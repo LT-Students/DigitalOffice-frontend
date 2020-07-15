@@ -1,0 +1,24 @@
+<div class="content-container">
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="signin()">
+    <label class="login-form__title">trrak!</label>
+      <div class="login-form__username-input">
+        <label>
+          <input class="login-form__input-field" name="username" type="text" id="login_username" placeholder="Корпоративный e-mail" formControlName="username">
+        </label>
+        <div class="login-form__error" *ngIf="loginForm.get('username').touched && loginForm.get('username').invalid">
+          Username is requered.
+        </div>
+      </div>
+      <div class="login-form__password-input">
+        <label>
+          <input class="login-form__input-field" name="password" type="password" id="login_password" placeholder="Пароль" formControlName="password">
+        </label>
+        <div class="login-form__error" *ngIf="loginForm.get('password').touched && loginForm.get('password').invalid">
+          Password is requered.
+        </div>
+      </div>
+      <div class="submit">
+        <button type="submit" class="submit__submit-button">Войти</button>
+      </div>
+  </form>
+</div>
