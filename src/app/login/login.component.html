@@ -2,17 +2,13 @@
   <form class="login-form" [formGroup]="loginForm" (ngSubmit)="signin()">
     <label class="login-form__title">trrak!</label>
       <div class="login-form__username-input">
-        <label>
-          <input class="login-form__input-field" name="username" type="text" id="login_username" placeholder="Корпоративный e-mail" formControlName="username">
-        </label>
+        <input class="login-form__input-field" name="username" type="text" id="login_username" placeholder="Корпоративный e-mail" formControlName="username">
         <div class="login-form__error" *ngIf="loginForm.get('username').touched && loginForm.get('username').invalid">
           Username is requered.
         </div>
       </div>
       <div class="login-form__password-input">
-        <label>
-          <input class="login-form__input-field" name="password" type="password" id="login_password" placeholder="Пароль" formControlName="password">
-        </label>
+        <input class="login-form__input-field" name="password" type="password" id="login_password" placeholder="Пароль" formControlName="password">
         <div class="login-form__error" *ngIf="loginForm.get('password').touched && loginForm.get('password').invalid">
           Password is requered.
         </div>
@@ -21,4 +17,8 @@
         <button type="submit" class="submit__submit-button">Войти</button>
       </div>
   </form>
+  <svg class="content-container__curves" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path id="lightcurve" d="M192.5 27.0549C95.7 23.8549 -3.5 99.3882 -41 137.555L-80 264.555L1223.5 203.055C1181.17 134.055 1082.1 -3.14499 1024.5 0.0550136C952.5 4.05501 903.5 121.055 828 137.555C752.5 154.055 735 95.5 647.5 88.055C588.5 83.035 569.5 115.055 498 121.055C426.5 127.055 313.5 31.0549 192.5 27.0549Z" fill="#F0BFA3" fill-opacity="0.43"/>
+    <path id="darkcurve" d="M178 229.5C96.4 236.3 -32.8333 45.3333 -71 0V314L1024 303L1138.5 175.5C1093 162.5 942.5 88.5 841 122C761.839 148.127 706 190.5 626 229.5C546 268.5 448.5 151.5 362 175.5C275.5 199.5 280 221 178 229.5Z" fill="#FFB78C" fill-opacity="0.12"/>
+  </svg>
 </div>
