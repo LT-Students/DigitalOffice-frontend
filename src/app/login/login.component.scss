@@ -8,11 +8,10 @@
   &__curves{
     position: absolute;
     bottom: 0px;
-    width: 100%;
+    width: 60%;
+    height: 30%;
   }
 }
-
-
 
 .login-form{
   display: flex;
@@ -21,7 +20,7 @@
   &__input-field{
     background-color: transparent;
     margin: 15px;
-    font-family: Gill Sans;
+    font-family: "Gill Sans";
     font-style: normal;
     font-weight: normal;
     font-size: 16px;
@@ -45,7 +44,7 @@
   &__title{
     position: relative;
     display: block;
-    font-family: Gotham Pro;
+    font-family: "Gotham Pro";
     font-style: normal;
     font-weight: bold;
     font-size: 35px;
@@ -58,7 +57,7 @@
 
 ::placeholder {
   position: absolute;
-  font-family: Gill Sans;
+  font-family: "Gill Sans";
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -76,4 +75,46 @@
   border-radius: 5px;
   background-color: #EC8B52;
   color: #FFFFFF;
+}
+
+.nav-link{
+  &__forgot-password {
+    position: relative;
+    margin-top: 30px;
+    font-family: "Gill Sans";
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+    opacity: 0.2;
+    &:hover{
+      opacity: 0.5;
+    }
+  }
+  &__signup{
+    position: absolute;
+    top: 30px;
+    right: 22%;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+    opacity: 0.23;
+    &__arrow{
+      stroke-width: 2px;
+      stroke-opacity: 1;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke: #FFFFFF;
+    }
+    &:hover{
+      opacity: 0.5;
+    }
+  }
 }
