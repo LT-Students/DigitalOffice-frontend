@@ -1,0 +1,28 @@
+.projectInfoMyStat {
+  display:flex;
+  width: 138px;
+}
+
+.projectInfoMyStat__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+}
+
+img {
+  width: 20px;
+  height: 20px;
+}
+
+.projectInfoMyStat__container>p {
+  --icon-orange1: #FA7D57;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--icon-orange1);
+  align-items: center;
+  text-align: center;
+}

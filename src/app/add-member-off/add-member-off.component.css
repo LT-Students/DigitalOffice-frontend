@@ -1,0 +1,30 @@
+.addMemberOff {
+  --button-color-grey1: #f1f1ef;
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-grey1);
+  border-radius: 5px;
+  width: 169px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.addMemberOff__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addMemberOff__container > p {
+  --font-grey1: #BDBDBD;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey1);
+  align-items: center;
+  text-align: center;
+}
+
+/*# sourceMappingURL=add-member-off.component.css.map */

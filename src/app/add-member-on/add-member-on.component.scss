@@ -1,0 +1,28 @@
+.addMemberOn {
+  --button-color-orange1: #fa7d57;
+  display:flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width:169px;
+  height:32px;
+  border-radius: 5px;
+}
+
+.addMemberOn__container {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addMemberOn__container>p {
+  --font-white1: #ffffff;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white1);
+  align-items: center;
+  text-align: center;
+}

@@ -1,0 +1,35 @@
+.chooseInt {
+  --button-color-orange2: #FFB78C;
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange2);
+  border-radius: 5px;
+  width: 209px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.chooseInt__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chooseInt__container > p {
+  --font-grey3: #434348;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey3);
+  align-items: center;
+  text-align: center;
+}
+
+img {
+  width: 10px;
+  height: 10px;
+}
+
+/*# sourceMappingURL=choose-int.component.css.map */

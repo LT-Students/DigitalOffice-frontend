@@ -1,0 +1,14 @@
+.addIconsPaper__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+}
+
+img {
+  width: 25px;
+  height: 25px;
+}
+
+/*# sourceMappingURL=add-icons-paper.component.css.map */

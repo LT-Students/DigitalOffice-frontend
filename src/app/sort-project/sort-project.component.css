@@ -1,0 +1,30 @@
+.sortProject {
+  --button-color-orange1: #fa7d57;
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width: 125px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.sortProject__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortProject__container > p {
+  --font-white2: #FCFCFC;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white2);
+  align-items: center;
+  text-align: center;
+}
+
+/*# sourceMappingURL=sort-project.component.css.map */

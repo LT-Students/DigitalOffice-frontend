@@ -1,0 +1,28 @@
+.sendPost {
+  --button-color-orange1: #fa7d57;
+  display:flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width:140px;
+  height:32px;
+  border-radius: 5px;
+}
+
+.sendPost__container {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sendPost__container>p {
+  --font-grey1: #fcfcfc;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey1);
+  align-items: center;
+  text-align: center;
+}

@@ -1,0 +1,29 @@
+.sortProjectOff {
+  --button-color-grey2: #F6F6F4;
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-grey2);
+  width: 125px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.sortProjectOff__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortProjectOff__container > p {
+  --font-grey1: #bdbdbd;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey1);
+  align-items: center;
+  text-align: center;
+}
+
+/*# sourceMappingURL=sort-project-off.component.css.map */

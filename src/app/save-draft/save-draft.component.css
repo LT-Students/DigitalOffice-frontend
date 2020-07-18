@@ -1,0 +1,32 @@
+.saveDraft {
+  --button-color-white1: #fff;
+  --border-color2: 1px solid #FFB78C;
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-white1);
+  border: var(--border-color2);
+  border-radius: 5px;
+  width: 160px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.saveDraft__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.saveDraft__container > p {
+  --font-orange2: #FFB78C;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-orange2);
+  align-items: center;
+  text-align: center;
+}
+
+/*# sourceMappingURL=save-draft.component.css.map */

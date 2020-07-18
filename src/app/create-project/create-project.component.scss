@@ -1,0 +1,28 @@
+.createProject {
+  --button-color-orange1: #FA7D57;
+  display:flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width:192px;
+  height:32px;
+  border-radius: 5px;
+}
+
+.createProject__container {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.createProject__container>p {
+  --font-white1: #fff;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white1);
+  align-items: center;
+  text-align: center;
+}

@@ -1,0 +1,14 @@
+.respondIconsSmiley__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+}
+
+img {
+  width: 20px;
+  height: 20px;
+}
+
+/*# sourceMappingURL=respond-icons-smiley.component.css.map */
