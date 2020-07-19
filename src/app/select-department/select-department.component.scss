@@ -1,0 +1,44 @@
+$backgroundColor: #F6F6F4;
+$textColor: #434348;
+
+.select__department{
+  position: relative ;
+  overflow: hidden;
+  width: 450px;
+  height: 100px;
+  background-color: white;
+
+  p{
+    color: $textColor;
+    line-height: 0;
+    font-family: "Gill Sans";
+  }
+
+  &:after {
+    background: url("../dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 15px;
+    top: 48px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: none;
+    width: 432px;
+    height: 36px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColor;
+    padding-left: 13px;
+    color: $textColor;
+    font-family: "Gill Sans";
+    font-size: 14px;
+    order-radius: 5px;
+    outline: none;
+  }
+}
