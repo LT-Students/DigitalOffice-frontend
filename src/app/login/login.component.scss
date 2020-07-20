@@ -1,3 +1,21 @@
+%font-basic{
+  font-family: "Gill Sans";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: white;
+}
+
+%font-title{
+  font-family: "Gotham Pro";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  line-height: 40px;
+  color: white;
+}
+
 .content-container{
   width: 100%;
   height: 100vh;
@@ -8,9 +26,21 @@
   &__curves{
     position: absolute;
     bottom: 0px;
-    width: 60%;
+    width: 100%;
     height: 30%;
+    &__light, &__dark{
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+      height: 100%;
+    }
   }
+}
+
+::placeholder {
+  @extend %font-basic;
+  position: absolute;
+  opacity: 0.8;
 }
 
 .login-form{
@@ -18,93 +48,69 @@
   flex-direction: column;
   align-items: center;
   &__input-field{
+    @extend %font-basic;
     background-color: transparent;
     margin: 15px;
-    font-family: "Gill Sans";
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-    color: #FFFFFF;
     opacity: 0.8;
     border-style: none;
+    border: transparent;
+    border-width:1px ;
     border-bottom-width: 1px;
     border-bottom-style: solid;
     border-bottom-color: white;
     width: 288px; 
     height: 24px;
+    &:focus{
+      background-color: transparent;
+      border: 1px solid white;
+    }
   }
-
   &__username-input, &__password-input{
-
+    margin: 2px;
   }
   &__error{
     color: red;
   }
   &__title{
+    @extend %font-title;
     position: relative;
     display: block;
-    font-family: "Gotham Pro";
-    font-style: normal;
-    font-weight: bold;
-    font-size: 35px;
-    line-height: 40px;
     text-align: center;
-    color: #FFFFFF;
     margin-bottom: 30px;
   }
-}
-
-::placeholder {
-  position: absolute;
-  font-family: "Gill Sans";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: #FFFFFF;
-  opacity: 0.8;
-}
-
-.submit__submit-button{
-  position: relative;
-  margin-top: 30px;
-  width: 132px;
-  height: 36px;
-  border-style: none;
-  border-radius: 5px;
-  background-color: #EC8B52;
-  color: #FFFFFF;
+  &__submit-button{
+    position: relative;
+    margin-top: 30px;
+    width: 132px;
+    height: 36px;
+    border-style: none;
+    border-radius: 5px;
+    background-color: #EC8B52;
+    color: #FFFFFF;
+    &:hover{
+      background-color: #EC8052;
+    }
+  }
 }
 
 .nav-link{
   &__forgot-password {
+    @extend %font-basic;
     position: relative;
     margin-top: 30px;
-    font-family: "Gill Sans";
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-    color: #FFFFFF;
     opacity: 0.2;
     &:hover{
       opacity: 0.5;
     }
   }
   &__signup{
+    @extend %font-basic;
     position: absolute;
     top: 30px;
-    right: 22%;
+    right: 6%;
     display: flex;
     align-items: center;
     text-decoration: none;
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-    color: #FFFFFF;
     opacity: 0.23;
     &__arrow{
       stroke-width: 2px;
