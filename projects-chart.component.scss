@@ -1,0 +1,16 @@
+.circle{
+  max-width: 412px;
+  max-height: 262px;
+}
+.chart_text{
+  text-anchor: middle;
+}
+.all_hours{
+  transform: translateY(-0.25em);
+  font-size: 0.4em;
+}
+.hours_difference{
+  transform: translateY(1em);
+  font-size: 0.2em;
+  background-color: red;
+}
