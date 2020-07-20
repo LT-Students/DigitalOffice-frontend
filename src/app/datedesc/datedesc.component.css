@@ -1,0 +1,80 @@
+.desc__title {
+  position: relative;
+  /*width: 247px;*/
+  width: 928px;
+  height: 28px;
+  left: 48px;
+  top: 36px;
+  font-family: Gotham Pro;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 28px;
+  color: #434348;
+}
+.desc__content {
+  position: relative;
+  display: flex;
+  width: 928px;
+  height: 240px;
+  background: url("image/fon.svg");
+  /*background: rgba(229, 229, 229, 0.05);*/
+  left: 48px;
+  top: 20px;
+}
+.content__period {
+  display: flex;
+  padding-left: 48px;
+  padding-top: 36px;
+  width: 184px;
+  height: 40px;
+  font-family: Gotham Pro;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  line-height: 40px;
+  color: #323137;
+}
+.content__week {
+  position: absolute;
+  display: flex;
+  width: 400px;
+  height: 61px;
+  padding-left: 48px;
+  padding-top: 50px;
+}
+.button__form {
+  position: absolute;
+  width: 179px;
+  height: 32px;
+  left: 48px;
+  top: 175px;
+  background: #FFB78C;
+  border-radius: 5px;
+  border-color: transparent;
+}
+.button__text {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #434348;
+  margin: 0;
+}
+.button__foto {
+  /*position: absolute;*/
+  width: 4px;
+  height: 8px;
+  left: 259px;
+  top: 325px;
+  border: 2px solid #434348;
+}
+.desc__foto {
+  background: url("image/girl.svg");
+  position: absolute;
+  width: 189px;
+  height: 264px;
+  left: 660px;
+  top: -24px;
+}

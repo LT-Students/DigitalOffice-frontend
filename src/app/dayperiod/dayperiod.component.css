@@ -1,0 +1,11 @@
+.week__day {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 398.78px;
+  height: 48px;
+  padding-top: 16px;
+  padding-bottom: 10px;
+}

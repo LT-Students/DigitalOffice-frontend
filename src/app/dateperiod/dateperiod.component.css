@@ -1,0 +1,19 @@
+.week__date {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 400px;
+  height: 32px;
+  padding-top: 40px;
+  margin-top: 10px;
+}
+.date__active {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  left: 279.93px;
+  top: 255px;
+  background: #FA7D57;
+}
