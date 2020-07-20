@@ -1,0 +1,45 @@
+$textColor: #BDBDBD;
+$backgroundColor: #F6F6F4;
+
+.select__project {
+  position: relative ;
+  overflow: hidden;
+  width: 200px;
+  height: 100px;
+
+  //background: url("./svg.svg");
+  &:after {
+    background: url("../grey.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: -3px;
+    top: 48px;
+    width: 28px;
+    display: block;
+  }
+
+
+  p {
+    color:$textColor ;
+    line-height: 0;
+  }
+  select {
+    margin-left: 10px;
+    border: none;
+    width: 192px;
+    height: 36px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColor;
+    padding-left: 10px;
+    color: $textColor;
+    font-family: "Gill Sans";
+    font-size: 15px;
+    border-radius: 5px;
+    outline: none;
+
+  }
+}
