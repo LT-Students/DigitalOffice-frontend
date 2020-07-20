@@ -1,0 +1,593 @@
+@charset "UTF-8";
+/*переменные цветов*/
+:host {
+  --button-color-orange1: #fa7d57;
+  --button-color-orange2: #FFB78C;
+  --button-color-orange3: #EC8B52;
+  --button-color-grey1: #f1f1ef;
+  --button-color-grey2: #F6F6F4;
+  --button-color-white1: #fff;
+  --border-color1: 1px solid #fa7d57;
+  --border-color2: 1px solid #FFB78C;
+  --font-orange1: #FA7D57;
+  --font-white1: #ffffff;
+  --font-white2: #fcfcfc;
+  --font-grey1: #BDBDBD;
+  --font-grey2: #434348;
+  --font-orange2: #FFB78C;
+}
+
+/*кнопка плюс*/
+.addButton {
+  width: 48px;
+  height: 48px;
+  background: var(--button-color-orange1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addButton__plusIcon {
+  display: flex;
+}
+
+/*загрузите с устройства*/
+.addFile {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-white1);
+  border: var(--border-color1);
+  border-radius: 5px;
+  width: 178px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.addFile__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addFile__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-orange1);
+  align-items: center;
+  text-align: center;
+}
+
+/*добавить участников оранжевая*/
+.addMemberOn {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width: 169px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.addMemberOn__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addMemberOn__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white1);
+  align-items: center;
+  text-align: center;
+}
+
+/*добавить участников серая*/
+.addMemberOff {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-grey1);
+  border-radius: 5px;
+  width: 169px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.addMemberOff__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addMemberOff__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey1);
+  align-items: center;
+  text-align: center;
+}
+
+/*добавить проект*/
+.addProject {
+  width: 164px;
+  height: 32px;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.addProject__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.addProject__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white2);
+  align-items: center;
+  text-align: center;
+}
+
+/*выбрать другую дату*/
+.chooseDate {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange2);
+  border-radius: 5px;
+  width: 179px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.chooseDate__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chooseDate__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey2);
+  align-items: center;
+  text-align: center;
+}
+
+/*выбрать другой интервал*/
+.chooseInt {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange2);
+  border-radius: 5px;
+  width: 209px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.chooseInt__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chooseInt__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey2);
+}
+
+.chooseInt__container img {
+  position: relative;
+  bottom: -1px;
+}
+
+/*создать проект*/
+.createProject {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width: 192px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.createProject__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.createProject__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white1);
+  align-items: center;
+  text-align: center;
+}
+
+/*войти*/
+.logIn {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange3);
+  border-radius: 5px;
+  width: 132px;
+  height: 36px;
+  border-radius: 5px;
+}
+
+.logIn__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logIn__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white1);
+  align-items: center;
+  text-align: center;
+}
+
+/*редактировать*/
+.projectEdit {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width: 132px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.projectEdit__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.projectEdit__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white1);
+  align-items: center;
+  text-align: center;
+}
+
+/*статистика*/
+.projectStats {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width: 236px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.projectStats__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.projectStats__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white1);
+  align-items: center;
+  text-align: center;
+}
+
+/*сохранить черновик*/
+.saveDraft {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-white1);
+  border: var(--border-color2);
+  border-radius: 5px;
+  width: 160px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.saveDraft__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.saveDraft__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-orange2);
+  align-items: center;
+  text-align: center;
+}
+
+/*отправить*/
+.sendPost {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width: 140px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.sendPost__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sendPost__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white2);
+  align-items: center;
+  text-align: center;
+}
+
+/*сортировка: карточки оранжевая*/
+.sortCards {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  width: 125px;
+  height: 32px;
+  border-radius: 0 5px 5px 0;
+}
+
+.sortCards__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortCards__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white2);
+  align-items: center;
+  text-align: center;
+}
+
+/*сортировка: карточки серая*/
+.sortCardsOff {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-grey2);
+  width: 125px;
+  height: 32px;
+  border-radius: 0 5px 5px 0;
+}
+
+.sortCardsOff__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortCardsOff__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey1);
+  align-items: center;
+  text-align: center;
+}
+
+/*сортировка: список оранжевая*/
+.sortList {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  width: 125px;
+  height: 32px;
+  border-radius: 5px 0 0 5px;
+}
+
+.sortList__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortList__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white2);
+  align-items: center;
+  text-align: center;
+}
+
+/*сортировка: список серая*/
+.sortListOff {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-grey2);
+  width: 125px;
+  height: 32px;
+  border-radius: 5px 0 0 5px;
+}
+
+.sortListOff__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortListOff__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey1);
+  align-items: center;
+  text-align: center;
+}
+
+/*сортировка: по проектам оранжевая*/
+.sortProject {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-orange1);
+  border-radius: 5px;
+  width: 125px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.sortProject__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortProject__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white2);
+  align-items: center;
+  text-align: center;
+}
+
+/*сортировка: по проектам серая*/
+.sortProjectOff {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-grey2);
+  width: 125px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.sortProjectOff__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortProjectOff__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey1);
+  align-items: center;
+  text-align: center;
+}
+
+/*сортировка: по тегам оранжевая*/
+.sortTag {
+  display: flex;
+  justify-content: center;
+  background: #fa7d57;
+  border-radius: 5px;
+  width: 125px;
+  height: 32px;
+  border-radius: 5px;
+}
+
+.sortTag__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortTag__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-white2);
+  align-items: center;
+  text-align: center;
+}
+
+/*сортировка: по тегам серая*/
+.sortTagOff {
+  display: flex;
+  justify-content: center;
+  background: var(--button-color-grey2);
+  border-radius: 5px;
+  width: 125px;
+  height: 32px;
+}
+
+.sortTagOff__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sortTagOff__container > p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--font-grey1);
+  align-items: center;
+  text-align: center;
+}
+
+/*# sourceMappingURL=buttons.component.css.map */
