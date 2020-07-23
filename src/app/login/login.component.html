@@ -4,7 +4,7 @@
       <path class="nav-link__signup__arrow" d="M1 8 L47 8 M40 15 L47 8 L40 1"/>
     </svg>
   </a>
-  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="signin()">
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="signin()" autocomplete="off">
     <label class="login-form__title">trrak!</label>
       <div class="login-form__username-input">
         <input class="login-form__input-field" name="username" type="text" id="login_username" placeholder="Корпоративный e-mail" formControlName="username">

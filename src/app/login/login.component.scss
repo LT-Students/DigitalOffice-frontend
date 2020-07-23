@@ -53,16 +53,14 @@
     margin: 15px;
     opacity: 0.8;
     border-style: none;
-    border: transparent;
-    border-width:1px ;
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: white;
+    border-bottom: 1px solid white;
     width: 288px; 
     height: 24px;
-    &:focus{
+    &:focus, &:-internal-autofill-selected {
       background-color: transparent;
-      border: 1px solid white;
+      border-style: none;
+      outline: none;
+      border-bottom: 1px solid white;
     }
   }
   &__username-input, &__password-input{
