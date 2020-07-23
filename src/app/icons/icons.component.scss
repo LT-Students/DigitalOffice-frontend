@@ -1,8 +1,6 @@
 /*переменные цветов*/
-:host {
-  --icon-orange1: #FA7D57;
-  --icon-grey1: #c4c4c4;
-}
+$icon-orange: hsl(14°, 94%, 66%);
+$icon-grey: hsl(0°, 0%, 77%);
 
 
 /*иконка цепь*/
@@ -14,13 +12,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
-}
-
-.addIconsChain__container img {
-  width: 25px;
-  height: 25px;
+  max-width: 24px;
+  height: 24px;
 }
 
 /*иконка файл*/
@@ -32,19 +25,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
-}
-
-.addIconsPaper__container img {
-  width: 25px;
-  height: 25px;
+  max-width: 19px;
+  height: 24px;
 }
 
 /*лента оранжевая*/
 .projectInfoFeed {
   display:flex;
-
+  max-width: 81px;
+  height: 17px;
 }
 
 .projectInfoFeed__container {
@@ -52,29 +41,23 @@
   justify-content: center;
   align-items: center;
   max-width: 100%;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: $icon-orange;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.projectInfoFeed__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoFeed__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-orange1);
-  align-items: center;
-  text-align: center;
-}
 
 /*лента серая*/
 .projectInfoFeedOff {
   display:flex;
-
+  max-width: 81px;
+  height: 17px;
 }
 
 .projectInfoFeedOff__container {
@@ -82,89 +65,69 @@
   justify-content: center;
   align-items: center;
   max-width: 100%;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: $icon-grey;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.projectInfoFeedOff__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoFeedOff__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-grey1);
-  align-items: center;
-  text-align: center;
-}
 
 /*моя статистика оранжевая*/
 .projectInfoMyStat {
-  display:flex;
-  width: 138px;
+  max-width: 141px;
+  height: 17px;
 }
 
 .projectInfoMyStat__container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   max-width: 100%;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: $icon-orange;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.projectInfoMyStat__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoMyStat__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-orange1);
-  align-items: center;
-  text-align: center;
-}
 
 /*моя статистика серая*/
 .projectInfoMyStatOff {
-  display:flex;
-  width: 138px;
+  max-width: 141px;
+  height: 17px;
 }
 
 .projectInfoMyStatOff__container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   max-width: 100%;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: $icon-grey;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.projectInfoMyStatOff__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoMyStatOff__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-grey1);
-  align-items: center;
-  text-align: center;
-}
 
 /*команда оранжевая*/
 .projectInfoTeam {
   display:flex;
-
+  max-width: 111px;
+  height: 18px;
 }
 
 .projectInfoTeam__container {
@@ -172,29 +135,23 @@
   justify-content: center;
   align-items: center;
   max-width: 100%;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: $icon-orange;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.projectInfoTeam__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoTeam__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-orange1);
-  align-items: center;
-  text-align: center;
-}
 
 /*команда серая*/
 .projectInfoTeamOff {
   display:flex;
-
+  max-width: 111px;
+  height: 18px;
 }
 
 .projectInfoTeamOff__container {
@@ -202,76 +159,57 @@
   justify-content: center;
   align-items: center;
   max-width: 100%;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    color: $icon-grey;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.projectInfoTeamOff__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoTeamOff__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-grey1);
-  align-items: center;
-  text-align: center;
-}
 
 /*самолетик оранжевый*/
 .respondIconsAirplane {
-
+  max-width: 22px;
+  height: 20px;
 }
 
 .respondIconsAirplane__container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
+  max-width: 25px;
   height: 25px;
-}
-
-.respondIconsAirplane__container img {
-  width: 20px;
-  height: 20px;
 }
 
 /*иконка камера*/
 .respondIconsCam {
-
+  max-width: 25px;
+  height: 20px;
 }
 
 .respondIconsCam__container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
+  max-width: 25px;
   height: 25px;
-}
-
-.respondIconsCam__container img {
-  width: 20px;
-  height: 20px;
 }
 
 /*иконка смайл*/
 .respondIconsSmiley {
-
+  max-width: 21px;
+  height: 20px;
 }
 
 .respondIconsSmiley__container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
+  max-width: 25px;
   height: 25px;
-}
-
-.respondIconsSmiley__container img {
-  width: 20px;
-  height: 20px;
 }
 

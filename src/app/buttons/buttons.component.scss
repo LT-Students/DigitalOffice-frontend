@@ -1,26 +1,26 @@
 /*переменные цветов*/
-:host {
-  --button-color-orange1: #fa7d57;
-  --button-color-orange2: #FFB78C;
-  --button-color-orange3: #EC8B52;
-  --button-color-grey1: #f1f1ef;
-  --button-color-grey2: #F6F6F4;
-  --button-color-white1: #fff;
-  --border-color1: 1px solid #fa7d57;
-  --border-color2: 1px solid #FFB78C;
-  --font-orange1: #FA7D57;
-  --font-white1: #ffffff;
-  --font-white2: #fcfcfc;
-  --font-grey1: #BDBDBD;
-  --font-grey2: #434348;
-  --font-orange2: #FFB78C;
-}
+$border-style1: 1px solid hsl(14°, 94%, 66%);
+$border-style2: 1px solid hsl(22°, 100%, 77%);
+
+$button-color-orange1: hsl(14°, 94%, 66%);
+$button-color-orange2: hsl(22°, 100%, 77%);
+$button-color-orange3: hsl(22°, 80%, 62%);
+
+$button-color-grey: hsl(60°, 10%, 96%);
+$button-color-white1: hsl(0°, 0%, 100%);
+
+$font-grey1: hsl(0°, 0%, 74%);
+$font-grey2: hsl(240°, 4%, 27%);
+$font-orange1: hsl(14°, 94%, 66%);
+$font-orange2: hsl(22°, 100%, 77%);
+$font-white: hsl(0°, 0%, 100%);
+
 
 /*кнопка плюс*/
 .addButton {
-  width: 48px;
+  max-width: 48px;
   height: 48px;
-  background: var(--button-color-orange1);
+  background: $button-color-orange1;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -31,14 +31,15 @@
   display:flex;
 }
 
+
 /*загрузите с устройства*/
 .addFile {
   display:flex;
   justify-content: center;
-  background: var(--button-color-white1);
-  border: var(--border-color1);
+  background: $button-color-white1;
+  border: $border-style1;
   border-radius: 5px;
-  width:178px;
+  max-width:178px;
   height:32px;
   border-radius: 5px;
 }
@@ -47,26 +48,26 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-orange1;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.addFile__container>p {
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-orange1);
-  align-items: center;
-  text-align: center;
-}
 
 /*добавить участников оранжевая*/
 .addMemberOn {
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange1);
+  background: $button-color-orange1;
   border-radius: 5px;
-  width:169px;
+  max-width:169px;
   height:32px;
   border-radius: 5px;
 }
@@ -75,26 +76,26 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.addMemberOn__container>p {
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white1);
-  align-items: center;
-  text-align: center;
-}
 
 /*добавить участников серая*/
 .addMemberOff {
   display:flex;
   justify-content: center;
-  background: var(--button-color-grey1);
+  background: $button-color-grey;
   border-radius: 5px;
-  width:169px;
+  max-width:169px;
   height:32px;
   border-radius: 5px;
 }
@@ -103,24 +104,24 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-grey1;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.addMemberOff__container>p {
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-grey1);
-  align-items: center;
-  text-align: center;
-}
 
 /*добавить проект*/
 .addProject {
-  width: 164px;
+  max-width: 164px;
   height: 32px;
-  background: var(--button-color-orange1);
+  background: $button-color-orange1;
   border-radius: 5px;
   display:flex;
   justify-content: center;
@@ -130,26 +131,26 @@
   display:flex;
   align-items: center;
   justify-content: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.addProject__container >p {
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white2);
-  align-items: center;
-  text-align: center;
-}
 
 /*выбрать другую дату*/
 .chooseDate {
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange2);
+  background: $button-color-orange2;
   border-radius: 5px;
-  width:179px;
+  max-width:179px;
   height:32px;
   border-radius: 5px;
 }
@@ -158,26 +159,26 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-grey2;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.chooseDate__container>p {
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-grey2);
-  align-items: center;
-  text-align: center;
-}
 
 /*выбрать другой интервал*/
 .chooseInt {
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange2);
+  background: $button-color-orange2;
   border-radius: 5px;
-  width:209px;
+  max-width:209px;
   height:32px;
   border-radius: 5px;
 }
@@ -186,31 +187,29 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-grey2;
+  }
+  svg {
+    position:relative;
+    bottom: -1px;
+  }
 }
 
-.chooseInt__container>p {
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-grey2);
-
-}
-.chooseInt__container img {
-  position:relative;
-  bottom: -1px;
-}
 
 
 /*создать проект*/
 .createProject {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange1);
+  background: $button-color-orange1;
   border-radius: 5px;
-  width:192px;
+  max-width:192px;
   height:32px;
   border-radius: 5px;
 }
@@ -219,28 +218,27 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.createProject__container>p {
 
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white1);
-  align-items: center;
-  text-align: center;
-}
 
 /*войти*/
 .logIn {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange3);
+  background: $button-color-orange3;
   border-radius: 5px;
-  width:132px;
+  max-width:132px;
   height:36px;
   border-radius: 5px;
 }
@@ -249,28 +247,26 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.logIn__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white1);
-  align-items: center;
-  text-align: center;
-}
 
 /*редактировать*/
 .projectEdit {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange1);
+  background: $button-color-orange1;
   border-radius: 5px;
-  width:132px;
+  max-width:132px;
   height:32px;
   border-radius: 5px;
 }
@@ -279,28 +275,26 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.projectEdit__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white1);
-  align-items: center;
-  text-align: center;
-}
 
 /*статистика*/
 .projectStats {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange1);
+  background: $button-color-orange1;
   border-radius: 5px;
-  width:236px;
+  max-width:236px;
   height:32px;
   border-radius: 5px;
 }
@@ -309,30 +303,27 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.projectStats__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white1);
-  align-items: center;
-  text-align: center;
-}
 
 /*сохранить черновик*/
 .saveDraft {
-
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-white1);
-  border: var(--border-color2);
+  background: $button-color-white1;
+  border: $border-style2;
   border-radius: 5px;
-  width:160px;
+  max-width:160px;
   height:32px;
   border-radius: 5px;
 }
@@ -341,28 +332,26 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-orange2;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.saveDraft__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-orange2);
-  align-items: center;
-  text-align: center;
-}
 
 /*отправить*/
 .sendPost {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange1);
+  background: $button-color-orange1;
   border-radius: 5px;
-  width:140px;
+  max-width:140px;
   height:32px;
   border-radius: 5px;
 }
@@ -371,28 +360,25 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.sendPost__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white2);
-  align-items: center;
-  text-align: center;
-}
 
 /*сортировка: карточки оранжевая*/
 .sortCards {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange1);
-
-  width: 125px;
+  background: $button-color-orange1;
+  max-width: 125px;
   height: 32px;
   border-radius: 0 5px 5px 0;
 }
@@ -401,27 +387,25 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.sortCards__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white2);
-  align-items: center;
-  text-align: center;
-}
 
 /*сортировка: карточки серая*/
 .sortCardsOff {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-grey2);
-  width: 125px;
+  background: $button-color-grey;
+  max-width: 125px;
   height: 32px;
   border-radius: 0 5px 5px 0;
 }
@@ -430,27 +414,25 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p{
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-grey1;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.sortCardsOff__container>p{
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-grey1);
-  align-items: center;
-  text-align: center;
-}
 
 /*сортировка: список оранжевая*/
 .sortList {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange1);
-  width:125px;
+  background: $button-color-orange1;
+  max-width:125px;
   height:32px;
   border-radius: 5px 0 0 5px;
 }
@@ -459,27 +441,25 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.sortList__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white2);
-  align-items: center;
-  text-align: center;
-}
 
 /*сортировка: список серая*/
 .sortListOff {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-grey2);
-  width:125px;
+  background: $button-color-grey;
+  max-width:125px;
   height:32px;
   border-radius: 5px 0 0 5px;
 }
@@ -488,28 +468,27 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-grey1;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.sortListOff__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-grey1);
-  align-items: center;
-  text-align: center;
-}
 
 /*сортировка: по проектам оранжевая*/
 .sortProject {
 
   display:flex;
   justify-content: center;
-  background: var(--button-color-orange1);
+  background: $button-color-orange1;
   border-radius: 5px;
-  width:125px;
+  max-width:125px;
   height:32px;
   border-radius: 5px;
 }
@@ -518,27 +497,25 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.sortProject__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white2);
-  align-items: center;
-  text-align: center;
-}
 
 /*сортировка: по проектам серая*/
 .sortProjectOff {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-grey2);
-  width:125px;
+  background: $button-color-grey;
+  max-width:125px;
   height:32px;
   border-radius: 5px;
 }
@@ -547,27 +524,27 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-grey1;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.sortProjectOff__container>p {
 
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-grey1);
-  align-items: center;
-  text-align: center;
-}
 
 /*сортировка: по тегам оранжевая*/
 .sortTag {
   display:flex;
   justify-content: center;
-  background: #fa7d57;
+  background: $button-color-orange1;
   border-radius: 5px;
-  width:125px;
+  max-width:125px;
   height:32px;
   border-radius: 5px;
 }
@@ -576,28 +553,26 @@
   display:flex;
   justify-content: center;
   align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-white;
+    align-items: center;
+    text-align: center;
+  }
 }
 
-.sortTag__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-white2);
-  align-items: center;
-  text-align: center;
-}
 
 /*сортировка: по тегам серая*/
 .sortTagOff {
-
   display:flex;
   justify-content: center;
-  background: var(--button-color-grey2);
+  background: $button-color-grey;
   border-radius: 5px;
-  width:125px;
+  max-width:125px;
   height:32px;
 }
 
@@ -605,16 +580,14 @@
   display:flex;
   justify-content: center;
   align-items: center;
-}
-
-.sortTagOff__container>p {
-
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: lighter;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--font-grey1);
-  align-items: center;
-  text-align: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+    color: $font-grey1;
+    align-items: center;
+    text-align: center;
+  }
 }

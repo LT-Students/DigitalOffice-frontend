@@ -1,22 +1,12 @@
 @charset "UTF-8";
 /*переменные цветов*/
-:host {
-  --icon-orange1: #FA7D57;
-  --icon-grey1: #c4c4c4;
-}
-
 /*иконка цепь*/
 .addIconsChain__container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
-}
-
-.addIconsChain__container img {
-  width: 25px;
-  height: 25px;
+  max-width: 24px;
+  height: 24px;
 }
 
 /*иконка файл*/
@@ -24,18 +14,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
-}
-
-.addIconsPaper__container img {
-  width: 25px;
-  height: 25px;
+  max-width: 19px;
+  height: 24px;
 }
 
 /*лента оранжевая*/
 .projectInfoFeed {
   display: flex;
+  max-width: 81px;
+  height: 17px;
 }
 
 .projectInfoFeed__container {
@@ -44,19 +31,12 @@
   align-items: center;
   max-width: 100%;
 }
-
-.projectInfoFeed__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoFeed__container > p {
+.projectInfoFeed__container p {
   font-family: Gill Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-orange1);
+  color: #fa7d57;
   align-items: center;
   text-align: center;
 }
@@ -64,6 +44,8 @@
 /*лента серая*/
 .projectInfoFeedOff {
   display: flex;
+  max-width: 81px;
+  height: 17px;
 }
 
 .projectInfoFeedOff__container {
@@ -72,77 +54,56 @@
   align-items: center;
   max-width: 100%;
 }
-
-.projectInfoFeedOff__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoFeedOff__container > p {
+.projectInfoFeedOff__container p {
   font-family: Gill Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-grey1);
+  color: #c4c4c4;
   align-items: center;
   text-align: center;
 }
 
 /*моя статистика оранжевая*/
 .projectInfoMyStat {
-  display: flex;
-  width: 138px;
+  max-width: 141px;
+  height: 17px;
 }
 
 .projectInfoMyStat__container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   max-width: 100%;
 }
-
-.projectInfoMyStat__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoMyStat__container > p {
+.projectInfoMyStat__container p {
   font-family: Gill Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-orange1);
+  color: #fa7d57;
   align-items: center;
   text-align: center;
 }
 
 /*моя статистика серая*/
 .projectInfoMyStatOff {
-  display: flex;
-  width: 138px;
+  max-width: 141px;
+  height: 17px;
 }
 
 .projectInfoMyStatOff__container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   max-width: 100%;
 }
-
-.projectInfoMyStatOff__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoMyStatOff__container > p {
+.projectInfoMyStatOff__container p {
   font-family: Gill Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-grey1);
+  color: #c4c4c4;
   align-items: center;
   text-align: center;
 }
@@ -150,6 +111,8 @@
 /*команда оранжевая*/
 .projectInfoTeam {
   display: flex;
+  max-width: 111px;
+  height: 18px;
 }
 
 .projectInfoTeam__container {
@@ -158,19 +121,12 @@
   align-items: center;
   max-width: 100%;
 }
-
-.projectInfoTeam__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoTeam__container > p {
+.projectInfoTeam__container p {
   font-family: Gill Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-orange1);
+  color: #fa7d57;
   align-items: center;
   text-align: center;
 }
@@ -178,6 +134,8 @@
 /*команда серая*/
 .projectInfoTeamOff {
   display: flex;
+  max-width: 111px;
+  height: 18px;
 }
 
 .projectInfoTeamOff__container {
@@ -186,63 +144,56 @@
   align-items: center;
   max-width: 100%;
 }
-
-.projectInfoTeamOff__container img {
-  width: 20px;
-  height: 20px;
-}
-
-.projectInfoTeamOff__container > p {
+.projectInfoTeamOff__container p {
   font-family: Gill Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
-  line-height: 24px;
-  color: var(--icon-grey1);
+  color: #c4c4c4;
   align-items: center;
   text-align: center;
 }
 
 /*самолетик оранжевый*/
+.respondIconsAirplane {
+  max-width: 22px;
+  height: 20px;
+}
+
 .respondIconsAirplane__container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
+  max-width: 25px;
   height: 25px;
 }
 
-.respondIconsAirplane__container img {
-  width: 20px;
+/*иконка камера*/
+.respondIconsCam {
+  max-width: 25px;
   height: 20px;
 }
 
-/*иконка камера*/
 .respondIconsCam__container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
+  max-width: 25px;
   height: 25px;
 }
 
-.respondIconsCam__container img {
-  width: 20px;
+/*иконка смайл*/
+.respondIconsSmiley {
+  max-width: 21px;
   height: 20px;
 }
 
-/*иконка смайл*/
 .respondIconsSmiley__container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
+  max-width: 25px;
   height: 25px;
-}
-
-.respondIconsSmiley__container img {
-  width: 20px;
-  height: 20px;
 }
 
 /*# sourceMappingURL=icons.component.css.map */
