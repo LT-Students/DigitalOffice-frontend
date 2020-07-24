@@ -43,6 +43,28 @@
   padding-left: 48px;
   padding-top: 50px;
 }
+.week__day {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 398.78px;
+  height: 48px;
+  padding-top: 16px;
+  padding-bottom: 10px;
+}
+.week__date {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 400px;
+  height: 32px;
+  padding-top: 40px;
+  margin-top: 10px;
+}
 .button__form {
   position: absolute;
   width: 179px;
@@ -63,16 +85,17 @@
   margin: 0;
 }
 .button__foto {
-  /*position: absolute;*/
+  display: flex;
+  position: absolute;
+  margin-left: 160px;
+  margin-top: -14px;
   width: 4px;
   height: 8px;
-  left: 259px;
-  top: 325px;
-  border: 2px solid #434348;
 }
 .desc__foto {
   background: url("image/girl.svg");
   position: absolute;
+  /*border-radius: 50%;*/
   width: 189px;
   height: 264px;
   left: 660px;
