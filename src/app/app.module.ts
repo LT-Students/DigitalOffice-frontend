@@ -4,9 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { DatedescComponent } from './datedesc/datedesc.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DatedescComponent
   ],
   imports: [
     BrowserModule,
