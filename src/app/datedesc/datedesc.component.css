@@ -93,7 +93,7 @@
   height: 8px;
 }
 .desc__foto {
-  background: url("image/girl.svg");
+  /*background: url("image/girl.svg");*/
   position: absolute;
   /*border-radius: 50%;*/
   width: 189px;
