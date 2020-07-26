@@ -1,0 +1,86 @@
+.desc__title {
+  color: #434348;
+  font-family: Gotham Pro;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 22px;
+  height: 28px;
+  left: 48px;
+  line-height: 28px;
+  position: relative;
+  top: 36px;
+  width: 928px;
+  }
+.desc__content {
+  background: url("../../assets/image/fon.svg");
+  display: flex;
+  height: 240px;
+  left: 48px;
+  position: relative;
+  top: 20px;
+  width: 928px;
+}
+.content__period {
+  color: #323137;
+  font-family: Gotham Pro;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 35px;
+  padding-left: 48px;
+  padding-top: 36px;
+  width: 184px;
+}
+.content__week {
+  display: flex;
+  position: absolute;
+  padding-left: 48px;
+  padding-top: 50px;
+  width: 380px;
+        &__day {
+          flex-direction: column;
+          padding-top: 16px;
+          width: 398.78px;
+              &-single {
+                 margin-bottom: -5px;
+              }
+              &_orange {
+                background: orange;
+                border-radius: 50%;
+                width: 25px;
+          }
+        }
+}
+.button__form {
+  background: #FFB78C;
+  border-radius: 5px;
+  border-color: transparent;
+  height: 32px;
+  left: 48px;
+  top: 175px;
+  position: absolute;
+  width: 179px;
+}
+.button__text {
+  color: #434348;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+}
+.button__foto {
+  display: flex;
+  height: 8px;
+  margin-left: 160px;
+  margin-top: -14px;
+  position: absolute;
+  width: 4px;
+}
+.desc__foto {
+  height: 264px;
+  left: 660px;
+  position: absolute;
+  top: -24px;
+  width: 189px;
+}
