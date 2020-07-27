@@ -3,7 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import {ChartComponent} from "./chart/chart.component";
 
 
-const routes: Routes = [];
+const routes: Routes = [
+  {path: 'bar-chart', component: ChartComponent},
+  {path: '**', component: ChartComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
