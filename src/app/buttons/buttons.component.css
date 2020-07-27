@@ -552,4 +552,26 @@
   text-align: center;
 }
 
+/*добавить большая серая*/
+.addBigButton {
+  display: flex;
+  justify-content: center;
+  background: #424248;
+  border-radius: 5px;
+  max-width: 400px;
+  height: 40px;
+}
+
+.addBigButton__container {
+  display: flex;
+  align-items: center;
+}
+.addBigButton__container p {
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: lighter;
+  font-size: 16px;
+  color: white;
+}
+
 /*# sourceMappingURL=buttons.component.css.map */

@@ -7,6 +7,7 @@ $button-color-orange2: hsl(22°, 100%, 77%);
 $button-color-orange3: hsl(22°, 80%, 62%);
 
 $button-color-grey: hsl(60°, 10%, 96%);
+$button-color-grey2: hsl(240°, 4%, 27%);
 $button-color-white1: hsl(0°, 0%, 100%);
 
 $font-grey1: hsl(0°, 0%, 74%);
@@ -589,5 +590,28 @@ $font-white: hsl(0°, 0%, 100%);
     color: $font-grey1;
     align-items: center;
     text-align: center;
+  }
+}
+
+
+/*добавить большая серая*/
+.addBigButton {
+  display: flex;
+  justify-content: center;
+  background: $button-color-grey2;
+  border-radius: 5px;
+  max-width: 400px;
+  height: 40px;
+}
+
+.addBigButton__container {
+  display: flex;
+  align-items: center;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    color: $font-white;
   }
 }
