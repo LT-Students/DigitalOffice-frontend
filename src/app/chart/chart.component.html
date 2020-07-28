@@ -1,4 +1,11 @@
-<div class="ChartContainer">
-  <canvas #canvas width="412" height="262">
-  </canvas>
+<div class="chart">
+  <div class="chart__doughnut">
+    <canvas #canvas width="184" height="182">
+    </canvas>
+  </div>
+  <div class="chart__tags">
+      <div *ngFor="let project of projectsData">
+        {{ project.projectName }}
+      </div>
+  </div>
 </div>

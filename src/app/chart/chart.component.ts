@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ElementRef} from "@angular/core";
 import { ViewChild} from "@angular/core";
 import {count} from "rxjs/operators";
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-chart',
@@ -27,133 +28,21 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
+    var myChart = new Chart(this.ctx, {
+      type: 'doughnut',
+      data: {
+        datasets: [{
+          data: this.projectsData.map((project) => project.projectHours),
+          backgroundColor: this.colorsData,
+          borderWidth: 1
+        }]
+      },
+      options: {
+        tooltips: {
+          enabled: false
+        }
+      }
 
-    let allHours = 0;
-    for (let i = 0; i < this.projectsData.length; i++){
-      allHours += Number(this.projectsData[i].projectHours);
+    });
     }
-
-    //
-    //Chart bilding
-    let startAngle = 0;
-    let chartCenter = Number (this.canvas.nativeElement.height) / 2;
-    let chartRadius = chartCenter * 0.6;
-    for (let i = 0; i < this.projectsData.length; i++){
-
-      let theAngle = (2 * Math.PI * Number (this.projectsData[i].projectHours)) / allHours;
-
-      //sector of donut
-      this.ctx.lineWidth = chartRadius * 0.35;
-      this.ctx.strokeStyle = this.colorsData[i];
-      this.ctx.arc(
-        chartCenter,
-        chartCenter,
-        chartRadius,
-        startAngle,
-        theAngle + startAngle
-      );
-      this.ctx.stroke();
-      this.ctx.beginPath();
-      //
-
-      startAngle += theAngle;
-    }
-
-    //hours in the donut
-    this.ctx.stroke();
-    this.ctx.font = "normal bold " + chartRadius/3 + "px Gotham Pro";
-    this.ctx.textBaseline = "middle";
-    this.ctx.textAlign = "end";
-    this.ctx.fillText (
-      String (allHours),
-      chartCenter * 1.2,
-      chartCenter - (chartRadius * 0.19));
-    //
-
-    //Char "ч" in the donut
-    this.ctx.stroke();
-    this.ctx.font = "normal " + chartRadius/4 + "px Gill Sans";
-    this.ctx.fillStyle = "#BDBDBD";
-    this.ctx.textBaseline = "middle";
-    this.ctx.textAlign = "start";
-    this.ctx.fillText (
-      "ч",
-      chartCenter + (chartRadius * 0.4),
-      chartCenter - (chartRadius * 0.19));
-    //
-
-    //red square in donut
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = "#EB5757";
-    this.ctx.lineJoin = "round";
-    this.ctx.lineWidth = chartRadius * 0.15;
-    this.ctx.rect(
-      chartCenter - (chartRadius * 0.3),
-      chartCenter + (chartRadius * 0.1),
-      chartRadius * 0.6,
-      chartRadius * 0.15);
-    this.ctx.stroke();
-    //
-
-    //text in red square
-    this.ctx.beginPath();
-    this.ctx.font = "normal " + chartRadius / 4.5 + "px Gill Sans";
-    this.ctx.fillStyle = "#FFFFFF";
-    this.ctx.textBaseline = "middle";
-    this.ctx.textAlign = "center";
-    this.ctx.fillText (
-      "-0.02",
-      chartCenter,
-      chartCenter + (chartRadius * 0.19));
-    this.ctx.stroke();
-    //
-
-    //
-    //explanation block
-    let xForDescr = chartCenter + chartRadius * 1.7;
-    let yForDescr = chartCenter - chartRadius;
-
-    //draw the world "Projects"
-    this.ctx.beginPath();
-    this.ctx.font = "normal bold " + chartRadius / 3 + "px Gotham Pro";
-    this.ctx.textAlign = "start";
-    this.ctx.textBaseline = "middle";
-    this.ctx.fillStyle = "#434348";
-    this.ctx.fillText (
-      "Проекты",
-      xForDescr - chartRadius * 0.12,
-      yForDescr);
-    this.ctx.stroke();
-    //
-
-    for (let i = 0; i < this.projectsData.length; i++) {
-      yForDescr += chartRadius * 0.45;
-
-      //draw color pointer of project
-      this.ctx.beginPath();
-      this.ctx.fillStyle = this.colorsData[i];
-      this.ctx.arc(
-        xForDescr,
-        yForDescr,
-        chartRadius * 0.08,
-        0,
-        2 * Math.PI);
-      this.ctx.fill();
-      this.ctx.closePath();
-      //
-
-      //draw project name
-      this.ctx.beginPath();
-      this.ctx.font = "normal " + chartRadius / 4.2 + "px Gill Sans";
-      this.ctx.textAlign = "start";
-      this.ctx.textBaseline = "middle";
-      this.ctx.fillStyle = "#434348";
-      this.ctx.fillText (
-        this.projectsData[i].projectName,
-        xForDescr + chartRadius * 0.15,
-        yForDescr);
-      this.ctx.stroke();
-      //
-    }
-  }
 }
