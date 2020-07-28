@@ -15,7 +15,7 @@ export class ChartComponent implements OnInit {
   colorsData = ["#7C799B", "#C7C6D8", "#FFB2B2", "#000000"];
 
   projectsData = [
-    {projectName: "Kojima", projectHours: "50.2"},
+    {projectName: "Kojima", projectHours: "10.26"},
     {projectName: "First", projectHours: "35.7"},
     {projectName: "Something", projectHours: "15.3"},
     {projectName: "Else", projectHours: "15"},
@@ -33,10 +33,11 @@ export class ChartComponent implements OnInit {
       allHours += Number(this.projectsData[i].projectHours);
     }
 
+    //
     //Chart bilding
     let startAngle = 0;
-    let chartCenter = 300;
-    let chartRadius = 200;
+    let chartCenter = Number (this.canvas.nativeElement.height) / 2;
+    let chartRadius = chartCenter * 0.6;
     for (let i = 0; i < this.projectsData.length; i++){
 
       let theAngle = (2 * Math.PI * Number (this.projectsData[i].projectHours)) / allHours;
@@ -60,17 +61,30 @@ export class ChartComponent implements OnInit {
 
     //hours in the donut
     this.ctx.stroke();
-    this.ctx.font = "50px Arial";
-    this.ctx.textAlign = "center";
+    this.ctx.font = "normal bold " + chartRadius/3 + "px Gotham Pro";
+    this.ctx.textBaseline = "middle";
+    this.ctx.textAlign = "end";
     this.ctx.fillText (
       String (allHours),
-      chartCenter,
-      chartCenter - (chartRadius * 0.1));
+      chartCenter * 1.2,
+      chartCenter - (chartRadius * 0.19));
+    //
+
+    //Char "ч" in the donut
+    this.ctx.stroke();
+    this.ctx.font = "normal " + chartRadius/4 + "px Gill Sans";
+    this.ctx.fillStyle = "#BDBDBD";
+    this.ctx.textBaseline = "middle";
+    this.ctx.textAlign = "start";
+    this.ctx.fillText (
+      "ч",
+      chartCenter + (chartRadius * 0.4),
+      chartCenter - (chartRadius * 0.19));
     //
 
     //red square in donut
     this.ctx.beginPath();
-    this.ctx.strokeStyle = "#FF0000";
+    this.ctx.strokeStyle = "#EB5757";
     this.ctx.lineJoin = "round";
     this.ctx.lineWidth = chartRadius * 0.15;
     this.ctx.rect(
@@ -83,30 +97,31 @@ export class ChartComponent implements OnInit {
 
     //text in red square
     this.ctx.beginPath();
-    this.ctx.font = "30px Arial";
-    this.ctx.strokeStyle = "white";//7
+    this.ctx.font = "normal " + chartRadius / 4.5 + "px Gill Sans";
+    this.ctx.fillStyle = "#FFFFFF";
     this.ctx.textBaseline = "middle";
     this.ctx.textAlign = "center";
     this.ctx.fillText (
       "-0.02",
       chartCenter,
-      chartCenter + (chartRadius * 0.17));
+      chartCenter + (chartRadius * 0.19));
     this.ctx.stroke();
     //
 
+    //
     //explanation block
     let xForDescr = chartCenter + chartRadius * 1.7;
     let yForDescr = chartCenter - chartRadius;
 
     //draw the world "Projects"
     this.ctx.beginPath();
-    this.ctx.font = "50px Arial";
+    this.ctx.font = "normal bold " + chartRadius / 3 + "px Gotham Pro";
     this.ctx.textAlign = "start";
     this.ctx.textBaseline = "middle";
-    this.ctx.fillStyle = "black";
+    this.ctx.fillStyle = "#434348";
     this.ctx.fillText (
       "Проекты",
-      xForDescr - chartRadius * 0.08,
+      xForDescr - chartRadius * 0.12,
       yForDescr);
     this.ctx.stroke();
     //
@@ -129,10 +144,10 @@ export class ChartComponent implements OnInit {
 
       //draw project name
       this.ctx.beginPath();
-      this.ctx.font = "30px Arial";
+      this.ctx.font = "normal " + chartRadius / 4.2 + "px Gill Sans";
       this.ctx.textAlign = "start";
       this.ctx.textBaseline = "middle";
-      this.ctx.fillStyle = "black";
+      this.ctx.fillStyle = "#434348";
       this.ctx.fillText (
         this.projectsData[i].projectName,
         xForDescr + chartRadius * 0.15,
