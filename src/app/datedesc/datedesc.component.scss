@@ -1,30 +1,43 @@
-.desc__title {
-  color: #434348;
+@import "../../stylesheets/base/fonts";
+%content_font_basic {
   font-family: Gotham Pro;
   font-style: normal;
   font-weight: bold;
+}
+%button_font_basic {
+  color: #434348;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+.datedesc {
+  margin: 0 auto;
+  max-width: 1024px;
+}
+.desc__title {
+  @extend %content_font_basic;
+  color: #434348;
   font-size: 22px;
-  height: 28px;
-  left: 48px;
   line-height: 28px;
-  position: relative;
-  top: 36px;
-  width: 928px;
-  }
+  margin-bottom: -20px;
+  padding-left: 50px;
+  max-width: 928px;
+}
 .desc__content {
   background: url("../../assets/image/fon.svg");
   display: flex;
   height: 240px;
-  left: 48px;
-  position: relative;
-  top: 20px;
-  width: 928px;
+  margin-top: 40px;
+  margin-left: 48px;
+  margin-right: 40px;
+  max-width: 928px;
 }
 .content__period {
+  @extend %content_font_basic;
   color: #323137;
-  font-family: Gotham Pro;
-  font-style: normal;
-  font-weight: bold;
+  display: flex;
   font-size: 35px;
   padding-left: 48px;
   padding-top: 36px;
@@ -32,55 +45,50 @@
 }
 .content__week {
   display: flex;
-  position: absolute;
+  margin-left: -230px;
   padding-left: 48px;
   padding-top: 50px;
   width: 380px;
-        &__day {
-          flex-direction: column;
-          padding-top: 16px;
-          width: 398.78px;
-              &-single {
-                 margin-bottom: -5px;
-              }
-              &_orange {
-                background: orange;
-                border-radius: 50%;
-                width: 25px;
-          }
-        }
+  &__day {
+    flex-direction: column;
+    padding-top: 16px;
+    width: 398.78px;
+    &-single {
+      margin-bottom: -5px;
+    }
+    &_orange {
+      background: orange;
+      border-radius: 50%;
+      width: 25px;
+    }
+  }
 }
 .button__form {
   background: #FFB78C;
   border-radius: 5px;
   border-color: transparent;
   height: 32px;
-  left: 48px;
-  top: 175px;
-  position: absolute;
+  margin-top: 125px;
+  margin-left: -380px;
   width: 179px;
 }
 .button__text {
-  color: #434348;
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
+  @extend %button_font_basic;
   line-height: 24px;
   margin: 0;
+  padding-bottom: 10px;
 }
 .button__foto {
   display: flex;
   height: 8px;
   margin-left: 160px;
   margin-top: -14px;
-  position: absolute;
   width: 4px;
 }
 .desc__foto {
   height: 264px;
-  left: 660px;
+  left: 720px;
   position: absolute;
-  top: -24px;
+  top: 45px;
   width: 189px;
 }
