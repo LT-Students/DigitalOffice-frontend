@@ -13,7 +13,7 @@ import { Chart } from 'chart.js';
 export class ChartComponent implements OnInit {
   constructor() { }
 
-  colorsData = ["#7C799B", "#C7C6D8", "#FFB2B2", "#000000"];
+  colorsData = ["#7C799B", "#C7C6D8", "#FFB2B2", "#FFB78C", "#EB5757", "#BC7BFA", "#FFBE97", "#BDBDBD"];
 
   projectsData = [
     {projectName: "Kojima", projectHours: "10.26"},
@@ -22,12 +22,18 @@ export class ChartComponent implements OnInit {
     {projectName: "Else", projectHours: "15"},
     ];
 
+
   @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
 
   ngOnInit() {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
+    let allHours = 0;
+    for (let i = 0; i < this.projectsData.length; i++) {
+      allHours += Number(this.projectsData[i].projectHours);
+    }
+
+      this.ctx = this.canvas.nativeElement.getContext('2d');
     var myChart = new Chart(this.ctx, {
       type: 'doughnut',
       data: {
@@ -35,6 +41,7 @@ export class ChartComponent implements OnInit {
           data: this.projectsData.map((project) => project.projectHours),
           backgroundColor: this.colorsData,
           borderWidth: 1
+
         }]
       },
       options: {
