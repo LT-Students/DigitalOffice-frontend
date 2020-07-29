@@ -4,21 +4,29 @@
     <div class="toolbar_menu">
       <a href="#"><img src="../../assets/Vector (1).svg" alt="menu"></a></div>
     <div class="toolbar_logo">
-      <a href="#">trrak!</a></div>
+      <a class=h3_light href="#">trrak!</a></div>
     <div class="toolbar_mood">
-      <a href="#">
-        <p>темный режим</p>
+      <a class= "toolbar_mood_nav-link" href="#">
+        <p class="regular_text">темный режим</p>
         <img src="../../assets/mode.svg" alt=""></a>
     </div>
-
     <div class="toolbar_greeting">
       <a class="toolbar_greeting_nav-link" href="#">
         <img src="../../assets/greetingFoto.svg" alt="">
-        <p>Привет, Ева</p>
+        <p class="regular_text">Привет,</p>
+        <p class="h4">Евa</p>
       </a>
     </div>
     <div class="toolbar_notification">
-      <a href="#"><img src="../../assets/notification.svg" alt="notification"></a></div>
+      <a href="#"
+         (click)="onClick()">
+        <img src="../../assets/notification.svg" alt="notification" class="toolbar_notification_bell">
+        <img src="../../assets/notification2.svg"
+          alt="notification"
+          class="toolbar_notification_light"
+          *ngIf="hasNotification">
+      </a>
+    </div>
   </div>
 </div>
 

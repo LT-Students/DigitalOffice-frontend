@@ -6,10 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-
+  hasNotification = false;
   constructor() { }
 
   ngOnInit() {
   }
 
+  onClick(){
+    this.hasNotification = !this.hasNotification;
+  }
 }

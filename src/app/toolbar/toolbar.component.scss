@@ -10,6 +10,8 @@
   height: 56px;
   width: 100%;
   top: 0;
+  display: flex;
+  align-items: center;
   a {
     text-decoration: none;
   }
@@ -19,22 +21,18 @@
     width: 20px;
     height: 18px;
     left: 48px;
-    top: 19px;
+    display: flex;
+    align-items: baseline;
   }
 
   .toolbar_logo {
     left: 128px;
-    top: 14px;
     position: absolute;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 28px;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     a {
-    font-family: $header_font;
-    color: $dark_2;
+      font-family: $header_font;
+      color: $dark_2;
     }
   }
 
@@ -43,19 +41,19 @@
     left: 240px;
     justify-content: space-between;
     max-width: 100%;
-    display: inline-block;
 
+    .toolbar_mood_nav-link {
+      display: flex;
+      align-items: center;
+    }
     p {
-      font-size: 16px;
       color: $gray;
-      margin-top: 19px;
       float: left;
       font-family: $regular_font;
     }
     img {
       width: 20px;
       height: 20px;
-      margin-top: 19px;
       padding-left: 10px;
     }
   }
@@ -71,23 +69,30 @@
       img {
         width: 36px;
         height: 35.25px;
+        margin-right: 10px;
       }
       p {
         color: $dark_2;
-        line-height: 24px;
-        font-size: 16px;
         font-family: $regular_font;
-        margin-left: 10px;
       }
     }
-
   }
   .toolbar_notification {
-    position: fixed;
-    width: 22px;
-    height: 23.83px;
-    right: 48px;
-    top: 17.63px;
+    position: absolute;
 
+    .toolbar_notification_bell {
+      position: fixed;
+      width: 22px;
+      height: 23.83px;
+      right: 48px;
+      top: 18px;
+    }
+    .toolbar_notification_light {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      right: 48px;
+      top: 18px;
+    }
   }
 }
