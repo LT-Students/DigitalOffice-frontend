@@ -149,6 +149,10 @@
   align-items: center;
   text-align: center;
 }
+.chooseDate__container svg {
+  position: relative;
+  bottom: -1px;
+}
 
 /*выбрать другой интервал*/
 .chooseInt {

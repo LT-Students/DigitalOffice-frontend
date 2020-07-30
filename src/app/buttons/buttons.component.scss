@@ -170,6 +170,10 @@ $font-white: hsl(0°, 0%, 100%);
     align-items: center;
     text-align: center;
   }
+  svg {
+    position:relative;
+    bottom: -1px;
+  }
 }
 
 

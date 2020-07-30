@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-buttons',
+  selector: 'do-button',
   templateUrl: './buttons.component.html',
   styleUrls: ['./buttons.component.scss']
 })

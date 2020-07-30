@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 
 import { ButtonsComponent } from './buttons/buttons.component';
 import { IconsComponent } from './icons/icons.component';
+import { TagsBlockComponent } from './tags-block/tags-block.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ButtonsComponent,
-    IconsComponent
+    IconsComponent,
+    TagsBlockComponent
   ],
   imports: [
     BrowserModule,
