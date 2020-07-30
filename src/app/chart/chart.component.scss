@@ -12,7 +12,7 @@
     max-height: 183px;
     position: relative;
     z-index: 1;
-    .chart_hours {
+    .chart__hours {
       position: absolute;
       z-index: 2;
       top: 50%;
@@ -22,21 +22,20 @@
       text-align: center;
       font-family: "Gill Sans";
       font-size: 16px;
-      .all_hours {
+      .all__hours {
         font-family: "Gotham Pro";
         font-size: 22px;
         font-weight: bold;
         line-height: 127%;
       }
-      .ch_char {
+      .ch__char {
         color: #BDBDBD;
       }
-      .time_diff {
+      .time__diff {
         color: #FFFFFF;
         font-size: 16px;
         display: block;
         text-align: center;
-        background-color: #EB5757;
         border-radius: 4px;
       }
     }
@@ -49,7 +48,7 @@
       font-weight: bold;
       margin: 0 5px;
     }
-    .color_pointer{
+    .color__pointer{
       display: inline-block;
       margin: 20px 5px -2px;
       width: 15px;

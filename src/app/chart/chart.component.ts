@@ -22,34 +22,48 @@ export class ChartComponent implements OnInit {
     {projectName: "Else", projectHours: "15"},
     ];
 
+  allHoursValue
+  hoursDiffValue = -0.03
+  backgroundColor
 
   @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
   private ctx: CanvasRenderingContext2D;
 
   ngOnInit() {
-    let allHours = 0;
+    //calculating the total number of hours in the center of chart
+    this.allHoursValue = 0;
     for (let i = 0; i < this.projectsData.length; i++) {
-      allHours += Number(this.projectsData[i].projectHours);
+      this.allHoursValue += Number(this.projectsData[i].projectHours);
     }
+    //
 
+    //defining the background-color for the square in the center of the chart
+    if (this.allHoursValue > 0) {
+      this.backgroundColor = "#21D373";
+    } else {
+      this.backgroundColor = "#EB5757";
+    }
+    //
+
+    //donut building
       this.ctx = this.canvas.nativeElement.getContext('2d');
     var myChart = new Chart(this.ctx, {
       type: 'doughnut',
+
       data: {
         datasets: [{
           data: this.projectsData.map((project) => project.projectHours),
           backgroundColor: this.colorsData,
-          borderWidth: 1
-
+          borderWidth: 0,
         }]
       },
       options: {
+        cutoutPercentage: 70,
         tooltips: {
           enabled: false
         }
       }
-
     });
     }
 }

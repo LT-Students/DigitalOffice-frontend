@@ -3,11 +3,11 @@
   <div class="chart__doughnut">
     <canvas #canvas width="184" height="182">
     </canvas>
-    <div class="chart_hours">
+    <div class="chart__hours">
       <p>
-        <span class="all_hours">46:00</span>
-        <span class="ch_char"> ч</span><br>
-        <span class="time_diff">-0.02</span>
+        <span class="all__hours" >{{allHoursValue}}</span>
+        <span class="ch__char"> ч</span><br>
+        <span class="time__diff" [style.background-color]="backgroundColor">{{hoursDiffValue}}</span>
       </p>
     </div>
   </div>
@@ -15,7 +15,7 @@
   <div class="chart__tags">
     <p>Проекты</p>
     <div *ngFor="let project of projectsData; index as i">
-      <span class="color_pointer" [style.background-color]="colorsData[i]"></span>
+      <span class="color__pointer" [style.background-color]="colorsData[i]"></span>
       {{ project.projectName }}
     </div>
   </div>
