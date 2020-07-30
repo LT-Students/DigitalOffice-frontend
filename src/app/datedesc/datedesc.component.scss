@@ -63,60 +63,30 @@
     }
   }
 }
-//.button__form {
-//  background: #FFB78C;
-//  border-radius: 5px;
-//  border-color: transparent;
-//  height: 32px;
-//  margin-top: 125px;
-//  margin-left: -380px;
-//  width: 179px;
-//}
-//.button__text {
-//  @extend %button_font_basic;
-//  line-height: 24px;
-//  margin: 0;
-//  padding-bottom: 10px;
-//}
-//.button__foto {
-//  display: flex;
-//  height: 8px;
-//  margin-left: 160px;
-//  margin-top: -14px;
-//  width: 4px;
-//}
-$button-color-orange2: hsl(22°, 100%, 77%);
-$font-grey2: hsl(240°, 4%, 27%);
-
 .chooseDate {
-  display:flex;
-  justify-content: center;
-  background: $button-color-orange2;
+  background: #FFB78C;
   border-radius: 5px;
-  max-width:179px;
-  height:32px;
-  border-radius: 5px;
+  border-color: transparent;
+  height: 32px;
+  margin-top: 170px;
+  margin-left: -799px;
+  width: 179px;
 }
-
 .chooseDate__container {
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  p {
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: lighter;
-    font-size: 16px;
-    line-height: 24px;
-    color: $font-grey2;
-    align-items: center;
-    text-align: center;
+  @extend %button_font_basic;
+  margin-top: -12px;
+  padding-left: 10px;
+  svg {
+    display: flex;
+    height: 8px;
+    margin-left: 155px;
+    margin-top: -30px;
+    width: 4px;
   }
 }
+
 .desc__foto {
-  height: 264px;
-  left: 720px;
-  position: absolute;
-  top: 45px;
   width: 189px;
+  padding-left: 233px;
+  margin-top: -25px;
 }
