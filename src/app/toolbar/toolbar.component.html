@@ -9,10 +9,7 @@
     </div>
     <div class="toolbar__mode">
       <span class= "toolbar__mode__change" (click)="this.isDarkMode= !this.isDarkMode">
-        <p class="regular_text" *ngIf="isDarkMode; else isLightMode">темный режим</p>
-        <ng-template #isLightMode>
-        <p>светлый режим</p>
-        </ng-template>
+        <p class="regular_text"> {{ isDarkMode? 'темный' : 'светлый' }} режим</p>
         <img src="../../assets/mode.svg" alt="">
       </span>
     </div>
