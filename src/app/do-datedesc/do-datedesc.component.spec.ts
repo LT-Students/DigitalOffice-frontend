@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatedescComponent } from './datedesc.component';
+import { DoDatedescComponent } from './do-datedesc.component';
 
 describe('DatedescComponent', () => {
-  let component: DatedescComponent;
-  let fixture: ComponentFixture<DatedescComponent>;
+  let component: DoDatedescComponent;
+  let fixture: ComponentFixture<DoDatedescComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DatedescComponent ]
+      declarations: [ DoDatedescComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DatedescComponent);
+    fixture = TestBed.createComponent(DoDatedescComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

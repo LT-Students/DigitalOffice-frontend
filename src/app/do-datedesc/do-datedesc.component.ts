@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-datedesc',
-  templateUrl: './datedesc.component.html',
-  styleUrls: ['./datedesc.component.scss']
+  selector: 'do-datedesc',
+  templateUrl: './do-datedesc.component.html',
+  styleUrls: ['./do-datedesc.component.scss']
 })
-export class DatedescComponent implements OnInit {
+export class DoDatedescComponent implements OnInit {
 
   days = null;
 
