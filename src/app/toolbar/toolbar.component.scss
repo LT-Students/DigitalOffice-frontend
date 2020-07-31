@@ -2,54 +2,55 @@
 @import 'abstracts/variables';
 @import 'base/fonts';
 
-.toolbar_container {
+.toolbar {
   position: fixed;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
   background: #F6F6F4;
   box-sizing: border-box;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   height: 56px;
   width: 100%;
-  top: 0;
-  display: flex;
-  align-items: center;
-  a {
-    text-decoration: none;
-  }
+  min-width: 700px;
 
-  .toolbar_menu {
+  &__menu {
     position: absolute;
-    width: 20px;
-    height: 18px;
+    display: flex;
+    align-items: center;
+    height: 100%;
     left: 48px;
-    display: flex;
-    align-items: baseline;
   }
 
-  .toolbar_logo {
+  &__logo {
     left: 128px;
+    height: 100%;
     position: absolute;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     a {
       font-family: $header_font;
       color: $dark_2;
+      text-decoration: none;
     }
   }
 
-  .toolbar_mood {
+  &__mood {
     position: absolute;
-    left: 240px;
     justify-content: space-between;
+    left: 240px;
     max-width: 100%;
+    cursor: pointer;
 
-    .toolbar_mood_nav-link {
+    &__change {
       display: flex;
       align-items: center;
     }
     p {
       color: $gray;
-      float: left;
       font-family: $regular_font;
+      float: left;
     }
     img {
       width: 20px;
@@ -58,14 +59,18 @@
     }
   }
 
-  .toolbar_greeting {
+  &__greeting {
     position: absolute;
+    display: flex;
+    justify-content: space-between;
     max-width: 100%;
     right: 128px;
 
-    .toolbar_greeting_nav-link{
+    &__nav-link {
       display: flex;
+      justify-content: space-between;
       align-items: center;
+      text-decoration: none;
       img {
         width: 36px;
         height: 35.25px;
@@ -74,25 +79,30 @@
       p {
         color: $dark_2;
         font-family: $regular_font;
+        span {
+          color: $dark_2;
+          font-family: $header_font;
+        }
       }
     }
   }
-  .toolbar_notification {
+  &__notification {
     position: absolute;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    right: 48px;
+    height: 100%;
 
-    .toolbar_notification_bell {
-      position: fixed;
+    &__bell {
       width: 22px;
       height: 23.83px;
-      right: 48px;
-      top: 18px;
     }
-    .toolbar_notification_light {
-      position: fixed;
+    &__light {
+      position: absolute;
       width: 8px;
       height: 8px;
-      right: 48px;
-      top: 18px;
+      right: 1px;
     }
   }
 }

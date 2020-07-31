@@ -1,32 +1,35 @@
-
 <div class="toolbar">
-  <div class="toolbar_container">
-    <div class="toolbar_menu">
-      <a href="#"><img src="../../assets/Vector (1).svg" alt="menu"></a></div>
-    <div class="toolbar_logo">
-      <a class=h3_light href="#">trrak!</a></div>
-    <div class="toolbar_mood">
-      <a class= "toolbar_mood_nav-link" href="#">
-        <p class="regular_text">темный режим</p>
-        <img src="../../assets/mode.svg" alt=""></a>
+    <div class="toolbar__menu">
+      <a href="#">
+        <img src="../../assets/menu.svg" alt="menu">
+      </a>
     </div>
-    <div class="toolbar_greeting">
-      <a class="toolbar_greeting_nav-link" href="#">
+    <div class="toolbar__logo">
+      <a class=h3_light href="#">trrak!</a>
+    </div>
+    <div class="toolbar__mood">
+      <span class= "toolbar__mood__change" (click)="onClickMood()">
+        <p class="regular_text" *ngIf="isDarkMood; else isLightMood">темный режим</p>
+        <ng-template #isLightMood>
+        <p>светлый режим</p>
+        </ng-template>
+        <img src="../../assets/mode.svg" alt="">
+      </span>
+    </div>
+    <div class="toolbar__greeting">
+      <a class="toolbar__greeting__nav-link" href="#">
         <img src="../../assets/greetingFoto.svg" alt="">
-        <p class="regular_text">Привет,</p>
-        <p class="h4">Евa</p>
+        <p class="regular_text">Привет, <span class="h4">{{userName}}</span></p>
       </a>
     </div>
-    <div class="toolbar_notification">
-      <a href="#"
-         (click)="onClick()">
-        <img src="../../assets/notification.svg" alt="notification" class="toolbar_notification_bell">
-        <img src="../../assets/notification2.svg"
+    <div class="toolbar__notification">
+      <span (click)="onClickNotification()">
+        <img src="../../assets/notification.svg" alt="notification" class="toolbar__notification__bell">
+        <img src="../../assets/notificationLight.svg"
           alt="notification"
-          class="toolbar_notification_light"
+          class="toolbar__notification__light"
           *ngIf="hasNotification">
-      </a>
+      </span>
     </div>
-  </div>
 </div>
 

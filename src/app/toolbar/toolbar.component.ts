@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-toolbar',
@@ -7,12 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
   hasNotification = false;
+  isDarkMood = true;
+  @Input() userName;
   constructor() { }
 
   ngOnInit() {
   }
 
-  onClick(){
+  onClickNotification() {
     this.hasNotification = !this.hasNotification;
+  }
+  onClickMood() {
+    this.isDarkMood = !this.isDarkMood;
   }
 }
