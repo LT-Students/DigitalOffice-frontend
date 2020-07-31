@@ -9,9 +9,33 @@
 </head>
 <body>
 
-  <app-select [className]="'select__project'" [title]="'Проект'">
 
-  </app-select>
+<div class="addTimes">
+  <p class="addTimes__title">Внести часы</p>
+  <div class="addTimes__underline"></div>
+<!--  пока в теге p-->
+  <div class="addTimes__period"><p>48:00 ч</p></div>
+
+  <div class="addTimes__select">
+    <div class="selectProject">
+    <app-select [className]="'select__project'" [title]="'Проект'"> </app-select>
+    </div>
+    <div class="selectTag">
+    <app-select [className]="'select__tag'" [title]="'Тег'" ></app-select>
+  </div>
+
+    <div class="addTimes__comment">
+    Комментарий
+      <input type="text" >
+      <div class="addBigButton">
+        <div class="addBigButton__container">
+        <p>Добавить</p>
+        </div>
+    </div>
+</div>
+  </div>
+  </div>
+
 
 
 </body>
