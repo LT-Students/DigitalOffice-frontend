@@ -7,10 +7,10 @@
     <div class="toolbar__logo">
       <a class=h3_light href="#">trrak!</a>
     </div>
-    <div class="toolbar__mood">
-      <span class= "toolbar__mood__change" (click)="onClickMood()">
-        <p class="regular_text" *ngIf="isDarkMood; else isLightMood">темный режим</p>
-        <ng-template #isLightMood>
+    <div class="toolbar__mode">
+      <span class= "toolbar__mode__change" (click)="this.isDarkMode= !this.isDarkMode">
+        <p class="regular_text" *ngIf="isDarkMode; else isLightMode">темный режим</p>
+        <ng-template #isLightMode>
         <p>светлый режим</p>
         </ng-template>
         <img src="../../assets/mode.svg" alt="">
@@ -23,7 +23,7 @@
       </a>
     </div>
     <div class="toolbar__notification">
-      <span (click)="onClickNotification()">
+      <span (click)="this.hasNotification = !this.hasNotification">
         <img src="../../assets/notification.svg" alt="notification" class="toolbar__notification__bell">
         <img src="../../assets/notificationLight.svg"
           alt="notification"
