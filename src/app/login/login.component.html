@@ -1,28 +1,44 @@
 <div class="content-container">
-  <a class="nav-link__signup" routerLink="/signup">У меня еще нет аккаунта
-    <svg style="margin-left:20px;" width="48px" height="16px" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path class="nav-link__signup__arrow" d="M1 8 L47 8 M40 15 L47 8 L40 1"/>
+  <a class="nav-link__signup regular_text" 
+      routerLink="/signup">У меня еще нет аккаунта
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <path class="arrow" d="M1 8 L47 8 M40 15 L47 8 L40 1"/>
     </svg>
   </a>
-  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="signin()" autocomplete="off">
-    <label class="login-form__title">trrak!</label>
-      <div class="login-form__username-input">
-        <input class="login-form__input-field" name="username" type="text" id="login_username" placeholder="Корпоративный e-mail" formControlName="username">
-        <div class="login-form__error" *ngIf="loginForm.get('username').touched && loginForm.get('username').invalid">
-          Username is requered.
-        </div>
-      </div>
-      <div class="login-form__password-input">
-        <input class="login-form__input-field" name="password" type="password" id="login_password" placeholder="Пароль" formControlName="password">
-        <div class="login-form__error" *ngIf="loginForm.get('password').touched && loginForm.get('password').invalid">
-          Password is requered.
-        </div>
-      </div>
-      <button type="submit" class="login-form__submit-button">Войти</button>
-      <a class="nav-link__forgot-password" routerLink="/forgotpassword">О нет! Я забыл пароль</a>
+  <form class="login-form" 
+          [formGroup]="loginForm" 
+          (ngSubmit)="signin()" 
+          autocomplete="off">
+    <label class="login-form__title h1">trrak!</label>
+    <div class="login-form__error">
+      <small *ngIf="!isUsernameInputValid()"> Username is requered.</small>
+      <small *ngIf="!isPasswordInputValid()"> Password is requered.</small>
+      <small *ngIf="loginError">{{loginError}}</small>
+    </div>
+    <div class="login-form__username-input">
+      <input class="login-form__input-field regular_text" 
+              name="username" 
+              type="text" 
+              id="login_username" 
+              placeholder="Корпоративный e-mail"
+              formControlName="username">
+    </div>
+    <div class="login-form__password-input">
+      <input class="login-form__input-field regular_text"
+              name="password"
+              type="password" 
+              id="login_password" 
+              placeholder="Пароль" 
+              formControlName="password">
+    </div>
+    <button type="submit" 
+              class="login-form__submit-button"
+              [disabled]="loginForm.invalid">Войти</button>
+    <a class="nav-link__forgot-password regular_text" 
+        routerLink="/forgotpassword">О нет! Я забыл пароль</a>
   </form>
-  <div class="content-container__curves">
-    <img class="content-container__curves__light" src="../../assets/login/light_curve.png">
-    <img class="content-container__curves__dark" src="../../assets/login/dark_curve.png">
+  <div class="waves-conteiner">
+    <img src="../../assets/login/light_wave.png">
+    <img src="../../assets/login/dark_wave.png">
   </div>
 </div>

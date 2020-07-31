@@ -1,34 +1,19 @@
-%font-basic{
-  font-family: "Gill Sans";
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: white;
-}
-
-%font-title{
-  font-family: "Gotham Pro";
-  font-style: normal;
-  font-weight: bold;
-  font-size: 35px;
-  line-height: 40px;
-  color: white;
-}
+@import 'abstracts/variables';
+@import 'base/fonts';
 
 .content-container{
   width: 100%;
   height: 100vh;
-  background: linear-gradient(180deg, #2C2C2C 0%, #202020 100%);
+  background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  &__curves{
+  .waves-conteiner{
     position: absolute;
     bottom: 0px;
     width: 100%;
     height: 30%;
-    &__light, &__dark{
+    img {
       position: absolute;
       bottom: 0px;
       width: 100%;
@@ -38,7 +23,7 @@
 }
 
 ::placeholder {
-  @extend %font-basic;
+  @extend .regular_text;
   position: absolute;
   opacity: 0.8;
 }
@@ -48,77 +33,79 @@
   flex-direction: column;
   align-items: center;
   &__input-field{
-    @extend %font-basic;
     background-color: transparent;
-    margin: 15px;
+    margin-bottom: 33px;
     opacity: 0.8;
     border-style: none;
     border-bottom: 1px solid white;
     width: 288px; 
     height: 24px;
-    &:focus, &:-internal-autofill-selected {
+    &:focus{
       background-color: transparent;
       border-style: none;
       outline: none;
       border-bottom: 1px solid white;
     }
   }
-  &__username-input, &__password-input{
-    margin: 2px;
-  }
   &__error{
-    color: red;
+    display: flex;
+    align-items: center;
+    height: 24px;
+    margin-top: 11px;
+    margin-bottom: 16px;
+    color: $negative_accent;
   }
   &__title{
-    @extend %font-title;
     position: relative;
     display: block;
     text-align: center;
-    margin-bottom: 30px;
   }
   &__submit-button{
     position: relative;
-    margin-top: 30px;
+    margin-top: 11px;
     width: 132px;
     height: 36px;
     border-style: none;
     border-radius: 5px;
     background-color: #EC8B52;
-    color: #FFFFFF;
+    color: white;
     &:hover{
-      background-color: #EC8052;
+      opacity: 0.8;
     }
   }
 }
 
-.nav-link{
-  &__forgot-password {
-    @extend %font-basic;
-    position: relative;
-    margin-top: 30px;
-    opacity: 0.2;
-    &:hover{
-      opacity: 0.5;
-    }
-  }
-  &__signup{
-    @extend %font-basic;
-    position: absolute;
-    top: 30px;
-    right: 6%;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    opacity: 0.23;
-    &__arrow{
+.nav-link__forgot-password {
+  position: relative;
+  margin-top: 24px;
+  opacity: 0.2;
+}
+.nav-link__forgot-password:hover{
+  opacity: 0.5;
+}
+.nav-link__signup{
+  position: absolute;
+  top: 30px;
+  right: 6%;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  opacity: 0.23;
+  svg{
+    margin-left:20px;
+    width: 48px;
+    height: 16px;
+    fill: none;
+    .arrow{
       stroke-width: 2px;
       stroke-opacity: 1;
       stroke-linecap: round;
       stroke-linejoin: round;
-      stroke: #FFFFFF;
-    }
-    &:hover{
-      opacity: 0.5;
+      stroke: white;
     }
   }
+
+}
+.nav-link__signup:hover{
+  opacity: 0.5;
 }
