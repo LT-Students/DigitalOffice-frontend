@@ -4,10 +4,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { DoDatedescComponent } from './do-datedesc/do-datedesc.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    DoDatedescComponent,
     ToolbarComponent
   ],
   imports: [
