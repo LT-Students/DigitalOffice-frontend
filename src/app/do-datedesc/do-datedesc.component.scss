@@ -1,92 +1,77 @@
 @import "../../stylesheets/base/fonts";
-%content_font_basic {
-  font-family: Gotham Pro;
-  font-style: normal;
-  font-weight: bold;
+p {
+  margin: 0;
 }
-%button_font_basic {
-  color: #434348;
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-}
-.datedesc {
+
+.desc {
   margin: 0 auto;
   max-width: 1024px;
-}
-.desc__title {
-  @extend %content_font_basic;
-  color: #434348;
-  font-size: 22px;
-  line-height: 28px;
-  margin-bottom: -20px;
-  padding-left: 50px;
-  max-width: 928px;
-}
-.desc__content {
-  background: url("../../assets/image/fon.svg");
   display: flex;
-  height: 240px;
-  margin-top: 40px;
-  margin-left: 48px;
-  margin-right: 40px;
-  max-width: 928px;
+  flex-direction: column;
+  align-items: center;
+
+  &__title {
+    color: $dark_1;
+    margin-bottom: 16px;
+    width: 928px;
+  }
+  &__content {
+    background: url("../../assets/image/fon.svg") no-repeat;
+    background-size: cover;
+    width: 928px;
+    height: 240px;
+    display: flex;
+    flex-direction: row;
+  }
+  .desc__calender {
+    margin: 36px 219px 0 48px;
+
+  }
+  &__photo {
+    width: 189px;
+    align-self: flex-end;
+  }
 }
 .content__period {
-  @extend %content_font_basic;
-  color: #323137;
-  display: flex;
-  font-size: 35px;
-  padding-left: 48px;
-  padding-top: 36px;
-  width: 184px;
+  color: $dark_2;
 }
 .content__week {
   display: flex;
-  margin-left: -230px;
-  padding-left: 48px;
-  padding-top: 50px;
   width: 380px;
+  color: $dark_1;
+  margin-top: 16px;
+  margin-bottom: 24px;
+
   &__day {
     flex-direction: column;
-    padding-top: 16px;
-    width: 398.78px;
+    margin-right: 43.9px;
     &-single {
-      margin-bottom: -5px;
+      margin-bottom: 10px;
     }
     &_orange {
-      background: orange;
+      background: $accent_color_bright;
+      text-align: center;
       border-radius: 50%;
       width: 25px;
+      color: $light_1;
     }
   }
 }
 .chooseDate {
-  background: #FFB78C;
+  background: $accent_color;
   border-radius: 5px;
   border-color: transparent;
   height: 32px;
-  margin-top: 170px;
-  margin-left: -799px;
   width: 179px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &__container {
+    color: $dark_1;
+    svg {
+      height: 8px;
+      width: 4px;
+    }
 }
-.chooseDate__container {
-  @extend %button_font_basic;
-  margin-top: -12px;
-  padding-left: 10px;
-  svg {
-    display: flex;
-    height: 8px;
-    margin-left: 155px;
-    margin-top: -30px;
-    width: 4px;
-  }
 }
 
-.desc__foto {
-  width: 189px;
-  padding-left: 233px;
-  margin-top: -25px;
-}

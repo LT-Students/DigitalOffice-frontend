@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DoDatedescComponent implements OnInit {
 
-  days = null;
+  days: any;
 
   constructor() { }
 
@@ -27,10 +27,8 @@ export class DoDatedescComponent implements OnInit {
     ];
   }
   selectDay(day) {
-    console.log(day);
-
-    this.days.forEach(d => {
-      d.selected = false;
+    this.days.forEach(day => {
+      day.selected = false;
     });
 
     day.selected = true;
