@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'do-button',
@@ -7,8 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ButtonsComponent implements OnInit {
 
-  constructor() { }
+  @Input() className: string;
+  @Input() title: string;
 
+  constructor() { }
   ngOnInit() {
   }
 
