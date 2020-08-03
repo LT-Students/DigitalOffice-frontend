@@ -1,0 +1,48 @@
+@import 'abstracts/variables';
+
+%header_font_basic{
+    font-family: $header_font;
+    font-style: normal;
+    font-weight: bold;
+    color: $font_color;
+}
+
+%regular_font_basic{
+    font-family: $regular_font;
+    font-style: normal;
+    font-weight: normal;
+    color: $font_color;
+}
+
+.h1, .h2{
+    @extend %header_font_basic;
+    font-size: 35px;
+    line-height: 40px;
+}
+
+.h3{
+    @extend %header_font_basic;
+    font-size: 22px;
+    line-height: 28px;
+}
+
+.h4{
+    @extend %header_font_basic;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.regular_text{
+    @extend %regular_font_basic;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.h3_light{
+    @extend %header_font_basic;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 28px;
+}
+
+

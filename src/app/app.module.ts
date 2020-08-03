@@ -2,14 +2,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {DoSelectComponent} from './do-select/do-select.component';
+import { DoSelectComponent } from './do-select/do-select.component';
 import { RouterModule } from '@angular/router';
-// import {ProjectService, TitleService} from './options.service.';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { DoDateDescComponent } from './do-datedesc/do-datedesc.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DoSelectComponent
+    DoSelectComponent,
+    DoDatedescComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
