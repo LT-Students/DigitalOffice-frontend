@@ -3,7 +3,6 @@ import { ElementRef} from "@angular/core";
 import { ViewChild} from "@angular/core";
 import {count, min} from "rxjs/operators";
 import { Chart } from 'chart.js';
-import * as moment from 'moment';
 
 @Component({
   selector: 'do-chart',
@@ -13,14 +12,14 @@ import * as moment from 'moment';
 
 export class ChartComponent implements OnInit {
   constructor() { }
-  @Input() projectsData;               //Data about projectsName and projectsHours
+  @Input() projectsData;               //Data about projectName, projectHours and projectMinutes
   @Input() allHoursPlan;               //Hours of plan
   @Input() timeDescriptionValue;       //Difference between hours in the center under hours
 
   colorsData = ["#7C799B", "#C7C6D8", "#FFB2B2", "#FFB78C", "#EB5757", "#BC7BFA", "#FFBE97", "#BDBDBD"];
 
   //variables for hours in the center
-  allHoursPerfom;
+  allHoursPerformance;
   allHours;
   allHoursColor;
   //
@@ -37,19 +36,19 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
     //calculating the total number of hours in the center of chart
-    this.allHoursPerfom = moment.duration("00:00");
+    this.allHoursPerformance = 0
     for (let i = 0; i < this.projectsData.length; i++) {
-      this.allHoursPerfom.add(this.projectsData[i].projectHours, "hours");
+      this.allHoursPerformance += Number(this.projectsData[i].projectHours) + Number(this.projectsData[i].projectMinutes/60);
     }
     //
 
     //donut building
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    if (this.allHoursPerfom > 0) {
+    if (this.allHoursPerformance > 0) {
 
       //Hours in the center
-      this.allHours = this.allHoursPerfom;
+      this.allHours = Math.floor(this.allHoursPerformance) + ":" + Math.floor(this.allHoursPerformance % 1 * 60);
       this.allHoursColor = "#434348";
       //
 
@@ -63,7 +62,7 @@ export class ChartComponent implements OnInit {
         type: 'doughnut',
         data: {
           datasets: [{
-            data: this.projectsData.map((project) => project.projectHours),
+            data: this.projectsData.map((project) => (Number(project.projectHours) + Number(project.projectMinutes)/60)),
             backgroundColor: this.colorsData,
             borderWidth: 0,
           }]
@@ -78,7 +77,7 @@ export class ChartComponent implements OnInit {
     } else {
 
       //Hours in the center
-      this.allHours = this.allHoursPerfom;
+      this.allHours = this.allHoursPlan;
       this.allHoursColor = "#BDBDBD";
       //
 
