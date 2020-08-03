@@ -1,0 +1,8 @@
+<!--выпадающий список с выбором проекта-->
+<div [class]="className">
+  <p>{{ title }}</p>
+  <select>
+    <option *ngFor="let option of options"
+    >{{ option }}</option>
+  </select>
+</div>

@@ -18,6 +18,7 @@
     "component-selector": [
       true,
       "element",
+      "do",
       "app",
       "kebab-case"
     ],
