@@ -1,0 +1,97 @@
+body {
+  background-color: #E5E5E5;
+
+}
+.addTimes {
+  width: 483px;
+  height: 529px;
+  background-color: #FFFFFF;
+  border-radius: 4.87px;
+  margin-left: 30px;
+  margin-top: 428px;
+
+  .addTimes__title {
+    font-family: "Gill Sans";
+    color: #434348;
+    font-size: 35px;
+    padding-left: 35px;
+    padding-top: 25px;
+  }
+
+  .addTimes__underline {
+    /* Rectangle 266 */
+
+    position: absolute;
+    width: 142px;
+    height: 4px;
+    left: 82px;
+    top: 490px;
+
+    /* accent_color_bright */
+    background: #FA7D57;
+  }
+  .addTimes__period {
+    font-family: "Gill Sans";
+    width: 112px;
+    height: 32px;
+    color: #BDBDBD;
+    font-size: 25px;
+    margin-left: 35px;
+  }
+  .addTimes__select{
+    margin-left: 35px;
+    .selectProject {
+      display: block;
+      float: left;
+      margin-right: 13px;
+    }
+    .selectTag {
+       display: block;
+       float: left;
+     }
+  }
+}
+
+
+.addTimes__comment {
+
+  color: #BDBDBD;
+  font-family: "Gill Sans";
+  font-size: 15px;
+
+  input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    width: 400px;
+    height: 135px;
+    background-color: #F6F6F4;
+    border-radius: 5px;
+    border: none;
+    margin-top: 5px;
+  }
+
+    .addBigButton {
+      display: flex;
+      justify-content: center;
+      background: #424248;
+      border-radius: 5px;
+      max-width: 400px;
+      height: 40px;
+      margin-top: 45px;
+    }
+
+    .addBigButton__container {
+      display: flex;
+      align-items: center;
+    }
+
+    .addBigButton__container p {
+      font-family: Gill Sans;
+      font-style: normal;
+      font-weight: lighter;
+      font-size: 16px;
+      color: white;
+    }
+  }
