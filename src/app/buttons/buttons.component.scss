@@ -6,25 +6,16 @@
   justify-content: center;
   align-items: center;
   border-radius: 5px;
-  border: 1px solid $accent_color;
-  &__container {
-    p {
-      font-family: $regular_font;
-      color: $accent_color_bright;
-      font-style: normal;
-      font-weight: lighter;
-      font-size: 16px;
-      line-height: 24px;
-      align-items: center;
-      text-align: center;
-    }
-  }
 }
 
-/*цвета кнопок и шрифтов*/
+/*цвета кнопок, шрифтов и бордеров*/
+
+.border-accent_color {
+  border: 1px solid $accent_color;
+}
 
 .border-accent_color_bright {
-  background: $accent_color_bright;
+  border: 1px solid $accent_color_bright;
 }
 
 .bg-accent_color {
