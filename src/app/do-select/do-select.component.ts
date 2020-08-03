@@ -4,7 +4,7 @@ import {Component, Input} from '@angular/core';
 
 
 @Component({
-  selector: 'app-select',
+  selector: 'do-select',
   templateUrl: './do-select.component.html',
   styleUrls: ['./do-select.component.scss'],
 
@@ -12,8 +12,6 @@ import {Component, Input} from '@angular/core';
 })
 export class DoSelectComponent {
 
- @Input() pro;
-  optionsPro = ['first', 'second'];
   @Input() options: string[];
   @Input() className: string;
   @Input() title: string;
