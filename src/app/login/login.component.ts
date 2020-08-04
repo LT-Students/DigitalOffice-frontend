@@ -3,13 +3,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'do-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginError: string;
+  isWaiting: boolean = false;
+  forgotPassword = false;
+
 
   constructor( 
     private userService: UserService,
@@ -24,6 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   signin(){
+    this.isWaiting = true;
     this.userService.signin();
   }
 

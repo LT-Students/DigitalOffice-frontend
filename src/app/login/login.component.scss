@@ -28,7 +28,7 @@
   opacity: 0.8;
 }
 
-.login-form{
+.form{
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,22 +55,69 @@
     margin-bottom: 16px;
     color: $negative_accent;
   }
+  &__description{
+    display: flex;
+    align-items: center;
+    width: 284px;
+    color: $light_3;
+  }
   &__title{
     position: relative;
     display: block;
     text-align: center;
   }
-  &__submit-button{
+  &__submit{
     position: relative;
     margin-top: 11px;
     width: 132px;
     height: 36px;
-    border-style: none;
-    border-radius: 5px;
-    background-color: #EC8B52;
-    color: white;
-    &:hover{
-      opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button{
+      width: 100%;
+      height: 100%;
+      border-style: none;
+      border-radius: 5px;
+      background-color: #EC8B52;
+      color: white;
+      &:hover{
+        opacity: 0.8;
+      }
+    }
+    .spinner {
+      animation: rotate 2s linear infinite;
+      top: 50%;
+      left: 50%;
+      width: 25px;
+      height: 25px;      
+      & .path {
+        stroke: $preza_dc;
+        stroke-linecap: round;
+        box-shadow: 0px 0px 7px rgba($color: white, $alpha: 0.4);
+        animation: dash 1.5s ease-in-out infinite;
+      }
+    }
+    
+    @keyframes rotate {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    @keyframes dash {
+      0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+      }
+      50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+      }
+      100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+      }
     }
   }
 }
@@ -79,6 +126,8 @@
   position: relative;
   margin-top: 24px;
   opacity: 0.2;
+  text-decoration: underline;
+  cursor: pointer;
 }
 .nav-link__forgot-password:hover{
   opacity: 0.5;
@@ -86,13 +135,14 @@
 .nav-link__signup{
   position: absolute;
   top: 30px;
-  right: 6%;
+  left: 30px;
   display: flex;
   align-items: center;
   text-decoration: none;
   opacity: 0.23;
+  cursor: pointer;
   svg{
-    margin-left:20px;
+    margin-right:20px;
     width: 48px;
     height: 16px;
     fill: none;
