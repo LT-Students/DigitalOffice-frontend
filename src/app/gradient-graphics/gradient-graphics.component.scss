@@ -1,0 +1,56 @@
+@import "../../stylesheets/base/fonts";
+
+.gradient__graphics{
+  display: flex;
+  flex-direction: column;
+  color: #2C2C2C;
+  border-radius: 5px;
+  max-width: 412px;
+  max-height: 262px;
+
+  .time__period p{
+    font-size: 22px;
+    text-align: right;
+    font-weight: bold;
+    font-style: $header_font;
+    margin: 48px 48px 30px;
+  }
+
+  .graphics__container{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 48px 73px;
+    border-bottom: solid 1px $gray;
+
+    .graphic__column{
+      display: flex;
+      flex-direction: column;
+      margin: 0 12px;
+
+      .item__description{
+        display: block;
+        height: 6px;
+        width: 32px;
+        border-radius: 10px;
+        margin: 5px 0 0;
+      }
+    }
+
+    .graphic__column:first-child{
+      margin-left: 2px;             // to cut button line
+    }
+
+    .graphic__column:last-child{
+      margin-right: 2px;            //to cut button line
+    }
+  }
+
+  .column__date{
+    display: flex;
+    justify-content: center;
+    margin: 3px 0 -33px;           //margin-button -30px for to rise container button line
+    font-family: $regular_font;
+    font-size: 14px;
+  }
+}
+

@@ -1,0 +1,22 @@
+
+<div class="gradient__graphics">
+  <div class="time__period">
+    <p>
+      Часы {{timePeriod}}
+    </p>
+  </div>
+
+  <div class="graphics__container">
+    <div class="graphic__column" *ngFor="let column of [0, 1, 2, 3, 4, 5], index as column">
+      <div class = "graphic__item" *ngFor="let item of [0, 1, 2, 3, 4, 5, 6, 7, 8], index as item">
+        <div class="item__description" *ngIf="item >= 8 - dailyHoursData[column].hours" [style.background-color]="colorsData[item]">
+        </div>
+        <div class="item__description" *ngIf="item < 8 - dailyHoursData[column].hours" [style.background-color]="gray">
+        </div>
+      </div>
+      <div class="column__date">
+        {{dailyHoursData[column].day}}
+      </div>
+    </div>
+  </div>
+</div>
