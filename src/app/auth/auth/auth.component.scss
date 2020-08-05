@@ -1,0 +1,25 @@
+@import 'abstracts/variables';
+
+.content-container{
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
+  display: flex;
+  justify-content: center;
+  router-outlet {
+    position: absolute;
+  }
+
+  .waves-conteiner{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 30%;
+    img {
+      position: absolute;
+      bottom: 0px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

@@ -1,6 +1,6 @@
-import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'do-login',
@@ -11,14 +11,13 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginError: string;
   isWaiting: boolean = false;
-  forgotPassword = false;
 
 
   constructor( 
     private userService: UserService,
     private formBuilder: FormBuilder) { 
       this.loginForm = this.formBuilder.group({
-        username: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
         password: ['', Validators.required]
       });
   }
@@ -29,11 +28,14 @@ export class LoginComponent implements OnInit {
   signin(){
     this.isWaiting = true;
     this.userService.signin();
+    setTimeout(() => {
+      this.isWaiting = false;
+    }, 1000);
   }
 
-  isUsernameInputValid(): boolean{
-    return !(this.loginForm.get('username').touched &&
-    this.loginForm.get('username').invalid);
+  isEmailInputValid(): boolean{
+    return !(this.loginForm.get('email').touched &&
+    this.loginForm.get('email').invalid);
   }
 
   isPasswordInputValid(): boolean{

@@ -1,0 +1,33 @@
+<form class="form" 
+        [formGroup]="loginForm" 
+        (ngSubmit)="signin()" 
+        autocomplete="off">
+  <label class="form__title h1">trrak!</label>
+  <div class="form__error">
+    <small *ngIf="!isEmailInputValid()"> Email is not valid.</small>
+    <small *ngIf="!isPasswordInputValid()"> Password is requered.</small>
+    <small *ngIf="loginError">{{loginError}}</small>
+  </div>
+  <input class="form__input-field regular_text" 
+          name="email" 
+          type="email" 
+          placeholder="Корпоративный e-mail"
+          formControlName="email">
+  <input class="form__input-field regular_text"
+          name="password"
+          type="password" 
+          placeholder="Пароль" 
+          formControlName="password">
+  <div class="form__submit">
+    <button *ngIf="!isWaiting"
+              type="submit" 
+              [disabled]="loginForm.invalid">Войти</button>
+    <svg *ngIf="isWaiting"
+          class="spinner" 
+          viewBox="0 0 50 50">
+      <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+    </svg>
+  </div>
+  <a class="nav-link__forgot-password regular_text"
+      routerLink="/auth/forgotpassword" >О нет! Я забыл пароль</a>
+</form>
