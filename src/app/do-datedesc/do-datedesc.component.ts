@@ -16,19 +16,27 @@ export class DoDatedescComponent implements OnInit {
   }
 
   getWeek() {
-    return [
-      {day: 'пт', date: '12', selected: false },
-      {day: 'сб', date: '13', selected: false },
-      {day: 'вс', date: '14', selected: false },
-      {day: 'пн', date: '15', selected: false },
-      {day: 'вт', date: '16', selected: false },
-      {day: 'ср', date: '17', selected: false },
-      {day: 'чт', date: '18', selected: false }
-    ];
+    const days = [];
+
+    for (let i = -3; i <= 3; i++) {
+      const now = new Date();
+      days.push(new Date(now.setDate(now.getDate() + i)));
+    }
+
+    const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
+
+    return days.map((day) => {
+      const date = day.getDate();
+      return {
+        day: weekDays[day.getDay()],
+        date: (date > 0) ? date : `0${date}`,
+        selected: false,
+      };
+    });
   }
   selectDay(day) {
-    this.days.forEach(day => {
-      day.selected = false;
+    this.days.forEach(d => {
+      d.selected = false;
     });
 
     day.selected = true;
