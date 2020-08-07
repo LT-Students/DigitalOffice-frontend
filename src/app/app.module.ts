@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { IconsComponent } from './icons/icons.component';
 import { TagsBlockComponent } from './tags-block/tags-block.component';
+import { DoUserNotesComponent } from './do-user-notes/do-user-notes.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { TagsBlockComponent } from './tags-block/tags-block.component';
     AppComponent,
     ButtonsComponent,
     IconsComponent,
-    TagsBlockComponent
+    TagsBlockComponent,
+    DoUserNotesComponent
   ],
   imports: [
     BrowserModule,
