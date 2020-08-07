@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DoSelectComponent } from './do-select/do-select.component';
 import { RouterModule } from '@angular/router';
@@ -9,6 +10,7 @@ import { DoDatedescComponent } from './do-datedesc/do-datedesc.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { IconsComponent } from './icons/icons.component';
 import { TagsBlockComponent } from './tags-block/tags-block.component';
+import { AdminModule } from './admin/admin.module';
 
 
 @NgModule({
@@ -23,7 +25,9 @@ import { TagsBlockComponent } from './tags-block/tags-block.component';
   ],
   imports: [
     BrowserModule,
-    RouterModule
+    RouterModule,
+    AppRoutingModule,
+    AdminModule
   ],
   providers: [],
   bootstrap: [AppComponent]
