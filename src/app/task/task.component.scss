@@ -1,0 +1,40 @@
+@import 'abstracts/variables';
+
+.note__head {
+  font-family: Gill Sans;
+  color: $dark_1;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.note__text p {
+  font-family: Gill Sans;
+  color: $dark_2;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.note__date p {
+  font-family: Gill Sans;
+  color: $gray;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.column-1 {
+  max-width: 70px;
+}
+
+.column-2 {
+  max-width: 559px;
+}
+
+.icons {
+
+}

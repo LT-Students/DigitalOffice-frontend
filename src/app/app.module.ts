@@ -9,6 +9,7 @@ import { IconsComponent } from './icons/icons.component';
 import { TagsBlockComponent } from './tags-block/tags-block.component';
 import { DoUserNotesComponent } from './do-user-notes/do-user-notes.component';
 import { TaskComponent } from './task/task.component';
+import { ProjectComponent } from './project/project.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { TaskComponent } from './task/task.component';
     IconsComponent,
     TagsBlockComponent,
     DoUserNotesComponent,
-    TaskComponent
+    TaskComponent,
+    ProjectComponent
   ],
   imports: [
     BrowserModule,
