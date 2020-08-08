@@ -1,1 +1,3 @@
-<p>project works!</p>
+<div class="row" *ngFor let task of project.tasks>
+  <do-task [task]=“task”></do-task>
+</div>

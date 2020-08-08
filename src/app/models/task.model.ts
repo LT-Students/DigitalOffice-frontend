@@ -8,7 +8,3 @@ export interface ITask {
   icon: any;
 }
 
-export interface IProject {
-  param1: any;
-  param2: any;
-}

@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {IProject} from "../models/task.model";
+import {IProject} from "../models/project.model";
+
 
 @Component({
   selector: 'do-project',
