@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, } from '@angular/core';
+import { ITask } from '../models/task.model';
 
 @Component({
   selector: 'do-user-notes',
@@ -7,16 +8,17 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DoUserNotesComponent implements OnInit {
 
-  projects = ["Kojima is a Genius", "Меркурий"];
-  tasks = ["текст задачи 1 проекта Kojima", "текст задачи 2 проекта Меркурий"];
+  @Input() task: ITask;
+
+  /*projects = ["Kojima is a Genius", "Меркурий"];
+  tasks = ["текст задачи 1 проекта Kojima", "текст задачи 2 проекта Меркурий"];*/
 
   /*ngFor project in projects
     ngFor task in project.tasks
 1) выводит инфу о всех проектах
 2) инфа о всех задачах*/
 
-  constructor() { }
-  ngOnInit() {
-  }
+  constructor() {}
+  ngOnInit() {}
 
 }
