@@ -2,37 +2,106 @@
 @import 'base/fonts';
 
 .content-container{
-    display: flex;
-    flex-direction: column;
     padding: 0px 48px 0px 48px;
     height: 100vh;
     background-color: $light_2;
-    .desc {
+    .board{
+        display: flex;
+        flex-direction: column;
         position: relative;
         top: 9vw;
-        width: 100%;
-        &__content {
+        .user-board {
+            position: relative;
             width: 100%;
-            max-height: 100%;
+            &__content {
+                position: relative;
+                bottom: 0;
+                width: 100%;
+                max-height: 100%;
+                border-radius: 5px;
+            }
+            &__photo {
+                height: 125% ;
+                position: absolute;
+                right: 24px;
+                bottom: 0;
+            }
+            &__date {
+                position: absolute;
+                top: 40px;
+                left: 48px;
+                display: flex;
+                flex-direction: column;
+                .h2_ultimate-orange{
+                    color: $ultimate_orange;
+                }
+                span{
+                    margin: 6px 0px 6px 0px;
+                }
+            }
         }
-        &__photo {
-            height: 125% ;
-            position: absolute;
-            right: 24px;
-            bottom: 0;
-        }
-        &__date {
-            position: absolute;
-            top: 40px;
-            left: 48px;
+        .manage-board {
             display: flex;
             flex-direction: column;
-            .h2_ultimate-orange{
-                color: $ultimate_orange;
+            align-items: flex-start;
+            margin-top: 42px;
+            .h3_dark_1{
+                color: $dark_1;
             }
-            span{
-                margin: 6px 0px 6px 0px;
+            &__content{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 14px;
+                .h4_ultimate-orange{
+                    color: $ultimate_orange;
+                }
+                .h4_dark_1{
+                    color: $dark_1;
+                }
+
+                button{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    border-style:none;
+                    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.15);
+                    border-radius: 5px;
+                    padding: 0;
+                    margin: 0px 16px 0px 16px;
+                    width: 288px;
+                    height: 272px;
+                    cursor: pointer;
+                    span{
+                        position: relative;
+                        top: 30px;
+                    }
+                }
+
+                .btn-first{
+                    margin-left: 0;
+                    background-color: $light_1;
+                }
+                .btn-last{
+                    margin-right: 0;
+                    background-color: $accent_color;
+                }
+            }
+        }
+
+        .projects-board {
+            margin-top: 42px;
+            .h3_dark_1{
+                color: $dark_1;
+            }
+            &__content{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 14px;
             }
         }
     }
+
 }
