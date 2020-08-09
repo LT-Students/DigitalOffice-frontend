@@ -8,10 +8,10 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
-  forgotPasswordForm: FormGroup;
-  forgotPasswordError: string;
-  isWaiting: boolean = false;
-  isCompleted: boolean = false;
+  private forgotPasswordForm: FormGroup;
+  private forgotPasswordError: string;
+  private isWaiting: boolean = false;
+  private isCompleted: boolean = false;
 
   constructor( 
     private userService: UserService,
@@ -21,10 +21,10 @@ export class ForgotPasswordComponent implements OnInit {
       });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
-  resetPassword(){
+  private resetPassword(){
     this.isWaiting = true;
     setTimeout(() => {
       this.isCompleted = true;
@@ -32,7 +32,7 @@ export class ForgotPasswordComponent implements OnInit {
     }, 1000);
   }
 
-  isEmailInputValid(): boolean{
+  private isEmailInputValid(): boolean{
     return !(this.forgotPasswordForm.get('email').touched &&
     this.forgotPasswordForm.get('email').invalid);
   }

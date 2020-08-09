@@ -8,9 +8,9 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
-  loginError: string;
-  isWaiting: boolean = false;
+  private loginForm: FormGroup;
+  private loginError: string;
+  private isWaiting: boolean = false;
 
 
   constructor( 
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  signin(){
+  private signin() : void{
     this.isWaiting = true;
     this.userService.signin();
     setTimeout(() => {
@@ -33,12 +33,12 @@ export class LoginComponent implements OnInit {
     }, 1000);
   }
 
-  isEmailInputValid(): boolean{
+  private isEmailInputValid(): boolean{
     return !(this.loginForm.get('email').touched &&
     this.loginForm.get('email').invalid);
   }
 
-  isPasswordInputValid(): boolean{
+  private isPasswordInputValid(): boolean{
     return !(this.loginForm.get('password').touched && 
     this.loginForm.get('password').invalid);
   }

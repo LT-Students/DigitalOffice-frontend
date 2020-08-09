@@ -9,7 +9,7 @@
   opacity: 0.2;
   text-decoration: underline;
   cursor: pointer;
-}
-.nav-link__forgot-password:hover{
-  opacity: 0.5;
+  &:hover{
+    opacity: 0.5;
+  }
 }

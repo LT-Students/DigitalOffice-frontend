@@ -6,18 +6,18 @@
   background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
   display: flex;
   justify-content: center;
-  router-outlet {
+  .admin-router {
     position: absolute;
   }
 
-  .waves-conteiner{
+  .waves-container{
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
     height: 30%;
     img {
       position: absolute;
-      bottom: 0px;
+      bottom: 0;
       width: 100%;
       height: 100%;
     }
