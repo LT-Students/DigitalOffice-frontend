@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { DoSelectComponent } from './do-select/do-select.component';
 import { RouterModule } from '@angular/router';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { DoDateDescComponent } from './do-datedesc/do-datedesc.component';
+import { DoDatedescComponent } from './do-datedesc/do-datedesc.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { IconsComponent } from './icons/icons.component';
 import { TagsBlockComponent } from './tags-block/tags-block.component';
@@ -16,7 +16,7 @@ import { TagsBlockComponent } from './tags-block/tags-block.component';
     AppComponent,
     ButtonsComponent,
     IconsComponent,
-    TagsBlockComponent
+    TagsBlockComponent,
     DoSelectComponent,
     DoDatedescComponent,
     ToolbarComponent
