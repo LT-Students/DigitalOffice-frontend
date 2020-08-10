@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, } from '@angular/core';
-/*import {IProject} from '../models/project.model';*/
+import {IProject} from '../models/project.model';
 
 @Component({
   selector: 'do-user-tasks',
@@ -12,4 +12,4 @@ export class UserTasksComponent implements OnInit {
   ngOnInit() {}
 
 }
-export interface IProject{}
+
