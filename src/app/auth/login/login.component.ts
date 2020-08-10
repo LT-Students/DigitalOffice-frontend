@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private signin() : void{
+  private signin() : void {
     this.isWaiting = true;
     this.userService.signin();
     setTimeout(() => {
@@ -33,12 +33,12 @@ export class LoginComponent implements OnInit {
     }, 1000);
   }
 
-  private isEmailInputValid(): boolean{
+  private isEmailInputValid(): boolean {
     return !(this.loginForm.get('email').touched &&
     this.loginForm.get('email').invalid);
   }
 
-  private isPasswordInputValid(): boolean{
+  private isPasswordInputValid(): boolean {
     return !(this.loginForm.get('password').touched && 
     this.loginForm.get('password').invalid);
   }

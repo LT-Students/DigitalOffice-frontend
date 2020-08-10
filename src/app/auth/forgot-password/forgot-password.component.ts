@@ -24,7 +24,7 @@ export class ForgotPasswordComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private resetPassword(){
+  private resetPassword() {
     this.isWaiting = true;
     setTimeout(() => {
       this.isCompleted = true;
@@ -32,7 +32,7 @@ export class ForgotPasswordComponent implements OnInit {
     }, 1000);
   }
 
-  private isEmailInputValid(): boolean{
+  private isEmailInputValid(): boolean {
     return !(this.forgotPasswordForm.get('email').touched &&
     this.forgotPasswordForm.get('email').invalid);
   }
