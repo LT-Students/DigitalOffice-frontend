@@ -1,0 +1,52 @@
+@import 'abstracts/variables';
+@import 'base/fonts';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 928px;
+  background: #eeeeee;
+
+  .tasks {
+    display: flex;
+    flex-direction: column;
+    margin: 48px;
+
+    h2 {
+      font-family: $header_font;
+      color: $dark_1;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 28px;
+      line-height: 32px;
+      margin-bottom: 48px;
+    }
+
+    .tasks__search {
+      display: flex;
+      margin-bottom: 48px;
+
+      p {
+        font-family: Gill Sans;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+
+    .project__container {
+      display: flex;
+      flex-direction: row;
+      background: $light_1;
+      border-radius: 5px;
+    }
+  }
+}
+
+
+
+
+
+
+

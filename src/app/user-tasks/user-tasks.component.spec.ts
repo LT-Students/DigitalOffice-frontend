@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DoUserNotesComponent } from './do-user-notes.component';
+import { UserTasksComponent } from './user-tasks.component';
 
 describe('DoUserNotesComponent', () => {
-  let component: DoUserNotesComponent;
-  let fixture: ComponentFixture<DoUserNotesComponent>;
+  let component: UserTasksComponent;
+  let fixture: ComponentFixture<UserTasksComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DoUserNotesComponent ]
+      declarations: [ UserTasksComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DoUserNotesComponent);
+    fixture = TestBed.createComponent(UserTasksComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

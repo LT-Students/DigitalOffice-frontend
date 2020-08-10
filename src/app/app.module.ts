@@ -3,11 +3,10 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { ButtonsComponent } from './buttons/buttons.component';
 import { IconsComponent } from './icons/icons.component';
 import { TagsBlockComponent } from './tags-block/tags-block.component';
-import { DoUserNotesComponent } from './do-user-notes/do-user-notes.component';
+import { UserTasksComponent } from './user-tasks/user-tasks.component';
 import { TaskComponent } from './task/task.component';
 import { ProjectComponent } from './project/project.component';
 
@@ -18,7 +17,7 @@ import { ProjectComponent } from './project/project.component';
     ButtonsComponent,
     IconsComponent,
     TagsBlockComponent,
-    DoUserNotesComponent,
+    UserTasksComponent,
     TaskComponent,
     ProjectComponent
   ],
