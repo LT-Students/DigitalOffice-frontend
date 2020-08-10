@@ -1,0 +1,42 @@
+@import 'abstracts/variables';
+@import 'base/fonts';
+
+.content-container{
+    display: flex;
+    flex-direction: column;
+    padding: 38px 48px 61px 48px;
+    height: 100vh;
+    background-color: $light_2;
+    .regular_text_dark_1{
+        color: $dark_1;
+    }
+    .h1_dark_2{
+        color: $dark_2;
+    }
+    .nav-link__dashboard{
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+        svg{
+            width: 4px;
+            height: 8px;
+            fill: none;
+            margin-right: 13px;
+            .arrow{
+                stroke-width: 2px;
+                stroke-opacity: 1;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke: $dark_1;
+            }
+        }
+        &:hover{
+            opacity: 0.5;
+        }
+    }
+
+    .title{
+        margin: 25px 0px 25px 0px;
+    }
+}
