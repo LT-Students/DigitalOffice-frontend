@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+/*also root: must work here*/
+/*in .component.scss try host: (shadow DOM)*/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+div {
+  margin:5px;
+}
+
+a,
+a:visited,
+a:hover{
+  text-decoration: none;
+}
