@@ -15,13 +15,13 @@ export class UserTasksComponent implements OnInit {
 
   ngOnInit() {
     var project = new Project();
-    project.name = 'Some project';
+    project.name = 'Kojima is a genius';
     project.tasks = [
         {
           time: { hours: 4, minutes: 0},
-          name: 'Some task',
-          description: 'Some description',
-          createdAt: new Date(2017, 1)
+          name: 'Фикс неправильного отображения строки “Коты” на дашборде',
+          description: 'Распланировали сегодня спринт на 11 дней, дал задачи стажеру. Я просто решила написать длинный комментарий, чтобы посмотреть, как сломается система, потому что еще работаю на полставки тестировщиком. Му-ха-ха-ха!',
+          createdAt: new Date(2020, 6)
         }
       ];
 
