@@ -15,7 +15,7 @@ export class UserTasksComponent implements OnInit {
 
   ngOnInit() {
     var project = new Project();
-    project.name = ['Kojima is a genius', 'Меркурий'];
+    project.name = 'Kojima is a genius';
     project.tasks = [
         {
           time: { hours: 4, minutes: 0},
