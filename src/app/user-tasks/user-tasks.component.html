@@ -3,7 +3,18 @@
     <h2>4 записи за 8–15 июня</h2>
     <div class="tasks__search">
       <p class="regular_text">Сортировка</p>
-      <!--кнопки-->
+      <div class="buttons">
+        <button type="button" class="regular_text buttons__projects">По проектам</button>
+        <button type="button" class="regular_text buttons__hours">По часам</button>
+      </div>
+      <div class="tasks__search__text">
+        <button type="submit" class="button__magnifier">
+          <img src="../../assets/magnifier.svg" alt="">
+        </button>
+        <label>
+          <input type="text" id="text__search" class="regular_text" placeholder="Поиск по тексту комментария">
+        </label>
+      </div>
     </div>
     <div class="project__container" *ngFor="let project of projects">
       <do-project [project]="project"></do-project>

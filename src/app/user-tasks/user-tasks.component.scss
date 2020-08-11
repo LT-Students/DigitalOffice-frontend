@@ -5,8 +5,8 @@
   display: flex;
   flex-direction: column;
   width: 928px;
-  background: grey;
-  margin: 48px;
+  background: $light_1;
+  margin: 0 48px 0 48px;
 
   .tasks {
     display: flex;
@@ -16,27 +16,71 @@
     h2 {
       font-family: $header_font;
       color: $dark_1;
-      font-style: normal;
-      font-weight: bold;
       font-size: 28px;
       line-height: 32px;
-      margin-bottom: 48px;
+      margin-bottom: 64px;
     }
 
     .tasks__search {
       display: flex;
-      margin-bottom: 48px;
+      margin-bottom: 52px;
 
-      p {
-        font-style: normal;
-        font-weight: normal;
+      .buttons {
+        margin-left: 24px;
 
+        &__projects {
+          background: $accent_color_bright;
+          border-color: transparent;
+          border-radius: 5px;
+          color: $light_1;
+          text-align: center;
+          width: 125px;
+          height: 32px;
+          margin-right: 16px;
+        }
+
+        &__hours {
+          background: $light_2;
+          border-color: transparent;
+          border-radius: 5px;
+          color: $gray;
+          text-align: center;
+          width: 125px;
+          height: 32px;
+        }
+      }
+
+      &__text {
+        background: $light_2;
+        border-radius: 5px;
+        width: 272px;
+        height: 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: auto;
+
+        .button__magnifier {
+          border: none;
+          width: 16px;
+          height: 16px;
+          margin-left: 16px;
+        }
+
+        #text__search {
+          background: $light_2;
+          border: none;
+          width: 216px;
+          margin-right: 16px;
+          }
+
+        input::placeholder {
+          color: $gray;
+        }
       }
     }
 
     .project__container {
-      display: flex;
-      flex-direction: row;
       background: $light_1;
       border-radius: 5px;
     }
