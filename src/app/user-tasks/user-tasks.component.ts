@@ -2,6 +2,7 @@ import { Component, Input, OnInit, } from '@angular/core';
 import { IProject } from '../models/project.model';
 import { ITask } from '../models/task.model';
 
+
 @Component({
   selector: 'do-user-tasks',
   templateUrl: './user-tasks.component.html',
@@ -34,5 +35,4 @@ export class Project implements IProject{
   name: string;
   tasks: Array<ITask>;
 }
-
 
