@@ -1,3 +1,7 @@
-<div class="row" *ngFor="let task of project.tasks">
-  <do-task [task]="task"></do-task>
+<div class="project-body">
+  <div class="project-head"><h3>{{project.name[0]}}</h3></div>
+  <div *ngFor="let task of project.tasks">
+    <do-task [task]="task"></do-task>
+    <do-task [task]="task"></do-task>
+  </div>
 </div>

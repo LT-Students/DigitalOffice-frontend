@@ -1,0 +1,23 @@
+@import 'abstracts/variables';
+@import 'base/fonts';
+
+.project-body {
+  margin-bottom: 48px;
+}
+
+.project-head {
+  width: 212px;
+  height: 28px;
+  right: 717px;
+  bottom: 777px;
+  h3 {
+    font-family: Gotham Pro;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+
+
+

@@ -1,40 +1,97 @@
 @import 'abstracts/variables';
+@import 'base/fonts';
+
+.task-row {
+  display: flex;
+  flex-flow: row nowrap;
+
+  margin: 25px 24px 16px 24px;
+  border-radius: 5px;
+  background: $light_1;
+
+}
+
+.col {
+  border-radius: inherit;
+}
+
+.col-1 {
+  max-width: 70px;
+  background: #21D373;
+  padding-right: 24px;
+
+}
+
+.col-2 {
+
+  max-width: 586px;
+  background: #795b37;
+  padding-right: 42px;
+}
+
+.col-3 {
+  margin-left: auto;
+  min-width: auto;
+  background: #BC7BFA;
+}
 
 .note__head {
-  font-family: Gill Sans;
-  color: $dark_1;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
+  width: 586px;
+  height: 22.48px;
+  right: 225px;
+  bottom: 714.52px;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: $dark_1;
+  }
 }
 
-.note__text p {
-  font-family: Gill Sans;
-  color: $dark_2;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
+.note__text {
+  width: 559px;
+  height: 74px;
+  right: 252px;
+  bottom: 627px;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: $dark_2;
+  }
 }
+.note__date {
+  width: 95px;
+  height: 24px;
+  right: 716px;
+  bottom: 595px;
 
-.note__date p {
-  font-family: Gill Sans;
-  color: $gray;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-}
-
-.column-1 {
-  max-width: 70px;
-}
-
-.column-2 {
-  max-width: 559px;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    color: $gray;
+  }
 }
 
 .icons {
+  width: 60px;
+  display: flex;
+  justify-content: space-between;
+}
 
+button {
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
 }
