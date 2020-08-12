@@ -1,7 +1,10 @@
 <div class="task-row">
   <div class="col col-1">
-    <div class="time"><h4>{{task.time | date:'HH:mm'}}</h4></div>
-    <!--<div class="time"><h4>{{task.time.hours}} : {{task.time.minutes}}</h4></div>-->
+    <div class="time">
+      <!--<h4>{{task.time.hours}} : {{task.time.minutes}}</h4>-->
+      <h4>{{task.time |date:'HH:mm'}}</h4>
+      &nbsp;&nbsp;<p>ч</p>
+    </div>
   </div>
 
   <div class="col col-2">
@@ -12,7 +15,9 @@
       <div class="note__text">
         <p>{{task.description}}</p>
       </div>
-      <div class="note__date"><p>{{task.createdAt | date: 'd MMMM в HH:mm'}}</p></div>
+      <div class="note__date">
+        <p>{{task.createdAt | date: 'd MMMM в HH:mm'}}</p>
+      </div>
     </div>
   </div>
 

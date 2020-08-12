@@ -16,27 +16,36 @@
 }
 
 .col-1 {
-  max-width: 70px;
 
+  max-width: 150px;
   padding-right: 24px;
 
 }
 
 .col-2 {
-
   max-width: 586px;
-
   padding-right: 42px;
 }
 
 .col-3 {
   margin-left: auto;
   min-width: auto;
-
 }
 
 .time {
+  max-width: 150px;
+  display: flex;
   padding-top: 3px;
+  h4 {
+  }
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+
+    color: $gray;
+  }
 }
 
 .note__head {
