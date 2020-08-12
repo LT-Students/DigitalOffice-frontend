@@ -82,10 +82,12 @@
                 .btn-first{
                     margin-left: 0;
                     background-color: $light_1;
+                    background-image: url("../../../assets/admin/dashboard/add-employee-background.png");
                 }
                 .btn-last{
                     margin-right: 0;
                     background-color: $accent_color;
+                    background-image: url("../../../assets/admin/dashboard/add-project-background.png");
                 }
             }
         }
