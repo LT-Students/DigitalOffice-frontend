@@ -17,7 +17,7 @@
 
 .col-1 {
   max-width: 70px;
-  background: #21D373;
+
   padding-right: 24px;
 
 }
@@ -25,14 +25,18 @@
 .col-2 {
 
   max-width: 586px;
-  background: #795b37;
+
   padding-right: 42px;
 }
 
 .col-3 {
   margin-left: auto;
   min-width: auto;
-  background: #BC7BFA;
+
+}
+
+.time {
+  padding-top: 3px;
 }
 
 .note__head {
@@ -40,6 +44,8 @@
   height: 22.48px;
   right: 225px;
   bottom: 714.52px;
+  margin-bottom: 13px;
+
   p {
     font-family: Gill Sans;
     font-style: normal;
@@ -47,6 +53,7 @@
     font-size: 16px;
     line-height: 24px;
     color: $dark_1;
+
   }
 }
 
@@ -65,11 +72,10 @@
   }
 }
 .note__date {
-  width: 95px;
+  max-width: 200px;
   height: 24px;
   right: 716px;
   bottom: 595px;
-
   p {
     font-family: Gill Sans;
     font-style: normal;

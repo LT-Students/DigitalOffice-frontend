@@ -18,10 +18,12 @@ export class UserTasksComponent implements OnInit {
     project.name = 'Kojima is a genius';
     project.tasks = [
         {
-          time: { hours: 4, minutes: 0},
+          time: Date(),
+          /*time: { hours: 4, minutes: 0},*/
           name: 'Фикс неправильного отображения строки “Коты” на дашборде',
           description: 'Распланировали сегодня спринт на 11 дней, дал задачи стажеру. Я просто решила написать длинный комментарий, чтобы посмотреть, как сломается система, потому что еще работаю на полставки тестировщиком. Му-ха-ха-ха!',
-          createdAt: new Date(2020, 6)
+          createdAt: Date()
+          /*createdAt: new Date(2020, 6)*/
         }
       ];
 
