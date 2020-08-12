@@ -5,6 +5,7 @@ import { AdminComponent } from './admin/admin.component';
 import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
 import { NewEmployeeComponent } from './new-employee/new-employee.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -17,6 +18,8 @@ import { NewEmployeeComponent } from './new-employee/new-employee.component';
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     AdminRoutingModule
   ]
 })

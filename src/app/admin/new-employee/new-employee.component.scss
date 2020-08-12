@@ -4,11 +4,23 @@
 .content-container{
     display: flex;
     flex-direction: column;
-    padding: 38px 48px 61px 48px;
-    height: 100vh;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 5%;
+    min-width: 1024px;
+    min-height: 1157px;
     background-color: $light_2;
     .regular_text_dark_1{
         color: $dark_1;
+    }
+    .regular_text_accent_color_bright {
+        color: $accent_color_bright;
+    }
+    .regular_text_accent_color {
+        color: $accent_color;
+    }
+    .regular_text_light_1{
+        color: $light_1;
     }
     .h1_dark_2{
         color: $dark_2;
@@ -36,7 +48,145 @@
         }
     }
 
-    .title{
-        margin: 25px 0px 25px 0px;
+    .form-container{
+        display: flex;
+        justify-content: center;
+        padding-top: 5%;
+        padding-bottom: 5%;
+        width: 100%;
+        min-height: 884px;
+        border-radius: 5px;
+        background-color: white;
+        .data-form{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 75%;
+            .h3_dark_1, .h5_dark_1{
+                color: $dark_1;
+            }
+            &__input-content{
+                display: flex;
+                flex-direction: column;
+            }
+            &__input-field, &__select-field{
+                width: 100%;
+                height: 36px;
+                border-radius: 5px;
+                padding: 0;
+                border-style: none;
+                background-color: $light_3;
+            }
+            &__title::after{
+                content: '';
+                display:block;
+                width: 17%;
+                height: 4px;
+                background-color: $accent_color_bright;
+            }
+
+            .main-info{
+                display: flex;
+                flex-direction: row;
+                .content{
+                    &__photo{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 30%;
+                        .photo-container{
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            width: 128px;
+                            height: 128px;
+                            background: linear-gradient(180deg, #FFA386 0%, #FFD3B8 100%);
+                            border-radius: 50%;
+                        }
+                    }
+                    &__inputs{
+                        display:flex;
+                        flex-direction: column;
+                        justify-content: space-around;
+                        width: 70%;
+                    }
+                }
+
+            }
+            .job-info{
+                display: flex;
+                flex-direction: column;
+                .position-info{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    width: 100%;
+                    div{
+                        width: 48%;
+                    }
+                }
+                .department-info{
+                    width: 100%;
+                }
+            }
+            .login-info{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+
+                .content__inputs{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    width: 70%;
+                    div{
+                        width: 47%;
+                    }
+                }
+
+                .btn-generate-credentials{
+                    display: flex;
+                    flex-direction: row;
+                    align-self: flex-end;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 8px 14px;
+                    border: 1px solid $accent_color_bright;
+                    box-sizing: border-box;
+                    border-radius: 5px;
+                    height: 36px;
+                    width: 28%;
+                    background-color: transparent;
+                    cursor: pointer;
+                    img{
+                        margin-right: 11px;;
+                    }
+                }
+            }
+            .submit-buttons{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                width: 100%;
+                .btn-send-credentials{                
+                    border: 1px solid $accent_color_bright;
+                    box-sizing: border-box;
+                    border-radius: 5px;
+                    background-color: transparent;
+                    margin-right: 2%;
+                    padding: 8px 14px;
+                    cursor: pointer;
+                }
+                .btn-create-employee{
+                    background-color: $accent_color_bright;
+                    border: none;
+                    border-radius: 5px;
+                    padding: 8px 14px;
+                    cursor: pointer;
+                }
+            }
+
+        }
     }
+
 }
