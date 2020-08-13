@@ -45,6 +45,14 @@ export class NewEmployeeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  createEmployee(): void {
+
+  }
+
+  sendCredentials(): void {
+    
+  }
+
   generateCredentials(): void {
     
   }

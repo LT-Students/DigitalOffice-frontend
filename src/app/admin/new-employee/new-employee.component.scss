@@ -80,7 +80,7 @@
             &__title::after{
                 content: '';
                 display:block;
-                width: 17%;
+                width: 123px;
                 height: 4px;
                 background-color: $accent_color_bright;
             }
@@ -88,6 +88,7 @@
             .main-info{
                 display: flex;
                 flex-direction: row;
+                min-height: 216px;
                 .content{
                     &__photo{
                         display: flex;
@@ -102,12 +103,16 @@
                             height: 128px;
                             background: linear-gradient(180deg, #FFA386 0%, #FFD3B8 100%);
                             border-radius: 50%;
+                            img{
+                                position: relative;
+                                right: 7px;
+                            }
                         }
                     }
                     &__inputs{
                         display:flex;
                         flex-direction: column;
-                        justify-content: space-around;
+                        justify-content: space-between;
                         width: 70%;
                     }
                 }
@@ -116,6 +121,8 @@
             .job-info{
                 display: flex;
                 flex-direction: column;
+                justify-content: space-between;
+                min-height: 140px;
                 .position-info{
                     display: flex;
                     flex-direction: row;
