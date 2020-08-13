@@ -1,0 +1,201 @@
+@import url(//db.onlinewebfonts.com/c/07a38bbad54db72a40b406bed1c72f53?family=Gotham+Pro);
+$button-color-orange1: hsl(14°, 94%, 66%);
+$background-color-white1: hsl(0°, 0%, 100%);
+$font-black1: hsl(250°, 6%, 20%);
+$bar-color-orange1: hsl (22°, 100%, 77%);
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  width: 928px;
+  height: 345px;
+  background: linear-gradient(135deg, #ffffff, #ffdfc7);;
+}
+
+/*контент*/
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 832px;
+  padding: 48px 48px 36px 48px;
+
+}
+
+
+/*шапка с названием блока*/
+.head p {
+  max-width: 364px;
+  height: 24px;
+  margin-bottom: 30px;
+  font-family: Gotham Pro;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 32px;
+  color: $font-black1;
+}
+
+
+/*Всего*/
+.main>p {
+    text-align: right;
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #BDBDBD;
+  }
+
+
+/*строки с проектами*/
+.row {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: 24px;
+  justify-content: space-between;
+  position: relative;
+  &:after {
+    content:'';
+    position: absolute;
+    width: 832px;
+    bottom:0;
+    height:1px;
+    left:0%;
+    background-color: #F1F1EF;
+
+  }
+}
+
+.rowName {
+  width: 80px;
+  padding-right: 20px;
+}
+
+.rowName p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+  }
+
+.main__column2 {
+  display: flex;
+  max-width: 700px;
+  justify-content: flex-start;
+}
+
+.bar {
+  border-radius: 5px;
+  height: 20px;
+  p {
+    font-family: Gotham Pro;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 10px;
+    line-height: 24px;
+    color: #434348;
+  }
+}
+
+.bar1 {
+  width: 429px;
+  height: 20px;
+  background: #FFB78C;
+  border-radius: 5px;
+}
+
+.bar2 {
+  width: 71.5px;
+  height: 20px;
+  background: #D0BBF1;
+}
+
+.bar3 {
+  width: 143px;
+  height: 20px;
+  background: #8BB6CE;
+}
+
+.bar4 {
+  width: 71.5px;
+  height: 20px;
+  background: #8BB6CE;
+}
+
+.time {
+  max-width: 51px;
+  font-family: Gotham Pro;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  color: #434348;
+}
+
+/*трока с тегами*/
+.tagsRow {
+  display: flex;
+  flex-direction: row;
+  padding-top: 36px;
+  justify-content: space-between;
+  p {
+    font-family: Gotham Pro;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.tagsName {
+
+}
+
+.tags__column2 {
+  display: flex;
+}
+
+.tag {
+  margin: 0 12px;
+  border-radius: 10px;
+  p {
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: lighter;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+.tag1 {
+  background: #FFB78C;
+  max-width: 56px;
+}
+
+.tag2 {
+  background: #8BB6CE;
+  max-width: 122px;
+}
+
+.tag3 {
+  background: #D0BBF1;
+  max-width: 118px;
+}
+
+
+
+
+
+
+
+
+

@@ -9,12 +9,10 @@
   margin: 0;
 }
 
-div {
-  margin:5px;
-}
-
 a,
 a:visited,
-a:hover{
+a:hover {
   text-decoration: none;
 }
+
+/*# sourceMappingURL=main.css.map */
