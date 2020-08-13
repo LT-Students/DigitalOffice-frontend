@@ -4,8 +4,8 @@
             <img class="user-board__content" src="../../../assets/image/fon.png" alt="background">
             <img class="user-board__photo" src="../../../assets/admin/dashboard/avatar.png" alt="avatar">
             <div class="user-board__date">
-                <span class="h2 h2_ultimate-orange">Сегодня 27 августа</span>
-                <span class="h3_light">Вторник</span>
+                <span class="h2 h2_ultimate-orange">Сегодня {{ today | date:'d LLLL'}}</span>
+                <span class="h3_light">{{ today | date:'EEEE' | titlecase}}</span>
             </div>
         </div>
         <div class="manage-board">
@@ -24,8 +24,8 @@
         </div>
         <div class="projects-board">
             <span class="h3 h3_dark_1">Мои проекты</span>
-            <div class="projects-board__content">
-
+            <div class="projects-board__content" *ngFor="let project of projects">
+                <!-- <do-my-project [project]="project"></do-my-project> -->
             </div>
         </div>
     </div>

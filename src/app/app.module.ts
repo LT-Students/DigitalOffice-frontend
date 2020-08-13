@@ -11,7 +11,11 @@ import { ButtonsComponent } from './buttons/buttons.component';
 import { IconsComponent } from './icons/icons.component';
 import { TagsBlockComponent } from './tags-block/tags-block.component';
 import { AdminModule } from './admin/admin.module';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
 
+registerLocaleData(localeRu);
 
 @NgModule({
   declarations: [
@@ -29,7 +33,9 @@ import { AdminModule } from './admin/admin.module';
     AppRoutingModule,
     AdminModule
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'ru' },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
