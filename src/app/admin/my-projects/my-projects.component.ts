@@ -3,7 +3,7 @@ import { Input} from "@angular/core";
 
 
 @Component({
-  selector: 'app-my-projects',
+  selector: 'do-my-projects',
   templateUrl: './my-projects.component.html',
   styleUrls: ['./my-projects.component.scss']
 })
