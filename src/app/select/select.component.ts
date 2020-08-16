@@ -1,16 +1,12 @@
 import {Component, Input} from '@angular/core';
 
-
-
-
 @Component({
   selector: 'do-select',
-  templateUrl: './do-select.component.html',
-  styleUrls: ['./do-select.component.scss'],
-
-
+  templateUrl: './select.component.html',
+  styleUrls: ['./select.component.scss'],
 })
-export class DoSelectComponent {
+
+export class SelectComponent {
 
   @Input() options: string[];
   @Input() className: string;
