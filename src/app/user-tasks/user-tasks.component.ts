@@ -9,12 +9,16 @@ import { IProject } from '../models/project.model';
 })
 export class UserTasksComponent implements OnInit {
   @Input() projects: Array<IProject> = [];
-
+  isOrderedByProject: boolean = false;
+  isOrderedByHours: boolean = false;
   constructor() {}
 
   ngOnInit() {
 
   }
-
+  sortByProject(): void {
+    this.isOrderedByProject = !this.isOrderedByProject;
+    this.isOrderedByHours = !this.isOrderedByHours;
+  }
 }
 
