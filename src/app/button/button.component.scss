@@ -2,10 +2,14 @@
 
 /*основной класс*/
 .button {
+  cursor: pointer;
   display:flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
+  p {
+    margin: 0;
+  }
 }
 
 /*цвета кнопок, шрифтов и бордеров*/
