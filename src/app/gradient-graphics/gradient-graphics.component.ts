@@ -8,11 +8,19 @@ import {Component, Input, OnInit} from '@angular/core';
 export class GradientGraphicsComponent implements OnInit {
 
   constructor() { }
-  @Input() dailyHoursData; //data about day, month, hours of time period
+  @Input() dailyHoursData; //data about day, month, hours, minutes of time period
 
   //color for graphic items
   colorsData = ["#7adea2", "#8bdca5", "#9cdaa9", "#add8ad", "#bdd7b1", "#cdd5b4", "#ddd4b8", "#efd2bc"];
   gray = "#EEEEEE";
+  //
+
+  //define amount of graphic columns/strings
+  amountOfWorkHours = [...Array(8).keys()];
+  amountOfDays = [...Array(6).keys()];
+
+  //determination of days when was processing
+  processingArray = [];
   //
 
   //the variable define the data of string above graphic
@@ -37,8 +45,19 @@ export class GradientGraphicsComponent implements OnInit {
     }
     //
 
+    //create string of time period
     firstPartTimePeriod = this.dailyHoursData[0].day + " - " + this.dailyHoursData[breakIndex-1].day + " " + this.dailyHoursData[0].month;
     this.timePeriod = firstPartTimePeriod + secondPartTimePeriod;
+    //
+
+    //to check processing in hours
+    for (let i = 0; i < this.dailyHoursData.length; i ++){
+      if (this.dailyHoursData[i].hours > 8 || this.dailyHoursData[i].hours == 8 && this.dailyHoursData[i].minutes > 0) {
+        this.processingArray[i] = true;
+      } else {
+        this.processingArray[i] = false;
+      }
+    }
     //
   }
 }
