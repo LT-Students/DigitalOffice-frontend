@@ -16,11 +16,8 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 
-<<<<<<< HEAD
 registerLocaleData(localeRu);
 
-=======
->>>>>>> origin/develop
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,18 +30,12 @@ registerLocaleData(localeRu);
   ],
   imports: [
     BrowserModule,
-<<<<<<< HEAD
     RouterModule,
     AppRoutingModule,
     AdminModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'ru' },
-=======
-    AppRoutingModule,
-    AuthModule,
-    RouterModule
->>>>>>> origin/develop
   ],
   bootstrap: [AppComponent]
 })
