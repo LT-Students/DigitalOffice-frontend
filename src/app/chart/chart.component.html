@@ -1,0 +1,35 @@
+
+<div class="chart">
+  <div class="chart__doughnut">
+    <canvas #canvas width="184" height="183">
+    </canvas>
+    <div class="chart__hours">
+      <p>
+
+        <span class="all__hours"
+              [style.color]="allHoursColor"
+        >{{allHours}}</span>
+
+        <span class="hour__char"> ч</span><br>
+
+        <span class="time__description"
+              [style.background-color]="timeDescriptionBackgroundColor"
+              [style.font-size]="timeDescriptionFontSize"
+              [style.color]="timeDescriptionColor"
+        >{{timeDescriptionValue}}</span>
+
+      </p>
+    </div>
+  </div>
+
+  <div class="chart__tags">
+    <p>Проекты</p>
+    <div *ngFor="let project of projectsData; index as i">
+      <span class="color__pointer"
+            [style.background-color]="colorsData[i]"
+      ></span>
+      {{ project.projectName }}
+    </div>
+  </div>
+</div>
+
