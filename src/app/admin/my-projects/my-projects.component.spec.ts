@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GradientGraphicsComponent } from './gradient-graphics.component';
+import { GradientGraphicsComponent } from './../../gradient-graphics/gradient-graphics.component';
 
 describe('GradientGraphicsComponent', () => {
   let component: GradientGraphicsComponent;
