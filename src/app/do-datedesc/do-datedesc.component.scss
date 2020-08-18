@@ -57,7 +57,7 @@ p {
     }
   }
 }
-.chooseDate {
+.choose_date__wrapper {
   background: $accent_color;
   border-radius: 5px;
   border-color: transparent;
@@ -66,12 +66,5 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  &__container {
-    color: $dark_1;
-    svg {
-      height: 8px;
-      width: 4px;
-    }
-}
 }
 

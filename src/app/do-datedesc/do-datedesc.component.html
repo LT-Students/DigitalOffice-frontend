@@ -5,16 +5,16 @@
       <div class="content__period h1">8–15 июня</div>
       <div class="content__week regular_text">
         <div class="content__week__day" *ngFor="let day of days" (click)="selectDay(day)">
-          <p class="content__week__day-single">{{day.day}}</p>
-          <p [ngClass]="{ content__week__day_orange: day.selected }">{{day.date}}</p>
+          <p class="content__week__day-single">{{day.date | date:'EEEEEE'}}</p>
+          <p [ngClass]="{ content__week__day_orange: day.selected }">{{day.date | date:'dd'}}</p>
         </div>
       </div>
-      <div class="chooseDate regular_text">
-        <div class="chooseDate__container ">
-          <p>Выбрать другую дату <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1L5 5L1 9" stroke="#434348" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg></p>
-        </div>
+      <div class="choose_date__wrapper">
+        <do-button (click)="onChooseDateClick()"
+                   [title]="'Выбрать другую дату'"
+                   [className]="'button bg-accent_color font-regular_font'">
+          <img src="../../assets/svg/arrow-right.svg">
+        </do-button>
       </div>
     </div>
     <div class="desc__photo">

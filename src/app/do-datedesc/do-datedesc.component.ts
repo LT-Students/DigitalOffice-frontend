@@ -18,18 +18,15 @@ export class DoDatedescComponent implements OnInit {
   getWeek() {
     const days = [];
 
+    const now = new Date();
     for (let i = -3; i <= 3; i++) {
-      const now = new Date();
-      days.push(new Date(now.setDate(now.getDate() + i)));
+      const day = new Date();
+      day.setDate(now.getDate() + i)
+      days.push(day);
     }
-
-    const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-
     return days.map((day) => {
-      const date = day.getDate();
       return {
-        day: weekDays[day.getDay()],
-        date: (date > 0) ? date : `0${date}`,
+        date: day,
         selected: false,
       };
     });
