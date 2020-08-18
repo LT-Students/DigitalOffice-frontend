@@ -9,16 +9,17 @@
           <p [ngClass]="{ content__week__day_orange: day.selected }">{{day.date}}</p>
         </div>
       </div>
-      <div class="chooseDate regular_text">
-        <div class="chooseDate__container ">
-          <p>Выбрать другую дату <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 1L5 5L1 9" stroke="#434348" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg></p>
-        </div>
+      <div class="choose_date__wrapper">
+        <do-button (click)="onChooseDateClick()"
+                   [title]="'Выбрать другую дату'"
+                   [className]="'button bg-accent_color font-regular_font'">
+          <img src="../../assets/svg/arrow-right.svg">
+        </do-button>
       </div>
+
     </div>
     <div class="desc__photo">
-      <img src="../../assets/image/girl.svg" alt="girl">
+      <img src="../../assets/svg/girl.svg" alt="girl">
     </div>
   </div>
 </div>

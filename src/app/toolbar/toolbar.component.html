@@ -1,7 +1,7 @@
 <div class="toolbar">
     <div class="toolbar__menu">
       <a href="#">
-        <img src="../../assets/menu.svg" alt="menu">
+        <img src="../../assets/svg/menu.svg" alt="menu">
       </a>
     </div>
     <div class="toolbar__logo">
@@ -10,19 +10,19 @@
     <div class="toolbar__mode">
       <span class= "toolbar__mode__change" (click)="this.isDarkMode= !this.isDarkMode">
         <p class="regular_text"> {{ isDarkMode? 'темный' : 'светлый' }} режим</p>
-        <img src="../../assets/mode.svg" alt="">
+        <img src="../../assets/svg/mode.svg" alt="">
       </span>
     </div>
     <div class="toolbar__greeting">
       <a class="toolbar__greeting__nav-link" href="#">
-        <img src="../../assets/greetingFoto.svg" alt="">
+        <img src="../../assets/svg/greeting-photo.svg" alt="">
         <p class="regular_text">Привет, <span class="h4">{{userName}}</span></p>
       </a>
     </div>
     <div class="toolbar__notification">
       <span (click)="this.hasNotification = !this.hasNotification">
-        <img src="../../assets/notification.svg" alt="notification" class="toolbar__notification__bell">
-        <img src="../../assets/notificationLight.svg"
+        <img src="../../assets/svg/notification.svg" alt="notification" class="toolbar__notification__bell">
+        <img src="../../assets/svg/notification-light.svg"
           alt="notification"
           class="toolbar__notification__light"
           *ngIf="hasNotification">

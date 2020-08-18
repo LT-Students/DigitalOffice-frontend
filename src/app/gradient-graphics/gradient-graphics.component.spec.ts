@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DoDatedescComponent } from './do-datedesc.component';
+import { GradientGraphicsComponent } from './gradient-graphics.component';
 
-describe('DatedescComponent', () => {
-  let component: DoDatedescComponent;
-  let fixture: ComponentFixture<DoDatedescComponent>;
+describe('GradientGraphicsComponent', () => {
+  let component: GradientGraphicsComponent;
+  let fixture: ComponentFixture<GradientGraphicsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DoDatedescComponent ]
+      declarations: [ GradientGraphicsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DoDatedescComponent);
+    fixture = TestBed.createComponent(GradientGraphicsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
