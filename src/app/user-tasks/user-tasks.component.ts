@@ -18,6 +18,8 @@ export class UserTasksComponent implements OnInit {
   }
   sortByProject(): void {
     this.isOrderedByProject = !this.isOrderedByProject;
+  }
+  sortByHours(): void {
     this.isOrderedByHours = !this.isOrderedByHours;
   }
 }
