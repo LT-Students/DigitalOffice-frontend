@@ -33,7 +33,9 @@ import { AppRoutingModule } from './app-routing.module';
     AuthModule,
     RouterModule
   ],
-  providers: [],
+  providers: [
+    {provide: LOCALE_ID, useValue: 'ru-RU'}
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
