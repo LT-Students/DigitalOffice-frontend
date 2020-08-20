@@ -1,18 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
-/*also root: must work here*/
-/*in .component.scss try host: (shadow DOM)*/
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  padding: 0;
+body {
   margin: 0;
-}
-
-a,
-a:visited,
-a:hover {
-  text-decoration: none;
+  padding: 0;
 }
 
 /*# sourceMappingURL=main.css.map */
