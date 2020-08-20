@@ -1,0 +1,71 @@
+@import 'abstracts/variables';
+@import 'base/fonts';
+
+.project__container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 300px;
+  min-height: 349px;
+  border-radius: 5px;
+  background-color: white;
+
+  .content-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 236px;
+    min-height: 285px;
+    .project__name,   
+    .hours,
+    .gray__circle{
+      color: $dark_1;
+    }
+  
+    .project__comment{
+      color: $dark_1;
+      height: 160px;
+    }
+
+    .project__customer{
+      position: relative;
+      bottom: 10px
+    }
+  
+    .project__details{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      .contribution{
+        text-align: center;
+        p{
+          margin: 0;
+        }
+      }
+  
+      .team{
+        display: flex;
+      }
+  
+      .participant,
+      .gray__circle{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-size: contain;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+  
+        .gray__circle {
+          margin: 0;
+          background-color: $gray;
+        }
+      }
+  }
+
+  }
+}
+
+

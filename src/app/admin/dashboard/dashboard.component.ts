@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IProject } from '../../models/project.model';
-import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'do-dashboard',
@@ -9,12 +8,60 @@ import { DatePipe } from '@angular/common'
 })
 export class DashboardComponent implements OnInit {
 
-  @Input() projects: Array<IProject>;
+  @Input() projects: Array<IProject> = [];
   private today = Date.now();
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
+
+    const proj1 = {
+      name: "MainProject1",
+      consumer: {
+        name: "Company№1",
+        description: "Super company that is doing nothing."
+      },
+      description: "Just project. Nothing special.",
+      contributors: [
+        {
+          user: {
+            firstName: "Вася",
+            lastName: "Пчелкин",
+            photo: "../../../assets/images/girl.png"
+          },
+          totalTime: {
+             hours: 40,
+             minutes: 0
+            }
+        }
+      ]
+    }
+    const proj2 = {
+      name: "MainProject2",
+      consumer: {
+        name: "Company№2",
+        description: "Super company that is doing nothing."
+      },
+      description: "Just project. Nothing special.",
+      contributors: [
+        {
+          user: {
+            firstName: "Вася",
+            lastName: "Пчелкин",
+            photo: "../../../assets/images/girl.png"
+          },
+          totalTime: {
+             hours: 40,
+             minutes: 0
+            }
+        }
+      ]
+    }
+
+    this.projects.push(
+      proj1,
+      proj2
+    )
   }
 
 }
