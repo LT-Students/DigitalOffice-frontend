@@ -4,9 +4,9 @@
     <div class="desc__calender">
       <div class="content__period h1">8–15 июня</div>
       <div class="content__week regular_text">
-        <div class="content__week__day" *ngFor="let day of days" (click)="selectDay(day)">
-          <p class="content__week__day-single">{{day.date | date:'EEEEEE'}}</p>
-          <p [ngClass]="{ content__week__day_orange: day.selected }">{{day.date | date:'dd'}}</p>
+        <div class="content__week__day" *ngFor="let dayOfWeek of daysOfWeek" (click)="selectDay(dayOfWeek)">
+          <p class="content__week__day-single">{{dayOfWeek.date | date:'EEEEEE'}}</p>
+          <p [ngClass]="{ content__week__day_orange: dayOfWeek.selected }">{{dayOfWeek.date | date:'dd'}}</p>
         </div>
       </div>
       <div class="choose_date__wrapper">

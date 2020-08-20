@@ -9,16 +9,14 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { DateDescComponent } from './date-desc/date-desc.component';
 import { ButtonComponent } from './button/button.component';
 import { TagsBlockComponent } from './tags-block/tags-block.component';
-<<<<<<< HEAD
 import { LOCALE_ID} from '@angular/core';
 import { registerLocaleData} from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 
 registerLocaleData(localeRu);
 
-=======
 import { AppRoutingModule } from './app-routing.module';
->>>>>>> develop
+
 
 @NgModule({
   declarations: [
