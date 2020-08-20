@@ -18,7 +18,9 @@
     "component-selector": [
       true,
       "element",
+      "do",
       "app",
+      "do",
       "kebab-case"
     ],
     "import-blacklist": [

@@ -2,7 +2,7 @@
   <div class="col col-1">
     <div class="time">
       <!--<h4>{{task.time.hours}} : {{task.time.minutes}}</h4>-->
-      <h4>{{task.time |date:'HH:mm'}}</h4>
+      <h4>{{task.time.hours | number: '2.0'}}:{{task.time.minutes | number: '2.0'}}</h4>
       &nbsp;&nbsp;<p>ч</p>
     </div>
   </div>

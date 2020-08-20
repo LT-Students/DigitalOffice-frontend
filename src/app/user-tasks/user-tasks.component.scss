@@ -27,26 +27,32 @@
 
       .buttons {
         margin-left: 24px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 266px;
 
-        &__projects {
-          background: $accent_color_bright;
-          border-color: transparent;
-          border-radius: 5px;
-          color: $light_1;
-          text-align: center;
-          width: 125px;
+        .button-active {
           height: 32px;
-          margin-right: 16px;
+          width: 125px;
+          display: flex;
+          align-items: center;
+          background: $accent_color_bright;
+          border-radius: 5px;
+          border-color: transparent;
+          color: $light_1;
         }
 
-        &__hours {
+        .button-inactive {
           background: $light_2;
           border-color: transparent;
           border-radius: 5px;
           color: $gray;
-          text-align: center;
           width: 125px;
           height: 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
 
