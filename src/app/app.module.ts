@@ -12,7 +12,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { UserTasksComponent } from './user-tasks/user-tasks.component';
 import { TaskComponent } from './task/task.component';
 import { ProjectComponent } from './project/project.component';
+import { LOCALE_ID} from '@angular/core';
+import { registerLocaleData} from '@angular/common';
+import localeRu from '@angular/common/locales/ru';
 
+registerLocaleData(localeRu);
 
 @NgModule({
   declarations: [
@@ -32,7 +36,9 @@ import { ProjectComponent } from './project/project.component';
     AuthModule,
     RouterModule
   ],
-  providers: [],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'ru' },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,16 +13,14 @@
     flex-direction: column;
     margin: 48px;
 
-    h2 {
-      font-family: $header_font;
+    &__header {
       color: $dark_1;
-      font-size: 28px;
-      line-height: 32px;
-      margin-bottom: 64px;
+      margin: 0 0 64px 0;
     }
 
-    .tasks__search {
+    &__search {
       display: flex;
+      align-items: center;
       margin-bottom: 52px;
 
       .buttons {
@@ -32,15 +30,9 @@
         justify-content: space-between;
         width: 266px;
 
-        .button-active {
+        .button-shape {
           height: 32px;
           width: 125px;
-          display: flex;
-          align-items: center;
-          background: $accent_color_bright;
-          border-radius: 5px;
-          border-color: transparent;
-          color: $light_1;
         }
 
         .button-inactive {
@@ -48,8 +40,8 @@
           border-color: transparent;
           border-radius: 5px;
           color: $gray;
-          width: 125px;
           height: 32px;
+          width: 125px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -67,10 +59,14 @@
         margin-left: auto;
 
         .button__magnifier {
+          background: transparent;
           border: none;
+          cursor: pointer;
           width: 16px;
           height: 16px;
           margin-left: 16px;
+          overflow: visible;
+          padding: 0;
         }
 
         #text__search {
@@ -91,16 +87,6 @@
       border-radius: 5px;
     }
   }
-}
-
-button {
-  border: none;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  width: auto;
-  overflow: visible;
-  background: transparent;
 }
 
 

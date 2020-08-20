@@ -11,10 +11,20 @@ export class UserTasksComponent implements OnInit {
   @Input() projects: Array<IProject> = [];
   isOrderedByProject: boolean = false;
   isOrderedByHours: boolean = false;
+  startPeriod: Date;
+  endPeriod: Date;
+  tasksCount: number = 0;
   constructor() {}
 
   ngOnInit() {
-
+    const now = new Date();
+    this.startPeriod = new Date();
+    this.startPeriod.setDate(now.getDate() - 3);
+    this.endPeriod = new Date();
+    this.endPeriod.setDate(now.getDate() + 3);
+    if (this.projects.length !== 0){
+      this.tasksCount = this.projects.map((p) => p.tasks).reduce((all, tasks) => all.concat(tasks)).length;
+    }
   }
   sortByProject(): void {
     this.isOrderedByProject = !this.isOrderedByProject;

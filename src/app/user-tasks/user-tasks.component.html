@@ -1,28 +1,23 @@
 <div class="wrapper">
   <div class="tasks">
-    <h2>4 записи за 8–15 июня</h2>
+    <h2 class ="tasks__header h2">{{tasksCount}} записи за {{startPeriod | date: 'd'}} – {{endPeriod | date: 'd'}} {{startPeriod | date: 'MMMM'}}</h2>
     <div class="tasks__search">
       <p class="regular_text">Сортировка</p>
       <div class="buttons">
-          <do-button class="button-active"
+          <do-button class="button-shape"
             (click)="sortByProject()"
             [title] = "'По проектам'"
-            [className] = "'button bg-accent_color_bright font-regular_font'">
+            className = "{{isOrderedByProject ?
+            'button bg-accent_color_bright font-light_1 font-regular_font' :
+            'button bg-light_2 font-gray font-regular_font'}}">
           </do-button>
-
-          <do-button class="button-inactive"
+          <do-button class="button-shape"
             (click)="sortByHours()"
             [title] = "'По часам'"
-            [className] = "'button bg-light_2 font-gray'">
+            className = "{{isOrderedByHours ?
+            'button bg-accent_color_bright font-light_1 font-regular_font' :
+            'button bg-light_2 font-gray font-regular_font'}}">
           </do-button>
-
-        <!--<button type="button"
-                class="regular_text"
-                [ngClass]="{'buttons__projects': isOrderedByProject, 'buttons__hours' : !isOrderedByProject }"
-                (click)="sortByProject()">По проектам</button>
-        <button type="button" class="regular_text buttons__hours"
-                [ngClass]="{'buttons__hours': isOrderedByHours, 'buttons__projects' : !isOrderedByHours }"
-                (click)="sortByProject()">По часам</button>-->
       </div>
       <div class="tasks__search__text">
         <button type="submit" class="button__magnifier">
