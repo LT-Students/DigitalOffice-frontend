@@ -5,7 +5,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'admin', pathMatch: 'full' },
-  { path: "admin" , loadChildren: './admin/admin.module#AdminModule' }
+  { path: 'admin' , loadChildren: './admin/admin.module#AdminModule' }
 ];
 
 @NgModule({
