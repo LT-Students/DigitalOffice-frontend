@@ -5,7 +5,7 @@ import { NewEmployeeComponent } from './new-employee/new-employee.component';
 
 
 const adminRoutes: Routes = [
-    { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+    { path: '', redirectTo: 'new-employee', pathMatch: 'full'},
     { 
         path: '', 
         component: AdminComponent,
