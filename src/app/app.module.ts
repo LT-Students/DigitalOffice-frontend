@@ -16,6 +16,10 @@ import localeRu from '@angular/common/locales/ru';
 registerLocaleData(localeRu);
 
 import { AppRoutingModule } from './app-routing.module';
+import { AttendanceComponent } from './attendance/attendance.component';
+import { ChartComponent } from './chart/chart.component';
+import { AddHoursComponent } from './add-hours/add-hours.component';
+import { GradientGraphicsComponent } from './gradient-graphics/gradient-graphics.component';
 
 
 @NgModule({
@@ -25,7 +29,11 @@ import { AppRoutingModule } from './app-routing.module';
     TagsBlockComponent,
     SelectComponent,
     DateDescComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    AttendanceComponent,
+    ChartComponent,
+    AddHoursComponent,
+    GradientGraphicsComponent
   ],
   imports: [
     BrowserModule,

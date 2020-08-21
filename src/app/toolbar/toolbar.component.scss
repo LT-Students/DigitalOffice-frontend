@@ -3,45 +3,31 @@
 @import 'base/fonts';
 
 .toolbar {
-  position: fixed;
   display: flex;
   align-items: center;
+  padding: 0 5%;
   flex-direction: row;
-  justify-content: space-between;
-  background: #F6F6F4;
+  background: $light_1;
   box-sizing: border-box;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   height: 56px;
-  width: 100%;
-  min-width: 700px;
 
   &__menu {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    height: 100%;
-    left: 48px;
+    margin-right: 6%;
   }
 
   &__logo {
-    left: 128px;
-    height: 100%;
-    position: absolute;
     display: flex;
-    align-items: center;
+    margin-right: 6%;
     a {
-      font-family: $header_font;
       color: $dark_2;
       text-decoration: none;
     }
   }
 
   &__mode {
-    position: absolute;
-    justify-content: space-between;
-    left: 240px;
-    max-width: 100%;
     cursor: pointer;
+    margin-right: 35%;
 
     &__change {
       display: flex;
@@ -49,7 +35,6 @@
     }
     p {
       color: $gray;
-      font-family: $regular_font;
       float: left;
     }
     img {
@@ -60,15 +45,9 @@
   }
 
   &__greeting {
-    position: absolute;
-    display: flex;
-    justify-content: space-between;
-    max-width: 100%;
-    right: 128px;
 
     &__nav-link {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       text-decoration: none;
       img {
@@ -78,21 +57,16 @@
       }
       p {
         color: $dark_2;
-        font-family: $regular_font;
         span {
           color: $dark_2;
-          font-family: $header_font;
         }
       }
     }
   }
   &__notification {
-    position: absolute;
-    display: flex;
-    align-items: center;
     cursor: pointer;
-    right: 48px;
-    height: 100%;
+    position: absolute;
+    right: 5%;
 
     &__bell {
       width: 22px;

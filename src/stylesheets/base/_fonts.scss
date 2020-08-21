@@ -14,10 +14,16 @@
     color: $font_color;
 }
 
-.h1, .h2{
+.h1{
     @extend %header_font_basic;
     font-size: 35px;
     line-height: 40px;
+}
+
+.h2{
+  @extend %header_font_basic;
+  font-size: 28px;
+  line-height: 32px;
 }
 
 .h3{

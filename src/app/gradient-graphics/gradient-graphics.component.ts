@@ -1,5 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 
+export interface IDailyHoursData {
+  day: string,
+  month: string,
+  hours: number,
+  minutes?: number
+}
+
 @Component({
   selector: 'app-gradient-graphics',
   templateUrl: './gradient-graphics.component.html',
