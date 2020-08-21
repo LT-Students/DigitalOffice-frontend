@@ -4,7 +4,7 @@ export interface IDailyHoursData {
   day: string,
   month: string,
   hours: number,
-  minutes?: number
+  minutes: number
 }
 
 @Component({
