@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
                 if(user.isAdmin){
                   this.router.navigate(['/admin/dashboard']);
                 }else{
-                  this.router.navigate(['user/attendance']);
+                  this.router.navigate(['/user/attendance']);
                 }
               },
               error: error =>{
