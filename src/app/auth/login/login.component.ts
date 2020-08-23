@@ -1,8 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-import { IAuthenticationRequest } from 'src/app/models/auth/authentication-request.model';
+import { AuthService } from 'src/app/services/auth.service';
+import { IAuthenticationRequest } from 'src/app/interfaces/auth/auth.interface';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { Router } from '@angular/router';
 
@@ -17,12 +17,12 @@ export class LoginComponent implements OnInit {
   private isWaiting: boolean = false;
 
 
-  constructor( 
-    private authenticationUser: AuthenticationService,
+  constructor(
+    private authenticationUser: AuthService,
     private userService: UserService,
     private localStorageService: LocalStorageService,
     private router: Router,
-    private formBuilder: FormBuilder) { 
+    private formBuilder: FormBuilder) {
       this.loginForm = this.formBuilder.group({
         email: ['', [Validators.required, Validators.email]],
         password: ['', Validators.required]
@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit {
   }
 
   private isPasswordInputValid(): boolean {
-    return !(this.loginForm.get('password').touched && 
+    return !(this.loginForm.get('password').touched &&
     this.loginForm.get('password').invalid);
   }
 }

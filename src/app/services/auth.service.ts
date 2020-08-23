@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IAuthenticationRequest } from '../models/auth/authentication-request.model'
-import { IAuthenticationResponse } from '../models/auth/authentication-response.model';
+import { IAuthenticationRequest, IAuthenticationResponse } from '../interfaces/auth/auth.interface'
 import { LocalStorageService } from './local-storage.service';
 
 const authenticationServiceUri = 'https://localhost:9816/AuthenticationService';
@@ -11,7 +10,7 @@ const authenticationServiceUri = 'https://localhost:9816/AuthenticationService';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthService {
 
   constructor(
     private http: HttpClient,
@@ -27,7 +26,7 @@ export class AuthenticationService {
                 error: error => {
                   console.log('Authentication failed.', error.message);
                 }
-              }));                      
+              }));
   }
 
   isAuthenticated():boolean{

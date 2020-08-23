@@ -1,4 +1,4 @@
-import { IAchievementResponse } from './achievement-response.model'
+import { IAchievementResponse } from './achievement-response.interface'
 
 export interface IUserResponse {
     userId: string;
