@@ -57,13 +57,41 @@ p {
   }
 }
 .choose_date__wrapper {
-  background: $accent_color;
-  border-radius: 5px;
-  border-color: transparent;
   height: 32px;
   width: 179px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  position: relative;
+  ngb-datepicker {
+    position: absolute;
+    top: 28px;
+    z-index: 10;
+  }
+}
+
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+  outline:none;
+  &.focused{
+    background-color: #e6e6e6;
+  }
+  &.range, &:hover {
+    background-color: $accent_color_bright;
+    color: white;
+    outline: none;
+    border: none;
+  }
+
+  &.faded {
+    background-color: $light_1;
+    border-top: 1px solid $accent_color_bright;
+    border-bottom: 1px solid $accent_color_bright;
+    border-radius: 0;
+    color: black;
+  }
 }
 

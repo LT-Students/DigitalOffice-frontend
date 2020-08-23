@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ITimePeriod } from '../attendance/attendance.component';
+import { Time } from '@angular/common';
 
 @Component({
   selector: 'app-add-hours',
@@ -7,6 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddHoursComponent implements OnInit {
 
+  @Input() timePeriodSelected: ITimePeriod;
+
+  public recommendedHours: Time;
+
   public user = {
     projects: ['Ромашка', 'Рога и копыта']
   }
@@ -14,6 +20,9 @@ export class AddHoursComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    if (!this.timePeriodSelected.to) {
+      this.recommendedHours = {hours: 8, minutes:0}
+    }
   }
 
 }
