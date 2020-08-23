@@ -1,7 +1,7 @@
 @import 'abstracts/variables';
 @import 'base/fonts';
 
-.project-body {
+.project-wrap {
   margin-bottom: 48px;
 }
 
@@ -11,6 +11,7 @@
   right: 717px;
   bottom: 777px;
   h3 {
+    display: inline;
     font-family: Gotham Pro;
     font-style: normal;
     font-weight: bold;
