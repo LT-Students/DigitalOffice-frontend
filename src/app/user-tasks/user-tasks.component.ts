@@ -8,7 +8,36 @@ import { IProject } from '../models/project.model';
   styleUrls: ['./user-tasks.component.scss']
 })
 export class UserTasksComponent implements OnInit {
-  @Input() projects: Array<IProject> = [];
+  @Input() projects: Array<IProject> = [
+    {
+    name: 'Proj',
+    tasks: [
+      {
+        time: {hours: 2, minutes: 3},
+        name: 'Developing',
+        description: 'desc1',
+        createdAt: new Date()
+      },
+      {
+        time: {hours: 2, minutes: 3},
+        name: 'Developing',
+        description: 'desc1',
+        createdAt: new Date()
+      },
+    ]
+  },
+    {
+      name: 'Proj',
+      tasks: [
+        {
+          time: {hours: 2, minutes: 3},
+          name: 'Developing',
+          description: 'desc1',
+          createdAt: new Date()
+        }
+      ]
+    }
+    ];
   isOrderedByProject: boolean = false;
   isOrderedByHours: boolean = false;
   constructor() {}
