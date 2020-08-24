@@ -17,6 +17,14 @@ import localeRu from '@angular/common/locales/ru';
 
 registerLocaleData(localeRu);
 
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { UserService } from './services/user.service';
+import { AuthService } from './services/auth.service';
+import { LocalStorageService } from './services/local-storage.service';
+import { AuthGuard } from './services/auth.guard';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,11 +38,21 @@ registerLocaleData(localeRu);
     BrowserModule,
     RouterModule,
     AppRoutingModule,
+    HttpClientModule,
     AuthModule,
     AdminModule
   ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'ru' },
+    AuthService,
+    AuthGuard,
+    UserService,
+    LocalStorageService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {provide: LOCALE_ID, useValue: 'ru-RU'}
   ],
   bootstrap: [AppComponent]
 })
