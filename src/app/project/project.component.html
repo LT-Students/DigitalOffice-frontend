@@ -1,0 +1,6 @@
+<div class="project-wrap">
+  <div class="project-head h3">{{project.name}}</div>
+  <div *ngFor="let task of project.tasks">
+    <do-task [task]="task"></do-task>
+  </div>
+</div>
