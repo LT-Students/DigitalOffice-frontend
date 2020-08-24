@@ -1,8 +1,8 @@
 <div class="wrapper">
   <div class="tasks">
-    <h2 class ="tasks__header h2">{{tasksCount}} записи за {{startPeriod | date: 'd'}} – {{endPeriod | date: 'd'}} {{startPeriod | date: 'MMMM'}}</h2>
+    <span class ="tasks__header h2">{{tasksCount}} записи за {{startPeriod | date: 'd'}} – {{endPeriod | date: 'd'}} {{startPeriod | date: 'MMMM'}}</span>
     <div class="tasks__search">
-      <p class="regular_text">Сортировка</p>
+      <span class="regular_text">Сортировка</span>
       <div class="buttons">
           <do-button class="button-shape"
             (click)="sortByProject()"
@@ -30,7 +30,7 @@
         </label>
       </div>
     </div>
-    <div class="project__container" *ngFor="let project of projects">
+    <div *ngFor="let project of projects">
       <do-project [project]="project"></do-project>
     </div>
   </div>

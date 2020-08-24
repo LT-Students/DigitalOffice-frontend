@@ -1,4 +1,4 @@
-import {ITask} from "./task.model";
+import { ITask } from './task.interface';
 
 export interface IProject {
   name: string;

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, } from '@angular/core';
-import { IProject } from '../models/project.model';
+import { IProject } from '../interfaces/project.interface';
 
 
 @Component({
@@ -10,24 +10,24 @@ import { IProject } from '../models/project.model';
 export class UserTasksComponent implements OnInit {
   @Input() projects: Array<IProject> = [
     {
-    name: 'Proj',
+    name: 'Proj1',
     tasks: [
       {
-        time: {hours: 2, minutes: 3},
+        time: {hours: 22, minutes: 3},
         name: 'Developing',
         description: 'desc1',
         createdAt: new Date()
       },
       {
         time: {hours: 2, minutes: 3},
-        name: 'Developing',
-        description: 'desc1',
+        name: 'Очень длинная задача, которую мне отдал мой коллега, а я не очень хотел ее делать и она занимает две строки',
+        description: 'desc2',
         createdAt: new Date()
       },
     ]
   },
     {
-      name: 'Proj',
+      name: 'Proj2',
       tasks: [
         {
           time: {hours: 2, minutes: 3},

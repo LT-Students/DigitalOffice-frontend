@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {ITask} from '../models/task.model';
+import {ITask} from '../interfaces/task.interface';
 
 @Component({
   selector: 'do-task',

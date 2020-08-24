@@ -1,14 +1,30 @@
 @import 'abstracts/variables';
 @import 'base/fonts';
 
+button {
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  &:hover {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+p {
+  margin: 0;
+}
+
 .task-row {
   display: flex;
   flex-flow: row nowrap;
-
-  margin: 25px 24px 16px 24px;
+  padding: 25px 24px 16px 24px;
   border-radius: 5px;
   background: $light_1;
-
 }
 
 .col {
@@ -16,14 +32,13 @@
 }
 
 .col-1 {
-
-  max-width: 150px;
+  width: 10%;
+  min-width: 60px;
   padding-right: 24px;
-
 }
 
 .col-2 {
-  max-width: 586px;
+  width: 57%;
   padding-right: 42px;
 }
 
@@ -34,79 +49,30 @@
 
 .time {
   max-width: 150px;
-  display: flex;
-  padding-top: 3px;
-  h4 {
-  }
-  /*p {
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-
-    color: $gray;
-  }*/
-}
-
-.note__head {
-  width: 586px;
-  height: 22.48px;
-  right: 225px;
-  bottom: 714.52px;
-  margin-bottom: 13px;
-
-  /*p {
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    color: $dark_1;
-
-  }*/
-}
-
-.note__text {
-  width: 559px;
-  height: 74px;
-  right: 252px;
-  bottom: 627px;
-  /*p {
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
+  &__period {
+    font-weight: bold;
     color: $dark_2;
-  }*/
+  }
 }
-.note__date {
-  max-width: 200px;
-  height: 24px;
-  right: 716px;
-  bottom: 595px;
-  /*p {
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: normal;
+
+.note {
+  &__head {
+    font-weight: 600;
+    color: $dark_1;
+    margin-bottom: 12px;
+  }
+  &__text {
+    color: $dark_1;
+    margin-bottom: 8px;
+  }
+  &__date {
+    height: 24px;
     font-size: 14px;
-    line-height: 24px;
-    color: $gray;
-  }*/
+  }
 }
 
 .icons {
   width: 60px;
   display: flex;
   justify-content: space-between;
-}
-
-button {
-  border: none;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  width: auto;
-  overflow: visible;
-  background: transparent;
 }

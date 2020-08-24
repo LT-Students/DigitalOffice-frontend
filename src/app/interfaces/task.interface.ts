@@ -1,7 +1,7 @@
-import {Time} from "@angular/common";
+import { Time } from "@angular/common";
 
 export interface ITask {
-  time: Date;
+  time: Time;
   name: string;
   description: string;
   createdAt: Date;
