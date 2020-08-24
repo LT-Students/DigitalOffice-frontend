@@ -18,6 +18,12 @@ import localeRu from '@angular/common/locales/ru';
 registerLocaleData(localeRu);
 
 import { AppRoutingModule } from './app-routing.module';
+import { AttendanceComponent } from './attendance/attendance.component';
+import { ChartComponent } from './chart/chart.component';
+import { AddHoursComponent } from './add-hours/add-hours.component';
+import { GradientGraphicsComponent } from './gradient-graphics/gradient-graphics.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AttendanceService } from './attendance/attendance.service';ъ
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { UserService } from './services/user.service';
@@ -32,7 +38,11 @@ import { AuthGuard } from './services/auth.guard';
     TagsBlockComponent,
     SelectComponent,
     DateDescComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    AttendanceComponent,
+    ChartComponent,
+    AddHoursComponent,
+    GradientGraphicsComponent
   ],
   imports: [
     BrowserModule,

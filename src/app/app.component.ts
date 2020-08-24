@@ -9,6 +9,9 @@ import { Component } from '@angular/core';
 
 })
 export class AppComponent {
+  public user = {
+    firstName: 'Ия'
+  }
 
 }
 
