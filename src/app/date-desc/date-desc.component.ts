@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import 'moment/locale/ru';
+
+
 
 @Component({
   selector: 'do-datedesc',
@@ -7,39 +10,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DateDescComponent implements OnInit {
 
-  days: any;
+  daysOfWeek: any;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.days = this.getWeek();
+    this.daysOfWeek = this.getWeek();
   }
 
   getWeek() {
-    const days = [];
+    const daysOfWeek = [];
 
+    const now = new Date();
     for (let i = -3; i <= 3; i++) {
-      const now = new Date();
-      days.push(new Date(now.setDate(now.getDate() + i)));
+      const dayOfWeek = new Date();
+      dayOfWeek.setDate(now.getDate() + i);
+      daysOfWeek.push(dayOfWeek);
     }
-
-    const weekDays = ['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс'];
-
-    return days.map((day) => {
-      const date = day.getDate();
+    return daysOfWeek.map((dayOfWeek) => {
       return {
-        day: weekDays[day.getDay()],
-        date: (date > 0) ? date : `0${date}`,
+        date: dayOfWeek,
         selected: false,
       };
     });
   }
-  selectDay(day) {
-    this.days.forEach(d => {
+  selectDay(dayOfWeek) {
+    this.daysOfWeek.forEach(d => {
       d.selected = false;
     });
 
-    day.selected = true;
+    dayOfWeek.selected = true;
   }
 
 
