@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuardService } from './services/auth-guard.service';
+import { AuthGuard } from './services/auth.guard';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
+  { path: '', redirectTo: 'admin', pathMatch: 'full' },
+  { path: 'admin' , loadChildren: './admin/admin.module#AdminModule' }
 ];
 
 @NgModule({
