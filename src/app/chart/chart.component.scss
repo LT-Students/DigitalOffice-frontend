@@ -1,10 +1,10 @@
+@import 'base/fonts';
+@import "abstracts/variables";
+
 .chart {
-  background: #FFFFFF;
   box-sizing: border-box;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   position: relative;
   display: flex;
-  justify-content: space-around;
 
   &__doughnut {
     max-width: 184px;
@@ -20,13 +20,8 @@
       margin-right: -50%;
       transform: translate(-50%, -50%);
       text-align: center;
-      font-family: "Gill Sans";
       font-size: 16px;
       .all__hours {
-        font-family: "Gotham Pro";
-        font-size: 22px;
-        font-weight: bold;
-        line-height: 127%;
       }
       .hour__char {
         color: #BDBDBD;
@@ -40,11 +35,12 @@
   }
   &__tags{
     font-size: 16px;
-    p{
-      font-size: 22px;
-      font-family: "Gotham Pro";
-      font-weight: bold;
+    p {
+      color: $dark_1;
       margin: 45px 5px 0;
+    }
+    div {
+      color: $dark_2;
     }
     .color__pointer{
       display: inline-block;

@@ -3,6 +3,13 @@ import { ElementRef} from "@angular/core";
 import { ViewChild} from "@angular/core";
 import {count, min} from "rxjs/operators";
 import { Chart } from 'chart.js';
+import {isNumber} from "util";
+
+export interface IProjectsData {
+  name: string,
+  hours: number,
+  minutes: number
+}
 
 @Component({
   selector: 'do-chart',
@@ -12,9 +19,9 @@ import { Chart } from 'chart.js';
 
 export class ChartComponent implements OnInit {
   constructor() { }
-  @Input() projectsData;               //Data about projectName, projectHours and projectMinutes
+  @Input() projectsData;               //Data about name, hours and minutes
   @Input() allHoursPlan;               //Hours of plan
-  @Input() timeDescriptionValue;       //Difference between hours in the center under hours
+  @Input() timeDescriptionValue = "0.3";       //Difference between hours in the center under hours
 
   colorsData = ["#7C799B", "#C7C6D8", "#FFB2B2", "#FFB78C", "#EB5757", "#BC7BFA", "#FFBE97", "#BDBDBD"];
 
@@ -38,7 +45,7 @@ export class ChartComponent implements OnInit {
     //calculating the total number of hours in the center of chart
     this.allHoursPerformance = 0
     for (let i = 0; i < this.projectsData.length; i++) {
-      this.allHoursPerformance += Number(this.projectsData[i].projectHours) + Number(this.projectsData[i].projectMinutes/60);
+      this.allHoursPerformance += Number(this.projectsData[i].hours) + Number(this.projectsData[i].minutes/60);
     }
     //
 
@@ -54,7 +61,7 @@ export class ChartComponent implements OnInit {
 
       //String under hours
       this.timeDescriptionColor = "#FFFFFF";
-      this.timeDescriptionValue >= 0 ? this.timeDescriptionBackgroundColor = "#21D373" : this.timeDescriptionBackgroundColor = "#EB5757";
+      Number(this.timeDescriptionValue) >= 0 ? this.timeDescriptionBackgroundColor = "#21D373" : this.timeDescriptionBackgroundColor = "#EB5757";
       this.timeDescriptionFontSize = "16px";
       //
 
@@ -62,7 +69,7 @@ export class ChartComponent implements OnInit {
         type: 'doughnut',
         data: {
           datasets: [{
-            data: this.projectsData.map((project) => (Number(project.projectHours) + Number(project.projectMinutes)/60)),
+            data: this.projectsData.map((project) => (Number(project.hours) + Number(project.minutes)/60)),
             backgroundColor: this.colorsData,
             borderWidth: 0,
           }]

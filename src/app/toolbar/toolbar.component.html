@@ -19,14 +19,12 @@
         <p class="regular_text">Привет, <span class="h4">{{userName}}</span></p>
       </a>
     </div>
-    <div class="toolbar__notification">
-      <span (click)="this.hasNotification = !this.hasNotification">
+    <div class="toolbar__notification" (click)="this.hasNotification = !this.hasNotification">
         <img src="../../assets/svg/notification.svg" alt="notification" class="toolbar__notification__bell">
         <img src="../../assets/svg/notification-light.svg"
           alt="notification"
           class="toolbar__notification__light"
           *ngIf="hasNotification">
-      </span>
     </div>
 </div>
 

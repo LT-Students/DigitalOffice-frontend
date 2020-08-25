@@ -24,3 +24,111 @@ $button_orange: #EC8B52;
 //Fonts
 $header_font: 'Gotham Pro';
 $regular_font: 'GillSansWGL';
+
+//Colors classes
+
+// text color
+.text-accent_color {
+  color: $accent_color;
+}
+.text-accent_color_bright {
+  color: $accent_color_bright;
+}
+.text-accent_positive {
+  color: $accent_positive;
+}
+.text-positive_accent_bright {
+  color: $positive_accent_bright;
+}
+.text-light_1 {
+  color: $light_1;
+}
+.text-light_2 {
+  color: $light_2;
+}
+.text-light_3 {
+  color: $light_3;
+}
+.text-gray {
+  color: $gray;
+}
+.text-dark_1 {
+  color: $dark_1;
+}
+.text-dark_2 {
+  color: $dark_2;
+}
+.text-dark_3 {
+  color: $dark_3;
+}
+.text-dark_4 {
+  color: $dark_4;
+}
+.text-overtime {
+  color: $overtime;
+}
+.text-negative_accent {
+  color: $negative_accent;
+}
+.text-preza_dc {
+  color: $preza_dc;
+}
+.text-ultimate_orange {
+  color: $ultimate_orange;
+}
+
+/* background colors*/
+
+.bg-accent_color {
+  background-color: $accent_color;
+}
+.bg-accent_color_bright {
+  background-color: $accent_color_bright;
+}
+.bg-accent_positive {
+  background-color: $accent_positive;
+}
+.bg-positive_accent_bright {
+  background-color: $positive_accent_bright;
+}
+.bg-white {
+  background-color: #FFFFFF;
+}
+.bg-light_1 {
+  background-color: $light_1;
+}
+.bg-light_2 {
+  background-color: $light_2;
+}
+.bg-light_3 {
+  background-color: $light_3;
+}
+.bg-gray {
+  background-color: $gray;
+}
+.bg-dark_1 {
+  background-color: $dark_1;
+}
+.bg-dark_2 {
+  background-color: $dark_2;
+}
+.bg-dark_3 {
+  background-color: $dark_3;
+}
+.bg-dark_4 {
+  background-color: $dark_4;
+}
+.bg-overtime {
+  background-color: $overtime;
+}
+.bg-negative_accent {
+  background-color: $negative_accent;
+}
+.bg-preza_dc {
+  background-color: $preza_dc;
+}
+.bg-ultimate_orange {
+  background-color: $ultimate_orange;
+}
+
+

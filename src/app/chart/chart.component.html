@@ -1,12 +1,12 @@
 
-<div class="chart">
+<div class="do-card bg-white chart">
   <div class="chart__doughnut">
     <canvas #canvas width="184" height="183">
     </canvas>
     <div class="chart__hours">
       <p>
 
-        <span class="all__hours"
+        <span class="all__hours h3"
               [style.color]="allHoursColor"
         >{{allHours}}</span>
 
@@ -23,12 +23,12 @@
   </div>
 
   <div class="chart__tags">
-    <p>Проекты</p>
-    <div *ngFor="let project of projectsData; index as i">
+    <p class="h3">Проекты</p>
+    <div class="regular_text" *ngFor="let project of projectsData; index as i">
       <span class="color__pointer"
             [style.background-color]="colorsData[i]"
       ></span>
-      {{ project.projectName }}
+      {{ project.name }}
     </div>
   </div>
 </div>

@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin/admin.component';
+import { NewEmployeeComponent } from './new-employee/new-employee.component';
 
 
 const adminRoutes: Routes = [
@@ -10,7 +12,8 @@ const adminRoutes: Routes = [
         path: '', 
         component: AdminComponent,
         children: [
-            { path: 'dashboard', component: DashboardComponent }
+            { path: 'dashboard', component: DashboardComponent },
+            { path: 'new-employee', component: NewEmployeeComponent }
         ]
     }
 ];

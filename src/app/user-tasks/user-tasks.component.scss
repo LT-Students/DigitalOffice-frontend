@@ -1,0 +1,87 @@
+@import 'abstracts/variables';
+@import 'base/fonts';
+
+.wrapper {
+  background: #ffffff;
+
+  .tasks {
+    display: flex;
+    flex-direction: column;
+    margin: 48px;
+
+    &__header {
+      color: $dark_1;
+      margin: 0 0 64px 0;
+    }
+
+    &__search {
+      display: flex;
+      align-items: center;
+      margin-bottom: 48px;
+
+      .buttons {
+        margin-left: 24px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 266px;
+
+        .button-shape {
+          height: 32px;
+          width: 125px;
+        }
+
+        .button-inactive {
+          background: $light_2;
+          border-color: transparent;
+          border-radius: 5px;
+          color: $gray;
+          height: 32px;
+          width: 125px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      &__text {
+        background: $light_2;
+        border-radius: 5px;
+        width: 272px;
+        height: 32px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-left: auto;
+
+        .button__magnifier {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          width: 16px;
+          height: 16px;
+          margin-left: 16px;
+          overflow: visible;
+          padding: 0;
+        }
+
+        #text__search {
+          background: $light_2;
+          border: none;
+          width: 216px;
+          margin-right: 16px;
+          }
+
+        input::placeholder {
+          color: $gray;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+

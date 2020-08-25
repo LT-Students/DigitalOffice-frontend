@@ -1,0 +1,78 @@
+@import 'abstracts/variables';
+@import 'base/fonts';
+
+button {
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  &:hover {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+.task-row {
+  display: flex;
+  flex-flow: row nowrap;
+  padding: 25px 24px 16px 24px;
+  border-radius: 5px;
+  background: $light_1;
+}
+
+.col {
+  border-radius: inherit;
+}
+
+.col-1 {
+  width: 10%;
+  min-width: 60px;
+  padding-right: 24px;
+}
+
+.col-2 {
+  width: 57%;
+  padding-right: 42px;
+}
+
+.col-3 {
+  margin-left: auto;
+  min-width: auto;
+}
+
+.time {
+  max-width: 150px;
+  &__period {
+    font-weight: bold;
+    color: $dark_2;
+  }
+}
+
+.note {
+  &__head {
+    font-weight: 600;
+    color: $dark_1;
+    margin-bottom: 12px;
+  }
+  &__text {
+    color: $dark_1;
+    margin-bottom: 8px;
+  }
+  &__date {
+    height: 24px;
+    font-size: 14px;
+  }
+}
+
+.icons {
+  width: 60px;
+  display: flex;
+  justify-content: space-between;
+}

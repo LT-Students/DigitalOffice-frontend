@@ -1,6 +1,10 @@
 import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { IAuthenticationRequest } from 'src/app/interfaces/auth/auth.interface';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'do-login',
@@ -13,9 +17,12 @@ export class LoginComponent implements OnInit {
   private isWaiting: boolean = false;
 
 
-  constructor( 
+  constructor(
+    private authenticationUser: AuthService,
     private userService: UserService,
-    private formBuilder: FormBuilder) { 
+    private localStorageService: LocalStorageService,
+    private router: Router,
+    private formBuilder: FormBuilder) {
       this.loginForm = this.formBuilder.group({
         email: ['', [Validators.required, Validators.email]],
         password: ['', Validators.required]
@@ -25,12 +32,35 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private signin() : void {
+  private login() : void {
     this.isWaiting = true;
-    this.userService.signin();
-    setTimeout(() => {
-      this.isWaiting = false;
-    }, 1000);
+
+    const authenticationRequest: IAuthenticationRequest = this.loginForm.value;
+    this.authenticationUser.login(authenticationRequest)
+      .subscribe({
+        next: val =>{
+          this.userService.getUser(val.id).
+            subscribe({
+              next: user =>{
+                this.localStorageService.set('user', user);
+                if(user.isAdmin){
+                  this.router.navigate(['/admin/dashboard']);
+                }else{
+                  this.router.navigate(['/user/attendance']);
+                }
+              },
+              error: error =>{
+                console.log('Getting user info failed.', error.message);
+              }
+            });
+        },
+        error: error =>{
+          this.loginError = error.message;
+        },
+        complete: () => {
+          this.isWaiting = false;
+        }
+      });
   }
 
   private isEmailInputValid(): boolean {
@@ -39,7 +69,7 @@ export class LoginComponent implements OnInit {
   }
 
   private isPasswordInputValid(): boolean {
-    return !(this.loginForm.get('password').touched && 
+    return !(this.loginForm.get('password').touched &&
     this.loginForm.get('password').invalid);
   }
 }
