@@ -1,0 +1,211 @@
+@import '../../../../../stylesheets/abstracts/variables';
+@import '../../../../../stylesheets/base/fonts';
+
+.new-employee-container{
+    display: flex;
+    background-color: $light_2;
+    .content-container{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 38px 5%;
+        width: 100%;
+
+        .regular_text_dark_1{
+            color: $dark_1;
+        }
+        .regular_text_accent_color_bright {
+            color: $accent_color_bright;
+        }
+        .regular_text_accent_color {
+            color: $accent_color;
+        }
+        .regular_text_light_1{
+            color: $light_1;
+        }
+        .h1_dark_2{
+            color: $dark_2;
+        }
+        .nav-link__dashboard{
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+
+            cursor: pointer;
+            svg{
+                width: 5px;
+                height: 10px;
+                fill: none;
+                margin-right: 13px;
+                .arrow{
+                    stroke-width: 2px;
+                    stroke-opacity: 1;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    stroke: $dark_1;
+                }
+            }
+            &:hover{
+                opacity: 0.5;
+            }
+        }
+
+        .form-container{
+            display: flex;
+            justify-content: center;
+            align-self: center;
+            padding-top: 66px;
+            padding-bottom: 66px;
+            width: 100%;
+            min-height: 884px;
+            border-radius: 5px;
+            background-color: white;
+            .data-form{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 75%;
+                .h3_dark_1, .h5_dark_1{
+                    color: $dark_1;
+                }
+                &__input-content{
+                    display: flex;
+                    flex-direction: column;
+                }
+                &__input-field, &__select-field{
+                    width: 100%;
+                    height: 36px;
+                    border-radius: 5px;
+                    padding: 0;
+                    border-style: none;
+                    background-color: $light_3;
+                }
+                &__title::after{
+                    content: '';
+                    display:block;
+                    width: 123px;
+                    height: 4px;
+                    background-color: $accent_color_bright;
+                }
+
+                .main-info{
+                    display: flex;
+                    flex-direction: row;
+                    min-height: 216px;
+                    .content{
+                        &__photo{
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            width: 30%;
+                            .photo-container{
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                width: 128px;
+                                height: 128px;
+                                background: linear-gradient(180deg, #FFA386 0%, #FFD3B8 100%);
+                                border-radius: 50%;
+                                img{
+                                    position: relative;
+                                    right: 7px;
+                                }
+                            }
+                        }
+                        &__inputs{
+                            display:flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            width: 70%;
+                        }
+                    }
+
+                }
+                .job-info{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    min-height: 140px;
+                    .position-info{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        width: 100%;
+                        div{
+                            width: 48%;
+                        }
+                    }
+                    .department-info{
+                        width: 100%;
+                    }
+                }
+                .login-info{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    .content__inputs{
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        width: 70%;
+                        div{
+                            width: 47%;
+                        }
+                    }
+
+                    .btn-generate-credentials{
+                        display: flex;
+                        flex-direction: row;
+                        align-self: flex-end;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 8px 14px;
+                        border: 1px solid $accent_color_bright;
+                        box-sizing: border-box;
+                        border-radius: 5px;
+                        height: 36px;
+                        width: 28%;
+                        background-color: transparent;
+                        cursor: pointer;
+                        img{
+                            margin-right: 11px;;
+                        }
+                    }
+                }
+                .submit-buttons{
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                    width: 100%;
+                    .btn-send-credentials{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px solid $accent_color_bright;
+                        box-sizing: border-box;
+                        border-radius: 5px;
+                        background-color: transparent;
+                        margin-right: 14px;
+                        height: 32px;
+                        width: 223px;
+                        cursor: pointer;
+                    }
+                    .btn-create-employee{
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background-color: $accent_color_bright;
+                        border: none;
+                        border-radius: 5px;
+                        height: 32px;
+                        width: 192px;
+                        cursor: pointer;
+                    }
+                }
+
+            }
+        }
+    }
+}
+

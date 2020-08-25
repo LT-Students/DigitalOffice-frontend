@@ -1,0 +1,593 @@
+$textColor: #BDBDBD;
+$backgroundColor: #F6F6F4;
+$backgroundColorDisabled: #FFFFFF;
+
+$borderColor: #F1F1EF;
+$borderColorOurlined: #BDBDBD;
+$textColorDisabled: #434348;
+
+$fontFamily: "Gill Sans";
+
+@import '../../../../stylesheets/layouts/card';
+@import '../../../../stylesheets/base/fonts';
+@import "../../../../stylesheets/abstracts/variables";
+
+////выпадающий список с выбором проекта
+.select {
+  position: relative ;
+  overflow: hidden;
+  height: 100px;
+
+  //background: url("./svg.svg");
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-grey.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 48px;
+    width: 28px;
+    display: block;
+  }
+
+
+  p {
+    color:$textColor ;
+    line-height: 0;
+  }
+  select {
+    border: none;
+    width: 100%;
+    height: 36px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColor;
+    color: $textColor;
+    font-family: $fontFamily;
+    font-size: 15px;
+    border-radius: 5px;
+    outline: none;
+    padding: 5px;
+  }
+}
+
+
+////выпадающий список с выбором депаратамента
+.select__department{
+  position: relative ;
+  overflow: hidden;
+  width: 450px;
+  height: 100px;
+  background-color: white;
+
+  p{
+    color: $textColorDisabled;
+    line-height: 0;
+    font-family: $fontFamily;
+  }
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 15px;
+    top: 48px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: none;
+    width: 432px;
+    height: 36px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColor;
+    padding-left: 13px;
+    color:$textColorDisabled;
+    font-family: $fontFamily;
+    font-size: 14px;
+    order-radius: 5px;
+    outline: none;
+  }
+}
+
+
+////выпадающий список с выбором уровня
+.select__level {
+  position: relative ;
+  overflow: hidden;
+  width: 135px;
+  height: 100px;
+  background-color: white;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 25px;
+    top: 18px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: 2px solid $borderColor;
+    width: 103px;
+    height: 36px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    padding-left: 10px;
+    color: $textColorDisabled;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
+////выпадающий список с выбором месяца
+.select__month {
+  position: relative ;
+  overflow: hidden;
+  width: 100px;
+  height: 50px;
+  background-color: $borderColorOurlined;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-grey.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 7px;
+    top: 12px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: 1px solid $borderColorOurlined;
+    width: 83px;
+    height: 28px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 10px;
+    padding-left: 10px;
+    color: $borderColorOurlined;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
+////выпадающий список с выбором имя
+.select__name {
+  position: relative ;
+  overflow: hidden;
+  width: 100px;
+  height: 50px;
+  background-color: white;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 30px;
+    top: 10px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: none;
+    width: 45px;
+    height: 24px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 5px;
+    padding-left: 4px;
+    color: $textColorDisabled;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 0;
+    outline: none;
+  }
+}
+
+//
+.select__project-on-work {
+  position: relative ;
+  overflow: hidden;
+  width: 200px;
+  height: 50px;
+  background-color: white;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 47px;
+    top: 11px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: none;
+    width: 140px;
+    height: 24px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 5px;
+    padding-left: 4px;
+    color: $textColorDisabled;
+    font-family: $fontFamily;
+    font-size: 14px;
+    border-radius: 0;
+    outline: none;
+  }
+}
+
+////выпадающий список с выбором статуса проекта
+.select__projectStatus {
+  position: relative ;
+  overflow: hidden;
+  width: 170px;
+  height: 70px;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-grey.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 8px;
+    top: 15px;
+    width: 28px;
+    display: block;
+  }
+
+  select{
+    border: none;
+    width: 155px;
+    height: 32px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    padding-left: 10px;
+    color: $borderColorOurlined;
+    font-size: 15px;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
+////выпадающий список с выбором роли
+.select__role {
+  position: relative ;
+  overflow: hidden;
+  width: 100px;
+  height: 50px;
+  background-color: #FCFCFC;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-grey.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 20px;
+    top: 11px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: 1px solid $borderColorOurlined;
+    width: 63px;
+    height: 24px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 10px;
+    padding-left: 10px;
+    color: $borderColorOurlined;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
+////выпадающий список с выбором специализации
+.select__specialization {
+  position: relative ;
+  overflow: hidden;
+  width: 300px;
+  height: 100px;
+  background-color: white;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 24px;
+    top: 17px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: 2px solid #F1F1EF;
+    width: 271px;
+    height: 36px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    padding-left: 10px;
+    color: $textColorDisabled;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
+////выпадающий список с выбором статуса
+.select__status {
+  position: relative ;
+  overflow: hidden;
+  width: 110px;
+  height: 50px;
+  background-color: white;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 30px;
+    top: 10px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: none;
+    width: 47px;
+    height: 24px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 5px;
+    padding-left: 4px;
+    color: $textColorDisabled;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 0;
+    outline: none;
+  }
+}
+
+
+////выпадающий список с выбором Тега
+.select__tag {
+  position: relative ;
+  overflow: hidden;
+  width: 200px;
+  height: 100px;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-grey.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 3px;
+    top: 47px;
+    width: 28px;
+    display: block;
+  }
+
+  p{
+    color: $textColor;
+    line-height: 0;
+  }
+  select {
+    border: none;
+    width: 192px;
+    height: 36px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColor;
+    padding-left: 10px;
+    color: $textColor;
+    font-family: $fontFamily;
+    font-size: 15px;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
+////выпадающий список c выбором недели
+.select__week {
+  position: relative ;
+  overflow: hidden;
+  width: 100px;
+  height: 50px;
+  background-color: #FCFCFC;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-grey.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 7px;
+    top: 12px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: 1px solid $borderColorOurlined;
+    width: 83px;
+    height: 28px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 10px;
+    padding-left: 10px;
+    color: $borderColorOurlined;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
+////выпадающий список c выбором года
+.select__year {
+  position: relative ;
+  overflow: hidden;
+  width: 100px;
+  height: 50px;
+  background-color: #FCFCFC;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 28px;
+    pointer-events: none;
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: 1px solid $borderColorOurlined;
+    width: 83px;
+    height: 28px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 10px;
+    padding-left: 15px;
+    color: $borderColorOurlined;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 5px;
+    outline: none;
+  }
+}
+
+
+////выпадающий список с ввыбором недели без бордера
+.select__week_disabled {
+  position: relative ;
+  overflow: hidden;
+  width: 120px;
+  height: 50px;
+  background-color: white;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 32px;
+    top:10px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: none;
+    width: 50px;
+    height: 24px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 5px;
+    padding-left: 4px;
+    color: $textColorDisabled;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 0;
+    outline: none;
+  }
+}
+
+////выпадающий список с ввыбором роли без бордера
+.select__role-disabled {
+  position: relative ;
+  overflow: hidden;
+  width: 110px;
+  height: 50px;
+  background-color: white;
+
+  &:after {
+    background: url("../../../../assets/svg/arrow-down-dark.svg") no-repeat;
+    content: "";
+    height: 38px;
+    pointer-events: none;
+    position: absolute;
+    right: 35px;
+    top: 10px;
+    width: 28px;
+    display: block;
+  }
+
+  select {
+    border: none;
+    width: 32px;
+    height: 24px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: $backgroundColorDisabled;
+    margin-left: 5px;
+    padding-left: 4px;
+    color: $textColorDisabled;
+    font-family: $fontFamily;
+    font-size: 13px;
+    border-radius: 0;
+    outline: none;
+  }
+}
+

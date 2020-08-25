@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+@import '../../../../stylesheets/abstracts/variables';
+@import '../../../../stylesheets/base/fonts';
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0 5%;
+  flex-direction: row;
+  background: $light_1;
+  box-sizing: border-box;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  height: 56px;
+
+  &__menu {
+    margin-right: 6%;
+  }
+
+  &__logo {
+    display: flex;
+    margin-right: 6%;
+    a {
+      color: $dark_2;
+      text-decoration: none;
+    }
+  }
+
+  &__mode {
+    cursor: pointer;
+    margin-right: 35%;
+    align-self: flex-end;
+
+    &__change {
+      display: flex;
+      align-items: center;
+    }
+    p {
+      color: $gray;
+    }
+    img {
+      width: 20px;
+      height: 20px;
+      padding-left: 10px;
+    }
+  }
+
+  &__greeting {
+
+    &__nav-link {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      img {
+        width: 36px;
+        height: 35.25px;
+        margin-right: 10px;
+      }
+      p {
+        color: $dark_2;
+        span {
+          color: $dark_2;
+        }
+      }
+    }
+  }
+  &__notification {
+    cursor: pointer;
+    position: absolute;
+    right: 5%;
+
+    &__bell {
+      width: 22px;
+      height: 23.83px;
+    }
+    &__light {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      right: 1px;
+    }
+  }
+}

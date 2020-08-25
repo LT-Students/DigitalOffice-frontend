@@ -1,0 +1,26 @@
+@import '../../../../../stylesheets/abstracts/variables';
+
+.content-container{
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .admin-router {
+    z-index: 10;
+  }
+
+  .waves-container{
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    img {
+      display: inline-block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+  }
+}
