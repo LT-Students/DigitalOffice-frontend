@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 import {IProjectsData} from "../chart/chart.component";
+import { ITimePeriod } from '../interfaces/time-period.interface';
 
 @Component({
   selector: 'app-attendance',
@@ -8,6 +9,10 @@ import {IProjectsData} from "../chart/chart.component";
   styleUrls: ['./attendance.component.scss']
 })
 export class AttendanceComponent implements OnInit {
+  public timePeriodSelected: ITimePeriod = {
+    from: new Date()
+  }
+
   public projectsData: IProjectsData [] = [
     {name: 'Ромашки', hours: 6, minutes: 45},
     {name: 'Рога и копыта', hours: 14, minutes: 0},

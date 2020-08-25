@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ITimePeriod } from '../attendance/attendance.component';
 import { Time } from '@angular/common';
+import { ITimePeriod } from '../interfaces/time-period.interface';
 
 @Component({
   selector: 'app-add-hours',

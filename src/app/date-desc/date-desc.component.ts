@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import 'moment/locale/ru';
-import { ITimePeriod } from '../attendance/attendance.component';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Time } from '@angular/common';
+import { ITimePeriod } from '../interfaces/time-period.interface';
 
 
 

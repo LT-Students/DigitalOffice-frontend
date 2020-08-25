@@ -17,19 +17,21 @@ import localeRu from '@angular/common/locales/ru';
 
 registerLocaleData(localeRu);
 
-import { AppRoutingModule } from './app-routing.module';
 import { AttendanceComponent } from './attendance/attendance.component';
 import { ChartComponent } from './chart/chart.component';
 import { AddHoursComponent } from './add-hours/add-hours.component';
 import { GradientGraphicsComponent } from './gradient-graphics/gradient-graphics.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AttendanceService } from './attendance/attendance.service';ъ
+import { AttendanceService } from './attendance/attendance.service';
 import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';
 import { LocalStorageService } from './services/local-storage.service';
 import { AuthGuard } from './services/auth.guard';
+import { UserTasksComponent } from './user-tasks/user-tasks.component';
+import { ProjectComponent } from './project/project.component';
+import { TaskComponent } from './task/task.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,10 @@ import { AuthGuard } from './services/auth.guard';
     AttendanceComponent,
     ChartComponent,
     AddHoursComponent,
-    GradientGraphicsComponent
+    GradientGraphicsComponent,
+    UserTasksComponent,
+    ProjectComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +55,8 @@ import { AuthGuard } from './services/auth.guard';
     AppRoutingModule,
     HttpClientModule,
     AuthModule,
-    AdminModule
+    AdminModule,
+    NgbModule
   ],
   providers: [
     AuthService,

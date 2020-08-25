@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ITimePeriod } from './attendance.component';
+import { ITimePeriod } from '../interfaces/time-period.interface';
 
 @Injectable({
   providedIn: 'root'
