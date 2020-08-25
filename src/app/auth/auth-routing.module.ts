@@ -6,9 +6,9 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 
 
 const authRoutes: Routes = [
-    { 
+    {
         path: 'auth',
-        component: AuthComponent, 
+        component: AuthComponent,
         children: [
             { path: 'login', component: LoginComponent },
             { path: 'forgotpassword', component: ForgotPasswordComponent },

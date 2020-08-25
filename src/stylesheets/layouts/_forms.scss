@@ -3,7 +3,6 @@
 
 .form {
     position: relative;
-    top: 212px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,7 +12,7 @@
       opacity: 0.8;
       border-style: none;
       border-bottom: 1px solid white;
-      width: 288px; 
+      width: 288px;
       height: 24px;
       &:focus {
         background-color: transparent;
@@ -56,16 +55,13 @@
         border-radius: 5px;
         background-color: $button_orange;
         color: white;
-        &:hover {
-          opacity: 0.8;
-        }
       }
       .spinner {
         animation: rotate 2s linear infinite;
         top: 50%;
         left: 50%;
         width: 25px;
-        height: 25px;      
+        height: 25px;
         & .path {
           stroke: $preza_dc;
           stroke-linecap: round;
@@ -73,13 +69,13 @@
           animation: dash 1.5s ease-in-out infinite;
         }
       }
-      
+
       @keyframes rotate {
         100% {
           transform: rotate(360deg);
         }
       }
-      
+
       @keyframes dash {
         0% {
           stroke-dasharray: 1, 150;

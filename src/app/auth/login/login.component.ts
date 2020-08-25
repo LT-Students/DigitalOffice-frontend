@@ -2,9 +2,10 @@ import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { IAuthenticationRequest } from 'src/app/interfaces/auth/auth.interface';
+import { IAuthenticationRequest, IAuthenticationResponse } from 'src/app/interfaces/auth/auth.interface';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { Router } from '@angular/router';
+import { IUserResponse } from "../../interfaces/user-response.interface";
 
 @Component({
   selector: 'do-login',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
 
 
   constructor(
-    private authenticationUser: AuthService,
+    private authService: AuthService,
     private userService: UserService,
     private localStorageService: LocalStorageService,
     private router: Router,
@@ -32,30 +33,31 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private login() : void {
+  private login(): void {
     this.isWaiting = true;
 
     const authenticationRequest: IAuthenticationRequest = this.loginForm.value;
-    this.authenticationUser.login(authenticationRequest)
+    this.authService.login(authenticationRequest)
       .subscribe({
-        next: val =>{
-          this.userService.getUser(val.id).
-            subscribe({
-              next: user =>{
+        next: (val: IAuthenticationResponse) => {
+          this.userService.getUser(val.id)
+          .subscribe({
+              next: (user: IUserResponse) => {
                 this.localStorageService.set('user', user);
-                if(user.isAdmin){
+                if (user.isAdmin) {
                   this.router.navigate(['/admin/dashboard']);
-                }else{
-                  this.router.navigate(['/user/attendance']);
+                } else {
+                  this.router.navigate(['/attendance']);
                 }
               },
-              error: error =>{
+              error: error => {
                 console.log('Getting user info failed.', error.message);
               }
             });
         },
-        error: error =>{
+        error: error => {
           this.loginError = error.message;
+          this.isWaiting = false;
         },
         complete: () => {
           this.isWaiting = false;

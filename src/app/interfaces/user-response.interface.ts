@@ -1,4 +1,4 @@
-import { IAchievementResponse } from './achievement-response.interface'
+import { IAchievementResponse } from './achievement-response.interface';
 
 export interface IUserResponse {
     userId: string;
@@ -11,4 +11,10 @@ export interface IUserResponse {
     certificatesIds: string;
     achievmentsIds: IAchievementResponse;
     isAdmin: boolean;
+}
+
+export interface IUser{
+  firstName: string;
+  lastName: string;
+  photo: any;
 }

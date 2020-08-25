@@ -28,6 +28,7 @@
   &__mode {
     cursor: pointer;
     margin-right: 35%;
+    align-self: flex-end;
 
     &__change {
       display: flex;
@@ -35,7 +36,6 @@
     }
     p {
       color: $gray;
-      float: left;
     }
     img {
       width: 20px;
