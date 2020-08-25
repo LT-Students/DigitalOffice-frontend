@@ -7,7 +7,8 @@ import { AttendanceComponent } from './attendance/attendance.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
-  { path: 'attendance', component: AttendanceComponent }
+  { path: 'attendance', component: AttendanceComponent },
+  { path: "admin" , loadChildren: './admin/admin.module#AdminModule' }
 ];
 
 @NgModule({
