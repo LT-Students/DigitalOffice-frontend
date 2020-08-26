@@ -1,16 +1,34 @@
-@import "../../../../../stylesheets/base/fonts";
-@import "../../../../../stylesheets/abstracts/variables";
+@import 'base/fonts';
+@import 'abstracts/variables';
 
 .add-hours {
   padding: 9.6%;
 
   &__title {
-    color: #434348;
+    color: $dark_1;
+    &:after{
+      content: '';
+      display:block;
+      width: 123px;
+      height: 4px;
+      background-color: $accent_color_bright;
+      margin-bottom: 35px;
+    }
   }
 
   &__period {
+    display: flex;
+    align-items: center;
     height: 32px;
     color: $dark_1;
+    span{
+      margin: 0;
+      padding: 0;
+    }
+    input{
+      margin: 0;
+      padding: 0;
+    }
   }
 
   &__select {
@@ -62,7 +80,7 @@
   appearance: none;
   border: none;
   outline: none;
-  width: 50px;
+  width: 40px;
   &::placeholder {
     @extend %header_font_basic;
     font-size: 28px;
