@@ -8,20 +8,7 @@ import { RouterModule } from '@angular/router';
 import { AdminModule } from './modules/admin/admin.module';
 
 import { AppComponent } from './app.component';
-import { SelectComponent } from './modules/shared/select/select.component';
-import { ToolbarComponent } from './modules/shared/toolbar/toolbar.component';
-import { DateDescComponent } from './modules/user-page/components/date-desc/date-desc.component';
-import { ButtonComponent } from './modules/shared/button/button.component';
-import { TagsBlockComponent } from './modules/user-page/components/tags-block/tags-block.component';
-import { AttendanceComponent } from './modules/user-page/components/attendance/attendance.component';
-import { ChartComponent } from './modules/user-page/components/chart/chart.component';
-import { AddHoursComponent } from './modules/user-page/components/add-hours/add-hours.component';
-import { GradientGraphicsComponent } from './modules/user-page/components/gradient-graphics/gradient-graphics.component';
-import { UserTasksComponent } from './modules/user-page/components/user-tasks/user-tasks.component';
-import { ProjectComponent } from './modules/user-page/components/project/project.component';
-import { TaskComponent } from './modules/user-page/components/project/task/task.component';
 
-import { AttendanceService } from './modules/user-page/components/attendance/attendance.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';

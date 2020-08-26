@@ -12,6 +12,9 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   getUser(userId: string): Observable<IUserResponse>{
-    return this.http.get<IUserResponse>(environment.userServiceUri,{ params: { userId: userId } })
+    return this.http.get<IUserResponse>(environment.userServiceUri + '/User/getUserById',
+    { 
+      params: { userId: userId } 
+    })
   }
 }

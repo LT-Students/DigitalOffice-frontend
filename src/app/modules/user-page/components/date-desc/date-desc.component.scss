@@ -62,6 +62,10 @@ p {
   display: flex;
   align-items: center;
   position: relative;
+  .btn_choose-date{
+    height: 32px;
+    width: 179px;
+  }
   ngb-datepicker {
     position: absolute;
     top: 28px;

@@ -4,6 +4,6 @@ export interface IAuthenticationRequest{
 }
 
 export interface IAuthenticationResponse {
-  id: string;
-  jwt: string;
+  userId: string;
+  jwtToken: string;
 }

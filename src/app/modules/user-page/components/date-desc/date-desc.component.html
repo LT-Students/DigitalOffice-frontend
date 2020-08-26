@@ -24,7 +24,8 @@
       <div class="choose_date__wrapper">
         <do-button (click)="visible = !visible"
                    [title]="'Выбрать другую дату'"
-                   [className]="'button bg-accent_color font-regular_font'">
+                   [className]="'button bg-accent_color font-regular_font'"
+                   class="btn_choose-date">
           <img src="../../../../../assets/svg/arrow-right.svg">
         </do-button>
         <ngb-datepicker class="dropdown-menu show p-0" (dateSelect)="onDateSelection($event)"
