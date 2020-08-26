@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 import { AdminModule } from './modules/admin/admin.module';
 
 import { AppComponent } from './app.component';
-
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { UserService } from './services/user.service';
 import { AuthService } from './services/auth.service';

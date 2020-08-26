@@ -54,7 +54,6 @@
         .title{
             margin-bottom: 26.5px;
         }
-
         .form-container{
             display: flex;
             justify-content: center;
@@ -104,16 +103,33 @@
                             justify-content: center;
                             width: 30%;
                             .photo-container{
+                                cursor: pointer;
                                 display: flex;
-                                justify-content: center;
                                 align-items: center;
+                                justify-content: center;
+                                position: relative;
+                                overflow: hidden;
+                                display: flex;
                                 width: 128px;
                                 height: 128px;
                                 background: linear-gradient(180deg, #FFA386 0%, #FFD3B8 100%);
                                 border-radius: 50%;
-                                img{
-                                    position: relative;
-                                    right: 7px;
+                                label {
+                                  cursor: pointer;
+                                }
+                                img {
+                                  width: auto;
+                                  height: 100%;
+                                  cursor: pointer;
+                                }
+                                .empty_avatar {
+
+                                }
+                                .filled_avatar {
+                                  width: 140px;
+                                }
+                                #choose-avatar{
+                                  display: none;
                                 }
                             }
                         }

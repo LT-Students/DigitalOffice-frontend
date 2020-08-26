@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -7,7 +8,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./new-employee.component.scss']
 })
 export class NewEmployeeComponent implements OnInit {
-  
+  public message: string;
+  public imagePath;
+  imgURL: any;
   private userForm: FormGroup;
   private positions = [
     { name : 'position1'},
@@ -26,10 +29,6 @@ export class NewEmployeeComponent implements OnInit {
     { name: 'department2' },
     { name: 'department3' }
   ]
-  
-  constructor(
-    private formBuilder: FormBuilder
-  ) { 
     this.userForm = this.formBuilder.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -50,10 +49,27 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   sendCredentials(): void {
-    
   }
 
   generateCredentials(): void {
-    
+
+  }
+
+  preview(files) {
+    if (files.length === 0)
+      return;
+
+    var mimeType = files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      this.message = "Only images are supported.";
+      return;
+    }
+
+    var reader = new FileReader();
+    this.imagePath = files;
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
+    }
   }
 }
