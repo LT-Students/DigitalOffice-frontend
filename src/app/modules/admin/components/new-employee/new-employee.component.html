@@ -17,10 +17,13 @@
                     <div class="content__photo">
                         <div class="photo-container">
                           <label for="choose-avatar">
-                            <img src="../../../../../assets/admin/new-employee/empty-photo-icon.png" alt="empty-photo-icon">
+                            <img [src]="imgURL ? imgURL
+                                  : '../../../../../assets/admin/new-employee/empty-photo-icon.png'"
+                                 [ngClass]="imgURL ? 'filled_avatar' : 'empty_avatar'"
+                                 alt="empty-photo-icon">
                           </label>
-                          <input type="file" id="choose-avatar" accept="image/jpeg,image/png">
-
+                          <input type="file" id="choose-avatar" accept="image/jpeg,image/png" #file (change)="preview(file.files)">
+                          <span class="text-negative_accent regular_text" *ngIf="message">{{message}}</span>
                         </div>
                     </div>
                     <div class="content__inputs">
