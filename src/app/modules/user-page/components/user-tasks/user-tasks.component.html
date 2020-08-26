@@ -1,6 +1,18 @@
 <div class="wrapper">
   <div class="tasks">
-    <span class ="tasks__header h2">{{tasksCount}} записи за {{startPeriod | date: 'd'}} – {{endPeriod | date: 'd'}} {{startPeriod | date: 'MMMM'}}</span>
+    <span class ="tasks__header h2">
+      {{tasksCount}} записи за {{ timePeriodSelected.from | date: 'd' }}
+      <span *ngIf="!timePeriodSelected.to
+          || timePeriodSelected.from.getMonth() != timePeriodSelected.to.getMonth()">
+          {{ timePeriodSelected.from | date: 'MMMM' }}
+        </span>
+        <span *ngIf="timePeriodSelected.to">– {{ timePeriodSelected.to | date: 'd' }}</span>
+        <span
+          *ngIf="timePeriodSelected.to
+          && timePeriodSelected.from.getMonth() === timePeriodSelected.to.getMonth()">
+          {{ timePeriodSelected.from | date: 'MMMM' }}
+        </span>
+    </span>
     <div class="tasks__search">
       <span class="regular_text">Сортировка</span>
       <div class="buttons">

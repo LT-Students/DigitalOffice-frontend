@@ -13,6 +13,8 @@ export class AttendanceService {
   countPlannedHours(period: ITimePeriod): number {
     if (!period.to) {
       return 8;
+    } else {
+
     }
 
   }

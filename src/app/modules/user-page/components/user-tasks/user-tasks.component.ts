@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, } from '@angular/core';
 import { IProject } from '../../../../interfaces/project.interface';
+import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 
 
 @Component({
@@ -8,7 +9,9 @@ import { IProject } from '../../../../interfaces/project.interface';
   styleUrls: ['./user-tasks.component.scss']
 })
 export class UserTasksComponent implements OnInit {
-  @Input() projects: Array<IProject> = [
+
+  @Input() timePeriodSelected: ITimePeriod;
+  @Input() projects: IProject[] = [
     {
     name: 'Proj1',
     tasks: [

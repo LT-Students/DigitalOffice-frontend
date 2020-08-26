@@ -14,12 +14,14 @@
   }
 
   &__select {
+    margin-top: 10px;
     .select-project {
-      display: block;
+      margin-bottom: 20px;
     }
 
     .select-tag {
-      display: block;
+
+      margin-bottom: 20px;
 
       .do-input {
         padding: 5px;
@@ -51,5 +53,19 @@
       border-radius: 5px;
       border: none;
     }
+  }
+}
+
+.add_time {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  outline: none;
+  width: 50px;
+  &::placeholder {
+    @extend %header_font_basic;
+    font-size: 28px;
+    line-height: 32px;
   }
 }

@@ -2,7 +2,17 @@
   <div class="gradient__graphics">
     <div class="time__period">
       <p class="h3">
-        Часы {{timePeriod}}
+        Часы  {{ timePeriodSelected.from | date: 'd' }}
+        <span *ngIf="!timePeriodSelected.to
+          || timePeriodSelected.from.getMonth() != timePeriodSelected.to.getMonth()">
+          {{ timePeriodSelected.from | date: 'MMMM' }}
+        </span>
+        <span *ngIf="timePeriodSelected.to">– {{ timePeriodSelected.to | date: 'd' }}</span>
+        <span
+          *ngIf="timePeriodSelected.to
+          && timePeriodSelected.from.getMonth() === timePeriodSelected.to.getMonth()">
+          {{ timePeriodSelected.from | date: 'MMMM' }}
+        </span>
       </p>
     </div>
 

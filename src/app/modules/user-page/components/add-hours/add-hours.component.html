@@ -3,18 +3,23 @@
   <div class="add-hours__underline"></div>
   <!--  пока в теге p-->
   <div class="add-hours__period">
-    <span class="h2">48:00 ч</span>
+    <input class="add_time h2 text-dark_1"
+           style="text-align: right;" type="text"
+            [placeholder]="this.recommendedTime.hours">
+    :
+    <input class="add_time h2 text-dark_1" type="text"
+           [placeholder]="this.recommendedTime.minutes | number : '2.0'"> ч
   </div>
-
   <div>
 
   </div>
+
   <div class="add-hours__select">
     <div class="select-project">
       <do-select [className]="'select'" [title]="'Проект'" [options]="user.projects"></do-select>
     </div>
-    <div class="select-tag">
 
+    <div class="select-tag">
       <span class="regular_text" style="display: block;">Задача</span>
       <div class="do-input bg-light_2">
         <input class="bg-light_2" type="text" style="border: none;">
@@ -22,13 +27,13 @@
     </div>
   </div>
 
-    <div class="add-hours__comment">
-      <span class="regular_text" style="display: block;">Описание</span>
-      <textarea class="bg-light_2"></textarea>
-      <do-button [className]="'bg-dark_1 button-lg'"
-                 class="text-light_1"
-                 [title]="'Добавить'"
-                 >
-      </do-button>
-    </div>
+  <div class="add-hours__comment">
+    <span class="regular_text" style="display: block;">Описание</span>
+    <textarea class="bg-light_2"></textarea>
+    <do-button [className]="'bg-dark_1 button-lg'"
+               class="text-light_1"
+               [title]="'Добавить'"
+    >
+    </do-button>
+  </div>
 </div>

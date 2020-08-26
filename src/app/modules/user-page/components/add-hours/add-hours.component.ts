@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Time } from '@angular/common';
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
+import { IUser } from '../../../../interfaces/user-response.interface';
 
 @Component({
   selector: 'app-add-hours',
@@ -10,8 +11,9 @@ import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 export class AddHoursComponent implements OnInit {
 
   @Input() timePeriodSelected: ITimePeriod;
+  @Input() userq: IUser;
 
-  public recommendedHours: Time;
+  public recommendedTime: Time;
 
   public user = {
     projects: ['Ромашка', 'Рога и копыта']
@@ -21,7 +23,7 @@ export class AddHoursComponent implements OnInit {
 
   ngOnInit() {
     if (!this.timePeriodSelected.to) {
-      this.recommendedHours = {hours: 8, minutes:0}
+      this.recommendedTime = {hours: 8, minutes:0}
     }
   }
 
