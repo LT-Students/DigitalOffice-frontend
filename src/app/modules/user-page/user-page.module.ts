@@ -12,7 +12,6 @@ import { TaskComponent } from './components/project/task/task.component';
 import { UserPageRoutingModule } from './user-page-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToolbarComponent } from '../shared/toolbar/toolbar.component';
 import { UserPageComponent } from './user-page.component';
 
 

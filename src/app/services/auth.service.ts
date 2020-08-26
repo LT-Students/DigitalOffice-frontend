@@ -4,8 +4,7 @@ import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { IAuthenticationRequest, IAuthenticationResponse } from '../interfaces/auth/auth.interface'
 import { LocalStorageService } from './local-storage.service';
-
-const authenticationServiceUri = 'https://localhost:9816/AuthenticationService';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +16,15 @@ export class AuthService {
     private localStorageService: LocalStorageService) { }
 
   login(authenticationRequest: IAuthenticationRequest): Observable<IAuthenticationResponse> {
-    return this.http.post<IAuthenticationResponse>(authenticationServiceUri, authenticationRequest)
+    console.log(environment.authenticationServiceUri + '/Authentication/login');
+    return this.http.post<IAuthenticationResponse>(environment.authenticationServiceUri + '/Authentication/login', authenticationRequest)
             .pipe(
               tap({
                 next: val => {
-                  this.localStorageService.set("id_token", val.jwt);
+                  this.localStorageService.set("id_token", val.jwtToken);
                 },
                 error: error => {
-                  console.log('Authentication failed.', error.message);
+                  console.log('Authentication failed.', error);
                 }
               }));
   }

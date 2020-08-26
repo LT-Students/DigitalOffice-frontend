@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -7,11 +8,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./new-employee.component.scss']
 })
 export class NewEmployeeComponent implements OnInit {
-
   public message: string;
   public imagePath;
   imgURL: any;
-
   private userForm: FormGroup;
   private positions = [
     { name : 'position1'},
@@ -30,10 +29,6 @@ export class NewEmployeeComponent implements OnInit {
     { name: 'department2' },
     { name: 'department3' }
   ]
-
-  constructor(
-    private formBuilder: FormBuilder
-  ) {
     this.userForm = this.formBuilder.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -54,7 +49,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   sendCredentials(): void {
-
   }
 
   generateCredentials(): void {
