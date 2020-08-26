@@ -1,6 +1,7 @@
 import { IProject } from './project.model';
-import { IUser } from './user.model';
 import { Time } from '@angular/common'
+import { IUser } from '../interfaces/user-response.interface';
+
 
 export interface IContributor{
     //project: IProject;

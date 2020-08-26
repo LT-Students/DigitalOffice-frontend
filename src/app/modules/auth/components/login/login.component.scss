@@ -1,0 +1,19 @@
+@import '../../../../../stylesheets/abstracts/variables';
+@import '../../../../../stylesheets/abstracts/placeholders';
+@import '../../../../../stylesheets/base/fonts';
+@import '../../../../../stylesheets/layouts/forms';
+
+.nav-link__forgot-password {
+  position: relative;
+  margin-top: 24px;
+  opacity: 0.2;
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover{
+    opacity: 0.5;
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+}

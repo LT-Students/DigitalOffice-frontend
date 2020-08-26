@@ -1,0 +1,59 @@
+<div class="desc">
+  <p class="desc__title h3">Доска учета времени</p>
+  <div class="desc__content">
+    <div class="desc__calender">
+      <div class="content__period h1">
+        {{ timePeriodSelected.from | date: 'd' }}
+        <span *ngIf="!timePeriodSelected.to
+          || timePeriodSelected.from.getMonth() != timePeriodSelected.to.getMonth()">
+          {{ timePeriodSelected.from | date: 'MMMM' }}
+        </span>
+        <span *ngIf="timePeriodSelected.to">– {{ timePeriodSelected.to | date: 'd' }}</span>
+        <span
+          *ngIf="timePeriodSelected.to
+          && timePeriodSelected.from.getMonth() === timePeriodSelected.to.getMonth()">
+          {{ timePeriodSelected.from | date: 'MMMM' }}
+        </span>
+      </div>
+      <div class="content__week regular_text">
+        <div class="content__week__day" *ngFor="let dayOfWeek of daysOfWeek" (click)="selectDay(dayOfWeek)">
+          <p class="content__week__day-single">{{dayOfWeek.date | date:'EEEEEE'}}</p>
+          <p [ngClass]="{ content__week__day_orange: dayOfWeek.selected }">{{dayOfWeek.date | date:'dd'}}</p>
+        </div>
+      </div>
+      <div class="choose_date__wrapper">
+        <do-button (click)="visible = !visible"
+                   [title]="'Выбрать другую дату'"
+                   [className]="'button bg-accent_color font-regular_font'">
+          <img src="../../../../../assets/svg/arrow-right.svg">
+        </do-button>
+        <ngb-datepicker class="dropdown-menu show p-0" (dateSelect)="onDateSelection($event)"
+                        [displayMonths]="1" [dayTemplate]="t"
+                        outsideDays="hidden"
+                        [ngClass]="{'d-none': !visible }"
+                          >
+        </ngb-datepicker>
+
+        <ng-template #t let-date let-focused="focused">
+  <span class="custom-day"
+        [ngClass]="{
+        focused: focused,
+        range: isRange(date),
+        faded: isHovered(date) || isInside(date)
+        }"
+        (mouseenter)="hoveredDate = date"
+        (mouseleave)="hoveredDate = null">
+    {{ date.day }}
+  </span>
+        </ng-template>
+      </div>
+
+
+    </div>
+    <div class="desc__photo">
+      <img src="../../../../../assets/svg/girl.svg" alt="girl">
+    </div>
+  </div>
+</div>
+
+

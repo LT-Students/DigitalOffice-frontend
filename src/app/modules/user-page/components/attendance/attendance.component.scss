@@ -1,0 +1,18 @@
+@import '../../../../../stylesheets/abstracts/variables';
+
+.grid {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 53% 44%;
+  grid-column-gap: 3%;
+  grid-row-gap: 20px;
+  grid-auto-rows: auto;
+  app-add-hours {
+    grid-row-start: 1;
+    grid-row-end: 3;
+  }
+  do-user-tasks {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+}

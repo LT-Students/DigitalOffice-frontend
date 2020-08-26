@@ -1,0 +1,71 @@
+@import "../../../../../stylesheets/base/fonts";
+@import "../../../../../stylesheets/abstracts/variables";
+
+.add-hours {
+  padding: 9.6%;
+
+  &__title {
+    color: #434348;
+  }
+
+  &__period {
+    height: 32px;
+    color: $dark_1;
+  }
+
+  &__select {
+    margin-top: 10px;
+    .select-project {
+      margin-bottom: 20px;
+    }
+
+    .select-tag {
+
+      margin-bottom: 20px;
+
+      .do-input {
+        padding: 5px;
+
+        input[type="text"] {
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          border: none;
+          padding: 0;
+          width: 100%;
+          height: 50px;
+          border-radius: 5px;
+          outline: none;
+        }
+      }
+    }
+  }
+
+  &__comment {
+    color: #bdbdbd;
+
+    textarea {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      padding: 0;
+      width: 100%;
+      height: 135px;
+      border-radius: 5px;
+      border: none;
+    }
+  }
+}
+
+.add_time {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  outline: none;
+  width: 50px;
+  &::placeholder {
+    @extend %header_font_basic;
+    font-size: 28px;
+    line-height: 32px;
+  }
+}
