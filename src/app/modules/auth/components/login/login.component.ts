@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(authenticationRequest)
       .subscribe({
         next: (val: IAuthenticationResponse) => {
-          this.userService.getUser(val.id)
+          this.userService.getUser(val.userId)
           .subscribe({
               next: (user: IUserResponse) => {
                 this.localStorageService.set('user', user);
