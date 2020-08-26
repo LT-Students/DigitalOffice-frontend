@@ -9,9 +9,10 @@ const routes: Routes = [
     component: UserPageComponent,
     children: [
       { path: 'attendance', component: AttendanceComponent },
+      { path: 'admin' , loadChildren: './modules/admin/admin.module#AdminModule' }
     ]
   },
-  { path: 'admin' , loadChildren: './modules/admin/admin.module#AdminModule' },
+  
 ];
 
 @NgModule({
