@@ -10,7 +10,9 @@ const routes: Routes = [
     children: [
       { path: 'attendance', component: AttendanceComponent },
     ]
-  }];
+  },
+  { path: 'admin' , loadChildren: './modules/admin/admin.module#AdminModule' },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

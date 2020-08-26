@@ -45,9 +45,9 @@ export class LoginComponent implements OnInit {
               next: (user: IUserResponse) => {
                 this.localStorageService.set('user', user);
                 if (user.isAdmin) {
-                  this.router.navigate(['/admin/dashboard']);
+                  this.router.navigate(['/user/admin/dashboard']);
                 } else {
-                  this.router.navigate(['/attendance']);
+                  this.router.navigate(['/user/attendance']);
                 }
               },
               error: error => {

@@ -1,9 +1,7 @@
-@import '../../../../../stylesheets/base/fonts';
-@import "../../../../../stylesheets/abstracts/variables";
+@import 'base/fonts';
+@import 'abstracts/variables';
 
 .chart {
-  box-sizing: border-box;
-  position: relative;
   display: flex;
 
   &__doughnut {
