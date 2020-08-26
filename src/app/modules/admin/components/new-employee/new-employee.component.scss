@@ -107,8 +107,11 @@
                                 background: linear-gradient(180deg, #FFA386 0%, #FFD3B8 100%);
                                 border-radius: 50%;
                                 img{
-                                    position: relative;
-                                    right: 7px;
+                                  position: relative;
+                                  right: 7px;
+                                }
+                                #choose-avatar{
+                                  display: none;
                                 }
                             }
                         }
