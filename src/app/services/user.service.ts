@@ -28,4 +28,9 @@ export class UserService {
     }
     return false;
   }
+
+  getCurrentUser(): IUserResponse | null{
+    const user: IUserResponse = this.localStorageService.get("user");
+    return (user) ? user : null;
+  }
 }
