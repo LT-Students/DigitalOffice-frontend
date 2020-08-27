@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
 import { ButtonComponent } from './button/button.component';
 import { SelectComponent } from './select/select.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -14,6 +16,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   ],
   imports: [
     CommonModule,
+    RouterModule
   ],
   exports: [
     ButtonComponent,

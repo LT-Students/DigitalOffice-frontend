@@ -11,6 +11,10 @@
     grid-row-start: 1;
     grid-row-end: 3;
   }
+  app-gradient-graphics{
+    display: flex;
+    align-items: flex-end;
+  }
   do-user-tasks {
     grid-column-start: 1;
     grid-column-end: 3;

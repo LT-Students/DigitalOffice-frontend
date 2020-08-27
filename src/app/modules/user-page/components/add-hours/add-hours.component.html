@@ -5,10 +5,11 @@
   <div class="add-hours__period">
     <input class="add_time h2 text-dark_1"
            style="text-align: right;" type="text"
-            [placeholder]="this.recommendedTime.hours">
-    :
+            [placeholder]="this.recommendedTime.hours | number : '2.0'">
+    <span class="h2" >:</span>
     <input class="add_time h2 text-dark_1" type="text"
-           [placeholder]="this.recommendedTime.minutes | number : '2.0'"> ч
+           [placeholder]="this.recommendedTime.minutes | number : '2.0'">
+    <span class="h2 text-dark_1" >&nbsp;ч</span>
   </div>
   <div>
 
