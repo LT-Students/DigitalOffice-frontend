@@ -4,6 +4,7 @@ import { ViewChild} from "@angular/core";
 import {count, min} from "rxjs/operators";
 import { Chart } from 'chart.js';
 import {isNumber} from "util";
+import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 
 export interface IProjectsData {
   name: string,
@@ -22,6 +23,7 @@ export class ChartComponent implements OnInit {
   @Input() projectsData;               //Data about name, hours and minutes
   @Input() allHoursPlan;               //Hours of plan
   @Input() timeDescriptionValue = "0.3";       //Difference between hours in the center under hours
+  @Input() timePeriodSelected: ITimePeriod;
 
   colorsData = ["#7C799B", "#C7C6D8", "#FFB2B2", "#FFB78C", "#EB5757", "#BC7BFA", "#FFBE97", "#BDBDBD"];
 

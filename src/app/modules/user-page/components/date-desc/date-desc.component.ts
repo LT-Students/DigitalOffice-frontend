@@ -3,6 +3,7 @@ import 'moment/locale/ru';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Time } from '@angular/common';
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
+import { AttendanceService } from '../attendance/attendance.service';
 
 
 
@@ -23,7 +24,8 @@ export class DateDescComponent implements OnInit {
 
   daysOfWeek: any;
 
-  constructor(calendar: NgbCalendar) {
+  constructor(calendar: NgbCalendar,
+              private attendanceService: AttendanceService) {
     this.fromDate = calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
@@ -67,6 +69,7 @@ export class DateDescComponent implements OnInit {
     console.log(event);
     this.checkSelectedPeriod(event);
     this.daysOfWeek = (this.timePeriodSelected.to) ? this.getWeek(this.timePeriodSelected.to) : this.getWeek(this.timePeriodSelected.from);
+    this.attendanceService.countPlannedHours(this.timePeriodSelected);
   }
 
 

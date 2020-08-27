@@ -3,6 +3,7 @@ import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.componen
 import { IProjectsData } from '../chart/chart.component';
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { IUser } from '../../../../interfaces/user-response.interface';
+import { AttendanceService } from './attendance.service';
 
 @Component({
   selector: 'app-attendance',
@@ -11,6 +12,7 @@ import { IUser } from '../../../../interfaces/user-response.interface';
 })
 export class AttendanceComponent implements OnInit {
   public user: IUser;
+
 
   public timePeriodSelected: ITimePeriod = {
     from: new Date()
@@ -30,7 +32,7 @@ export class AttendanceComponent implements OnInit {
     {day: '27', month: 'june', hours: 0, minutes: 0},
   ];
 
-  constructor() {
+  constructor(private attendanceService: AttendanceService) {
     this.user = {
       firstName: 'Петр',
       lastName: 'Петров',
@@ -40,6 +42,10 @@ export class AttendanceComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  countHours() {
+    this.attendanceService.countPlannedHours(this.timePeriodSelected);
   }
 
 }
