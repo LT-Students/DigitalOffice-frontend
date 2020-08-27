@@ -1,14 +1,9 @@
-@import '../../../../../stylesheets/abstracts/variables';
-@import '../../../../../stylesheets/base/fonts';
+@import 'abstracts/variables';
+@import 'base/fonts';
 
 .project-wrap {
-  margin-bottom: 48px;
+  margin-top: 48px;
+  div{
+    margin-top: 16px;
+  }
 }
-
-.project-head {
-  font-weight: bold;
-  color: $dark_1;
-}
-
-
-

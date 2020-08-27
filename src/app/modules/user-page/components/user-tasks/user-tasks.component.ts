@@ -13,7 +13,7 @@ export class UserTasksComponent implements OnInit {
   @Input() timePeriodSelected: ITimePeriod;
   @Input() projects: IProject[] = [
     {
-    name: 'Proj1',
+    name: 'Ромашка',
     tasks: [
       {
         time: {hours: 22, minutes: 3},
@@ -30,7 +30,7 @@ export class UserTasksComponent implements OnInit {
     ]
   },
     {
-      name: 'Proj2',
+      name: 'Рога и копыта',
       tasks: [
         {
           time: {hours: 2, minutes: 3},
