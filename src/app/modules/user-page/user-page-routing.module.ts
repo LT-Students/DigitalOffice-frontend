@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { UserPageComponent } from './user-page.component';
+import { AdminGuard } from '../../guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -9,7 +10,7 @@ const routes: Routes = [
     component: UserPageComponent,
     children: [
       { path: 'attendance', component: AttendanceComponent },
-      { path: 'admin' , loadChildren: '../admin/admin.module#AdminModule' }
+      { path: 'admin' , loadChildren: '../admin/admin.module#AdminModule', canLoad: [AdminGuard], canActivate: [AdminGuard]}
     ]
   },
   

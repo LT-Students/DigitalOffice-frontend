@@ -15,6 +15,7 @@ import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
 import { UserPageRoutingModule } from './user-page-routing.module';
 import { UserPageComponent } from './user-page.component';
+import { AdminGuard } from 'src/app/guards/admin.guard';
 
 
 
@@ -37,6 +38,9 @@ import { UserPageComponent } from './user-page.component';
     AdminModule,
     NgbDatepickerModule,
     UserPageRoutingModule
+  ],
+  providers:[
+    AdminGuard
   ]
 })
 export class UserPageModule { }
