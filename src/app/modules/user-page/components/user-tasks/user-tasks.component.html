@@ -40,8 +40,10 @@
         <input type="text" id="text__search" class="regular_text" placeholder="Поиск по тексту комментария">
       </div>
     </div>
-    <div *ngFor="let project of projects">
-      <do-project [project]="project"></do-project>
+    <div>
+      <ng-container *ngFor="let project of projects">
+        <do-project [project]="project"></do-project>
+      </ng-container>
     </div>
   </div>
 </div>
