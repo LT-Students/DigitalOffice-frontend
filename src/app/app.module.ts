@@ -5,7 +5,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
-import { AdminModule } from './modules/admin/admin.module';
 
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -32,7 +31,6 @@ registerLocaleData(localeRu);
     AppRoutingModule,
     HttpClientModule,
     AuthModule,
-    AdminModule,
     SharedModule,
     UserPageModule,
     NgbModule

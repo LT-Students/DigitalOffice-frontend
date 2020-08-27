@@ -1,14 +1,22 @@
-@import '../../../../../../stylesheets/abstracts/variables';
-@import '../../../../../../stylesheets/base/fonts';
+@import 'abstracts/variables';
+@import 'base/fonts';
 
 button {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   border: none;
   cursor: pointer;
   margin: 0;
   padding: 0;
-  width: auto;
   overflow: visible;
   background: transparent;
+  width: 19px;
+  height: 19px;
+  svg{
+    height: 100%;
+    width: 100%;
+  }
   &:hover {
     outline: none;
     box-shadow: none;
@@ -21,10 +29,45 @@ p {
 
 .task-row {
   display: flex;
-  flex-flow: row nowrap;
+  flex-direction: row;
   padding: 25px 24px 16px 24px;
   border-radius: 5px;
   background: $light_1;
+
+  .time {
+    width: 12%;
+    &__period {
+      font-weight: bold;
+      color: $dark_2;
+    }
+  }
+
+  .note {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 75%;
+    &__head {
+      font-weight: 600;
+      color: $dark_1;
+      margin-bottom: 12px;
+    }
+    &__text {
+      color: $dark_1;
+      margin-bottom: 8px;
+    }
+    &__date {
+      height: 24px;
+      font-size: 14px;
+    }
+  }
+
+  .icons {
+    width: 13%;
+    display: flex;
+    justify-content: space-around;
+    margin-left: auto;
+  }
 }
 
 .col {
@@ -47,33 +90,3 @@ p {
   min-width: auto;
 }
 
-.time {
-  max-width: 150px;
-  &__period {
-    font-weight: bold;
-    color: $dark_2;
-  }
-}
-
-.note {
-  &__head {
-    font-weight: 600;
-    color: $dark_1;
-    margin-bottom: 12px;
-  }
-  &__text {
-    color: $dark_1;
-    margin-bottom: 8px;
-  }
-  &__date {
-    height: 24px;
-    font-size: 14px;
-  }
-}
-
-.icons {
-  width: 60px;
-  display: flex;
-  justify-content: space-between;
-  margin-left: auto;
-}

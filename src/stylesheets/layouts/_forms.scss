@@ -2,7 +2,6 @@
 @import 'base/fonts';
 
 .form {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -43,7 +42,6 @@
     &__submit {
       position: relative;
       margin-top: 11px;
-      width: 132px;
       height: 36px;
       display: flex;
       align-items: center;

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserPageModule } from './modules/user-page/user-page.module';
+import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
-  { path: 'user', component: UserPageModule}
+  { path: '', redirectTo: 'user', pathMatch: 'full' },
+  { path: 'user', loadChildren: './modules/user-page/user-page.module#UserPageModule', canLoad: [AuthGuard], canActivate: [AuthGuard]}
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-@import '../../../../../stylesheets/abstracts/variables';
+@import 'abstracts/variables';
 
 .content-container{
   width: 100%;
@@ -16,6 +16,12 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    #wave1{
+      opacity: 0.24;
+    }
+    #wave2{
+      opacity: 0.86;
+    }
     img {
       display: inline-block;
       position: absolute;

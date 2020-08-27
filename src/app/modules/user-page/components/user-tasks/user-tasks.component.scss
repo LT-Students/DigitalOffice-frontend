@@ -3,11 +3,11 @@
 
 .wrapper {
   background: #ffffff;
-
+  padding: 48px;
   .tasks {
     display: flex;
     flex-direction: column;
-    margin: 48px;
+
 
     &__header {
       color: $dark_1;
@@ -17,7 +17,6 @@
     &__search {
       display: flex;
       align-items: center;
-      margin-bottom: 48px;
 
       .buttons {
         margin-left: 24px;
@@ -55,6 +54,8 @@
         margin-left: auto;
 
         .button__magnifier {
+          display: flex;
+          align-items: center;
           background: transparent;
           border: none;
           cursor: pointer;
@@ -70,7 +71,8 @@
           border: none;
           width: 216px;
           margin-right: 16px;
-          }
+          padding: 0;
+        }
 
         input::placeholder {
           color: $gray;

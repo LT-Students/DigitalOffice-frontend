@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { IUser } from '../../interfaces/user-response.interface';
+import { IUser, IUserResponse } from '../../interfaces/user-response.interface';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'do-user-page',
@@ -7,18 +8,12 @@ import { IUser } from '../../interfaces/user-response.interface';
   styleUrls: ['./user-page.component.scss']
 })
 export class UserPageComponent implements OnInit {
-  public user: IUser;
+  public user: IUserResponse;
 
-  constructor() {
-    this.user = {
-      firstName: 'Петр',
-      lastName: 'Петров',
-      photo: 'url'
-    }
-  }
+  constructor( private userService: UserService) { }
 
   ngOnInit() {
-
+    this.user = this.userService.getCurrentUser();
   }
 
 }
