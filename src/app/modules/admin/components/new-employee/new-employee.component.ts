@@ -23,12 +23,15 @@ export class NewEmployeeComponent implements OnInit {
     1,
     1.5,
     2
-  ]
+  ];
   private departments = [
     { name: 'department1' },
     { name: 'department2' },
     { name: 'department3' }
-  ]
+  ];
+
+  constructor(
+    private formBuilder: FormBuilder) {
     this.userForm = this.formBuilder.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],

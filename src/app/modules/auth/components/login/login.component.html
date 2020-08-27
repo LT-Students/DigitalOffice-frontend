@@ -2,7 +2,7 @@
         [formGroup]="loginForm"
         (ngSubmit)="login()"
         autocomplete="off">
-  <label class="form__title h1">trrak!</label>
+  <label class="form__title h1 text_bold text_white">trrak!</label>
   <div class="form__error">
     <small *ngIf="!isEmailInputValid()"> Email is not valid.</small>
     <small *ngIf="!isPasswordInputValid()"> Password is requered.</small>
@@ -20,9 +20,9 @@
           formControlName="password">
   <div class="form__submit">
     <button *ngIf="!isWaiting else spinner"
-              type="submit"
-              [disabled]="!isEmailInputValid() || !isPasswordInputValid()"
-            [ngClass]="{disabled: !isEmailInputValid() || !isPasswordInputValid()}">Войти</button>
+            type="submit"
+            [disabled]="isDisable()"
+            id="btn-enter">Войти</button>
     <ng-template #spinner>
       <svg class="spinner"
           viewBox="0 0 50 50">
