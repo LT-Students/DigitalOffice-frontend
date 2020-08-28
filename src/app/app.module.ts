@@ -18,6 +18,7 @@ import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
 import { SharedModule } from './modules/shared/shared.module';
 import { UserPageModule } from './modules/user-page/user-page.module';
+import { AttendanceService } from './modules/user-page/components/attendance/attendance.service';
 
 registerLocaleData(localeRu);
 
@@ -40,6 +41,7 @@ registerLocaleData(localeRu);
     AuthGuard,
     UserService,
     LocalStorageService,
+    AttendanceService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

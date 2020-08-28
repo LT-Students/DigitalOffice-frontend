@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import 'moment/locale/ru';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Time } from '@angular/common';
@@ -61,15 +61,19 @@ export class DateDescComponent implements OnInit {
       d.selected = false;
     });
 
-    this.timePeriodSelected.from = dayOfWeek.date;
+    this.timePeriodSelected = {
+      from: dayOfWeek.date,
+      to: null
+    }
     dayOfWeek.selected = true;
+    this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
   }
 
   onDateSelection(event: NgbDate) {
     console.log(event);
     this.checkSelectedPeriod(event);
     this.daysOfWeek = (this.timePeriodSelected.to) ? this.getWeek(this.timePeriodSelected.to) : this.getWeek(this.timePeriodSelected.from);
-    this.attendanceService.countPlannedHours(this.timePeriodSelected);
+    this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
   }
 
 

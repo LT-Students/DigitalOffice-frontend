@@ -33,6 +33,12 @@
         text-align: center;
         border-radius: 4px;
       }
+      .time__description_remains {
+        background-color: $negative_accent;
+      }
+      .time__description_empty {
+        background-color: white;
+      }
     }
   }
   &__tags{

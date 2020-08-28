@@ -16,5 +16,5 @@ export interface IUserResponse {
 export interface IUser{
   firstName: string;
   lastName: string;
-  photo: any;
+  photo?: any;
 }
