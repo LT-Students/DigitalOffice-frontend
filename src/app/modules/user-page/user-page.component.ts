@@ -8,12 +8,19 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./user-page.component.scss']
 })
 export class UserPageComponent implements OnInit {
-  public user: IUserResponse;
+  public user: IUserResponse | IUser;
 
-  constructor( private userService: UserService) { }
+  constructor( private userService: UserService) {
+  }
 
   ngOnInit() {
     this.user = this.userService.getCurrentUser();
+    if (!this.user) {
+      this.user =  {
+       firstName: 'сотрудник',
+       lastName: 'сотрудник'
+      };
+    }
   }
 
 }

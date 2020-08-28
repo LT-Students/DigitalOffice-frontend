@@ -1,8 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
-import { IProjectsData } from '../chart/chart.component';
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { IUser } from '../../../../interfaces/user-response.interface';
+import { AttendanceService } from './attendance.service';
+import { IProject } from '../../../../interfaces/project.interface';
 
 @Component({
   selector: 'app-attendance',
@@ -11,15 +12,12 @@ import { IUser } from '../../../../interfaces/user-response.interface';
 })
 export class AttendanceComponent implements OnInit {
   public user: IUser;
+  public project: IProject;
+
 
   public timePeriodSelected: ITimePeriod = {
     from: new Date()
   };
-
-  public projectsData: IProjectsData [] = [
-    {name: 'Ромашки', hours: 6, minutes: 45},
-    {name: 'Рога и копыта', hours: 14, minutes: 0},
-  ];
 
   public dailyHoursData: IDailyHoursData[] = [
     {day: '22', month: 'june', hours: 6, minutes: 0},
@@ -30,7 +28,7 @@ export class AttendanceComponent implements OnInit {
     {day: '27', month: 'june', hours: 0, minutes: 0},
   ];
 
-  constructor() {
+  constructor(private attendanceService: AttendanceService) {
     this.user = {
       firstName: 'Петр',
       lastName: 'Петров',

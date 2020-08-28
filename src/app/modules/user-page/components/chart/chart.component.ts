@@ -1,15 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ElementRef} from "@angular/core";
 import { ViewChild} from "@angular/core";
-import {count, min} from "rxjs/operators";
 import { Chart } from 'chart.js';
-import {isNumber} from "util";
-
-export interface IProjectsData {
-  name: string,
-  hours: number,
-  minutes: number
-}
+import { ITimePeriod } from '../../../../interfaces/time-period.interface';
+import { AttendanceService } from '../attendance/attendance.service';
+import { Time } from '@angular/common';
+import { IProject } from '../../../../interfaces/project.interface';
+import { ITask } from '../../../../interfaces/task.interface';
 
 @Component({
   selector: 'do-chart',
@@ -17,45 +14,74 @@ export interface IProjectsData {
   styleUrls: ['./chart.component.scss']
 })
 
-export class ChartComponent implements OnInit {
-  constructor() { }
-  @Input() projectsData;               //Data about name, hours and minutes
-  @Input() allHoursPlan;               //Hours of plan
-  @Input() timeDescriptionValue = "0.3";       //Difference between hours in the center under hours
+export class ChartComponent implements OnInit, OnDestroy {
+  @Input() allHoursPlan;
+  private _projects: IProject[];
 
-  colorsData = ["#7C799B", "#C7C6D8", "#FFB2B2", "#FFB78C", "#EB5757", "#BC7BFA", "#FFBE97", "#BDBDBD"];
+  //Hours of plan
+  timeDescriptionValue: Time | string;       //Difference between hours in the center under hours
+
+  public recommendedTime: Time = {hours: 8, minutes: 0};
+
+  COLORS = ["#7C799B", "#C7C6D8", "#FFB2B2", "#FFB78C", "#EB5757", "#BC7BFA", "#FFBE97", "#BDBDBD"];
 
   //variables for hours in the center
-  allHoursPerformance;
-  allHours;
   allHoursColor;
-  //
 
+  private spentTime;
   //variables for string under hours in the center of the chart
   timeDescriptionBackgroundColor;
+
   timeDescriptionFontSize;
   timeDescriptionColor;
   //
-
   @ViewChild('canvas', { static: true })
   canvas: ElementRef<HTMLCanvasElement>;
+
   private ctx: CanvasRenderingContext2D;
+  //
+  constructor(private attendanceService: AttendanceService) {
+    this._projects = this.attendanceService.getProjects();
+  }
 
   ngOnInit() {
-    //calculating the total number of hours in the center of chart
-    this.allHoursPerformance = 0
-    for (let i = 0; i < this.projectsData.length; i++) {
-      this.allHoursPerformance += Number(this.projectsData[i].hours) + Number(this.projectsData[i].minutes/60);
-    }
+    this.attendanceService.plannedHours$.subscribe((period: ITimePeriod) => {
+      this.recommendedTime = this.attendanceService.countPlannedHours(period)
+    })
+
+
+
+    let minutesByProjects = this._projects.map((project: IProject) => {
+        return this.countMinutesByTask(project);
+    })
     //
 
     //donut building
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    if (this.allHoursPerformance > 0) {
+    if (minutesByProjects.every((minutesByProjects: number) => minutesByProjects > 0)) {
 
-      //Hours in the center
-      this.allHours = Math.floor(this.allHoursPerformance) + ":" + Math.floor(this.allHoursPerformance % 1 * 60);
+      let allSpentMinutes = minutesByProjects.reduce((sum, totalTime) => sum + totalTime, 0);
+      let allRecommendedMinutes = this.recommendedTime.hours * 60 + this.recommendedTime.minutes;
+
+      let recommendedHoursRemain = allRecommendedMinutes - allSpentMinutes;
+
+      this.recommendedTime =
+        {
+          hours: Math.round(recommendedHoursRemain / 60),
+          minutes: recommendedHoursRemain % 60
+        }
+
+      this.spentTime =
+        {
+          hours: Math.round(allSpentMinutes / 60),
+          minutes: allSpentMinutes % 60
+        }
+
+
+      this.timeDescriptionValue = this.recommendedTime;
+
+
       this.allHoursColor = "#434348";
       //
 
@@ -69,8 +95,8 @@ export class ChartComponent implements OnInit {
         type: 'doughnut',
         data: {
           datasets: [{
-            data: this.projectsData.map((project) => (Number(project.hours) + Number(project.minutes)/60)),
-            backgroundColor: this.colorsData,
+            data: minutesByProjects,
+            backgroundColor: this.COLORS,
             borderWidth: 0,
           }]
         },
@@ -84,12 +110,11 @@ export class ChartComponent implements OnInit {
     } else {
 
       //Hours in the center
-      this.allHours = this.allHoursPlan;
       this.allHoursColor = "#BDBDBD";
       //
 
       //String under hours
-      this.timeDescriptionValue = "Запаланированно";
+      this.timeDescriptionValue = "Запланировано";
       this.timeDescriptionBackgroundColor = "#FFFFFF";
       this.timeDescriptionColor = "#BDBDBD";
       this.timeDescriptionFontSize = "14px";
@@ -112,5 +137,16 @@ export class ChartComponent implements OnInit {
         }
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.attendanceService.plannedHours$.unsubscribe();
+  }
+
+  countMinutesByTask(project: IProject): number {
+    let allMinutesCounted = project.tasks.reduce((sum, task: ITask) => sum + task.time.minutes, 0);
+    let allHoursCounted = project.tasks.reduce((sum, task: ITask) => sum + task.time.hours, 0) ;
+    let allHoursImMinutes = allHoursCounted * 60;
+    return allMinutesCounted + allHoursImMinutes;
   }
 }

@@ -8,15 +8,22 @@
 
         <span class="all__hours h3"
               [style.color]="allHoursColor"
-        >{{allHours}}</span>
+              *ngIf="spentTime"
+              >{{ spentTime?.hours }}:{{ spentTime?.minutes | number: '2.0' }}</span>
+
+        <span class="all__hours h3"
+              [style.color]="allHoursColor"
+              *ngIf="!spentTime"
+        >{{ recommendedTime?.hours }}:{{ recommendedTime?.minutes | number: '2.0' }}</span>
 
         <span class="hour__char"> ч</span><br>
+
 
         <span class="time__description"
               [style.background-color]="timeDescriptionBackgroundColor"
               [style.font-size]="timeDescriptionFontSize"
               [style.color]="timeDescriptionColor"
-        >{{timeDescriptionValue}}</span>
+        >- {{ timeDescriptionValue?.hours | number: '2.0' }}:{{ timeDescriptionValue?.minutes | number: '2.0' }}</span>
 
       </p>
     </div>
@@ -24,9 +31,9 @@
 
   <div class="chart__tags">
     <p class="h3">Проекты</p>
-    <div class="regular_text" *ngFor="let project of projectsData; index as i">
+    <div class="regular_text" *ngFor="let project of _projects; index as i">
       <span class="color__pointer"
-            [style.background-color]="colorsData[i]"
+            [style.background-color]="COLORS[i]"
       ></span>
       {{ project.name }}
     </div>

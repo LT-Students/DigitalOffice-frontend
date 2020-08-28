@@ -1,5 +1,5 @@
 <div class="project-wrap">
-  <span class="h3 text_bold text_dark_1">{{project.name}}</span>
+  <span class="h3 text_bold text_dark_1">{{ project.name }}</span>
   <div >
     <ng-container *ngFor="let task of project.tasks">
       <do-task [task]="task"></do-task>

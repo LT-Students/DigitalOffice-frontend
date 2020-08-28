@@ -29,12 +29,11 @@
           <img src="../../../../../assets/svg/arrow-right.svg">
         </do-button>
         <ngb-datepicker class="dropdown-menu show p-0" (dateSelect)="onDateSelection($event)"
-                        [displayMonths]="1" [dayTemplate]="t"
+                        [displayMonths]="2" [dayTemplate]="t"
                         outsideDays="hidden"
                         [ngClass]="{'d-none': !visible }"
                           >
         </ngb-datepicker>
-
         <ng-template #t let-date let-focused="focused">
   <span class="custom-day"
         [ngClass]="{
