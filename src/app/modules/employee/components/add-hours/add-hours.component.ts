@@ -1,10 +1,11 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Time } from '@angular/common';
+
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
-import { IUser } from '../../../../interfaces/user-response.interface';
 import { AttendanceService } from '../attendance/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
+import { UserResponse } from '../../../../../../libs/api/src/lib/user-service';
 
 @Component({
   selector: 'app-add-hours',
@@ -13,7 +14,7 @@ import { ITask } from '../../../../interfaces/task.interface';
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
 
-  @Input() userq: IUser;
+  @Input() userq: UserResponse;
   @ViewChild('task', {static: false}) inputTask: ElementRef;
   @ViewChild('description', {static: false}) textFieldDescription: ElementRef;
   @ViewChild('inputHours', {static: false}) inputHours: ElementRef;

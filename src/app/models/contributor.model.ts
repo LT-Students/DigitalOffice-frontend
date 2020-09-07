@@ -1,10 +1,9 @@
-import { IProject } from './project.model';
-import { Time } from '@angular/common'
-import { IUser } from '../interfaces/user-response.interface';
+import { Time } from '@angular/common';
 
+import { UserResponse } from '../../../libs/api/src/lib/user-service';
 
-export interface IContributor{
-    //project: IProject;
-    user: IUser;
-    totalTime: Time;
+export interface Contributor {
+  // project: IProject;
+  user: UserResponse;
+  totalTime: Time;
 }

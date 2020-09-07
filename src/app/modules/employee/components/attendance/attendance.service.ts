@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { Time } from '@angular/common';
 import { ITask } from '../../../../interfaces/task.interface';

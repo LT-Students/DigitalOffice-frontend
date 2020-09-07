@@ -1,8 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
-import { IUser } from '../../../../interfaces/user-response.interface';
-import { AttendanceService } from './attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 
 @Component({
@@ -11,7 +10,6 @@ import { IProject } from '../../../../interfaces/project.interface';
   styleUrls: ['./attendance.component.scss']
 })
 export class AttendanceComponent implements OnInit {
-  public user: IUser;
   public project: IProject;
 
 
@@ -28,13 +26,7 @@ export class AttendanceComponent implements OnInit {
     {day: '27', month: 'june', hours: 0, minutes: 0},
   ];
 
-  constructor(private attendanceService: AttendanceService) {
-    this.user = {
-      firstName: 'Петр',
-      lastName: 'Петров',
-      photo: 'url'
-    }
-  }
+  constructor() {}
 
   ngOnInit() {
 

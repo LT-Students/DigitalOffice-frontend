@@ -13,15 +13,11 @@ import { GradientGraphicsComponent } from './components/gradient-graphics/gradie
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
-import { UserPageRoutingModule } from './user-page-routing.module';
-import { UserPageComponent } from './user-page.component';
 import { AdminGuard } from 'src/app/guards/admin.guard';
-
 
 
 @NgModule({
   declarations: [
-    UserPageComponent,
     TagsBlockComponent,
     DateDescComponent,
     AttendanceComponent,
@@ -36,11 +32,11 @@ import { AdminGuard } from 'src/app/guards/admin.guard';
     CommonModule,
     SharedModule,
     AdminModule,
-    NgbDatepickerModule,
-    UserPageRoutingModule
+    NgbDatepickerModule
   ],
-  providers:[
+  providers: [
     AdminGuard
   ]
 })
-export class UserPageModule { }
+export class EmployeeModule {
+}

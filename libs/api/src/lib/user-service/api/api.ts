@@ -1,0 +1,11 @@
+export * from './achievement.service';
+import { AchievementService } from './achievement.service';
+export * from './avatar.service';
+import { AvatarService } from './avatar.service';
+export * from './certificate.service';
+import { CertificateService } from './certificate.service';
+export * from './user.service';
+import { UserService } from './user.service';
+export * from './userAchievement.service';
+import { UserAchievementService } from './userAchievement.service';
+export const APIS = [AchievementService, AvatarService, CertificateService, UserService, UserAchievementService];
