@@ -1,0 +1,144 @@
+@import '../../../../../stylesheets/abstracts/variables';
+@import '../../../../../stylesheets/base/fonts';
+
+*,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+p,
+h1,
+h2,
+h3,
+svg {
+  padding: 0;
+  margin: 0;
+}
+
+
+
+
+.add-member-wrapper {
+  margin: 0 auto;
+  position: relative;
+  max-width: 720px;
+  height: 698px;
+  background: #fff;
+}
+
+.add-member__content-wrapper {
+  padding: 49px 48px 32px 48px;
+  display: flex;
+  flex-flow: column wrap;
+  h3{
+    font-family: Gotham Pro;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+
+.cross {
+  position: absolute;
+  right:0;
+  margin-right:24px;
+  top:0;
+  margin-top:24px;
+}
+
+.form-content{
+  display: flex;
+  flex-direction: column;
+
+  min-width: 624px;
+  /*max-height: 617px;*/
+  padding-top: 34px;
+  .form-content__select-row{
+    display:flex;
+    flex-flow: row wrap;
+
+  }/*кнопка*/
+  .choose-member-wrapper {
+    position: absolute;
+    right:0;
+    bottom:0;
+    margin-right: 48px;
+    margin-bottom: 32px;
+    width: 169px;
+    height: 32px;
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: $gray;
+  }
+}
+
+.search-member {
+  width: 624px;
+  height: 32px;
+  margin-bottom: 14px;
+  outline: none;
+  border: none;
+  background: $light_2 url(src/assets/magnifier.svg) no-repeat center left;
+  background-position: 20px;
+  border-radius: 5px;
+  padding-left: 40px;
+}
+
+select{
+  display: block;
+  outline: none;
+  border: none;
+  background:#fff;
+  border: 1px solid $light_2;
+  box-shadow:none;
+  border-radius: 5px;
+  appearance: none;
+  background-image: url("src/assets/svg/arrow-down-dark.svg"), linear-gradient(to bottom, #ffffff 0%,#ffffff 100%);
+  background-repeat: no-repeat, repeat;
+  background-position: right .7em top 50%, 0 0;
+  padding: 5px 5px 5px 15px; width: 100%;
+  margin-right: 5px;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: $dark_1;
+  height: 36px;
+}
+
+.spec{
+  width: 271px;
+}
+
+.lvl{
+  width: 103px;
+}
+
+.back-image-if-blank {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  margin-top: 168px;
+
+  p{
+    padding-top:14px;
+    font-family: Gill Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color:$gray;
+  }
+}
+
+
+
+
