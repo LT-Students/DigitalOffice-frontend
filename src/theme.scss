@@ -1,0 +1,17 @@
+/*"styles": [
+"./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+"src/styles.scss",
+"src/theme.scss"
+]*/
+@import '~@angular/material/theming';
+@include mat-core();
+
+/* ======== Angular material custom themes ======== */
+
+$theme-primary: mat-palette($mat-grey, 100);
+$theme-accent: mat-palette($mat-grey, 900);
+$app-theme: mat-light-theme($theme-accent, $theme-primary);
+
+
+
+@include angular-material-theme($app-theme);
