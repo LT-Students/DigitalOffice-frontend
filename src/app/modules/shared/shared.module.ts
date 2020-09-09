@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ButtonComponent } from './button/button.component';
 import { SelectComponent } from './select/select.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { ProfileImageComponent } from './profile-image/profile-image.component';
 
 
 
@@ -12,7 +13,8 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   declarations: [
     ButtonComponent,
     SelectComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    ProfileImageComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +23,8 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   exports: [
     ButtonComponent,
     SelectComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    ProfileImageComponent
   ]
 })
 export class SharedModule { }
