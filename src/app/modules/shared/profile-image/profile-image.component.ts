@@ -8,12 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ProfileImageComponent implements OnInit {
 
   @Input() src: string;
-  @Input() height: number;
-  @Input() width: number;
+  @Input() sideLength: number;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void{
   }
 
 }
