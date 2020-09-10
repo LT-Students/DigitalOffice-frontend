@@ -9,19 +9,23 @@ import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 
+
 @NgModule({
-  declarations: [
-    DashboardComponent,
-    AdminComponent,
-    MyProjectComponent,
-    NewEmployeeComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AdminRoutingModule
-  ]
+    declarations: [
+        DashboardComponent,
+        AdminComponent,
+        MyProjectComponent,
+        NewEmployeeComponent
+    ],
+    exports: [
+        DashboardComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        AdminRoutingModule
+    ]
 })
 export class AdminModule { }

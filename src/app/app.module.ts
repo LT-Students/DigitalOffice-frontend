@@ -51,6 +51,9 @@ registerLocaleData(localeRu);
     },
     {provide: LOCALE_ID, useValue: 'ru-RU'}
   ],
+  exports: [
+    NewProjectComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

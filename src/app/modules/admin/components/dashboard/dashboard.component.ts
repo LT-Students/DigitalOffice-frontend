@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IProject } from '../../../../models/project.model';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'do-dashboard',
@@ -10,8 +11,9 @@ export class DashboardComponent implements OnInit {
 
   @Input() projects: IProject[] = [];
   private today = Date.now();
+  private route: any;
 
-  constructor() { }
+  constructor(private router: Router) {  }
 
   ngOnInit(): void {
     const proj1 = {
@@ -61,6 +63,11 @@ export class DashboardComponent implements OnInit {
       proj1,
       proj2
     )
+  }
+
+  onOpenNewProject() {
+    this.router.navigate(['new-project'], {relativeTo: this.route});
+
   }
 
 }
