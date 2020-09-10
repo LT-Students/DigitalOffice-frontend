@@ -1,46 +1,22 @@
-@import '../../../../../stylesheets/abstracts/variables';
-@import '../../../../../stylesheets/base/fonts';
-
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-p,
-h1,
-h2,
-h3,
-svg {
-  padding: 0;
-  margin: 0;
-}
-
-
-
+@import 'abstracts/variables';
+@import 'base/fonts';
 
 .add-member-wrapper {
   margin: 0 auto;
   position: relative;
   max-width: 720px;
-  height: 698px;
   background: #fff;
-}
-
-.add-member__content-wrapper {
-  padding: 49px 48px 32px 48px;
-  display: flex;
-  flex-flow: column wrap;
-  h3{
-    font-family: Gotham Pro;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 22px;
-    line-height: 28px;
+  &__content {
+    padding: 49px 48px 32px 48px;
+    display: flex;
+    flex-flow: column wrap;
+    h3{
+      color:$dark_1;
+    }
   }
 }
+
+
 
 .cross {
   position: absolute;
@@ -55,14 +31,14 @@ svg {
   flex-direction: column;
 
   min-width: 624px;
-  /*max-height: 617px;*/
+
   padding-top: 34px;
   .form-content__select-row{
     display:flex;
     flex-flow: row wrap;
 
   }/*кнопка*/
-  .choose-member-wrapper {
+  .form-content__bttn-wrap {
     position: absolute;
     right:0;
     bottom:0;
@@ -79,7 +55,7 @@ svg {
   }
 }
 
-.search-member {
+.form-content__search {
   width: 624px;
   height: 32px;
   margin-bottom: 14px;
@@ -114,19 +90,19 @@ select{
   height: 36px;
 }
 
-.spec{
+.select-row__spec{
   width: 271px;
 }
 
-.lvl{
+.select-row__lvl{
   width: 103px;
 }
 
-.back-image-if-blank {
+.form-content__back-img {
   display: flex;
   flex-flow: column wrap;
   align-items: center;
-  margin-top: 168px;
+
 
   p{
     padding-top:14px;

@@ -20,13 +20,16 @@ import { SharedModule } from './modules/shared/shared.module';
 import { UserPageModule } from './modules/user-page/user-page.module';
 import { AttendanceService } from './modules/user-page/components/attendance/attendance.service';
 
+
 registerLocaleData(localeRu);
 
 @NgModule({
   declarations: [
     AppComponent,
+
   ],
   imports: [
+
     BrowserModule,
     RouterModule,
     AppRoutingModule,
@@ -34,7 +37,7 @@ registerLocaleData(localeRu);
     AuthModule,
     SharedModule,
     UserPageModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [
     AuthService,

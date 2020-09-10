@@ -10,10 +10,10 @@ const routes: Routes = [
     component: UserPageComponent,
     children: [
       { path: 'attendance', component: AttendanceComponent },
-      { path: 'admin' , loadChildren: '../admin/admin.module#AdminModule', canLoad: [AdminGuard], canActivate: [AdminGuard]}
+      { path: 'admin' , loadChildren: '../admin/admin.module#AdminModule'}
     ]
   },
-  
+
 ];
 
 @NgModule({

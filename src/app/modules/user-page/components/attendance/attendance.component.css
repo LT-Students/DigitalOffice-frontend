@@ -1,0 +1,157 @@
+@import url(//db.onlinewebfonts.com/c/07a38bbad54db72a40b406bed1c72f53?family=Gotham+Pro);
+@import url(//db.onlinewebfonts.com/c/5e8964a3ad15aac170f1c13c0e3afeba?family=GillSansWGL);
+.text-accent_color {
+  color: #FFB78C;
+}
+
+.text-accent_color_bright {
+  color: #FA7D57;
+}
+
+.text-accent_positive {
+  color: #21D373;
+}
+
+.text-positive_accent_bright {
+  color: #CDF4DF;
+}
+
+.text-light_1 {
+  color: #FCFCFC;
+}
+
+.text-light_2 {
+  color: #F6F6F4;
+}
+
+.text-light_3 {
+  color: #F1F1EF;
+}
+
+.text-gray {
+  color: #BDBDBD;
+}
+
+.text-dark_1 {
+  color: #434348;
+}
+
+.text-dark_2 {
+  color: #323137;
+}
+
+.text-dark_3 {
+  color: #2C2C2C;
+}
+
+.text-dark_4 {
+  color: #202020;
+}
+
+.text-overtime {
+  color: #BC7BFA;
+}
+
+.text-negative_accent {
+  color: #EB5757;
+}
+
+.text-preza_dc {
+  color: #FFBE97;
+}
+
+.text-ultimate_orange {
+  color: #C25432;
+}
+
+/* background colors*/
+.bg-accent_color {
+  background-color: #FFB78C;
+}
+
+.bg-accent_color_bright {
+  background-color: #FA7D57;
+}
+
+.bg-accent_positive {
+  background-color: #21D373;
+}
+
+.bg-positive_accent_bright {
+  background-color: #CDF4DF;
+}
+
+.bg-white {
+  background-color: #FFFFFF;
+}
+
+.bg-light_1 {
+  background-color: #FCFCFC;
+}
+
+.bg-light_2 {
+  background-color: #F6F6F4;
+}
+
+.bg-light_3 {
+  background-color: #F1F1EF;
+}
+
+.bg-gray {
+  background-color: #BDBDBD;
+}
+
+.bg-dark_1 {
+  background-color: #434348;
+}
+
+.bg-dark_2 {
+  background-color: #323137;
+}
+
+.bg-dark_3 {
+  background-color: #2C2C2C;
+}
+
+.bg-dark_4 {
+  background-color: #202020;
+}
+
+.bg-overtime {
+  background-color: #BC7BFA;
+}
+
+.bg-negative_accent {
+  background-color: #EB5757;
+}
+
+.bg-preza_dc {
+  background-color: #FFBE97;
+}
+
+.bg-ultimate_orange {
+  background-color: #C25432;
+}
+
+.grid {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: 53% 44%;
+  grid-column-gap: 3%;
+  grid-row-gap: 20px;
+  grid-auto-rows: auto;
+}
+.grid app-add-hours {
+  grid-row-start: 1;
+  grid-row-end: 3;
+}
+.grid app-gradient-graphics {
+  display: flex;
+  align-items: flex-end;
+}
+.grid do-user-tasks {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+/*# sourceMappingURL=attendance.component.css.map */

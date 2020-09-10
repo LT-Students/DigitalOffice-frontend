@@ -9,7 +9,7 @@ import { NewEmployeeComponent } from './components/new-employee/new-employee.com
 const adminRoutes: Routes = [
     { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full'},
     {
-        path: 'admin',
+        path: '',
         component: AdminComponent,
         children: [
             { path: 'dashboard', component: DashboardComponent },

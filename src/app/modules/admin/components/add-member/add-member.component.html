@@ -1,5 +1,5 @@
 <div class="add-member-wrapper">
-  <div class="add-member__content-wrapper">
+  <div class="add-member-wrapper__content">
     <div class="cross">
       <a href="#">
         <svg width="35" height="34" viewBox="0 0 35 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -8,24 +8,24 @@
         </svg>
       </a>
     </div>
-    <h3>Добавить участника</h3>
+    <h3 class="h3">Добавить участника</h3>
     <form class="form-content" action="#" method="post">
-      <input class="search-member" type="text">
+      <input class="form-content__search" type="text">
       <div class="form-content__select-row">
-        <select class="spec">
+        <select class="select-row__spec">
             <option value="">Специализация</option>
             <option value="">front-end</option>
             <option value="">back-end</option>
             <option value="">full-stack</option>
         </select>
-        <select class="lvl">
+        <select class="select-row__lvl">
             <option value="">Уровень</option>
             <option value="">junior</option>
             <option value="">middle</option>
             <option value="">senior</option>
         </select>
       </div>
-      <div class="back-image-if-blank">
+      <div class="form-content__back-img">
         <svg width="202" height="97" viewBox="0 0 202 97" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <rect width="202" height="97" fill="url(#pattern0)"/>
           <defs>
@@ -37,14 +37,12 @@
         </svg>
         <p>Пока тут никого...</p>
       </div>
-      <div class="choose-member-wrapper">
+      <div class="form-content__bttn-wrap">
         <do-button (click)="onChooseMemberClick()"
           [title]="'Добавить участников'"
           [className]="'button bg-light_2 font-regular_font'">
         </do-button>
       </div>
-
-
     </form>
   </div>
 </div>
