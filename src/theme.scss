@@ -4,9 +4,8 @@
 /* ======== Angular material custom themes ======== */
 
 $theme-primary: mat-palette($mat-grey, 100);
-$theme-accent: mat-palette($mat-grey, 900);
-$app-theme: mat-light-theme($theme-accent, $theme-primary);
-
-
+$theme-accent: mat-palette($mat-orange, 700);
+$theme-warn: mat-palette($mat-red);
+$app-theme: mat-light-theme($theme-primary, $theme-accent, $mat-red);
 
 @include angular-material-theme($app-theme);
