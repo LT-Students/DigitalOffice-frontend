@@ -19,6 +19,9 @@ import localeRu from '@angular/common/locales/ru';
 import { SharedModule } from './modules/shared/shared.module';
 import { UserPageModule } from './modules/user-page/user-page.module';
 import { AttendanceService } from './modules/user-page/components/attendance/attendance.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppMaterialModule } from "./app-material.module";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 
 registerLocaleData(localeRu);
 
@@ -34,7 +37,9 @@ registerLocaleData(localeRu);
     AuthModule,
     SharedModule,
     UserPageModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    AppMaterialModule
   ],
   providers: [
     AuthService,
@@ -49,6 +54,7 @@ registerLocaleData(localeRu);
     },
     {provide: LOCALE_ID, useValue: 'ru-RU'}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
