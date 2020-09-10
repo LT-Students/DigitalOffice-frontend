@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IAuthenticationRequest, IAuthenticationResponse } from '../interfaces/auth/auth.interface'
+import { IAuthenticationRequest, IAuthenticationResponse } from '../interfaces/auth/auth.interface';
 import { LocalStorageService } from './local-storage.service';
 import { environment } from '../../environments/environment';
 
@@ -21,7 +21,7 @@ export class AuthService {
             .pipe(
               tap({
                 next: val => {
-                  this.localStorageService.set("id_token", val.jwtToken);
+                  this.localStorageService.set('id_token', val.jwtToken);
                 },
                 error: error => {
                   console.log('Authentication failed.', error);
@@ -29,8 +29,8 @@ export class AuthService {
               }));
   }
 
-  isAuthenticated():boolean{
-    const token = this.localStorageService.get("id_token");
+  isAuthenticated(): boolean {
+    const token = this.localStorageService.get('id_token');
     return true;
   }
 }

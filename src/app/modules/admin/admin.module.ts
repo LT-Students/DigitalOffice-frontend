@@ -8,6 +8,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
+import { NewProjectComponent } from './components/new-project/new-project.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { NewEmployeeComponent } from './components/new-employee/new-employee.com
         DashboardComponent,
         AdminComponent,
         MyProjectComponent,
-        NewEmployeeComponent
+        NewEmployeeComponent,
+        NewProjectComponent
     ],
     exports: [
         DashboardComponent
