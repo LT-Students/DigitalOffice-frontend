@@ -19,7 +19,6 @@ import localeRu from '@angular/common/locales/ru';
 import { SharedModule } from './modules/shared/shared.module';
 import { UserPageModule } from './modules/user-page/user-page.module';
 import { AttendanceService } from './modules/user-page/components/attendance/attendance.service';
-import { NewProjectComponent } from './modules/admin/components/new-project/new-project.component';
 
 registerLocaleData(localeRu);
 
@@ -49,9 +48,6 @@ registerLocaleData(localeRu);
       multi: true
     },
     {provide: LOCALE_ID, useValue: 'ru-RU'}
-  ],
-  exports: [
-    NewProjectComponent
   ],
   bootstrap: [AppComponent]
 })

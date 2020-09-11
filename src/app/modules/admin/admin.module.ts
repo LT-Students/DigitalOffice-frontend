@@ -19,9 +19,6 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
         NewEmployeeComponent,
         NewProjectComponent
     ],
-    exports: [
-        DashboardComponent
-    ],
     imports: [
         CommonModule,
         RouterModule,

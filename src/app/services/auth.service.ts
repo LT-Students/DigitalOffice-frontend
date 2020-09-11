@@ -31,6 +31,6 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = this.localStorageService.get('id_token');
-    return true;
+    return token != null;
   }
 }
