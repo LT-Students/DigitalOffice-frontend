@@ -11,7 +11,6 @@ export class DashboardComponent implements OnInit {
 
   @Input() projects: IProject[] = [];
   private today = Date.now();
-  private route: any;
 
   constructor(private router: Router) {
   }
@@ -67,7 +66,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onOpenNewProject() {
-    this.router.navigate(['admin/new-project'], {relativeTo: this.route});
+    this.router.navigate(['admin/new-project']);
 
   }
 
