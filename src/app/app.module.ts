@@ -18,6 +18,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { ApiModule } from '../../libs/api/src/lib/api.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { AttendanceService } from './modules/employee/components/attendance/attendance.service';
+import { AdminModule } from './modules/admin/admin.module';
 
 registerLocaleData(localeRu);
 
@@ -34,6 +35,7 @@ registerLocaleData(localeRu);
     AuthModule,
     SharedModule,
     EmployeeModule,
+    AdminModule,
     NgbModule
   ],
   providers: [
@@ -47,9 +49,9 @@ registerLocaleData(localeRu);
       useClass: AuthInterceptor,
       multi: true
     },
-    {provide: LOCALE_ID, useValue: 'ru-RU'}
+    { provide: LOCALE_ID, useValue: 'ru-RU' }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }

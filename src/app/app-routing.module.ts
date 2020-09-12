@@ -14,28 +14,36 @@ const routes: Routes = [
   {
     path: '', component: ToolbarContainerComponent, children: [
       {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'user/attendance'
+      },
+      {
         path: 'user/attendance',
         component: AttendanceComponent,
-        // canLoad: [AuthGuard],
         // canActivate: [AuthGuard]
       },
       {
         path: 'admin',
         component: AdminComponent,
         children: [
-          {path: 'dashboard', component: DashboardComponent},
-          {path: 'new-employee', component: NewEmployeeComponent}
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'dashboard'
+          },
+          { path: 'dashboard', component: DashboardComponent },
+          { path: 'new-employee', component: NewEmployeeComponent }
         ],
-        // canLoad: [AdminGuard],
-        // canActivate: [AdminGuard]
+        // canActivate: [AdminGuard, AuthGuard]
       }
     ]
   },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [ RouterModule.forRoot(routes) ],
+  exports: [ RouterModule ]
 })
 export class AppRoutingModule {
 }

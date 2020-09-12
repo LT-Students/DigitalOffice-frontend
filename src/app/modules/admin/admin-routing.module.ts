@@ -1,3 +1,5 @@
+/*
+todo we will add separate routing module later
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -22,3 +24,4 @@ const adminRoutes: Routes = [
   exports: [RouterModule]
 })
 export class AdminRoutingModule { }
+*/

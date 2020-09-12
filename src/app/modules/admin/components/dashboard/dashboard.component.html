@@ -1,36 +1,36 @@
 <div class="content-container">
-    <div class="board">
-        <div class="user-board">
-            <img class="user-board__content" src="../../../../../assets/images/fon.png" alt="background">
-            <img class="user-board__photo" src="../../../../../assets/admin/dashboard/avatar.png" alt="avatar">
-            <div class="user-board__date">
-                <span class="h2 h2_ultimate-orange">Сегодня {{ today | date:'d MMMM'}}</span>
-                <span class="h3_light">{{ today | date:'EEEE' | titlecase}}</span>
-            </div>
-        </div>
-        <div class="manage-board">
-            <span class="h3 h3_dark_1">Управление системой</span>
-            <div class="manage-board__content">
-              <a routerLink="/user/admin/new-employee">
-                <button class="btn-first">
-                  <img src="../../../../../assets/admin/dashboard/add-employee-icon.png" alt="add-employee-icon">
-                  <span class="h4 h4_ultimate-orange">Добавить сотрудника</span>
-                </button>
-              </a>
-                <button class="btn-last">
-                    <img src="../../../../../assets/admin/dashboard/add-project-icon.png" alt="add-project-icon">
-                    <span class="h4 h4_dark_1">Добавить проект</span>
-                </button>
-            </div>
-        </div>
-        <div class="projects-board">
-            <span class="h3 h3_dark_1">Мои проекты</span>
-            <div class="projects-board__content">
-                <ng-container *ngFor="let project of projects">
-                    <do-my-project  class="component-my-project"
-                                    [project]="project"></do-my-project>
-                </ng-container>
-            </div>
-        </div>
+  <div class="board">
+    <div class="user-board">
+      <img class="user-board__content" src="../../../../../assets/images/fon.png" alt="background">
+      <img class="user-board__photo" src="../../../../../assets/admin/dashboard/avatar.png" alt="avatar">
+      <div class="user-board__date">
+        <span class="h2 h2_ultimate-orange">Сегодня {{ today | date:'d MMMM'}}</span>
+        <span class="h3_light">{{ today | date:'EEEE' | titlecase}}</span>
+      </div>
     </div>
+    <div class="manage-board">
+      <span class="h3 h3_dark_1">Управление системой</span>
+      <div class="manage-board__content">
+        <a routerLink="/admin/new-employee">
+          <button class="btn-first">
+            <img src="../../../../../assets/admin/dashboard/add-employee-icon.png" alt="add-employee-icon">
+            <span class="h4 h4_ultimate-orange">Добавить сотрудника</span>
+          </button>
+        </a>
+        <button class="btn-last">
+          <img src="../../../../../assets/admin/dashboard/add-project-icon.png" alt="add-project-icon">
+          <span class="h4 h4_dark_1">Добавить проект</span>
+        </button>
+      </div>
+    </div>
+    <div class="projects-board">
+      <span class="h3 h3_dark_1">Мои проекты</span>
+      <div class="projects-board__content">
+        <ng-container *ngFor="let project of projects">
+          <do-my-project class="component-my-project"
+                         [project]="project"></do-my-project>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </div>

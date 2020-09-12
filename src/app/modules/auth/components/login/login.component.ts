@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { UserResponse } from '../../../../../../libs/api/src/lib/user-service';
-
-import { UserService } from '../../../../services/user.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { AuthenticationRequest, AuthenticationResponse } from '../../../../../../libs/api/src/lib/auth-service';
+import { UserService } from '../../../../services/user.service';
+
 
 @Component({
   selector: 'do-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: [ './login.component.scss' ]
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder) {
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      email: [ '', [ Validators.required, Validators.email ] ],
+      password: [ '', Validators.required ]
     });
   }
 
@@ -52,10 +52,10 @@ export class LoginComponent implements OnInit {
     )
       .subscribe(
         (user: UserResponse) => {
-          if (user.isAdmin) {
-            this.router.navigate(['/user/admin/dashboard']);
+          if ( user.isAdmin ) {
+            this.router.navigate([ '/user/admin/dashboard' ]);
           } else {
-            this.router.navigate(['/user/attendance']);
+            this.router.navigate([ '/user/attendance' ]);
           }
         }, error => {
           console.log('Getting user info failed.', error.message);

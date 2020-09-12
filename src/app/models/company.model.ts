@@ -1,4 +1,4 @@
-export interface ICompany{
+export interface ICompany {
     name: string;
     description: string;
 }

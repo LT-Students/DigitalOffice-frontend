@@ -14,13 +14,12 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private localStorageService: LocalStorageService) {
-  }
+    private localStorageService: LocalStorageService) {}
 
   getUser(userId: string): Observable<UserResponse> {
     return this.http.get<UserResponse>(environment.userServiceUri + '/User/getUserById',
       {
-        params: {userId}
+        params: { userId }
       }).pipe(
       tap((user: UserResponse) => {
         this.localStorageService.set('user', user);
@@ -30,7 +29,7 @@ export class UserService {
 
   isAdmin(): boolean {
     const user: UserResponse = this.localStorageService.get('user');
-    if (user) {
+    if ( user ) {
       return user.isAdmin;
     }
     return false;

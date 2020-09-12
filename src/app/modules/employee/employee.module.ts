@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AdminModule } from '../admin/admin.module';
-import { SharedModule } from '../shared/shared.module';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { SharedModule } from '../shared/shared.module';
 import { TagsBlockComponent } from './components/tags-block/tags-block.component';
 import { DateDescComponent } from './components/date-desc/date-desc.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
@@ -13,7 +12,6 @@ import { GradientGraphicsComponent } from './components/gradient-graphics/gradie
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
-import { AdminGuard } from 'src/app/guards/admin.guard';
 
 
 @NgModule({
@@ -31,12 +29,9 @@ import { AdminGuard } from 'src/app/guards/admin.guard';
   imports: [
     CommonModule,
     SharedModule,
-    AdminModule,
     NgbDatepickerModule
   ],
-  providers: [
-    AdminGuard
-  ]
+  providers: []
 })
 export class EmployeeModule {
 }
