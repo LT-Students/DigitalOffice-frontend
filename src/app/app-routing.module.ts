@@ -4,10 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { ToolbarContainerComponent } from './modules/shared/toolbar-container/toolbar-container.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
-import { AttendanceComponent } from './modules/employee/components/attendance/attendance.component';
 import { AdminComponent } from './modules/admin/components/admin/admin.component';
 import { DashboardComponent } from './modules/admin/components/dashboard/dashboard.component';
 import { NewEmployeeComponent } from './modules/admin/components/new-employee/new-employee.component';
+import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
 
 
 const routes: Routes = [

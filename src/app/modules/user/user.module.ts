@@ -33,5 +33,5 @@ import { TaskComponent } from './components/project/task/task.component';
   ],
   providers: []
 })
-export class EmployeeModule {
+export class UserModule {
 }

@@ -1,7 +1,4 @@
-@import "../../../../../stylesheets/base/fonts";
-p {
-  margin: 0;
-}
+@import "base/fonts";
 
 .desc {
   display: flex;
@@ -62,6 +59,12 @@ p {
   display: flex;
   align-items: center;
   position: relative;
+  .dropdown-menu{
+    background: white;
+    &.d-none{
+      display: none;
+    }
+  }
   .btn_choose-date{
     height: 32px;
     width: 179px;

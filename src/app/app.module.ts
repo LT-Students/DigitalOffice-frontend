@@ -18,10 +18,10 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { ApiModule } from '../../libs/api/src/lib/api.module';
-import { EmployeeModule } from './modules/employee/employee.module';
-import { AttendanceService } from './modules/employee/components/attendance/attendance.service';
 import { AdminModule } from './modules/admin/admin.module';
 import { AppMaterialModule } from './app-material.module';
+import { UserModule } from './modules/user/user.module';
+import { AttendanceService } from './modules/user/components/attendance/attendance.service';
 
 registerLocaleData(localeRu);
 
@@ -37,7 +37,7 @@ registerLocaleData(localeRu);
     HttpClientModule,
     AuthModule,
     SharedModule,
-    EmployeeModule,
+    UserModule,
     AdminModule,
     NgbModule,
     BrowserAnimationsModule,

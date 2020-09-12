@@ -1,16 +1,16 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import 'moment/locale/ru';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Time } from '@angular/common';
+
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
-
 
 
 @Component({
   selector: 'do-datedesc',
   templateUrl: './date-desc.component.html',
-  styleUrls: ['./date-desc.component.scss']
+  styleUrls: [ './date-desc.component.scss' ]
 })
 export class DateDescComponent implements OnInit {
   public visible = false;
@@ -24,8 +24,10 @@ export class DateDescComponent implements OnInit {
 
   daysOfWeek: any;
 
-  constructor(calendar: NgbCalendar,
-              private attendanceService: AttendanceService) {
+  constructor(
+    calendar: NgbCalendar,
+    private attendanceService: AttendanceService
+  ) {
     this.fromDate = calendar.getToday();
     this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
   }
@@ -33,15 +35,15 @@ export class DateDescComponent implements OnInit {
   ngOnInit(): void {
     this.daysOfWeek = this.getWeek();
 
-    if (!this.timePeriodSelected.to) {
-      this.plannedTime = {hours: 8, minutes: 0}
+    if ( !this.timePeriodSelected.to ) {
+      this.plannedTime = { hours: 8, minutes: 0 };
     }
   }
 
-  getWeek(dateSelected: Date = new Date()) {
+  getWeek(dateSelected: Date = new Date()): Date[] {
     const daysOfWeek = [];
 
-    for (let i = -3; i <= 3; i++) {
+    for ( let i = -3; i <= 3; i++ ) {
       const dayOfWeek = new Date();
       dayOfWeek.setDate(dateSelected.getDate() + i);
       daysOfWeek.push(
@@ -56,7 +58,7 @@ export class DateDescComponent implements OnInit {
   }
 
 
-  selectDay(dayOfWeek) {
+  selectDay(dayOfWeek): void {
     this.daysOfWeek.forEach(d => {
       d.selected = false;
     });
@@ -64,49 +66,46 @@ export class DateDescComponent implements OnInit {
     this.timePeriodSelected = {
       from: dayOfWeek.date,
       to: null
-    }
+    };
     dayOfWeek.selected = true;
     this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
   }
 
-  onDateSelection(event: NgbDate) {
-    console.log(event);
+  onDateSelection(event: NgbDate): void {
     this.checkSelectedPeriod(event);
     this.daysOfWeek = (this.timePeriodSelected.to) ? this.getWeek(this.timePeriodSelected.to) : this.getWeek(this.timePeriodSelected.from);
     this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
   }
 
 
-  checkSelectedPeriod(date: NgbDate) {
-    if (!this.fromDate && !this.toDate) {
+  checkSelectedPeriod(date: NgbDate): void {
+    if ( !this.fromDate && !this.toDate ) {
       this.fromDate = date;
       this.timePeriodSelected.from = this.getDateInStandart(date);
-    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
+    } else if ( this.fromDate && !this.toDate && date.after(this.fromDate) ) {
       this.toDate = date;
       this.timePeriodSelected.to = this.getDateInStandart(date);
     } else {
       this.toDate = null;
       this.timePeriodSelected.to = null;
       this.fromDate = date;
-      this.timePeriodSelected.from = this.getDateInStandart(date);;
+      this.timePeriodSelected.from = this.getDateInStandart(date);
     }
   }
 
-  isHovered(date: NgbDate) {
+  isHovered(date: NgbDate): boolean {
     return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
   }
 
-  isInside(date: NgbDate) {
+  isInside(date: NgbDate): boolean {
     return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
   }
 
-  isRange(date: NgbDate) {
+  isRange(date: NgbDate): boolean {
     return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
   }
 
   getDateInStandart(date: NgbDate): Date {
-    return new Date(date.year, date.month-1, date.day);
+    return new Date(date.year, date.month - 1, date.day);
   }
-
-
 }
