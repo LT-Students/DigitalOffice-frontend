@@ -5,6 +5,8 @@ import localeRu from '@angular/common/locales/ru';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -19,6 +21,7 @@ import { ApiModule } from '../../libs/api/src/lib/api.module';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { AttendanceService } from './modules/employee/components/attendance/attendance.service';
 import { AdminModule } from './modules/admin/admin.module';
+import { AppMaterialModule } from './app-material.module';
 
 registerLocaleData(localeRu);
 
@@ -36,7 +39,9 @@ registerLocaleData(localeRu);
     SharedModule,
     EmployeeModule,
     AdminModule,
-    NgbModule
+    NgbModule,
+    BrowserAnimationsModule,
+    AppMaterialModule
   ],
   providers: [
     AuthService,
@@ -51,7 +56,8 @@ registerLocaleData(localeRu);
     },
     { provide: LOCALE_ID, useValue: 'ru-RU' }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule {
 }
