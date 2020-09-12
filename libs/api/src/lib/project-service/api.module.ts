@@ -3,15 +3,18 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { AuthenticationService } from './api/authentication.service';
+import { ProjectService } from './api/project.service';
+import { ProjectFileService } from './api/projectFile.service';
+import { ProjectWorkerService } from './api/projectWorker.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    AuthenticationService
-  ]
+    ProjectService,
+    ProjectFileService,
+    ProjectWorkerService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {

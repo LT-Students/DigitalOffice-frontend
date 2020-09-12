@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 import { LocalStorageService } from './local-storage.service';
-import { environment } from '../../environments/environment';
-import { AuthenticationRequest, AuthenticationResponse } from '../../../libs/api/src/lib/auth-service';
+import { AuthenticationRequest, AuthenticationResponse, AuthenticationService } from '../../../libs/api/src/lib/auth-service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +11,12 @@ import { AuthenticationRequest, AuthenticationResponse } from '../../../libs/api
 export class AuthService {
 
   constructor(
-    private http: HttpClient,
+    private authService: AuthenticationService,
     private localStorageService: LocalStorageService) {
   }
 
   login(authenticationRequest: AuthenticationRequest): Observable<AuthenticationResponse> {
-    console.log(environment.authenticationServiceUri + '/Authentication/login');
-    return this.http.post<AuthenticationResponse>(environment.authenticationServiceUri + '/Authentication/login', authenticationRequest)
+    return this.authService.loginPost(authenticationRequest)
       .pipe(
         tap({
           next: val => {

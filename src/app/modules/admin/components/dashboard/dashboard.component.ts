@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { IProject } from '../../../../models/project.model';
+import { Project } from '../../../../models/project.model';
 
 @Component({
   selector: 'do-dashboard',
@@ -9,7 +9,7 @@ import { IProject } from '../../../../models/project.model';
 })
 export class DashboardComponent implements OnInit {
 
-  @Input() projects: IProject[] = [];
+  @Input() projects: Project[] = [];
   private today = Date.now();
 
   constructor() { }

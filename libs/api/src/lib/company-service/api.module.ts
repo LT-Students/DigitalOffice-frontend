@@ -3,15 +3,20 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { AuthenticationService } from './api/authentication.service';
+import { CompanyService } from './api/company.service';
+import { DepartmentService } from './api/department.service';
+import { PositionService } from './api/position.service';
+import { UserPositionService } from './api/userPosition.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    AuthenticationService
-  ]
+    CompanyService,
+    DepartmentService,
+    PositionService,
+    UserPositionService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {

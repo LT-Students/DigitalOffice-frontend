@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { IProject } from '../../../../models/project.model';
+import { Project } from '../../../../models/project.model';
 
 @Component({
   selector: 'do-my-project',
@@ -9,7 +9,7 @@ import { IProject } from '../../../../models/project.model';
 })
 export class MyProjectComponent implements OnInit {
   // data about projectName, consumer, comment, myHours, participants - array with photo of participants
-  @Input() project: IProject;
+  @Input() project: Project;
 
   amountHiddenPhoto = 0;
 
