@@ -23,7 +23,6 @@ import { AppMaterialModule } from './app-material.module';
 import { UserModule } from './modules/user/user.module';
 import { AttendanceService } from './modules/user/components/attendance/attendance.service';
 
-
 registerLocaleData(localeRu);
 
 @NgModule({
@@ -38,9 +37,9 @@ registerLocaleData(localeRu);
     HttpClientModule,
     AuthModule,
     SharedModule,
-    NgbModule,
     UserModule,
     AdminModule,
+    NgbModule,
     BrowserAnimationsModule,
     AppMaterialModule
   ],
