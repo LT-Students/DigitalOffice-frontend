@@ -1,9 +1,9 @@
-import { IContributor } from './contributor.model';
-import { ICompany } from './company.model';
+import { Contributor } from './contributor.model';
+import { Company } from './company.model';
 
-export interface IProject{
+export interface Project {
     name: string;
-    consumer: ICompany;
+    consumer: Company;
     description: string;
-    contributors: Array<IContributor>;
+    contributors: Array<Contributor>;
 }

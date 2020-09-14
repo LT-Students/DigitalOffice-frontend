@@ -6,6 +6,7 @@ import { ButtonComponent } from './button/button.component';
 import { SelectComponent } from './select/select.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ProfileImageComponent } from './profile-image/profile-image.component';
+import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
 
 
 
@@ -14,7 +15,8 @@ import { ProfileImageComponent } from './profile-image/profile-image.component';
     ButtonComponent,
     SelectComponent,
     ToolbarComponent,
-    ProfileImageComponent
+    ProfileImageComponent,
+    ToolbarContainerComponent
   ],
   imports: [
     CommonModule,

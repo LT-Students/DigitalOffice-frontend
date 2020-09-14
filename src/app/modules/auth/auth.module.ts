@@ -8,7 +8,6 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { LoginComponent } from './components/login/login.component';
 
 
-
 @NgModule({
   declarations: [
     AuthComponent,
@@ -22,4 +21,5 @@ import { LoginComponent } from './components/login/login.component';
     AuthRoutingModule
   ]
 })
-export class AuthModule { }
+export class AuthModule {
+}
