@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IProject } from '../../../../models/project.model';
+import { MatDialog } from "@angular/material/dialog";
+import { NewCompanyComponent } from "../new-company/new-company.component";
 
 @Component({
   selector: 'do-dashboard',
@@ -11,7 +13,16 @@ export class DashboardComponent implements OnInit {
   @Input() projects: IProject[] = [];
   private today = Date.now();
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
+
+  OnOpenNewCompany():void {
+    let dialogRef = this.dialog.open(NewCompanyComponent, {
+      width: '503px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 
   ngOnInit(): void {
     const proj1 = {
