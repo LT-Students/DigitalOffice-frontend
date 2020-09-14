@@ -1,0 +1,21 @@
+@import 'abstracts/variables';
+
+.content-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $light_2;
+  .toolbar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+  }
+  .wrapper {
+    margin-top: 80px;
+    height: 100%;
+    width: 1024px;
+    z-index: 1;
+    padding: 38px 5%;
+  }
+}

@@ -3,6 +3,9 @@
   "rules": {
     "array-type": false,
     "arrow-parens": false,
+    "arrow-return-shorthand": true,
+    "callable-types": true,
+    "class-name": true,
     "deprecation": {
       "severity": "warning"
     },
@@ -27,7 +30,11 @@
       true,
       "rxjs/Rx"
     ],
+    "import-spacing": true,
     "interface-name": false,
+    "indent": [true, "spaces"],
+    "interface-over-type-literal": true,
+    "label-position": true,
     "max-classes-per-file": false,
     "max-line-length": [
       true,
@@ -46,6 +53,8 @@
       }
     ],
     "no-consecutive-blank-lines": false,
+    "no-arg": true,
+    "no-bitwise": true,
     "no-console": [
       true,
       "debug",
@@ -55,25 +64,23 @@
       "trace"
     ],
     "no-empty": false,
+    "no-empty-interface": true,
     "no-inferrable-types": [
       true,
       "ignore-params"
     ],
+    "no-eval": true,
+    "no-misused-new": true,
     "no-non-null-assertion": true,
-    "no-redundant-jsdoc": true,
+    "no-redundant-jsdoc": false,
+    "no-shadowed-variable": true,
+    "no-string-literal": false,
+    "no-string-throw": true,
     "no-switch-case-fall-through": true,
-    "no-var-requires": false,
-    "object-literal-key-quotes": [
-      true,
-      "as-needed"
-    ],
-    "object-literal-sort-keys": false,
-    "ordered-imports": false,
-    "quotemark": [
-      true,
-      "single"
-    ],
-    "trailing-comma": false,
+    "no-trailing-whitespace": true,
+    "no-unnecessary-initializer": true,
+    "no-unused-expression": true,
+    "no-var-keyword": true,
     "no-conflicting-lifecycle": true,
     "no-host-metadata-property": true,
     "no-input-rename": true,
@@ -82,6 +89,47 @@
     "no-output-on-prefix": true,
     "no-output-rename": true,
     "no-outputs-metadata-property": true,
+    "object-literal-sort-keys": false,
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
+    "ordered-imports": [
+      true,
+      {
+        "import-sources-order": "any",
+        "named-imports-order": "any",
+        "grouped-imports": true,
+        "groups": [
+          {
+            "name": "project",
+            "match": "^\\.",
+            "order": 30
+          },
+          {
+            "name": "libraries",
+            "match": ".*",
+            "order": 10
+          }
+        ]
+      }
+    ],
+    "one-line": [true, "check-open-brace", "check-catch", "check-else", "check-whitespace"],
+    "quotemark": [true, "single", "avoid-escape"],
+    "radix": true,
+    "semicolon": [true, "always"],
+    "trailing-comma": false,
+    "triple-equals": [true, "allow-null-check"],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      }
+    ],
     "template-banana-in-box": true,
     "template-no-negated-async": true,
     "use-lifecycle-interface": true,

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IUserResponse } from '../interfaces/user-response.interface';
 import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
+
 import { LocalStorageService } from './local-storage.service';
-import { environment  } from '../../environments/environment';
+import { environment } from '../../environments/environment';
+import { UserResponse } from '../../../libs/api/src/lib/user-service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,25 +14,29 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private localStorageService: LocalStorageService) { }
+    private localStorageService: LocalStorageService) {}
 
-  getUser(userId: string): Observable<IUserResponse>{
-    return this.http.get<IUserResponse>(environment.userServiceUri + '/User/getUserById',
-    { 
-      params: { userId: userId } 
-    })
+  getUser(userId: string): Observable<UserResponse> {
+    return this.http.get<UserResponse>(environment.userServiceUri + '/User/getUserById',
+      {
+        params: { userId }
+      }).pipe(
+      tap((user: UserResponse) => {
+        this.localStorageService.set('user', user);
+      })
+    );
   }
 
-  isAdmin(): boolean{
-    const user: IUserResponse = this.localStorageService.get("user");
-    if(user){
+  isAdmin(): boolean {
+    const user: UserResponse = this.localStorageService.get('user');
+    if ( user ) {
       return user.isAdmin;
     }
     return false;
   }
 
-  getCurrentUser(): IUserResponse | null{
-    const user: IUserResponse = this.localStorageService.get("user");
+  getCurrentUser(): UserResponse | null {
+    const user: UserResponse = this.localStorageService.get('user');
     return (user) ? user : null;
   }
 }
