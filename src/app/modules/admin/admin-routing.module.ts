@@ -1,3 +1,5 @@
+/*
+todo we will add separate routing module later
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -8,9 +10,8 @@ import { NewProjectComponent} from './components/new-project/new-project.compone
 
 
 const adminRoutes: Routes = [
-    { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full'},
     {
-        path: 'admin',
+        path: '',
         component: AdminComponent,
         children: [
             { path: 'dashboard', component: DashboardComponent },
@@ -25,3 +26,4 @@ const adminRoutes: Routes = [
   exports: [RouterModule]
 })
 export class AdminRoutingModule { }
+*/

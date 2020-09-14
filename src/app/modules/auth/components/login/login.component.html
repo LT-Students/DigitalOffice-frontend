@@ -22,6 +22,7 @@
     <button *ngIf="!isWaiting else spinner"
             type="submit"
             [disabled]="isDisable()"
+            (click)="login()"
             id="btn-enter">Войти</button>
     <ng-template #spinner>
       <svg class="spinner"

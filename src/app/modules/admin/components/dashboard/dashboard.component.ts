@@ -1,15 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IProject } from '../../../../models/project.model';
 import { Router } from '@angular/router';
+
+import { Project } from '../../../../models/project.model';
 
 @Component({
   selector: 'do-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: [ './dashboard.component.scss' ]
 })
 export class DashboardComponent implements OnInit {
 
-  @Input() projects: IProject[] = [];
+  @Input() projects: Project[] = [];
   private today = Date.now();
 
   constructor(private router: Router) {

@@ -5,7 +5,7 @@ import { UserService } from '../../../../services/user.service';
 @Component({
   selector: 'do-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss']
+  styleUrls: [ './forgot-password.component.scss' ]
 })
 export class ForgotPasswordComponent implements OnInit {
   private forgotPasswordForm: FormGroup;
@@ -16,9 +16,9 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder) {
-      this.forgotPasswordForm = this.formBuilder.group({
-        email: ['', [Validators.required, Validators.email]]
-      });
+    this.forgotPasswordForm = this.formBuilder.group({
+      email: [ '', [ Validators.required, Validators.email ] ]
+    });
   }
 
   ngOnInit(): void {
@@ -34,6 +34,6 @@ export class ForgotPasswordComponent implements OnInit {
 
   private isEmailInputValid(): boolean {
     return !(this.forgotPasswordForm.get('email').touched &&
-    this.forgotPasswordForm.get('email').invalid);
+      this.forgotPasswordForm.get('email').invalid);
   }
 }

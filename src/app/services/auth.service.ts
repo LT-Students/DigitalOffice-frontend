@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { IAuthenticationRequest, IAuthenticationResponse } from '../interfaces/auth/auth.interface';
 import { LocalStorageService } from './local-storage.service';
-import { environment } from '../../environments/environment';
+import { AuthenticationRequest, AuthenticationResponse, AuthenticationService } from '../../../libs/api/src/lib/auth-service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +10,21 @@ import { environment } from '../../environments/environment';
 export class AuthService {
 
   constructor(
-    private http: HttpClient,
-    private localStorageService: LocalStorageService) { }
+    private authService: AuthenticationService,
+    private localStorageService: LocalStorageService) {
+  }
 
-  login(authenticationRequest: IAuthenticationRequest): Observable<IAuthenticationResponse> {
-    console.log(environment.authenticationServiceUri + '/Authentication/login');
-    return this.http.post<IAuthenticationResponse>(environment.authenticationServiceUri + '/Authentication/login', authenticationRequest)
-            .pipe(
-              tap({
-                next: val => {
-                  this.localStorageService.set('id_token', val.jwtToken);
-                },
-                error: error => {
-                  console.log('Authentication failed.', error);
-                }
-              }));
+  login(authenticationRequest: AuthenticationRequest): Observable<AuthenticationResponse> {
+    return this.authService.loginPost(authenticationRequest)
+      .pipe(
+        tap({
+          next: val => {
+            this.localStorageService.set('id_token', val.jwt);
+          },
+          error: error => {
+            console.log('Authentication failed.', error);
+          }
+        }));
   }
 
   isAuthenticated(): boolean {

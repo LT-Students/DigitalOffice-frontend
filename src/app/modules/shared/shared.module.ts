@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ButtonComponent } from './button/button.component';
 import { SelectComponent } from './select/select.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
 
 
 
@@ -12,7 +13,8 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   declarations: [
     ButtonComponent,
     SelectComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    ToolbarContainerComponent
   ],
   imports: [
     CommonModule,

@@ -28,6 +28,11 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/styles.scss",
+              "src/theme.scss"
+            ],
+            "styles": [
               "src/stylesheets/main.scss"
             ],
             "stylePreprocessorOptions": {
@@ -129,6 +134,32 @@
           }
         }
       }
-    }},
+    },
+    "api": {
+      "root": "libs/api",
+      "sourceRoot": "libs/api/src",
+      "projectType": "library",
+      "prefix": "do",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "libs/api/tsconfig.lib.json",
+            "project": "libs/api/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "libs/api/tsconfig.lib.prod.json"
+            }
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/schematics:component": {
+          "styleext": "scss"
+        }
+      }
+    }
+  },
   "defaultProject": "DigitalOffice-frontend"
 }

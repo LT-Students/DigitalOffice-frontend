@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AdminRoutingModule } from './admin-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -10,6 +9,8 @@ import { MyProjectComponent } from './components/my-project/my-project.component
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 
+
+// import { AdminRoutingModule } from './admin-routing.module';
 
 @NgModule({
     declarations: [
@@ -27,4 +28,5 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
         AdminRoutingModule
     ]
 })
-export class AdminModule { }
+export class AdminModule {
+}
