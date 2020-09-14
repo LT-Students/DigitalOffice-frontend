@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from "../shared/shared.module";
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
-import { AddMemberComponent } from './components/add-member/add-member.component';
-import {SharedModule} from "../shared/shared.module";
+import { MembersBoardComponent } from './components/members-board/members-board.component';
+
 
 @NgModule({
   declarations: [
@@ -17,15 +18,15 @@ import {SharedModule} from "../shared/shared.module";
     AdminComponent,
     MyProjectComponent,
     NewEmployeeComponent,
-    AddMemberComponent
+    MembersBoardComponent
   ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AdminRoutingModule,
-        SharedModule
-    ]
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AdminRoutingModule,
+    SharedModule
+  ]
 })
 export class AdminModule { }
