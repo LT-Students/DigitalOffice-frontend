@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AdminRoutingModule } from './admin-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from "../shared/shared.module";
 
@@ -25,8 +24,8 @@ import { MembersBoardComponent } from './components/members-board/members-board.
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminRoutingModule,
     SharedModule
   ]
 })
-export class AdminModule { }
+export class AdminModule {
+}
