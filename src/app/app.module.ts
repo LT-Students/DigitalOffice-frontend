@@ -29,10 +29,8 @@ registerLocaleData(localeRu);
 @NgModule({
   declarations: [
     AppComponent,
-
   ],
   imports: [
-
     BrowserModule,
     RouterModule,
     ApiModule,
