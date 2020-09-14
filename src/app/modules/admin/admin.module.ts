@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AdminRoutingModule } from './admin-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -11,6 +10,8 @@ import { NewCompanyComponent } from "./components/new-company/new-company.compon
 import { MatDialogModule} from "@angular/material/dialog";
 import { MatInputModule } from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
+
+// import { AdminRoutingModule } from './admin-routing.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import {MatButtonModule} from "@angular/material/button";
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminRoutingModule,
+    // AdminRoutingModule,
     MatDialogModule,
     MatInputModule,
     MatButtonModule,
@@ -35,4 +36,5 @@ import {MatButtonModule} from "@angular/material/button";
   ]
 
 })
-export class AdminModule { }
+export class AdminModule {
+}
