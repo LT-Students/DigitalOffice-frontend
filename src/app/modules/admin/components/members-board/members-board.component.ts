@@ -7,6 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MembersBoardComponent implements OnInit {
 
+  specializations: string[] = [
+    "front-end",
+    "back-end",
+    "full-stack"
+  ];
+  levels: string[] = [
+    "junior",
+    "middle",
+    "senior"
+  ];
+
   constructor() { }
 
   ngOnInit(): void {

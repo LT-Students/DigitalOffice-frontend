@@ -1,29 +1,34 @@
 @import 'abstracts/variables';
 @import 'base/fonts';
+@import 'layouts/containers';
+@import 'components/search';
+@import 'components/selects';
 
-.add-member-wrapper {
-  margin: 0 auto;
+.members-board {
   position: relative;
   max-width: 720px;
-  background: #fff;
-  &__content {
-    padding: 49px 48px 32px 48px;
-    display: flex;
-    flex-flow: column wrap;
-    h3{
-      color:$dark_1;
-    }
+  background: white;
+  padding: 48px;
+  &__close-button{
+    position: absolute;
+    top: 15px;
+    right: 15px; 
+  }
+  &__title{
+    margin-bottom: 34px;
   }
 }
 
-
-
-.cross {
-  position: absolute;
-  right:0;
-  margin-right:24px;
-  top:0;
-  margin-top:24px;
+.members-form{
+  &__search{
+    margin-bottom: 14px;
+  }
+  &__select-spec{
+    width: 271px;
+  }
+  &__select-lvl{
+    width: 103px;
+  }
 }
 
 .form-content{
@@ -61,7 +66,7 @@
   margin-bottom: 14px;
   outline: none;
   border: none;
-  background: $light_2 url(src/assets/magnifier.svg) no-repeat center left;
+  background: $light_2 url(src/assets/svg/magnifier.svg) no-repeat center left;
   background-position: 20px;
   border-radius: 5px;
   padding-left: 40px;

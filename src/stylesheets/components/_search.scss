@@ -1,0 +1,18 @@
+@import 'abstracts/variables';
+
+.search{
+    display: flex;
+    background-color: $light_2;
+    border-radius: 5px;
+    height: 32px;
+    &__icon{
+        margin: 0 16px 0 16px;
+    }
+    &__input{
+        background-color: $light_2;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        flex-grow: 1;
+    }
+}

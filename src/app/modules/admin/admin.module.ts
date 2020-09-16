@@ -9,6 +9,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { MembersBoardComponent } from './components/members-board/members-board.component';
+import { AppMaterialModule } from 'src/app/app-material.module';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { MembersBoardComponent } from './components/members-board/members-board.
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+    AppMaterialModule
   ]
 })
 export class AdminModule {

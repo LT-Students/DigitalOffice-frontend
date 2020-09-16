@@ -1,0 +1,44 @@
+@import 'abstracts/variables';
+
+/*основной класс*/
+.button {
+  cursor: pointer;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.button_size_l {
+  height: 40px;
+}
+
+.button_size_m{
+  height: 32px;
+}
+
+/*цвета кнопок и бордеров*/
+
+.button_border_accent-color {
+  border: 1px solid $accent_color;
+}
+
+.button_border_accent-color-bright {
+  border: 1px solid $accent_color_bright;
+}
+
+.button_bg_accent_color {
+  background: $accent_color;
+}
+
+.button_bg_accent-color-bright {
+  background: $accent_color_bright;
+}
+
+.button_bg_dark-1 {
+  background: $dark_1;
+}
+
+.button_bg_light-2 {
+  background: $light_2;
+}

@@ -1,0 +1,35 @@
+.flex-container{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    &_direction{
+        &_row{
+            flex-direction: row;
+        }
+        &_column{
+            flex-direction: column;
+        }
+    }
+    &_justify{
+        &_start{
+            justify-content: flex-start;
+        }
+        &_end{
+            justify-content: flex-end;
+        }
+        &_center{
+            justify-content: center;
+        }
+    }
+}
+
+.flex-item{
+    &_align-self{
+        &_start{
+            align-self: flex-start;
+        }
+        &_end{
+            align-self: flex-end;
+        }
+    }
+}
