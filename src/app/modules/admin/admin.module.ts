@@ -9,9 +9,6 @@ import { MyProjectComponent } from './components/my-project/my-project.component
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 
-
-// import { AdminRoutingModule } from './admin-routing.module';
-
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -24,8 +21,7 @@ import { NewProjectComponent } from './components/new-project/new-project.compon
         CommonModule,
         RouterModule,
         FormsModule,
-        ReactiveFormsModule,
-        AdminRoutingModule
+        ReactiveFormsModule
     ]
 })
 export class AdminModule {
