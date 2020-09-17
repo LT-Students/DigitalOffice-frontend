@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatDialog } from "@angular/material/dialog";
 import { NewCompanyComponent } from "../new-company/new-company.component";
 import { Project } from '../../../../models/project.model';
@@ -22,6 +23,7 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  constructor(private router: Router) {
   }
 
   ngOnInit(): void {
@@ -72,6 +74,11 @@ export class DashboardComponent implements OnInit {
       proj1,
       proj2
     );
+  }
+
+  onOpenNewProject() {
+    this.router.navigate(['admin/new-project']);
+
   }
 
 }

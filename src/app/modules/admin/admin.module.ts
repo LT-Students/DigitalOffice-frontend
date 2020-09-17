@@ -6,6 +6,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
+import { NewProjectComponent } from './components/new-project/new-project.component';
 import { NewCompanyComponent } from "./components/new-company/new-company.component";
 import { MatDialogModule} from "@angular/material/dialog";
 import { MatInputModule } from "@angular/material/input";
@@ -19,6 +20,7 @@ import {MatButtonModule} from "@angular/material/button";
     AdminComponent,
     MyProjectComponent,
     NewEmployeeComponent,
+    NewProjectComponent,
     NewCompanyComponent,
   ],
   imports: [
@@ -34,7 +36,6 @@ import {MatButtonModule} from "@angular/material/button";
   entryComponents: [
     NewCompanyComponent,
   ]
-
 })
 export class AdminModule {
 }
