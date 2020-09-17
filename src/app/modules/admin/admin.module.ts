@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material';
 import { MatIconModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material';
+import {SharedModule} from '../shared/shared.module';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -23,15 +24,16 @@ import { TeamCardComponent } from './components/team-card/team-card.component';
         NewProjectComponent,
         TeamCardComponent
     ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatIconModule,
-        MatButtonModule
-    ]
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    SharedModule
+  ]
 })
 export class AdminModule {
 }
