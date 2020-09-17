@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-
 import { LocalStorageService } from './local-storage.service';
 import { AuthenticationRequest, AuthenticationResponse, AuthenticationService } from '../../../libs/api/src/lib/auth-service';
 
