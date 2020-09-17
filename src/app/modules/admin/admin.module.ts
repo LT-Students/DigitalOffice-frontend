@@ -12,8 +12,6 @@ import { MatDialogModule} from "@angular/material/dialog";
 import { MatInputModule } from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 
-// import { AdminRoutingModule } from './admin-routing.module';
-
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -28,7 +26,6 @@ import {MatButtonModule} from "@angular/material/button";
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    // AdminRoutingModule,
     MatDialogModule,
     MatInputModule,
     MatButtonModule,

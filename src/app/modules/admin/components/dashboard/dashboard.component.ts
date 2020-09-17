@@ -1,30 +1,24 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { Project } from '../../../../models/project.model';
 import { MatDialog } from "@angular/material/dialog";
 import { NewCompanyComponent } from "../new-company/new-company.component";
-import { Project } from '../../../../models/project.model';
 
 @Component({
   selector: 'do-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: [ './dashboard.component.scss' ]
 })
+
 export class DashboardComponent implements OnInit {
 
   @Input() projects: Project[] = [];
   private today = Date.now();
 
-  constructor(public dialog: MatDialog) { }
-
-  OnOpenNewCompany():void {
-    let dialogRef = this.dialog.open(NewCompanyComponent, {
-      width: '503px',
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });
-  constructor(private router: Router) {
-  }
+  constructor (
+    private router: Router,
+    public dialog: MatDialog
+  ) {};
 
   ngOnInit(): void {
     const proj1 = {
@@ -78,7 +72,14 @@ export class DashboardComponent implements OnInit {
 
   onOpenNewProject() {
     this.router.navigate(['admin/new-project']);
-
   }
 
+  onOpenNewCompany(): void {
+    let dialogRef = this.dialog.open(NewCompanyComponent, {
+      width: '503px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }
