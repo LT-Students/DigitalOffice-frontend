@@ -11,13 +11,13 @@
     <div class="manage-board">
       <span class="h3 h3_dark_1">Управление системой</span>
       <div class="manage-board__content">
-        <a routerLink="/admin/new-employee">
+        <a routerLink="/user/admin/new-employee">
           <button class="btn-first">
             <img src="../../../../../assets/admin/dashboard/add-employee-icon.png" alt="add-employee-icon">
             <span class="h4 h4_ultimate-orange">Добавить сотрудника</span>
           </button>
         </a>
-        <button class="btn-last">
+        <button class="btn-last" (click)="onOpenNewProject()">
           <img src="../../../../../assets/admin/dashboard/add-project-icon.png" alt="add-project-icon">
           <span class="h4 h4_dark_1">Добавить проект</span>
         </button>
@@ -31,8 +31,8 @@
       <span class="h3 h3_dark_1">Мои проекты</span>
       <div class="projects-board__content">
         <ng-container *ngFor="let project of projects">
-          <do-my-project class="component-my-project"
-                         [project]="project"></do-my-project>
+          <do-my-project  class="component-my-project"
+                          [project]="project"></do-my-project>
         </ng-container>
       </div>
     </div>
