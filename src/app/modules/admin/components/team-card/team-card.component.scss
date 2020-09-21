@@ -2,9 +2,10 @@
 @import 'base/fonts';
 
 .team-card {
-  width: 320px;
+  min-width: 320px;
   background-color: $light_1;
   padding: 24px;
+  height: 100%;
 
   &__header {
     display: flex;
@@ -43,28 +44,31 @@
     font-weight: normal;
     font-size: 16px;
     line-height: 24px;
+    text-transform: capitalize;
     margin-top: 6px;
   }
   &__team-members {
     display: flex;
     justify-content: flex-start;
-    align-content: center;
-    margin-top: 24px;
+    align-items: center;
+    margin-top: 12px;
   }
   &__members-list {
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-end;
+    flex-wrap: wrap;
     list-style: none;
   }
   &__new-member {
-    width: 36px;
-    height: 36px;
-    margin-right: 20px;
+    margin-right: 12px;
+    margin-top: 12px;
+    align-self: flex-start;
   }
   &__member {
     position: relative;
-    margin-right: 20px;
+    margin-right: 12px;
+    margin-top: 12px;
   }
   &__icon-dummy {
     width: 36px;
