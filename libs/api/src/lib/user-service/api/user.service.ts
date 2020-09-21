@@ -31,7 +31,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class UserService {
 
-    protected basePath = 'https://localhost:9801/UserService';
+    protected basePath = 'https://localhost:9801/api/user';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
