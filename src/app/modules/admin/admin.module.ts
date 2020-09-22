@@ -8,6 +8,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
+import { NewProjectComponent } from './components/new-project/new-project.component';
 import { MembersBoardComponent } from './components/members-board/members-board.component';
 import { AppMaterialModule } from 'src/app/app-material.module';
 
@@ -18,7 +19,9 @@ import { AppMaterialModule } from 'src/app/app-material.module';
     AdminComponent,
     MyProjectComponent,
     NewEmployeeComponent,
-    MembersBoardComponent
+    NewProjectComponent,
+    MembersBoardComponent,
+
   ],
   imports: [
     CommonModule,

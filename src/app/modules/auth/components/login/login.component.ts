@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(authenticationRequest).pipe(
       switchMap((val: AuthenticationResponse) => {
           this.isWaiting = false;
-          return this.userService.getUser(val.id);
+          return this.userService.getUser(val.userId);
         }
       ),
       catchError(error => {

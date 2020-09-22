@@ -20,7 +20,7 @@ export class AuthService {
       .pipe(
         tap({
           next: val => {
-            this.localStorageService.set('id_token', val.jwt);
+            this.localStorageService.set('id_token', val.token);
           },
           error: error => {
             console.log('Authentication failed.', error);

@@ -14,9 +14,9 @@ export interface AuthenticationResponse {
     /**
      * User global unique identifier.
      */
-    id?: string;
+    userId?: string;
     /**
      * Generation new JSON Web Token.
      */
-    jwt?: string;
+    token?: string;
 }

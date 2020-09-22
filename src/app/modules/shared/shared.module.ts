@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ButtonComponent } from './button/button.component';
 import { SelectComponent } from './select/select.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { ProfileImageComponent } from './profile-image/profile-image.component';
 import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
 import { SearchComponent } from './search/search.component';
 import { AppMaterialModule } from 'src/app/app-material.module';
@@ -16,6 +17,7 @@ import { AppMaterialModule } from 'src/app/app-material.module';
     ButtonComponent,
     SelectComponent,
     ToolbarComponent,
+    ProfileImageComponent,
     ToolbarContainerComponent,
     SearchComponent
   ],
@@ -28,6 +30,7 @@ import { AppMaterialModule } from 'src/app/app-material.module';
     ButtonComponent,
     SelectComponent,
     ToolbarComponent,
+    ProfileImageComponent,
     SearchComponent
   ]
 })
