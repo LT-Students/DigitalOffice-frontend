@@ -25,6 +25,7 @@ import { AppMaterialModule } from 'src/app/app-material.module';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     AppMaterialModule
   ]
 })

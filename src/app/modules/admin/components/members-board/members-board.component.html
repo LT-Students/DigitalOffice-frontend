@@ -6,17 +6,15 @@
   </button>
   <h3 class="members-board__title h3 text_color_dark-1">Добавить участника</h3>
   <form class="members-form">
-    <div class="search members-form__search">
-      <img src="/assets/svg/magnifier.svg"
-           alt="magnifier"
-           class="search__icon">
-      <input class="search__input" type="text">
+    <div  class="members-form__search">
+      <do-search (searchClick)="onSearchClick($event)"></do-search>
     </div>
-    <div class="flex-container">
-      <mat-form-field class="members-form__select-spec"
-                      appearance="fill">
-        <mat-label>Специализация</mat-label>
-        <mat-select class="select regular_text text_color_dark-1">
+    <div class="members-form__selects flex-container flex-container_justify_space-between">
+      <mat-form-field class="select members-form__select-spec"
+                      floatLabel="never">
+        <mat-select class="regular_text text_color_dark-1"
+                    placeholder="Специализация"
+                    ariaLabel="">
           <mat-option *ngFor="let specialization of specializations" 
                       [value]="specialization"
                       class="regular_text text_color_dark-1">
@@ -24,10 +22,10 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="members-form__select-lvl"
-                      appearance="fill">
-        <mat-label>Уровень</mat-label>
-        <mat-select class="select regular_text text_color_dark-1">
+      <mat-form-field class="select members-form__select-lvl" 
+                      floatLabel="never">
+        <mat-select class="regular_text text_color_dark-1"
+                    placeholder="Уровень">
           <mat-option *ngFor="let level of levels" 
                       [value]="level"
                       class="regular_text text_color_dark-1">
@@ -36,17 +34,19 @@
         </mat-select>
       </mat-form-field>
     </div>
-
-    <div class="members-form__background">
-      <img src="/assets/images/tumbleweed.png" alt="tumbleweed">
-      <p>Пока тут никого...</p>
+    <div class="members-form__background flex-container flex-container_justify_center flex-container_align_center">
+      <div *ngIf="this.members.length == 0" 
+           class="no-members-icon flex-container flex-container_direction_column">
+        <img src="/assets/images/tumbleweed.png" alt="tumbleweed">
+        <span class="regular_text text_color_gray">Пока тут никого...</span>
+      </div>
     </div>
     <div class="flex-container flex-container_justify_end">
       <button mat-flat-button
         color="accent"
         disabled
         (click)="onChooseMemberClick()"
-        class="button members-board__add-members-button">
+        class="members-board__add-members-button">
         Добавить участников
       </button>
     </div>

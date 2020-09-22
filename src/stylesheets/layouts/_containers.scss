@@ -20,6 +20,14 @@
         &_center{
             justify-content: center;
         }
+        &_space-between{
+            justify-content: space-between;
+        }
+    }
+    &_align{
+        &_center{
+            align-items: center;
+        }
     }
 }
 

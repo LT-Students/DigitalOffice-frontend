@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { IMember } from './../../../../interfaces/member.interface';
 
 @Component({
   selector: 'do-members-board',
@@ -18,6 +19,8 @@ export class MembersBoardComponent implements OnInit {
     "senior"
   ];
 
+  @Input() members: IMember[] = [];
+
   constructor() { }
 
   ngOnInit(): void {
@@ -25,5 +28,9 @@ export class MembersBoardComponent implements OnInit {
 
   onChooseMemberClick(): void {
     console.log('clicked!');
+  }
+
+  onSearchClick(value: string){
+    console.log(value);
   }
 }

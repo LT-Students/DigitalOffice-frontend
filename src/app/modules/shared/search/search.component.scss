@@ -1,0 +1,26 @@
+@import 'abstracts/variables';
+@import 'layouts/containers';
+
+.search{
+    $height: 32px;
+    background-color: $light_2;
+    border-radius: 5px;
+    height: $height;
+    &__button{
+        height: $height;
+        width: 48px;
+        .mat-button-wrapper{
+            line-height: $height;
+        }
+    }
+    &__input{
+        background-color: $light_2;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        flex-grow: 1;
+    }
+    .mat-icon-button{
+        line-height: $height;
+    }
+}

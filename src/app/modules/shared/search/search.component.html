@@ -1,0 +1,12 @@
+<div class="search flex-container">
+    <button mat-icon-button
+            class="search__button flex-container flex-container_justify_center flex-container_align_center"
+            (click)="onSearchClick(searchInput.value)">
+        <img src="/assets/svg/magnifier.svg"
+             alt="magnifier">
+    </button>
+    <input [placeholder]="placeholder"           
+           type="text"
+           class="search__input regular_text"
+           #searchInput>
+  </div>

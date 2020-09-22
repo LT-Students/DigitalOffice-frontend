@@ -1,8 +1,6 @@
 @import 'abstracts/variables';
 @import 'base/fonts';
 @import 'layouts/containers';
-@import 'components/search';
-@import 'components/selects';
 
 .members-board {
   position: relative;
@@ -23,103 +21,74 @@
   &__search{
     margin-bottom: 14px;
   }
+  &__selects{
+    width: 379px;
+    margin-bottom: 14px;
+  }
   &__select-spec{
     width: 271px;
   }
   &__select-lvl{
     width: 103px;
   }
-}
-
-.form-content{
-  display: flex;
-  flex-direction: column;
-
-  min-width: 624px;
-
-  padding-top: 34px;
-  .form-content__select-row{
-    display:flex;
-    flex-flow: row wrap;
-
-  }/*кнопка*/
-  .form-content__bttn-wrap {
-    position: absolute;
-    right:0;
-    bottom:0;
-    margin-right: 48px;
-    margin-bottom: 32px;
-    width: 169px;
-    height: 32px;
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-    color: $gray;
+  &__background{
+    height: 424px;
+    margin-bottom: 14px;;
   }
 }
 
-.form-content__search {
-  width: 624px;
-  height: 32px;
-  margin-bottom: 14px;
-  outline: none;
-  border: none;
-  background: $light_2 url(src/assets/svg/magnifier.svg) no-repeat center left;
-  background-position: 20px;
-  border-radius: 5px;
-  padding-left: 40px;
+.no-members-icon{
+  text-align: center;
 }
 
-select{
-  display: block;
-  outline: none;
-  border: none;
-  background:#fff;
-  border: 1px solid $light_2;
-  box-shadow:none;
-  border-radius: 5px;
-  appearance: none;
-  background-image: url("src/assets/svg/arrow-down-dark.svg"), linear-gradient(to bottom, #ffffff 0%,#ffffff 100%);
-  background-repeat: no-repeat, repeat;
-  background-position: right .7em top 50%, 0 0;
-  padding: 5px 5px 5px 15px; width: 100%;
-  margin-right: 5px;
-  font-family: Gill Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: $dark_1;
-  height: 36px;
-}
 
-.select-row__spec{
-  width: 271px;
-}
-
-.select-row__lvl{
-  width: 103px;
-}
-
-.form-content__back-img {
-  display: flex;
-  flex-flow: column wrap;
-  align-items: center;
-
-
-  p{
-    padding-top:14px;
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-    color:$gray;
+::ng-deep .members-board{
+  .mat-form-field-infix,
+  .mat-form-field-wrapper,
+  .mat-form-field-flex,
+  .mat-form-field-appearance-legacy,
+  .mat-form-field-label-wrapper{
+      padding: 0;
   }
+  
+   .mat-form-field-appearance-legacy {
+      .mat-form-field-infix,
+      .mat-form-field-wrapper,
+      .mat-form-field-subscript-wrapper
+       {
+          padding: 0;
+      }
+  
+      .mat-form-field-underline{
+          visibility: hidden;
+      } 
+      .mat-form-field-label{
+          margin: 0;
+          top: 0;
+          padding: 0 0 0 0.5em;
+          @extend .regular_text;
+          @extend .text_color_dark-1;
+      }
+      .mat-select-value{
+          padding: 0 0 0 0.5em;
+      }
+      .mat-select-arrow{
+          border: none;
+          height: 6px;
+          width: 10px;
+          background-image: url('/assets/svg/arrow-down-dark.svg');
+      }
+  }
+
+
+  
+  .mat-form-field-infix{
+      border: none;
+      .mat-form-field-label-wrapper{
+          position: static;
+          height: 0;
+          overflow: visible;
+      }
+  } 
 }
-
-
-
 
