@@ -30,7 +30,7 @@ export class MembersBoardComponent implements OnInit {
     console.log('clicked!');
   }
 
-  onSearchClick(value: string){
+  onSearchClick(value: string): void {
     console.log(value);
   }
 }

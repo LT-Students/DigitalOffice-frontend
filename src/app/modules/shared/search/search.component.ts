@@ -15,7 +15,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onSearchClick(value: string): void{
+  onSearchClick(value: string): void {
     this.searchClick.emit(value);
   }
 }
