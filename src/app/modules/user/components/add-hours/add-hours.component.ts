@@ -15,10 +15,10 @@ import { UserResponse } from '../../../../../../libs/api/src/lib/user-service';
 export class AddHoursComponent implements OnInit, OnDestroy {
 
   @Input() userq: UserResponse;
-  @ViewChild('task', {static: false}) inputTask: ElementRef;
-  @ViewChild('description', {static: false}) textFieldDescription: ElementRef;
-  @ViewChild('inputHours', {static: false}) inputHours: ElementRef;
-  @ViewChild('inputMinutes', {static: false}) inputMinutes: ElementRef;
+  @ViewChild('task') inputTask: ElementRef;
+  @ViewChild('description') textFieldDescription: ElementRef;
+  @ViewChild('inputHours') inputHours: ElementRef;
+  @ViewChild('inputMinutes') inputMinutes: ElementRef;
 
   _projects: IProject[];
 
