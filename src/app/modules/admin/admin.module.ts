@@ -14,7 +14,7 @@ import { MyProjectComponent } from './components/my-project/my-project.component
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { TeamCardsComponent } from './components/team-cards/team-cards.component';
-import { TeamCardComponent } from './components/team-card/team-card.component';
+import { ProfileImageComponent } from '../shared/profile-image/profile-image.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +23,6 @@ import { TeamCardComponent } from './components/team-card/team-card.component';
         MyProjectComponent,
         NewEmployeeComponent,
         NewProjectComponent,
-        TeamCardComponent,
         TeamCardsComponent
     ],
   imports: [

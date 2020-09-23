@@ -1,82 +1,108 @@
 import { Component, OnInit } from '@angular/core';
 
 export interface TeamCard {
-  teamName: string;
+  name: string;
   members: {
     name: string;
     level?: string;
     lead?: boolean;
-    profilePic: string;
+    profileImgSrc: string;
   }[];
 }
 
 @Component({
-  selector: 'app-team-cards',
+  selector: 'do-team-cards',
   templateUrl: './team-cards.component.html',
   styleUrls: ['./team-cards.component.scss']
 })
 export class TeamCardsComponent implements OnInit {
   teamCards: TeamCard[] = [
     {
-      teamName: 'Teamleads',
+      name: 'Teamleads',
       members: [
         {
           name: 'Olya',
-          profilePic: ''
+          profileImgSrc: ''
         },
         {
           name: 'Slava',
-          profilePic: ''
+          profileImgSrc: ''
         },
         {
           name: 'Nikita',
-          profilePic: ''
+          profileImgSrc: ''
         }
       ]
     },
     {
-      teamName: 'Front-End Developers',
+      name: 'Front-End Developers',
       members: [
         {
           name: 'Anna',
-          profilePic: '',
+          profileImgSrc: '',
           lead: true,
           level: 'junior'
         },
         {
           name: 'Mariya',
-          profilePic: '',
+          profileImgSrc: '',
           level: 'junior'
         },
         {
           name: 'Vladimir',
-          profilePic: '',
+          profileImgSrc: '',
           level: 'middle',
         }
       ]
     },
     {
-      teamName: 'Back-End Developers',
+      name: 'Back-End Developers',
       members: [
         {
           name: 'Elena',
-          profilePic: '',
+          profileImgSrc: '',
           lead: true,
           level: 'middle'
         },
         {
           name: 'Oleg',
-          profilePic: '',
+          profileImgSrc: '',
           level: 'senior'
         }
       ]
     },
 
   ];
-
   constructor() { }
 
   ngOnInit() {
   }
 
+  private countLevels(members): string {
+    const levels = members.reduce((levelsObj, member) => {
+      levelsObj[member.level] = (levelsObj[member.level] || 0) + 1;
+      return levelsObj;
+    }, {});
+
+    let startDelimiter = false;
+    let levelsStr = '';
+
+    for (const [key, value] of Object.entries(levels)) {
+      if (startDelimiter) {
+        levelsStr += `, ${value} ${key}`;
+      } else {
+        levelsStr += `${value} ${key}`;
+        startDelimiter = true;
+      }
+    }
+    return levelsStr;
+  }
+
+  public addMember(members) {
+    members.push({
+      name: 'unknown',
+      profileImgSrc: ''
+    });
+    console.log('Member added');
+  }
 }
