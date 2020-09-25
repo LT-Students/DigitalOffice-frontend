@@ -9,21 +9,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class NewEmployeeComponent implements OnInit {
   public message: string;
   public imagePath;
-  imgURL: any;
-  private userForm: FormGroup;
-  private positions = [
+  public imgURL: any;
+  public userForm: FormGroup;
+  public positions = [
     { name: 'position1' },
     { name: 'position2' },
     { name: 'position3' },
   ];
-  private rates = [
+  public rates = [
     0,
     0.5,
     1,
     1.5,
     2
   ];
-  private departments = [
+  public departments = [
     { name: 'department1' },
     { name: 'department2' },
     { name: 'department3' }
@@ -65,7 +65,7 @@ export class NewEmployeeComponent implements OnInit {
     let reader = new FileReader();
     this.imagePath = files;
     reader.readAsDataURL(files[0]);
-    reader.onload = (_event) => {
+    reader.onload = (event) => {
       this.imgURL = reader.result;
     };
   }
