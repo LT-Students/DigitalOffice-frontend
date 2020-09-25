@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { IMember } from './../../../../interfaces/member.interface';
+import { Member } from './../../../../interfaces/member.interface';
 
 @Component({
   selector: 'do-members-board',
@@ -19,7 +19,7 @@ export class MembersBoardComponent implements OnInit {
     "senior"
   ];
 
-  @Input() members: IMember[] = [];
+  @Input() members: Member[] = [];
 
   constructor() { }
 
