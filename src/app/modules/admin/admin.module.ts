@@ -1,30 +1,32 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// Materials
-import { MatCardModule } from '@angular/material';
-import { MatIconModule } from '@angular/material';
-import { MatButtonModule } from '@angular/material';
-import {SharedModule} from '../shared/shared.module';
+import { MatCardModule} from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
+import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { TeamCardsComponent } from './components/team-cards/team-cards.component';
-import { ProfileImageComponent } from '../shared/profile-image/profile-image.component';
+import { NewCompanyComponent } from './components/new-company/new-company.component';
 
 @NgModule({
-    declarations: [
-        DashboardComponent,
-        AdminComponent,
-        MyProjectComponent,
-        NewEmployeeComponent,
-        NewProjectComponent,
-        TeamCardsComponent
-    ],
+  declarations: [
+    DashboardComponent,
+    AdminComponent,
+    MyProjectComponent,
+    NewEmployeeComponent,
+    NewProjectComponent,
+    NewCompanyComponent,
+    TeamCardsComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -33,7 +35,13 @@ import { ProfileImageComponent } from '../shared/profile-image/profile-image.com
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    SharedModule
+    SharedModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
+  entryComponents: [
+    NewCompanyComponent,
   ]
 })
 export class AdminModule {

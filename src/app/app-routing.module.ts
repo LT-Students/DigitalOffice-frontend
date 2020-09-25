@@ -22,7 +22,7 @@ const routes: Routes = [
       {
         path: 'user/attendance',
         component: AttendanceComponent,
-        // canActivate: [AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'admin',
@@ -37,7 +37,7 @@ const routes: Routes = [
           { path: 'new-employee', component: NewEmployeeComponent },
           { path: 'new-project', component: NewProjectComponent }
         ],
-        // canActivate: [AdminGuard, AuthGuard]
+        canActivate: [AdminGuard, AuthGuard]
       }
     ]
   },

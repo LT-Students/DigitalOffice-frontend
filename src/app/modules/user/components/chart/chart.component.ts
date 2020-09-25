@@ -1,35 +1,35 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ElementRef} from "@angular/core";
-import { ViewChild} from "@angular/core";
+import { ElementRef, ViewChild } from '@angular/core';
+import { Time } from '@angular/common';
 import { Chart } from 'chart.js';
+
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
-import { Time } from '@angular/common';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
 
 @Component({
   selector: 'do-chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss']
+  styleUrls: [ './chart.component.scss' ]
 })
 
 export class ChartComponent implements OnInit, OnDestroy {
   @Input() allHoursPlan;
-  private _projects: IProject[];
+  public projects: IProject[];
 
-  //Hours of plan
-  timeDescriptionValue: Time | string;       //Difference between hours in the center under hours
+  // Hours of plan
+  public timeDescriptionValue: Time;       // Difference between hours in the center under hours
 
-  public recommendedTime: Time = {hours: 8, minutes: 0};
+  public recommendedTime: Time = { hours: 8, minutes: 0 };
 
-  COLORS = ["#7C799B", "#C7C6D8", "#FFB2B2", "#FFB78C", "#EB5757", "#BC7BFA", "#FFBE97", "#BDBDBD"];
+  COLORS = [ '#7C799B', '#C7C6D8', '#FFB2B2', '#FFB78C', '#EB5757', '#BC7BFA', '#FFBE97', '#BDBDBD' ];
 
-  //variables for hours in the center
+  // variables for hours in the center
   allHoursColor;
 
-  private spentTime;
-  //variables for string under hours in the center of the chart
+  public spentTime;
+  // variables for string under hours in the center of the chart
   timeDescriptionBackgroundColor;
 
   timeDescriptionFontSize;
@@ -39,27 +39,27 @@ export class ChartComponent implements OnInit, OnDestroy {
   canvas: ElementRef<HTMLCanvasElement>;
 
   private ctx: CanvasRenderingContext2D;
+
   //
   constructor(private attendanceService: AttendanceService) {
-    this._projects = this.attendanceService.getProjects();
+    this.projects = this.attendanceService.getProjects();
   }
 
   ngOnInit() {
     this.attendanceService.plannedHours$.subscribe((period: ITimePeriod) => {
-      this.recommendedTime = this.attendanceService.countPlannedHours(period)
-    })
+      this.recommendedTime = this.attendanceService.countPlannedHours(period);
+    });
 
 
-
-    let minutesByProjects = this._projects.map((project: IProject) => {
-        return this.countMinutesByTask(project);
-    })
+    const minutesByProjects = this.projects.map((project: IProject) => {
+      return this.countMinutesByTask(project);
+    });
     //
 
-    //donut building
+    // donut building
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    if (minutesByProjects.every((minutesByProjects: number) => minutesByProjects > 0)) {
+    if ( minutesByProjects.every((minutes: number) => minutes > 0) ) {
 
       let allSpentMinutes = minutesByProjects.reduce((sum, totalTime) => sum + totalTime, 0);
       let allRecommendedMinutes = this.recommendedTime.hours * 60 + this.recommendedTime.minutes;
@@ -70,35 +70,35 @@ export class ChartComponent implements OnInit, OnDestroy {
         {
           hours: Math.round(recommendedHoursRemain / 60),
           minutes: recommendedHoursRemain % 60
-        }
+        };
 
       this.spentTime =
         {
           hours: Math.round(allSpentMinutes / 60),
           minutes: allSpentMinutes % 60
-        }
+        };
 
 
       this.timeDescriptionValue = this.recommendedTime;
 
 
-      this.allHoursColor = "#434348";
+      this.allHoursColor = '#434348';
       //
 
-      //String under hours
-      this.timeDescriptionColor = "#FFFFFF";
-      Number(this.timeDescriptionValue) >= 0 ? this.timeDescriptionBackgroundColor = "#21D373" : this.timeDescriptionBackgroundColor = "#EB5757";
-      this.timeDescriptionFontSize = "16px";
+      // String under hours
+      this.timeDescriptionColor = '#FFFFFF';
+      Number(this.timeDescriptionValue) >= 0 ? this.timeDescriptionBackgroundColor = '#21D373' : this.timeDescriptionBackgroundColor = '#EB5757';
+      this.timeDescriptionFontSize = '16px';
       //
 
-      var myChart = new Chart(this.ctx, {
+      let myChart = new Chart(this.ctx, {
         type: 'doughnut',
         data: {
-          datasets: [{
+          datasets: [ {
             data: minutesByProjects,
             backgroundColor: this.COLORS,
             borderWidth: 0,
-          }]
+          } ]
         },
         options: {
           cutoutPercentage: 70,
@@ -109,25 +109,25 @@ export class ChartComponent implements OnInit, OnDestroy {
       });
     } else {
 
-      //Hours in the center
-      this.allHoursColor = "#BDBDBD";
+      // Hours in the center
+      this.allHoursColor = '#BDBDBD';
       //
 
-      //String under hours
-      this.timeDescriptionValue = "Запланировано";
-      this.timeDescriptionBackgroundColor = "#FFFFFF";
-      this.timeDescriptionColor = "#BDBDBD";
-      this.timeDescriptionFontSize = "14px";
+      // String under hours
+      // this.timeDescriptionValue = 'Запланировано';
+      this.timeDescriptionBackgroundColor = '#FFFFFF';
+      this.timeDescriptionColor = '#BDBDBD';
+      this.timeDescriptionFontSize = '14px';
       //
 
-      var myChart = new Chart(this.ctx, {
+      let myChart = new Chart(this.ctx, {
         type: 'doughnut',
         data: {
-          datasets: [{
-            data: [1],
-            backgroundColor: "#F1F1EF",
+          datasets: [ {
+            data: [ 1 ],
+            backgroundColor: '#F1F1EF',
             borderWidth: 0,
-          }]
+          } ]
         },
         options: {
           cutoutPercentage: 70,
@@ -145,7 +145,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   countMinutesByTask(project: IProject): number {
     let allMinutesCounted = project.tasks.reduce((sum, task: ITask) => sum + task.time.minutes, 0);
-    let allHoursCounted = project.tasks.reduce((sum, task: ITask) => sum + task.time.hours, 0) ;
+    let allHoursCounted = project.tasks.reduce((sum, task: ITask) => sum + task.time.hours, 0);
     let allHoursImMinutes = allHoursCounted * 60;
     return allMinutesCounted + allHoursImMinutes;
   }
