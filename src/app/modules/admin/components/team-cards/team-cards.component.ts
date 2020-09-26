@@ -1,14 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
-export interface TeamCard {
-  name: string;
-  members: {
-    name: string;
-    level?: string;
-    lead?: boolean;
-    profileImgSrc: string;
-  }[];
-}
+import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
   selector: 'do-team-cards',
@@ -16,69 +6,12 @@ export interface TeamCard {
   styleUrls: ['./team-cards.component.scss']
 })
 export class TeamCardsComponent implements OnInit {
-  teamCards: TeamCard[] = [
-    {
-      name: 'Teamleads',
-      members: [
-        {
-          name: 'Olya',
-          profileImgSrc: ''
-        },
-        {
-          name: 'Slava',
-          profileImgSrc: ''
-        },
-        {
-          name: 'Nikita',
-          profileImgSrc: ''
-        }
-      ]
-    },
-    {
-      name: 'Front-End Developers',
-      members: [
-        {
-          name: 'Anna',
-          profileImgSrc: '',
-          lead: true,
-          level: 'junior'
-        },
-        {
-          name: 'Mariya',
-          profileImgSrc: '',
-          level: 'junior'
-        },
-        {
-          name: 'Vladimir',
-          profileImgSrc: '',
-          level: 'middle',
-        }
-      ]
-    },
-    {
-      name: 'Back-End Developers',
-      members: [
-        {
-          name: 'Elena',
-          profileImgSrc: '',
-          lead: true,
-          level: 'middle'
-        },
-        {
-          name: 'Oleg',
-          profileImgSrc: '',
-          level: 'senior'
-        }
-      ]
-    },
-
-  ];
+  @Input() teamCards;
   constructor() { }
-
   ngOnInit() {
   }
 
-  private countLevels(members): string {
+  public countLevels(members): string {
     const levels = members.reduce((levelsObj, member) => {
       levelsObj[member.level] = (levelsObj[member.level] || 0) + 1;
       return levelsObj;
