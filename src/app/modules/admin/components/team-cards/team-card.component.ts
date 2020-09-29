@@ -1,12 +1,12 @@
 import {Component, OnInit, Input} from '@angular/core';
 
 @Component({
-  selector: 'do-team-cards',
-  templateUrl: './team-cards.component.html',
-  styleUrls: ['./team-cards.component.scss']
+  selector: 'do-team-card',
+  templateUrl: './team-card.component.html',
+  styleUrls: ['./team-card.component.scss']
 })
-export class TeamCardsComponent implements OnInit {
-  @Input() teamCards;
+export class TeamCardComponent implements OnInit {
+  @Input() teamCard;
   constructor() { }
   ngOnInit() {
   }
@@ -24,6 +24,5 @@ export class TeamCardsComponent implements OnInit {
       name: 'unknown',
       profileImgSrc: ''
     });
-    console.log('Member added');
   }
 }

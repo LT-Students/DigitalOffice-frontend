@@ -1,0 +1,76 @@
+@import 'abstracts/variables';
+@import 'base/fonts';
+
+
+.team-card {
+  min-width: 320px;
+  padding: 24px;
+  height: 100%;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__name {
+    margin: 0;
+  }
+  &__people-count-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__people-count-icon {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+  }
+  &__level-labels {
+    margin-top: 6px;
+  }
+  &__team-members {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 12px;
+  }
+  &__members-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    list-style: none;
+  }
+  &__new-member {
+    margin-right: 12px;
+    margin-top: 12px;
+    align-self: flex-start;
+  }
+  &__member {
+    position: relative;
+    margin-right: 12px;
+    margin-top: 12px;
+  }
+  &__icon-dummy {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: $gray;
+  }
+  &__icon-dummy_lead {
+    &:before {
+      @extend .h6;
+      @extend .text_white;
+      content: "lead";
+      position: absolute;
+      top: -6px;
+      right: -14px;
+      text-align: center;
+      text-transform: uppercase;
+      background-color: $blue_3;
+      border-radius: 6px;
+      padding: 0 3px;
+    }
+  }
+}

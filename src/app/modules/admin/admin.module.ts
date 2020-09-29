@@ -14,7 +14,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
-import { TeamCardsComponent } from './components/team-cards/team-cards.component';
+import { TeamCardComponent } from './components/team-cards/team-card.component';
 import { NewCompanyComponent } from './components/new-company/new-company.component';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     NewEmployeeComponent,
     NewProjectComponent,
     NewCompanyComponent,
-    TeamCardsComponent
+    TeamCardComponent
   ],
   imports: [
     CommonModule,

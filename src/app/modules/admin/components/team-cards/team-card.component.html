@@ -1,8 +1,5 @@
-<div class="team-cards">
-  <ng-container
-    *ngFor="let teamCard of teamCards"
-  >
-    <mat-card class="team-card bg-light_1">
+<mat-card
+  class="team-card bg-light_1">
       <div class="team-card__header">
         <mat-card-title class="team-card__name h4 text_bold text_dark_1">{{ teamCard.name }}</mat-card-title>
         <div class="team-card__people-count-container">
@@ -42,7 +39,3 @@
         </ul>
       </div>
     </mat-card>
-  </ng-container>
-</div>
-
-
