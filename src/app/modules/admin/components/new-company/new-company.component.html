@@ -1,19 +1,22 @@
-<div class="content-container">
-  <div class="header-content">
-    <span class="h3 header-content">Новая компания</span>
+<div class="newCompany__container">
+  <div class="newCompany__inputsContainer">
+    <div class="newCompany__header">
+      <span class="h3 newCompany__header">Новая компания</span>
+    </div>
+    <form class="newCompany__inputsContainer">
+      <mat-form-field appearance="none" class="companyName">
+        <p class="regular_text">Название</p>
+        <input matInput class="mat__input">
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="none" class="companyDescription">
+        <p class="regular_text">Описание</p>
+        <textarea matInput class="mat__textarea"></textarea>
+      </mat-form-field>
+    </form>
   </div>
-  <form class="form-container">
-    <mat-form-field class="company-name h5">
-      <mat-label>Название</mat-label>
-      <input matInput>
-    </mat-form-field>
-    <br>
-    <mat-form-field class="company-description h5">
-      <mat-label>Описание</mat-label>
-      <textarea matInput></textarea>
-    </mat-form-field>
-  </form>
-  <div class="buttons-container">
+
+  <div class="newCompany__buttonsContainer">
     <button mat-flat-button class="addEmploye">Добавить</button>
     <button mat-flat-button class="bg-accent_color">Отмена</button>
   </div>

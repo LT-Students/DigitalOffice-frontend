@@ -1,0 +1,11 @@
+@import '../abstracts/variables';
+@import '../base/fonts';
+
+.mat__textarea{
+  width: 100%;
+  background-color: $light_3;
+  min-height: 82px;
+  border-radius: 5px;
+  padding: 0 17px;
+  color: $dark_1;
+}

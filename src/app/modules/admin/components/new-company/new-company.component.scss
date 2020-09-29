@@ -1,23 +1,31 @@
 @import '../../../../../stylesheets/abstracts/variables';
 @import '../../../../../stylesheets/base/fonts';
-.content-container{
+@import '../../../../../stylesheets/material/input';
+@import '../../../../../stylesheets/material/textarea';
+.h3,
+.regular_text{
+  color: $dark_1;
+}
+.regular_text{
+  font-size: 14px;
+}
+
+.newCompany__container{
+  height: 100%;
   display: flex;
   flex-direction: column;
-  .header-content{
-    color: $dark_1;
-  }
-  .form-container{
-    min-width: 431px;
-    .company-name,
-    .company-description{
+  justify-content: space-between;
+  padding: 25px 12px 0;
+  .newCompany__inputsContainer{
+    .companyName,
+    .companyDescription{
       width: 100%;
     }
   }
-  .buttons-container{
+  .newCompany__buttonsContainer{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    margin: 185px 0 0;
     button {
       width: 185px;
     }
