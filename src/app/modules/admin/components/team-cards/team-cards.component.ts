@@ -16,19 +16,7 @@ export class TeamCardsComponent implements OnInit {
       levelsObj[member.level] = (levelsObj[member.level] || 0) + 1;
       return levelsObj;
     }, {});
-
-    let startDelimiter = false;
-    let levelsStr = '';
-
-    for (const [key, value] of Object.entries(levels)) {
-      if (startDelimiter) {
-        levelsStr += `, ${value} ${key}`;
-      } else {
-        levelsStr += `${value} ${key}`;
-        startDelimiter = true;
-      }
-    }
-    return levelsStr;
+    return Object.keys(levels).map(level => `${levels[level]} ${level}`).join(', ');
   }
 
   public addMember(members) {
