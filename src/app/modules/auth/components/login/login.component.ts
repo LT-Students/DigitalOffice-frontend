@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (user: UserResponse) => {
           if ( user.isAdmin ) {
-            this.router.navigate([ '/user/admin/dashboard' ]);
+            this.router.navigate([ '/admin/dashboard' ]);
           } else {
             this.router.navigate([ '/user/attendance' ]);
           }
