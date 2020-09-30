@@ -11,9 +11,10 @@
     </div>
     <div class="members-form__selects flex-container flex-container_justify_space-between">
       <mat-form-field class="select members-form__select-spec"
-                      floatLabel="never">
+                      appearance="none">
         <mat-select class="regular_text text_color_dark-1"
-                    placeholder="Специализация">
+                    placeholder="Специализация"
+                    disableOptionCentering="true">
           <mat-option *ngFor="let specialization of specializations" 
                       [value]="specialization"
                       class="regular_text text_color_dark-1">
@@ -22,7 +23,7 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field class="select members-form__select-lvl" 
-                      floatLabel="never">
+                      appearance="none">
         <mat-select class="regular_text text_color_dark-1"
                     placeholder="Уровень">
           <mat-option *ngFor="let level of levels" 
