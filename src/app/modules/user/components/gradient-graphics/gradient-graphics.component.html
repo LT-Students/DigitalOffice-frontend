@@ -17,8 +17,8 @@
   </div>
 
   <div class="graphics__container">
-    <div class="graphic__column" *ngFor="let column of amountOfDays, index as column">
-      <div class="graphic__item" *ngFor="let item of amountOfWorkHours, index as item">
+    <div class="graphic__column" *ngFor="let column of amountOfDays">
+      <div class="graphic__item" *ngFor="let item of amountOfWorkHours">
 
         <div class="hours__processing regular_text" *ngIf="item == 0 && processingArray[column] == true">
           {{dailyHoursData[column].hours}}:{{dailyHoursData[column].minutes}}

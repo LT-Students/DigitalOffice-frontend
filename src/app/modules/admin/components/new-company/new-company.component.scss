@@ -1,0 +1,27 @@
+@import '../../../../../stylesheets/abstracts/variables';
+@import '../../../../../stylesheets/base/fonts';
+.content-container{
+  display: flex;
+  flex-direction: column;
+  .header-content{
+    color: $dark_1;
+  }
+  .form-container{
+    min-width: 431px;
+    .company-name,
+    .company-description{
+      width: 100%;
+    }
+  }
+  .buttons-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 185px 0 0;
+    button {
+      width: 185px;
+    }
+  }
+}
+
+
