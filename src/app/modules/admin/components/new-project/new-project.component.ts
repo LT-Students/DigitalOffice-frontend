@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { teamCards } from './team-cards';
+import {teamCards, TeamCard} from './team-cards';
 
 @Component({
   selector: 'do-new-project',
@@ -8,7 +8,7 @@ import { teamCards } from './team-cards';
   styleUrls: ['./new-project.component.scss']
 })
 export class NewProjectComponent implements OnInit {
-  teams = teamCards;
+  teams: TeamCard[] = teamCards;
   constructor() { }
 
   ngOnInit(): void {

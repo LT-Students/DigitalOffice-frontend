@@ -1,15 +1,15 @@
 import {Component, OnInit, Input} from '@angular/core';
 
+import {TeamCard} from '../new-project/team-cards';
+
 @Component({
   selector: 'do-team-card',
   templateUrl: './team-card.component.html',
   styleUrls: ['./team-card.component.scss']
 })
-export class TeamCardComponent implements OnInit {
-  @Input() teamCard;
+export class TeamCardComponent {
+  @Input() teamCard: TeamCard;
   constructor() { }
-  ngOnInit() {
-  }
 
   public countLevels(members): string {
     const levels = members.reduce((levelsObj, member) => {
@@ -19,7 +19,7 @@ export class TeamCardComponent implements OnInit {
     return Object.keys(levels).map(level => `${levels[level]} ${level}`).join(', ');
   }
 
-  public addMember(members) {
+  public addMember(members): void {
     members.push({
       name: 'unknown',
       profileImgSrc: ''

@@ -1,7 +1,5 @@
 <span class="h1 h1_dark_2">Новый проект</span>
 
 <div class="team-cards">
-  <ng-container *ngFor="let team of teams">
-    <do-team-card [teamCard]="team"></do-team-card>
-  </ng-container>
+    <do-team-card *ngFor="let team of teams" [teamCard]="team"></do-team-card>
 </div>
