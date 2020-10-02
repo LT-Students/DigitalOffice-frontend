@@ -10,19 +10,16 @@
   font-size: 14px;
 }
 
-.newCompany__container{
+.new-company__container{
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 25px 12px 0;
-  .newCompany__inputsContainer{
-    .companyName,
-    .companyDescription{
-      width: 100%;
-    }
+  mat-form-field{
+    width: 100%
   }
-  .newCompany__buttonsContainer{
+  .new-company__buttons-container{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
