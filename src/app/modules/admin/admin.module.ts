@@ -32,7 +32,7 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    AppMaterialModule
+    AppMaterialModule,
     MatDialogModule,
     MatInputModule,
     MatButtonModule,
