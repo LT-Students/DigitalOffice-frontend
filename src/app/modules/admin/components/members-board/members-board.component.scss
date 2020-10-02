@@ -1,10 +1,11 @@
 @import 'abstracts/variables';
 @import 'base/fonts';
-@import 'layouts/containers';
 
 $select-height: 36px;
 
 .members-board {
+  display: flex;
+  flex-direction: column;
   position: relative;
   max-width: 720px;
   background: white;
@@ -24,6 +25,8 @@ $select-height: 36px;
     margin-bottom: 14px;
   }
   &__selects{
+    display: flex;
+    justify-content: space-between;
     width: 379px;
     height: $select-height;
     margin-bottom: 14px;
@@ -35,12 +38,21 @@ $select-height: 36px;
     width: 103px;
   }
   &__background{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 424px;
     margin-bottom: 14px;;
+  }
+  &__button-container{
+    display: flex;
+    justify-content: flex-end;
   }
 }
 
 .no-members-icon{
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
 

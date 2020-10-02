@@ -1,4 +1,4 @@
-<div class="members-board flex-container flex-container_direction_column">
+<div class="members-board">
   <button mat-icon-button
           class="members-board__close-button">
     <img src="/assets/svg/cross.svg" 
@@ -9,7 +9,7 @@
     <div  class="members-form__search">
       <do-search (searchClick)="onSearchClick($event)"></do-search>
     </div>
-    <div class="members-form__selects flex-container flex-container_justify_space-between">
+    <div class="members-form__selects">
       <mat-form-field class="select members-form__select-spec"
                       appearance="none">
         <mat-select class="regular_text text_color_dark-1"
@@ -34,19 +34,18 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="members-form__background flex-container flex-container_justify_center flex-container_align_center">
+    <div class="members-form__background">
       <div *ngIf="this.members.length == 0" 
-           class="no-members-icon flex-container flex-container_direction_column">
+           class="no-members-icon">
         <img src="/assets/images/tumbleweed.png" alt="tumbleweed">
         <span class="regular_text text_color_gray">Пока тут никого...</span>
       </div>
     </div>
-    <div class="flex-container flex-container_justify_end">
+    <div class="members-form__button-container">
       <button mat-flat-button
         color="accent"
         disabled
-        (click)="onChooseMemberClick()"
-        class="members-board__add-members-button">
+        (click)="onChooseMemberClick()">
         Добавить участников
       </button>
     </div>
