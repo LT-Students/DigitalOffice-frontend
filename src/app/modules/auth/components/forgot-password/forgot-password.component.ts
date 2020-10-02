@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { UserService } from '../../../../services/user.service';
 
 @Component({
@@ -8,10 +9,10 @@ import { UserService } from '../../../../services/user.service';
   styleUrls: [ './forgot-password.component.scss' ]
 })
 export class ForgotPasswordComponent implements OnInit {
-  private forgotPasswordForm: FormGroup;
-  private forgotPasswordError: string;
-  private isWaiting: boolean = false;
-  private isCompleted: boolean = false;
+  public forgotPasswordForm: FormGroup;
+  public forgotPasswordError: string;
+  public isWaiting = false;
+  public isCompleted = false;
 
   constructor(
     private userService: UserService,
@@ -24,7 +25,7 @@ export class ForgotPasswordComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  private resetPassword() {
+  public resetPassword() {
     this.isWaiting = true;
     setTimeout(() => {
       this.isCompleted = true;
@@ -32,7 +33,7 @@ export class ForgotPasswordComponent implements OnInit {
     }, 1000);
   }
 
-  private isEmailInputValid(): boolean {
+  public isEmailInputValid(): boolean {
     return !(this.forgotPasswordForm.get('email').touched &&
       this.forgotPasswordForm.get('email').invalid);
   }
