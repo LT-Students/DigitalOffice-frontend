@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 /*also root: must work here*/
 /*in .component.scss try host: (shadow DOM)*/
+@import 'src/stylesheets/material/mat-mini-fab-override';
+
 *,
 *:before,
 *:after {
@@ -18,4 +20,8 @@ a,
 a:visited,
 a:hover{
   text-decoration: none;
+}
+
+button:focus{
+  outline: none;
 }
