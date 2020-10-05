@@ -35,9 +35,6 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     ReactiveFormsModule,
     SharedModule,
     AppMaterialModule,
-    MatDialogModule,
-    MatInputModule,
-    MatButtonModule,
   ],
   entryComponents: [
     NewCompanyComponent,

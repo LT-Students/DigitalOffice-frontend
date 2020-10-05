@@ -46,6 +46,13 @@
     margin-right: 12px;
     margin-top: 12px;
     align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__plus{
+    height: 26px;
+    width: 26px;
   }
   &__member {
     position: relative;
