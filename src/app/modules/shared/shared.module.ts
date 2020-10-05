@@ -7,6 +7,8 @@ import { SelectComponent } from './select/select.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ProfileImageComponent } from './profile-image/profile-image.component';
 import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
+import { SearchComponent } from './search/search.component';
+import { AppMaterialModule } from 'src/app/app-material.module';
 
 
 
@@ -16,17 +18,20 @@ import { ToolbarContainerComponent } from './toolbar-container/toolbar-container
     SelectComponent,
     ToolbarComponent,
     ProfileImageComponent,
-    ToolbarContainerComponent
+    ToolbarContainerComponent,
+    SearchComponent
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    AppMaterialModule
   ],
   exports: [
     ButtonComponent,
     SelectComponent,
     ToolbarComponent,
-    ProfileImageComponent
+    ProfileImageComponent,
+    SearchComponent
   ]
 })
 export class SharedModule { }

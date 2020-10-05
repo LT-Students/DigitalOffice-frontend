@@ -68,9 +68,25 @@
     font-weight: bold;
 }
 
+.text_color{
+    &_white{
+        color: white;
+    }
+    &_dark-1{
+        color: $dark_1;
+    }
+    &_light-1{
+        color: $light_1;
+    }
+    &_gray{
+        color: $gray;
+    }
+}
+
 .text_dark_1{
     color: $dark_1;
 }
+
 
 .text_white{
     color: white;
