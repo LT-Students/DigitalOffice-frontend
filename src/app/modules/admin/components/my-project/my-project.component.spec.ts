@@ -8,9 +8,8 @@ describe('GradientGraphicsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GradientGraphicsComponent ]
-    })
-    .compileComponents();
+      declarations: [GradientGraphicsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -13,16 +13,18 @@ import { AttendanceComponent } from './modules/user/components/attendance/attend
 
 const routes: Routes = [
   {
-    path: '', component: ToolbarContainerComponent, children: [
+    path: '',
+    component: ToolbarContainerComponent,
+    children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'user/attendance'
+        redirectTo: 'user/attendance',
       },
       {
         path: 'user/attendance',
         component: AttendanceComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: 'admin',
@@ -31,7 +33,7 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            redirectTo: 'dashboard'
+            redirectTo: 'dashboard',
           },
           { path: 'dashboard', component: DashboardComponent },
           { path: 'new-employee', component: NewEmployeeComponent },
@@ -44,8 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

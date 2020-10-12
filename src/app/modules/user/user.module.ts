@@ -13,7 +13,6 @@ import { UserTasksComponent } from './components/user-tasks/user-tasks.component
 import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
 
-
 @NgModule({
   declarations: [
     TagsBlockComponent,
@@ -24,14 +23,9 @@ import { TaskComponent } from './components/project/task/task.component';
     GradientGraphicsComponent,
     UserTasksComponent,
     ProjectComponent,
-    TaskComponent
+    TaskComponent,
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    NgbDatepickerModule
-  ],
-  providers: []
+  imports: [CommonModule, SharedModule, NgbDatepickerModule],
+  providers: [],
 })
-export class UserModule {
-}
+export class UserModule {}

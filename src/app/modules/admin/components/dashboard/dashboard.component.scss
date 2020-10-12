@@ -1,113 +1,111 @@
-@import '../../../../../stylesheets/abstracts/variables';
-@import '../../../../../stylesheets/base/fonts';
+@import 'base/variables';
 
-.content-container{
+.content-container {
+  display: flex;
+  justify-content: center;
+  min-height: 1100px;
+  background-color: $light_2;
+  .board {
     display: flex;
-    justify-content: center;
-    min-height: 1100px;
-    background-color: $light_2;
-    .board{
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 928px;
+    .user-board {
+      position: relative;
+      margin-top: 6.36%;
+      width: 100%;
+      &__content {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        max-height: 100%;
+        border-radius: 5px;
+      }
+      &__photo {
+        height: 125%;
+        position: absolute;
+        right: 24px;
+        bottom: 0;
+      }
+      &__date {
+        position: absolute;
+        top: 40px;
+        left: 48px;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        max-width: 928px;
-        .user-board {
+        .h2_ultimate-orange {
+          color: $ultimate_orange;
+        }
+        span {
+          margin: 6px 0px 6px 0px;
+        }
+      }
+    }
+    .manage-board {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 3.38%;
+      .h3_dark_1 {
+        color: $dark_1;
+      }
+      &__content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 14px;
+        .h4_ultimate-orange {
+          color: $ultimate_orange;
+        }
+        .h4_dark_1 {
+          color: $dark_1;
+        }
+
+        button {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border-style: none;
+          box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.15);
+          border-radius: 5px;
+          padding: 0;
+          margin: 0px 16px 0px 16px;
+          width: 288px;
+          height: 272px;
+          cursor: pointer;
+          span {
             position: relative;
-            margin-top: 6.36%;
-            width: 100%;
-            &__content {
-                position: relative;
-                bottom: 0;
-                width: 100%;
-                max-height: 100%;
-                border-radius: 5px;
-            }
-            &__photo {
-                height: 125% ;
-                position: absolute;
-                right: 24px;
-                bottom: 0;
-            }
-            &__date {
-                position: absolute;
-                top: 40px;
-                left: 48px;
-                display: flex;
-                flex-direction: column;
-                .h2_ultimate-orange{
-                    color: $ultimate_orange;
-                }
-                span{
-                    margin: 6px 0px 6px 0px;
-                }
-            }
-        }
-        .manage-board {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-top: 3.38%;
-            .h3_dark_1{
-                color: $dark_1;
-            }
-            &__content{
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                margin-top: 14px;
-                .h4_ultimate-orange{
-                    color: $ultimate_orange;
-                }
-                .h4_dark_1{
-                    color: $dark_1;
-                }
-
-                button{
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    border-style:none;
-                    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.15);
-                    border-radius: 5px;
-                    padding: 0;
-                    margin: 0px 16px 0px 16px;
-                    width: 288px;
-                    height: 272px;
-                    cursor: pointer;
-                    span{
-                        position: relative;
-                        top: 30px;
-                    }
-                }
-
-                .btn-first{
-                    margin-left: 0;
-                    background-color: $light_1;
-                    background-image: url("../../../../../assets/admin/dashboard/add-employee-background.png");
-                }
-                .btn-last{
-                    margin-right: 0;
-                    background-color: $accent_color;
-                    background-image: url("../../../../../assets/admin/dashboard/add-project-background.png");
-                }
-            }
+            top: 30px;
+          }
         }
 
-        .projects-board {
-            margin-top: 6.36%;
-            .h3_dark_1{
-                color: $dark_1;
-            }
-            &__content{
-                display: flex;
-                flex-direction: row;
-                margin-top: 14px;
-                .component-my-project{
-                    margin-right: 20px;
-                }
-            }
+        .btn-first {
+          margin-left: 0;
+          background-color: $light_1;
+          background-image: url('../../../../../assets/admin/dashboard/add-employee-background.png');
         }
+        .btn-last {
+          margin-right: 0;
+          background-color: $accent_color;
+          background-image: url('../../../../../assets/admin/dashboard/add-project-background.png');
+        }
+      }
     }
 
+    .projects-board {
+      margin-top: 6.36%;
+      .h3_dark_1 {
+        color: $dark_1;
+      }
+      &__content {
+        display: flex;
+        flex-direction: row;
+        margin-top: 14px;
+        .component-my-project {
+          margin-right: 20px;
+        }
+      }
+    }
+  }
 }

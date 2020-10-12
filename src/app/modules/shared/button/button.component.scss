@@ -1,9 +1,9 @@
-@import '../../../../stylesheets/abstracts/variables';
+@import 'base/variables';
 
 /*основной класс*/
 .button {
   cursor: pointer;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 5px;
@@ -15,7 +15,7 @@
 }
 
 .button-lg {
-height: 40px;
+  height: 40px;
 }
 
 .button-md {

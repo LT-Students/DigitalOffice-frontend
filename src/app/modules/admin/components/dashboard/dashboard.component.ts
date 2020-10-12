@@ -8,25 +8,20 @@ import { NewCompanyComponent } from '../new-company/new-company.component';
 @Component({
   selector: 'do-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: [ './dashboard.component.scss' ]
+  styleUrls: ['./dashboard.component.scss'],
 })
-
 export class DashboardComponent implements OnInit {
-
   @Input() projects: Project[] = [];
   public today = Date.now();
 
-  constructor(
-    private router: Router,
-    public dialog: MatDialog
-  ) {}
+  constructor(private router: Router, public dialog: MatDialog) {}
 
   ngOnInit(): void {
     const proj1 = {
       name: 'MainProject1',
       consumer: {
         name: 'Company№1',
-        description: 'Super company that is doing nothing.'
+        description: 'Super company that is doing nothing.',
       },
       description: 'Just project. Nothing special.',
       contributors: [
@@ -34,20 +29,20 @@ export class DashboardComponent implements OnInit {
           user: {
             firstName: 'Вася',
             lastName: 'Пчелкин',
-            photo: '../../../assets/images/girl.png'
+            photo: '../../../assets/images/girl.png',
           },
           totalTime: {
             hours: 40,
-            minutes: 0
-          }
-        }
-      ]
+            minutes: 0,
+          },
+        },
+      ],
     };
     const proj2 = {
       name: 'MainProject2',
       consumer: {
         name: 'Company№2',
-        description: 'Super company that is doing nothing.'
+        description: 'Super company that is doing nothing.',
       },
       description: 'Just project. Nothing special.',
       contributors: [
@@ -55,32 +50,29 @@ export class DashboardComponent implements OnInit {
           user: {
             firstName: 'Вася',
             lastName: 'Пчелкин',
-            photo: '../../../assets/images/girl.png'
+            photo: '../../../assets/images/girl.png',
           },
           totalTime: {
             hours: 40,
-            minutes: 0
-          }
-        }
-      ]
+            minutes: 0,
+          },
+        },
+      ],
     };
 
-    this.projects.push(
-      proj1,
-      proj2
-    );
+    this.projects.push(proj1, proj2);
   }
 
   onOpenNewProject() {
-    this.router.navigate([ 'admin/new-project' ]);
+    this.router.navigate(['admin/new-project']);
   }
 
   onOpenNewCompany(): void {
     const dialogRef = this.dialog.open(NewCompanyComponent, {
       width: '503px',
     });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${ result }`);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
     });
   }
 }

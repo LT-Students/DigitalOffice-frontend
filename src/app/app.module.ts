@@ -26,9 +26,7 @@ import { AttendanceService } from './modules/user/components/attendance/attendan
 registerLocaleData(localeRu);
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     RouterModule,
@@ -41,7 +39,7 @@ registerLocaleData(localeRu);
     AdminModule,
     NgbModule,
     BrowserAnimationsModule,
-    AppMaterialModule
+    AppMaterialModule,
   ],
   providers: [
     AuthService,
@@ -52,12 +50,11 @@ registerLocaleData(localeRu);
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
+      multi: true,
     },
-    { provide: LOCALE_ID, useValue: 'ru-RU' }
+    { provide: LOCALE_ID, useValue: 'ru-RU' },
   ],
-  bootstrap: [ AppComponent ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {
-}
+export class AppModule {}

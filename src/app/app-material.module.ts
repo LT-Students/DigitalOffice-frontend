@@ -43,9 +43,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatCardModule,
     MatDialogModule
   ],
-  providers: [
-    MatDatepickerModule,
-  ]
+  providers: [MatDatepickerModule],
 })
 
 export class AppMaterialModule { }

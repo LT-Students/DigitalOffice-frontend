@@ -33,12 +33,9 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule,
     AppMaterialModule,
+    SharedModule,
   ],
-  entryComponents: [
-    NewCompanyComponent,
-  ]
+  entryComponents: [NewCompanyComponent],
 })
-export class AdminModule {
-}
+export class AdminModule {}

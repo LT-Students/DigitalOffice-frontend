@@ -10,8 +10,6 @@ import { ToolbarContainerComponent } from './toolbar-container/toolbar-container
 import { SearchComponent } from './search/search.component';
 import { AppMaterialModule } from 'src/app/app-material.module';
 
-
-
 @NgModule({
   declarations: [
     ButtonComponent,

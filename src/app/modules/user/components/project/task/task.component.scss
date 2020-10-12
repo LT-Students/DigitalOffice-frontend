@@ -1,5 +1,4 @@
-@import 'abstracts/variables';
-@import 'base/fonts';
+@import 'base/variables';
 
 button {
   display: flex;
@@ -13,7 +12,7 @@ button {
   background: transparent;
   width: 19px;
   height: 19px;
-  svg{
+  svg {
     height: 100%;
     width: 100%;
   }
@@ -89,4 +88,3 @@ p {
   margin-left: auto;
   min-width: auto;
 }
-
