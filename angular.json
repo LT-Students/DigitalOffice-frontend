@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "DigitalOffice-frontend": {
+    "digitalOffice-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -28,12 +28,8 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss",
               "src/theme.scss"
-            ],
-            "styles": [
-              "src/stylesheets/main.scss"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [

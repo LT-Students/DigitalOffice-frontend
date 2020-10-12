@@ -1,31 +1,41 @@
-@import '../../../../../stylesheets/abstracts/variables';
-@import '../../../../../stylesheets/base/fonts';
-@import '../../../../../stylesheets/material/input';
-@import '../../../../../stylesheets/material/textarea';
+@import 'base/variables';
+
 .h3,
-.regular_text{
+.regular_text {
   color: $dark_1;
 }
-.regular_text{
+
+.regular_text {
   font-size: 14px;
 }
 
-.new-company__container{
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 25px 12px 0;
-  mat-form-field{
-    width: 100%
+.new-company {
+  &__container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px 12px 0;
   }
-  .new-company__buttons-container{
+
+  &__buttons-container {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+
     button {
       width: 185px;
+
+      &:first-child {
+        margin: 0 15px;
+      }
     }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
   }
 }
 

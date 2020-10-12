@@ -28,8 +28,8 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatInputModule,
     MatButtonModule,
+    MatInputModule,
   ],
   entryComponents: [
     NewCompanyComponent,

@@ -1,6 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
-/*also root: must work here*/
-/*in .component.scss try host: (shadow DOM)*/
+@import 'base/variables';
+@import 'base/fonts';
+@import 'layouts/card';
+@import 'layouts/forms';
+@import "material/input";
+
 *,
 *:before,
 *:after {
@@ -18,4 +21,15 @@ a,
 a:visited,
 a:hover{
   text-decoration: none;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+::placeholder {
+  @extend .regular_text;
+  opacity: 0.8;
 }

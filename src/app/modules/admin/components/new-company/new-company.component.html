@@ -1,24 +1,22 @@
 <div class="new-company__container">
+  <div>
+    <span class="h3">Новая компания</span>
+  </div>
   <div class="new-company__inputs-container">
-    <div>
-      <span class="h3">Новая компания</span>
-    </div>
-    <form>
-      <mat-form-field appearance="none">
+    <form class="new-company__form">
+      <mat-form-field>
         <p class="regular_text">Название</p>
-        <input matInput class="mat-custom-input">
+        <input matInput>
       </mat-form-field>
-      <br>
-      <mat-form-field appearance="none">
+      <mat-form-field>
         <p class="regular_text">Описание</p>
-        <textarea matInput class="mat-custom-textarea"></textarea>
+        <textarea matInput></textarea>
       </mat-form-field>
     </form>
   </div>
-
   <div class="new-company__buttons-container">
-    <button mat-flat-button>Добавить</button>
-    <button mat-flat-button class="bg-accent_color">Отмена</button>
+    <button mat-flat-button>Отмена</button>
+    <button mat-flat-button color="primary" class="bg-accent_color">Добавить</button>
   </div>
 </div>
 

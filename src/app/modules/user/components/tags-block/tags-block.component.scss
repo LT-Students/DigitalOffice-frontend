@@ -3,16 +3,7 @@ $button-color-orange1: hsl(14°, 94%, 66%);
 $background-color-white1: hsl(0°, 0%, 100%);
 $font-black1: hsl(250°, 6%, 20%);
 $bar-color-orange1: hsl (22°, 100%, 77%);
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
 
-p {
-  margin: 0;
-  padding: 0;
-}
 
 .wrapper {
   width: 928px;

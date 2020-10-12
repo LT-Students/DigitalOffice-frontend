@@ -35,7 +35,7 @@ const routes: Routes = [
           { path: 'dashboard', component: DashboardComponent },
           { path: 'new-employee', component: NewEmployeeComponent }
         ],
-        canActivate: [AdminGuard, AuthGuard]
+        // canActivate: [AdminGuard, AuthGuard]
       }
     ]
   },

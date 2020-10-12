@@ -1,14 +1,15 @@
+@import 'base/variables';
 @import 'base/fonts';
-@import 'abstracts/variables';
 
 .add-hours {
   padding: 9.6%;
 
   &__title {
     color: $dark_1;
-    &:after{
+
+    &:after {
       content: '';
-      display:block;
+      display: block;
       width: 123px;
       height: 4px;
       background-color: $accent_color_bright;
@@ -21,11 +22,13 @@
     align-items: center;
     height: 32px;
     color: $dark_1;
-    span{
+
+    span {
       margin: 0;
       padding: 0;
     }
-    input{
+
+    input {
       margin: 0;
       padding: 0;
     }
@@ -33,6 +36,7 @@
 
   &__select {
     margin-top: 10px;
+
     .select-project {
       margin-bottom: 20px;
     }
@@ -81,6 +85,7 @@
   border: none;
   outline: none;
   width: 40px;
+
   &::placeholder {
     @extend %header_font_basic;
     font-size: 28px;
