@@ -8,25 +8,20 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ProfileImageComponent } from './profile-image/profile-image.component';
 import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
 
-
-
 @NgModule({
   declarations: [
     ButtonComponent,
     SelectComponent,
     ToolbarComponent,
     ProfileImageComponent,
-    ToolbarContainerComponent
+    ToolbarContainerComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
+  imports: [CommonModule, RouterModule],
   exports: [
     ButtonComponent,
     SelectComponent,
     ToolbarComponent,
-    ProfileImageComponent
-  ]
+    ProfileImageComponent,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

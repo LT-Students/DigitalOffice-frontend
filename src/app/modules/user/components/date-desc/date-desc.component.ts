@@ -6,11 +6,10 @@ import { Time } from '@angular/common';
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
 
-
 @Component({
   selector: 'do-datedesc',
   templateUrl: './date-desc.component.html',
-  styleUrls: [ './date-desc.component.scss' ]
+  styleUrls: ['./date-desc.component.scss'],
 })
 export class DateDescComponent implements OnInit {
   public visible = false;
@@ -35,7 +34,7 @@ export class DateDescComponent implements OnInit {
   ngOnInit(): void {
     this.daysOfWeek = this.getWeek();
 
-    if ( !this.timePeriodSelected.to ) {
+    if (!this.timePeriodSelected.to) {
       this.plannedTime = { hours: 8, minutes: 0 };
     }
   }
@@ -43,29 +42,26 @@ export class DateDescComponent implements OnInit {
   getWeek(dateSelected: Date = new Date()): Date[] {
     const daysOfWeek = [];
 
-    for ( let i = -3; i <= 3; i++ ) {
+    for (let i = -3; i <= 3; i++) {
       const dayOfWeek = new Date();
       dayOfWeek.setDate(dateSelected.getDate() + i);
-      daysOfWeek.push(
-        {
-          date: dayOfWeek,
-          selected: false,
-        }
-      );
+      daysOfWeek.push({
+        date: dayOfWeek,
+        selected: false,
+      });
     }
     daysOfWeek[3].selected = true;
     return daysOfWeek;
   }
 
-
   selectDay(dayOfWeek): void {
-    this.daysOfWeek.forEach(d => {
+    this.daysOfWeek.forEach((d) => {
       d.selected = false;
     });
 
     this.timePeriodSelected = {
       from: dayOfWeek.date,
-      to: null
+      to: null,
     };
     dayOfWeek.selected = true;
     this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
@@ -73,16 +69,17 @@ export class DateDescComponent implements OnInit {
 
   onDateSelection(event: NgbDate): void {
     this.checkSelectedPeriod(event);
-    this.daysOfWeek = (this.timePeriodSelected.to) ? this.getWeek(this.timePeriodSelected.to) : this.getWeek(this.timePeriodSelected.from);
+    this.daysOfWeek = this.timePeriodSelected.to
+      ? this.getWeek(this.timePeriodSelected.to)
+      : this.getWeek(this.timePeriodSelected.from);
     this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
   }
 
-
   checkSelectedPeriod(date: NgbDate): void {
-    if ( !this.fromDate && !this.toDate ) {
+    if (!this.fromDate && !this.toDate) {
       this.fromDate = date;
       this.timePeriodSelected.from = this.getDateInStandart(date);
-    } else if ( this.fromDate && !this.toDate && date.after(this.fromDate) ) {
+    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
       this.toDate = date;
       this.timePeriodSelected.to = this.getDateInStandart(date);
     } else {
@@ -94,7 +91,13 @@ export class DateDescComponent implements OnInit {
   }
 
   isHovered(date: NgbDate): boolean {
-    return this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate);
+    return (
+      this.fromDate &&
+      !this.toDate &&
+      this.hoveredDate &&
+      date.after(this.fromDate) &&
+      date.before(this.hoveredDate)
+    );
   }
 
   isInside(date: NgbDate): boolean {
@@ -102,7 +105,12 @@ export class DateDescComponent implements OnInit {
   }
 
   isRange(date: NgbDate): boolean {
-    return date.equals(this.fromDate) || (this.toDate && date.equals(this.toDate)) || this.isInside(date) || this.isHovered(date);
+    return (
+      date.equals(this.fromDate) ||
+      (this.toDate && date.equals(this.toDate)) ||
+      this.isInside(date) ||
+      this.isHovered(date)
+    );
   }
 
   getDateInStandart(date: NgbDate): Date {

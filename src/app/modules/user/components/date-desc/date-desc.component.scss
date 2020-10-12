@@ -10,7 +10,7 @@
     text-align: left;
   }
   &__content {
-    background: url("../../../../../assets/svg/fon.svg") no-repeat;
+    background: url('../../../../../assets/svg/fon.svg') no-repeat;
     background-size: cover;
     height: 240px;
     display: flex;
@@ -19,7 +19,6 @@
   }
   .desc__calender {
     margin: 36px 0 0 48px;
-
   }
   &__photo {
     width: 189px;
@@ -59,13 +58,13 @@
   display: flex;
   align-items: center;
   position: relative;
-  .dropdown-menu{
+  .dropdown-menu {
     background: white;
-    &.d-none{
+    &.d-none {
       display: none;
     }
   }
-  .btn_choose-date{
+  .btn_choose-date {
     height: 32px;
     width: 179px;
   }
@@ -82,11 +81,12 @@
   display: inline-block;
   height: 2rem;
   width: 2rem;
-  outline:none;
-  &.focused{
+  outline: none;
+  &.focused {
     background-color: #e6e6e6;
   }
-  &.range, &:hover {
+  &.range,
+  &:hover {
     background-color: $accent_color_bright;
     color: white;
     outline: none;
@@ -101,4 +101,3 @@
     color: black;
   }
 }
-

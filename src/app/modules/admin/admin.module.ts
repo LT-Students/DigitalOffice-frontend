@@ -31,9 +31,6 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     MatButtonModule,
     MatInputModule,
   ],
-  entryComponents: [
-    NewCompanyComponent,
-  ]
+  entryComponents: [NewCompanyComponent],
 })
-export class AdminModule {
-}
+export class AdminModule {}

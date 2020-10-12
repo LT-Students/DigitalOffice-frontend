@@ -7,19 +7,8 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { LoginComponent } from './components/login/login.component';
 
-
 @NgModule({
-  declarations: [
-    AuthComponent,
-    LoginComponent,
-    ForgotPasswordComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AuthRoutingModule
-  ]
+  declarations: [AuthComponent, LoginComponent, ForgotPasswordComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, AuthRoutingModule],
 })
-export class AuthModule {
-}
+export class AuthModule {}

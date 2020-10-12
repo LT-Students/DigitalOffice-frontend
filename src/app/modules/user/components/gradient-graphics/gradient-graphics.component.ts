@@ -12,7 +12,7 @@ export interface IDailyHoursData {
 @Component({
   selector: 'app-gradient-graphics',
   templateUrl: './gradient-graphics.component.html',
-  styleUrls: [ './gradient-graphics.component.scss' ]
+  styleUrls: ['./gradient-graphics.component.scss'],
 })
 export class GradientGraphicsComponent implements OnInit {
   @Input()
@@ -20,17 +20,24 @@ export class GradientGraphicsComponent implements OnInit {
   @Input()
   public dailyHoursData; // data about day, month, hours, minutes of time period
 
-  constructor() { }
-
+  constructor() {}
 
   // color for graphic items
-  colorsData = [ '#7adea2', '#8bdca5', '#9cdaa9', '#add8ad', '#bdd7b1', '#cdd5b4', '#ddd4b8', '#efd2bc' ];
+  colorsData = [
+    '#7adea2',
+    '#8bdca5',
+    '#9cdaa9',
+    '#add8ad',
+    '#bdd7b1',
+    '#cdd5b4',
+    '#ddd4b8',
+    '#efd2bc',
+  ];
   gray = '#EEEEEE';
 
-
   // define amount of graphic columns/strings
-  amountOfWorkHours = [ ...Array(8).keys() ];
-  amountOfDays = [ ...Array(6).keys() ];
+  amountOfWorkHours = [...Array(8).keys()];
+  amountOfDays = [...Array(6).keys()];
 
   // determination of days when was processing
   processingArray = [];
@@ -46,11 +53,20 @@ export class GradientGraphicsComponent implements OnInit {
     let breakIndex = this.dailyHoursData.length;
 
     // check if the data includes two month
-    if ( this.dailyHoursData[0].month !== this.dailyHoursData[this.dailyHoursData.length - 1].month ) {
-      breakPoint: for ( let i = 0; i < this.dailyHoursData.length; i++ ) {
-        if ( this.dailyHoursData[0].month !== this.dailyHoursData[i].month ) {
+    if (
+      this.dailyHoursData[0].month !==
+      this.dailyHoursData[this.dailyHoursData.length - 1].month
+    ) {
+      breakPoint: for (let i = 0; i < this.dailyHoursData.length; i++) {
+        if (this.dailyHoursData[0].month !== this.dailyHoursData[i].month) {
           breakIndex = i;
-          secondPartTimePeriod = ', ' + this.dailyHoursData[breakIndex].day + ' - ' + this.dailyHoursData[this.dailyHoursData.length - 1].day + ' ' + this.dailyHoursData[5].month;
+          secondPartTimePeriod =
+            ', ' +
+            this.dailyHoursData[breakIndex].day +
+            ' - ' +
+            this.dailyHoursData[this.dailyHoursData.length - 1].day +
+            ' ' +
+            this.dailyHoursData[5].month;
           break breakPoint;
         }
       }
@@ -58,13 +74,20 @@ export class GradientGraphicsComponent implements OnInit {
     //
 
     // create string of time period
-    firstPartTimePeriod = this.dailyHoursData[0].day + ' - ' + this.dailyHoursData[breakIndex - 1].day + ' ' + this.dailyHoursData[0].month;
+    firstPartTimePeriod =
+      this.dailyHoursData[0].day +
+      ' - ' +
+      this.dailyHoursData[breakIndex - 1].day +
+      ' ' +
+      this.dailyHoursData[0].month;
     this.timePeriod = firstPartTimePeriod + secondPartTimePeriod;
 
-
     // to check processing in hours
-    for ( let i = 0; i < this.dailyHoursData.length; i++ ) {
-      this.processingArray[i] = this.dailyHoursData[i].hours > 8 || this.dailyHoursData[i].hours === 8 && this.dailyHoursData[i].minutes > 0;
+    for (let i = 0; i < this.dailyHoursData.length; i++) {
+      this.processingArray[i] =
+        this.dailyHoursData[i].hours > 8 ||
+        (this.dailyHoursData[i].hours === 8 &&
+          this.dailyHoursData[i].minutes > 0);
     }
     //
   }

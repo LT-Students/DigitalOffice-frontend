@@ -5,9 +5,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })
-
 export class SelectComponent {
-
   @Input() options: string[];
   @Input() className: string;
   @Input() title: string;
@@ -17,6 +15,4 @@ export class SelectComponent {
   onChange(option) {
     this.optionSelected.emit(option);
   }
-
 }
-

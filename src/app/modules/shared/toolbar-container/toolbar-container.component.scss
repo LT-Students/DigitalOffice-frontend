@@ -1,11 +1,11 @@
 @import 'base/variables';
 
-.content-container{
+.content-container {
   display: flex;
   align-items: center;
   justify-content: center;
   background: $light_2;
-  .toolbar{
+  .toolbar {
     position: fixed;
     top: 0;
     width: 100%;

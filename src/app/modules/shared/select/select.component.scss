@@ -1,11 +1,10 @@
-@import "base/variables";
-
+@import 'base/variables';
 
 ////выпадающий список с выбором проекта
 .select {
   position: relative;
   p {
-    color: $gray ;
+    color: $gray;
     margin: 0;
   }
 
@@ -23,8 +22,8 @@
     outline: none;
 
     &:after {
-      background: url("../../../../assets/svg/arrow-down-grey.svg") no-repeat;
-      content: "";
+      background: url('../../../../assets/svg/arrow-down-grey.svg') no-repeat;
+      content: '';
       height: 38px;
       pointer-events: none;
       position: absolute;
@@ -35,5 +34,3 @@
     }
   }
 }
-
-

@@ -40,7 +40,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
     MatTableModule,
     MatPaginatorModule,
-    MatCardModule
+    MatCardModule,
   ],
   exports: [
     MatButtonModule,
@@ -59,11 +59,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
     MatTableModule,
     MatPaginatorModule,
-    MatCardModule
+    MatCardModule,
   ],
-  providers: [
-    MatDatepickerModule,
-  ]
+  providers: [MatDatepickerModule],
 })
-
-export class AppMaterialModule { }
+export class AppMaterialModule {}

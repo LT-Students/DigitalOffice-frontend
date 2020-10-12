@@ -8,9 +8,8 @@ describe('DoUserNotesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserTasksComponent ]
-    })
-    .compileComponents();
+      declarations: [UserTasksComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
