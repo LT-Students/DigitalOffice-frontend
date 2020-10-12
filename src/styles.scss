@@ -33,3 +33,7 @@ body {
   @extend .regular_text;
   opacity: 0.8;
 }
+
+button:focus{
+  outline: none;
+}

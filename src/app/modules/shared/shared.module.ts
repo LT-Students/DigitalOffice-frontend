@@ -7,6 +7,8 @@ import { SelectComponent } from './select/select.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ProfileImageComponent } from './profile-image/profile-image.component';
 import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
+import { SearchComponent } from './search/search.component';
+import { AppMaterialModule } from 'src/app/app-material.module';
 
 @NgModule({
   declarations: [
@@ -15,13 +17,19 @@ import { ToolbarContainerComponent } from './toolbar-container/toolbar-container
     ToolbarComponent,
     ProfileImageComponent,
     ToolbarContainerComponent,
+    SearchComponent
   ],
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    AppMaterialModule
+  ],
   exports: [
     ButtonComponent,
     SelectComponent,
     ToolbarComponent,
     ProfileImageComponent,
-  ],
+    SearchComponent
+  ]
 })
-export class SharedModule {}
+export class SharedModule { }
