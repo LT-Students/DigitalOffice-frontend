@@ -3,9 +3,11 @@
 
 
 .team-card {
-  min-width: 320px;
+  box-sizing: border-box;
+  min-width: 270px;
   padding: 24px;
   height: 100%;
+  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.15);
 
   &__header {
     display: flex;
@@ -24,6 +26,7 @@
     display: block;
     width: 16px;
     height: 16px;
+    margin-top: -10px;
     margin-right: 8px;
   }
   &__level-labels {
@@ -41,6 +44,7 @@
     align-items: flex-end;
     flex-wrap: wrap;
     list-style: none;
+    margin-bottom: 0;
   }
   &__new-member {
     margin-right: 12px;

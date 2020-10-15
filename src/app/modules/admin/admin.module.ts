@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from 'src/app/app-material.module';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -28,14 +29,15 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     NewCompanyComponent,
     TeamCardComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    AppMaterialModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        AppMaterialModule,
+        MatTabsModule,
+    ],
   entryComponents: [
     NewCompanyComponent,
   ]

@@ -1,6 +1,8 @@
-.mat-mini-fab.mat-mini-fab-override {
+.mat-mini-fab.mat-mini-fab.mat-mini-fab-override {
   width: 36px;
   height: 36px;
+  box-shadow: none;
+
   .mat-button-wrapper {
     padding: 0;
     line-height: 36px;
@@ -13,4 +15,7 @@
       }
     }
   }
+}
+.mat-mini-fab.mat-mini-fab-override.mat-mini-fab:not([disabled]):active:not([class*=mat-elevation-z]) {
+  box-shadow: none;
 }

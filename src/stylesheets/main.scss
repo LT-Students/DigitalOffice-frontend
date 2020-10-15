@@ -7,6 +7,8 @@
 @import 'layouts/forms';
 @import 'materials/selects';
 @import "~bootstrap/scss/bootstrap";
+@import 'src/stylesheets/material/mat-mini-fab-override';
+@import 'src/stylesheets/material/mat-tab-override';
 
 body {
     margin: 0;
