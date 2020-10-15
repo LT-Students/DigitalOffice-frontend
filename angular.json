@@ -112,7 +112,7 @@
               "e2e/tsconfig.json"
             ],
             "exclude": [
-              "**/node_modules/**"
+              "**/node_modules/**", "libs/api/**", "**/*.spec.ts", "**/polyfills.ts"
             ]
           }
         },

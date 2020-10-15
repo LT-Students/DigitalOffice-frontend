@@ -4,7 +4,8 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 
-import { UserResponse } from '../../../../../../libs/api/src/lib/user-service';
+import { UserResponse } from '@digital-office/api/user-service';
+
 import {
   AuthenticationRequest,
   AuthenticationResponse,

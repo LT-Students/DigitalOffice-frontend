@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+
 import { ITask } from '../../../../../interfaces/task.interface';
 
 @Component({

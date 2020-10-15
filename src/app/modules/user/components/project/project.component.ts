@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
 import { IProject } from '../../../../interfaces/project.interface';
-import { AttendanceService } from '../attendance/attendance.service';
 
 @Component({
   selector: 'do-project',
