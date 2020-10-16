@@ -8,11 +8,12 @@ import {
 } from '@angular/core';
 import { Time } from '@angular/common';
 
+import { User } from '@digital-office/api/user-service';
+
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
-import { UserResponse } from '../../../../../../libs/api/src/lib/user-service';
 
 @Component({
   selector: 'app-add-hours',
@@ -20,7 +21,7 @@ import { UserResponse } from '../../../../../../libs/api/src/lib/user-service';
   styleUrls: ['./add-hours.component.scss'],
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
-  @Input() userq: UserResponse;
+  @Input() user: User;
   @ViewChild('task') inputTask: ElementRef;
   @ViewChild('description') textFieldDescription: ElementRef;
   @ViewChild('inputHours') inputHours: ElementRef;

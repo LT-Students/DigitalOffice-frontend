@@ -73,8 +73,7 @@
       "prettier --write"
     ],
     "*.scss": [
-      "prettier --write",
-      "npm run lint-css"
+      "prettier --write"
     ],
     "*.ts": [
       "prettier --write",

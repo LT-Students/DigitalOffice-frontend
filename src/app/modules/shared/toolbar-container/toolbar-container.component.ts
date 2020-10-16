@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { User } from '@digital-office/api/user-service';
+
 import { UserService } from '../../../services/user.service';
-import { UserResponse } from '../../../../../libs/api/src/lib/user-service';
 
 @Component({
   selector: 'app-toolbar-container',
@@ -9,7 +10,7 @@ import { UserResponse } from '../../../../../libs/api/src/lib/user-service';
   styleUrls: ['./toolbar-container.component.scss'],
 })
 export class ToolbarContainerComponent implements OnInit {
-  user: UserResponse;
+  user: User;
 
   constructor(private userService: UserService) {}
 

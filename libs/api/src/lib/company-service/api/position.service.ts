@@ -1,6 +1,6 @@
 /**
  * CompanyService
- * CompanyService is an API intended to work with the positions, companies, dep  **Changes since 0.0.0** -
+ * CompanyService is an API that intended to work with positions, companies and departments. -
  *
  * OpenAPI spec version: 1.0.0
  * 
@@ -17,7 +17,8 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { PositionRequest } from '../model/positionRequest';
+import { AddPositionRequest } from '../model/addPositionRequest';
+import { EditPositionRequest } from '../model/editPositionRequest';
 import { PositionResponse } from '../model/positionResponse';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -27,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class PositionService {
 
-    protected basePath = 'https://localhost:9815/CompanyService';
+    protected basePath = 'https://localhost:9815/api';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -63,13 +64,13 @@ export class PositionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addPositionPost(body: PositionRequest, observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public addPositionPost(body: PositionRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public addPositionPost(body: PositionRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
-    public addPositionPost(body: PositionRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public positionAddPositionPost(body: AddPositionRequest, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public positionAddPositionPost(body: AddPositionRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public positionAddPositionPost(body: AddPositionRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public positionAddPositionPost(body: AddPositionRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling addPositionPost.');
+            throw new Error('Required parameter body was null or undefined when calling positionAddPositionPost.');
         }
 
         let headers = this.defaultHeaders;
@@ -92,7 +93,7 @@ export class PositionService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<string>('post',`${this.basePath}/addPosition`,
+        return this.httpClient.request<string>('post',`${this.basePath}/position/addPosition`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -110,13 +111,18 @@ export class PositionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public disablePositionByIdPositionIdDelete(positionId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public disablePositionByIdPositionIdDelete(positionId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public disablePositionByIdPositionIdDelete(positionId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public disablePositionByIdPositionIdDelete(positionId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public positionDisablePositionByIdDelete(positionId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public positionDisablePositionByIdDelete(positionId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public positionDisablePositionByIdDelete(positionId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public positionDisablePositionByIdDelete(positionId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (positionId === null || positionId === undefined) {
-            throw new Error('Required parameter positionId was null or undefined when calling disablePositionByIdPositionIdDelete.');
+            throw new Error('Required parameter positionId was null or undefined when calling positionDisablePositionByIdDelete.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (positionId !== undefined && positionId !== null) {
+            queryParameters = queryParameters.set('positionId', <any>positionId);
         }
 
         let headers = this.defaultHeaders;
@@ -133,8 +139,9 @@ export class PositionService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('delete',`${this.basePath}/disablePositionById/${encodeURIComponent(String(positionId))}`,
+        return this.httpClient.request<any>('delete',`${this.basePath}/position/disablePositionById`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -147,21 +154,16 @@ export class PositionService {
      * 
      * Edits a specified position.
      * @param body 
-     * @param positionId Position global unique identifier.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public editPositionPositionIdPut(body: PositionRequest, positionId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public editPositionPositionIdPut(body: PositionRequest, positionId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public editPositionPositionIdPut(body: PositionRequest, positionId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public editPositionPositionIdPut(body: PositionRequest, positionId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public positionEditPositionPut(body: EditPositionRequest, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public positionEditPositionPut(body: EditPositionRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public positionEditPositionPut(body: EditPositionRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public positionEditPositionPut(body: EditPositionRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling editPositionPositionIdPut.');
-        }
-
-        if (positionId === null || positionId === undefined) {
-            throw new Error('Required parameter positionId was null or undefined when calling editPositionPositionIdPut.');
+            throw new Error('Required parameter body was null or undefined when calling positionEditPositionPut.');
         }
 
         let headers = this.defaultHeaders;
@@ -183,7 +185,7 @@ export class PositionService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('put',`${this.basePath}/editPosition/${encodeURIComponent(String(positionId))}`,
+        return this.httpClient.request<any>('put',`${this.basePath}/position/editPosition`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -197,13 +199,23 @@ export class PositionService {
     /**
      * 
      * Returns position by id.
+     * @param positionId Position global unique identifier.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPositionByIdGet(observe?: 'body', reportProgress?: boolean): Observable<PositionResponse>;
-    public getPositionByIdGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PositionResponse>>;
-    public getPositionByIdGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PositionResponse>>;
-    public getPositionByIdGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public positionGetPositionByIdGet(positionId: string, observe?: 'body', reportProgress?: boolean): Observable<PositionResponse>;
+    public positionGetPositionByIdGet(positionId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PositionResponse>>;
+    public positionGetPositionByIdGet(positionId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PositionResponse>>;
+    public positionGetPositionByIdGet(positionId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (positionId === null || positionId === undefined) {
+            throw new Error('Required parameter positionId was null or undefined when calling positionGetPositionByIdGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (positionId !== undefined && positionId !== null) {
+            queryParameters = queryParameters.set('positionId', <any>positionId);
+        }
 
         let headers = this.defaultHeaders;
 
@@ -220,8 +232,9 @@ export class PositionService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<PositionResponse>('get',`${this.basePath}/getPositionById`,
+        return this.httpClient.request<PositionResponse>('get',`${this.basePath}/position/getPositionById`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -236,10 +249,10 @@ export class PositionService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getPositionsListGet(observe?: 'body', reportProgress?: boolean): Observable<Array<PositionResponse>>;
-    public getPositionsListGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PositionResponse>>>;
-    public getPositionsListGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PositionResponse>>>;
-    public getPositionsListGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public positionGetPositionsListGet(observe?: 'body', reportProgress?: boolean): Observable<Array<PositionResponse>>;
+    public positionGetPositionsListGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<PositionResponse>>>;
+    public positionGetPositionsListGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<PositionResponse>>>;
+    public positionGetPositionsListGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -256,7 +269,7 @@ export class PositionService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<PositionResponse>>('get',`${this.basePath}/getPositionsList`,
+        return this.httpClient.request<Array<PositionResponse>>('get',`${this.basePath}/position/getPositionsList`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

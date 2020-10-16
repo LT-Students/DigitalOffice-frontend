@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
+import { AuthenticationRequest, AuthenticationService, AuthenticationResponse } from '@digital-office/api/auth-service';
+
 import { LocalStorageService } from './local-storage.service';
-import {
-  AuthenticationRequest,
-  AuthenticationResponse,
-  AuthenticationService,
-} from '../../../libs/api/src/lib/auth-service';
 
 @Injectable({
   providedIn: 'root',

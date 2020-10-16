@@ -4,9 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { CompanyService } from './api/company.service';
-import { DepartmentService } from './api/department.service';
 import { PositionService } from './api/position.service';
-import { UserPositionService } from './api/userPosition.service';
 
 @NgModule({
   imports:      [],
@@ -14,12 +12,10 @@ import { UserPositionService } from './api/userPosition.service';
   exports:      [],
   providers: [
     CompanyService,
-    DepartmentService,
-    PositionService,
-    UserPositionService ]
+    PositionService ]
 })
 export class ApiModule {
-    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
+    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {
         return {
             ngModule: ApiModule,
             providers: [ { provide: Configuration, useFactory: configurationFactory } ]

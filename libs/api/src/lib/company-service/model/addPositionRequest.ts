@@ -10,17 +10,17 @@
  * Do not edit the class manually.
  */
 
-export interface CompanyResponse { 
+export interface AddPositionRequest { 
     /**
-     * Company global unique identifier.
+     * Position id.
      */
     id?: string;
     /**
-     * Company name.
+     * Position name.
      */
     name?: string;
     /**
-     * Does the company work?
+     * Position description.
      */
-    isActive?: boolean;
+    description?: string;
 }

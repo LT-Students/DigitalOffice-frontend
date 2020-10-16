@@ -4,7 +4,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 
-import { UserResponse } from '@digital-office/api/user-service';
+import { User } from '@digital-office/api/user-service';
 
 import {
   AuthenticationRequest,
@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
         })
       )
       .subscribe(
-        (user: UserResponse) => {
+        (user: User) => {
           if ( user.isAdmin ) {
             this.router.navigate([ '/admin/dashboard' ]);
           } else {

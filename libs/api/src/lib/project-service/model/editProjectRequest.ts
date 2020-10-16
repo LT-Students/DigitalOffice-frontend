@@ -9,12 +9,26 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { WorkersUsersIds } from './workersUsersIds';
 
-export interface ProjectWorkerRequest { 
+export interface EditProjectRequest { 
     /**
-     * The project's ID.
+     * The project's Id.
      */
-    projectId?: string;
-    workersIds?: WorkersUsersIds;
+    id?: string;
+    /**
+     * The project's title.
+     */
+    name?: string;
+    /**
+     * The project's description.
+     */
+    description?: string;
+    /**
+     * Id of the department that funds the project.
+     */
+    departmentId?: string;
+    /**
+     * Analogue the IsCompleted mark. Allows to search for the completed projects.
+     */
+    isActive?: boolean;
 }

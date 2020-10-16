@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import {
-  UserResponse,
-  UserService as UserAPIService,
-} from '../../../libs/api/src/lib/user-service';
+  UserService as UserAPIService, User,
+} from '@digital-office/api/user-service';
+
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -17,24 +17,24 @@ export class UserService {
     private localStorageService: LocalStorageService
   ) {}
 
-  getUser(userId: string): Observable<UserResponse> {
+  getUser(userId: string): Observable<User> {
     return this.userService.getUserByIdGet(userId).pipe(
-      tap((user: UserResponse) => {
+      tap((user: User) => {
         this.localStorageService.set('user', user);
       })
     );
   }
 
   isAdmin(): boolean {
-    const user: UserResponse = this.localStorageService.get('user');
+    const user: User = this.localStorageService.get('user');
     if (user) {
       return user.isAdmin;
     }
     return false;
   }
 
-  getCurrentUser(): UserResponse | null {
-    const user: UserResponse = this.localStorageService.get('user');
+  getCurrentUser(): User | null {
+    const user: User = this.localStorageService.get('user');
     return user ? user : null;
   }
 }

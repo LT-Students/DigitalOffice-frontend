@@ -4,20 +4,16 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { ProjectService } from './api/project.service';
-import { ProjectFileService } from './api/projectFile.service';
-import { ProjectWorkerService } from './api/projectWorker.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    ProjectService,
-    ProjectFileService,
-    ProjectWorkerService ]
+    ProjectService ]
 })
 export class ApiModule {
-    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
+    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {
         return {
             ngModule: ApiModule,
             providers: [ { provide: Configuration, useFactory: configurationFactory } ]

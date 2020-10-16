@@ -20,6 +20,10 @@ export interface ProjectRequest {
      */
     departmentId?: string;
     /**
+     * The project's description.
+     */
+    description?: string;
+    /**
      * Analogue the IsCompleted mark. Allows to search for the completed projects.
      */
     isActive?: boolean;

@@ -9,26 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { WorkersUsersIds } from './workersUsersIds';
 
 export interface ProjectResponse { 
     /**
      * The project's title.
      */
     name?: string;
-    /**
-     * The project's description. What its about, what are the goals, etc.
-     */
-    description?: string;
-    /**
-     * The id of the department that funds or is responsible for this project.
-     */
-    departmentId?: string;
-    /**
-     * The project has an overdue deadline.
-     */
-    deferred?: boolean;
-    /**
-     * Analogue the IsCompleted mark. Allows to search for the completed projects.
-     */
-    isActive?: boolean;
+    workersIds?: WorkersUsersIds;
 }
