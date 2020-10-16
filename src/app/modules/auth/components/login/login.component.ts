@@ -39,7 +39,11 @@ export class LoginComponent implements OnInit {
   login(): void {
     this.isWaiting = true;
 
-    const authenticationRequest: AuthenticationRequest = this.loginForm.value;
+    const authenticationRequest: AuthenticationRequest = {
+      loginData: this.loginForm.get('email').value,
+      password: this.loginForm.get('password').value
+    };
+
     this.authService
       .login(authenticationRequest)
       .pipe(
