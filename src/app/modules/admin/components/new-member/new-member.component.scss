@@ -1,0 +1,53 @@
+@import 'abstracts/variables';
+@import 'base/fonts';
+
+.new-member {
+  display: flex;
+  width: 672px;
+  &__checkbox {
+    margin: 0 12px;
+    align-items: center;
+  }
+}
+.new-member-form__selects {
+  display: flex;
+  flex-direction: column;
+}
+
+//.members-form{
+//  &__search{
+//    margin-bottom: 14px;
+//  }
+//  &__selects{
+//    display: flex;
+//    justify-content: space-between;
+//    width: 379px;
+//    height: $select-height;
+//    margin-bottom: 14px;
+//  }
+//  &__select-spec{
+//    width: 271px;
+//  }
+//  &__select-lvl{
+//    width: 103px;
+//  }
+//  &__background{
+//    display: flex;
+//    justify-content: center;
+//    align-items: center;
+//    height: 424px;
+//    margin-bottom: 14px;;
+//  }
+//  &__button-container{
+//    display: flex;
+//    justify-content: flex-end;
+//  }
+//}
+//
+//::ng-deep .members-board{
+//  .mat-form-field-wrapper,
+//  .mat-form-field-flex,
+//  .mat-form-field-appearance-legacy,
+//  .mat-form-field-label-wrapper{
+//    padding: 0;
+//  }
