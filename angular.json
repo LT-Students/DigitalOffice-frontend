@@ -28,8 +28,6 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/stylesheets/main.scss",
               "src/styles.scss",
               "src/theme.scss"
             ],
@@ -114,7 +112,7 @@
               "e2e/tsconfig.json"
             ],
             "exclude": [
-              "**/node_modules/**"
+              "**/node_modules/**", "libs/api/**", "**/*.spec.ts", "**/polyfills.ts"
             ]
           }
         },

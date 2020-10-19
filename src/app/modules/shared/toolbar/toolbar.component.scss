@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
-@import '../../../../stylesheets/abstracts/variables';
-@import '../../../../stylesheets/base/fonts';
+@import 'base/variables';
 
 .toolbar {
   display: flex;
@@ -38,7 +37,7 @@
     }
     p {
       color: $gray;
-      margin:0;
+      margin: 0;
     }
     img {
       width: 20px;
@@ -64,7 +63,7 @@
         span {
           color: $dark_2;
         }
-        margin:0;
+        margin: 0;
       }
     }
   }

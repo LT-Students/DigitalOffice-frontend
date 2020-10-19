@@ -8,8 +8,6 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ProfileImageComponent } from './profile-image/profile-image.component';
 import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
 import { SearchComponent } from './search/search.component';
-import { AppMaterialModule } from 'src/app/app-material.module';
-
 
 
 @NgModule({
@@ -23,8 +21,7 @@ import { AppMaterialModule } from 'src/app/app-material.module';
   ],
   imports: [
     CommonModule,
-    RouterModule,
-    AppMaterialModule
+    RouterModule
   ],
   exports: [
     ButtonComponent,

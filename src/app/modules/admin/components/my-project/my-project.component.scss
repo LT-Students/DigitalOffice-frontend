@@ -1,7 +1,6 @@
-@import '../../../../../stylesheets/abstracts/variables';
-@import '../../../../../stylesheets/base/fonts';
+@import 'base/variables';
 
-.project__container{
+.project__container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,46 +9,48 @@
   border-radius: 5px;
   background-color: white;
 
-  .content-wrapper{
+  .content-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-width: 236px;
     min-height: 285px;
+
     .project__name,
     .hours,
-    .gray__circle{
+    .gray__circle {
       color: $dark_1;
     }
 
-    .project__comment{
+    .project__comment {
       color: $dark_1;
       height: 160px;
     }
 
-    .project__customer{
+    .project__customer {
       position: relative;
-      bottom: 10px
+      bottom: 10px;
     }
 
-    .project__details{
+    .project__details {
       display: flex;
       justify-content: space-between;
       align-items: center;
 
-      .contribution{
+      .contribution {
         text-align: center;
-        p{
+
+        p {
           margin: 0;
         }
       }
 
-      .team{
+      .team {
         display: flex;
       }
 
       .participant,
-      .gray__circle{
+      .gray__circle {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -63,9 +64,6 @@
           background-color: $gray;
         }
       }
-  }
-
+    }
   }
 }
-
-

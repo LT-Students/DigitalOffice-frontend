@@ -17,9 +17,10 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { EditProjectRequest } from '../model/editProjectRequest';
 import { ProjectRequest } from '../model/projectRequest';
 import { ProjectResponse } from '../model/projectResponse';
-import { ProjectResponseFilter } from '../model/projectResponseFilter';
+import { ProjectWorkerRequest } from '../model/projectWorkerRequest';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -28,7 +29,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class ProjectService {
 
-    protected basePath = 'https://localhost:9803/ProjectService';
+    protected basePath = 'https://localhost:9803/api/project';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -59,14 +60,14 @@ export class ProjectService {
 
     /**
      * 
-     * Create a new project.
+     * Adds a project and returns its Id.
      * @param body 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createNewProjectPost(body: ProjectRequest, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public createNewProjectPost(body: ProjectRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public createNewProjectPost(body: ProjectRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public createNewProjectPost(body: ProjectRequest, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public createNewProjectPost(body: ProjectRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public createNewProjectPost(body: ProjectRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
     public createNewProjectPost(body: ProjectRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
@@ -77,6 +78,7 @@ export class ProjectService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -92,7 +94,7 @@ export class ProjectService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('post',`${this.basePath}/createNewProject`,
+        return this.httpClient.request<string>('post',`${this.basePath}/createNewProject`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -105,23 +107,23 @@ export class ProjectService {
 
     /**
      * 
-     * Delete the specific project by its id.
-     * @param projectId Project global unique identifier.
+     * Deletes the specified worker in project by id.
+     * @param projectWorker 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public disableProjectByIdDelete(projectId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public disableProjectByIdDelete(projectId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public disableProjectByIdDelete(projectId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public disableProjectByIdDelete(projectId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public disableWorkersInProjectDelete(projectWorker: ProjectWorkerRequest, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public disableWorkersInProjectDelete(projectWorker: ProjectWorkerRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public disableWorkersInProjectDelete(projectWorker: ProjectWorkerRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public disableWorkersInProjectDelete(projectWorker: ProjectWorkerRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (projectId === null || projectId === undefined) {
-            throw new Error('Required parameter projectId was null or undefined when calling disableProjectByIdDelete.');
+        if (projectWorker === null || projectWorker === undefined) {
+            throw new Error('Required parameter projectWorker was null or undefined when calling disableWorkersInProjectDelete.');
         }
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (projectId !== undefined && projectId !== null) {
-            queryParameters = queryParameters.set('projectId', <any>projectId);
+        if (projectWorker !== undefined && projectWorker !== null) {
+            queryParameters = queryParameters.set('Project Worker', <any>projectWorker);
         }
 
         let headers = this.defaultHeaders;
@@ -138,7 +140,7 @@ export class ProjectService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('delete',`${this.basePath}/disableProjectById`,
+        return this.httpClient.request<any>('delete',`${this.basePath}/disableWorkersInProject`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -151,16 +153,16 @@ export class ProjectService {
 
     /**
      * 
-     * Edits a specified project.
-     * @param body 
-     * @param projectId Project global unique identifier. (GUID)
+     * Updates project fields.
+     * @param body The Project to put.
+     * @param projectId Project global unique identifier.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public editProjectByIdPut(body: ProjectRequest, projectId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public editProjectByIdPut(body: ProjectRequest, projectId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public editProjectByIdPut(body: ProjectRequest, projectId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public editProjectByIdPut(body: ProjectRequest, projectId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public editProjectByIdPut(body: EditProjectRequest, projectId: string, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public editProjectByIdPut(body: EditProjectRequest, projectId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public editProjectByIdPut(body: EditProjectRequest, projectId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public editProjectByIdPut(body: EditProjectRequest, projectId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling editProjectByIdPut.');
@@ -179,6 +181,7 @@ export class ProjectService {
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -194,7 +197,7 @@ export class ProjectService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('put',`${this.basePath}/editProjectById`,
+        return this.httpClient.request<string>('put',`${this.basePath}/editProjectById`,
             {
                 body: body,
                 params: queryParameters,
@@ -208,52 +211,8 @@ export class ProjectService {
 
     /**
      * 
-     * Find the specific project by its id and return the project.
-     * @param body 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getProjectFilteredPost(body?: ProjectResponseFilter, observe?: 'body', reportProgress?: boolean): Observable<ProjectResponse>;
-    public getProjectFilteredPost(body?: ProjectResponseFilter, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProjectResponse>>;
-    public getProjectFilteredPost(body?: ProjectResponseFilter, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProjectResponse>>;
-    public getProjectFilteredPost(body?: ProjectResponseFilter, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected != undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.request<ProjectResponse>('post',`${this.basePath}/getProjectFiltered`,
-            {
-                body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * Find the specific project by its id and return the project.
-     * @param projectId Project global unique identifier. (GUID)
+     * Returns project information by id.
+     * @param projectId Project global unique identifier.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -289,42 +248,6 @@ export class ProjectService {
         return this.httpClient.request<ProjectResponse>('get',`${this.basePath}/getProjectInfoById`,
             {
                 params: queryParameters,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * Returned all projects.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getProjectsGet(observe?: 'body', reportProgress?: boolean): Observable<ProjectResponse>;
-    public getProjectsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ProjectResponse>>;
-    public getProjectsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ProjectResponse>>;
-    public getProjectsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<ProjectResponse>('get',`${this.basePath}/getProjects`,
-            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

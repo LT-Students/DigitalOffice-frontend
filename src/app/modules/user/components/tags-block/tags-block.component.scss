@@ -3,21 +3,11 @@ $button-color-orange1: hsl(14°, 94%, 66%);
 $background-color-white1: hsl(0°, 0%, 100%);
 $font-black1: hsl(250°, 6%, 20%);
 $bar-color-orange1: hsl (22°, 100%, 77%);
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-p {
-  margin: 0;
-  padding: 0;
-}
 
 .wrapper {
   width: 928px;
   height: 345px;
-  background: linear-gradient(135deg, #ffffff, #ffdfc7);;
+  background: linear-gradient(135deg, #ffffff, #ffdfc7);
 }
 
 /*контент*/
@@ -26,9 +16,7 @@ p {
   flex-direction: column;
   width: 832px;
   padding: 48px 48px 36px 48px;
-
 }
-
 
 /*шапка с названием блока*/
 .head p {
@@ -43,18 +31,16 @@ p {
   color: $font-black1;
 }
 
-
 /*Всего*/
-.main>p {
-    text-align: right;
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-    line-height: 24px;
-    color: #BDBDBD;
-  }
-
+.main > p {
+  text-align: right;
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #bdbdbd;
+}
 
 /*строки с проектами*/
 .row {
@@ -64,14 +50,13 @@ p {
   justify-content: space-between;
   position: relative;
   &:after {
-    content:'';
+    content: '';
     position: absolute;
     width: 832px;
-    bottom:0;
-    height:1px;
-    left:0%;
-    background-color: #F1F1EF;
-
+    bottom: 0;
+    height: 1px;
+    left: 0%;
+    background-color: #f1f1ef;
   }
 }
 
@@ -81,11 +66,11 @@ p {
 }
 
 .rowName p {
-    font-family: Gill Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 16px;
-  }
+  font-family: Gill Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+}
 
 .main__column2 {
   display: flex;
@@ -109,26 +94,26 @@ p {
 .bar1 {
   width: 429px;
   height: 20px;
-  background: #FFB78C;
+  background: #ffb78c;
   border-radius: 5px;
 }
 
 .bar2 {
   width: 71.5px;
   height: 20px;
-  background: #D0BBF1;
+  background: #d0bbf1;
 }
 
 .bar3 {
   width: 143px;
   height: 20px;
-  background: #8BB6CE;
+  background: #8bb6ce;
 }
 
 .bar4 {
   width: 71.5px;
   height: 20px;
-  background: #8BB6CE;
+  background: #8bb6ce;
 }
 
 .time {
@@ -157,7 +142,6 @@ p {
 }
 
 .tagsName {
-
 }
 
 .tags__column2 {
@@ -177,25 +161,16 @@ p {
 }
 
 .tag1 {
-  background: #FFB78C;
+  background: #ffb78c;
   max-width: 56px;
 }
 
 .tag2 {
-  background: #8BB6CE;
+  background: #8bb6ce;
   max-width: 122px;
 }
 
 .tag3 {
-  background: #D0BBF1;
+  background: #d0bbf1;
   max-width: 118px;
 }
-
-
-
-
-
-
-
-
-

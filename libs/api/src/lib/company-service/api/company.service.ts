@@ -1,6 +1,6 @@
 /**
  * CompanyService
- * CompanyService is an API intended to work with the positions, companies, dep  **Changes since 0.0.0** -
+ * CompanyService is an API that intended to work with positions, companies and departments. -
  *
  * OpenAPI spec version: 1.0.0
  * 
@@ -27,7 +27,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class CompanyService {
 
-    protected basePath = 'https://localhost:9815/CompanyService';
+    protected basePath = 'https://localhost:9815/api';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -63,19 +63,20 @@ export class CompanyService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public addCompanyPost(body: CompanyRequest, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public addCompanyPost(body: CompanyRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public addCompanyPost(body: CompanyRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public addCompanyPost(body: CompanyRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public companyAddCompanyPost(body: CompanyRequest, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public companyAddCompanyPost(body: CompanyRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public companyAddCompanyPost(body: CompanyRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public companyAddCompanyPost(body: CompanyRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling addCompanyPost.');
+            throw new Error('Required parameter body was null or undefined when calling companyAddCompanyPost.');
         }
 
         let headers = this.defaultHeaders;
 
         // to determine the Accept header
         let httpHeaderAccepts: string[] = [
+            'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -91,55 +92,9 @@ export class CompanyService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('post',`${this.basePath}/addCompany`,
+        return this.httpClient.request<string>('post',`${this.basePath}/company/addCompany`,
             {
                 body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * Deletes the specified company.
-     * @param companyId Company global unique identifier.
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public disableCompanyDelete(companyId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public disableCompanyDelete(companyId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public disableCompanyDelete(companyId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public disableCompanyDelete(companyId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (companyId === null || companyId === undefined) {
-            throw new Error('Required parameter companyId was null or undefined when calling disableCompanyDelete.');
-        }
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (companyId !== undefined && companyId !== null) {
-            queryParameters = queryParameters.set('companyId', <any>companyId);
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<any>('delete',`${this.basePath}/disableCompany`,
-            {
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -152,26 +107,16 @@ export class CompanyService {
      * 
      * Edits a specified company.
      * @param body 
-     * @param companyId Company global unique identifier.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public editCompanyPut(body: CompanyRequest, companyId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public editCompanyPut(body: CompanyRequest, companyId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public editCompanyPut(body: CompanyRequest, companyId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public editCompanyPut(body: CompanyRequest, companyId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public companyChangeCompanyPut(body: CompanyRequest, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public companyChangeCompanyPut(body: CompanyRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public companyChangeCompanyPut(body: CompanyRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public companyChangeCompanyPut(body: CompanyRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling editCompanyPut.');
-        }
-
-        if (companyId === null || companyId === undefined) {
-            throw new Error('Required parameter companyId was null or undefined when calling editCompanyPut.');
-        }
-
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (companyId !== undefined && companyId !== null) {
-            queryParameters = queryParameters.set('companyId', <any>companyId);
+            throw new Error('Required parameter body was null or undefined when calling companyChangeCompanyPut.');
         }
 
         let headers = this.defaultHeaders;
@@ -193,10 +138,9 @@ export class CompanyService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('put',`${this.basePath}/editCompany`,
+        return this.httpClient.request<any>('put',`${this.basePath}/company/changeCompany`,
             {
                 body: body,
-                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -211,10 +155,10 @@ export class CompanyService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getCompaniesGet(observe?: 'body', reportProgress?: boolean): Observable<Array<CompanyResponse>>;
-    public getCompaniesGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CompanyResponse>>>;
-    public getCompaniesGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CompanyResponse>>>;
-    public getCompaniesGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public companyGetCompaniesListGet(observe?: 'body', reportProgress?: boolean): Observable<Array<CompanyResponse>>;
+    public companyGetCompaniesListGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<CompanyResponse>>>;
+    public companyGetCompaniesListGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<CompanyResponse>>>;
+    public companyGetCompaniesListGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -231,8 +175,55 @@ export class CompanyService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<CompanyResponse>>('get',`${this.basePath}/getCompanies`,
+        return this.httpClient.request<Array<CompanyResponse>>('get',`${this.basePath}/company/getCompaniesList`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * Returns company by id.
+     * @param companyId Company global unique identifier.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public companyGetCompanyByIdGet(companyId: string, observe?: 'body', reportProgress?: boolean): Observable<CompanyResponse>;
+    public companyGetCompanyByIdGet(companyId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CompanyResponse>>;
+    public companyGetCompanyByIdGet(companyId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CompanyResponse>>;
+    public companyGetCompanyByIdGet(companyId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (companyId === null || companyId === undefined) {
+            throw new Error('Required parameter companyId was null or undefined when calling companyGetCompanyByIdGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (companyId !== undefined && companyId !== null) {
+            queryParameters = queryParameters.set('companyId', <any>companyId);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<CompanyResponse>('get',`${this.basePath}/company/getCompanyById`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

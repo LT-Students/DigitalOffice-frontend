@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'do-new-employee',
   templateUrl: './new-employee.component.html',
-  styleUrls: [ './new-employee.component.scss' ]
+  styleUrls: ['./new-employee.component.scss'],
 })
 export class NewEmployeeComponent implements OnInit {
   public message: string;
@@ -16,30 +16,23 @@ export class NewEmployeeComponent implements OnInit {
     { name: 'position2' },
     { name: 'position3' },
   ];
-  public rates = [
-    0,
-    0.5,
-    1,
-    1.5,
-    2
-  ];
+  public rates = [0, 0.5, 1, 1.5, 2];
   public departments = [
     { name: 'department1' },
     { name: 'department2' },
-    { name: 'department3' }
+    { name: 'department3' },
   ];
 
-  constructor(
-    private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder) {
     this.userForm = this.formBuilder.group({
-      lastName: [ '', Validators.required ],
-      firstName: [ '', Validators.required ],
-      middleName: [ '', Validators.required ],
-      position: [ '', Validators.required ],
-      rate: [ '', Validators.required ],
-      department: [ '', Validators.required ],
-      email: [ '', [ Validators.required, Validators.email ] ],
-      password: [ '', Validators.required ],
+      lastName: ['', Validators.required],
+      firstName: ['', Validators.required],
+      middleName: ['', Validators.required],
+      position: ['', Validators.required],
+      rate: ['', Validators.required],
+      department: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
 
@@ -52,12 +45,12 @@ export class NewEmployeeComponent implements OnInit {
   generateCredentials(): void {}
 
   preview(files) {
-    if ( files.length === 0 ) {
+    if (files.length === 0) {
       return;
     }
 
     let mimeType = files[0].type;
-    if ( mimeType.match(/image\/*/) == null ) {
+    if (mimeType.match(/image\/*/) == null) {
       this.message = 'Only images are supported.';
       return;
     }

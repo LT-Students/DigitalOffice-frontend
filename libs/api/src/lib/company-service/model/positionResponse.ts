@@ -1,6 +1,6 @@
 /**
  * CompanyService
- * CompanyService is an API intended to work with the positions, companies, dep  **Changes since 0.0.0** -
+ * CompanyService is an API that intended to work with positions, companies and departments. -
  *
  * OpenAPI spec version: 1.0.0
  * 
@@ -12,10 +12,6 @@
 
 export interface PositionResponse { 
     /**
-     * Position global unique identifier.
-     */
-    id?: string;
-    /**
      * Position name.
      */
     name?: string;
@@ -23,4 +19,12 @@ export interface PositionResponse {
      * Position description.
      */
     description?: string;
+    /**
+     * Marks whether position is active or not.
+     */
+    isActive?: boolean;
+    /**
+     * List of users ids that have this position.
+     */
+    userIds?: Array<string>;
 }

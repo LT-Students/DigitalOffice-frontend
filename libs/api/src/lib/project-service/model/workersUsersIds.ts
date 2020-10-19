@@ -11,7 +11,7 @@
  */
 
 /**
- * The collection of the users working on the current project.
+ * Users working on the current project.
  */
 export interface WorkersUsersIds extends Array<string> { 
 }

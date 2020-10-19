@@ -1,5 +1,4 @@
-@import '../../../../../stylesheets/abstracts/variables';
-@import '../../../../../stylesheets/base/fonts';
+@import 'base/variables';
 
 .wrapper {
   background: #ffffff;
@@ -7,7 +6,6 @@
   .tasks {
     display: flex;
     flex-direction: column;
-
 
     &__header {
       color: $dark_1;
@@ -79,9 +77,3 @@
     }
   }
 }
-
-
-
-
-
-

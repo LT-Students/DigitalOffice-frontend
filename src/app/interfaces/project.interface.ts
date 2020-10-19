@@ -5,5 +5,3 @@ export interface IProject {
   name: string;
   tasks?: ITask[];
 }
-
-

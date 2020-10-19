@@ -5,7 +5,7 @@ import { AdminGuard } from './admin.guard';
 describe('AdminGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AdminGuard]
+      providers: [AdminGuard],
     });
   });
 

@@ -15,6 +15,6 @@ export interface ProjectWorkerRequest {
     /**
      * The project's ID.
      */
-    id?: string;
-    workersUsersIds?: WorkersUsersIds;
+    projectId?: string;
+    workersIds?: WorkersUsersIds;
 }

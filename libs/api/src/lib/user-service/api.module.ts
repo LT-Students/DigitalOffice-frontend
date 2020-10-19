@@ -3,25 +3,17 @@ import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
 
-import { AchievementService } from './api/achievement.service';
-import { AvatarService } from './api/avatar.service';
-import { CertificateService } from './api/certificate.service';
 import { UserService } from './api/user.service';
-import { UserAchievementService } from './api/userAchievement.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    AchievementService,
-    AvatarService,
-    CertificateService,
-    UserService,
-    UserAchievementService ]
+    UserService ]
 })
 export class ApiModule {
-    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {
+    public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {
         return {
             ngModule: ApiModule,
             providers: [ { provide: Configuration, useFactory: configurationFactory } ]

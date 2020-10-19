@@ -16,7 +16,7 @@ export interface AuthenticationResponse {
      */
     userId?: string;
     /**
-     * Generation new JSON Web Token.
+     * User JWT.
      */
     token?: string;
 }

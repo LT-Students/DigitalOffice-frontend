@@ -2,36 +2,39 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { UserResponse, UserService as UserAPIService} from '../../../libs/api/src/lib/user-service';
+import {
+  UserService as UserAPIService, User,
+} from '@digital-office/api/user-service';
+
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
   constructor(
     private userService: UserAPIService,
-    private localStorageService: LocalStorageService) {}
+    private localStorageService: LocalStorageService
+  ) {}
 
-  getUser(userId: string): Observable<UserResponse> {
+  getUser(userId: string): Observable<User> {
     return this.userService.getUserByIdGet(userId).pipe(
-      tap((user: UserResponse) => {
+      tap((user: User) => {
         this.localStorageService.set('user', user);
       })
     );
   }
 
   isAdmin(): boolean {
-    const user: UserResponse = this.localStorageService.get('user');
-    if ( user ) {
+    const user: User = this.localStorageService.get('user');
+    if (user) {
       return user.isAdmin;
     }
     return false;
   }
 
-  getCurrentUser(): UserResponse | null {
-    const user: UserResponse = this.localStorageService.get('user');
-    return (user) ? user : null;
+  getCurrentUser(): User | null {
+    const user: User = this.localStorageService.get('user');
+    return user ? user : null;
   }
 }

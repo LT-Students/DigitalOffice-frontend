@@ -1,78 +1,78 @@
-@import 'abstracts/variables';
+@import 'variables';
 
-%header_font_basic{
-    font-family: $header_font;
-    font-style: normal;
-    font-weight: bold;
-    color: $font_color;
+%header_font_basic {
+  font-family: $header_font;
+  font-style: normal;
+  font-weight: bold;
+  color: $font_color;
 }
 
-%regular_font_basic{
-    font-family: $regular_font;
-    font-style: normal;
-    font-weight: normal;
-    color: $font_color;
+%regular_font_basic {
+  font-family: $regular_font;
+  font-style: normal;
+  font-weight: normal;
+  color: $font_color;
 }
 
-.h1{
-    @extend %header_font_basic;
-    font-size: 35px;
-    line-height: 40px;
+.h1 {
+  @extend %header_font_basic;
+  font-size: 35px;
+  line-height: 40px;
 }
 
-.h2{
-    @extend %header_font_basic;
-    font-size: 28px;
-    line-height: 32px;
+.h2 {
+  @extend %header_font_basic;
+  font-size: 28px;
+  line-height: 32px;
 }
 
-.h3{
-    @extend %header_font_basic;
-    font-size: 22px;
-    line-height: 28px;
+.h3 {
+  @extend %header_font_basic;
+  font-size: 22px;
+  line-height: 28px;
 }
 
-.h4{
-    @extend %header_font_basic;
-    font-size: 16px;
-    line-height: 24px;
+.h4 {
+  @extend %header_font_basic;
+  font-size: 16px;
+  line-height: 24px;
 }
 
-.h5{
-    @extend %header_font_basic;
-    font-size: 14px;
-    line-height: 24px;
+.h5 {
+  @extend %header_font_basic;
+  font-size: 14px;
+  line-height: 24px;
 }
 
-.h6{
+.h6 {
   @extend %header_font_basic;
   font-size: 10px;
   line-height: 15px;
   font-weight: normal;
 }
 
-.regular_text{
+.regular_text {
     @extend %regular_font_basic;
     font-size: 16px;
     line-height: 24px;
 }
 
-.h3_light{
-    @extend %header_font_basic;
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 28px;
+.h3_light {
+  @extend %header_font_basic;
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 28px;
 }
 
-.text_bold{
-    font-weight: bold;
+.text_bold {
+  font-weight: bold;
 }
 
-.text_color{
-    &_white{
+.text_color {
+    &_white {
         color: white;
     }
-    &_dark-1{
+    &_dark-1 {
         color: $dark_1;
     }
     &_light-1{
@@ -87,7 +87,6 @@
     color: $dark_1;
 }
 
-
-.text_white{
-    color: white;
+.text_white {
+  color: white;
 }

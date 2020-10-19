@@ -12,9 +12,9 @@
 
 export interface AuthenticationRequest { 
     /**
-     * User mail.
+     * User email or login.
      */
-    email?: string;
+    loginData?: string;
     /**
      * User password.
      */

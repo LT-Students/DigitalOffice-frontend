@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { Member } from './../../../../interfaces/member.interface';
+import { Component, Input, OnInit } from '@angular/core';
+
+import { Member } from '../../../../interfaces/member.interface';
 
 @Component({
   selector: 'do-members-board',
