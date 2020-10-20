@@ -4,3 +4,16 @@
   border: 1px solid $light_3;
   border-radius: 5px;
 }
+
+//styles for FormControl => select
+.ng-valid select {
+  width: 100%;
+  background-color: $light_3;
+  min-height: 36px;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: $dark_1;
+  border: none;
+  top: 0;
+  margin-bottom: 0;
+}

@@ -1,5 +1,34 @@
-<span class="h1 h1_dark_2">Новый проект</span>
+<div>
+  <div class="h1 h1_dark_2">Новый проект</div>
 
-<div class="team-cards">
-    <do-team-card *ngFor="let team of teams" [teamCard]="team"></do-team-card>
+  <div class="content-container bg-white">
+    <div class="h3">Общая информация</div>
+    <form [formGroup]="profileForm" class="newProject__container regular_text">
+      <label>
+        <div class="input_header">Название проекта</div>
+        <input type="text" formControlName="projectName" />
+      </label>
+      <label>
+        <div class="input_header">Сокращенное название</div>
+        <input type="text" formControlName="shortProjectName" />
+      </label>
+      <label>
+        <div class="input_header">Департамент</div>
+        <select formControlName="departments" [disabled]>
+          <option *ngFor="let department of departments">
+            {{ department }}
+          </option>
+        </select>
+      </label>
+    </form>
+    <form>
+      <mat-form-field class="regular_text">
+        <div class="input_header">Описание</div>
+        <textarea matInput></textarea>
+      </mat-form-field>
+    </form>
+    <div class="team-cards">
+      <do-team-card *ngFor="let team of teams" [teamCard]="team"></do-team-card>
+    </div>
+  </div>
 </div>

@@ -26,3 +26,19 @@
     }
   }
 }
+
+//styles for FormControl => input
+.ng-pristine input,
+.ng-valid input {
+  width: 100%;
+  background-color: $light_3;
+  min-height: 36px;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: $dark_1;
+  caret-color: $dark_1;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,7 +1,28 @@
 @import 'base/variables';
+@import 'base/fonts';
 
-.h1_dark_2 {
+.h1_dark_2,
+.h3,
+.input_header {
   color: $dark_2;
+}
+.content-container {
+  width: 928px;
+  border-radius: 5px;
+  padding: 60px 128px;
+  .newProject__container {
+    display: grid;
+    grid-template-columns: 64.28% 34.24%;
+    grid-column-gap: 1.48%;
+  }
+  .mat-form-field {
+    display: block;
+  }
+  .input_header {
+    font-size: 14px;
+    color: $dark_1;
+    margin-top: 28px;
+  }
 }
 
 .team-cards {
