@@ -1,5 +1,6 @@
+@import 'base/variables';
+
 .mat-tab-group.mat-tab-group-override {
-  overflow: visible;
   .mat-tab-header {
     border: none;
     overflow: hidden;
@@ -37,14 +38,4 @@
       }
     }
   }
-  .mat-tab-body-wrapper {
-    overflow: visible;
-    .mat-tab-body {
-      overflow: visible;
-      .mat-tab-body-content {
-        overflow: visible;
-      }
-    }
-  }
 }
-

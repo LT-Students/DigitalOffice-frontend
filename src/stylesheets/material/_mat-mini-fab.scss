@@ -9,8 +9,14 @@
         width: 100%;
         height: 1px;
         padding-bottom: 100%;
-        overflow: visible
+        overflow: visible;
       }
+    }
+  }
+  &:not([class*='mat-elevation-z']) {
+    box-shadow: none;
+    &:not([disabled]):active {
+      box-shadow: none;
     }
   }
 }
