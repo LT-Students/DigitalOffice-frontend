@@ -1,4 +1,5 @@
 @import 'base/variables';
+@import 'base/fonts';
 
 .h1_dark_2 {
   color: $dark_2;
@@ -50,7 +51,7 @@
         width: 48px;
         height: 48px;
       }
-      &__plus{
+      &__plus {
         height: 26px;
         width: 26px;
       }
@@ -69,7 +70,7 @@
         &:before {
           @extend .h6;
           @extend .text_white;
-          content: "lead";
+          content: 'lead';
           position: absolute;
           top: -6px;
           right: -14px;
@@ -93,5 +94,3 @@
     }
   }
 }
-
-
