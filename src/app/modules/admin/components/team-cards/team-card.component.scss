@@ -1,12 +1,11 @@
 @import 'base/fonts';
 
-
 .team-card {
   box-sizing: border-box;
-  min-width: 270px;
+  min-width: 300px;
   padding: 24px;
   height: 100%;
-  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
 
   &__header {
     display: flex;
@@ -25,7 +24,6 @@
     display: block;
     width: 16px;
     height: 16px;
-    margin-top: -10px;
     margin-right: 8px;
   }
   &__level-labels {
@@ -53,7 +51,7 @@
     align-items: center;
     justify-content: center;
   }
-  &__plus{
+  &__plus {
     height: 26px;
     width: 26px;
   }
@@ -72,7 +70,7 @@
     &:before {
       @extend .h6;
       @extend .text_white;
-      content: "lead";
+      content: 'lead';
       position: absolute;
       top: -6px;
       right: -14px;
