@@ -10,6 +10,7 @@ import { NewEmployeeComponent } from './modules/admin/components/new-employee/ne
 import { NewProjectComponent } from './modules/admin/components/new-project/new-project.component';
 import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
 import { NewMemberComponent } from './modules/admin/components/new-member/new-member.component';
+import { MembersBoardComponent } from './modules/admin/components/members-board/members-board.component';
 
 
 const routes: Routes = [
@@ -37,7 +38,7 @@ const routes: Routes = [
           { path: 'dashboard', component: DashboardComponent },
           { path: 'new-employee', component: NewEmployeeComponent },
           { path: 'new-project', component: NewProjectComponent },
-          { path: 'new-member', component: NewMemberComponent }
+          { path: 'members-board', component: MembersBoardComponent }
         ],
         canActivate: [AuthGuard, AdminGuard]
       }

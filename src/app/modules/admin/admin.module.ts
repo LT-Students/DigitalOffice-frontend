@@ -36,13 +36,12 @@ import { NewMemberComponent } from './components/new-member/new-member.component
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule,
     AppMaterialModule,
-    MatCheckboxModule,
+    SharedModule,
+    MatCheckboxModule
   ],
   entryComponents: [
     NewCompanyComponent,
   ]
 })
-export class AdminModule {
-}
+export class AdminModule {}

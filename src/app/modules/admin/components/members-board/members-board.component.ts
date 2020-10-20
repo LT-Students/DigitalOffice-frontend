@@ -1,23 +1,32 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { Member } from './../../../../interfaces/member.interface';
+
+import { Member } from '../../../../interfaces/member.interface';
+import { newMembers, NewMember } from './new-members';
+
+
+
 
 @Component({
   selector: 'do-members-board',
   templateUrl: './members-board.component.html',
   styleUrls: ['./members-board.component.scss']
 })
+
 export class MembersBoardComponent implements OnInit {
 
+  public users: NewMember[] = newMembers;
+
   specializations: string[] = [
-    "front-end",
-    "back-end",
-    "full-stack"
+    'front-end',
+    'back-end',
+    'full-stack'
   ];
   levels: string[] = [
-    "junior",
-    "middle",
-    "senior"
+    'junior',
+    'middle',
+    'senior'
   ];
+
 
   @Input() members: Member[] = [];
 

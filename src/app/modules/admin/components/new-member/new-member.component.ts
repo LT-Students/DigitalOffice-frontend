@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+
+import { NewMember } from '../members-board/new-members';
+
+
+
 
 
 @Component({
@@ -8,12 +13,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewMemberComponent implements OnInit {
 
-  members = [
-    {
-      profileImgSrc: '',
-      lead: true
-    }
-  ];
+  @Input()
+  public newMember: NewMember;
+
+
   names: string[] = [
     'Алексей Пивоваров',
     'Алита Пратчетт',
