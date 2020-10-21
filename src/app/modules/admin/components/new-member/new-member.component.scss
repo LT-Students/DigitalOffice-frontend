@@ -10,6 +10,7 @@ $select-height: 24px;
   height: 80px;
   background-color: $light_1;
   border-radius: 5px;
+  margin-left: -25px;
   &__checkbox {
     margin: auto 39px auto 24px;
   }
@@ -28,20 +29,17 @@ $select-height: 24px;
 .new-member-form {
   display: flex;
   justify-content: space-between;
-  width: 557px;
+  width: 505px;
   &__selects {
     height: $select-height;
     margin-bottom: 14px;
   }
   &__select-role {
     width: 63px;
-
+    height: $select-height;
   }
 }
 
-mat-placeholder.regular_text.new-member-form__select-role {
-  font-size: 14px;
-}
 label.mat-checkbox-layout {
   margin-bottom: 0;
 }
@@ -54,6 +52,12 @@ label.mat-checkbox-layout {
     padding: 0;
   }
 
+  .mat-checkbox-frame  {
+    border: 1px solid #BDBDBD;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
   .mat-select-value{
     padding: 0 0 0 0.5em;
     line-height: $select-height;
@@ -64,23 +68,20 @@ label.mat-checkbox-layout {
   }
   .mat-select-arrow{
     border: none;
-    height: 6px;
-    width: 10px;
-    margin: 0 14px 0 4px;
-    background-image: url('/assets/svg/arrow-down-dark.svg');
+    height: 3px;
+    width: 6px;
+    margin: 0 9px 0 0;
+
   }
 
-  .mat-select-arrow.ng-tns-c184-5 {
+  .mat-select-arrow.ng-tns-c184-5,
+  .mat-select-arrow.ng-tns-c184-7{
     background-image: none;
-  }
-
-  span.matt-select-value-text.ng-tns-c184-5.ng.star-inserted {
-    color: gray;
   }
 
   .mat-form-field {
     margin-left: -10px;
-    border: none;
+    background-color: #FFFFFF;
     background-image: none;
   }
 
@@ -91,6 +92,40 @@ label.mat-checkbox-layout {
       position: static;
       height: 0;
       overflow: visible;
+    }
+  }
+}
+
+::ng-deep .new-member-form {
+  &__select-spec {
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+    border-radius: 5px;
+    .mat-select-arrow-wrapper {
+      border: none;
+      height: 3px;
+      width: 6px;
+      padding: 0 9px 0 0;
+      background-image: url('/assets/svg/arrow-down-dark-small.svg');
+      background-repeat: no-repeat;
+      background-position-y: center;
+    }
+  }
+  &__select-role {
+    .mat-select-arrow-wrapper {
+      border: none;
+      height: 3px;
+      width: 6px;
+      margin: 0 9px 0 0;
+      background-image: url('/assets/svg/arrow-down-grey-small.svg');
+      background-repeat: no-repeat;
+      background-position-y: center;
+    }
+    .mat-select-value {
+      .mat-select-placeholder {
+        @extend .text_color_gray;
+        font-size: 14px;
+        line-height: $select-height;
+      }
     }
   }
 }
