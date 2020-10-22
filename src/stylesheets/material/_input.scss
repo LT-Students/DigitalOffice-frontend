@@ -27,9 +27,11 @@
   }
 }
 
-//styles for FormControl => input
+//styles for FormControl
 .ng-pristine input,
-.ng-valid input {
+.ng-valid input,
+.ng-pristine textarea,
+.ng-valid textarea {
   width: 100%;
   background-color: $light_3;
   min-height: 36px;
