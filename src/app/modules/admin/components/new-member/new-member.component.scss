@@ -30,6 +30,7 @@ $select-height: 24px;
   display: flex;
   justify-content: space-between;
   width: 505px;
+  align-items: center;
   &__selects {
     height: $select-height;
     margin-bottom: 14px;
