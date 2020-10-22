@@ -13,6 +13,7 @@ export class NewProjectComponent {
   profileForm = new FormGroup({
     projectName: new FormControl(''),
     shortProjectName: new FormControl(''),
+    departments: new FormControl(''),
   });
   departments = ['one', 'two', 'three'];
 
