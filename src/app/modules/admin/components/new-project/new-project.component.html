@@ -1,7 +1,7 @@
 <h1 class="h1 h1_dark_2">Новый проект</h1>
 <div class="content-container">
   <section class="team">
-    <h3 class="team__section-title h3 text_bold text_dark_1">Команда</h3>
+    <h2 class="team__section-title h3 text_bold text_dark_1">Команда</h2>
     <p class="team__members-count regular_text text_dark_1">
       {{ team.length }} участников
     </p>
@@ -10,19 +10,10 @@
         <div class="team-list">
           <button
             mat-mini-fab
-            class="team-list__new-member mat-mini-fab-override"
+            class="team-list__new-member mat-mini-fab-override mat-elevation-z0"
             (click)="addMember(team)"
           >
-            <svg
-              class="team-list__plus"
-              fill="white"
-              viewBox="0 0 24 24"
-              preserveAspectRatio="xMidYMin slice"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path d="M0 0h24v24H0z" fill="none" />
-              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-            </svg>
+            <img src="assets/svg/add.svg" alt="add icon" />
           </button>
           <ul class="team-list__members-list">
             <li class="team-list__member" *ngFor="let member of team">

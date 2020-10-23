@@ -13,10 +13,4 @@
       }
     }
   }
-  &:not([class*='mat-elevation-z']) {
-    box-shadow: none;
-    &:not([disabled]):active {
-      box-shadow: none;
-    }
-  }
 }

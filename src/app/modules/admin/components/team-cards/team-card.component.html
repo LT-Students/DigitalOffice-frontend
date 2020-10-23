@@ -1,34 +1,39 @@
 <mat-card class="team-card bg-light_1">
   <div class="team-card__header">
-    <mat-card-title class="team-card__name h4 text_bold text_dark_1">{{ teamCard.name }}</mat-card-title>
+    <mat-card-title class="team-card__name h4 text_bold text_dark_1">{{
+      teamCard.name
+    }}</mat-card-title>
     <div class="team-card__people-count-container">
       <mat-icon class="team-card__people-count-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-          <path d="M8 0C9.06087 0 10.0783 0.421427 10.8284 1.17157C11.5786 1.92172 12 2.93913 12 4C12 5.06087 11.5786 6.07828 10.8284 6.82843C10.0783 7.57857 9.06087 8 8 8C6.93913 8 5.92172 7.57857 5.17157 6.82843C4.42143 6.07828 4 5.06087 4 4C4 2.93913 4.42143 1.92172 5.17157 1.17157C5.92172 0.421427 6.93913 0 8 0ZM8 10C12.42 10 16 11.79 16 14V16H0V14C0 11.79 3.58 10 8 10Z" fill="#FA7D57"/>
-        </svg>
+        <img src="assets/svg/members-count.svg" alt="user icon" />
       </mat-icon>
-      <p class="team-card__people-count regular_text text_dark_1">{{ teamCard.members.length }}</p>
+      <p class="team-card__people-count regular_text text_dark_1">
+        {{ teamCard.members.length }}
+      </p>
     </div>
   </div>
-  <p class="team-card__level-labels regular_text">{{ countLevels(teamCard.members) | titlecase }}</p>
+  <p class="team-card__level-labels regular_text">
+    {{ countLevels(teamCard.members) | titlecase }}
+  </p>
   <div class="team-card__team-members">
-    <button mat-mini-fab class="team-card__new-member mat-mini-fab-override"
-            (click)="addMember(teamCard.members)"
+    <button
+      mat-mini-fab
+      class="team-card__new-member mat-mini-fab-override mat-elevation-z0"
+      (click)="addMember(teamCard.members)"
     >
-        <svg class="team-card__plus" fill="white" viewBox="0 0 24 24" preserveAspectRatio="xMidYMin slice" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0h24v24H0z" fill="none"/>
-          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-        </svg>
+      <img src="assets/svg/add.svg" alt="add icon" />
     </button>
     <ul class="team-card__members-list">
-      <li class="team-card__member"
-          *ngFor="let member of teamCard.members"
-      >
+      <li class="team-card__member" *ngFor="let member of teamCard.members">
         <a href="#" [title]="member.name">
-          <do-profile-image [src]="member.profileImgSrc" *ngIf="member.profileImgSrc; else iconDummy"></do-profile-image>
+          <do-profile-image
+            [src]="member.profileImgSrc"
+            *ngIf="member.profileImgSrc; else iconDummy"
+          ></do-profile-image>
           <ng-template #iconDummy>
-            <div class="team-card__icon-dummy"
-                 [class.team-card__icon-dummy_lead]="member.lead"
+            <div
+              class="team-card__icon-dummy"
+              [class.team-card__icon-dummy_lead]="member.lead"
             ></div>
           </ng-template>
         </a>
