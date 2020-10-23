@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from 'src/app/app-material.module';
-import { MatTabsModule } from '@angular/material/tabs';
 
 import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -32,8 +31,7 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
         FormsModule,
         ReactiveFormsModule,
         SharedModule,
-        AppMaterialModule,
-        MatTabsModule,
+        AppMaterialModule
     ],
   entryComponents: [
     NewCompanyComponent,
