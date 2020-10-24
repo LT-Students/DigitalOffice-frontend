@@ -61,7 +61,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged --relative"
+      "pre-commit": "npx lint-staged --relative"
     }
   },
   "lint-staged": {
@@ -73,7 +73,7 @@
     ],
     "*.ts": [
       "prettier --write",
-      "ng lint DigitalOffice-frontend --files"
+      "tslint"
     ]
   }
 }
