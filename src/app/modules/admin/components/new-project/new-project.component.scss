@@ -19,16 +19,16 @@
     &__members-count {
       position: absolute;
       right: 0;
-      top: 105px;
+      top: 99px;
     }
     &__tabs {
-      margin-top: 30px;
+      margin-top: 25px;
     }
     .team-list {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      margin-top: 25px;
+      margin-top: 10px;
       &__members-list {
         display: flex;
         justify-content: flex-start;
@@ -84,4 +84,11 @@
       margin: 40px 4px 4px 4px;
     }
   }
+}
+
+::ng-deep.mat-tab-link,
+::ng-deep.mat-tab-label,
+::ng-deep.mat-tab-label-active {
+  min-width: 0 !important;
+  padding: 0 40px !important;
 }
