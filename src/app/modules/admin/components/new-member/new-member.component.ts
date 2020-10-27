@@ -26,8 +26,6 @@ export class NewMemberComponent implements OnInit {
     'Back-End Developer'
   ];
 
-  // text: any;
-
   constructor() {
   }
 
