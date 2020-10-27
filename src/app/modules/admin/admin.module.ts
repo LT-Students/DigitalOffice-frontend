@@ -6,7 +6,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from 'src/app/app-material.module';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -37,8 +36,7 @@ import { NewMemberComponent } from './components/new-member/new-member.component
     FormsModule,
     ReactiveFormsModule,
     AppMaterialModule,
-    SharedModule,
-    MatCheckboxModule
+    SharedModule
   ],
   entryComponents: [
     NewCompanyComponent,
