@@ -7,9 +7,10 @@
     <div class="new-member-form">
       <div class="new-member-form__selects">
         <p class="regular_text text_color_dark-1">{{newMember.fullName}}</p>
-        <mat-form-field class="select  new-member-form__select-spec"
+        <div *ngIf="newMember.specialization.length > 1 else text" >
+          <mat-form-field class="select  new-member-form__select-spec"
                         appearance="none">
-          <div *ngIf="newMember.specialization.length > 1 else text" >
+
             <mat-select class="regular_text text_color_gray"
                         placeholder="Специализация"
                         disableOptionCentering="true">
@@ -19,11 +20,11 @@
                 {{newMember.specialization}}
               </mat-option>
             </mat-select>
-          </div>
-          <ng-template #text>{{newMember.specialization[0]}}</ng-template>
-        </mat-form-field>
+          </mat-form-field>
+        </div>
+        <ng-template #text>{{newMember.specialization[0]}}</ng-template>
       </div>
-      <p class="regular_text text_color_gray">{{newMember.projectsCount}} проекта</p>
+      <p class="regular_text text_color_gray">{{newMember.projectsCount}} {{getCountProjectsTitle()}}</p>
       <mat-form-field class="select new-member-form__select-role"
                       appearance="none">
         <mat-select class="regular_text text_color_gray"
