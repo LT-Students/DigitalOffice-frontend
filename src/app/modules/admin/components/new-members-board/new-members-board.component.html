@@ -38,7 +38,7 @@
       <do-new-member *ngFor="let user of users" [newMember]="user"></do-new-member>
     </div>
     <div class="members-form__background">
-      <div *ngIf="this.members.length == 0"
+      <div *ngIf="this.members.length === 0"
            class="no-members-icon">
         <img src="/assets/images/tumbleweed.png" alt="tumbleweed">
         <span class="regular_text text_color_gray">Пока тут никого...</span>
