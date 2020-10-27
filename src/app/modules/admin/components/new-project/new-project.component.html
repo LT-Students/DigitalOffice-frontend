@@ -13,7 +13,12 @@
             class="team-list__new-member mat-mini-fab-override mat-elevation-z0"
             (click)="addMember(team)"
           >
-            <img src="assets/svg/add.svg" alt="add icon" />
+            <img
+              src="assets/svg/plus.svg"
+              width="26"
+              height="26"
+              alt="Добавить сотрудника."
+            />
           </button>
           <ul class="team-list__members-list">
             <li class="team-list__member" *ngFor="let member of team">
