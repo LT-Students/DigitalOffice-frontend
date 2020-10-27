@@ -7,12 +7,12 @@ import { newMembers, NewMember } from './new-members';
 
 
 @Component({
-  selector: 'do-members-board',
-  templateUrl: './members-board.component.html',
-  styleUrls: ['./members-board.component.scss']
+  selector: 'do-new-members-board',
+  templateUrl: './new-members-board.component.html',
+  styleUrls: ['./new-members-board.component.scss']
 })
 
-export class MembersBoardComponent implements OnInit {
+export class NewMembersBoardComponent implements OnInit {
 
   public users: NewMember[] = newMembers;
 

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { NewMember } from '../members-board/new-members';
+import { NewMember } from '../new-members-board/new-members';
 
 
 
