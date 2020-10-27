@@ -17,23 +17,6 @@ export class NewMemberComponent implements OnInit {
   public newMember: NewMember;
 
 
-  names: string[] = [
-    'Алексей Пивоваров',
-    'Алита Пратчетт',
-    'Алтул Пендлагон',
-    'Алиса Реутова'
-  ];
-  specializations: string[] = [
-    'Front-End Developer',
-    'Back-End Developer',
-    'Junior Product Manager',
-    'Middle QA Tester',
-    'Junior UI/UX Designer'
-  ];
-  projects: string[] = [
-    '2 проекта',
-    '1 проект'
-  ];
   roles: string[] = [
     'Product Manager',
     'Front-End Developer',
@@ -43,8 +26,18 @@ export class NewMemberComponent implements OnInit {
     'Back-End Developer'
   ];
 
+  // text: any;
+
   constructor() {
   }
+
+  // public checkProductsCount(number, titles) {
+  //   cases = [2, 0, 1, 1, 1, 2];
+  //   return titles[ (number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5] ];
+  // }
+  // let count = productsCount,
+  // result = checkProductsCount(count, ['проект', 'проекта', 'проектов']);
+  // }
 
 
   ngOnInit(): void {

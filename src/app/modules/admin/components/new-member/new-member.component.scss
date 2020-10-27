@@ -11,6 +11,7 @@ $select-height: 24px;
   background-color: $light_1;
   border-radius: 5px;
   margin-left: -25px;
+  margin-bottom: 14px;
   &__checkbox {
     margin: auto 39px auto 24px;
   }
@@ -18,8 +19,8 @@ $select-height: 24px;
     display: flex;
   }
   &__img {
-    width: 36px;
-    height: 36px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background-color: $gray;
     margin-right: 16px;

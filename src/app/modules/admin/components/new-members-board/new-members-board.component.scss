@@ -13,7 +13,7 @@ $select-height: 36px;
   &__close-button{
     position: absolute;
     top: 15px;
-    right: 15px; 
+    right: 15px;
   }
   &__title{
     margin-bottom: 34px;
@@ -50,10 +50,16 @@ $select-height: 36px;
   }
 }
 
-.no-members-icon{
+.new-members-icon{
   display: flex;
   flex-direction: column;
   text-align: center;
+  &__-dummy {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: $gray;
+  }
 }
 
 ::ng-deep .members-board{
@@ -63,7 +69,7 @@ $select-height: 36px;
   .mat-form-field-label-wrapper{
       padding: 0;
   }
-  
+
   .mat-select-value{
       padding: 0 0 0 0.5em;
       line-height: $select-height;
@@ -88,7 +94,7 @@ $select-height: 36px;
         height: 0;
         overflow: visible;
     }
-  } 
+  }
 }
 
 ::ng-deep .cdk-overlay-pane{
