@@ -1,6 +1,9 @@
 @import 'base/variables';
 @import 'base/fonts';
 
+.h1 {
+  margin-bottom: 20px;
+}
 .h1_dark_2,
 .h3,
 .input_header {
@@ -15,8 +18,8 @@
     grid-template-columns: 64.28% 34.24%;
     grid-column-gap: 1.48%;
   }
-  .mat-form-field {
-    display: block;
+  textarea {
+    height: 82px;
   }
   .input_header {
     font-size: 14px;
