@@ -1,0 +1,41 @@
+@import 'base/variables';
+
+.mat-tab-group.mat-tab-group-override {
+  .mat-tab-header {
+    border: none;
+    overflow: hidden;
+    .mat-tab-label-container {
+      .mat-tab-list {
+        .mat-ink-bar {
+          display: none;
+        }
+        .mat-tab-labels {
+          .mat-tab-label {
+            height: 32px;
+            padding: 0 30px;
+            background-color: $light_2;
+            opacity: 1;
+            &:first-child {
+              border-radius: 5px 0 0 5px;
+            }
+            &:last-child {
+              border-radius: 0 5px 5px 0;
+            }
+            .mat-tab-label-content {
+              font-family: $regular_font;
+              color: $gray;
+            }
+          }
+          .mat-tab-label-active {
+            background-color: $button_orange;
+            border: none;
+            outline: 0;
+            .mat-tab-label-content {
+              color: $light_1;
+            }
+          }
+        }
+      }
+    }
+  }
+}

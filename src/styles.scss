@@ -3,6 +3,8 @@
 @import 'layouts/card';
 @import 'layouts/forms';
 @import 'material/input';
+@import 'material/mat-mini-fab';
+@import 'material/mat-tabs';
 
 *,
 *:before,
@@ -34,6 +36,6 @@ body {
   opacity: 0.8;
 }
 
-button:focus{
+button:focus {
   outline: none;
 }

@@ -1,14 +1,94 @@
 @import 'base/variables';
+@import 'base/fonts';
 
 .h1_dark_2 {
   color: $dark_2;
 }
 
-.team-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  grid-auto-rows: min-content;
-  column-gap: 35px;
-  row-gap: 20px;
-  margin-top: 20px;
+.content-container {
+  background-color: $light_1;
+  border-radius: 5px;
+  padding: 0 128px;
+  margin-top: 26px;
+  .team {
+    padding-top: 42px;
+    padding-bottom: 20px;
+    position: relative;
+    &__section-title {
+    }
+    &__members-count {
+      position: absolute;
+      right: 0;
+      top: 99px;
+    }
+    &__tabs {
+      margin-top: 25px;
+    }
+    .team-list {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 10px;
+      &__members-list {
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        list-style: none;
+        margin-bottom: 0;
+      }
+      &__new-member {
+        margin-right: 13px;
+        margin-top: 13px;
+        align-self: flex-start;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+      }
+      &__member {
+        position: relative;
+        margin-right: 12px;
+        margin-top: 12px;
+      }
+      &__icon-dummy {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: $gray;
+      }
+      &__icon-dummy_lead {
+        &:before {
+          @extend .h6;
+          @extend .text_white;
+          content: 'lead';
+          position: absolute;
+          top: -6px;
+          right: -14px;
+          text-align: center;
+          text-transform: uppercase;
+          background-color: $blue_3;
+          border-radius: 6px;
+          padding: 0 3px;
+        }
+      }
+    }
+
+    .team-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-auto-rows: min-content;
+      column-gap: 32px;
+      row-gap: 20px;
+      margin: 40px 4px 4px 4px;
+    }
+  }
+}
+
+::ng-deep.mat-tab-link,
+::ng-deep.mat-tab-label,
+::ng-deep.mat-tab-label-active {
+  min-width: 0 !important;
+  padding: 0 40px !important;
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import { teamCards, TeamCard } from './team-cards';
 
@@ -9,6 +9,35 @@ import { teamCards, TeamCard } from './team-cards';
 })
 export class NewProjectComponent {
   public teams: TeamCard[] = teamCards;
+  public team = [
+    {
+      name: 'Olya',
+      profileImgSrc: ''
+    },
+    {
+      name: 'Slava',
+      profileImgSrc: ''
+    },
+    {
+      name: 'Nikita',
+      profileImgSrc: ''
+    },
+    {
+      name: 'Olya',
+      profileImgSrc: ''
+    },
+    {
+      name: 'Slava',
+      profileImgSrc: ''
+    },
+  ];
 
   constructor() { }
+
+  public addMember(members): void {
+    members.push({
+      name: 'unknown',
+      profileImgSrc: ''
+    });
+  }
 }

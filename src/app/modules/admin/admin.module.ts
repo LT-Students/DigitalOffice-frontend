@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from 'src/app/app-material.module';
 
@@ -28,14 +25,16 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     NewCompanyComponent,
     TeamCardComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppMaterialModule,
-    SharedModule,
-  ],
-  entryComponents: [NewCompanyComponent],
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        AppMaterialModule
+    ],
+  entryComponents: [
+    NewCompanyComponent,
+  ]
 })
 export class AdminModule {}

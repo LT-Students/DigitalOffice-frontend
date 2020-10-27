@@ -12,10 +12,11 @@
     z-index: 2;
   }
   .wrapper {
-    margin-top: 80px;
+    margin-top: 56px;
     height: 100%;
-    width: 1024px;
+    width: 100%;
+    max-width: 1024px;
     z-index: 1;
-    padding: 38px 5%;
+    padding: 38px 48px;
   }
 }

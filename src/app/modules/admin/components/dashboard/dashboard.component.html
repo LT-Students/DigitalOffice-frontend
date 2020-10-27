@@ -1,11 +1,21 @@
 <div class="content-container">
   <div class="board">
     <div class="user-board">
-      <img class="user-board__content" src="../../../../../assets/images/fon.png" alt="background">
-      <img class="user-board__photo" src="../../../../../assets/admin/dashboard/avatar.png" alt="avatar">
+      <img
+        class="user-board__content"
+        src="assets/images/fon.png"
+        alt="background"
+      />
+      <img
+        class="user-board__photo"
+        src="assets/admin/dashboard/avatar.png"
+        alt="avatar"
+      />
       <div class="user-board__date">
-        <span class="h2 h2_ultimate-orange">Сегодня {{ today | date:'d MMMM'}}</span>
-        <span class="h3_light">{{ today | date:'EEEE' | titlecase}}</span>
+        <span class="h2 h2_ultimate-orange"
+          >Сегодня {{ today | date: 'd MMMM' }}</span
+        >
+        <span class="h3_light">{{ today | date: 'EEEE' | titlecase }}</span>
       </div>
     </div>
     <div class="manage-board">
@@ -13,16 +23,22 @@
       <div class="manage-board__content">
         <a routerLink="/user/admin/new-employee">
           <button class="btn-first">
-            <img src="../../../../../assets/admin/dashboard/add-employee-icon.png" alt="add-employee-icon">
+            <img
+              src="assets/admin/dashboard/add-employee-icon.png"
+              alt="add-employee-icon"
+            />
             <span class="h4 h4_ultimate-orange">Добавить сотрудника</span>
           </button>
         </a>
         <button class="btn-last" (click)="onOpenNewProject()">
-          <img src="../../../../../assets/admin/dashboard/add-project-icon.png" alt="add-project-icon">
+          <img
+            src="assets/admin/dashboard/add-project-icon.png"
+            alt="add-project-icon"
+          />
           <span class="h4 h4_dark_1">Добавить проект</span>
         </button>
         <button class="btn-last" (click)="onOpenNewCompany()">
-          <img src="../../../../../assets/svg/add-company.svg" alt="add-company-icon">
+          <img src="assets/svg/add-company.svg" alt="add-company-icon" />
           <span class="h4_dark_1 h4">Добавить компанию</span>
         </button>
       </div>
@@ -31,8 +47,10 @@
       <span class="h3 h3_dark_1">Мои проекты</span>
       <div class="projects-board__content">
         <ng-container *ngFor="let project of projects">
-          <do-my-project  class="component-my-project"
-                          [project]="project"></do-my-project>
+          <do-my-project
+            class="component-my-project"
+            [project]="project"
+          ></do-my-project>
         </ng-container>
       </div>
     </div>
