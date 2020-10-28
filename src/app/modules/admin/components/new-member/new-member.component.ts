@@ -18,7 +18,7 @@ export class NewMemberComponent implements OnInit {
 
 
   roles: string[] = [
-    'Product Manager',
+    'PM',
     'Front-End Developer',
     'QA Tester',
     'Teamlead',

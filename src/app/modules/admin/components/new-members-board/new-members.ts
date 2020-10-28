@@ -1,7 +1,7 @@
 enum Level {
-  Junior = 'junior',
-  Middle = 'middle',
-  Senior = 'senior'
+  Junior = 'Junior',
+  Middle = 'Middle',
+  Senior = 'Senior'
 }
 
 enum Specialization {

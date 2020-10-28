@@ -13,7 +13,7 @@ $select-height: 24px;
   margin-left: -25px;
   margin-bottom: 14px;
   &__checkbox {
-    margin: auto 39px auto 24px;
+    margin: 30px 39px auto 24px;
   }
   &__info {
     display: flex;
@@ -34,7 +34,9 @@ $select-height: 24px;
   align-items: center;
   &__selects {
     height: $select-height;
+    margin-top: -10px;
     margin-bottom: 14px;
+    //width: 118px;
   }
   &__select-role {
     width: 63px;
