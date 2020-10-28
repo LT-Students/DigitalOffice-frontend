@@ -1,10 +1,11 @@
 @import 'base/fonts';
 
-
 .team-card {
-  min-width: 320px;
+  box-sizing: border-box;
+  min-width: 300px;
   padding: 24px;
   height: 100%;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
 
   &__header {
     display: flex;
@@ -40,6 +41,7 @@
     align-items: flex-end;
     flex-wrap: wrap;
     list-style: none;
+    margin-bottom: 0;
   }
   &__new-member {
     margin-right: 12px;
@@ -49,7 +51,7 @@
     align-items: center;
     justify-content: center;
   }
-  &__plus{
+  &__plus {
     height: 26px;
     width: 26px;
   }
@@ -68,7 +70,7 @@
     &:before {
       @extend .h6;
       @extend .text_white;
-      content: "lead";
+      content: 'lead';
       position: absolute;
       top: -6px;
       right: -14px;

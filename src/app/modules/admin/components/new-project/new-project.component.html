@@ -30,8 +30,55 @@
         ></textarea>
       </div>
     </form>
-    <div class="team-cards">
-      <do-team-card *ngFor="let team of teams" [teamCard]="team"></do-team-card>
-    </div>
+  </div>
+  <h1 class="h1 h1_dark_2">Новый проект</h1>
+  <div class="content-container">
+    <section class="team">
+      <h2 class="team__section-title h3 text_bold text_dark_1">Команда</h2>
+      <p class="team__members-count regular_text text_dark_1">
+        {{ team.length }} участников
+      </p>
+      <mat-tab-group
+        class="team__tabs mat-tab-group-override mat-tab-shadow-fix"
+      >
+        <mat-tab label="Список" class="mat-tab-first team__tab">
+          <div class="team-list">
+            <button
+              mat-mini-fab
+              class="team-list__new-member mat-mini-fab-override mat-elevation-z0"
+              (click)="addMember(team)"
+            >
+              <img
+                src="assets/svg/plus.svg"
+                width="26"
+                height="26"
+                alt="Добавить сотрудника."
+              />
+            </button>
+            <ul class="team-list__members-list">
+              <li class="team-list__member" *ngFor="let member of team">
+                <a href="#" [title]="member.name">
+                  <do-profile-image
+                    [src]="member.profileImgSrc"
+                    *ngIf="member.profileImgSrc; else iconDummy"
+                  ></do-profile-image>
+                  <ng-template #iconDummy>
+                    <div class="team-list__icon-dummy"></div>
+                  </ng-template>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </mat-tab>
+        <mat-tab label="Карточки" class="mat-tab-last team__tab">
+          <div class="team-cards">
+            <do-team-card
+              *ngFor="let team of teams"
+              [teamCard]="team"
+            ></do-team-card>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </section>
   </div>
 </div>

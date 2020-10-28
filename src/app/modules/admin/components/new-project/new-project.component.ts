@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { teamCards, TeamCard } from './team-cards';
@@ -17,6 +17,35 @@ export class NewProjectComponent {
     projectDescription: new FormControl(''),
   });
   departments = ['one', 'two', 'three'];
+  public team = [
+    {
+      name: 'Olya',
+      profileImgSrc: '',
+    },
+    {
+      name: 'Slava',
+      profileImgSrc: '',
+    },
+    {
+      name: 'Nikita',
+      profileImgSrc: '',
+    },
+    {
+      name: 'Olya',
+      profileImgSrc: '',
+    },
+    {
+      name: 'Slava',
+      profileImgSrc: '',
+    },
+  ];
 
   constructor() {}
+
+  public addMember(members): void {
+    members.push({
+      name: 'unknown',
+      profileImgSrc: '',
+    });
+  }
 }
