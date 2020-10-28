@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { teamCards, TeamCard } from './team-cards';
@@ -11,10 +11,10 @@ import { teamCards, TeamCard } from './team-cards';
 export class NewProjectComponent {
   public teams: TeamCard[] = teamCards;
   profileForm = new FormGroup({
-    projectName: new FormControl(''),
-    shortProjectName: new FormControl(''),
+    name: new FormControl(''),
+    shortName: new FormControl(''),
     departments: new FormControl(''),
-    projectDescription: new FormControl(''),
+    description: new FormControl(''),
   });
   departments = ['one', 'two', 'three'];
   public team = [

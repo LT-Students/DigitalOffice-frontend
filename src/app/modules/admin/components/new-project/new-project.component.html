@@ -2,34 +2,34 @@
   <div class="regular_text">< К доске проектов</div>
   <h1 class="h1 h1_dark_2">Новый проект</h1>
   <div class="content-container bg-white">
-    <section>
-      <div class="h3">Общая информация</div>
-      <form
-        [formGroup]="profileForm"
-        class="newProject__container regular_text"
-      >
-        <div class="inputs__container">
-          <div>
-            <div class="input_header">Название проекта</div>
-            <input type="text" formControlName="projectName" />
-          </div>
-          <div>
-            <div class="input_header">Сокращенное название</div>
-            <input type="text" formControlName="shortProjectName" />
-          </div>
-          <div>
-            <div class="input_header">Департамент</div>
-            <select formControlName="departments" [disabled]>
-              <option *ngFor="let department of departments">
-                {{ department }}
-              </option>
-            </select>
-          </div>
+    <section class="project-info">
+      <h2 class="project-info__title h3">Общая информация</h2>
+      <form [formGroup]="profileForm" class="project-info__form regular_text">
+        <div class="project-info__name">
+          <label class="project-info__label" for="name">Название проекта</label>
+          <input type="text" id="name" formControlName="name" />
         </div>
-        <div>
-          <div class="input_header">Описание</div>
+        <div class="project-info__abbr-name">
+          <label class="project-info__label" for="abbr-name"
+            >Сокращенное название</label
+          >
+          <input type="text" id="abbr-name" formControlName="shortName" />
+        </div>
+        <div class="project-info__department">
+          <label class="project-info__label" for="department"
+            >Департамент</label
+          >
+          <select id="department" formControlName="departments" [disabled]>
+            <option *ngFor="let department of departments">
+              {{ department }}
+            </option>
+          </select>
+        </div>
+        <div class="project-info__description">
+          <label class="project-info__label" for="description">Описание</label>
           <textarea
-            formControlName="projectDescription"
+            id="description"
+            formControlName="description"
             placeholder="Краткое описание сути проекта на его публичной карточке"
           ></textarea>
         </div>

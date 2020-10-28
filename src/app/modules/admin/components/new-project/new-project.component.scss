@@ -5,34 +5,22 @@
   margin: 17px 0 20px;
 }
 .h1_dark_2,
-.h3,
-.input_header {
+.h3 {
   color: $dark_2;
 }
 .content-container {
   width: 928px;
   border-radius: 5px;
   padding: 60px 128px;
-  .inputs__container {
-    display: grid;
-    grid-template-columns: 64.28% 34.24%;
-    grid-column-gap: 1.48%;
-  }
+
   textarea {
     height: 82px;
   }
-  .input_header {
-    font-size: 14px;
-    color: $dark_1;
-    margin-top: 28px;
-  }
+
   .team {
     padding-top: 42px;
     padding-bottom: 20px;
     position: relative;
-
-    &__section-title {
-    }
 
     &__members-count {
       position: absolute;
@@ -108,6 +96,47 @@
       row-gap: 20px;
       margin: 40px 4px 4px 4px;
     }
+  }
+}
+
+.project-info {
+  margin-bottom: 45px;
+
+  &__title {
+    margin-bottom: 30px;
+  }
+
+  &__form {
+    display: grid;
+    grid-template-columns: 64.28% 34.24%;
+    grid-template-rows: repeat(3, 25%);
+    grid-column-gap: 1.48%;
+    grid-row-gap: 12%;
+    grid-template-areas:
+      'name abbr-name'
+      'department .'
+      'desc desc';
+  }
+
+  &__name {
+    grid-area: name;
+  }
+
+  &__abbr-name {
+    grid-area: abbr-name;
+  }
+
+  &__department {
+    grid-area: department;
+  }
+
+  &__description {
+    grid-area: desc;
+  }
+
+  &__label {
+    font-size: 14px;
+    color: $dark_1;
   }
 }
 
