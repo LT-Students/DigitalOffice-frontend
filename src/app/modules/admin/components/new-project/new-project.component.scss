@@ -2,7 +2,7 @@
 @import 'base/fonts';
 
 .h1 {
-  margin-bottom: 20px;
+  margin: 17px 0 20px;
 }
 .h1_dark_2,
 .h3,
@@ -26,32 +26,30 @@
     color: $dark_1;
     margin-top: 28px;
   }
-}
-
-.content-container {
-  background-color: $light_1;
-  border-radius: 5px;
-  padding: 0 128px;
-  margin-top: 26px;
   .team {
     padding-top: 42px;
     padding-bottom: 20px;
     position: relative;
+
     &__section-title {
     }
+
     &__members-count {
       position: absolute;
       right: 0;
       top: 99px;
     }
+
     &__tabs {
       margin-top: 25px;
     }
+
     .team-list {
       display: flex;
       justify-content: flex-start;
       align-items: center;
       margin-top: 10px;
+
       &__members-list {
         display: flex;
         justify-content: flex-start;
@@ -60,6 +58,7 @@
         list-style: none;
         margin-bottom: 0;
       }
+
       &__new-member {
         margin-right: 13px;
         margin-top: 13px;
@@ -70,17 +69,20 @@
         width: 48px;
         height: 48px;
       }
+
       &__member {
         position: relative;
         margin-right: 12px;
         margin-top: 12px;
       }
+
       &__icon-dummy {
         width: 48px;
         height: 48px;
         border-radius: 50%;
         background-color: $gray;
       }
+
       &__icon-dummy_lead {
         &:before {
           @extend .h6;

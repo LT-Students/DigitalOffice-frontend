@@ -1,38 +1,41 @@
 <div>
+  <div class="regular_text">< К доске проектов</div>
   <h1 class="h1 h1_dark_2">Новый проект</h1>
-
   <div class="content-container bg-white">
-    <div class="h3">Общая информация</div>
-    <form [formGroup]="profileForm" class="newProject__container regular_text">
-      <div class="inputs__container">
-        <div>
-          <div class="input_header">Название проекта</div>
-          <input type="text" formControlName="projectName" />
+    <section>
+      <div class="h3">Общая информация</div>
+      <form
+        [formGroup]="profileForm"
+        class="newProject__container regular_text"
+      >
+        <div class="inputs__container">
+          <div>
+            <div class="input_header">Название проекта</div>
+            <input type="text" formControlName="projectName" />
+          </div>
+          <div>
+            <div class="input_header">Сокращенное название</div>
+            <input type="text" formControlName="shortProjectName" />
+          </div>
+          <div>
+            <div class="input_header">Департамент</div>
+            <select formControlName="departments" [disabled]>
+              <option *ngFor="let department of departments">
+                {{ department }}
+              </option>
+            </select>
+          </div>
         </div>
         <div>
-          <div class="input_header">Сокращенное название</div>
-          <input type="text" formControlName="shortProjectName" />
+          <div class="input_header">Описание</div>
+          <textarea
+            formControlName="projectDescription"
+            placeholder="Краткое описание сути проекта на его публичной карточке"
+          ></textarea>
         </div>
-        <div>
-          <div class="input_header">Департамент</div>
-          <select formControlName="departments" [disabled]>
-            <option *ngFor="let department of departments">
-              {{ department }}
-            </option>
-          </select>
-        </div>
-      </div>
-      <div>
-        <div class="input_header">Описание</div>
-        <textarea
-          formControlName="projectDescription"
-          placeholder="Краткое описание сути проекта на его публичной карточке"
-        ></textarea>
-      </div>
-    </form>
-  </div>
-  <h1 class="h1 h1_dark_2">Новый проект</h1>
-  <div class="content-container">
+      </form>
+    </section>
+
     <section class="team">
       <h2 class="team__section-title h3 text_bold text_dark_1">Команда</h2>
       <p class="team__members-count regular_text text_dark_1">

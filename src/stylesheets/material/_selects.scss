@@ -6,14 +6,18 @@
 }
 
 //styles for FormControl => select
-.ng-valid select {
+.ng-valid select,
+.ng-pristine select {
   width: 100%;
   background-color: $light_3;
   min-height: 36px;
   border-radius: 5px;
-  padding: 10px 15px;
+  border: 10px solid $light_3;
+  padding: 0 45px 0 5px;
   color: $dark_1;
-  border: none;
   top: 0;
   margin-bottom: 0;
+  &:focus {
+    outline: none;
+  }
 }
