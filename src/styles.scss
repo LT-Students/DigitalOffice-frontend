@@ -5,6 +5,7 @@
 @import 'material/input';
 @import 'material/mat-mini-fab';
 @import 'material/mat-tabs';
+@import 'material/selects';
 
 *,
 *:before,
@@ -38,4 +39,8 @@ body {
 
 button:focus {
   outline: none;
+}
+
+textarea {
+  resize: none;
 }

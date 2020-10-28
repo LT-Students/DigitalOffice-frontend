@@ -23,18 +23,16 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     NewProjectComponent,
     MembersBoardComponent,
     NewCompanyComponent,
-    TeamCardComponent
+    TeamCardComponent,
   ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        FormsModule,
-        ReactiveFormsModule,
-        SharedModule,
-        AppMaterialModule
-    ],
-  entryComponents: [
-    NewCompanyComponent,
-  ]
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SharedModule,
+    AppMaterialModule,
+  ],
+  entryComponents: [NewCompanyComponent],
 })
 export class AdminModule {}

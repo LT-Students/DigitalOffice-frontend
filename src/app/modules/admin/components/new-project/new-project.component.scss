@@ -1,34 +1,43 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-.h1_dark_2 {
+.h1 {
+  margin: 17px 0 20px;
+}
+.h1_dark_2,
+.h3 {
   color: $dark_2;
 }
-
 .content-container {
-  background-color: $light_1;
+  width: 928px;
   border-radius: 5px;
-  padding: 0 128px;
-  margin-top: 26px;
+  padding: 60px 128px;
+
+  textarea {
+    height: 82px;
+  }
+
   .team {
     padding-top: 42px;
     padding-bottom: 20px;
     position: relative;
-    &__section-title {
-    }
+
     &__members-count {
       position: absolute;
       right: 0;
       top: 99px;
     }
+
     &__tabs {
       margin-top: 25px;
     }
+
     .team-list {
       display: flex;
       justify-content: flex-start;
       align-items: center;
       margin-top: 10px;
+
       &__members-list {
         display: flex;
         justify-content: flex-start;
@@ -37,6 +46,7 @@
         list-style: none;
         margin-bottom: 0;
       }
+
       &__new-member {
         margin-right: 13px;
         margin-top: 13px;
@@ -47,17 +57,20 @@
         width: 48px;
         height: 48px;
       }
+
       &__member {
         position: relative;
         margin-right: 12px;
         margin-top: 12px;
       }
+
       &__icon-dummy {
         width: 48px;
         height: 48px;
         border-radius: 50%;
         background-color: $gray;
       }
+
       &__icon-dummy_lead {
         &:before {
           @extend .h6;
@@ -83,6 +96,47 @@
       row-gap: 20px;
       margin: 40px 4px 4px 4px;
     }
+  }
+}
+
+.project-info {
+  margin-bottom: 45px;
+
+  &__title {
+    margin-bottom: 30px;
+  }
+
+  &__form {
+    display: grid;
+    grid-template-columns: 64.28% 34.24%;
+    grid-template-rows: repeat(3, 25%);
+    grid-column-gap: 1.48%;
+    grid-row-gap: 12%;
+    grid-template-areas:
+      'name abbr-name'
+      'department .'
+      'desc desc';
+  }
+
+  &__name {
+    grid-area: name;
+  }
+
+  &__abbr-name {
+    grid-area: abbr-name;
+  }
+
+  &__department {
+    grid-area: department;
+  }
+
+  &__description {
+    grid-area: desc;
+  }
+
+  &__label {
+    font-size: 14px;
+    color: $dark_1;
   }
 }
 
