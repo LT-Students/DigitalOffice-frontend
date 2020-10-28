@@ -1,0 +1,23 @@
+@import 'base/fonts';
+
+.select {
+  border: 1px solid $light_3;
+  border-radius: 5px;
+}
+
+//styles for FormControl => select
+.ng-valid select,
+.ng-pristine select {
+  width: 100%;
+  background-color: $light_3;
+  min-height: 36px;
+  border-radius: 5px;
+  border: 10px solid $light_3;
+  padding: 0 45px 0 5px;
+  color: $dark_1;
+  top: 0;
+  margin-bottom: 0;
+  &:focus {
+    outline: none;
+  }
+}

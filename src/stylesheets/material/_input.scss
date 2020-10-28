@@ -1,0 +1,46 @@
+@import '../abstracts/variables';
+
+.mat-form-field {
+  .mat-form-field-wrapper {
+    .mat-input-element {
+      width: 100%;
+      background-color: $light_3;
+      min-height: 36px;
+      border-radius: 5px;
+      padding: 10px 15px;
+      color: $dark_1;
+      caret-color: $dark_1;
+    }
+
+    textarea.mat-input-element {
+      min-height: 82px;
+    }
+
+    .mat-form-field-infix {
+      border: 0;
+      padding: 0;
+    }
+
+    .mat-form-field-underline {
+      display: none;
+    }
+  }
+}
+
+//styles for FormControl
+.ng-pristine input,
+.ng-valid input,
+.ng-pristine textarea,
+.ng-valid textarea {
+  width: 100%;
+  background-color: $light_3;
+  min-height: 36px;
+  border-radius: 5px;
+  padding: 10px 15px;
+  color: $dark_1;
+  caret-color: $dark_1;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
