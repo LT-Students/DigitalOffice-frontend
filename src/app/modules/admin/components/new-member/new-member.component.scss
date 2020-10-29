@@ -6,7 +6,8 @@ $select-height: 24px;
 .new-member {
   display: flex;
   align-items: center;
-  width: 672px;
+  //width: 672px;
+  width: 108%;
   height: 80px;
   background-color: $light_1;
   border-radius: 5px;
@@ -33,11 +34,13 @@ $select-height: 24px;
   width: 505px;
   align-items: center;
   color: $gray;
+  white-space: nowrap;
   &__selects {
     height: $select-height;
     margin-top: -10px;
     margin-bottom: 14px;
-    width: 170px;
+    //width: 170px;
+    width: 24%;
   }
   &__select-role {
     width: 63px;
@@ -77,12 +80,17 @@ label.mat-checkbox-layout {
       @extend .text_color_dark-1;
     }
   }
+
+  .mat-select-value-text {
+    color: $accent_color_bright;
+    font-size: 14px;
+    line-height: 24px;
+  }
   .mat-select-arrow{
     border: none;
     height: 3px;
     width: 6px;
     margin: 0 9px 0 0;
-
   }
 
   .mat-select-arrow.ng-tns-c184-5,
