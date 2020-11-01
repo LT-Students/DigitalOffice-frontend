@@ -1,5 +1,5 @@
-@import 'abstracts/variables';
-@import 'base/fonts';
+@import "abstracts/variables";
+@import "base/fonts";
 
 $select-height: 24px;
 
@@ -52,11 +52,11 @@ label.mat-checkbox-layout {
   margin-bottom: 0;
 }
 
-::ng-deep .new-member{
+::ng-deep .new-member {
   .mat-form-field-wrapper,
   .mat-form-field-flex,
   .mat-form-field-appearance-legacy,
-  .mat-form-field-label-wrapper{
+  .mat-form-field-label-wrapper {
     padding: 0;
   }
   .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
@@ -66,27 +66,22 @@ label.mat-checkbox-layout {
   .mat-form-field-infix {
     width: 233px;
   }
-  .mat-checkbox-frame  {
-    border: 1px solid #BDBDBD;
+  .mat-checkbox-frame {
+    border: 1px solid #bdbdbd;
     box-sizing: border-box;
     border-radius: 5px;
   }
 
-  .mat-select-value{
+  .mat-select-value {
     padding: 0 0 0 0.5em;
     line-height: $select-height;
-    .mat-select-placeholder{
+    .mat-select-placeholder {
       @extend .regular_text;
       @extend .text_color_dark-1;
     }
   }
 
-  .mat-select-value-text {
-    color: $accent_color_bright;
-    font-size: 14px;
-    line-height: 24px;
-  }
-  .mat-select-arrow{
+  .mat-select-arrow {
     border: none;
     height: 3px;
     width: 6px;
@@ -94,20 +89,20 @@ label.mat-checkbox-layout {
   }
 
   .mat-select-arrow.ng-tns-c184-5,
-  .mat-select-arrow.ng-tns-c184-7{
+  .mat-select-arrow.ng-tns-c184-7 {
     background-image: none;
   }
 
   .mat-form-field {
     margin-left: -10px;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     background-image: none;
   }
 
-  .mat-form-field-infix{
+  .mat-form-field-infix {
     padding: 0;
     border: none;
-    .mat-form-field-label-wrapper{
+    .mat-form-field-label-wrapper {
       position: static;
       height: 0;
       overflow: visible;
@@ -124,7 +119,7 @@ label.mat-checkbox-layout {
       height: 3px;
       width: 6px;
       padding: 0 9px 0 0;
-      background-image: url('/assets/svg/arrow-down-dark-small.svg');
+      background-image: url("/assets/svg/arrow-down-dark-small.svg");
       background-repeat: no-repeat;
       background-position-y: center;
     }
@@ -135,7 +130,7 @@ label.mat-checkbox-layout {
       height: 3px;
       width: 6px;
       margin: 0 9px 0 0;
-      background-image: url('/assets/svg/arrow-down-grey-small.svg');
+      background-image: url("/assets/svg/arrow-down-grey-small.svg");
       background-repeat: no-repeat;
       background-position-y: center;
     }
@@ -145,6 +140,12 @@ label.mat-checkbox-layout {
         font-size: 14px;
         line-height: $select-height;
       }
+    }
+
+    .mat-select-value-text {
+      color: $accent_color_bright;
+      font-size: 14px;
+      line-height: 24px;
     }
   }
 }

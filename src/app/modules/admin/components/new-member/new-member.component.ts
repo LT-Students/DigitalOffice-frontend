@@ -2,20 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { NewMember } from '../new-members-board/new-members';
 
-
-
-
-
 @Component({
   selector: 'do-new-member',
   templateUrl: './new-member.component.html',
-  styleUrls: ['./new-member.component.scss']
+  styleUrls: ['./new-member.component.scss'],
 })
 export class NewMemberComponent implements OnInit {
-
   @Input()
   public newMember: NewMember;
-
 
   roles: string[] = [
     'PM',
@@ -23,23 +17,28 @@ export class NewMemberComponent implements OnInit {
     'QA Tester',
     'Teamlead',
     'Technical Support',
-    'Back-End Developer'
+    'Back-End Developer',
   ];
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  getCountProjectsTitle(): string {
+    return this.declOfNum(this.newMember.projectsCount, [
+      'проект',
+      'проекта',
+      'проектов',
+    ]);
   }
 
-  ngOnInit(): void {
+  // TODO вынести в Utils
+  declOfNum(count: number, titles: string[]): string {
+    const cases = [2, 0, 1, 1, 1, 2];
+    return titles[
+      count % 100 > 4 && count % 100 < 20
+        ? 2
+        : cases[count % 10 < 5 ? count % 10 : 5]
+    ];
   }
-
-  getCountProjectsTitle() {
-    // tslint:disable-next-line:variable-name
-    function declOfNum(number, titles) {
-      const cases = [2, 0, 1, 1, 1, 2];
-      return titles[ (number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5] ];
-    }
-
-    return declOfNum(this.newMember.projectsCount, ['проект', 'проекта', 'проектов']);
-  }
-
 }
