@@ -8,6 +8,9 @@ import { ApiModule as UserServiceApiModule } from './user-service';
 import { ApiModule as CompanyServiceApiModule } from './company-service';
 import { ApiModule as ProjectServiceApiModule } from './project-service';
 import { ApiModule as AuthenticationServiceApiModule } from './auth-service';
+import { ApiModule as TimeManagmentApiModule } from './time-managment-service';
+import { ApiModule as FileApiModule } from './file-service';
+import { ApiModule as CheckRightsApiModule } from './check-rights-service';
 //#endregion
 
 @NgModule({
@@ -16,13 +19,19 @@ import { ApiModule as AuthenticationServiceApiModule } from './auth-service';
     UserServiceApiModule,
     CompanyServiceApiModule,
     AuthenticationServiceApiModule,
-    ProjectServiceApiModule
+    ProjectServiceApiModule,
+    TimeManagmentApiModule,
+    FileApiModule,
+    CheckRightsApiModule
   ],
   exports: [
     UserServiceApiModule,
     AuthenticationServiceApiModule,
     CompanyServiceApiModule,
-    ProjectServiceApiModule
+    ProjectServiceApiModule,
+    TimeManagmentApiModule,
+    FileApiModule,
+    CheckRightsApiModule
   ]
 })
 export class ApiModule {}

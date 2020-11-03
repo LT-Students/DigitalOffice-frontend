@@ -1,16 +1,15 @@
 import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
-
-import { UserService } from './api/user.service';
+import { Configuration } from './configuration';
+import { RightService } from './api/right.service';
 
 @NgModule({
   imports:      [],
   declarations: [],
   exports:      [],
   providers: [
-    UserService ]
+    RightService ]
 })
 export class ApiModule {
     public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders<ApiModule> {

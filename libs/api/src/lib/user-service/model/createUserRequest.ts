@@ -10,45 +10,45 @@
  * Do not edit the class manually.
  */
 
-export interface User { 
+export interface CreateUserRequest { 
     /**
-     * User global unique identifier.
+     * User mail.
      */
-    id?: string;
+    email: string;
+    /**
+     * User login.
+     */
+    login: string;
     /**
      * First name of a user.
      */
-    firstName?: string;
+    firstName: string;
     /**
      * Last name of a user.
      */
-    lastName?: string;
+    lastName: string;
     /**
      * Last name of a user.
      */
     middleName?: string;
     /**
-     * User mail.
-     */
-    email?: string;
-    /**
      * User status.
      */
     status?: string;
     /**
-     * File global unique identifier.
+     * User password.
      */
-    avatarFileId?: string;
+    password?: string;
     /**
      * Mark whether the user is an administrator.
      */
     isAdmin?: boolean;
     /**
-     * Certificate files global unique identifiers.
+     * Mark whether the user is an active.
      */
-    certificatesIds?: Array<string>;
+    isActive?: boolean;
     /**
-     * Certificate files global unique identifiers.
+     * File global unique identifier.
      */
-    achievementsIds?: Array<string>;
+    avatarFileId?: string;
 }

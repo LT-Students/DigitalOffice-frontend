@@ -14,11 +14,11 @@ export interface ProjectRequest {
     /**
      * The project's title.
      */
-    name?: string;
+    name: string;
     /**
      * Id of the department that funds the project.
      */
-    departmentId?: string;
+    departmentId: string;
     /**
      * The project's description.
      */
@@ -26,5 +26,5 @@ export interface ProjectRequest {
     /**
      * Analogue the IsCompleted mark. Allows to search for the completed projects.
      */
-    isActive?: boolean;
+    isActive: boolean;
 }
