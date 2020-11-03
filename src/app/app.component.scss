@@ -4,3 +4,9 @@
   height: 100%;
   padding: 38px 5%;
 }
+@import 'abstracts/variables';
+.wrapper {
+  background: $light_2;
+  height: 100%;
+  padding: 38px 5%;
+}
