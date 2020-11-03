@@ -1,5 +1,4 @@
 export * from './addPositionRequest';
-export * from './companyRequest';
-export * from './companyResponse';
+export * from './departmentRequest';
 export * from './editPositionRequest';
 export * from './positionResponse';

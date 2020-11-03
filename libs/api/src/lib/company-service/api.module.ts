@@ -2,7 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 
 import { Configuration } from './configuration';
-import { CompanyService } from './api/company.service';
+import { DepartmentService } from './api/department.service';
 import { PositionService } from './api/position.service';
 
 @NgModule({
@@ -10,7 +10,7 @@ import { PositionService } from './api/position.service';
   declarations: [],
   exports:      [],
   providers: [
-    CompanyService,
+    DepartmentService,
     PositionService ]
 })
 export class ApiModule {
