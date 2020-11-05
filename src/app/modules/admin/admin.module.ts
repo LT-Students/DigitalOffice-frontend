@@ -10,9 +10,10 @@ import { AdminComponent } from './components/admin/admin.component';
 import { MyProjectComponent } from './components/my-project/my-project.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
-import { MembersBoardComponent } from './components/members-board/members-board.component';
+import { NewMembersBoardComponent } from './components/new-members-board/new-members-board.component';
 import { TeamCardComponent } from './components/team-cards/team-card.component';
 import { NewCompanyComponent } from './components/new-company/new-company.component';
+import { NewMemberComponent } from './components/new-member/new-member.component';
 
 @NgModule({
   declarations: [
@@ -21,18 +22,21 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
     MyProjectComponent,
     NewEmployeeComponent,
     NewProjectComponent,
-    MembersBoardComponent,
+    NewMembersBoardComponent,
     NewCompanyComponent,
     TeamCardComponent,
+    NewMemberComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule,
     AppMaterialModule,
+    SharedModule
   ],
-  entryComponents: [NewCompanyComponent],
+  entryComponents: [
+    NewCompanyComponent,
+  ]
 })
 export class AdminModule {}
