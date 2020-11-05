@@ -1,28 +1,38 @@
-@import "base/variables";
-.search{
+@import 'base/variables';
+
+.search {
+  display: flex;
+  $height: 32px;
+  background-color: $light_2;
+  border-radius: 5px;
+  height: $height;
+
+  &__button {
     display: flex;
-    $height: 32px;
-    background-color: $light_2;
-    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
     height: $height;
-    &__button{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: $height;
-        width: 48px;
-        .mat-button-wrapper{
-            line-height: $height;
-        }
+    width: 48px;
+    border: none;
+    border-radius: 5px;
+    background-color: $light_2;
+
+    .mat-button-wrapper {
+      line-height: $height;
     }
-    &__input{
-        background-color: $light_2;
-        border: none;
-        border-radius: 5px;
-        outline: none;
-        flex-grow: 1;
-    }
-    .mat-icon-button{
-        line-height: $height;
-    }
+  }
+
+  &__input {
+    min-height: $height;
+    background-color: $light_2;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    flex-grow: 1;
+  }
+
+  .mat-icon-button {
+    border: none;
+    line-height: $height;
+  }
 }

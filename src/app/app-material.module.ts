@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -30,6 +31,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCardModule,
     MatDialogModule,
     MatTabsModule,
+    MatCheckboxModule
   ],
   exports: [
     MatButtonModule,
@@ -45,6 +47,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatCardModule,
     MatDialogModule,
     MatTabsModule,
+    MatCheckboxModule
   ],
   providers: [MatDatepickerModule],
 })
