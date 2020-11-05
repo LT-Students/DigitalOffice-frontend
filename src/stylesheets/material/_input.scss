@@ -3,12 +3,14 @@
 .mat-form-field {
   .mat-form-field-wrapper {
     .mat-input-element {
-      width: 100%;
-      background-color: $light_3;
-      min-height: 36px;
-      border-radius: 5px;
       padding: 10px 15px;
+
+      width: 100%;
+      min-height: 36px;
+
       color: $dark_1;
+      background-color: $light_3;
+      border-radius: 5px;
       caret-color: $dark_1;
     }
 
@@ -17,8 +19,9 @@
     }
 
     .mat-form-field-infix {
-      border: 0;
       padding: 0;
+
+      border: 0;
     }
 
     .mat-form-field-underline {
@@ -32,14 +35,17 @@
 .ng-valid input,
 .ng-pristine textarea,
 .ng-valid textarea {
-  width: 100%;
-  background-color: $light_3;
-  min-height: 36px;
-  border-radius: 5px;
   padding: 10px 15px;
+
+  width: 100%;
+  min-height: 36px;
+
   color: $dark_1;
-  caret-color: $dark_1;
+  background-color: $light_3;
   border: none;
+  border-radius: 5px;
+  caret-color: $dark_1;
+
   &:focus {
     outline: none;
   }

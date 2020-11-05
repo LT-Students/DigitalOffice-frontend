@@ -2,17 +2,20 @@
 
 .project__container {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+
   min-width: 300px;
   min-height: 349px;
+
+  background-color: #fff;
   border-radius: 5px;
-  background-color: white;
 
   .content-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
     min-width: 236px;
     min-height: 285px;
 
@@ -23,8 +26,9 @@
     }
 
     .project__comment {
-      color: $dark_1;
       height: 160px;
+
+      color: $dark_1;
     }
 
     .project__customer {
@@ -54,13 +58,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        background-size: contain;
+
         width: 36px;
         height: 36px;
+
+        background-size: contain;
         border-radius: 50%;
 
         .gray__circle {
           margin: 0;
+
           background-color: $gray;
         }
       }

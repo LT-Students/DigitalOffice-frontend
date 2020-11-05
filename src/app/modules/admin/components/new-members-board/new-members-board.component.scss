@@ -4,12 +4,16 @@
 $select-height: 36px;
 
 .members-board {
+  position: relative;
+
+  padding: 48px;
+
   display: flex;
   flex-direction: column;
-  position: relative;
+
   max-width: 720px;
-  background: white;
-  padding: 48px;
+
+  background: #fff;
 
   &__close-button {
     position: absolute;
@@ -28,11 +32,13 @@ $select-height: 36px;
   }
 
   &__selects {
+    margin-bottom: 14px;
+
     display: flex;
     justify-content: space-between;
+
     width: 379px;
     height: $select-height;
-    margin-bottom: 14px;
   }
 
   &__select-spec {
@@ -44,11 +50,13 @@ $select-height: 36px;
   }
 
   &__background {
+    margin-bottom: 14px;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     height: 424px;
-    margin-bottom: 14px;
   }
 
   &__button-container {
@@ -60,13 +68,15 @@ $select-height: 36px;
 .new-members-icon {
   display: flex;
   flex-direction: column;
+
   text-align: center;
 
   &__-dummy {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
+
     background-color: $gray;
+    border-radius: 50%;
   }
 }
 
@@ -80,28 +90,36 @@ $select-height: 36px;
 
   .mat-select-value {
     padding: 0 0 0 0.5em;
+
     line-height: $select-height;
+
     .mat-select-placeholder {
       @extend .regular_text;
       @extend .text_color_dark-1;
     }
   }
+
   .mat-select-arrow {
-    border: none;
-    height: 6px;
-    width: 10px;
     margin: 0 14px 0 4px;
+
+    width: 10px;
+    height: 6px;
+
     background-image: url('../../../../../assets/svg/arrow-down-dark.svg');
+    border: none;
   }
 
   .mat-form-field-infix {
     padding: 0;
+
     border: none;
 
     .mat-form-field-label-wrapper {
       position: static;
-      height: 0;
+
       overflow: visible;
+
+      height: 0;
     }
   }
 }
@@ -111,6 +129,7 @@ $select-height: 36px;
 
   .mat-select-panel {
     min-width: 100% !important;
+
     border-radius: 0 0 5px 5px;
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   }

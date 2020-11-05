@@ -1,9 +1,14 @@
 .nav-link__forgot-password {
   position: relative;
+
   margin-top: 24px;
-  opacity: 0.2;
+
   text-decoration: underline;
+
   cursor: pointer;
+
+  opacity: 0.2;
+
   &:hover {
     opacity: 0.5;
   }

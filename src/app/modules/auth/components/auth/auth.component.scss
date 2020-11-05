@@ -1,32 +1,41 @@
 @import 'base/variables';
 
 .content-container {
-  width: 100%;
-  height: 100vh;
-  background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
   display: flex;
   justify-content: center;
   align-items: center;
+
+  width: 100%;
+  height: 100vh;
+
+  background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
+
   .admin-router {
     z-index: 10;
   }
 
   .waves-container {
-    display: inline-block;
     position: absolute;
     bottom: 0;
+
+    display: inline-block;
+
     width: 100%;
+
     #wave1 {
       opacity: 0.24;
     }
+
     #wave2 {
       opacity: 0.86;
     }
+
     img {
-      display: inline-block;
       position: absolute;
-      bottom: 0;
       left: 0;
+      bottom: 0;
+
+      display: inline-block;
     }
   }
 }

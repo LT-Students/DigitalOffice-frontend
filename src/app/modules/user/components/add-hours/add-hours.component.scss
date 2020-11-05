@@ -7,20 +7,26 @@
   &__title {
     color: $dark_1;
 
-    &:after {
+    &::after {
       content: '';
+
+      margin-bottom: 35px;
+
       display: block;
+
       width: 123px;
       height: 4px;
+
       background-color: $accent_color_bright;
-      margin-bottom: 35px;
     }
   }
 
   &__period {
     display: flex;
     align-items: center;
+
     height: 32px;
+
     color: $dark_1;
 
     span {
@@ -48,14 +54,16 @@
         padding: 5px;
 
         input[type='text'] {
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          border: none;
           padding: 0;
+
           width: 100%;
           height: 50px;
+
+          border: none;
           border-radius: 5px;
           outline: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
         }
       }
     }
@@ -65,25 +73,29 @@
     color: #bdbdbd;
 
     textarea {
+      padding: 0;
+
+      width: 100%;
+      height: 135px;
+
+      border: none;
+      border-radius: 5px;
       -webkit-appearance: none;
       -moz-appearance: none;
       appearance: none;
-      padding: 0;
-      width: 100%;
-      height: 135px;
-      border-radius: 5px;
-      border: none;
     }
   }
 }
 
 .add_time {
+  width: 40px;
+
+  border: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  border: none;
+
   outline: none;
-  width: 40px;
 
   &::placeholder {
     @extend %header_font_basic;

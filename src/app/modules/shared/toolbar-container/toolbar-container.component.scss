@@ -2,21 +2,27 @@
 
 .content-container {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+
   background: $light_2;
+
   .toolbar {
     position: fixed;
-    top: 0;
-    width: 100%;
     z-index: 2;
+    top: 0;
+
+    width: 100%;
   }
+
   .wrapper {
+    z-index: 1;
+
     margin-top: 56px;
-    height: 100%;
+    padding: 38px 48px;
+
     width: 100%;
     max-width: 1024px;
-    z-index: 1;
-    padding: 38px 48px;
+    height: 100%;
   }
 }

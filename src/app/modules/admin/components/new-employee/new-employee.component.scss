@@ -2,13 +2,16 @@
 
 .new-employee-container {
   display: flex;
-  background-color: $light_2;
+
   width: 100%;
+
+  background-color: $light_2;
 
   .content-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
     width: 100%;
 
     .regular_text_dark_1 {
@@ -32,25 +35,28 @@
     }
 
     .nav-link__dashboard {
+      margin-bottom: 24px;
+
       display: flex;
       align-items: center;
+
       text-decoration: none;
-      margin-bottom: 24px;
 
       cursor: pointer;
 
       svg {
+        margin-right: 13px;
+
         width: 5px;
         height: 10px;
         fill: none;
-        margin-right: 13px;
 
         .arrow {
-          stroke-width: 2px;
-          stroke-opacity: 1;
+          stroke: $dark_1;
           stroke-linecap: round;
           stroke-linejoin: round;
-          stroke: $dark_1;
+          stroke-opacity: 1;
+          stroke-width: 2px;
         }
       }
 
@@ -64,20 +70,24 @@
     }
 
     .form-container {
-      display: flex;
-      justify-content: center;
-      align-self: center;
       padding-top: 66px;
       padding-bottom: 66px;
+
+      display: flex;
+      justify-content: center;
+
       width: 100%;
       min-height: 884px;
+
+      background-color: #fff;
       border-radius: 5px;
-      background-color: white;
+      align-self: center;
 
       .data-form {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
         width: 75%;
 
         .h3_dark_1,
@@ -92,44 +102,54 @@
 
         &__input-field,
         &__select-field {
+          padding: 0;
+
           width: 100%;
           height: 36px;
-          border-radius: 5px;
-          padding: 0;
-          border-style: none;
+
           background-color: $light_3;
+          border-style: none;
+          border-radius: 5px;
         }
 
         &__title::after {
           content: '';
+
           display: block;
+
           width: 123px;
           height: 4px;
+
           background-color: $accent_color_bright;
         }
 
         .main-info {
           display: flex;
           flex-direction: row;
+
           min-height: 216px;
 
           .content {
             &__photo {
               display: flex;
-              align-items: center;
               justify-content: center;
+              align-items: center;
+
               width: 30%;
 
               .photo-container {
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
                 position: relative;
-                overflow: hidden;
+
                 display: flex;
+                overflow: hidden;
+                justify-content: center;
+                align-items: center;
+
                 width: 128px;
                 height: 128px;
+
+                cursor: pointer;
+
                 background: linear-gradient(180deg, #ffa386 0%, #ffd3b8 100%);
                 border-radius: 50%;
 
@@ -140,10 +160,8 @@
                 img {
                   width: auto;
                   height: 100%;
-                  cursor: pointer;
-                }
 
-                .empty_avatar {
+                  cursor: pointer;
                 }
 
                 .filled_avatar {
@@ -160,6 +178,7 @@
               display: flex;
               flex-direction: column;
               justify-content: space-between;
+
               width: 70%;
             }
           }
@@ -169,12 +188,14 @@
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+
           min-height: 140px;
 
           .position-info {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+
             width: 100%;
 
             div {
@@ -196,6 +217,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+
             width: 70%;
 
             div {
@@ -204,19 +226,23 @@
           }
 
           .btn-generate-credentials {
+            padding: 8px 14px;
+
             display: flex;
             flex-direction: row;
-            align-self: flex-end;
-            align-items: center;
             justify-content: center;
-            padding: 8px 14px;
-            border: 1px solid $accent_color_bright;
+            align-items: center;
+
             box-sizing: border-box;
-            border-radius: 5px;
-            height: 36px;
             width: 28%;
-            background-color: transparent;
+            height: 36px;
+
             cursor: pointer;
+
+            background-color: transparent;
+            border: 1px solid $accent_color_bright;
+            border-radius: 5px;
+            align-self: flex-end;
 
             img {
               margin-right: 11px;
@@ -228,32 +254,40 @@
           display: flex;
           flex-direction: row;
           justify-content: flex-end;
+
           width: 100%;
 
           .btn-send-credentials {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid $accent_color_bright;
-            box-sizing: border-box;
-            border-radius: 5px;
-            background-color: transparent;
             margin-right: 14px;
-            height: 32px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            box-sizing: border-box;
             width: 223px;
+            height: 32px;
+
             cursor: pointer;
+
+            background-color: transparent;
+            border: 1px solid $accent_color_bright;
+            border-radius: 5px;
           }
 
           .btn-create-employee {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+
+            width: 192px;
+            height: 32px;
+
+            cursor: pointer;
+
             background-color: $accent_color_bright;
             border: none;
             border-radius: 5px;
-            height: 32px;
-            width: 192px;
-            cursor: pointer;
           }
         }
       }

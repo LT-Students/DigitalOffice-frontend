@@ -1,15 +1,18 @@
 @import 'base/variables';
 
 .wrapper {
-  background: #ffffff;
   padding: 48px;
+
+  background: #fff;
+
   .tasks {
     display: flex;
     flex-direction: column;
 
     &__header {
-      color: $dark_1;
       margin: 0 0 64px 0;
+
+      color: $dark_1;
     }
 
     &__search {
@@ -18,56 +21,69 @@
 
       .buttons {
         margin-left: 24px;
+
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+
         width: 266px;
 
         .button-shape {
-          height: 32px;
           width: 125px;
+          height: 32px;
         }
 
         .button-inactive {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          width: 125px;
+          height: 32px;
+
+          color: $gray;
           background: $light_2;
           border-color: transparent;
           border-radius: 5px;
-          color: $gray;
-          height: 32px;
-          width: 125px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
         }
       }
 
       &__text {
-        background: $light_2;
-        border-radius: 5px;
-        width: 272px;
-        height: 32px;
-        align-items: center;
         margin-left: auto;
 
+        align-items: center;
+
+        width: 272px;
+        height: 32px;
+
+        background: $light_2;
+        border-radius: 5px;
+
         .button__magnifier {
+          margin-left: 16px;
+          padding: 0;
+
           display: flex;
+          overflow: visible;
           align-items: center;
-          background: transparent;
-          border: none;
-          cursor: pointer;
+
           width: 16px;
           height: 16px;
-          margin-left: 16px;
-          overflow: visible;
-          padding: 0;
+
+          cursor: pointer;
+
+          background: transparent;
+          border: none;
         }
 
         #text__search {
-          background: $light_2;
-          border: none;
-          width: 216px;
           margin-right: 16px;
           padding: 0;
+
+          width: 216px;
+
+          background: $light_2;
+          border: none;
         }
 
         input::placeholder {

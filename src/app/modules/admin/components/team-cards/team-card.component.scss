@@ -1,10 +1,12 @@
 @import 'base/fonts';
 
 .team-card {
+  padding: 24px;
+
   box-sizing: border-box;
   min-width: 300px;
-  padding: 24px;
   height: 100%;
+
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
 
   &__header {
@@ -12,73 +14,96 @@
     justify-content: space-between;
     align-items: center;
   }
+
   &__name {
     margin: 0;
   }
+
   &__people-count-container {
     display: flex;
     justify-content: center;
     align-items: center;
   }
+
   &__people-count-icon {
+    margin-right: 8px;
+
     display: block;
+
     width: 16px;
     height: 16px;
-    margin-right: 8px;
   }
+
   &__level-labels {
     margin-top: 6px;
   }
+
   &__team-members {
+    margin-top: 12px;
+
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-top: 12px;
   }
+
   &__members-list {
+    margin-bottom: 0;
+
     display: flex;
     justify-content: flex-start;
     align-items: flex-end;
-    flex-wrap: wrap;
+
     list-style: none;
-    margin-bottom: 0;
+    flex-wrap: wrap;
   }
+
   &__new-member {
-    margin-right: 12px;
     margin-top: 12px;
-    align-self: flex-start;
+    margin-right: 12px;
+
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    align-self: flex-start;
   }
+
   &__plus {
-    height: 26px;
     width: 26px;
+    height: 26px;
   }
+
   &__member {
     position: relative;
-    margin-right: 12px;
+
     margin-top: 12px;
+    margin-right: 12px;
   }
+
   &__icon-dummy {
     width: 36px;
     height: 36px;
-    border-radius: 50%;
+
     background-color: $gray;
+    border-radius: 50%;
   }
+
   &__icon-dummy_lead {
-    &:before {
+    &::before {
       @extend .h6;
       @extend .text_white;
       content: 'lead';
+
       position: absolute;
       top: -6px;
       right: -14px;
+
+      padding: 0 3px;
+
       text-align: center;
       text-transform: uppercase;
+
       background-color: $blue_3;
       border-radius: 6px;
-      padding: 0 3px;
     }
   }
 }

@@ -2,15 +2,17 @@
 
 %header_font_basic {
   font-family: $header_font;
-  font-style: normal;
   font-weight: bold;
+  font-style: normal;
+
   color: $font_color;
 }
 
 %regular_font_basic {
   font-family: $regular_font;
-  font-style: normal;
   font-weight: normal;
+  font-style: normal;
+
   color: $font_color;
 }
 
@@ -47,20 +49,20 @@
 .h6 {
   @extend %header_font_basic;
   font-size: 10px;
-  line-height: 15px;
   font-weight: normal;
+  line-height: 15px;
 }
 
 .regular_text {
-    @extend %regular_font_basic;
-    font-size: 16px;
-    line-height: 24px;
+  @extend %regular_font_basic;
+  font-size: 16px;
+  line-height: 24px;
 }
 
 .h3_light {
   @extend %header_font_basic;
-  font-weight: 500;
   font-size: 22px;
+  font-weight: 500;
   line-height: 28px;
 }
 
@@ -69,24 +71,27 @@
 }
 
 .text_color {
-    &_white {
-        color: white;
-    }
-    &_dark-1 {
-        color: $dark_1;
-    }
-    &_light-1{
-        color: $light_1;
-    }
-    &_gray{
-        color: $gray;
-    }
+  &_white {
+    color: #fff;
+  }
+
+  &_dark-1 {
+    color: $dark_1;
+  }
+
+  &_light-1 {
+    color: $light_1;
+  }
+
+  &_gray {
+    color: $gray;
+  }
 }
 
-.text_dark_1{
-    color: $dark_1;
+.text_dark_1 {
+  color: $dark_1;
 }
 
 .text_white {
-  color: white;
+  color: #fff;
 }

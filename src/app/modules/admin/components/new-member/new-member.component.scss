@@ -1,47 +1,59 @@
-@import "base/variables";
-@import "base/fonts";
+@import 'base/variables';
+@import 'base/fonts';
 
 $select-height: 24px;
 
 .new-member {
+  margin-bottom: 14px;
+  margin-left: -25px;
+
   display: flex;
   align-items: center;
   //width: 672px;
   width: 108%;
   height: 80px;
+
   background-color: $light_1;
   border-radius: 5px;
-  margin-left: -25px;
-  margin-bottom: 14px;
+
   &__checkbox {
     margin: 30px 39px auto 24px;
   }
+
   &__info {
     display: flex;
   }
+
   &__img {
+    margin-right: 16px;
+
     width: 48px;
     height: 48px;
-    border-radius: 50%;
+
     background-color: $gray;
-    margin-right: 16px;
+    border-radius: 50%;
   }
 }
 
 .new-member-form {
   display: flex;
   justify-content: space-between;
-  width: 505px;
   align-items: center;
-  color: $gray;
+
+  width: 505px;
+
   white-space: nowrap;
+
+  color: $gray;
+
   &__selects {
-    height: $select-height;
     margin-top: -10px;
     margin-bottom: 14px;
     //width: 170px;
     width: 24%;
+    height: $select-height;
   }
+
   &__select-role {
     width: 63px;
     height: $select-height;
@@ -59,22 +71,24 @@ label.mat-checkbox-layout {
   .mat-form-field-label-wrapper {
     padding: 0;
   }
+
   .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background,
   .mat-checkbox-checked.mat-accent .mat-checkbox-background {
     border-radius: 5px;
   }
-  .mat-form-field-infix {
-    width: 233px;
-  }
+
   .mat-checkbox-frame {
-    border: 1px solid #bdbdbd;
     box-sizing: border-box;
+
+    border: 1px solid #bdbdbd;
     border-radius: 5px;
   }
 
   .mat-select-value {
     padding: 0 0 0 0.5em;
+
     line-height: $select-height;
+
     .mat-select-placeholder {
       @extend .regular_text;
       @extend .text_color_dark-1;
@@ -82,54 +96,70 @@ label.mat-checkbox-layout {
   }
 
   .mat-select-arrow {
-    border: none;
-    height: 3px;
-    width: 6px;
     margin: 0 9px 0 0;
+
+    width: 6px;
+    height: 3px;
+
     background-image: none;
+    border: none;
   }
 
   .mat-form-field {
     margin-left: -10px;
-    background-color: #ffffff;
+
+    background-color: #fff;
     background-image: none;
   }
 
   .mat-form-field-infix {
     padding: 0;
+
+    width: 233px;
+
     border: none;
+
     .mat-form-field-label-wrapper {
       position: static;
-      height: 0;
+
       overflow: visible;
+
+      height: 0;
     }
   }
 }
 
 ::ng-deep .new-member-form {
   &__select-spec {
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
     border-radius: 5px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+
     .mat-select-arrow-wrapper {
-      border: none;
-      height: 3px;
-      width: 6px;
       padding: 0 9px 0 0;
+
+      width: 6px;
+      height: 3px;
+
       background-image: url('../../../../../assets/svg/arrow-down-dark.svg');
       background-repeat: no-repeat;
       background-position-y: center;
+      border: none;
     }
   }
+
   &__select-role {
     .mat-select-arrow-wrapper {
-      border: none;
-      height: 3px;
-      width: 6px;
       margin: 0 9px 0 0;
+
+      width: 6px;
+      height: 3px;
+
       background-image: url('../../../../../assets/svg/arrow-down-grey-small.svg');
       background-repeat: no-repeat;
       background-position-y: center;
+      border: none;
     }
+
     .mat-select-value {
       .mat-select-placeholder {
         @extend .text_color_gray;
@@ -139,9 +169,10 @@ label.mat-checkbox-layout {
     }
 
     .mat-select-value-text {
-      color: $accent_color_bright;
       font-size: 14px;
       line-height: 24px;
+
+      color: $accent_color_bright;
     }
   }
 }

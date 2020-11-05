@@ -5,99 +5,131 @@
   flex-direction: column;
 
   &__title {
-    color: $dark_1;
     margin-bottom: 16px;
+
     text-align: left;
+
+    color: $dark_1;
   }
+
   &__content {
-    background: url('../../../../../assets/svg/fon.svg') no-repeat;
-    background-size: cover;
-    height: 240px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    height: 240px;
+
+    background: url('../../../../../assets/svg/fon.svg') no-repeat;
+    background-size: cover;
   }
+
   .desc__calender {
     margin: 36px 0 0 48px;
   }
+
   &__photo {
-    width: 189px;
     margin-right: 65px;
+
+    width: 189px;
     align-self: flex-end;
   }
 }
+
 .content__period {
   color: $dark_2;
 }
+
 .content__week {
-  display: flex;
-  width: 380px;
-  color: $dark_1;
   margin-top: 16px;
   margin-bottom: 24px;
 
+  display: flex;
+
+  width: 380px;
+
+  color: $dark_1;
+
   &__day {
-    flex-direction: column;
     margin-right: 43.9px;
+
+    flex-direction: column;
+
     &-single {
       margin-bottom: 10px;
+
       text-align: center;
     }
+
     &_orange {
-      background: $accent_color_bright;
-      text-align: center;
-      border-radius: 50%;
       width: 25px;
+
+      text-align: center;
+
       color: $light_1;
+      background: $accent_color_bright;
+      border-radius: 50%;
     }
   }
 }
+
 .choose_date__wrapper {
-  height: 32px;
-  width: 179px;
+  position: relative;
+
   display: flex;
   align-items: center;
-  position: relative;
+
+  width: 179px;
+  height: 32px;
+
   .dropdown-menu {
-    background: white;
+    background: #fff;
+
     &.d-none {
       display: none;
     }
   }
+
   .btn_choose-date {
-    height: 32px;
     width: 179px;
+    height: 32px;
   }
+
   ngb-datepicker {
     position: absolute;
-    top: 28px;
     z-index: 10;
+    top: 28px;
   }
 }
 
 .custom-day {
-  text-align: center;
   padding: 0.185rem 0.25rem;
+
   display: inline-block;
-  height: 2rem;
+
   width: 2rem;
+  height: 2rem;
+
+  text-align: center;
+
   outline: none;
+
   &.focused {
     background-color: #e6e6e6;
   }
+
   &.range,
   &:hover {
+    color: #fff;
     background-color: $accent_color_bright;
-    color: white;
-    outline: none;
     border: none;
+    outline: none;
   }
 
   &.faded {
+    color: #000;
     background-color: $light_1;
     border-top: 1px solid $accent_color_bright;
     border-bottom: 1px solid $accent_color_bright;
     border-radius: 0;
-    color: black;
   }
 }
