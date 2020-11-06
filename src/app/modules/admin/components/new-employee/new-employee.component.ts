@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { UserService } from '@digital-office/api/user-service';
+
 @Component({
   selector: 'do-new-employee',
   templateUrl: './new-employee.component.html',
@@ -23,7 +25,10 @@ export class NewEmployeeComponent implements OnInit {
     { name: 'department3' },
   ];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService
+  ) {
     this.userForm = this.formBuilder.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
@@ -38,7 +43,22 @@ export class NewEmployeeComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  createEmployee(): void {}
+  createEmployee(): void {
+    this.userService
+      .createUserPost({
+        login: this.userForm.controls[''].value,
+        email: this.userForm.controls['email'].value,
+        lastName: this.userForm.controls['lastName'].value,
+        firstName: this.userForm.controls['firstName'].value,
+        middleName: this.userForm.controls['middleName'].value,
+        password: this.userForm.controls['password'].value,
+
+        /*: this.userForm.controls['position'].value,
+        : this.userForm.controls['rate'].value,
+        : this.userForm.controls['department'].value,*/
+      })
+      .subscribe((res) => {});
+  }
 
   sendCredentials(): void {}
 
