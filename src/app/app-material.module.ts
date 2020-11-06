@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,6 +27,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSelectModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     MatChipsModule,
     MatCardModule,
     MatDialogModule,
