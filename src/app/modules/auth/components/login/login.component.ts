@@ -40,8 +40,8 @@ export class LoginComponent implements OnInit {
     this.isWaiting = true;
 
     const authenticationRequest: AuthenticationRequest = {
-      email: this.loginForm.get('email').value,
-      password: this.loginForm.get('password').value
+      loginData: this.loginForm.get('email').value,
+      password: this.loginForm.get('password').value,
     };
 
     this.authService
@@ -59,8 +59,8 @@ export class LoginComponent implements OnInit {
       )
       .subscribe(
         (user: User) => {
-          if ( user.isAdmin ) {
-            this.router.navigate([ '/admin/dashboard' ]);
+          if (user.isAdmin) {
+            this.router.navigate(['/admin/dashboard']);
           } else {
             this.router.navigate(['/user/attendance']);
           }

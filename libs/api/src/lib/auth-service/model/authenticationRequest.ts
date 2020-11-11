@@ -11,12 +11,12 @@
  */
 
 export interface AuthenticationRequest {
-    /**
-     * User email or login.
-     */
-    email: string;
-    /**
-     * User password.
-     */
-    password: string;
+  /**
+   * User email or login.
+   */
+  loginData: string;
+  /**
+   * User password.
+   */
+  password: string;
 }

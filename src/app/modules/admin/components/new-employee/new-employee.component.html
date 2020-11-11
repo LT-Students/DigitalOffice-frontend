@@ -1,50 +1,74 @@
 <div class="new-employee-container">
   <div class="content-container">
-    <a class="nav-link__dashboard regular_text regular_text_dark_1"
-       routerLink="/admin/dashboard">
+    <a
+      class="nav-link__dashboard regular_text regular_text_dark_1"
+      routerLink="/admin/dashboard"
+    >
       <svg xmlns="http://www.w3.org/2000/svg">
-        <path class="arrow" d="M4 1 L1 5 L4 9"/>
+        <path class="arrow" d="M4 1 L1 5 L4 9" />
       </svg>
       К дашборду
     </a>
     <span class="title h1 h1_dark_2">Новый сотрудник</span>
     <div class="form-container">
-      <form class="data-form"
-            [formGroup]="userForm"
-            (ngSubmit)="createEmployee()">
-        <span class="data-form__title h3 h3_dark_1">1. Основная информация</span>
+      <form
+        class="data-form"
+        [formGroup]="userForm"
+        (ngSubmit)="createEmployee()"
+      >
+        <span class="data-form__title h3 h3_dark_1"
+          >1. Основная информация</span
+        >
         <div class="main-info">
           <div class="content__photo">
             <div class="photo-container">
               <label for="choose-avatar">
-                <img [src]="imgURL ? imgURL
-                                  : '../../../../../assets/admin/new-employee/empty-photo-icon.png'"
-                     [ngClass]="imgURL ? 'filled_avatar' : 'empty_avatar'"
-                     alt="empty-photo-icon">
+                <img
+                  [src]="
+                    imgURL
+                      ? imgURL
+                      : '../../../../../assets/admin/new-employee/empty-photo-icon.png'
+                  "
+                  [ngClass]="imgURL ? 'filled_avatar' : 'empty_avatar'"
+                  alt="empty-photo-icon"
+                />
               </label>
-              <input type="file" id="choose-avatar" accept="image/jpeg,image/png" #file
-                     (change)="preview(file.files)">
-              <span class="text-negative_accent regular_text" *ngIf="message">{{message}}</span>
+              <input
+                type="file"
+                id="choose-avatar"
+                accept="image/jpeg,image/png"
+                #file
+                (change)="preview(file.files)"
+              />
+              <span class="text-negative_accent regular_text" *ngIf="message">{{
+                message
+              }}</span>
             </div>
           </div>
           <div class="content__inputs">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1">Фамилия</label>
-              <input class="data-form__input-field"
-                     type="text"
-                     formControlName="lastName">
+              <input
+                class="data-form__input-field"
+                type="text"
+                formControlName="lastName"
+              />
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1">Имя</label>
-              <input class="data-form__input-field"
-                     type="text"
-                     formControlName="firstName">
+              <input
+                class="data-form__input-field"
+                type="text"
+                formControlName="firstName"
+              />
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1">Отчество</label>
-              <input class="data-form__input-field"
-                     type="text"
-                     formControlName="middleName">
+              <input
+                class="data-form__input-field"
+                type="text"
+                formControlName="middleName"
+              />
             </div>
           </div>
         </div>
@@ -53,20 +77,19 @@
           <div class="position-info">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1">Позиция</label>
-              <select formControlName="position"
-                      class="data-form__select-field">
-                <option *ngFor="let position of positions"
-                        [ngValue]="position">
+              <select
+                formControlName="position"
+                class="data-form__select-field"
+              >
+                <option *ngFor="let position of positions" [ngValue]="position">
                   {{ position.name }}
                 </option>
               </select>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1">Ставка</label>
-              <select formControlName="rate"
-                      class="data-form__select-field">
-                <option *ngFor="let rate of rates"
-                        [ngValue]="rate">
+              <select formControlName="rate" class="data-form__select-field">
+                <option *ngFor="let rate of rates" [ngValue]="rate">
                   {{ rate }}
                 </option>
               </select>
@@ -75,10 +98,14 @@
           <div class="department-info">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1">Департамент</label>
-              <select formControlName="department"
-                      class="data-form__select-field">
-                <option *ngFor="let department of departments"
-                        [ngValue]="department">
+              <select
+                formControlName="department"
+                class="data-form__select-field"
+              >
+                <option
+                  *ngFor="let department of departments"
+                  [ngValue]="department"
+                >
                   {{ department.name }}
                 </option>
               </select>
@@ -90,39 +117,58 @@
           <div class="content__inputs">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1">Почта</label>
-              <input class="data-form__input-field"
-                     type="email"
-                     formControlName="email">
+              <input
+                class="data-form__input-field"
+                type="email"
+                formControlName="email"
+              />
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1">Пароль</label>
-              <input class="data-form__input-field"
-                     type="password"
-                     formControlName="password">
+              <input
+                class="data-form__input-field"
+                type="password"
+                formControlName="password"
+              />
             </div>
           </div>
-          <button class="btn-generate-credentials"
-                  type="button"
-                  (click)="generateCredentials()">
-            <img src="../../../../../assets/admin/new-employee/lock-icon.png" alt="lock-icon">
-            <span class="regular_text regular_text_accent_color_bright">Сгенерировать</span>
+          <button
+            class="btn-generate-credentials"
+            type="button"
+            (click)="generateCredentials()"
+          >
+            <img
+              src="../../../../../assets/admin/new-employee/lock-icon.png"
+              alt="lock-icon"
+            />
+            <span class="regular_text regular_text_accent_color_bright"
+              >Сгенерировать</span
+            >
           </button>
         </div>
         <div class="submit-buttons">
-          <button class="btn-send-credentials"
-                  type="button"
-                  (click)="sendCredentials()"
-                  [disabled]="userForm.invalid">
-            <span class="regular_text regular_text_accent_color">Отправить данные для входа</span>
+          <button
+            class="btn-send-credentials"
+            type="button"
+            (click)="sendCredentials()"
+            [disabled]="userForm.invalid"
+          >
+            <span class="regular_text regular_text_accent_color"
+              >Отправить данные для входа</span
+            >
           </button>
-          <button class="btn-create-employee"
-                  type="submit"
-                  [disabled]="userForm.invalid">
-            <span class="regular_text regular_text_light_1">Создать сотрудника</span>
+          <button
+            class="btn-create-employee"
+            type="submit"
+            (click)="createEmployee()"
+            [disabled]="userForm.invalid"
+          >
+            <span class="regular_text regular_text_light_1"
+              >Создать сотрудника</span
+            >
           </button>
         </div>
       </form>
     </div>
   </div>
-
 </div>

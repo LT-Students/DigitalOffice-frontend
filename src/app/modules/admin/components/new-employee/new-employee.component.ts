@@ -33,9 +33,9 @@ export class NewEmployeeComponent implements OnInit {
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
       middleName: ['', Validators.required],
-      position: ['', Validators.required],
-      rate: ['', Validators.required],
-      department: ['', Validators.required],
+      position: [''],
+      rate: [''],
+      department: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
@@ -46,7 +46,7 @@ export class NewEmployeeComponent implements OnInit {
   createEmployee(): void {
     this.userService
       .createUserPost({
-        login: this.userForm.controls[''].value,
+        login: this.userForm.controls['email'].value,
         email: this.userForm.controls['email'].value,
         lastName: this.userForm.controls['lastName'].value,
         firstName: this.userForm.controls['firstName'].value,
