@@ -31,8 +31,7 @@ export class NewEmployeeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService,
-    private localStorageService: LocalStorageService
+    private userService: UserService
   ) {
     this.userForm = this.formBuilder.group({
       lastName: ['', Validators.required],
@@ -41,10 +40,8 @@ export class NewEmployeeComponent implements OnInit {
       position: [''],
       rate: [''],
       department: [''],
-      isAdmin: ['true'],
-      isActive: ['true'],
-      login: [''],
       email: ['', [Validators.required, Validators.email]],
+      login: ['', [Validators.required]],
       password: ['', Validators.required],
     });
   }
@@ -54,29 +51,21 @@ export class NewEmployeeComponent implements OnInit {
   createEmployee(): void {
     this.userService
       .createUserPost({
-        //id: this.localStorageService.get('user'),
-        id: '6146b87a-587d-4945-a565-1cbde93f187c',
         email: this.userForm.controls['email'].value,
-        login: this.userForm.controls['lastName'].value,
+        login: this.userForm.controls['login'].value,
         firstName: this.userForm.controls['firstName'].value,
         lastName: this.userForm.controls['lastName'].value,
         middleName: this.userForm.controls['middleName'].value,
-        status: 'someStatus',
         password: this.userForm.controls['password'].value,
         isAdmin: true,
-        isActive: true,
-        avatarFileId: '',
-
-        /*: this.userForm.controls['position'].value,
-        : this.userForm.controls['rate'].value,
-        : this.userForm.controls['department'].value,*/
+        isActive: true
       })
       .subscribe((res) => {});
   }
 
-  sendCredentials(): void {}
-
-  generateCredentials(): void {}
+  generateCredentials(): void {
+    // todo add this part when APi is ready
+  }
 
   preview(files) {
     if (files.length === 0) {

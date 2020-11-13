@@ -1,11 +1,8 @@
 <div class="new-employee-container">
   <div class="content-container">
-    <a
-      class="nav-link__dashboard regular_text regular_text_dark_1"
-      routerLink="/admin/dashboard"
-    >
+    <a class="nav-link__dashboard regular_text regular_text_dark_1" routerLink="/admin/dashboard">
       <svg xmlns="http://www.w3.org/2000/svg">
-        <path class="arrow" d="M4 1 L1 5 L4 9" />
+        <path class="arrow" d="M4 1 L1 5 L4 9"/>
       </svg>
       К дашборду
     </a>
@@ -17,40 +14,31 @@
           <div class="content__photo">
             <div class="photo-container">
               <label for="choose-avatar">
-                <img
-                  [src]="
-                    imgURL
-                      ? imgURL
-                      : '../../../../../assets/admin/new-employee/empty-photo-icon.png'
-                  "
-                  [ngClass]="imgURL ? 'filled_avatar' : 'empty_avatar'"
-                  alt="empty-photo-icon"
-                />
+                <img [src]="imgURL ? imgURL : '../../../../../assets/admin/new-employee/empty-photo-icon.png'"
+                     [ngClass]="imgURL ? 'filled_avatar' : 'empty_avatar'"
+                     alt="empty-photo-icon"/>
               </label>
-              <input
-                type="file"
-                id="choose-avatar"
-                accept="image/jpeg,image/png"
-                #file
-                (change)="preview(file.files)"
-              />
-              <span class="text-negative_accent regular_text" *ngIf="message">{{
-                message
-              }}</span>
+              <input type="file"
+                     id="choose-avatar"
+                     accept="image/jpeg,image/png"
+                     #file
+                     (change)="preview(file.files)"/>
+              <span class="text-negative_accent regular_text"
+                    *ngIf="message">{{message}}</span>
             </div>
           </div>
           <div class="content__inputs">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="lastName">Фамилия</label>
-              <input type="text" id="lastName" formControlName="lastName" />
+              <input type="text" id="lastName" formControlName="lastName"/>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="firstName">Имя</label>
-              <input type="text" id="firstName" formControlName="firstName" />
+              <input type="text" id="firstName" formControlName="firstName"/>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="middleName">Отчество</label>
-              <input type="text" id="middleName" formControlName="middleName" />
+              <input type="text" id="middleName" formControlName="middleName"/>
             </div>
           </div>
         </div>
@@ -90,47 +78,30 @@
           <div class="content__inputs">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="email">Почта</label>
-              <input type="email" id="email" formControlName="email" />
+              <input type="email" id="email" formControlName="email"/>
+            </div>
+            <div class="data-form__input-content">
+              <label class="h5 h5_dark_1" for="login">Логин</label>
+              <input id="login" formControlName="login"/>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="password">Пароль</label>
-              <input type="password" id="password" formControlName="password" />
+              <input type="password" id="password" formControlName="password"/>
             </div>
           </div>
-          <button
-            class="btn-generate-credentials"
-            type="button"
-            (click)="generateCredentials()"
-          >
-            <img
-              src="../../../../../assets/admin/new-employee/lock-icon.png"
-              alt="lock-icon"
-            />
-            <span class="regular_text regular_text_accent_color_bright"
-              >Сгенерировать</span
-            >
-          </button>
         </div>
-        <div class="submit-buttons">
-          <button
-            class="btn-send-credentials"
-            type="button"
-            (click)="sendCredentials()"
-            [disabled]="userForm.invalid"
-          >
-            <span class="regular_text regular_text_accent_color"
-              >Отправить данные для входа</span
-            >
+        <div class="buttons">
+          <button mat-flat-button class="btn-generate-credentials"
+                  type="button"
+                  (click)="generateCredentials()">
+            <img src="../../../../../assets/admin/new-employee/lock-icon.png" alt="lock-icon"/>
+            <span class="regular_text regular_text_accent_color_bright">Сгенерировать пароль</span>
           </button>
-          <button
-            class="btn-create-employee"
-            type="submit"
-            (click)="createEmployee()"
-            [disabled]="userForm.invalid"
-          >
-            <span class="regular_text regular_text_light_1"
-              >Создать сотрудника</span
-            >
+          <button mat-flat-button color="primary" class="btn-create-employee"
+                  type="submit"
+                  (click)="createEmployee()"
+                  [disabled]="userForm.invalid">
+            <span class="regular_text regular_text_light_1">Создать сотрудника</span>
           </button>
         </div>
       </form>
