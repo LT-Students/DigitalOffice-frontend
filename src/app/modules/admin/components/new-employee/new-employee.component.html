@@ -11,14 +11,8 @@
     </a>
     <span class="title h1 h1_dark_2">Новый сотрудник</span>
     <div class="form-container">
-      <form
-        class="data-form"
-        [formGroup]="userForm"
-        (ngSubmit)="createEmployee()"
-      >
-        <span class="data-form__title h3 h3_dark_1"
-          >1. Основная информация</span
-        >
+      <form [formGroup]="userForm" (ngSubmit)="createEmployee()" class="data-form">
+        <h2 class="data-form__title h3 h3_dark_1">1. Основная информация</h2>
         <div class="main-info">
           <div class="content__photo">
             <div class="photo-container">
@@ -47,48 +41,33 @@
           </div>
           <div class="content__inputs">
             <div class="data-form__input-content">
-              <label class="h5 h5_dark_1">Фамилия</label>
-              <input
-                class="data-form__input-field"
-                type="text"
-                formControlName="lastName"
-              />
+              <label class="h5 h5_dark_1" for="lastName">Фамилия</label>
+              <input type="text" id="lastName" formControlName="lastName" />
             </div>
             <div class="data-form__input-content">
-              <label class="h5 h5_dark_1">Имя</label>
-              <input
-                class="data-form__input-field"
-                type="text"
-                formControlName="firstName"
-              />
+              <label class="h5 h5_dark_1" for="firstName">Имя</label>
+              <input type="text" id="firstName" formControlName="firstName" />
             </div>
             <div class="data-form__input-content">
-              <label class="h5 h5_dark_1">Отчество</label>
-              <input
-                class="data-form__input-field"
-                type="text"
-                formControlName="middleName"
-              />
+              <label class="h5 h5_dark_1" for="middleName">Отчество</label>
+              <input type="text" id="middleName" formControlName="middleName" />
             </div>
           </div>
         </div>
-        <span class="data-form__title h3 h3_dark_1">2. Рабочая информация</span>
+        <h2 class="data-form__title h3 h3_dark_1">2. Рабочая информация</h2>
         <div class="job-info">
           <div class="position-info">
             <div class="data-form__input-content">
-              <label class="h5 h5_dark_1">Позиция</label>
-              <select
-                formControlName="position"
-                class="data-form__select-field"
-              >
+              <label class="h5 h5_dark_1" for="position">Позиция</label>
+              <select id="position" formControlName="position">
                 <option *ngFor="let position of positions" [ngValue]="position">
                   {{ position.name }}
                 </option>
               </select>
             </div>
             <div class="data-form__input-content">
-              <label class="h5 h5_dark_1">Ставка</label>
-              <select formControlName="rate" class="data-form__select-field">
+              <label class="h5 h5_dark_1" for="rate">Ставка</label>
+              <select id="rate" formControlName="rate">
                 <option *ngFor="let rate of rates" [ngValue]="rate">
                   {{ rate }}
                 </option>
@@ -97,39 +76,25 @@
           </div>
           <div class="department-info">
             <div class="data-form__input-content">
-              <label class="h5 h5_dark_1">Департамент</label>
-              <select
-                formControlName="department"
-                class="data-form__select-field"
-              >
-                <option
-                  *ngFor="let department of departments"
-                  [ngValue]="department"
-                >
+              <label class="h5 h5_dark_1" for="department">Департамент</label>
+              <select id="department" formControlName="department">
+                <option *ngFor="let department of departments" [ngValue]="department">
                   {{ department.name }}
                 </option>
               </select>
             </div>
           </div>
         </div>
-        <span class="data-form__title h3 h3_dark_1">3. Данные для входа</span>
+        <h2 class="data-form__title h3 h3_dark_1">3. Данные для входа</h2>
         <div class="login-info">
           <div class="content__inputs">
             <div class="data-form__input-content">
-              <label class="h5 h5_dark_1">Почта</label>
-              <input
-                class="data-form__input-field"
-                type="email"
-                formControlName="email"
-              />
+              <label class="h5 h5_dark_1" for="email">Почта</label>
+              <input type="email" id="email" formControlName="email" />
             </div>
             <div class="data-form__input-content">
-              <label class="h5 h5_dark_1">Пароль</label>
-              <input
-                class="data-form__input-field"
-                type="password"
-                formControlName="password"
-              />
+              <label class="h5 h5_dark_1" for="password">Пароль</label>
+              <input type="password" id="password" formControlName="password" />
             </div>
           </div>
           <button

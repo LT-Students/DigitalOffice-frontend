@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { UserService } from '@digital-office/api/user-service';
+import { User } from '@digital-office/api/user-service';
+
+import { LocalStorageService } from '../../../../services/local-storage.service';
 
 @Component({
   selector: 'do-new-employee',
@@ -9,6 +12,7 @@ import { UserService } from '@digital-office/api/user-service';
   styleUrls: ['./new-employee.component.scss'],
 })
 export class NewEmployeeComponent implements OnInit {
+  user: User;
   public message: string;
   public imagePath;
   public imgURL: any;
@@ -27,7 +31,8 @@ export class NewEmployeeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private localStorageService: LocalStorageService
   ) {
     this.userForm = this.formBuilder.group({
       lastName: ['', Validators.required],
@@ -36,6 +41,9 @@ export class NewEmployeeComponent implements OnInit {
       position: [''],
       rate: [''],
       department: [''],
+      isAdmin: ['true'],
+      isActive: ['true'],
+      login: [''],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
@@ -46,12 +54,18 @@ export class NewEmployeeComponent implements OnInit {
   createEmployee(): void {
     this.userService
       .createUserPost({
-        login: this.userForm.controls['email'].value,
+        //id: this.localStorageService.get('user'),
+        id: '6146b87a-587d-4945-a565-1cbde93f187c',
         email: this.userForm.controls['email'].value,
-        lastName: this.userForm.controls['lastName'].value,
+        login: this.userForm.controls['lastName'].value,
         firstName: this.userForm.controls['firstName'].value,
+        lastName: this.userForm.controls['lastName'].value,
         middleName: this.userForm.controls['middleName'].value,
+        status: 'someStatus',
         password: this.userForm.controls['password'].value,
+        isAdmin: true,
+        isActive: true,
+        avatarFileId: '',
 
         /*: this.userForm.controls['position'].value,
         : this.userForm.controls['rate'].value,
@@ -70,7 +84,7 @@ export class NewEmployeeComponent implements OnInit {
     }
 
     let mimeType = files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
+    if (mimeType.match(/image\/*/) === null) {
       this.message = 'Only images are supported.';
       return;
     }
