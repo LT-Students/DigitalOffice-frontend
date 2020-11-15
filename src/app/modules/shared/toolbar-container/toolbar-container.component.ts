@@ -5,7 +5,7 @@ import { User } from '@digital-office/api/user-service';
 import { UserService } from '../../../services/user.service';
 
 @Component({
-  selector: 'app-toolbar-container',
+  selector: 'do-toolbar-container',
   templateUrl: './toolbar-container.component.html',
   styleUrls: ['./toolbar-container.component.scss'],
 })
