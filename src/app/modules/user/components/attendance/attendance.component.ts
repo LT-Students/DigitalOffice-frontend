@@ -5,7 +5,7 @@ import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { IProject } from '../../../../interfaces/project.interface';
 
 @Component({
-  selector: 'app-attendance',
+  selector: 'do-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.scss'],
 })

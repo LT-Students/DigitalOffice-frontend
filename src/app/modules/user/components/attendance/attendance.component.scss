@@ -9,12 +9,12 @@
   grid-row-gap: 20px;
   grid-template-columns: 53% 44%;
 
-  app-add-hours {
+  do-add-hours {
     grid-row-end: 3;
     grid-row-start: 1;
   }
 
-  app-gradient-graphics {
+  do-gradient-graphics {
     display: flex;
     align-items: flex-end;
   }

@@ -10,7 +10,7 @@ export interface IDailyHoursData {
 }
 
 @Component({
-  selector: 'app-gradient-graphics',
+  selector: 'do-gradient-graphics',
   templateUrl: './gradient-graphics.component.html',
   styleUrls: ['./gradient-graphics.component.scss'],
 })
