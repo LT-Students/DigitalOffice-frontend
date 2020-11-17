@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-tags-block',
+  selector: 'do-tags-block',
   templateUrl: './tags-block.component.html',
   styleUrls: ['./tags-block.component.scss'],
 })

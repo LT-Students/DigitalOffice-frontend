@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+import { ApiModule } from '@digital-office/api';
+
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { UserService } from './services/user.service';
@@ -17,7 +19,6 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './modules/shared/shared.module';
-import { ApiModule } from '../../libs/api/src/lib/api.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AppMaterialModule } from './app-material.module';
 import { UserModule } from './modules/user/user.module';

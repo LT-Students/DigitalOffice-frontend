@@ -58,9 +58,9 @@ export class ChartComponent implements OnInit, OnDestroy {
       this.recommendedTime = this.attendanceService.countPlannedHours(period);
     });
 
-    const minutesByProjects = this.projects.map((project: IProject) => {
-      return this.countMinutesByTask(project);
-    });
+    const minutesByProjects = this.projects.map((project: IProject) =>
+      this.countMinutesByTask(project)
+    );
     //
 
     // donut building
@@ -93,6 +93,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
       // String under hours
       this.timeDescriptionColor = '#FFFFFF';
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       Number(this.timeDescriptionValue) >= 0
         ? (this.timeDescriptionBackgroundColor = '#21D373')
         : (this.timeDescriptionBackgroundColor = '#EB5757');

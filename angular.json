@@ -22,23 +22,12 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "allowedCommonJsDependencies": [
-              "chart.js",
-              "moment"
-            ],
+            "allowedCommonJsDependencies": ["chart.js", "moment"],
             "aot": true,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss",
-              "src/theme.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss", "src/theme.scss"],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/stylesheets"
-              ]
+              "includePaths": ["src/stylesheets"]
             },
             "scripts": []
           },
@@ -97,27 +86,9 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**", "libs/api/**", "**/*.spec.ts", "**/polyfills.ts"
-            ]
           }
         },
         "e2e": {
@@ -130,6 +101,12 @@
             "production": {
               "devServerTarget": "DigitalOffice-frontend:serve:production"
             }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.component.html"]
           }
         }
       }

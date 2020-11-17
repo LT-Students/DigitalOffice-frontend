@@ -16,7 +16,7 @@ import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
 
 @Component({
-  selector: 'app-add-hours',
+  selector: 'do-add-hours',
   templateUrl: './add-hours.component.html',
   styleUrls: ['./add-hours.component.scss'],
 })
