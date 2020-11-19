@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '@digital-office/api/user-service';
 import { User } from '@digital-office/api/user-service';
 
-import { LocalStorageService } from '../../../../services/local-storage.service';
+import { catchError, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'do-new-employee',
@@ -40,8 +40,8 @@ export class NewEmployeeComponent implements OnInit {
       position: [''],
       rate: [''],
       department: [''],
-      email: ['', [Validators.required, Validators.email]],
-      login: ['', [Validators.required]],
+      email: ['', Validators.required, Validators.email],
+      login: ['', [Validators.required, Validators.minLength(5)]],
       password: ['', Validators.required],
     });
   }
@@ -58,9 +58,24 @@ export class NewEmployeeComponent implements OnInit {
         middleName: this.userForm.controls['middleName'].value,
         password: this.userForm.controls['password'].value,
         isAdmin: true,
-        isActive: true
+        isActive: true,
       })
-      .subscribe((res) => {});
+      .pipe(
+        /*switchMap(() => {
+
+        }),*/
+        catchError((error) => {
+          console.log(error.message);
+          throw error;
+        })
+      )
+      .subscribe(
+        (res) => {},
+        (error) => {
+          console.log(error.message);
+          throw error;
+        }
+      );
   }
 
   generateCredentials(): void {

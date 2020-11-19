@@ -1,44 +1,95 @@
 <div class="new-employee-container">
   <div class="content-container">
-    <a class="nav-link__dashboard regular_text regular_text_dark_1" routerLink="/admin/dashboard">
+    <a
+      class="nav-link__dashboard regular_text regular_text_dark_1"
+      routerLink="/admin/dashboard"
+    >
       <svg xmlns="http://www.w3.org/2000/svg">
-        <path class="arrow" d="M4 1 L1 5 L4 9"/>
+        <path class="arrow" d="M4 1 L1 5 L4 9" />
       </svg>
       К дашборду
     </a>
     <span class="title h1 h1_dark_2">Новый сотрудник</span>
     <div class="form-container">
-      <form [formGroup]="userForm" (ngSubmit)="createEmployee()" class="data-form">
+      <form
+        [formGroup]="userForm"
+        (ngSubmit)="createEmployee()"
+        class="data-form"
+      >
         <h2 class="data-form__title h3 h3_dark_1">1. Основная информация</h2>
         <div class="main-info">
           <div class="content__photo">
             <div class="photo-container">
               <label for="choose-avatar">
-                <img [src]="imgURL ? imgURL : '../../../../../assets/admin/new-employee/empty-photo-icon.png'"
-                     [ngClass]="imgURL ? 'filled_avatar' : 'empty_avatar'"
-                     alt="empty-photo-icon"/>
+                <img
+                  [src]="
+                    imgURL
+                      ? imgURL
+                      : '../../../../../assets/admin/new-employee/empty-photo-icon.png'
+                  "
+                  [ngClass]="imgURL ? 'filled_avatar' : 'empty_avatar'"
+                  alt="empty-photo-icon"
+                />
               </label>
-              <input type="file"
-                     id="choose-avatar"
-                     accept="image/jpeg,image/png"
-                     #file
-                     (change)="preview(file.files)"/>
-              <span class="text-negative_accent regular_text"
-                    *ngIf="message">{{message}}</span>
+              <input
+                type="file"
+                id="choose-avatar"
+                accept="image/jpeg,image/png"
+                #file
+                (change)="preview(file.files)"
+              />
+              <span class="text-negative_accent regular_text" *ngIf="message">{{
+                message
+              }}</span>
             </div>
           </div>
           <div class="content__inputs">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="lastName">Фамилия</label>
-              <input type="text" id="lastName" formControlName="lastName"/>
+              <input
+                type="text"
+                id="lastName"
+                #lastName
+                minlength="1"
+                maxlength="32"
+                formControlName="lastName"
+              />
+              <mat-hint lastName="end" *ngIf="lastName.value?.length < 1"
+                >Add last Name</mat-hint
+              >
+              <mat-hint lastName="end" *ngIf="lastName.value?.length > 32"
+                >Last name is too long</mat-hint
+              >
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="firstName">Имя</label>
-              <input type="text" id="firstName" formControlName="firstName"/>
+              <input
+                type="text"
+                id="firstName"
+                #firstName
+                minlength="1"
+                maxlength="32"
+                formControlName="firstName"
+              />
+              <mat-hint firstName="end" *ngIf="firstName.value?.length < 1"
+                >Add first Name</mat-hint
+              >
+              <mat-hint firstName="end" *ngIf="firstName.value?.length > 32"
+                >First name is too long</mat-hint
+              >
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="middleName">Отчество</label>
-              <input type="text" id="middleName" formControlName="middleName"/>
+              <input
+                type="text"
+                id="middleName"
+                #middleName
+                maxlength="32"
+                formControlName="middleName"
+              />
+              <mat-hint middleName="end" *ngIf="middleName.value?.length > 32"
+                >Middle name is too long</mat-hint
+              >
             </div>
           </div>
         </div>
@@ -66,7 +117,10 @@
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="department">Департамент</label>
               <select id="department" formControlName="department">
-                <option *ngFor="let department of departments" [ngValue]="department">
+                <option
+                  *ngFor="let department of departments"
+                  [ngValue]="department"
+                >
                   {{ department.name }}
                 </option>
               </select>
@@ -78,30 +132,63 @@
           <div class="content__inputs">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="email">Почта</label>
-              <input type="email" id="email" formControlName="email"/>
+              <input type="email" id="email" formControlName="email" />
+              <!--mat-hint email="end" *ngIf="">Enter email</mat-hint-->
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="login">Логин</label>
-              <input id="login" formControlName="login"/>
+              <input
+                id="login"
+                #login
+                minlength="5"
+                maxlength="16"
+                formControlName="login"
+              />
+              <mat-hint login="end" *ngIf="login.value?.length < 5"
+                >Length is to short</mat-hint
+              >
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="password">Пароль</label>
-              <input type="password" id="password" formControlName="password"/>
+              <input
+                type="password"
+                id="password"
+                #password
+                minlength="1"
+                formControlName="password"
+              />
+              <mat-hint password="end" *ngIf="password.value?.length < 1"
+                >Put a password</mat-hint
+              >
             </div>
           </div>
         </div>
         <div class="buttons">
-          <button mat-flat-button class="btn-generate-credentials"
-                  type="button"
-                  (click)="generateCredentials()">
-            <img src="../../../../../assets/admin/new-employee/lock-icon.png" alt="lock-icon"/>
-            <span class="regular_text regular_text_accent_color_bright">Сгенерировать пароль</span>
+          <button
+            mat-flat-button
+            class="btn-generate-credentials"
+            type="button"
+            (click)="generateCredentials()"
+          >
+            <img
+              src="../../../../../assets/admin/new-employee/lock-icon.png"
+              alt="lock-icon"
+            />
+            <span class="regular_text regular_text_accent_color_bright"
+              >Сгенерировать пароль</span
+            >
           </button>
-          <button mat-flat-button color="primary" class="btn-create-employee"
-                  type="submit"
-                  (click)="createEmployee()"
-                  [disabled]="userForm.invalid">
-            <span class="regular_text regular_text_light_1">Создать сотрудника</span>
+          <button
+            mat-flat-button
+            color="primary"
+            class="btn-create-employee"
+            type="submit"
+            (click)="createEmployee()"
+            [disabled]="userForm.invalid"
+          >
+            <span class="regular_text regular_text_light_1"
+              >Создать сотрудника</span
+            >
           </button>
         </div>
       </form>
