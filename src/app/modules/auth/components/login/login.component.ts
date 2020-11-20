@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
     this.isWaiting = true;
 
     const authenticationRequest: AuthenticationRequest = {
-      email: this.loginForm.get('email').value,
+      loginData: this.loginForm.get('email').value,
       password: this.loginForm.get('password').value
     };
 

@@ -22,6 +22,7 @@ export class AuthService {
       tap({
         next: (val) => {
           this.localStorageService.set('id_token', val.token);
+          this.localStorageService.set('userId', val.userId);
         },
         error: (error) => {
           console.log('Authentication failed.', error);
