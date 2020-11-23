@@ -46,50 +46,24 @@
           <div class="content__inputs">
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="lastName">Фамилия</label>
-              <input
-                type="text"
-                id="lastName"
-                #lastName
-                minlength="1"
-                maxlength="32"
-                formControlName="lastName"
-              />
-              <mat-hint lastName="end" *ngIf="lastName.value?.length < 1"
-                >Add last Name</mat-hint
-              >
-              <mat-hint lastName="end" *ngIf="lastName.value?.length > 32"
-                >Last name is too long</mat-hint
-              >
+              <input type="text" id="lastName" formControlName="lastName" />
+              <mat-error *ngIf="userForm.controls.lastName.invalid">{{
+                getErrorMessageUserForm()
+              }}</mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="firstName">Имя</label>
-              <input
-                type="text"
-                id="firstName"
-                #firstName
-                minlength="1"
-                maxlength="32"
-                formControlName="firstName"
-              />
-              <mat-hint firstName="end" *ngIf="firstName.value?.length < 1"
-                >Add first Name</mat-hint
-              >
-              <mat-hint firstName="end" *ngIf="firstName.value?.length > 32"
-                >First name is too long</mat-hint
-              >
+              <input type="text" id="firstName" formControlName="firstName" />
+              <mat-error *ngIf="userForm.controls.firstName.invalid">{{
+                getErrorMessageUserForm()
+              }}</mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="middleName">Отчество</label>
-              <input
-                type="text"
-                id="middleName"
-                #middleName
-                maxlength="32"
-                formControlName="middleName"
-              />
-              <mat-hint middleName="end" *ngIf="middleName.value?.length > 32"
-                >Middle name is too long</mat-hint
-              >
+              <input type="text" id="middleName" formControlName="middleName" />
+              <mat-error *ngIf="userForm.controls.middleName.invalid">{{
+                getErrorMessageUserForm()
+              }}</mat-error>
             </div>
           </div>
         </div>
@@ -133,33 +107,23 @@
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="email">Почта</label>
               <input type="email" id="email" formControlName="email" />
-              <!--mat-hint email="end" *ngIf="">Enter email</mat-hint-->
+              <mat-error *ngIf="userForm.controls.email.invalid">{{
+                getErrorMessageUserForm()
+              }}</mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="login">Логин</label>
-              <input
-                id="login"
-                #login
-                minlength="5"
-                maxlength="16"
-                formControlName="login"
-              />
-              <mat-hint login="end" *ngIf="login.value?.length < 5"
-                >Length is to short</mat-hint
-              >
+              <input type="text" id="login" formControlName="login" />
+              <mat-error *ngIf="userForm.controls.login.invalid">{{
+                getErrorMessageUserForm()
+              }}</mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="password">Пароль</label>
-              <input
-                type="password"
-                id="password"
-                #password
-                minlength="1"
-                formControlName="password"
-              />
-              <mat-hint password="end" *ngIf="password.value?.length < 1"
-                >Put a password</mat-hint
-              >
+              <input type="password" id="password" formControlName="password" />
+              <mat-error *ngIf="userForm.controls.password.invalid">{{
+                getErrorMessageUserForm()
+              }}</mat-error>
             </div>
           </div>
         </div>

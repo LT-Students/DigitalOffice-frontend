@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { UserService } from '@digital-office/api/user-service';
 import { User } from '@digital-office/api/user-service';
 
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'do-new-employee',
@@ -28,21 +29,49 @@ export class NewEmployeeComponent implements OnInit {
     { name: 'department2' },
     { name: 'department3' },
   ];
-
+  public snackBar: MatSnackBar;
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService
   ) {
     this.userForm = this.formBuilder.group({
-      lastName: ['', Validators.required],
-      firstName: ['', Validators.required],
-      middleName: ['', Validators.required],
+      lastName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(32),
+        ],
+      ],
+      firstName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(32),
+        ],
+      ],
+      middleName: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(32),
+        ],
+      ],
       position: [''],
       rate: [''],
       department: [''],
-      email: ['', Validators.required, Validators.email],
-      login: ['', [Validators.required, Validators.minLength(5)]],
-      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      login: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(16),
+        ],
+      ],
+      password: ['', [Validators.required, Validators.minLength(1)]],
     });
   }
 
@@ -60,18 +89,12 @@ export class NewEmployeeComponent implements OnInit {
         isAdmin: true,
         isActive: true,
       })
-      .pipe(
-        /*switchMap(() => {
-
-        }),*/
-        catchError((error) => {
-          console.log(error.message);
-          throw error;
-        })
-      )
       .subscribe(
-        (res) => {},
+        (res) => {
+          alert('Success');
+        },
         (error) => {
+          //this.snackBar.open('error.message');
           console.log(error.message);
           throw error;
         }
@@ -81,7 +104,13 @@ export class NewEmployeeComponent implements OnInit {
   generateCredentials(): void {
     // todo add this part when APi is ready
   }
+  /*openSnackBar(message: string) {
+    this.snackBar.open(message);
+  }*/
 
+  getErrorMessageUserForm() {
+    return 'invalid value';
+  }
   preview(files) {
     if (files.length === 0) {
       return;
