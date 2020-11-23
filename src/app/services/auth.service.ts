@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { AuthenticationRequest, AuthenticationService, AuthenticationResponse } from '@digital-office/api/auth-service';
+import {
+  AuthenticationRequest,
+  AuthenticationService,
+  AuthenticationResponse,
+} from '@digital-office/api/auth-service';
 
 import { LocalStorageService } from './local-storage.service';
 
@@ -22,6 +26,7 @@ export class AuthService {
       tap({
         next: (val) => {
           this.localStorageService.set('id_token', val.token);
+          this.localStorageService.set('userId', val.userId);
         },
         error: (error) => {
           console.log('Authentication failed.', error);
