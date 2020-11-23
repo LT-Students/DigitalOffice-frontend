@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '@digital-office/api/user-service';
 import { User } from '@digital-office/api/user-service';
 
-import { catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'do-new-employee',
@@ -29,10 +29,11 @@ export class NewEmployeeComponent implements OnInit {
     { name: 'department2' },
     { name: 'department3' },
   ];
-  public snackBar: MatSnackBar;
+
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    public snackBar: MatSnackBar
   ) {
     this.userForm = this.formBuilder.group({
       lastName: [
@@ -91,11 +92,12 @@ export class NewEmployeeComponent implements OnInit {
       })
       .subscribe(
         (res) => {
-          alert('Success');
+          this.snackBar.open('New user added successfully', 'done', {
+            duration: 3000,
+          });
         },
-        (error) => {
-          //this.snackBar.open('error.message');
-          console.log(error.message);
+        (error: HttpErrorResponse) => {
+          this.snackBar.open(error.error.Message, 'accept');
           throw error;
         }
       );
@@ -104,13 +106,7 @@ export class NewEmployeeComponent implements OnInit {
   generateCredentials(): void {
     // todo add this part when APi is ready
   }
-  /*openSnackBar(message: string) {
-    this.snackBar.open(message);
-  }*/
 
-  getErrorMessageUserForm() {
-    return 'invalid value';
-  }
   preview(files) {
     if (files.length === 0) {
       return;

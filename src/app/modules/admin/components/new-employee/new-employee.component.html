@@ -47,23 +47,29 @@
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="lastName">Фамилия</label>
               <input type="text" id="lastName" formControlName="lastName" />
-              <mat-error *ngIf="userForm.controls.lastName.invalid">{{
-                getErrorMessageUserForm()
-              }}</mat-error>
+              <mat-error
+                *ngIf="userForm.controls.lastName.hasError('required')"
+              >
+                The last name is invalid
+              </mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="firstName">Имя</label>
               <input type="text" id="firstName" formControlName="firstName" />
-              <mat-error *ngIf="userForm.controls.firstName.invalid">{{
-                getErrorMessageUserForm()
-              }}</mat-error>
+              <mat-error
+                *ngIf="userForm.controls.firstName.hasError('required')"
+              >
+                The first name is invalid
+              </mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="middleName">Отчество</label>
               <input type="text" id="middleName" formControlName="middleName" />
-              <mat-error *ngIf="userForm.controls.middleName.invalid">{{
-                getErrorMessageUserForm()
-              }}</mat-error>
+              <mat-error
+                *ngIf="userForm.controls.middleName.hasError('required')"
+              >
+                The middle name is invalid
+              </mat-error>
             </div>
           </div>
         </div>
@@ -107,23 +113,25 @@
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="email">Почта</label>
               <input type="email" id="email" formControlName="email" />
-              <mat-error *ngIf="userForm.controls.email.invalid">{{
-                getErrorMessageUserForm()
-              }}</mat-error>
+              <mat-error *ngIf="userForm.controls.email.hasError('required')">
+                The email is invalid
+              </mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="login">Логин</label>
               <input type="text" id="login" formControlName="login" />
-              <mat-error *ngIf="userForm.controls.login.invalid">{{
-                getErrorMessageUserForm()
-              }}</mat-error>
+              <mat-error *ngIf="userForm.controls.login.hasError('required')">
+                The login is invalid
+              </mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="password">Пароль</label>
               <input type="password" id="password" formControlName="password" />
-              <mat-error *ngIf="userForm.controls.password.invalid">{{
-                getErrorMessageUserForm()
-              }}</mat-error>
+              <mat-error
+                *ngIf="userForm.controls.password.hasError('required')"
+              >
+                The password is invalid
+              </mat-error>
             </div>
           </div>
         </div>
