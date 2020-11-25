@@ -75,10 +75,21 @@
       </div>
 
       <div class="datepicker">
-        <mat-form-field appearance="fill" class="datepicker__form">
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate placeholder="Start date" />
-            <input matEndDate placeholder="End date" />
+        <mat-form-field
+          appearance="fill"
+          class="datepicker__form mat-form-field-datepicker-override"
+        >
+          <mat-date-range-input
+            [rangePicker]="picker"
+            [formGroup]="range"
+            [dateFilter]="myFilter"
+          >
+            <input
+              matStartDate
+              formControlName="start"
+              placeholder="Start date"
+            />
+            <input matEndDate formControlName="end" placeholder="End date" />
           </mat-date-range-input>
           <mat-datepicker-toggle
             matSuffix
@@ -86,7 +97,11 @@
           ></mat-datepicker-toggle>
           <mat-date-range-picker #picker></mat-date-range-picker>
         </mat-form-field>
-        <button mat-flat-button (click)="picker.open()" class="datepicker__btn">
+        <button
+          mat-flat-button
+          (click)="picker.open()"
+          class="mat-flat-button-override datepicker__btn"
+        >
           <p class="regular_text text_dark_1" class="datepicker__btn-text">
             Выбрать другую дату
           </p>
@@ -95,6 +110,7 @@
             class="datepicker__btn-icon"
           />
         </button>
+        <p>Selected range: {{ range.value | json }}</p>
       </div>
     </div>
 

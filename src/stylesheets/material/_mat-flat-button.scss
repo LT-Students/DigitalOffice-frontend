@@ -1,0 +1,16 @@
+@import 'base/fonts';
+@import 'base/variables';
+
+.mat-flat-button.mat-flat-button-override {
+  border-radius: 5px;
+  padding: 4px 12px;
+  margin: 0;
+  .mat-button-wrapper {
+    @extend %regular_font_basic;
+    font-size: 16px;
+    line-height: 24px;
+    color: $dark_1;
+    padding: 0;
+    margin: 0;
+  }
+}

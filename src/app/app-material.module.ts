@@ -43,11 +43,12 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSelectModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatNativeDateModule,
     MatChipsModule,
     MatCardModule,
     MatDialogModule,
     MatTabsModule,
   ],
-  providers: [MatDatepickerModule],
+  providers: [],
 })
 export class AppMaterialModule {}
