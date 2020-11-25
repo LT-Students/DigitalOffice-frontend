@@ -50,7 +50,12 @@
               <mat-error
                 *ngIf="userForm.controls.lastName.hasError('required')"
               >
-                The last name is invalid
+                Enter the last name
+              </mat-error>
+              <mat-error
+                *ngIf="userForm.controls.lastName.hasError('maxlength')"
+              >
+                The last name is to long
               </mat-error>
             </div>
             <div class="data-form__input-content">
@@ -59,7 +64,12 @@
               <mat-error
                 *ngIf="userForm.controls.firstName.hasError('required')"
               >
-                The first name is invalid
+                Enter the first name
+              </mat-error>
+              <mat-error
+                *ngIf="userForm.controls.firstName.hasError('maxlength')"
+              >
+                The first name is to long
               </mat-error>
             </div>
             <div class="data-form__input-content">
@@ -68,7 +78,12 @@
               <mat-error
                 *ngIf="userForm.controls.middleName.hasError('required')"
               >
-                The middle name is invalid
+                Enter the middle name
+              </mat-error>
+              <mat-error
+                *ngIf="userForm.controls.middleName.hasError('maxlength')"
+              >
+                The middle name is to long
               </mat-error>
             </div>
           </div>
@@ -114,6 +129,9 @@
               <label class="h5 h5_dark_1" for="email">Почта</label>
               <input type="email" id="email" formControlName="email" />
               <mat-error *ngIf="userForm.controls.email.hasError('required')">
+                Enter the email
+              </mat-error>
+              <mat-error *ngIf="userForm.controls.email.hasError('email')">
                 The email is invalid
               </mat-error>
             </div>
@@ -121,7 +139,13 @@
               <label class="h5 h5_dark_1" for="login">Логин</label>
               <input type="text" id="login" formControlName="login" />
               <mat-error *ngIf="userForm.controls.login.hasError('required')">
-                The login is invalid
+                Enter the login
+              </mat-error>
+              <mat-error *ngIf="userForm.controls.login.hasError('minlength')">
+                The login is to short
+              </mat-error>
+              <mat-error *ngIf="userForm.controls.login.hasError('maxlength')">
+                The login is to long
               </mat-error>
             </div>
             <div class="data-form__input-content">
@@ -130,7 +154,7 @@
               <mat-error
                 *ngIf="userForm.controls.password.hasError('required')"
               >
-                The password is invalid
+                Enter the password
               </mat-error>
             </div>
           </div>

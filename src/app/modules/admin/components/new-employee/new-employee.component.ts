@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { UserService } from '@digital-office/api/user-service';
 import { User } from '@digital-office/api/user-service';
-
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'do-new-employee',
@@ -13,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./new-employee.component.scss'],
 })
 export class NewEmployeeComponent implements OnInit {
-  user: User;
+  public user: User;
   public message: string;
   public imagePath;
   public imgURL: any;
@@ -33,33 +32,12 @@ export class NewEmployeeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    public snackBar: MatSnackBar
+    private snackBar: MatSnackBar
   ) {
     this.userForm = this.formBuilder.group({
-      lastName: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(32),
-        ],
-      ],
-      firstName: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(32),
-        ],
-      ],
-      middleName: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(32),
-        ],
-      ],
+      lastName: ['', [Validators.required, Validators.maxLength(32)]],
+      firstName: ['', [Validators.required, Validators.maxLength(32)]],
+      middleName: ['', [Validators.required, Validators.maxLength(32)]],
       position: [''],
       rate: [''],
       department: [''],
@@ -72,7 +50,7 @@ export class NewEmployeeComponent implements OnInit {
           Validators.maxLength(16),
         ],
       ],
-      password: ['', [Validators.required, Validators.minLength(1)]],
+      password: ['', [Validators.required]],
     });
   }
 
