@@ -88,8 +88,14 @@
               matStartDate
               formControlName="start"
               placeholder="Start date"
+              (dateChange)="onDateInput($event.value, true)"
             />
-            <input matEndDate formControlName="end" placeholder="End date" />
+            <input
+              matEndDate
+              formControlName="end"
+              placeholder="End date"
+              (dateChange)="onDateInput($event.value, false)"
+            />
           </mat-date-range-input>
           <mat-datepicker-toggle
             matSuffix
@@ -110,12 +116,11 @@
             class="datepicker__btn-icon"
           />
         </button>
-        <p>Selected range: {{ range.value | json }}</p>
       </div>
     </div>
+  </div>
 
-    <div class="desc__photo">
-      <img src="../../../../../assets/svg/girl.svg" alt="girl" />
-    </div>
+  <div class="desc__photo">
+    <img src="../../../../../assets/svg/girl.svg" alt="girl" />
   </div>
 </div>

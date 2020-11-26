@@ -4,6 +4,7 @@ import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Time } from '@angular/common';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
@@ -135,4 +136,15 @@ export class DateDescComponent implements OnInit {
     // Prevent Saturday and Sunday from being selected.
     return day !== 0 && day !== 6;
   };
+
+  onDateInput(date: Date | null, isStartDate: boolean) {
+    if (date !== null) {
+      const ngbDate = NgbDate.from({
+        day: date.getUTCDate() + 1,
+        month: date.getUTCMonth() + 1,
+        year: date.getUTCFullYear(),
+      });
+      this.onDateSelection(ngbDate);
+    }
+  }
 }
