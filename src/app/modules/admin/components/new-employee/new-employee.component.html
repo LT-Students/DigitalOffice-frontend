@@ -55,7 +55,7 @@
               <mat-error
                 *ngIf="userForm.controls.lastName.hasError('maxlength')"
               >
-                The last name is to long
+                The last name is too long
               </mat-error>
             </div>
             <div class="data-form__input-content">
@@ -69,7 +69,7 @@
               <mat-error
                 *ngIf="userForm.controls.firstName.hasError('maxlength')"
               >
-                The first name is to long
+                The first name is too long
               </mat-error>
             </div>
             <div class="data-form__input-content">
@@ -83,7 +83,7 @@
               <mat-error
                 *ngIf="userForm.controls.middleName.hasError('maxlength')"
               >
-                The middle name is to long
+                The middle name is too long
               </mat-error>
             </div>
           </div>
@@ -142,10 +142,10 @@
                 Enter the login
               </mat-error>
               <mat-error *ngIf="userForm.controls.login.hasError('minlength')">
-                The login is to short
+                The login is too short
               </mat-error>
               <mat-error *ngIf="userForm.controls.login.hasError('maxlength')">
-                The login is to long
+                The login is too long
               </mat-error>
             </div>
             <div class="data-form__input-content">
