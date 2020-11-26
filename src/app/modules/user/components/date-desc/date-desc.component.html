@@ -79,20 +79,14 @@
           appearance="fill"
           class="datepicker__form mat-form-field-datepicker-override"
         >
-          <mat-date-range-input
-            [rangePicker]="picker"
-            [formGroup]="range"
-            [dateFilter]="myFilter"
-          >
+          <mat-date-range-input [rangePicker]="picker" [dateFilter]="myFilter">
             <input
               matStartDate
-              formControlName="start"
               placeholder="Start date"
               (dateChange)="onDateInput($event.value, true)"
             />
             <input
               matEndDate
-              formControlName="end"
               placeholder="End date"
               (dateChange)="onDateInput($event.value, false)"
             />
@@ -118,9 +112,9 @@
         </button>
       </div>
     </div>
-  </div>
 
-  <div class="desc__photo">
-    <img src="../../../../../assets/svg/girl.svg" alt="girl" />
+    <div class="desc__photo">
+      <img src="../../../../../assets/svg/girl.svg" alt="girl" />
+    </div>
   </div>
 </div>

@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import 'moment/locale/ru';
 import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Time } from '@angular/common';
-import { FormGroup, FormControl } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
@@ -15,11 +14,6 @@ import { AttendanceService } from '../attendance/attendance.service';
   styleUrls: ['./date-desc.component.scss'],
 })
 export class DateDescComponent implements OnInit {
-  range = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl(),
-  });
-
   public visible = false;
 
   @Input() timePeriodSelected: ITimePeriod;
