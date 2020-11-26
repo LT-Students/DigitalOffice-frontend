@@ -1,3 +1,6 @@
+@import 'base/fonts';
+@import 'base/variables';
+
 .mat-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-datepicker-override {
   visibility: hidden;
   height: 0;
@@ -40,6 +43,33 @@
     position: relative;
     top: 18px;
     .mat-calendar {
+      font-family: $regular_font;
+      color: $dark_2;
+      .mat-calendar-header {
+        .mat-calendar-controls {
+          .mat-calendar-period-button {
+            .mat-button-wrapper {
+              font-family: $regular_font;
+            }
+          }
+        }
+      }
+      .mat-calendar-content {
+        .mat-calendar-table {
+          .mat-calendar-table-header {
+            color: $gray;
+          }
+          .mat-calendar-body {
+            .mat-calendar-body-in-preview {
+              color: $accent_color;
+            }
+            .mat-calendar-body-selected {
+              color: $light_1;
+              background-color: $accent_color_bright;
+            }
+          }
+        }
+      }
     }
   }
 }
