@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppMaterialModule } from '../../app-material.module';
 
 import { SharedModule } from '../shared/shared.module';
 import { TagsBlockComponent } from './components/tags-block/tags-block.component';
@@ -25,7 +26,7 @@ import { TaskComponent } from './components/project/task/task.component';
     ProjectComponent,
     TaskComponent,
   ],
-  imports: [CommonModule, SharedModule, NgbDatepickerModule],
+  imports: [CommonModule, SharedModule, NgbDatepickerModule, AppMaterialModule],
   providers: [],
 })
 export class UserModule {}

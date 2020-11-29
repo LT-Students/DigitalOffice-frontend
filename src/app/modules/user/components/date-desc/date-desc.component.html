@@ -4,56 +4,117 @@
     <div class="desc__calender">
       <div class="content__period h1">
         {{ timePeriodSelected.from | date: 'd' }}
-        <span *ngIf="!timePeriodSelected.to
-          || timePeriodSelected.from.getMonth() != timePeriodSelected.to.getMonth()">
+        <span
+          *ngIf="
+            !timePeriodSelected.to ||
+            timePeriodSelected.from.getMonth() !=
+              timePeriodSelected.to.getMonth()
+          "
+        >
           {{ timePeriodSelected.from | date: 'MMMM' }}
         </span>
-        <span *ngIf="timePeriodSelected.to">– {{ timePeriodSelected.to | date: 'd' }}</span>
+        <span *ngIf="timePeriodSelected.to"
+          >– {{ timePeriodSelected.to | date: 'd' }}</span
+        >
         <span
-          *ngIf="timePeriodSelected.to
-          && timePeriodSelected.from.getMonth() === timePeriodSelected.to.getMonth()">
+          *ngIf="
+            timePeriodSelected.to &&
+            timePeriodSelected.from.getMonth() ===
+              timePeriodSelected.to.getMonth()
+          "
+        >
           {{ timePeriodSelected.from | date: 'MMMM' }}
         </span>
       </div>
       <div class="content__week regular_text">
-        <div class="content__week__day" *ngFor="let dayOfWeek of daysOfWeek" (click)="selectDay(dayOfWeek)">
-          <p class="content__week__day-single">{{dayOfWeek.date | date:'EEEEEE'}}</p>
-          <p [ngClass]="{ content__week__day_orange: dayOfWeek.selected }">{{dayOfWeek.date | date:'dd'}}</p>
+        <div
+          class="content__week__day"
+          *ngFor="let dayOfWeek of daysOfWeek"
+          (click)="selectDay(dayOfWeek)"
+        >
+          <p class="content__week__day-single">
+            {{ dayOfWeek.date | date: 'EEEEEE' }}
+          </p>
+          <p [ngClass]="{ content__week__day_orange: dayOfWeek.selected }">
+            {{ dayOfWeek.date | date: 'dd' }}
+          </p>
         </div>
       </div>
-      <div class="choose_date__wrapper">
-        <do-button (click)="visible = !visible"
-                   [title]="'Выбрать другую дату'"
-                   [className]="'button bg-accent_color font-regular_font'"
-                   class="btn_choose-date">
-          <img src="../../../../../assets/svg/arrow-right.svg">
-        </do-button>
-        <ngb-datepicker class="dropdown-menu show p-0" (dateSelect)="onDateSelection($event)"
-                        [displayMonths]="2" [dayTemplate]="t"
-                        outsideDays="hidden"
-                        [ngClass]="{'d-none': !visible }"
-                          >
-        </ngb-datepicker>
-        <ng-template #t let-date let-focused="focused">
-  <span class="custom-day"
-        [ngClass]="{
-        focused: focused,
-        range: isRange(date),
-        faded: isHovered(date) || isInside(date)
-        }"
-        (mouseenter)="hoveredDate = date"
-        (mouseleave)="hoveredDate = null">
-    {{ date.day }}
-  </span>
-        </ng-template>
+      <!--      <div class="choose_date__wrapper">-->
+      <!--        <do-button-->
+      <!--          (click)="visible = !visible"-->
+      <!--          [title]="'Выбрать другую дату'"-->
+      <!--          [className]="'button bg-accent_color font-regular_font'"-->
+      <!--          class="btn_choose-date"-->
+      <!--        >-->
+      <!--          <img src="assets/svg/arrow-right.svg" />-->
+      <!--        </do-button>-->
+      <!--        <ngb-datepicker-->
+      <!--          class="dropdown-menu show p-0"-->
+      <!--          (dateSelect)="onDateSelection($event)"-->
+      <!--          [displayMonths]="2"-->
+      <!--          [dayTemplate]="t"-->
+      <!--          outsideDays="hidden"-->
+      <!--          [ngClass]="{ 'd-none': !visible }"-->
+      <!--        >-->
+      <!--        </ngb-datepicker>-->
+      <!--        <ng-template #t let-date let-focused="focused">-->
+      <!--          <span-->
+      <!--            class="custom-day"-->
+      <!--            [ngClass]="{-->
+      <!--              focused: focused,-->
+      <!--              range: isRange(date),-->
+      <!--              faded: isHovered(date) || isInside(date)-->
+      <!--            }"-->
+      <!--            (mouseenter)="hoveredDate = date"-->
+      <!--            (mouseleave)="hoveredDate = null"-->
+      <!--          >-->
+      <!--            {{ date.day }}-->
+      <!--          </span>-->
+      <!--        </ng-template>-->
+      <!--      </div>-->
+
+      <div class="datepicker">
+        <mat-form-field
+          appearance="fill"
+          class="datepicker__form mat-form-field-datepicker-override"
+        >
+          <mat-date-range-input
+            [rangePicker]="picker"
+            [dateFilter]="disableWeekends"
+          >
+            <input
+              matStartDate
+              placeholder="Start date"
+              (dateChange)="onDateInput($event.value)"
+            />
+            <input
+              matEndDate
+              placeholder="End date"
+              (dateChange)="onDateInput($event.value)"
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+        <button
+          mat-flat-button
+          (click)="picker.open()"
+          class="mat-flat-button-override datepicker__btn"
+        >
+          <span class="regular_text text_dark_1 datepicker__btn-text">
+            Выбрать другую дату
+          </span>
+          <img src="assets/svg/arrow-right.svg" class="datepicker__btn-icon" />
+        </button>
       </div>
-
-
     </div>
+
     <div class="desc__photo">
-      <img src="../../../../../assets/svg/girl.svg" alt="girl">
+      <img src="assets/svg/girl.svg" alt="girl" />
     </div>
   </div>
 </div>
-
-
