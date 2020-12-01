@@ -5,7 +5,7 @@
       routerLink="/admin/dashboard"
     >
       <svg xmlns="http://www.w3.org/2000/svg">
-        <path class="arrow" d="M4 1 L1 5 L4 9" />
+        <path d="M4 1 L1 5 L4 9" />
       </svg>
       К дашборду
     </a>
@@ -25,7 +25,7 @@
                   [src]="
                     imgURL
                       ? imgURL
-                      : '../../../../../assets/admin/new-employee/empty-photo-icon.png'
+                      : '/assets/admin/new-employee/empty-photo-icon.png'
                   "
                   [ngClass]="imgURL ? 'filled_avatar' : 'empty_avatar'"
                   alt="empty-photo-icon"
@@ -48,12 +48,18 @@
               <label class="h5 h5_dark_1" for="lastName">Фамилия</label>
               <input type="text" id="lastName" formControlName="lastName" />
               <mat-error
-                *ngIf="userForm.controls.lastName.hasError('required')"
+                *ngIf="
+                  userForm.controls['lastName'].dirty &&
+                  userForm.controls['lastName'].hasError('required')
+                "
               >
                 Enter the last name
               </mat-error>
               <mat-error
-                *ngIf="userForm.controls.lastName.hasError('maxlength')"
+                *ngIf="
+                  userForm.controls['lastName'].dirty &&
+                  userForm.controls['lastName'].hasError('maxlength')
+                "
               >
                 The last name is too long
               </mat-error>
@@ -62,12 +68,18 @@
               <label class="h5 h5_dark_1" for="firstName">Имя</label>
               <input type="text" id="firstName" formControlName="firstName" />
               <mat-error
-                *ngIf="userForm.controls.firstName.hasError('required')"
+                *ngIf="
+                  userForm.controls['firstName'].dirty &&
+                  userForm.controls['firstName'].hasError('required')
+                "
               >
                 Enter the first name
               </mat-error>
               <mat-error
-                *ngIf="userForm.controls.firstName.hasError('maxlength')"
+                *ngIf="
+                  userForm.controls['firstName'].dirty &&
+                  userForm.controls['firstName'].hasError('maxlength')
+                "
               >
                 The first name is too long
               </mat-error>
@@ -76,12 +88,18 @@
               <label class="h5 h5_dark_1" for="middleName">Отчество</label>
               <input type="text" id="middleName" formControlName="middleName" />
               <mat-error
-                *ngIf="userForm.controls.middleName.hasError('required')"
+                *ngIf="
+                  userForm.controls['middleName'].dirty &&
+                  userForm.controls['middleName'].hasError('required')
+                "
               >
                 Enter the middle name
               </mat-error>
               <mat-error
-                *ngIf="userForm.controls.middleName.hasError('maxlength')"
+                *ngIf="
+                  userForm.controls['middleName'].dirty &&
+                  userForm.controls['middleName'].hasError('maxlength')
+                "
               >
                 The middle name is too long
               </mat-error>
@@ -128,23 +146,48 @@
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="email">Почта</label>
               <input type="email" id="email" formControlName="email" />
-              <mat-error *ngIf="userForm.controls.email.hasError('required')">
+              <mat-error
+                *ngIf="
+                  userForm.controls['email'].dirty &&
+                  userForm.controls['email'].hasError('required')
+                "
+              >
                 Enter the email
               </mat-error>
-              <mat-error *ngIf="userForm.controls.email.hasError('email')">
+              <mat-error
+                *ngIf="
+                  userForm.controls['email'].dirty &&
+                  userForm.controls['email'].hasError('email')
+                "
+              >
                 The email is invalid
               </mat-error>
             </div>
             <div class="data-form__input-content">
               <label class="h5 h5_dark_1" for="login">Логин</label>
               <input type="text" id="login" formControlName="login" />
-              <mat-error *ngIf="userForm.controls.login.hasError('required')">
+              <mat-error
+                *ngIf="
+                  userForm.controls['login'].dirty &&
+                  userForm.controls['login'].hasError('required')
+                "
+              >
                 Enter the login
               </mat-error>
-              <mat-error *ngIf="userForm.controls.login.hasError('minlength')">
+              <mat-error
+                *ngIf="
+                  userForm.controls['login'].dirty &&
+                  userForm.controls['login'].hasError('minlength')
+                "
+              >
                 The login is too short
               </mat-error>
-              <mat-error *ngIf="userForm.controls.login.hasError('maxlength')">
+              <mat-error
+                *ngIf="
+                  userForm.controls['login'].dirty &&
+                  userForm.controls['login'].hasError('maxlength')
+                "
+              >
                 The login is too long
               </mat-error>
             </div>
@@ -152,7 +195,10 @@
               <label class="h5 h5_dark_1" for="password">Пароль</label>
               <input type="password" id="password" formControlName="password" />
               <mat-error
-                *ngIf="userForm.controls.password.hasError('required')"
+                *ngIf="
+                  userForm.controls['password'].dirty &&
+                  userForm.controls['password'].hasError('required')
+                "
               >
                 Enter the password
               </mat-error>
@@ -167,7 +213,7 @@
             (click)="generateCredentials()"
           >
             <img
-              src="../../../../../assets/admin/new-employee/lock-icon.png"
+              src="/assets/admin/new-employee/lock-icon.png"
               alt="lock-icon"
             />
             <span class="regular_text regular_text_accent_color_bright"

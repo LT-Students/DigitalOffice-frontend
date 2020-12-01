@@ -33,7 +33,9 @@ export class NewEmployeeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private snackBar: MatSnackBar
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.userForm = this.formBuilder.group({
       lastName: ['', [Validators.required, Validators.maxLength(32)]],
       firstName: ['', [Validators.required, Validators.maxLength(32)]],
@@ -53,8 +55,6 @@ export class NewEmployeeComponent implements OnInit {
       password: ['', [Validators.required]],
     });
   }
-
-  ngOnInit(): void {}
 
   createEmployee(): void {
     this.userService
