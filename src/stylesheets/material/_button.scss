@@ -1,127 +1,68 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-.mat-flat-button-accent {
-  padding: 0;
+button.mat-flat-button.mat-primary {
+  padding: 0 15px 0 15px;
 
+  min-width: 192px;
   height: 32px;
+
+  font-family: Gill Sans, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 24px;
 
   color: $light_1;
   background: $accent_color_bright;
   border: none;
   border-radius: 5px;
-
-  &_small {
-    width: 123px;
-  }
-
-  &_normal {
-    width: 125px;
-  }
-
-  &_normally {
-    width: 132px;
-  }
-
-  &_medium {
-    width: 169px;
-  }
-
-  &_big {
-    width: 192px;
-  }
-
-  &_bigest {
-    width: 236px;
-  }
 }
 
-.mat-stroked-button {
-  padding: 0;
+button.mat-stroked-button.mat-primary {
+  padding: 0 5px 0 5px;
 
+  min-width: 192px;
   height: 32px;
 
+  font-family: Gill Sans, sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 24px;
+
+  color: $accent_color;
   border: 1px solid;
   border-radius: 5px;
-
-  &_medium {
-    width: 160px;
-
-    color: $accent_color;
-  }
-
-  &_big {
-    width: 178px;
-
-    color: $accent_color_bright;
-  }
 }
 
-.mat-flat-button-disabled {
+button.mat-button-disabled {
+  padding: 0 30px 0 30px;
+
+  min-width: 125px;
   height: 32px;
+
+  font-family: Gill Sans, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
 
   color: $gray;
   background: $light_2;
   border: none;
   border-radius: 5px;
-
-  &_small {
-    width: 95px;
-  }
-
-  &_normal {
-    width: 125px;
-  }
 }
 
-.mat-flat-button-disable {
-  width: 44px;
+button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  width: 100%;
+  max-width: 360px;
   height: 32px;
 
-  font-size: 32px;
-
-  color: $dark_2;
-  background: $light_3;
-  border: none;
-  border-radius: 5px;
-}
-
-.mat-flat-button-dark {
-  padding: 0;
-
-  height: 32px;
+  font-family: Gill Sans, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
 
   color: $light_1;
   background: $dark_1;
   border: none;
   border-radius: 5px;
-
-  &_small {
-    width: 178px;
-  }
-
-  &_normal {
-    width: 241px;
-  }
-
-  &_medium {
-    width: 364px;
-  }
-
-  &_big {
-    width: 400px;
-  }
-
-  &_bigest {
-    width: 500px;
-  }
-}
-
-.mat-button-basic {
-  width: 75px;
-  height: 32px;
-
-  color: $accent_color_bright;
-  background: none;
-  border: none;
 }
