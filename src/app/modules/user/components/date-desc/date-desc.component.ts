@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import 'moment/locale/ru';
-import { NgbCalendar, NgbDate } from '@ng-bootstrap/ng-bootstrap';
 import { Time } from '@angular/common';
 import { DateAdapter } from '@angular/material/core';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
@@ -14,27 +12,23 @@ import { AttendanceService } from '../attendance/attendance.service';
   styleUrls: ['./date-desc.component.scss'],
 })
 export class DateDescComponent implements OnInit {
-  public visible = false;
-
   @Input() timePeriodSelected: ITimePeriod;
   plannedTime: Time;
-  hoveredDate: NgbDate | null = null;
 
-  fromDate: NgbDate;
-  toDate: NgbDate | null = null;
+  fromDate: Date | null;
+  toDate: Date | null;
 
-  daysOfWeek: any;
+  daysOfWeek: { date: Date; selected: boolean }[];
 
   constructor(
-    calendar: NgbCalendar,
     private attendanceService: AttendanceService,
     private dateAdapter: DateAdapter<Date>
-  ) {
-    this.fromDate = calendar.getToday();
-    this.toDate = calendar.getNext(calendar.getToday(), 'd', 10);
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.fromDate = new Date();
+    this.toDate = this.addDays(this.fromDate, 10);
+
     this.daysOfWeek = this.getWeek();
 
     if (!this.timePeriodSelected.to) {
@@ -45,12 +39,24 @@ export class DateDescComponent implements OnInit {
     this.dateAdapter.getFirstDayOfWeek = () => 1;
   }
 
-  getWeek(dateSelected: Date = new Date()): Date[] {
-    const daysOfWeek = [];
+  private disableWeekends = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    return day !== 0 && day !== 6;
+  };
+
+  private addDays(date: Date, days: number): Date {
+    const result = new Date(date);
+    result.setDate(date.getDate() + days);
+    return result;
+  }
+
+  private getWeek(
+    dateSelected: Date = new Date()
+  ): { date: Date; selected: boolean }[] {
+    const daysOfWeek: { date: Date; selected: boolean }[] = [];
 
     for (let i = -3; i <= 3; i++) {
-      const dayOfWeek = new Date();
-      dayOfWeek.setDate(dateSelected.getDate() + i);
+      const dayOfWeek = this.addDays(dateSelected, i);
       daysOfWeek.push({
         date: dayOfWeek,
         selected: false,
@@ -60,7 +66,7 @@ export class DateDescComponent implements OnInit {
     return daysOfWeek;
   }
 
-  selectDay(dayOfWeek): void {
+  private selectDay(dayOfWeek): void {
     this.daysOfWeek.forEach((d) => {
       d.selected = false;
     });
@@ -73,70 +79,32 @@ export class DateDescComponent implements OnInit {
     this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
   }
 
-  onDateSelection(event: NgbDate): void {
-    this.checkSelectedPeriod(event);
+  private checkSelectedPeriod(date: Date): void {
+    if (!this.fromDate && !this.toDate) {
+      this.fromDate = date;
+      this.timePeriodSelected.from = date;
+    } else if (this.fromDate && !this.toDate && date > this.fromDate) {
+      this.toDate = date;
+      this.timePeriodSelected.to = date;
+    } else {
+      this.toDate = null;
+      this.timePeriodSelected.to = null;
+      this.fromDate = date;
+      this.timePeriodSelected.from = date;
+    }
+  }
+
+  private onDateSelection(date: Date): void {
+    this.checkSelectedPeriod(date);
     this.daysOfWeek = this.timePeriodSelected.to
       ? this.getWeek(this.timePeriodSelected.to)
       : this.getWeek(this.timePeriodSelected.from);
     this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
   }
 
-  checkSelectedPeriod(date: NgbDate): void {
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-      this.timePeriodSelected.from = this.getDateInStandart(date);
-    } else if (this.fromDate && !this.toDate && date.after(this.fromDate)) {
-      this.toDate = date;
-      this.timePeriodSelected.to = this.getDateInStandart(date);
-    } else {
-      this.toDate = null;
-      this.timePeriodSelected.to = null;
-      this.fromDate = date;
-      this.timePeriodSelected.from = this.getDateInStandart(date);
-    }
-  }
-
-  isHovered(date: NgbDate): boolean {
-    return (
-      this.fromDate &&
-      !this.toDate &&
-      this.hoveredDate &&
-      date.after(this.fromDate) &&
-      date.before(this.hoveredDate)
-    );
-  }
-
-  isInside(date: NgbDate): boolean {
-    return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
-  }
-
-  isRange(date: NgbDate): boolean {
-    return (
-      date.equals(this.fromDate) ||
-      (this.toDate && date.equals(this.toDate)) ||
-      this.isInside(date) ||
-      this.isHovered(date)
-    );
-  }
-
-  getDateInStandart(date: NgbDate): Date {
-    return new Date(date.year, date.month - 1, date.day);
-  }
-
-  disableWeekends = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    // Prevent Saturday and Sunday from being selected.
-    return day !== 0 && day !== 6;
-  };
-
-  onDateInput(date: Date | null) {
+  private onDateInput(date: Date | null) {
     if (date !== null) {
-      const ngbDate = NgbDate.from({
-        day: date.getUTCDate() + 1,
-        month: date.getUTCMonth() + 1,
-        year: date.getUTCFullYear(),
-      });
-      this.onDateSelection(ngbDate);
+      this.onDateSelection(date);
     }
   }
 }
