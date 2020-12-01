@@ -66,7 +66,7 @@ export class DateDescComponent implements OnInit {
     return daysOfWeek;
   }
 
-  private selectDay(dayOfWeek): void {
+  selectDay(dayOfWeek): void {
     this.daysOfWeek.forEach((d) => {
       d.selected = false;
     });
@@ -102,7 +102,7 @@ export class DateDescComponent implements OnInit {
     this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
   }
 
-  private onDateInput(date: Date | null) {
+  onDateInput(date: Date | null) {
     if (date !== null) {
       this.onDateSelection(date);
     }
