@@ -55,13 +55,59 @@ export class AttendanceService {
       ],
     },
   ];
+
+  public timePeriod$ = new Subject<ITimePeriod>();
+  public currentTimePeriod: ITimePeriod;
+  private tempStart: Date;
+
   public plannedHours$ = new Subject<ITimePeriod>();
 
   public projects$ = new BehaviorSubject<IProject[]>(this.projects);
 
   private ONE_DAY = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
-  constructor() {}
+  constructor() {
+    const today = new Date();
+    const inWeek = this.addDays(today, 6);
+    this.currentTimePeriod = { from: today, to: inWeek };
+    this.timePeriod$.next(this.currentTimePeriod);
+  }
+
+  private checkTimePeriod(
+    currentPeriod: ITimePeriod,
+    newPeriod: ITimePeriod
+  ): ITimePeriod {
+    if (newPeriod.from && newPeriod.to) {
+      return newPeriod;
+    } else if (newPeriod.from) {
+      this.tempStart = newPeriod.from;
+      return { from: newPeriod.from, to: null };
+    } else {
+      return { from: this.tempStart, to: newPeriod.to };
+    }
+  }
+
+  onTimePeriodChange(newTimePeriod) {
+    this.currentTimePeriod = this.checkTimePeriod(
+      this.currentTimePeriod,
+      newTimePeriod
+    );
+    this.timePeriod$.next(this.currentTimePeriod);
+  }
+
+  addDays(date: Date, days: number): Date {
+    const result = new Date(date);
+    result.setDate(date.getDate() + days);
+    return result;
+  }
+
+  isSameDay(fromDate: Date, toDate: Date) {
+    return fromDate.getTime() === toDate.getTime();
+  }
+
+  isSameMonth(fromDate: Date, toDate: Date) {
+    return fromDate.getMonth() === toDate.getMonth();
+  }
 
   setPlannedHoursByTimePeriod(period: ITimePeriod) {
     this.plannedHours$.next(period);
@@ -71,7 +117,7 @@ export class AttendanceService {
     return;
   }
 
-  countPlannedHours(period: ITimePeriod): Time {
+  countPlannedHours(period: ITimePeriod = this.currentTimePeriod): Time {
     let daysArray: Date[] = [];
 
     if (!period.to) {

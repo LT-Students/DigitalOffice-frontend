@@ -3,27 +3,26 @@
   <div class="desc__content">
     <div class="desc__calender">
       <div class="content__period h1">
-        {{ timePeriodSelected.from | date: 'd' }}
         <span
-          *ngIf="
-            !timePeriodSelected.to ||
-            timePeriodSelected.from.getMonth() !=
-              timePeriodSelected.to.getMonth()
-          "
+          *ngIf="!toDate || this.attendanceService.isSameDay(fromDate, toDate)"
         >
-          {{ timePeriodSelected.from | date: 'MMMM' }}
+          {{ fromDate | date: 'd MMMM' }}
         </span>
-        <span *ngIf="timePeriodSelected.to"
-          >– {{ timePeriodSelected.to | date: 'd' }}</span
-        >
         <span
           *ngIf="
-            timePeriodSelected.to &&
-            timePeriodSelected.from.getMonth() ===
-              timePeriodSelected.to.getMonth()
+            toDate &&
+            this.attendanceService.isSameMonth(fromDate, toDate) &&
+            !this.attendanceService.isSameDay(fromDate, toDate)
           "
         >
-          {{ timePeriodSelected.from | date: 'MMMM' }}
+          {{ fromDate | date: 'd' }} – {{ toDate | date: 'd MMMM' }}
+        </span>
+        <span
+          *ngIf="
+            toDate && !this.attendanceService.isSameMonth(fromDate, toDate)
+          "
+        >
+          {{ fromDate | date: 'd MMMM' }} – {{ toDate | date: 'd MMMM' }}
         </span>
       </div>
       <div class="content__week regular_text">
@@ -53,12 +52,14 @@
             <input
               matStartDate
               placeholder="Start date"
-              (dateChange)="onDateInput($event.value)"
+              [value]="fromDate"
+              (dateChange)="onDateInput($event.value, true)"
             />
             <input
               matEndDate
               placeholder="End date"
-              (dateChange)="onDateInput($event.value)"
+              [value]="toDate"
+              (dateChange)="onDateInput($event.value, false)"
             />
           </mat-date-range-input>
           <mat-datepicker-toggle

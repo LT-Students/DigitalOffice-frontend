@@ -1,4 +1,4 @@
 export interface ITimePeriod {
-  from: Date;
-  to?: Date;
+  from: Date | null;
+  to?: Date | null;
 }

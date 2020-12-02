@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import 'moment/locale/ru';
 import { Time } from '@angular/common';
 import { DateAdapter } from '@angular/material/core';
@@ -11,8 +11,7 @@ import { AttendanceService } from '../attendance/attendance.service';
   templateUrl: './date-desc.component.html',
   styleUrls: ['./date-desc.component.scss'],
 })
-export class DateDescComponent implements OnInit {
-  @Input() timePeriodSelected: ITimePeriod;
+export class DateDescComponent implements OnInit, OnDestroy {
   plannedTime: Time;
 
   fromDate: Date | null;
@@ -21,42 +20,39 @@ export class DateDescComponent implements OnInit {
   daysOfWeek: { date: Date; selected: boolean }[];
 
   constructor(
-    private attendanceService: AttendanceService,
+    public attendanceService: AttendanceService,
     private dateAdapter: DateAdapter<Date>
   ) {}
 
   ngOnInit(): void {
-    this.fromDate = new Date();
-    this.toDate = this.addDays(this.fromDate, 10);
+    this.attendanceService.timePeriod$.subscribe((timePeriod) => {
+      this.fromDate = timePeriod.from;
+      this.toDate = timePeriod.to;
+      if (this.toDate) {
+        this.daysOfWeek = this.getWeek(this.toDate);
+      }
+    });
 
-    this.daysOfWeek = this.getWeek();
+    this.fromDate = this.attendanceService.currentTimePeriod.from;
+    this.toDate = this.attendanceService.currentTimePeriod.to;
+    this.daysOfWeek = this.getWeek(this.toDate);
 
-    if (!this.timePeriodSelected.to) {
-      this.plannedTime = { hours: 8, minutes: 0 };
-    }
+    this.plannedTime = this.attendanceService.countPlannedHours();
 
     this.dateAdapter.setLocale('ru');
     this.dateAdapter.getFirstDayOfWeek = () => 1;
   }
 
-  private disableWeekends = (d: Date | null): boolean => {
+  disableWeekends = (d: Date | null): boolean => {
     const day = (d || new Date()).getDay();
     return day !== 0 && day !== 6;
   };
 
-  private addDays(date: Date, days: number): Date {
-    const result = new Date(date);
-    result.setDate(date.getDate() + days);
-    return result;
-  }
-
-  private getWeek(
-    dateSelected: Date = new Date()
-  ): { date: Date; selected: boolean }[] {
+  private getWeek(dateSelected: Date): { date: Date; selected: boolean }[] {
     const daysOfWeek: { date: Date; selected: boolean }[] = [];
 
     for (let i = -3; i <= 3; i++) {
-      const dayOfWeek = this.addDays(dateSelected, i);
+      const dayOfWeek = this.attendanceService.addDays(dateSelected, i);
       daysOfWeek.push({
         date: dayOfWeek,
         selected: false,
@@ -67,44 +63,25 @@ export class DateDescComponent implements OnInit {
   }
 
   selectDay(dayOfWeek): void {
-    this.daysOfWeek.forEach((d) => {
-      d.selected = false;
-    });
-
-    this.timePeriodSelected = {
+    this.daysOfWeek = this.getWeek(dayOfWeek.date);
+    this.attendanceService.onTimePeriodChange({
       from: dayOfWeek.date,
-      to: null,
-    };
-    dayOfWeek.selected = true;
-    this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
+      to: dayOfWeek.date,
+    });
   }
 
-  private checkSelectedPeriod(date: Date): void {
-    if (!this.fromDate && !this.toDate) {
-      this.fromDate = date;
-      this.timePeriodSelected.from = date;
-    } else if (this.fromDate && !this.toDate && date > this.fromDate) {
-      this.toDate = date;
-      this.timePeriodSelected.to = date;
-    } else {
-      this.toDate = null;
-      this.timePeriodSelected.to = null;
-      this.fromDate = date;
-      this.timePeriodSelected.from = date;
+  onDateInput(date: Date | null, isStartDate: boolean) {
+    if (date) {
+      if (isStartDate) {
+        this.attendanceService.onTimePeriodChange({ from: date, to: null });
+        this.daysOfWeek = this.getWeek(date);
+      } else {
+        this.attendanceService.onTimePeriodChange({ from: null, to: date });
+      }
     }
   }
 
-  private onDateSelection(date: Date): void {
-    this.checkSelectedPeriod(date);
-    this.daysOfWeek = this.timePeriodSelected.to
-      ? this.getWeek(this.timePeriodSelected.to)
-      : this.getWeek(this.timePeriodSelected.from);
-    this.attendanceService.setPlannedHoursByTimePeriod(this.timePeriodSelected);
-  }
-
-  onDateInput(date: Date | null) {
-    if (date !== null) {
-      this.onDateSelection(date);
-    }
+  ngOnDestroy(): void {
+    this.attendanceService.timePeriod$.unsubscribe();
   }
 }
