@@ -10,13 +10,39 @@ import { newMembers, NewMember } from './new-members';
 })
 export class NewMembersBoardComponent implements OnInit {
   public users: NewMember[] = newMembers;
+  public visiblyUsers = this.users;
 
-  specializations: string[] = ['front-end', 'back-end', 'full-stack'];
-  levels: string[] = ['junior', 'middle', 'senior'];
+  specializations: string[] = [
+    'Front-End Developer',
+    'Backend-End Developer',
+    'Product Manager',
+    'UI/UX Designer',
+    'QA Tester',
+  ];
+  levels: string[] = ['Junior', 'Middle', 'Senior'];
 
   @Input() members: Member[] = [];
+  selectedSpecialization;
+  selectedLevel;
 
   constructor() {}
+
+  onSelect() {
+    this.visiblyUsers = this.users;
+    if (this.selectedSpecialization !== undefined) {
+      this.visiblyUsers = this.visiblyUsers.filter((user) =>
+        user.specialization.find(
+          (specialization) => specialization === this.selectedSpecialization
+        )
+      );
+    }
+    if (this.selectedLevel !== undefined) {
+      this.visiblyUsers = this.visiblyUsers.filter(
+        (user) => user.level === this.selectedLevel
+      );
+    }
+    return this.visiblyUsers;
+  }
 
   ngOnInit(): void {}
 
