@@ -1,68 +1,66 @@
 @import 'base/variables';
 @import 'base/fonts';
 
+button.mat-flat-button.mat-primary,
+button.mat-stroked-button.mat-primary,
+button.mat-button-disabled,
+button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  height: 32px;
+
+  font-family: GillSansWGL, serif;
+  font-size: 16px;
+  line-height: 24px;
+
+  border-radius: 5px;
+}
+
+button.mat-flat-button.mat-primary,
+button.mat-stroked-button.mat-primary {
+  font-weight: normal;
+}
+
+button.mat-button-disabled,
+button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  font-weight: 400;
+}
+
+button.mat-flat-button.mat-primary,
+button.mat-button-disabled,
+button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  border: none;
+}
+
 button.mat-flat-button.mat-primary {
   padding: 0 15px 0 15px;
 
   min-width: 192px;
-  height: 32px;
-
-  font-family: Gill Sans, sans-serif;
-  font-size: 16px;
-  font-weight: normal;
-  line-height: 24px;
 
   color: $light_1;
   background: $accent_color_bright;
-  border: none;
-  border-radius: 5px;
 }
 
 button.mat-stroked-button.mat-primary {
   padding: 0 5px 0 5px;
 
   min-width: 192px;
-  height: 32px;
-
-  font-family: Gill Sans, sans-serif;
-  font-size: 16px;
-  font-weight: normal;
-  line-height: 24px;
 
   color: $accent_color;
   border: 1px solid;
-  border-radius: 5px;
 }
 
 button.mat-button-disabled {
   padding: 0 30px 0 30px;
 
   min-width: 125px;
-  height: 32px;
-
-  font-family: Gill Sans, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
 
   color: $gray;
   background: $light_2;
-  border: none;
-  border-radius: 5px;
 }
 
 button.mat-raised-button.mat-button-disabled.mat-button-disabled {
   width: 100%;
   max-width: 360px;
-  height: 32px;
-
-  font-family: Gill Sans, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
 
   color: $light_1;
   background: $dark_1;
-  border: none;
-  border-radius: 5px;
 }
