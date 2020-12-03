@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { UserService } from '@digital-office/api/user-service';
+import { User } from '@digital-office/api/user-service';
 
 @Component({
   selector: 'do-new-employee',
@@ -7,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./new-employee.component.scss'],
 })
 export class NewEmployeeComponent implements OnInit {
+  public user: User;
   public message: string;
   public imagePath;
   public imgURL: any;
@@ -23,26 +29,61 @@ export class NewEmployeeComponent implements OnInit {
     { name: 'department3' },
   ];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private userService: UserService,
+    private snackBar: MatSnackBar
+  ) {}
+
+  ngOnInit(): void {
     this.userForm = this.formBuilder.group({
-      lastName: ['', Validators.required],
-      firstName: ['', Validators.required],
-      middleName: ['', Validators.required],
-      position: ['', Validators.required],
-      rate: ['', Validators.required],
-      department: ['', Validators.required],
+      lastName: ['', [Validators.required, Validators.maxLength(32)]],
+      firstName: ['', [Validators.required, Validators.maxLength(32)]],
+      middleName: ['', [Validators.required, Validators.maxLength(32)]],
+      position: [''],
+      rate: [''],
+      department: [''],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      login: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(16),
+        ],
+      ],
+      password: ['', [Validators.required]],
     });
   }
 
-  ngOnInit(): void {}
+  createEmployee(): void {
+    this.userService
+      .createUserPost({
+        email: this.userForm.controls['email'].value,
+        login: this.userForm.controls['login'].value,
+        firstName: this.userForm.controls['firstName'].value,
+        lastName: this.userForm.controls['lastName'].value,
+        middleName: this.userForm.controls['middleName'].value,
+        password: this.userForm.controls['password'].value,
+        isAdmin: true,
+        isActive: true,
+      })
+      .subscribe(
+        (res) => {
+          this.snackBar.open('New user added successfully', 'done', {
+            duration: 3000,
+          });
+        },
+        (error: HttpErrorResponse) => {
+          this.snackBar.open(error.error.Message, 'accept');
+          throw error;
+        }
+      );
+  }
 
-  createEmployee(): void {}
-
-  sendCredentials(): void {}
-
-  generateCredentials(): void {}
+  generateCredentials(): void {
+    // todo add this part when APi is ready
+  }
 
   preview(files) {
     if (files.length === 0) {
@@ -50,7 +91,7 @@ export class NewEmployeeComponent implements OnInit {
     }
 
     let mimeType = files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
+    if (mimeType.match(/image\/*/) === null) {
       this.message = 'Only images are supported.';
       return;
     }

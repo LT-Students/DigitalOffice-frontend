@@ -46,18 +46,11 @@
 
       svg {
         margin-right: 13px;
+        stroke: $dark_2;
 
         width: 5px;
         height: 10px;
         fill: none;
-
-        .arrow {
-          stroke: $dark_1;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-          stroke-opacity: 1;
-          stroke-width: 2px;
-        }
       }
 
       &:hover {
@@ -98,18 +91,9 @@
         &__input-content {
           display: flex;
           flex-direction: column;
-        }
 
-        &__input-field,
-        &__select-field {
-          padding: 0;
-
-          width: 100%;
-          height: 36px;
-
-          background-color: $light_3;
-          border-style: none;
-          border-radius: 5px;
+          min-width: 220px;
+          min-height: 5em;
         }
 
         &__title::after {
@@ -178,10 +162,13 @@
               display: flex;
               flex-direction: column;
               justify-content: space-between;
-
-              width: 70%;
+              flex: 1 0 auto;
             }
           }
+        }
+
+        mat-error {
+          color: $accent_color_bright;
         }
 
         .job-info {
@@ -196,15 +183,9 @@
             flex-direction: row;
             justify-content: space-between;
 
-            width: 100%;
-
             div {
               width: 48%;
             }
-          }
-
-          .department-info {
-            width: 100%;
           }
         }
 
@@ -218,76 +199,42 @@
             flex-direction: row;
             justify-content: space-between;
 
-            width: 70%;
-
-            div {
-              width: 47%;
-            }
-          }
-
-          .btn-generate-credentials {
-            padding: 8px 14px;
-
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-
-            box-sizing: border-box;
-            width: 28%;
-            height: 36px;
-
-            cursor: pointer;
-
-            background-color: transparent;
-            border: 1px solid $accent_color_bright;
-            border-radius: 5px;
-            align-self: flex-end;
-
-            img {
-              margin-right: 11px;
-            }
+            width: 100%;
           }
         }
 
-        .submit-buttons {
+        .buttons {
           display: flex;
           flex-direction: row;
           justify-content: flex-end;
 
           width: 100%;
 
-          .btn-send-credentials {
-            margin-right: 14px;
-
+          .btn-generate-credentials,
+          .btn-create-employee {
             display: flex;
+            flex-direction: row;
             justify-content: center;
             align-items: center;
 
-            box-sizing: border-box;
-            width: 223px;
-            height: 32px;
-
             cursor: pointer;
+          }
+
+          .btn-generate-credentials {
+            margin-right: 15px;
 
             background-color: transparent;
             border: 1px solid $accent_color_bright;
-            border-radius: 5px;
+
+            img {
+              margin-right: 11px;
+            }
           }
 
           .btn-create-employee {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            width: 192px;
-            height: 32px;
-
-            cursor: pointer;
+            padding: 0 30px;
 
             background-color: $accent_color_bright;
-            border: none;
-            border-radius: 5px;
           }
         }
       }
