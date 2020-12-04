@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { ITimePeriod } from '../../../../interfaces/time-period.interface';
+import { IDatePeriod } from '../../../../interfaces/date-period.interface';
 
 export interface IDailyHoursData {
   day: string;
@@ -16,7 +16,7 @@ export interface IDailyHoursData {
 })
 export class GradientGraphicsComponent implements OnInit {
   @Input()
-  public timePeriodSelected: ITimePeriod;
+  public timePeriodSelected: IDatePeriod;
   @Input()
   public dailyHoursData; // data about day, month, hours, minutes of time period
 

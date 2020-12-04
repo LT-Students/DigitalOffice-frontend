@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import 'moment/locale/ru';
-import { Time } from '@angular/common';
 import { DateAdapter } from '@angular/material/core';
+import { ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
+import { IDayOfWeek } from '../../../../interfaces/day-of-week.interface';
 
 @Component({
   selector: 'do-datedesc',
@@ -12,12 +12,11 @@ import { AttendanceService } from '../attendance/attendance.service';
   styleUrls: ['./date-desc.component.scss'],
 })
 export class DateDescComponent implements OnInit, OnDestroy {
-  plannedTime: Time;
+  private onDestroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  fromDate: Date | null;
-  toDate: Date | null;
-
-  daysOfWeek: { date: Date; selected: boolean }[];
+  public startDate: Date | null;
+  public endDate: Date | null;
+  public daysOfWeek: IDayOfWeek[];
 
   constructor(
     public attendanceService: AttendanceService,
@@ -25,63 +24,70 @@ export class DateDescComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.attendanceService.timePeriod$.subscribe((timePeriod) => {
-      this.fromDate = timePeriod.from;
-      this.toDate = timePeriod.to;
-      if (this.toDate) {
-        this.daysOfWeek = this.getWeek(this.toDate);
-      }
-    });
+    this.attendanceService.datePeriod$
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe((datePeriod) => {
+        this.startDate = datePeriod.startDate;
+        this.endDate = datePeriod.endDate;
+        if (this.endDate) {
+          this.daysOfWeek = this.getWeek(this.endDate);
+        }
+      });
 
-    this.fromDate = this.attendanceService.currentTimePeriod.from;
-    this.toDate = this.attendanceService.currentTimePeriod.to;
-    this.daysOfWeek = this.getWeek(this.toDate);
-
-    this.plannedTime = this.attendanceService.countPlannedHours();
+    this.startDate = this.attendanceService.datePeriod$.getValue().startDate;
+    this.endDate = this.attendanceService.datePeriod$.getValue().endDate;
+    this.daysOfWeek = this.getWeek(this.endDate);
 
     this.dateAdapter.setLocale('ru');
     this.dateAdapter.getFirstDayOfWeek = () => 1;
   }
 
-  disableWeekends = (d: Date | null): boolean => {
-    const day = (d || new Date()).getDay();
-    return day !== 0 && day !== 6;
-  };
-
-  private getWeek(dateSelected: Date): { date: Date; selected: boolean }[] {
-    const daysOfWeek: { date: Date; selected: boolean }[] = [];
+  private getWeek(dateSelected: Date): IDayOfWeek[] {
+    const daysOfWeek: IDayOfWeek[] = [];
 
     for (let i = -3; i <= 3; i++) {
       const dayOfWeek = this.attendanceService.addDays(dateSelected, i);
       daysOfWeek.push({
         date: dayOfWeek,
-        selected: false,
+        isSelected: false,
       });
     }
-    daysOfWeek[3].selected = true;
+    daysOfWeek[3].isSelected = true;
     return daysOfWeek;
   }
 
-  selectDay(dayOfWeek): void {
+  public disableWeekends = (d: Date | null): boolean => {
+    const day = (d || new Date()).getDay();
+    return day !== 0 && day !== 6;
+  };
+
+  public selectDay(dayOfWeek): void {
     this.daysOfWeek = this.getWeek(dayOfWeek.date);
-    this.attendanceService.onTimePeriodChange({
-      from: dayOfWeek.date,
-      to: dayOfWeek.date,
+    this.attendanceService.onDatePeriodChange({
+      startDate: dayOfWeek.date,
+      endDate: dayOfWeek.date,
     });
   }
 
-  onDateInput(date: Date | null, isStartDate: boolean) {
+  public onDateInput(date: Date | null, isStartDate: boolean) {
     if (date) {
       if (isStartDate) {
-        this.attendanceService.onTimePeriodChange({ from: date, to: null });
+        this.attendanceService.onDatePeriodChange({
+          startDate: date,
+          endDate: null,
+        });
         this.daysOfWeek = this.getWeek(date);
       } else {
-        this.attendanceService.onTimePeriodChange({ from: null, to: date });
+        this.attendanceService.onDatePeriodChange({
+          startDate: null,
+          endDate: date,
+        });
       }
     }
   }
 
   ngOnDestroy(): void {
-    this.attendanceService.timePeriod$.unsubscribe();
+    this.onDestroy.next(null);
+    this.onDestroy.complete();
   }
 }

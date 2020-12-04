@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Time } from '@angular/common';
 
-import { ITimePeriod } from '../../../../interfaces/time-period.interface';
+import { IDatePeriod } from '../../../../interfaces/date-period.interface';
 import { ITask } from '../../../../interfaces/task.interface';
 import { IProject } from '../../../../interfaces/project.interface';
 
@@ -10,7 +10,9 @@ import { IProject } from '../../../../interfaces/project.interface';
   providedIn: 'root',
 })
 export class AttendanceService {
-  projects: IProject[] = [
+  private tempStartDate: Date;
+  private ONE_DAY = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+  private projects: IProject[] = [
     {
       id: 1,
       name: 'Ромашка',
@@ -56,75 +58,57 @@ export class AttendanceService {
     },
   ];
 
-  public timePeriod$ = new Subject<ITimePeriod>();
-  public currentTimePeriod: ITimePeriod;
-  private tempStart: Date;
-
-  public plannedHours$ = new Subject<ITimePeriod>();
-
+  public datePeriod$ = new BehaviorSubject<IDatePeriod>(
+    this.getDefaultDatePeriod(6)
+  );
+  public plannedHours$ = new Subject<IDatePeriod>();
   public projects$ = new BehaviorSubject<IProject[]>(this.projects);
 
-  private ONE_DAY = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+  constructor() {}
 
-  constructor() {
+  private getDefaultDatePeriod(daysFromToday: number): IDatePeriod {
     const today = new Date();
-    const inWeek = this.addDays(today, 6);
-    this.currentTimePeriod = { from: today, to: inWeek };
-    this.timePeriod$.next(this.currentTimePeriod);
+    const inWeek = this.addDays(today, daysFromToday);
+    return { startDate: today, endDate: inWeek };
   }
 
-  private checkTimePeriod(
-    currentPeriod: ITimePeriod,
-    newPeriod: ITimePeriod
-  ): ITimePeriod {
-    if (newPeriod.from && newPeriod.to) {
-      return newPeriod;
-    } else if (newPeriod.from) {
-      this.tempStart = newPeriod.from;
-      return { from: newPeriod.from, to: null };
+  private normalizeDatePeriod(datePeriod: IDatePeriod): IDatePeriod {
+    if (datePeriod.startDate && datePeriod.endDate) {
+      return datePeriod;
+    } else if (datePeriod.startDate) {
+      this.tempStartDate = datePeriod.startDate;
+      return { startDate: datePeriod.startDate, endDate: null };
     } else {
-      return { from: this.tempStart, to: newPeriod.to };
+      return { startDate: this.tempStartDate, endDate: datePeriod.endDate };
     }
   }
 
-  onTimePeriodChange(newTimePeriod) {
-    this.currentTimePeriod = this.checkTimePeriod(
-      this.currentTimePeriod,
-      newTimePeriod
-    );
-    this.timePeriod$.next(this.currentTimePeriod);
+  public onDatePeriodChange(datePeriod: IDatePeriod): void {
+    this.datePeriod$.next(this.normalizeDatePeriod(datePeriod));
   }
 
-  addDays(date: Date, days: number): Date {
+  public addDays(date: Date, days: number): Date {
     const result = new Date(date);
     result.setDate(date.getDate() + days);
     return result;
   }
 
-  isSameDay(fromDate: Date, toDate: Date) {
+  public isSameDay(fromDate: Date, toDate: Date): boolean {
     return fromDate.getTime() === toDate.getTime();
   }
 
-  isSameMonth(fromDate: Date, toDate: Date) {
+  public isSameMonth(fromDate: Date, toDate: Date): boolean {
     return fromDate.getMonth() === toDate.getMonth();
   }
 
-  setPlannedHoursByTimePeriod(period: ITimePeriod) {
-    this.plannedHours$.next(period);
-  }
-
-  countAllHoursInMinutes(): Time {
-    return;
-  }
-
-  countPlannedHours(period: ITimePeriod = this.currentTimePeriod): Time {
+  public countPlannedHours(period: IDatePeriod): Time {
     let daysArray: Date[] = [];
 
-    if (!period.to) {
+    if (!period.endDate) {
       return { hours: 8, minutes: 0 };
     } else {
-      let from = new Date(period.from);
-      let to = new Date(period.to);
+      let from = new Date(period.startDate);
+      let to = new Date(period.endDate);
 
       while (from.getDate() !== to.getDate()) {
         daysArray.push(new Date(from));
@@ -141,7 +125,7 @@ export class AttendanceService {
     }
   }
 
-  addTaskToProject(task: ITask, id: number) {
+  public addTaskToProject(task: ITask, id: number): void {
     this.projects.forEach((project: IProject) => {
       if (project.id === id) {
         project.tasks.push(task);
@@ -150,14 +134,16 @@ export class AttendanceService {
     });
   }
 
-  getProjects(): IProject[] {
+  public getProjects(): IProject[] {
     return this.projects.slice();
   }
 
-  getProjectIdByName(name: string): number {
+  public getProjectIdByName(name: string): number {
     return this.projects.filter((project: IProject) => project.name === name)[0]
       .id;
   }
 
-  private countDaysBetween(period: ITimePeriod) {}
+  // setPlannedHoursByTimePeriod(period: ITimePeriod) {
+  //   this.plannedHours$.next(period);
+  // }
 }

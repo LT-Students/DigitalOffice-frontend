@@ -9,11 +9,10 @@ import {
 import { Time } from '@angular/common';
 
 import { User } from '@digital-office/api/user-service';
-
-import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
+import { IDatePeriod } from '../../../../interfaces/date-period.interface';
 
 @Component({
   selector: 'do-add-hours',
@@ -38,7 +37,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.attendanceService.plannedHours$.subscribe((period: ITimePeriod) => {
+    this.attendanceService.plannedHours$.subscribe((period: IDatePeriod) => {
       this.recommendedTime = this.attendanceService.countPlannedHours(period);
     });
   }

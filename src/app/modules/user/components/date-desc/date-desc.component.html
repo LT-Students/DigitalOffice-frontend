@@ -4,25 +4,27 @@
     <div class="desc__calender">
       <div class="content__period h1">
         <span
-          *ngIf="!toDate || this.attendanceService.isSameDay(fromDate, toDate)"
+          *ngIf="
+            !endDate || this.attendanceService.isSameDay(startDate, endDate)
+          "
         >
-          {{ fromDate | date: 'd MMMM' }}
+          {{ startDate | date: 'd MMMM' }}
         </span>
         <span
           *ngIf="
-            toDate &&
-            this.attendanceService.isSameMonth(fromDate, toDate) &&
-            !this.attendanceService.isSameDay(fromDate, toDate)
+            endDate &&
+            this.attendanceService.isSameMonth(startDate, endDate) &&
+            !this.attendanceService.isSameDay(startDate, endDate)
           "
         >
-          {{ fromDate | date: 'd' }} – {{ toDate | date: 'd MMMM' }}
+          {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
         </span>
         <span
           *ngIf="
-            toDate && !this.attendanceService.isSameMonth(fromDate, toDate)
+            endDate && !this.attendanceService.isSameMonth(startDate, endDate)
           "
         >
-          {{ fromDate | date: 'd MMMM' }} – {{ toDate | date: 'd MMMM' }}
+          {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
         </span>
       </div>
       <div class="content__week regular_text">
@@ -34,7 +36,7 @@
           <p class="content__week__day-single">
             {{ dayOfWeek.date | date: 'EEEEEE' }}
           </p>
-          <p [ngClass]="{ content__week__day_orange: dayOfWeek.selected }">
+          <p [ngClass]="{ content__week__day_orange: dayOfWeek.isSelected }">
             {{ dayOfWeek.date | date: 'dd' }}
           </p>
         </div>
@@ -52,13 +54,13 @@
             <input
               matStartDate
               placeholder="Start date"
-              [value]="fromDate"
+              [value]="startDate"
               (dateChange)="onDateInput($event.value, true)"
             />
             <input
               matEndDate
               placeholder="End date"
-              [value]="toDate"
+              [value]="endDate"
               (dateChange)="onDateInput($event.value, false)"
             />
           </mat-date-range-input>

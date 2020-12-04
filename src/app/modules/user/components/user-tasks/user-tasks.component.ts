@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
 import { IProject } from '../../../../interfaces/project.interface';
-import { ITimePeriod } from '../../../../interfaces/time-period.interface';
+import { IDatePeriod } from '../../../../interfaces/date-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { AttendanceService } from '../attendance/attendance.service';
   styleUrls: ['./user-tasks.component.scss'],
 })
 export class UserTasksComponent implements OnInit, OnDestroy {
-  @Input() timePeriodSelected: ITimePeriod;
+  @Input() timePeriodSelected: IDatePeriod;
   public projects: IProject[];
 
   isOrderedByProject = false;

@@ -1,38 +1,57 @@
 <div class="wrapper">
   <div class="tasks">
-    <span class ="tasks__header h2">
-      {{tasksCount}} записи за {{ timePeriodSelected.from | date: 'd' }}
-      <span *ngIf="!timePeriodSelected.to
-          || timePeriodSelected.from.getMonth() != timePeriodSelected.to.getMonth()">
-          {{ timePeriodSelected.from | date: 'MMMM' }}
-        </span>
-        <span *ngIf="timePeriodSelected.to">– {{ timePeriodSelected.to | date: 'd' }}</span>
-        <span
-          *ngIf="timePeriodSelected.to
-          && timePeriodSelected.from.getMonth() === timePeriodSelected.to.getMonth()">
-          {{ timePeriodSelected.from | date: 'MMMM' }}
-        </span>
+    <span class="tasks__header h2">
+      {{ tasksCount }} записи за {{ timePeriodSelected.startDate | date: 'd' }}
+      <span
+        *ngIf="
+          !timePeriodSelected.endDate ||
+          timePeriodSelected.startDate.getMonth() !=
+            timePeriodSelected.endDate.getMonth()
+        "
+      >
+        {{ timePeriodSelected.startDate | date: 'MMMM' }}
+      </span>
+      <span *ngIf="timePeriodSelected.endDate"
+        >– {{ timePeriodSelected.endDate | date: 'd' }}</span
+      >
+      <span
+        *ngIf="
+          timePeriodSelected.endDate &&
+          timePeriodSelected.startDate.getMonth() ===
+            timePeriodSelected.endDate.getMonth()
+        "
+      >
+        {{ timePeriodSelected.startDate | date: 'MMMM' }}
+      </span>
     </span>
     <div class="tasks__search">
       <span class="regular_text">Сортировка</span>
       <div class="buttons">
-          <do-button class="button-shape"
-            (click)="sortByProject()"
-            [title] = "'По проектам'"
-            className = "{{isOrderedByProject ?
-            'button bg-accent_color_bright font-light_1 font-regular_font' :
-            'button bg-light_2 font-gray font-regular_font'}}">
-          </do-button>
-          <do-button class="button-shape"
-            (click)="sortByHours()"
-            [title] = "'По часам'"
-            className = "{{isOrderedByHours ?
-            'button bg-accent_color_bright font-light_1 font-regular_font' :
-            'button bg-light_2 font-gray font-regular_font'}}">
-          </do-button>
+        <do-button
+          class="button-shape"
+          (click)="sortByProject()"
+          [title]="'По проектам'"
+          className="{{
+            isOrderedByProject
+              ? 'button bg-accent_color_bright font-light_1 font-regular_font'
+              : 'button bg-light_2 font-gray font-regular_font'
+          }}"
+        >
+        </do-button>
+        <do-button
+          class="button-shape"
+          (click)="sortByHours()"
+          [title]="'По часам'"
+          className="{{
+            isOrderedByHours
+              ? 'button bg-accent_color_bright font-light_1 font-regular_font'
+              : 'button bg-light_2 font-gray font-regular_font'
+          }}"
+        >
+        </do-button>
       </div>
       <div class="tasks__search__text">
-        <do-search [placeholder]="'Поиск по тексту комментария'" ></do-search>
+        <do-search [placeholder]="'Поиск по тексту комментария'"></do-search>
       </div>
     </div>
     <div>
