@@ -63,4 +63,13 @@ button.mat-raised-button.mat-button-disabled.mat-button-disabled {
 
   color: $light_1;
   background: $dark_1;
+
+.mat-flat-button .mat-button-wrapper{
+  display: flex;
+  align-items: center;
+  padding: 3px 0;
+
+  .regular_text{
+    vertical-align: baseline;
+  }
 }

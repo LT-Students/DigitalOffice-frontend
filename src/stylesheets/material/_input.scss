@@ -33,8 +33,10 @@
 //styles for FormControl
 .ng-pristine input,
 .ng-valid input,
+.ng-invalid input,
 .ng-pristine textarea,
-.ng-valid textarea {
+.ng-valid textarea,
+.ng-invalid textarea{
   padding: 10px 15px;
 
   width: 100%;
