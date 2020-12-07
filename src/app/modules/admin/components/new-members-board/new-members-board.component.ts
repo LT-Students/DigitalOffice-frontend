@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+
+import { User, UserService } from '@digital-office/api/user-service';
 
 import { Member } from '../../../../interfaces/member.interface';
 import { newMembers, NewMember } from './new-members';
@@ -8,24 +11,34 @@ import { newMembers, NewMember } from './new-members';
   templateUrl: './new-members-board.component.html',
   styleUrls: ['./new-members-board.component.scss'],
 })
-export class NewMembersBoardComponent implements OnInit {
+export class NewMembersBoardComponent implements OnInit, OnDestroy {
+  public user: User;
+  private subscription: Subscription;
   public users: NewMember[] = newMembers;
   public visiblyUsers = this.users;
-
-  specializations: string[] = [
+  public specializations: string[] = [
     'Front-End Developer',
     'Backend-End Developer',
     'Product Manager',
     'UI/UX Designer',
     'QA Tester',
   ];
-  levels: string[] = ['Junior', 'Middle', 'Senior'];
-
+  public levels: string[] = ['Junior', 'Middle', 'Senior'];
   @Input() members: Member[] = [];
-  selectedSpecialization;
-  selectedLevel;
+  public selectedSpecialization;
+  public selectedLevel;
+  public searchName;
 
-  constructor() {}
+  constructor(private userService: UserService) {}
+
+  ngOnInit(): void {}
+
+  getUsers(): void {
+    this.subscription = this.userService
+      .getAllUsersGet(0, 50, this.searchName)
+      .pipe()
+      .subscribe((data: User) => console.log(data));
+  }
 
   onSelect() {
     this.visiblyUsers = this.users;
@@ -44,13 +57,16 @@ export class NewMembersBoardComponent implements OnInit {
     return this.visiblyUsers;
   }
 
-  ngOnInit(): void {}
-
   onChooseMemberClick(): void {
     console.log('clicked!');
   }
 
   onSearchClick(value: string): void {
-    console.log(value);
+    this.searchName = value;
+    this.getUsers();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
