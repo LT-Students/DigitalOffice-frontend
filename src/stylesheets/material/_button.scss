@@ -7,7 +7,7 @@ button.mat-button-disabled,
 button.mat-raised-button.mat-button-disabled.mat-button-disabled {
   height: 32px;
 
-  font-family: GillSansWGL, sans-serif;
+  font-family: $regular_font, sans-serif;
   font-size: 16px;
   line-height: 24px;
 
@@ -63,13 +63,15 @@ button.mat-raised-button.mat-button-disabled.mat-button-disabled {
 
   color: $light_1;
   background: $dark_1;
+}
 
-.mat-flat-button .mat-button-wrapper{
-  display: flex;
-  align-items: center;
+.mat-flat-button .mat-button-wrapper {
   padding: 3px 0;
 
-  .regular_text{
+  display: flex;
+  align-items: center;
+
+  .regular_text {
     vertical-align: baseline;
   }
 }
