@@ -38,6 +38,27 @@
       display: none;
     }
   }
+
+  &.mat-form-field_time-input {
+    .mat-input-element {
+      padding: 0;
+
+      background-color: transparent;
+    }
+
+    .mat-form-field-infix {
+      .mat-input-element {
+        font-family: $header_font;
+        font-size: 28px;
+        font-weight: bold;
+        font-style: normal;
+        line-height: 32px;
+        text-align: center;
+
+        color: $dark_1;
+      }
+    }
+  }
 }
 
 //styles for FormControl

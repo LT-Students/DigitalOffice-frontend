@@ -32,28 +32,10 @@
 
   &__form-element {
     &_ctrl_time {
-      margin: 0;
-      padding: 0;
-
       display: block;
 
       width: 100%;
       max-width: 40px;
-
-      text-align: center;
-
-      color: $dark_1;
-      background-color: transparent;
-
-      &::placeholder {
-        font-family: $header_font;
-        font-size: 28px;
-        font-weight: bold;
-        font-style: normal;
-        line-height: 32px;
-
-        color: $dark_1;
-      }
     }
 
     &_ctrl_project {
@@ -80,67 +62,16 @@
 
     display: flex;
     justify-content: left;
-    align-items: center;
-
-    height: 32px;
-
-    color: $dark_1;
+    align-items: end;
 
     span {
-      margin: 0;
-      padding: 0;
+      line-height: 32px;
 
       color: $dark_1;
     }
   }
 
   &__hours-char {
-    color: $dark_1;
-  }
-
-  &__select {
-    margin-top: 10px;
-
-    .select-project {
-      margin-bottom: 20px;
-    }
-
-    .select-tag {
-      margin-bottom: 20px;
-
-      .do-input {
-        padding: 5px;
-
-        input[type='text'] {
-          padding: 0;
-
-          width: 100%;
-          height: 50px;
-
-          border: none;
-          border-radius: 5px;
-          outline: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-        }
-      }
-    }
-  }
-
-  &__comment {
-    color: #bdbdbd;
-
-    textarea {
-      padding: 0;
-
-      width: 100%;
-      height: 135px;
-
-      border: none;
-      border-radius: 5px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-    }
+    margin-left: 10px;
   }
 }

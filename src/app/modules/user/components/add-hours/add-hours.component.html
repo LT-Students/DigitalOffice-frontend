@@ -7,24 +7,34 @@
     class="add-hours__form regular_text"
   >
     <div class="add-hours__period">
-      <input
-        matInput
-        formControlName="hours"
-        #hours
-        class="add-hours__time add-hours__form-element add-hours__form-element_ctrl_time h2 text-dark_1"
-        type="text"
-        [textMask]="{ mask: hoursMask }"
-      />
+      <mat-form-field
+        class="add-hours__form-element add-hours__form-element_ctrl_time mat-form-field_time-input"
+        appearance="none"
+      >
+        <input
+          matInput
+          formControlName="hours"
+          #hours
+          class="add-hours__time h2 text-dark_1"
+          type="text"
+          [textMask]="{ mask: hoursMask }"
+        />
+      </mat-form-field>
       <span class="h2">:</span>
-      <input
-        matInput
-        formControlName="minutes"
-        #minutes
-        class="add-hours__time add-hours__form-element add-hours__form-element_ctrl_time h2 text-dark_1"
-        type="text"
-        [textMask]="{ mask: minutesMask }"
-      />
-      <span class="h2 add-hours__hours-char">&nbsp;ч</span>
+      <mat-form-field
+        class="add-hours__form-element add-hours__form-element_ctrl_time mat-form-field_time-input"
+        appearance="none"
+      >
+        <input
+          matInput
+          formControlName="minutes"
+          #minutes
+          class="add-hours__time h2 text-dark_1"
+          type="text"
+          [textMask]="{ mask: minutesMask }"
+        />
+      </mat-form-field>
+      <span class="h2 add-hours__hours-char">ч</span>
       <div class="add-hours__underline"></div>
     </div>
     <label class="add-hours__label" for="project">Проект</label>

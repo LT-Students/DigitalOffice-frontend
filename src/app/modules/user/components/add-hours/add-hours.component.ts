@@ -52,7 +52,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.addHoursForm = this.fb.group({
       hours: ['08', Validators.required],
-      minutes: ['00'],
+      minutes: ['00', Validators.required],
       project: [''],
       task: [''],
       description: [''],
