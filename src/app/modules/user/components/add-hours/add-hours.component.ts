@@ -7,6 +7,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Time } from '@angular/common';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs';
 
 import { User } from '@digital-office/api/user-service';
 import { AttendanceService } from '../attendance/attendance.service';
@@ -23,27 +26,58 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   @Input() user: User;
   @ViewChild('task') inputTask: ElementRef;
   @ViewChild('description') textFieldDescription: ElementRef;
-  @ViewChild('inputHours') inputHours: ElementRef;
-  @ViewChild('inputMinutes') inputMinutes: ElementRef;
+  @ViewChild('hours') inputHours: ElementRef;
+  @ViewChild('minutes') inputMinutes: ElementRef;
+
+  private onDestroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   _projects: IProject[];
-
   projectSelected: string;
+
+  hours = 8;
+  minutes = 0;
+
+  public addHoursForm: FormGroup;
+
+  public minutesMask = [/[0-5]/, /\d/];
+  public hoursMask = [/\d/, /\d/];
 
   public recommendedTime: Time = { hours: 8, minutes: 0 };
 
-  constructor(private attendanceService: AttendanceService) {
-    this._projects = attendanceService.getProjects();
-  }
+  constructor(
+    private fb: FormBuilder,
+    private attendanceService: AttendanceService
+  ) {}
 
   ngOnInit() {
-    this.attendanceService.plannedHours$.subscribe((period: IDatePeriod) => {
-      this.recommendedTime = this.attendanceService.countPlannedHours(period);
+    this.addHoursForm = this.fb.group({
+      hours: ['08', Validators.required],
+      minutes: ['00'],
+      project: [''],
+      task: [''],
+      description: [''],
     });
+
+    this.onChanges();
+
+    this._projects = this.attendanceService.getProjects();
+    this.attendanceService.plannedHours$
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe((period: IDatePeriod) => {
+        this.recommendedTime = this.attendanceService.countPlannedHours(period);
+      });
   }
 
-  ngOnDestroy() {
-    this.attendanceService.plannedHours$.unsubscribe();
+  onChanges(): void {
+    const hoursControl = this.addHoursForm.get('hours');
+
+    hoursControl.valueChanges
+      .pipe(takeUntil(this.onDestroy))
+      .subscribe((val) => {
+        if (val.length === 2 && val[1] !== '_') {
+          this.inputMinutes.nativeElement.focus();
+        }
+      });
   }
 
   getProjectNames(): string[] {
@@ -64,5 +98,10 @@ export class AddHoursComponent implements OnInit, OnDestroy {
       },
     };
     this.attendanceService.addTaskToProject(task, project_id);
+  }
+
+  ngOnDestroy() {
+    this.onDestroy.next(null);
+    this.onDestroy.complete();
   }
 }

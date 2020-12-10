@@ -11,7 +11,6 @@ import { NewProjectComponent } from './modules/admin/components/new-project/new-
 import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
 import { NewMembersBoardComponent } from './modules/admin/components/new-members-board/new-members-board.component';
 
-
 const routes: Routes = [
   {
     path: '',
@@ -39,11 +38,11 @@ const routes: Routes = [
           { path: 'dashboard', component: DashboardComponent },
           { path: 'new-employee', component: NewEmployeeComponent },
           { path: 'new-project', component: NewProjectComponent },
-          { path: 'new-members-board', component: NewMembersBoardComponent }
+          { path: 'new-members-board', component: NewMembersBoardComponent },
         ],
-        canActivate: [AuthGuard, AdminGuard]
-      }
-    ]
+        // canActivate: [AuthGuard, AdminGuard]
+      },
+    ],
   },
 ];
 

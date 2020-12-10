@@ -25,3 +25,89 @@
     outline: none;
   }
 }
+
+// default select with gray background
+// style should be applied to mat-form-field tag
+.mat-form-field_default-select {
+  .mat-form-field-wrapper,
+  .mat-form-field-flex,
+  .mat-form-field-appearance-legacy,
+  .mat-form-field-label-wrapper {
+    padding: 0;
+  }
+
+  .mat-select-value {
+    padding: 0 15px;
+
+    height: 36px;
+
+    line-height: 36px;
+
+    .mat-select-placeholder {
+      @extend .regular_text;
+      @extend .text_color_dark-1;
+    }
+  }
+
+  .mat-select-arrow {
+    margin: 0 14px 0 4px;
+
+    width: 10px;
+    height: 6px;
+
+    background-image: url('../../assets/svg/arrow-down-dark.svg');
+    border: none;
+  }
+
+  .mat-form-field-infix {
+    padding: 0;
+
+    border: none;
+
+    .mat-select {
+      font-family: $header_font;
+      font-size: 16px;
+      font-weight: normal;
+      line-height: 24px;
+
+      background-color: $light_2;
+    }
+
+    .mat-form-field-label-wrapper {
+      position: static;
+
+      overflow: visible;
+
+      height: 0;
+    }
+  }
+}
+
+.cdk-overlay-pane {
+  transform: translateY(36px - 1) !important;
+
+  .mat-select-panel {
+    min-width: 100% !important;
+
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+
+    .mat-option {
+      font-family: $header_font;
+      font-size: 16px;
+      font-weight: normal;
+      line-height: 24px;
+
+      background-color: $light_2;
+
+      &.mat-selected:not(.mat-option-disabled) {
+        color: $dark_1;
+        background-color: $light_3;
+      }
+    }
+
+    &:hover {
+      background-color: $light_3;
+    }
+  }
+}

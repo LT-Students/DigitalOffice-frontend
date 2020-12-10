@@ -1,15 +1,18 @@
 @import '../base/variables';
 
-.mat-form-field {
+.mat-form-field,
+.mat-form-field-appearance-legacy {
   .mat-form-field-wrapper {
+    padding-bottom: 0;
+
     .mat-input-element {
       padding: 10px 15px;
 
       width: 100%;
-      min-height: 36px;
+      height: 36px;
 
       color: $dark_1;
-      background-color: $light_3;
+      background-color: $light_2;
       border-radius: 5px;
       caret-color: $dark_1;
     }
@@ -22,6 +25,13 @@
       padding: 0;
 
       border: 0;
+
+      .mat-input-element {
+        font-family: $header_font;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 24px;
+      }
     }
 
     .mat-form-field-underline {
@@ -41,7 +51,7 @@
   min-height: 36px;
 
   color: $dark_1;
-  background-color: $light_3;
+  background-color: $light_2;
   border: none;
   border-radius: 5px;
   caret-color: $dark_1;

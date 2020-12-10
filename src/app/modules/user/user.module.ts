@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { AppMaterialModule } from '../../app-material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TextMaskModule } from 'angular2-text-mask';
 
+import { AppMaterialModule } from '../../app-material.module';
 import { SharedModule } from '../shared/shared.module';
 import { TagsBlockComponent } from './components/tags-block/tags-block.component';
 import { DateDescComponent } from './components/date-desc/date-desc.component';
@@ -26,7 +28,15 @@ import { TaskComponent } from './components/project/task/task.component';
     ProjectComponent,
     TaskComponent,
   ],
-  imports: [CommonModule, SharedModule, NgbDatepickerModule, AppMaterialModule],
+  imports: [
+    CommonModule,
+    SharedModule,
+    NgbDatepickerModule,
+    AppMaterialModule,
+    ReactiveFormsModule,
+    FormsModule,
+    TextMaskModule,
+  ],
   providers: [],
 })
 export class UserModule {}

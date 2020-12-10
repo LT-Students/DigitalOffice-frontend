@@ -2,7 +2,7 @@
 @import 'base/fonts';
 
 .add-hours {
-  padding: 9.6%;
+  padding: 48px;
 
   &__title {
     color: $dark_1;
@@ -21,8 +21,65 @@
     }
   }
 
-  &__period {
+  &__form {
     display: flex;
+    flex-direction: column;
+  }
+
+  &__label {
+    margin-bottom: 8px;
+  }
+
+  &__form-element {
+    &_ctrl_time {
+      margin: 0;
+      padding: 0;
+
+      display: block;
+
+      width: 100%;
+      max-width: 40px;
+
+      text-align: center;
+
+      color: $dark_1;
+      background-color: transparent;
+
+      &::placeholder {
+        font-family: $header_font;
+        font-size: 28px;
+        font-weight: bold;
+        font-style: normal;
+        line-height: 32px;
+
+        color: $dark_1;
+      }
+    }
+
+    &_ctrl_project {
+      margin-bottom: 12px;
+    }
+
+    &_ctrl_task {
+      margin-bottom: 8px;
+    }
+
+    &_ctrl_description {
+      margin-bottom: 21px;
+
+      textarea {
+        resize: none;
+
+        height: 86px;
+      }
+    }
+  }
+
+  &__period {
+    margin-bottom: 16px;
+
+    display: flex;
+    justify-content: left;
     align-items: center;
 
     height: 32px;
@@ -32,12 +89,13 @@
     span {
       margin: 0;
       padding: 0;
-    }
 
-    input {
-      margin: 0;
-      padding: 0;
+      color: $dark_1;
     }
+  }
+
+  &__hours-char {
+    color: $dark_1;
   }
 
   &__select {
@@ -84,22 +142,5 @@
       -moz-appearance: none;
       appearance: none;
     }
-  }
-}
-
-.add_time {
-  width: 40px;
-
-  border: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  outline: none;
-
-  &::placeholder {
-    @extend %header_font_basic;
-    font-size: 28px;
-    line-height: 32px;
   }
 }
