@@ -8,6 +8,8 @@
   &__input-field {
     margin-bottom: 33px;
 
+    padding: 5px 0 0 5px;
+
     width: 288px;
     height: 24px;
 
@@ -33,10 +35,14 @@
 
     height: 24px;
 
+    font-family: $regular_font;
+
     color: $negative_accent;
   }
 
   &__description {
+    margin: 26px 0 14px 3px;
+
     display: flex;
     align-items: center;
 
@@ -72,6 +78,14 @@
       background-color: $button_orange;
       border-style: none;
       border-radius: 5px;
+    }
+
+    button:disabled {
+      background: rgba(250, 125, 87, 0.3);
+    }
+
+    button:hover {
+      background: #f4673c;
     }
 
     .spinner {

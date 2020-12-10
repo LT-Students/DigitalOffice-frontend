@@ -1,36 +1,56 @@
-<form class="form"
-        [formGroup]="loginForm"
-        (ngSubmit)="login()"
-        autocomplete="off">
-  <label class="form__title h1 text_bold text_white">trrak!</label>
+<form
+  class="form"
+  [formGroup]="loginForm"
+  (ngSubmit)="login()"
+  autocomplete="off"
+>
+  <label class="form__title h1 text_white">trrak!</label>
   <div class="form__error">
-    <small *ngIf="!isEmailInputValid()"> Email is not valid.</small>
-    <small *ngIf="!isPasswordInputValid()"> Password is requered.</small>
-    <small *ngIf="loginError">Ошибка! Попробуйте позже</small>
+    <small *ngIf="!isEmailInputValid()"> </small>
+    <small *ngIf="!isPasswordInputValid()"> </small>
+    <small *ngIf="loginError">Неверный логин или пароль :(</small>
   </div>
-  <input class="form__input-field regular_text"
-          name="email"
-          type="email"
-          placeholder="Корпоративный e-mail"
-          formControlName="email">
-  <input class="form__input-field regular_text"
-          name="password"
-          type="password"
-          placeholder="Пароль"
-          formControlName="password">
+  <input
+    class="form__input-field regular_text"
+    name="email"
+    type="email"
+    placeholder="Корпоративный e-mail"
+    formControlName="email"
+  />
+  <input
+    class="form__input-field regular_text"
+    name="password"
+    type="password"
+    placeholder="Пароль"
+    formControlName="password"
+  />
   <div class="form__submit">
-    <button *ngIf="!isWaiting else spinner"
-            type="submit"
-            [disabled]="isDisable()"
-            (click)="login()"
-            id="btn-enter">Войти</button>
+    <button
+      class="regular_text"
+      *ngIf="!isWaiting; else spinner"
+      type="submit"
+      [disabled]="isDisable()"
+      (click)="login()"
+      id="btn-enter"
+    >
+      Войти
+    </button>
     <ng-template #spinner>
-      <svg class="spinner"
-          viewBox="0 0 50 50">
-          <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+      <svg class="spinner" viewBox="0 0 50 50">
+        <circle
+          class="path"
+          cx="25"
+          cy="25"
+          r="20"
+          fill="none"
+          stroke-width="5"
+        ></circle>
       </svg>
     </ng-template>
   </div>
-  <a class="nav-link__forgot-password regular_text"
-      routerLink="/auth/forgotpassword" >О нет! Я забыл пароль</a>
+  <a
+    class="nav-link__forgot-password regular_text"
+    routerLink="/auth/forgotpassword"
+    >О нет! Я забыл пароль</a
+  >
 </form>

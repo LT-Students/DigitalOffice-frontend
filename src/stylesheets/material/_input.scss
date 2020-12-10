@@ -36,16 +36,13 @@
 .ng-invalid input,
 .ng-pristine textarea,
 .ng-valid textarea,
-.ng-invalid textarea{
-  padding: 10px 15px;
+.ng-invalid textarea {
+  padding: 5px 5px;
 
-  width: 100%;
-  min-height: 36px;
+  //width: 100%;
+  min-height: 30px;
 
-  color: $dark_1;
-  background-color: $light_3;
-  border: none;
-  border-radius: 5px;
+  color: #fff;
   caret-color: $dark_1;
 
   &:focus {
