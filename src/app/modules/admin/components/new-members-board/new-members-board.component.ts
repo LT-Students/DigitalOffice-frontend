@@ -13,9 +13,9 @@ import { newMembers, NewMember } from './new-members';
 })
 export class NewMembersBoardComponent implements OnInit, OnDestroy {
   public user: User;
-  private subscription: Subscription;
+  private getUsersSubscription: Subscription;
   public users: NewMember[] = newMembers;
-  public visiblyUsers = this.users;
+  public visibleUsers = this.users;
   public specializations: string[] = [
     'Front-End Developer',
     'Backend-End Developer',
@@ -34,27 +34,24 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {}
 
   getUsers(): void {
-    this.subscription = this.userService
+    this.getUsersSubscription = this.userService
       .getAllUsersGet(0, 50, this.searchName)
-      .pipe()
       .subscribe((data: User) => console.log(data));
   }
 
   onSelect() {
-    this.visiblyUsers = this.users;
+    this.visibleUsers = this.users;
     if (this.selectedSpecialization !== undefined) {
-      this.visiblyUsers = this.visiblyUsers.filter((user) =>
-        user.specialization.find(
-          (specialization) => specialization === this.selectedSpecialization
-        )
+      this.visibleUsers = this.visibleUsers.filter((user) =>
+        user.specialization.includes(this.selectedSpecialization)
       );
     }
     if (this.selectedLevel !== undefined) {
-      this.visiblyUsers = this.visiblyUsers.filter(
+      this.visibleUsers = this.visibleUsers.filter(
         (user) => user.level === this.selectedLevel
       );
     }
-    return this.visiblyUsers;
+    return this.visibleUsers;
   }
 
   onChooseMemberClick(): void {
@@ -67,6 +64,6 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.getUsersSubscription.unsubscribe();
   }
 }
