@@ -39,11 +39,10 @@
 .ng-invalid textarea {
   padding: 5px 5px;
 
-  //width: 100%;
   min-height: 30px;
 
   color: #fff;
-  caret-color: $dark_1;
+  caret-color: #fff;
 
   &:focus {
     outline: none;

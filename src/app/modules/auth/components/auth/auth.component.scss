@@ -22,20 +22,27 @@
 
     width: 100%;
 
-    #wave1 {
-      //opacity: 0.24;
-    }
-
-    #wave2 {
-      //opacity: 0.86;
-    }
-
-    img {
+    &.wave1,
+    &.wave2 {
       position: absolute;
-      left: 0;
-      bottom: 0;
 
       display: inline-block;
+
+      background-repeat: no-repeat;
+
+      background-size: cover;
+    }
+
+    &.wave1 {
+      top: 494px;
+
+      background-image: url('../../../../../assets/svg/wave1.svg');
+    }
+
+    &.wave2 {
+      top: 390px;
+
+      background-image: url('../../../../../assets/svg/wave2.svg');
     }
   }
 }

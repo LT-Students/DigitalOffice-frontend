@@ -6,8 +6,8 @@
 >
   <label class="form__title h1 text_white">trrak!</label>
   <div class="form__error">
-    <small *ngIf="!isEmailInputValid()"> </small>
-    <small *ngIf="!isPasswordInputValid()"> </small>
+    <small *ngIf="!isEmailInputValid()">Неверный логин :( </small>
+    <small *ngIf="!isPasswordInputValid()">Неверный пароль :( </small>
     <small *ngIf="loginError">Неверный логин или пароль :(</small>
   </div>
   <input
