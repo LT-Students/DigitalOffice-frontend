@@ -6,7 +6,9 @@
 >
   <label class="form__title h1 text_white">trrak!</label>
   <div class="form__error">
-    <small *ngIf="!isEmailInputValid()">Неверный логин :( </small>
+    <small *ngIf="!isEmailInputValid()"
+      >Неправильно введен email адрес :(
+    </small>
     <small *ngIf="!isPasswordInputValid()">Неверный пароль :( </small>
     <small *ngIf="loginError">Неверный логин или пароль :(</small>
   </div>
@@ -29,7 +31,7 @@
       class="regular_text"
       *ngIf="!isWaiting; else spinner"
       type="submit"
-      [disabled]="isDisable()"
+      [disabled]="!isEmailInputValid()"
       (click)="login()"
       id="btn-enter"
     >
