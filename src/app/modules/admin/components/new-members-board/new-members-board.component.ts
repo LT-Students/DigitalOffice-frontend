@@ -17,13 +17,14 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   public users: NewMember[] = newMembers;
   public visibleUsers = this.users;
   public specializations: string[] = [
+    'All specializations',
     'Front-End Developer',
     'Backend-End Developer',
     'Product Manager',
     'UI/UX Designer',
     'QA Tester',
   ];
-  public levels: string[] = ['Junior', 'Middle', 'Senior'];
+  public levels: string[] = ['All levels', 'Junior', 'Middle', 'Senior'];
   @Input() members: Member[] = [];
   public selectedSpecialization;
   public selectedLevel;
@@ -36,17 +37,23 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   getUsers(): void {
     this.getUsersSubscription = this.userService
       .getAllUsersGet(0, 50, this.searchName)
-      .subscribe((data: User) => console.log(data));
+      .subscribe((data: User[]) => console.log(data));
   }
 
   onSelect() {
     this.visibleUsers = this.users;
-    if (this.selectedSpecialization !== undefined) {
+    if (
+      this.selectedSpecialization !== undefined &&
+      this.selectedSpecialization !== 'All specializations'
+    ) {
       this.visibleUsers = this.visibleUsers.filter((user) =>
         user.specialization.includes(this.selectedSpecialization)
       );
     }
-    if (this.selectedLevel !== undefined) {
+    if (
+      this.selectedLevel !== undefined &&
+      this.selectedLevel !== 'All levels'
+    ) {
       this.visibleUsers = this.visibleUsers.filter(
         (user) => user.level === this.selectedLevel
       );
