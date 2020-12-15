@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Time } from '@angular/common';
 
 import { IDatePeriod } from '../../../../interfaces/date-period.interface';
@@ -11,7 +11,6 @@ import { IProject } from '../../../../interfaces/project.interface';
 })
 export class AttendanceService {
   private tempStartDate: Date;
-  private ONE_DAY = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
   private projects: IProject[] = [
     {
       id: 1,
@@ -61,7 +60,9 @@ export class AttendanceService {
   public datePeriod$ = new BehaviorSubject<IDatePeriod>(
     this.getDefaultDatePeriod(6)
   );
-  public plannedHours$ = new Subject<IDatePeriod>();
+  public recommendedTime$ = new BehaviorSubject<Time>(
+    this.countRecommendedTime(this.datePeriod$.getValue())
+  );
   public projects$ = new BehaviorSubject<IProject[]>(this.projects);
 
   constructor() {}
@@ -84,7 +85,13 @@ export class AttendanceService {
   }
 
   public onDatePeriodChange(datePeriod: IDatePeriod): void {
-    this.datePeriod$.next(this.normalizeDatePeriod(datePeriod));
+    const normalizedDatePeriod = this.normalizeDatePeriod(datePeriod);
+    this.datePeriod$.next(normalizedDatePeriod);
+    if (normalizedDatePeriod.endDate) {
+      this.recommendedTime$.next(
+        this.countRecommendedTime(normalizedDatePeriod)
+      );
+    }
   }
 
   public addDays(date: Date, days: number): Date {
@@ -101,33 +108,14 @@ export class AttendanceService {
     return fromDate.getMonth() === toDate.getMonth();
   }
 
-  public countPlannedHours(period: IDatePeriod): Time {
-    let daysArray: Date[] = [];
-
-    if (!period.endDate) {
-      return { hours: 8, minutes: 0 };
-    } else {
-      let from = new Date(period.startDate);
-      let to = new Date(period.endDate);
-
-      while (from.getDate() !== to.getDate()) {
-        daysArray.push(new Date(from));
-        from.setDate(from.getDate() + 1);
-      }
-      const hours =
-        (daysArray.filter(
-          (day: Date) => day.getDay() !== 6 && day.getDay() !== 0
-        ).length +
-          1) *
-        8;
-
-      return { hours: hours, minutes: 0 };
-    }
+  public normalizeTime(time: any): String {
+    const timeString = time.toString();
+    return timeString.length === 1 ? '0' + timeString : timeString;
   }
 
   public addTaskToProject(task: ITask, id: number): void {
     this.projects.forEach((project: IProject) => {
-      if (project.id === id) {
+      if (project.id === id + 1) {
         project.tasks.push(task);
         this.projects$.next(this.projects.slice());
       }
@@ -138,12 +126,31 @@ export class AttendanceService {
     return this.projects.slice();
   }
 
-  public getProjectIdByName(name: string): number {
-    return this.projects.filter((project: IProject) => project.name === name)[0]
-      .id;
-  }
+  public countRecommendedTime(datePeriod: IDatePeriod, rate: number = 1): Time {
+    const daysArray: Date[] = [];
 
-  // setPlannedHoursByTimePeriod(period: ITimePeriod) {
-  //   this.plannedHours$.next(period);
-  // }
+    if (
+      datePeriod.endDate &&
+      this.isSameDay(datePeriod.startDate, datePeriod.endDate)
+    ) {
+      return { hours: 8 * rate, minutes: 0 };
+    } else {
+      const startDate = new Date(datePeriod.startDate);
+      const endDate = new Date(datePeriod.endDate);
+
+      while (startDate.getDate() !== endDate.getDate()) {
+        daysArray.push(new Date(startDate));
+        startDate.setDate(startDate.getDate() + 1);
+      }
+      const hours =
+        (daysArray.filter(
+          (day: Date) => day.getDay() !== 6 && day.getDay() !== 0
+        ).length +
+          1) *
+        8 *
+        rate;
+
+      return { hours: hours, minutes: 0 };
+    }
+  }
 }

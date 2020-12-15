@@ -28,27 +28,30 @@
 
   &__label {
     margin-bottom: 8px;
+
+    &_for_project {
+      margin-top: 16px;
+    }
+
+    &_for_task {
+      margin-top: 12px;
+    }
+
+    &_for_description {
+      margin-top: 8px;
+    }
   }
 
   &__form-element {
-    &_ctrl_time {
-      display: block;
-
-      width: 100%;
-      max-width: 40px;
+    &_ctrl_hours {
+      max-width: 60px;
     }
 
-    &_ctrl_project {
-      margin-bottom: 12px;
-    }
-
-    &_ctrl_task {
-      margin-bottom: 8px;
+    &_ctrl_minutes {
+      max-width: 50px;
     }
 
     &_ctrl_description {
-      margin-bottom: 21px;
-
       textarea {
         resize: none;
 
@@ -58,11 +61,9 @@
   }
 
   &__period {
-    margin-bottom: 16px;
-
     display: flex;
     justify-content: left;
-    align-items: end;
+    align-items: flex-start;
 
     span {
       line-height: 32px;
@@ -72,6 +73,10 @@
   }
 
   &__hours-char {
-    margin-left: 10px;
+    margin-left: 8px;
+  }
+
+  &__submit-btn {
+    margin-top: 21px;
   }
 }

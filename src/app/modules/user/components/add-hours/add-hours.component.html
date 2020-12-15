@@ -2,42 +2,45 @@
   <span class="add-hours__title h2">Внести часы</span>
   <form
     [formGroup]="addHoursForm"
-    (ngSubmit)="addTask()"
+    (ngSubmit)="onSubmit()"
     autocomplete="off"
     class="add-hours__form regular_text"
   >
-    <div class="add-hours__period">
+    <div formGroupName="time" class="add-hours__period">
       <mat-form-field
-        class="add-hours__form-element add-hours__form-element_ctrl_time mat-form-field_time-input"
+        class="add-hours__form-element add-hours__form-element_ctrl_hours mat-form-field_time-input"
         appearance="none"
       >
         <input
           matInput
           formControlName="hours"
-          #hours
           class="add-hours__time h2 text-dark_1"
           type="text"
-          [textMask]="{ mask: hoursMask }"
+          maxlength="3"
         />
       </mat-form-field>
       <span class="h2">:</span>
       <mat-form-field
-        class="add-hours__form-element add-hours__form-element_ctrl_time mat-form-field_time-input"
+        class="add-hours__form-element add-hours__form-element_ctrl_minutes mat-form-field_time-input"
         appearance="none"
       >
         <input
           matInput
           formControlName="minutes"
-          #minutes
           class="add-hours__time h2 text-dark_1"
           type="text"
-          [textMask]="{ mask: minutesMask }"
+          maxlength="2"
         />
       </mat-form-field>
       <span class="h2 add-hours__hours-char">ч</span>
-      <div class="add-hours__underline"></div>
     </div>
-    <label class="add-hours__label" for="project">Проект</label>
+    <mat-error *ngIf="!addHoursForm.get('time').valid">{{
+      getTimePeriodErrorMessage()
+    }}</mat-error>
+
+    <label class="add-hours__label add-hours__label_for_project" for="project"
+      >Проект</label
+    >
     <mat-form-field
       class="add-hours__form-element add-hours__form-element_ctrl_project select mat-form-field_default-select"
       appearance="none"
@@ -48,12 +51,18 @@
         [value]="getProjectNames()[0]"
         disableOptionCentering="true"
       >
-        <mat-option *ngFor="let project of getProjectNames()" [value]="project">
+        <mat-option
+          *ngFor="let project of getProjectNames(); let i = index"
+          [value]="i"
+        >
           {{ project }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <label class="add-hours__label" for="task">Задача</label>
+
+    <label class="add-hours__label add-hours__label_for_task" for="task"
+      >Задача</label
+    >
     <mat-form-field
       class="add-hours__form-element add-hours__form-element_ctrl_task"
       appearance="none"
@@ -67,7 +76,12 @@
         style="border: none"
       />
     </mat-form-field>
-    <label class="add-hours__label" for="description">Описание</label>
+
+    <label
+      class="add-hours__label add-hours__label_for_description"
+      for="description"
+      >Описание</label
+    >
     <mat-form-field
       class="add-hours__form-element add-hours__form-element_ctrl_description"
       appearance="none"
@@ -79,51 +93,13 @@
         class="bg-light_2"
       ></textarea>
     </mat-form-field>
+
     <button
       mat-flat-button
       [disabled]="!addHoursForm.valid"
-      class="mat-flat-button mat-flat-button_style_black"
+      class="mat-flat-button mat-flat-button_style_black add-hours__submit-btn"
     >
       Добавить
     </button>
   </form>
-
-  <!--  пока в теге p-->
-  <!--  <div class="add-hours__period">-->
-  <!--    <input class="add_time h2 text-dark_1"-->
-  <!--           style="text-align: right;" type="text"-->
-  <!--            [placeholder]="this.recommendedTime.hours | number : '2.0'" #inputHours>-->
-  <!--    <span class="h2" >:</span>-->
-  <!--    <input class="add_time h2 text-dark_1" type="text"-->
-  <!--           [placeholder]="this.recommendedTime.minutes | number : '2.0'" #inputMinutes>-->
-  <!--    <span class="h2 text-dark_1" >&nbsp;ч</span>-->
-  <!--  </div>-->
-
-  <!--  <div class="add-hours__select">-->
-  <!--    <div class="select-project">-->
-  <!--      <do-select [className]="'select'"-->
-  <!--                 [title]="'Проект'"-->
-  <!--                 [options]="getProjectNames()"-->
-  <!--                  (optionSelected)="projectSelected = $event"></do-select>-->
-  <!--    </div>-->
-
-  <!--    <div class="select-tag">-->
-  <!--      <span class="regular_text" style="display: block;">Задача</span>-->
-  <!--      <div class="do-input bg-light_2">-->
-  <!--        <input class="bg-light_2" type="text" style="border: none;" #task>-->
-  <!--      </div>-->
-  <!--    </div>-->
-  <!--  </div>-->
-
-  <!--  <div class="add-hours__comment">-->
-  <!--    <span class="regular_text" style="display: block;">Описание</span>-->
-  <!--    <textarea class="bg-light_2" #description></textarea>-->
-  <!--    <do-button [className]="'bg-dark_1 button-lg'"-->
-  <!--               class="text-light_1"-->
-  <!--               [title]="'Добавить'"-->
-  <!--               (buttonClicked)="addTask()"-->
-
-  <!--    >-->
-  <!--    </do-button>-->
-  <!--  </div>-->
 </div>

@@ -25,7 +25,6 @@
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
-    "angular2-text-mask": "^9.0.0",
     "bootstrap": "^4.5.2",
     "canvasjs": "^1.8.3",
     "chart.js": "^2.9.3",
