@@ -1,10 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  AbstractControl,
-} from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
@@ -37,13 +32,9 @@ export class AddHoursComponent implements OnInit, OnDestroy {
       time: this.fb.group({
         hours: [
           '',
-          [
-            Validators.required,
-            this.datePeriodValidator.bind(this),
-            timeValidator(() => this.getHours()),
-          ],
+          [Validators.required, timeValidator(() => this.getHours())],
         ],
-        minutes: ['', [Validators.required, this.minutesValidator.bind(this)]],
+        minutes: ['', [Validators.required, Validators.max(59)]],
       }),
       project: ['', Validators.required],
       task: ['', Validators.required],
@@ -61,20 +52,13 @@ export class AddHoursComponent implements OnInit, OnDestroy {
           .setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
       });
 
-    this.attendanceService.datePeriod$
-      .pipe(takeUntil(this.onDestroy))
-      .subscribe((datePeriod) => {
-        this.addHoursForm.get('time.hours').updateValueAndValidity();
-      });
-
     this.projects = this.attendanceService.getProjects();
   }
 
   private getHours(): number {
     const currentDatePeriod = this.attendanceService.datePeriod$.getValue();
-    return (
-      +this.attendanceService.countRecommendedTime(currentDatePeriod).hours * 3
-    );
+    return +this.attendanceService.countRecommendedTime(currentDatePeriod, 24)
+      .hours;
   }
 
   public getProjectNames(): string[] {
@@ -93,51 +77,28 @@ export class AddHoursComponent implements OnInit, OnDestroy {
       },
     };
     this.attendanceService.addTaskToProject(task, project_id);
+    this.addHoursForm.reset();
+    const datePeriod = this.attendanceService.datePeriod$.getValue();
+    this.attendanceService.onDatePeriodChange(datePeriod);
   }
 
-  // Validation
   public getTimePeriodErrorMessage(): String {
     const hours = this.addHoursForm.get('time.hours');
     const minutes = this.addHoursForm.get('time.minutes');
-    if (hours.errors?.['endDateEqualsNull']) {
-      return 'Закончите выбор периода дат';
-    }
+
+    console.log(minutes?.errors);
+
     if (hours.errors?.['periodExceedsMaxValue']) {
       return 'Превышено максимальное время для выбранного периода';
     }
-    if (minutes.errors?.['invalidMinutes']) {
+    if (minutes.errors?.['max']) {
       return 'Введите корректные минуты';
     }
-    return 'Введите корретные периоды дат и времени';
-  }
-
-  // public timeValidator (control: AbstractControl): {[key: string]: any} | null {
-  //   // todo переделать сётчик времени на функцию с параметрами период дат, часы в день
-  //   const maxPossibleHours = +this.attendanceService.countRecommendedTime(this.attendanceService.datePeriod$.getValue()).hours * 3;
-  //   return +control.value < maxPossibleHours
-  //     ? null
-  //     : {'periodExceedsMaxValue': true}
-  // }
-
-  public minutesValidator(
-    control: AbstractControl
-  ): { [key: string]: any } | null {
-    return control.value < 60 ? null : { invalidMinutes: true };
-  }
-
-  public datePeriodValidator(
-    control: AbstractControl
-  ): { [key: string]: any } | null {
-    return this.attendanceService.datePeriod$.getValue().endDate
-      ? null
-      : { endDateEqualsNull: true };
+    return 'Введите корретный период времени';
   }
 
   ngOnDestroy() {
     this.onDestroy.next(null);
     this.onDestroy.complete();
   }
-
-  // todo переделать сётчик времени на функцию с параметрами период дат, часы в день
-  // todo очищать форму после сабита (часы ставить опять рекомендованные)
 }

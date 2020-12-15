@@ -68,7 +68,10 @@
             matSuffix
             [for]="picker"
           ></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-date-range-picker
+            #picker
+            (closed)="onClose()"
+          ></mat-date-range-picker>
         </mat-form-field>
         <button
           mat-flat-button

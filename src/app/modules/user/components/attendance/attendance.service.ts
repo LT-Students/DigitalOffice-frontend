@@ -126,14 +126,18 @@ export class AttendanceService {
     return this.projects.slice();
   }
 
-  public countRecommendedTime(datePeriod: IDatePeriod, rate: number = 1): Time {
+  public countRecommendedTime(
+    datePeriod: IDatePeriod,
+    hoursPerDay: number = 8,
+    rate: number = 1
+  ): Time {
     const daysArray: Date[] = [];
 
     if (
       datePeriod.endDate &&
       this.isSameDay(datePeriod.startDate, datePeriod.endDate)
     ) {
-      return { hours: 8 * rate, minutes: 0 };
+      return { hours: hoursPerDay * rate, minutes: 0 };
     } else {
       const startDate = new Date(datePeriod.startDate);
       const endDate = new Date(datePeriod.endDate);
@@ -147,7 +151,7 @@ export class AttendanceService {
           (day: Date) => day.getDay() !== 6 && day.getDay() !== 0
         ).length +
           1) *
-        8 *
+        hoursPerDay *
         rate;
 
       return { hours: hours, minutes: 0 };

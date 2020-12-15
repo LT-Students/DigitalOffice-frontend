@@ -1,27 +1,27 @@
 <div class="wrapper">
   <div class="tasks">
     <span class="tasks__header h2">
-      {{ tasksCount }} записи за {{ timePeriodSelected.startDate | date: 'd' }}
+      {{ tasksCount }} записи за
       <span
-        *ngIf="
-          !timePeriodSelected.endDate ||
-          timePeriodSelected.startDate.getMonth() !=
-            timePeriodSelected.endDate.getMonth()
-        "
+        *ngIf="!endDate || this.attendanceService.isSameDay(startDate, endDate)"
       >
-        {{ timePeriodSelected.startDate | date: 'MMMM' }}
+        {{ startDate | date: 'd MMMM' }}
       </span>
-      <span *ngIf="timePeriodSelected.endDate"
-        >– {{ timePeriodSelected.endDate | date: 'd' }}</span
-      >
       <span
         *ngIf="
-          timePeriodSelected.endDate &&
-          timePeriodSelected.startDate.getMonth() ===
-            timePeriodSelected.endDate.getMonth()
+          endDate &&
+          this.attendanceService.isSameMonth(startDate, endDate) &&
+          !this.attendanceService.isSameDay(startDate, endDate)
         "
       >
-        {{ timePeriodSelected.startDate | date: 'MMMM' }}
+        {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
+      </span>
+      <span
+        *ngIf="
+          endDate && !this.attendanceService.isSameMonth(startDate, endDate)
+        "
+      >
+        {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
       </span>
     </span>
     <div class="tasks__search">

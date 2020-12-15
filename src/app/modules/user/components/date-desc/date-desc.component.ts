@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -67,6 +67,17 @@ export class DateDescComponent implements OnInit, OnDestroy {
       startDate: dayOfWeek.date,
       endDate: dayOfWeek.date,
     });
+  }
+
+  public onClose(): void {
+    const datePeriod = this.attendanceService.datePeriod$.getValue();
+    if (!datePeriod.endDate) {
+      const oneDayPeriod = {
+        startDate: datePeriod.startDate,
+        endDate: datePeriod.startDate,
+      };
+      this.attendanceService.onDatePeriodChange(oneDayPeriod);
+    }
   }
 
   public onDateInput(date: Date | null, isStartDate: boolean) {
