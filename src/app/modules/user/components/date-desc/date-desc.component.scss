@@ -1,4 +1,5 @@
 @import 'base/variables';
+@import 'base/fonts';
 
 .desc {
   display: flex;
@@ -53,6 +54,8 @@
     margin-right: 43.9px;
 
     flex-direction: column;
+
+    cursor: pointer;
 
     &-single {
       margin-bottom: 10px;
@@ -131,5 +134,37 @@
     border-top: 1px solid $accent_color_bright;
     border-bottom: 1px solid $accent_color_bright;
     border-radius: 0;
+  }
+}
+
+.datepicker {
+  &__btn {
+    position: relative;
+    top: -18px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 32px;
+
+    cursor: pointer;
+
+    background: $accent_color;
+  }
+
+  &__btn-text {
+    margin: 0;
+
+    display: inline;
+  }
+
+  &__btn-icon {
+    position: relative;
+    top: 1px;
+
+    margin-left: 5px;
+
+    display: inline;
   }
 }
