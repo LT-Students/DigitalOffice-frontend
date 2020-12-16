@@ -5,12 +5,12 @@ import { Time } from '@angular/common';
 import { IDatePeriod } from '../../../../interfaces/date-period.interface';
 import { ITask } from '../../../../interfaces/task.interface';
 import { IProject } from '../../../../interfaces/project.interface';
+import { IDayOfWeek } from '../../../../interfaces/day-of-week.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AttendanceService {
-  private tempStartDate: Date;
   private projects: IProject[] = [
     {
       id: 1,
@@ -76,12 +76,23 @@ export class AttendanceService {
   private normalizeDatePeriod(datePeriod: IDatePeriod): IDatePeriod {
     if (datePeriod.startDate && datePeriod.endDate) {
       return datePeriod;
-    } else if (datePeriod.startDate) {
-      this.tempStartDate = datePeriod.startDate;
-      return { startDate: datePeriod.startDate, endDate: null };
     } else {
-      return { startDate: this.tempStartDate, endDate: datePeriod.endDate };
+      return { startDate: datePeriod.startDate, endDate: null };
     }
+  }
+
+  public getWeek(dateSelected: Date): IDayOfWeek[] {
+    const daysOfWeek: IDayOfWeek[] = [];
+
+    for (let i = -3; i <= 3; i++) {
+      const dayOfWeek = this.addDays(dateSelected, i);
+      daysOfWeek.push({
+        date: dayOfWeek,
+        isSelected: false,
+      });
+    }
+    daysOfWeek[3].isSelected = true;
+    return daysOfWeek;
   }
 
   public onDatePeriodChange(datePeriod: IDatePeriod): void {

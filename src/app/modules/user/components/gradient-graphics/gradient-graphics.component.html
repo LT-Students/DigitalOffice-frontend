@@ -1,27 +1,27 @@
 <div class="gradient__graphics">
   <div class="time__period">
     <p class="h3">
-      Часы {{ timePeriodSelected.startDate | date: 'd' }}
+      Часы
       <span
-        *ngIf="
-          !timePeriodSelected.endDate ||
-          timePeriodSelected.startDate.getMonth() !=
-            timePeriodSelected.endDate.getMonth()
-        "
+        *ngIf="!endDate || this.attendanceService.isSameDay(startDate, endDate)"
       >
-        {{ timePeriodSelected.startDate | date: 'MMMM' }}
+        {{ startDate | date: 'd MMMM' }}
       </span>
-      <span *ngIf="timePeriodSelected.endDate"
-        >– {{ timePeriodSelected.endDate | date: 'd' }}</span
-      >
       <span
         *ngIf="
-          timePeriodSelected.endDate &&
-          timePeriodSelected.startDate.getMonth() ===
-            timePeriodSelected.endDate.getMonth()
+          endDate &&
+          this.attendanceService.isSameMonth(startDate, endDate) &&
+          !this.attendanceService.isSameDay(startDate, endDate)
         "
       >
-        {{ timePeriodSelected.startDate | date: 'MMMM' }}
+        {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
+      </span>
+      <span
+        *ngIf="
+          endDate && !this.attendanceService.isSameMonth(startDate, endDate)
+        "
+      >
+        {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
       </span>
     </p>
   </div>
@@ -52,8 +52,8 @@
   </div>
 
   <div class="dates__container">
-    <div class="column__date" *ngFor="let column of amountOfDays">
-      {{ dailyHoursData[column].day }}
+    <div class="column__date" *ngFor="let day of daysOfWeek">
+      {{ day.date | date: 'd' }}
     </div>
   </div>
 </div>

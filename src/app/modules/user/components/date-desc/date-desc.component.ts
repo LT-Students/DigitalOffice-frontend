@@ -12,6 +12,8 @@ import { IDayOfWeek } from '../../../../interfaces/day-of-week.interface';
   styleUrls: ['./date-desc.component.scss'],
 })
 export class DateDescComponent implements OnInit, OnDestroy {
+  private tempStartDate: Date;
+
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   public startDate: Date | null;
@@ -30,30 +32,16 @@ export class DateDescComponent implements OnInit, OnDestroy {
         this.startDate = datePeriod.startDate;
         this.endDate = datePeriod.endDate;
         if (this.endDate) {
-          this.daysOfWeek = this.getWeek(this.endDate);
+          this.daysOfWeek = this.attendanceService.getWeek(this.endDate);
         }
       });
 
     this.startDate = this.attendanceService.datePeriod$.getValue().startDate;
     this.endDate = this.attendanceService.datePeriod$.getValue().endDate;
-    this.daysOfWeek = this.getWeek(this.endDate);
+    this.daysOfWeek = this.attendanceService.getWeek(this.endDate);
 
     this.dateAdapter.setLocale('ru');
     this.dateAdapter.getFirstDayOfWeek = () => 1;
-  }
-
-  private getWeek(dateSelected: Date): IDayOfWeek[] {
-    const daysOfWeek: IDayOfWeek[] = [];
-
-    for (let i = -3; i <= 3; i++) {
-      const dayOfWeek = this.attendanceService.addDays(dateSelected, i);
-      daysOfWeek.push({
-        date: dayOfWeek,
-        isSelected: false,
-      });
-    }
-    daysOfWeek[3].isSelected = true;
-    return daysOfWeek;
   }
 
   public disableWeekends = (d: Date | null): boolean => {
@@ -62,7 +50,7 @@ export class DateDescComponent implements OnInit, OnDestroy {
   };
 
   public selectDay(dayOfWeek): void {
-    this.daysOfWeek = this.getWeek(dayOfWeek.date);
+    this.daysOfWeek = this.attendanceService.getWeek(dayOfWeek.date);
     this.attendanceService.onDatePeriodChange({
       startDate: dayOfWeek.date,
       endDate: dayOfWeek.date,
@@ -87,10 +75,11 @@ export class DateDescComponent implements OnInit, OnDestroy {
           startDate: date,
           endDate: null,
         });
-        this.daysOfWeek = this.getWeek(date);
+        this.daysOfWeek = this.attendanceService.getWeek(date);
+        this.tempStartDate = date;
       } else {
         this.attendanceService.onDatePeriodChange({
-          startDate: null,
+          startDate: this.tempStartDate,
           endDate: date,
         });
       }

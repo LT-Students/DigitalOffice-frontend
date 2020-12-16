@@ -1,6 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs';
 
 import { IDatePeriod } from '../../../../interfaces/date-period.interface';
+import { AttendanceService } from '../attendance/attendance.service';
+import { IDayOfWeek } from '../../../../interfaces/day-of-week.interface';
 
 export interface IDailyHoursData {
   day: string;
@@ -14,13 +18,19 @@ export interface IDailyHoursData {
   templateUrl: './gradient-graphics.component.html',
   styleUrls: ['./gradient-graphics.component.scss'],
 })
-export class GradientGraphicsComponent implements OnInit {
+export class GradientGraphicsComponent implements OnInit, OnDestroy {
+  private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
+
   @Input()
   public timePeriodSelected: IDatePeriod;
   @Input()
   public dailyHoursData; // data about day, month, hours, minutes of time period
 
-  constructor() {}
+  public startDate: Date | null;
+  public endDate: Date | null;
+  public daysOfWeek: IDayOfWeek[];
+
+  constructor(public attendanceService: AttendanceService) {}
 
   // color for graphic items
   colorsData = [
@@ -47,6 +57,18 @@ export class GradientGraphicsComponent implements OnInit {
   timePeriod;
 
   ngOnInit() {
+    this.attendanceService.datePeriod$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((datePeriod) => {
+        if (datePeriod.endDate) {
+          this.daysOfWeek = this.attendanceService
+            .getWeek(datePeriod.endDate)
+            .splice(0, 6);
+        }
+        this.startDate = this.daysOfWeek[0].date;
+        this.endDate = this.daysOfWeek[5].date;
+      });
+
     // make the line with period data
     let firstPartTimePeriod;
     let secondPartTimePeriod = ''; // use in the case of date consist from two month
@@ -90,5 +112,10 @@ export class GradientGraphicsComponent implements OnInit {
           this.dailyHoursData[i].minutes > 0);
     }
     //
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }
