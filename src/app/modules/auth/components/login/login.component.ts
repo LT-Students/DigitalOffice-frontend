@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
 
     const authenticationRequest: AuthenticationRequest = {
       loginData: this.loginForm.get('email').value,
-      password: this.loginForm.get('password').value
+      password: this.loginForm.get('password').value,
     };
 
     this.authService
@@ -59,8 +59,8 @@ export class LoginComponent implements OnInit {
       )
       .subscribe(
         (user: User) => {
-          if ( user.isAdmin ) {
-            this.router.navigate([ '/admin/dashboard' ]);
+          if (user.isAdmin) {
+            this.router.navigate(['/admin/dashboard']);
           } else {
             this.router.navigate(['/user/attendance']);
           }
@@ -71,26 +71,11 @@ export class LoginComponent implements OnInit {
       );
   }
 
-  isEmailInputValid(): boolean {
-    return (
-      !this.loginForm.get('email').touched ||
-      !this.loginForm.get('email').invalid
-    );
+  get email() {
+    return this.loginForm.get('email');
   }
 
-  isPasswordInputValid(): boolean {
-    return (
-      !this.loginForm.get('password').touched ||
-      !this.loginForm.get('password').invalid
-    );
-  }
-
-  isDisable(): boolean {
-    return (
-      !this.loginForm.get('email').touched ||
-      this.loginForm.get('password').invalid ||
-      !this.loginForm.get('password').touched ||
-      this.loginForm.get('password').invalid
-    );
+  get password() {
+    return this.loginForm.get('password');
   }
 }

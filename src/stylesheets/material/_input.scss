@@ -64,18 +64,16 @@
 //styles for FormControl
 .ng-pristine input,
 .ng-valid input,
+.ng-invalid input,
 .ng-pristine textarea,
-.ng-valid textarea {
-  padding: 10px 15px;
+.ng-valid textarea,
+.ng-invalid textarea {
+  padding: 5px 5px;
 
-  width: 100%;
-  min-height: 36px;
+  min-height: 30px;
 
-  color: $dark_1;
-  background-color: $light_2;
-  border: none;
-  border-radius: 5px;
-  caret-color: $dark_1;
+  color: #fff;
+  caret-color: #fff;
 
   &:focus {
     outline: none;
