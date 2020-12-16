@@ -108,7 +108,7 @@ export class AttendanceService {
     return fromDate.getMonth() === toDate.getMonth();
   }
 
-  public normalizeTime(time: any): String {
+  public normalizeTime(time: any): string {
     const timeString = time.toString();
     return timeString.length === 1 ? '0' + timeString : timeString;
   }

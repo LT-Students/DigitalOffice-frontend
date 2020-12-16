@@ -40,7 +40,7 @@ const routes: Routes = [
           { path: 'new-project', component: NewProjectComponent },
           { path: 'new-members-board', component: NewMembersBoardComponent },
         ],
-        // canActivate: [AuthGuard, AdminGuard]
+        canActivate: [AuthGuard, AdminGuard],
       },
     ],
   },

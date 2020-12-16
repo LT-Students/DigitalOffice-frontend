@@ -48,14 +48,11 @@
       <mat-select
         id="project"
         formControlName="project"
-        [value]="getProjectNames()[0]"
+        [value]="projects[0].name"
         disableOptionCentering="true"
       >
-        <mat-option
-          *ngFor="let project of getProjectNames(); let i = index"
-          [value]="i"
-        >
-          {{ project }}
+        <mat-option *ngFor="let project of projects; let i = index" [value]="i">
+          {{ project.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -97,7 +94,7 @@
     <button
       mat-flat-button
       [disabled]="!addHoursForm.valid"
-      class="mat-flat-button mat-flat-button_style_black add-hours__submit-btn"
+      class="mat-flat-button mat-flat-button_black add-hours__submit-btn"
     >
       Добавить
     </button>

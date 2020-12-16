@@ -4,7 +4,7 @@ export function timeValidator(
   countMaxPossibleHours: () => number
 ): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null =>
-    +control.value < countMaxPossibleHours()
+    Number(control.value < countMaxPossibleHours())
       ? null
       : { periodExceedsMaxValue: true };
 }

@@ -12,7 +12,7 @@ import { IDayOfWeek } from '../../../../interfaces/day-of-week.interface';
   styleUrls: ['./date-desc.component.scss'],
 })
 export class DateDescComponent implements OnInit, OnDestroy {
-  private onDestroy: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   public startDate: Date | null;
   public endDate: Date | null;
@@ -25,7 +25,7 @@ export class DateDescComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.attendanceService.datePeriod$
-      .pipe(takeUntil(this.onDestroy))
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe((datePeriod) => {
         this.startDate = datePeriod.startDate;
         this.endDate = datePeriod.endDate;
@@ -98,7 +98,7 @@ export class DateDescComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.onDestroy.next(null);
-    this.onDestroy.complete();
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

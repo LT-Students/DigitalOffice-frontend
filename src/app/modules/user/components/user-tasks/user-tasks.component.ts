@@ -14,7 +14,7 @@ import { AttendanceService } from '../attendance/attendance.service';
 export class UserTasksComponent implements OnInit, OnDestroy {
   @Input() timePeriodSelected: IDatePeriod;
 
-  private onDestroy: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   public projects: IProject[];
 
@@ -35,7 +35,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
     );
 
     this.attendanceService.datePeriod$
-      .pipe(takeUntil(this.onDestroy))
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe((datePeriod) => {
         this.startDate = datePeriod.startDate;
         this.endDate = datePeriod.endDate;
@@ -55,8 +55,8 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.attendanceService.projects$.unsubscribe();
-    this.onDestroy.next(null);
-    this.onDestroy.complete();
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 
   sortByProject(): void {

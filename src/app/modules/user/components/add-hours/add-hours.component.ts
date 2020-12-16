@@ -16,9 +16,9 @@ import { timeValidator } from './add-hours.validators';
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
   @Input() user: User;
-  private onDestroy: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  private projects: IProject[];
+  public projects: IProject[];
 
   public addHoursForm: FormGroup;
 
@@ -42,7 +42,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     });
 
     this.attendanceService.recommendedTime$
-      .pipe(takeUntil(this.onDestroy))
+      .pipe(takeUntil(this.onDestroy$))
       .subscribe((timePeriod) => {
         this.addHoursForm
           .get('time.hours')
@@ -57,23 +57,20 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
   private getHours(): number {
     const currentDatePeriod = this.attendanceService.datePeriod$.getValue();
-    return +this.attendanceService.countRecommendedTime(currentDatePeriod, 24)
-      .hours;
-  }
-
-  public getProjectNames(): string[] {
-    return this.projects.map((project: IProject) => project.name);
+    return Number(
+      this.attendanceService.countRecommendedTime(currentDatePeriod, 24).hours
+    );
   }
 
   public onSubmit(): void {
-    const project_id = +this.addHoursForm.get('project').value;
+    const project_id = Number(this.addHoursForm.get('project').value);
     const task: ITask = {
       name: this.addHoursForm.get('task').value,
       description: this.addHoursForm.get('description').value,
       createdAt: new Date(),
       time: {
-        hours: +this.addHoursForm.get('time.hours').value,
-        minutes: +this.addHoursForm.get('time.minutes').value,
+        hours: Number(this.addHoursForm.get('time.hours').value),
+        minutes: Number(this.addHoursForm.get('time.minutes').value),
       },
     };
     this.attendanceService.addTaskToProject(task, project_id);
@@ -86,19 +83,17 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     const hours = this.addHoursForm.get('time.hours');
     const minutes = this.addHoursForm.get('time.minutes');
 
-    console.log(minutes?.errors);
-
-    if (hours.errors?.['periodExceedsMaxValue']) {
+    if (hours.hasError('periodExceedsMaxValue')) {
       return 'Превышено максимальное время для выбранного периода';
     }
-    if (minutes.errors?.['max']) {
+    if (minutes.hasError('max')) {
       return 'Введите корректные минуты';
     }
     return 'Введите корретный период времени';
   }
 
   ngOnDestroy() {
-    this.onDestroy.next(null);
-    this.onDestroy.complete();
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

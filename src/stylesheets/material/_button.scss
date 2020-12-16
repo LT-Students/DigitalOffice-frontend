@@ -5,11 +5,16 @@ button.mat-flat-button.mat-primary,
 button.mat-stroked-button.mat-primary,
 button.mat-button-disabled,
 button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  margin: 0;
+  padding: 4px 12px;
+
   height: 32px;
 
   font-family: $regular_font, sans-serif;
   font-size: 16px;
   line-height: 24px;
+
+  color: transparent;
 
   border-radius: 5px;
 }
@@ -66,12 +71,28 @@ button.mat-raised-button.mat-button-disabled.mat-button-disabled {
 }
 
 .mat-flat-button .mat-button-wrapper {
+  margin: 0;
   padding: 3px 0;
 
   display: flex;
+  justify-content: center;
   align-items: center;
 
   .regular_text {
     vertical-align: baseline;
+  }
+}
+
+button.mat-button-focus-overlay {
+  background-color: transparent;
+}
+
+.mat-flat-button.mat-flat-button_black {
+  height: 40px;
+
+  background-color: $dark_1;
+
+  .mat-button-wrapper {
+    color: $light_1;
   }
 }
