@@ -26,9 +26,9 @@ export class GradientGraphicsComponent implements OnInit, OnDestroy {
   @Input()
   public dailyHoursData; // data about day, month, hours, minutes of time period
 
-  public startDate: Date | null;
-  public endDate: Date | null;
-  public daysOfWeek: IDayOfWeek[];
+  public startDate: Date;
+  public endDate: Date;
+  public daysOfWeek: Date[];
 
   constructor(public attendanceService: AttendanceService) {}
 
@@ -61,12 +61,12 @@ export class GradientGraphicsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((datePeriod) => {
         if (datePeriod.endDate) {
-          this.daysOfWeek = this.attendanceService
-            .getWeek(datePeriod.endDate)
-            .splice(0, 6);
+          this.daysOfWeek = this.attendanceService.getWorkdays(
+            datePeriod.endDate
+          );
         }
-        this.startDate = this.daysOfWeek[0].date;
-        this.endDate = this.daysOfWeek[5].date;
+        this.startDate = this.daysOfWeek[0];
+        this.endDate = this.daysOfWeek[5];
       });
 
     // make the line with period data

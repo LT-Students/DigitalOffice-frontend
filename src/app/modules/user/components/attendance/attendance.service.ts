@@ -95,6 +95,17 @@ export class AttendanceService {
     return daysOfWeek;
   }
 
+  public getWorkdays(dateSelected: Date): Date[] {
+    const daysOfWeek: Date[] = [];
+    const selectedDayOfWeek = dateSelected.getDay();
+    const nearestMonday = this.addDays(dateSelected, -selectedDayOfWeek + 1);
+    for (let i = 0; i <= 5; i++) {
+      const dayOfWeek = this.addDays(nearestMonday, i);
+      daysOfWeek.push(dayOfWeek);
+    }
+    return daysOfWeek;
+  }
+
   public onDatePeriodChange(datePeriod: IDatePeriod): void {
     const normalizedDatePeriod = this.normalizeDatePeriod(datePeriod);
     this.datePeriod$.next(normalizedDatePeriod);
