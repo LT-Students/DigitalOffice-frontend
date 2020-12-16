@@ -27,7 +27,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
   public startDate: Date | null;
   public endDate: Date | null;
 
-  constructor(private attendanceService: AttendanceService) {}
+  constructor(public attendanceService: AttendanceService) {}
 
   ngOnInit() {
     this.attendanceService.projects$.subscribe(
