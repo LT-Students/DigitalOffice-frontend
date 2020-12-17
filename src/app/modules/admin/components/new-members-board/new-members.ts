@@ -1,7 +1,7 @@
 enum Level {
   Junior = 'Junior',
   Middle = 'Middle',
-  Senior = 'Senior'
+  Senior = 'Senior',
 }
 
 enum Specialization {
@@ -9,7 +9,7 @@ enum Specialization {
   Backend = 'Backend-End Developer',
   Manager = 'Product Manager',
   Designer = 'UI/UX Designer',
-  Tester = 'QA Tester'
+  Tester = 'QA Tester',
 }
 export interface NewMember {
   fullName: string;
@@ -26,27 +26,27 @@ export const newMembers: NewMember[] = [
     projectsCount: 2,
     level: Level.Senior,
     profileImgSrc: '',
-    specialization: [Specialization.Frontend, Specialization.Backend]
+    specialization: [Specialization.Frontend, Specialization.Backend],
   },
   {
     fullName: 'Алита Пратчетт',
     projectsCount: 2,
     level: Level.Junior,
     profileImgSrc: '',
-    specialization: [Specialization.Manager]
+    specialization: [Specialization.Manager],
   },
   {
     fullName: 'Алтул Пендлагон',
     projectsCount: 2,
     level: Level.Middle,
     profileImgSrc: '',
-    specialization: [Specialization.Tester]
+    specialization: [Specialization.Tester],
   },
   {
     fullName: 'Алиса Реутова',
     projectsCount: 1,
     level: Level.Junior,
     profileImgSrc: '',
-    specialization: [Specialization.Designer]
+    specialization: [Specialization.Designer],
   },
 ];

@@ -150,10 +150,17 @@
   &__description {
     grid-area: desc;
   }
-
+  &__name,
+  &__abbr-name,
+  &__department,
+  &__description {
+    mat-form-field {
+      width: 100%;
+    }
+  }
   &__label {
     font-size: 14px;
-
+    display: block;
     color: $dark_1;
   }
 }
@@ -162,6 +169,5 @@
 ::ng-deep.mat-tab-label,
 ::ng-deep.mat-tab-label-active {
   padding: 0 40px !important;
-
   min-width: 0 !important;
 }

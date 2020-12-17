@@ -5,14 +5,10 @@ $select-height: 36px;
 
 .members-board {
   position: relative;
-
-  padding: 48px;
-
+  padding: 10px;
   display: flex;
   flex-direction: column;
-
   max-width: 720px;
-
   background: #fff;
 
   &__close-button {
@@ -26,6 +22,12 @@ $select-height: 36px;
   }
 }
 
+.new-members {
+  height: 440px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .members-form {
   &__search {
     margin-bottom: 14px;
@@ -33,10 +35,8 @@ $select-height: 36px;
 
   &__selects {
     margin-bottom: 14px;
-
     display: flex;
     justify-content: space-between;
-
     width: 379px;
     height: $select-height;
   }
@@ -51,11 +51,9 @@ $select-height: 36px;
 
   &__background {
     margin-bottom: 14px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     height: 424px;
   }
 
@@ -68,7 +66,6 @@ $select-height: 36px;
 .new-members-icon {
   display: flex;
   flex-direction: column;
-
   text-align: center;
 
   &__-dummy {
@@ -101,24 +98,19 @@ $select-height: 36px;
 
   .mat-select-arrow {
     margin: 0 14px 0 4px;
-
     width: 10px;
     height: 6px;
-
-    background-image: url('../../../../../assets/svg/arrow-down-dark.svg');
+    background-image: url('/assets/svg/arrow-down-dark.svg');
     border: none;
   }
 
   .mat-form-field-infix {
     padding: 0;
-
     border: none;
 
     .mat-form-field-label-wrapper {
       position: static;
-
       overflow: visible;
-
       height: 0;
     }
   }

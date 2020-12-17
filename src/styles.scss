@@ -9,6 +9,7 @@
 @import 'material/mat-error';
 @import 'material/datepicker';
 @import 'material/button';
+@import 'material/checkbox';
 
 *,
 *::before,
@@ -47,4 +48,26 @@ button:focus {
 
 textarea {
   resize: none;
+}
+
+.nav-link {
+  margin-bottom: 24px;
+  color: $dark_4;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+
+  svg {
+    margin-right: 13px;
+    stroke: $dark_2;
+
+    width: 5px;
+    height: 10px;
+    fill: none;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
 }

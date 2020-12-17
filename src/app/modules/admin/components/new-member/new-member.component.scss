@@ -5,23 +5,20 @@ $select-height: 24px;
 
 .new-member {
   margin-bottom: 14px;
-  margin-left: -25px;
-
   display: flex;
   align-items: center;
-  //width: 672px;
-  width: 108%;
   height: 80px;
 
   background-color: $light_1;
   border-radius: 5px;
 
   &__checkbox {
-    margin: 30px 39px auto 24px;
+    margin-right: 40px;
   }
 
   &__info {
     display: flex;
+    flex: 1 0 auto;
   }
 
   &__img {
@@ -37,19 +34,15 @@ $select-height: 24px;
 
 .new-member-form {
   display: flex;
+  flex: 1 0 auto;
   justify-content: space-between;
   align-items: center;
-
-  width: 505px;
-
   white-space: nowrap;
-
   color: $gray;
 
   &__selects {
     margin-top: -10px;
     margin-bottom: 14px;
-    //width: 170px;
     width: 24%;
     height: $select-height;
   }
@@ -106,8 +99,6 @@ label.mat-checkbox-layout {
   }
 
   .mat-form-field {
-    margin-left: -10px;
-
     background-color: #fff;
     background-image: none;
   }
@@ -140,7 +131,7 @@ label.mat-checkbox-layout {
       width: 6px;
       height: 3px;
 
-      background-image: url('../../../../../assets/svg/arrow-down-dark.svg');
+      background-image: url('/assets/svg/arrow-down-dark.svg');
       background-repeat: no-repeat;
       background-position-y: center;
       border: none;
@@ -154,7 +145,7 @@ label.mat-checkbox-layout {
       width: 6px;
       height: 3px;
 
-      background-image: url('../../../../../assets/svg/arrow-down-grey-small.svg');
+      background-image: url('/assets/svg/arrow-down-grey-small.svg');
       background-repeat: no-repeat;
       background-position-y: center;
       border: none;

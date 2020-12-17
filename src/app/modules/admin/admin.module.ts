@@ -25,7 +25,7 @@ import { NewMemberComponent } from './components/new-member/new-member.component
     NewMembersBoardComponent,
     NewCompanyComponent,
     TeamCardComponent,
-    NewMemberComponent
+    NewMemberComponent,
   ],
   imports: [
     CommonModule,
@@ -33,10 +33,7 @@ import { NewMemberComponent } from './components/new-member/new-member.component
     FormsModule,
     ReactiveFormsModule,
     AppMaterialModule,
-    SharedModule
+    SharedModule,
   ],
-  entryComponents: [
-    NewCompanyComponent,
-  ]
 })
 export class AdminModule {}

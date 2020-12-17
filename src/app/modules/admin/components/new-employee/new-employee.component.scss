@@ -34,30 +34,6 @@
       color: $dark_2;
     }
 
-    .nav-link__dashboard {
-      margin-bottom: 24px;
-
-      display: flex;
-      align-items: center;
-
-      text-decoration: none;
-
-      cursor: pointer;
-
-      svg {
-        margin-right: 13px;
-        stroke: $dark_2;
-
-        width: 5px;
-        height: 10px;
-        fill: none;
-      }
-
-      &:hover {
-        opacity: 0.5;
-      }
-    }
-
     .title {
       margin-bottom: 26.5px;
     }
