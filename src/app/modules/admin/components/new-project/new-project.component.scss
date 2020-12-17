@@ -126,7 +126,7 @@
   &__form {
     display: grid;
     grid-column-gap: 1.48%;
-    grid-row-gap: 12%;
+    grid-row-gap: 7%;
     grid-template-areas:
       'name abbr-name'
       'department .'
@@ -151,7 +151,18 @@
     grid-area: desc;
   }
 
+  &__name,
+  &__abbr-name,
+  &__department,
+  &__description {
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
   &__label {
+    display: block;
+
     font-size: 14px;
 
     color: $dark_1;

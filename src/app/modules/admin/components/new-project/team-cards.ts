@@ -14,17 +14,17 @@ export const teamCards: TeamCard[] = [
     members: [
       {
         name: 'Olya',
-        profileImgSrc: ''
+        profileImgSrc: '',
       },
       {
         name: 'Slava',
-        profileImgSrc: ''
+        profileImgSrc: '',
       },
       {
         name: 'Nikita',
-        profileImgSrc: ''
-      }
-    ]
+        profileImgSrc: '',
+      },
+    ],
   },
   {
     name: 'Front-End Developers',
@@ -33,19 +33,19 @@ export const teamCards: TeamCard[] = [
         name: 'Anna',
         profileImgSrc: '',
         lead: true,
-        level: 'junior'
+        level: 'junior',
       },
       {
         name: 'Mariya',
         profileImgSrc: '',
-        level: 'junior'
+        level: 'junior',
       },
       {
         name: 'Vladimir',
         profileImgSrc: '',
         level: 'middle',
-      }
-    ]
+      },
+    ],
   },
   {
     name: 'Back-End Developers',
@@ -54,13 +54,13 @@ export const teamCards: TeamCard[] = [
         name: 'Elena',
         profileImgSrc: '',
         lead: true,
-        level: 'middle'
+        level: 'middle',
       },
       {
         name: 'Oleg',
         profileImgSrc: '',
-        level: 'senior'
-      }
-    ]
-  }
+        level: 'senior',
+      },
+    ],
+  },
 ];

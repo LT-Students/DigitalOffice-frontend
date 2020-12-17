@@ -1,4 +1,3 @@
-
 import { Component, Input, OnInit } from '@angular/core';
 
 import { NewMember } from '../new-members-board/new-members';
@@ -40,6 +39,6 @@ export class NewMemberComponent implements OnInit {
       count % 100 > 4 && count % 100 < 20
         ? 2
         : cases[count % 10 < 5 ? count % 10 : 5]
-      ];
+    ];
   }
 }

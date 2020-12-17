@@ -1,3 +1,3 @@
 export interface Member {
-  name: string
+  name: string;
 }

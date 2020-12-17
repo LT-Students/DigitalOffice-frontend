@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import {
-  UserService as UserAPIService, User,
+  UserService as UserAPIService,
+  User,
 } from '@digital-office/api/user-service';
 
 import { LocalStorageService } from './local-storage.service';

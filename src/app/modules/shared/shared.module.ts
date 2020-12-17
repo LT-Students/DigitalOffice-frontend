@@ -9,7 +9,6 @@ import { ProfileImageComponent } from './profile-image/profile-image.component';
 import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
 import { SearchComponent } from './search/search.component';
 
-
 @NgModule({
   declarations: [
     ButtonComponent,
@@ -17,18 +16,15 @@ import { SearchComponent } from './search/search.component';
     ToolbarComponent,
     ProfileImageComponent,
     ToolbarContainerComponent,
-    SearchComponent
+    SearchComponent,
   ],
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
+  imports: [CommonModule, RouterModule],
   exports: [
     ButtonComponent,
     SelectComponent,
     ToolbarComponent,
     ProfileImageComponent,
-    SearchComponent
-  ]
+    SearchComponent,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

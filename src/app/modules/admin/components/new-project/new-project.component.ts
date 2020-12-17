@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+
+import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
 
 import { teamCards, TeamCard } from './team-cards';
 
@@ -10,13 +13,13 @@ import { teamCards, TeamCard } from './team-cards';
 })
 export class NewProjectComponent {
   public teams: TeamCard[] = teamCards;
-  profileForm = new FormGroup({
+  public profileForm = new FormGroup({
     name: new FormControl(''),
     shortName: new FormControl(''),
     departments: new FormControl(''),
     description: new FormControl(''),
   });
-  departments = ['one', 'two', 'three'];
+  public departments = ['one', 'two', 'three'];
   public team = [
     {
       name: 'Olya',
@@ -40,12 +43,12 @@ export class NewProjectComponent {
     },
   ];
 
-  constructor() {}
+  constructor(public dialog: MatDialog) {}
 
-  public addMember(members): void {
-    members.push({
-      name: 'unknown',
-      profileImgSrc: '',
+  public addMember(): void {
+    this.dialog.open(NewMembersBoardComponent, {
+      width: '720px',
+      height: '700px',
     });
   }
 }

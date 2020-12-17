@@ -6,7 +6,7 @@ $select-height: 36px;
 .members-board {
   position: relative;
 
-  padding: 48px;
+  padding: 10px;
 
   display: flex;
   flex-direction: column;
@@ -26,6 +26,13 @@ $select-height: 36px;
   }
 }
 
+.new-members {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  height: 440px;
+}
+
 .members-form {
   &__search {
     margin-bottom: 14px;
@@ -36,7 +43,6 @@ $select-height: 36px;
 
     display: flex;
     justify-content: space-between;
-    column-gap: 5px;
 
     width: 379px;
     height: $select-height;
@@ -47,7 +53,7 @@ $select-height: 36px;
   }
 
   &__select-lvl {
-    width: 125px;
+    width: 103px;
   }
 
   &__background {
@@ -106,7 +112,7 @@ $select-height: 36px;
     width: 10px;
     height: 6px;
 
-    background-image: url('../../../../../assets/svg/arrow-down-dark.svg');
+    background-image: url('/assets/svg/arrow-down-dark.svg');
     border: none;
   }
 
