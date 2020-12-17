@@ -36,6 +36,7 @@ $select-height: 36px;
 
     display: flex;
     justify-content: space-between;
+    column-gap: 5px;
 
     width: 379px;
     height: $select-height;
@@ -46,7 +47,7 @@ $select-height: 36px;
   }
 
   &__select-lvl {
-    width: 103px;
+    width: 125px;
   }
 
   &__background {
