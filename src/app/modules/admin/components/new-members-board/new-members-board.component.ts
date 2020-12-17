@@ -3,8 +3,9 @@ import { Subscription } from 'rxjs';
 
 import { User, UserService } from '@digital-office/api/user-service';
 
+import { map } from 'rxjs/operators';
 import { Member } from '../../../../interfaces/member.interface';
-import { newMembers, NewMember } from './new-members';
+import { NewMember } from './new-members';
 
 @Component({
   selector: 'do-new-members-board',
@@ -14,8 +15,8 @@ import { newMembers, NewMember } from './new-members';
 export class NewMembersBoardComponent implements OnInit, OnDestroy {
   public user: User;
   private getUsersSubscription: Subscription;
-  public users: NewMember[] = newMembers;
-  public visibleUsers = this.users;
+  public users: NewMember[];
+  public visibleUsers: NewMember[];
   public specializations: string[] = [
     'All specializations',
     'Front-End Developer',
@@ -26,18 +27,36 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   ];
   public levels: string[] = ['All levels', 'Junior', 'Middle', 'Senior'];
   @Input() members: Member[] = [];
+
   public selectedSpecialization;
   public selectedLevel;
-  public searchName;
+  public searchName = null;
 
   constructor(private userService: UserService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.specializations);
+    this.getUsers();
+  }
 
   getUsers(): void {
     this.getUsersSubscription = this.userService
       .getAllUsersGet(0, 50, this.searchName)
-      .subscribe((data: User[]) => console.log(data));
+      .pipe(
+        map((data: User[]) =>
+          data.map((userDb) => ({
+            fullName: `${userDb.firstName} ${userDb.lastName} `,
+            projectsCount: 0,
+            level: '',
+            profileImgSrc: '',
+            specialization: '',
+          }))
+        )
+      )
+      .subscribe((data: NewMember[]) => {
+        this.users = [...data];
+        this.visibleUsers = [...this.users];
+      });
   }
 
   onSelect() {
