@@ -19,6 +19,9 @@
           placeholder="Специализация"
           disableOptionCentering="true"
         >
+          <mat-option value="" class="regular_text text_color_dark-1"
+            >Все специализации</mat-option
+          >
           <mat-option
             *ngFor="let specialization of specializations"
             [value]="specialization"
@@ -35,6 +38,9 @@
           class="regular_text text_color_dark-1"
           placeholder="Уровень"
         >
+          <mat-option value="" class="regular_text text_color_dark-1"
+            >Все уровни</mat-option
+          >
           <mat-option
             *ngFor="let level of levels"
             [value]="level"
@@ -47,8 +53,8 @@
     </div>
     <div class="new-members">
       <do-new-member
-        *ngFor="let visiblyUser of visibleUsers"
-        [newMember]="visiblyUser"
+        *ngFor="let user of visibleUsers"
+        [newMember]="user"
       ></do-new-member>
     </div>
     <div class="members-form__background">
