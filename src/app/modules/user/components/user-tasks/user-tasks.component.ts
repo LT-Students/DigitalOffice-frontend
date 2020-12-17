@@ -1,7 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs';
 
 import { IProject } from '../../../../interfaces/project.interface';
-import { ITimePeriod } from '../../../../interfaces/time-period.interface';
+import { IDatePeriod } from '../../../../interfaces/date-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
 
 @Component({
@@ -10,7 +12,10 @@ import { AttendanceService } from '../attendance/attendance.service';
   styleUrls: ['./user-tasks.component.scss'],
 })
 export class UserTasksComponent implements OnInit, OnDestroy {
-  @Input() timePeriodSelected: ITimePeriod;
+  @Input() timePeriodSelected: IDatePeriod;
+
+  private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
+
   public projects: IProject[];
 
   isOrderedByProject = false;
@@ -18,12 +23,23 @@ export class UserTasksComponent implements OnInit, OnDestroy {
   startPeriod: Date;
   endPeriod: Date;
   tasksCount = 0;
-  constructor(private attendanceService: AttendanceService) {}
+
+  public startDate: Date | null;
+  public endDate: Date | null;
+
+  constructor(public attendanceService: AttendanceService) {}
 
   ngOnInit() {
     this.attendanceService.projects$.subscribe(
       (projects: IProject[]) => (this.projects = projects)
     );
+
+    this.attendanceService.datePeriod$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((datePeriod) => {
+        this.startDate = datePeriod.startDate;
+        this.endDate = datePeriod.endDate;
+      });
 
     const now = new Date();
     this.startPeriod = new Date();
@@ -39,6 +55,8 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.attendanceService.projects$.unsubscribe();
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 
   sortByProject(): void {

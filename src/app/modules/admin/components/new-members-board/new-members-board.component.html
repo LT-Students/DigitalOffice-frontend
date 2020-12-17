@@ -13,15 +13,10 @@
         appearance="none"
       >
         <mat-select
-          [(value)]="selectedSpecialization"
-          (valueChange)="onSelect()"
           class="regular_text text_color_dark-1"
           placeholder="Специализация"
           disableOptionCentering="true"
         >
-          <mat-option value="" class="regular_text text_color_dark-1"
-            >Все специализации</mat-option
-          >
           <mat-option
             *ngFor="let specialization of specializations"
             [value]="specialization"
@@ -33,14 +28,9 @@
       </mat-form-field>
       <mat-form-field class="select members-form__select-lvl" appearance="none">
         <mat-select
-          [(value)]="selectedLevel"
-          (valueChange)="onSelect()"
           class="regular_text text_color_dark-1"
           placeholder="Уровень"
         >
-          <mat-option value="" class="regular_text text_color_dark-1"
-            >Все уровни</mat-option
-          >
           <mat-option
             *ngFor="let level of levels"
             [value]="level"
@@ -53,23 +43,18 @@
     </div>
     <div class="new-members">
       <do-new-member
-        *ngFor="let user of visibleUsers"
+        *ngFor="let user of users"
         [newMember]="user"
       ></do-new-member>
     </div>
     <div class="members-form__background">
-      <div *ngIf="this.visibleUsers?.length === 0" class="no-members-icon">
+      <div *ngIf="this.users.length === 0" class="no-members-icon">
         <img src="/assets/images/tumbleweed.png" alt="tumbleweed" />
         <span class="regular_text text_color_gray">Пока тут никого...</span>
       </div>
     </div>
     <div class="members-form__button-container">
-      <button
-        mat-flat-button
-        color="accent"
-        disabled
-        (click)="onChooseMemberClick()"
-      >
+      <button mat-flat-button color="primary" (click)="onChooseMemberClick()">
         Добавить участников
       </button>
     </div>

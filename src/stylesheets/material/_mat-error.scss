@@ -1,0 +1,12 @@
+@import 'base/variables';
+@import 'base/fonts';
+
+.mat-error {
+  font-family: $regular_font;
+  font-size: 14px;
+  font-weight: normal;
+  font-style: normal;
+  line-height: 24px;
+
+  color: $negative_accent;
+}

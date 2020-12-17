@@ -71,26 +71,11 @@ export class LoginComponent implements OnInit {
       );
   }
 
-  isEmailInputValid(): boolean {
-    return (
-      !this.loginForm.get('email').touched ||
-      !this.loginForm.get('email').invalid
-    );
+  get email() {
+    return this.loginForm.get('email');
   }
 
-  isPasswordInputValid(): boolean {
-    return (
-      !this.loginForm.get('password').touched ||
-      !this.loginForm.get('password').invalid
-    );
-  }
-
-  isDisable(): boolean {
-    return (
-      !this.loginForm.get('email').touched ||
-      this.loginForm.get('password').invalid ||
-      !this.loginForm.get('password').touched ||
-      this.loginForm.get('password').invalid
-    );
+  get password() {
+    return this.loginForm.get('password');
   }
 }

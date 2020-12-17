@@ -3,7 +3,7 @@ import { ElementRef, ViewChild } from '@angular/core';
 import { Time } from '@angular/common';
 import { Chart } from 'chart.js';
 
-import { ITimePeriod } from '../../../../interfaces/time-period.interface';
+import { IDatePeriod } from '../../../../interfaces/date-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
@@ -54,8 +54,10 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.attendanceService.plannedHours$.subscribe((period: ITimePeriod) => {
-      this.recommendedTime = this.attendanceService.countPlannedHours(period);
+    this.attendanceService.datePeriod$.subscribe((period: IDatePeriod) => {
+      this.recommendedTime = this.attendanceService.countRecommendedTime(
+        period
+      );
     });
 
     const minutesByProjects = this.projects.map((project: IProject) =>
@@ -152,7 +154,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.attendanceService.plannedHours$.unsubscribe();
+    this.attendanceService.datePeriod$.unsubscribe();
   }
 
   countMinutesByTask(project: IProject): number {

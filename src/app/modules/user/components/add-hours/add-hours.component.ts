@@ -1,19 +1,13 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { Time } from '@angular/common';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs';
 
 import { User } from '@digital-office/api/user-service';
-
-import { ITimePeriod } from '../../../../interfaces/time-period.interface';
 import { AttendanceService } from '../attendance/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
+import { timeValidator } from './add-hours.validators';
 
 @Component({
   selector: 'do-add-hours',
@@ -22,48 +16,84 @@ import { ITask } from '../../../../interfaces/task.interface';
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
   @Input() user: User;
-  @ViewChild('task') inputTask: ElementRef;
-  @ViewChild('description') textFieldDescription: ElementRef;
-  @ViewChild('inputHours') inputHours: ElementRef;
-  @ViewChild('inputMinutes') inputMinutes: ElementRef;
+  private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  _projects: IProject[];
+  public projects: IProject[];
 
-  projectSelected: string;
+  public addHoursForm: FormGroup;
 
-  public recommendedTime: Time = { hours: 8, minutes: 0 };
-
-  constructor(private attendanceService: AttendanceService) {
-    this._projects = attendanceService.getProjects();
-  }
+  constructor(
+    private fb: FormBuilder,
+    private attendanceService: AttendanceService
+  ) {}
 
   ngOnInit() {
-    this.attendanceService.plannedHours$.subscribe((period: ITimePeriod) => {
-      this.recommendedTime = this.attendanceService.countPlannedHours(period);
+    this.addHoursForm = this.fb.group({
+      time: this.fb.group({
+        hours: [
+          '',
+          [Validators.required, timeValidator(() => this.getHours())],
+        ],
+        minutes: ['', [Validators.required, Validators.max(59)]],
+      }),
+      project: ['', Validators.required],
+      task: ['', Validators.required],
+      description: [''],
     });
+
+    this.attendanceService.recommendedTime$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((timePeriod) => {
+        this.addHoursForm
+          .get('time.hours')
+          .setValue(this.attendanceService.normalizeTime(timePeriod.hours));
+        this.addHoursForm
+          .get('time.minutes')
+          .setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
+      });
+
+    this.projects = this.attendanceService.getProjects();
   }
 
-  ngOnDestroy() {
-    this.attendanceService.plannedHours$.unsubscribe();
-  }
-
-  getProjectNames(): string[] {
-    return this._projects.map((project: IProject) => project.name);
-  }
-
-  addTask() {
-    let project_id = this.attendanceService.getProjectIdByName(
-      this.projectSelected
+  private getHours(): number {
+    const currentDatePeriod = this.attendanceService.datePeriod$.getValue();
+    return Number(
+      this.attendanceService.countRecommendedTime(currentDatePeriod, 24).hours
     );
-    let task: ITask = {
-      name: this.inputTask.nativeElement.value,
-      description: this.textFieldDescription.nativeElement.value,
+  }
+
+  public onSubmit(): void {
+    const project_id = Number(this.addHoursForm.get('project').value);
+    const task: ITask = {
+      name: this.addHoursForm.get('task').value,
+      description: this.addHoursForm.get('description').value,
       createdAt: new Date(),
       time: {
-        hours: this.inputHours.nativeElement.value,
-        minutes: this.inputMinutes.nativeElement.value,
+        hours: Number(this.addHoursForm.get('time.hours').value),
+        minutes: Number(this.addHoursForm.get('time.minutes').value),
       },
     };
     this.attendanceService.addTaskToProject(task, project_id);
+    this.addHoursForm.reset();
+    const datePeriod = this.attendanceService.datePeriod$.getValue();
+    this.attendanceService.onDatePeriodChange(datePeriod);
+  }
+
+  public getTimePeriodErrorMessage(): String {
+    const hours = this.addHoursForm.get('time.hours');
+    const minutes = this.addHoursForm.get('time.minutes');
+
+    if (hours.hasError('periodExceedsMaxValue')) {
+      return 'Превышено максимальное время для выбранного периода';
+    }
+    if (minutes.hasError('max')) {
+      return 'Введите корректные минуты';
+    }
+    return 'Введите корретный период времени';
+  }
+
+  ngOnDestroy() {
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

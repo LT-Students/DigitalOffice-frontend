@@ -1,9 +1,98 @@
-.mat-flat-button .mat-button-wrapper{
-  display: flex;
-  align-items: center;
+@import 'base/variables';
+@import 'base/fonts';
+
+button.mat-flat-button.mat-primary,
+button.mat-stroked-button.mat-primary,
+button.mat-button-disabled,
+button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  margin: 0;
+  padding: 4px 12px;
+
+  height: 32px;
+
+  font-family: $regular_font, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+
+  color: transparent;
+
+  border-radius: 5px;
+}
+
+button.mat-flat-button.mat-primary,
+button.mat-stroked-button.mat-primary {
+  font-weight: normal;
+}
+
+button.mat-button-disabled,
+button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  font-weight: 400;
+}
+
+button.mat-flat-button.mat-primary,
+button.mat-button-disabled,
+button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  border: none;
+}
+
+button.mat-flat-button.mat-primary {
+  padding: 0 15px 0 15px;
+
+  min-width: 192px;
+
+  color: $light_1;
+  background: $accent_color_bright;
+}
+
+button.mat-stroked-button.mat-primary {
+  padding: 0 5px 0 5px;
+
+  min-width: 192px;
+
+  color: $accent_color;
+  border: 1px solid;
+}
+
+button.mat-button-disabled {
+  padding: 0 30px 0 30px;
+
+  min-width: 125px;
+
+  color: $gray;
+  background: $light_2;
+}
+
+button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+  width: 100%;
+  max-width: 360px;
+
+  color: $light_1;
+  background: $dark_1;
+}
+
+.mat-flat-button .mat-button-wrapper {
+  margin: 0;
   padding: 3px 0;
 
-  .regular_text{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .regular_text {
     vertical-align: baseline;
+  }
+}
+
+.mat-flat-button .mat-button-focus-overlay {
+  background-color: transparent;
+}
+
+.mat-flat-button.mat-flat-button_black {
+  height: 40px;
+
+  background-color: $dark_1;
+
+  .mat-button-wrapper {
+    color: $light_1;
   }
 }

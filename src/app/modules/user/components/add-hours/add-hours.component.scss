@@ -2,7 +2,7 @@
 @import 'base/fonts';
 
 .add-hours {
-  padding: 9.6%;
+  padding: 48px;
 
   &__title {
     color: $dark_1;
@@ -21,85 +21,62 @@
     }
   }
 
-  &__period {
+  &__form {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+  }
 
-    height: 32px;
+  &__label {
+    margin-bottom: 8px;
 
-    color: $dark_1;
-
-    span {
-      margin: 0;
-      padding: 0;
+    &_for_project {
+      margin-top: 16px;
     }
 
-    input {
-      margin: 0;
-      padding: 0;
+    &_for_task {
+      margin-top: 12px;
+    }
+
+    &_for_description {
+      margin-top: 8px;
     }
   }
 
-  &__select {
-    margin-top: 10px;
-
-    .select-project {
-      margin-bottom: 20px;
+  &__form-element {
+    &_ctrl_hours {
+      max-width: 60px;
     }
 
-    .select-tag {
-      margin-bottom: 20px;
+    &_ctrl_minutes {
+      max-width: 50px;
+    }
 
-      .do-input {
-        padding: 5px;
+    &_ctrl_description {
+      textarea {
+        resize: none;
 
-        input[type='text'] {
-          padding: 0;
-
-          width: 100%;
-          height: 50px;
-
-          border: none;
-          border-radius: 5px;
-          outline: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-        }
+        height: 86px;
       }
     }
   }
 
-  &__comment {
-    color: #bdbdbd;
+  &__period {
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
 
-    textarea {
-      padding: 0;
+    span {
+      line-height: 32px;
 
-      width: 100%;
-      height: 135px;
-
-      border: none;
-      border-radius: 5px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
+      color: $dark_1;
     }
   }
-}
 
-.add_time {
-  width: 40px;
+  &__hours-char {
+    margin-left: 8px;
+  }
 
-  border: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-
-  outline: none;
-
-  &::placeholder {
-    @extend %header_font_basic;
-    font-size: 28px;
-    line-height: 32px;
+  &__submit-btn {
+    margin-top: 21px;
   }
 }
