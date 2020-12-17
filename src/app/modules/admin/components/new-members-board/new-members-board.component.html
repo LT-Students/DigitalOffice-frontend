@@ -3,7 +3,7 @@
     <img src="/assets/svg/cross.svg" alt="cross" />
   </button>
   <h3 class="members-board__title h3 text_color_dark-1">Добавить участника</h3>
-  <div class="members-form__background" *ngIf="this.users.length === 0">
+  <div class="members-form__background" *ngIf="this.users?.length === 0">
     <div class="no-members-icon">
       <img src="/assets/images/tumbleweed.png" alt="tumbleweed" />
       <span class="regular_text text_color_gray">Пока тут никого...</span>

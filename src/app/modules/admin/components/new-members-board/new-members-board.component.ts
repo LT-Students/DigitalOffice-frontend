@@ -35,7 +35,6 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    console.log(this.specializations);
     this.getUsers();
   }
 
@@ -54,7 +53,7 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((data: NewMember[]) => {
-        this.users = [...data];
+        this.users = data;
         this.visibleUsers = [...this.users];
       });
   }

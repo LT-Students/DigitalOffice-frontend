@@ -9,7 +9,11 @@
 <div class="content-container bg-white">
   <section class="project-info">
     <h2 class="project-info__title h3">Общая информация</h2>
-    <form [formGroup]="profileForm" class="project-info__form regular_text">
+    <form
+      [formGroup]="profileForm"
+      autocomplete="off"
+      class="project-info__form regular_text"
+    >
       <div class="project-info__name">
         <label class="project-info__label" for="name">Название проекта</label>
         <mat-form-field>
