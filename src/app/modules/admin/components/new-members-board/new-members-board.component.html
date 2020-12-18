@@ -3,12 +3,6 @@
     <img src="/assets/svg/cross.svg" alt="cross" />
   </button>
   <h3 class="members-board__title h3 text_color_dark-1">Добавить участника</h3>
-  <div class="members-form__background" *ngIf="this.users?.length === 0">
-    <div class="no-members-icon">
-      <img src="/assets/images/tumbleweed.png" alt="tumbleweed" />
-      <span class="regular_text text_color_gray">Пока тут никого...</span>
-    </div>
-  </div>
   <form class="members-form">
     <div class="members-form__search">
       <do-search (searchClick)="onSearchClick($event)"></do-search>
@@ -52,6 +46,12 @@
         *ngFor="let user of users"
         [newMember]="user"
       ></do-new-member>
+    </div>
+    <div class="members-form__background" *ngIf="this.users?.length === 0">
+      <div class="no-members-icon">
+        <img src="/assets/images/tumbleweed.png" alt="tumbleweed" />
+        <span class="regular_text text_color_gray">Пока тут никого...</span>
+      </div>
     </div>
     <div class="members-form__button-container">
       <button mat-flat-button color="primary" (click)="onChooseMemberClick()">
