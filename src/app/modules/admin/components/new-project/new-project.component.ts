@@ -48,7 +48,7 @@ export class NewProjectComponent {
   public addMember(): void {
     this.dialog.open(NewMembersBoardComponent, {
       width: '720px',
-      height: '700px',
+      height: '650px',
     });
   }
 }

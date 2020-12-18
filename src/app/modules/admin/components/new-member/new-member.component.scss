@@ -5,8 +5,10 @@ $select-height: 24px;
 
 .new-member {
   margin-bottom: 14px;
+
   display: flex;
   align-items: center;
+
   height: 80px;
 
   background-color: $light_1;
@@ -35,14 +37,18 @@ $select-height: 24px;
 .new-member-form {
   display: flex;
   flex: 1 0 auto;
+
   justify-content: space-between;
   align-items: center;
+
   white-space: nowrap;
+
   color: $gray;
 
   &__selects {
     margin-top: -10px;
     margin-bottom: 14px;
+
     width: 24%;
     height: $select-height;
   }

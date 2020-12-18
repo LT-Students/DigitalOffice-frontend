@@ -1,32 +1,29 @@
 <div class="members-board">
   <button mat-icon-button class="members-board__close-button" mat-dialog-close>
-    <img src="/assets/svg/cross.svg" alt="cross"/>
+    <img src="/assets/svg/cross.svg" alt="cross" />
   </button>
   <h3 class="members-board__title h3 text_color_dark-1">Добавить участника</h3>
-  <div class="members-form__background" *ngIf="this.users.length === 0">
-    <div class="no-members-icon">
-      <img src="/assets/images/tumbleweed.png" alt="tumbleweed"/>
-      <span class="regular_text text_color_gray">Пока тут никого...</span>
-    </div>
-  </div>
   <form class="members-form">
     <div class="members-form__search">
       <do-search (searchClick)="onSearchClick($event)"></do-search>
     </div>
     <div class="members-form__selects">
       <mat-form-field
-          class="select members-form__select-spec"
-          appearance="none"
+        class="select members-form__select-spec"
+        appearance="none"
       >
         <mat-select
-            class="regular_text text_color_dark-1"
-            placeholder="Специализация"
-            disableOptionCentering="true"
+          class="regular_text text_color_dark-1"
+          placeholder="Специализация"
+          disableOptionCentering="true"
         >
+          <mat-option value="" class="regular_text text_color_dark-1"
+            >Все специализации</mat-option
+          >
           <mat-option
-              *ngFor="let specialization of specializations"
-              [value]="specialization"
-              class="regular_text text_color_dark-1"
+            *ngFor="let specialization of specializations"
+            [value]="specialization"
+            class="regular_text text_color_dark-1"
           >
             {{ specialization }}
           </mat-option>
@@ -34,13 +31,16 @@
       </mat-form-field>
       <mat-form-field class="select members-form__select-lvl" appearance="none">
         <mat-select
-            class="regular_text text_color_dark-1"
-            placeholder="Уровень"
+          class="regular_text text_color_dark-1"
+          placeholder="Уровень"
         >
+          <mat-option value="" class="regular_text text_color_dark-1"
+            >Все уровни</mat-option
+          >
           <mat-option
-              *ngFor="let level of levels"
-              [value]="level"
-              class="regular_text text_color_dark-1"
+            *ngFor="let level of levels"
+            [value]="level"
+            class="regular_text text_color_dark-1"
           >
             {{ level }}
           </mat-option>
@@ -49,9 +49,15 @@
     </div>
     <div class="new-members">
       <do-new-member
-          *ngFor="let user of users"
-          [newMember]="user"
+        *ngFor="let user of users"
+        [newMember]="user"
       ></do-new-member>
+    </div>
+    <div class="members-form__background" *ngIf="this.users?.length === 0">
+      <div class="no-members-icon">
+        <img src="/assets/images/tumbleweed.png" alt="tumbleweed" />
+        <span class="regular_text text_color_gray">Пока тут никого...</span>
+      </div>
     </div>
     <div class="members-form__button-container">
       <button mat-flat-button color="primary" (click)="onChooseMemberClick()">

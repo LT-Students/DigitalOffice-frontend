@@ -1,6 +1,6 @@
 <a class="nav-link regular_text" routerLink="/admin/dashboard">
   <svg xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 1 L1 5 L4 9"/>
+    <path d="M4 1 L1 5 L4 9" />
   </svg>
   К дашборду
 </a>
@@ -9,24 +9,38 @@
 <div class="content-container bg-white">
   <section class="project-info">
     <h2 class="project-info__title h3">Общая информация</h2>
-    <form [formGroup]="profileForm" class="project-info__form regular_text">
+    <form
+      [formGroup]="profileForm"
+      autocomplete="off"
+      class="project-info__form regular_text"
+    >
       <div class="project-info__name">
         <label class="project-info__label" for="name">Название проекта</label>
         <mat-form-field>
-          <input matInput type="text" id="name" formControlName="name"/>
+          <input matInput type="text" id="name" formControlName="name" />
         </mat-form-field>
       </div>
       <div class="project-info__abbr-name">
-        <label class="project-info__label" for="abbr-name">Сокращенное название</label>
+        <label class="project-info__label" for="abbr-name"
+          >Сокращенное название</label
+        >
         <mat-form-field>
-          <input matInput type="text" id="abbr-name" formControlName="shortName"/>
+          <input
+            matInput
+            type="text"
+            id="abbr-name"
+            formControlName="shortName"
+          />
         </mat-form-field>
       </div>
       <div class="project-info__department">
         <label class="project-info__label" for="department">Департамент</label>
         <mat-form-field class="mat-form-field_default-select" appearance="none">
           <mat-select id="department" formControlName="departments">
-            <mat-option *ngFor="let department of departments" [value]="department">
+            <mat-option
+              *ngFor="let department of departments"
+              [value]="department"
+            >
               {{ department }}
             </mat-option>
           </mat-select>
@@ -35,11 +49,12 @@
       <div class="project-info__description">
         <label class="project-info__label" for="description">Описание</label>
         <mat-form-field appearance="none">
-        <textarea
+          <textarea
             matInput
             id="description"
             formControlName="description"
-            placeholder="Краткое описание сути проекта на его публичной карточке"></textarea>
+            placeholder="Краткое описание сути проекта на его публичной карточке"
+          ></textarea>
         </mat-form-field>
       </div>
     </form>
@@ -53,20 +68,24 @@
     <mat-tab-group class="team__tabs mat-tab-group-override mat-tab-shadow-fix">
       <mat-tab label="Список" class="mat-tab-first team__tab">
         <div class="team-list">
-          <button mat-mini-fab
-                  class="team-list__new-member mat-mini-fab-override mat-elevation-z0"
-                  (click)="addMember()">
-            <img src="assets/svg/plus.svg"
-                 width="26"
-                 height="26"
-                 alt="Добавить сотрудника."/>
+          <button
+            mat-mini-fab
+            class="team-list__new-member mat-mini-fab-override mat-elevation-z0"
+            (click)="addMember()"
+          >
+            <img
+              src="assets/svg/plus.svg"
+              width="26"
+              height="26"
+              alt="Добавить сотрудника."
+            />
           </button>
           <ul class="team-list__members-list">
             <li class="team-list__member" *ngFor="let member of team">
               <a href="#" [title]="member.name">
                 <do-profile-image
-                    [src]="member.profileImgSrc"
-                    *ngIf="member.profileImgSrc; else iconDummy"
+                  [src]="member.profileImgSrc"
+                  *ngIf="member.profileImgSrc; else iconDummy"
                 ></do-profile-image>
                 <ng-template #iconDummy>
                   <div class="team-list__icon-dummy"></div>
@@ -79,8 +98,8 @@
       <mat-tab label="Карточки" class="mat-tab-last team__tab">
         <div class="team-cards">
           <do-team-card
-              *ngFor="let team of teams"
-              [teamCard]="team"
+            *ngFor="let team of teams"
+            [teamCard]="team"
           ></do-team-card>
         </div>
       </mat-tab>

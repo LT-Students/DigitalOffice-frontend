@@ -1,68 +1,98 @@
 <div class="add-hours do-card bg-white">
   <span class="add-hours__title h2">Внести часы</span>
-  <form [formGroup]="addHoursForm"
-        (ngSubmit)="onSubmit()"
-        autocomplete="off"
-        class="add-hours__form regular_text">
+  <form
+    [formGroup]="addHoursForm"
+    (ngSubmit)="onSubmit()"
+    autocomplete="off"
+    class="add-hours__form regular_text"
+  >
     <div formGroupName="time" class="add-hours__period">
-      <mat-form-field class="add-hours__form-element add-hours__form-element_ctrl_hours mat-form-field_time-input"
-                      appearance="none">
-        <input matInput
-               formControlName="hours"
-               class="add-hours__time h2 text-dark_1"
-               type="number"
-               maxlength="3"/>
+      <mat-form-field
+        class="add-hours__form-element add-hours__form-element_ctrl_hours mat-form-field_time-input"
+        appearance="none"
+      >
+        <input
+          matInput
+          formControlName="hours"
+          class="add-hours__time h2 text-dark_1"
+          type="number"
+          maxlength="3"
+        />
       </mat-form-field>
       <span class="h2">:</span>
-      <mat-form-field class="add-hours__form-element add-hours__form-element_ctrl_minutes mat-form-field_time-input"
-                      appearance="none">
-        <input matInput
-               formControlName="minutes"
-               class="add-hours__time h2 text-dark_1"
-               type="number"
-               maxlength="2"/>
+      <mat-form-field
+        class="add-hours__form-element add-hours__form-element_ctrl_minutes mat-form-field_time-input"
+        appearance="none"
+      >
+        <input
+          matInput
+          formControlName="minutes"
+          class="add-hours__time h2 text-dark_1"
+          type="number"
+          maxlength="2"
+        />
       </mat-form-field>
       <span class="h2 add-hours__hours-char">ч</span>
     </div>
-    <mat-error *ngIf="!addHoursForm.get('time').valid">{{
-        getTimePeriodErrorMessage()
-      }}</mat-error>
+    <mat-error *ngIf="addHoursForm.get('time').invalid">{{
+      getTimePeriodErrorMessage()
+    }}</mat-error>
 
     <label class="add-hours__label add-hours__label_for_project" for="project"
-    >Проект</label>
+      >Проект</label
+    >
     <mat-form-field
-        class="add-hours__form-element add-hours__form-element_ctrl_project select mat-form-field_default-select"
-        appearance="none">
-      <mat-select id="project"
-                  formControlName="project"
-                  [value]="projects[0].name">
+      class="add-hours__form-element add-hours__form-element_ctrl_project select mat-form-field_default-select"
+      appearance="none"
+    >
+      <mat-select
+        id="project"
+        formControlName="project"
+        [value]="projects[0].name"
+      >
         <mat-option *ngFor="let project of projects; let i = index" [value]="i">
           {{ project.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <label class="add-hours__label add-hours__label_for_task" for="task">Задача</label>
-    <mat-form-field class="add-hours__form-element add-hours__form-element_ctrl_task"
-                    appearance="none">
-      <input id="task"
-             formControlName="task"
-             matInput
-             class="bg-light_2"
-             type="text"
-             style="border: none"/>
+    <label class="add-hours__label add-hours__label_for_task" for="task"
+      >Задача</label
+    >
+    <mat-form-field
+      class="add-hours__form-element add-hours__form-element_ctrl_task"
+      appearance="none"
+    >
+      <input
+        id="task"
+        formControlName="task"
+        matInput
+        class="bg-light_2"
+        type="text"
+        style="border: none"
+      />
     </mat-form-field>
-    <label class="add-hours__label add-hours__label_for_description"
-           for="description">Описание</label>
-    <mat-form-field class="add-hours__form-element add-hours__form-element_ctrl_description"
-                    appearance="none">
-      <textarea id="description"
-                formControlName="description"
-                matInput
-                class="bg-light_2"></textarea>
+    <label
+      class="add-hours__label add-hours__label_for_description"
+      for="description"
+      >Описание</label
+    >
+    <mat-form-field
+      class="add-hours__form-element add-hours__form-element_ctrl_description"
+      appearance="none"
+    >
+      <textarea
+        id="description"
+        formControlName="description"
+        matInput
+        class="bg-light_2"
+      ></textarea>
     </mat-form-field>
-    <button mat-flat-button
-            [disabled]="!addHoursForm.valid"
-            class="mat-flat-button mat-flat-button_black add-hours__submit-btn"> Добавить
+    <button
+      mat-flat-button
+      [disabled]="addHoursForm.invalid"
+      class="mat-flat-button mat-flat-button_black add-hours__submit-btn"
+    >
+      Добавить
     </button>
   </form>
 </div>
