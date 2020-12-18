@@ -34,7 +34,7 @@
       </mat-form-field>
       <span class="h2 add-hours__hours-char">ч</span>
     </div>
-    <mat-error *ngIf="!addHoursForm.get('time').valid">{{
+    <mat-error *ngIf="addHoursForm.get('time').invalid">{{
       getTimePeriodErrorMessage()
     }}</mat-error>
 
@@ -89,7 +89,7 @@
     </mat-form-field>
     <button
       mat-flat-button
-      [disabled]="!addHoursForm.valid"
+      [disabled]="addHoursForm.invalid"
       class="mat-flat-button mat-flat-button_black add-hours__submit-btn"
     >
       Добавить
