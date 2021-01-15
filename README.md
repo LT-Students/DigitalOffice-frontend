@@ -1,27 +1,31 @@
-# DigitalOfficeFrontend
+## Для сборки фронтенда нужно:
+1. Установить Node.js https://nodejs.org/en/
+2. Выполнить команду 
+```
+npm install
+```
+3. Запустить проект с помощью команды 
+```
+ng serve
+```
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.22.
+## Для создания сертификата
+1. Создать сертификат с помощью инструмента generate-trusted-ssl-certificate. Для этого выполним следующие команды:
+  ```
+  git clone https://github.com/RubenVermeulen/generate-trusted-ssl-certificate.git
+  cd generate-trusted-ssl-certificate
+  bash generate.sh
+  ```
+  Должны будут появиться файлы server.crt и server.key
 
-## Development server
-
-Ввести `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+2. Далее необходимо установить сертификат, для этого нужно дважды нажать на созданный файл server.crt
+3. Нажать на “Установить сертификат…”
+4. Выбрать “Локальный компьютер”
+5. Выбрать “Поместить все сертификаты в следующее хранилище”
+6. Выбрать “Доверенные корневые центры сертификации”
+7. Далее нажать “ОK” и “Далее”
+8. Теперь в проекте нужно создать папку ssl и туда поместить файлы server.crt и server.key
+9. Запустить проект с помощью команды 
+```
+ng serve --ssl true -o --sslKey ssl/server.key --sslCert ssl/server.crt
+```
