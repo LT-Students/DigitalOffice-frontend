@@ -2,7 +2,7 @@
   <svg xmlns="http://www.w3.org/2000/svg">
     <path d="M4 1 L1 5 L4 9" />
   </svg>
-  К дашборду
+  К доске проектов
 </a>
 
 <h1 class="h1 h1_dark_2">Новый проект</h1>
@@ -104,5 +104,27 @@
         </div>
       </mat-tab>
     </mat-tab-group>
+  </section>
+  <section class="project-info__addition">
+    <h2 class="project-info__addition__title h3">Дополнительно</h2>
+    <form
+      [formGroup]="profileForm"
+      autocomplete="off"
+      class="project-info__addition__form regular_text"
+    >
+      <div class="project-info__addition">
+        <label class="project-info__label regular_text" for="addition"
+          >Информация для команды</label
+        >
+        <mat-form-field appearance="none">
+          <textarea
+            matInput
+            id="addition"
+            formControlName="addition"
+            placeholder=""
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </form>
   </section>
 </div>
