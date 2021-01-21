@@ -6,9 +6,9 @@ import { Input, Component, OnInit } from '@angular/core';
   styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit {
-  hasNotification = false;
-  isDarkMode = true;
-  @Input() userName;
+  //hasNotification = false;
+  //isDarkMode = true;
+  //@Input() userName;
 
   constructor() {}
 

@@ -1,9 +1,9 @@
 <div class="content-container">
-  <do-toolbar [userName]="user.firstName"
-              class="toolbar">
-  </do-toolbar>
+  <do-toolbar class="toolbar__container"></do-toolbar>
+
   <div class="wrapper">
+    <do-header [userName]="user.firstName" class="header__container">
+    </do-header>
     <router-outlet></router-outlet>
   </div>
 </div>
-

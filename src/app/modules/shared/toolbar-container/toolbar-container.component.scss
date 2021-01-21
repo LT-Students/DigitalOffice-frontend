@@ -7,22 +7,31 @@
 
   background: $light_2;
 
-  .toolbar {
+  .toolbar__container {
     position: fixed;
     z-index: 2;
     top: 0;
+    left: 0;
 
-    width: 100%;
+    width: 140px;
+    height: 100vh;
+
+    background: $light_1;
   }
 
   .wrapper {
     z-index: 1;
 
-    margin-top: 56px;
-    padding: 38px 48px;
+    padding: 12px 48px 38px;
 
     width: 100%;
     max-width: 1024px;
     height: 100%;
+
+    .header__container {
+      z-index: 2;
+
+      margin-bottom: 75px;
+    }
   }
 }

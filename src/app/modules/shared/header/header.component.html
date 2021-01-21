@@ -1,0 +1,27 @@
+<div class="header">
+  <div class="header__search__container"></div>
+  <div class="header__privacy">
+    <a class="header__privacy__greeting" routerLink="/user/attendance">
+      <img src="../../../../assets/svg/greeting-photo.svg" alt="" />
+      <p class="regular_text">
+        Привет, <span class="h4">{{ userName }}</span>
+      </p>
+    </a>
+    <div
+      class="header__notification"
+      (click)="this.hasNotification = !this.hasNotification"
+    >
+      <img
+        src="../../../../assets/svg/notification.svg"
+        alt="notification"
+        class="toolbar__notification__bell"
+      />
+      <img
+        src="../../../../assets/svg/notification-light.svg"
+        alt="notification"
+        class="header__notification__light"
+        *ngIf="hasNotification"
+      />
+    </div>
+  </div>
+</div>

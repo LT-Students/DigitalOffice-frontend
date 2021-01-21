@@ -1,30 +1,13 @@
-<div class="toolbar">
-  <div class="toolbar__menu">
-    <a routerLink="/user/attendance">
-      <img src="../../../../assets/svg/menu.svg" alt="menu">
-    </a>
-  </div>
+<div class="toolbar" xmlns="http://www.w3.org/1999/html">
   <div class="toolbar__logo">
-    <a class=h3_light routerLink="/user/attendance">trrak!</a>
+    <a class="h3_light" routerLink="/user/attendance">trrak!</a>
   </div>
-  <div class="toolbar__mode">
-      <span class="toolbar__mode__change" (click)="this.isDarkMode= !this.isDarkMode">
-        <p class="regular_text"> {{ isDarkMode ? 'темный' : 'светлый' }} режим <img
-            src="../../../../assets/svg/mode.svg" alt=""></p>
-      </span>
+  <div class="toolbar__theme-switch">
+    <img src="../../../../assets/svg/switch.svg" alt="" />
   </div>
-  <div class="toolbar__greeting">
-    <a class="toolbar__greeting__nav-link" routerLink="/user/attendance">
-      <img src="../../../../assets/svg/greeting-photo.svg" alt="">
-      <p class="regular_text">Привет, <span class="h4">{{userName}}</span></p>
-    </a>
-  </div>
-  <div class="toolbar__notification" (click)="this.hasNotification = !this.hasNotification">
-    <img src="../../../../assets/svg/notification.svg" alt="notification" class="toolbar__notification__bell">
-    <img src="../../../../assets/svg/notification-light.svg"
-         alt="notification"
-         class="toolbar__notification__light"
-         *ngIf="hasNotification">
+  <h4 class="regular_text">Дашборд</h4>
+  <div class="toolbar__links">
+    <a routerLink="/user/attendance">Учет заполнения</a><br />
+    <a>Доска проектов</a>
   </div>
 </div>
-
