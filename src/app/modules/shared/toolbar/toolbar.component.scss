@@ -20,13 +20,45 @@
   &__theme-switch {
     margin: 49px 0 30px;
 
-    display: flex;
+    .switch-checkbox {
+      position: absolute;
+      z-index: 2;
 
-    width: 52px;
-    height: 23px;
+      width: 52px;
+      height: 23px;
 
-    border: 1px solid $accent_positive;
-    border-radius: 22px;
+      opacity: 0;
+    }
+
+    .switch__container {
+      width: 52px;
+      height: 23px;
+
+      border: 1px solid $accent_positive;
+      border-radius: 22px;
+
+      transition: 250ms;
+
+      img {
+        z-index: 1;
+
+        display: block;
+
+        height: 100%;
+
+        transition: all 250ms ease-in;
+      }
+    }
+
+    .switch-checkbox:checked ~ .switch__container {
+      background-color: $accent_positive;
+
+      img {
+        margin-left: 28px;
+
+        transform: rotate(0.48turn);
+      }
+    }
   }
 
   &__toolbar__links {

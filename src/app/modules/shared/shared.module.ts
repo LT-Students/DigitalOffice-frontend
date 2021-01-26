@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { MatSelectModule } from '@angular/material/select';
 
 import { ButtonComponent } from './button/button.component';
 import { SelectComponent } from './select/select.component';
@@ -20,7 +21,7 @@ import { HeaderComponent } from './header/header.component';
     SearchComponent,
     HeaderComponent,
   ],
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, MatSelectModule],
   exports: [
     ButtonComponent,
     SelectComponent,

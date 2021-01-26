@@ -1,15 +1,13 @@
 <div class="header">
   <div class="header__search">
-    <mat-form-field class="header__search__form" appearance="none">
-      <mat-select
-        class="select small_text"
-        placeholder="Выбрать раздел"
-        appearance="none"
-      >
-        <mat-option></mat-option>
-      </mat-select>
-    </mat-form-field>
-    <do-search> </do-search>
+    <mat-select
+      class="select small_text"
+      placeholder="Выбрать раздел"
+      appearance="none"
+    >
+      <mat-option></mat-option>
+    </mat-select>
+    <do-search class="header__search__do-search"> </do-search>
   </div>
   <div class="header__privacy">
     <a class="header__privacy__greeting" routerLink="/user/attendance">
