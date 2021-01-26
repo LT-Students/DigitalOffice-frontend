@@ -2,7 +2,7 @@
 @import 'base/variables';
 
 .toolbar {
-  padding: 24px;
+  padding: 23px 24px;
 
   display: flex;
   flex-direction: column;
@@ -18,7 +18,7 @@
   }
 
   &__theme-switch {
-    margin: 50px 0 31px;
+    margin: 49px 0 30px;
 
     display: flex;
 
@@ -35,6 +35,16 @@
   }
 
   &__links {
-    margin-top: 35px;
+    margin-top: 34px;
+
+    a {
+      display: block;
+
+      color: $gray;
+    }
+
+    a:last-child {
+      margin-top: -10px;
+    }
   }
 }

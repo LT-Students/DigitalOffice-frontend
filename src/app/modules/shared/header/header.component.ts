@@ -1,5 +1,7 @@
 import { Input, Component, OnInit } from '@angular/core';
 
+import { MatSelectModule } from '@angular/material/select';
+
 @Component({
   selector: 'do-header',
   templateUrl: './header.component.html',

@@ -2,10 +2,29 @@
 @import 'base/variables';
 
 .header {
+  margin-bottom: 52px;
+
   display: flex;
   justify-content: space-between;
 
   box-sizing: border-box;
+
+  &__search {
+    display: flex;
+    align-items: stretch;
+
+    .mat-form-field-infix {
+      width: 0;
+    }
+
+    .select {
+      padding: 4px 0 4px 8px;
+
+      width: 134px;
+
+      background-color: $accent_color;
+    }
+  }
 
   &__privacy {
     display: flex;
@@ -34,11 +53,13 @@
     }
 
     &__notification {
+      margin-top: 5px;
+
       cursor: pointer;
 
       &__bell {
         width: 18px;
-        height: 24px;
+        height: 23px;
       }
 
       &__light {
