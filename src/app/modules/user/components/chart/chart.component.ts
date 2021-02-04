@@ -1,9 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ElementRef, ViewChild } from '@angular/core';
 import { Time } from '@angular/common';
-import { Chart } from 'chart.js';
+import { ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { IDatePeriod } from '../../../../interfaces/date-period.interface';
+import { Chart } from 'chart.js';
 import { AttendanceService } from '../attendance/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
@@ -14,15 +15,14 @@ import { ITask } from '../../../../interfaces/task.interface';
   styleUrls: ['./chart.component.scss'],
 })
 export class ChartComponent implements OnInit, OnDestroy {
-  @Input() allHoursPlan;
-  public projects: IProject[];
+  @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
-  // Hours of plan
-  public timeDescriptionValue: Time; // Difference between hours in the center under hours
+  private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
+  private ctx: CanvasRenderingContext2D;
+  private chart: Chart;
+  private minutesByProject: number[];
 
-  public recommendedTime: Time = { hours: 8, minutes: 0 };
-
-  COLORS = [
+  public COLORS = [
     '#7C799B',
     '#C7C6D8',
     '#FFB2B2',
@@ -32,107 +32,88 @@ export class ChartComponent implements OnInit, OnDestroy {
     '#FFBE97',
     '#BDBDBD',
   ];
+  public projects: IProject[];
+  public recommendedTime: Time;
+  public setTime: Time;
+  public spentTime: Time;
+  public remainingTime: Time;
+  public isPeriodEmpty: boolean;
+  public isFirstTaskForPeriod: boolean;
 
-  // variables for hours in the center
-  allHoursColor;
-
-  public spentTime;
-  // variables for string under hours in the center of the chart
-  timeDescriptionBackgroundColor;
-
-  timeDescriptionFontSize;
-  timeDescriptionColor;
-  //
-  @ViewChild('canvas', { static: true })
-  canvas: ElementRef<HTMLCanvasElement>;
-
-  private ctx: CanvasRenderingContext2D;
-
-  //
-  constructor(private attendanceService: AttendanceService) {
-    this.projects = this.attendanceService.getProjects();
-  }
+  constructor(private attendanceService: AttendanceService) {}
 
   ngOnInit() {
-    this.attendanceService.datePeriod$.subscribe((period: IDatePeriod) => {
-      this.recommendedTime = this.attendanceService.countRecommendedTime(
-        period
-      );
-    });
-
-    const minutesByProjects = this.projects.map((project: IProject) =>
-      this.countMinutesByTask(project)
-    );
-    //
-
-    // donut building
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    if (minutesByProjects.every((minutes: number) => minutes > 0)) {
-      let allSpentMinutes = minutesByProjects.reduce(
-        (sum, totalTime) => sum + totalTime,
-        0
-      );
-      let allRecommendedMinutes =
-        this.recommendedTime.hours * 60 + this.recommendedTime.minutes;
-
-      let recommendedHoursRemain = allRecommendedMinutes - allSpentMinutes;
-
-      this.recommendedTime = {
-        hours: Math.round(recommendedHoursRemain / 60),
-        minutes: recommendedHoursRemain % 60,
-      };
-
-      this.spentTime = {
-        hours: Math.round(allSpentMinutes / 60),
-        minutes: allSpentMinutes % 60,
-      };
-
-      this.timeDescriptionValue = this.recommendedTime;
-
-      this.allHoursColor = '#434348';
-      //
-
-      // String under hours
-      this.timeDescriptionColor = '#FFFFFF';
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      Number(this.timeDescriptionValue) >= 0
-        ? (this.timeDescriptionBackgroundColor = '#21D373')
-        : (this.timeDescriptionBackgroundColor = '#EB5757');
-      this.timeDescriptionFontSize = '16px';
-      //
-
-      let myChart = new Chart(this.ctx, {
-        type: 'doughnut',
-        data: {
-          datasets: [
-            {
-              data: minutesByProjects,
-              backgroundColor: this.COLORS,
-              borderWidth: 0,
-            },
-          ],
-        },
-        options: {
-          cutoutPercentage: 70,
-          tooltips: {
-            enabled: false,
-          },
-        },
+    this.attendanceService.setTime$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((setTime) => {
+        this.setTime = setTime;
       });
-    } else {
-      // Hours in the center
-      this.allHoursColor = '#BDBDBD';
-      //
 
-      // String under hours
-      // this.timeDescriptionValue = 'Запланировано';
-      this.timeDescriptionBackgroundColor = '#FFFFFF';
-      this.timeDescriptionColor = '#BDBDBD';
-      this.timeDescriptionFontSize = '14px';
-      //
+    this.attendanceService.recommendedTime$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((setTime) => {
+        this.recommendedTime = setTime;
+      });
 
-      let myChart = new Chart(this.ctx, {
+    this.attendanceService.projects$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((projects) => {
+        this.projects = projects;
+        this.buildChart();
+      });
+  }
+
+  private countWorkTime() {
+    const spentMinutes = this.minutesByProject.reduce(
+      (sum, projectMinutes) => sum + projectMinutes,
+      0
+    );
+    const recommendedMinutes =
+      this.recommendedTime.hours * 60 + this.recommendedTime.minutes;
+    const remainingMinutes = recommendedMinutes - spentMinutes;
+
+    this.spentTime = {
+      hours: Math.floor(spentMinutes / 60),
+      minutes: spentMinutes % 60,
+    };
+
+    this.remainingTime =
+      remainingMinutes >= 0
+        ? {
+            hours: Math.floor(remainingMinutes / 60),
+            minutes: remainingMinutes % 60,
+          }
+        : {
+            hours: Math.ceil(remainingMinutes / 60),
+            minutes: remainingMinutes % 60,
+          };
+  }
+
+  private getData(): number[] {
+    return this.projects.map((project: IProject) =>
+      project.tasks.reduce(
+        (sum, task: ITask) => sum + task.time.hours * 60 + task.time.minutes,
+        0
+      )
+    );
+  }
+
+  private updateChart(): void {
+    this.chart.data.datasets[0].data = this.getData();
+    this.chart.update();
+  }
+
+  private buildChart() {
+    this.minutesByProject = this.getData();
+    this.isPeriodEmpty = !this.minutesByProject.some(
+      (minutes: number) => minutes > 0
+    );
+    this.countWorkTime();
+
+    if (this.isPeriodEmpty) {
+      this.chart = new Chart(this.ctx, {
         type: 'doughnut',
         data: {
           datasets: [
@@ -150,23 +131,18 @@ export class ChartComponent implements OnInit, OnDestroy {
           },
         },
       });
+      this.isFirstTaskForPeriod = true;
+    } else if (this.isFirstTaskForPeriod) {
+      this.chart.data.datasets[0].backgroundColor = this.COLORS;
+      this.updateChart();
+      this.isFirstTaskForPeriod = false;
+    } else {
+      this.updateChart();
     }
   }
 
   ngOnDestroy() {
-    this.attendanceService.datePeriod$.unsubscribe();
-  }
-
-  countMinutesByTask(project: IProject): number {
-    let allMinutesCounted = project.tasks.reduce(
-      (sum, task: ITask) => sum + task.time.minutes,
-      0
-    );
-    let allHoursCounted = project.tasks.reduce(
-      (sum, task: ITask) => sum + task.time.hours,
-      0
-    );
-    let allHoursImMinutes = allHoursCounted * 60;
-    return allMinutesCounted + allHoursImMinutes;
+    this.onDestroy$.next(null);
+    this.onDestroy$.complete();
   }
 }

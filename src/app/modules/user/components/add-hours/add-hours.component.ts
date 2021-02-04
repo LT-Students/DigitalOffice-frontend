@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Time } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
@@ -19,8 +20,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   public projects: IProject[];
-
   public addHoursForm: FormGroup;
+  public setTimePeriod: Time;
 
   constructor(
     private fb: FormBuilder,
@@ -44,6 +45,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     this.attendanceService.recommendedTime$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((timePeriod) => {
+        this.setTimePeriod = timePeriod;
         this.addHoursForm
           .get('time.hours')
           .setValue(this.attendanceService.normalizeTime(timePeriod.hours));
@@ -52,7 +54,30 @@ export class AddHoursComponent implements OnInit, OnDestroy {
           .setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
       });
 
-    this.projects = this.attendanceService.getProjects();
+    this.projects = this.attendanceService.projects$.getValue();
+
+    this.onChanges();
+  }
+
+  onChanges(): void {
+    this.addHoursForm
+      .get('time.hours')
+      .valueChanges.pipe(takeUntil(this.onDestroy$))
+      .subscribe((hours) => {
+        this.attendanceService.setTime$.next({
+          hours: hours,
+          minutes: this.setTimePeriod.minutes,
+        });
+      });
+    this.addHoursForm
+      .get('time.minutes')
+      .valueChanges.pipe(takeUntil(this.onDestroy$))
+      .subscribe((minutes) => {
+        this.attendanceService.setTime$.next({
+          hours: this.setTimePeriod.hours,
+          minutes: minutes,
+        });
+      });
   }
 
   private getHours(): number {

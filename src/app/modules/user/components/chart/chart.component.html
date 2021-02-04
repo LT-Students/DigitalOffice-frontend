@@ -1,30 +1,45 @@
-
 <div class="do-card bg-white chart">
   <div class="chart__doughnut">
-    <canvas #canvas width="184" height="183">
-    </canvas>
+    <canvas #canvas width="184" height="183"> </canvas>
     <div class="chart__hours">
       <p>
+        <span *ngIf="!isPeriodEmpty; else setTimeElement" class="all__hours h3">
+          {{ spentTime.hours | number: '2.0' }}:{{
+            this.spentTime.minutes | number: '2.0'
+          }}
+        </span>
 
-        <span class="all__hours h3"
-              [style.color]="allHoursColor"
-              *ngIf="spentTime"
-              >{{ spentTime?.hours }}:{{ spentTime?.minutes | number: '2.0' }}</span>
+        <ng-template #setTimeElement>
+          <span class="all__hours h3 all__hours_initial">
+            {{ setTime.hours | number: '2.0' }}:{{
+              setTime.minutes | number: '2.0'
+            }}
+          </span>
+        </ng-template>
 
-        <span class="all__hours h3"
-              [style.color]="allHoursColor"
-              *ngIf="!spentTime"
-        >{{ recommendedTime?.hours }}:{{ recommendedTime?.minutes | number: '2.0' }}</span>
+        <span class="hour__char"> ч</span><br />
 
-        <span class="hour__char"> ч</span><br>
+        <span
+          class="time__description"
+          [ngClass]="{
+            time__description_style_overtime:
+              remainingTime.hours <= 0 && remainingTime.minutes <= 0,
+            time__description_style_remain:
+              remainingTime.hours >= 0 && remainingTime.minutes >= 0,
+            'time__description_style_zero-remain':
+              remainingTime.hours == 0 && remainingTime.minutes == 0
+          }"
+          *ngIf="!isPeriodEmpty; else plannedTimeDescription"
+          >{{ remainingTime.hours | number: '2.0' }}:{{
+            remainingTime.minutes | number: '2.0'
+          }}</span
+        >
 
-
-        <span class="time__description"
-              [style.background-color]="timeDescriptionBackgroundColor"
-              [style.font-size]="timeDescriptionFontSize"
-              [style.color]="timeDescriptionColor"
-        >- {{ timeDescriptionValue?.hours | number: '2.0' }}:{{ timeDescriptionValue?.minutes | number: '2.0' }}</span>
-
+        <ng-template #plannedTimeDescription>
+          <span class="time__description time__description_style_initial"
+            >Запланировано</span
+          >
+        </ng-template>
       </p>
     </div>
   </div>
@@ -32,11 +47,8 @@
   <div class="chart__tags">
     <p class="h3">Проекты</p>
     <div class="regular_text" *ngFor="let project of projects; index as i">
-      <span class="color__pointer"
-            [style.background-color]="COLORS[i]"
-      ></span>
+      <span class="color__pointer" [style.background-color]="COLORS[i]"></span>
       {{ project.name }}
     </div>
   </div>
 </div>
-
