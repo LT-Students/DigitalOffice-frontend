@@ -11,14 +11,29 @@
 }
 
 .content-container {
-  padding: 60px 128px;
+  padding: 60px 40px;
 
-  width: 928px;
-
+  width: 1011px;
+  //padding: 60px 128px;
+  //
+  //width: 928px;
   border-radius: 5px;
 
   textarea {
     height: 82px;
+  }
+
+  &__section {
+    border: none;
+
+    &-secret {
+      margin-bottom: 52px;
+    }
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
   }
 
   .team {
@@ -124,27 +139,40 @@
   }
 
   &__form {
-    display: grid;
-    grid-column-gap: 1.48%;
-    grid-row-gap: 7%;
-    grid-template-areas:
-      'name abbr-name'
-      'department .'
-      'desc desc';
-    grid-template-columns: 64.28% 34.24%;
-    grid-template-rows: repeat(3, 25%);
+    //display: grid;
+    //grid-column-gap: 1.48%;
+    //grid-row-gap: 7%;
+    //grid-template-areas:
+    //  'name abbr-name'
+    //  'department .'
+    //  'desc desc';
+    //grid-template-columns: 64.28% 34.24%;
+    //grid-template-rows: repeat(3, 25%);
   }
 
   &__name {
-    grid-area: name;
+    margin-right: 60px;
+
+    display: inline-block;
+
+    width: 68%;
+    //grid-area: name;
   }
 
   &__abbr-name {
-    grid-area: abbr-name;
+    display: inline-block;
+
+    width: 25.2%;
+    //grid-area: abbr-name;
   }
 
   &__department {
-    grid-area: department;
+    margin-bottom: 24px;
+
+    display: inline-block;
+
+    width: 68%;
+    //grid-area: department;
   }
 
   &__description {
@@ -168,6 +196,21 @@
 
     color: $dark_1;
   }
+
+  &__loading {
+    margin-bottom: 44px;
+    padding-top: 52px;
+
+    display: block;
+
+    width: 928px;
+    height: 234px;
+
+    text-align: center;
+
+    border: 2px dashed #bdbdbd;
+    border-radius: 5px;
+  }
 }
 
 //.project-addition {
@@ -181,6 +224,6 @@
   min-width: 0 !important;
 }
 
-//::ng-deep.mat-form-field.mat-form-field.ng-tns-c128-5.mat-primary.mat-form-field-type-mat-input {
-//  display: block;
-//}
+::ng-deep.mat-flat-button.mat-button-base.mat-primary {
+  margin-left: 24px;
+}
