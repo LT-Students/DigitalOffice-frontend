@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 @import 'base/variables';
 
-.toolbar {
-  padding: 23px 24px;
+.dashboard {
+  padding: 23px 14px 23px 24px;
 
   display: flex;
   flex-direction: column;
@@ -51,32 +51,32 @@
     }
 
     .switch-checkbox:checked ~ .switch__container {
-      background-color: $accent_positive;
+      background-color: $positive_accent_bright;
 
       img {
         margin-left: 28px;
 
-        transform: rotate(0.48turn);
+        transform: rotate(0.45turn);
       }
     }
-  }
-
-  &__toolbar__links {
-    display: flex;
-    flex-direction: column;
   }
 
   &__links {
     margin-top: 34px;
 
+    display: flex;
+    flex-direction: column;
+
     a {
       display: block;
+
+      cursor: pointer;
 
       color: $gray;
     }
 
-    a:last-child {
-      margin-top: -10px;
+    a:hover {
+      color: $dark_2;
     }
   }
 }

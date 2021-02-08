@@ -1,7 +1,5 @@
 import { Input, Component, OnInit } from '@angular/core';
 
-import { MatSelectModule } from '@angular/material/select';
-
 @Component({
   selector: 'do-header',
   templateUrl: './header.component.html',
@@ -9,8 +7,8 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class HeaderComponent implements OnInit {
   hasNotification = false;
-  isDarkMode = true;
   @Input() userName;
+  @Input() magnifierLocation: 'right' | 'left' = 'left';
 
   constructor() {}
 

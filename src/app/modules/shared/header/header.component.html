@@ -7,11 +7,17 @@
     >
       <mat-option></mat-option>
     </mat-select>
-    <do-search class="header__search__do-search"> </do-search>
+    <do-search
+      class="search"
+      [ngStyle]="{
+        flexDirection: magnifierLocation === 'left' ? 'row' : 'row-reverse'
+      }"
+    >
+    </do-search>
   </div>
   <div class="header__privacy">
     <a class="header__privacy__greeting" routerLink="/user/attendance">
-      <img src="../../../../assets/svg/greeting-photo.svg" alt="" />
+      <img src="assets/svg/greeting-photo.svg" alt="" />
       <p class="regular_text">
         Привет, <span class="h4">{{ userName }}</span>
       </p>
@@ -21,12 +27,12 @@
       (click)="this.hasNotification = !this.hasNotification"
     >
       <img
-        src="../../../../assets/svg/notification.svg"
+        src="assets/svg/notification.svg"
         alt="notification"
         class="toolbar__notification__bell"
       />
       <img
-        src="../../../../assets/svg/notification-light.svg"
+        src="assets/svg/notification-light.svg"
         alt="notification"
         class="header__notification__light"
         *ngIf="hasNotification"

@@ -7,7 +7,7 @@
 
   background: $light_2;
 
-  .toolbar__container {
+  .dashboard__container {
     position: fixed;
     z-index: 2;
     top: 0;
@@ -22,10 +22,11 @@
   .wrapper {
     z-index: 1;
 
-    padding: 12px 60px 60px;
+    margin-left: 140px;
+
+    padding: 12px 60px 60px 60px;
 
     width: 100%;
-    max-width: 1100px;
     height: 100%;
   }
 }

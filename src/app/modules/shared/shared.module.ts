@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatSelectModule } from '@angular/material/select';
+import { AppMaterialModule } from '../../app-material.module';
 
 import { ButtonComponent } from './button/button.component';
 import { SelectComponent } from './select/select.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProfileImageComponent } from './profile-image/profile-image.component';
-import { ToolbarContainerComponent } from './toolbar-container/toolbar-container.component';
+import { ContentContainerComponent } from './content-container/content-container.component';
 import { SearchComponent } from './search/search.component';
 import { HeaderComponent } from './header/header.component';
 
@@ -15,17 +15,17 @@ import { HeaderComponent } from './header/header.component';
   declarations: [
     ButtonComponent,
     SelectComponent,
-    ToolbarComponent,
+    DashboardComponent,
     ProfileImageComponent,
-    ToolbarContainerComponent,
+    ContentContainerComponent,
     SearchComponent,
     HeaderComponent,
   ],
-  imports: [CommonModule, RouterModule, MatSelectModule],
+  imports: [CommonModule, RouterModule, AppMaterialModule],
   exports: [
     ButtonComponent,
     SelectComponent,
-    ToolbarComponent,
+    DashboardComponent,
     ProfileImageComponent,
     SearchComponent,
     HeaderComponent,
