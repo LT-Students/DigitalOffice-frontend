@@ -55,29 +55,6 @@ export class AddHoursComponent implements OnInit, OnDestroy {
       });
 
     this.projects = this.attendanceService.projects$.getValue();
-
-    this.onChanges();
-  }
-
-  onChanges(): void {
-    this.addHoursForm
-      .get('time.hours')
-      .valueChanges.pipe(takeUntil(this.onDestroy$))
-      .subscribe((hours) => {
-        this.attendanceService.setTime$.next({
-          hours: hours,
-          minutes: this.setTimePeriod.minutes,
-        });
-      });
-    this.addHoursForm
-      .get('time.minutes')
-      .valueChanges.pipe(takeUntil(this.onDestroy$))
-      .subscribe((minutes) => {
-        this.attendanceService.setTime$.next({
-          hours: this.setTimePeriod.hours,
-          minutes: minutes,
-        });
-      });
   }
 
   private getHours(): number {

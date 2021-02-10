@@ -1,0 +1,58 @@
+<div class="chart card">
+  <div class="chart__doughnut">
+    <canvas #canvas height="184" width="184" class="chart__canvas"></canvas>
+    <div class="chart__time-info">
+      <p
+        *ngIf="!isPeriodEmpty; else recommendedTimeElement"
+        class="chart__time-spent h3"
+      >
+        {{ spentTime.hours | number: '2.0' }}:{{
+          this.spentTime.minutes | number: '2.0'
+        }}
+      </p>
+
+      <ng-template #recommendedTimeElement>
+        <p class="chart__time-spent chart__time-spent_initial h3">
+          {{ recommendedTime.hours | number: '2.0' }}:{{
+            recommendedTime.minutes | number: '2.0'
+          }}
+        </p>
+      </ng-template>
+
+      <p
+        *ngIf="!isPeriodEmpty; else plannedTimeDescription"
+        [ngClass]="{
+          'chart__time-status_style_overtime':
+            remainingTimeStatus === 'negative',
+          'chart__time-status_style_remain': remainingTimeStatus === 'positive',
+          'chart__time-status_style_zero-remain': remainingTimeStatus === 'zero'
+        }"
+        class="chart__time-status"
+      >
+        {{ abs(remainingTime.hours) | number: '2.0' }}:{{
+          abs(remainingTime.minutes) | number: '2.0'
+        }}
+      </p>
+
+      <ng-template #plannedTimeDescription>
+        <p class="chart__time-status chart__time-status_style_initial">
+          Запланировано
+        </p>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="chart__tags">
+    <p class="chart__tags-heading h3">Проекты</p>
+    <div
+      *ngFor="let project of projects; index as i"
+      class="chart__tag regular_text"
+    >
+      <span
+        [style.background-color]="COLORS[i]"
+        class="chart__tag-marker"
+      ></span>
+      {{ project.name }}
+    </div>
+  </div>
+</div>

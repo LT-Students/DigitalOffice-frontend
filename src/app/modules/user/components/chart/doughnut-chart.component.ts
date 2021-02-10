@@ -10,11 +10,11 @@ import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
 
 @Component({
-  selector: 'do-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss'],
+  selector: 'do-doughnut-chart',
+  templateUrl: './doughnut-chart.component.html',
+  styleUrls: ['./doughnut-chart.component.scss'],
 })
-export class ChartComponent implements OnInit, OnDestroy {
+export class DoughnutChartComponent implements OnInit, OnDestroy {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -34,9 +34,9 @@ export class ChartComponent implements OnInit, OnDestroy {
   ];
   public projects: IProject[];
   public recommendedTime: Time;
-  public setTime: Time;
   public spentTime: Time;
   public remainingTime: Time;
+  public remainingTimeStatus: 'positive' | 'zero' | 'negative';
   public isPeriodEmpty: boolean;
   public isFirstTaskForPeriod: boolean;
 
@@ -45,16 +45,10 @@ export class ChartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
 
-    this.attendanceService.setTime$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((setTime) => {
-        this.setTime = setTime;
-      });
-
     this.attendanceService.recommendedTime$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe((setTime) => {
-        this.recommendedTime = setTime;
+      .subscribe((time) => {
+        this.recommendedTime = time;
       });
 
     this.attendanceService.projects$
@@ -79,16 +73,25 @@ export class ChartComponent implements OnInit, OnDestroy {
       minutes: spentMinutes % 60,
     };
 
-    this.remainingTime =
-      remainingMinutes >= 0
-        ? {
-            hours: Math.floor(remainingMinutes / 60),
-            minutes: remainingMinutes % 60,
-          }
-        : {
-            hours: Math.ceil(remainingMinutes / 60),
-            minutes: remainingMinutes % 60,
-          };
+    if (remainingMinutes < 0) {
+      this.remainingTimeStatus = 'negative';
+      this.remainingTime = {
+        hours: Math.ceil(remainingMinutes / 60),
+        minutes: remainingMinutes % 60,
+      };
+    } else if (remainingMinutes === 0) {
+      this.remainingTimeStatus = 'zero';
+      this.remainingTime = {
+        hours: 0,
+        minutes: 0,
+      };
+    } else {
+      this.remainingTimeStatus = 'positive';
+      this.remainingTime = {
+        hours: Math.floor(remainingMinutes / 60),
+        minutes: remainingMinutes % 60,
+      };
+    }
   }
 
   private getData(): number[] {
@@ -139,6 +142,10 @@ export class ChartComponent implements OnInit, OnDestroy {
     } else {
       this.updateChart();
     }
+  }
+
+  public abs(x: number): number {
+    return Math.abs(x);
   }
 
   ngOnDestroy() {
