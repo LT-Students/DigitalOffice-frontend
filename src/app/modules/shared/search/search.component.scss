@@ -2,22 +2,25 @@
 $height: 32px;
 
 .search {
+  padding: 0 6px;
+
   display: flex;
 
   height: $height;
 
-  background-color: $light_2;
+  background-color: inherit;
   border-radius: 5px;
 
   &__button {
+    padding: 0 8px;
+
     display: flex;
     justify-content: center;
     align-items: center;
 
-    width: 48px;
     height: $height;
 
-    background-color: $light_2;
+    background-color: inherit;
     border: none;
     border-radius: 5px;
 
@@ -27,14 +30,23 @@ $height: 32px;
   }
 
   &__input {
+    padding-left: 16px;
+
     min-height: $height;
 
     color: $dark_4;
-    background-color: $light_2;
+    background-color: inherit;
     border: none;
     border-radius: 5px;
     outline: none;
     flex-grow: 1;
+  }
+
+  &__input::placeholder {
+    font-size: 14px;
+    text-align: center;
+
+    color: $gray;
   }
 
   .mat-icon-button {

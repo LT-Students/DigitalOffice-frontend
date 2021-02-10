@@ -8,12 +8,9 @@
       <mat-option></mat-option>
     </mat-select>
     <do-search
-      class="search"
-      [ngStyle]="{
-        flexDirection: magnifierLocation === 'left' ? 'row' : 'row-reverse'
-      }"
-    >
-    </do-search>
+      magnifierLocation="right"
+      placeholder="глобальный поиск по сайту"
+    ></do-search>
   </div>
   <div class="header__privacy">
     <a class="header__privacy__greeting" routerLink="/user/attendance">

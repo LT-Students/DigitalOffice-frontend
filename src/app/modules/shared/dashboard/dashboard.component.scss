@@ -50,8 +50,15 @@
       }
     }
 
+    .switch-checkbox:hover ~ .switch__container,
+    .switch-checkbox:checked:hover ~ .switch__container {
+      background-color: $accent_positive;
+      border-color: $light_3;
+    }
+
     .switch-checkbox:checked ~ .switch__container {
-      background-color: $positive_accent_bright;
+      background-color: $accent_positive_dark;
+      border-color: $light_3;
 
       img {
         margin-left: 28px;

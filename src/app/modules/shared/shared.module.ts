@@ -29,6 +29,7 @@ import { HeaderComponent } from './header/header.component';
     ProfileImageComponent,
     SearchComponent,
     HeaderComponent,
+    AppMaterialModule,
   ],
 })
 export class SharedModule {}

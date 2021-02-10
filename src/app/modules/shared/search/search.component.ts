@@ -6,7 +6,9 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-  @Input() placeholder = '';
+  @Input() magnifierLocation: 'right' | 'left' = 'left';
+  @Input()
+  placeholder = '';
   @Output() searchClick = new EventEmitter<string>();
 
   constructor() {}
