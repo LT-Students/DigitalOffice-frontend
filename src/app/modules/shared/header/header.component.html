@@ -1,12 +1,10 @@
 <div class="header">
   <div class="header__search">
-    <mat-select
-      class="select small_text"
-      placeholder="Выбрать раздел"
-      appearance="none"
-    >
-      <mat-option></mat-option>
-    </mat-select>
+    <mat-form-field class="mat-form-field_default-select" appearance="none">
+      <mat-select class="select small_text" placeholder="Выбрать раздел">
+        <mat-option></mat-option>
+      </mat-select>
+    </mat-form-field>
     <do-search
       magnifierLocation="right"
       placeholder="глобальный поиск по сайту"
