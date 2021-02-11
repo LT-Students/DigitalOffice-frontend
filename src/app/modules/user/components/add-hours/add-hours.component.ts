@@ -5,9 +5,10 @@ import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
 import { User } from '@digital-office/api/user-service';
-import { AttendanceService } from '../attendance/attendance.service';
+import { AttendanceService } from '../../../../services/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
+import { ProjectStoreService } from '../../../../services/project-store.service';
 import { timeValidator } from './add-hours.validators';
 
 @Component({
@@ -25,7 +26,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private attendanceService: AttendanceService
+    private attendanceService: AttendanceService,
+    private projectStore: ProjectStoreService
   ) {}
 
   ngOnInit() {
@@ -54,13 +56,13 @@ export class AddHoursComponent implements OnInit, OnDestroy {
           .setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
       });
 
-    this.projects = this.attendanceService.projects$.getValue();
+    this.projects = this.projectStore.projects;
   }
 
   private getHours(): number {
-    const currentDatePeriod = this.attendanceService.datePeriod$.getValue();
+    const currentDatePeriod = this.attendanceService.datePeriod;
     return Number(
-      this.attendanceService.countRecommendedTime(currentDatePeriod, 24).hours
+      this.attendanceService.getRecommendedTime(currentDatePeriod, 24).hours
     );
   }
 
@@ -75,9 +77,9 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         minutes: Number(this.addHoursForm.get('time.minutes').value),
       },
     };
-    this.attendanceService.addTaskToProject(task, project_id);
+    this.projectStore.addTaskToProject(task, project_id);
     this.addHoursForm.reset();
-    const datePeriod = this.attendanceService.datePeriod$.getValue();
+    const datePeriod = this.attendanceService.datePeriod;
     this.attendanceService.onDatePeriodChange(datePeriod);
   }
 

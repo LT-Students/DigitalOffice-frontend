@@ -74,7 +74,7 @@
     border-radius: 5px;
 
     &_style {
-      &_remain {
+      &_positive {
         background-color: #21d373;
 
         &::before {
@@ -82,7 +82,7 @@
         }
       }
 
-      &_overtime {
+      &_negative {
         background-color: #eb5757;
 
         &::before {
@@ -90,7 +90,7 @@
         }
       }
 
-      &_zero-remain {
+      &_zero {
         background-color: $gray;
       }
 

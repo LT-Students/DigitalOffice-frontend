@@ -5,9 +5,10 @@ import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Chart } from 'chart.js';
-import { AttendanceService } from '../attendance/attendance.service';
+import { AttendanceService } from '../../../../services/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
 import { ITask } from '../../../../interfaces/task.interface';
+import { ProjectStoreService } from '../../../../services/project-store.service';
 
 @Component({
   selector: 'do-doughnut-chart',
@@ -36,11 +37,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
   public recommendedTime: Time;
   public spentTime: Time;
   public remainingTime: Time;
-  public remainingTimeStatus: 'positive' | 'zero' | 'negative';
   public isPeriodEmpty: boolean;
-  public isFirstTaskForPeriod: boolean;
 
-  constructor(private attendanceService: AttendanceService) {}
+  constructor(
+    private attendanceService: AttendanceService,
+    private projectStore: ProjectStoreService
+  ) {}
 
   ngOnInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d');
@@ -51,7 +53,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
         this.recommendedTime = time;
       });
 
-    this.attendanceService.projects$
+    this.projectStore.projects$
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((projects) => {
         this.projects = projects;
@@ -59,38 +61,42 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
       });
   }
 
-  private countWorkTime() {
-    const spentMinutes = this.minutesByProject.reduce(
+  get spentMinutes() {
+    return this.minutesByProject.reduce(
       (sum, projectMinutes) => sum + projectMinutes,
       0
     );
+  }
+
+  get remainingMinutes() {
     const recommendedMinutes =
       this.recommendedTime.hours * 60 + this.recommendedTime.minutes;
-    const remainingMinutes = recommendedMinutes - spentMinutes;
+    return recommendedMinutes - this.spentMinutes;
+  }
 
+  private countWorkTime() {
     this.spentTime = {
-      hours: Math.floor(spentMinutes / 60),
-      minutes: spentMinutes % 60,
+      hours: Math.floor(this.spentMinutes / 60),
+      minutes: this.spentMinutes % 60,
     };
 
-    if (remainingMinutes < 0) {
-      this.remainingTimeStatus = 'negative';
-      this.remainingTime = {
-        hours: Math.ceil(remainingMinutes / 60),
-        minutes: remainingMinutes % 60,
-      };
-    } else if (remainingMinutes === 0) {
-      this.remainingTimeStatus = 'zero';
-      this.remainingTime = {
-        hours: 0,
-        minutes: 0,
-      };
+    const minutes = this.remainingMinutes % 60;
+    const hours = this.remainingMinutes
+      ? Math.floor(this.remainingMinutes / 60)
+      : Math.ceil(this.remainingMinutes / 60);
+    this.remainingTime = {
+      hours,
+      minutes,
+    };
+  }
+
+  getRemainingTimeStatus(): string {
+    if (this.remainingMinutes > 0) {
+      return 'positive';
+    } else if (this.remainingMinutes < 0) {
+      return 'negative';
     } else {
-      this.remainingTimeStatus = 'positive';
-      this.remainingTime = {
-        hours: Math.floor(remainingMinutes / 60),
-        minutes: remainingMinutes % 60,
-      };
+      return 'zero';
     }
   }
 
@@ -105,6 +111,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
   private updateChart(): void {
     this.chart.data.datasets[0].data = this.getData();
+    this.chart.data.datasets[0].backgroundColor = this.COLORS;
     this.chart.update();
   }
 
@@ -134,11 +141,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
           },
         },
       });
-      this.isFirstTaskForPeriod = true;
-    } else if (this.isFirstTaskForPeriod) {
-      this.chart.data.datasets[0].backgroundColor = this.COLORS;
-      this.updateChart();
-      this.isFirstTaskForPeriod = false;
     } else {
       this.updateChart();
     }

@@ -2,24 +2,20 @@
   <div class="time__period">
     <p class="h3">
       Часы
-      <span
-        *ngIf="!endDate || this.attendanceService.isSameDay(startDate, endDate)"
-      >
+      <span *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)">
         {{ startDate | date: 'd MMMM' }}
       </span>
       <span
         *ngIf="
           endDate &&
-          this.attendanceService.isSameMonth(startDate, endDate) &&
-          !this.attendanceService.isSameDay(startDate, endDate)
+          this.dateService.isSameMonth(startDate, endDate) &&
+          !this.dateService.isSameDay(startDate, endDate)
         "
       >
         {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
       </span>
       <span
-        *ngIf="
-          endDate && !this.attendanceService.isSameMonth(startDate, endDate)
-        "
+        *ngIf="endDate && !this.dateService.isSameMonth(startDate, endDate)"
       >
         {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
       </span>

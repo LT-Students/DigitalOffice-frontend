@@ -22,7 +22,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { AppMaterialModule } from './app-material.module';
 import { UserModule } from './modules/user/user.module';
-import { AttendanceService } from './modules/user/components/attendance/attendance.service';
+import { AttendanceService } from './services/attendance.service';
 
 registerLocaleData(localeRu);
 
