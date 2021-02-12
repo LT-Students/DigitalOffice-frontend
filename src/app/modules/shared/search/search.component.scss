@@ -2,8 +2,6 @@
 $height: 32px;
 
 .search {
-  padding: 0 6px;
-
   display: flex;
 
   height: $height;
@@ -12,7 +10,7 @@ $height: 32px;
   border-radius: 5px;
 
   &__button {
-    padding: 0 8px;
+    margin: 0 4px;
 
     display: flex;
     justify-content: center;
@@ -30,7 +28,7 @@ $height: 32px;
   }
 
   &__input {
-    padding-left: 16px;
+    padding: 0 6px;
 
     min-height: $height;
 

@@ -20,11 +20,17 @@
     background-color: $light_1;
     border-radius: 5px;
 
+    .mat-form-field_default-select {
+      width: 130px;
+    }
+
     do-search {
       width: 100%;
     }
 
     .select {
+      margin: 0;
+
       width: 130px;
       height: 32px;
 
