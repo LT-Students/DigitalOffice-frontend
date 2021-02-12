@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
 @import 'base/variables';
+@import 'base/fonts';
 
 .header {
   margin-bottom: 52px;
@@ -14,6 +15,7 @@
     align-items: center;
 
     width: 53%;
+    height: 100%;
 
     background-color: $light_1;
     border-radius: 5px;
@@ -23,13 +25,21 @@
     }
 
     .select {
-      width: 160px;
+      width: 130px;
       height: 32px;
 
       background-color: $accent_color;
 
+      ::ng-deep .mat-select-placeholder {
+        @extend .small_text;
+      }
+
+      ::ng-deep .mat-select-arrow {
+        margin-right: 6px;
+      }
+
       ::ng-deep .mat-select-value {
-        padding: 0 10px;
+        padding: 0 0 0 8px;
 
         line-height: 30px;
       }
