@@ -38,15 +38,3 @@ export class AdminGuard implements CanLoad {
     }
   }
 }
-
-//   canLoad(
-//     route: Route,
-//     segments: UrlSegment[]
-//   ): Observable<boolean> | Promise<boolean> | boolean {
-//     return true;
-//   }
-//
-//   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-//     return true;
-//   }
-// }

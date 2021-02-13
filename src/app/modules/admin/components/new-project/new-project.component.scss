@@ -26,7 +26,7 @@
   &__section {
     border: none;
 
-    &-secret {
+    &-private {
       margin-bottom: 52px;
     }
   }
@@ -197,7 +197,7 @@
     color: $dark_1;
   }
 
-  &__loading {
+  &__upload {
     margin-bottom: 44px;
     padding-top: 52px;
 
