@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ToolbarContainerComponent } from './modules/shared/toolbar-container/toolbar-container.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminGuard } from './guards/admin.guard';
 import { AdminComponent } from './modules/admin/components/admin/admin.component';
@@ -10,11 +9,12 @@ import { NewEmployeeComponent } from './modules/admin/components/new-employee/ne
 import { NewProjectComponent } from './modules/admin/components/new-project/new-project.component';
 import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
 import { NewMembersBoardComponent } from './modules/admin/components/new-members-board/new-members-board.component';
+import { ContentContainerComponent } from './modules/shared/content-container/content-container.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ToolbarContainerComponent,
+    component: ContentContainerComponent,
     children: [
       {
         path: '',

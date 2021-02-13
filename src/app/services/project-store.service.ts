@@ -11,17 +11,45 @@ export class ProjectStoreService {
     {
       id: 1,
       name: 'Ромашка',
-      tasks: [],
+      tasks: [
+        {
+          time: { hours: 1, minutes: 0 },
+          name: 'Developing',
+          description: 'desc1',
+          createdAt: new Date(),
+        },
+        {
+          time: { hours: 1, minutes: 0 },
+          name:
+            'Очень длинная задача, которую мне отдал мой коллега, а я не очень хотел ее делать и она занимает две строки',
+          description: 'desc2',
+          createdAt: new Date(),
+        },
+      ],
     },
     {
       id: 2,
       name: 'Рога и копыта',
-      tasks: [],
+      tasks: [
+        {
+          time: { hours: 2, minutes: 3 },
+          name: 'Developing',
+          description: 'desc1',
+          createdAt: new Date(),
+        },
+      ],
     },
     {
       id: 3,
       name: 'Ещё один проект',
-      tasks: [],
+      tasks: [
+        {
+          time: { hours: 2, minutes: 3 },
+          name: 'Документация',
+          description: 'desc1',
+          createdAt: new Date(),
+        },
+      ],
     },
   ];
 

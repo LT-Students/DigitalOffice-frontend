@@ -21,7 +21,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
   private ctx: CanvasRenderingContext2D;
   private chart: Chart;
-  private minutesByProject: number[];
 
   public COLORS = [
     '#7C799B',
@@ -35,9 +34,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
   ];
   public projects: IProject[];
   public recommendedTime: Time;
-  public spentTime: Time;
-  public remainingTime: Time;
-  public isPeriodEmpty: boolean;
 
   constructor(
     private attendanceService: AttendanceService,
@@ -57,40 +53,33 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((projects) => {
         this.projects = projects;
-        this.buildChart();
+        if (this.chart) {
+          this.updateChart();
+        }
       });
+
+    this.buildChart();
   }
 
-  get spentMinutes() {
-    return this.minutesByProject.reduce(
-      (sum, projectMinutes) => sum + projectMinutes,
-      0
-    );
-  }
-
-  get remainingMinutes() {
-    const recommendedMinutes =
-      this.recommendedTime.hours * 60 + this.recommendedTime.minutes;
-    return recommendedMinutes - this.spentMinutes;
-  }
-
-  private countWorkTime() {
-    this.spentTime = {
+  get spentTime() {
+    return {
       hours: Math.floor(this.spentMinutes / 60),
       minutes: this.spentMinutes % 60,
     };
+  }
 
+  get remainingTime() {
     const minutes = this.remainingMinutes % 60;
     const hours = this.remainingMinutes
       ? Math.floor(this.remainingMinutes / 60)
       : Math.ceil(this.remainingMinutes / 60);
-    this.remainingTime = {
+    return {
       hours,
       minutes,
     };
   }
 
-  getRemainingTimeStatus(): string {
+  get remainingTimeStatus(): string {
     if (this.remainingMinutes > 0) {
       return 'positive';
     } else if (this.remainingMinutes < 0) {
@@ -100,7 +89,11 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getData(): number[] {
+  get isPeriodEmpty() {
+    return !this.data.some((minutes: number) => minutes > 0);
+  }
+
+  private get data(): number[] {
     return this.projects.map((project: IProject) =>
       project.tasks.reduce(
         (sum, task: ITask) => sum + task.time.hours * 60 + task.time.minutes,
@@ -109,41 +102,41 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
     );
   }
 
+  private get spentMinutes() {
+    return this.data.reduce((sum, projectMinutes) => sum + projectMinutes, 0);
+  }
+
+  private get remainingMinutes() {
+    const recommendedMinutes =
+      this.recommendedTime.hours * 60 + this.recommendedTime.minutes;
+    return recommendedMinutes - this.spentMinutes;
+  }
+
   private updateChart(): void {
-    this.chart.data.datasets[0].data = this.getData();
+    this.chart.data.datasets[0].data = this.data;
     this.chart.data.datasets[0].backgroundColor = this.COLORS;
     this.chart.update();
   }
 
   private buildChart() {
-    this.minutesByProject = this.getData();
-    this.isPeriodEmpty = !this.minutesByProject.some(
-      (minutes: number) => minutes > 0
-    );
-    this.countWorkTime();
-
-    if (this.isPeriodEmpty) {
-      this.chart = new Chart(this.ctx, {
-        type: 'doughnut',
-        data: {
-          datasets: [
-            {
-              data: [1],
-              backgroundColor: '#F1F1EF',
-              borderWidth: 0,
-            },
-          ],
-        },
-        options: {
-          cutoutPercentage: 70,
-          tooltips: {
-            enabled: false,
+    this.chart = new Chart(this.ctx, {
+      type: 'doughnut',
+      data: {
+        datasets: [
+          {
+            data: this.isPeriodEmpty ? [1] : this.data,
+            backgroundColor: this.isPeriodEmpty ? '#F1F1EF' : this.COLORS,
+            borderWidth: 0,
           },
+        ],
+      },
+      options: {
+        cutoutPercentage: 70,
+        tooltips: {
+          enabled: false,
         },
-      });
-    } else {
-      this.updateChart();
-    }
+      },
+    });
   }
 
   public abs(x: number): number {
