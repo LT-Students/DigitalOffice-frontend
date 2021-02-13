@@ -1,12 +1,20 @@
-<div class="search">
-    <button mat-icon-button
-            class="search__button"
-            (click)="onSearchClick(searchInput.value)">
-        <img src="/assets/svg/magnifier.svg"
-             alt="magnifier">
-    </button>
-    <input [placeholder]="placeholder"           
-           type="text"
-           class="search__input regular_text text_color_dark-1"
-           #searchInput>
-  </div>
+<div
+  class="search"
+  [ngStyle]="{
+    flexDirection: magnifierLocation === 'left' ? 'row' : 'row-reverse'
+  }"
+>
+  <button
+    mat-icon-button
+    class="search__button"
+    (click)="onSearchClick(searchInput.value)"
+  >
+    <img src="/assets/svg/magnifier.svg" alt="magnifier" />
+  </button>
+  <input
+    [placeholder]="placeholder"
+    type="text"
+    class="search__input regular_text text_color_dark-1"
+    #searchInput
+  />
+</div>
