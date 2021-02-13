@@ -7,22 +7,26 @@
 
   background: $light_2;
 
-  .toolbar {
+  .dashboard__container {
     position: fixed;
     z-index: 2;
     top: 0;
+    left: 0;
 
-    width: 100%;
+    width: 140px;
+    height: 100vh;
+
+    background: $light_1;
   }
 
   .wrapper {
     z-index: 1;
 
-    margin-top: 56px;
-    padding: 38px 48px;
+    margin-left: 140px;
+
+    padding: 12px 10.77% 60px 4.62%;
 
     width: 100%;
-    max-width: 1024px;
     height: 100%;
   }
 }
