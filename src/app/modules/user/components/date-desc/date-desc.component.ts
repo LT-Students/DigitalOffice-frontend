@@ -3,8 +3,9 @@ import { DateAdapter } from '@angular/material/core';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AttendanceService } from '../attendance/attendance.service';
+import { AttendanceService } from '../../../../services/attendance.service';
 import { IDayOfWeek } from '../../../../interfaces/day-of-week.interface';
+import { DateService } from '../../../../services/date.service';
 
 @Component({
   selector: 'do-datedesc',
@@ -22,7 +23,8 @@ export class DateDescComponent implements OnInit, OnDestroy {
 
   constructor(
     public attendanceService: AttendanceService,
-    private dateAdapter: DateAdapter<Date>
+    private dateAdapter: DateAdapter<Date>,
+    public dateService: DateService
   ) {}
 
   ngOnInit(): void {
@@ -32,13 +34,13 @@ export class DateDescComponent implements OnInit, OnDestroy {
         this.startDate = datePeriod.startDate;
         this.endDate = datePeriod.endDate;
         if (this.endDate) {
-          this.daysOfWeek = this.attendanceService.getWeek(this.endDate);
+          this.daysOfWeek = this.dateService.getWeek(this.endDate);
         }
       });
 
-    this.startDate = this.attendanceService.datePeriod$.getValue().startDate;
-    this.endDate = this.attendanceService.datePeriod$.getValue().endDate;
-    this.daysOfWeek = this.attendanceService.getWeek(this.endDate);
+    this.startDate = this.attendanceService.datePeriod.startDate;
+    this.endDate = this.attendanceService.datePeriod.endDate;
+    this.daysOfWeek = this.dateService.getWeek(this.endDate);
 
     this.dateAdapter.setLocale('ru');
     this.dateAdapter.getFirstDayOfWeek = () => 1;
@@ -50,7 +52,7 @@ export class DateDescComponent implements OnInit, OnDestroy {
   };
 
   public selectDay(dayOfWeek): void {
-    this.daysOfWeek = this.attendanceService.getWeek(dayOfWeek.date);
+    this.daysOfWeek = this.dateService.getWeek(dayOfWeek.date);
     this.attendanceService.onDatePeriodChange({
       startDate: dayOfWeek.date,
       endDate: dayOfWeek.date,
@@ -58,7 +60,7 @@ export class DateDescComponent implements OnInit, OnDestroy {
   }
 
   public onClose(): void {
-    const datePeriod = this.attendanceService.datePeriod$.getValue();
+    const datePeriod = this.attendanceService.datePeriod;
     if (!datePeriod.endDate) {
       const oneDayPeriod = {
         startDate: datePeriod.startDate,
@@ -75,7 +77,7 @@ export class DateDescComponent implements OnInit, OnDestroy {
           startDate: date,
           endDate: null,
         });
-        this.daysOfWeek = this.attendanceService.getWeek(date);
+        this.daysOfWeek = this.dateService.getWeek(date);
         this.tempStartDate = date;
       } else {
         this.attendanceService.onDatePeriodChange({

@@ -4,7 +4,9 @@ import { ReplaySubject } from 'rxjs';
 
 import { IProject } from '../../../../interfaces/project.interface';
 import { IDatePeriod } from '../../../../interfaces/date-period.interface';
-import { AttendanceService } from '../attendance/attendance.service';
+import { AttendanceService } from '../../../../services/attendance.service';
+import { ProjectStoreService } from '../../../../services/project-store.service';
+import { DateService } from '../../../../services/date.service';
 
 @Component({
   selector: 'do-user-tasks',
@@ -27,12 +29,16 @@ export class UserTasksComponent implements OnInit, OnDestroy {
   public startDate: Date | null;
   public endDate: Date | null;
 
-  constructor(public attendanceService: AttendanceService) {}
+  constructor(
+    public attendanceService: AttendanceService,
+    private projectStore: ProjectStoreService,
+    public dateService: DateService
+  ) {}
 
   ngOnInit() {
-    this.attendanceService.projects$.subscribe(
-      (projects: IProject[]) => (this.projects = projects)
-    );
+    this.projectStore.projects$
+      .pipe(takeUntil(this.onDestroy$))
+      .subscribe((projects: IProject[]) => (this.projects = projects));
 
     this.attendanceService.datePeriod$
       .pipe(takeUntil(this.onDestroy$))
@@ -54,7 +60,6 @@ export class UserTasksComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.attendanceService.projects$.unsubscribe();
     this.onDestroy$.next(null);
     this.onDestroy$.complete();
   }

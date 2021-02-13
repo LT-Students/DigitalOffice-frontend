@@ -1,10 +1,10 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-button.mat-flat-button.mat-primary,
-button.mat-stroked-button.mat-primary,
-button.mat-button-disabled,
-button.mat-raised-button.mat-button-disabled.mat-button-disabled {
+button.mat-flat-button,
+button.mat-stroked-button,
+button.mat-raised-button,
+button.mat-button-disabled {
   margin: 0;
   padding: 4px 12px;
 
