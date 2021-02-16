@@ -18,6 +18,8 @@ export class NewProjectComponent {
     shortName: new FormControl(''),
     departments: new FormControl(''),
     description: new FormControl(''),
+    additionInfo: new FormControl(''),
+    checkControl: new FormControl(''),
   });
   public departments = ['one', 'two', 'three'];
   public team = [
@@ -50,5 +52,13 @@ export class NewProjectComponent {
       width: '720px',
       height: '650px',
     });
+  }
+
+  public saveDraft(): void {
+    console.log('Сохранить черновик');
+  }
+
+  public createProject(): void {
+    console.log('Создать проект');
   }
 }
