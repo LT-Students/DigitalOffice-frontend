@@ -1,0 +1,17 @@
+<div class="projects-table__container">
+  <h1 class="h1">Доска проектов</h1>
+  <mat-form-field class="mat-form-field_default-select" appearance="none">
+    <mat-select class="select" placeholder="Все">
+      <mat-option></mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="projects-table__projects-group" *ngFor="let group of groups">
+    <h3 class="group-name h3">{{ group.groupName }}</h3>
+    <div class="group-container">
+      <do-project-card
+        *ngFor="let project of group.groupData"
+        [project]="project"
+      ></do-project-card>
+    </div>
+  </div>
+</div>
