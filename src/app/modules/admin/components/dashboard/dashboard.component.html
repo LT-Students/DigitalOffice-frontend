@@ -43,10 +43,10 @@
       <span class="h3 h3_dark_1">Мои проекты</span>
       <div class="projects-board__content">
         <ng-container *ngFor="let project of projects">
-          <do-my-project
+          <do-project-card
             class="component-my-project"
             [project]="project"
-          ></do-my-project>
+          ></do-project-card>
         </ng-container>
       </div>
     </div>

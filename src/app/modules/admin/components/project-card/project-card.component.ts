@@ -3,11 +3,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Project } from '../../../../models/project.model';
 
 @Component({
-  selector: 'do-my-project',
-  templateUrl: './my-project.component.html',
-  styleUrls: ['./my-project.component.scss'],
+  selector: 'do-project-card',
+  templateUrl: './project-card.component.html',
+  styleUrls: ['./project-card.component.scss'],
 })
-export class MyProjectComponent implements OnInit {
+export class ProjectCardComponent implements OnInit {
   // data about projectName, consumer, comment, myHours, participants - array with photo of participants
   @Input() project: Project;
 
