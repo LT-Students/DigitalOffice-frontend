@@ -13,7 +13,7 @@
     flex-direction: column;
     justify-content: flex-start;
 
-    max-width: 928px;
+    width: 100%;
 
     .user-board {
       position: relative;
@@ -70,7 +70,7 @@
       }
 
       &__content {
-        margin-top: 14px;
+        margin-top: 30px;
 
         display: flex;
         flex-direction: row;
@@ -132,7 +132,7 @@
       }
 
       &__content {
-        margin-top: 14px;
+        margin-top: 30px;
 
         display: flex;
         flex-direction: row;

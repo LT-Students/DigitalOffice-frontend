@@ -9,7 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TagsBlockComponent } from './components/tags-block/tags-block.component';
 import { DateDescComponent } from './components/date-desc/date-desc.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
-import { ChartComponent } from './components/chart/chart.component';
+import { DoughnutChartComponent } from './components/chart/doughnut-chart.component';
 import { AddHoursComponent } from './components/add-hours/add-hours.component';
 import { GradientGraphicsComponent } from './components/gradient-graphics/gradient-graphics.component';
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
@@ -22,7 +22,7 @@ import { ProjectsTableComponent } from './components/projects-table/projects-tab
     TagsBlockComponent,
     DateDescComponent,
     AttendanceComponent,
-    ChartComponent,
+    DoughnutChartComponent,
     AddHoursComponent,
     GradientGraphicsComponent,
     UserTasksComponent,

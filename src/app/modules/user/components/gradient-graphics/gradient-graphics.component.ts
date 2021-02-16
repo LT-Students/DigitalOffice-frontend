@@ -3,8 +3,8 @@ import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
 import { IDatePeriod } from '../../../../interfaces/date-period.interface';
-import { AttendanceService } from '../attendance/attendance.service';
-import { IDayOfWeek } from '../../../../interfaces/day-of-week.interface';
+import { AttendanceService } from '../../../../services/attendance.service';
+import { DateService } from '../../../../services/date.service';
 
 export interface IDailyHoursData {
   day: string;
@@ -30,7 +30,10 @@ export class GradientGraphicsComponent implements OnInit, OnDestroy {
   public endDate: Date;
   public daysOfWeek: Date[];
 
-  constructor(public attendanceService: AttendanceService) {}
+  constructor(
+    public attendanceService: AttendanceService,
+    public dateService: DateService
+  ) {}
 
   // color for graphic items
   colorsData = [
@@ -61,9 +64,7 @@ export class GradientGraphicsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.onDestroy$))
       .subscribe((datePeriod) => {
         if (datePeriod.endDate) {
-          this.daysOfWeek = this.attendanceService.getWorkdays(
-            datePeriod.endDate
-          );
+          this.daysOfWeek = this.dateService.getWorkdays(datePeriod.endDate);
         }
         this.startDate = this.daysOfWeek[0];
         this.endDate = this.daysOfWeek[5];
