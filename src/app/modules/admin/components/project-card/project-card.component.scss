@@ -17,6 +17,15 @@
     margin-bottom: 12px;
   }
 
+  .project__comment {
+    -webkit-line-clamp: 4;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+  }
+
   .project__details {
     margin-top: 25px;
 
