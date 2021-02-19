@@ -18,12 +18,13 @@
   }
 
   .project__comment {
-    -webkit-line-clamp: 4;
-
     display: -webkit-box;
-    -webkit-box-orient: vertical;
 
     overflow: hidden;
+
+    height: 97px;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
   }
 
   .project__details {
