@@ -1,53 +1,29 @@
 @import 'base/variables';
 
 .project__container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 32px;
 
-  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 300px;
   min-height: 349px;
 
   background-color: #fff;
   border-radius: 5px;
 
-  .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  .project__customer {
+    margin-bottom: 12px;
+  }
 
-    min-width: 236px;
-    min-height: 285px;
+  .project__details {
+    margin-top: 25px;
 
-    .project__name,
-    .hours,
-    .gray__circle {
-      color: $dark_1;
-    }
-
-    .project__comment {
-      height: 160px;
-
-      color: $dark_1;
-    }
-
-    .project__customer {
-      position: relative;
-      bottom: 10px;
-    }
-
-    .project__details {
+    .procession-data {
       display: flex;
       justify-content: space-between;
       align-items: center;
-
-      .contribution {
-        text-align: center;
-
-        p {
-          margin: 0;
-        }
-      }
 
       .team {
         display: flex;
@@ -72,5 +48,15 @@
         }
       }
     }
+
+    .btn-statistic {
+      margin-top: 27px;
+
+      width: 100%;
+    }
+  }
+
+  .history-data {
+    margin-top: 20px;
   }
 }

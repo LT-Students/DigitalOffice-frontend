@@ -16,10 +16,6 @@
     background-color: $light_1;
 
     ::ng-deep .mat-select-placeholder {
-      padding-left: 8px;
-
-      line-height: 12px;
-
       color: $gray;
     }
 
@@ -30,7 +26,9 @@
     }
 
     ::ng-deep .mat-select-value {
-      padding: 0;
+      padding: 0 0 0 8px;
+
+      color: $gray;
     }
   }
 }

@@ -23,13 +23,18 @@ const routes: Routes = [
         redirectTo: 'user/attendance',
       },
       {
-        path: 'user/attendance',
-        component: AttendanceComponent,
+        path: 'user',
+        children: [
+          {
+            path: 'attendance',
+            component: AttendanceComponent,
+          },
+          {
+            path: 'projects-table',
+            component: ProjectsTableComponent,
+          },
+        ],
         canActivate: [AuthGuard],
-      },
-      {
-        path: 'user/projects-table',
-        component: ProjectsTableComponent,
       },
       {
         path: 'admin',

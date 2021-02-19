@@ -10,9 +10,10 @@ import { Project } from '../../../../models/project.model';
 export class ProjectsTableComponent implements OnInit {
   constructor() {}
 
-  @Input() activeProjects: Project[] = [];
-  @Input() suspendedProjects: Project[] = [];
-  @Input() closedProjects: Project[] = [];
+  activeProjects: Project[] = [];
+  suspendedProjects: Project[] = [];
+  closedProjects: Project[] = [];
+  visiblyGroup = '';
 
   public groups = [
     { groupName: 'В работе', groupData: this.activeProjects },
@@ -21,13 +22,14 @@ export class ProjectsTableComponent implements OnInit {
   ];
 
   ngOnInit() {
-    const proj1 = {
-      name: 'MainProject1',
+    const active1 = {
+      name: 'Меркурий – лечу на орбиту',
       consumer: {
-        name: 'Company№1',
-        description: 'Super company that is doing nothing.',
+        name: 'Роскосмос',
+        description: '',
       },
-      description: 'Just project-card. Nothing special.',
+      description:
+        'Внедряем ПО на железки Роскосмоса для полета к орбите Меркурия. Человечество надеется на нас!',
       contributors: [
         {
           user: {
@@ -36,19 +38,20 @@ export class ProjectsTableComponent implements OnInit {
             photo: '../../../assets/images/girl.png',
           },
           totalTime: {
-            hours: 40,
-            minutes: 0,
+            hours: 280,
+            minutes: 40,
           },
         },
       ],
     };
-    const proj2 = {
-      name: 'MainProject2',
+    const active2 = {
+      name: 'Kojima is a Genius',
       consumer: {
-        name: 'Company№2',
-        description: 'Super company that is doing nothing.',
+        name: 'Joel K. & Co',
+        description: '',
       },
-      description: 'Just project-card. Nothing special.',
+      description:
+        'Заказчик хочет, чтобы оно ренедерило ВСЕ! Пробуем реализовать',
       contributors: [
         {
           user: {
@@ -57,15 +60,65 @@ export class ProjectsTableComponent implements OnInit {
             photo: '../../../assets/images/girl.png',
           },
           totalTime: {
-            hours: 40,
-            minutes: 0,
+            hours: 30,
+            minutes: 25,
           },
         },
       ],
+    };
+    const suspended1 = {
+      name: 'Герои Меча и Магии XXV',
+      consumer: {
+        name: 'Российский Фонд Кино',
+        description: '',
+      },
+      description:
+        'Тут были единороги и 50 новых видов драконов, но проект приостановлен до возобновления финансирования',
+      contributors: [
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: '../../../assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 123,
+            minutes: 40,
+          },
+        },
+      ],
+      historyDetails: 'Приостановлен 10.06.2019',
+    };
+    const closed1 = {
+      name: 'Ребрендинг “Мир Света”',
+      consumer: {
+        name: 'ИП Горин Д.А.',
+        description: '',
+      },
+      description:
+        'Делаем так, чтобы всем захотелось срочно поменять все светильники в доме!!',
+      contributors: [
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: '../../../assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 123,
+            minutes: 40,
+          },
+        },
+      ],
+      historyDetails: 'Завершен 02.03.2020',
     };
 
-    this.activeProjects.push(proj1, proj2);
-    this.suspendedProjects.push(proj1, proj2);
-    this.closedProjects.push(proj1, proj2);
+    this.activeProjects.push(active1, active2);
+    this.suspendedProjects.push(suspended1);
+    this.closedProjects.push(closed1);
+  }
+
+  onSelect(selectChange) {
+    this.visiblyGroup = selectChange.value;
   }
 }

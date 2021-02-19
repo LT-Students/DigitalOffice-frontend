@@ -1,31 +1,29 @@
 <div class="project__container">
-  <div class="content-wrapper">
-    <div class="h4 project__name">
+  <div class="project__description">
+    <h3 class="h4 project__name">
       {{ project.name }}
-    </div>
+    </h3>
 
-    <div class="regular_text project__customer">
+    <p class="regular_text text_color_gray project__customer">
       {{ project.consumer.name }}
-    </div>
+    </p>
 
-    <div class="regular_text project__comment">
+    <p class="regular_text project__comment">
       {{ project.description }}
-    </div>
+    </p>
+  </div>
 
-    <div class="project__details">
+  <div class="project__details">
+    <div class="procession-data">
       <div class="contribution">
-        <p class="regular_text">
-          Мой вклад<br />
-          <span class="h4 hours"
-            >{{ project.contributors[0].totalTime.hours | number: '3.0' }} :{{
-              project.contributors[0].totalTime.minutes | number: '2.0'
-            }}
-            ч</span
-          >
-          <!--i need to get ID-->
+        <p class="text_color_gray">Мой вклад</p>
+        <p class="h4 hours">
+          {{ project.contributors[0].totalTime.hours }}:{{
+            project.contributors[0].totalTime.minutes | number: '2.0'
+          }}ч
         </p>
+        <!--i need to get ID-->
       </div>
-
       <div class="team">
         <div
           class="participant"
@@ -41,5 +39,19 @@
         </div>
       </div>
     </div>
+    <button
+      *ngIf="showStatisticsBtn"
+      mat-flat-button
+      color="primary"
+      class="btn-statistic"
+    >
+      <span class="regular_text regular_text_light_1">Статистика</span>
+    </button>
   </div>
+  <p
+    class="regular_text text_color_gray history-data"
+    *ngIf="project.historyDetails !== undefined"
+  >
+    {{ project.historyDetails }}
+  </p>
 </div>
