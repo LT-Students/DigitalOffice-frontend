@@ -1,1 +1,1 @@
-powershell.exe -ExecutionPolicy Bypass -Command "./digitaloffice.ps1"
+powershell.exe -ExecutionPolicy Bypass -Command "./DigitalOfficeStartup.ps1"
