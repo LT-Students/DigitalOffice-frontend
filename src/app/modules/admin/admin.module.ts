@@ -14,6 +14,7 @@ import { NewMembersBoardComponent } from './components/new-members-board/new-mem
 import { TeamCardComponent } from './components/team-cards/team-card.component';
 import { NewCompanyComponent } from './components/new-company/new-company.component';
 import { NewMemberComponent } from './components/new-member/new-member.component';
+import { UploadComponent } from './components/upload/upload.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NewMemberComponent } from './components/new-member/new-member.component
     NewCompanyComponent,
     TeamCardComponent,
     NewMemberComponent,
+    UploadComponent,
   ],
   imports: [
     CommonModule,
