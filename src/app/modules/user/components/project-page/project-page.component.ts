@@ -8,9 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class ProjectPageComponent implements OnInit {
   titleProject: string = 'Меркурий'
   descriptionProject: string = 'Депортамент цифровых решений'
+  detailsProject: Array<string> = ['Роскосмос', 'В работе', '26 октября 2019', '233 дня', '19 человек']
 
   constructor() { }
-  detailsProject: Array<string> = ['Роскосмос','В работе','26 октября 2019', '233 дня','19 человек']
   ngOnInit(): void {
   }
 }
