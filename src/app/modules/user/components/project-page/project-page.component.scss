@@ -1,0 +1,106 @@
+@import 'base/variables';
+@import 'base/fonts';
+
+.projectPage{
+    max-width: 100%;
+    margin-top: 10px;
+    padding: 40px;
+
+    background: #FCFCFC;
+    border-radius: 5px 5px 0px 0px;
+
+    hr {
+        border: 1px solid #F1F1EF;
+        margin: 40px 0 20px;
+    }
+    
+    .header{
+        display: flex;
+        justify-content:  space-between;
+        flex-wrap: wrap;
+
+        .header-title {  
+            h1 {
+                font-family: Gotham Pro;
+                font-style: normal;
+                font-weight: bold;
+                font-size: 35px;
+                line-height: 40px;
+
+                color: $dark_2;
+            }
+            .header-splitter {
+                width: 124px;
+                height: 4px;
+                background: $accent_color_bright;
+            }
+            p {
+                font-family: "GillSansWGL";
+                color: $gray;
+                font-size: 16px;
+                line-height: 24px;
+            }
+        }
+        .header-menu {
+            button {
+                width: 100px;
+                height: 50px;
+                background-color: hotpink;
+            }
+        }
+    }
+    .content {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        h4{
+            font-family: Gotham Pro;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 24px;
+            color: $dark_1;
+            margin-bottom: 25px;
+            &:last-child {
+                margin-top: 20px;
+            }
+        }
+        .details{
+            .description {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+
+                max-width: 320px;
+                margin-bottom: 10px;
+
+                text-align:  left;
+
+                .description__name{
+                    max-width: 110px;
+                    margin-right: 60px;
+                    tr {
+                        font-family: "GillSansWGL";
+                        color: $gray;
+                        font-size: 16px;
+                        line-height: 24px;
+                        max-width: 50px;
+                        font-weight: 400;
+                        
+                    }
+                    
+                }
+                .description__text{
+                    tr {
+                        font-family: "GillSansWGL";
+                        color: $dark_1;
+                        font-size: 16px;
+                        line-height: 24px;
+                        font-weight: 400;
+                    }
+                    
+                }
+            }
+        }
+    }
+}

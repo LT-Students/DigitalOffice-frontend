@@ -1,0 +1,35 @@
+<div class="projectPage">
+    <div class="header">
+        <div class="header-title">
+            <h1>{{titleProject}}</h1>
+            <div class="header-splitter"></div>
+            <p>{{descriptionProject}}</p>
+        </div>
+        <div class="header-menu">
+            <button></button>
+            <!-- <mat-flat-button></mat-flat-button>     --> 
+        </div>
+    </div>
+    <hr>
+    <div class="content">
+        <div class="details">
+            <h4>Детали проекта</h4>
+            <div class="description">
+                <th class="description__name">
+                    <tr>Заказчик</tr>
+                    <tr>Статус</tr>
+                    <tr>Запуск проекта</tr>
+                    <tr>Проект длится</tr>
+                    <tr>Команда</tr>
+                </th>
+                <th class="description__text">
+                    <tr *ngFor="let el of detailsProject">{{el}}</tr>
+                </th>
+                <h4>Прогресс команды</h4>
+            </div>
+        </div>
+        <div class="team">
+            <h4>Команда</h4>
+        </div>
+    </div>
+</div>

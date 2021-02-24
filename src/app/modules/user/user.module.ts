@@ -14,6 +14,7 @@ import { GradientGraphicsComponent } from './components/gradient-graphics/gradie
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
+import { ProjectPageComponent } from './components/project-page/project-page.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { TaskComponent } from './components/project/task/task.component';
     UserTasksComponent,
     ProjectComponent,
     TaskComponent,
+    ProjectPageComponent,
   ],
   imports: [
     CommonModule,
@@ -37,4 +39,4 @@ import { TaskComponent } from './components/project/task/task.component';
   ],
   providers: [],
 })
-export class UserModule {}
+export class  UserModule {}
