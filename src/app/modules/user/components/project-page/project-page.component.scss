@@ -5,9 +5,29 @@
     max-width: 100%;
     margin-top: 10px;
     padding: 40px;
+    @media(max-width: 420px) {
+        padding: 10px;
+    }
 
     background: #FCFCFC;
     border-radius: 5px 5px 0px 0px;
+
+    h1 {
+        font-family: Gotham Pro;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 35px;
+        line-height: 40px;
+
+        color: $dark_2;
+    }
+
+    p {
+        font-family: "GillSansWGL";
+        color: $gray;
+        font-size: 16px;
+        line-height: 24px;
+    }
 
     hr {
         border: 1px solid #F1F1EF;
@@ -19,33 +39,27 @@
         justify-content:  space-between;
         flex-wrap: wrap;
 
-        .header-title {  
-            h1 {
-                font-family: Gotham Pro;
-                font-style: normal;
-                font-weight: bold;
-                font-size: 35px;
-                line-height: 40px;
-
-                color: $dark_2;
-            }
-            .header-splitter {
+        .header__title {  
+            
+            .header__splitter {
                 width: 124px;
                 height: 4px;
                 background: $accent_color_bright;
             }
-            p {
+            
+        }
+        .header__menu {
+            .header__button {
+                width: 132px;
+                height: 32px;
+                margin-top: 20px;
+
+                background-color: $accent_color_bright;
+                
                 font-family: "GillSansWGL";
-                color: $gray;
                 font-size: 16px;
                 line-height: 24px;
-            }
-        }
-        .header-menu {
-            button {
-                width: 100px;
-                height: 50px;
-                background-color: hotpink;
+                color: $light_1;
             }
         }
     }
@@ -53,6 +67,8 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+        margin-right: 60px;
+        
         h4{
             font-family: Gotham Pro;
             font-style: normal;
@@ -60,9 +76,23 @@
             font-size: 16px;
             line-height: 24px;
             color: $dark_1;
+
             margin-bottom: 25px;
-            &:last-child {
+
+        }
+        .time {
+
+            h4 {
                 margin-top: 20px;
+            }
+            .time__elements {
+
+                display: flex;
+                flex-wrap: nowrap;
+
+                div:first-child {
+                    margin-right: 50px;
+                }
             }
         }
         .details{
@@ -72,34 +102,84 @@
                 flex-wrap: wrap;
 
                 max-width: 320px;
-                margin-bottom: 10px;
 
                 text-align:  left;
 
+                tr {
+                    font-family: "GillSansWGL";
+                    font-size: 16px;
+                    line-height: 30px;
+                    font-weight: 400;
+                }
                 .description__name{
                     max-width: 110px;
+
                     margin-right: 60px;
+                    @media(max-width: 420px) {
+                        margin-right: 0px;
+                    }
+
                     tr {
-                        font-family: "GillSansWGL";
-                        color: $gray;
-                        font-size: 16px;
-                        line-height: 24px;
-                        max-width: 50px;
-                        font-weight: 400;
-                        
+                        color: $gray;                        
                     }
                     
                 }
                 .description__text{
-                    tr {
-                        font-family: "GillSansWGL";
-                        color: $dark_1;
-                        font-size: 16px;
-                        line-height: 24px;
-                        font-weight: 400;
+
+                    tr {                        
+                        color: $dark_1;                        
                     }
                     
                 }
+            }
+        }
+        
+        .team {
+            @media(max-width: 420px) {
+                h4 {
+                    margin-top: 30px;
+                }
+            }
+            .team__content {
+                .leaders {
+                    display: flex;
+                    @media(max-width: 1024px) {
+                        display: inline;
+                    }
+                    margin-bottom: 32px;
+
+                    .leaders__el {
+                        display: flex;
+                        flex-wrap: nowrap;
+        
+                        img {
+                            margin-right: 10px;
+                            @media(max-width: 420px) {
+                                height: 48px;
+                            }
+                        }
+        
+                        &:first-child {
+                            margin-right: 30px;
+                        }
+        
+                        .leader__name{
+                            color: #000000;
+                        }
+                    }
+                }   
+                .team__all {
+                    margin-bottom: 35px;
+
+                    img{
+                        margin-right: 4px;
+                        @media(max-width: 1024px) {
+                            margin-right: -10px;
+                        }
+                    }
+                }
+            
+            
             }
         }
     }

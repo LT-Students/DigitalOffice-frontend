@@ -1,13 +1,13 @@
 <div class="projectPage">
     <div class="header">
-        <div class="header-title">
+        <div class="header__title">
             <h1>{{titleProject}}</h1>
-            <div class="header-splitter"></div>
+            <div class="header__splitter"></div>
             <p>{{descriptionProject}}</p>
         </div>
-        <div class="header-menu">
-            <button></button>
-            <!-- <mat-flat-button></mat-flat-button>   // вот это у меня не работает(  -->
+        <div class="header__menu">
+            <a mat-flat-button class="header__button">Редактировать</a>
+            <button mat-icon-button><mat-icon>more_vert</mat-icon></button> <!-- кнопочка не отображается, не понял почему( --> 
         </div>
     </div>
     <hr>
@@ -25,11 +25,57 @@
                 <th class="description__text">
                     <tr *ngFor="let el of detailsProject">{{el}}</tr>
                 </th>
-                <h4>Прогресс команды</h4>
+                <div class="time">
+                    <h4>Прогресс команды</h4>
+                    <div class="time__elements">
+                        <div>
+                            <h1>264 ч</h1>
+                            <p>Июнь 2020</p>
+                        </div>
+                        <div>
+                            <h1>2858 ч</h1>
+                            <p>За все время</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="team">
             <h4>Команда</h4>
+            <div class="team__content">
+                <div class="leaders">
+                    <div class="leaders__el">
+                        <img src="../../../../../assets/images/smallPhoto/Ellipse88.png" alt="NaN">
+                        <div>
+                            <p class="leader__name">Eva Tener</p>
+                            <p>Product Manager</p>
+                        </div>
+                    </div>
+                    <div class="leaders__el">
+                        <img src="../../../../../assets/images/smallPhoto/Ellipse89.png" alt="NaN">
+                        <div>
+                            <p class="leader__name">Jerri Fenster</p>
+                            <p>Teamlead</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="team__all">
+                    <img [src]='photo' *ngFor="let photo of smallPhotos" alt="NaN">
+                </div>
+            </div>
+            <div class="time">
+                <h4>Мой вклад</h4>
+                <div class="time__elements">
+                    <div>
+                        <h1>40 ч</h1>
+                        <p>Июнь 2020</p>
+                    </div>
+                    <div>
+                        <h1>295 ч</h1>
+                        <p>За все время</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
