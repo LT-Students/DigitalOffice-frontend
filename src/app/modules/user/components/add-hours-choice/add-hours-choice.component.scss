@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import 'base/variables';
+@import 'base/fonts';
+
+.add-hours-choice {
+  padding: 40px;
+
+  &__title {
+    color: $dark_1;
+
+    &::after {
+      content: '';
+
+      margin-bottom: 35px;
+
+      display: block;
+
+      width: 123px;
+      height: 4px;
+
+      background-color: $accent_color_bright;
+    }
+  }
+}

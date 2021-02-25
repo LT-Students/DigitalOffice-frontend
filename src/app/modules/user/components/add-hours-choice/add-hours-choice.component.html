@@ -1,0 +1,15 @@
+<button
+  mat-icon-button
+  [matMenuTriggerFor]="menu"
+  aria-label="Example icon-button with a menu"
+>
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <span class="add-hours-choice__title h2">Куда внести часы?</span>
+  <mat-radio-group>
+    <div *ngFor="let option of options" mat-menu-item>
+      <mat-radio-button [value]="option">{{ option }}</mat-radio-button>
+    </div>
+  </mat-radio-group>
+</mat-menu>
