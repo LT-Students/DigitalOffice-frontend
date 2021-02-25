@@ -12,9 +12,10 @@
       <mat-option value=""> Все </mat-option>
     </mat-select>
   </mat-form-field>
-  <div class="projects-table__projects-group" *ngFor="let group of groups">
-    <ng-container
+  <ng-container *ngFor="let group of groups">
+    <div
       *ngIf="visiblyGroup === '' || group.groupName === visiblyGroup"
+      class="projects-table__projects-group"
     >
       <h2 class="group-name h3">{{ group.groupName }}</h2>
       <div class="group-container">
@@ -24,6 +25,6 @@
           [project]="project"
         ></do-project-card>
       </div>
-    </ng-container>
-  </div>
+    </div>
+  </ng-container>
 </div>

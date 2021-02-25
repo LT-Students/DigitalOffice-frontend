@@ -10,15 +10,15 @@ import { Project } from '../../../../models/project.model';
 export class ProjectsTableComponent implements OnInit {
   constructor() {}
 
-  activeProjects: Project[] = [];
-  suspendedProjects: Project[] = [];
-  closedProjects: Project[] = [];
+  active: Project[] = [];
+  suspended: Project[] = [];
+  closed: Project[] = [];
   visiblyGroup = '';
 
   public groups = [
-    { groupName: 'В работе', groupData: this.activeProjects },
-    { groupName: 'Приостановлены', groupData: this.suspendedProjects },
-    { groupName: 'Завершены', groupData: this.closedProjects },
+    { groupName: 'В работе', groupData: this.active },
+    { groupName: 'Приостановлены', groupData: this.suspended },
+    { groupName: 'Завершены', groupData: this.closed },
   ];
 
   ngOnInit() {
@@ -113,9 +113,9 @@ export class ProjectsTableComponent implements OnInit {
       historyDetails: 'Завершен 02.03.2020',
     };
 
-    this.activeProjects.push(active1, active2);
-    this.suspendedProjects.push(suspended1);
-    this.closedProjects.push(closed1);
+    this.active.push(active1, active2);
+    this.suspended.push(suspended1);
+    this.closed.push(closed1);
   }
 
   onSelect(selectChange) {
