@@ -35,7 +35,51 @@ export class ProjectsTableComponent implements OnInit {
           user: {
             firstName: 'Вася',
             lastName: 'Пчелкин',
-            photo: '../../../assets/images/girl.png',
+            photo: './assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 280,
+            minutes: 40,
+          },
+        },
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: './assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 280,
+            minutes: 40,
+          },
+        },
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: './assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 280,
+            minutes: 40,
+          },
+        },
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: './assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 280,
+            minutes: 40,
+          },
+        },
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: './assets/images/girl.png',
           },
           totalTime: {
             hours: 280,
@@ -57,7 +101,7 @@ export class ProjectsTableComponent implements OnInit {
           user: {
             firstName: 'Вася',
             lastName: 'Пчелкин',
-            photo: '../../../assets/images/girl.png',
+            photo: './assets/images/girl.png',
           },
           totalTime: {
             hours: 123,
@@ -80,7 +124,7 @@ export class ProjectsTableComponent implements OnInit {
           user: {
             firstName: 'Вася',
             lastName: 'Пчелкин',
-            photo: '../../../assets/images/girl.png',
+            photo: './assets/images/girl.png',
           },
           totalTime: {
             hours: 123,
@@ -91,7 +135,7 @@ export class ProjectsTableComponent implements OnInit {
       historyDetails: 'Завершен 02.03.2020',
     };
 
-    this.activeProjects.push(active);
+    this.activeProjects.push(active, active, active, active);
     this.suspendedProjects.push(suspended);
     this.closedProjects.push(closed);
   }

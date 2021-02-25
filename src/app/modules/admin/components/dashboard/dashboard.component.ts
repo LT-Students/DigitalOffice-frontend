@@ -11,56 +11,80 @@ import { NewCompanyComponent } from '../new-company/new-company.component';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  @Input() projects: Project[] = [];
+  projects: Project[] = [];
   public today = Date.now();
 
   constructor(private router: Router, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    const proj1 = {
-      name: 'MainProject1',
+    const active = {
+      name: 'Меркурий – лечу на орбиту',
       consumer: {
-        name: 'Company№1',
-        description: 'Super company that is doing nothing.',
+        name: 'Роскосмос',
+        description: '',
       },
-      description: 'Just project. Nothing special.',
+      description:
+        'Внедряем ПО на железки Роскосмоса для полета к орбите Меркурия. Человечество надеется на нас! Внедряем ПО на железки Роскосмоса для полета к орбите Меркурия. Человечество надеется на нас!',
       contributors: [
         {
           user: {
             firstName: 'Вася',
             lastName: 'Пчелкин',
-            photo: '../../../assets/images/girl.png',
+            photo: './assets/images/girl.png',
           },
           totalTime: {
-            hours: 40,
-            minutes: 0,
+            hours: 280,
+            minutes: 40,
           },
         },
-      ],
-    };
-    const proj2 = {
-      name: 'MainProject2',
-      consumer: {
-        name: 'Company№2',
-        description: 'Super company that is doing nothing.',
-      },
-      description: 'Just project. Nothing special.',
-      contributors: [
         {
           user: {
             firstName: 'Вася',
             lastName: 'Пчелкин',
-            photo: '../../../assets/images/girl.png',
+            photo: './assets/images/girl.png',
           },
           totalTime: {
-            hours: 40,
-            minutes: 0,
+            hours: 280,
+            minutes: 40,
+          },
+        },
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: './assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 280,
+            minutes: 40,
+          },
+        },
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: './assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 280,
+            minutes: 40,
+          },
+        },
+        {
+          user: {
+            firstName: 'Вася',
+            lastName: 'Пчелкин',
+            photo: './assets/images/girl.png',
+          },
+          totalTime: {
+            hours: 280,
+            minutes: 40,
           },
         },
       ],
     };
 
-    this.projects.push(proj1, proj2);
+    this.projects.push(active, active, active, active);
   }
 
   onOpenNewProject() {
