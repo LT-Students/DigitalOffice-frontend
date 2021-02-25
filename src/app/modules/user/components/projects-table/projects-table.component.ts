@@ -10,19 +10,19 @@ import { Project } from '../../../../models/project.model';
 export class ProjectsTableComponent implements OnInit {
   constructor() {}
 
-  active: Project[] = [];
-  suspended: Project[] = [];
-  closed: Project[] = [];
+  activeProjects: Project[] = [];
+  suspendedProjects: Project[] = [];
+  closedProjects: Project[] = [];
   visiblyGroup = '';
 
   public groups = [
-    { groupName: 'В работе', groupData: this.active },
-    { groupName: 'Приостановлены', groupData: this.suspended },
-    { groupName: 'Завершены', groupData: this.closed },
+    { groupName: 'В работе', groupData: this.activeProjects },
+    { groupName: 'Приостановлены', groupData: this.suspendedProjects },
+    { groupName: 'Завершены', groupData: this.closedProjects },
   ];
 
   ngOnInit() {
-    const active1 = {
+    const active = {
       name: 'Меркурий – лечу на орбиту',
       consumer: {
         name: 'Роскосмос',
@@ -44,29 +44,7 @@ export class ProjectsTableComponent implements OnInit {
         },
       ],
     };
-    const active2 = {
-      name: 'Kojima is a Genius',
-      consumer: {
-        name: 'Joel K. & Co',
-        description: '',
-      },
-      description:
-        'Заказчик хочет, чтобы оно ренедерило ВСЕ! Пробуем реализовать',
-      contributors: [
-        {
-          user: {
-            firstName: 'Вася',
-            lastName: 'Пчелкин',
-            photo: '../../../assets/images/girl.png',
-          },
-          totalTime: {
-            hours: 30,
-            minutes: 25,
-          },
-        },
-      ],
-    };
-    const suspended1 = {
+    const suspended = {
       name: 'Герои Меча и Магии XXV',
       consumer: {
         name: 'Российский Фонд Кино',
@@ -89,7 +67,7 @@ export class ProjectsTableComponent implements OnInit {
       ],
       historyDetails: 'Приостановлен 10.06.2019',
     };
-    const closed1 = {
+    const closed = {
       name: 'Ребрендинг “Мир Света”',
       consumer: {
         name: 'ИП Горин Д.А.',
@@ -113,9 +91,9 @@ export class ProjectsTableComponent implements OnInit {
       historyDetails: 'Завершен 02.03.2020',
     };
 
-    this.active.push(active1, active2);
-    this.suspended.push(suspended1);
-    this.closed.push(closed1);
+    this.activeProjects.push(active);
+    this.suspendedProjects.push(suspended);
+    this.closedProjects.push(closed);
   }
 
   onSelect(selectChange) {
