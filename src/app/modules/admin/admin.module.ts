@@ -14,6 +14,9 @@ import { NewMembersBoardComponent } from './components/new-members-board/new-mem
 import { TeamCardComponent } from './components/team-cards/team-card.component';
 import { NewCompanyComponent } from './components/new-company/new-company.component';
 import { NewMemberComponent } from './components/new-member/new-member.component';
+import { UploadComponent } from './components/upload/upload.component';
+import { DndDirective } from './components/upload/dnd.directive';
+import { ProgressComponent } from './components/upload/progress/progress.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +29,9 @@ import { NewMemberComponent } from './components/new-member/new-member.component
     NewCompanyComponent,
     TeamCardComponent,
     NewMemberComponent,
+    UploadComponent,
+    DndDirective,
+    ProgressComponent,
   ],
   imports: [
     CommonModule,
