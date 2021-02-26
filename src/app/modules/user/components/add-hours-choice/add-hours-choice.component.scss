@@ -1,31 +1,44 @@
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import 'base/variables';
 @import 'base/fonts';
 
 .add-hours-choice {
-  padding: 40px;
-
   &__title {
     color: $dark_1;
 
     &::after {
       content: '';
 
-      margin-bottom: 35px;
+      margin-bottom: 10px;
 
       display: block;
 
       width: 123px;
-      height: 4px;
+      height: 2px;
 
       background-color: $accent_color_bright;
     }
   }
+
+  &__button_light3 {
+    font-size: 32px;
+
+    color: $dark_2;
+    background-color: $light_3;
+  }
+
+  &__radio {
+    width: inherit;
+
+    font-family: $header_font;
+
+    color: $gray;
+
+    &.mat-radio-button.mat-radio-checked {
+      color: $dark_1;
+    }
+  }
 }
 
-.add-hours-choice__button_light3 {
-  font-size: 32px;
-
-  color: $dark_2;
-  background-color: $light_3;
+button.mat-menu-item {
+  padding: 0;
 }

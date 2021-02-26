@@ -5,11 +5,13 @@
 >
   ⋯
 </button>
-<mat-menu #menu="matMenu">
+<mat-menu #menu="matMenu" [overlapTrigger]="true">
   <span class="add-hours-choice__title h4">Куда внести часы?</span>
   <mat-radio-group [(ngModel)]="chosenOption">
     <button *ngFor="let option of options" mat-menu-item>
-      <mat-radio-button [value]="option">{{ option }}</mat-radio-button>
+      <mat-radio-button [value]="option" class="add-hours-choice__radio">
+        {{ option }}
+      </mat-radio-button>
     </button>
   </mat-radio-group>
 </mat-menu>
