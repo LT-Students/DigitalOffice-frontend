@@ -79,4 +79,9 @@
   &__submit-btn {
     margin-top: 21px;
   }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
 }

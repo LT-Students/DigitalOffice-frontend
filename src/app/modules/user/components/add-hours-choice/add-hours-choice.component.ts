@@ -14,6 +14,7 @@ export class AddHoursChoiceComponent implements OnInit {
     'Отпуск',
     'Отгул',
   ];
+  chosenOption = this.options[0];
 
   constructor() {}
 
