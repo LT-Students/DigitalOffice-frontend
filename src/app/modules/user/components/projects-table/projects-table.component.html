@@ -6,10 +6,10 @@
       placeholder="Все"
       (selectionChange)="onSelect($event)"
     >
+      <mat-option value="">Все</mat-option>
       <mat-option *ngFor="let group of groups" [value]="group.groupName">
         {{ group.groupName }}
       </mat-option>
-      <mat-option value=""> Все </mat-option>
     </mat-select>
   </mat-form-field>
   <ng-container *ngFor="let group of groups">
