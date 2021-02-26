@@ -6,4 +6,5 @@ export interface Project {
   consumer: Company;
   description: string;
   contributors: Array<Contributor>;
+  historyDetails?: string;
 }

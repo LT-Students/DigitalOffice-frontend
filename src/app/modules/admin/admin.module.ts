@@ -7,7 +7,7 @@ import { AppMaterialModule } from 'src/app/app-material.module';
 import { SharedModule } from '../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { MyProjectComponent } from './components/my-project/my-project.component';
+import { ProjectCardComponent } from './components/project-card/project-card.component';
 import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { NewMembersBoardComponent } from './components/new-members-board/new-members-board.component';
@@ -22,7 +22,7 @@ import { ProgressComponent } from './components/upload/progress/progress.compone
   declarations: [
     DashboardComponent,
     AdminComponent,
-    MyProjectComponent,
+    ProjectCardComponent,
     NewEmployeeComponent,
     NewProjectComponent,
     NewMembersBoardComponent,
@@ -41,5 +41,6 @@ import { ProgressComponent } from './components/upload/progress/progress.compone
     AppMaterialModule,
     SharedModule,
   ],
+  exports: [ProjectCardComponent],
 })
 export class AdminModule {}

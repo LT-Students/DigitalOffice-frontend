@@ -8,6 +8,7 @@ import { DashboardComponent } from './modules/admin/components/dashboard/dashboa
 import { NewEmployeeComponent } from './modules/admin/components/new-employee/new-employee.component';
 import { NewProjectComponent } from './modules/admin/components/new-project/new-project.component';
 import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
+import { ProjectsTableComponent } from './modules/user/components/projects-table/projects-table.component';
 import { NewMembersBoardComponent } from './modules/admin/components/new-members-board/new-members-board.component';
 import { ContentContainerComponent } from './modules/shared/content-container/content-container.component';
 
@@ -22,8 +23,17 @@ const routes: Routes = [
         redirectTo: 'user/attendance',
       },
       {
-        path: 'user/attendance',
-        component: AttendanceComponent,
+        path: 'user',
+        children: [
+          {
+            path: 'attendance',
+            component: AttendanceComponent,
+          },
+          {
+            path: 'projects-table',
+            component: ProjectsTableComponent,
+          },
+        ],
         canActivate: [AuthGuard],
       },
       {

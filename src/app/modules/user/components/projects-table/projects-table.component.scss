@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+@import 'base/variables';
+@import 'base/fonts';
+
+.h1 {
+  font-weight: 700;
+}
+
+.mat-form-field_default-select {
+  margin: 48px 0;
+
+  .select {
+    min-width: 155px;
+    height: 32px;
+
+    background-color: $light_1;
+
+    ::ng-deep .mat-select-placeholder {
+      color: $gray;
+    }
+
+    ::ng-deep .mat-select-arrow {
+      margin-right: 6px;
+
+      opacity: 0.3;
+    }
+
+    ::ng-deep .mat-select-value {
+      padding: 0 0 0 8px;
+
+      color: $gray;
+    }
+  }
+}
+
+.projects-table__projects-group {
+  margin-bottom: 48px;
+
+  .group-name {
+    margin-bottom: 18px;
+  }
+
+  .group-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    do-project-card {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.projects-table__projects-group:last-child {
+  margin-bottom: 21px;
+}
