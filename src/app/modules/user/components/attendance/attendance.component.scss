@@ -4,7 +4,7 @@
   margin-top: 40px;
 
   display: grid;
-  grid-template-columns: 53% 47%;
+  grid-template-columns: 1.1fr 1fr;
   grid-auto-rows: auto;
   grid-template-areas:
     'add-hours doughnut'
