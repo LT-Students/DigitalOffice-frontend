@@ -24,6 +24,16 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   public addHoursForm: FormGroup;
   public setTimePeriod: Time;
 
+  options = [
+    'Проект',
+    'Командировка',
+    'Обучение',
+    'Больничный',
+    'Отпуск',
+    'Отгул',
+  ];
+  chosenOption = this.options[0];
+
   constructor(
     private fb: FormBuilder,
     private attendanceService: AttendanceService,

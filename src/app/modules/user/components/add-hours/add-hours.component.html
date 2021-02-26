@@ -1,8 +1,26 @@
 <div class="add-hours card bg-white">
-  <span class="add-hours__header">
+  <div class="add-hours__header">
     <span class="add-hours__title h2">Внести часы</span>
-    <do-add-hours-choice></do-add-hours-choice>
-  </span>
+    <div class="add-hours__choice">
+      <button
+        mat-flat-button
+        [matMenuTriggerFor]="menu"
+        class="mat-flat-button add-hours__choice__button_light3"
+      >
+        ⋯
+      </button>
+      <mat-menu #menu="matMenu" [overlapTrigger]="true">
+        <span class="add-hours__choice__title h4">Куда внести часы?</span>
+        <mat-radio-group [(ngModel)]="chosenOption">
+          <button *ngFor="let option of options" mat-menu-item>
+            <mat-radio-button [value]="option" class="add-hours__choice__radio">
+              {{ option }}
+            </mat-radio-button>
+          </button>
+        </mat-radio-group>
+      </mat-menu>
+    </div>
+  </div>
   <form
     [formGroup]="addHoursForm"
     (ngSubmit)="onSubmit()"

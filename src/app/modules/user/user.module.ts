@@ -14,7 +14,6 @@ import { GradientGraphicsComponent } from './components/gradient-graphics/gradie
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
-import { AddHoursChoiceComponent } from './components/add-hours-choice/add-hours-choice.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +26,6 @@ import { AddHoursChoiceComponent } from './components/add-hours-choice/add-hours
     UserTasksComponent,
     ProjectComponent,
     TaskComponent,
-    AddHoursChoiceComponent,
   ],
   imports: [
     CommonModule,
