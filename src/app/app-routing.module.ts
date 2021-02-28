@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuard } from './guards/auth.guard';
-import { AdminGuard } from './guards/admin.guard';
+import { AuthGuard } from './core/guards/auth.guard';
+import { AdminGuard } from './core/guards/admin.guard';
 import { AdminComponent } from './modules/admin/components/admin/admin.component';
 import { DashboardComponent } from './modules/admin/components/dashboard/dashboard.component';
 import { NewEmployeeComponent } from './modules/admin/components/new-employee/new-employee.component';
@@ -10,7 +10,7 @@ import { NewProjectComponent } from './modules/admin/components/new-project/new-
 import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
 import { ProjectsTableComponent } from './modules/user/components/projects-table/projects-table.component';
 import { NewMembersBoardComponent } from './modules/admin/components/new-members-board/new-members-board.component';
-import { ContentContainerComponent } from './modules/shared/content-container/content-container.component';
+import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
 
 const routes: Routes = [
   {

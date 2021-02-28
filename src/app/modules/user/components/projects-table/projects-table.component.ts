@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { Project } from '../../../../models/project.model';
+import { DEPRECATED_Project2 } from '../../../../core/models/project.model';
 
 @Component({
   selector: 'do-projects-table',
@@ -10,9 +10,9 @@ import { Project } from '../../../../models/project.model';
 export class ProjectsTableComponent implements OnInit {
   constructor() {}
 
-  activeProjects: Project[] = [];
-  suspendedProjects: Project[] = [];
-  closedProjects: Project[] = [];
+  activeProjects: DEPRECATED_Project2[] = [];
+  suspendedProjects: DEPRECATED_Project2[] = [];
+  closedProjects: DEPRECATED_Project2[] = [];
   visiblyGroup = '';
 
   public groups = [

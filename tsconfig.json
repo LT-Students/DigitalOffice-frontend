@@ -17,6 +17,8 @@
       "node_modules/@types"
     ],
     "paths": {
+      "@app/*": ["src/app/core/*"],
+      "@data/*": ["src/app/data/*"],
       "@digital-office/api": ["libs/api/src/index.ts"],
       "@digital-office/api/*": ["libs/api/src/lib/*"]
     },

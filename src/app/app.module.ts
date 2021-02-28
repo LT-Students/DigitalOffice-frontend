@@ -11,18 +11,20 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ApiModule } from '@digital-office/api';
 
 import { AppComponent } from './app.component';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { UserService } from './services/user.service';
-import { AuthService } from './services/auth.service';
-import { LocalStorageService } from './services/local-storage.service';
-import { AuthGuard } from './guards/auth.guard';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { UserService } from './core/services/user.service';
+import { AuthService } from './core/services/auth.service';
+import { LocalStorageService } from './core/services/local-storage.service';
+import { AuthGuard } from './core/guards/auth.guard';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
-import { SharedModule } from './modules/shared/shared.module';
+import { SharedModule } from './shared/shared.module';
 import { AdminModule } from './modules/admin/admin.module';
-import { AppMaterialModule } from './app-material.module';
+import { MaterialModule } from './shared/material.module';
 import { UserModule } from './modules/user/user.module';
-import { AttendanceService } from './services/attendance.service';
+import { AttendanceService } from './core/services/attendance.service';
+import { ProjectStore } from './data/store/project.store';
+import { Constants } from './core/constants/constants';
 
 registerLocaleData(localeRu);
 
@@ -40,7 +42,7 @@ registerLocaleData(localeRu);
     AdminModule,
     NgbModule,
     BrowserAnimationsModule,
-    AppMaterialModule,
+    MaterialModule,
   ],
   providers: [
     AuthService,
@@ -48,6 +50,8 @@ registerLocaleData(localeRu);
     UserService,
     LocalStorageService,
     AttendanceService,
+    ProjectStore,
+    Constants,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

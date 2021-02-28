@@ -2,11 +2,11 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { IProject } from '../../../../interfaces/project.interface';
-import { IDatePeriod } from '../../../../interfaces/date-period.interface';
-import { AttendanceService } from '../../../../services/attendance.service';
-import { ProjectStoreService } from '../../../../services/project-store.service';
-import { DateService } from '../../../../services/date.service';
+import { IDatePeriod } from '../../../../core/interfaces/date-period.interface';
+import { AttendanceService } from '../../../../core/services/attendance.service';
+import { ProjectStore } from '../../../../data/store/project.store';
+import { DateService } from '../../../../core/services/date.service';
+import { Project } from '../../../../data/models/project';
 
 @Component({
   selector: 'do-user-tasks',
@@ -18,7 +18,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public projects: IProject[];
+  public projects: Project[];
 
   isOrderedByProject = false;
   isOrderedByHours = false;
@@ -31,14 +31,14 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 
   constructor(
     public attendanceService: AttendanceService,
-    private projectStore: ProjectStoreService,
+    private projectStore: ProjectStore,
     public dateService: DateService
   ) {}
 
   ngOnInit() {
     this.projectStore.projects$
       .pipe(takeUntil(this.onDestroy$))
-      .subscribe((projects: IProject[]) => (this.projects = projects));
+      .subscribe((projects) => (this.projects = projects));
 
     this.attendanceService.datePeriod$
       .pipe(takeUntil(this.onDestroy$))
@@ -54,7 +54,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
     this.endPeriod.setDate(now.getDate() + 3);
     if (this.projects.length !== 0) {
       this.tasksCount = this.projects
-        .map((p) => p.tasks)
+        .map((p) => p.workTime)
         .reduce((all, tasks) => all.concat(tasks)).length;
     }
   }

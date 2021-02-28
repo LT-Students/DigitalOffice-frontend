@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { Project } from '../../../../models/project.model';
+import { DEPRECATED_Project2 } from '../../../../core/models/project.model';
 
 @Component({
   selector: 'do-project-card',
@@ -9,7 +9,7 @@ import { Project } from '../../../../models/project.model';
 })
 export class ProjectCardComponent implements OnInit {
   // data about projectName, consumer, comment, myHours, participants - array with photo of participants
-  @Input() project: Project;
+  @Input() project: DEPRECATED_Project2;
   @Input() showStatisticsBtn: true | false = false;
 
   amountHiddenPhoto = 0;

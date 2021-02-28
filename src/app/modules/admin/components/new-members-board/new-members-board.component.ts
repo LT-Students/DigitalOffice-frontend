@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { User, UserService } from '@digital-office/api/user-service';
 
 import { map } from 'rxjs/operators';
-import { Member } from '../../../../interfaces/member.interface';
+import { Member } from '../../../../core/interfaces/member.interface';
 import { NewMember } from './new-members';
 
 @Component({
