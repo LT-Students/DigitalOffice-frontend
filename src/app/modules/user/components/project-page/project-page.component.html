@@ -1,81 +1,100 @@
 <div class="projectPage">
-    <div class="header">
-        <div class="header__title">
-            <h1>{{titleProject}}</h1>
-            <div class="header__splitter"></div>
-            <p>{{descriptionProject}}</p>
-        </div>
-        <div class="header__menu">
-            <a mat-flat-button class="header__button">Редактировать</a>
-            <button mat-icon-button><mat-icon>more_vert</mat-icon></button> <!-- кнопочка не отображается, не понял почему( --> 
-        </div>
+  <div class="header">
+    <div class="header__title">
+      <h1 class="h1 text-dark_2">{{ projectPage.title }}</h1>
+      <div class="header__splitter"></div>
+      <p class="regular_text">{{ projectPage.description }}</p>
     </div>
-    <hr>
-    <div class="content">
-        <div class="details">
-            <h4>Детали проекта</h4>
-            <div class="description">
-                <th class="description__name">
-                    <tr>Заказчик</tr>
-                    <tr>Статус</tr>
-                    <tr>Запуск проекта</tr>
-                    <tr>Проект длится</tr>
-                    <tr>Команда</tr>
-                </th>
-                <th class="description__text">
-                    <tr *ngFor="let el of detailsProject">{{el}}</tr>
-                </th>
-                <div class="time">
-                    <h4>Прогресс команды</h4>
-                    <div class="time__elements">
-                        <div>
-                            <h1>264 ч</h1>
-                            <p>Июнь 2020</p>
-                        </div>
-                        <div>
-                            <h1>2858 ч</h1>
-                            <p>За все время</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="team">
-            <h4>Команда</h4>
-            <div class="team__content">
-                <div class="leaders">
-                    <div class="leaders__el">
-                        <img src="../../../../../assets/images/smallPhoto/Ellipse88.png" alt="NaN">
-                        <div>
-                            <p class="leader__name">Eva Tener</p>
-                            <p>Product Manager</p>
-                        </div>
-                    </div>
-                    <div class="leaders__el">
-                        <img src="../../../../../assets/images/smallPhoto/Ellipse89.png" alt="NaN">
-                        <div>
-                            <p class="leader__name">Jerri Fenster</p>
-                            <p>Teamlead</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="team__all">
-                    <img [src]='photo' *ngFor="let photo of smallPhotos" alt="NaN">
-                </div>
-            </div>
-            <div class="time">
-                <h4>Мой вклад</h4>
-                <div class="time__elements">
-                    <div>
-                        <h1>40 ч</h1>
-                        <p>Июнь 2020</p>
-                    </div>
-                    <div>
-                        <h1>295 ч</h1>
-                        <p>За все время</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="header__menu">
+      <!-- <button mat-flat-button class="header__button regular_text text-light_1">Редактировать</button>
+            <button>
+                <mat-icon class="add_hours__icon" svgIcon = 'more' aria-label="Choose category"></mat-icon>
+            </button> -->
+      <button class="datepicker__btn" mat-flat-button>
+        <span class="regular_text text_light_1 datepicker__btn-text">
+          Редактировать
+        </span>
+      </button>
     </div>
+  </div>
+  <hr />
+  <div class="content">
+    <div class="details">
+      <h4 class="h4 text-dark_1">Детали проекта</h4>
+      <div *ngFor="let detail of projectPage.details" class="description">
+        <p class="regular_text text-gray">{{ detail.header }}</p>
+        <p class="regular_text text-dark_1">{{ detail.text }}</p>
+      </div>
+      <div class="time">
+        <h4 class="h4 text-dark_1">Прогресс команды</h4>
+        <div class="time__moments">
+          <div>
+            <h1 class="h1 text-dark_2">
+              {{ projectPage.teamProgress.lastTime }} ч
+            </h1>
+            <p class="regular_text text-gray">
+              {{ projectPage.teamProgress.lastMonth }}
+            </p>
+          </div>
+          <div>
+            <h1 class="h1 text-dark_2">
+              {{ projectPage.teamProgress.allTime }} ч
+            </h1>
+            <p class="regular_text text-gray">За все время</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="team">
+      <h4 class="h4 text-dark_1">Команда</h4>
+      <div class="team__content">
+        <div class="leaders">
+          <ng-container *ngFor="let member of projectPage.members">
+            <div
+              class="leaders__member"
+              *ngIf="
+                member.role === 'Product Manager' || member.role === 'TeamLead'
+              "
+            >
+              <img [src]="member.smallPhoto" alt="NaN" />
+              <div>
+                <p class="regular_text leader__name">
+                  {{ member.firstName }} {{ member.lastName }}
+                </p>
+                <p class="regular_text text-gray">{{ member.role }}</p>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="otherMember">
+          <ng-container *ngFor="let member of projectPage.members">
+            <img
+              [src]="member.smallPhoto"
+              *ngIf="
+                member.role != 'Product Manager' && member.role != 'TeamLead'
+              "
+              alt="NaN"
+            />
+          </ng-container>
+        </div>
+      </div>
+      <div class="time" *ngFor="let member of projectPage.members">
+        <ng-container *ngIf="userId === member.id">
+          <h4 class="h4 text-dark_1">Мой вклад</h4>
+          <div class="time__moments">
+            <div>
+              <h1 class="h1 text-dark_2">{{ member.progress.lastTime }} ч</h1>
+              <p class="regular_text text-gray">
+                {{ member.progress.lastMonth }}
+              </p>
+            </div>
+            <div>
+              <h1 class="h1 text-dark_2">{{ member.progress.allTime }} ч</h1>
+              <p class="regular_text text-gray">За все время</p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
 </div>

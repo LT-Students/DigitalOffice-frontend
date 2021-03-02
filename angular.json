@@ -1,8 +1,5 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "cli": {
-    "analytics": "9a7e6097-ffc5-4440-a5b1-50ddd2595e02"
-  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -25,12 +22,23 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "allowedCommonJsDependencies": ["chart.js", "moment"],
+            "allowedCommonJsDependencies": [
+              "chart.js",
+              "moment"
+            ],
             "aot": true,
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss", "src/theme.scss"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss",
+              "src/theme.scss"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["src/stylesheets"]
+              "includePaths": [
+                "src/stylesheets"
+              ]
             },
             "scripts": []
           },
@@ -89,8 +97,13 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": []
           }
         },
@@ -109,7 +122,10 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.component.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.component.html"
+            ]
           }
         }
       }
@@ -140,5 +156,8 @@
       }
     }
   },
-  "defaultProject": "DigitalOffice-frontend"
+  "defaultProject": "DigitalOffice-frontend",
+  "cli": {
+    "analytics": "a24b178e-4300-41ac-a4ec-19f0ab8267fc"
+  }
 }
