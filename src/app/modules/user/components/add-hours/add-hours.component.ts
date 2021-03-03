@@ -4,6 +4,9 @@ import { Time } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+
 import { User } from '@digital-office/api/user-service';
 import { AttendanceService } from '../../../../services/attendance.service';
 import { IProject } from '../../../../interfaces/project.interface';
@@ -24,21 +27,29 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   public addHoursForm: FormGroup;
   public setTimePeriod: Time;
 
-  options = [
-    'Проект',
-    'Командировка',
-    'Обучение',
-    'Больничный',
-    'Отпуск',
-    'Отгул',
+  public categories;
+  public chosenCategory;
+
+  public listOfIcons = [
+    { name: 'more', url: 'assets/svg/more.svg' },
+    { name: 'hint', url: 'assets/svg/hint.svg' },
+    { name: 'attach-file', url: 'assets/svg/attach-file.svg' },
   ];
-  chosenOption = this.options[0];
 
   constructor(
     private fb: FormBuilder,
     private attendanceService: AttendanceService,
-    private projectStore: ProjectStoreService
-  ) {}
+    private projectStore: ProjectStoreService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer
+  ) {
+    this.listOfIcons.forEach((icon) => {
+      iconRegistry.addSvgIcon(
+        icon.name,
+        sanitizer.bypassSecurityTrustResourceUrl(icon.url)
+      );
+    });
+  }
 
   ngOnInit() {
     this.addHoursForm = this.fb.group({
@@ -67,6 +78,22 @@ export class AddHoursComponent implements OnInit, OnDestroy {
       });
 
     this.projects = this.projectStore.projects;
+
+    this.categories = [
+      { name: 'Проект', options: this.projects.map((p) => p.name) },
+      {
+        name: 'Командировка',
+        options: ['За счёт компании', 'За счёт компании-партнёра'],
+      },
+      { name: 'Обучение', options: ['За свой счёт', 'За счёт компании'] },
+      {
+        name: 'Больничный',
+        options: ['Обычный', 'Дети/родственники', 'По беременности и родам'],
+      },
+      { name: 'Отпуск', options: ['Ежегодный', 'За свой счёт', 'Декретный'] },
+      { name: 'Отгул', options: ['Суд', 'ДТП', 'Форс-мажор', 'Похороны'] },
+    ];
+    this.chosenCategory = this.categories[0];
   }
 
   private getHours(): number {

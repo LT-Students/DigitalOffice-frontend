@@ -29,6 +29,10 @@
   &__label {
     margin-bottom: 8px;
 
+    span {
+      margin-right: 10px;
+    }
+
     &_for_project {
       margin-top: 16px;
     }
@@ -85,45 +89,52 @@
     justify-content: space-between;
   }
 
-  &__choice {
-    &__title {
-      color: $dark_1;
+  &__icon {
+    vertical-align: middle;
 
-      &::after {
-        content: '';
+    &_hint {
+      margin-right: 7px;
 
-        margin-bottom: 10px;
-
-        display: block;
-
-        width: 123px;
-        height: 2px;
-
-        background-color: $accent_color_bright;
-      }
-    }
-
-    &__button_light3 {
-      font-size: 32px;
-
-      color: $dark_2;
-      background-color: $light_3;
-    }
-
-    &__radio {
-      width: inherit;
-
-      font-family: $header_font;
-
-      color: $gray;
-
-      &.mat-radio-button.mat-radio-checked {
-        color: $dark_1;
-      }
+      float: right;
     }
   }
-}
 
-button.mat-menu-item {
-  padding: 0;
+  &__menu-title {
+    padding: 10px;
+
+    font-size: 18px;
+
+    &::after {
+      content: '';
+
+      margin-bottom: 10px;
+
+      display: block;
+
+      width: 123px;
+      height: 2px;
+
+      background-color: $accent_color_bright;
+    }
+  }
+
+  &__menu-button {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    color: $dark_2;
+    background-color: $light_3;
+  }
+
+  &__radio {
+    width: inherit;
+    height: inherit;
+
+    font-family: $header_font;
+    font-weight: 400;
+
+    &.mat-radio-button.mat-radio-checked {
+      color: $dark_1;
+    }
+  }
 }
