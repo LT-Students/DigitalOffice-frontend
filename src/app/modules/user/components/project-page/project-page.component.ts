@@ -108,6 +108,7 @@ export class ProjectPageComponent implements OnInit {
     ],
   };
 
+  moreHorizButton = 'assets/svg/more-horiz.svg';
   userId = '89';
   constructor() {}
   ngOnInit(): void {}

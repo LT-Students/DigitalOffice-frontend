@@ -6,14 +6,11 @@
       <p class="regular_text">{{ projectPage.description }}</p>
     </div>
     <div class="header__menu">
-      <!-- <button mat-flat-button class="header__button regular_text text-light_1">Редактировать</button>
-            <button>
-                <mat-icon class="add_hours__icon" svgIcon = 'more' aria-label="Choose category"></mat-icon>
-            </button> -->
-      <button class="datepicker__btn" mat-flat-button>
-        <span class="regular_text text_light_1 datepicker__btn-text">
-          Редактировать
-        </span>
+      <button class="datepicker__btn butt" mat-flat-button>
+        <span class="regular_text text-light_1"> Редактировать </span>
+      </button>
+      <button mat-icon-button class="header_more">
+        <img [src]="moreHorizButton" alt="NaN" />
       </button>
     </div>
   </div>

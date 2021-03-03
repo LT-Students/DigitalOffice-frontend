@@ -31,14 +31,26 @@
       }
     }
 
-    .header__menu {
-      button {
-        margin-top: 20px;
+    &__menu {
+      display: flex;
+
+      .butt {
+        margin-right: 10px;
+        padding: 0;
 
         width: 132px;
         height: 32px;
 
         background-color: $accent_color_bright;
+        align-self: center;
+      }
+
+      .header_more {
+        margin-top: 20px;
+        padding: 0;
+
+        width: 42px;
+        height: 32px;
       }
     }
   }
@@ -81,6 +93,9 @@
         p {
           margin-bottom: 6px;
 
+          @media (max-width: 1024px) {
+            margin-bottom: 15px;
+          }
           width: 160px;
         }
       }
@@ -111,6 +126,10 @@
 
             img {
               margin-right: 10px;
+
+              @media (max-width: 1024px) {
+                margin-bottom: 15px;
+              }
 
               @media (max-width: 420px) {
                 height: 48px;
