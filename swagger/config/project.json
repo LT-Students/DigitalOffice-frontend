@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/ProjectService.json",
+  "output": "src/app/data/api/project-service",
+  "templates": "swagger/templates",
+  "module": "ProjectApiModule",
+  "excludeParameters": ["userId", "token"],
+  "serviceSuffix": "ApiService"
+}

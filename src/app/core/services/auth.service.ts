@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import {
-  AuthenticationRequest,
-  AuthenticationService,
-  AuthenticationResponse,
-} from '@digital-office/api/auth-service';
-
+import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
+import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
+import { AuthenticationApiService } from '@data/api/auth-service/services/authentication-api.service';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -15,14 +12,14 @@ import { LocalStorageService } from './local-storage.service';
 })
 export class AuthService {
   constructor(
-    private authService: AuthenticationService,
+    private authApiService: AuthenticationApiService,
     private localStorageService: LocalStorageService
   ) {}
 
   login(
     authenticationRequest: AuthenticationRequest
   ): Observable<AuthenticationResponse> {
-    return this.authService.loginPost(authenticationRequest).pipe(
+    return this.authApiService.login({ body: authenticationRequest }).pipe(
       tap({
         next: (val) => {
           this.localStorageService.set('id_token', val.token);

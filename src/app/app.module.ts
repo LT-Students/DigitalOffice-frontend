@@ -8,23 +8,21 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-import { ApiModule } from '@digital-office/api';
-
-import { AppComponent } from './app.component';
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
-import { UserService } from './core/services/user.service';
-import { AuthService } from './core/services/auth.service';
-import { LocalStorageService } from './core/services/local-storage.service';
-import { AuthGuard } from './core/guards/auth.guard';
+import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
+import { UserService } from '@app/services/user.service';
+import { AuthService } from '@app/services/auth.service';
+import { LocalStorageService } from '@app/services/local-storage.service';
+import { AuthGuard } from '@app/guards/auth.guard';
+import { AttendanceService } from '@app/services/attendance.service';
+import { ProjectStore } from '@data/store/project.store';
+import { Constants } from '@app/constants/constants';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { MaterialModule } from './shared/material.module';
 import { UserModule } from './modules/user/user.module';
-import { AttendanceService } from './core/services/attendance.service';
-import { ProjectStore } from './data/store/project.store';
-import { Constants } from './core/constants/constants';
+import { AppComponent } from './app.component';
 
 registerLocaleData(localeRu);
 
@@ -33,7 +31,6 @@ registerLocaleData(localeRu);
   imports: [
     BrowserModule,
     RouterModule,
-    ApiModule,
     AppRoutingModule,
     HttpClientModule,
     AuthModule,

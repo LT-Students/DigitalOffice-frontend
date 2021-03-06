@@ -1,0 +1,654 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ProjectService",
+    "description": "This specification describes which endpoints this service has, which models\nit uses.\n\nThis service, ProjectService, is intended to work with the projects -- create them, assign people to them, update info.\n",
+    "version": "1.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:9803/api"
+    },
+    {
+      "url": "http://localhost:9804/api"
+    }
+  ],
+  "paths": {
+    "/project/getProjects": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "getProjects",
+        "responses": {
+          "200": {
+            "description": "Successfully returned a project information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProjectResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/project/getProjectById": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "getProjectById",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Project global unique identifier.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned a project information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectExpandedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/project/createNewProject": {
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "description": "Creating new project.\n*  __The user must have access right__ -- Add/Edit/Remove projects.\n",
+        "operationId": "createNewProject",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "header",
+            "description": "The user global unique identifier who requests this resource.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectExpandedRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "New project Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n"
+          }
+        }
+      }
+    },
+    "/project/editProjectById": {
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "description": "Editing specific project by Id.\n*  __The user must have access right__ -- Add/Edit/Remove projects. \n",
+        "operationId": "editProjectById",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "header",
+            "description": "The user global unique identifier who requests this resource.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Project global unique identifier.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Project's Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/user/addUsersToProject": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Adding specific users to project.\n*  __The user must have access right__ -- Add/Edit/Remove projects.\n",
+        "operationId": "addUsersToProject",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "header",
+            "description": "The user global unique identifier who requests this resource.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUsersToProjectReques"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Users of specific project added successfully."
+          },
+          "204": {
+            "description": "Project's Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/user/removeUsersFromProject": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Remove specific users from specific project.\n* __The user must have access right__ -- Add/Edit/Remove project. \n",
+        "operationId": "removeUsersFromProject",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "header",
+            "description": "The user global unique identifier who requests this resource.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Project global unique identifier.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "UserIds",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/parameters/userId"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "404": {
+            "description": "Not Found.\n* User or Project with this id not found.\n"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PatchDocument": {
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed",
+            "enum": [
+              "add",
+              "remove",
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer"
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          },
+          "from": {
+            "type": "string",
+            "description": "A string containing a JSON Pointer value."
+          }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "CreatedAt": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "type": "string",
+            "format": "date-time"
+          },
+          "ClosedAt": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "CloasedReason": {
+            "type": "string"
+          },
+          "IsActive": {
+            "type": "string"
+          }
+        }
+      },
+      "ProjectUser": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "AddedOne": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "type": "string",
+            "format": "date-time"
+          },
+          "RemovedOn": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "ProjectExpandedRequest": {
+        "type": "object",
+        "properties": {
+          "Project": {
+            "$ref": "#/components/schemas/Project"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUser"
+            }
+          }
+        }
+      },
+      "AddUsersToProjectReques": {
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUser"
+            }
+          }
+        }
+      },
+      "EditProjectRequest": {
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Patch": {
+            "minItems": 1,
+            "type": "array",
+            "example": [
+              {
+                "op": "replace",
+                "path": "/description",
+                "value": "new description"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/PatchDocument"
+            }
+          }
+        }
+      },
+      "ProjectResponse": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "description": "The project's Id.",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Name": {
+            "type": "string",
+            "description": "The project's title.",
+            "example": "DigitalOffice"
+          },
+          "ShortName": {
+            "description": "The project short name.",
+            "example": "DO"
+          },
+          "Description": {
+            "type": "string",
+            "description": "The project's description."
+          },
+          "DepartmentId": {
+            "type": "string",
+            "description": "Id of the department that funds the project.",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "CreateAt": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "description": "Date and time of project creation."
+          },
+          "ClosedAt": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "description": "Date and time of project closed (maybe the value 'null')."
+          },
+          "IsActive": {
+            "type": "boolean",
+            "description": "Analogue the IsCompleted mark. Allows to search for the completed projects.",
+            "example": true
+          }
+        }
+      },
+      "ProjectExpandedResponse": {
+        "required": [
+          "DepartmentId",
+          "Id",
+          "IsActive",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "description": "The project's Id.",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Name": {
+            "type": "string",
+            "description": "The project's title.",
+            "example": "DigitalOffice"
+          },
+          "Description": {
+            "type": "string",
+            "description": "The project's description."
+          },
+          "DepartmentId": {
+            "type": "string",
+            "description": "Id of the department that funds the project.",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "IsActive": {
+            "type": "boolean",
+            "description": "Analogue the IsCompleted mark. Allows to search for the completed projects.",
+            "example": true
+          }
+        }
+      }
+    },
+    "parameters": {
+      "projectId": {
+        "name": "projectId",
+        "in": "query",
+        "description": "Project global unique identifier.",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "userId": {
+        "name": "userId",
+        "in": "query",
+        "description": "User global unique identifier.",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "fileId": {
+        "name": "fileId",
+        "in": "query",
+        "description": "File global unique identifier.",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "roleId": {
+        "name": "roleId",
+        "in": "query",
+        "description": "Role global unique identifier.",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "requestedUserId": {
+        "name": "userId",
+        "in": "header",
+        "description": "The user global unique identifier who requests this resource.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        }
+      }
+    }
+  }
+}

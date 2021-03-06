@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { UserService } from '../../../../core/services/user.service';
+import { UserService } from '@app/services/user.service';
 
 @Component({
   selector: 'do-forgot-password',

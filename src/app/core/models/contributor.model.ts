@@ -1,9 +1,7 @@
 import { Time } from '@angular/common';
-
-import { User } from '@digital-office/api/user-service';
+import { User } from '@data/api/user-service/models/user';
 
 export interface Contributor {
-  // project: IProject;
   user: User;
   totalTime: Time;
 }

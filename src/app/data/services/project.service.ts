@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpParams, HttpClient } from '@angular/common/http';
-import { Constants } from '../../core/constants/constants';
+import { Constants } from '@app/constants/constants';
 import { Project } from '../models/project';
 
 @Injectable({

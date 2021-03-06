@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpParams, HttpClient } from '@angular/common/http';
-import { Constants } from '../../core/constants/constants';
+import { Constants } from '@app/constants/constants';
 import { WorkTime } from '../models/work-time';
 import { LeaveTime } from '../models/leave-time';
+import { share } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -21,17 +22,21 @@ export class TimeManagementService {
     startTime: Date,
     endTime: Date
   ): Observable<WorkTime[]> {
-    return this.http.post<WorkTime[]>(
-      `${this.workTimeApiPath}/getUserWorkTimes`,
-      {
-        startTime,
-        endTime,
-      },
-      { params: new HttpParams().set('userId', userId) }
-    );
+    return this.http
+      .post<WorkTime[]>(
+        `${this.workTimeApiPath}/getUserWorkTimes`,
+        {
+          startTime,
+          endTime,
+        },
+        { params: new HttpParams().set('userId', userId) }
+      )
+      .pipe(share());
   }
 
-  addWorkTime(body: WorkTime): Observable<string> {
+  addWorkTime(
+    body: Omit<WorkTime, 'id' | 'createdAt' | 'createdBy'>
+  ): Observable<string> {
     return this.http.post<string>(`${this.workTimeApiPath}/addWorkTime`, body);
   }
 

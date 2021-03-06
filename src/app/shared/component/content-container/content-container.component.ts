@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { User } from '@digital-office/api/user-service';
-
-import { UserService } from '../../../core/services/user.service';
+import { UserService } from '@app/services/user.service';
+import { User } from '@data/api/user-service/models/user';
 
 @Component({
   selector: 'do-content-container',

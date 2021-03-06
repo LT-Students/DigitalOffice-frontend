@@ -2,11 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import {
-  UserService as UserAPIService,
-  User,
-} from '@digital-office/api/user-service';
-
+import { User } from '@data/api/user-service/models/user';
+import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -14,12 +11,12 @@ import { LocalStorageService } from './local-storage.service';
 })
 export class UserService {
   constructor(
-    private userService: UserAPIService,
+    private userApiService: UserApiService,
     private localStorageService: LocalStorageService
   ) {}
 
   getUser(userId: string): Observable<User> {
-    return this.userService.getUserByIdGet(userId).pipe(
+    return this.userApiService.getUserById(userId).pipe(
       tap((user: User) => {
         this.localStorageService.set('user', user);
       })

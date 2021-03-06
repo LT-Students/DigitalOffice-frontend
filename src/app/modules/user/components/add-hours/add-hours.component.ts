@@ -4,12 +4,12 @@ import { Time } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { User } from '@digital-office/api/user-service';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project } from '@data/models/project';
 import { WorkTime } from '@data/models/work-time';
 import { timeValidator } from './add-hours.validators';
+import { User } from '@data/api/user-service/models/user';
 
 @Component({
   selector: 'do-add-hours',

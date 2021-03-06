@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { TimeManagementService } from '../services/time-management.service';
-import { ProjectService } from '../services/project.service';
-import { Project } from '../models/project';
-import { WorkTime } from '../models/work-time';
+import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
+import { WorkTimeApiService } from '@data/api/time-management-service/services/work-time-api.service';
+import { WorkTime } from '@data/models/work-time';
+import { Project } from '@data/models/project';
 
 @Injectable({
   providedIn: 'root',
@@ -74,8 +74,8 @@ export class ProjectStore {
   readonly projects$ = this._projects.asObservable();
 
   constructor(
-    private projectService: ProjectService,
-    private timeManagementService: TimeManagementService
+    private projectApiService: ProjectApiService,
+    private workTimeApiService: WorkTimeApiService
   ) {
     // this.loadInitialData();
   }
@@ -97,7 +97,7 @@ export class ProjectStore {
   }
 
   /*  private loadInitialData(): void {
-    this.projectService.getProjects().subscribe((projects) => {});
+    this.projectApiService.getProjects().subscribe((projects) => {});
     forkJoin([
       this.projectService.getProjects(),
       // сюда прокинуть userId, startTime, endTime
