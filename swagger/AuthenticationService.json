@@ -1,0 +1,94 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "AuthenticationService",
+    "description": "AuthenticationService is an API intended to work with user authentication, create jwt token for user.",
+    "version": "1.1.1"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:9817/api/authentication"
+    },
+    {
+      "url": "http://localhost:9818/api/authentication"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "description": "User authentication.",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully user authentication, returned a user id and token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Format error in the user email or password.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Wrong user credentials.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* User was not found.\n"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AuthenticationRequest": {
+        "required": [
+          "LoginData",
+          "Password"
+        ],
+        "type": "object",
+        "properties": {
+          "LoginData": {
+            "type": "string",
+            "description": "User email or login.",
+            "example": "ivan_ivanov123@mail.ru or ivan123"
+          },
+          "Password": {
+            "type": "string",
+            "description": "User password."
+          }
+        }
+      },
+      "AuthenticationResponse": {
+        "type": "object",
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "description": "User global unique identifier.",
+            "format": "uuid"
+          },
+          "Token": {
+            "type": "string",
+            "description": "User JWT."
+          }
+        }
+      }
+    }
+  }
+}

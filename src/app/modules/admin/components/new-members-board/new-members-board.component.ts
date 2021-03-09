@@ -1,10 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { User, UserService } from '@digital-office/api/user-service';
-
 import { map } from 'rxjs/operators';
-import { Member } from '../../../../interfaces/member.interface';
+import { Member } from '@app/interfaces/member.interface';
+import { UserApiService } from '@data/api/user-service/services/user-api.service';
+import { User } from '@data/api/user-service/models/user';
 import { NewMember } from './new-members';
 
 @Component({
@@ -31,7 +31,7 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   public selectedLevel;
   public searchName = null;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserApiService) {}
 
   ngOnInit(): void {
     this.getUsers();
@@ -39,19 +39,21 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
 
   getUsers(): void {
     this.getUsersSubscription = this.userService
-      .getAllUsersGet(0, 50, this.searchName)
+      .getAllUsers({
+        skipCount: 0,
+        takeCount: 50,
+        userNameFilter: this.searchName,
+      })
       .pipe(
-        map((data: User[]) =>
-          data.map((userDb) => ({
-            fullName: `${userDb.firstName} ${userDb.lastName} `,
-            projectsCount: 0,
-            level: '',
-            profileImgSrc: '',
-            specialization: '',
-          }))
-        )
+        map((data: User) => ({
+          fullName: `${data.firstName} ${data.lastName} `,
+          projectsCount: 0,
+          level: '',
+          profileImgSrc: '',
+          specialization: '',
+        }))
       )
-      .subscribe((data: NewMember[]) => {
+      .subscribe((data: any) => {
         this.users = data;
         this.visibleUsers = [...this.users];
       });

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { ITask } from '../../../../../interfaces/task.interface';
+import { ITask } from '../../../../../core/interfaces/task.interface';
+import { WorkTime } from '../../../../../data/models/work-time';
 
 @Component({
   selector: 'do-task',
@@ -8,9 +9,14 @@ import { ITask } from '../../../../../interfaces/task.interface';
   styleUrls: ['./task.component.scss'],
 })
 export class TaskComponent implements OnInit {
-  @Input() task: ITask;
+  @Input() workTime: WorkTime;
+  hours = 0;
+  minutes = 0;
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.hours = Math.floor(this.workTime.minutes / 60);
+    this.minutes = this.workTime.minutes % 60;
+  }
 }

@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { AppMaterialModule } from '../../app-material.module';
+import { MaterialModule } from '../../shared/material.module';
 import { AdminModule } from '../admin/admin.module';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 import { TagsBlockComponent } from './components/tags-block/tags-block.component';
 import { DateDescComponent } from './components/date-desc/date-desc.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
@@ -34,7 +34,7 @@ import { ProjectsTableComponent } from './components/projects-table/projects-tab
     CommonModule,
     SharedModule,
     NgbDatepickerModule,
-    AppMaterialModule,
+    MaterialModule,
     ReactiveFormsModule,
     FormsModule,
     AdminModule,

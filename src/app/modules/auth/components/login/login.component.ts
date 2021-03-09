@@ -2,15 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
-import { User } from '@digital-office/api/user-service';
-
-import {
-  AuthenticationRequest,
-  AuthenticationResponse,
-} from '../../../../../../libs/api/src/lib/auth-service';
-import { UserService } from '../../../../services/user.service';
+import { UserService } from '@app/services/user.service';
+import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
+import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
+import { User } from '@data/api/user-service/models/user';
 
 @Component({
   selector: 'do-login',

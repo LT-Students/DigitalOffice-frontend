@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { Project } from '../../../../models/project.model';
+import { DEPRECATED_Project2 } from '../../../../core/models/project.model';
 import { NewCompanyComponent } from '../new-company/new-company.component';
 
 @Component({
@@ -11,7 +11,7 @@ import { NewCompanyComponent } from '../new-company/new-company.component';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  projects: Project[] = [];
+  projects: DEPRECATED_Project2[] = [];
   public today = Date.now();
 
   constructor(private router: Router, public dialog: MatDialog) {}

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { IProject } from '../../../../interfaces/project.interface';
+import { Project } from '../../../../data/models/project';
 
 @Component({
   selector: 'do-project',
@@ -8,7 +8,7 @@ import { IProject } from '../../../../interfaces/project.interface';
   styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit {
-  @Input() project: IProject;
+  @Input() project: Project;
 
   constructor() {}
 

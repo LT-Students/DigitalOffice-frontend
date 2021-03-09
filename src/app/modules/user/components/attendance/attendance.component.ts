@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
-import { IDatePeriod } from '../../../../interfaces/date-period.interface';
-import { IProject } from '../../../../interfaces/project.interface';
+import { IDatePeriod } from '../../../../core/interfaces/date-period.interface';
+import { Project } from '../../../../data/models/project';
 
 @Component({
   selector: 'do-attendance',
@@ -10,7 +10,7 @@ import { IProject } from '../../../../interfaces/project.interface';
   styleUrls: ['./attendance.component.scss'],
 })
 export class AttendanceComponent implements OnInit {
-  public project: IProject;
+  public project: Project;
 
   public timePeriodSelected: IDatePeriod = {
     startDate: new Date(),

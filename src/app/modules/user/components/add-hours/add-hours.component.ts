@@ -4,12 +4,12 @@ import { Time } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { User } from '@digital-office/api/user-service';
-import { AttendanceService } from '../../../../services/attendance.service';
-import { IProject } from '../../../../interfaces/project.interface';
-import { ITask } from '../../../../interfaces/task.interface';
-import { ProjectStoreService } from '../../../../services/project-store.service';
+import { AttendanceService } from '@app/services/attendance.service';
+import { ProjectStore } from '@data/store/project.store';
+import { Project } from '@data/models/project';
+import { WorkTime } from '@data/models/work-time';
 import { timeValidator } from './add-hours.validators';
+import { User } from '@data/api/user-service/models/user';
 
 @Component({
   selector: 'do-add-hours',
@@ -20,14 +20,14 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   @Input() user: User;
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public projects: IProject[];
+  public projects: Project[];
   public addHoursForm: FormGroup;
   public setTimePeriod: Time;
 
   constructor(
     private fb: FormBuilder,
     private attendanceService: AttendanceService,
-    private projectStore: ProjectStoreService
+    private projectStore: ProjectStore
   ) {}
 
   ngOnInit() {
@@ -67,17 +67,16 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    const project_id = Number(this.addHoursForm.get('project').value);
-    const task: ITask = {
-      name: this.addHoursForm.get('task').value,
+    const projectId = this.addHoursForm.get('project').value;
+    const workTime: Partial<WorkTime> = {
+      title: this.addHoursForm.get('task').value,
       description: this.addHoursForm.get('description').value,
       createdAt: new Date(),
-      time: {
-        hours: Number(this.addHoursForm.get('time.hours').value),
-        minutes: Number(this.addHoursForm.get('time.minutes').value),
-      },
+      minutes:
+        Number(this.addHoursForm.get('time.minutes').value) +
+        Number(this.addHoursForm.get('time.hours').value) * 60,
     };
-    this.projectStore.addTaskToProject(task, project_id);
+    this.projectStore.addWorkTimeToProject(workTime, projectId);
     this.addHoursForm.reset();
     const datePeriod = this.attendanceService.datePeriod;
     this.attendanceService.onDatePeriodChange(datePeriod);

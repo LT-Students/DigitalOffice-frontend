@@ -17,8 +17,8 @@
       "node_modules/@types"
     ],
     "paths": {
-      "@digital-office/api": ["libs/api/src/index.ts"],
-      "@digital-office/api/*": ["libs/api/src/lib/*"]
+      "@app/*": ["src/app/core/*"],
+      "@data/*": ["src/app/data/*"],
     },
     "lib": [
       "es2018",

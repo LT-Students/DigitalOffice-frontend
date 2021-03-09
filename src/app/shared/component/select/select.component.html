@@ -1,0 +1,7 @@
+<!--выпадающий список с выбором проекта-->
+<div [class]="className">
+  <p class="regular_text">{{ title }}</p>
+  <select (change)="onChange($event.target.value)">
+    <option *ngFor="let option of options">{{ option }}</option>
+  </select>
+</div>
