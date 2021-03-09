@@ -10,9 +10,9 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { EditProjectRequest } from '../models/edit-project-request';
+import { Project } from '../models/project';
 import { ProjectExpandedRequest } from '../models/project-expanded-request';
 import { ProjectExpandedResponse } from '../models/project-expanded-response';
-import { ProjectResponse } from '../models/project-response';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +37,7 @@ export class ProjectApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   getProjects$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<ProjectResponse>>> {
+  }): Observable<StrictHttpResponse<Array<Project>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectsPath, 'get');
     if (params) {
@@ -49,7 +49,7 @@ export class ProjectApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ProjectResponse>>;
+        return r as StrictHttpResponse<Array<Project>>;
       })
     );
   }
@@ -61,10 +61,10 @@ export class ProjectApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   getProjects(params?: {
-  }): Observable<Array<ProjectResponse>> {
+  }): Observable<Array<Project>> {
 
     return this.getProjects$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<ProjectResponse>>) => r.body as Array<ProjectResponse>)
+      map((r: StrictHttpResponse<Array<Project>>) => r.body as Array<Project>)
     );
   }
 

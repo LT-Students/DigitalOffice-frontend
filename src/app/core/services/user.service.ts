@@ -16,7 +16,7 @@ export class UserService {
   ) {}
 
   getUser(userId: string): Observable<User> {
-    return this.userApiService.getUserById(userId).pipe(
+    return this.userApiService.getUserById({ userId }).pipe(
       tap((user: User) => {
         this.localStorageService.set('user', user);
       })

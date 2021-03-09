@@ -4,6 +4,6 @@
   "output": "src/app/data/api/time-management-service",
   "templates": "swagger/templates",
   "module": "TimeManagementApiModule",
-  "excludeParameters": ["userId", "token"],
+  "excludeParameters": ["token"],
   "serviceSuffix": "ApiService"
 }

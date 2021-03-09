@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { PatchDocument } from './patch-document';
 export interface EditProjectRequest {
-  patch?: Array<PatchDocument>;
-  projectId?: string;
+  patch: Array<PatchDocument>;
+  projectId: string;
 }
 

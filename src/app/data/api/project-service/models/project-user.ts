@@ -1,9 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+import { Role } from './role';
+import { User } from './user';
 export interface ProjectUser {
-  addedOne?: string;
-  id?: string;
-  projectId?: string;
-  removedOn?: null | string;
+  role?: Role;
+  user?: User;
 }
 

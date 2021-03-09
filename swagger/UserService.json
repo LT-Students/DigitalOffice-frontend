@@ -3,7 +3,7 @@
   "info": {
     "title": "UserService",
     "description": "UserService is an API that intended to work with users, user credentials and achievements.\n",
-    "version": "1.1.1"
+    "version": "1.1.2"
   },
   "servers": [
     {
@@ -204,18 +204,6 @@
         "operationId": "createUser",
         "parameters": [
           {
-            "name": "userId",
-            "in": "header",
-            "description": "The user global unique identifier who requests this resource.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
             "name": "token",
             "in": "header",
             "description": "The JWT token.",
@@ -267,18 +255,6 @@
         "description": "Updates user fields.\n* __The user must have accsess right__ -- Add/Edit/Remove users.\n",
         "operationId": "editUser",
         "parameters": [
-          {
-            "name": "userId",
-            "in": "header",
-            "description": "The user global unique identifier who requests this resource.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "token",
             "in": "header",
@@ -348,11 +324,11 @@
           },
           {
             "name": "userId",
-            "in": "header",
-            "description": "The user global unique identifier who requests this resource.",
+            "in": "query",
+            "description": "User global unique identifier.",
             "required": true,
-            "style": "simple",
-            "explode": false,
+            "style": "form",
+            "explode": true,
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -516,18 +492,6 @@
       }
     },
     "parameters": {
-      "requestedUserId": {
-        "name": "userId",
-        "in": "header",
-        "description": "The user global unique identifier who requests this resource.",
-        "required": true,
-        "style": "simple",
-        "explode": false,
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        }
-      },
       "securityToken": {
         "name": "token",
         "in": "header",

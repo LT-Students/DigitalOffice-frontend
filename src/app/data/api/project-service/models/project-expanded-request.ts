@@ -1,9 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
-import { Project } from './project';
-import { ProjectUser } from './project-user';
+import { ProjectRequest } from './project-request';
+import { ProjectUserRequest } from './project-user-request';
 export interface ProjectExpandedRequest {
-  project?: Project;
-  users?: Array<ProjectUser>;
+  project: ProjectRequest;
+  users: Array<ProjectUserRequest>;
 }
 

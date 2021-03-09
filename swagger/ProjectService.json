@@ -3,7 +3,7 @@
   "info": {
     "title": "ProjectService",
     "description": "This specification describes which endpoints this service has, which models\nit uses.\n\nThis service, ProjectService, is intended to work with the projects -- create them, assign people to them, update info.\n",
-    "version": "1.1.1"
+    "version": "1.1.2"
   },
   "servers": [
     {
@@ -28,7 +28,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ProjectResponse"
+                    "$ref": "#/components/schemas/Project"
                   }
                 }
               }
@@ -86,18 +86,6 @@
         "operationId": "createNewProject",
         "parameters": [
           {
-            "name": "userId",
-            "in": "header",
-            "description": "The user global unique identifier who requests this resource.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
             "name": "token",
             "in": "header",
             "description": "The JWT token.",
@@ -121,8 +109,8 @@
           "required": true
         },
         "responses": {
-          "204": {
-            "description": "New project Id.",
+          "200": {
+            "description": "New project Id.\n  * OK\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -134,6 +122,9 @@
           },
           "400": {
             "description": "Bad request.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
           }
         }
       }
@@ -146,18 +137,6 @@
         "description": "Editing specific project by Id.\n*  __The user must have access right__ -- Add/Edit/Remove projects. \n",
         "operationId": "editProjectById",
         "parameters": [
-          {
-            "name": "userId",
-            "in": "header",
-            "description": "The user global unique identifier who requests this resource.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "token",
             "in": "header",
@@ -208,8 +187,11 @@
           "400": {
             "description": "Bad request.\n* Error in the field.\n"
           },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          },
           "404": {
-            "description": "Not Found.\n* Project with this id not found.\n"
+            "description": "Not Found. * Project with this id not found."
           }
         }
       }
@@ -222,18 +204,6 @@
         "description": "Adding specific users to project.\n*  __The user must have access right__ -- Add/Edit/Remove projects.\n",
         "operationId": "addUsersToProject",
         "parameters": [
-          {
-            "name": "userId",
-            "in": "header",
-            "description": "The user global unique identifier who requests this resource.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "token",
             "in": "header",
@@ -275,6 +245,9 @@
           "400": {
             "description": "Bad request.\n* Error in the field.\n"
           },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          },
           "404": {
             "description": "Not Found.\n* Project with this id not found.\n"
           }
@@ -289,18 +262,6 @@
         "description": "Remove specific users from specific project.\n* __The user must have access right__ -- Add/Edit/Remove project. \n",
         "operationId": "removeUsersFromProject",
         "parameters": [
-          {
-            "name": "userId",
-            "in": "header",
-            "description": "The user global unique identifier who requests this resource.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
           {
             "name": "token",
             "in": "header",
@@ -326,7 +287,7 @@
             }
           },
           {
-            "name": "UserIds",
+            "name": "userIds",
             "in": "query",
             "required": true,
             "style": "form",
@@ -344,11 +305,62 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "Removed users by id successful.\n  * OK\n"
+          },
           "204": {
             "description": "No Content."
           },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          },
           "404": {
-            "description": "Not Found.\n* User or Project with this id not found.\n"
+            "description": "Not Found. * User or Project with this id not found."
+          }
+        }
+      }
+    },
+    "/role/disableUserRoleInProject": {
+      "delete": {
+        "tags": [
+          "Role"
+        ],
+        "description": "Remove specific role by id.\n* __The user must have access right__ -- Add/Edit/Remove project. \n",
+        "operationId": "disableUserRoleInProject",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removed role by id successful.\n  * OK\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* Role with this id not found.\n"
           }
         }
       }
@@ -386,7 +398,178 @@
           }
         }
       },
+      "Department": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "UserRequest": {
+        "required": [
+          "Id",
+          "IsActive"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "description": "The project's Id.",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "FirstName": {
+            "type": "string"
+          },
+          "MiddleName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "AddedOn": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "RemovedOn": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-12-10 04:13"
+          },
+          "IsActive": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "ProjectUser": {
+        "type": "object",
+        "properties": {
+          "User": {
+            "$ref": "#/components/schemas/User"
+          },
+          "Role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        }
+      },
+      "ProjectFile": {
+        "type": "object",
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FileId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "Project": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "CreatedAt": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "ClosedAt": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "description": "Project closing time. May be empty if the project is not closed.",
+            "example": "2021-05-14 06:13"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "ClosedReason": {
+            "$ref": "#/components/schemas/ProjectClosedReason"
+          },
+          "DepartmentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ProjectClosedReason": {
+        "type": "integer",
+        "description": "Project closed reason.\nMay be empty if the project is not closed.\n\nEnum numbers description\n* 1 - Completed\n* 2 - Failed\n* 3 - Abandoned\n* 4 - Rejected\n",
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "ProjectExpandedRequest": {
+        "required": [
+          "Project",
+          "Users"
+        ],
+        "type": "object",
+        "properties": {
+          "Project": {
+            "$ref": "#/components/schemas/ProjectRequest"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUserRequest"
+            }
+          }
+        }
+      },
+      "ProjectRequest": {
+        "required": [
+          "DepartmentId",
+          "Description",
+          "IsActive",
+          "Name",
+          "ShortName"
+        ],
         "type": "object",
         "properties": {
           "Id": {
@@ -402,64 +585,25 @@
           "Description": {
             "type": "string"
           },
-          "CreatedAt": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
-            "format": "date-time"
+          "ClosedReason": {
+            "type": "integer",
+            "description": "Project closed reason. May be empty if the project is not closed."
           },
-          "ClosedAt": {
-            "pattern": "YYYY-MM-DDTHH:mm",
+          "DepartmentId": {
             "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "CloasedReason": {
-            "type": "string"
+            "format": "uuid"
           },
           "IsActive": {
-            "type": "string"
-          }
-        }
-      },
-      "ProjectUser": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ProjectId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "AddedOne": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
-            "format": "date-time"
-          },
-          "RemovedOn": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          }
-        }
-      },
-      "ProjectExpandedRequest": {
-        "type": "object",
-        "properties": {
-          "Project": {
-            "$ref": "#/components/schemas/Project"
-          },
-          "Users": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectUser"
-            }
+            "type": "boolean"
           }
         }
       },
       "AddUsersToProjectReques": {
+        "required": [
+          "ProjectId",
+          "Users"
+        ],
+        "type": "object",
         "properties": {
           "ProjectId": {
             "type": "string",
@@ -468,12 +612,17 @@
           "Users": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ProjectUser"
+              "$ref": "#/components/schemas/ProjectUserRequest"
             }
           }
         }
       },
       "EditProjectRequest": {
+        "required": [
+          "Patch",
+          "ProjectId"
+        ],
+        "type": "object",
         "properties": {
           "ProjectId": {
             "type": "string",
@@ -495,83 +644,46 @@
           }
         }
       },
-      "ProjectResponse": {
+      "ProjectUserRequest": {
+        "required": [
+          "RoleId",
+          "User"
+        ],
         "type": "object",
         "properties": {
-          "Id": {
+          "ProjectId": {
             "type": "string",
-            "description": "The project's Id.",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+            "format": "uuid"
           },
-          "Name": {
+          "RoleId": {
             "type": "string",
-            "description": "The project's title.",
-            "example": "DigitalOffice"
+            "format": "uuid"
           },
-          "ShortName": {
-            "description": "The project short name.",
-            "example": "DO"
-          },
-          "Description": {
-            "type": "string",
-            "description": "The project's description."
-          },
-          "DepartmentId": {
-            "type": "string",
-            "description": "Id of the department that funds the project.",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-          },
-          "CreateAt": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "description": "Date and time of project creation."
-          },
-          "ClosedAt": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "description": "Date and time of project closed (maybe the value 'null')."
-          },
-          "IsActive": {
-            "type": "boolean",
-            "description": "Analogue the IsCompleted mark. Allows to search for the completed projects.",
-            "example": true
+          "User": {
+            "$ref": "#/components/schemas/UserRequest"
           }
         }
       },
       "ProjectExpandedResponse": {
-        "required": [
-          "DepartmentId",
-          "Id",
-          "IsActive",
-          "Name"
-        ],
         "type": "object",
         "properties": {
-          "Id": {
-            "type": "string",
-            "description": "The project's Id.",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          "Project": {
+            "$ref": "#/components/schemas/Project"
           },
-          "Name": {
-            "type": "string",
-            "description": "The project's title.",
-            "example": "DigitalOffice"
+          "Department": {
+            "$ref": "#/components/schemas/Department"
           },
-          "Description": {
-            "type": "string",
-            "description": "The project's description."
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUser"
+            }
           },
-          "DepartmentId": {
-            "type": "string",
-            "description": "Id of the department that funds the project.",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-          },
-          "IsActive": {
-            "type": "boolean",
-            "description": "Analogue the IsCompleted mark. Allows to search for the completed projects.",
-            "example": true
+          "ProjectFile": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectFile"
+            }
           }
         }
       }
@@ -620,18 +732,6 @@
         "required": true,
         "style": "form",
         "explode": true,
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        }
-      },
-      "requestedUserId": {
-        "name": "userId",
-        "in": "header",
-        "description": "The user global unique identifier who requests this resource.",
-        "required": true,
-        "style": "simple",
-        "explode": false,
         "schema": {
           "type": "string",
           "format": "uuid"

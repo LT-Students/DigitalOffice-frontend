@@ -4,6 +4,6 @@
   "output": "src/app/data/api/user-service",
   "templates": "swagger/templates",
   "module": "UserApiModule",
-  "excludeParameters": ["userId", "token"],
+  "excludeParameters": ["token"],
   "serviceSuffix": "ApiService"
 }

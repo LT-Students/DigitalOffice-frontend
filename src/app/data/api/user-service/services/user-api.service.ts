@@ -36,11 +36,17 @@ export class UserApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getUserById$Response(params?: {
+  getUserById$Response(params: {
+
+    /**
+     * User global unique identifier.
+     */
+    userId: string;
   }): Observable<StrictHttpResponse<User>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.GetUserByIdPath, 'get');
     if (params) {
+      rb.query('userId', params.userId, {"style":"form","explode":true});
     }
 
     return this.http.request(rb.build({
@@ -62,7 +68,12 @@ export class UserApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getUserById(params?: {
+  getUserById(params: {
+
+    /**
+     * User global unique identifier.
+     */
+    userId: string;
   }): Observable<User> {
 
     return this.getUserById$Response(params).pipe(
@@ -392,11 +403,17 @@ export class UserApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  disableUserById$Response(params?: {
+  disableUserById$Response(params: {
+
+    /**
+     * User global unique identifier.
+     */
+    userId: string;
   }): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.DisableUserByIdPath, 'delete');
     if (params) {
+      rb.query('userId', params.userId, {"style":"form","explode":true});
     }
 
     return this.http.request(rb.build({
@@ -419,7 +436,12 @@ export class UserApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  disableUserById(params?: {
+  disableUserById(params: {
+
+    /**
+     * User global unique identifier.
+     */
+    userId: string;
   }): Observable<void> {
 
     return this.disableUserById$Response(params).pipe(

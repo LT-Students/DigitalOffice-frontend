@@ -4,6 +4,6 @@
   "output": "src/app/data/api/project-service",
   "templates": "swagger/templates",
   "module": "ProjectApiModule",
-  "excludeParameters": ["userId", "token"],
+  "excludeParameters": ["token"],
   "serviceSuffix": "ApiService"
 }

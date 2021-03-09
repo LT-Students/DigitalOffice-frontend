@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ProjectApiService } from './services/project-api.service';
 import { UserApiService } from './services/user-api.service';
+import { RoleApiService } from './services/role-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,6 +18,7 @@ import { UserApiService } from './services/user-api.service';
   providers: [
     ProjectApiService,
     UserApiService,
+    RoleApiService,
     ApiConfiguration
   ],
 })

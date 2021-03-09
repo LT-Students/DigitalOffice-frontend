@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-import { ProjectUser } from './project-user';
+import { ProjectUserRequest } from './project-user-request';
 export interface AddUsersToProjectReques {
-  projectId?: string;
-  users?: Array<ProjectUser>;
+  projectId: string;
+  users: Array<ProjectUserRequest>;
 }
 

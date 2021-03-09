@@ -1,12 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ProjectClosedReason } from './project-closed-reason';
 export interface Project {
-  cloasedReason?: string;
-  closedAt?: null | string;
-  createdAt?: string;
+
+  /**
+   * Project closing time. May be empty if the project is not closed.
+   */
+  closedAt?: any;
+  closedReason?: ProjectClosedReason;
+  createdAt?: any;
+  departmentId?: string;
   description?: string;
   id?: string;
-  isActive?: string;
+  isActive?: boolean;
   name?: string;
   shortName?: string;
 }

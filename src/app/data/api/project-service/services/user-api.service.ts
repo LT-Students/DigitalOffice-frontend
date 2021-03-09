@@ -94,13 +94,13 @@ export class UserApiService extends BaseService {
      * Project global unique identifier.
      */
     projectId: string;
-    UserIds: any;
+    userIds: any;
   }): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.RemoveUsersFromProjectPath, 'delete');
     if (params) {
       rb.query('projectId', params.projectId, {"style":"form","explode":true});
-      rb.query('UserIds', params.UserIds, {"style":"form","explode":true});
+      rb.query('userIds', params.userIds, {"style":"form","explode":true});
     }
 
     return this.http.request(rb.build({
@@ -129,7 +129,7 @@ export class UserApiService extends BaseService {
      * Project global unique identifier.
      */
     projectId: string;
-    UserIds: any;
+    userIds: any;
   }): Observable<void> {
 
     return this.removeUsersFromProject$Response(params).pipe(

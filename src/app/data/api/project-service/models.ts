@@ -1,8 +1,15 @@
 export { PatchDocument } from './models/patch-document';
-export { Project } from './models/project';
+export { Department } from './models/department';
+export { UserRequest } from './models/user-request';
+export { Role } from './models/role';
+export { User } from './models/user';
 export { ProjectUser } from './models/project-user';
+export { ProjectFile } from './models/project-file';
+export { Project } from './models/project';
+export { ProjectClosedReason } from './models/project-closed-reason';
 export { ProjectExpandedRequest } from './models/project-expanded-request';
+export { ProjectRequest } from './models/project-request';
 export { AddUsersToProjectReques } from './models/add-users-to-project-reques';
 export { EditProjectRequest } from './models/edit-project-request';
-export { ProjectResponse } from './models/project-response';
+export { ProjectUserRequest } from './models/project-user-request';
 export { ProjectExpandedResponse } from './models/project-expanded-response';
