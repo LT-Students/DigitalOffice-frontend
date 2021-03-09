@@ -14,7 +14,8 @@
     "generate.time": "ng-openapi-gen -c swagger/config/time.json",
     "generate.project": "ng-openapi-gen -c swagger/config/project.json",
     "generate.user": "ng-openapi-gen -c swagger/config/user.json",
-    "generate-api": "npm run generate.auth && npm run generate.time && npm run generate.project && npm run generate.user"
+    "generate.company": "ng-openapi-gen -c swagger/config/company.json",
+    "generate-api": "npm run generate.auth && npm run generate.time && npm run generate.project && npm run generate.user && npm run generate.company"
   },
   "private": true,
   "dependencies": {
