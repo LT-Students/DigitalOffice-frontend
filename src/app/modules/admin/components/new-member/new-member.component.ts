@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { NewMember } from '../new-members-board/new-members';
+import { INewMember } from '@app/interfaces/INewMember';
 
 @Component({
   selector: 'do-new-member',
@@ -8,8 +8,8 @@ import { NewMember } from '../new-members-board/new-members';
   styleUrls: ['./new-member.component.scss'],
 })
 export class NewMemberComponent implements OnInit {
-  @Input()
-  public newMember: NewMember;
+  @Input() public newMember: INewMember;
+  @Output() checkMember = new EventEmitter<boolean>();
 
   roles: string[] = [
     'PM',
@@ -40,5 +40,9 @@ export class NewMemberComponent implements OnInit {
         ? 2
         : cases[count % 10 < 5 ? count % 10 : 5]
     ];
+  }
+
+  onCheckNewMember(event) {
+    this.checkMember.emit(event.checked);
   }
 }
