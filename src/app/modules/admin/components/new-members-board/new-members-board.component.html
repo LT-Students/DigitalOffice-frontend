@@ -51,7 +51,7 @@
       <do-new-member
         *ngFor="let member of members"
         [newMember]="member"
-        (onCheckMember)="onCheckMember($event, member)"
+        (checkMember)="onCheckMember($event, member)"
       ></do-new-member>
     </div>
     <div class="members-form__background" *ngIf="this.members?.length === 0">
