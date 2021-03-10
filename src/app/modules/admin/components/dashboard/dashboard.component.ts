@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { DEPRECATED_Project2 } from '../../../../core/models/project.model';
 import { NewCompanyComponent } from '../new-company/new-company.component';
+import { NewDepartmentComponent } from '../new-department/new-department.component';
 
 @Component({
   selector: 'do-dashboard',
@@ -98,5 +99,13 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+  onOpenNewDepartment(): void {
+    const dialogRef = this.dialog.open(NewDepartmentComponent, {
+      width: '503px',
+    });
+    /*dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });*/
   }
 }
