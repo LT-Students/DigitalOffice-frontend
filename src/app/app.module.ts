@@ -15,7 +15,6 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
-import { Constants } from '@app/constants/constants';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -48,7 +47,6 @@ registerLocaleData(localeRu);
     LocalStorageService,
     AttendanceService,
     ProjectStore,
-    Constants,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
