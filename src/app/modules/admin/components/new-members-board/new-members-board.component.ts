@@ -31,29 +31,31 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   public selectedLevel;
   public searchName = null;
 
-  constructor(private userService: UserApiService) {}
+  constructor(private userApiService: UserApiService) {}
 
   ngOnInit(): void {
     this.getUsers();
   }
 
   getUsers(): void {
-    this.getUsersSubscription = this.userService
+    this.getUsersSubscription = this.userApiService
       .getAllUsers({
         skipCount: 0,
         takeCount: 50,
         userNameFilter: this.searchName,
       })
       .pipe(
-        map((data: User) => ({
-          fullName: `${data.firstName} ${data.lastName} `,
-          projectsCount: 0,
-          level: '',
-          profileImgSrc: '',
-          specialization: '',
-        }))
+        map((data: User[]) =>
+          data.map((userDb) => ({
+            fullName: `${userDb.firstName} ${userDb.lastName} `,
+            projectsCount: 0,
+            level: '',
+            profileImgSrc: '',
+            specialization: '',
+          }))
+        )
       )
-      .subscribe((data: any) => {
+      .subscribe((data: NewMember[]) => {
         this.users = data;
         this.visibleUsers = [...this.users];
       });
