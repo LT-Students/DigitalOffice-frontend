@@ -1,4 +1,5 @@
-export interface NewMember {
+export interface INewMember {
+  id: string;
   fullName: string;
   lead?: boolean;
   profileImgSrc: string;
