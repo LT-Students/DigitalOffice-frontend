@@ -1,23 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
+import { DepartmentInfo } from './department-info';
+import { DepartmentUser } from './department-user';
 export interface DepartmentRequest {
-  /**
-   * Company global unique identifier.
-   */
-  companyId: string;
+  info: DepartmentInfo;
 
   /**
-   * Department description.
+   * Department users.
    */
-  description?: string;
-
-  /**
-   * Department name.
-   */
-  name: string;
-
-  /**
-   * Department users Ids.
-   */
-  usersIds?: Array<string>;
+  users?: null | Array<DepartmentUser>;
 }

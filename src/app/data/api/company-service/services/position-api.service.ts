@@ -145,24 +145,24 @@ export class PositionApiService extends BaseService {
   }
 
   /**
-   * Path part for operation addPosition
+   * Path part for operation createPosition
    */
-  static readonly AddPositionPath = '/position/addPosition';
+  static readonly CreatePositionPath = '/position/create';
 
   /**
    * Adds a new position.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `addPosition()` instead.
+   * To access only the response body, use `createPosition()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addPosition$Response(params: {
+  createPosition$Response(params: {
     body: AddPositionRequest;
   }): Observable<StrictHttpResponse<string>> {
     const rb = new RequestBuilder(
       this.rootUrl,
-      PositionApiService.AddPositionPath,
+      PositionApiService.CreatePositionPath,
       'post'
     );
     if (params) {
@@ -188,12 +188,12 @@ export class PositionApiService extends BaseService {
    * Adds a new position.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `addPosition$Response()` instead.
+   * To access the full response (for headers, for example), `createPosition$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addPosition(params: { body: AddPositionRequest }): Observable<string> {
-    return this.addPosition$Response(params).pipe(
+  createPosition(params: { body: AddPositionRequest }): Observable<string> {
+    return this.createPosition$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }

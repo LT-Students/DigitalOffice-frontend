@@ -3,7 +3,7 @@
   "info": {
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions, companies and departments.\n-",
-    "version": "1.1.2"
+    "version": "1.2.0"
   },
   "servers": [
     {
@@ -73,13 +73,13 @@
         }
       }
     },
-    "/position/addPosition": {
+    "/position/create": {
       "post": {
         "tags": [
           "Position"
         ],
         "description": "Adds a new position.",
-        "operationId": "addPosition",
+        "operationId": "createPosition",
         "requestBody": {
           "content": {
             "application/json": {
@@ -167,13 +167,13 @@
         }
       }
     },
-    "/department/addDepartment": {
+    "/department/create": {
       "post": {
         "tags": [
           "Department"
         ],
         "description": "Adds a new department to company.\n* __The user must have access to the right__ -- Add/Edit/Remove departments.\n",
-        "operationId": "addDepartment",
+        "operationId": "createDepartment",
         "parameters": [
           {
             "name": "token",
@@ -218,30 +218,38 @@
     "schemas": {
       "DepartmentRequest": {
         "required": [
-          "CompanyId",
-          "Name"
+          "Info"
         ],
         "type": "object",
         "properties": {
-          "Name": {
-            "type": "string",
-            "description": "Department name."
+          "Info": {
+            "$ref": "#/components/schemas/DepartmentInfo"
           },
-          "Description": {
-            "type": "string",
-            "description": "Department description."
-          },
-          "UsersIds": {
+          "Users": {
             "type": "array",
-            "description": "Department users Ids.",
+            "description": "Department users.",
+            "nullable": true,
             "items": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/DepartmentUser"
             }
-          },
-          "CompanyId": {
+          }
+        }
+      },
+      "DepartmentUser": {
+        "required": [
+          "PositionId",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "UserId": {
             "type": "string",
-            "description": "Company global unique identifier.",
+            "description": "User ID.",
+            "format": "uuid"
+          },
+          "PositionId": {
+            "type": "string",
+            "description": "User position ID.",
             "format": "uuid"
           }
         }
@@ -317,6 +325,31 @@
               "type": "string",
               "format": "uuid"
             }
+          }
+        }
+      },
+      "DepartmentInfo": {
+        "required": [
+          "DirectorId",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Department name.",
+            "example": "IT department"
+          },
+          "Description": {
+            "type": "string",
+            "description": "Department description.",
+            "nullable": true,
+            "example": "Information technology department"
+          },
+          "DirectorId": {
+            "type": "string",
+            "description": "Director user ID.",
+            "format": "uuid"
           }
         }
       }

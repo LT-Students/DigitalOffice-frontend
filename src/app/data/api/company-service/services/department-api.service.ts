@@ -20,25 +20,25 @@ export class DepartmentApiService extends BaseService {
   }
 
   /**
-   * Path part for operation addDepartment
+   * Path part for operation createDepartment
    */
-  static readonly AddDepartmentPath = '/department/addDepartment';
+  static readonly CreateDepartmentPath = '/department/create';
 
   /**
    * Adds a new department to company.
    * * __The user must have access to the right__ -- Add/Edit/Remove departments.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `addDepartment()` instead.
+   * To access only the response body, use `createDepartment()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addDepartment$Response(params: {
+  createDepartment$Response(params: {
     body: DepartmentRequest;
   }): Observable<StrictHttpResponse<string>> {
     const rb = new RequestBuilder(
       this.rootUrl,
-      DepartmentApiService.AddDepartmentPath,
+      DepartmentApiService.CreateDepartmentPath,
       'post'
     );
     if (params) {
@@ -65,12 +65,12 @@ export class DepartmentApiService extends BaseService {
    * * __The user must have access to the right__ -- Add/Edit/Remove departments.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `addDepartment$Response()` instead.
+   * To access the full response (for headers, for example), `createDepartment$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addDepartment(params: { body: DepartmentRequest }): Observable<string> {
-    return this.addDepartment$Response(params).pipe(
+  createDepartment(params: { body: DepartmentRequest }): Observable<string> {
+    return this.createDepartment$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
