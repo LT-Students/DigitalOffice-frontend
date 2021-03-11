@@ -64,7 +64,7 @@
       <button
         mat-flat-button
         color="primary"
-        (click)="onReturnCheckedMembers()"
+        [mat-dialog-close]="checkedMembers"
       >
         Добавить участников
       </button>

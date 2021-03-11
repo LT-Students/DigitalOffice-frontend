@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { map } from 'rxjs/operators';
@@ -35,8 +28,6 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
     'QA Tester',
   ];
   public levels: string[] = ['Junior', 'Middle', 'Senior'];
-
-  @Output() returnedMembers = new EventEmitter<any>();
 
   constructor(private userApiService: UserApiService) {}
 
@@ -98,17 +89,13 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
     if ($event) {
       this.checkedMembers.push(user);
     } else {
-      let unckedUserIndex;
+      let uncheckedUserIndex;
       this.checkedMembers.map((x, index) => {
         if (x.id === user.id) {
-          unckedUserIndex = index;
+          uncheckedUserIndex = index;
         }
       });
-      this.checkedMembers.splice(unckedUserIndex, 1);
+      this.checkedMembers.splice(uncheckedUserIndex, 1);
     }
-  }
-
-  onReturnCheckedMembers(): void {
-    this.returnedMembers.emit(this.checkedMembers);
   }
 }

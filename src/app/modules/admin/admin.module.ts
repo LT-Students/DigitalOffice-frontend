@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { DndDirective } from '@app/directives/dnd.directive';
 
+import { DndDirective } from '@app/directives/dnd.directive';
 import { SharedModule } from '../../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
