@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { DndDirective } from '@app/directives/dnd.directive';
 
 import { SharedModule } from '../../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -15,8 +16,8 @@ import { TeamCardComponent } from './components/team-cards/team-card.component';
 import { NewCompanyComponent } from './components/new-company/new-company.component';
 import { NewMemberComponent } from './components/new-member/new-member.component';
 import { UploadComponent } from './components/upload/upload.component';
-import { DndDirective } from '../../core/directives/dnd.directive';
 import { ProgressComponent } from './components/upload/progress/progress.component';
+import { NewDepartmentComponent } from './components/new-department/new-department.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { ProgressComponent } from './components/upload/progress/progress.compone
     UploadComponent,
     DndDirective,
     ProgressComponent,
+    NewDepartmentComponent,
   ],
   imports: [
     CommonModule,
