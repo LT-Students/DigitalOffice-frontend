@@ -7,16 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProjectPageComponent implements OnInit {
   projectPage = {
-    title: 'Меркурий',
+    name: 'Меркурий',
     description: 'Департамент цифровых решений',
 
-    details: [
-      { header: 'Заказчик', text: 'Роскосмос' },
-      { header: 'статус', text: 'В работе ' },
-      { header: 'Запуск проекта', text: '20 октября 2019' },
-      { header: 'Проект длится', text: '233 дня' },
-      { header: 'Команда', text: '19 человек' },
-    ],
+    details: {
+      consumer: 'Роскосмос',
+      status: 'В работе ',
+      start: '20 октября 2019',
+      duration: '233 дня',
+      team: '19 участников',
+    },
 
     teamProgress: {
       allTime: '2858',
@@ -108,8 +108,8 @@ export class ProjectPageComponent implements OnInit {
     ],
   };
 
-  moreHorizButton = 'assets/svg/more-horiz.svg';
-  userId = '89';
+  valuesFromDescription = Object.values(this.projectPage.details);
+  userId = '89'; //временно
   constructor() {}
   ngOnInit(): void {}
 }

@@ -10,7 +10,7 @@ import { NewProjectComponent } from './modules/admin/components/new-project/new-
 import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
 import { NewMembersBoardComponent } from './modules/admin/components/new-members-board/new-members-board.component';
 import { ContentContainerComponent } from './modules/shared/content-container/content-container.component';
-
+import { ProjectPageComponent } from './modules/user/components/project-page/project-page.component';
 const routes: Routes = [
   {
     path: '',
@@ -24,6 +24,11 @@ const routes: Routes = [
       {
         path: 'user/attendance',
         component: AttendanceComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'project/:id',
+        component: ProjectPageComponent,
         canActivate: [AuthGuard],
       },
       {

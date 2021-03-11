@@ -1,9 +1,8 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-.projectPage {
+.project {
   margin-top: 10px;
-  padding: 40px;
 
   @media (max-width: 420px) {
     padding: 10px;
@@ -11,15 +10,13 @@
   background: $light_1;
   border-radius: 5px 5px 0 0;
 
-  hr {
-    margin: 40px 0 20px;
-
-    border: 1px solid $light_3;
-  }
-
   .header {
+    padding: 40px 40px 32px 40px;
+
     display: flex;
     justify-content: space-between;
+
+    border-bottom: 1px solid $light_3;
     flex-wrap: wrap;
 
     &__title {
@@ -32,31 +29,33 @@
     }
 
     &__menu {
+      padding-top: 15px;
+
       display: flex;
 
-      .butt {
+      button:first-child {
         margin-right: 10px;
-        padding: 0;
-
-        width: 132px;
-        height: 32px;
 
         background-color: $accent_color_bright;
-        align-self: center;
+        border: unset;
+
+        span {
+          vertical-align: initial;
+        }
       }
 
-      .header_more {
-        margin-top: 20px;
+      button:last-child {
+        margin-top: -3px;
         padding: 0;
 
-        width: 42px;
-        height: 32px;
+        min-width: unset;
       }
     }
   }
 
   .content {
     margin-right: 60px;
+    padding: 20px 40px 40px 40px;
 
     display: flex;
     justify-content: space-between;
@@ -79,7 +78,7 @@
 
     .details {
       h4 {
-        margin-bottom: 23px;
+        margin-bottom: 24px;
       }
 
       .description {
@@ -91,7 +90,7 @@
         flex-wrap: nowrap;
 
         p {
-          margin-bottom: 6px;
+          margin-bottom: 5px;
 
           @media (max-width: 1024px) {
             margin-bottom: 15px;
@@ -142,8 +141,8 @@
           }
         }
 
-        .otherMember {
-          margin-bottom: 49px;
+        .member {
+          margin-bottom: 45px;
 
           img {
             margin-right: 4px;

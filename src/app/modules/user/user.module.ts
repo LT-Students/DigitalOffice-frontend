@@ -1,4 +1,3 @@
-import { MatIconModule } from '@angular/material/icon';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
@@ -37,8 +36,7 @@ import { ProjectPageComponent } from './components/project-page/project-page.com
     AppMaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    MatIconModule
   ],
   providers: [],
 })
-export class  UserModule {}
+export class UserModule {}
