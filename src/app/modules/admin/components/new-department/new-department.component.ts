@@ -1,24 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
-
-//import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 
 @Component({
   selector: 'do-new-department',
   templateUrl: './new-department.component.html',
-  //styleUrls: ['./new-employee.component.scss'],
+  styleUrls: ['./new-department.component.scss'],
 })
 export class NewDepartmentComponent implements OnInit {
-  public departmentForm: FormGroup;
   public team = [];
 
+  departmentForm = new FormGroup({
+    name: new FormControl(null, [Validators.required]),
+    description: new FormControl(null, [Validators.required]),
+    directorId: new FormControl(null, [Validators.required]),
+  });
+
   constructor(
-    //public departmentApiService: DepartmentApiService,
+    public departmentApiService: DepartmentApiService,
+    private dialogRef: MatDialogRef<NewMembersBoardComponent>,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private snackBar: MatSnackBar
@@ -33,14 +43,18 @@ export class NewDepartmentComponent implements OnInit {
   }
 
   public onAddMembersClick(): void {
-    this.dialog.open(NewMembersBoardComponent, {
+    const dialogRef = this.dialog.open(NewMembersBoardComponent, {
       width: '720px',
       height: '650px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
     });
   }
 
   postDepartment(): void {
-    /*this.departmentApiService
+    this.departmentApiService
       .createDepartment({
         body: {
           info: {
@@ -66,6 +80,6 @@ export class NewDepartmentComponent implements OnInit {
           this.snackBar.open(error.error.Message, 'accept');
           throw error;
         }
-      );*/
+      );
   }
 }
