@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'do-project-page',
@@ -6,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./project-page.component.scss'],
 })
 export class ProjectPageComponent implements OnInit {
+  idProject: string;
+  constructor(private route: ActivatedRoute) {}
+
   projectPage = {
+    id: '1',
     name: 'Меркурий',
     description: 'Департамент цифровых решений',
 
@@ -110,6 +115,7 @@ export class ProjectPageComponent implements OnInit {
 
   valuesFromDescription = Object.values(this.projectPage.details);
   userId = '89'; //временно
-  constructor() {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.idProject = this.route.snapshot.params.id;
+  }
 }

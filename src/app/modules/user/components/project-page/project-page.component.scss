@@ -33,18 +33,18 @@
 
       display: flex;
 
-      button:first-child {
+      .header__edit {
         margin-right: 10px;
 
         background-color: $accent_color_bright;
         border: unset;
 
-        span {
+        .header__span {
           vertical-align: initial;
         }
       }
 
-      button:last-child {
+      .header__more {
         margin-top: -3px;
         padding: 0;
 
@@ -62,7 +62,7 @@
     flex-wrap: wrap;
 
     .time {
-      h4 {
+      &__title {
         margin: 34px 0 24px;
       }
 
@@ -70,14 +70,14 @@
         display: flex;
         flex-wrap: nowrap;
 
-        div:first-child {
+        .time__content {
           margin-right: 50px;
         }
       }
     }
 
     .details {
-      h4 {
+      &__title {
         margin-bottom: 24px;
       }
 
@@ -102,7 +102,7 @@
 
     .team {
       @media (max-width: 420px) {
-        h4 {
+        &__title {
           margin-top: 30px;
         }
       }
@@ -119,11 +119,11 @@
             display: inline;
           }
 
-          &__member {
+          &__card {
             display: flex;
             flex-wrap: nowrap;
 
-            img {
+            .leaders__photo {
               margin-right: 10px;
 
               @media (max-width: 1024px) {
@@ -144,7 +144,7 @@
         .member {
           margin-bottom: 45px;
 
-          img {
+          &__photo {
             margin-right: 4px;
 
             @media (max-width: 1024px) {

@@ -6,26 +6,28 @@
       <p class="regular_text">{{ projectPage.description }}</p>
     </div>
     <div class="header__menu">
-      <button mat-stroked-button>
-        <span class="regular_text text-light_1"> Редактировать </span>
+      <button mat-stroked-button class="header__edit">
+        <span class="regular_text text-light_1 header__span">
+          Редактировать
+        </span>
       </button>
-      <button mat-flat-button>
+      <button mat-flat-button class="header__more">
         <img src="assets/svg/more-horiz.svg" alt="NaN" />
       </button>
     </div>
   </div>
   <div class="content">
     <div class="details">
-      <h4 class="h4 text-dark_1">Детали проекта</h4>
+      <h2 class="h4 text-dark_1 details__title">Детали проекта</h2>
       <div class="description">
-        <div class="description__name">
+        <div>
           <p class="regular_text text-gray">Заказчик</p>
           <p class="regular_text text-gray">Статус</p>
           <p class="regular_text text-gray">Запуск проекта</p>
           <p class="regular_text text-gray">Проект длится</p>
           <p class="regular_text text-gray">Команда</p>
         </div>
-        <div class="description__text">
+        <div>
           <p
             class="regular_text text-dark_1"
             *ngFor="let detail of valuesFromDescription"
@@ -35,9 +37,9 @@
         </div>
       </div>
       <div class="time">
-        <h4 class="h4 text-dark_1">Прогресс команды</h4>
+        <h3 class="h4 text-dark_1 time__title">Прогресс команды</h3>
         <div class="time__moments">
-          <div>
+          <div class="time__content">
             <span class="h1 text-dark_2">
               {{ projectPage.teamProgress.lastTime }} ч
             </span>
@@ -55,17 +57,17 @@
       </div>
     </div>
     <div class="team">
-      <h4 class="h4 text-dark_1">Команда</h4>
+      <h2 class="h4 text-dark_1 team__title">Команда</h2>
       <div class="team__content">
         <div class="leaders">
           <ng-container *ngFor="let member of projectPage.members">
             <div
-              class="leaders__member"
+              class="leaders__card"
               *ngIf="
                 member.role === 'Product Manager' || member.role === 'TeamLead'
               "
             >
-              <img [src]="member.smallPhoto" alt="NaN" />
+              <img class="leaders__photo" [src]="member.smallPhoto" alt="NaN" />
               <div>
                 <p class="regular_text leader__name">
                   {{ member.firstName }} {{ member.lastName }}
@@ -78,6 +80,7 @@
         <div class="member">
           <ng-container *ngFor="let member of projectPage.members">
             <img
+              class="member__photo"
               [src]="member.smallPhoto"
               *ngIf="
                 member.role != 'Product Manager' && member.role != 'TeamLead'
@@ -89,9 +92,9 @@
       </div>
       <div class="time" *ngFor="let member of projectPage.members">
         <ng-container *ngIf="userId === member.id">
-          <h4 class="h4 text-dark_1">Мой вклад</h4>
+          <h3 class="time__title h4 text-dark_1">Мой вклад</h3>
           <div class="time__moments">
-            <div>
+            <div class="time__content">
               <span class="h1 text-dark_2"
                 >{{ member.progress.lastTime }} ч</span
               >
