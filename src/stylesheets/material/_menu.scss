@@ -6,7 +6,6 @@ button.mat-menu-item {
   padding: 0 10px;
 }
 
-.mat-menu-panel {
-  margin-top: -35px;
-  margin-bottom: 35px;
+.cdk-overlay-pane[style$='static;'] {
+  transform: none !important;
 }
