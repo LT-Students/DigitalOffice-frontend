@@ -87,15 +87,8 @@
       class="add-hours__form-element add-hours__form-element_ctrl_project select mat-form-field_default-select"
       appearance="none"
     >
-      <mat-select
-        id="project"
-        formControlName="project"
-        [value]="chosenCategory.options[0]"
-      >
-        <mat-option
-          *ngFor="let option of chosenCategory.options; let i = index"
-          [value]="i"
-        >
+      <mat-select id="project" formControlName="project" [value]="options[0]">
+        <mat-option *ngFor="let option of options; let i = index" [value]="i">
           {{ option }}
         </mat-option>
       </mat-select>

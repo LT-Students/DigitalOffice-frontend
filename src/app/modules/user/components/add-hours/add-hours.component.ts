@@ -96,6 +96,10 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     this.chosenCategory = this.categories[0];
   }
 
+  get options() {
+    return this.chosenCategory.options;
+  }
+
   private getHours(): number {
     const currentDatePeriod = this.attendanceService.datePeriod;
     return Number(
