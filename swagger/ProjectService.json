@@ -1,0 +1,754 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ProjectService",
+    "description": "This specification describes which endpoints this service has, which models\nit uses.\n\nThis service, ProjectService, is intended to work with the projects -- create them, assign people to them, update info.\n",
+    "version": "1.1.2"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:9803/api"
+    },
+    {
+      "url": "http://localhost:9804/api"
+    }
+  ],
+  "paths": {
+    "/project/getProjects": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "getProjects",
+        "responses": {
+          "200": {
+            "description": "Successfully returned a project information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/project/getProjectById": {
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "getProjectById",
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Project global unique identifier.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned a project information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectExpandedResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/project/createNewProject": {
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "description": "Creating new project.\n*  __The user must have access right__ -- Add/Edit/Remove projects.\n",
+        "operationId": "createNewProject",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectExpandedRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "New project Id.\n  * OK\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          }
+        }
+      }
+    },
+    "/project/editProjectById": {
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "description": "Editing specific project by Id.\n*  __The user must have access right__ -- Add/Edit/Remove projects. \n",
+        "operationId": "editProjectById",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Project global unique identifier.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Project's Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          },
+          "404": {
+            "description": "Not Found. * Project with this id not found."
+          }
+        }
+      }
+    },
+    "/user/addUsersToProject": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Adding specific users to project.\n*  __The user must have access right__ -- Add/Edit/Remove projects.\n",
+        "operationId": "addUsersToProject",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUsersToProjectReques"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Users of specific project added successfully."
+          },
+          "204": {
+            "description": "Project's Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/user/removeUsersFromProject": {
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "description": "Remove specific users from specific project.\n* __The user must have access right__ -- Add/Edit/Remove project. \n",
+        "operationId": "removeUsersFromProject",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
+          {
+            "name": "projectId",
+            "in": "query",
+            "description": "Project global unique identifier.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "userIds",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/parameters/userId"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removed users by id successful.\n  * OK\n"
+          },
+          "204": {
+            "description": "No Content."
+          },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          },
+          "404": {
+            "description": "Not Found. * User or Project with this id not found."
+          }
+        }
+      }
+    },
+    "/role/disableUserRoleInProject": {
+      "delete": {
+        "tags": [
+          "Role"
+        ],
+        "description": "Remove specific role by id.\n* __The user must have access right__ -- Add/Edit/Remove project. \n",
+        "operationId": "disableUserRoleInProject",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
+          {
+            "name": "roleId",
+            "in": "query",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Removed role by id successful.\n  * OK\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* Role with this id not found.\n"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PatchDocument": {
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed",
+            "enum": [
+              "add",
+              "remove",
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer"
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          },
+          "from": {
+            "type": "string",
+            "description": "A string containing a JSON Pointer value."
+          }
+        }
+      },
+      "Department": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "UserRequest": {
+        "required": [
+          "Id",
+          "IsActive"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Role": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "description": "The project's Id.",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "FirstName": {
+            "type": "string"
+          },
+          "MiddleName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "AddedOn": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "RemovedOn": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-12-10 04:13"
+          },
+          "IsActive": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "ProjectUser": {
+        "type": "object",
+        "properties": {
+          "User": {
+            "$ref": "#/components/schemas/User"
+          },
+          "Role": {
+            "$ref": "#/components/schemas/Role"
+          }
+        }
+      },
+      "ProjectFile": {
+        "type": "object",
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FileId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "Project": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "CreatedAt": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "ClosedAt": {
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "description": "Project closing time. May be empty if the project is not closed.",
+            "example": "2021-05-14 06:13"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "ClosedReason": {
+            "$ref": "#/components/schemas/ProjectClosedReason"
+          },
+          "DepartmentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ProjectClosedReason": {
+        "type": "integer",
+        "description": "Project closed reason.\nMay be empty if the project is not closed.\n\nEnum numbers description\n* 1 - Completed\n* 2 - Failed\n* 3 - Abandoned\n* 4 - Rejected\n",
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "ProjectExpandedRequest": {
+        "required": [
+          "Project",
+          "Users"
+        ],
+        "type": "object",
+        "properties": {
+          "Project": {
+            "$ref": "#/components/schemas/ProjectRequest"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUserRequest"
+            }
+          }
+        }
+      },
+      "ProjectRequest": {
+        "required": [
+          "DepartmentId",
+          "Description",
+          "IsActive",
+          "Name",
+          "ShortName"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "ClosedReason": {
+            "type": "integer",
+            "description": "Project closed reason. May be empty if the project is not closed."
+          },
+          "DepartmentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AddUsersToProjectReques": {
+        "required": [
+          "ProjectId",
+          "Users"
+        ],
+        "type": "object",
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUserRequest"
+            }
+          }
+        }
+      },
+      "EditProjectRequest": {
+        "required": [
+          "Patch",
+          "ProjectId"
+        ],
+        "type": "object",
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Patch": {
+            "minItems": 1,
+            "type": "array",
+            "example": [
+              {
+                "op": "replace",
+                "path": "/description",
+                "value": "new description"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/PatchDocument"
+            }
+          }
+        }
+      },
+      "ProjectUserRequest": {
+        "required": [
+          "RoleId",
+          "User"
+        ],
+        "type": "object",
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "RoleId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "User": {
+            "$ref": "#/components/schemas/UserRequest"
+          }
+        }
+      },
+      "ProjectExpandedResponse": {
+        "type": "object",
+        "properties": {
+          "Project": {
+            "$ref": "#/components/schemas/Project"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/Department"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUser"
+            }
+          },
+          "ProjectFile": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectFile"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "projectId": {
+        "name": "projectId",
+        "in": "query",
+        "description": "Project global unique identifier.",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "userId": {
+        "name": "userId",
+        "in": "query",
+        "description": "User global unique identifier.",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "fileId": {
+        "name": "fileId",
+        "in": "query",
+        "description": "File global unique identifier.",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "roleId": {
+        "name": "roleId",
+        "in": "query",
+        "description": "Role global unique identifier.",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        }
+      }
+    }
+  }
+}

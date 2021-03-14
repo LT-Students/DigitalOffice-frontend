@@ -9,7 +9,13 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prettier": "prettier --write src/**/*.{ts,scss}"
+    "prettier": "prettier --write src/**/*.{ts,scss}",
+    "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
+    "generate.time": "ng-openapi-gen -c swagger/config/time.json",
+    "generate.project": "ng-openapi-gen -c swagger/config/project.json",
+    "generate.user": "ng-openapi-gen -c swagger/config/user.json",
+    "generate.company": "ng-openapi-gen -c swagger/config/company.json",
+    "generate-api": "npm run generate.auth && npm run generate.time && npm run generate.project && npm run generate.user && npm run generate.company"
   },
   "private": true,
   "dependencies": {
@@ -61,6 +67,7 @@
     "karma-jasmine": "~4.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "lint-staged": "^10.5.0",
+    "ng-openapi-gen": "^0.16.0",
     "prettier": "^2.1.2",
     "protractor": "~7.0.0",
     "stylelint": "^13.7.2",

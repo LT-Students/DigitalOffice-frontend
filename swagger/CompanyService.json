@@ -1,0 +1,372 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CompanyService",
+    "description": "CompanyService is an API that intended to work with positions, companies and departments.\n-",
+    "version": "1.2.0"
+  },
+  "servers": [
+    {
+      "url": "https://localhost:9815/api"
+    },
+    {
+      "url": "http://localhost:9816/api"
+    }
+  ],
+  "paths": {
+    "/position/getPositionById": {
+      "get": {
+        "tags": [
+          "Position"
+        ],
+        "description": "Returns position by id.",
+        "operationId": "getPositionById",
+        "parameters": [
+          {
+            "name": "positionId",
+            "in": "query",
+            "description": "Position global unique identifier.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned a position.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PositionResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/position/getPositionsList": {
+      "get": {
+        "tags": [
+          "Position"
+        ],
+        "description": "Returns all added positions.",
+        "operationId": "getPositionsList",
+        "responses": {
+          "200": {
+            "description": "Successfully returned added positions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PositionResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/position/create": {
+      "post": {
+        "tags": [
+          "Position"
+        ],
+        "description": "Adds a new position.",
+        "operationId": "createPosition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddPositionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "New position was successfully added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "Position global unique identifier.",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content."
+          }
+        }
+      }
+    },
+    "/position/editPosition": {
+      "put": {
+        "tags": [
+          "Position"
+        ],
+        "description": "Edits a specified position.",
+        "operationId": "editPosition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditPositionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "404": {
+            "description": "Not Found.\n* Position with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/position/disablePositionById": {
+      "delete": {
+        "tags": [
+          "Position"
+        ],
+        "description": "Deletes the specified position.",
+        "operationId": "disablePositionById",
+        "parameters": [
+          {
+            "name": "positionId",
+            "in": "query",
+            "description": "Position global unique identifier.",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content."
+          },
+          "404": {
+            "description": "Not Found.\n* Position with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/department/create": {
+      "post": {
+        "tags": [
+          "Department"
+        ],
+        "description": "Adds a new department to company.\n* __The user must have access to the right__ -- Add/Edit/Remove departments.\n",
+        "operationId": "createDepartment",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Guid of the added department.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DepartmentRequest": {
+        "required": [
+          "Info"
+        ],
+        "type": "object",
+        "properties": {
+          "Info": {
+            "$ref": "#/components/schemas/DepartmentInfo"
+          },
+          "Users": {
+            "type": "array",
+            "description": "Department users.",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/DepartmentUser"
+            }
+          }
+        }
+      },
+      "DepartmentUser": {
+        "required": [
+          "PositionId",
+          "UserId"
+        ],
+        "type": "object",
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "description": "User ID.",
+            "format": "uuid"
+          },
+          "PositionId": {
+            "type": "string",
+            "description": "User position ID.",
+            "format": "uuid"
+          }
+        }
+      },
+      "AddPositionRequest": {
+        "required": [
+          "Description",
+          "Id",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "description": "Position id.",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string",
+            "description": "Position name.",
+            "example": "IT projects consultant"
+          },
+          "Description": {
+            "type": "string",
+            "description": "Position description.",
+            "nullable": true,
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts)."
+          }
+        }
+      },
+      "EditPositionRequest": {
+        "required": [
+          "Description",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Position name.",
+            "example": "IT projects consultant"
+          },
+          "Description": {
+            "type": "string",
+            "description": "Position description.",
+            "nullable": true,
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts)."
+          }
+        }
+      },
+      "PositionResponse": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Position name.",
+            "example": "IT projects consultant"
+          },
+          "Description": {
+            "type": "string",
+            "description": "Position description.",
+            "nullable": true,
+            "example": "Responsibilities include the following."
+          },
+          "IsActive": {
+            "type": "boolean",
+            "description": "Marks whether position is active or not."
+          },
+          "UserIds": {
+            "type": "array",
+            "description": "List of users ids that have this position.",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "DepartmentInfo": {
+        "required": [
+          "DirectorId",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Department name.",
+            "example": "IT department"
+          },
+          "Description": {
+            "type": "string",
+            "description": "Department description.",
+            "nullable": true,
+            "example": "Information technology department"
+          },
+          "DirectorId": {
+            "type": "string",
+            "description": "Director user ID.",
+            "format": "uuid"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        }
+      }
+    }
+  }
+}

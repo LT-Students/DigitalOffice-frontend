@@ -5,10 +5,9 @@ import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Chart } from 'chart.js';
-import { AttendanceService } from '../../../../services/attendance.service';
-import { IProject } from '../../../../interfaces/project.interface';
-import { ITask } from '../../../../interfaces/task.interface';
-import { ProjectStoreService } from '../../../../services/project-store.service';
+import { AttendanceService } from '../../../../core/services/attendance.service';
+import { ProjectStore } from '../../../../data/store/project.store';
+import { Project } from '../../../../data/models/project';
 
 @Component({
   selector: 'do-doughnut-chart',
@@ -32,12 +31,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
     '#FFBE97',
     '#BDBDBD',
   ];
-  public projects: IProject[];
+  public projects: Project[];
   public recommendedTime: Time;
 
   constructor(
     private attendanceService: AttendanceService,
-    private projectStore: ProjectStoreService
+    private projectStore: ProjectStore
   ) {}
 
   ngOnInit() {
@@ -94,11 +93,8 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
   }
 
   private get data(): number[] {
-    return this.projects.map((project: IProject) =>
-      project.tasks.reduce(
-        (sum, task: ITask) => sum + task.time.hours * 60 + task.time.minutes,
-        0
-      )
+    return this.projects.map((project) =>
+      project.workTime.reduce((sum, workTime) => sum + workTime.minutes, 0)
     );
   }
 

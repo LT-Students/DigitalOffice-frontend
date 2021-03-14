@@ -65,6 +65,8 @@
       flex-direction: column;
       align-items: flex-start;
 
+      width: 100%;
+
       .h3_dark_1 {
         color: $dark_1;
       }
@@ -73,8 +75,6 @@
         margin-top: 30px;
 
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
 
         .h4_ultimate-orange {
           color: $ultimate_orange;
@@ -85,7 +85,6 @@
         }
 
         button {
-          margin: 0 16px 0 16px;
           padding: 0;
 
           display: flex;
@@ -93,7 +92,7 @@
           justify-content: center;
           align-items: center;
 
-          width: 288px;
+          width: 300px;
           height: 272px;
 
           cursor: pointer;
@@ -109,14 +108,12 @@
         }
 
         .btn-first {
-          margin-left: 0;
-
           background-color: $light_1;
           background-image: url('../../../../../assets/admin/dashboard/add-employee-background.png');
         }
 
         .btn-last {
-          margin-right: 0;
+          margin-left: 100px;
 
           background-color: $accent_color;
           background-image: url('../../../../../assets/admin/dashboard/add-project-background.png');
@@ -132,13 +129,13 @@
       }
 
       &__content {
-        margin-top: 30px;
+        margin: 30px -50px 0;
 
         display: flex;
-        flex-direction: row;
+        flex-wrap: wrap;
 
         .component-my-project {
-          margin-right: 20px;
+          margin: 14px 50px;
         }
       }
     }

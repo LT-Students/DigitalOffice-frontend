@@ -3,9 +3,9 @@ import { DateAdapter } from '@angular/material/core';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AttendanceService } from '../../../../services/attendance.service';
-import { IDayOfWeek } from '../../../../interfaces/day-of-week.interface';
-import { DateService } from '../../../../services/date.service';
+import { AttendanceService } from '../../../../core/services/attendance.service';
+import { IDayOfWeek } from '../../../../core/interfaces/day-of-week.interface';
+import { DateService } from '../../../../core/services/date.service';
 
 @Component({
   selector: 'do-datedesc',

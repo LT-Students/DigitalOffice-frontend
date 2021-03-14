@@ -2,9 +2,9 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { IDatePeriod } from '../../../../interfaces/date-period.interface';
-import { AttendanceService } from '../../../../services/attendance.service';
-import { DateService } from '../../../../services/date.service';
+import { IDatePeriod } from '../../../../core/interfaces/date-period.interface';
+import { AttendanceService } from '../../../../core/services/attendance.service';
+import { DateService } from '../../../../core/services/date.service';
 
 export interface IDailyHoursData {
   day: string;

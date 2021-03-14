@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { UserService } from '@digital-office/api/user-service';
-import { User } from '@digital-office/api/user-service';
+import { User } from '@data/api/user-service/models/user';
+import { UserApiService } from '@data/api/user-service/services/user-api.service';
 
 @Component({
   selector: 'do-new-employee',
@@ -31,7 +31,7 @@ export class NewEmployeeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService,
+    private userApiService: UserApiService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -57,16 +57,18 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   createEmployee(): void {
-    this.userService
-      .createUserPost({
-        email: this.userForm.controls['email'].value,
-        login: this.userForm.controls['login'].value,
-        firstName: this.userForm.controls['firstName'].value,
-        lastName: this.userForm.controls['lastName'].value,
-        middleName: this.userForm.controls['middleName'].value,
-        password: this.userForm.controls['password'].value,
-        isAdmin: true,
-        isActive: true,
+    this.userApiService
+      .createUser({
+        body: {
+          email: this.userForm.controls['email'].value,
+          login: this.userForm.controls['login'].value,
+          firstName: this.userForm.controls['firstName'].value,
+          lastName: this.userForm.controls['lastName'].value,
+          middleName: this.userForm.controls['middleName'].value,
+          password: this.userForm.controls['password'].value,
+          isAdmin: true,
+          isActive: true,
+        },
       })
       .subscribe(
         (res) => {
