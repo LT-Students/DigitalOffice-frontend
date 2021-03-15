@@ -1,0 +1,11 @@
+.mat-menu-content {
+  padding: 10px;
+}
+
+button.mat-menu-item {
+  padding: 0 10px;
+}
+
+.cdk-overlay-pane[style$='static;'] {
+  transform: none !important;
+}
