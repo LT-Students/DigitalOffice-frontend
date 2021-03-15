@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
+import { INewMember } from '@app/interfaces/INewMember';
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
 
 @Component({
@@ -18,9 +19,9 @@ import { NewMembersBoardComponent } from '../new-members-board/new-members-board
   styleUrls: ['./new-department.component.scss'],
 })
 export class NewDepartmentComponent implements OnInit {
-  public team = [];
+  public director: INewMember;
 
-  departmentForm = new FormGroup({
+  public departmentForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
     directorId: new FormControl(null, [Validators.required]),
@@ -36,37 +37,54 @@ export class NewDepartmentComponent implements OnInit {
 
   ngOnInit(): void {
     this.departmentForm = this.formBuilder.group({
-      name: ['', []],
-      description: ['', []],
-      director: ['', []],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(100),
+        ],
+      ],
+      description: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(1000),
+        ],
+      ],
+      directorId: ['', [Validators.required, Validators.minLength(1)]],
     });
   }
 
-  public onAddMembersClick(): void {
+  public onAddMemberClick(): void {
     const dialogRef = this.dialog.open(NewMembersBoardComponent, {
       width: '720px',
       height: '650px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
+      this.director = result[0];
+      if (this.director !== undefined) {
+        this.departmentForm.controls['directorId'].setValue(this.director.id);
+      } else {
+        this.departmentForm.controls['directorId'].setValue('');
+      }
     });
   }
 
   postDepartment(): void {
-    /*this.departmentApiService
-      .createDepartment({
+    this.departmentApiService
+      .addDepartment({
         body: {
           info: {
-            description: 'my test',
-            directorId: '6146B87A-587D-4945-A565-1CBDE93F187C',
-            name: 'testProject',
+            name: this.departmentForm.controls['name'].value,
+            description: this.departmentForm.controls['description'].value,
+            directorUserId: this.departmentForm.controls['directorId'].value,
           },
-          users: [
-            {
-              userId: '6146B87A-587D-4945-A565-1CBDE93F187C',
-              positionId: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-            },
+          usersIds: [
+            this.departmentForm.controls['directorId'].value,
+            this.departmentForm.controls['directorId'].value,
           ],
         },
       })
@@ -80,6 +98,6 @@ export class NewDepartmentComponent implements OnInit {
           this.snackBar.open(error.error.Message, 'accept');
           throw error;
         }
-      );*/
+      );
   }
 }

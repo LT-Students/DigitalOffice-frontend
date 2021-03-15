@@ -8,10 +8,10 @@
   <span class="title h1 h1_dark_2">Новая специализация</span>
   <div class="form__container">
     <form
-      [formGroup]="specializationForm"
-      (ngSubmit)="postSpecialization()"
       autocomplete="off"
       class="data-form"
+      [formGroup]="specializationForm"
+      (ngSubmit)="postSpecialization()"
     >
       <div class="new-specialization__input-container">
         <div class="new-specialization__input">
@@ -37,7 +37,6 @@
         color="primary"
         class="btn-create-department"
         type="submit"
-        (click)="postSpecialization()"
         [disabled]="specializationForm.invalid"
       >
         <span class="regular_text regular_text_light_1"

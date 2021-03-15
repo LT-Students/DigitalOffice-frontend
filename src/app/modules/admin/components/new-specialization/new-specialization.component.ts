@@ -16,7 +16,7 @@ import { PositionApiService } from '@data/api/company-service/services/position-
   styleUrls: ['./new-specialization.component.scss'],
 })
 export class NewSpecializationComponent implements OnInit {
-  specializationForm = new FormGroup({
+  public specializationForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     description: new FormControl(null, [Validators.required]),
   });
