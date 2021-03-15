@@ -103,10 +103,6 @@
       margin-bottom: 32px;
 
       display: flex;
-
-      @media (max-width: 1024px) {
-        display: inline;
-      }
     }
 
     &__card {
@@ -144,6 +140,10 @@
     .project-team {
       &__title {
         margin-top: 30px;
+      }
+
+      &__leaders {
+        display: inline;
       }
 
       &__leaders-photo {
