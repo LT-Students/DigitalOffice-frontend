@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  FormBuilder,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
-
 import { teamCards, TeamCard } from './team-cards';
 
 @Component({
@@ -12,15 +15,8 @@ import { teamCards, TeamCard } from './team-cards';
   styleUrls: ['./new-project.component.scss'],
 })
 export class NewProjectComponent {
+  public projectForm: FormGroup;
   public teams: TeamCard[] = teamCards;
-  public profileForm = new FormGroup({
-    name: new FormControl(''),
-    shortName: new FormControl(''),
-    departments: new FormControl(''),
-    description: new FormControl(''),
-    additionInfo: new FormControl(''),
-    checkControl: new FormControl(''),
-  });
   public departments = ['one', 'two', 'three'];
   public team = [
     {
@@ -31,21 +27,20 @@ export class NewProjectComponent {
       name: 'Slava',
       profileImgSrc: '',
     },
-    {
-      name: 'Nikita',
-      profileImgSrc: '',
-    },
-    {
-      name: 'Olya',
-      profileImgSrc: '',
-    },
-    {
-      name: 'Slava',
-      profileImgSrc: '',
-    },
   ];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private formBuilder: FormBuilder) {}
+
+  /*ngOnInit(): void {
+    this.projectForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.maxLength(80)]],
+      shortName: ['', [Validators.required, Validators.maxLength(32)]],
+      //departments: ['', [Validators.required, Validators.maxLength(32)]],
+      description: ['', [Validators.required, Validators.maxLength(500)]],
+      additionInfo: [''],
+      department: [''],
+    });
+  }*/
 
   public addMember(): void {
     this.dialog.open(NewMembersBoardComponent, {
@@ -56,9 +51,5 @@ export class NewProjectComponent {
 
   public saveDraft(): void {
     console.log('Сохранить черновик');
-  }
-
-  public createProject(): void {
-    console.log('Создать проект');
   }
 }
