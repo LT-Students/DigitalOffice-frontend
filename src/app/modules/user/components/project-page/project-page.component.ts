@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./project-page.component.scss'],
 })
 export class ProjectPageComponent implements OnInit {
-  idProject: string;
+  projectId: string;
   constructor(private route: ActivatedRoute) {}
 
   projectPage = {
@@ -116,6 +116,6 @@ export class ProjectPageComponent implements OnInit {
   valuesFromDescription = Object.values(this.projectPage.details);
   userId = '89'; //временно
   ngOnInit(): void {
-    this.idProject = this.route.snapshot.params.id;
+    this.projectId = this.route.snapshot.params.id;
   }
 }

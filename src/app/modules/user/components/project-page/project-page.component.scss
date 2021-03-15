@@ -4,13 +4,10 @@
 .project {
   margin-top: 10px;
 
-  @media (max-width: 420px) {
-    padding: 10px;
-  }
   background: $light_1;
   border-radius: 5px 5px 0 0;
 
-  .header {
+  .project-header {
     padding: 40px 40px 32px 40px;
 
     display: flex;
@@ -19,139 +16,142 @@
     border-bottom: 1px solid $light_3;
     flex-wrap: wrap;
 
-    &__title {
-      .header__splitter {
-        width: 124px;
-        height: 4px;
+    &__splitter {
+      width: 124px;
+      height: 4px;
 
-        background: $accent_color_bright;
-      }
+      background: $accent_color_bright;
     }
 
     &__menu {
       padding-top: 15px;
 
       display: flex;
+    }
 
-      .header__edit {
-        margin-right: 10px;
+    &__edit {
+      margin-right: 10px;
 
-        background-color: $accent_color_bright;
-        border: unset;
+      background-color: $accent_color_bright;
+      border: unset;
+    }
 
-        .header__span {
-          vertical-align: initial;
-        }
-      }
+    &__span {
+      vertical-align: initial;
+    }
 
-      .header__more {
-        margin-top: -3px;
-        padding: 0;
+    &__more {
+      margin-top: -3px;
+      padding: 0;
 
-        min-width: unset;
-      }
+      min-width: unset;
     }
   }
 
-  .content {
+  &__content {
     margin-right: 60px;
     padding: 20px 40px 40px 40px;
 
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+  }
 
-    .time {
-      &__title {
-        margin: 34px 0 24px;
-      }
+  .project-description {
+    &__title {
+      margin-bottom: 24px;
+    }
 
-      &__moments {
-        display: flex;
-        flex-wrap: nowrap;
+    &__body {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
 
-        .time__content {
-          margin-right: 50px;
-        }
+      max-width: 320px;
+
+      text-align: left;
+    }
+
+    p {
+      margin-bottom: 5px;
+
+      width: 160px;
+    }
+  }
+
+  .project-time {
+    &__title {
+      margin: 34px 0 24px;
+    }
+
+    &__container {
+      display: flex;
+      flex-wrap: nowrap;
+    }
+
+    &__all-time {
+      margin-left: 50px;
+    }
+  }
+
+  .project-team {
+    &__title {
+      margin-bottom: 23px;
+    }
+
+    &__leaders {
+      margin-bottom: 32px;
+
+      display: flex;
+
+      @media (max-width: 1024px) {
+        display: inline;
       }
     }
 
-    .details {
-      &__title {
-        margin-bottom: 24px;
-      }
+    &__card {
+      display: flex;
+      flex-wrap: nowrap;
+      flex: 1 1 auto;
+    }
 
-      .description {
-        display: flex;
+    &__leaders-photo {
+      margin-right: 10px;
 
-        max-width: 320px;
+      max-height: 48px;
+    }
 
-        text-align: left;
-        flex-wrap: nowrap;
+    &__member {
+      margin-bottom: 45px;
+    }
 
-        p {
-          margin-bottom: 5px;
+    &__member-photo {
+      margin-right: 4px;
+    }
+  }
 
-          @media (max-width: 1024px) {
-            margin-bottom: 15px;
-          }
-          width: 160px;
-        }
+  @media (max-width: 420px) {
+    padding: 10px;
+  }
+
+  @media (max-width: 1024px) {
+    .project-description {
+      p {
+        margin-bottom: 15px;
       }
     }
 
-    .team {
-      @media (max-width: 420px) {
-        &__title {
-          margin-top: 30px;
-        }
+    .project-team {
+      &__title {
+        margin-top: 30px;
       }
 
-      &__content {
-        margin-top: 23px;
+      &__leaders-photo {
+        margin-bottom: 15px;
+      }
 
-        .leaders {
-          margin-bottom: 32px;
-
-          display: flex;
-
-          @media (max-width: 1024px) {
-            display: inline;
-          }
-
-          &__card {
-            display: flex;
-            flex-wrap: nowrap;
-
-            .leaders__photo {
-              margin-right: 10px;
-
-              @media (max-width: 1024px) {
-                margin-bottom: 15px;
-              }
-
-              @media (max-width: 420px) {
-                height: 48px;
-              }
-            }
-
-            &:first-child {
-              margin-right: 30px;
-            }
-          }
-        }
-
-        .member {
-          margin-bottom: 45px;
-
-          &__photo {
-            margin-right: 4px;
-
-            @media (max-width: 1024px) {
-              margin-right: -10px;
-            }
-          }
-        }
+      &__member-photo {
+        margin-right: -10px;
       }
     }
   }
