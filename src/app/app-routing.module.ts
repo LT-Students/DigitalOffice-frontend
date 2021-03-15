@@ -11,6 +11,7 @@ import { AttendanceComponent } from './modules/user/components/attendance/attend
 import { ProjectsTableComponent } from './modules/user/components/projects-table/projects-table.component';
 import { NewMembersBoardComponent } from './modules/admin/components/new-members-board/new-members-board.component';
 import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
+import { ProjectPageComponent } from './modules/user/components/project-page/project-page.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,11 @@ const routes: Routes = [
             component: ProjectsTableComponent,
           },
         ],
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'project/:id',
+        component: ProjectPageComponent,
         canActivate: [AuthGuard],
       },
       {

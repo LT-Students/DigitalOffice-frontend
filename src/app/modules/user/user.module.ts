@@ -16,6 +16,7 @@ import { UserTasksComponent } from './components/user-tasks/user-tasks.component
 import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
+import { ProjectPageComponent } from './components/project-page/project-page.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { ProjectsTableComponent } from './components/projects-table/projects-tab
     ProjectComponent,
     TaskComponent,
     ProjectsTableComponent,
+    ProjectPageComponent,
   ],
   imports: [
     CommonModule,
