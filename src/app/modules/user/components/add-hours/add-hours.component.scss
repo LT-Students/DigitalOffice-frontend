@@ -29,6 +29,10 @@
   &__label {
     margin-bottom: 8px;
 
+    span {
+      margin-right: 10px;
+    }
+
     &_for_project {
       margin-top: 16px;
     }
@@ -78,5 +82,59 @@
 
   &__submit-btn {
     margin-top: 21px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__icon {
+    vertical-align: middle;
+
+    &_hint {
+      margin-right: 7px;
+
+      float: right;
+    }
+  }
+
+  &__menu-title {
+    padding: 10px;
+
+    font-size: 18px;
+
+    &::after {
+      content: '';
+
+      margin-bottom: 10px;
+
+      display: block;
+
+      width: 123px;
+      height: 2px;
+
+      background-color: $accent_color_bright;
+    }
+  }
+
+  &__menu-button {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    color: $dark_2;
+    background-color: $light_3;
+  }
+
+  &__radio {
+    width: inherit;
+    height: inherit;
+
+    font-family: $header_font;
+    font-weight: 400;
+
+    &.mat-radio-button.mat-radio-checked {
+      color: $dark_1;
+    }
   }
 }

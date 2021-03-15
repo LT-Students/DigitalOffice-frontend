@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface LeaveTimeRequest {
-
   /**
    * Description for alloted time.
    */
@@ -27,4 +26,3 @@ export interface LeaveTimeRequest {
    */
   workerUserId: string;
 }
-
