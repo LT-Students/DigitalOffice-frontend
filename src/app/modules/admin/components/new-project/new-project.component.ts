@@ -14,7 +14,7 @@ import { teamCards, TeamCard } from './team-cards';
   templateUrl: './new-project.component.html',
   styleUrls: ['./new-project.component.scss'],
 })
-export class NewProjectComponent {
+export class NewProjectComponent implements OnInit {
   public projectForm: FormGroup;
   public teams: TeamCard[] = teamCards;
   public departments = ['one', 'two', 'three'];
@@ -31,7 +31,7 @@ export class NewProjectComponent {
 
   constructor(public dialog: MatDialog, private formBuilder: FormBuilder) {}
 
-  /*ngOnInit(): void {
+  ngOnInit(): void {
     this.projectForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(80)]],
       shortName: ['', [Validators.required, Validators.maxLength(32)]],
@@ -40,7 +40,7 @@ export class NewProjectComponent {
       additionInfo: [''],
       department: [''],
     });
-  }*/
+  }
 
   public addMember(): void {
     this.dialog.open(NewMembersBoardComponent, {
@@ -49,6 +49,7 @@ export class NewProjectComponent {
     });
   }
 
+  public createProject(): void {}
   public saveDraft(): void {
     console.log('Сохранить черновик');
   }

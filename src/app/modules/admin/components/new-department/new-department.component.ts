@@ -54,7 +54,7 @@ export class NewDepartmentComponent implements OnInit {
   }
 
   postDepartment(): void {
-    this.departmentApiService
+    /*this.departmentApiService
       .createDepartment({
         body: {
           info: {
@@ -80,6 +80,6 @@ export class NewDepartmentComponent implements OnInit {
           this.snackBar.open(error.error.Message, 'accept');
           throw error;
         }
-      );
+      );*/
   }
 }

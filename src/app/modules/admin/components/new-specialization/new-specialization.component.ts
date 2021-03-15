@@ -30,23 +30,37 @@ export class NewSpecializationComponent implements OnInit {
 
   ngOnInit(): void {
     this.specializationForm = this.formBuilder.group({
-      name: ['', []],
-      description: ['', []],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(80),
+        ],
+      ],
+      description: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(1),
+          Validators.maxLength(350),
+        ],
+      ],
     });
   }
 
   postSpecialization(): void {
     this.positionApiService
-      .createPosition({
+      .addPosition({
         body: {
-          name: '',
-          description: '',
-          id: '',
+          name: this.specializationForm.controls['name'].value,
+          description: this.specializationForm.controls['description'].value,
+          isActive: true,
         },
       })
       .subscribe(
         (res) => {
-          this.snackBar.open('New department added successfully', 'done', {
+          this.snackBar.open('New specialization added successfully', 'done', {
             duration: 3000,
           });
         },
