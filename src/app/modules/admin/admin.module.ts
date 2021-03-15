@@ -7,6 +7,7 @@ import { DndDirective } from '@app/directives/dnd.directive';
 
 import { DndDirective } from '@app/directives/dnd.directive';
 import { SharedModule } from '../../shared/shared.module';
+import { DndDirective } from '../../core/directives/dnd.directive';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { ProjectCardComponent } from './components/project-card/project-card.component';

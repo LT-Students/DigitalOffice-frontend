@@ -18,10 +18,7 @@ import { ProjectExpandedResponse } from '../models/project-expanded-response';
   providedIn: 'root',
 })
 export class ProjectApiService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
@@ -36,22 +33,30 @@ export class ProjectApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getProjects$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<Project>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectsPath, 'get');
+  getProjects$Response(params?: {}): Observable<
+    StrictHttpResponse<Array<Project>>
+  > {
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      ProjectApiService.GetProjectsPath,
+      'get'
+    );
     if (params) {
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<Project>>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<Array<Project>>;
+        })
+      );
   }
 
   /**
@@ -60,9 +65,7 @@ export class ProjectApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getProjects(params?: {
-  }): Observable<Array<Project>> {
-
+  getProjects(params?: {}): Observable<Array<Project>> {
     return this.getProjects$Response(params).pipe(
       map((r: StrictHttpResponse<Array<Project>>) => r.body as Array<Project>)
     );
@@ -80,27 +83,33 @@ export class ProjectApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   getProjectById$Response(params: {
-
     /**
      * Project global unique identifier.
      */
     projectId: string;
   }): Observable<StrictHttpResponse<ProjectExpandedResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectByIdPath, 'get');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      ProjectApiService.GetProjectByIdPath,
+      'get'
+    );
     if (params) {
-      rb.query('projectId', params.projectId, {"style":"form","explode":true});
+      rb.query('projectId', params.projectId, { style: 'form', explode: true });
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ProjectExpandedResponse>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<ProjectExpandedResponse>;
+        })
+      );
   }
 
   /**
@@ -110,15 +119,16 @@ export class ProjectApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   getProjectById(params: {
-
     /**
      * Project global unique identifier.
      */
     projectId: string;
   }): Observable<ProjectExpandedResponse> {
-
     return this.getProjectById$Response(params).pipe(
-      map((r: StrictHttpResponse<ProjectExpandedResponse>) => r.body as ProjectExpandedResponse)
+      map(
+        (r: StrictHttpResponse<ProjectExpandedResponse>) =>
+          r.body as ProjectExpandedResponse
+      )
     );
   }
 
@@ -137,23 +147,30 @@ export class ProjectApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   createNewProject$Response(params: {
-    body: ProjectExpandedRequest
+    body: ProjectExpandedRequest;
   }): Observable<StrictHttpResponse<string>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.CreateNewProjectPath, 'post');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      ProjectApiService.CreateNewProjectPath,
+      'post'
+    );
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<string>;
+        })
+      );
   }
 
   /**
@@ -166,9 +183,8 @@ export class ProjectApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   createNewProject(params: {
-    body: ProjectExpandedRequest
+    body: ProjectExpandedRequest;
   }): Observable<string> {
-
     return this.createNewProject$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
@@ -189,29 +205,35 @@ export class ProjectApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editProjectById$Response(params: {
-
     /**
      * Project global unique identifier.
      */
     projectId: string;
-    body: EditProjectRequest
+    body: EditProjectRequest;
   }): Observable<StrictHttpResponse<string>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.EditProjectByIdPath, 'post');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      ProjectApiService.EditProjectByIdPath,
+      'post'
+    );
     if (params) {
-      rb.query('projectId', params.projectId, {"style":"form","explode":true});
+      rb.query('projectId', params.projectId, { style: 'form', explode: true });
       rb.body(params.body, 'application/json');
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<string>;
+        })
+      );
   }
 
   /**
@@ -224,17 +246,14 @@ export class ProjectApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editProjectById(params: {
-
     /**
      * Project global unique identifier.
      */
     projectId: string;
-    body: EditProjectRequest
+    body: EditProjectRequest;
   }): Observable<string> {
-
     return this.editProjectById$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
-
 }

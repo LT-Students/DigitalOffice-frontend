@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ProjectRequest {
-
   /**
    * Project closed reason. May be empty if the project is not closed.
    */
@@ -13,4 +12,3 @@ export interface ProjectRequest {
   name: string;
   shortName: string;
 }
-

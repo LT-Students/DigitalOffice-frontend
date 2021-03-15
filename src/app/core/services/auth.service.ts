@@ -22,7 +22,7 @@ export class AuthService {
     return this.authApiService.login({ body: authenticationRequest }).pipe(
       tap({
         next: (val) => {
-          this.localStorageService.set('id_token', val.token);
+          this.localStorageService.set('access_token', val.token);
           this.localStorageService.set('userId', val.userId);
         },
         error: (error) => {
@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const token = this.localStorageService.get('id_token');
+    const token = this.localStorageService.get('access_token');
     return token != null;
   }
 }
