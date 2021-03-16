@@ -9,13 +9,13 @@
   <div class="note regular_text">
     <div class="note__head">
       <ng-container *ngIf="!isInput">
-        <p>{{ workTime.title }}</p>
+        <p>{{ task.title }}</p>
       </ng-container>
     </div>
     <ng-container *ngIf="isInput">
       <!-- <input class="note__head note__head_input h4"
-            [value]='workTime.title' 
-            #inputTitle 
+            [value]='task.title'
+            #inputTitle
             (input)="changeTitle(inputTitle.value)"
           /> -->
       <form>
@@ -23,17 +23,17 @@
           <input
             matInput
             #inputTitle
-            [value]="workTime.title"
+            [value]="task.title"
             (input)="changeTitle(inputTitle.value)"
           />
         </mat-form-field>
       </form>
     </ng-container>
     <div class="note__text">
-      <span>{{ workTime.description }}</span>
+      <span>{{ task.description }}</span>
     </div>
     <div class="note__date">
-      <p>{{ workTime.createdAt | date: 'd MMMM в HH:mm' }}</p>
+      <p>{{ task.createdAt | date: 'd MMMM в HH:mm' }}</p>
     </div>
   </div>
 
@@ -46,7 +46,7 @@
         />
       </svg>
     </button>
-    <button (click)="delete()">
+    <button (click)="deleteTask(task.projectId, task.id)()">
       <svg fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M1.14286 16.8889C1.14286 17.4488 1.38367 17.9858 1.81233 18.3817C2.24098 18.7776 2.82236 19 3.42857 19H12.5714C13.1776 19 13.759 18.7776 14.1877 18.3817C14.6163 17.9858 14.8571 17.4488 14.8571 16.8889V4.22222H1.14286V16.8889ZM3.42857 6.33333H12.5714V16.8889H3.42857V6.33333ZM12 1.05556L10.8571 0H5.14286L4 1.05556H0V3.16667H16V1.05556H12Z"

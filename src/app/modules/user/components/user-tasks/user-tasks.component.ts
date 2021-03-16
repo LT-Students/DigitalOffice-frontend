@@ -54,7 +54,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
     this.endPeriod.setDate(now.getDate() + 3);
     if (this.projects.length !== 0) {
       this.tasksCount = this.projects
-        .map((p) => p.workTime)
+        .map((p) => p.tasks)
         .reduce((all, tasks) => all.concat(tasks)).length;
     }
   }

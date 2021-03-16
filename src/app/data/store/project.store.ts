@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
 import { WorkTimeApiService } from '@data/api/time-management-service/services/work-time-api.service';
-import { WorkTime } from '@data/models/work-time';
+import { Task } from '@data/models/task';
 import { Project } from '@data/models/project';
 
 @Injectable({
@@ -17,14 +17,18 @@ export class ProjectStore {
       description: '13',
       departmentId: '1',
       isActive: true,
-      workTime: [
+      tasks: [
         {
+          id: '1',
+          projectId: '1',
           minutes: 60,
           title: 'Developing',
           description: 'desc1',
           createdAt: new Date(),
         },
         {
+          id: '2',
+          projectId: '1',
           minutes: 60,
           title:
             'Очень длинная задача, которую мне отдал мой коллега, а я не очень хотел ее делать и она занимает две строки',
@@ -40,8 +44,10 @@ export class ProjectStore {
       description: '13',
       departmentId: '1',
       isActive: true,
-      workTime: [
+      tasks: [
         {
+          id: '3',
+          projectId: '2',
           minutes: 123,
           title: 'Developing',
           description: 'desc1',
@@ -56,8 +62,10 @@ export class ProjectStore {
       description: '13',
       departmentId: '1',
       isActive: true,
-      workTime: [
+      tasks: [
         {
+          id: '4',
+          projectId: '3',
           minutes: 123,
           title: 'Документация',
           description: 'desc1',
@@ -83,17 +91,27 @@ export class ProjectStore {
   get projects(): Project[] {
     return this._projects.getValue();
   }
+
   // TODO убрать Partial
-  addWorkTimeToProject(workTime: Partial<WorkTime>, projectId: string): void {
-    // вызываем бэкенд метод, для создания WorkTime
-    // проверить на работоспособность, раньше проверка была такая
-    // project.id === id + 1 ???
-    this.projects.forEach((project: Project) => {
-      if (project.id === projectId) {
-        project.workTime.push(workTime);
-        this._projects.next(this.projects.slice());
-      }
-    });
+  addTaskToProject(task: Partial<Task>, projectId: string): void {
+    const elIndex = this.projects.findIndex(
+      (project) => project.id === projectId
+    );
+    this.projects[elIndex].tasks.push(task);
+    this._projects.next([...this.projects]);
+  }
+
+  deleteTaskFromProject(projectId: string, taskId: string): boolean {
+    const elIndex = this.projects.findIndex(
+      (project) => project.id === projectId
+    );
+
+    this.projects[elIndex].tasks = this.projects[elIndex].tasks.filter(
+      (task) => task.id !== taskId
+    );
+
+    this._projects.next([...this.projects]);
+    return true;
   }
 
   /*  private loadInitialData(): void {

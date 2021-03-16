@@ -10,7 +10,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project } from '@data/models/project';
-import { WorkTime } from '@data/models/work-time';
+import { Task } from '@data/models/task';
 import { User } from '@data/api/user-service/models/user';
 import { timeValidator } from './add-hours.validators';
 
@@ -109,7 +109,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
   public onSubmit(): void {
     const projectId = this.addHoursForm.get('project').value;
-    const workTime: Partial<WorkTime> = {
+    console.log(this.addHoursForm);
+    const task: Partial<Task> = {
       title: this.addHoursForm.get('task').value,
       description: this.addHoursForm.get('description').value,
       createdAt: new Date(),
@@ -117,7 +118,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
         Number(this.addHoursForm.get('time.minutes').value) +
         Number(this.addHoursForm.get('time.hours').value) * 60,
     };
-    this.projectStore.addWorkTimeToProject(workTime, projectId);
+    this.projectStore.addTaskToProject(task, projectId);
     this.addHoursForm.reset();
     const datePeriod = this.attendanceService.datePeriod;
     this.attendanceService.onDatePeriodChange(datePeriod);
