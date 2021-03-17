@@ -9,9 +9,9 @@ $height: 32px;
   background-color: inherit;
   border-radius: 5px;
 
-  &__button {
-    margin: 0 4px;
-
+  &__button,
+  &__delete {
+    //margin: 0 4px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -21,6 +21,10 @@ $height: 32px;
     background-color: inherit;
     border: none;
     border-radius: 5px;
+
+    img {
+      height: 20px;
+    }
 
     .mat-button-wrapper {
       line-height: $height;

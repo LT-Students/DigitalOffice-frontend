@@ -11,6 +11,13 @@
   >
     <img src="assets/svg/magnifier.svg" alt="magnifier" />
   </button>
+  <button
+    mat-icon-button
+    class="search__delete"
+    (click)="onSearchClick(searchInput.value)"
+  >
+    <img src="assets/svg/delete.svg" alt="delete" />
+  </button>
   <input
     [placeholder]="placeholder"
     type="text"
