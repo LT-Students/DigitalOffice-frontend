@@ -8,29 +8,23 @@
 
   <div class="note regular_text">
     <div class="note__head">
-      <ng-container *ngIf="!isInput">
-        <p>{{ task.title }}</p>
-      </ng-container>
+      <p>{{ task.title }}</p>
     </div>
-    <ng-container *ngIf="isInput">
-      <!-- <input class="note__head note__head_input h4"
-            [value]='task.title'
-            #inputTitle
-            (input)="changeTitle(inputTitle.value)"
-          /> -->
-      <form>
-        <mat-form-field class="h4">
-          <input
-            matInput
-            #inputTitle
-            [value]="task.title"
-            (input)="changeTitle(inputTitle.value)"
-          />
-        </mat-form-field>
-      </form>
-    </ng-container>
     <div class="note__text">
-      <span>{{ task.description }}</span>
+      <span *ngIf="!isInput">{{ task.description }}</span>
+      <ng-container *ngIf="isInput">
+        <form>
+          <mat-form-field class="h4">
+            <input
+              matInput
+              #inputTitle
+              [value]="task.description"
+              (input)="changeTitle(inputTitle.value)"
+              (keydown.enter)="changeInput()"
+            />
+          </mat-form-field>
+        </form>
+      </ng-container>
     </div>
     <div class="note__date">
       <p>{{ task.createdAt | date: 'd MMMM в HH:mm' }}</p>

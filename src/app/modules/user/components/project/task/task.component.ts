@@ -17,13 +17,12 @@ export class TaskComponent implements OnInit {
 
   constructor(private projectStore: ProjectStore) {}
 
-  changeInput() {
-    console.log('input');
-    this.isInput = !this.isInput;
+  changeInput(): Function {
+    return () => (this.isInput = !this.isInput);
   }
 
-  changeTitle(value: string) {
-    this.task.title = value;
+  changeTitle(value: string): Function {
+    return () => (this.task.description = value);
   }
 
   deleteTask(projectId: string, taskId: string): Function {
