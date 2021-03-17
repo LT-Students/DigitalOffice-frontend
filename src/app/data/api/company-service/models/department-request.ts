@@ -1,12 +1,24 @@
 /* tslint:disable */
 /* eslint-disable */
-import { DepartmentInfo } from './department-info';
-import { DepartmentUser } from './department-user';
+
+/**
+ * Specific department data.
+ */
 export interface DepartmentRequest {
-  info: DepartmentInfo;
 
   /**
-   * Department users.
+   * Department description.
    */
-  users?: null | Array<DepartmentUser>;
+  description: string;
+
+  /**
+   * Specific director user id this department.
+   */
+  directorUserId?: string;
+
+  /**
+   * Department name.
+   */
+  name: string;
 }
+

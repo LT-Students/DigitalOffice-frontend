@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface UserRequest {
-
   /**
    * File global unique identifier.
    */
@@ -57,4 +56,3 @@ export interface UserRequest {
    */
   status?: null | string;
 }
-

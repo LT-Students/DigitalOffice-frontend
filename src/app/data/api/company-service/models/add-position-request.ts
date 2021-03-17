@@ -1,18 +1,24 @@
 /* tslint:disable */
 /* eslint-disable */
+
+/**
+ * Specific position data.
+ */
 export interface AddPositionRequest {
+
   /**
    * Position description.
    */
   description: null | string;
 
   /**
-   * Position id.
+   * Marks whether position is active or not.
    */
-  id: string;
+  isActive: boolean;
 
   /**
    * Position name.
    */
   name: string;
 }
+

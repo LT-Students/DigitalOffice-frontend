@@ -15,7 +15,7 @@ import { AuthenticationResponse } from '../models/authentication-response';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthenticationApiService extends BaseService {
+export class AuthApiService extends BaseService {
   constructor(
     config: ApiConfiguration,
     http: HttpClient
@@ -40,7 +40,7 @@ export class AuthenticationApiService extends BaseService {
     body: AuthenticationRequest
   }): Observable<StrictHttpResponse<AuthenticationResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, AuthenticationApiService.LoginPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, AuthApiService.LoginPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }

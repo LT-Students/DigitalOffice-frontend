@@ -5,4 +5,3 @@ export interface AddUsersToProjectReques {
   projectId: string;
   users: Array<ProjectUserRequest>;
 }
-

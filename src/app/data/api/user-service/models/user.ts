@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface User {
-
   /**
    * Certificate files global unique identifiers.
    */
@@ -52,4 +51,3 @@ export interface User {
    */
   status?: null | string;
 }
-

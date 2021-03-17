@@ -134,14 +134,3 @@ $select-height: 36px;
     }
   }
 }
-
-::ng-deep .cdk-overlay-pane {
-  transform: translateY($select-height - 1) !important;
-
-  .mat-select-panel {
-    min-width: 100% !important;
-
-    border-radius: 0 0 5px 5px;
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
-  }
-}
