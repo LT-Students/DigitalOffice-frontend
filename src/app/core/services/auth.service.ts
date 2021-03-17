@@ -4,15 +4,15 @@ import { Observable } from 'rxjs';
 
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { AuthenticationApiService } from '@data/api/auth-service/services/authentication-api.service';
 import { LocalStorageService } from './local-storage.service';
+import { AuthApiService } from '@data/api/auth-service/services/auth-api.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(
-    private authApiService: AuthenticationApiService,
+    private authApiService: AuthApiService,
     private localStorageService: LocalStorageService
   ) {}
 
