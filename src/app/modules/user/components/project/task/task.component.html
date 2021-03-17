@@ -13,9 +13,10 @@
     <div class="note__text">
       <span *ngIf="!isInput">{{ task.description }}</span>
       <ng-container *ngIf="isInput">
-        <form>
-          <mat-form-field class="h4">
+        <form class="note__form-input">
+          <mat-form-field class="note__field-input">
             <input
+              type="text"
               matInput
               #inputTitle
               [value]="task.description"
