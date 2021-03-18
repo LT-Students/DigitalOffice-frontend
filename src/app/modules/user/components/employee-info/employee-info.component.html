@@ -1,0 +1,86 @@
+<div class="employee-info card regular_text text_dark_1">
+  <div class="employee-info__main">
+    <div class="employee-info__photo">
+      <img src="assets/images/employee-photo.png" alt="Employee photo" />
+    </div>
+    <h1 class="employee-info__name h3 text-dark_2">
+      {{ fullName }}&nbsp;<span
+        matTooltipClass="tooltip"
+        matTooltip="Ангелина работает из дома"
+        [matTooltipPosition]="'above'"
+        >{{ employee.emojiStatus }}</span
+      >
+    </h1>
+    <div class="employee-info__about-me small_text text-gray">
+      “{{ employee.aboutMe }}”
+    </div>
+  </div>
+  <div class="employee-info__general">
+    <h2 class="h4 text-dark_2">Общие сведения</h2>
+    <div class="employee-info__columns">
+      <div>
+        <h3 class="small_text text-gray">Должность</h3>
+        <div>{{ employee.jobPosition }}</div>
+        <h3 class="small_text text-gray">Департамент</h3>
+        <div>{{ employee.department }}</div>
+        <h3 class="small_text text-gray">Местоположение</h3>
+        <div>{{ employee.location }}</div>
+        <h3 class="small_text text-gray">Офис</h3>
+        <div>{{ employee.office }}</div>
+      </div>
+      <div>
+        <h3 class="small_text text-gray">Ставка</h3>
+        <div>{{ employee.workingRate }}</div>
+        <h3 class="small_text text-gray">
+          Рабочие часы
+          <mat-icon
+            class="employee-info__hint"
+            svgIcon="question-mark"
+            aria-label="Hint"
+            matTooltipClass="tooltip"
+            matTooltip="Рабочие часы пользователя по вашему часовому поясу"
+            [matTooltipPosition]="'above'"
+          ></mat-icon>
+        </h3>
+        <div>{{ workingHours }}</div>
+        <h3 class="small_text text-gray">В компании с</h3>
+        <div>{{ employee.workingSince }}</div>
+        <h3 class="small_text text-gray">Дата рождения</h3>
+        <div>{{ employee.birthDate }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="employee-info__border"></div>
+  <div class="employee-info__additional">
+    <h2 class="h4 text-dark_2">Контакты</h2>
+    <h3 class="small_text text-gray">E-mail</h3>
+    <div>{{ employee.contacts.email }}</div>
+    <h3 class="small_text text-gray">Рабочий номер</h3>
+    <div>{{ employee.contacts.phone }}</div>
+    <h3 class="small_text text-gray">Telegram</h3>
+    <div>{{ employee.contacts.telegram }}</div>
+    <h2 class="h4 text-dark_2">
+      Отпуск
+      <mat-icon
+        class="employee-info__hint"
+        svgIcon="question-mark"
+        aria-label="Hint"
+        matTooltipClass="tooltip"
+        matTooltip="Стандартный отпуск - 20 рабочих дней в год"
+        [matTooltipPosition]="'above'"
+      ></mat-icon>
+    </h2>
+    <h3 class="small_text text-gray">Осталось отпускных дней</h3>
+    <div>{{ employee.vacation }} дней</div>
+  </div>
+  <div>
+    <mat-icon
+      class="employee-info__edit"
+      svgIcon="edit"
+      aria-label="Edit"
+      matTooltipClass="tooltip"
+      matTooltip="Стандартный отпуск - 20 рабочих дней в год"
+      [matTooltipPosition]="'above'"
+    ></mat-icon>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+@import 'base/variables';
+
+.employee-info {
+  padding: 52px 47px 42px 47px;
+
+  display: flex;
+  justify-content: space-evenly;
+
+  &__main {
+    text-align: center;
+
+    flex-basis: 25%;
+  }
+
+  &__general {
+    margin-left: 32px;
+
+    flex-basis: 50%;
+  }
+
+  &__additional {
+    flex-basis: 25%;
+
+    .h4:last-of-type {
+      margin: 42px 0 13px 0;
+    }
+  }
+
+  &__about-me {
+    line-height: 21px;
+  }
+
+  &__columns {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__border {
+    margin: 0 72px;
+
+    height: 320px;
+
+    border-left: 1px solid $light_3;
+
+    align-self: flex-end;
+  }
+
+  &__hint {
+    margin-left: 2px;
+
+    width: 16px;
+    height: 16px;
+
+    vertical-align: -14%;
+  }
+
+  &__edit {
+    width: 20px;
+    height: 20px;
+  }
+
+  .small_text {
+    margin: 14px 0 3px 0;
+  }
+
+  .h3 {
+    line-height: 33px;
+  }
+
+  .h4 {
+    margin-bottom: 25px;
+
+    font-size: 18px;
+  }
+}
