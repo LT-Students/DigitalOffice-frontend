@@ -5,6 +5,7 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
+import { INewMember } from '@app/interfaces/INewMember';
 import { MatDialog } from '@angular/material/dialog';
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
 import { teamCards, TeamCard } from './team-cards';
@@ -35,7 +36,7 @@ export class NewProjectComponent implements OnInit {
     this.projectForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(80)]],
       shortName: ['', [Validators.required, Validators.maxLength(32)]],
-      //departments: ['', [Validators.required, Validators.maxLength(32)]],
+      departments: ['', [Validators.required, Validators.maxLength(32)]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
       additionInfo: [''],
       department: [''],
