@@ -8,9 +8,12 @@ import {
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { INewMember } from '@app/interfaces/INewMember';
+import { map } from 'rxjs/operators';
+import { UserApiService } from '@data/api/user-service/services/user-api.service';
+import { User } from '@data/api/user-service/models/user';
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
 
 @Component({
@@ -20,6 +23,8 @@ import { NewMembersBoardComponent } from '../new-members-board/new-members-board
 })
 export class NewDepartmentComponent implements OnInit {
   public director: INewMember;
+  public directors: INewMember[];
+  private getDirectorsSubscription: Subscription;
 
   public departmentForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
@@ -28,6 +33,7 @@ export class NewDepartmentComponent implements OnInit {
   });
 
   constructor(
+    public userApiService: UserApiService,
     public departmentApiService: DepartmentApiService,
     private dialogRef: MatDialogRef<NewMembersBoardComponent>,
     private formBuilder: FormBuilder,
@@ -36,6 +42,8 @@ export class NewDepartmentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getDirectors();
+
     this.departmentForm = this.formBuilder.group({
       name: [
         '',
@@ -57,7 +65,31 @@ export class NewDepartmentComponent implements OnInit {
     });
   }
 
-  public onAddMemberClick(): void {
+  getDirectors(): void {
+    this.getDirectorsSubscription = this.userApiService
+      .getAllUsers({
+        skipCount: 0,
+        takeCount: 50,
+      })
+      .pipe(
+        map((data: User[]) =>
+          data.map((userDb) => ({
+            id: userDb.id,
+            fullName: `${userDb.firstName} ${userDb.lastName} `,
+            projectsCount: 0,
+            level: '',
+            profileImgSrc: '',
+            specialization: '',
+          }))
+        )
+      )
+      .subscribe((data: INewMember[]) => {
+        this.directors = data;
+        console.log(this.directors);
+      });
+  }
+
+  onAddMemberClick(): void {
     const dialogRef = this.dialog.open(NewMembersBoardComponent, {
       width: '720px',
       height: '650px',
@@ -74,6 +106,7 @@ export class NewDepartmentComponent implements OnInit {
   }
 
   postDepartment(): void {
+    console.log(this.departmentForm.controls['directorId'].value);
     this.departmentApiService
       .addDepartment({
         body: {
@@ -82,10 +115,7 @@ export class NewDepartmentComponent implements OnInit {
             description: this.departmentForm.controls['description'].value,
             directorUserId: this.departmentForm.controls['directorId'].value,
           },
-          usersIds: [
-            this.departmentForm.controls['directorId'].value,
-            this.departmentForm.controls['directorId'].value,
-          ],
+          usersIds: [],
         },
       })
       .subscribe(
