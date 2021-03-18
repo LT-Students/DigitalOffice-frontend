@@ -3,7 +3,7 @@
   "info": {
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments.\n-",
-    "version": "1.1.3"
+    "version": "1.1.4"
   },
   "servers": [
     {
@@ -372,40 +372,15 @@
         "type": "object",
         "properties": {
           "Info": {
-            "$ref": "#/components/schemas/DepartmentRequest"
+            "$ref": "#/components/schemas/Department"
           },
-          "UsersIds": {
+          "Users": {
             "type": "array",
-            "description": "List specific users id.",
             "items": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/DepartmentUser"
             }
           }
         }
-      },
-      "DepartmentRequest": {
-        "required": [
-          "Description",
-          "Name"
-        ],
-        "type": "object",
-        "properties": {
-          "Name": {
-            "type": "string",
-            "description": "Department name."
-          },
-          "Description": {
-            "type": "string",
-            "description": "Department description."
-          },
-          "DirectorUserId": {
-            "type": "string",
-            "description": "Specific director user id this department.",
-            "format": "uuid"
-          }
-        },
-        "description": "Specific department data."
       },
       "PositionResponse": {
         "type": "object",
@@ -448,6 +423,45 @@
           }
         },
         "description": "Specific position data."
+      },
+      "Department": {
+        "required": [
+          "Description",
+          "Name"
+        ],
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "Department name."
+          },
+          "Description": {
+            "type": "string",
+            "description": "Department description."
+          },
+          "DirectorUserId": {
+            "type": "string",
+            "description": "Specific director user id this department.",
+            "format": "uuid"
+          }
+        },
+        "description": "Specific department data."
+      },
+      "DepartmentUser": {
+        "type": "object",
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "description": "Specific users id.",
+            "format": "uuid"
+          },
+          "PositionId": {
+            "type": "string",
+            "description": "Specific position id.",
+            "format": "uuid"
+          }
+        },
+        "description": "User data of specific department."
       }
     },
     "parameters": {

@@ -66,6 +66,7 @@ export class NewDepartmentComponent implements OnInit {
   }
 
   getDirectors(): void {
+    //Rework when will api with specialization sort
     this.getDirectorsSubscription = this.userApiService
       .getAllUsers({
         skipCount: 0,
@@ -89,24 +90,7 @@ export class NewDepartmentComponent implements OnInit {
       });
   }
 
-  onAddMemberClick(): void {
-    const dialogRef = this.dialog.open(NewMembersBoardComponent, {
-      width: '720px',
-      height: '650px',
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      this.director = result[0];
-      if (this.director !== undefined) {
-        this.departmentForm.controls['directorId'].setValue(this.director.id);
-      } else {
-        this.departmentForm.controls['directorId'].setValue('');
-      }
-    });
-  }
-
   postDepartment(): void {
-    console.log(this.departmentForm.controls['directorId'].value);
     this.departmentApiService
       .addDepartment({
         body: {
@@ -115,7 +99,12 @@ export class NewDepartmentComponent implements OnInit {
             description: this.departmentForm.controls['description'].value,
             directorUserId: this.departmentForm.controls['directorId'].value,
           },
-          usersIds: [],
+          users: [
+            {
+              userId: '6146B87A-587D-4945-A565-1CBDE93F187C',
+              positionId: 'EEDE7723-3C5D-4DD1-96F1-17B7F22CE266', //add any position Id from your DB
+            },
+          ],
         },
       })
       .subscribe(
