@@ -114,6 +114,25 @@ export class ProjectStore {
     return true;
   }
 
+  changeDescriptionInProject(
+    projectId: string,
+    taskId: string,
+    newDescription: string
+  ): boolean {
+    const elIndex = this.projects.findIndex(
+      (project) => project.id === projectId
+    );
+
+    const workIndex = this.projects[elIndex].tasks.findIndex(
+      (work) => work.id === taskId
+    );
+
+    this.projects[elIndex].tasks[workIndex].description = newDescription;
+
+    this._projects.next([...this.projects]);
+    return true;
+  }
+
   /*  private loadInitialData(): void {
     this.projectApiService.getProjects().subscribe((projects) => {});
     forkJoin([

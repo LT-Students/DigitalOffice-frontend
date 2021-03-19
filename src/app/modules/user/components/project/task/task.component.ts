@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-
 import { Task } from '@data/models/task';
 import { ProjectStore } from '@data/store/project.store';
 
@@ -9,20 +8,30 @@ import { ProjectStore } from '@data/store/project.store';
   styleUrls: ['./task.component.scss'],
 })
 export class TaskComponent implements OnInit {
-  isInput = false;
+  isEdited = false;
   @Input() task: Task;
   hours = 0;
   minutes = 0;
-  @Input() delete: any;
 
   constructor(private projectStore: ProjectStore) {}
 
-  changeInput() {
-    this.isInput = !this.isInput;
+  toggleInput() {
+    this.isEdited = !this.isEdited;
   }
 
-  changeTitle(value: string) {
-    this.task.description = value;
+  changeDescription(
+    projectId: string,
+    taskId: string,
+    newDescription: string
+  ): Function {
+    return () => {
+      this.projectStore.changeDescriptionInProject(
+        projectId,
+        taskId,
+        newDescription
+      );
+      this.toggleInput();
+    };
   }
 
   deleteTask(projectId: string, taskId: string): Function {
