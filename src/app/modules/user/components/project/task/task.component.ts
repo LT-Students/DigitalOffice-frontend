@@ -25,7 +25,7 @@ export class TaskComponent implements OnInit {
     newDescription: string
   ): Function {
     return () => {
-      this.projectStore.changeDescriptionInProject(
+      this.projectStore.changeDescriptionInTask(
         projectId,
         taskId,
         newDescription

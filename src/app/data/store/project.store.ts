@@ -114,7 +114,7 @@ export class ProjectStore {
     return true;
   }
 
-  changeDescriptionInProject(
+  changeDescriptionInTask(
     projectId: string,
     taskId: string,
     newDescription: string
