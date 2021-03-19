@@ -86,7 +86,6 @@ export class NewDepartmentComponent implements OnInit {
       )
       .subscribe((data: INewMember[]) => {
         this.directors = data;
-        console.log(this.directors);
       });
   }
 
@@ -99,12 +98,6 @@ export class NewDepartmentComponent implements OnInit {
             description: this.departmentForm.controls['description'].value,
             directorUserId: this.departmentForm.controls['directorId'].value,
           },
-          users: [
-            {
-              userId: '6146B87A-587D-4945-A565-1CBDE93F187C',
-              positionId: 'EEDE7723-3C5D-4DD1-96F1-17B7F22CE266', //add any position Id from your DB
-            },
-          ],
         },
       })
       .subscribe(
@@ -118,5 +111,6 @@ export class NewDepartmentComponent implements OnInit {
           throw error;
         }
       );
+    console.log(this.departmentForm.controls);
   }
 }
