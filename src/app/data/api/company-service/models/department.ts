@@ -4,8 +4,7 @@
 /**
  * Specific department data.
  */
-export interface DepartmentRequest {
-
+export interface Department {
   /**
    * Department description.
    */
@@ -21,4 +20,3 @@ export interface DepartmentRequest {
    */
   name: string;
 }
-

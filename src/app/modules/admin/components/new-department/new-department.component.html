@@ -33,25 +33,19 @@
         </div>
         <div class="new-department__input">
           <label class="h5 h5_dark_1" for="description">Директор</label>
-          <mat-form-field>
-            <input
-              matInput
-              type="text"
-              id="director"
-              [placeholder]="director !== undefined ? director.fullName : ''"
-              readonly
-            />
-          </mat-form-field>
-          <button
-            mat-flat-button
-            color="primary"
-            type="button"
-            (click)="onAddMemberClick()"
+          <mat-form-field
+            class="mat-form-field_default-select"
+            appearance="none"
           >
-            <span class="regular_text regular_text_light_1"
-              >Выбрать сотрудника</span
-            >
-          </button>
+            <mat-select id="director" formControlName="directorId">
+              <mat-option
+                *ngFor="let director of directors"
+                [value]="director.id"
+              >
+                {{ director.fullName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
       <button
