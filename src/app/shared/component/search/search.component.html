@@ -11,6 +11,12 @@
   >
     <img src="assets/svg/magnifier.svg" alt="magnifier" />
   </button>
+  <input
+    [placeholder]="placeholder"
+    type="text"
+    class="search__input regular_text text_color_dark-1"
+    #searchInput
+  />
   <button
     mat-icon-button
     class="search__delete"
@@ -18,10 +24,4 @@
   >
     <img src="assets/svg/delete.svg" alt="delete" />
   </button>
-  <input
-    [placeholder]="placeholder"
-    type="text"
-    class="search__input regular_text text_color_dark-1"
-    #searchInput
-  />
 </div>
