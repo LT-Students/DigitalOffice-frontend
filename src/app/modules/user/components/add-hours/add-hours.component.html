@@ -88,8 +88,8 @@
       appearance="none"
     >
       <mat-select id="project" formControlName="project" [value]="options[0]">
-        <mat-option *ngFor="let option of options; let i = index" [value]="i">
-          {{ option }}
+        <mat-option *ngFor="let option of options" [value]="option.id">
+          {{ option.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
