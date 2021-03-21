@@ -47,11 +47,14 @@
         </do-button>
       </div>
       <div class="tasks__search__text">
-        <do-search [placeholder]="'Поиск по тексту комментария'"></do-search>
+        <do-search
+          [(ngModel)]="filterProject"
+          [placeholder]="'Поиск по тексту комментария'"
+        ></do-search>
       </div>
     </div>
     <div>
-      <ng-container *ngFor="let project of projects">
+      <ng-container *ngFor="let project of projects | filter: filterProject">
         <do-project [project]="project"></do-project>
       </ng-container>
     </div>

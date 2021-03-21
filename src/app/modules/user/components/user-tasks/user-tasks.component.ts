@@ -20,6 +20,8 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 
   public projects: Project[];
 
+  filterProject: string;
+
   isOrderedByProject = false;
   isOrderedByHours = false;
   startPeriod: Date;

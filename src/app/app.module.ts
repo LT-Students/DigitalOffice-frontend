@@ -15,6 +15,7 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -39,6 +40,7 @@ registerLocaleData(localeRu);
     NgbModule,
     BrowserAnimationsModule,
     MaterialModule,
+    Ng2SearchPipeModule,
   ],
   providers: [
     AuthService,
