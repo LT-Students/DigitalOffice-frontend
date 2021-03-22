@@ -145,24 +145,24 @@ export class PositionApiService extends BaseService {
   }
 
   /**
-   * Path part for operation createPosition
+   * Path part for operation addPosition
    */
-  static readonly CreatePositionPath = '/position/create';
+  static readonly AddPositionPath = '/position/create';
 
   /**
    * Adds a new position.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `createPosition()` instead.
+   * To access only the response body, use `addPosition()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createPosition$Response(params: {
+  addPosition$Response(params: {
     body: AddPositionRequest;
   }): Observable<StrictHttpResponse<string>> {
     const rb = new RequestBuilder(
       this.rootUrl,
-      PositionApiService.CreatePositionPath,
+      PositionApiService.AddPositionPath,
       'post'
     );
     if (params) {
@@ -188,12 +188,12 @@ export class PositionApiService extends BaseService {
    * Adds a new position.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `createPosition$Response()` instead.
+   * To access the full response (for headers, for example), `addPosition$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createPosition(params: { body: AddPositionRequest }): Observable<string> {
-    return this.createPosition$Response(params).pipe(
+  addPosition(params: { body: AddPositionRequest }): Observable<string> {
+    return this.addPosition$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
@@ -217,7 +217,7 @@ export class PositionApiService extends BaseService {
     const rb = new RequestBuilder(
       this.rootUrl,
       PositionApiService.EditPositionPath,
-      'put'
+      'post'
     );
     if (params) {
       rb.body(params.body, 'application/json');

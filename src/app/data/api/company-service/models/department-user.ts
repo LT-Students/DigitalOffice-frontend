@@ -1,13 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
+
+/**
+ * User data of specific department.
+ */
 export interface DepartmentUser {
   /**
-   * User position ID.
+   * Specific position id.
    */
-  positionId: string;
+  positionId?: string;
 
   /**
-   * User ID.
+   * Specific users id.
    */
-  userId: string;
+  userId?: string;
 }

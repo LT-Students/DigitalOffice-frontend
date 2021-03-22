@@ -80,18 +80,46 @@ export class AddHoursComponent implements OnInit, OnDestroy {
     this.projects = this.projectStore.projects;
 
     this.categories = [
-      { name: 'Проект', options: this.projects.map((p) => p.name) },
+      { name: 'Проект', options: this.projects },
       {
         name: 'Командировка',
-        options: ['За счёт компании', 'За счёт компании-партнёра'],
+        options: [
+          { id: 0, name: 'За счёт компании' },
+          { id: 1, name: 'За счёт компании-партнёра' },
+        ],
       },
-      { name: 'Обучение', options: ['За свой счёт', 'За счёт компании'] },
+      {
+        name: 'Обучение',
+        options: [
+          { id: 0, name: 'За свой счёт' },
+          { id: 1, name: 'За счёт компании' },
+        ],
+      },
       {
         name: 'Больничный',
-        options: ['Обычный', 'Дети/родственники', 'По беременности и родам'],
+        options: [
+          { id: 0, name: 'Обычный' },
+          { id: 1, name: 'Дети/родственники' },
+          { id: 2, name: 'По беременности и родам' },
+        ],
       },
-      { name: 'Отпуск', options: ['Ежегодный', 'За свой счёт', 'Декретный'] },
-      { name: 'Отгул', options: ['Суд', 'ДТП', 'Форс-мажор', 'Похороны'] },
+      {
+        name: 'Отпуск',
+        options: [
+          { id: 0, name: 'Ежегодный' },
+          { id: 1, name: 'За свой счёт' },
+          { id: 2, name: 'Декретный' },
+        ],
+      },
+      {
+        name: 'Отгул',
+        options: [
+          { id: 0, name: 'Суд' },
+          { id: 1, name: 'ДТП' },
+          { id: 2, name: 'Форс-мажор' },
+          { id: 3, name: 'Похороны' },
+        ],
+      },
     ];
     this.chosenCategory = this.categories[0];
   }

@@ -1,23 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
+import { Position } from './position';
 export interface PositionResponse {
-  /**
-   * Position description.
-   */
-  description?: null | string;
+  info?: Position;
 
   /**
-   * Marks whether position is active or not.
-   */
-  isActive?: boolean;
-
-  /**
-   * Position name.
-   */
-  name?: string;
-
-  /**
-   * List of users ids that have this position.
+   * List specific users id.
    */
   userIds?: Array<string>;
 }
+

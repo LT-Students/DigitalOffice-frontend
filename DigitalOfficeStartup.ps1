@@ -3,9 +3,8 @@
 
 New-Item DigitalOffice -ItemType Directory
 
-$allServices = "CheckRightsService", "AuthenticationService", "UserService",
-"MessageService", "FileService", "NewsService",
-"TimeManagementService", "CompanyService", "ProjectService"
+$allServices = "CheckRightsService", "MessageService", "FileService",
+ "NewsService", "TimeManagementService", "CompanyService"
 
 cd .\DigitalOffice
 
@@ -33,7 +32,10 @@ foreach($service in $allServices)
 foreach($service in $allServices)
 {
     Write-Host Starting DigitalOffice-$service
-    cd .\DigitalOffice-$service\src\$service\bin\Debug\netcoreapp3.1\
+    cd .\DigitalOffice-$service\src\$service\bin\Debug\net5.0\
+
+    $Env:ASPNETCORE_ENVIRONMENT = "Development"
+
     start LT.DigitalOffice.$service.exe
     cd ..\..\..\..\..\..\
 }
