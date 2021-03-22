@@ -1,4 +1,4 @@
-import { WorkTime } from './work-time';
+import { Task } from './task';
 
 export interface Project {
   id: string;
@@ -7,5 +7,5 @@ export interface Project {
   description: string;
   departmentId: string;
   isActive: boolean;
-  workTime?: Partial<WorkTime>[];
+  tasks?: Partial<Task>[];
 }

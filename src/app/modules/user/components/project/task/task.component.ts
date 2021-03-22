@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-
-import { ITask } from '../../../../../core/interfaces/task.interface';
-import { WorkTime } from '../../../../../data/models/work-time';
+import { Task } from '@data/models/task';
+import { ProjectStore } from '@data/store/project.store';
 
 @Component({
   selector: 'do-task',
@@ -9,14 +8,36 @@ import { WorkTime } from '../../../../../data/models/work-time';
   styleUrls: ['./task.component.scss'],
 })
 export class TaskComponent implements OnInit {
-  @Input() workTime: WorkTime;
+  isEdited = false;
+  @Input() task: Task;
   hours = 0;
   minutes = 0;
 
-  constructor() {}
+  constructor(private projectStore: ProjectStore) {}
+
+  toggleInput() {
+    this.isEdited = !this.isEdited;
+  }
+
+  changeDescription(projectId: string, taskId: string): Function {
+    return (newDescription: string) => {
+      this.projectStore.changeDescriptionInTask(
+        projectId,
+        taskId,
+        newDescription
+      );
+      this.toggleInput();
+    };
+  }
+
+  deleteTask(projectId: string, taskId: string): Function {
+    return () => {
+      this.projectStore.deleteTaskFromProject(projectId, taskId);
+    };
+  }
 
   ngOnInit() {
-    this.hours = Math.floor(this.workTime.minutes / 60);
-    this.minutes = this.workTime.minutes % 60;
+    this.hours = Math.floor(this.task.minutes / 60);
+    this.minutes = this.task.minutes % 60;
   }
 }
