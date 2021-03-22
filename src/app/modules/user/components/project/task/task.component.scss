@@ -72,13 +72,11 @@ p {
       color: $dark_1;
     }
 
-    &__field-input {
+    &__input {
       width: 100%;
-      min-width: 150px;
-      max-width: 700px;
     }
 
-    &__width-input {
+    &__form-input {
       width: 100%;
     }
 

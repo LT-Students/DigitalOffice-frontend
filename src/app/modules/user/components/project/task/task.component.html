@@ -11,22 +11,25 @@
       <p>{{ task.title }}</p>
     </div>
     <div class="note__text">
-      <span *ngIf="!isEdited">{{ task.description }}</span>
-      <ng-container *ngIf="isEdited">
-        <form class="note__field-input">
-          <mat-form-field class="note__width-input">
+      <span *ngIf="!isEdited; else editForm">{{ task.description }}</span>
+      <ng-template #editForm>
+        <form class="note__input">
+          <mat-form-field class="note__form-input">
             <textarea
               type="text"
               matInput
-              #inputTitle
               [value]="task.description"
               (keydown.enter)="
-                changeDescription(task.projectId, task.id, inputTitle.value)()
+                changeDescription(
+                  task.projectId,
+                  task.id,
+                  $event.target.value
+                )()
               "
             ></textarea>
           </mat-form-field>
         </form>
-      </ng-container>
+      </ng-template>
     </div>
     <div class="note__date">
       <p>{{ task.createdAt | date: 'd MMMM в HH:mm' }}</p>
