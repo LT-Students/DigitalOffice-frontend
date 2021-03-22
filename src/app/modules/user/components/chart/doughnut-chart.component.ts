@@ -94,7 +94,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
   private get data(): number[] {
     return this.projects.map((project) =>
-      project.workTime.reduce((sum, workTime) => sum + workTime.minutes, 0)
+      project.tasks.reduce((sum, task) => sum + task.minutes, 0)
     );
   }
 
