@@ -10,6 +10,7 @@ import { ProfileImageComponent } from './component/profile-image/profile-image.c
 import { ContentContainerComponent } from './component/content-container/content-container.component';
 import { SearchComponent } from './component/search/search.component';
 import { HeaderComponent } from './component/header/header.component';
+import { EmployeeInfoComponent } from './component/employee-info/employee-info.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { HeaderComponent } from './component/header/header.component';
     ContentContainerComponent,
     SearchComponent,
     HeaderComponent,
+    EmployeeInfoComponent,
   ],
   imports: [CommonModule, RouterModule, MaterialModule],
   exports: [
