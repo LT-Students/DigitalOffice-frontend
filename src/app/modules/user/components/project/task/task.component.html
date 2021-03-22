@@ -22,9 +22,8 @@
               (keydown.enter)="
                 changeDescription(
                   task.projectId,
-                  task.id,
-                  $event.target.value
-                )()
+                  task.id
+                )($event.target.value)
               "
             ></textarea>
           </mat-form-field>

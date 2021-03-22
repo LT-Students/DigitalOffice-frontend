@@ -19,12 +19,8 @@ export class TaskComponent implements OnInit {
     this.isEdited = !this.isEdited;
   }
 
-  changeDescription(
-    projectId: string,
-    taskId: string,
-    newDescription: string
-  ): Function {
-    return () => {
+  changeDescription(projectId: string, taskId: string): Function {
+    return (newDescription: string) => {
       this.projectStore.changeDescriptionInTask(
         projectId,
         taskId,
