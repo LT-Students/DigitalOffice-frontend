@@ -13,8 +13,7 @@
 
     display: flex;
     flex-direction: column;
-    align-items: center;
-
+    //align-items: center;
     text-align: center;
 
     flex-basis: 25%;
@@ -40,6 +39,8 @@
   }
 
   &__photo {
+    align-self: center;
+
     position: relative;
 
     overflow: hidden;
@@ -79,6 +80,8 @@
   }
 
   &__label {
+    align-self: flex-start;
+
     display: block;
   }
 
