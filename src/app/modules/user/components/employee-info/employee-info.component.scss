@@ -1,24 +1,33 @@
 @import 'base/variables';
 
 .employee-info {
-  padding: 52px 47px 42px 47px;
+  overflow: hidden;
 
-  display: flex;
-  justify-content: space-evenly;
+  &__form {
+    display: flex;
+    justify-content: space-evenly;
+  }
 
   &__main {
+    padding: 52px 0 42px 47px;
+
     text-align: center;
 
     flex-basis: 25%;
   }
 
   &__general {
+    margin-right: 32px;
     margin-left: 32px;
+
+    padding: 52px 0 42px;
 
     flex-basis: 50%;
   }
 
   &__additional {
+    padding: 52px 74px 42px 73px;
+
     flex-basis: 25%;
 
     .h4:last-of-type {
@@ -26,11 +35,55 @@
     }
   }
 
+  &__photo {
+    overflow: hidden;
+
+    width: 180px;
+    height: 180px;
+
+    border-radius: 50%;
+  }
+
+  &__edit-button {
+    padding: 52px 47px 42px 0;
+  }
+
+  &__submit-buttons {
+    margin-top: 32px;
+
+    display: flex;
+    justify-content: center;
+  }
+
+  &__label {
+    display: block;
+  }
+
+  &__form-field {
+    display: block;
+  }
+
+  &__working-hours {
+    display: inline-block;
+
+    width: 80px;
+  }
+
+  &__stepper {
+    text-align: center;
+  }
+
+  &__input {
+    font-family: $regular_font !important;
+  }
+
   &__about-me {
     line-height: 21px;
   }
 
   &__columns {
+    margin-right: 32px;
+
     display: flex;
     justify-content: space-between;
   }
@@ -52,9 +105,13 @@
     vertical-align: -14%;
   }
 
-  &__edit {
+  &__edit-icon {
     width: 20px;
     height: 20px;
+  }
+
+  &__required {
+    color: $negative_accent;
   }
 
   .small_text {

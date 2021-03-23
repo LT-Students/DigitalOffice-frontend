@@ -1,83 +1,518 @@
 <div class="employee-info card regular_text text_dark_1">
-  <div class="employee-info__main">
-    <div class="employee-info__photo">
-      <img src="assets/images/employee-photo.png" alt="Employee photo" />
-    </div>
-    <h1 class="employee-info__name h3 text-dark_2">
-      {{ fullName }}&nbsp;<span
-        matTooltipClass="tooltip"
-        matTooltip="Ангелина работает из дома"
-        [matTooltipPosition]="'above'"
-        >{{ employee.emojiStatus }}</span
-      >
-    </h1>
-    <div class="employee-info__about-me small_text text-gray">
-      “{{ employee.aboutMe }}”
-    </div>
-  </div>
-  <div class="employee-info__general">
-    <h2 class="h4 text-dark_2">Общие сведения</h2>
-    <div class="employee-info__columns">
-      <div>
-        <h3 class="small_text text-gray">Должность</h3>
-        <div>{{ employee.jobPosition }}</div>
-        <h3 class="small_text text-gray">Департамент</h3>
-        <div>{{ employee.department }}</div>
-        <h3 class="small_text text-gray">Местоположение</h3>
-        <div>{{ employee.location }}</div>
-        <h3 class="small_text text-gray">Офис</h3>
-        <div>{{ employee.office }}</div>
+  <ng-container *ngIf="!isEditable; else edit">
+    <div class="employee-info__form">
+      <div class="employee-info__main">
+        <div class="employee-info__photo">
+          <img src="{{ employee.photo }}" alt="Employee photo" />
+        </div>
+        <h1 class="employee-info__name h3 text-dark_2">
+          {{ fullName }}&nbsp;<span
+            matTooltipClass="tooltip"
+            matTooltip="Ангелина {{
+              employee.emojiStatus.description | lowercase
+            }}"
+            [matTooltipPosition]="'above'"
+            >{{ employee.emojiStatus.emoji }}</span
+          >
+        </h1>
+        <div class="employee-info__about-me small_text text-gray">
+          “{{ employee.aboutMe }}”
+        </div>
       </div>
-      <div>
-        <h3 class="small_text text-gray">Ставка</h3>
-        <div>{{ employee.workingRate }}</div>
-        <h3 class="small_text text-gray">
-          Рабочие часы
+      <div class="employee-info__general">
+        <h2 class="h4 text-dark_2">Общие сведения</h2>
+        <div class="employee-info__columns">
+          <div>
+            <h3 class="small_text text-gray">Должность</h3>
+            <div>{{ employee.jobPosition }}</div>
+            <h3 class="small_text text-gray">Департамент</h3>
+            <div>{{ employee.department }}</div>
+            <h3 class="small_text text-gray">Местоположение</h3>
+            <div>{{ employee.location }}</div>
+            <h3 class="small_text text-gray">Офис</h3>
+            <div>{{ employee.office }}</div>
+          </div>
+          <div>
+            <h3 class="small_text text-gray">Ставка</h3>
+            <div>{{ employee.workingRate }}</div>
+            <h3 class="small_text text-gray">
+              Рабочие часы
+              <mat-icon
+                class="employee-info__hint"
+                svgIcon="question-mark"
+                aria-label="Hint"
+                matTooltipClass="tooltip"
+                matTooltip="Рабочие часы пользователя по вашему часовому поясу"
+                [matTooltipPosition]="'above'"
+              ></mat-icon>
+            </h3>
+            <div>{{ workingHours }}</div>
+            <h3 class="small_text text-gray">В компании с</h3>
+            <div>{{ employee.workingSince | date: 'LLLL y' }}</div>
+            <h3 class="small_text text-gray">Дата рождения</h3>
+            <div>{{ employee.birthDate | date: 'd MMMM y' }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="employee-info__additional bg-light_1">
+        <h2 class="h4 text-dark_2">Контакты</h2>
+        <h3 class="small_text text-gray">E-mail</h3>
+        <div>{{ employee.contacts.email }}</div>
+        <h3 class="small_text text-gray">Рабочий номер</h3>
+        <div>{{ employee.contacts.phone }}</div>
+        <h3 class="small_text text-gray">Telegram</h3>
+        <div>{{ employee.contacts.telegram }}</div>
+        <h2 class="h4 text-dark_2">
+          Отпуск
           <mat-icon
             class="employee-info__hint"
             svgIcon="question-mark"
             aria-label="Hint"
             matTooltipClass="tooltip"
-            matTooltip="Рабочие часы пользователя по вашему часовому поясу"
+            matTooltip="Стандартный отпуск - 20 рабочих дней в год"
             [matTooltipPosition]="'above'"
           ></mat-icon>
-        </h3>
-        <div>{{ workingHours }}</div>
-        <h3 class="small_text text-gray">В компании с</h3>
-        <div>{{ employee.workingSince }}</div>
-        <h3 class="small_text text-gray">Дата рождения</h3>
-        <div>{{ employee.birthDate }}</div>
+        </h2>
+        <h3 class="small_text text-gray">Осталось отпускных дней</h3>
+        <div>{{ employee.vacationDays }} дней</div>
+      </div>
+      <div class="employee-info__edit-button bg-light_1">
+        <button
+          mat-icon-button
+          aria-label="Edit employee info"
+          (click)="toggleEditMode()"
+        >
+          <mat-icon
+            class="employee-info__edit-icon"
+            svgIcon="edit"
+            aria-label="Edit"
+          ></mat-icon>
+        </button>
       </div>
     </div>
-  </div>
-  <div class="employee-info__border"></div>
-  <div class="employee-info__additional">
-    <h2 class="h4 text-dark_2">Контакты</h2>
-    <h3 class="small_text text-gray">E-mail</h3>
-    <div>{{ employee.contacts.email }}</div>
-    <h3 class="small_text text-gray">Рабочий номер</h3>
-    <div>{{ employee.contacts.phone }}</div>
-    <h3 class="small_text text-gray">Telegram</h3>
-    <div>{{ employee.contacts.telegram }}</div>
-    <h2 class="h4 text-dark_2">
-      Отпуск
-      <mat-icon
-        class="employee-info__hint"
-        svgIcon="question-mark"
-        aria-label="Hint"
-        matTooltipClass="tooltip"
-        matTooltip="Стандартный отпуск - 20 рабочих дней в год"
-        [matTooltipPosition]="'above'"
-      ></mat-icon>
-    </h2>
-    <h3 class="small_text text-gray">Осталось отпускных дней</h3>
-    <div>{{ employee.vacation }} дней</div>
-  </div>
-  <div>
-    <mat-icon
-      class="employee-info__edit"
-      svgIcon="edit"
-      aria-label="Edit"
-    ></mat-icon>
-  </div>
+  </ng-container>
 </div>
+
+<ng-template #edit>
+  <form
+    [formGroup]="employeeInfoForm"
+    (ngSubmit)="onSubmit()"
+    (reset)="onReset()"
+    class="employee-info__form"
+  >
+    <div class="employee-info__main">
+      <div class="employee-info__photo">
+        <img [src]="previewPhoto" alt="Employee photo" height="200px" />
+        <input
+          type="file"
+          formGroupName="photo"
+          (change)="onFileChange($event)"
+        />
+      </div>
+      <label class="small_text text-gray employee-info__label" for="lastName"
+        >Фамилия<sup class="employee-info__required">*</sup></label
+      >
+      <mat-form-field class="employee-info__form-field" appearance="fill">
+        <input
+          id="lastName"
+          formControlName="lastName"
+          matInput
+          class="bg-light_2 employee-info__input"
+          type="text"
+        />
+      </mat-form-field>
+      <label class="small_text text-gray employee-info__label" for="firstName"
+        >Имя<sup class="employee-info__required">*</sup></label
+      >
+      <mat-form-field class="employee-info__form-field" appearance="fill">
+        <input
+          id="firstName"
+          formControlName="firstName"
+          matInput
+          class="bg-light_2 employee-info__input"
+          type="text"
+        />
+      </mat-form-field>
+      <label class="small_text text-gray employee-info__label" for="middleName"
+        >Отчество</label
+      >
+      <mat-form-field class="employee-info__form-field" appearance="fill">
+        <input
+          id="middleName"
+          formControlName="middleName"
+          matInput
+          class="bg-light_2 employee-info__input"
+          type="text"
+        />
+      </mat-form-field>
+      <label class="small_text text-gray employee-info__label" for="aboutMe"
+        >О себе</label
+      >
+      <mat-form-field class="employee-info__form-field" appearance="fill">
+        <textarea
+          id="aboutMe"
+          formControlName="aboutMe"
+          matInput
+          class="bg-light_2 employee-info__input"
+        ></textarea>
+      </mat-form-field>
+    </div>
+    <div class="employee-info__general">
+      <h2 class="h4 text-dark_2">Общие сведения</h2>
+      <div class="employee-info__columns">
+        <div>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="jobPosition"
+            >Должность<sup class="employee-info__required">*</sup></label
+          >
+          <mat-form-field
+            class="employee-info__form-field mat-form-field_default-select"
+            appearance="none"
+          >
+            <mat-select
+              class="employee-info__input"
+              id="jobPosition"
+              formControlName="jobPosition"
+            >
+              <mat-option
+                class="employee-info__input"
+                *ngFor="let option of selectOptions.jobPosition"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="department"
+            >Департамент<sup class="employee-info__required">*</sup></label
+          >
+          <mat-form-field
+            class="employee-info__form-field mat-form-field_default-select"
+            appearance="none"
+          >
+            <mat-select
+              class="employee-info__input"
+              id="department"
+              formControlName="department"
+            >
+              <mat-option
+                class="employee-info__input"
+                *ngFor="let option of selectOptions.department"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="location"
+            >Местоположение<sup class="employee-info__required">*</sup></label
+          >
+          <mat-form-field class="employee-info__form-field" appearance="fill">
+            <input
+              id="location"
+              formControlName="location"
+              matInput
+              class="bg-light_2 employee-info__input"
+              type="text"
+            />
+          </mat-form-field>
+          <label class="small_text text-gray employee-info__label" for="office"
+            >Офис<sup class="employee-info__required">*</sup></label
+          >
+          <mat-form-field
+            class="employee-info__form-field mat-form-field_default-select"
+            appearance="none"
+          >
+            <mat-select
+              class="employee-info__input"
+              id="office"
+              formControlName="office"
+            >
+              <mat-option
+                class="employee-info__input"
+                *ngFor="let option of selectOptions.office"
+                [value]="option"
+              >
+                {{ option }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="emojiStatus"
+          >
+            Эмодзи-статус
+            <mat-icon
+              class="employee-info__hint"
+              svgIcon="question-mark"
+              aria-label="Hint"
+              matTooltipClass="tooltip"
+              matTooltip="Статус будет отображаться рядом с именем пользователя"
+              [matTooltipPosition]="'above'"
+            ></mat-icon>
+          </label>
+          <mat-form-field
+            class="employee-info__form-field mat-form-field_default-select"
+            appearance="none"
+          >
+            <mat-select
+              class="employee-info__input"
+              id="emojiStatus"
+              formControlName="emojiStatus"
+            >
+              <mat-option
+                class="employee-info__input"
+                *ngFor="let option of selectOptions.emojiStatus"
+                [value]="option"
+              >
+                {{ option.emoji }} {{ option.description }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <label class="small_text text-gray">Замещает: </label>
+          <a class="small_text text-gray" href="#">Назначить замещающего</a>
+        </div>
+        <div>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="workingRate"
+            >Ставка<sup class="employee-info__required">*</sup></label
+          >
+          <mat-form-field
+            class="employee-info__form-field employee-info__stepper"
+            appearance="fill"
+          >
+            <button
+              mat-icon-button
+              matPrefix
+              type="button"
+              (click)="changeWorkingRate(rate.value, -0.25)"
+            >
+              -
+            </button>
+            <input
+              #rate
+              id="workingRate"
+              formControlName="workingRate"
+              matInput
+              class="bg-light_2 employee-info__input"
+              type="number"
+              readonly
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="changeWorkingRate(rate.value, 0.25)"
+            >
+              +
+            </button>
+          </mat-form-field>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="startAt"
+          >
+            Рабочие часы
+            <mat-icon
+              class="employee-info__hint"
+              svgIcon="question-mark"
+              aria-label="Hint"
+              matTooltipClass="tooltip"
+              matTooltip="Рабочие часы пользователя по вашему часовому поясу"
+              [matTooltipPosition]="'above'"
+            ></mat-icon>
+          </label>
+          <div formGroupName="workingHours">
+            <mat-form-field
+              class="mat-form-field_default-select employee-info__form-field employee-info__working-hours"
+              appearance="none"
+            >
+              <mat-select
+                class="employee-info__input"
+                id="startAt"
+                formControlName="startAt"
+              >
+                <mat-option
+                  class="employee-info__input"
+                  *ngFor="let option of selectOptions.workingHours"
+                  [value]="option"
+                >
+                  {{ option }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            —
+            <mat-form-field
+              class="mat-form-field_default-select employee-info__form-field employee-info__working-hours"
+              appearance="none"
+            >
+              <mat-select class="employee-info__input" formControlName="endAt">
+                <mat-option
+                  class="employee-info__input"
+                  *ngFor="let option of selectOptions.workingHours"
+                  [value]="option"
+                >
+                  {{ option }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="workingSince"
+            >В компании с</label
+          >
+          <mat-form-field class="employee-info__form-field" appearance="fill">
+            <input
+              id="workingSince"
+              matInput
+              [matDatepicker]="workingSince"
+              formControlName="workingSince"
+              class="employee-info__input"
+            />
+            <mat-datepicker-toggle matSuffix [for]="workingSince">
+              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #workingSince></mat-datepicker>
+          </mat-form-field>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="birthDate"
+            >Дата рождения</label
+          >
+          <mat-form-field class="employee-info__form-field" appearance="fill">
+            <input
+              id="birthDate"
+              matInput
+              [matDatepicker]="birthDate"
+              formControlName="birthDate"
+              class="employee-info__input"
+            />
+            <mat-datepicker-toggle matSuffix [for]="birthDate">
+              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #birthDate></mat-datepicker>
+          </mat-form-field>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="vacationSince"
+            >В отпуске с<sup class="employee-info__required">*</sup></label
+          >
+          <mat-form-field class="employee-info__form-field" appearance="fill">
+            <input
+              id="vacationSince"
+              matInput
+              [matDatepicker]="vacationSince"
+              formControlName="vacationSince"
+              class="employee-info__input"
+            />
+            <mat-datepicker-toggle matSuffix [for]="vacationSince">
+              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #vacationSince></mat-datepicker>
+          </mat-form-field>
+          <label
+            class="small_text text-gray employee-info__label"
+            for="vacationUntil"
+            >В отпуске до<sup class="employee-info__required">*</sup></label
+          >
+          <mat-form-field class="employee-info__form-field" appearance="fill">
+            <input
+              id="vacationUntil"
+              matInput
+              [matDatepicker]="vacationUntil"
+              formControlName="vacationUntil"
+              class="employee-info__input"
+            />
+            <mat-datepicker-toggle matSuffix [for]="vacationUntil">
+              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #vacationUntil></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="employee-info__submit-buttons">
+        <button type="reset" class="text-gray" mat-flat-button>Отменить</button>
+        <button
+          [disabled]="employeeInfoForm.invalid"
+          type="submit"
+          class="bg-accent_color_bright text-light_1"
+          mat-flat-button
+        >
+          Сохранить
+        </button>
+      </div>
+    </div>
+    <div class="employee-info__additional bg-light_1">
+      <h2 class="h4 text-dark_2">Контакты</h2>
+      <ng-container formGroupName="contacts">
+        <label class="small_text text-gray employee-info__label" for="email"
+          >E-mail<sup class="employee-info__required">*</sup></label
+        >
+        <mat-form-field class="employee-info__form-field" appearance="none">
+          <input
+            id="email"
+            formControlName="email"
+            matInput
+            class="bg-light_2 employee-info__input"
+            type="text"
+          />
+        </mat-form-field>
+        <label class="small_text text-gray employee-info__label" for="phone"
+          >Рабочий номер<sup class="employee-info__required">*</sup></label
+        >
+        <mat-form-field class="employee-info__form-field" appearance="none">
+          <input
+            id="phone"
+            formControlName="phone"
+            matInput
+            class="bg-light_2 employee-info__input"
+            type="text"
+          />
+        </mat-form-field>
+        <label class="small_text text-gray employee-info__label" for="telegram"
+          >Telegram</label
+        >
+        <mat-form-field class="employee-info__form-field" appearance="none">
+          <input
+            id="telegram"
+            formControlName="telegram"
+            matInput
+            class="bg-light_2 employee-info__input"
+            type="text"
+          />
+        </mat-form-field>
+      </ng-container>
+      <h2 class="h4 text-dark_2">
+        Отпуск
+        <mat-icon
+          class="employee-info__hint"
+          svgIcon="question-mark"
+          aria-label="Hint"
+          matTooltipClass="tooltip"
+          matTooltip="Стандартный отпуск - 20 рабочих дней в год"
+          [matTooltipPosition]="'above'"
+        ></mat-icon>
+      </h2>
+      <label
+        class="small_text text-gray employee-info__label"
+        for="vacationDays"
+        >Накоплено дней<sup class="employee-info__required">*</sup></label
+      >
+      <mat-form-field class="employee-info__form-field" appearance="none">
+        <input
+          id="vacationDays"
+          formControlName="vacationDays"
+          matInput
+          class="bg-light_2 employee-info__input"
+          type="number"
+        />
+      </mat-form-field>
+    </div>
+  </form>
+</ng-template>
