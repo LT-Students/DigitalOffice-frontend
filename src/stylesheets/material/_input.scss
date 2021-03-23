@@ -3,6 +3,8 @@
 .mat-form-field,
 .mat-form-field.mat-form-field-appearance-legacy {
   .mat-form-field-wrapper {
+    padding-bottom: 0;
+
     .mat-input-element {
       padding: 10px 15px;
 
@@ -25,6 +27,8 @@
       border: 0;
 
       .mat-input-element {
+        margin-top: 0;
+
         font-family: $header_font;
         font-size: 16px;
         font-weight: normal;
