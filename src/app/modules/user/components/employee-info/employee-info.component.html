@@ -159,11 +159,14 @@
           type="text"
         />
       </mat-form-field>
-      <label class="small_text text-gray employee-info__label" for="aboutMe"
-        >О себе</label
+      <label
+        class="small_text text-gray employee-info__label employee-info__label_for_textarea"
+        for="aboutMe"
+        ><span>О себе</span><span>{{ textarea.value.length }}/150</span></label
       >
       <mat-form-field class="employee-info__form-field" appearance="none">
         <textarea
+          #textarea
           id="aboutMe"
           formControlName="aboutMe"
           matInput

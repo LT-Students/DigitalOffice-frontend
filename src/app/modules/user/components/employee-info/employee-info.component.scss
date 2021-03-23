@@ -83,6 +83,13 @@
     align-self: flex-start;
 
     display: block;
+
+    &_for_textarea {
+      align-self: stretch;
+
+      display: flex;
+      justify-content: space-between;
+    }
   }
 
   &__form-field {
