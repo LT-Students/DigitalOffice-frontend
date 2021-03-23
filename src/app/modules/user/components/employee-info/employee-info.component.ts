@@ -55,6 +55,7 @@ export class EmployeeInfoComponent implements OnInit {
     { name: 'question-mark', url: 'assets/svg/question-mark.svg' },
     { name: 'edit', url: 'assets/svg/edit.svg' },
     { name: 'datepicker', url: 'assets/svg/datepicker.svg' },
+    { name: 'upload', url: 'assets/svg/arrow-upload-file.svg' },
   ];
 
   public isEditable = false;

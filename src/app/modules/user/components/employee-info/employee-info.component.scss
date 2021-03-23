@@ -11,6 +11,10 @@
   &__main {
     padding: 52px 0 42px 47px;
 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     text-align: center;
 
     flex-basis: 25%;
@@ -36,12 +40,31 @@
   }
 
   &__photo {
+    position: relative;
+
     overflow: hidden;
 
     width: 180px;
     height: 180px;
 
     border-radius: 50%;
+  }
+
+  &__upload-button {
+    position: absolute;
+    bottom: 0;
+
+    padding-top: 8px;
+
+    width: 180px;
+    height: 60px;
+
+    background-color: rgba(67, 67, 72, 0.6);
+  }
+
+  &__upload-icon {
+    width: 16px;
+    height: 16px;
   }
 
   &__edit-button {
@@ -82,10 +105,18 @@
   }
 
   &__columns {
-    margin-right: 32px;
-
     display: flex;
     justify-content: space-between;
+  }
+
+  &__first-column {
+    width: 100%;
+  }
+
+  &__second-column {
+    margin-left: 32px;
+
+    width: 185px;
   }
 
   &__border {
@@ -111,6 +142,10 @@
   }
 
   &__required {
+    margin-left: 1px;
+
+    vertical-align: top;
+
     color: $negative_accent;
   }
 

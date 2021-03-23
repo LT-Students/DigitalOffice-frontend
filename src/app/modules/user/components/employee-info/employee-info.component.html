@@ -3,7 +3,7 @@
     <div class="employee-info__form">
       <div class="employee-info__main">
         <div class="employee-info__photo">
-          <img src="{{ employee.photo }}" alt="Employee photo" />
+          <img src="{{ employee.photo }}" alt="Employee photo" width="200" />
         </div>
         <h1 class="employee-info__name h3 text-dark_2">
           {{ fullName }}&nbsp;<span
@@ -15,14 +15,17 @@
             >{{ employee.emojiStatus.emoji }}</span
           >
         </h1>
-        <div class="employee-info__about-me small_text text-gray">
+        <div
+          *ngIf="employee.aboutMe"
+          class="employee-info__about-me small_text text-gray"
+        >
           “{{ employee.aboutMe }}”
         </div>
       </div>
       <div class="employee-info__general">
         <h2 class="h4 text-dark_2">Общие сведения</h2>
         <div class="employee-info__columns">
-          <div>
+          <div class="employee-info__first-column">
             <h3 class="small_text text-gray">Должность</h3>
             <div>{{ employee.jobPosition }}</div>
             <h3 class="small_text text-gray">Департамент</h3>
@@ -32,7 +35,7 @@
             <h3 class="small_text text-gray">Офис</h3>
             <div>{{ employee.office }}</div>
           </div>
-          <div>
+          <div class="employee-info__second-column">
             <h3 class="small_text text-gray">Ставка</h3>
             <div>{{ employee.workingRate }}</div>
             <h3 class="small_text text-gray">
@@ -102,11 +105,22 @@
   >
     <div class="employee-info__main">
       <div class="employee-info__photo">
-        <img [src]="previewPhoto" alt="Employee photo" height="200px" />
+        <img [src]="previewPhoto" alt="Employee photo" width="200" />
+        <label
+          class="text_white employee-info__label employee-info__upload-button"
+          for="photo"
+          ><mat-icon
+            class="employee-info__upload-icon"
+            svgIcon="upload"
+          ></mat-icon>
+          Обновить фото</label
+        >
         <input
+          id="photo"
           type="file"
           formGroupName="photo"
           (change)="onFileChange($event)"
+          hidden
         />
       </div>
       <label class="small_text text-gray employee-info__label" for="lastName"
@@ -154,13 +168,16 @@
           formControlName="aboutMe"
           matInput
           class="bg-light_2 employee-info__input"
+          placeholder="Напишите немного о себе или оставьте заметку коллегам"
+          maxlength="150"
+          cdkTextareaAutosize="false"
         ></textarea>
       </mat-form-field>
     </div>
     <div class="employee-info__general">
       <h2 class="h4 text-dark_2">Общие сведения</h2>
       <div class="employee-info__columns">
-        <div>
+        <div class="employee-info__first-column">
           <label
             class="small_text text-gray employee-info__label"
             for="jobPosition"
@@ -277,7 +294,7 @@
           <label class="small_text text-gray">Замещает: </label>
           <a class="small_text text-gray" href="#">Назначить замещающего</a>
         </div>
-        <div>
+        <div class="employee-info__second-column">
           <label
             class="small_text text-gray employee-info__label"
             for="workingRate"
