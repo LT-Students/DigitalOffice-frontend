@@ -122,6 +122,10 @@ export class EmployeeInfoComponent implements OnInit {
     this.employeeInfoForm.patchValue(this.employee);
   }
 
+  compareEmoji(option, value) {
+    return option.emoji === value.emoji;
+  }
+
   changeWorkingRate(inputValue, step) {
     this.employeeInfoForm.patchValue({ workingRate: +inputValue + step });
   }
