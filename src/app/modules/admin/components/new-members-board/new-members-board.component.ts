@@ -2,7 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { Member } from '@app/interfaces/member.interface';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { User } from '@data/api/user-service/models/user';
 import { NewMember } from './new-members';
@@ -25,7 +24,6 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
     'QA Tester',
   ];
   public levels: string[] = ['Junior', 'Middle', 'Senior'];
-  @Input() members: Member[] = [];
 
   public selectedSpecialization;
   public selectedLevel;

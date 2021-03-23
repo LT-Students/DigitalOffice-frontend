@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
-import { IDatePeriod } from '../../../../core/interfaces/date-period.interface';
+import { DatePeriod } from '@data/models/date-period';
 import { Project } from '../../../../data/models/project';
 
 @Component({
@@ -12,7 +12,7 @@ import { Project } from '../../../../data/models/project';
 export class AttendanceComponent implements OnInit {
   public project: Project;
 
-  public timePeriodSelected: IDatePeriod = {
+  public timePeriodSelected: DatePeriod = {
     startDate: new Date(),
   };
 
