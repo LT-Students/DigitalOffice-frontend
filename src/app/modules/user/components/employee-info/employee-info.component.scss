@@ -13,10 +13,10 @@
 
     display: flex;
     flex-direction: column;
-    //align-items: center;
-    text-align: center;
 
-    flex-basis: 25%;
+    width: 26%;
+
+    text-align: center;
   }
 
   &__general {
@@ -24,8 +24,6 @@
     margin-left: 32px;
 
     padding: 52px 0 42px;
-
-    flex-basis: 50%;
   }
 
   &__additional {
@@ -33,7 +31,7 @@
 
     padding: 52px 74px 42px 73px;
 
-    flex-basis: 25%;
+    width: 33%;
 
     .h4:last-of-type {
       margin: 42px 0 13px 0;
@@ -77,14 +75,22 @@
   }
 
   &__edit-button {
-    padding: 52px 47px 42px 0;
+    position: absolute;
+    top: 45px;
+    right: 47px;
   }
 
-  &__submit-buttons {
+  &__form-buttons {
     margin-top: 32px;
 
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
+  }
+
+  &__submit {
+    margin-left: 87px;
+
+    width: 185px;
   }
 
   &__label {
