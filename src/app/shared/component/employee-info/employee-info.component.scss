@@ -3,14 +3,14 @@
 .employee-info {
   padding: 52px 47px;
 
-  &__section {
+  .section {
     margin-top: 66px;
 
-    .header {
+    &__header {
       display: flex;
       justify-content: space-between;
 
-      &__title {
+      .title {
         display: flex;
 
         .h2 {
@@ -35,9 +35,17 @@
         }
       }
     }
+
+    &__content {
+      margin-top: 33px;
+
+      .w-100 {
+        width: 100%;
+      }
+    }
   }
 
-  &__section:first-child {
+  .section:first-child {
     margin-top: 0;
   }
 }

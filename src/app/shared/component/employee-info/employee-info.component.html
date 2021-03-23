@@ -1,37 +1,58 @@
 <div class="card employee-info bg-white">
   <!--  Навыки  -->
-  <div class="employee-info__section">
-    <div class="header">
-      <div class="header__title">
+  <div class="section">
+    <div class="section__header">
+      <div class="title">
         <span class="h2 h2_underlined">Навыки</span>
         <do-search magnifierLocation="left" placeholder="поиск"></do-search>
       </div>
-      <div class="header__action">
+      <div class="action">
         <button mat-icon-button>
           <img src="assets/svg/edit.svg" alt="edit" />
         </button>
       </div>
     </div>
+    <div class="section__content">
+      <mat-form-field class="w-100">
+        <mat-chip-list #chipList>
+          <mat-chip color="accent" *ngFor="let skill of skills">
+            {{ skill }}
+            <mat-icon matChipRemove *ngIf="mode === workFlowMode.EDIT"
+              >cancel</mat-icon
+            >
+          </mat-chip>
+        </mat-chip-list>
+        <input
+          *ngIf="mode === workFlowMode.EDIT"
+          [matChipInputFor]="chipList"
+        />
+      </mat-form-field>
+      <mat-form-field class="mat-form-field_default-select" appearance="none">
+        <mat-select class="select" placeholder="Показать все">
+          <mat-option></mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
   <!--  Образование  -->
-  <div class="employee-info__section">
-    <div class="header">
-      <div class="header__title">
+  <div class="section">
+    <div class="section__header">
+      <div class="title">
         <span class="h2 h2_underlined">Образование</span>
       </div>
-      <div class="header__action">
+      <div class="action">
         <button mat-flat-button color="primary">+ Добавить образование</button>
       </div>
     </div>
   </div>
   <!--  Сертификаты  -->
-  <div class="employee-info__section">
-    <div class="header">
-      <div class="header__title">
+  <div class="section">
+    <div class="section__header">
+      <div class="title">
         <span class="h2 h2_underlined">Сертификаты</span>
         <do-search magnifierLocation="left" placeholder="поиск"></do-search>
       </div>
-      <div class="header__action">
+      <div class="action">
         <button mat-flat-button color="primary">+ Добавить сертификат</button>
       </div>
     </div>
