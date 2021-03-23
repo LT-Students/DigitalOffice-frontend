@@ -296,7 +296,9 @@
             </mat-select>
           </mat-form-field>
           <label class="small_text text-gray">Замещает: </label>
-          <a class="small_text text-gray" href="#">Назначить замещающего</a>
+          <span class="small_text text-gray employee-info__substitute"
+            >Назначить замещающего</span
+          >
         </div>
         <div class="employee-info__second-column">
           <label
@@ -481,7 +483,7 @@
             formControlName="email"
             matInput
             class="bg-light_2 employee-info__input"
-            type="text"
+            type="email"
           />
         </mat-form-field>
         <label class="small_text text-gray employee-info__label" for="phone"
@@ -493,7 +495,7 @@
             formControlName="phone"
             matInput
             class="bg-light_2 employee-info__input"
-            type="text"
+            type="tel"
           />
         </mat-form-field>
         <label class="small_text text-gray employee-info__label" for="telegram"
@@ -534,6 +536,9 @@
           type="number"
         />
       </mat-form-field>
+      <span class="text-negative_accent small_text employee-info__memo"
+        ><sup class="employee-info__required">*</sup> Обязательные поля</span
+      >
     </div>
   </form>
 </ng-template>

@@ -29,6 +29,8 @@
   }
 
   &__additional {
+    position: relative;
+
     padding: 52px 74px 42px 73px;
 
     flex-basis: 25%;
@@ -36,6 +38,12 @@
     .h4:last-of-type {
       margin: 42px 0 13px 0;
     }
+  }
+
+  &__memo {
+    position: absolute;
+    right: 47px;
+    bottom: 42px;
   }
 
   &__photo {
@@ -102,6 +110,11 @@
     width: 80px;
   }
 
+  &__substitute {
+    text-decoration: underline;
+    text-underline-offset: 1px;
+  }
+
   &__stepper {
     text-align: center;
   }
@@ -115,6 +128,8 @@
   }
 
   &__columns {
+    margin-top: -14px;
+
     display: flex;
     justify-content: space-between;
   }
