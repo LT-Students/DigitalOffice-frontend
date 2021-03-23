@@ -1,5 +1,5 @@
 <div class="employee-info card regular_text text_dark_1">
-  <ng-container *ngIf="!isEditable; else editOwner">
+  <ng-container *ngIf="!isEditable; else edit">
     <div class="employee-info__form">
       <div class="employee-info__main">
         <div class="employee-info__photo">
@@ -36,8 +36,10 @@
             <div>{{ employee.office }}</div>
           </div>
           <div class="employee-info__second-column">
-            <h3 class="small_text text-gray">Ставка</h3>
-            <div>{{ employee.workingRate }}</div>
+            <ng-container *ngIf="canEdit()"
+              ><h3 class="small_text text-gray">Ставка</h3>
+              <div>{{ employee.workingRate }}</div>
+            </ng-container>
             <h3 class="small_text text-gray">
               Рабочие часы
               <mat-icon
@@ -65,36 +67,44 @@
         <div>{{ employee.contacts.phone }}</div>
         <h3 class="small_text text-gray">Telegram</h3>
         <div>{{ employee.contacts.telegram }}</div>
-        <h2 class="h4 text-dark_2">
-          Отпуск
-          <mat-icon
-            class="employee-info__hint"
-            svgIcon="question-mark"
-            aria-label="Hint"
-            matTooltipClass="tooltip"
-            matTooltip="Стандартный отпуск - 20 рабочих дней в год"
-            [matTooltipPosition]="'above'"
-          ></mat-icon>
-        </h2>
-        <h3 class="small_text text-gray">Осталось отпускных дней</h3>
-        <div>{{ employee.vacationDays }} дней</div>
-        <div class="employee-info__edit-button bg-light_1">
-          <button
-            mat-icon-button
-            aria-label="Edit employee info"
-            (click)="toggleEditMode()"
-          >
+        <ng-container *ngIf="canEdit()">
+          <h2 class="h4 text-dark_2">
+            Отпуск
             <mat-icon
-              class="employee-info__edit-icon"
-              svgIcon="edit"
-              aria-label="Edit"
+              class="employee-info__hint"
+              svgIcon="question-mark"
+              aria-label="Hint"
+              matTooltipClass="tooltip"
+              matTooltip="Стандартный отпуск - 20 рабочих дней в год"
+              [matTooltipPosition]="'above'"
             ></mat-icon>
-          </button>
-        </div>
+          </h2>
+          <h3 class="small_text text-gray">Осталось отпускных дней</h3>
+          <div>{{ employee.vacationDays }} дней</div>
+          <div class="employee-info__edit-button bg-light_1">
+            <button
+              mat-icon-button
+              aria-label="Edit employee info"
+              (click)="toggleEditMode()"
+            >
+              <mat-icon
+                class="employee-info__edit-icon"
+                svgIcon="edit"
+                aria-label="Edit"
+              ></mat-icon>
+            </button>
+          </div>
+        </ng-container>
       </div>
     </div>
   </ng-container>
 </div>
+
+<ng-template #edit>
+  <ng-container
+    *ngIf="isAdmin(); then editAdmin; else editOwner"
+  ></ng-container>
+</ng-template>
 
 <ng-template #editAdmin>
   <form
@@ -104,25 +114,7 @@
     class="employee-info__form"
   >
     <div class="employee-info__main">
-      <div class="employee-info__photo">
-        <img [src]="previewPhoto" alt="Employee photo" width="200" />
-        <label
-          class="text_white employee-info__label employee-info__upload-button"
-          for="photo"
-          ><mat-icon
-            class="employee-info__upload-icon"
-            svgIcon="upload"
-          ></mat-icon>
-          Обновить фото</label
-        >
-        <input
-          id="photo"
-          type="file"
-          formGroupName="photo"
-          (change)="onFileChange($event)"
-          hidden
-        />
-      </div>
+      <ng-container [ngTemplateOutlet]="photo"></ng-container>
       <label class="small_text text-gray employee-info__label" for="lastName"
         >Фамилия<sup class="employee-info__required">*</sup></label
       >
@@ -245,39 +237,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <label
-            class="small_text text-gray employee-info__label"
-            for="emojiStatus"
-          >
-            Эмодзи-статус
-            <mat-icon
-              class="employee-info__hint"
-              svgIcon="question-mark"
-              aria-label="Hint"
-              matTooltipClass="tooltip"
-              matTooltip="Статус будет отображаться рядом с именем пользователя"
-              [matTooltipPosition]="'above'"
-            ></mat-icon>
-          </label>
-          <mat-form-field
-            class="employee-info__form-field mat-form-field_default-select"
-            appearance="none"
-          >
-            <mat-select
-              class="employee-info__input"
-              id="emojiStatus"
-              formControlName="emojiStatus"
-              [compareWith]="compareEmoji"
-            >
-              <mat-option
-                class="employee-info__input"
-                *ngFor="let option of selectOptions.emojiStatus"
-                [value]="option"
-              >
-                {{ option.emoji }} {{ option.description }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <ng-container [ngTemplateOutlet]="emoji"></ng-container>
           <label class="small_text text-gray">Замещает: </label>
           <span class="small_text text-gray employee-info__substitute"
             >Назначить замещающего</span
@@ -386,60 +346,7 @@
             </mat-datepicker-toggle>
             <mat-datepicker #workingSince></mat-datepicker>
           </mat-form-field>
-          <label
-            class="small_text text-gray employee-info__label"
-            for="birthDate"
-            >Дата рождения</label
-          >
-          <mat-form-field class="employee-info__form-field" appearance="fill">
-            <input
-              id="birthDate"
-              matInput
-              [matDatepicker]="birthDate"
-              formControlName="birthDate"
-              class="employee-info__input"
-            />
-            <mat-datepicker-toggle matSuffix [for]="birthDate">
-              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #birthDate></mat-datepicker>
-          </mat-form-field>
-          <label
-            class="small_text text-gray employee-info__label"
-            for="vacationSince"
-            >В отпуске с<sup class="employee-info__required">*</sup></label
-          >
-          <mat-form-field class="employee-info__form-field" appearance="fill">
-            <input
-              id="vacationSince"
-              matInput
-              [matDatepicker]="vacationSince"
-              formControlName="vacationSince"
-              class="employee-info__input"
-            />
-            <mat-datepicker-toggle matSuffix [for]="vacationSince">
-              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #vacationSince></mat-datepicker>
-          </mat-form-field>
-          <label
-            class="small_text text-gray employee-info__label"
-            for="vacationUntil"
-            >В отпуске до<sup class="employee-info__required">*</sup></label
-          >
-          <mat-form-field class="employee-info__form-field" appearance="fill">
-            <input
-              id="vacationUntil"
-              matInput
-              [matDatepicker]="vacationUntil"
-              formControlName="vacationUntil"
-              class="employee-info__input"
-            />
-            <mat-datepicker-toggle matSuffix [for]="vacationUntil">
-              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #vacationUntil></mat-datepicker>
-          </mat-form-field>
+          <ng-container [ngTemplateOutlet]="dates"></ng-container>
         </div>
       </div>
       <div class="employee-info__form-buttons">
@@ -469,30 +376,7 @@
             type="email"
           />
         </mat-form-field>
-        <label class="small_text text-gray employee-info__label" for="phone"
-          >Рабочий номер<sup class="employee-info__required">*</sup></label
-        >
-        <mat-form-field class="employee-info__form-field" appearance="none">
-          <input
-            id="phone"
-            formControlName="phone"
-            matInput
-            class="bg-light_2 employee-info__input"
-            type="tel"
-          />
-        </mat-form-field>
-        <label class="small_text text-gray employee-info__label" for="telegram"
-          >Telegram</label
-        >
-        <mat-form-field class="employee-info__form-field" appearance="none">
-          <input
-            id="telegram"
-            formControlName="telegram"
-            matInput
-            class="bg-light_2 employee-info__input"
-            type="text"
-          />
-        </mat-form-field>
+        <ng-container [ngTemplateOutlet]="contacts"></ng-container>
       </ng-container>
       <h2 class="h4 text-dark_2">
         Отпуск
@@ -526,7 +410,6 @@
   </form>
 </ng-template>
 
-<!----------------------------------------------------------------------------->
 <ng-template #editOwner>
   <form
     [formGroup]="employeeInfoForm"
@@ -535,25 +418,7 @@
     class="employee-info__form"
   >
     <div class="employee-info__main">
-      <div class="employee-info__photo">
-        <img [src]="previewPhoto" alt="Employee photo" width="200" />
-        <label
-          class="text_white employee-info__label employee-info__upload-button"
-          for="photo"
-          ><mat-icon
-            class="employee-info__upload-icon"
-            svgIcon="upload"
-          ></mat-icon>
-          Обновить фото</label
-        >
-        <input
-          id="photo"
-          type="file"
-          formGroupName="photo"
-          (change)="onFileChange($event)"
-          hidden
-        />
-      </div>
+      <ng-container [ngTemplateOutlet]="photo"></ng-container>
       <h1 class="employee-info__name h3 text-dark_2">
         {{ fullName }}
       </h1>
@@ -587,39 +452,7 @@
           <div>{{ employee.location }}</div>
           <h3 class="small_text text-gray">Офис</h3>
           <div>{{ employee.office }}</div>
-          <label
-            class="small_text text-gray employee-info__label"
-            for="emojiStatus"
-          >
-            Эмодзи-статус
-            <mat-icon
-              class="employee-info__hint"
-              svgIcon="question-mark"
-              aria-label="Hint"
-              matTooltipClass="tooltip"
-              matTooltip="Статус будет отображаться рядом с именем пользователя"
-              [matTooltipPosition]="'above'"
-            ></mat-icon>
-          </label>
-          <mat-form-field
-            class="employee-info__form-field mat-form-field_default-select"
-            appearance="none"
-          >
-            <mat-select
-              class="employee-info__input"
-              id="emojiStatus"
-              formControlName="emojiStatus"
-              [compareWith]="compareEmoji"
-            >
-              <mat-option
-                class="employee-info__input"
-                *ngFor="let option of selectOptions.emojiStatus"
-                [value]="option"
-              >
-                {{ option.emoji }} {{ option.description }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <ng-container [ngTemplateOutlet]="emoji"></ng-container>
         </div>
         <div class="employee-info__second-column">
           <h3 class="small_text text-gray">Ставка</h3>
@@ -638,60 +471,7 @@
           <div>{{ workingHours }}</div>
           <h3 class="small_text text-gray">В компании с</h3>
           <div>{{ employee.workingSince | date: 'LLLL y' }}</div>
-          <label
-            class="small_text text-gray employee-info__label"
-            for="birthDate"
-            >Дата рождения</label
-          >
-          <mat-form-field class="employee-info__form-field" appearance="fill">
-            <input
-              id="birthDate"
-              matInput
-              [matDatepicker]="birthDate"
-              formControlName="birthDate"
-              class="employee-info__input"
-            />
-            <mat-datepicker-toggle matSuffix [for]="birthDate">
-              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #birthDate></mat-datepicker>
-          </mat-form-field>
-          <label
-            class="small_text text-gray employee-info__label"
-            for="vacationSince"
-            >В отпуске с<sup class="employee-info__required">*</sup></label
-          >
-          <mat-form-field class="employee-info__form-field" appearance="fill">
-            <input
-              id="vacationSince"
-              matInput
-              [matDatepicker]="vacationSince"
-              formControlName="vacationSince"
-              class="employee-info__input"
-            />
-            <mat-datepicker-toggle matSuffix [for]="vacationSince">
-              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #vacationSince></mat-datepicker>
-          </mat-form-field>
-          <label
-            class="small_text text-gray employee-info__label"
-            for="vacationUntil"
-            >В отпуске до<sup class="employee-info__required">*</sup></label
-          >
-          <mat-form-field class="employee-info__form-field" appearance="fill">
-            <input
-              id="vacationUntil"
-              matInput
-              [matDatepicker]="vacationUntil"
-              formControlName="vacationUntil"
-              class="employee-info__input"
-            />
-            <mat-datepicker-toggle matSuffix [for]="vacationUntil">
-              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #vacationUntil></mat-datepicker>
-          </mat-form-field>
+          <ng-container [ngTemplateOutlet]="dates"></ng-container>
         </div>
       </div>
       <div class="employee-info__form-buttons">
@@ -711,30 +491,7 @@
       <h3 class="small_text text-gray">E-mail</h3>
       <div>{{ employee.contacts.email }}</div>
       <ng-container formGroupName="contacts">
-        <label class="small_text text-gray employee-info__label" for="phone"
-          >Рабочий номер<sup class="employee-info__required">*</sup></label
-        >
-        <mat-form-field class="employee-info__form-field" appearance="none">
-          <input
-            id="phone"
-            formControlName="phone"
-            matInput
-            class="bg-light_2 employee-info__input"
-            type="tel"
-          />
-        </mat-form-field>
-        <label class="small_text text-gray employee-info__label" for="telegram"
-          >Telegram</label
-        >
-        <mat-form-field class="employee-info__form-field" appearance="none">
-          <input
-            id="telegram"
-            formControlName="telegram"
-            matInput
-            class="bg-light_2 employee-info__input"
-            type="text"
-          />
-        </mat-form-field>
+        <ng-container [ngTemplateOutlet]="contacts"></ng-container>
         <h2 class="h4 text-dark_2">
           Отпуск
           <mat-icon
@@ -754,4 +511,136 @@
       >
     </div>
   </form>
+</ng-template>
+
+<ng-template #photo [formGroup]="employeeInfoForm">
+  <div class="employee-info__photo">
+    <img [src]="previewPhoto" alt="Employee photo" width="200" />
+    <label
+      class="text_white employee-info__label employee-info__upload-button"
+      for="photo"
+      ><mat-icon class="employee-info__upload-icon" svgIcon="upload"></mat-icon>
+      Обновить фото</label
+    >
+    <input
+      id="photo"
+      type="file"
+      formGroupName="photo"
+      (change)="onFileChange($event)"
+      hidden
+    />
+  </div>
+</ng-template>
+
+<ng-template #emoji [formGroup]="employeeInfoForm">
+  <label class="small_text text-gray employee-info__label" for="emojiStatus">
+    Эмодзи-статус
+    <mat-icon
+      class="employee-info__hint"
+      svgIcon="question-mark"
+      aria-label="Hint"
+      matTooltipClass="tooltip"
+      matTooltip="Статус будет отображаться рядом с именем пользователя"
+      [matTooltipPosition]="'above'"
+    ></mat-icon>
+  </label>
+  <mat-form-field
+    class="employee-info__form-field mat-form-field_default-select"
+    appearance="none"
+  >
+    <mat-select
+      class="employee-info__input"
+      id="emojiStatus"
+      formControlName="emojiStatus"
+      [compareWith]="compareEmoji"
+    >
+      <mat-option
+        class="employee-info__input"
+        *ngFor="let option of selectOptions.emojiStatus"
+        [value]="option"
+      >
+        {{ option.emoji }} {{ option.description }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-template>
+
+<ng-template #dates [formGroup]="employeeInfoForm">
+  <label class="small_text text-gray employee-info__label" for="birthDate"
+    >Дата рождения</label
+  >
+  <mat-form-field class="employee-info__form-field" appearance="fill">
+    <input
+      id="birthDate"
+      matInput
+      [matDatepicker]="birthDate"
+      formControlName="birthDate"
+      class="employee-info__input"
+    />
+    <mat-datepicker-toggle matSuffix [for]="birthDate">
+      <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #birthDate></mat-datepicker>
+  </mat-form-field>
+  <label class="small_text text-gray employee-info__label" for="vacationSince"
+    >В отпуске с<sup class="employee-info__required">*</sup></label
+  >
+  <mat-form-field class="employee-info__form-field" appearance="fill">
+    <input
+      id="vacationSince"
+      matInput
+      [matDatepicker]="vacationSince"
+      formControlName="vacationSince"
+      class="employee-info__input"
+    />
+    <mat-datepicker-toggle matSuffix [for]="vacationSince">
+      <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #vacationSince></mat-datepicker>
+  </mat-form-field>
+  <label class="small_text text-gray employee-info__label" for="vacationUntil"
+    >В отпуске до<sup class="employee-info__required">*</sup></label
+  >
+  <mat-form-field class="employee-info__form-field" appearance="fill">
+    <input
+      id="vacationUntil"
+      matInput
+      [matDatepicker]="vacationUntil"
+      formControlName="vacationUntil"
+      class="employee-info__input"
+    />
+    <mat-datepicker-toggle matSuffix [for]="vacationUntil">
+      <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #vacationUntil></mat-datepicker>
+  </mat-form-field>
+</ng-template>
+
+<ng-template #contacts [formGroup]="employeeInfoForm">
+  <ng-container formGroupName="contacts"
+    ><label class="small_text text-gray employee-info__label" for="phone"
+      >Рабочий номер<sup class="employee-info__required">*</sup></label
+    >
+    <mat-form-field class="employee-info__form-field" appearance="none">
+      <input
+        id="phone"
+        formControlName="phone"
+        matInput
+        class="bg-light_2 employee-info__input"
+        type="tel"
+      />
+    </mat-form-field>
+    <label class="small_text text-gray employee-info__label" for="telegram"
+      >Telegram</label
+    >
+    <mat-form-field class="employee-info__form-field" appearance="none">
+      <input
+        id="telegram"
+        formControlName="telegram"
+        matInput
+        class="bg-light_2 employee-info__input"
+        type="text"
+      />
+    </mat-form-field>
+  </ng-container>
 </ng-template>

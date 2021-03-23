@@ -84,6 +84,14 @@ export class EmployeeInfoComponent implements OnInit {
     return `${startAt}-${endAt}`;
   }
 
+  isAdmin() {
+    return this.employee.role === 'admin';
+  }
+
+  canEdit() {
+    return this.isAdmin() || this.employee.role === 'owner';
+  }
+
   toggleEditMode() {
     if (!this.isEditable) this.fillForm();
     this.isEditable = !this.isEditable;
