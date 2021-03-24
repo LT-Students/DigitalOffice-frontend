@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="section__content">
-      <div *ngFor="let place of education" class="row">
+      <div *ngFor="let place of institutes" class="row">
         <div class="row__main-info">
           <!--1 column-->
           <div class="col">
@@ -65,9 +65,7 @@
           </div>
         </div>
         <div class="row__edit text-gray1">
-          <button mat-icon-button>
-            <mat-icon>more_horiz</mat-icon>
-          </button>
+          <button mat-icon-button><mat-icon>more_horiz</mat-icon></button>
         </div>
       </div>
     </div>
@@ -82,6 +80,43 @@
       <div class="action">
         <button mat-flat-button color="primary">+ Добавить сертификат</button>
       </div>
+    </div>
+    <div class="section__content">
+      <div *ngFor="let course of courses" class="row">
+        <div class="row__main-info">
+          <!--1 column-->
+          <div class="col">
+            <p class="regular_text text-gray1">
+              {{ course.studyType | titlecase }}
+            </p>
+            <p class="regular_text text-dark_2">
+              {{ course.getEducationalPeriod() }}
+            </p>
+          </div>
+          <!--2 column-->
+          <div class="col">
+            <p class="col__header regular_text text-gray1">
+              {{ course.educationInstitution }}
+            </p>
+            <p class="regular_text text-dark_2">{{ course.specialization }}</p>
+          </div>
+          <div class="col">
+            <div class="row__button text-gray1">
+              <button mat-flat-button>
+                <mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row__button text-gray1">
+          <button mat-icon-button><mat-icon>more_horiz</mat-icon></button>
+        </div>
+      </div>
+      <mat-form-field class="mat-form-field_default-select" appearance="none">
+        <mat-select class="select" placeholder="Показать все">
+          <mat-option></mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
   </div>
 </div>
