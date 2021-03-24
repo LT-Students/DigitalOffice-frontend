@@ -101,9 +101,8 @@ export class EmployeeInfoComponent implements OnInit {
     if (event.target.files.length > 0) {
       const reader = new FileReader();
 
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.readAsDataURL(event.target.files[0]);
       reader.onload = (evt) => {
-        // called once readAsDataURL is completed
         this.employeeInfoForm.patchValue({
           photo: evt.target.result,
         });

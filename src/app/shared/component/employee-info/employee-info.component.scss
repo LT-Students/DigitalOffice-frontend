@@ -1,6 +1,8 @@
-@import 'base/variables';
+@import '../../../../stylesheets/base/variables';
 
 .employee-info {
+  margin-bottom: 45px;
+
   overflow: hidden;
 
   &__form {

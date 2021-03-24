@@ -17,7 +17,6 @@ import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
-import { EmployeeInfoComponent } from './components/employee-info/employee-info.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import { EmployeeInfoComponent } from './components/employee-info/employee-info.
     TaskComponent,
     ProjectsTableComponent,
     ProjectPageComponent,
-    EmployeeInfoComponent,
   ],
   imports: [
     CommonModule,
