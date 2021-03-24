@@ -3,8 +3,8 @@ import { DateAdapter } from '@angular/material/core';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { DayOfWeek } from '@data/models/day-of-week';
 import { AttendanceService } from '../../../../core/services/attendance.service';
-import { IDayOfWeek } from '../../../../core/interfaces/day-of-week.interface';
 import { DateService } from '../../../../core/services/date.service';
 
 @Component({
@@ -19,7 +19,7 @@ export class DateDescComponent implements OnInit, OnDestroy {
 
   public startDate: Date | null;
   public endDate: Date | null;
-  public daysOfWeek: IDayOfWeek[];
+  public daysOfWeek: DayOfWeek[];
 
   constructor(
     public attendanceService: AttendanceService,

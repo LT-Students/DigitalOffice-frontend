@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Time } from '@angular/common';
 
-import { IDatePeriod } from '../interfaces/date-period.interface';
+import { DatePeriod } from '@data/models/date-period';
 import { DateService } from './date.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AttendanceService {
-  private readonly _datePeriod = new BehaviorSubject<IDatePeriod>(
+  private readonly _datePeriod = new BehaviorSubject<DatePeriod>(
     this.dateService.getDefaultDatePeriod(6)
   );
 
@@ -21,13 +21,13 @@ export class AttendanceService {
 
   readonly recommendedTime$ = this._recommendedTime.asObservable();
 
-  get datePeriod(): IDatePeriod {
+  get datePeriod(): DatePeriod {
     return this._datePeriod.getValue();
   }
 
   constructor(private dateService: DateService) {}
 
-  public onDatePeriodChange(datePeriod: IDatePeriod): void {
+  public onDatePeriodChange(datePeriod: DatePeriod): void {
     const normalizedDatePeriod = this.dateService.normalizeDatePeriod(
       datePeriod
     );
@@ -43,7 +43,7 @@ export class AttendanceService {
   }
 
   public getRecommendedTime(
-    datePeriod: IDatePeriod,
+    datePeriod: DatePeriod,
     hoursPerDay: number = 8,
     rate: number = 1
   ): Time {

@@ -1,4 +1,4 @@
-export interface WorkTime {
+export interface Task {
   id: string;
   userId: string;
   startDate: Date;

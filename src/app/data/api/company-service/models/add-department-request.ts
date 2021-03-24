@@ -1,12 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-import { DepartmentRequest } from './department-request';
+import { Department } from './department';
+import { DepartmentUser } from './department-user';
 export interface AddDepartmentRequest {
-  info: DepartmentRequest;
-
-  /**
-   * List specific users id.
-   */
-  usersIds: Array<string>;
+  info: Department;
+  users?: Array<DepartmentUser>;
 }
-

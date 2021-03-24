@@ -1,4 +1,6 @@
-import { WorkTime } from './work-time';
+import { Contributor } from '@data/models/contributor';
+import { Company } from '@data/models/company';
+import { Task } from './task';
 
 export interface Project {
   id: string;
@@ -7,5 +9,8 @@ export interface Project {
   description: string;
   departmentId: string;
   isActive: boolean;
-  workTime?: Partial<WorkTime>[];
+  tasks?: Partial<Task>[];
+  consumer?: Company;
+  contributors?: Contributor[];
+  historyDetails?: string;
 }

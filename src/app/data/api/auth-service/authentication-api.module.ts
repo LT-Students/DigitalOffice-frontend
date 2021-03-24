@@ -9,7 +9,7 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { AuthenticationApiService } from './services/authentication-api.service';
+import { AuthApiService } from './services/auth-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -18,7 +18,7 @@ import { AuthenticationApiService } from './services/authentication-api.service'
   imports: [],
   exports: [],
   declarations: [],
-  providers: [AuthenticationApiService, ApiConfiguration],
+  providers: [AuthApiService, ApiConfiguration],
 })
 export class AuthenticationApiModule {
   static forRoot(

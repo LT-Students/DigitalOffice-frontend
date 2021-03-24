@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-
-import { DEPRECATED_Project2 } from '../../../../core/models/project.model';
+import { Component, OnInit } from '@angular/core';
+import { Project } from '@data/models/project';
 
 @Component({
   selector: 'do-projects-table',
@@ -10,9 +9,9 @@ import { DEPRECATED_Project2 } from '../../../../core/models/project.model';
 export class ProjectsTableComponent implements OnInit {
   constructor() {}
 
-  activeProjects: DEPRECATED_Project2[] = [];
-  suspendedProjects: DEPRECATED_Project2[] = [];
-  closedProjects: DEPRECATED_Project2[] = [];
+  activeProjects: Project[] = [];
+  suspendedProjects: Project[] = [];
+  closedProjects: Project[] = [];
   visiblyGroup = '';
 
   public groups = [
@@ -22,8 +21,12 @@ export class ProjectsTableComponent implements OnInit {
   ];
 
   ngOnInit() {
-    const active = {
+    const active: Project = {
+      id: '1',
       name: 'Меркурий – лечу на орбиту',
+      shortName: 'shortName',
+      departmentId: '1',
+      isActive: true,
       consumer: {
         name: 'Роскосмос',
         description: '',
@@ -88,8 +91,13 @@ export class ProjectsTableComponent implements OnInit {
         },
       ],
     };
+
     const suspended = {
+      id: '1',
       name: 'Герои Меча и Магии XXV',
+      shortName: 'shortName',
+      departmentId: '1',
+      isActive: false,
       consumer: {
         name: 'Российский Фонд Кино',
         description: '',
@@ -111,8 +119,13 @@ export class ProjectsTableComponent implements OnInit {
       ],
       historyDetails: 'Приостановлен 10.06.2019',
     };
-    const closed = {
+
+    const closed: Project = {
+      id: '1',
       name: 'Ребрендинг “Мир Света”',
+      shortName: 'shortName',
+      departmentId: '1',
+      isActive: false,
       consumer: {
         name: 'ИП Горин Д.А.',
         description: '',
