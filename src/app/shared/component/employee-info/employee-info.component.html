@@ -44,6 +44,33 @@
         <button mat-flat-button color="primary">+ Добавить образование</button>
       </div>
     </div>
+    <div class="section__content">
+      <div *ngFor="let place of education" class="row">
+        <div class="row__main-info">
+          <!--1 column-->
+          <div class="col">
+            <p class="regular_text text-gray1">
+              {{ place.studyType | titlecase }}
+            </p>
+            <p class="regular_text text-dark_2">
+              {{ place.getEducationalPeriod() }}
+            </p>
+          </div>
+          <!--2 column-->
+          <div class="col">
+            <p class="col__header regular_text text-gray1">
+              {{ place.educationInstitution }}
+            </p>
+            <p class="regular_text text-dark_2">{{ place.specialization }}</p>
+          </div>
+        </div>
+        <div class="row__edit text-gray1">
+          <button mat-icon-button>
+            <mat-icon>more_horiz</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
   <!--  Сертификаты  -->
   <div class="section">

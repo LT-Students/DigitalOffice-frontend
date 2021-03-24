@@ -42,6 +42,33 @@
       .w-100 {
         width: 100%;
       }
+
+      .row {
+        margin-bottom: 32px;
+
+        display: flex;
+        justify-content: space-between;
+
+        &__main-info {
+          display: flex;
+        }
+
+        .col {
+          margin-right: 57px;
+
+          p {
+            min-width: 64px;
+          }
+        }
+
+        .col:last-child {
+          margin-right: 0;
+        }
+      }
+
+      .row:last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
