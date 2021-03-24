@@ -1,5 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { EducationModel, StudyType } from '@app/models/education.model';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  MatAutocomplete,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -13,14 +22,30 @@ export enum WorkFlowMode {
   styleUrls: ['./employee-page.component.scss'],
 })
 export class EmployeePageComponent implements OnInit {
+  public visible: boolean;
+  public selectable: boolean;
+  public removable: boolean;
+  public addOnBlur: boolean;
   public workFlowMode: typeof WorkFlowMode = WorkFlowMode;
   public mode: WorkFlowMode;
   public skills: string[];
+  public filteredSkills: Observable<string[]>;
+  public skillsCtrl: FormControl;
   public institutes: EducationModel[];
   public courses: EducationModel[];
+  readonly separatorKeysCodes: number[];
+
+  @ViewChild('skillsInput') skillsInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor() {
-    this.mode = WorkFlowMode.VIEW;
+    this.visible = true;
+    this.selectable = true;
+    this.removable = true;
+    this.addOnBlur = true;
+    this.separatorKeysCodes = [ENTER, COMMA];
+    this.mode = WorkFlowMode.EDIT;
+    this.skillsCtrl = new FormControl();
     this.skills = [
       'Atlassian Jira',
       'Key Account Management',
@@ -65,7 +90,51 @@ export class EmployeePageComponent implements OnInit {
         certificateId: 'f92f878c-8cad-11eb-8dcd-0242ac130003',
       }),
     ];
+
+    this.filteredSkills = this.skillsCtrl.valueChanges.pipe(
+      startWith(null),
+      map((skill: string | null) =>
+        skill ? this._filter(skill) : this.skills.slice()
+      )
+    );
   }
 
   ngOnInit(): void {}
+
+  public add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our fruit
+    if ((value || '').trim()) {
+      this.skills.push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  remove(skill: string): void {
+    const index = this.skills.indexOf(skill);
+
+    if (index >= 0) {
+      this.skills.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.skills.push(event.option.viewValue);
+    this.skillsInput.nativeElement.value = '';
+    this.skillsCtrl.setValue(null);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.skills.filter(
+      (skill) => skill.toLowerCase().indexOf(filterValue) === 0
+    );
+  }
 }
