@@ -10,7 +10,7 @@ import { ProfileImageComponent } from './component/profile-image/profile-image.c
 import { ContentContainerComponent } from './component/content-container/content-container.component';
 import { SearchComponent } from './component/search/search.component';
 import { HeaderComponent } from './component/header/header.component';
-import { EmployeeInfoComponent } from './component/employee-info/employee-info.component';
+import { EmployeePageComponent } from './component/employee-page/employee-page.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { EmployeeInfoComponent } from './component/employee-info/employee-info.c
     ContentContainerComponent,
     SearchComponent,
     HeaderComponent,
-    EmployeeInfoComponent,
+    EmployeePageComponent,
   ],
   imports: [CommonModule, RouterModule, MaterialModule],
   exports: [

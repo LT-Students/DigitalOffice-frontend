@@ -8,11 +8,11 @@ export enum WorkFlowMode {
 }
 
 @Component({
-  selector: 'do-employee-info',
-  templateUrl: './employee-info.component.html',
-  styleUrls: ['./employee-info.component.scss'],
+  selector: 'do-employee-page',
+  templateUrl: './employee-page.component.html',
+  styleUrls: ['./employee-page.component.scss'],
 })
-export class EmployeeInfoComponent implements OnInit {
+export class EmployeePageComponent implements OnInit {
   public workFlowMode: typeof WorkFlowMode = WorkFlowMode;
   public mode: WorkFlowMode;
   public skills: string[];
