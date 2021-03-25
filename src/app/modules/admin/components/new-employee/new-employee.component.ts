@@ -6,7 +6,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '@data/api/user-service/models/user';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
-import { map } from 'rxjs/operators';
 import { PositionResponse } from '@data/api/company-service/models/position-response';
 
 @Component({
@@ -58,7 +57,6 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   getPositions(): void {
-    let pos;
     this.positionApiService
       .getPositionsList()
       .subscribe((data: PositionResponse[]) => {
