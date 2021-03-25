@@ -1,5 +1,5 @@
 <div class="header">
-  <div class="header__search">
+  <!-- <div class="header__search">                                                                                         
     <mat-form-field class="mat-form-field_default-select" appearance="none">
       <mat-select class="select" placeholder="Выбрать раздел">
         <mat-option></mat-option>
@@ -9,6 +9,27 @@
       magnifierLocation="right"
       placeholder="глобальный поиск по сайту"
     ></do-search>
+  </div> -->
+  <div class="header-navigation">
+    <div class="theme-switch">
+      <input type="checkbox" class="theme-switch__checkbox" />
+      <div class="theme-switch__container">
+        <div class="theme-switch__round">
+          <img src="../../../../assets/svg/switch.svg" alt="" />
+        </div>
+      </div>
+    </div>
+    <div class="header-navigation__logo">
+      <a class="h3 text-dark_2" routerLink="/user/attendance">trrak!</a>
+    </div>
+    <nav class="header-navigation__links">
+      <a routerLink="/user/attendance" class="regular_text text-gray"
+        >Учет заполнения</a
+      >
+      <a routerLink="/user/projects-table" class="regular_text text-gray"
+        >Доска проектов</a
+      >
+    </nav>
   </div>
   <div class="header__privacy">
     <a class="header__privacy__greeting" routerLink="/user/attendance">
