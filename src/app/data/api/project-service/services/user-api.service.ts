@@ -15,10 +15,7 @@ import { AddUsersToProjectReques } from '../models/add-users-to-project-reques';
   providedIn: 'root',
 })
 export class UserApiService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
@@ -37,23 +34,32 @@ export class UserApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addUsersToProject$Response(params: {
-    body: AddUsersToProjectReques
+    body: AddUsersToProjectReques;
   }): Observable<StrictHttpResponse<void>> {
-
-    const rb = new RequestBuilder(this.rootUrl, UserApiService.AddUsersToProjectPath, 'post');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      UserApiService.AddUsersToProjectPath,
+      'post'
+    );
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'text',
+          accept: '*/*',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return (r as HttpResponse<any>).clone({
+            body: undefined,
+          }) as StrictHttpResponse<void>;
+        })
+      );
   }
 
   /**
@@ -66,9 +72,8 @@ export class UserApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addUsersToProject(params: {
-    body: AddUsersToProjectReques
+    body: AddUsersToProjectReques;
   }): Observable<void> {
-
     return this.addUsersToProject$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
     );
@@ -89,29 +94,37 @@ export class UserApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   removeUsersFromProject$Response(params: {
-
     /**
      * Project global unique identifier.
      */
     projectId: string;
     userIds: any;
   }): Observable<StrictHttpResponse<void>> {
-
-    const rb = new RequestBuilder(this.rootUrl, UserApiService.RemoveUsersFromProjectPath, 'delete');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      UserApiService.RemoveUsersFromProjectPath,
+      'delete'
+    );
     if (params) {
-      rb.query('projectId', params.projectId, {"style":"form","explode":true});
-      rb.query('userIds', params.userIds, {"style":"form","explode":true});
+      rb.query('projectId', params.projectId, { style: 'form', explode: true });
+      rb.query('userIds', params.userIds, { style: 'form', explode: true });
     }
 
-    return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'text',
+          accept: '*/*',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return (r as HttpResponse<any>).clone({
+            body: undefined,
+          }) as StrictHttpResponse<void>;
+        })
+      );
   }
 
   /**
@@ -124,17 +137,14 @@ export class UserApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   removeUsersFromProject(params: {
-
     /**
      * Project global unique identifier.
      */
     projectId: string;
     userIds: any;
   }): Observable<void> {
-
     return this.removeUsersFromProject$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
     );
   }
-
 }

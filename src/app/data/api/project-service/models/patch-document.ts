@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface PatchDocument {
-
   /**
    * A string containing a JSON Pointer value.
    */
@@ -20,6 +19,5 @@ export interface PatchDocument {
   /**
    * The value to be used within the operations.
    */
-  value: {  };
+  value: {};
 }
-

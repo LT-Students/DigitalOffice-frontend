@@ -3,7 +3,6 @@
 import { UserConnection } from './user-connection';
 import { UserStatus } from './user-status';
 export interface UserRequest {
-
   /**
    * File global unique identifier.
    */
@@ -61,4 +60,3 @@ export interface UserRequest {
   skills?: null | Array<string>;
   status?: UserStatus;
 }
-

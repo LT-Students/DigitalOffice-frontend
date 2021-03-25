@@ -3,10 +3,10 @@ import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
 import { DatePeriod } from '@data/models/date-period';
-import { AttendanceService } from '../../../../core/services/attendance.service';
-import { ProjectStore } from '../../../../data/store/project.store';
-import { DateService } from '../../../../core/services/date.service';
-import { Project } from '../../../../data/models/project';
+import { AttendanceService } from '@app/services/attendance.service';
+import { ProjectStore } from '@data/store/project.store';
+import { DateService } from '@app/services/date.service';
+import { Project } from '@data/models/project';
 
 @Component({
   selector: 'do-user-tasks',

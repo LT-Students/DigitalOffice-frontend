@@ -5,7 +5,6 @@
  * User data of specific department.
  */
 export interface DepartmentUser {
-
   /**
    * Specific position id.
    */
@@ -16,4 +15,3 @@ export interface DepartmentUser {
    */
   userId?: string;
 }
-

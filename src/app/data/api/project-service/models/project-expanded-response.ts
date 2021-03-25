@@ -10,4 +10,3 @@ export interface ProjectExpandedResponse {
   projectFile?: Array<ProjectFile>;
   users?: Array<ProjectUser>;
 }
-
