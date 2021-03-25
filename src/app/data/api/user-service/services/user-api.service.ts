@@ -100,7 +100,7 @@ export class UserApiService extends BaseService {
      * List of users global unique identifiers.
      */
     usersIds: Array<string>;
-  }): Observable<StrictHttpResponse<User>> {
+  }): Observable<StrictHttpResponse<Array<User>>> {
     const rb = new RequestBuilder(
       this.rootUrl,
       UserApiService.GetUsersByIdsPath,
@@ -120,7 +120,7 @@ export class UserApiService extends BaseService {
       .pipe(
         filter((r: any) => r instanceof HttpResponse),
         map((r: HttpResponse<any>) => {
-          return r as StrictHttpResponse<User>;
+          return r as StrictHttpResponse<Array<User>>;
         })
       );
   }
@@ -138,9 +138,9 @@ export class UserApiService extends BaseService {
      * List of users global unique identifiers.
      */
     usersIds: Array<string>;
-  }): Observable<User> {
+  }): Observable<Array<User>> {
     return this.getUsersByIds$Response(params).pipe(
-      map((r: StrictHttpResponse<User>) => r.body as User)
+      map((r: StrictHttpResponse<Array<User>>) => r.body as Array<User>)
     );
   }
 
@@ -172,7 +172,7 @@ export class UserApiService extends BaseService {
      * User full name or its part that is wanted to be found.
      */
     userNameFilter?: string;
-  }): Observable<StrictHttpResponse<User>> {
+  }): Observable<StrictHttpResponse<Array<User>>> {
     const rb = new RequestBuilder(
       this.rootUrl,
       UserApiService.GetAllUsersPath,
@@ -197,7 +197,7 @@ export class UserApiService extends BaseService {
       .pipe(
         filter((r: any) => r instanceof HttpResponse),
         map((r: HttpResponse<any>) => {
-          return r as StrictHttpResponse<User>;
+          return r as StrictHttpResponse<Array<User>>;
         })
       );
   }
@@ -225,9 +225,9 @@ export class UserApiService extends BaseService {
      * User full name or its part that is wanted to be found.
      */
     userNameFilter?: string;
-  }): Observable<User[]> {
+  }): Observable<Array<User>> {
     return this.getAllUsers$Response(params).pipe(
-      map((r: StrictHttpResponse<User>) => r.body as User[])
+      map((r: StrictHttpResponse<Array<User>>) => r.body as Array<User>)
     );
   }
 
@@ -290,6 +290,59 @@ export class UserApiService extends BaseService {
   }): Observable<User> {
     return this.getUserByEmail$Response(params).pipe(
       map((r: StrictHttpResponse<User>) => r.body as User)
+    );
+  }
+
+  /**
+   * Path part for operation generatePassword
+   */
+  static readonly GeneratePasswordPath = '/generatePassword';
+
+  /**
+   * Returns randomly generated password.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `generatePassword()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  generatePassword$Response(params?: {}): Observable<
+    StrictHttpResponse<string>
+  > {
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      UserApiService.GeneratePasswordPath,
+      'get'
+    );
+    if (params) {
+    }
+
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<string>;
+        })
+      );
+  }
+
+  /**
+   * Returns randomly generated password.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `generatePassword$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  generatePassword(params?: {}): Observable<string> {
+    return this.generatePassword$Response(params).pipe(
+      map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
 

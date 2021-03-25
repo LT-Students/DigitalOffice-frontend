@@ -2,11 +2,11 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { IDatePeriod } from '../../../../core/interfaces/date-period.interface';
-import { AttendanceService } from '../../../../core/services/attendance.service';
-import { ProjectStore } from '../../../../data/store/project.store';
-import { DateService } from '../../../../core/services/date.service';
-import { Project } from '../../../../data/models/project';
+import { DatePeriod } from '@data/models/date-period';
+import { AttendanceService } from '@app/services/attendance.service';
+import { ProjectStore } from '@data/store/project.store';
+import { DateService } from '@app/services/date.service';
+import { Project } from '@data/models/project';
 
 @Component({
   selector: 'do-user-tasks',
@@ -14,7 +14,7 @@ import { Project } from '../../../../data/models/project';
   styleUrls: ['./user-tasks.component.scss'],
 })
 export class UserTasksComponent implements OnInit, OnDestroy {
-  @Input() timePeriodSelected: IDatePeriod;
+  @Input() timePeriodSelected: DatePeriod;
 
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 

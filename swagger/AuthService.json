@@ -2,15 +2,15 @@
   "openapi": "3.0.0",
   "info": {
     "title": "AuthService",
-    "description": "AuthService is an API intended to work with user authentication, create jwt token for user.",
-    "version": "1.2.0"
+    "description": "AuthService is an API intended to work with user authentication, create jwt token for user.\n\n**What's new since 1.2.1:**\n  * `Updated server urls.`\n  ",
+    "version": "1.2.1"
   },
   "servers": [
     {
-      "url": "https://localhost:9817/api/auth"
+      "url": "https://84.201.146.123:9817/api/auth"
     },
     {
-      "url": "http://localhost:9818/api/auth"
+      "url": "http://84.201.146.123:9818/api/auth"
     }
   ],
   "paths": {
