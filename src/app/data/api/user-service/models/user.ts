@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { UserStatus } from './user-status';
 export interface User {
   /**
    * Certificate files global unique identifiers.
@@ -15,6 +16,11 @@ export interface User {
    * Certificate files global unique identifiers.
    */
   certificatesIds?: null | Array<string>;
+
+  /**
+   * DateTime of creating user
+   */
+  createdAt?: string;
 
   /**
    * User mail.
@@ -45,9 +51,5 @@ export interface User {
    * Last name of a user.
    */
   middleName?: null | string;
-
-  /**
-   * User status.
-   */
-  status?: null | string;
+  status?: UserStatus;
 }

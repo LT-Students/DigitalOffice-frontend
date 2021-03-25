@@ -1,7 +1,7 @@
 import { Time } from '@angular/common';
-import { User } from '@data/api/user-service/models/user';
+import { IUser } from '@data/models/user';
 
 export interface Contributor {
-  user: User;
+  user: IUser;
   totalTime: Time;
 }
