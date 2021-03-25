@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IDatePeriod } from '../interfaces/date-period.interface';
-import { IDayOfWeek } from '../interfaces/day-of-week.interface';
+import { DatePeriod } from '@data/models/date-period';
+import { DayOfWeek } from '@data/models/day-of-week';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class DateService {
     return result;
   }
 
-  normalizeDatePeriod(datePeriod: IDatePeriod): IDatePeriod {
+  normalizeDatePeriod(datePeriod: DatePeriod): DatePeriod {
     if (datePeriod.startDate && datePeriod.endDate) {
       return datePeriod;
     } else {
@@ -30,14 +30,14 @@ export class DateService {
     }
   }
 
-  getDefaultDatePeriod(daysFromToday: number): IDatePeriod {
+  getDefaultDatePeriod(daysFromToday: number): DatePeriod {
     const today = new Date();
     const inWeek = this.addDays(today, daysFromToday);
     return { startDate: today, endDate: inWeek };
   }
 
-  getWeek(dateSelected: Date): IDayOfWeek[] {
-    const daysOfWeek: IDayOfWeek[] = [];
+  getWeek(dateSelected: Date): DayOfWeek[] {
+    const daysOfWeek: DayOfWeek[] = [];
 
     for (let i = -3; i <= 3; i++) {
       const dayOfWeek = this.addDays(dateSelected, i);
