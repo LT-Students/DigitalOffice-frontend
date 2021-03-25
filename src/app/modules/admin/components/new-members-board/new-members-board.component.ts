@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { User } from '@data/api/user-service/models/user';
-import { INewMember } from '@app/interfaces/INewMember';
+import { IUser } from '@data/models/user';
 
 @Component({
   selector: 'do-new-members-board',
@@ -12,9 +12,9 @@ import { INewMember } from '@app/interfaces/INewMember';
   styleUrls: ['./new-members-board.component.scss'],
 })
 export class NewMembersBoardComponent implements OnInit, OnDestroy {
-  public members: INewMember[];
-  public visibleMembers: INewMember[];
-  public checkedMembers: INewMember[] = [];
+  public members: IUser[];
+  public visibleMembers: IUser[];
+  public checkedMembers: IUser[] = [];
   public selectedSpecialization;
   public selectedLevel;
   public searchName = null;
@@ -46,15 +46,17 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
         map((data: User[]) =>
           data.map((userDb) => ({
             id: userDb.id,
-            fullName: `${userDb.firstName} ${userDb.lastName} `,
+            firstName: userDb.firstName,
+            lastName: userDb.lastName,
+            middleName: userDb.middleName,
+            photo: userDb.avatarFileId,
             projectsCount: 0,
             level: '',
-            profileImgSrc: '',
             specialization: '',
           }))
         )
       )
-      .subscribe((data: INewMember[]) => {
+      .subscribe((data: User[]) => {
         this.members = data;
         this.visibleMembers = [...this.members];
       });

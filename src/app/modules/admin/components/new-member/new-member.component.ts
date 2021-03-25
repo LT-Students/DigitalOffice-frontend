@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 
-import { INewMember } from '@app/interfaces/INewMember';
+import { IUser } from '@data/models/user';
 
 @Component({
   selector: 'do-new-member',
@@ -8,7 +8,7 @@ import { INewMember } from '@app/interfaces/INewMember';
   styleUrls: ['./new-member.component.scss'],
 })
 export class NewMemberComponent implements OnInit {
-  @Input() public newMember: INewMember;
+  @Input() public newMember: IUser;
   @Output() checkMember = new EventEmitter<boolean>();
 
   roles: string[] = [
