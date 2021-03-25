@@ -5,13 +5,11 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
-import { INewMember } from '@app/interfaces/INewMember';
-import { map } from 'rxjs/operators';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { User } from '@data/api/user-service/models/user';
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
@@ -22,8 +20,7 @@ import { NewMembersBoardComponent } from '../new-members-board/new-members-board
   styleUrls: ['./new-department.component.scss'],
 })
 export class NewDepartmentComponent implements OnInit {
-  public director: INewMember;
-  public directors: INewMember[];
+  public directors: User[] = [];
   private getDirectorsSubscription: Subscription;
 
   public departmentForm = new FormGroup({
@@ -37,7 +34,6 @@ export class NewDepartmentComponent implements OnInit {
     public departmentApiService: DepartmentApiService,
     private dialogRef: MatDialogRef<NewMembersBoardComponent>,
     private formBuilder: FormBuilder,
-    public dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
 
@@ -72,19 +68,7 @@ export class NewDepartmentComponent implements OnInit {
         skipCount: 0,
         takeCount: 50,
       })
-      .pipe(
-        map((data: User[]) =>
-          data.map((userDb) => ({
-            id: userDb.id,
-            fullName: `${userDb.firstName} ${userDb.lastName} `,
-            projectsCount: 0,
-            level: '',
-            profileImgSrc: '',
-            specialization: '',
-          }))
-        )
-      )
-      .subscribe((data: INewMember[]) => {
+      .subscribe((data: User[]) => {
         this.directors = data;
       });
   }
@@ -111,6 +95,5 @@ export class NewDepartmentComponent implements OnInit {
           throw error;
         }
       );
-    console.log(this.departmentForm.controls);
   }
 }

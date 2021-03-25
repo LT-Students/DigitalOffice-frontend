@@ -42,7 +42,7 @@
                 *ngFor="let director of directors"
                 [value]="director.id"
               >
-                {{ director.fullName }}
+                {{ director.lastName + ' ' + director.firstName }}
               </mat-option>
             </mat-select>
           </mat-form-field>
