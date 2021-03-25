@@ -41,6 +41,10 @@
           color: $gray1;
 
           @extend %regular_font_basic;
+
+          .mat-placeholder-required {
+            color: $negative_accent;
+          }
         }
       }
     }
