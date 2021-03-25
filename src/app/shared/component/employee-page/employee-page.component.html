@@ -95,7 +95,25 @@
           </div>
         </div>
         <div class="row__edit text-gray1">
-          <button mat-icon-button><mat-icon>more_horiz</mat-icon></button>
+          <mat-form-field class="mat-form-field_none" appearance="none">
+            <mat-select class="none" #matSelect>
+              <mat-option
+                ><img
+                  src="assets/svg/edit.svg"
+                  alt="edit"
+                />&nbsp;Редактировать</mat-option
+              >
+              <mat-option
+                ><img
+                  src="assets/svg/delete.svg"
+                  alt="delete"
+                />&nbsp;Удалить</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <button mat-icon-button (click)="matSelect.open()">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
         </div>
       </div>
     </div>
@@ -139,7 +157,26 @@
           </div>
         </div>
         <div class="row__button text-gray1">
-          <button mat-icon-button><mat-icon>more_horiz</mat-icon></button>
+          <!--    Trick, для работы dropdown. TODO: Сделать нормальную собственную реализацию      -->
+          <mat-form-field class="mat-form-field_none" appearance="none">
+            <mat-select class="none" #matSelect>
+              <mat-option
+                ><img
+                  src="assets/svg/edit.svg"
+                  alt="edit"
+                />&nbsp;Редактировать</mat-option
+              >
+              <mat-option
+                ><img
+                  src="assets/svg/delete.svg"
+                  alt="delete"
+                />&nbsp;Удалить</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+          <button mat-icon-button (click)="matSelect.open()">
+            <mat-icon>more_horiz</mat-icon>
+          </button>
         </div>
       </div>
       <mat-form-field class="mat-form-field_default-select" appearance="none">
