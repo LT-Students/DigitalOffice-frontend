@@ -33,6 +33,7 @@ export class EmployeePageComponent implements OnInit {
   public skillsCtrl: FormControl;
   public institutes: EducationModel[];
   public courses: EducationModel[];
+  public selectedEducationItem: EducationModel;
   readonly separatorKeysCodes: number[];
 
   @ViewChild('skillsInput') skillsInput: ElementRef<HTMLInputElement>;
@@ -90,6 +91,7 @@ export class EmployeePageComponent implements OnInit {
         certificateId: 'f92f878c-8cad-11eb-8dcd-0242ac130003',
       }),
     ];
+    this.selectedEducationItem = this.institutes[0];
 
     this.filteredSkills = this.skillsCtrl.valueChanges.pipe(
       startWith(null),

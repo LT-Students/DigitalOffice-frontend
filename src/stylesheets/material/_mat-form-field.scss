@@ -1,13 +1,17 @@
 @import '../base/variables';
+@import '../base/fonts';
 
-.mat-form-field,
-.mat-form-field.mat-form-field-appearance-legacy {
+// Могло поломать другие стили, нужно проверить на остальных инпутах
+.mat-form-field__form-control .mat-form-field-should-float {
   .mat-form-field-wrapper {
+    @extend %regular_font_basic;
+    font-size: 16px;
+    line-height: 24px;
+
     .mat-input-element {
       padding: 10px 15px;
 
       width: 100%;
-      height: 36px;
 
       color: $dark_1;
       background-color: $light_2;
@@ -28,9 +32,6 @@
         overflow: visible;
 
         .mat-form-field-label {
-          position: relative;
-          top: -28px;
-
           display: inline;
           overflow: visible;
 
@@ -62,7 +63,7 @@
 
     .mat-form-field-infix {
       .mat-input-element {
-        //color: $dark_1;
+        color: $dark_1;
       }
     }
   }

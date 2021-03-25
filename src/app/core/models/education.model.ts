@@ -18,7 +18,6 @@ export interface EducationPlace {
 }
 
 export class EducationModel {
-  private _startYear: number;
   private _educationInstitution: string;
   public get educationInstitution(): string {
     return this._educationInstitution;
@@ -30,6 +29,10 @@ export class EducationModel {
   private _studyType: StudyType;
   public get studyType(): StudyType {
     return this._studyType;
+  }
+  private _startYear: number;
+  public get startYear(): number {
+    return this._startYear;
   }
   private _endYear: number;
   public get endYear(): number {

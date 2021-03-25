@@ -75,6 +75,7 @@
       </div>
     </div>
     <div class="section__content">
+      <ng-container *ngTemplateOutlet="editForm"></ng-container>
       <div *ngFor="let place of institutes" class="row">
         <div class="row__main-info">
           <!--1 column-->
@@ -187,3 +188,81 @@
     </div>
   </div>
 </div>
+
+<!-- edit form -->
+<ng-template #editForm>
+  <div class="row">
+    <div class="row__edit">
+      <mat-form-field
+        class="mat-form-field__form-control"
+        appearance="none"
+        floatLabel="always"
+      >
+        <mat-label>Учебное заведение</mat-label>
+        <input
+          matInput
+          placeholder="Введите название заведения"
+          [value]="selectedEducationItem.educationInstitution"
+        />
+      </mat-form-field>
+      <mat-form-field
+        class="mat-form-field__form-control"
+        appearance="none"
+        floatLabel="always"
+      >
+        <mat-label>Специализация</mat-label>
+        <input
+          matInput
+          placeholder="Введите название специализации"
+          [value]="selectedEducationItem.specialization"
+        />
+      </mat-form-field>
+      <mat-form-field
+        class="mat-form-field__form-control"
+        appearance="none"
+        floatLabel="always"
+      >
+        <mat-label>Формат обучения</mat-label>
+        <mat-form-field class="mat-form-field_default-select" appearance="none">
+          <mat-select
+            class="select"
+            placeholder="Показать все"
+            [value]="selectedEducationItem.studyType"
+          >
+            <mat-option>очная</mat-option>
+            <mat-option>очно-заочная</mat-option>
+            <mat-option>заочная</mat-option>
+            <mat-option>офлайн</mat-option>
+            <mat-option>онлайн</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-form-field>
+      <mat-form-field
+        class="mat-form-field__form-control"
+        appearance="none"
+        floatLabel="always"
+      >
+        <mat-label *ngIf="selectedEducationItem.startYear"
+          >Год начала</mat-label
+        >
+        <input
+          matInput
+          placeholder="Введите название специализации"
+          [value]="selectedEducationItem.startYear"
+        />
+      </mat-form-field>
+      <mat-form-field
+        class="mat-form-field__form-control"
+        appearance="none"
+        floatLabel="always"
+      >
+        <mat-label>Год окончания</mat-label>
+        <input
+          matInput
+          placeholder="Введите название специализации"
+          [value]="selectedEducationItem.endYear"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+</ng-template>

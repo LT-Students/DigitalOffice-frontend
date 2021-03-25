@@ -113,3 +113,52 @@ select {
     }
   }
 }
+
+.mat-form-field_none {
+  .mat-form-field-wrapper,
+  .mat-form-field-flex,
+  .mat-form-field-appearance-legacy,
+  .mat-form-field-label-wrapper {
+    padding: 0;
+
+    width: 0;
+  }
+
+  .mat-select-value {
+    padding: 0 15px;
+
+    height: 36px;
+
+    line-height: 36px;
+
+    .mat-select-placeholder {
+      @extend .regular_text;
+      @extend .text_color_dark-1;
+    }
+  }
+
+  .mat-select-arrow {
+    display: none;
+  }
+
+  .mat-form-field-infix {
+    padding: 0;
+
+    border: none;
+
+    .mat-select {
+      font-family: $header_font;
+      font-size: 16px;
+      font-weight: normal;
+      line-height: 24px;
+    }
+
+    .mat-form-field-label-wrapper {
+      position: static;
+
+      overflow: visible;
+
+      height: 0;
+    }
+  }
+}
