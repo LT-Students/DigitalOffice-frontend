@@ -92,7 +92,7 @@
       "prettier --write",
       "stylelint --fix"
     ],
-    "src/**/*.{ts,html}": [
+    "src/**/*.{ts,html}, !src/data/api/**/*.ts": [
       "prettier --write",
       "eslint"
     ]
