@@ -116,6 +116,7 @@ export class EmployeeInfoComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.employeeInfoForm.value);
     this.updateEmployeeInfo();
     this.toggleEditMode();
     this.employeeInfoForm.reset();

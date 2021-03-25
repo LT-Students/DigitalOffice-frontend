@@ -1,0 +1,34 @@
+@import '../../../../stylesheets/base/variables';
+
+.employee-info__label {
+  align-self: flex-start;
+
+  display: block;
+
+  &_for_textarea {
+    align-self: stretch;
+
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.employee-info__required {
+  margin-left: 1px;
+
+  vertical-align: top;
+
+  color: $negative_accent;
+}
+
+.employee-info__form-field {
+  display: block;
+}
+
+.employee-info__input {
+  font-family: $regular_font !important;
+}
+
+.small_text {
+  margin: 14px 0 3px 0;
+}

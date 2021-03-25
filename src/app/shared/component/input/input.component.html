@@ -1,0 +1,22 @@
+<ng-container *ngIf="isEdit; else textBlock">
+  <label class="small_text text-gray employee-info__label" [for]="controlName"
+    >{{ label
+    }}<sup *ngIf="required" class="employee-info__required">*</sup></label
+  >
+  <mat-form-field class="employee-info__form-field" appearance="fill">
+    <input
+      matInput
+      class="bg-light_2 employee-info__input"
+      [value]="value"
+      [formControl]="control"
+      [id]="controlName"
+      [name]="controlName"
+      [type]="type"
+      [placeholder]="placeholder"
+  /></mat-form-field>
+</ng-container>
+
+<ng-template #textBlock>
+  <h3 class="small_text text-gray">{{ label }}</h3>
+  <div>{{ value }}</div>
+</ng-template>

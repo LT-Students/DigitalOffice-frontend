@@ -13,6 +13,7 @@ import { SearchComponent } from './component/search/search.component';
 import { HeaderComponent } from './component/header/header.component';
 import { EmployeePageComponent } from './component/employee-page/employee-page.component';
 import { EmployeeInfoComponent } from './component/employee-info/employee-info.component';
+import { InputComponent } from './component/input/input.component';
 
 @NgModule({
   declarations: [
@@ -25,9 +26,11 @@ import { EmployeeInfoComponent } from './component/employee-info/employee-info.c
     HeaderComponent,
     EmployeePageComponent,
     EmployeeInfoComponent,
+    InputComponent,
   ],
   imports: [CommonModule, RouterModule, MaterialModule, ReactiveFormsModule],
   exports: [
+    InputComponent,
     ButtonComponent,
     SelectComponent,
     DashboardComponent,
