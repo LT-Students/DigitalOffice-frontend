@@ -37,8 +37,8 @@ export class DashboardComponent implements OnInit {
             photo: './assets/images/girl.png',
           },
           totalTime: {
-            hours: 280,
-            minutes: 40,
+            hour: 280,
+            minute: 40,
           },
         },
         {
@@ -48,8 +48,8 @@ export class DashboardComponent implements OnInit {
             photo: './assets/images/girl.png',
           },
           totalTime: {
-            hours: 280,
-            minutes: 40,
+            hour: 280,
+            minute: 40,
           },
         },
         {
@@ -59,8 +59,8 @@ export class DashboardComponent implements OnInit {
             photo: './assets/images/girl.png',
           },
           totalTime: {
-            hours: 280,
-            minutes: 40,
+            hour: 280,
+            minute: 40,
           },
         },
         {
@@ -70,8 +70,8 @@ export class DashboardComponent implements OnInit {
             photo: './assets/images/girl.png',
           },
           totalTime: {
-            hours: 280,
-            minutes: 40,
+            hour: 280,
+            minute: 40,
           },
         },
         {
@@ -81,8 +81,8 @@ export class DashboardComponent implements OnInit {
             photo: './assets/images/girl.png',
           },
           totalTime: {
-            hours: 280,
-            minutes: 40,
+            hour: 280,
+            minute: 40,
           },
         },
       ],

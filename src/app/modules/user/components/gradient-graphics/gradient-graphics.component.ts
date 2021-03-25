@@ -3,15 +3,8 @@ import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
 import { DatePeriod } from '@data/models/date-period';
-import { AttendanceService } from '../../../../core/services/attendance.service';
-import { DateService } from '../../../../core/services/date.service';
-
-export interface IDailyHoursData {
-  day: string;
-  month: string;
-  hours: number;
-  minutes: number;
-}
+import { AttendanceService } from '@app/services/attendance.service';
+import { DateService } from '@app/services/date.service';
 
 @Component({
   selector: 'do-gradient-graphics',
