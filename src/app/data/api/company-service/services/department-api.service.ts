@@ -15,7 +15,10 @@ import { AddDepartmentRequest } from '../models/add-department-request';
   providedIn: 'root',
 })
 export class DepartmentApiService extends BaseService {
-  constructor(config: ApiConfiguration, http: HttpClient) {
+  constructor(
+    config: ApiConfiguration,
+    http: HttpClient
+  ) {
     super(config, http);
   }
 
@@ -34,30 +37,23 @@ export class DepartmentApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addDepartment$Response(params: {
-    body: AddDepartmentRequest;
+    body: AddDepartmentRequest
   }): Observable<StrictHttpResponse<string>> {
-    const rb = new RequestBuilder(
-      this.rootUrl,
-      DepartmentApiService.AddDepartmentPath,
-      'post'
-    );
+
+    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.AddDepartmentPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http
-      .request(
-        rb.build({
-          responseType: 'json',
-          accept: 'application/json',
-        })
-      )
-      .pipe(
-        filter((r: any) => r instanceof HttpResponse),
-        map((r: HttpResponse<any>) => {
-          return r as StrictHttpResponse<string>;
-        })
-      );
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
   }
 
   /**
@@ -69,9 +65,13 @@ export class DepartmentApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addDepartment(params: { body: AddDepartmentRequest }): Observable<string> {
+  addDepartment(params: {
+    body: AddDepartmentRequest
+  }): Observable<string> {
+
     return this.addDepartment$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
+
 }

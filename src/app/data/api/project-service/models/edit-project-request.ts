@@ -5,3 +5,4 @@ export interface EditProjectRequest {
   patch: Array<PatchDocument>;
   projectId: string;
 }
+

@@ -1,10 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
+import { UserConnection } from './user-connection';
+import { UserStatus } from './user-status';
 export interface UserRequest {
+
   /**
    * File global unique identifier.
    */
   avatarFileId?: null | string;
+  connections?: Array<UserConnection>;
 
   /**
    * User mail.
@@ -24,7 +28,7 @@ export interface UserRequest {
   /**
    * Mark whether the user is an active.
    */
-  isActive: boolean;
+  isActive?: boolean;
 
   /**
    * Mark whether the user is an administrator.
@@ -52,7 +56,9 @@ export interface UserRequest {
   password: string;
 
   /**
-   * User status.
+   * Array of user skills
    */
-  status?: null | string;
+  skills?: null | Array<string>;
+  status?: UserStatus;
 }
+

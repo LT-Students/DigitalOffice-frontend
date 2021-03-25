@@ -2,15 +2,15 @@
   "openapi": "3.0.0",
   "info": {
     "title": "TimeManagement service",
-    "description": "TimeManagement is an API intended to work with the \n  - Work time\n  - Leave time\n",
-    "version": "1.1.1"
+    "description": "TimeManagement is an API intended to work with the \n  - Work time\n  - Leave time\n\n**What's new since 1.1.2:**\n  * `Updated server urls.`\n  * `Added header parameter (securityToken)`\n  \n",
+    "version": "1.1.2"
   },
   "servers": [
     {
-      "url": "https://localhost:9805/api"
+      "url": "https://84.201.146.123:9805/api"
     },
     {
-      "url": "http://localhost:9806/api"
+      "url": "http://84.201.146.123:9806/api"
     }
   ],
   "paths": {
@@ -21,6 +21,20 @@
         ],
         "summary": "Sets the leavetime for the user.",
         "operationId": "addLeaveTime",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Needed for set leavetime.",
           "content": {
@@ -61,6 +75,20 @@
         ],
         "summary": "Sets the worktime for the user.",
         "operationId": "addWorkTime",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Needed for set worktime.",
           "content": {
@@ -101,6 +129,20 @@
         ],
         "summary": "Edit the worktime by Id.",
         "operationId": "editWorkTime",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Needed for edit worktime.",
           "content": {
@@ -258,6 +300,20 @@
             "type": "string",
             "description": "Description for alloted time."
           }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "required": true,
+        "style": "simple",
+        "explode": false,
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
         }
       }
     }

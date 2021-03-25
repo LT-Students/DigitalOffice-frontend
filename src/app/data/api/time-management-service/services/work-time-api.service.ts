@@ -16,7 +16,10 @@ import { WorkTimeRequest } from '../models/work-time-request';
   providedIn: 'root',
 })
 export class WorkTimeApiService extends BaseService {
-  constructor(config: ApiConfiguration, http: HttpClient) {
+  constructor(
+    config: ApiConfiguration,
+    http: HttpClient
+  ) {
     super(config, http);
   }
 
@@ -36,33 +39,27 @@ export class WorkTimeApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addWorkTime$Response(params: {
+
     /**
      * Needed for set worktime.
      */
-    body: WorkTimeRequest;
+    body: WorkTimeRequest
   }): Observable<StrictHttpResponse<string>> {
-    const rb = new RequestBuilder(
-      this.rootUrl,
-      WorkTimeApiService.AddWorkTimePath,
-      'post'
-    );
+
+    const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.AddWorkTimePath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http
-      .request(
-        rb.build({
-          responseType: 'json',
-          accept: 'application/json',
-        })
-      )
-      .pipe(
-        filter((r: any) => r instanceof HttpResponse),
-        map((r: HttpResponse<any>) => {
-          return r as StrictHttpResponse<string>;
-        })
-      );
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<string>;
+      })
+    );
   }
 
   /**
@@ -76,11 +73,13 @@ export class WorkTimeApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addWorkTime(params: {
+
     /**
      * Needed for set worktime.
      */
-    body: WorkTimeRequest;
+    body: WorkTimeRequest
   }): Observable<string> {
+
     return this.addWorkTime$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
@@ -102,35 +101,27 @@ export class WorkTimeApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editWorkTime$Response(params: {
+
     /**
      * Needed for edit worktime.
      */
-    body: EditWorkTimeRequest;
+    body: EditWorkTimeRequest
   }): Observable<StrictHttpResponse<void>> {
-    const rb = new RequestBuilder(
-      this.rootUrl,
-      WorkTimeApiService.EditWorkTimePath,
-      'post'
-    );
+
+    const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.EditWorkTimePath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http
-      .request(
-        rb.build({
-          responseType: 'text',
-          accept: '*/*',
-        })
-      )
-      .pipe(
-        filter((r: any) => r instanceof HttpResponse),
-        map((r: HttpResponse<any>) => {
-          return (r as HttpResponse<any>).clone({
-            body: undefined,
-          }) as StrictHttpResponse<void>;
-        })
-      );
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: '*/*'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      })
+    );
   }
 
   /**
@@ -144,13 +135,16 @@ export class WorkTimeApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editWorkTime(params: {
+
     /**
      * Needed for edit worktime.
      */
-    body: EditWorkTimeRequest;
+    body: EditWorkTimeRequest
   }): Observable<void> {
+
     return this.editWorkTime$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
     );
   }
+
 }
