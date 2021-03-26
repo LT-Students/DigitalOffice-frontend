@@ -21,15 +21,13 @@
     <div class="manage-board">
       <span class="h3 h3_dark_1">Управление системой</span>
       <div class="manage-board__content">
-        <a routerLink="/admin/new-employee">
-          <button class="btn-first">
-            <img
-              src="assets/admin/dashboard/add-employee-icon.png"
-              alt="add-employee-icon"
-            />
-            <span class="h4 h4_ultimate-orange">Добавить сотрудника</span>
-          </button>
-        </a>
+        <button class="btn-first" routerLink="/admin/new-employee">
+          <img
+            src="assets/admin/dashboard/add-employee-icon.png"
+            alt="add-employee-icon"
+          />
+          <span class="h4 h4_ultimate-orange">Добавить сотрудника</span>
+        </button>
         <button class="btn-last" (click)="onOpenNewProject()">
           <img
             src="assets/admin/dashboard/add-project-icon.png"

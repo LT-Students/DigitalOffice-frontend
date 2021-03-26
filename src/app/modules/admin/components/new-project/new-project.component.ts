@@ -37,6 +37,7 @@ export class NewProjectComponent implements OnInit {
       shortName: ['', [Validators.required, Validators.maxLength(32)]],
       departments: ['', [Validators.required, Validators.maxLength(32)]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
+      checkControl: ['', [Validators.required]],
       additionInfo: [''],
       department: [''],
     });
