@@ -20,10 +20,7 @@
               matInput
               [value]="task.description"
               (keydown.enter)="
-                changeDescription(
-                  task.projectId,
-                  task.id
-                )($event.target.value)
+                changeDescription(task.projectId, task.id)($event.target.value)
               "
             ></textarea>
           </mat-form-field>

@@ -3,8 +3,8 @@ import { DateAdapter } from '@angular/material/core';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AttendanceService } from '../../../../core/services/attendance.service';
 import { DayOfWeek } from '@data/models/day-of-week';
+import { AttendanceService } from '../../../../core/services/attendance.service';
 import { DateService } from '../../../../core/services/date.service';
 
 @Component({

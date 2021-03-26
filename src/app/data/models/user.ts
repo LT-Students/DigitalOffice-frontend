@@ -1,4 +1,4 @@
-export interface User {
+export interface IUser {
   id?: string;
   firstName?: string;
   lastName?: string;
@@ -9,4 +9,7 @@ export interface User {
   isAdmin?: boolean;
   certificatesIds?: null | string[];
   achievementsIds?: null | string[];
+  projectsCount?: number;
+  level?: string;
+  specialization?: string;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 import { DatePeriod } from '@data/models/date-period';
+import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 import { Project } from '../../../../data/models/project';
 
 @Component({

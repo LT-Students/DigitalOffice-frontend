@@ -2,7 +2,6 @@
 /* eslint-disable */
 import { ProjectClosedReason } from './project-closed-reason';
 export interface Project {
-
   /**
    * Project closing time. May be empty if the project is not closed.
    */
@@ -16,4 +15,3 @@ export interface Project {
   name?: string;
   shortName?: string;
 }
-

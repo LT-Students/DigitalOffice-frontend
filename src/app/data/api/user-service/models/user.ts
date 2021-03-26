@@ -2,7 +2,6 @@
 /* eslint-disable */
 import { UserStatus } from './user-status';
 export interface User {
-
   /**
    * Certificate files global unique identifiers.
    */
@@ -54,4 +53,3 @@ export interface User {
   middleName?: null | string;
   status?: UserStatus;
 }
-

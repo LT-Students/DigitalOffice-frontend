@@ -15,10 +15,7 @@ import { LeaveTimeRequest } from '../models/leave-time-request';
   providedIn: 'root',
 })
 export class LeaveTimeApiService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
@@ -38,27 +35,33 @@ export class LeaveTimeApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addLeaveTime$Response(params: {
-
     /**
      * Needed for set leavetime.
      */
-    body: LeaveTimeRequest
+    body: LeaveTimeRequest;
   }): Observable<StrictHttpResponse<string>> {
-
-    const rb = new RequestBuilder(this.rootUrl, LeaveTimeApiService.AddLeaveTimePath, 'post');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      LeaveTimeApiService.AddLeaveTimePath,
+      'post'
+    );
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<string>;
+        })
+      );
   }
 
   /**
@@ -72,16 +75,13 @@ export class LeaveTimeApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addLeaveTime(params: {
-
     /**
      * Needed for set leavetime.
      */
-    body: LeaveTimeRequest
+    body: LeaveTimeRequest;
   }): Observable<string> {
-
     return this.addLeaveTime$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
   }
-
 }

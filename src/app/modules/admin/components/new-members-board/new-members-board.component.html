@@ -49,18 +49,23 @@
     </div>
     <div class="new-members">
       <do-new-member
-        *ngFor="let user of users"
-        [newMember]="user"
+        *ngFor="let member of members"
+        [newMember]="member"
+        (checkMember)="onCheckMember($event, member)"
       ></do-new-member>
     </div>
-    <div class="members-form__background" *ngIf="this.users?.length === 0">
+    <div class="members-form__background" *ngIf="this.members?.length === 0">
       <div class="no-members-icon">
         <img src="/assets/images/tumbleweed.png" alt="tumbleweed" />
         <span class="regular_text text_color_gray">Пока тут никого...</span>
       </div>
     </div>
     <div class="members-form__button-container">
-      <button mat-flat-button color="primary" (click)="onChooseMemberClick()">
+      <button
+        mat-flat-button
+        color="primary"
+        [mat-dialog-close]="checkedMembers"
+      >
         Добавить участников
       </button>
     </div>

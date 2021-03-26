@@ -8,5 +8,5 @@ export enum UserStatus {
   Vacation = 'Vacation',
   Sick = 'Sick',
   WorkFromOffice = 'WorkFromOffice',
-  WorkFromHome = 'WorkFromHome'
+  WorkFromHome = 'WorkFromHome',
 }

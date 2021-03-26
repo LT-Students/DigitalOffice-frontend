@@ -1,0 +1,48 @@
+<div class="new-department">
+  <a class="nav-link regular_text" routerLink="/admin/dashboard">
+    <svg xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 1 L1 5 L4 9" />
+    </svg>
+    К дашборду
+  </a>
+  <span class="title h1 h1_dark_2">Новая специализация</span>
+  <div class="form__container">
+    <form
+      autocomplete="off"
+      class="data-form"
+      [formGroup]="specializationForm"
+      (ngSubmit)="postSpecialization()"
+    >
+      <div class="new-specialization__input-container">
+        <div class="new-specialization__input">
+          <label class="h5 h5_dark_1" for="name">Название</label>
+          <mat-form-field>
+            <input matInput type="text" id="name" formControlName="name" />
+          </mat-form-field>
+        </div>
+        <div class="new-specialization__input">
+          <label class="h5 h5_dark_1" for="description">Описание</label>
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              id="description"
+              formControlName="description"
+            />
+          </mat-form-field>
+        </div>
+      </div>
+      <button
+        mat-flat-button
+        color="primary"
+        class="btn-create-department"
+        type="submit"
+        [disabled]="specializationForm.invalid"
+      >
+        <span class="regular_text regular_text_light_1"
+          >Добавить специализацию</span
+        >
+      </button>
+    </form>
+  </div>
+</div>
