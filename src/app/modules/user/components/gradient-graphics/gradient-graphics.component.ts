@@ -2,7 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { IDatePeriod } from '../../../../core/interfaces/date-period.interface';
+import { DatePeriod } from '@data/models/date-period';
 import { AttendanceService } from '../../../../core/services/attendance.service';
 import { DateService } from '../../../../core/services/date.service';
 
@@ -22,7 +22,7 @@ export class GradientGraphicsComponent implements OnInit, OnDestroy {
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   @Input()
-  public timePeriodSelected: IDatePeriod;
+  public timePeriodSelected: DatePeriod;
   @Input()
   public dailyHoursData; // data about day, month, hours, minutes of time period
 

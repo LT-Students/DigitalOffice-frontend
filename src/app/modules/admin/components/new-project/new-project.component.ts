@@ -5,7 +5,6 @@ import {
   Validators,
   FormBuilder,
 } from '@angular/forms';
-import { INewMember } from '@app/interfaces/INewMember';
 import { MatDialog } from '@angular/material/dialog';
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
 import { teamCards, TeamCard } from './team-cards';

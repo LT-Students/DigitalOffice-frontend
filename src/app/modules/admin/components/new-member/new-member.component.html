@@ -7,13 +7,15 @@
   <div class="new-member__info">
     <div class="new-member__img">
       <do-profile-image
-        [src]="newMember.profileImgSrc"
-        *ngIf="newMember.profileImgSrc"
+        [src]="newMember.photo"
+        *ngIf="newMember.photo"
       ></do-profile-image>
     </div>
     <div class="new-member-form">
       <div class="new-member-form__selects">
-        <p class="regular_text text_color_dark-1">{{ newMember.fullName }}</p>
+        <p class="regular_text text_color_dark-1">
+          {{ newMember.lastName + ' ' + newMember.firstName }}
+        </p>
         <div
           class="regular_text text_color_gray"
           *ngIf="newMember.specialization.length > 1; else text"

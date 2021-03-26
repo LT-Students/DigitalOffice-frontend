@@ -2,15 +2,15 @@
   "openapi": "3.0.0",
   "info": {
     "title": "CompanyService",
-    "description": "CompanyService is an API that intended to work with positions and departments.\n-",
-    "version": "1.1.4"
+    "description": "CompanyService is an API that intended to work with positions and departments.\n-\n\n**What's new since 1.1.2:**\n  * `Updated server urls.`\n  * `Added header parameter (securityToken)`",
+    "version": "1.2.0"
   },
   "servers": [
     {
-      "url": "https://localhost:9815/api"
+      "url": "https://84.201.146.123:9815/api"
     },
     {
-      "url": "http://localhost:9816/api"
+      "url": "http://84.201.146.123:9816/api"
     }
   ],
   "paths": {
@@ -108,7 +108,7 @@
         }
       }
     },
-    "/position/addPosition": {
+    "/position/create": {
       "post": {
         "tags": [
           "Position"
@@ -251,7 +251,7 @@
         }
       }
     },
-    "/department/addDepartment": {
+    "/department/create": {
       "post": {
         "tags": [
           "Department"

@@ -3,9 +3,8 @@
 
 New-Item DigitalOffice -ItemType Directory
 
-$allServices = "CheckRightsService", "AuthService", "UserService",
-"MessageService", "FileService", "NewsService",
-"TimeManagementService", "CompanyService"
+$allServices = "CheckRightsService", "MessageService", "FileService",
+ "NewsService", "TimeManagementService", "CompanyService"
 
 cd .\DigitalOffice
 

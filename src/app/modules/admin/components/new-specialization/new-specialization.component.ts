@@ -5,7 +5,6 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
@@ -24,7 +23,6 @@ export class NewSpecializationComponent implements OnInit {
   constructor(
     public positionApiService: PositionApiService,
     private formBuilder: FormBuilder,
-    public dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
 
