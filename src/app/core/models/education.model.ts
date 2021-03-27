@@ -17,9 +17,12 @@ export interface EducationPlace {
   endYear: Date;
   startYear?: Date;
   certificateId?: string;
+  isEditing?: boolean;
 }
 
 export class EducationModel {
+  public isEditing: boolean;
+
   private _educationInstitution: string;
   public get educationInstitution(): string {
     return this._educationInstitution;
@@ -63,6 +66,7 @@ export class EducationModel {
     this._startYear = data.startYear ? data.startYear : null;
     this._endYear = data.endYear ? data.endYear : null;
     this._certificateId = data.certificateId ? data.certificateId : null;
+    this.isEditing = false;
   }
 
   public getEducationalPeriod(): string {

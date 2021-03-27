@@ -96,8 +96,8 @@ export class EmployeePageComponent implements OnInit {
     this.mode = WorkFlowMode.EDIT;
     this.sectionModes = {
       skills: WorkFlowMode.VIEW,
-      education: WorkFlowMode.EDIT,
-      certificates: WorkFlowMode.ADD,
+      education: WorkFlowMode.VIEW,
+      certificates: WorkFlowMode.VIEW,
     };
     this.skillsCtrl = new FormControl();
     this.skills = [
@@ -205,12 +205,12 @@ export class EmployeePageComponent implements OnInit {
     selectedDate: any,
     isStartYearSelected: boolean = false
   ): void {
-    console.log(selectedDate);
+    const dateToSet: Date = new Date(selectedDate.year(), 0, 1);
     if (isStartYearSelected) {
-      this.selectedEducationItem.startYear = selectedDate;
+      this.editForm.patchValue({ startYear: dateToSet });
       this.pickerStartYear.close();
     } else {
-      this.selectedEducationItem.endYear = selectedDate;
+      this.editForm.patchValue({ endYear: dateToSet });
       this.pickerEndYear.close();
     }
   }
@@ -219,6 +219,16 @@ export class EmployeePageComponent implements OnInit {
     if (!this.editForm.valid) {
       return;
     }
+    let itemIndex: number = this.courses.indexOf(this.selectedEducationItem);
+
+    if (itemIndex === -1) {
+      itemIndex = this.institutes.indexOf(this.selectedEducationItem);
+      console.log(itemIndex);
+      this.institutes[itemIndex] = new EducationModel(this.editForm.value);
+    } else {
+      this.courses[itemIndex] = new EducationModel(this.editForm.value);
+    }
+
     console.log(this.editForm.value);
   }
 
@@ -227,12 +237,41 @@ export class EmployeePageComponent implements OnInit {
     console.log(this.sectionModes);
   }
 
-  public datePickerClosed(): void {
-    this.editForm.patchValue({
-      startYear: this.selectedEducationItem.startYear,
-      endYear: this.selectedEducationItem.endYear,
+  public onItemEditClicked(
+    item: EducationModel,
+    course: boolean = false
+  ): void {
+    if (course) {
+      this.sectionModes.certificates = WorkFlowMode.VIEW;
+    } else {
+      this.sectionModes.education = WorkFlowMode.VIEW;
+    }
+    this.selectedEducationItem = item;
+    console.log(this.selectedEducationItem);
+    item.isEditing = true;
+    this.editForm.setValue({
+      educationInstitution: item.educationInstitution
+        ? item.educationInstitution
+        : null,
+      specialization: item.specialization ? item.specialization : null,
+      studyType: item.studyType ? item.studyType : null,
+      endYear: item.endYear ? item.endYear : null,
+      startYear: item.startYear ? item.startYear : null,
+      certificateId: item.certificateId ? item.certificateId : null,
     });
-    console.log(this.editForm.value);
+  }
+
+  public onItemDeleteClicked(
+    item: EducationModel,
+    course: boolean = false
+  ): void {
+    if (course) {
+      const itemIndex: number = this.courses.indexOf(item);
+      this.courses.splice(itemIndex, 1);
+    } else {
+      const itemIndex: number = this.institutes.indexOf(item);
+      this.institutes.splice(itemIndex, 1);
+    }
   }
 
   private _filter(value: string): string[] {

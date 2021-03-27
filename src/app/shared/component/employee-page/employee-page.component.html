@@ -80,47 +80,51 @@
       </div>
     </div>
     <div class="section__content">
-      <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>
+      <div *ngIf="sectionModes.education === workFlowMode.ADD" class="row">
+        <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>
+      </div>
       <div *ngFor="let place of institutes" class="row">
-        <div class="row__main-info">
-          <!--1 column-->
-          <div class="col">
-            <p class="regular_text text-gray1">
-              {{ place.studyType | titlecase }}
-            </p>
-            <p class="regular_text text-dark_2">
-              {{ place.getEducationalPeriod() }}
-            </p>
+        <ng-container *ngIf="!place.isEditing; else editFormTemplate">
+          <div class="row__main-info">
+            <!--1 column-->
+            <div class="col">
+              <p class="regular_text text-gray1">
+                {{ place.studyType | titlecase }}
+              </p>
+              <p class="regular_text text-dark_2">
+                {{ place.getEducationalPeriod() }}
+              </p>
+            </div>
+            <!--2 column-->
+            <div class="col">
+              <p class="col__header regular_text text-gray1">
+                {{ place.educationInstitution }}
+              </p>
+              <p class="regular_text text-dark_2">{{ place.specialization }}</p>
+            </div>
           </div>
-          <!--2 column-->
-          <div class="col">
-            <p class="col__header regular_text text-gray1">
-              {{ place.educationInstitution }}
-            </p>
-            <p class="regular_text text-dark_2">{{ place.specialization }}</p>
+          <div class="row__edit text-gray1">
+            <mat-form-field class="mat-form-field_none" appearance="none">
+              <mat-select class="none" #matSelect>
+                <mat-option (click)="onItemEditClicked(place)"
+                  ><img
+                    src="assets/svg/edit.svg"
+                    alt="edit"
+                  />&nbsp;Редактировать</mat-option
+                >
+                <mat-option (click)="onItemDeleteClicked(place)"
+                  ><img
+                    src="assets/svg/delete.svg"
+                    alt="delete"
+                  />&nbsp;Удалить</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <button mat-icon-button (click)="matSelect.open()">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
           </div>
-        </div>
-        <div class="row__edit text-gray1">
-          <mat-form-field class="mat-form-field_none" appearance="none">
-            <mat-select class="none" #matSelect>
-              <mat-option
-                ><img
-                  src="assets/svg/edit.svg"
-                  alt="edit"
-                />&nbsp;Редактировать</mat-option
-              >
-              <mat-option
-                ><img
-                  src="assets/svg/delete.svg"
-                  alt="delete"
-                />&nbsp;Удалить</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-          <button mat-icon-button (click)="matSelect.open()">
-            <mat-icon>more_horiz</mat-icon>
-          </button>
-        </div>
+        </ng-container>
       </div>
     </div>
   </div>
@@ -172,13 +176,13 @@
           <!--    Trick, для работы dropdown. TODO: Сделать нормальную собственную реализацию      -->
           <mat-form-field class="mat-form-field_none" appearance="none">
             <mat-select class="none" #matSelect>
-              <mat-option
+              <mat-option (click)="onItemEditClicked(course, true)"
                 ><img
                   src="assets/svg/edit.svg"
                   alt="edit"
                 />&nbsp;Редактировать</mat-option
               >
-              <mat-option
+              <mat-option (click)="onItemDeleteClicked(course, true)"
                 ><img
                   src="assets/svg/delete.svg"
                   alt="delete"
@@ -202,123 +206,118 @@
 
 <!-- edit form -->
 <ng-template #editFormTemplate>
-  <div class="row">
-    <form
-      class="row__edit-form edit-form"
-      [formGroup]="editForm"
-      (ngSubmit)="onSubmit()"
-      (reset)="onReset()"
+  <form
+    class="row__edit-form edit-form"
+    [formGroup]="editForm"
+    (ngSubmit)="onSubmit()"
+    (reset)="onReset()"
+  >
+    <mat-form-field
+      class="mat-form-field__form-control edit-form__institution"
+      appearance="none"
+      floatLabel="always"
     >
-      <mat-form-field
-        class="mat-form-field__form-control edit-form__institution"
-        appearance="none"
-        floatLabel="always"
-      >
-        <mat-label>Учебное заведение</mat-label>
-        <input
-          matInput
-          placeholder="Введите название заведения"
-          formControlName="educationInstitution"
-          [value]="selectedEducationItem.educationInstitution"
-        />
-      </mat-form-field>
-      <mat-form-field
-        class="mat-form-field__form-control edit-form__specialization"
-        appearance="none"
-        floatLabel="always"
-      >
-        <mat-label>Специализация</mat-label>
-        <input
-          matInput
-          formControlName="specialization"
-          placeholder="Введите название специализации"
-          [value]="selectedEducationItem.specialization"
-        />
-      </mat-form-field>
-      <mat-form-field
-        class="mat-form-field__form-control"
-        appearance="none"
-        floatLabel="always"
-      >
-        <mat-label>Формат обучения</mat-label>
-        <mat-form-field class="mat-form-field_default-select" appearance="none">
-          <mat-select
-            class="select"
-            placeholder="Показать все"
-            formControlName="studyType"
+      <mat-label>Учебное заведение</mat-label>
+      <input
+        matInput
+        placeholder="Введите название заведения"
+        formControlName="educationInstitution"
+        [value]="selectedEducationItem.educationInstitution"
+      />
+    </mat-form-field>
+    <mat-form-field
+      class="mat-form-field__form-control edit-form__specialization"
+      appearance="none"
+      floatLabel="always"
+    >
+      <mat-label>Специализация</mat-label>
+      <input
+        matInput
+        formControlName="specialization"
+        placeholder="Введите название специализации"
+        [value]="selectedEducationItem.specialization"
+      />
+    </mat-form-field>
+    <mat-form-field
+      class="mat-form-field__form-control"
+      appearance="none"
+      floatLabel="always"
+    >
+      <mat-label>Формат обучения</mat-label>
+      <mat-form-field class="mat-form-field_default-select" appearance="none">
+        <mat-select
+          class="select"
+          placeholder="Показать все"
+          formControlName="studyType"
+        >
+          <!--              [(ngModel)]='selectedEducationItem.studyType'-->
+          <!--              [value]="selectedEducationItem.studyType"-->
+          <mat-option
+            *ngFor="let studyType of studyTypes"
+            [value]="studyType"
+            >{{ studyType }}</mat-option
           >
-            <!--              [(ngModel)]='selectedEducationItem.studyType'-->
-            <!--              [value]="selectedEducationItem.studyType"-->
-            <mat-option
-              *ngFor="let studyType of studyTypes"
-              [value]="studyType"
-              >{{ studyType }}</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
+        </mat-select>
       </mat-form-field>
-      <mat-form-field
-        class="mat-form-field__form-control"
-        appearance="none"
-        floatLabel="always"
-      >
-        <mat-label *ngIf="selectedEducationItem.startYear"
-          >Год начала
-        </mat-label>
-        <input
-          matInput
-          [matDatepicker]="pickerStartYear"
-          [value]="selectedEducationItem.startYear"
-          formControlName="startYear"
-          placeholder="ХХХХ"
-          disabled
-        />
-        <mat-datepicker-toggle matSuffix [for]="pickerStartYear">
-          <button mat-icon-button>
-            <img src="assets/svg/calendar.svg" alt="calendar" />
-          </button>
-        </mat-datepicker-toggle>
-        <mat-datepicker
-          #pickerStartYear
-          startView="multi-year"
-          disabled="false"
-          (yearSelected)="onYearSelected($event, true)"
-          (closed)="datePickerClosed()"
-        ></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field
-        class="mat-form-field__form-control"
-        appearance="none"
-        floatLabel="always"
-      >
-        <mat-label>Год окончания</mat-label>
-        <input
-          matInput
-          [matDatepicker]="pickerEndYear"
-          [value]="selectedEducationItem.endYear"
-          formControlName="endYear"
-          placeholder="ХХХХ"
-          disabled
-        />
-        <mat-datepicker-toggle matSuffix [for]="pickerEndYear">
-          <button mat-icon-button>
-            <img src="assets/svg/calendar.svg" alt="calendar" />
-          </button>
-        </mat-datepicker-toggle>
-        <mat-datepicker
-          #pickerEndYear
-          startView="multi-year"
-          disabled="false"
-          (yearSelected)="onYearSelected($event)"
-        ></mat-datepicker>
-      </mat-form-field>
-      <button mat-flat-button>
-        <img src="assets/svg/pin.svg" alt="ping" />&nbsp;Загрузить сертификат
-      </button>
-      <div class="edit-form__action">
-        <button mat-flat-button color="warn" type="reset">Отменить</button>
-        <button mat-flat-button color="primary" type="submit">Сохранить</button>
-      </div>
-    </form>
-  </div>
+    </mat-form-field>
+    <mat-form-field
+      class="mat-form-field__form-control"
+      appearance="none"
+      floatLabel="always"
+    >
+      <mat-label *ngIf="selectedEducationItem.startYear">Год начала </mat-label>
+      <input
+        matInput
+        [matDatepicker]="pickerStartYear"
+        [value]="selectedEducationItem.startYear"
+        formControlName="startYear"
+        placeholder="ХХХХ"
+        disabled
+      />
+      <mat-datepicker-toggle matSuffix [for]="pickerStartYear">
+        <button mat-icon-button>
+          <img src="assets/svg/calendar.svg" alt="calendar" />
+        </button>
+      </mat-datepicker-toggle>
+      <mat-datepicker
+        #pickerStartYear
+        startView="multi-year"
+        disabled="false"
+        (yearSelected)="onYearSelected($event, true)"
+      ></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field
+      class="mat-form-field__form-control"
+      appearance="none"
+      floatLabel="always"
+    >
+      <mat-label>Год окончания</mat-label>
+      <input
+        matInput
+        [matDatepicker]="pickerEndYear"
+        [value]="selectedEducationItem.endYear"
+        formControlName="endYear"
+        placeholder="ХХХХ"
+        disabled
+      />
+      <mat-datepicker-toggle matSuffix [for]="pickerEndYear">
+        <button mat-icon-button>
+          <img src="assets/svg/calendar.svg" alt="calendar" />
+        </button>
+      </mat-datepicker-toggle>
+      <mat-datepicker
+        #pickerEndYear
+        startView="multi-year"
+        disabled="false"
+        (yearSelected)="onYearSelected($event)"
+      ></mat-datepicker>
+    </mat-form-field>
+    <button mat-flat-button>
+      <img src="assets/svg/pin.svg" alt="ping" />&nbsp;Загрузить сертификат
+    </button>
+    <div class="edit-form__action">
+      <button mat-flat-button color="warn" type="reset">Отменить</button>
+      <button mat-flat-button color="primary" type="submit">Сохранить</button>
+    </div>
+  </form>
 </ng-template>
