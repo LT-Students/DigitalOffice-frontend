@@ -6,17 +6,25 @@ import {
   MatAutocomplete,
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter,
+} from '@angular/material-moment-adapter';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
   EDIT = 'EDIT',
   VIEW = 'VIEW',
+  ADD = 'ADD',
 }
 
 export const DATE_FORMAT = {
@@ -29,6 +37,12 @@ export const DATE_FORMAT = {
   },
 };
 
+export interface Modes {
+  skills: WorkFlowMode;
+  education: WorkFlowMode;
+  certificates: WorkFlowMode;
+}
+
 @Component({
   selector: 'do-employee-page',
   templateUrl: './employee-page.component.html',
@@ -37,10 +51,10 @@ export const DATE_FORMAT = {
     {
       provide: DateAdapter,
       useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    {provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT},
-  ]
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
+  ],
 })
 export class EmployeePageComponent implements OnInit {
   public visible: boolean;
@@ -56,9 +70,22 @@ export class EmployeePageComponent implements OnInit {
   public courses: EducationModel[];
   public selectedEducationItem: EducationModel;
   readonly separatorKeysCodes: number[];
+  public sectionModes: Modes;
+
+  public studyTypes = [
+    StudyType.ABSENTIA,
+    StudyType.CONFRONT,
+    StudyType.PARTTIME,
+    StudyType.OFFLINE,
+    StudyType.ONLINE,
+  ];
+
+  public editForm: FormGroup;
 
   @ViewChild('skillsInput') skillsInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  @ViewChild('pickerStartYear') pickerStartYear: MatDatepicker<Date>;
+  @ViewChild('pickerEndYear') pickerEndYear: MatDatepicker<Date>;
 
   constructor() {
     this.visible = true;
@@ -67,6 +94,11 @@ export class EmployeePageComponent implements OnInit {
     this.addOnBlur = true;
     this.separatorKeysCodes = [ENTER, COMMA];
     this.mode = WorkFlowMode.EDIT;
+    this.sectionModes = {
+      skills: WorkFlowMode.VIEW,
+      education: WorkFlowMode.EDIT,
+      certificates: WorkFlowMode.ADD,
+    };
     this.skillsCtrl = new FormControl();
     this.skills = [
       'Atlassian Jira',
@@ -118,7 +150,16 @@ export class EmployeePageComponent implements OnInit {
       specialization: 'Информационная безопасность',
       studyType: StudyType.ABSENTIA,
       startYear: new Date(2018, 0, 1),
-      endYear: new Date(2020, 0, 1)
+      endYear: new Date(2020, 0, 1),
+    });
+
+    this.editForm = new FormGroup({
+      educationInstitution: new FormControl(''),
+      specialization: new FormControl(''),
+      studyType: new FormControl(''),
+      endYear: new FormControl(''),
+      startYear: new FormControl(''),
+      certificateId: new FormControl(''),
     });
 
     this.filteredSkills = this.skillsCtrl.valueChanges.pipe(
@@ -160,7 +201,10 @@ export class EmployeePageComponent implements OnInit {
     this.skillsCtrl.setValue(null);
   }
 
-  public onYearSelected(selectedDate: any, isStartYearSelected: boolean = false): void {
+  public onYearSelected(
+    selectedDate: any,
+    isStartYearSelected: boolean = false
+  ): void {
     console.log(selectedDate);
     if (isStartYearSelected) {
       this.selectedEducationItem.startYear = selectedDate;
@@ -169,6 +213,26 @@ export class EmployeePageComponent implements OnInit {
       this.selectedEducationItem.endYear = selectedDate;
       this.pickerEndYear.close();
     }
+  }
+
+  public onSubmit(): void {
+    if (!this.editForm.valid) {
+      return;
+    }
+    console.log(this.editForm.value);
+  }
+
+  public onReset(): void {
+    this.sectionModes.education = WorkFlowMode.VIEW;
+    console.log(this.sectionModes);
+  }
+
+  public datePickerClosed(): void {
+    this.editForm.patchValue({
+      startYear: this.selectedEducationItem.startYear,
+      endYear: this.selectedEducationItem.endYear,
+    });
+    console.log(this.editForm.value);
   }
 
   private _filter(value: string): string[] {

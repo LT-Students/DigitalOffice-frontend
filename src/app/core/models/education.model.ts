@@ -4,6 +4,8 @@ export enum StudyType {
   ABSENTIA = 'заочно',
   /* очно */
   CONFRONT = 'очно',
+  /* очно-заочно */
+  PARTTIME = 'очно-заочно',
   OFFLINE = 'offline',
   ONLINE = 'online',
 }
@@ -29,6 +31,9 @@ export class EducationModel {
   private _studyType: StudyType;
   public get studyType(): StudyType {
     return this._studyType;
+  }
+  public set studyType(studyType: StudyType) {
+    this._studyType = studyType;
   }
   private _startYear: Date;
   public get startYear(): Date {
@@ -63,6 +68,6 @@ export class EducationModel {
   public getEducationalPeriod(): string {
     return this._startYear
       ? `${this._startYear.getFullYear()}-${this._endYear.getFullYear()}`
-      : this._endYear.toString();
+      : this._endYear.getFullYear().toString();
   }
 }

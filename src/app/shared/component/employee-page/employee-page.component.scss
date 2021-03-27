@@ -49,11 +49,31 @@
         display: flex;
         justify-content: space-between;
 
-        &__edit-form {
+        .edit-form {
           display: grid;
+
           width: 100%;
-          grid-template-columns: 60% 40%;
+          grid-template-columns: repeat(8, auto);
           grid-gap: 6px 31px;
+
+          &__institution {
+            grid-column: 1 / 5;
+          }
+
+          &__specialization {
+            grid-column: 5 / 9;
+          }
+
+          &__action {
+            display: flex;
+            grid-column: 1 / span 8;
+
+            justify-content: center;
+
+            button:first-child {
+              margin-right: 38px;
+            }
+          }
         }
 
         &__button {
