@@ -49,6 +49,13 @@
         display: flex;
         justify-content: space-between;
 
+        &__edit-form {
+          display: grid;
+          width: 100%;
+          grid-template-columns: 60% 40%;
+          grid-gap: 6px 31px;
+        }
+
         &__button {
           align-self: center;
         }

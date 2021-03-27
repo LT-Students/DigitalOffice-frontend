@@ -2,7 +2,9 @@
 @import '../base/fonts';
 
 // Могло поломать другие стили, нужно проверить на остальных инпутах
-.mat-form-field__form-control .mat-form-field-should-float {
+.mat-form-field.mat-form-field__form-control.mat-form-field-type-mat-input.mat-form-field-can-float.mat-form-field-should-float.mat-form-field-has-label {
+  display: block;
+
   .mat-form-field-wrapper {
     @extend %regular_font_basic;
     font-size: 16px;

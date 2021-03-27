@@ -9,6 +9,9 @@ import {
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -16,10 +19,28 @@ export enum WorkFlowMode {
   VIEW = 'VIEW',
 }
 
+export const DATE_FORMAT = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'YYYY',
+    monthYearLabel: 'YYYY',
+  },
+};
+
 @Component({
   selector: 'do-employee-page',
   templateUrl: './employee-page.component.html',
   styleUrls: ['./employee-page.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    {provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT},
+  ]
 })
 export class EmployeePageComponent implements OnInit {
   public visible: boolean;
@@ -63,16 +84,16 @@ export class EmployeePageComponent implements OnInit {
         educationInstitution: 'Университет ИТМО',
         specialization: 'Информационная безопасность',
         studyType: StudyType.CONFRONT,
-        startYear: 2014,
-        endYear: 2018,
+        startYear: new Date(2014, 0, 1),
+        endYear: new Date(2018, 0, 1),
       }),
       new EducationModel({
         educationInstitution:
           'Национальный исследовательский университет «Высшая школа экономики»',
         specialization: 'Информационная безопасность',
         studyType: StudyType.ABSENTIA,
-        startYear: 2018,
-        endYear: 2020,
+        startYear: new Date(2018, 0, 1),
+        endYear: new Date(2020, 0, 1),
       }),
     ];
     this.courses = [
@@ -80,18 +101,25 @@ export class EmployeePageComponent implements OnInit {
         educationInstitution: 'Бруноям',
         specialization: 'UX/UI дизайнер',
         studyType: StudyType.OFFLINE,
-        endYear: 2020,
+        endYear: new Date(2020, 0, 1),
         certificateId: 'f92f878c-8cad-11eb-8dcd-0242ac130003',
       }),
       new EducationModel({
         educationInstitution: 'HTML-academy',
         specialization: 'Веб-программирование',
         studyType: StudyType.ONLINE,
-        endYear: 2020,
+        endYear: new Date(2020, 0, 1),
         certificateId: 'f92f878c-8cad-11eb-8dcd-0242ac130003',
       }),
     ];
-    this.selectedEducationItem = this.institutes[0];
+    this.selectedEducationItem = new EducationModel({
+      educationInstitution:
+        'Национальный исследовательский университет «Высшая школа экономики»',
+      specialization: 'Информационная безопасность',
+      studyType: StudyType.ABSENTIA,
+      startYear: new Date(2018, 0, 1),
+      endYear: new Date(2020, 0, 1)
+    });
 
     this.filteredSkills = this.skillsCtrl.valueChanges.pipe(
       startWith(null),
@@ -118,7 +146,7 @@ export class EmployeePageComponent implements OnInit {
     }
   }
 
-  remove(skill: string): void {
+  public remove(skill: string): void {
     const index = this.skills.indexOf(skill);
 
     if (index >= 0) {
@@ -126,10 +154,21 @@ export class EmployeePageComponent implements OnInit {
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  public selected(event: MatAutocompleteSelectedEvent): void {
     this.skills.push(event.option.viewValue);
     this.skillsInput.nativeElement.value = '';
     this.skillsCtrl.setValue(null);
+  }
+
+  public onYearSelected(selectedDate: any, isStartYearSelected: boolean = false): void {
+    console.log(selectedDate);
+    if (isStartYearSelected) {
+      this.selectedEducationItem.startYear = selectedDate;
+      this.pickerStartYear.close();
+    } else {
+      this.selectedEducationItem.endYear = selectedDate;
+      this.pickerEndYear.close();
+    }
   }
 
   private _filter(value: string): string[] {

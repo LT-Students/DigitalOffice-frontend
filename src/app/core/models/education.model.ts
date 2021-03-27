@@ -12,8 +12,8 @@ export interface EducationPlace {
   educationInstitution: string;
   specialization: string;
   studyType: StudyType;
-  endYear: number;
-  startYear?: number;
+  endYear: Date;
+  startYear?: Date;
   certificateId?: string;
 }
 
@@ -30,13 +30,19 @@ export class EducationModel {
   public get studyType(): StudyType {
     return this._studyType;
   }
-  private _startYear: number;
-  public get startYear(): number {
+  private _startYear: Date;
+  public get startYear(): Date {
     return this._startYear;
   }
-  private _endYear: number;
-  public get endYear(): number {
+  public set startYear(year: Date) {
+    this._startYear = year;
+  }
+  private _endYear: Date;
+  public get endYear(): Date {
     return this._endYear;
+  }
+  public set endYear(year: Date) {
+    this._endYear = year;
   }
   private _certificateId: string;
   public get certificateId(): string {
@@ -51,13 +57,12 @@ export class EducationModel {
     this._studyType = data.studyType ? data.studyType : null;
     this._startYear = data.startYear ? data.startYear : null;
     this._endYear = data.endYear ? data.endYear : null;
-    this._endYear = data.endYear ? data.endYear : null;
     this._certificateId = data.certificateId ? data.certificateId : null;
   }
 
   public getEducationalPeriod(): string {
     return this._startYear
-      ? `${this._startYear}-${this._endYear}`
+      ? `${this._startYear.getFullYear()}-${this._endYear.getFullYear()}`
       : this._endYear.toString();
   }
 }
