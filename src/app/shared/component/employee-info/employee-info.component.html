@@ -49,12 +49,12 @@
               Рабочие часы
               <mat-icon
                 class="employee-info__hint"
-                svgIcon="question-mark"
                 aria-label="Hint"
                 matTooltipClass="tooltip"
                 matTooltip="Рабочие часы пользователя по вашему часовому поясу"
                 [matTooltipPosition]="'above'"
-              ></mat-icon>
+                >help_outline</mat-icon
+              >
             </h3>
             <div>{{ workingHours }}</div>
             <h3 class="small_text text-gray">В компании с</h3>
@@ -77,12 +77,12 @@
             Отпуск
             <mat-icon
               class="employee-info__hint"
-              svgIcon="question-mark"
               aria-label="Hint"
               matTooltipClass="tooltip"
               matTooltip="Стандартный отпуск - 20 рабочих дней в год"
               [matTooltipPosition]="'above'"
-            ></mat-icon>
+              >help_outline</mat-icon
+            >
           </h2>
           <h3 class="small_text text-gray">Осталось отпускных дней</h3>
           <div>{{ employee.vacationDays }} дней</div>
@@ -92,11 +92,9 @@
               aria-label="Edit employee info"
               (click)="toggleEditMode()"
             >
-              <mat-icon
-                class="employee-info__edit-icon"
-                svgIcon="edit"
-                aria-label="Edit"
-              ></mat-icon>
+              <mat-icon class="employee-info__edit-icon" aria-label="Edit">
+                <img src="assets/svg/edit.svg" alt="Edit" />
+              </mat-icon>
             </button>
           </div>
         </ng-container>
@@ -284,12 +282,12 @@
             Рабочие часы
             <mat-icon
               class="employee-info__hint"
-              svgIcon="question-mark"
               aria-label="Hint"
               matTooltipClass="tooltip"
               matTooltip="Рабочие часы пользователя по вашему часовому поясу"
               [matTooltipPosition]="'above'"
-            ></mat-icon>
+              >help_outline</mat-icon
+            >
           </label>
           <div formGroupName="workingHours">
             <mat-form-field
@@ -340,7 +338,7 @@
               class="employee-info__input"
             />
             <mat-datepicker-toggle matSuffix [for]="workingSince">
-              <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+              <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
             </mat-datepicker-toggle>
             <mat-datepicker #workingSince></mat-datepicker>
           </mat-form-field>
@@ -380,12 +378,12 @@
         Отпуск
         <mat-icon
           class="employee-info__hint"
-          svgIcon="question-mark"
           aria-label="Hint"
           matTooltipClass="tooltip"
           matTooltip="Стандартный отпуск - 20 рабочих дней в год"
           [matTooltipPosition]="'above'"
-        ></mat-icon>
+          >help_outline</mat-icon
+        >
       </h2>
       <label
         class="small_text text-gray employee-info__label"
@@ -464,12 +462,12 @@
             Рабочие часы
             <mat-icon
               class="employee-info__hint"
-              svgIcon="question-mark"
               aria-label="Hint"
               matTooltipClass="tooltip"
               matTooltip="Рабочие часы пользователя по вашему часовому поясу"
               [matTooltipPosition]="'above'"
-            ></mat-icon>
+              >help_outline</mat-icon
+            >
           </h3>
           <div>{{ workingHours }}</div>
           <h3 class="small_text text-gray">В компании с</h3>
@@ -499,12 +497,12 @@
           Отпуск
           <mat-icon
             class="employee-info__hint"
-            svgIcon="question-mark"
             aria-label="Hint"
             matTooltipClass="tooltip"
             matTooltip="Стандартный отпуск - 20 рабочих дней в год"
             [matTooltipPosition]="'above'"
-          ></mat-icon>
+            >help_outline</mat-icon
+          >
         </h2>
       </ng-container>
       <h3 class="small_text text-gray">Осталось отпускных дней</h3>
@@ -522,7 +520,9 @@
     <label
       class="text_white employee-info__label employee-info__upload-button"
       for="photo"
-      ><mat-icon class="employee-info__upload-icon" svgIcon="upload"></mat-icon>
+      ><mat-icon class="employee-info__upload-icon">
+        <img src="assets/svg/arrow-upload-file.svg" alt="Upload photo" />
+      </mat-icon>
       Обновить фото</label
     >
     <input
@@ -540,12 +540,12 @@
     Эмодзи-статус
     <mat-icon
       class="employee-info__hint"
-      svgIcon="question-mark"
       aria-label="Hint"
       matTooltipClass="tooltip"
       matTooltip="Статус будет отображаться рядом с именем пользователя"
       [matTooltipPosition]="'above'"
-    ></mat-icon>
+      >help_outline</mat-icon
+    >
   </label>
   <mat-form-field
     class="employee-info__form-field mat-form-field_default-select"
@@ -581,7 +581,7 @@
       class="employee-info__input"
     />
     <mat-datepicker-toggle matSuffix [for]="birthDate">
-      <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
     </mat-datepicker-toggle>
     <mat-datepicker #birthDate></mat-datepicker>
   </mat-form-field>
@@ -597,7 +597,7 @@
       class="employee-info__input"
     />
     <mat-datepicker-toggle matSuffix [for]="vacationSince">
-      <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
     </mat-datepicker-toggle>
     <mat-datepicker #vacationSince></mat-datepicker>
   </mat-form-field>
@@ -613,7 +613,7 @@
       class="employee-info__input"
     />
     <mat-datepicker-toggle matSuffix [for]="vacationUntil">
-      <mat-icon matDatepickerToggleIcon svgIcon="datepicker"></mat-icon>
+      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
     </mat-datepicker-toggle>
     <mat-datepicker #vacationUntil></mat-datepicker>
   </mat-form-field>

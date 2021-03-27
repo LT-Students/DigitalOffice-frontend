@@ -51,28 +51,10 @@ export class EmployeeInfoComponent implements OnInit {
     workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
   };
 
-  public listOfIcons = [
-    { name: 'question-mark', url: 'assets/svg/question-mark.svg' },
-    { name: 'edit', url: 'assets/svg/edit.svg' },
-    { name: 'datepicker', url: 'assets/svg/datepicker.svg' },
-    { name: 'upload', url: 'assets/svg/arrow-upload-file.svg' },
-  ];
-
   public isEditable = false;
   public previewPhoto = this.employee.photo;
 
-  constructor(
-    private fb: FormBuilder,
-    iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer
-  ) {
-    this.listOfIcons.forEach((icon) => {
-      iconRegistry.addSvgIcon(
-        icon.name,
-        sanitizer.bypassSecurityTrustResourceUrl(icon.url)
-      );
-    });
-  }
+  constructor(private fb: FormBuilder) {}
 
   get fullName() {
     const { lastName, firstName, middleName } = this.employee;
