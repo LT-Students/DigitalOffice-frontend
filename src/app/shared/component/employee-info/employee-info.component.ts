@@ -1,7 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { User } from '@data/models/user';
+
+interface ExtendedUser extends User {
+  emojiStatus: { emoji: string; description: string };
+  aboutMe: string;
+  jobPosition: string;
+  department: string;
+  location: string;
+  office: string;
+  workingRate: number;
+  workingHours: { startAt: string; endAt: string };
+  workingSince: Date;
+  birthDate: Date;
+  phone: string;
+  telegram: string;
+  vacationDays: number;
+  vacationSince: Date;
+  vacationUntil: Date;
+}
 
 @Component({
   selector: 'do-employee-info',
@@ -10,7 +27,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class EmployeeInfoComponent implements OnInit {
   public employeeInfoForm: FormGroup;
-  public employee = {
+  public employee: ExtendedUser = {
+    id: '0',
     firstName: 'Ангелина',
     lastName: 'Иванова',
     middleName: 'Анатольевна',
@@ -29,15 +47,12 @@ export class EmployeeInfoComponent implements OnInit {
     },
     workingSince: new Date(2017, 9),
     birthDate: new Date(1995, 9, 10),
-    contacts: {
-      email: 'evet.pm@lanit-tercom.com',
-      phone: '+7(921)623-25-92',
-      telegram: '@eve01beast',
-    },
+    email: 'evet.pm@lanit-tercom.com',
+    phone: '+7(921)623-25-92',
+    telegram: '@eve01beast',
     vacationDays: 20,
     vacationSince: new Date(2020, 9, 10),
     vacationUntil: new Date(2020, 9, 20),
-    role: 'admin',
   };
 
   public selectOptions = {
@@ -139,11 +154,9 @@ export class EmployeeInfoComponent implements OnInit {
       }),
       workingSince: [''],
       birthDate: [''],
-      contacts: this.fb.group({
-        email: ['', Validators.required],
-        phone: ['', Validators.required],
-        telegram: [''],
-      }),
+      email: ['', Validators.required],
+      phone: ['', Validators.required],
+      telegram: [''],
       vacationSince: ['', Validators.required],
       vacationUntil: ['', Validators.required],
       vacationDays: ['', Validators.required],

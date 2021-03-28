@@ -67,11 +67,11 @@
       <div class="employee-info__additional bg-light_1">
         <h2 class="h4 text-dark_2">Контакты</h2>
         <h3 class="small_text text-gray">E-mail</h3>
-        <div>{{ employee.contacts.email }}</div>
+        <div>{{ employee.email }}</div>
         <h3 class="small_text text-gray">Рабочий номер</h3>
-        <div>{{ employee.contacts.phone }}</div>
+        <div>{{ employee.phone }}</div>
         <h3 class="small_text text-gray">Telegram</h3>
-        <div>{{ employee.contacts.telegram }}</div>
+        <div>{{ employee.telegram }}</div>
         <ng-container *ngIf="canEdit()">
           <h2 class="h4 text-dark_2">
             Отпуск
@@ -359,21 +359,19 @@
     </div>
     <div class="employee-info__additional bg-light_1">
       <h2 class="h4 text-dark_2">Контакты</h2>
-      <ng-container formGroupName="contacts">
-        <label class="small_text text-gray employee-info__label" for="email"
-          >E-mail<sup class="employee-info__required">*</sup></label
-        >
-        <mat-form-field class="employee-info__form-field" appearance="none">
-          <input
-            id="email"
-            formControlName="email"
-            matInput
-            class="bg-light_2 employee-info__input"
-            type="email"
-          />
-        </mat-form-field>
-        <ng-container [ngTemplateOutlet]="contacts"></ng-container>
-      </ng-container>
+      <label class="small_text text-gray employee-info__label" for="email"
+        >E-mail<sup class="employee-info__required">*</sup></label
+      >
+      <mat-form-field class="employee-info__form-field" appearance="none">
+        <input
+          id="email"
+          formControlName="email"
+          matInput
+          class="bg-light_2 employee-info__input"
+          type="email"
+        />
+      </mat-form-field>
+      <ng-container [ngTemplateOutlet]="contacts"></ng-container>
       <h2 class="h4 text-dark_2">
         Отпуск
         <mat-icon
@@ -490,21 +488,19 @@
     <div class="employee-info__additional bg-light_1">
       <h2 class="h4 text-dark_2">Контакты</h2>
       <h3 class="small_text text-gray">E-mail</h3>
-      <div>{{ employee.contacts.email }}</div>
-      <ng-container formGroupName="contacts">
-        <ng-container [ngTemplateOutlet]="contacts"></ng-container>
-        <h2 class="h4 text-dark_2">
-          Отпуск
-          <mat-icon
-            class="employee-info__hint"
-            aria-label="Hint"
-            matTooltipClass="tooltip"
-            matTooltip="Стандартный отпуск - 20 рабочих дней в год"
-            [matTooltipPosition]="'above'"
-            >help_outline</mat-icon
-          >
-        </h2>
-      </ng-container>
+      <div>{{ employee.email }}</div>
+      <ng-container [ngTemplateOutlet]="contacts"></ng-container>
+      <h2 class="h4 text-dark_2">
+        Отпуск
+        <mat-icon
+          class="employee-info__hint"
+          aria-label="Hint"
+          matTooltipClass="tooltip"
+          matTooltip="Стандартный отпуск - 20 рабочих дней в год"
+          [matTooltipPosition]="'above'"
+          >help_outline</mat-icon
+        >
+      </h2>
       <h3 class="small_text text-gray">Осталось отпускных дней</h3>
       <div>{{ employee.vacationDays }} дней</div>
       <span class="text-negative_accent small_text employee-info__memo"
@@ -620,30 +616,28 @@
 </ng-template>
 
 <ng-template #contacts [formGroup]="employeeInfoForm">
-  <ng-container formGroupName="contacts"
-    ><label class="small_text text-gray employee-info__label" for="phone"
-      >Рабочий номер<sup class="employee-info__required">*</sup></label
-    >
-    <mat-form-field class="employee-info__form-field" appearance="none">
-      <input
-        id="phone"
-        formControlName="phone"
-        matInput
-        class="bg-light_2 employee-info__input"
-        type="tel"
-      />
-    </mat-form-field>
-    <label class="small_text text-gray employee-info__label" for="telegram"
-      >Telegram</label
-    >
-    <mat-form-field class="employee-info__form-field" appearance="none">
-      <input
-        id="telegram"
-        formControlName="telegram"
-        matInput
-        class="bg-light_2 employee-info__input"
-        type="text"
-      />
-    </mat-form-field>
-  </ng-container>
+  ><label class="small_text text-gray employee-info__label" for="phone"
+    >Рабочий номер<sup class="employee-info__required">*</sup></label
+  >
+  <mat-form-field class="employee-info__form-field" appearance="none">
+    <input
+      id="phone"
+      formControlName="phone"
+      matInput
+      class="bg-light_2 employee-info__input"
+      type="tel"
+    />
+  </mat-form-field>
+  <label class="small_text text-gray employee-info__label" for="telegram"
+    >Telegram</label
+  >
+  <mat-form-field class="employee-info__form-field" appearance="none">
+    <input
+      id="telegram"
+      formControlName="telegram"
+      matInput
+      class="bg-light_2 employee-info__input"
+      type="text"
+    />
+  </mat-form-field>
 </ng-template>
