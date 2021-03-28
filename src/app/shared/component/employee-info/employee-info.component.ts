@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@data/models/user';
 
@@ -26,6 +26,8 @@ interface ExtendedUser extends User {
   styleUrls: ['./employee-info.component.scss'],
 })
 export class EmployeeInfoComponent implements OnInit {
+  @Input() pageId = '0';
+
   public employeeInfoForm: FormGroup;
   public employee: ExtendedUser = {
     id: '0',
@@ -82,6 +84,10 @@ export class EmployeeInfoComponent implements OnInit {
     return `${startAt}-${endAt}`;
   }
 
+  isOwner() {
+    return this.employee.id === this.pageId;
+  }
+
   canEdit() {
     return this.employee.isAdmin || this.isOwner;
   }
@@ -110,7 +116,6 @@ export class EmployeeInfoComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.employeeInfoForm.value);
     this.updateEmployeeInfo();
     this.toggleEditMode();
     this.employeeInfoForm.reset();
