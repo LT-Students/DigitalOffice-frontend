@@ -22,10 +22,13 @@
   .wrapper {
     z-index: 1;
 
-    margin-left: 140px;
-    padding: 12px 100px 60px 100px;
+    /* margin-left: 140px; */
+
+    /* padding: 12px 10.77% 60px 4.62%; */ //для дашборда
+    margin: 0 auto;
+    padding: 54px 100px 60px;
 
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
 }

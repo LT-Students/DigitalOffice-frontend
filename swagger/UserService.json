@@ -2,15 +2,15 @@
   "openapi": "3.0.0",
   "info": {
     "title": "UserService",
-    "description": "UserService is an API that intended to work with users, user credentials and achievements.\n",
-    "version": "1.1.2"
+    "description": "UserService is an API that intended to work with users, user credentials and achievements.\n\n**What's new since 1.2.0:**\n  * `Added new endpoint` - generatePassword.\n  * `Updated server urls.`\n  * `Added new request parameters (UserRequest):` \n    Connections, Status, Skills.\n  * `Added new response parameters (User):` CreatedAt\n    \n    \n",
+    "version": "1.2.0"
   },
   "servers": [
     {
-      "url": "https://localhost:9801/api/user"
+      "url": "https://84.201.146.123:9801/api/user"
     },
     {
-      "url": "http://localhost:9802/api/user"
+      "url": "http://84.201.146.123:9802/api/user"
     }
   ],
   "paths": {
@@ -22,6 +22,18 @@
         "description": "Returns user information by id.",
         "operationId": "getUserById",
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
           {
             "name": "userId",
             "in": "query",
@@ -46,6 +58,9 @@
               }
             }
           },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          },
           "404": {
             "description": "Not Found.\n* User with this id not found.\n"
           }
@@ -60,6 +75,18 @@
         "description": "Returns users information by ids.",
         "operationId": "getUsersByIds",
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
           {
             "name": "usersIds",
             "in": "query",
@@ -82,13 +109,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
                 }
               }
             }
           },
           "400": {
             "description": "Bad request.\n* Empty users list.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
           },
           "404": {
             "description": "Not Found.\n* Users with this ids were not found.\n"
@@ -104,6 +137,18 @@
         "description": "Returns all users information with pagination and filter by full name.",
         "operationId": "getAllUsers",
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
           {
             "name": "skipCount",
             "in": "query",
@@ -144,10 +189,16 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/User"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/User"
+                  }
                 }
               }
             }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
           },
           "404": {
             "description": "Not Found.\n* Users were not found.\n"
@@ -163,6 +214,18 @@
         "description": "Returns user information by email.",
         "operationId": "getUserByEmail",
         "parameters": [
+          {
+            "name": "token",
+            "in": "header",
+            "description": "The JWT token.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+            }
+          },
           {
             "name": "userEmail",
             "in": "query",
@@ -189,8 +252,34 @@
           "400": {
             "description": "Bad request.\n  *  Incorrect email\n"
           },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          },
           "404": {
             "description": "Not Found.\n* User with this email not found.\n"
+          }
+        }
+      }
+    },
+    "/generatePassword": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "description": "Returns randomly generated password.",
+        "operationId": "generatePassword",
+        "responses": {
+          "200": {
+            "description": "Successfully returned password string.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "description": "8-12 symbols password string.",
+                  "example": "!31TKgk_"
+                }
+              }
+            }
           }
         }
       }
@@ -294,7 +383,7 @@
             "description": "Bad request.\n* Error in the field.\n* Error in the password.\n"
           },
           "403": {
-            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
           },
           "404": {
             "description": "Not Found.\n* User with this id not found.\n"
@@ -343,7 +432,7 @@
             "description": "No Content."
           },
           "403": {
-            "description": "Forbidden.\n* Not enough rights.\n* Enter token.\n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
           },
           "404": {
             "description": "Not Found.\n* User with this id not found.\n"
@@ -358,7 +447,6 @@
         "required": [
           "Email",
           "FirstName",
-          "IsActive",
           "IsAdmin",
           "LastName",
           "Login",
@@ -398,10 +486,7 @@
             "example": "Ivanovich"
           },
           "Status": {
-            "type": "string",
-            "description": "User status.",
-            "nullable": true,
-            "example": "I'm sad."
+            "$ref": "#/components/schemas/UserStatus"
           },
           "Password": {
             "type": "string",
@@ -421,6 +506,21 @@
             "description": "File global unique identifier.",
             "format": "uuid",
             "nullable": true
+          },
+          "Skills": {
+            "type": "array",
+            "description": "Array of user skills",
+            "nullable": true,
+            "items": {
+              "type": "string",
+              "example": "backend development"
+            }
+          },
+          "Connections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserConnection"
+            }
           }
         }
       },
@@ -453,11 +553,14 @@
             "description": "User mail.",
             "example": "ivan_ivanov123@mail.ru"
           },
-          "Status": {
+          "CreatedAt": {
             "type": "string",
-            "description": "User status.",
-            "nullable": true,
-            "example": "I'm sad."
+            "description": "DateTime of creating user",
+            "format": "date-time",
+            "nullable": false
+          },
+          "Status": {
+            "$ref": "#/components/schemas/UserStatus"
           },
           "AvatarFileId": {
             "type": "string",
@@ -489,6 +592,47 @@
             }
           }
         }
+      },
+      "UserConnection": {
+        "required": [
+          "Type",
+          "Value"
+        ],
+        "type": "object",
+        "properties": {
+          "Value": {
+            "type": "string",
+            "description": "User mail, telegram, phone, skype.",
+            "example": "ivan_ivanov1234@mail.ru"
+          },
+          "Type": {
+            "$ref": "#/components/schemas/ConnectionType"
+          }
+        }
+      },
+      "ConnectionType": {
+        "type": "string",
+        "description": "Connection type.",
+        "writeOnly": true,
+        "example": "Email",
+        "enum": [
+          "Skype",
+          "Phone",
+          "Email",
+          "Telegram"
+        ]
+      },
+      "UserStatus": {
+        "type": "string",
+        "description": "Mode for user status.",
+        "example": "Sick",
+        "default": "WorkFromHome",
+        "enum": [
+          "Vacation",
+          "Sick",
+          "WorkFromOffice",
+          "WorkFromHome"
+        ]
       }
     },
     "parameters": {
