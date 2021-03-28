@@ -5,7 +5,6 @@
  * Specific department data.
  */
 export interface Department {
-
   /**
    * Department description.
    */
@@ -21,4 +20,3 @@ export interface Department {
    */
   name: string;
 }
-

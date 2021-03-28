@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface EditWorkTimeRequest {
-
   /**
    * Description for alloted time.
    */
@@ -37,4 +36,3 @@ export interface EditWorkTimeRequest {
    */
   workerUserId: string;
 }
-

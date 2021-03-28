@@ -31,7 +31,9 @@
             let contributor of project.contributors | slice: 0:5;
             let i = index
           "
-          [style.background-image]="'url(' + contributor.user.avatarFileUrl + ')'"
+          [style.background-image]="
+            'url(' + contributor.user.avatarFileUrl + ')'
+          "
         >
           <div class="regular_text gray__circle" *ngIf="i == 4">
             +{{ amountHiddenPhoto }}

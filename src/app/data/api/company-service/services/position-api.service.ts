@@ -17,10 +17,7 @@ import { PositionResponse } from '../models/position-response';
   providedIn: 'root',
 })
 export class PositionApiService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
@@ -38,27 +35,36 @@ export class PositionApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   getPositionById$Response(params: {
-
     /**
      * Position global unique identifier.
      */
     positionId: string;
   }): Observable<StrictHttpResponse<PositionResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.GetPositionByIdPath, 'get');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      PositionApiService.GetPositionByIdPath,
+      'get'
+    );
     if (params) {
-      rb.query('positionId', params.positionId, {"style":"form","explode":true});
+      rb.query('positionId', params.positionId, {
+        style: 'form',
+        explode: true,
+      });
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PositionResponse>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<PositionResponse>;
+        })
+      );
   }
 
   /**
@@ -70,15 +76,15 @@ export class PositionApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   getPositionById(params: {
-
     /**
      * Position global unique identifier.
      */
     positionId: string;
   }): Observable<PositionResponse> {
-
     return this.getPositionById$Response(params).pipe(
-      map((r: StrictHttpResponse<PositionResponse>) => r.body as PositionResponse)
+      map(
+        (r: StrictHttpResponse<PositionResponse>) => r.body as PositionResponse
+      )
     );
   }
 
@@ -95,22 +101,30 @@ export class PositionApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getPositionsList$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<PositionResponse>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.GetPositionsListPath, 'get');
+  getPositionsList$Response(params?: {}): Observable<
+    StrictHttpResponse<Array<PositionResponse>>
+  > {
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      PositionApiService.GetPositionsListPath,
+      'get'
+    );
     if (params) {
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<PositionResponse>>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<Array<PositionResponse>>;
+        })
+      );
   }
 
   /**
@@ -121,11 +135,12 @@ export class PositionApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getPositionsList(params?: {
-  }): Observable<Array<PositionResponse>> {
-
+  getPositionsList(params?: {}): Observable<Array<PositionResponse>> {
     return this.getPositionsList$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<PositionResponse>>) => r.body as Array<PositionResponse>)
+      map(
+        (r: StrictHttpResponse<Array<PositionResponse>>) =>
+          r.body as Array<PositionResponse>
+      )
     );
   }
 
@@ -143,23 +158,30 @@ export class PositionApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addPosition$Response(params: {
-    body: AddPositionRequest
+    body: AddPositionRequest;
   }): Observable<StrictHttpResponse<string>> {
-
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.AddPositionPath, 'post');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      PositionApiService.AddPositionPath,
+      'post'
+    );
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'json',
+          accept: 'application/json',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return r as StrictHttpResponse<string>;
+        })
+      );
   }
 
   /**
@@ -170,10 +192,7 @@ export class PositionApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  addPosition(params: {
-    body: AddPositionRequest
-  }): Observable<string> {
-
+  addPosition(params: { body: AddPositionRequest }): Observable<string> {
     return this.addPosition$Response(params).pipe(
       map((r: StrictHttpResponse<string>) => r.body as string)
     );
@@ -193,23 +212,32 @@ export class PositionApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editPosition$Response(params: {
-    body: EditPositionRequest
+    body: EditPositionRequest;
   }): Observable<StrictHttpResponse<void>> {
-
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.EditPositionPath, 'post');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      PositionApiService.EditPositionPath,
+      'post'
+    );
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'text',
+          accept: '*/*',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return (r as HttpResponse<any>).clone({
+            body: undefined,
+          }) as StrictHttpResponse<void>;
+        })
+      );
   }
 
   /**
@@ -220,10 +248,7 @@ export class PositionApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editPosition(params: {
-    body: EditPositionRequest
-  }): Observable<void> {
-
+  editPosition(params: { body: EditPositionRequest }): Observable<void> {
     return this.editPosition$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
     );
@@ -243,27 +268,38 @@ export class PositionApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   disablePositionById$Response(params: {
-
     /**
      * Position global unique identifier.
      */
     positionId: string;
   }): Observable<StrictHttpResponse<void>> {
-
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.DisablePositionByIdPath, 'delete');
+    const rb = new RequestBuilder(
+      this.rootUrl,
+      PositionApiService.DisablePositionByIdPath,
+      'delete'
+    );
     if (params) {
-      rb.query('positionId', params.positionId, {"style":"form","explode":true});
+      rb.query('positionId', params.positionId, {
+        style: 'form',
+        explode: true,
+      });
     }
 
-    return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-      })
-    );
+    return this.http
+      .request(
+        rb.build({
+          responseType: 'text',
+          accept: '*/*',
+        })
+      )
+      .pipe(
+        filter((r: any) => r instanceof HttpResponse),
+        map((r: HttpResponse<any>) => {
+          return (r as HttpResponse<any>).clone({
+            body: undefined,
+          }) as StrictHttpResponse<void>;
+        })
+      );
   }
 
   /**
@@ -275,16 +311,13 @@ export class PositionApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   disablePositionById(params: {
-
     /**
      * Position global unique identifier.
      */
     positionId: string;
   }): Observable<void> {
-
     return this.disablePositionById$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
     );
   }
-
 }

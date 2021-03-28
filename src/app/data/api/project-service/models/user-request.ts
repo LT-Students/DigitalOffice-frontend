@@ -4,4 +4,3 @@ export interface UserRequest {
   id: string;
   isActive: boolean;
 }
-

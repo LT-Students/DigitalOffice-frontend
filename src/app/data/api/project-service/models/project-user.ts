@@ -6,4 +6,3 @@ export interface ProjectUser {
   role?: Role;
   user?: User;
 }
-

@@ -137,9 +137,9 @@
                 <mat-select id="position" formControlName="position">
                   <mat-option
                     *ngFor="let position of positions"
-                    [value]="position.name"
+                    [value]="position.info.id"
                   >
-                    {{ position.name }}
+                    {{ position.info.name }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>

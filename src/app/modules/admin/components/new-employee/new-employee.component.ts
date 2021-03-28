@@ -5,6 +5,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { User } from '@data/api/user-service/models/user';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
+import { PositionApiService } from '@data/api/company-service/services/position-api.service';
+import { PositionResponse } from '@data/api/company-service/models/position-response';
 
 @Component({
   selector: 'do-new-employee',
@@ -17,11 +19,7 @@ export class NewEmployeeComponent implements OnInit {
   public imagePath;
   public imgURL: any;
   public userForm: FormGroup;
-  public positions = [
-    { name: 'position1' },
-    { name: 'position2' },
-    { name: 'position3' },
-  ];
+  public positions = [];
   public rates = [0, 0.5, 1, 1.5, 2];
   public departments = [
     { name: 'department1' },
@@ -31,11 +29,13 @@ export class NewEmployeeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
+    private positionApiService: PositionApiService,
     private userApiService: UserApiService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
+    this.getPositions();
     this.userForm = this.formBuilder.group({
       lastName: ['', [Validators.required, Validators.maxLength(32)]],
       firstName: ['', [Validators.required, Validators.maxLength(32)]],
@@ -54,6 +54,14 @@ export class NewEmployeeComponent implements OnInit {
       ],
       password: ['', [Validators.required]],
     });
+  }
+
+  getPositions(): void {
+    this.positionApiService
+      .getPositionsList()
+      .subscribe((data: PositionResponse[]) => {
+        this.positions = data;
+      });
   }
 
   createEmployee(): void {

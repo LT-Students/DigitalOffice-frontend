@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { Project } from '@data/models/project';
 import { NewCompanyComponent } from '../new-company/new-company.component';
+import { NewDepartmentComponent } from '../new-department/new-department.component';
+import { NewSpecializationComponent } from '../new-specialization/new-specialization.component';
 
 @Component({
   selector: 'do-dashboard',
@@ -102,5 +104,16 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+  onOpenNewDepartment(): void {
+    const dialogRef = this.dialog.open(NewDepartmentComponent, {
+      width: '503px',
+    });
+    /*dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });*/
+  }
+  onOpenNewSpecialization(): void {
+    const dialogRef = this.dialog.open(NewSpecializationComponent, {});
   }
 }

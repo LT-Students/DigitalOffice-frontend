@@ -73,8 +73,12 @@
 
       &__content {
         margin-top: 30px;
+        width: 100%;
 
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-column-gap: 15%;
+        grid-row-gap: 40px;
 
         .h4_ultimate-orange {
           color: $ultimate_orange;
@@ -92,7 +96,7 @@
           justify-content: center;
           align-items: center;
 
-          width: 300px;
+          min-width: 150px;
           height: 272px;
 
           cursor: pointer;
@@ -113,8 +117,6 @@
         }
 
         .btn-last {
-          margin-left: 100px;
-
           background-color: $accent_color;
           background-image: url('../../../../../assets/admin/dashboard/add-project-background.png');
         }
@@ -129,14 +131,11 @@
       }
 
       &__content {
-        margin: 30px -50px 0;
-
-        display: flex;
-        flex-wrap: wrap;
-
-        .component-my-project {
-          margin: 14px 50px;
-        }
+        margin-top: 30px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-column-gap: 15%;
+        grid-row-gap: 40px;
       }
     }
   }

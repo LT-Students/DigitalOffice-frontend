@@ -1,39 +1,64 @@
 <div class="new-member">
-  <mat-checkbox class="new-member__checkbox"></mat-checkbox>
+  <mat-checkbox
+    class="new-member__checkbox"
+    (change)="onCheckNewMember($event)"
+  >
+  </mat-checkbox>
   <div class="new-member__info">
     <div class="new-member__img">
-      <do-profile-image [src]="newMember.profileImgSrc" *ngIf="newMember.profileImgSrc"></do-profile-image>
+      <do-profile-image
+        [src]="newMember.photo"
+        *ngIf="newMember.photo"
+      ></do-profile-image>
     </div>
     <div class="new-member-form">
       <div class="new-member-form__selects">
-        <p class="regular_text text_color_dark-1">{{newMember.fullName}}</p>
-        <div class="regular_text text_color_gray" *ngIf="newMember.specialization.length > 1 else text" >
-          <mat-form-field class="select  new-member-form__select-spec"
-                          appearance="none">
-            <mat-select class="regular_text text_color_gray"
-                        placeholder="Специализация"
-                        disableOptionCentering="true">
-              <mat-option *ngFor="let specialization of newMember.specialization"
-                          [value]="specialization"
-                          class="regular_text text_color_gray">
-                {{newMember.level}} {{specialization}}
+        <p class="regular_text text_color_dark-1">
+          {{ newMember.lastName + ' ' + newMember.firstName }}
+        </p>
+        <div
+          class="regular_text text_color_gray"
+          *ngIf="newMember.specialization.length > 1; else text"
+        >
+          <mat-form-field
+            class="select new-member-form__select-spec"
+            appearance="none"
+          >
+            <mat-select
+              class="regular_text text_color_gray"
+              placeholder="Специализация"
+              disableOptionCentering="true"
+            >
+              <mat-option
+                *ngFor="let specialization of newMember.specialization"
+                [value]="specialization"
+                class="regular_text text_color_gray"
+              >
+                {{ newMember.level }} {{ specialization }}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
         <ng-template #text>
-          <p class="regular_text text_color_gray"> {{newMember.level}} {{newMember.specialization[0]}}</p>
+          <p class="regular_text text_color_gray">
+            {{ newMember.level }} {{ newMember.specialization[0] }}
+          </p>
         </ng-template>
       </div>
-      <p class="regular_text text_color_gray">{{newMember.projectsCount}} {{getCountProjectsTitle()}}</p>
-      <mat-form-field class="select new-member-form__select-role"
-                      appearance="none">
-        <mat-select class="regular_text text_color_gray"
-                    placeholder="Роль">
-          <mat-option *ngFor="let role of roles"
-                      [value]="role"
-                      class="regular_text text_color_gray">
-            {{role}}
+      <p class="regular_text text_color_gray">
+        {{ newMember.projectsCount }} {{ getCountProjectsTitle() }}
+      </p>
+      <mat-form-field
+        class="select new-member-form__select-role"
+        appearance="none"
+      >
+        <mat-select class="regular_text text_color_gray" placeholder="Роль">
+          <mat-option
+            *ngFor="let role of roles"
+            [value]="role"
+            class="regular_text text_color_gray"
+          >
+            {{ role }}
           </mat-option>
         </mat-select>
       </mat-form-field>

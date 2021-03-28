@@ -8,5 +8,5 @@ export enum ConnectionType {
   Skype = 'Skype',
   Phone = 'Phone',
   Email = 'Email',
-  Telegram = 'Telegram'
+  Telegram = 'Telegram',
 }

@@ -9,4 +9,3 @@ export interface UserConnection {
    */
   value: string;
 }
-
