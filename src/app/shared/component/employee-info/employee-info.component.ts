@@ -134,7 +134,10 @@ export class EmployeeInfoComponent implements OnInit {
   }
 
   changeWorkingRate(inputValue, step) {
-    this.employeeInfoForm.patchValue({ workingRate: +inputValue + step });
+    let rate = +inputValue + step;
+    if (rate > 1) rate = 1;
+    else if (rate < 0) rate = 0;
+    this.employeeInfoForm.patchValue({ workingRate: rate });
   }
 
   ngOnInit(): void {
