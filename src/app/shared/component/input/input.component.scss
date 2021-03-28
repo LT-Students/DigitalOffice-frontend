@@ -1,16 +1,9 @@
 @import '../../../../stylesheets/base/variables';
 
 .employee-info__label {
-  align-self: flex-start;
-
   display: block;
 
-  &_for_textarea {
-    align-self: stretch;
-
-    display: flex;
-    justify-content: space-between;
-  }
+  text-align: start;
 }
 
 .employee-info__required {
