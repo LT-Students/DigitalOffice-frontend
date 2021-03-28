@@ -7,9 +7,9 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
   @Input() magnifierLocation: 'right' | 'left' = 'left';
-  @Input()
-  placeholder = '';
+  @Input() placeholder = '';
   @Output() searchClick = new EventEmitter<string>();
+  @Output() searchInput = new EventEmitter<string>();
 
   constructor() {}
 
@@ -17,5 +17,9 @@ export class SearchComponent implements OnInit {
 
   onSearchClick(value: string): void {
     this.searchClick.emit(value);
+  }
+
+  onSearchInput(text: any) {
+    this.searchInput.emit(text);
   }
 }

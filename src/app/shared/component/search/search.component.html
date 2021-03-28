@@ -12,6 +12,7 @@
     <img src="/assets/svg/magnifier.svg" alt="magnifier" />
   </button>
   <input
+    (input)="onSearchInput($event.target.value)"
     [placeholder]="placeholder"
     type="text"
     class="search__input regular_text text_color_dark-1"
