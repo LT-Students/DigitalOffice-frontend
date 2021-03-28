@@ -3,28 +3,23 @@
     >{{ label
     }}<sup *ngIf="required" class="employee-info__required">*</sup></label
   >
-  <mat-form-field
-    class="employee-info__form-field mat-form-field_default-select"
-    appearance="none"
-  >
-    <mat-select
+  <mat-form-field class="employee-info__form-field" appearance="fill">
+    <input
+      matInput
       class="employee-info__input"
       [formControl]="control"
       [id]="controlName"
-      [attr.name]="controlName"
-    >
-      <mat-option
-        class="employee-info__input"
-        *ngFor="let option of options"
-        [value]="option"
-      >
-        {{ option }}
-      </mat-option>
-    </mat-select>
+      [name]="controlName"
+      [matDatepicker]="picker"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker">
+      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
 </ng-container>
 
 <ng-template #textBlock>
   <h3 class="small_text text-gray">{{ label }}</h3>
-  <div>{{ value }}</div>
+  <div>{{ value | date: format }}</div>
 </ng-template>

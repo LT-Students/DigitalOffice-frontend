@@ -13,17 +13,16 @@ export class InputComponent implements OnInit {
   @Input() placeholder = '';
   @Input() controlName = '';
   @Input() isEdit = false;
-  @Input() value = '';
+  @Input() isAdmin = true;
+  @Input() value: string | number = '';
 
   control: FormControl | undefined;
 
   constructor(private formGroupDir: FormGroupDirective) {}
 
   ngOnInit() {
-    if (this.isEdit) {
-      this.control = this.formGroupDir.control?.get(
-        this.controlName
-      ) as FormControl;
-    }
+    this.control = this.formGroupDir.control?.get(
+      this.controlName
+    ) as FormControl;
   }
 }

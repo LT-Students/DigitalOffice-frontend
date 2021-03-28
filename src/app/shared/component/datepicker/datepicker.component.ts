@@ -2,18 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 
 @Component({
-  selector: 'do-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
+  selector: 'do-datepicker',
+  templateUrl: './datepicker.component.html',
+  styleUrls: ['./datepicker.component.scss'],
 })
-export class SelectComponent implements OnInit {
+export class DatepickerComponent implements OnInit {
   @Input() label = '';
   @Input() required = false;
   @Input() controlName = '';
   @Input() isEdit = false;
   @Input() isAdmin = true;
-  @Input() options: string[];
-  @Input() value: string;
+  @Input() format = 'd MMMM y';
+  @Input() value: Date;
 
   control: FormControl | undefined;
 

@@ -14,6 +14,7 @@ import { HeaderComponent } from './component/header/header.component';
 import { EmployeePageComponent } from './component/employee-page/employee-page.component';
 import { EmployeeInfoComponent } from './component/employee-info/employee-info.component';
 import { InputComponent } from './component/input/input.component';
+import { DatepickerComponent } from './component/datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { InputComponent } from './component/input/input.component';
     EmployeePageComponent,
     EmployeeInfoComponent,
     InputComponent,
+    DatepickerComponent,
   ],
   imports: [CommonModule, RouterModule, MaterialModule, ReactiveFormsModule],
   exports: [
