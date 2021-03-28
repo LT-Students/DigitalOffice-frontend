@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '@data/models/user';
+import { IUser } from '@data/models/user';
 
-interface ExtendedUser extends User {
+interface ExtendedUser extends IUser {
   emojiStatus: { emoji: string; description: string };
   aboutMe: string;
   jobPosition: string;
