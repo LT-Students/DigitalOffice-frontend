@@ -37,7 +37,7 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.hours = Math.floor(this.task.minute / 60);
-    this.minutes = this.task.minute % 60;
+    this.hours = Math.floor(this.task.minutes / 60);
+    this.minutes = this.task.minutes % 60;
   }
 }

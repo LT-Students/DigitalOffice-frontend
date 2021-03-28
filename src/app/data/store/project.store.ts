@@ -21,7 +21,7 @@ export class ProjectStore {
         {
           id: '1',
           projectId: '1',
-          minute: 60,
+          minutes: 60,
           title: 'Developing',
           description: 'desc1',
           createdAt: new Date(),
@@ -29,7 +29,7 @@ export class ProjectStore {
         {
           id: '2',
           projectId: '1',
-          minute: 60,
+          minutes: 60,
           title:
             'Очень длинная задача, которую мне отдал мой коллега, а я не очень хотел ее делать и она занимает две строки',
           description: 'desc2',
@@ -48,7 +48,7 @@ export class ProjectStore {
         {
           id: '3',
           projectId: '2',
-          minute: 123,
+          minutes: 123,
           title: 'Developing',
           description: 'desc1',
           createdAt: new Date(),
@@ -66,7 +66,7 @@ export class ProjectStore {
         {
           id: '4',
           projectId: '3',
-          minute: 123,
+          minutes: 123,
           title: 'Документация',
           description: 'desc1',
           createdAt: new Date(),
