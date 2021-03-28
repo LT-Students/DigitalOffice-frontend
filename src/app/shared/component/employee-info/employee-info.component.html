@@ -105,7 +105,7 @@
 
 <ng-template #edit>
   <ng-container
-    *ngIf="isAdmin(); then editAdmin; else editOwner"
+    *ngIf="employee.isAdmin; then editAdmin; else editOwner"
   ></ng-container>
 </ng-template>
 
@@ -616,7 +616,7 @@
 </ng-template>
 
 <ng-template #contacts [formGroup]="employeeInfoForm">
-  ><label class="small_text text-gray employee-info__label" for="phone"
+  <label class="small_text text-gray employee-info__label" for="phone"
     >Рабочий номер<sup class="employee-info__required">*</sup></label
   >
   <mat-form-field class="employee-info__form-field" appearance="none">

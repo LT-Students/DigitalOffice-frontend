@@ -53,6 +53,7 @@ export class EmployeeInfoComponent implements OnInit {
     vacationDays: 20,
     vacationSince: new Date(2020, 9, 10),
     vacationUntil: new Date(2020, 9, 20),
+    isAdmin: true,
   };
 
   public selectOptions = {
@@ -81,12 +82,8 @@ export class EmployeeInfoComponent implements OnInit {
     return `${startAt}-${endAt}`;
   }
 
-  isAdmin() {
-    return this.employee.role === 'admin';
-  }
-
   canEdit() {
-    return this.isAdmin() || this.employee.role === 'owner';
+    return this.employee.isAdmin || this.isOwner;
   }
 
   toggleEditMode() {
