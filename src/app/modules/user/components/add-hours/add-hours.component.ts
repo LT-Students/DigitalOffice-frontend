@@ -54,11 +54,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.addHoursForm = this.fb.group({
       time: this.fb.group({
-        hours: [
-          '',
-          [Validators.required, timeValidator(() => this.getHours())],
-        ],
-        minutes: ['', [Validators.required, Validators.max(59)]],
+        hour: ['', [Validators.required, timeValidator(() => this.getHours())]],
+        minute: ['', [Validators.required, Validators.max(59)]],
       }),
       project: ['', Validators.required],
       task: ['', Validators.required],
@@ -142,7 +139,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
       title: this.addHoursForm.get('task').value,
       description: this.addHoursForm.get('description').value,
       createdAt: new Date(),
-      minutes:
+      minute:
         Number(this.addHoursForm.get('time.minutes').value) +
         Number(this.addHoursForm.get('time.hours').value) * 60,
     };
