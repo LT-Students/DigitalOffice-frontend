@@ -105,6 +105,7 @@ export class EmployeeInfoComponent implements OnInit {
       vacationUntil: ['', Validators.required],
       vacationDays: ['', Validators.required],
     });
+    this.fillForm();
   }
 
   get fullName() {
@@ -126,9 +127,6 @@ export class EmployeeInfoComponent implements OnInit {
   }
 
   toggleEditMode() {
-    if (!this.isEditable) {
-      this.fillForm();
-    }
     this.isEditable = !this.isEditable;
   }
 
@@ -153,7 +151,6 @@ export class EmployeeInfoComponent implements OnInit {
   onSubmit() {
     this.updateEmployeeInfo();
     this.toggleEditMode();
-    this.employeeInfoForm.reset();
   }
 
   fillForm() {

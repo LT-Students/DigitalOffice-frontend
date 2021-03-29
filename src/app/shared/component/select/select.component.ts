@@ -12,7 +12,6 @@ export class SelectComponent implements OnInit {
   @Input() controlName = '';
   @Input() isEdit = false;
   @Input() options: string[];
-  @Input() value: string;
 
   control: FormControl | undefined;
 

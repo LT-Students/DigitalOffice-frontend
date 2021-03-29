@@ -38,7 +38,6 @@
         <div class="employee-info__first-column">
           <do-select
             controlName="jobPosition"
-            [value]="employee.jobPosition"
             [isEdit]="isEditable && employee.isAdmin"
             [options]="selectOptions.jobPosition"
             label="Должность"
@@ -46,7 +45,6 @@
           ></do-select>
           <do-select
             controlName="department"
-            [value]="employee.department"
             [isEdit]="isEditable && employee.isAdmin"
             [options]="selectOptions.department"
             label="Департамент"
@@ -54,14 +52,12 @@
           ></do-select>
           <do-input
             controlName="location"
-            [value]="employee.location"
             [isEdit]="isEditable && employee.isAdmin"
             label="Местоположение"
             required="true"
           ></do-input>
           <do-select
             controlName="office"
-            [value]="employee.office"
             [isEdit]="isEditable && employee.isAdmin"
             [options]="selectOptions.office"
             label="Офис"
@@ -90,28 +86,24 @@
           </ng-container>
           <do-datepicker
             controlName="workingSince"
-            [value]="employee.workingSince"
             [isEdit]="isEditable && employee.isAdmin"
             label="В компании с"
             format="LLLL y"
           ></do-datepicker>
           <do-datepicker
             controlName="birthDate"
-            [value]="employee.birthDate"
             [isEdit]="isEditable"
             label="Дата рождения"
           ></do-datepicker>
           <ng-container *ngIf="isEditable">
             <do-datepicker
               controlName="vacationSince"
-              [value]="employee.vacationSince"
               [isEdit]="isEditable"
               label="В отпуске с"
               required="true"
             ></do-datepicker>
             <do-datepicker
               controlName="vacationUntil"
-              [value]="employee.vacationUntil"
               [isEdit]="isEditable"
               label="В отпуске до"
               required="true"
@@ -125,21 +117,18 @@
       <h2 class="h4 text-dark_2">Контакты</h2>
       <do-input
         controlName="email"
-        [value]="employee.email"
         [isEdit]="isEditable && employee.isAdmin"
         label="E-mail"
         required="true"
       ></do-input>
       <do-input
         controlName="phone"
-        [value]="employee.phone"
         [isEdit]="isEditable"
         label="Рабочий номер"
         required="true"
       ></do-input>
       <do-input
         controlName="telegram"
-        [value]="employee.telegram"
         [isEdit]="isEditable"
         label="Telegram"
       ></do-input>
@@ -158,7 +147,6 @@
         <do-input
           controlName="vacationDays"
           type="number"
-          [value]="employee.vacationDays"
           [isEdit]="isEditable && employee.isAdmin"
           label="Осталось отпускных дней"
           required="true"
@@ -183,21 +171,18 @@
 <ng-template #nameEdit [formGroup]="employeeInfoForm">
   <do-input
     controlName="lastName"
-    [value]="employee.lastName"
     [isEdit]="isEditable"
     label="Фамилия"
     required="true"
   ></do-input>
   <do-input
     controlName="firstName"
-    [value]="employee.firstName"
     [isEdit]="isEditable"
     label="Имя"
     required="true"
   ></do-input>
   <do-input
     controlName="middleName"
-    [value]="employee.middleName"
     [isEdit]="isEditable"
     label="Отчество"
   ></do-input>
