@@ -127,6 +127,18 @@
     text-align: center;
   }
 
+  &__stepper-button {
+    font-family: $header_font;
+
+    &:disabled {
+      padding: 0;
+
+      min-width: 0;
+
+      background-color: transparent;
+    }
+  }
+
   &__input {
     font-family: $regular_font !important;
   }

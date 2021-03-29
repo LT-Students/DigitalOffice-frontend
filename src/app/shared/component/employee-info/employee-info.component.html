@@ -241,10 +241,12 @@
     appearance="fill"
   >
     <button
+      class="employee-info__stepper-button h2"
       mat-icon-button
       matPrefix
       type="button"
       (click)="changeWorkingRate(rate.value, -0.25)"
+      [disabled]="+rate.value === 0"
     >
       -
     </button>
@@ -258,10 +260,12 @@
       readonly
     />
     <button
+      class="employee-info__stepper-button h2"
       mat-icon-button
       matSuffix
       type="button"
       (click)="changeWorkingRate(rate.value, 0.25)"
+      [disabled]="+rate.value === 1"
     >
       +
     </button>

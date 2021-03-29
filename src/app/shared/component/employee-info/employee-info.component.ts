@@ -134,9 +134,7 @@ export class EmployeeInfoComponent implements OnInit {
   }
 
   changeWorkingRate(inputValue, step) {
-    let rate = +inputValue + step;
-    if (rate > 1) rate = 1;
-    else if (rate < 0) rate = 0;
+    const rate = +inputValue + step;
     this.employeeInfoForm.patchValue({ workingRate: rate });
   }
 
