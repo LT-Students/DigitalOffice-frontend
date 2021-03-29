@@ -79,6 +79,32 @@ export class EmployeeInfoComponent implements OnInit {
 
     this.isEditable = false;
     this.previewPhoto = this.employee.photo;
+
+    this.employeeInfoForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      middleName: [''],
+      photo: [''],
+      emojiStatus: [''],
+      aboutMe: [''],
+      jobPosition: ['', Validators.required],
+      department: ['', Validators.required],
+      location: ['', Validators.required],
+      office: ['', Validators.required],
+      workingRate: ['', Validators.required],
+      workingHours: this.fb.group({
+        startAt: [''],
+        endAt: [''],
+      }),
+      workingSince: [''],
+      birthDate: [''],
+      email: ['', Validators.required],
+      phone: ['', Validators.required],
+      telegram: [''],
+      vacationSince: ['', Validators.required],
+      vacationUntil: ['', Validators.required],
+      vacationDays: ['', Validators.required],
+    });
   }
 
   get fullName() {
@@ -143,31 +169,5 @@ export class EmployeeInfoComponent implements OnInit {
     this.employeeInfoForm.patchValue({ workingRate: rate });
   }
 
-  ngOnInit(): void {
-    this.employeeInfoForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      middleName: [''],
-      photo: [''],
-      emojiStatus: [''],
-      aboutMe: [''],
-      jobPosition: ['', Validators.required],
-      department: ['', Validators.required],
-      location: ['', Validators.required],
-      office: ['', Validators.required],
-      workingRate: ['', Validators.required],
-      workingHours: this.fb.group({
-        startAt: [''],
-        endAt: [''],
-      }),
-      workingSince: [''],
-      birthDate: [''],
-      email: ['', Validators.required],
-      phone: ['', Validators.required],
-      telegram: [''],
-      vacationSince: ['', Validators.required],
-      vacationUntil: ['', Validators.required],
-      vacationDays: ['', Validators.required],
-    });
-  }
+  ngOnInit(): void {}
 }
