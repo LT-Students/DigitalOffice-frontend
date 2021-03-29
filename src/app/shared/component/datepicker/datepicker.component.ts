@@ -11,7 +11,6 @@ export class DatepickerComponent implements OnInit {
   @Input() required = false;
   @Input() controlName = '';
   @Input() isEdit = false;
-  @Input() isAdmin = true;
   @Input() format = 'd MMMM y';
   @Input() value: Date;
 

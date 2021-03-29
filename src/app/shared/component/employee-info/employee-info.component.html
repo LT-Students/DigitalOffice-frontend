@@ -39,8 +39,7 @@
           <do-select
             controlName="jobPosition"
             [value]="employee.jobPosition"
-            [isEdit]="isEditable"
-            [isAdmin]="employee.isAdmin"
+            [isEdit]="isEditable && employee.isAdmin"
             [options]="selectOptions.jobPosition"
             label="Должность"
             required="true"
@@ -48,8 +47,7 @@
           <do-select
             controlName="department"
             [value]="employee.department"
-            [isEdit]="isEditable"
-            [isAdmin]="employee.isAdmin"
+            [isEdit]="isEditable && employee.isAdmin"
             [options]="selectOptions.department"
             label="Департамент"
             required="true"
@@ -57,16 +55,14 @@
           <do-input
             controlName="location"
             [value]="employee.location"
-            [isEdit]="isEditable"
-            [isAdmin]="employee.isAdmin"
+            [isEdit]="isEditable && employee.isAdmin"
             label="Местоположение"
             required="true"
           ></do-input>
           <do-select
             controlName="office"
             [value]="employee.office"
-            [isEdit]="isEditable"
-            [isAdmin]="employee.isAdmin"
+            [isEdit]="isEditable && employee.isAdmin"
             [options]="selectOptions.office"
             label="Офис"
             required="true"
@@ -95,8 +91,7 @@
           <do-datepicker
             controlName="workingSince"
             [value]="employee.workingSince"
-            [isEdit]="isEditable"
-            [isAdmin]="employee.isAdmin"
+            [isEdit]="isEditable && employee.isAdmin"
             label="В компании с"
             format="LLLL y"
           ></do-datepicker>
@@ -131,8 +126,7 @@
       <do-input
         controlName="email"
         [value]="employee.email"
-        [isEdit]="isEditable"
-        [isAdmin]="employee.isAdmin"
+        [isEdit]="isEditable && employee.isAdmin"
         label="E-mail"
         required="true"
       ></do-input>
@@ -165,8 +159,7 @@
           controlName="vacationDays"
           type="number"
           [value]="employee.vacationDays"
-          [isEdit]="isEditable"
-          [isAdmin]="employee.isAdmin"
+          [isEdit]="isEditable && employee.isAdmin"
           label="Осталось отпускных дней"
           required="true"
         ></do-input>

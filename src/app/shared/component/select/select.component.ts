@@ -11,7 +11,6 @@ export class SelectComponent implements OnInit {
   @Input() required = false;
   @Input() controlName = '';
   @Input() isEdit = false;
-  @Input() isAdmin = true;
   @Input() options: string[];
   @Input() value: string;
 

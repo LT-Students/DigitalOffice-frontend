@@ -1,4 +1,4 @@
-<ng-container *ngIf="isEdit && isAdmin; else textBlock">
+<ng-container *ngIf="isEdit; else textBlock">
   <label class="small_text text-gray select__label" [for]="controlName"
     >{{ label
     }}<sup *ngIf="required" class="select__required">*</sup></label

@@ -13,7 +13,6 @@ export class InputComponent implements OnInit {
   @Input() placeholder = '';
   @Input() controlName = '';
   @Input() isEdit = false;
-  @Input() isAdmin = true;
   @Input() value: string | number = '';
 
   control: FormControl | undefined;
