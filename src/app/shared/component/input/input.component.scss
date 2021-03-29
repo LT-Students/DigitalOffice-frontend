@@ -1,25 +1,27 @@
 @import '../../../../stylesheets/base/variables';
 
-.employee-info__label {
-  display: block;
+.input {
+  &__label {
+    display: block;
 
-  text-align: start;
-}
+    text-align: start;
+  }
 
-.employee-info__required {
-  margin-left: 1px;
+  &__required {
+    margin-left: 1px;
 
-  vertical-align: top;
+    vertical-align: top;
 
-  color: $negative_accent;
-}
+    color: $negative_accent;
+  }
 
-.employee-info__form-field {
-  display: block;
-}
+  &__form-field {
+    display: block;
+  }
 
-.employee-info__input {
-  font-family: $regular_font !important;
+  &__input {
+    font-family: $regular_font !important;
+  }
 }
 
 .small_text {

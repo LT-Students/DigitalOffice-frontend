@@ -1,12 +1,12 @@
 <ng-container *ngIf="isEdit && isAdmin; else textBlock">
-  <label class="small_text text-gray employee-info__label" [for]="controlName"
+  <label class="small_text text-gray input__label" [for]="controlName"
     >{{ label
-    }}<sup *ngIf="required" class="employee-info__required">*</sup></label
+    }}<sup *ngIf="required" class="input__required">*</sup></label
   >
-  <mat-form-field class="employee-info__form-field" appearance="fill">
+  <mat-form-field class="input__form-field" appearance="fill">
     <input
       matInput
-      class="bg-light_2 employee-info__input"
+      class="bg-light_2 input__input"
       [formControl]="control"
       [id]="controlName"
       [name]="controlName"

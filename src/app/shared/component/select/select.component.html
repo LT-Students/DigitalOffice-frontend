@@ -1,20 +1,20 @@
 <ng-container *ngIf="isEdit && isAdmin; else textBlock">
-  <label class="small_text text-gray employee-info__label" [for]="controlName"
+  <label class="small_text text-gray select__label" [for]="controlName"
     >{{ label
-    }}<sup *ngIf="required" class="employee-info__required">*</sup></label
+    }}<sup *ngIf="required" class="select__required">*</sup></label
   >
   <mat-form-field
-    class="employee-info__form-field mat-form-field_default-select"
+    class="select__form-field mat-form-field_default-select"
     appearance="none"
   >
     <mat-select
-      class="employee-info__input"
+      class="select__input"
       [formControl]="control"
       [id]="controlName"
       [attr.name]="controlName"
     >
       <mat-option
-        class="employee-info__input"
+        class="select__input"
         *ngFor="let option of options"
         [value]="option"
       >
