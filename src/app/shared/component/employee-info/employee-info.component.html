@@ -74,11 +74,11 @@
           <ng-container *ngIf="isEditable; then emoji"></ng-container>
         </div>
         <div class="employee-info__second-column">
-          <ng-container *ngIf="canEdit() && !isEditable; else stepper">
+          <ng-container *ngIf="!employee.isAdmin || !isEditable; else stepper">
             <h3 class="small_text text-gray">Ставка</h3>
             <div>{{ employee.workingRate }}</div>
           </ng-container>
-          <ng-container *ngIf="!isEditable; else hours">
+          <ng-container *ngIf="!employee.isAdmin || !isEditable; else hours">
             <h3 class="small_text text-gray">
               Рабочие часы
               <mat-icon

@@ -100,7 +100,9 @@ export class EmployeeInfoComponent implements OnInit {
   }
 
   toggleEditMode() {
-    if (!this.isEditable) this.fillForm();
+    if (!this.isEditable) {
+      this.fillForm();
+    }
     this.isEditable = !this.isEditable;
   }
 
