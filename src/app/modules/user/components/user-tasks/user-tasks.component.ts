@@ -3,10 +3,10 @@ import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
 import { DatePeriod } from '@data/models/date-period';
-import { AttendanceService } from '../../../../core/services/attendance.service';
-import { ProjectStore } from '../../../../data/store/project.store';
-import { DateService } from '../../../../core/services/date.service';
-import { Project } from '../../../../data/models/project';
+import { AttendanceService } from '@app/services/attendance.service';
+import { ProjectStore } from '@data/store/project.store';
+import { DateService } from '@app/services/date.service';
+import { Project } from '@data/models/project';
 
 @Component({
   selector: 'do-user-tasks',
@@ -25,6 +25,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
   startPeriod: Date;
   endPeriod: Date;
   tasksCount = 0;
+  searchText = '';
 
   public startDate: Date | null;
   public endDate: Date | null;
@@ -69,5 +70,9 @@ export class UserTasksComponent implements OnInit, OnDestroy {
   }
   sortByHours(): void {
     this.isOrderedByHours = !this.isOrderedByHours;
+  }
+
+  onSearch(text: string) {
+    this.searchText = text;
   }
 }
