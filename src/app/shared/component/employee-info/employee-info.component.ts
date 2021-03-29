@@ -29,50 +29,57 @@ export class EmployeeInfoComponent implements OnInit {
   @Input() pageId = '0';
 
   public employeeInfoForm: FormGroup;
-  public employee: ExtendedUser = {
-    id: '0',
-    firstName: 'Ангелина',
-    lastName: 'Иванова',
-    middleName: 'Анатольевна',
-    photo: 'assets/images/employee-photo.png',
-    emojiStatus: { emoji: '🏠', description: 'Работает из дома' },
-    aboutMe:
-      'С удовольствием отвечу на ваши вопросы, но только в рабочее время! Всем хорошего дня!',
-    jobPosition: 'Middle Product Manager',
-    department: 'Департамент цифровых технологий',
-    location: 'Россия, г. Санкт-Петербург',
-    office: 'м. Чернышевская',
-    workingRate: 0.75,
-    workingHours: {
-      startAt: '10:00',
-      endAt: '19:00',
-    },
-    workingSince: new Date(2017, 9),
-    birthDate: new Date(1995, 9, 10),
-    email: 'evet.pm@lanit-tercom.com',
-    phone: '+7(921)623-25-92',
-    telegram: '@eve01beast',
-    vacationDays: 20,
-    vacationSince: new Date(2020, 9, 10),
-    vacationUntil: new Date(2020, 9, 20),
-    isAdmin: true,
-  };
+  public employee: ExtendedUser;
 
-  public selectOptions = {
-    jobPosition: ['Middle Product Manager', 'Senior Product Manager'],
-    department: ['Департамент цифровых технологий', 'Департамент мопсиков'],
-    office: ['м. Чернышевская', 'м. Площадь Восстания'],
-    emojiStatus: [
-      { emoji: '🏠', description: 'Работает из дома' },
-      { emoji: '🏖', description: 'В отпуске' },
-    ],
-    workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
-  };
+  public selectOptions;
 
-  public isEditable = false;
-  public previewPhoto = this.employee.photo;
+  public isEditable: boolean;
+  public previewPhoto: string;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    this.employee = {
+      id: '0',
+      firstName: 'Ангелина',
+      lastName: 'Иванова',
+      middleName: 'Анатольевна',
+      photo: 'assets/images/employee-photo.png',
+      emojiStatus: { emoji: '🏠', description: 'Работает из дома' },
+      aboutMe:
+        'С удовольствием отвечу на ваши вопросы, но только в рабочее время! Всем хорошего дня!',
+      jobPosition: 'Middle Product Manager',
+      department: 'Департамент цифровых технологий',
+      location: 'Россия, г. Санкт-Петербург',
+      office: 'м. Чернышевская',
+      workingRate: 0.75,
+      workingHours: {
+        startAt: '10:00',
+        endAt: '19:00',
+      },
+      workingSince: new Date(2017, 9),
+      birthDate: new Date(1995, 9, 10),
+      email: 'evet.pm@lanit-tercom.com',
+      phone: '+7(921)623-25-92',
+      telegram: '@eve01beast',
+      vacationDays: 20,
+      vacationSince: new Date(2020, 9, 10),
+      vacationUntil: new Date(2020, 9, 20),
+      isAdmin: true,
+    };
+
+    this.selectOptions = {
+      jobPosition: ['Middle Product Manager', 'Senior Product Manager'],
+      department: ['Департамент цифровых технологий', 'Департамент мопсиков'],
+      office: ['м. Чернышевская', 'м. Площадь Восстания'],
+      emojiStatus: [
+        { emoji: '🏠', description: 'Работает из дома' },
+        { emoji: '🏖', description: 'В отпуске' },
+      ],
+      workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
+    };
+
+    this.isEditable = false;
+    this.previewPhoto = this.employee.photo;
+  }
 
   get fullName() {
     const { lastName, firstName, middleName } = this.employee;
