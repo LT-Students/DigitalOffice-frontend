@@ -130,10 +130,6 @@ export class EmployeeInfoComponent implements OnInit {
     this.employeeInfoForm.reset();
   }
 
-  onReset() {
-    this.toggleEditMode();
-  }
-
   fillForm() {
     this.employeeInfoForm.patchValue(this.employee);
   }

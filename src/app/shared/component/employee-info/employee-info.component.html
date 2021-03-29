@@ -3,7 +3,7 @@
     class="employee-info__form"
     [formGroup]="employeeInfoForm"
     (ngSubmit)="onSubmit()"
-    (reset)="onReset()"
+    (reset)="toggleEditMode()"
   >
     <div class="employee-info__main">
       <div class="employee-info__photo">
