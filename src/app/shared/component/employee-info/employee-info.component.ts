@@ -125,8 +125,8 @@ export class EmployeeInfoComponent implements OnInit {
     return this.employee.id === this.pageId;
   }
 
-  canEdit() {
-    return this.employee.isAdmin || this.isOwner;
+  isVisitor() {
+    return this.employee.isAdmin || this.isOwner();
   }
 
   toggleEditMode() {

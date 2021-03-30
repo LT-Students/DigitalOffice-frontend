@@ -66,9 +66,13 @@
           <ng-container *ngIf="isEditable; then emoji"></ng-container>
         </div>
         <div class="employee-info__second-column">
-          <ng-container *ngIf="!employee.isAdmin || !isEditable; else stepper">
-            <h3 class="small_text text-gray">Ставка</h3>
-            <div>{{ employee.workingRate }}</div>
+          <ng-container *ngIf="isVisitor()">
+            <ng-container
+              *ngIf="!employee.isAdmin || !isEditable; else stepper"
+            >
+              <h3 class="small_text text-gray">Ставка</h3>
+              <div>{{ employee.workingRate }}</div>
+            </ng-container>
           </ng-container>
           <ng-container *ngIf="!employee.isAdmin || !isEditable; else hours">
             <h3 class="small_text text-gray">
@@ -132,7 +136,7 @@
         [isEdit]="isEditable"
         label="Telegram"
       ></do-input>
-      <ng-container *ngIf="canEdit()">
+      <ng-container *ngIf="isVisitor()">
         <h2 class="h4 text-dark_2">
           Отпуск
           <mat-icon
