@@ -228,7 +228,7 @@
       matPrefix
       type="button"
       (click)="changeWorkingRate(rate.value, -0.25)"
-      [disabled]="+rate.value === 0"
+      [disabled]="rate.value === '0'"
     >
       -
     </button>
@@ -247,7 +247,7 @@
       matSuffix
       type="button"
       (click)="changeWorkingRate(rate.value, 0.25)"
-      [disabled]="+rate.value === 1"
+      [disabled]="rate.value === '1'"
     >
       +
     </button>
