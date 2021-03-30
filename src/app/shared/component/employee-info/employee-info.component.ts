@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IUser } from '@data/models/user';
+import { ActivatedRoute } from '@angular/router';
 
 interface ExtendedUser extends IUser {
   emojiStatus: { emoji: string; description: string };
@@ -26,7 +27,7 @@ interface ExtendedUser extends IUser {
   styleUrls: ['./employee-info.component.scss'],
 })
 export class EmployeeInfoComponent implements OnInit {
-  @Input() pageId = '0';
+  public pageId: string;
 
   public employeeInfoForm: FormGroup;
   public employee: ExtendedUser;
@@ -36,7 +37,7 @@ export class EmployeeInfoComponent implements OnInit {
   public isEditable: boolean;
   public previewPhoto: string;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
     this.employee = {
       id: '0',
       firstName: 'Ангелина',
@@ -106,6 +107,8 @@ export class EmployeeInfoComponent implements OnInit {
       vacationDays: ['', Validators.required],
     });
     this.fillForm();
+
+    this.pageId = this.route.snapshot.paramMap.get('id');
   }
 
   get fullName() {
