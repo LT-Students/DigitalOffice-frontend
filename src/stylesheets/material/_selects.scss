@@ -39,7 +39,7 @@ select {
   }
 
   .mat-select-value {
-    padding: 0 15px;
+    padding: 0 8px;
 
     height: 36px;
 
@@ -49,6 +49,10 @@ select {
       @extend .regular_text;
       @extend .text_color_dark-1;
     }
+  }
+
+  .mat-select-value-text {
+    color: $dark_1;
   }
 
   .mat-select-arrow {
@@ -73,6 +77,7 @@ select {
       line-height: 24px;
 
       background-color: $light_2;
+      border-radius: 5px;
     }
 
     .mat-form-field-label-wrapper {
@@ -99,6 +104,8 @@ select {
       font-size: 16px;
       font-weight: normal;
       line-height: 24px;
+
+      color: $dark_1;
 
       background-color: $light_2;
 

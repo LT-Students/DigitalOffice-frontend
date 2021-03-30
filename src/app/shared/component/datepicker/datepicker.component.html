@@ -1,0 +1,25 @@
+<ng-container *ngIf="isEdit; else textBlock">
+  <label class="small_text text-gray datepicker__label" [for]="controlName"
+    >{{ label
+    }}<sup *ngIf="required" class="datepicker__required">*</sup></label
+  >
+  <mat-form-field class="datepicker__form-field" appearance="fill">
+    <input
+      matInput
+      class="datepicker__input"
+      [formControl]="control"
+      [id]="controlName"
+      [name]="controlName"
+      [matDatepicker]="picker"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker">
+      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</ng-container>
+
+<ng-template #textBlock>
+  <h3 class="small_text text-gray">{{ label }}</h3>
+  <div>{{ control.value | date: format }}</div>
+</ng-template>

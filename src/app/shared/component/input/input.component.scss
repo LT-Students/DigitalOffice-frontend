@@ -1,10 +1,10 @@
 @import '../../../../stylesheets/base/variables';
 
-.select {
+.input {
   &__label {
-    align-self: flex-start;
-
     display: block;
+
+    text-align: start;
   }
 
   &__required {

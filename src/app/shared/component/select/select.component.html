@@ -1,7 +1,30 @@
-<!--выпадающий список с выбором проекта-->
-<div [class]="className">
-  <p class="regular_text">{{ title }}</p>
-  <select (change)="onChange($event.target.value)">
-    <option *ngFor="let option of options">{{ option }}</option>
-  </select>
-</div>
+<ng-container *ngIf="isEdit; else textBlock">
+  <label class="small_text text-gray select__label" [for]="controlName"
+    >{{ label
+    }}<sup *ngIf="required" class="select__required">*</sup></label
+  >
+  <mat-form-field
+    class="select__form-field mat-form-field_default-select"
+    appearance="none"
+  >
+    <mat-select
+      class="select__input"
+      [formControl]="control"
+      [id]="controlName"
+      [attr.name]="controlName"
+    >
+      <mat-option
+        class="select__input"
+        *ngFor="let option of options"
+        [value]="option"
+      >
+        {{ option }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</ng-container>
+
+<ng-template #textBlock>
+  <h3 class="small_text text-gray">{{ label }}</h3>
+  <div>{{ control.value }}</div>
+</ng-template>

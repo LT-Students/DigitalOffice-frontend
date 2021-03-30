@@ -73,9 +73,10 @@
 
       &__content {
         margin-top: 30px;
-        width: 100%;
 
         display: grid;
+
+        width: 100%;
         grid-template-columns: 1fr 1fr 1fr;
         grid-column-gap: 15%;
         grid-row-gap: 40px;
@@ -132,6 +133,7 @@
 
       &__content {
         margin-top: 30px;
+
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         grid-column-gap: 15%;
