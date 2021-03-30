@@ -233,6 +233,8 @@ export class EmployeePageComponent implements OnInit {
   }
 
   public onReset(): void {
+    this.selectedEducationItem.isEditing = false;
+    this.selectedEducationItem = null;
     this.sectionModes.education = WorkFlowMode.VIEW;
     console.log(this.sectionModes);
   }
@@ -247,7 +249,6 @@ export class EmployeePageComponent implements OnInit {
       this.sectionModes.education = WorkFlowMode.VIEW;
     }
     this.selectedEducationItem = item;
-    console.log(this.selectedEducationItem);
     item.isEditing = true;
     this.editForm.setValue({
       educationInstitution: item.educationInstitution

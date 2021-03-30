@@ -146,54 +146,61 @@
       </div>
     </div>
     <div class="section__content">
+      <div *ngIf="sectionModes.education === workFlowMode.ADD" class="row">
+        <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>
+      </div>
       <div *ngFor="let course of courses" class="row">
-        <div class="row__main-info">
-          <!--1 column-->
-          <div class="col">
-            <p class="regular_text text-gray1">
-              {{ course.studyType | titlecase }}
-            </p>
-            <p class="regular_text text-dark_2">
-              {{ course.getEducationalPeriod() }}
-            </p>
-          </div>
-          <!--2 column-->
-          <div class="col">
-            <p class="col__header regular_text text-gray1">
-              {{ course.educationInstitution }}
-            </p>
-            <p class="regular_text text-dark_2">{{ course.specialization }}</p>
-          </div>
-          <div class="col">
-            <div class="row__button text-gray1">
-              <button mat-flat-button>
-                <mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат
-              </button>
+        <ng-container *ngIf="!course.isEditing; else editFormTemplate">
+          <div class="row__main-info">
+            <!--1 column-->
+            <div class="col">
+              <p class="regular_text text-gray1">
+                {{ course.studyType | titlecase }}
+              </p>
+              <p class="regular_text text-dark_2">
+                {{ course.getEducationalPeriod() }}
+              </p>
+            </div>
+            <!--2 column-->
+            <div class="col">
+              <p class="col__header regular_text text-gray1">
+                {{ course.educationInstitution }}
+              </p>
+              <p class="regular_text text-dark_2">
+                {{ course.specialization }}
+              </p>
+            </div>
+            <div class="col">
+              <div class="row__button text-gray1">
+                <button mat-flat-button>
+                  <mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="row__button text-gray1">
-          <!--    Trick, для работы dropdown. TODO: Сделать нормальную собственную реализацию      -->
-          <mat-form-field class="mat-form-field_none" appearance="none">
-            <mat-select class="none" #matSelect>
-              <mat-option (click)="onItemEditClicked(course, true)"
-                ><img
-                  src="assets/svg/edit.svg"
-                  alt="edit"
-                />&nbsp;Редактировать</mat-option
-              >
-              <mat-option (click)="onItemDeleteClicked(course, true)"
-                ><img
-                  src="assets/svg/delete.svg"
-                  alt="delete"
-                />&nbsp;Удалить</mat-option
-              >
-            </mat-select>
-          </mat-form-field>
-          <button mat-icon-button (click)="matSelect.open()">
-            <mat-icon>more_horiz</mat-icon>
-          </button>
-        </div>
+          <div class="row__button text-gray1">
+            <!--    Trick, для работы dropdown. TODO: Сделать нормальную собственную реализацию      -->
+            <mat-form-field class="mat-form-field_none" appearance="none">
+              <mat-select class="none" #matSelect>
+                <mat-option (click)="onItemEditClicked(course, true)"
+                  ><img
+                    src="assets/svg/edit.svg"
+                    alt="edit"
+                  />&nbsp;Редактировать</mat-option
+                >
+                <mat-option (click)="onItemDeleteClicked(course, true)"
+                  ><img
+                    src="assets/svg/delete.svg"
+                    alt="delete"
+                  />&nbsp;Удалить</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+            <button mat-icon-button (click)="matSelect.open()">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+          </div>
+        </ng-container>
       </div>
       <mat-form-field class="mat-form-field_default-select" appearance="none">
         <mat-select class="select" placeholder="Показать все">
@@ -210,7 +217,6 @@
     class="row__edit-form edit-form"
     [formGroup]="editForm"
     (ngSubmit)="onSubmit()"
-    (reset)="onReset()"
   >
     <mat-form-field
       class="mat-form-field__form-control edit-form__institution"
@@ -261,11 +267,12 @@
       </mat-form-field>
     </mat-form-field>
     <mat-form-field
+      *ngIf="selectedEducationItem.startYear"
       class="mat-form-field__form-control"
       appearance="none"
       floatLabel="always"
     >
-      <mat-label *ngIf="selectedEducationItem.startYear">Год начала </mat-label>
+      <mat-label>Год начала </mat-label>
       <input
         matInput
         [matDatepicker]="pickerStartYear"
@@ -316,7 +323,9 @@
       <img src="assets/svg/pin.svg" alt="ping" />&nbsp;Загрузить сертификат
     </button>
     <div class="edit-form__action">
-      <button mat-flat-button color="warn" type="reset">Отменить</button>
+      <button mat-flat-button color="warn" type="button" (click)="onReset()">
+        Отменить
+      </button>
       <button mat-flat-button color="primary" type="submit">Сохранить</button>
     </div>
   </form>
