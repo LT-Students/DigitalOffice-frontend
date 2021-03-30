@@ -25,6 +25,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
   startPeriod: Date;
   endPeriod: Date;
   tasksCount = 0;
+  searchText = '';
 
   public startDate: Date | null;
   public endDate: Date | null;
@@ -69,5 +70,9 @@ export class UserTasksComponent implements OnInit, OnDestroy {
   }
   sortByHours(): void {
     this.isOrderedByHours = !this.isOrderedByHours;
+  }
+
+  onSearch(text: string) {
+    this.searchText = text;
   }
 }

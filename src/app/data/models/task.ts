@@ -3,7 +3,7 @@ export interface Task {
   userId: string;
   startDate: Date;
   endDate: Date;
-  minute: number;
+  minutes: number;
   title: string;
   description: string;
   projectId: string;

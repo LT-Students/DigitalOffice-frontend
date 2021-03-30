@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { DndDirective } from '@app/directives/dnd.directive';
 
 import { SharedModule } from '../../shared/shared.module';
-import { DndDirective } from '../../core/directives/dnd.directive';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { ProjectCardComponent } from './components/project-card/project-card.component';
@@ -17,6 +17,8 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
 import { NewMemberComponent } from './components/new-member/new-member.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ProgressComponent } from './components/upload/progress/progress.component';
+import { NewDepartmentComponent } from './components/new-department/new-department.component';
+import { NewSpecializationComponent } from './components/new-specialization/new-specialization.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import { ProgressComponent } from './components/upload/progress/progress.compone
     UploadComponent,
     DndDirective,
     ProgressComponent,
+    NewDepartmentComponent,
+    NewSpecializationComponent,
   ],
   imports: [
     CommonModule,

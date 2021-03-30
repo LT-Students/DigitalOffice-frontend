@@ -1,10 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { map } from 'rxjs/operators';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { User } from '@data/api/user-service/models/user';
-import { NewMember } from './new-members';
+import { IUser } from '@data/models/user';
 
 @Component({
   selector: 'do-new-members-board',
@@ -12,10 +12,14 @@ import { NewMember } from './new-members';
   styleUrls: ['./new-members-board.component.scss'],
 })
 export class NewMembersBoardComponent implements OnInit, OnDestroy {
-  public user: User;
-  private getUsersSubscription: Subscription;
-  public users: NewMember[];
-  public visibleUsers: NewMember[];
+  public members: IUser[];
+  public visibleMembers: IUser[];
+  public checkedMembers: IUser[] = [];
+  public selectedSpecialization;
+  public selectedLevel;
+  public searchName = null;
+  private getMembersSubscription: Subscription;
+
   public specializations: string[] = [
     'Front-End Developer',
     'Backend-End Developer',
@@ -25,18 +29,14 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   ];
   public levels: string[] = ['Junior', 'Middle', 'Senior'];
 
-  public selectedSpecialization;
-  public selectedLevel;
-  public searchName = null;
-
   constructor(private userApiService: UserApiService) {}
 
   ngOnInit(): void {
-    this.getUsers();
+    this.getMembers();
   }
 
-  getUsers(): void {
-    this.getUsersSubscription = this.userApiService
+  getMembers(): void {
+    this.getMembersSubscription = this.userApiService
       .getAllUsers({
         skipCount: 0,
         takeCount: 50,
@@ -45,46 +45,59 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
       .pipe(
         map((data: User[]) =>
           data.map((userDb) => ({
-            fullName: `${userDb.firstName} ${userDb.lastName} `,
+            id: userDb.id,
+            firstName: userDb.firstName,
+            lastName: userDb.lastName,
+            middleName: userDb.middleName,
+            photo: userDb.avatarFileId,
             projectsCount: 0,
             level: '',
-            profileImgSrc: '',
             specialization: '',
           }))
         )
       )
-      .subscribe((data: NewMember[]) => {
-        this.users = data;
-        this.visibleUsers = [...this.users];
+      .subscribe((data: User[]) => {
+        this.members = data;
+        this.visibleMembers = [...this.members];
       });
   }
 
   onSelect() {
-    this.visibleUsers = this.users;
+    this.visibleMembers = this.members;
     if (this.selectedSpecialization) {
-      this.visibleUsers = this.visibleUsers.filter((user) =>
+      this.visibleMembers = this.visibleMembers.filter((user) =>
         user.specialization.includes(this.selectedSpecialization)
       );
     }
 
     if (this.selectedLevel) {
-      this.visibleUsers = this.visibleUsers.filter(
+      this.visibleMembers = this.visibleMembers.filter(
         (user) => user.level === this.selectedLevel
       );
     }
-    return this.visibleUsers;
-  }
-
-  onChooseMemberClick(): void {
-    console.log('clicked!');
+    return this.visibleMembers;
   }
 
   onSearchClick(value: string): void {
     this.searchName = value;
-    this.getUsers();
+    this.getMembers();
   }
 
   ngOnDestroy(): void {
-    this.getUsersSubscription.unsubscribe();
+    this.getMembersSubscription.unsubscribe();
+  }
+
+  onCheckMember($event, user): void {
+    if ($event) {
+      this.checkedMembers.push(user);
+    } else {
+      let uncheckedUserIndex;
+      this.checkedMembers.map((x, index) => {
+        if (x.id === user.id) {
+          uncheckedUserIndex = index;
+        }
+      });
+      this.checkedMembers.splice(uncheckedUserIndex, 1);
+    }
   }
 }
