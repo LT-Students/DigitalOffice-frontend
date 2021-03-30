@@ -17,6 +17,7 @@ import { ProjectComponent } from './components/project/project.component';
 import { TaskComponent } from './components/project/task/task.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
+import { TaskFilterPipe } from './pipes/task-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ProjectPageComponent } from './components/project-page/project-page.com
     TaskComponent,
     ProjectsTableComponent,
     ProjectPageComponent,
+    TaskFilterPipe,
   ],
   imports: [
     CommonModule,
