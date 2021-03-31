@@ -1,4 +1,4 @@
-@import 'base/variables';
+@import 'src/stylesheets/base/_variables.scss';
 
 .employee-info {
   padding: 52px 47px;
@@ -50,11 +50,14 @@
         justify-content: space-between;
 
         .edit-form {
+          margin-top: 30px;
+
           display: grid;
 
           width: 100%;
+
           grid-template-columns: repeat(8, auto);
-          grid-gap: 6px 31px;
+          grid-gap: 25px 31px;
 
           &__institution {
             grid-column: 1 / 5;

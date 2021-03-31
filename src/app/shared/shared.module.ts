@@ -11,7 +11,6 @@ import { ProfileImageComponent } from './component/profile-image/profile-image.c
 import { ContentContainerComponent } from './component/content-container/content-container.component';
 import { SearchComponent } from './component/search/search.component';
 import { HeaderComponent } from './component/header/header.component';
-import { EmployeePageComponent } from './component/employee-page/employee-page.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +21,6 @@ import { EmployeePageComponent } from './component/employee-page/employee-page.c
     ContentContainerComponent,
     SearchComponent,
     HeaderComponent,
-    EmployeePageComponent,
   ],
   imports: [
     CommonModule,

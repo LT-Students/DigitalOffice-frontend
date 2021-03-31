@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { EducationModel, StudyType } from '@app/models/education.model';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -19,13 +19,8 @@ import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
+import { WorkFlowMode } from '../../employee-page.component';
 
-// eslint-disable-next-line no-shadow
-export enum WorkFlowMode {
-  EDIT = 'EDIT',
-  VIEW = 'VIEW',
-  ADD = 'ADD',
-}
 
 export const DATE_FORMAT = {
   parse: {
@@ -44,9 +39,9 @@ export interface Modes {
 }
 
 @Component({
-  selector: 'do-employee-page',
-  templateUrl: './employee-page.component.html',
-  styleUrls: ['./employee-page.component.scss'],
+  selector: 'do-employee-page-skills',
+  templateUrl: 'employee-page-skills.component.html',
+  styleUrls: ['employee-page-skills.component.scss'],
   providers: [
     {
       provide: DateAdapter,
@@ -56,30 +51,23 @@ export interface Modes {
     { provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
   ],
 })
-export class EmployeePageComponent implements OnInit {
+
+export class EmployeePageSkillsComponent implements OnInit {
+  @Input() public skills: string[];
+  @Input() public institutes: EducationModel[];
+  @Input() public courses: EducationModel[];
+  @Input() public studyTypes: StudyType[];
+
   public visible: boolean;
   public selectable: boolean;
   public removable: boolean;
   public addOnBlur: boolean;
   public workFlowMode: typeof WorkFlowMode = WorkFlowMode;
-  public mode: WorkFlowMode;
-  public skills: string[];
   public filteredSkills: Observable<string[]>;
   public skillsCtrl: FormControl;
-  public institutes: EducationModel[];
-  public courses: EducationModel[];
   public selectedEducationItem: EducationModel;
   readonly separatorKeysCodes: number[];
   public sectionModes: Modes;
-
-  public studyTypes = [
-    StudyType.ABSENTIA,
-    StudyType.CONFRONT,
-    StudyType.PARTTIME,
-    StudyType.OFFLINE,
-    StudyType.ONLINE,
-  ];
-
   public editForm: FormGroup;
 
   @ViewChild('skillsInput') skillsInput: ElementRef<HTMLInputElement>;
@@ -93,65 +81,13 @@ export class EmployeePageComponent implements OnInit {
     this.removable = true;
     this.addOnBlur = true;
     this.separatorKeysCodes = [ENTER, COMMA];
-    this.mode = WorkFlowMode.EDIT;
     this.sectionModes = {
       skills: WorkFlowMode.VIEW,
       education: WorkFlowMode.VIEW,
       certificates: WorkFlowMode.VIEW,
     };
     this.skillsCtrl = new FormControl();
-    this.skills = [
-      'Atlassian Jira',
-      'Key Account Management',
-      'CJM',
-      'Agile Project Management',
-      'Agile Project Management',
-      'Agile Project Management',
-      'Agile Project Management',
-      'Agile Project Management',
-      'Agile Project Management',
-    ];
-    this.institutes = [
-      new EducationModel({
-        educationInstitution: 'Университет ИТМО',
-        specialization: 'Информационная безопасность',
-        studyType: StudyType.CONFRONT,
-        startYear: new Date(2014, 0, 1),
-        endYear: new Date(2018, 0, 1),
-      }),
-      new EducationModel({
-        educationInstitution:
-          'Национальный исследовательский университет «Высшая школа экономики»',
-        specialization: 'Информационная безопасность',
-        studyType: StudyType.ABSENTIA,
-        startYear: new Date(2018, 0, 1),
-        endYear: new Date(2020, 0, 1),
-      }),
-    ];
-    this.courses = [
-      new EducationModel({
-        educationInstitution: 'Бруноям',
-        specialization: 'UX/UI дизайнер',
-        studyType: StudyType.OFFLINE,
-        endYear: new Date(2020, 0, 1),
-        certificateId: 'f92f878c-8cad-11eb-8dcd-0242ac130003',
-      }),
-      new EducationModel({
-        educationInstitution: 'HTML-academy',
-        specialization: 'Веб-программирование',
-        studyType: StudyType.ONLINE,
-        endYear: new Date(2020, 0, 1),
-        certificateId: 'f92f878c-8cad-11eb-8dcd-0242ac130003',
-      }),
-    ];
-    this.selectedEducationItem = new EducationModel({
-      educationInstitution:
-        'Национальный исследовательский университет «Высшая школа экономики»',
-      specialization: 'Информационная безопасность',
-      studyType: StudyType.ABSENTIA,
-      startYear: new Date(2018, 0, 1),
-      endYear: new Date(2020, 0, 1),
-    });
+    this.selectedEducationItem = null;
 
     this.editForm = new FormGroup({
       educationInstitution: new FormControl(''),
@@ -163,14 +99,16 @@ export class EmployeePageComponent implements OnInit {
     });
 
     this.filteredSkills = this.skillsCtrl.valueChanges.pipe(
-      startWith(null),
-      map((skill: string | null) =>
-        skill ? this._filter(skill) : this.skills.slice()
-      )
+        startWith(null),
+        map((skill: string | null) =>
+            skill ? this._filter(skill) : this.skills.slice()
+        )
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.studyTypes);
+  }
 
   public add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -197,63 +135,86 @@ export class EmployeePageComponent implements OnInit {
 
   public selected(event: MatAutocompleteSelectedEvent): void {
     this.skills.push(event.option.viewValue);
-    this.skillsInput.nativeElement.value = '';
-    this.skillsCtrl.setValue(null);
+    this.skillsCtrl.reset();
   }
 
-  public onYearSelected(
-    selectedDate: any,
-    isStartYearSelected: boolean = false
-  ): void {
+  public onStartYearSelected(selectedDate: any): void {
     const dateToSet: Date = new Date(selectedDate.year(), 0, 1);
-    if (isStartYearSelected) {
-      this.editForm.patchValue({ startYear: dateToSet });
-      this.pickerStartYear.close();
-    } else {
-      this.editForm.patchValue({ endYear: dateToSet });
-      this.pickerEndYear.close();
-    }
+    this.editForm.patchValue({ startYear: dateToSet });
+    this.pickerStartYear.close();
+  }
+
+  public onEndYearSelected(selectedDate: any): void {
+    const dateToSet: Date = new Date(selectedDate.year(), 0, 1);
+    this.editForm.patchValue({ endYear: dateToSet });
+    this.pickerEndYear.close();
   }
 
   public onSubmit(): void {
     if (!this.editForm.valid) {
       return;
     }
-    let itemIndex: number = this.courses.indexOf(this.selectedEducationItem);
+    const educationPlaceToAdd: EducationModel = new EducationModel(this.editForm.value);
+    this.editForm.reset();
 
-    if (itemIndex === -1) {
-      itemIndex = this.institutes.indexOf(this.selectedEducationItem);
-      console.log(itemIndex);
-      this.institutes[itemIndex] = new EducationModel(this.editForm.value);
+    // Edit mode
+    if (this.selectedEducationItem) {
+      let itemIndex: number = this.courses.indexOf(this.selectedEducationItem);
+
+      if (itemIndex === -1) {
+        itemIndex = this.institutes.indexOf(this.selectedEducationItem);
+        this.institutes[itemIndex] = educationPlaceToAdd;
+      } else {
+        this.courses[itemIndex] = educationPlaceToAdd;
+      }
     } else {
-      this.courses[itemIndex] = new EducationModel(this.editForm.value);
+      // Add mode
+      /* check which type is adding */
+      if (this.sectionModes.education === WorkFlowMode.ADD) {
+        this.institutes.unshift(educationPlaceToAdd);
+        this.sectionModes.education = WorkFlowMode.VIEW;
+      } else if (this.sectionModes.certificates === WorkFlowMode.ADD) {
+        this.courses.unshift(educationPlaceToAdd);
+        this.sectionModes.certificates = WorkFlowMode.VIEW;
+      }
     }
-
-    console.log(this.editForm.value);
   }
 
   public onReset(): void {
-    this.selectedEducationItem.isEditing = false;
-    this.selectedEducationItem = null;
+    if (this.selectedEducationItem) {
+      this.selectedEducationItem.isEditing = false;
+      this.selectedEducationItem = null;
+    }
+    this.editForm.reset();
     this.sectionModes.education = WorkFlowMode.VIEW;
-    console.log(this.sectionModes);
+    this.sectionModes.certificates = WorkFlowMode.VIEW;
   }
 
-  public onItemEditClicked(
-    item: EducationModel,
-    course: boolean = false
+  public onEducationAddClicked(): void {
+    this.selectedEducationItem = null;
+    this.sectionModes.education = WorkFlowMode.ADD;
+  }
+
+  public onCertificateAddClicked(): void {
+    this.selectedEducationItem = null;
+    this.sectionModes.certificates = WorkFlowMode.ADD;
+  }
+
+  public onRowEditClicked(
+      item: EducationModel,
+      course: boolean = false
   ): void {
     if (course) {
-      this.sectionModes.certificates = WorkFlowMode.VIEW;
+      this.sectionModes.certificates = WorkFlowMode.EDIT;
     } else {
-      this.sectionModes.education = WorkFlowMode.VIEW;
+      this.sectionModes.education = WorkFlowMode.EDIT;
     }
     this.selectedEducationItem = item;
     item.isEditing = true;
     this.editForm.setValue({
       educationInstitution: item.educationInstitution
-        ? item.educationInstitution
-        : null,
+          ? item.educationInstitution
+          : null,
       specialization: item.specialization ? item.specialization : null,
       studyType: item.studyType ? item.studyType : null,
       endYear: item.endYear ? item.endYear : null,
@@ -262,9 +223,9 @@ export class EmployeePageComponent implements OnInit {
     });
   }
 
-  public onItemDeleteClicked(
-    item: EducationModel,
-    course: boolean = false
+  public onRowDeleteClicked(
+      item: EducationModel,
+      course: boolean = false
   ): void {
     if (course) {
       const itemIndex: number = this.courses.indexOf(item);
@@ -279,7 +240,7 @@ export class EmployeePageComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.skills.filter(
-      (skill) => skill.toLowerCase().indexOf(filterValue) === 0
+        (skill) => skill.toLowerCase().indexOf(filterValue) === 0
     );
   }
 }

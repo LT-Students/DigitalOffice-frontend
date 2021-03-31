@@ -12,7 +12,7 @@ import { ProjectsTableComponent } from './modules/user/components/projects-table
 import { NewMembersBoardComponent } from './modules/admin/components/new-members-board/new-members-board.component';
 import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
 import { ProjectPageComponent } from './modules/user/components/project-page/project-page.component';
-import { EmployeePageComponent } from './shared/component/employee-page/employee-page.component';
+import { EmployeePageComponent } from './modules/employee/employee-page.component';
 
 const routes: Routes = [
   {
