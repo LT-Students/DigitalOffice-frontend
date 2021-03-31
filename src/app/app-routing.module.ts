@@ -41,7 +41,12 @@ const routes: Routes = [
       {
         path: 'project/:id',
         component: ProjectPageComponent,
-        canActivate: [AuthGuard],
+         canActivate: [AuthGuard],
+      },
+      {
+        path: 'employee/:id',
+        component: EmployeePageComponent,
+         canActivate: [AuthGuard],
       },
       {
         path: 'employee',
@@ -62,7 +67,7 @@ const routes: Routes = [
           { path: 'new-project', component: NewProjectComponent },
           { path: 'new-members-board', component: NewMembersBoardComponent },
         ],
-        canActivate: [AuthGuard, AdminGuard],
+         canActivate: [AuthGuard, AdminGuard],
       },
     ],
   },

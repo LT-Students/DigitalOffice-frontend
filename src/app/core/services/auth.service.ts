@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { LocalStorageService } from './local-storage.service';
 import { AuthApiService } from '@data/api/auth-service/services/auth-api.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
