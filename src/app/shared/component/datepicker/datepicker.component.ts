@@ -10,7 +10,8 @@ export class DatepickerComponent implements OnInit {
   @Input() label = '';
   @Input() required = false;
   @Input() controlName = '';
-  @Input() isEdit = false;
+  @Input() isEdit = true;
+  @Input() placeholder = '';
   @Input() format = 'd MMMM y';
 
   control: FormControl | undefined;

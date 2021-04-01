@@ -10,7 +10,8 @@ export class SelectComponent implements OnInit {
   @Input() label = '';
   @Input() required = false;
   @Input() controlName = '';
-  @Input() isEdit = false;
+  @Input() isEdit = true;
+  @Input() placeholder = '';
   @Input() options: string[];
 
   control: FormControl | undefined;
