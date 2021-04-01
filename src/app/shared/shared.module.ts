@@ -46,6 +46,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     SearchComponent,
     HeaderComponent,
     MaterialModule,
+    DatepickerComponent,
   ],
 })
 export class SharedModule {}

@@ -1,5 +1,29 @@
 @import 'base/variables';
 
+.new-employee__inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+}
+
+.new-employee__office {
+  grid-column: span 2;
+}
+
+.new-employee__buttons {
+  margin-top: 35px;
+
+  width: 216px;
+}
+
+.new-employee__reset {
+  justify-self: end;
+}
+
+.new-employee__submit {
+  justify-self: start;
+}
+
 .new-employee-container {
   display: flex;
 
