@@ -15,6 +15,7 @@ import { EmployeePageComponent } from './component/employee-page/employee-page.c
 import { EmployeeInfoComponent } from './component/employee-info/employee-info.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
+import { StepperComponent } from './component/stepper/stepper.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     EmployeeInfoComponent,
     InputComponent,
     DatepickerComponent,
+    StepperComponent,
   ],
   imports: [
     CommonModule,
@@ -47,6 +49,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     HeaderComponent,
     MaterialModule,
     DatepickerComponent,
+    StepperComponent,
   ],
 })
 export class SharedModule {}

@@ -1,0 +1,43 @@
+@import '../../../../stylesheets/base/variables';
+
+.stepper {
+  &__label {
+    display: block;
+
+    text-align: start;
+  }
+
+  &__button {
+    font-family: $header_font;
+
+    &:disabled {
+      padding: 0;
+
+      min-width: 0;
+
+      background-color: transparent;
+    }
+  }
+
+  &__required {
+    margin-left: 1px;
+
+    vertical-align: top;
+
+    color: $negative_accent;
+  }
+
+  &__form-field {
+    display: block;
+
+    text-align: center;
+  }
+
+  &__input {
+    font-family: $regular_font !important;
+  }
+}
+
+.small_text {
+  margin: 14px 0 3px 0;
+}
