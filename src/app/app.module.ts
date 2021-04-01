@@ -23,6 +23,7 @@ import { AdminModule } from './modules/admin/admin.module';
 import { MaterialModule } from './shared/material.module';
 import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
+import { EmployeeModule } from './modules/employee/employee.module';
 
 registerLocaleData(localeRu);
 
@@ -37,6 +38,7 @@ registerLocaleData(localeRu);
     SharedModule,
     UserModule,
     AdminModule,
+    EmployeeModule,
     NgbModule,
     BrowserAnimationsModule,
     MaterialModule,
