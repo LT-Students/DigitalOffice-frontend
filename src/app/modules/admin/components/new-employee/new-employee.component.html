@@ -58,7 +58,7 @@
           <h2 class="h3">Рабочая информация</h2>
           <div class="new-employee__inputs">
             <do-select
-              controlName="jobPosition"
+              controlName="position"
               label="Должность"
               [options]="positions"
               required="true"
@@ -71,12 +71,11 @@
               required="true"
               placeholder="Выберите департамент"
             ></do-select>
-            <do-input
-              controlName="workingRate"
+            <do-stepper
+              controlName="rate"
               label="Ставка"
               required="true"
-              placeholder="Введите E-mail"
-            ></do-input>
+            ></do-stepper>
             <do-datepicker
               controlName="workingSince"
               label="Начало работы"

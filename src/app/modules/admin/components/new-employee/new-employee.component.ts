@@ -19,20 +19,22 @@ export class NewEmployeeComponent implements OnInit {
   public imagePath;
   public imgURL: any;
   public userForm: FormGroup;
-  public positions = [];
-  public rates = [0, 0.5, 1, 1.5, 2];
-  public departments = [
-    { name: 'department1' },
-    { name: 'department2' },
-    { name: 'department3' },
-  ];
+  public positions: string[];
+  public departments: string[];
+  public offices: string[];
+  public sex: string[];
 
   constructor(
     private formBuilder: FormBuilder,
     private positionApiService: PositionApiService,
     private userApiService: UserApiService,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.positions = ['Junior Pug', 'Boss Pug'];
+    this.departments = ['Pug Department', 'Corgi Department'];
+    this.offices = ['м. Чернышевская', 'Улица Пушкина, дом Колотушкина'];
+    this.sex = ['Мужской', 'Женский', 'Не определён'];
+  }
 
   ngOnInit(): void {
     this.getPositions();
