@@ -9,6 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "branch": "sh .githooks/pre-commit",
     "prettier": "prettier --write src/**/*.{ts,scss}",
     "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
     "generate.time": "ng-openapi-gen -c swagger/config/time.json",
@@ -82,7 +83,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npx lint-staged --relative"
+      "pre-commit": "npm run branch && npx lint-staged --relative"
     }
   },
   "lint-staged": {
