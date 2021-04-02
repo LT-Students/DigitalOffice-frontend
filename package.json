@@ -82,7 +82,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npx lint-staged --relative"
+      "pre-commit": "sh .githooks/pre-commit && npx lint-staged --relative"
     }
   },
   "lint-staged": {
