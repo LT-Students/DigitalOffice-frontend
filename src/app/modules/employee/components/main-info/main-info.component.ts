@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IUser } from '@data/models/user';
 import { ActivatedRoute } from '@angular/router';
+import { IUser } from '@data/models/user';
+import { ConnectionType } from '@data/api/user-service/models/connection-type';
 
 interface ExtendedUser extends IUser {
   emojiStatus: { emoji: string; description: string };
-  aboutMe: string;
+  about: string;
+  photoUrl: string;
   jobPosition: string;
   department: string;
   location: string;
@@ -14,19 +16,18 @@ interface ExtendedUser extends IUser {
   workingHours: { startAt: string; endAt: string };
   workingSince: Date;
   birthDate: Date;
-  phone: string;
-  telegram: string;
-  vacationDays: number;
+  connectionTypes: {type: ConnectionType, value: string}[];
+  vacationDaysLeft: number;
   vacationSince: Date;
   vacationUntil: Date;
 }
 
 @Component({
-  selector: 'do-employee-info',
-  templateUrl: './employee-info.component.html',
-  styleUrls: ['./employee-info.component.scss'],
+  selector: 'do-employee-page-main-info',
+  templateUrl: './main-info.component.html',
+  styleUrls: ['./main-info.component.scss'],
 })
-export class EmployeeInfoComponent implements OnInit {
+export class MainInfoComponent implements OnInit {
   public pageId: string;
 
   public employeeInfoForm: FormGroup;
@@ -43,10 +44,9 @@ export class EmployeeInfoComponent implements OnInit {
       firstName: 'Ангелина',
       lastName: 'Иванова',
       middleName: 'Анатольевна',
-      photo: 'assets/images/employee-photo.png',
+      photoUrl: 'assets/images/employee-photo.png',
       emojiStatus: { emoji: '🏠', description: 'Работает из дома' },
-      aboutMe:
-        'С удовольствием отвечу на ваши вопросы, но только в рабочее время! Всем хорошего дня!',
+      about: 'С удовольствием отвечу на ваши вопросы, но только в рабочее время! Всем хорошего дня!',
       jobPosition: 'Middle Product Manager',
       department: 'Департамент цифровых технологий',
       location: 'Россия, г. Санкт-Петербург',
@@ -58,10 +58,12 @@ export class EmployeeInfoComponent implements OnInit {
       },
       workingSince: new Date(2017, 9),
       birthDate: new Date(1995, 9, 10),
-      email: 'evet.pm@lanit-tercom.com',
-      phone: '+7(921)623-25-92',
-      telegram: '@eve01beast',
-      vacationDays: 20,
+      connectionTypes: [
+          { type: ConnectionType.Email, value: 'evet.pm@lanit-tercom.com' },
+          { type: ConnectionType.Phone, value: '+7(921)623-25-92' },
+          { type: ConnectionType.Telegram, value: '@eve01beast' },
+      ],
+      vacationDaysLeft: 20,
       vacationSince: new Date(2020, 9, 10),
       vacationUntil: new Date(2020, 9, 20),
       isAdmin: true,
@@ -79,7 +81,7 @@ export class EmployeeInfoComponent implements OnInit {
     };
 
     this.isEditable = false;
-    this.previewPhoto = this.employee.photo;
+    this.previewPhoto = this.employee.photoUrl;
 
     this.employeeInfoForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -110,6 +112,8 @@ export class EmployeeInfoComponent implements OnInit {
 
     this.pageId = this.route.snapshot.paramMap.get('id');
   }
+
+  ngOnInit(): void {}
 
   get fullName() {
     const { lastName, firstName, middleName } = this.employee;
@@ -169,5 +173,5 @@ export class EmployeeInfoComponent implements OnInit {
     this.employeeInfoForm.patchValue({ workingRate: rate });
   }
 
-  ngOnInit(): void {}
+  /* TODO: добавить обработчик перевода Эмодзи-статуса в "В отпуске"*/
 }

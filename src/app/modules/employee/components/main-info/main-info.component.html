@@ -8,27 +8,24 @@
     <div class="employee-info__main">
       <div class="employee-info__photo">
         <ng-container *ngIf="!isEditable; else photo">
-          <img src="{{ employee.photo }}" alt="Employee photo" width="200" />
+          <img [src]="employee.photoUrl" alt="Employee photo" width="200" />
         </ng-container>
       </div>
       <ng-container *ngIf="!(employee.isAdmin && isEditable); else nameEdit">
         <h1 class="employee-info__name h3 text-dark_2">
           {{ fullName }}&nbsp;<span
             matTooltipClass="tooltip"
-            matTooltip="Ангелина {{
-              employee.emojiStatus.description | lowercase
-            }}"
+            [matTooltip]="'Ангелина ' + (employee.emojiStatus.description | lowercase)"
             [matTooltipPosition]="'above'"
-            >{{ employee.emojiStatus.emoji }}</span
-          >
+            >{{ employee.emojiStatus.emoji }}</span>
         </h1>
       </ng-container>
       <ng-container *ngIf="!isEditable; else aboutMe">
         <div
-          *ngIf="employee.aboutMe"
+          *ngIf="employee.about"
           class="employee-info__about-me small_text text-gray"
         >
-          “{{ employee.aboutMe }}”
+          “{{ employee.about }}”
         </div>
       </ng-container>
     </div>
@@ -163,7 +160,7 @@
             (click)="toggleEditMode()"
           >
             <mat-icon aria-label="Edit">
-              <img src="assets/svg/edit.svg" alt="Edit" height="20px" />
+              <img src='../../../../../assets/svg/edit.svg' alt="Edit" height="20px" />
             </mat-icon>
           </button>
         </div>
@@ -309,7 +306,7 @@
     class="text_white employee-info__label employee-info__upload-button"
     for="photo"
     ><mat-icon class="employee-info__upload-icon">
-      <img src="assets/svg/arrow-upload-file.svg" alt="Upload photo" />
+      <img src='../../../../../assets/svg/arrow-upload-file.svg' alt="Upload photo" />
     </mat-icon>
     Обновить фото</label
   >

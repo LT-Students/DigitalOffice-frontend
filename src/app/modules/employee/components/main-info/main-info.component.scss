@@ -1,4 +1,4 @@
-@import '../../../../stylesheets/base/variables';
+@import '../../../../../stylesheets/base/variables';
 
 .employee-info {
   margin-bottom: 45px;
@@ -24,8 +24,9 @@
   &__general {
     margin-right: 32px;
     margin-left: 32px;
-
     padding: 52px 0 42px;
+
+    width: 41%;
   }
 
   &__additional {

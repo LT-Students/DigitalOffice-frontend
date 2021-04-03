@@ -11,8 +11,6 @@ import { ProfileImageComponent } from './component/profile-image/profile-image.c
 import { ContentContainerComponent } from './component/content-container/content-container.component';
 import { SearchComponent } from './component/search/search.component';
 import { HeaderComponent } from './component/header/header.component';
-import { EmployeePageComponent } from './component/employee-page/employee-page.component';
-import { EmployeeInfoComponent } from './component/employee-info/employee-info.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 
@@ -25,8 +23,6 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     ContentContainerComponent,
     SearchComponent,
     HeaderComponent,
-    EmployeePageComponent,
-    EmployeeInfoComponent,
     InputComponent,
     DatepickerComponent,
   ],
@@ -45,6 +41,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     ProfileImageComponent,
     SearchComponent,
     HeaderComponent,
+    DatepickerComponent,
     MaterialModule,
   ],
 })

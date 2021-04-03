@@ -40,8 +40,8 @@ export interface Modes {
 
 @Component({
   selector: 'do-employee-page-skills',
-  templateUrl: 'employee-page-skills.component.html',
-  styleUrls: ['employee-page-skills.component.scss'],
+  templateUrl: 'skills.component.html',
+  styleUrls: ['skills.component.scss'],
   providers: [
     {
       provide: DateAdapter,
@@ -52,7 +52,7 @@ export interface Modes {
   ],
 })
 
-export class EmployeePageSkillsComponent implements OnInit {
+export class SkillsComponent implements OnInit {
   @Input() public skills: string[];
   @Input() public institutes: EducationModel[];
   @Input() public courses: EducationModel[];
