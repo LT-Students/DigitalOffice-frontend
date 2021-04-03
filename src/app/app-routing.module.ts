@@ -36,17 +36,17 @@ const routes: Routes = [
             component: ProjectsTableComponent,
           },
         ],
-        /* canActivate: [AuthGuard], */
+        canActivate: [AuthGuard],
       },
       {
         path: 'project/:id',
         component: ProjectPageComponent,
-         /* canActivate: [AuthGuard], */
+        canActivate: [AuthGuard],
       },
       {
         path: 'employee/:id',
         component: EmployeePageComponent,
-         /* canActivate: [AuthGuard], */
+        canActivate: [AuthGuard],
       },
       {
         path: 'admin',
@@ -62,7 +62,7 @@ const routes: Routes = [
           { path: 'new-project', component: NewProjectComponent },
           { path: 'new-members-board', component: NewMembersBoardComponent },
         ],
-         /* canActivate: [AuthGuard, AdminGuard], */
+        canActivate: [AuthGuard, AdminGuard],
       },
     ],
   },
