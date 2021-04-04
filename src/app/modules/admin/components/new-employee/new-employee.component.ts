@@ -98,6 +98,14 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   generateCredentials(): void {
-    // todo add this part when APi is ready
+    this.userApiService.generatePassword().subscribe(
+      (res) => {
+        this.userForm.patchValue({ password: res });
+      },
+      (error: HttpErrorResponse) => {
+        this.snackBar.open(error.error.Message, 'accept');
+        throw error;
+      }
+    );
   }
 }
