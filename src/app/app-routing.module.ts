@@ -63,7 +63,6 @@ const routes: Routes = [
             redirectTo: 'dashboard',
           },
           { path: 'dashboard', component: DashboardComponent },
-          { path: 'new-employee', component: NewEmployeeComponent },
           { path: 'new-project', component: NewProjectComponent },
           { path: 'new-members-board', component: NewMembersBoardComponent },
         ],
