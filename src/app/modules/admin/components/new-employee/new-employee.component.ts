@@ -41,19 +41,16 @@ export class NewEmployeeComponent implements OnInit {
     this.userForm = this.formBuilder.group({
       lastName: ['', [Validators.required, Validators.maxLength(32)]],
       firstName: ['', [Validators.required, Validators.maxLength(32)]],
-      middleName: ['', [Validators.required, Validators.maxLength(32)]],
-      position: [''],
-      rate: [''],
-      department: [''],
+      middleName: ['', [Validators.maxLength(32)]],
+      position: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      sex: [''],
+      birthDate: [''],
+      workingSince: ['', [Validators.required]],
+      rate: ['1', [Validators.required]],
+      department: ['', [Validators.required]],
+      office: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      login: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(16),
-        ],
-      ],
       password: ['', [Validators.required]],
     });
   }
@@ -70,11 +67,18 @@ export class NewEmployeeComponent implements OnInit {
     this.userApiService
       .createUser({
         body: {
-          email: this.userForm.controls['email'].value,
-          login: this.userForm.controls['login'].value,
-          firstName: this.userForm.controls['firstName'].value,
           lastName: this.userForm.controls['lastName'].value,
+          firstName: this.userForm.controls['firstName'].value,
           middleName: this.userForm.controls['middleName'].value,
+          position: this.userForm.controls['position'].value,
+          city: this.userForm.controls['city'].value,
+          sex: this.userForm.controls['sex'].value,
+          birthDate: this.userForm.controls['birthDate'].value,
+          workingSince: this.userForm.controls['workingSince'].value,
+          rate: this.userForm.controls['rate'].value,
+          department: this.userForm.controls['department'].value,
+          office: this.userForm.controls['office'].value,
+          email: this.userForm.controls['email'].value,
           password: this.userForm.controls['password'].value,
           isAdmin: true,
           isActive: true,
@@ -95,24 +99,5 @@ export class NewEmployeeComponent implements OnInit {
 
   generateCredentials(): void {
     // todo add this part when APi is ready
-  }
-
-  preview(files) {
-    if (files.length === 0) {
-      return;
-    }
-
-    let mimeType = files[0].type;
-    if (mimeType.match(/image\/*/) === null) {
-      this.message = 'Only images are supported.';
-      return;
-    }
-
-    let reader = new FileReader();
-    this.imagePath = files;
-    reader.readAsDataURL(files[0]);
-    reader.onload = (event) => {
-      this.imgURL = reader.result;
-    };
   }
 }
