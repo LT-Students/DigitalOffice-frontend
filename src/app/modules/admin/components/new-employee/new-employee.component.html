@@ -3,11 +3,13 @@
     <h1 class="new-employee__title h2 text_dark_1">
       Новая карточка сотрудника
     </h1>
-    <span class="regular_text text-negative_accent new-employee__memo"
-      ><sup>*</sup>Обязательные поля</span
-    >
     <div class="new-employee__personal-info">
-      <h2 class="new-employee__heading h3 text_dark_1">Личные данные</h2>
+      <h2 class="new-employee__heading h3 text_dark_1 new-employee__flex-label">
+        <span>Личные данные</span>
+        <span class="regular_text text-negative_accent"
+          ><sup>*</sup>Обязательные поля</span
+        >
+      </h2>
       <div class="new-employee__inputs">
         <do-input
           controlName="lastName"
@@ -93,7 +95,7 @@
           placeholder="Введите E-mail"
         ></do-input>
         <div>
-          <div class="new-employee__password-label">
+          <div class="new-employee__flex-label">
             <label
               class="small_text text-gray new-employee__label"
               for="password"

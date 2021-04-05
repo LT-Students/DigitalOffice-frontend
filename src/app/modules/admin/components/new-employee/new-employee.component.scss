@@ -1,8 +1,6 @@
 @import 'base/variables';
 
 .new-employee {
-  position: relative;
-
   &__inputs {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -42,13 +40,7 @@
     justify-self: start;
   }
 
-  &__memo {
-    position: absolute;
-    top: 60px;
-    right: 24px;
-  }
-
-  &__password-label {
+  &__flex-label {
     display: flex;
     justify-content: space-between;
   }
