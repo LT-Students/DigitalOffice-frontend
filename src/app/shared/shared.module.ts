@@ -15,6 +15,7 @@ import { EmployeePageComponent } from './component/employee-page/employee-page.c
 import { EmployeeInfoComponent } from './component/employee-info/employee-info.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
+import { TextDirective } from '@app/directives/text.directive';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     EmployeeInfoComponent,
     InputComponent,
     DatepickerComponent,
+    TextDirective
   ],
   imports: [
     CommonModule,
@@ -45,6 +47,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     ProfileImageComponent,
     SearchComponent,
     HeaderComponent,
+    TextDirective,
     MaterialModule,
   ],
 })
