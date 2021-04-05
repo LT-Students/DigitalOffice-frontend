@@ -20,7 +20,7 @@ export class NewEmployeeComponent implements OnInit {
   public imagePath;
   public imgURL: any;
   public userForm: FormGroup;
-  public positions: string[];
+  public positions;
   public departments: string[];
   public offices: string[];
   public sex: string[];
