@@ -7,6 +7,7 @@ import { User } from '@data/api/user-service/models/user';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
 import { PositionResponse } from '@data/api/company-service/models/position-response';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'do-new-employee',
@@ -28,7 +29,8 @@ export class NewEmployeeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private positionApiService: PositionApiService,
     private userApiService: UserApiService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialogRef: MatDialogRef<any>
   ) {
     this.positions = ['Junior Pug', 'Boss Pug'];
     this.departments = ['Pug Department', 'Corgi Department'];
@@ -95,6 +97,7 @@ export class NewEmployeeComponent implements OnInit {
           throw error;
         }
       );
+    this.dialogRef.close();
   }
 
   generateCredentials(): void {

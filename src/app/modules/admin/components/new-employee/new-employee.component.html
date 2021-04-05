@@ -1,9 +1,5 @@
 <mat-dialog-content class="new-employee">
-  <form
-    [formGroup]="userForm"
-    (ngSubmit)="createEmployee()"
-    autocomplete="off"
-  >
+  <form [formGroup]="userForm" (ngSubmit)="createEmployee()" autocomplete="off">
     <h1 class="new-employee__title h2 text_dark_1">
       Новая карточка сотрудника
     </h1>
@@ -106,13 +102,14 @@
         <button
           mat-flat-button
           mat-dialog-close
+          type="button"
           class="text-gray new-employee__reset new-employee__buttons"
         >
           Отмена
         </button>
         <button
           mat-flat-button
-          mat-dialog-close
+          type="submit"
           [disabled]="userForm.invalid"
           class="bg-accent_color_bright text-light_1 new-employee__submit new-employee__buttons"
         >
