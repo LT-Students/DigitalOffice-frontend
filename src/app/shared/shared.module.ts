@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TextDirective } from '@app/directives/text.directive';
 import { MaterialModule } from './material.module';
 
 import { ButtonComponent } from './component/button/button.component';
@@ -25,6 +26,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     HeaderComponent,
     InputComponent,
     DatepickerComponent,
+    TextDirective
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     SearchComponent,
     HeaderComponent,
     DatepickerComponent,
+    TextDirective,
     MaterialModule,
   ],
 })
