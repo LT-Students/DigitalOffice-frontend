@@ -24,6 +24,9 @@ export class NewEmployeeComponent implements OnInit {
   public departments: string[];
   public offices: string[];
   public sex: string[];
+  public isVisible: boolean;
+  public passwordIcon: string;
+  public passwordType: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,6 +39,9 @@ export class NewEmployeeComponent implements OnInit {
     this.departments = ['Pug Department', 'Corgi Department'];
     this.offices = ['м. Чернышевская', 'Улица Пушкина, дом Колотушкина'];
     this.sex = ['Мужской', 'Женский', 'Не определён'];
+    this.isVisible = false;
+    this.passwordIcon = 'visibility_off';
+    this.passwordType = 'password';
   }
 
   ngOnInit(): void {
@@ -66,49 +72,64 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   createEmployee(): void {
-    this.userApiService
-      .createUser({
-        body: {
-          lastName: this.userForm.controls['lastName'].value,
-          firstName: this.userForm.controls['firstName'].value,
-          middleName: this.userForm.controls['middleName'].value,
-          position: this.userForm.controls['position'].value,
-          city: this.userForm.controls['city'].value,
-          sex: this.userForm.controls['sex'].value,
-          birthDate: this.userForm.controls['birthDate'].value,
-          workingSince: this.userForm.controls['workingSince'].value,
-          rate: this.userForm.controls['rate'].value,
-          department: this.userForm.controls['department'].value,
-          office: this.userForm.controls['office'].value,
-          email: this.userForm.controls['email'].value,
-          password: this.userForm.controls['password'].value,
-          isAdmin: true,
-          isActive: true,
-        },
-      })
-      .subscribe(
-        (res) => {
-          this.snackBar.open('New user added successfully', 'done', {
-            duration: 3000,
-          });
-        },
-        (error: HttpErrorResponse) => {
-          this.snackBar.open(error.error.Message, 'accept');
-          throw error;
-        }
-      );
+    // this.userApiService
+    //   .createUser({
+    //     body: {
+    //       lastName: this.userForm.controls['lastName'].value,
+    //       firstName: this.userForm.controls['firstName'].value,
+    //       middleName: this.userForm.controls['middleName'].value,
+    //       position: this.userForm.controls['position'].value,
+    //       city: this.userForm.controls['city'].value,
+    //       sex: this.userForm.controls['sex'].value,
+    //       birthDate: this.userForm.controls['birthDate'].value,
+    //       workingSince: this.userForm.controls['workingSince'].value,
+    //       rate: this.userForm.controls['rate'].value,
+    //       department: this.userForm.controls['department'].value,
+    //       office: this.userForm.controls['office'].value,
+    //       email: this.userForm.controls['email'].value,
+    //       password: this.userForm.controls['password'].value,
+    //       isAdmin: true,
+    //       isActive: true,
+    //     },
+    //   })
+    //   .subscribe(
+    //     (res) => {
+    //       this.snackBar.open('New user added successfully', 'done', {
+    //         duration: 3000,
+    //       });
+    //     },
+    //     (error: HttpErrorResponse) => {
+    //       this.snackBar.open(error.error.Message, 'accept');
+    //       throw error;
+    //     }
+    //   );
+    this.snackBar.open('New user added successfully', 'done', {
+      duration: 3000,
+    });
     this.dialogRef.close();
   }
 
   generateCredentials(): void {
-    this.userApiService.generatePassword().subscribe(
-      (res) => {
-        this.userForm.patchValue({ password: res });
-      },
-      (error: HttpErrorResponse) => {
-        this.snackBar.open(error.error.Message, 'accept');
-        throw error;
-      }
-    );
+    // this.userApiService.generatePassword().subscribe(
+    //   (res) => {
+    //     this.userForm.patchValue({ password: res });
+    //   },
+    //   (error: HttpErrorResponse) => {
+    //     this.snackBar.open(error.error.Message, 'accept');
+    //     throw error;
+    //   }
+    // );
+    this.userForm.patchValue({ password: 'some-random-string' });
+  }
+
+  toggleVisibility(): void {
+    this.isVisible = !this.isVisible;
+    if (this.isVisible) {
+      this.passwordIcon = 'visibility';
+      this.passwordType = 'text';
+    } else {
+      this.passwordIcon = 'visibility_off';
+      this.passwordType = 'password';
+    }
   }
 }

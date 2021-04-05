@@ -92,13 +92,49 @@
           required="true"
           placeholder="Введите E-mail"
         ></do-input>
-        <do-input
-          controlName="password"
-          type="password"
-          label="Пароль"
-          required="true"
-          placeholder="Сгенерируйте пароль"
-        ></do-input>
+        <div>
+          <div class="new-employee__password-label">
+            <label
+              class="small_text text-gray new-employee__label"
+              for="password"
+              >Пароль<sup class="new-employee__required">*</sup>
+              <mat-icon
+                class="new-employee__hint"
+                aria-label="Hint"
+                matTooltipClass="tooltip"
+                matTooltip="Пароль будет отправлен сотруднику автоматически"
+                [matTooltipPosition]="'above'"
+                >help_outline
+              </mat-icon>
+            </label>
+            <button
+              mat-flat-button
+              class="text-negative_accent"
+              type="button"
+              (click)="generateCredentials()"
+            >
+              Сгенерировать
+            </button>
+          </div>
+          <mat-form-field class="new-employee__form-field" appearance="fill">
+            <input
+              matInput
+              class="bg-light_2 new-employee__input"
+              formControlName="password"
+              id="password"
+              [type]="passwordType"
+              placeholder="Сгенерируйте пароль"
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleVisibility()"
+            >
+              <mat-icon class="text-gray1">{{ passwordIcon }}</mat-icon>
+            </button></mat-form-field
+          >
+        </div>
         <button
           mat-flat-button
           mat-dialog-close
