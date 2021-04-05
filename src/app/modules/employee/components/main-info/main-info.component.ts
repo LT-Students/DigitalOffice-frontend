@@ -16,7 +16,9 @@ interface ExtendedUser extends IUser {
   workingHours: { startAt: string; endAt: string };
   workingSince: Date;
   birthDate: Date;
-  connectionTypes: {type: ConnectionType, value: string}[];
+  email: string,
+  phone: string,
+  telegram: string,
   vacationDaysLeft: number;
   vacationSince: Date;
   vacationUntil: Date;
@@ -35,7 +37,7 @@ export class MainInfoComponent implements OnInit {
 
   public selectOptions;
 
-  public isEditable: boolean;
+  public isEditing: boolean;
   public previewPhoto: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {
@@ -45,24 +47,23 @@ export class MainInfoComponent implements OnInit {
       lastName: 'Иванова',
       middleName: 'Анатольевна',
       photoUrl: 'assets/images/employee-photo.png',
-      emojiStatus: { emoji: '🏠', description: 'Работает из дома' },
+      emojiStatus: { emoji: '🏠', description: 'На больничном' },
       about: 'С удовольствием отвечу на ваши вопросы, но только в рабочее время! Всем хорошего дня!',
       jobPosition: 'Middle Product Manager',
       department: 'Департамент цифровых технологий',
       location: 'Россия, г. Санкт-Петербург',
       office: 'м. Чернышевская',
       workingRate: 0.75,
+      // TODO: переделать на Time object
       workingHours: {
         startAt: '10:00',
         endAt: '19:00',
       },
       workingSince: new Date(2017, 9),
       birthDate: new Date(1995, 9, 10),
-      connectionTypes: [
-          { type: ConnectionType.Email, value: 'evet.pm@lanit-tercom.com' },
-          { type: ConnectionType.Phone, value: '+7(921)623-25-92' },
-          { type: ConnectionType.Telegram, value: '@eve01beast' },
-      ],
+      email: 'evet.pm@lanit-tercom.com',
+      phone: '+7(921)623-25-92',
+      telegram: '@eve01beast',
       vacationDaysLeft: 20,
       vacationSince: new Date(2020, 9, 10),
       vacationUntil: new Date(2020, 9, 20),
@@ -80,7 +81,7 @@ export class MainInfoComponent implements OnInit {
       workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
     };
 
-    this.isEditable = false;
+    this.isEditing = false;
     this.previewPhoto = this.employee.photoUrl;
 
     this.employeeInfoForm = this.fb.group({
@@ -101,7 +102,7 @@ export class MainInfoComponent implements OnInit {
       }),
       workingSince: [''],
       birthDate: [''],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       telegram: [''],
       vacationSince: ['', Validators.required],
@@ -134,7 +135,7 @@ export class MainInfoComponent implements OnInit {
   }
 
   toggleEditMode() {
-    this.isEditable = !this.isEditable;
+    this.isEditing = !this.isEditing;
   }
 
   onFileChange(event) {
@@ -160,6 +161,10 @@ export class MainInfoComponent implements OnInit {
     this.toggleEditMode();
   }
 
+  onReset() {
+    this.toggleEditMode();
+  }
+
   fillForm() {
     this.employeeInfoForm.patchValue(this.employee);
   }
@@ -168,8 +173,9 @@ export class MainInfoComponent implements OnInit {
     return option.emoji === value.emoji;
   }
 
-  changeWorkingRate(inputValue, step) {
-    const rate = +inputValue + step;
+  changeWorkingRate(step) {
+    const currentValue = this.employeeInfoForm.get('workingRate').value;
+    const rate = +currentValue + step;
     this.employeeInfoForm.patchValue({ workingRate: rate });
   }
 
