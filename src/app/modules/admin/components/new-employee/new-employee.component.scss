@@ -77,8 +77,15 @@
 
     vertical-align: -20%;
   }
-}
 
-.small_text {
-  margin: 14px 0 3px 0;
+  &__generate {
+    padding: 0;
+    align-self: center;
+
+    height: 24px;
+  }
+
+  .small_text {
+    margin: 14px 0 3px 0;
+  }
 }
