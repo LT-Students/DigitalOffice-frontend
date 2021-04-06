@@ -58,18 +58,18 @@ $regular_font: 'GillSansWGL';
 
 // text color
 .text {
-	@each $color-name, $color-value in $colors {
-		&-#{$color-name} {
-			color: $color-value;
-		}
-	}
+  @each $color-name, $color-value in $colors {
+    &-#{$color-name} {
+      color: $color-value;
+    }
+  }
 }
 
 /* background colors */
 .bg {
-	@each $color-name, $color-value in $colors {
-		&-#{$color-name} {
-			color: $color-value;
-		}
-	}
+  @each $color-name, $color-value in $colors {
+    &-#{$color-name} {
+      background-color: $color-value;
+    }
+  }
 }
