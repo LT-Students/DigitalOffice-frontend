@@ -3,7 +3,6 @@
     class="employee-info__form"
     [formGroup]="employeeInfoForm"
     (ngSubmit)="onSubmit()"
-    (reset)="toggleEditMode()"
   >
     <div class="employee-info__main">
       <div class="employee-info__photo">
@@ -15,9 +14,9 @@
         <h3 class="employee-info__name" doText color='dark_2'>
           {{ fullName }}&nbsp;<span
             matTooltipClass="tooltip"
-            [matTooltip]="employee.firstName + ' ' + (employee.emojiStatus.description | lowercase)"
+            [matTooltip]="employee.firstName + ' ' + (employee.status.statusInRussian | lowercase)"
             [matTooltipPosition]="'above'"
-            >{{ employee.emojiStatus.emoji }}</span>
+            >{{ employee.status.emojiIcon }}</span>
         </h3>
       </ng-container>
       <ng-container *ngIf="!isEditing; else about">
@@ -91,8 +90,7 @@
             [isEdit]="isEditing"
             label="Дата рождения"
           ></do-datepicker>
-          <!--TODO: переделать обработку статуса-->
-          <ng-container *ngIf="isEditing && employeeInfoForm.get('emojiStatus').value === 'В отпуске'">
+          <ng-container *ngIf="isEditing && employeeInfoForm.get('emojiStatus').value === userStatus.Vacation">
             <do-datepicker
               controlName="vacationSince"
               [isEdit]="isEditing"
@@ -106,13 +104,20 @@
               required="true"
             ></do-datepicker>
           </ng-container>
+          <ng-container *ngIf="isEditing && employeeInfoForm.get('emojiStatus').value === userStatus.Sick">
+            <do-datepicker
+              controlName="sickSince"
+              [isEdit]="isEditing"
+              label="На больничном с"
+              required="true"
+            ></do-datepicker>
+          </ng-container>
         </div>
       </div>
     </div>
-    <div class="employee-info__additional">
+    <div class="employee-info__additional bg-light_1">
       <h4 doText color='dark_2'>Контакты</h4>
-      <!--TODO: Переделать отдельно input, отдельно текст
-      текущая реализация некорректна-->
+      <!--TODO: Переделать отдельно input, отдельно текст. текущая реализация некорректна-->
       <do-input
         controlName="email"
         [isEdit]="isEditing && employee.isAdmin"
@@ -351,15 +356,16 @@
     >
       <mat-option
         class="employee-info__input"
-        *ngFor="let option of selectOptions.emojiStatus"
-        [value]="option"
+        *ngFor="let option of selectOptions.statuses"
+        [value]="option.statusType"
       >
-        {{ option.emoji }} {{ option.description }}
+        {{ option.emojiIcon }} {{ option.statusInRussian | titlecase }}
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <label class="small_text text-gray">Замещает: </label>
-  <span class="small_text text-gray employee-info__substitute"
-    >Назначить замещающего</span
-  >
+  <ng-container *ngIf="isEditing && employeeInfoForm.get('emojiStatus').value === userStatus.Vacation">
+    <label class="small_text text-gray">Замещает: </label>
+    <span class="small_text text-gray employee-info__substitute"
+    >Назначить замещающего</span>
+  </ng-container>
 </ng-template>

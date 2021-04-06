@@ -2,26 +2,28 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
-import { ConnectionType } from '@data/api/user-service/models/connection-type';
+import { Time } from '@angular/common';
+import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
+import { employee } from '../../mock';
 
 interface ExtendedUser extends IUser {
-  emojiStatus: { emoji: string; description: string };
-  about: string;
+  about?: string;
   photoUrl: string;
   jobPosition: string;
   department: string;
   location: string;
   office: string;
   workingRate: number;
-  workingHours: { startAt: string; endAt: string };
+  workingHours: { startAt: Time; endAt: Time };
   workingSince: Date;
   birthDate: Date;
   email: string,
   phone: string,
   telegram: string,
   vacationDaysLeft: number;
-  vacationSince: Date;
-  vacationUntil: Date;
+  vacationSince?: Date;
+  vacationUntil?: Date;
+  sickSince?: Date;
 }
 
 @Component({
@@ -31,53 +33,21 @@ interface ExtendedUser extends IUser {
 })
 export class MainInfoComponent implements OnInit {
   public pageId: string;
-
   public employeeInfoForm: FormGroup;
   public employee: ExtendedUser;
-
   public selectOptions;
-
   public isEditing: boolean;
   public previewPhoto: string;
+  public userStatus: typeof UserStatus = UserStatus;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {
-    this.employee = {
-      id: '0',
-      firstName: 'Ангелина',
-      lastName: 'Иванова',
-      middleName: 'Анатольевна',
-      photoUrl: 'assets/images/employee-photo.png',
-      emojiStatus: { emoji: '🏠', description: 'На больничном' },
-      about: 'С удовольствием отвечу на ваши вопросы, но только в рабочее время! Всем хорошего дня!',
-      jobPosition: 'Middle Product Manager',
-      department: 'Департамент цифровых технологий',
-      location: 'Россия, г. Санкт-Петербург',
-      office: 'м. Чернышевская',
-      workingRate: 0.75,
-      // TODO: переделать на Time object
-      workingHours: {
-        startAt: '10:00',
-        endAt: '19:00',
-      },
-      workingSince: new Date(2017, 9),
-      birthDate: new Date(1995, 9, 10),
-      email: 'evet.pm@lanit-tercom.com',
-      phone: '+7(921)623-25-92',
-      telegram: '@eve01beast',
-      vacationDaysLeft: 20,
-      vacationSince: new Date(2020, 9, 10),
-      vacationUntil: new Date(2020, 9, 20),
-      isAdmin: true,
-    };
+    this.employee = employee;
 
     this.selectOptions = {
       jobPosition: ['Middle Product Manager', 'Senior Product Manager'],
       department: ['Департамент цифровых технологий', 'Департамент мопсиков'],
       office: ['м. Чернышевская', 'м. Площадь Восстания'],
-      emojiStatus: [
-        { emoji: '🏠', description: 'Работает из дома' },
-        { emoji: '🏖', description: 'В отпуске' },
-      ],
+      statuses: UserStatusModel.getAllStatuses(),
       workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
     };
 
@@ -89,7 +59,7 @@ export class MainInfoComponent implements OnInit {
       lastName: ['', Validators.required],
       middleName: [''],
       photo: [''],
-      emojiStatus: [''],
+      status: [null],
       aboutMe: [''],
       jobPosition: ['', Validators.required],
       department: ['', Validators.required],
@@ -106,6 +76,7 @@ export class MainInfoComponent implements OnInit {
       phone: ['', Validators.required],
       telegram: [''],
       vacationSince: ['', Validators.required],
+      sickSince: ['', Validators.required],
       vacationUntil: ['', Validators.required],
       vacationDays: ['', Validators.required],
     });
@@ -122,8 +93,11 @@ export class MainInfoComponent implements OnInit {
   }
 
   get workingHours() {
-    const { startAt, endAt } = this.employee.workingHours;
-    return `${startAt}-${endAt}`;
+    const getTime = (timeObj: Time) => {
+      const minutes = (timeObj.minutes < 10) ? timeObj.minutes + '0' : timeObj.minutes;
+      return `${timeObj.hours}:${minutes}`;
+    };
+    return Object.values(this.employee.workingHours).map((timeObj: Time) => getTime(timeObj)).join('-');
   }
 
   isOwner() {
@@ -178,6 +152,4 @@ export class MainInfoComponent implements OnInit {
     const rate = +currentValue + step;
     this.employeeInfoForm.patchValue({ workingRate: rate });
   }
-
-  /* TODO: добавить обработчик перевода Эмодзи-статуса в "В отпуске"*/
 }
