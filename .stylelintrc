@@ -26,8 +26,8 @@
       { "ignore": ["after-declaration"] }
     ],
     "at-rule-no-unknown": [
-      false,
-      { "ignoreAtRules": ["extend", "include"] }
+      true,
+      { "ignoreAtRules": ["extend", "include", "each"] }
     ],
     "string-quotes": "single",
     "order/order": ["custom-properties", "declarations", "rules"],
