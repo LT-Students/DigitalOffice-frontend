@@ -1,14 +1,14 @@
-<div class="card employee-info bg-white">
+<div class="employee-info">
   <!--  Навыки  -->
   <div class="section">
     <div class="section__header">
       <div class="title">
-        <span class="h2 h2_underlined">Навыки</span>
+        <h2 underlinedSize='sm' doText underlined>Навыки</h2>
         <do-search magnifierLocation="left" placeholder="поиск"></do-search>
       </div>
       <div class="action">
         <button mat-icon-button>
-          <img src='../../../../../assets/svg/edit.svg' alt="edit" />
+          <img src='../../../../../assets/svg/edit.svg' alt="edit"/>
         </button>
       </div>
     </div>
@@ -66,7 +66,7 @@
   <div class="section">
     <div class="section__header">
       <div class="title">
-        <span class="h2 h2_underlined">Образование</span>
+        <h2 underlinedSize='sm' doText underlined>Образование</h2>
       </div>
       <div class="action">
         <button
@@ -133,7 +133,7 @@
   <div class="section">
     <div class="section__header">
       <div class="title">
-        <span class="h2 h2_underlined">Сертификаты</span>
+        <h2 underlinedSize='sm' doText underlined>Сертификаты</h2>
         <do-search magnifierLocation="left" placeholder="поиск"></do-search>
       </div>
       <div class="action">
@@ -156,26 +156,26 @@
           <div class="row__main-info">
             <!--1 column-->
             <div class="col">
-              <p class="regular_text text-gray1">
+              <p doText color='gray1'>
                 {{ course.studyType | titlecase }}
               </p>
-              <p class="regular_text text-dark_2">
+              <p doText color='dark_2'>
                 {{ course.getEducationalPeriod() }}
               </p>
             </div>
             <!--2 column-->
             <div class="col">
-              <p class="col__header regular_text text-gray1">
+              <p doText color='gray1'>
                 {{ course.educationInstitution }}
               </p>
-              <p class="regular_text text-dark_2">
+              <p doText color='dark_2'>
                 {{ course.specialization }}
               </p>
             </div>
             <div class="col">
-              <div class="row__button text-gray1">
+              <div class="row__button">
                 <button mat-flat-button>
-                  <mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат
+                  <span doText color='gray1'><mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат</span>
                 </button>
               </div>
             </div>
@@ -199,7 +199,7 @@
               </mat-select>
             </mat-form-field>
             <button mat-icon-button (click)="matSelect.open()">
-              <mat-icon>more_horiz</mat-icon>
+              <span doText color='gray1'><mat-icon>more_horiz</mat-icon></span>
             </button>
           </div>
         </ng-container>

@@ -1,8 +1,4 @@
-@import 'src/stylesheets/base/_variables.scss';
-
 .employee-info {
-  padding: 52px 47px;
-
   .section {
     margin-top: 66px;
 
@@ -12,27 +8,6 @@
 
       .title {
         display: flex;
-
-        .h2 {
-          position: relative;
-
-          &_underlined {
-            &::after {
-              content: '';
-
-              position: absolute;
-
-              margin-bottom: 35px;
-
-              display: block;
-
-              width: 50px;
-              height: 4px;
-
-              background-color: $accent_color_bright;
-            }
-          }
-        }
       }
     }
 

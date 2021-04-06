@@ -6,13 +6,15 @@ import { MaterialModule } from '../../shared/material.module';
 import { SharedModule } from '../../shared/shared.module';
 
 import { EmployeePageComponent } from './employee-page.component';
-import { EmployeePageSkillsComponent } from './components/employee-page-skills/employee-page-skills.component';
+import { SkillsComponent } from './components/skills/skills.component';
+import { MainInfoComponent } from './components/main-info/main-info.component';
 
 
 @NgModule({
 	declarations: [
 		EmployeePageComponent,
-		EmployeePageSkillsComponent
+		SkillsComponent,
+		MainInfoComponent
 	],
 	imports: [
 		CommonModule,
