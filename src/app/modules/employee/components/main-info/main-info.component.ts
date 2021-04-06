@@ -1,92 +1,65 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IUser } from '@data/models/user';
 import { ActivatedRoute } from '@angular/router';
+import { IUser } from '@data/models/user';
+import { Time } from '@angular/common';
+import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
+import { employee } from '../../mock';
 
 interface ExtendedUser extends IUser {
-  emojiStatus: { emoji: string; description: string };
-  aboutMe: string;
+  about?: string;
+  photoUrl: string;
   jobPosition: string;
   department: string;
   location: string;
   office: string;
   workingRate: number;
-  workingHours: { startAt: string; endAt: string };
+  workingHours: { startAt: Time; endAt: Time };
   workingSince: Date;
   birthDate: Date;
-  phone: string;
-  telegram: string;
-  vacationDays: number;
-  vacationSince: Date;
-  vacationUntil: Date;
+  email: string,
+  phone: string,
+  telegram: string,
+  vacationDaysLeft: number;
+  vacationSince?: Date;
+  vacationUntil?: Date;
+  sickSince?: Date;
 }
 
 @Component({
-  selector: 'do-employee-info',
-  templateUrl: './employee-info.component.html',
-  styleUrls: ['./employee-info.component.scss'],
+  selector: 'do-employee-page-main-info',
+  templateUrl: './main-info.component.html',
+  styleUrls: ['./main-info.component.scss'],
 })
-export class EmployeeInfoComponent implements OnInit {
+export class MainInfoComponent implements OnInit {
   public pageId: string;
-
   public employeeInfoForm: FormGroup;
   public employee: ExtendedUser;
-
   public selectOptions;
-
-  public isEditable: boolean;
+  public isEditing: boolean;
   public previewPhoto: string;
+  public userStatus: typeof UserStatus = UserStatus;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {
-    this.employee = {
-      id: '0',
-      firstName: 'Ангелина',
-      lastName: 'Иванова',
-      middleName: 'Анатольевна',
-      photo: 'assets/images/employee-photo.png',
-      emojiStatus: { emoji: '🏠', description: 'Работает из дома' },
-      aboutMe:
-        'С удовольствием отвечу на ваши вопросы, но только в рабочее время! Всем хорошего дня!',
-      jobPosition: 'Middle Product Manager',
-      department: 'Департамент цифровых технологий',
-      location: 'Россия, г. Санкт-Петербург',
-      office: 'м. Чернышевская',
-      workingRate: 0.75,
-      workingHours: {
-        startAt: '10:00',
-        endAt: '19:00',
-      },
-      workingSince: new Date(2017, 9),
-      birthDate: new Date(1995, 9, 10),
-      email: 'evet.pm@lanit-tercom.com',
-      phone: '+7(921)623-25-92',
-      telegram: '@eve01beast',
-      vacationDays: 20,
-      vacationSince: new Date(2020, 9, 10),
-      vacationUntil: new Date(2020, 9, 20),
-      isAdmin: true,
-    };
+    this.employee = employee;
 
     this.selectOptions = {
       jobPosition: ['Middle Product Manager', 'Senior Product Manager'],
       department: ['Департамент цифровых технологий', 'Департамент мопсиков'],
       office: ['м. Чернышевская', 'м. Площадь Восстания'],
-      emojiStatus: [
-        { emoji: '🏠', description: 'Работает из дома' },
-        { emoji: '🏖', description: 'В отпуске' },
-      ],
+      statuses: UserStatusModel.getAllStatuses(),
       workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
     };
 
-    this.isEditable = false;
-    this.previewPhoto = this.employee.photo;
+    this.isEditing = false;
+    this.previewPhoto = this.employee.photoUrl;
 
     this.employeeInfoForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       middleName: [''],
       photo: [''],
-      emojiStatus: [''],
+      status: [null],
       aboutMe: [''],
       jobPosition: ['', Validators.required],
       department: ['', Validators.required],
@@ -99,10 +72,11 @@ export class EmployeeInfoComponent implements OnInit {
       }),
       workingSince: [''],
       birthDate: [''],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
       telegram: [''],
       vacationSince: ['', Validators.required],
+      sickSince: ['', Validators.required],
       vacationUntil: ['', Validators.required],
       vacationDays: ['', Validators.required],
     });
@@ -111,14 +85,19 @@ export class EmployeeInfoComponent implements OnInit {
     this.pageId = this.route.snapshot.paramMap.get('id');
   }
 
+  ngOnInit(): void {}
+
   get fullName() {
     const { lastName, firstName, middleName } = this.employee;
     return `${lastName} ${firstName} ${middleName}`;
   }
 
   get workingHours() {
-    const { startAt, endAt } = this.employee.workingHours;
-    return `${startAt}-${endAt}`;
+    const getTime = (timeObj: Time) => {
+      const minutes = (timeObj.minutes < 10) ? timeObj.minutes + '0' : timeObj.minutes;
+      return `${timeObj.hours}:${minutes}`;
+    };
+    return Object.values(this.employee.workingHours).map((timeObj: Time) => getTime(timeObj)).join('-');
   }
 
   isOwner() {
@@ -130,7 +109,7 @@ export class EmployeeInfoComponent implements OnInit {
   }
 
   toggleEditMode() {
-    this.isEditable = !this.isEditable;
+    this.isEditing = !this.isEditing;
   }
 
   onFileChange(event) {
@@ -156,6 +135,10 @@ export class EmployeeInfoComponent implements OnInit {
     this.toggleEditMode();
   }
 
+  onReset() {
+    this.toggleEditMode();
+  }
+
   fillForm() {
     this.employeeInfoForm.patchValue(this.employee);
   }
@@ -164,10 +147,9 @@ export class EmployeeInfoComponent implements OnInit {
     return option.emoji === value.emoji;
   }
 
-  changeWorkingRate(inputValue, step) {
-    const rate = +inputValue + step;
+  changeWorkingRate(step) {
+    const currentValue = this.employeeInfoForm.get('workingRate').value;
+    const rate = +currentValue + step;
     this.employeeInfoForm.patchValue({ workingRate: rate });
   }
-
-  ngOnInit(): void {}
 }

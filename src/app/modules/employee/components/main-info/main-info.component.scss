@@ -1,17 +1,12 @@
-@import '../../../../stylesheets/base/variables';
+@import '../../../../../stylesheets/base/variables';
 
 .employee-info {
-  margin-bottom: 45px;
-
-  overflow: hidden;
-
   &__form {
     display: flex;
     justify-content: space-evenly;
   }
 
   &__main {
-    padding: 52px 0 42px 47px;
 
     display: flex;
     flex-direction: column;
@@ -25,13 +20,12 @@
     margin-right: 32px;
     margin-left: 32px;
 
-    padding: 52px 0 42px;
+    width: 41%;
   }
 
   &__additional {
     position: relative;
 
-    padding: 52px 74px 42px 73px;
 
     width: 33%;
 
@@ -77,16 +71,15 @@
   }
 
   &__edit-button {
-    position: absolute;
-    top: 45px;
-    right: 47px;
   }
 
   &__form-buttons {
+    position: relative;
+
     margin-top: 32px;
 
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   &__submit {
@@ -143,7 +136,7 @@
     font-family: $regular_font !important;
   }
 
-  &__about-me {
+  &__about {
     line-height: 21px;
   }
 
@@ -190,6 +183,13 @@
 
     color: $negative_accent;
   }
+
+  &__required-block {
+    position: absolute;
+
+    right: 0;
+  }
+
 
   .small_text {
     margin: 14px 0 3px 0;
