@@ -1,13 +1,11 @@
 <ng-container *ngIf="isEdit; else textBlock">
-  <label class="small_text text-gray input__label" [for]="controlName"
-    >{{ label
-    }}<sup *ngIf="required" class="input__required">*</sup></label
-  >
   <mat-form-field class="input__form-field" appearance="fill">
+    <mat-label *ngIf='label'>{{ label }}</mat-label>
     <input
       matInput
       class="bg-light_2 input__input"
       [formControl]="control"
+      [required]='required'
       [id]="controlName"
       [name]="controlName"
       [type]="type"
@@ -16,6 +14,6 @@
 </ng-container>
 
 <ng-template #textBlock>
-  <h3 class="small_text text-gray">{{ label }}</h3>
-  <div>{{ control.value }}</div>
+  <p doText regularTextSize='small' color='gray'>{{ label }}</p>
+  <div doText>{{ control.value }}</div>
 </ng-template>

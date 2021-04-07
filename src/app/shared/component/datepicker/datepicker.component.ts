@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { Moment } from 'moment';
 
 @Component({
   selector: 'do-datepicker',

@@ -1,186 +1,129 @@
 <div class="employee-info regular_text text_dark_1">
-  <form
-    class="employee-info__form"
-    [formGroup]="employeeInfoForm"
-    (ngSubmit)="onSubmit()"
-  >
-    <div class="employee-info__main">
-      <div class="employee-info__photo">
-        <ng-container *ngIf="!isEditing; else photo">
-          <img [src]="employee.photoUrl" alt="Employee photo" width="200" />
-        </ng-container>
-      </div>
-      <ng-container *ngIf="!(employee.isAdmin && isEditing); else nameEdit">
-        <h3 class="employee-info__name" doText color='dark_2'>
+
+  <ng-container *ngIf='!canEdit() || !isEditing; else editForm'>
+
+    <div class='employee-info__wrapper'>
+      <div class='employee-info__main'>
+        <div class='employee-info__photo'>
+          <img [src]='employee?.photoUrl' alt='Employee photo' width='200' />
+        </div>
+        <h3 class='employee-info__name' doText color='dark_2'>
           {{ fullName }}&nbsp;<span
-            matTooltipClass="tooltip"
+            matTooltipClass='tooltip'
             [matTooltip]="employee.firstName + ' ' + (employee.status.statusInRussian | lowercase)"
             [matTooltipPosition]="'above'"
-            >{{ employee.status.emojiIcon }}</span>
-        </h3>
-      </ng-container>
-      <ng-container *ngIf="!isEditing; else about">
-        <p *ngIf="employee.about" doText color='gray' class="employee-info__about">“{{ employee.about }}”</p>
-      </ng-container>
-    </div>
-    <div class="employee-info__general">
-      <h4 doText color='dark_2'>Общие сведения</h4>
-      <div class="employee-info__columns">
-        <div class="employee-info__first-column">
-          <do-select
-            controlName="jobPosition"
-            [isEdit]="isEditing && employee.isAdmin"
-            [options]="selectOptions.jobPosition"
-            label="Должность"
-            required="true"
-          ></do-select>
-          <do-select
-            controlName="department"
-            [isEdit]="isEditing && employee.isAdmin"
-            [options]="selectOptions.department"
-            label="Департамент"
-            required="true"
-          ></do-select>
-          <do-input
-            controlName="location"
-            [isEdit]="isEditing && employee.isAdmin"
-            label="Местоположение"
-            required="true"
-          ></do-input>
-          <do-select
-            controlName="office"
-            [isEdit]="isEditing && employee.isAdmin"
-            [options]="selectOptions.office"
-            label="Офис"
-            required="true"
-          ></do-select>
-          <ng-container *ngIf="isEditing; then emoji"></ng-container>
-        </div>
-        <div class="employee-info__second-column">
-          <ng-container *ngIf="isVisitor()">
-            <ng-container
-              *ngIf="!employee.isAdmin || !isEditing; else stepper"
-            >
-              <p doText color='gray'>Ставка</p>
-              <div>{{ employee.workingRate }}</div>
-            </ng-container>
-          </ng-container>
-          <ng-container *ngIf="!employee.isAdmin || !isEditing; else hours">
-            <p doText color='gray'>
+        >{{ employee?.status?.emojiIcon }}</span></h3>
+        <p *ngIf='employee.about' doText color='gray' class='employee-info__about'>“{{ employee.about }}”</p>
+      </div>
+      <div class='employee-info__general'>
+        <h4 doText color='dark_2'>Общие сведения</h4>
+        <div class='employee-info__columns'>
+          <div class='employee-info__first-column'>
+            <div>
+              <p doText regularTextSize='small' color='gray'>Должность</p>
+              <p doText>{{ employee.jobPosition }}</p>
+            </div>
+            <div>
+              <p doText regularTextSize='small' color='gray'>Департамент</p>
+              <p doText>{{ employee.department }}</p>
+            </div>
+            <div>
+              <p doText regularTextSize='small' color='gray'>Местоположение</p>
+              <p doText>{{ employee.location }}</p>
+            </div>
+            <div>
+              <p doText regularTextSize='small' color='gray'>Офис</p>
+              <p doText>{{ employee.office }}</p>
+            </div>
+          </div>
+          <div class='employee-info__second-column'>
+            <p doText regularTextSize='small' color='gray'>Ставка</p>
+            <div doText>{{ employee.workingRate }}</div>
+            <p doText regularTextSize='small' color='gray'>
               Рабочие часы
               <mat-icon
-                class="employee-info__hint"
-                aria-label="Hint"
-                matTooltipClass="tooltip"
-                matTooltip="Рабочие часы пользователя по вашему часовому поясу"
-                matTooltipPosition="above"
-                >help_outline
+                  class='employee-info__hint'
+                  aria-label='Hint'
+                  matTooltipClass='tooltip'
+                  matTooltip='Рабочие часы пользователя по вашему часовому поясу'
+                  matTooltipPosition='above'
+              >help_outline
               </mat-icon>
             </p>
             <div>{{ workingHours }}</div>
-          </ng-container>
-          <do-datepicker
-            controlName="workingSince"
-            [isEdit]="isEditing && employee.isAdmin"
-            label="В компании с"
-          ></do-datepicker>
-          <do-datepicker
-            controlName="birthDate"
-            [isEdit]="isEditing"
-            label="Дата рождения"
-          ></do-datepicker>
-          <ng-container *ngIf="isEditing && employeeInfoForm.get('status').value === userStatus.Vacation">
-            <do-datepicker
-              controlName="vacationSince"
-              [isEdit]="isEditing"
-              label="В отпуске с"
-              required="true"
-            ></do-datepicker>
-            <do-datepicker
-              controlName="vacationUntil"
-              [isEdit]="isEditing"
-              label="В отпуске до"
-              required="true"
-            ></do-datepicker>
-          </ng-container>
-          <ng-container *ngIf="isEditing && employeeInfoForm.get('status').value === userStatus.Sick">
-            <do-datepicker
-              controlName="sickSince"
-              [isEdit]="isEditing"
-              label="На больничном с"
-              required="true"
-            ></do-datepicker>
-          </ng-container>
+            <div>
+              <p doText regularTextSize='small' color='gray'>В компании с</p>
+              <p doText>{{ employee?.workingSince | date: dateType.FULL }}</p>
+            </div>
+            <div>
+              <p doText regularTextSize='small' color='gray'>Дата рождения</p>
+              <p doText>{{ employee?.birthDate | date: dateType.FULL }}</p>
+            </div>
+            <ng-container *ngIf='employee.status.statusType === userStatus.Vacation'>
+              <div>
+                <p doText regularTextSize='small' color='gray'>В отпуске с</p>
+                <p doText>{{ employee?.vacationSince | date: dateType.FULL }}</p>
+              </div>
+              <div>
+                <p doText regularTextSize='small' color='gray'>В отпуске до</p>
+                <p doText>{{ employee?.vacationUntil | date: dateType.FULL }}</p>
+              </div>
+            </ng-container>
+            <ng-template *ngIf='employee.status.statusType === userStatus.Sick'>
+              <div>
+                <p doText regularTextSize='small' color='gray'>На больничном с</p>
+                <p doText>{{ employee?.sickSince | date: dateType.FULL }}</p>
+              </div>
+            </ng-template>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="employee-info__additional ">
-      <div class="additional__line bg-light_3"></div>
-      <div class="form__column">
-        <h4 doText color='dark_2'>Контакты</h4>
-        <do-input
-            controlName="email"
-            [isEdit]="isEditing && employee.isAdmin"
-            label="E-mail"
-            required="true"
-        ></do-input>
-        <do-input
-            controlName="phone"
-            [isEdit]="isEditing"
-            label="Рабочий номер"
-            required="true"
-        ></do-input>
-        <do-input
-            controlName="telegram"
-            [isEdit]="isEditing"
-            label="Telegram"
-        ></do-input>
-        <ng-container *ngIf="isVisitor()">
+      <div class='employee-info__additional '>
+        <div class='additional__line bg-light_3'></div>
+        <div class='form__column'>
+          <h4 doText color='dark_2'>Контакты</h4>
+          <div>
+            <p doText regularTextSize='small' color='gray'>E-mail</p>
+            <div doText>{{ employee?.email }}</div>
+          </div>
+          <div>
+            <p doText regularTextSize='small' color='gray'>Рабочий номер</p>
+            <div doText>{{ employee?.phone }}</div>
+          </div>
+          <div>
+            <p doText regularTextSize='small' color='gray'>Telegram</p>
+            <div doText>{{ employee?.telegram }}</div>
+          </div>
           <h4 doText color='dark_2'>
             Отпуск
             <mat-icon
-                class="employee-info__hint text-gray"
-                aria-label="Hint"
-                matTooltipClass="tooltip"
-                matTooltip="Стандартный отпуск - 20 рабочих дней в год"
-                matTooltipPosition="above"
-            >help_outline</mat-icon
+                class='employee-info__hint text-gray'
+                aria-label='Hint'
+                aria-label='Hint'
+                matTooltipClass='tooltip'
+                matTooltip='Стандартный отпуск - 20 рабочих дней в год'
+                matTooltipPosition='above'
+            >help_outline
+            </mat-icon
             >
           </h4>
-          <do-input
-              controlName="vacationDays"
-              type="number"
-              [isEdit]="isEditing && employee.isAdmin"
-              label="Осталось отпускных дней"
-              required="true"
-          ></do-input>
-        </ng-container>
+          <div>
+            <p doText regularTextSize='small' color='gray'>Осталось отпускных дней</p>
+            <div doText>{{ employee?.vacationDaysLeft }}</div>
+          </div>
+        </div>
+      </div>
+      <div class='employee-info__edit-button'>
+        <button
+            type='button'
+            mat-icon-button
+            aria-label='Edit employee info'
+            (click)='toggleEditMode()'
+        ><img src='../../../../../assets/svg/edit.svg' alt='Edit' />
+        </button>
       </div>
     </div>
-    <div class="employee-info__edit-button">
-      <button
-        type="button"
-        mat-icon-button
-        aria-label="Edit employee info"
-        (click)="toggleEditMode()"
-      ><img src='../../../../../assets/svg/edit.svg' alt="Edit"/>
-      </button>
-    </div>
-  </form>
-  <div *ngIf='isEditing' class="employee-info__form-buttons">
-    <button type="button" class="text-gray" mat-flat-button (click)='onReset()'>Отменить</button>
-    <button
-      [disabled]="employeeInfoForm.invalid"
-      type="submit"
-      class="bg-accent_color_bright text-light_1 employee-info__submit"
-      mat-flat-button
-    >
-      Сохранить
-    </button>
-    <div class="employee-info__required-block"><span doText color='negative_accent'>
-      <sup>*</sup>&nbsp;Обязательное поле</span>
-    </div>
-  </div>
+  </ng-container>
 </div>
 
 <ng-template #nameEdit [formGroup]="employeeInfoForm">
@@ -207,14 +150,14 @@
   <ng-container *ngIf="!employee.isAdmin">
     <label
       class="small_text text-gray employee-info__label employee-info__label_for_textarea"
-      for="aboutMe"
+      for="about"
       ><span>О себе</span
-      ><span>{{ employeeInfoForm.value.aboutMe.length }}/150</span></label
+      ><span>{{ employeeInfoForm.get('about').value.length }}/150</span></label
     >
     <mat-form-field class="employee-info__form-field" appearance="none">
       <textarea
-        id="aboutMe"
-        formControlName="aboutMe"
+        id="about"
+        formControlName="about"
         matInput
         class="bg-light_2 employee-info__input"
         placeholder="Напишите немного о себе или оставьте заметку коллегам"
@@ -226,13 +169,11 @@
 </ng-template>
 
 <ng-template #stepper [formGroup]="employeeInfoForm">
-  <label class="small_text text-gray employee-info__label" for="workingRate"
-    >Ставка<sup class="employee-info__required">*</sup></label
-  >
   <mat-form-field
     class="employee-info__form-field employee-info__stepper"
     appearance="fill"
   >
+    <mat-label>Ставка</mat-label>
     <button
       class="employee-info__stepper-button h2"
       mat-icon-button
@@ -251,6 +192,7 @@
       class="bg-light_2 employee-info__input"
       type="number"
       readonly
+      required
     />
     <button
       class="employee-info__stepper-button h2"
@@ -266,22 +208,21 @@
 </ng-template>
 
 <ng-template #hours [formGroup]="employeeInfoForm">
-  <label class="small_text text-gray employee-info__label" for="startAt">
-    Рабочие часы
-    <mat-icon
-      class="employee-info__hint"
-      aria-label="Hint"
-      matTooltipClass="tooltip"
-      matTooltip="Рабочие часы пользователя по вашему часовому поясу"
-      [matTooltipPosition]="'above'"
-      >help_outline</mat-icon
-    >
-  </label>
-  <div formGroupName="workingHours">
+  <div formGroupName="workingHours"
+       matTooltipClass="tooltip"
+       matTooltip="Рабочие часы пользователя по вашему часовому поясу"
+       [matTooltipPosition]="'above'">
     <mat-form-field
       class="mat-form-field_default-select employee-info__form-field employee-info__working-hours"
       appearance="none"
     >
+      <mat-label>
+        Рабочие часы
+        <mat-icon
+            class="employee-info__hint"
+            aria-label="Hint"
+        >help_outline</mat-icon
+        ></mat-label>
       <mat-select
         class="employee-info__input"
         id="startAt"
@@ -334,21 +275,21 @@
 </ng-template>
 
 <ng-template #emoji [formGroup]="employeeInfoForm">
-  <label class="small_text text-gray employee-info__label" for="status">
-    Эмодзи-статус
-    <mat-icon
-      class="employee-info__hint"
-      aria-label="Hint"
-      matTooltipClass="tooltip"
-      matTooltip="Статус будет отображаться рядом с именем пользователя"
-      [matTooltipPosition]="'above'"
-      >help_outline</mat-icon
-    >
-  </label>
+
   <mat-form-field
     class="employee-info__form-field mat-form-field_default-select"
     appearance="none"
+    matTooltipClass="tooltip"
+    matTooltip="Статус будет отображаться рядом с именем пользователя"
+    [matTooltipPosition]="'above'"
   >
+    <mat-label class="employee-info__label" for="status">
+      Эмодзи-статус
+      <mat-icon
+          class="employee-info__hint"
+      >help_outline</mat-icon
+      >
+    </mat-label>
     <mat-select
       class="employee-info__input"
       id="status"
@@ -369,4 +310,195 @@
     <span class="small_text text-gray employee-info__substitute"
     >Назначить замещающего</span>
   </ng-container>
+</ng-template>
+
+<ng-template #editForm>
+  <form
+      class="employee-info__form"
+      [formGroup]="employeeInfoForm"
+      (ngSubmit)="onSubmit()"
+  ><div class='employee-info__wrapper'>
+    <div class='employee-info__main'>
+      <div class='employee-info__photo'>
+        <img [src]='previewPhoto' alt='Employee photo' width='200' />
+        <label
+            class='text_white employee-info__label employee-info__upload-button'
+            for='photo'
+        >
+          <mat-icon class='employee-info__upload-icon'>
+            <img src='../../../../../assets/svg/arrow-upload-file.svg' alt='Upload photo' />
+          </mat-icon>
+          Обновить фото</label
+        >
+        <input
+            type='file'
+            formGroupName='photo'
+            (change)='onFileChange($event)'
+            hidden />
+      </div>
+      <ng-container *ngIf='!employee.isAdmin; else nameEdit'>
+        <h3 class='employee-info__name' doText color='dark_2'>
+          {{ fullName }}&nbsp;<span
+            matTooltipClass='tooltip'
+            [matTooltip]="employee.firstName + ' ' + (employee.status.statusInRussian | lowercase)"
+            [matTooltipPosition]="'above'"
+        >{{ employee.status.emojiIcon }}</span>
+        </h3>
+      </ng-container>
+      <ng-container *ngTemplateOutlet='about'></ng-container>
+    </div>
+    <div class='employee-info__general'>
+      <h4 doText color='dark_2'>Общие сведения</h4>
+      <div class='employee-info__columns'>
+        <div class='employee-info__first-column'>
+          <do-select
+              controlName='jobPosition'
+              [isEdit]='employee.isAdmin'
+              [options]='selectOptions.jobPosition'
+              label='Должность'
+              required='true'
+          ></do-select>
+          <do-select
+              controlName='department'
+              [isEdit]='employee.isAdmin'
+              [options]='selectOptions.department'
+              label='Департамент'
+              required='true'
+          ></do-select>
+          <do-input
+              controlName='location'
+              [isEdit]='employee.isAdmin'
+              label='Местоположение'
+              required='true'
+          ></do-input>
+          <do-select
+              controlName='office'
+              [isEdit]='employee.isAdmin'
+              [options]='selectOptions.office'
+              label='Офис'
+              required='true'
+          ></do-select>
+          <ng-container *ngTemplateOutlet='emoji'></ng-container>
+        </div>
+        <div class='employee-info__second-column'>
+          <ng-container *ngIf='canEdit()'>
+            <ng-container *ngIf='!employee.isAdmin; else stepper'
+            >
+              <p doText regularTextSize='small' color='gray'>Ставка</p>
+              <div>{{ employee.workingRate }}</div>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf='!employee.isAdmin; else hours'>
+            <p doText regularTextSize='small' color='gray'>
+              Рабочие часы
+              <mat-icon
+                  class='employee-info__hint'
+                  aria-label='Hint'
+                  matTooltipClass='tooltip'
+                  matTooltip='Рабочие часы пользователя по вашему часовому поясу'
+                  matTooltipPosition='above'
+              >help_outline
+              </mat-icon>
+            </p>
+            <div>{{ workingHours }}</div>
+          </ng-container>
+          <do-datepicker
+              controlName='birthDate'
+              [isEdit]='true'
+              label='Дата рождения'
+          ></do-datepicker>
+          <do-datepicker
+              controlName='workingSince'
+              [isEdit]='employee.isAdmin'
+              label='В компании с'
+          ></do-datepicker>
+          <do-datepicker
+              controlName='birthDate'
+              [isEdit]='true'
+              label='Дата рождения'
+          ></do-datepicker>
+          <ng-container *ngIf="employeeInfoForm.get('status').value === userStatus.Vacation">
+            <do-datepicker
+                controlName='vacationSince'
+                [isEdit]='true'
+                label='В отпуске с'
+                required='true'
+            ></do-datepicker>
+            <do-datepicker
+                controlName='vacationUntil'
+                [isEdit]='true'
+                label='В отпуске до'
+                required='true'
+            ></do-datepicker>
+          </ng-container>
+          <ng-container *ngIf="employeeInfoForm.get('status').value === userStatus.Sick">
+            <do-datepicker
+                controlName='sickSince'
+                [isEdit]='true'
+                label='На больничном с'
+                required='true'
+            ></do-datepicker>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class='employee-info__additional '>
+      <div class='additional__line bg-light_3'></div>
+      <div class='form__column'>
+        <h4 doText color='dark_2'>Контакты</h4>
+        <do-input
+            controlName='email'
+            [isEdit]='employee.isAdmin'
+            label='E-mail'
+            required='true'
+        ></do-input>
+        <do-input
+            controlName='phone'
+            [isEdit]='true'
+            label='Рабочий номер'
+            required='true'
+        ></do-input>
+        <do-input
+            controlName='telegram'
+            [isEdit]='true'
+            label='Telegram'
+        ></do-input>
+        <ng-container *ngIf='canEdit()'>
+          <h4 doText color='dark_2'>
+            Отпуск
+            <mat-icon
+                class='employee-info__hint text-gray'
+                aria-label='Hint'
+                matTooltipClass='tooltip'
+                matTooltip='Стандартный отпуск - 20 рабочих дней в год'
+                matTooltipPosition='above'
+            >help_outline
+            </mat-icon
+            >
+          </h4>
+          <do-input
+              controlName='vacationDays'
+              type='number'
+              [isEdit]='employee.isAdmin'
+              label='Осталось отпускных дней'
+              required='true'
+          ></do-input>
+        </ng-container>
+      </div>
+    </div>
+    <div class='employee-info__form-buttons'>
+      <button type='button' class='text-gray' mat-flat-button (click)='onReset()'>Отменить</button>
+      <button
+          [disabled]='employeeInfoForm.invalid'
+          type='submit'
+          class='bg-accent_color_bright text-light_1 employee-info__submit'
+          mat-flat-button
+      >
+        Сохранить
+      </button>
+      <div class='employee-info__required-block'><span doText color='negative_accent'>
+      <sup>*</sup>&nbsp;Обязательное поле</span>
+      </div>
+    </div>
+  </div></form>
 </ng-template>

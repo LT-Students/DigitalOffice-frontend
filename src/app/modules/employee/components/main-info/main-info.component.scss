@@ -1,16 +1,21 @@
 @import '../../../../../stylesheets/base/variables';
 
 .employee-info {
+  &__wrapper {
+    display: grid;
+
+    width: 100%;
+
+    grid-template-columns: 25% 41% 31% 3%;
+  }
+
   &__form {
-    display: flex;
-    justify-content: space-evenly;
+    width: 100%;
   }
 
   &__main {
     display: flex;
     flex-direction: column;
-
-    width: 26%;
 
     text-align: center;
   }
@@ -18,14 +23,10 @@
   &__general {
     margin-right: 32px;
     margin-left: 32px;
-
-    width: 41%;
   }
 
   &__additional {
     display: flex;
-
-    width: 33%;
 
     .h4:last-of-type {
       margin: 42px 0 13px 0;
@@ -34,7 +35,7 @@
     .additional__line {
       margin-right: 70px;
 
-      width: 1px;
+      width: 2px;
       height: 70%;
 
       align-self: center;
@@ -88,25 +89,14 @@
 
     display: flex;
     justify-content: center;
+
+    grid-column: 1 / 4;
   }
 
   &__submit {
     margin-left: 87px;
 
     width: 185px;
-  }
-
-  &__label {
-    align-self: flex-start;
-
-    display: block;
-
-    &_for_textarea {
-      align-self: stretch;
-
-      display: flex;
-      justify-content: space-between;
-    }
   }
 
   &__form-field {
@@ -200,15 +190,5 @@
 
   .small_text {
     margin: 14px 0 3px 0;
-  }
-
-  .h3 {
-    line-height: 33px;
-  }
-
-  .h4 {
-    margin-bottom: 25px;
-
-    font-size: 18px;
   }
 }
