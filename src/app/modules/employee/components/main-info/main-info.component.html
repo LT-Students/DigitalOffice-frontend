@@ -115,46 +115,48 @@
         </div>
       </div>
     </div>
-    <div class="employee-info__additional bg-light_1">
-      <h4 doText color='dark_2'>Контакты</h4>
-      <!--TODO: Переделать отдельно input, отдельно текст. текущая реализация некорректна-->
-      <do-input
-        controlName="email"
-        [isEdit]="isEditing && employee.isAdmin"
-        label="E-mail"
-        required="true"
-      ></do-input>
-      <do-input
-        controlName="phone"
-        [isEdit]="isEditing"
-        label="Рабочий номер"
-        required="true"
-      ></do-input>
-      <do-input
-        controlName="telegram"
-        [isEdit]="isEditing"
-        label="Telegram"
-      ></do-input>
-      <ng-container *ngIf="isVisitor()">
-        <h4 doText color='dark_2'>
-          Отпуск
-          <mat-icon
-            class="employee-info__hint text-gray"
-            aria-label="Hint"
-            matTooltipClass="tooltip"
-            matTooltip="Стандартный отпуск - 20 рабочих дней в год"
-            matTooltipPosition="above"
-            >help_outline</mat-icon
-          >
-        </h4>
+    <div class="employee-info__additional ">
+      <div class="additional__line bg-light_3"></div>
+      <div class="form__column">
+        <h4 doText color='dark_2'>Контакты</h4>
         <do-input
-          controlName="vacationDays"
-          type="number"
-          [isEdit]="isEditing && employee.isAdmin"
-          label="Осталось отпускных дней"
-          required="true"
+            controlName="email"
+            [isEdit]="isEditing && employee.isAdmin"
+            label="E-mail"
+            required="true"
         ></do-input>
-      </ng-container>
+        <do-input
+            controlName="phone"
+            [isEdit]="isEditing"
+            label="Рабочий номер"
+            required="true"
+        ></do-input>
+        <do-input
+            controlName="telegram"
+            [isEdit]="isEditing"
+            label="Telegram"
+        ></do-input>
+        <ng-container *ngIf="isVisitor()">
+          <h4 doText color='dark_2'>
+            Отпуск
+            <mat-icon
+                class="employee-info__hint text-gray"
+                aria-label="Hint"
+                matTooltipClass="tooltip"
+                matTooltip="Стандартный отпуск - 20 рабочих дней в год"
+                matTooltipPosition="above"
+            >help_outline</mat-icon
+            >
+          </h4>
+          <do-input
+              controlName="vacationDays"
+              type="number"
+              [isEdit]="isEditing && employee.isAdmin"
+              label="Осталось отпускных дней"
+              required="true"
+          ></do-input>
+        </ng-container>
+      </div>
     </div>
     <div class="employee-info__edit-button">
       <button
@@ -350,8 +352,8 @@
   >
     <mat-select
       class="employee-info__input"
-      id="emojiStatus"
-      formControlName="emojiStatus"
+      id="status"
+      formControlName="status"
       [compareWith]="compareEmoji"
     >
       <mat-option

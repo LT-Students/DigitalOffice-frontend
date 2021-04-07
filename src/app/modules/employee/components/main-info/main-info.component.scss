@@ -7,7 +7,6 @@
   }
 
   &__main {
-
     display: flex;
     flex-direction: column;
 
@@ -24,13 +23,25 @@
   }
 
   &__additional {
-    position: relative;
-
+    display: flex;
 
     width: 33%;
 
     .h4:last-of-type {
       margin: 42px 0 13px 0;
+    }
+
+    .additional__line {
+      margin-right: 70px;
+
+      width: 1px;
+      height: 70%;
+
+      align-self: center;
+    }
+
+    .form__column {
+      width: 100%;
     }
   }
 
@@ -68,9 +79,6 @@
   &__upload-icon {
     width: 16px;
     height: 16px;
-  }
-
-  &__edit-button {
   }
 
   &__form-buttons {
@@ -189,7 +197,6 @@
 
     right: 0;
   }
-
 
   .small_text {
     margin: 14px 0 3px 0;
