@@ -15,7 +15,7 @@ interface ExtendedUser extends IUser {
   office: string;
   workingRate: number;
   workingHours: { startAt: Time; endAt: Time };
-  workingSince: Date;
+  workingSince?: Date;
   birthDate: Date;
   email: string,
   phone: string,
@@ -70,7 +70,7 @@ export class MainInfoComponent implements OnInit {
         startAt: [''],
         endAt: [''],
       }),
-      workingSince: [''],
+      workingSince: [null],
       birthDate: [''],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],

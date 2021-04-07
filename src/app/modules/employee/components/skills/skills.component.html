@@ -266,59 +266,20 @@
         </mat-select>
       </mat-form-field>
     </mat-form-field>
-    <mat-form-field
+    <do-datepicker
       *ngIf="sectionModes.education !== workFlowMode.VIEW"
-      class="mat-form-field__form-control"
-      appearance="none"
-      floatLabel="always"
-    >
-      <mat-label>Год начала </mat-label>
-      <input
-        matInput
-        formControlName="startYear"
-        placeholder="ХХХХ"
-        disabled
-        [matDatepicker]="pickerStartYear"
-        [value]="selectedEducationItem?.startYear"
-      />
-      <mat-datepicker-toggle matSuffix [for]="pickerStartYear">
-        <button mat-icon-button>
-          <img src='../../../../../assets/svg/calendar.svg' alt="calendar" />
-        </button>
-      </mat-datepicker-toggle>
-      <mat-datepicker
-        startView="multi-year"
-        disabled="false"
-        #pickerStartYear
-        (yearSelected)="onStartYearSelected($event)"
-      ></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field
-      class="mat-form-field__form-control"
-      appearance="none"
-      floatLabel="always"
-    >
-      <mat-label>Год окончания</mat-label>
-      <input
-        matInput
-        formControlName="endYear"
-        placeholder="ХХХХ"
-        disabled
-        [matDatepicker]="pickerEndYear"
-        [value]="selectedEducationItem?.endYear"
-      />
-      <mat-datepicker-toggle matSuffix [for]="pickerEndYear">
-        <button mat-icon-button>
-          <img src='../../../../../assets/svg/calendar.svg' alt="calendar" />
-        </button>
-      </mat-datepicker-toggle>
-      <mat-datepicker
-        #pickerEndYear
-        startView="multi-year"
-        disabled="false"
-        (yearSelected)="onEndYearSelected($event)"
-      ></mat-datepicker>
-    </mat-form-field>
+      controlName="startYear"
+      format='year'
+      [isEdit]="true"
+      label="Год начала"
+      required="true"
+    ></do-datepicker>
+    <do-datepicker
+      controlName="endYear"
+      format='year'
+      [isEdit]="true"
+      label="Год окончания"
+      required="true"></do-datepicker>
     <button mat-flat-button>
       <img src='../../../../../assets/svg/pin.svg' alt="ping" />&nbsp;Загрузить сертификат
     </button>

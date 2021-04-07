@@ -17,11 +17,17 @@
 
   &__form-field {
     display: block;
+
+    input {
+      display: none;
+    }
+
+    p {
+      margin: 6px 0 6px 12px;
+    }
   }
 
-  &__input {
-    font-family: $regular_font !important;
-  }
+
 }
 
 .small_text {

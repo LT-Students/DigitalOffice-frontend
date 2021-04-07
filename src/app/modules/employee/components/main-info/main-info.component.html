@@ -83,14 +83,13 @@
             controlName="workingSince"
             [isEdit]="isEditing && employee.isAdmin"
             label="В компании с"
-            format="LLLL y"
           ></do-datepicker>
           <do-datepicker
             controlName="birthDate"
             [isEdit]="isEditing"
             label="Дата рождения"
           ></do-datepicker>
-          <ng-container *ngIf="isEditing && employeeInfoForm.get('emojiStatus').value === userStatus.Vacation">
+          <ng-container *ngIf="isEditing && employeeInfoForm.get('status').value === userStatus.Vacation">
             <do-datepicker
               controlName="vacationSince"
               [isEdit]="isEditing"
@@ -104,7 +103,7 @@
               required="true"
             ></do-datepicker>
           </ng-container>
-          <ng-container *ngIf="isEditing && employeeInfoForm.get('emojiStatus').value === userStatus.Sick">
+          <ng-container *ngIf="isEditing && employeeInfoForm.get('status').value === userStatus.Sick">
             <do-datepicker
               controlName="sickSince"
               [isEdit]="isEditing"
@@ -335,7 +334,7 @@
 </ng-template>
 
 <ng-template #emoji [formGroup]="employeeInfoForm">
-  <label class="small_text text-gray employee-info__label" for="emojiStatus">
+  <label class="small_text text-gray employee-info__label" for="status">
     Эмодзи-статус
     <mat-icon
       class="employee-info__hint"
@@ -365,7 +364,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
-  <ng-container *ngIf="isEditing && employeeInfoForm.get('emojiStatus').value === userStatus.Vacation">
+  <ng-container *ngIf="isEditing && employeeInfoForm.get('status').value === userStatus.Vacation">
     <label class="small_text text-gray">Замещает: </label>
     <span class="small_text text-gray employee-info__substitute"
     >Назначить замещающего</span>
