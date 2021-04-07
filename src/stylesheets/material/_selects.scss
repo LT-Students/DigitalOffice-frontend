@@ -31,7 +31,6 @@ select {
 // default select with gray background
 // style should be applied to mat-form-field tag
 .mat-form-field_default-select {
-  .mat-form-field-wrapper,
   .mat-form-field-flex,
   .mat-form-field-appearance-legacy,
   .mat-form-field-label-wrapper {
@@ -55,38 +54,24 @@ select {
     color: $dark_1;
   }
 
-  .mat-select-arrow {
-    margin: 0 14px 0 4px;
+  .mat-select-arrow-wrapper {
+    transform: none;
 
-    width: 10px;
-    height: 6px;
+    .mat-select-arrow {
+      margin: 0 14px 0 4px;
 
-    background-image: url('../../assets/svg/arrow-down-dark.svg');
-    border: none;
+      width: 10px;
+      height: 6px;
+
+      background-image: url('../../assets/svg/arrow-down-dark.svg');
+      border: none;
+    }
   }
 
   .mat-form-field-infix {
     padding: 0;
 
     border: none;
-
-    .mat-select {
-      font-family: $header_font;
-      font-size: 16px;
-      font-weight: normal;
-      line-height: 24px;
-
-      background-color: $light_2;
-      border-radius: 5px;
-    }
-
-    .mat-form-field-label-wrapper {
-      position: static;
-
-      overflow: visible;
-
-      height: 0;
-    }
   }
 }
 
@@ -122,7 +107,6 @@ select {
 }
 
 .mat-form-field_none {
-  .mat-form-field-wrapper,
   .mat-form-field-flex,
   .mat-form-field-appearance-legacy,
   .mat-form-field-label-wrapper {
@@ -147,25 +131,18 @@ select {
   .mat-select-arrow {
     display: none;
   }
+}
 
-  .mat-form-field-infix {
-    padding: 0;
+.mat-form-field-appearance-fill.mat-form-field_default-select .mat-select-arrow-wrapper {
+  transform: none;
+}
 
-    border: none;
+.mat-select {
+  font-family: $header_font;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 24px;
 
-    .mat-select {
-      font-family: $header_font;
-      font-size: 16px;
-      font-weight: normal;
-      line-height: 24px;
-    }
-
-    .mat-form-field-label-wrapper {
-      position: static;
-
-      overflow: visible;
-
-      height: 0;
-    }
-  }
+  background-color: $light_2;
+  border-radius: 5px;
 }

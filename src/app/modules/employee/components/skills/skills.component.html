@@ -222,7 +222,7 @@
   >
     <mat-form-field
       class="mat-form-field__form-control edit-form__institution"
-      appearance="none"
+      appearance="fill"
       floatLabel="always"
     >
       <mat-label>Учебное заведение</mat-label>
@@ -235,7 +235,7 @@
     </mat-form-field>
     <mat-form-field
       class="mat-form-field__form-control edit-form__specialization"
-      appearance="none"
+      appearance="fill"
       floatLabel="always"
     >
       <mat-label>Специализация</mat-label>
@@ -247,24 +247,20 @@
       />
     </mat-form-field>
     <mat-form-field
-      class="mat-form-field__form-control"
-      appearance="none"
-      floatLabel="always"
-    >
+        class='mat-form-field_default-select'
+        appearance='fill'>
       <mat-label>Формат обучения</mat-label>
-      <mat-form-field class="mat-form-field_default-select" appearance="none">
-        <mat-select
-          class="select"
-          placeholder="Показать все"
-          formControlName="studyType"
+      <mat-select
+          class='select'
+          placeholder='Показать все'
+          formControlName='studyType'
+      >
+        <mat-option
+            *ngFor='let studyType of studyTypes'
+            [value]='studyType'
+        >{{ studyType }}</mat-option
         >
-          <mat-option
-            *ngFor="let studyType of studyTypes"
-            [value]="studyType"
-          >{{ studyType }}</mat-option
-          >
-        </mat-select>
-      </mat-form-field>
+      </mat-select>
     </mat-form-field>
     <do-datepicker
       *ngIf="sectionModes.education !== workFlowMode.VIEW"

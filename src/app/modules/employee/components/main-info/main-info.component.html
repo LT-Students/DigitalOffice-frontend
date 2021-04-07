@@ -131,18 +131,22 @@
     controlName="lastName"
     [isEdit]="isEditing"
     label="Фамилия"
+    textSize='small'
     required="true"
   ></do-input>
   <do-input
     controlName="firstName"
     [isEdit]="isEditing"
     label="Имя"
+    textSize='small'
     required="true"
   ></do-input>
   <do-input
     controlName="middleName"
     [isEdit]="isEditing"
     label="Отчество"
+    textSize='small'
+    required="true"
   ></do-input>
 </ng-template>
 
@@ -162,7 +166,8 @@
         class="bg-light_2 employee-info__input"
         placeholder="Напишите немного о себе или оставьте заметку коллегам"
         maxlength="150"
-        cdkTextareaAutosize="false"
+        cdkTextareaAutosize="true"
+        textSize='small'
       ></textarea>
     </mat-form-field>
   </ng-container>
@@ -170,10 +175,10 @@
 
 <ng-template #stepper [formGroup]="employeeInfoForm">
   <mat-form-field
-    class="employee-info__form-field employee-info__stepper"
+    class="employee-info__form-field mat-form-field__stepper"
     appearance="fill"
   >
-    <mat-label>Ставка</mat-label>
+    <mat-label doText color='gray' regularTextSize='small'>Ставка</mat-label>
     <button
       class="employee-info__stepper-button h2"
       mat-icon-button
@@ -208,15 +213,17 @@
 </ng-template>
 
 <ng-template #hours [formGroup]="employeeInfoForm">
-  <div formGroupName="workingHours"
+  <div
+      style='display: flex; align-items: flex-start;'
+      formGroupName="workingHours"
        matTooltipClass="tooltip"
        matTooltip="Рабочие часы пользователя по вашему часовому поясу"
        [matTooltipPosition]="'above'">
     <mat-form-field
       class="mat-form-field_default-select employee-info__form-field employee-info__working-hours"
-      appearance="none"
+      appearance="fill"
     >
-      <mat-label>
+      <mat-label doText color='gray' regularTextSize='small'>
         Рабочие часы
         <mat-icon
             class="employee-info__hint"
@@ -237,7 +244,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    —
+    <div style='align-self: center;'>—</div>
     <mat-form-field
       class="mat-form-field_default-select employee-info__form-field employee-info__working-hours"
       appearance="none"
@@ -278,12 +285,12 @@
 
   <mat-form-field
     class="employee-info__form-field mat-form-field_default-select"
-    appearance="none"
+    appearance="fill"
     matTooltipClass="tooltip"
     matTooltip="Статус будет отображаться рядом с именем пользователя"
     [matTooltipPosition]="'above'"
   >
-    <mat-label class="employee-info__label" for="status">
+    <mat-label doText color='gray' regularTextSize='small' class="employee-info__label" for="status">
       Эмодзи-статус
       <mat-icon
           class="employee-info__hint"
@@ -295,6 +302,7 @@
       id="status"
       formControlName="status"
       [compareWith]="compareEmoji"
+      appearance="fill"
     >
       <mat-option
         class="employee-info__input"
@@ -331,6 +339,7 @@
           Обновить фото</label
         >
         <input
+            id='photo'
             type='file'
             formGroupName='photo'
             (change)='onFileChange($event)'
@@ -356,6 +365,7 @@
               [isEdit]='employee.isAdmin'
               [options]='selectOptions.jobPosition'
               label='Должность'
+              textSize='small'
               required='true'
           ></do-select>
           <do-select
@@ -363,12 +373,14 @@
               [isEdit]='employee.isAdmin'
               [options]='selectOptions.department'
               label='Департамент'
+              textSize='small'
               required='true'
           ></do-select>
           <do-input
               controlName='location'
               [isEdit]='employee.isAdmin'
               label='Местоположение'
+              textSize='small'
               required='true'
           ></do-input>
           <do-select
@@ -376,6 +388,7 @@
               [isEdit]='employee.isAdmin'
               [options]='selectOptions.office'
               label='Офис'
+              textSize='small'
               required='true'
           ></do-select>
           <ng-container *ngTemplateOutlet='emoji'></ng-container>
@@ -412,11 +425,6 @@
               [isEdit]='employee.isAdmin'
               label='В компании с'
           ></do-datepicker>
-          <do-datepicker
-              controlName='birthDate'
-              [isEdit]='true'
-              label='Дата рождения'
-          ></do-datepicker>
           <ng-container *ngIf="employeeInfoForm.get('status').value === userStatus.Vacation">
             <do-datepicker
                 controlName='vacationSince'
@@ -450,17 +458,20 @@
             controlName='email'
             [isEdit]='employee.isAdmin'
             label='E-mail'
+            textSize='small'
             required='true'
         ></do-input>
         <do-input
             controlName='phone'
             [isEdit]='true'
+            textSize='small'
             label='Рабочий номер'
             required='true'
         ></do-input>
         <do-input
             controlName='telegram'
             [isEdit]='true'
+            textSize='small'
             label='Telegram'
         ></do-input>
         <ng-container *ngIf='canEdit()'>
@@ -481,6 +492,7 @@
               type='number'
               [isEdit]='employee.isAdmin'
               label='Осталось отпускных дней'
+              textSize='small'
               required='true'
           ></do-input>
         </ng-container>

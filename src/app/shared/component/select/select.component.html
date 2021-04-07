@@ -1,9 +1,9 @@
 <ng-container *ngIf="isEdit; else textBlock">
   <mat-form-field
     class="select__form-field mat-form-field_default-select"
-    appearance="none"
+    appearance="fill"
   >
-    <mat-label *ngIf='label'>{{ label }}</mat-label>
+    <mat-label doText color='gray' [regularTextSize]='textSize' *ngIf='label'>{{ label }}</mat-label>
     <mat-select
       class="select__input"
       [formControl]="control"

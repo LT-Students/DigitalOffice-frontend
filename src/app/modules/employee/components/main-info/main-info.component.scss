@@ -53,9 +53,9 @@
   }
 
   &__photo {
-    align-self: center;
-
     position: relative;
+
+    margin-bottom: 12px;
 
     overflow: hidden;
 
@@ -63,16 +63,20 @@
     height: 180px;
 
     border-radius: 50%;
+    align-self: center;
   }
 
   &__upload-button {
     position: absolute;
+    left: 0;
     bottom: 0;
 
     padding-top: 8px;
 
     width: 180px;
     height: 60px;
+
+    cursor: pointer;
 
     background-color: rgba(67, 67, 72, 0.6);
   }
@@ -106,7 +110,7 @@
   &__working-hours {
     display: inline-block;
 
-    width: 80px;
+    width: 45%;
   }
 
   &__substitute {
