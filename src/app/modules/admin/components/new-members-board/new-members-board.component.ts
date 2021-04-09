@@ -57,7 +57,8 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe((data: User[]) => {
-        this.members = data;
+        // TODO: change this part when USERSCHEMA is ready
+        // this.members = data;
         this.visibleMembers = [...this.members];
       });
   }
