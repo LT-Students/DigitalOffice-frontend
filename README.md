@@ -29,3 +29,12 @@ ng serve
 ```
 ng serve --ssl true -o --sslKey ssl/server.key --sslCert ssl/server.crt
 ```
+
+## Обновление сервиса
+1. Зайти в Postman, открыть workspace **Digital Office**
+2. Нажимаем на название сервиса, который нужно обновить. Открывается окно, с открытой вкладкой `Overview`
+3. Нажимаем на таб `Define`, открывается окно с главной информацией по сервису: слева - древовидная структура, справа - YAML описание.
+4. Полностью копируем YAML-файл, открываем страничку [https://www.convertjson.com/yaml-to-json.htm](https://www.convertjson.com/yaml-to-json.htm) и вставляем в поле с подписью "Paste YAML Data here"
+5. В правом окне автоматически сформируется JSON. Копируем его.
+6. Идем в папку swagger → `<имясервиса>.json`. Вставляем сгенерированный json.
+7. В консоли выполнить команду `npm run generate.<имясервиса>` (auth, time, project, user etc).
