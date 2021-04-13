@@ -1,9 +1,13 @@
 .projects-table {
-  &__section {
-    margin: 30px 0;
+  &__card-title {
+    margin-bottom: -10px;
   }
 
-  &__title {
+  &__section {
+    margin-top: 48px;
+  }
+
+  &__group-title {
     margin-bottom: 26px;
   }
 
