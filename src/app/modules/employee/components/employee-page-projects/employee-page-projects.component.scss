@@ -51,11 +51,13 @@
   }
 
   &__arrow {
-    vertical-align: -30%;
+    vertical-align: middle;
   }
 
   &__arrow-button {
     margin-top: 30px;
+
+    cursor: pointer;
 
     &:hover {
       color: #808080;
