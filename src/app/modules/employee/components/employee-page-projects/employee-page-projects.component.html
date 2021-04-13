@@ -1,0 +1,65 @@
+<div class="projects-table">
+  <h3 doText underlined underlinedSize="sm">Проекты</h3>
+  <ng-container *ngFor="let group of groups">
+    <div *ngIf="group.projects.length > 0" class="projects-table__section">
+      <h3 class="projects-table__title h3_light">
+        {{ group.name }}
+        <span class="text-accent_color_bright">{{
+          group.projects.length | i18nPlural: group.plural
+        }}</span>
+      </h3>
+      <div
+        class="projects-table__container"
+        [ngClass]="
+          group.expanded
+            ? 'projects-table__container_overflow_visible'
+            : 'projects-table__container_overflow_hidden'
+        "
+      >
+        <div
+          *ngFor="let project of group.projects"
+          class="projects-table__project bg-light_2 card"
+        >
+          <h4 doText color="dark_2">{{ project.name }}</h4>
+          <p doText color="gray1">{{ project.company }}</p>
+          <p doText color="dark_1">
+            {{ project.description }}
+          </p>
+          <p doText color="gray1">Роль</p>
+          <p doText color="dark_1">{{ project.role }}</p>
+          <p doText color="gray1">В проекте</p>
+          <p doText color="dark_1">
+            С {{ project.startedAt | date: 'd.MM.y' }}
+            <span *ngIf="project.endedAt"
+              >по {{ project.endedAt | date: 'd.MM.y' }}</span
+            >
+          </p>
+          <p class="projects-table__arrow-button" doText color="gray1">
+            Подробнее
+            <mat-icon class="projects-table__arrow"
+              >keyboard_arrow_right</mat-icon
+            >
+          </p>
+        </div>
+      </div>
+      <div
+        *ngIf="group.projects.length > 4"
+        class="projects-table__arrow-button"
+        doText
+        color="gray1"
+        (click)="expandProjects(group)"
+      >
+        <span *ngIf="group.expanded; else collapsed"
+          >Свернуть
+          <mat-icon class="projects-table__arrow">expand_less</mat-icon>
+        </span>
+        <ng-template #collapsed>
+          <span
+            >Показать всё
+            <mat-icon class="projects-table__arrow">expand_more</mat-icon>
+          </span>
+        </ng-template>
+      </div>
+    </div>
+  </ng-container>
+</div>

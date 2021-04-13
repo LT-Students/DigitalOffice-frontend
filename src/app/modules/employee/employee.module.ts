@@ -8,13 +8,15 @@ import { SharedModule } from '../../shared/shared.module';
 import { EmployeePageComponent } from './employee-page.component';
 import { SkillsComponent } from './components/skills/skills.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
+import { EmployeePageProjectsComponent } from './components/employee-page-projects/employee-page-projects.component';
 
 
 @NgModule({
 	declarations: [
 		EmployeePageComponent,
 		SkillsComponent,
-		MainInfoComponent
+		MainInfoComponent,
+		EmployeePageProjectsComponent
 	],
 	imports: [
 		CommonModule,
