@@ -7,6 +7,13 @@ interface UserProject extends Project {
   endedAt?: Date;
 }
 
+interface Group {
+  name: string;
+  projects: UserProject[];
+  expanded: boolean;
+  plural: {};
+}
+
 @Component({
   selector: 'do-employee-page-projects',
   templateUrl: './employee-page-projects.component.html',
@@ -18,7 +25,7 @@ export class EmployeePageProjectsComponent implements OnInit {
   public participatedProjects: UserProject[] = [];
 
   public pluralForm;
-  public groups;
+  public groups: Group[];
 
   constructor() {
     this.userProjects = this._getUserProjects();
