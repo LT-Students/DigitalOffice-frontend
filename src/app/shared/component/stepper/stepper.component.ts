@@ -2,17 +2,16 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 
 @Component({
-  selector: 'do-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
+  selector: 'do-stepper',
+  templateUrl: './stepper.component.html',
+  styleUrls: ['./stepper.component.scss']
 })
-export class SelectComponent implements OnInit {
+export class StepperComponent implements OnInit {
   @Input() label = '';
   @Input() required = false;
+  @Input() type = 'number';
   @Input() controlName = '';
   @Input() isEdit = true;
-  @Input() placeholder = '';
-  @Input() options: string[];
 
   control: FormControl | undefined;
 
@@ -23,4 +22,9 @@ export class SelectComponent implements OnInit {
       this.controlName
     ) as FormControl;
   }
+
+  changeWorkingRate(input, step) {
+    input.value = +input.value + step;
+  }
+
 }

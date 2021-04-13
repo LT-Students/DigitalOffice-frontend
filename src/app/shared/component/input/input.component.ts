@@ -12,7 +12,7 @@ export class InputComponent implements OnInit {
   @Input() type = 'text';
   @Input() placeholder = '';
   @Input() controlName = '';
-  @Input() isEdit = false;
+  @Input() isEdit = true;
 
   control: FormControl | undefined;
 
