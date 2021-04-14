@@ -4,12 +4,12 @@
   </h3>
   <ng-container *ngFor="let group of groups">
     <div *ngIf="group.projects.length > 0" class="projects-table__section">
-      <h3 class="projects-table__group-title h3_light">
+      <h4 class="projects-table__group-title h3_light">
         {{ group.name }}
         <span class="text-accent_color_bright">{{
           group.projects.length | i18nPlural: group.plural
         }}</span>
-      </h3>
+      </h4>
       <div
         class="projects-table__container"
         [ngClass]="
