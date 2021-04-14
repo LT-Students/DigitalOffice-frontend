@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpErrorResponse } from '@angular/common/http';
 
-import { User } from '@data/api/user-service/models/user';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
 import { PositionResponse } from '@data/api/company-service/models/position-response';
 import { MatDialogRef } from '@angular/material/dialog';
+import { IUser } from '@data/models/user';
 
 @Component({
   selector: 'do-new-employee',
@@ -15,7 +14,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./new-employee.component.scss'],
 })
 export class NewEmployeeComponent implements OnInit {
-  public user: User;
+  public user: IUser;
   public message: string;
   public imagePath;
   public imgURL: any;

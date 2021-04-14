@@ -1,39 +1,36 @@
 {
   "openapi": "3.0.0",
   "info": {
+    "version": "1.2.4",
     "title": "AuthService",
-    "description": "AuthService is an API intended to work with user authentication, create jwt token for user.\n\n**What's new since 1.2.1:**\n  * `Updated server urls.`\n  ",
-    "version": "1.2.1"
+    "description": "AuthService is an API intended to work with user authentication, create token for user."
   },
   "servers": [
     {
-      "url": "https://84.201.146.123:9817/api/auth"
-    },
-    {
-      "url": "http://84.201.146.123:9818/api/auth"
+      "url": "http://ltdo.xyz:9818"
     }
   ],
   "paths": {
-    "/login": {
+    "/auth/login": {
       "post": {
         "tags": [
           "Auth"
         ],
-        "description": "User authentication.",
         "operationId": "login",
+        "description": "User authentication.",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AuthenticationRequest"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
-            "description": "Successfully user authentication, returned a user id and token.\n",
+            "description": "Successfully user authentication, returned a user id and token.",
             "content": {
               "application/json": {
                 "schema": {
@@ -58,20 +55,20 @@
   "components": {
     "schemas": {
       "AuthenticationRequest": {
+        "type": "object",
         "required": [
           "LoginData",
           "Password"
         ],
-        "type": "object",
         "properties": {
           "LoginData": {
-            "type": "string",
             "description": "User email or login.",
+            "type": "string",
             "example": "ivan_ivanov123@mail.ru or ivan123"
           },
           "Password": {
-            "type": "string",
-            "description": "User password."
+            "description": "User password.",
+            "type": "string"
           }
         }
       },
@@ -79,13 +76,13 @@
         "type": "object",
         "properties": {
           "UserId": {
-            "type": "string",
             "description": "User global unique identifier.",
+            "type": "string",
             "format": "uuid"
           },
           "Token": {
-            "type": "string",
-            "description": "User JWT."
+            "description": "User JWT.",
+            "type": "string"
           }
         }
       }

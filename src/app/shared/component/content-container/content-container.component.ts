@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '@app/services/user.service';
-import { User } from '@data/api/user-service/models/user';
+import { IUser } from '@data/models/user';
 
 @Component({
   selector: 'do-content-container',
@@ -9,7 +9,7 @@ import { User } from '@data/api/user-service/models/user';
   styleUrls: ['./content-container.component.scss'],
 })
 export class ContentContainerComponent implements OnInit {
-  user: User;
+  user: IUser;
 
   constructor(private userService: UserService) {}
 

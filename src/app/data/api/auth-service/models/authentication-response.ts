@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface AuthenticationResponse {
+
   /**
    * User JWT.
    */
@@ -11,3 +12,4 @@ export interface AuthenticationResponse {
    */
   userId?: string;
 }
+
