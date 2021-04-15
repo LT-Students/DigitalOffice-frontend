@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthComponent } from './components/auth/auth.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/initial-form/initial-form.component';
 
 @NgModule({
   declarations: [AuthComponent, LoginComponent, ForgotPasswordComponent],

@@ -36,4 +36,8 @@ export class AuthService {
     const token = this.localStorageService.get('access_token');
     return token != null;
   }
+
+  signup(){
+    
+  }
 }

@@ -10,14 +10,15 @@ import { AuthenticationResponse } from '@data/api/auth-service/models/authentica
 import { User } from '@data/api/user-service/models/user';
 
 @Component({
-  selector: 'do-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'do-initial-form',
+  templateUrl: './initial-form.component.html',
+  styleUrls: ['./initial-form.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginError: string;
   isWaiting = false;
+  isSignUp: boolean;
 
   constructor(
     private authService: AuthService,
@@ -31,11 +32,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {    
+    this.isSignUp = this.router.routerState.snapshot.url.slice(6,11) !== 'login' 
+  }
 
   login(): void {
     this.isWaiting = true;
-
     const authenticationRequest: AuthenticationRequest = {
       loginData: this.loginForm.get('email').value,
       password: this.loginForm.get('password').value,
@@ -67,6 +69,8 @@ export class LoginComponent implements OnInit {
         }
       );
   }
+    signUp(): void {
+    }
 
   get email() {
     return this.loginForm.get('email');
