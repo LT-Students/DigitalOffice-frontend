@@ -22,7 +22,7 @@ interface Group {
 export class EmployeePageProjectsComponent implements OnInit {
   public userProjects: UserProject[];
   public activeProjects: UserProject[] = [];
-  public participatedProjects: UserProject[] = [];
+  public closedProjects: UserProject[] = [];
 
   public pluralForm;
   public groups: Group[];
@@ -34,17 +34,17 @@ export class EmployeePageProjectsComponent implements OnInit {
       if (project.isActive) {
         this.activeProjects.push(project);
       } else {
-        this.participatedProjects.push(project);
+        this.closedProjects.push(project);
       }
     });
 
     this.pluralForm = {
-      roditelny: {
+      activeProjectsTitle: {
         one: '# проект',
         few: '# проекта',
         other: '# проектов',
       },
-      predlozhny: {
+      closedProjectsTitle: {
         one: '# проекте',
         other: '# проектах',
       },
@@ -55,13 +55,13 @@ export class EmployeePageProjectsComponent implements OnInit {
         name: 'В работе',
         projects: this.activeProjects,
         expanded: false,
-        plural: this.pluralForm.roditelny,
+        plural: this.pluralForm.activeProjectsTitle,
       },
       {
         name: 'Участвовал в',
-        projects: this.participatedProjects,
+        projects: this.closedProjects,
         expanded: false,
-        plural: this.pluralForm.predlozhny,
+        plural: this.pluralForm.closedProjectsTitle,
       },
     ];
   }
