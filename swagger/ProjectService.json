@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.5",
+    "version": "1.1.6",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
   "servers": [
     {
-      "url": "http://ltdo.xyz:9804"
+      "url": "https://project.ltdo.xyz"
     }
   ],
   "paths": {

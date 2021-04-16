@@ -326,12 +326,18 @@ export class UserApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editUser$Response(params?: {
+  editUser$Response(params: {
+
+    /**
+     * Specific user id
+     */
+    userId: string;
     body?: Array<PatchOperation>
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserPath, 'patch');
     if (params) {
+      rb.query('userId', params.userId, {});
       rb.body(params.body, 'application/json');
     }
 
@@ -354,7 +360,12 @@ export class UserApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editUser(params?: {
+  editUser(params: {
+
+    /**
+     * Specific user id
+     */
+    userId: string;
     body?: Array<PatchOperation>
   }): Observable<OperationResultResponse> {
 

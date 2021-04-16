@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.4",
+    "version": "1.2.5",
     "title": "AuthService",
     "description": "AuthService is an API intended to work with user authentication, create token for user."
   },
   "servers": [
     {
-      "url": "http://ltdo.xyz:9818"
+      "url": "https://auth.ltdo.xyz"
     }
   ],
   "paths": {

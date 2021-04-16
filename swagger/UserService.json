@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2",
+    "version": "1.2.3",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
   "servers": [
     {
-      "url": "http://ltdo.xyz:9802"
+      "url": "https://user.ltdo.xyz"
     }
   ],
   "paths": {
@@ -291,6 +291,16 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "userId",
+          "in": "query",
+          "description": "Specific user id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
         }
       ],
       "patch": {
@@ -709,7 +719,16 @@
           },
           "path": {
             "type": "string",
-            "description": "A JSON-Pointer."
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/FirstName",
+              "/LastName",
+              "/MiddleName",
+              "/AvatarImage",
+              "/Status",
+              "/Certificates"
+            ]
+
           },
           "value": {
             "type": "object",
@@ -906,6 +925,9 @@
           "SchoolName": {
             "type": "string"
           },
+          "EducationType": {
+            "$ref": "#/components/schemas/EducationType"
+          },
           "ReceivedAt": {
             "type": "string"
           },
@@ -1015,6 +1037,14 @@
           "Twitter"
         ],
         "example": "Email"
+      },
+      "EducationType": {
+        "type": "string",
+        "description": "Education format.",
+        "enum": [
+          "Online",
+          "Offline"
+        ]
       },
       "UserStatus": {
         "type": "string",

@@ -1,13 +1,13 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.1",
+    "version": "1.3.2",
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments."
   },
   "servers": [
     {
-      "url": "http://ltdo.xyz:9816"
+      "url": "https://company.ltdo.xyz"
     }
   ],
   "paths": {

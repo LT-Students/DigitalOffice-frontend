@@ -16,5 +16,6 @@ export { ChangePasswordRequest } from './models/change-password-request';
 export { ErrorResponse } from './models/error-response';
 export { OperationResultResponse } from './models/operation-result-response';
 export { CommunicationType } from './models/communication-type';
+export { EducationType } from './models/education-type';
 export { UserStatus } from './models/user-status';
 export { OperationResultStatusType } from './models/operation-result-status-type';
