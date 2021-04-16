@@ -15,21 +15,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: auto;
-    column-gap: 40px;
-
-    &_overflow_hidden {
-      grid-auto-rows: 0;
-      row-gap: 0;
-
-      overflow-y: hidden;
-    }
-
-    &_overflow_visible {
-      grid-auto-rows: auto;
-      row-gap: 40px;
-
-      overflow-y: visible;
-    }
+    grid-gap: 40px;
   }
 
   &__project {

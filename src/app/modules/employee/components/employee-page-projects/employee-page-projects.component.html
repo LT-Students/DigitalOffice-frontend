@@ -10,14 +10,7 @@
           group.projects.length | i18nPlural: group.plural
         }}</span>
       </h4>
-      <div
-        class="projects-table__container"
-        [ngClass]="
-          group.expanded
-            ? 'projects-table__container_overflow_visible'
-            : 'projects-table__container_overflow_hidden'
-        "
-      >
+      <div class="projects-table__container">
         <div
           *ngFor="let project of group.projects"
           class="projects-table__project bg-light_2 card"
@@ -43,24 +36,6 @@
             >
           </p>
         </div>
-      </div>
-      <div
-        *ngIf="group.projects.length > 4"
-        class="projects-table__arrow-button"
-        doText
-        color="gray1"
-        (click)="expandProjects(group)"
-      >
-        <span *ngIf="group.expanded; else collapsed"
-          >Свернуть
-          <mat-icon class="projects-table__arrow">expand_less</mat-icon>
-        </span>
-        <ng-template #collapsed>
-          <span
-            >Показать всё
-            <mat-icon class="projects-table__arrow">expand_more</mat-icon>
-          </span>
-        </ng-template>
       </div>
     </div>
   </ng-container>
