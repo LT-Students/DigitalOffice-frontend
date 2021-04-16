@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface AuthenticationRequest {
+
   /**
    * User email or login.
    */
@@ -11,3 +12,4 @@ export interface AuthenticationRequest {
    */
   password: string;
 }
+

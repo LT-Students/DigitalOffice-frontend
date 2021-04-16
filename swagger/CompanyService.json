@@ -1,50 +1,38 @@
 {
   "openapi": "3.0.0",
   "info": {
+    "version": "1.3.2",
     "title": "CompanyService",
-    "description": "CompanyService is an API that intended to work with positions and departments.\n-\n\n**What's new since 1.1.2:**\n  * `Updated server urls.`\n  * `Added header parameter (securityToken)`",
-    "version": "1.2.0"
+    "description": "CompanyService is an API that intended to work with positions and departments."
   },
   "servers": [
     {
-      "url": "https://84.201.146.123:9815/api"
-    },
-    {
-      "url": "http://84.201.146.123:9816/api"
+      "url": "https://company.ltdo.xyz"
     }
   ],
   "paths": {
     "/position/getPositionById": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "get": {
         "tags": [
           "Position"
         ],
-        "description": "Returns position by id.",
         "operationId": "getPositionById",
+        "description": "Returns position by id.",
         "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          },
           {
             "name": "positionId",
             "in": "query",
             "description": "Position global unique identifier.",
-            "required": true,
-            "style": "form",
-            "explode": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
@@ -68,26 +56,17 @@
       }
     },
     "/position/getPositionsList": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "get": {
         "tags": [
           "Position"
         ],
-        "description": "Returns all added positions.",
         "operationId": "getPositionsList",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          }
-        ],
+        "description": "Returns all added positions.",
         "responses": {
           "200": {
             "description": "Successfully returned added positions.",
@@ -109,26 +88,17 @@
       }
     },
     "/position/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "post": {
         "tags": [
           "Position"
         ],
-        "description": "Adds a new position.",
         "operationId": "addPosition",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          }
-        ],
+        "description": "Adds a new position.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -145,8 +115,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
                   "description": "Position global unique identifier.",
+                  "type": "string",
                   "format": "uuid"
                 }
               }
@@ -162,26 +132,17 @@
       }
     },
     "/position/editPosition": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "post": {
         "tags": [
           "Position"
         ],
-        "description": "Edits a specified position.",
         "operationId": "editPosition",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          }
-        ],
+        "description": "Edits a specified position.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -206,36 +167,27 @@
       }
     },
     "/position/disablePositionById": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "delete": {
         "tags": [
           "Position"
         ],
-        "description": "Deletes the specified position.",
         "operationId": "disablePositionById",
+        "description": "Deletes the specified position.",
         "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          },
           {
             "name": "positionId",
             "in": "query",
             "description": "Position global unique identifier.",
-            "required": true,
-            "style": "form",
-            "explode": true,
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
@@ -252,26 +204,17 @@
       }
     },
     "/department/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "post": {
         "tags": [
           "Department"
         ],
-        "description": "Adds a new department to company.\n* __The user must have access to the right__ -- Add/Edit/Remove departments.\n",
         "operationId": "addDepartment",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          }
-        ],
+        "description": "Adds a new department to company.\n* __The user must have access to the right__ -- Add/Edit/Remove departments.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -302,74 +245,110 @@
           }
         }
       }
+    },
+    "/department/get": {
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "get",
+        "description": "Returns department by id.",
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "query",
+            "description": "Department global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned department.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Department"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.\n* Department with this id not found.\n"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "AddPositionRequest": {
-        "required": [
-          "Description",
-          "IsActive",
-          "Name"
-        ],
         "type": "object",
+        "description": "Specific position data.",
+        "required": [
+          "Name",
+          "Description",
+          "IsActive"
+        ],
         "properties": {
           "Name": {
-            "type": "string",
             "description": "Position name.",
+            "type": "string",
             "example": "IT projects consultant"
           },
           "Description": {
-            "type": "string",
             "description": "Position description.",
-            "nullable": true,
-            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts)."
+            "type": "string",
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+            "nullable": true
           },
           "IsActive": {
-            "type": "boolean",
-            "description": "Marks whether position is active or not."
+            "description": "Marks whether position is active or not.",
+            "type": "boolean"
           }
-        },
-        "description": "Specific position data."
+        }
       },
       "EditPositionRequest": {
-        "required": [
-          "Description",
-          "Id",
-          "IsActive",
-          "Name"
-        ],
         "type": "object",
+        "description": "Specific position data.",
+        "required": [
+          "Id",
+          "Name",
+          "Description",
+          "IsActive"
+        ],
         "properties": {
           "Id": {
-            "type": "string",
             "description": "Specific position id.",
+            "type": "string",
             "format": "uuid"
           },
           "Name": {
-            "type": "string",
             "description": "Position name.",
+            "type": "string",
             "example": "IT projects consultant"
           },
           "Description": {
-            "type": "string",
             "description": "Position description.",
-            "nullable": true,
-            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts)."
+            "type": "string",
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+            "nullable": true
           },
           "IsActive": {
-            "type": "boolean",
-            "description": "Marks whether position is active or not."
+            "description": "Marks whether position is active or not.",
+            "type": "boolean"
           }
-        },
-        "description": "Specific position data."
+        }
       },
       "AddDepartmentRequest": {
+        "type": "object",
         "required": [
           "Info",
           "UsersIds"
         ],
-        "type": "object",
         "properties": {
           "Info": {
             "$ref": "#/components/schemas/Department"
@@ -400,68 +379,68 @@
       },
       "Position": {
         "type": "object",
+        "description": "Specific position data.",
         "properties": {
           "Id": {
-            "type": "string",
             "description": "Specific position id.",
+            "type": "string",
             "format": "uuid"
           },
           "Name": {
-            "type": "string",
             "description": "Position name.",
+            "type": "string",
             "example": "IT projects consultant"
           },
           "Description": {
-            "type": "string",
             "description": "Position description.",
-            "nullable": true,
-            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts)."
+            "type": "string",
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+            "nullable": true
           },
           "IsActive": {
-            "type": "boolean",
-            "description": "Marks whether position is active or not."
+            "description": "Marks whether position is active or not.",
+            "type": "boolean"
           }
-        },
-        "description": "Specific position data."
+        }
       },
       "Department": {
-        "required": [
-          "Description",
-          "Name"
-        ],
         "type": "object",
+        "description": "Specific department data.",
+        "required": [
+          "Name",
+          "Description"
+        ],
         "properties": {
           "Name": {
-            "type": "string",
-            "description": "Department name."
+            "description": "Department name.",
+            "type": "string"
           },
           "Description": {
-            "type": "string",
-            "description": "Department description."
+            "description": "Department description.",
+            "type": "string"
           },
           "DirectorUserId": {
-            "type": "string",
             "description": "Specific director user id this department.",
+            "type": "string",
             "format": "uuid"
           }
-        },
-        "description": "Specific department data."
+        }
       },
       "DepartmentUser": {
         "type": "object",
+        "description": "User data of specific department.",
         "properties": {
           "UserId": {
             "type": "string",
-            "description": "Specific users id.",
-            "format": "uuid"
+            "format": "uuid",
+            "description": "Specific users id."
           },
           "PositionId": {
             "type": "string",
-            "description": "Specific position id.",
-            "format": "uuid"
+            "format": "uuid",
+            "description": "Specific position id."
           }
-        },
-        "description": "User data of specific department."
+        }
       }
     },
     "parameters": {
@@ -469,13 +448,11 @@
         "name": "token",
         "in": "header",
         "description": "The JWT token.",
-        "required": true,
-        "style": "simple",
-        "explode": false,
         "schema": {
           "type": "string",
           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-        }
+        },
+        "required": true
       }
     }
   }
