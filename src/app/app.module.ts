@@ -15,7 +15,6 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
-import { FormGroupDirective } from '@angular/forms';
 
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -51,7 +50,6 @@ registerLocaleData(localeRu);
     LocalStorageService,
     AttendanceService,
     ProjectStore,
-    FormGroupDirective,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

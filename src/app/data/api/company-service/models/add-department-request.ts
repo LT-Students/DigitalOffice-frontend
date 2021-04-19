@@ -6,3 +6,4 @@ export interface AddDepartmentRequest {
   info: Department;
   users?: Array<DepartmentUser>;
 }
+

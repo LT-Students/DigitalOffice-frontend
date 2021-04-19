@@ -6,6 +6,7 @@
       [required]='required'
       [formControl]="control"
       [matDatepicker]="picker"
+      [placeholder]="placeholder"
     />
     <p *ngIf='control.value' doText color='dark_1'>
       {{ control.value | date: dateFormat }}

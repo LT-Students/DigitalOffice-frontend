@@ -14,6 +14,7 @@ import { SearchComponent } from './component/search/search.component';
 import { HeaderComponent } from './component/header/header.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
+import { StepperComponent } from './component/stepper/stepper.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     HeaderComponent,
     InputComponent,
     DatepickerComponent,
+    StepperComponent,
     TextDirective
   ],
   imports: [
@@ -43,9 +45,10 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
     ProfileImageComponent,
     SearchComponent,
     HeaderComponent,
-    DatepickerComponent,
     TextDirective,
     MaterialModule,
+    DatepickerComponent,
+    StepperComponent,
   ],
 })
 export class SharedModule {}

@@ -6,3 +6,4 @@ export interface ProjectExpandedRequest {
   project: ProjectRequest;
   users: Array<ProjectUserRequest>;
 }
+
