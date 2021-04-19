@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '@app/services/user.service';
 import { IUser } from '@data/models/user';
+import { UserInfo, UserResponse } from '@data/api/user-service/models';
 
 @Component({
   selector: 'do-content-container',
@@ -9,12 +10,12 @@ import { IUser } from '@data/models/user';
   styleUrls: ['./content-container.component.scss'],
 })
 export class ContentContainerComponent implements OnInit {
-  user: IUser;
+  user: UserInfo;
 
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.user = this.userService.getCurrentUser();
+    this.user = this.userService.getCurrentUser().user;
     if (!this.user) {
       this.user = {
         firstName: 'сотрудник',
