@@ -26,9 +26,9 @@
   }
 
   &__additional {
-    position: relative;
+    display: flex;
 
-    width: 33%;
+    width: 100%;
 
     .h4:last-of-type {
       margin: 42px 0 13px 0;
