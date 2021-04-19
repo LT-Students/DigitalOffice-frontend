@@ -1,33 +1,13 @@
 @import '../../../../stylesheets/base/variables';
 
-.datepicker {
-  &__label {
-    align-self: flex-start;
-
-    display: block;
+.datepicker__form-field {
+  input {
+    display: none;
   }
 
-  &__required {
-    margin-left: 1px;
-
-    vertical-align: top;
-
-    color: $negative_accent;
+  p {
+    margin: 6px 0 6px 12px;
   }
-
-  &__form-field {
-    display: block;
-
-    input {
-      display: none;
-    }
-
-    p {
-      margin: 6px 0 6px 12px;
-    }
-  }
-
-
 }
 
 .small_text {

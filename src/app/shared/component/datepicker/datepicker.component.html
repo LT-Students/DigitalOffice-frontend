@@ -8,10 +8,10 @@
       [matDatepicker]="picker"
       [placeholder]="placeholder"
     />
-    <p *ngIf='control.value' doText color='dark_1'>
+    <p *ngIf='control.value' class='text_dark_1'>
       {{ control.value | date: dateFormat }}
     </p>
-    <p *ngIf='!control.value' doText color='gray1'>
+    <p *ngIf='!control.value' class='text_gray1'>
       {{ placeholder }}
     </p>
     <mat-datepicker-toggle matSuffix [for]="picker">
