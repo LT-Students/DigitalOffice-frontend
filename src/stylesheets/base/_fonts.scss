@@ -32,6 +32,8 @@
 
 .h4 {
   @extend %header_font_basic;
+  margin-bottom: 32px;
+
   font-size: 16px;
   line-height: 24px;
 }
@@ -88,10 +90,6 @@
   &_gray {
     color: $gray;
   }
-}
-
-.text_dark_1 {
-  color: $dark_1;
 }
 
 .text_white {

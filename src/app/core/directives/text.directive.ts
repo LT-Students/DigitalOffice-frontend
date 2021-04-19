@@ -35,6 +35,7 @@ export class TextDirective implements OnInit {
 	private _underlined: boolean;
 
 	@Input() color: color_style;
+	@Input() regularTextSize: 'regular' | 'small';
 	@Input() underlinedSize: 'sm' | 'l';
 	@Input()
 	get underlined() { return this._underlined; }
@@ -43,11 +44,11 @@ export class TextDirective implements OnInit {
 
 	constructor(private el: ElementRef, private renderer: Renderer2) {
 		this.underlinedSize = 'l';
-		const tagName: string = this.el.nativeElement.tagName;
-		this._handleTagName(tagName);
+		this.regularTextSize = 'regular';
 	}
 
 	public ngOnInit() {
+		this._handleTagName(this.el.nativeElement.tagName);
 		if (this.underlined) {
 			this.renderer.addClass(this.el.nativeElement, '-underlined');
 			this.renderer.addClass(this.el.nativeElement, `-underlined-${this.underlinedSize}`);
@@ -55,6 +56,7 @@ export class TextDirective implements OnInit {
 		if (this.color) {
 			this.renderer.addClass(this.el.nativeElement, `text-${this.color}`);
 		}
+
 	}
 
 	private _handleTagName(tagName: string): void {
@@ -85,6 +87,6 @@ export class TextDirective implements OnInit {
 	}
 
 	private _setRegularTextAttributes(): void {
-		this.renderer.addClass(this.el.nativeElement, 'regular_text')
+		this.renderer.addClass(this.el.nativeElement, `${this.regularTextSize}_text`)
 	}
 }
