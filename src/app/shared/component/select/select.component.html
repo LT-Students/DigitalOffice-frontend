@@ -1,4 +1,10 @@
 <ng-container *ngIf="isEdit; else textBlock">
+<<<<<<< HEAD
+=======
+  <label class="small_text text-gray select__label" [for]="controlName"
+    >{{ label }}<sup *ngIf="required" class="select__required">*</sup></label
+  >
+>>>>>>> develop
   <mat-form-field
     class="select__form-field mat-form-field_default-select"
     appearance="fill"
@@ -10,6 +16,7 @@
       [id]="controlName"
       [attr.name]="controlName"
       [required]='required'
+      [placeholder]="placeholder"
     >
       <mat-option
         class="select__input"

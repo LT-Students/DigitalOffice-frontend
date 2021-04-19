@@ -16,14 +16,17 @@ import { AuthenticationResponse } from '../models/authentication-response';
   providedIn: 'root',
 })
 export class AuthApiService extends BaseService {
-  constructor(config: ApiConfiguration, http: HttpClient) {
+  constructor(
+    config: ApiConfiguration,
+    http: HttpClient
+  ) {
     super(config, http);
   }
 
   /**
    * Path part for operation login
    */
-  static readonly LoginPath = '/login';
+  static readonly LoginPath = '/auth/login';
 
   /**
    * User authentication.
@@ -34,30 +37,23 @@ export class AuthApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   login$Response(params: {
-    body: AuthenticationRequest;
+    body: AuthenticationRequest
   }): Observable<StrictHttpResponse<AuthenticationResponse>> {
-    const rb = new RequestBuilder(
-      this.rootUrl,
-      AuthApiService.LoginPath,
-      'post'
-    );
+
+    const rb = new RequestBuilder(this.rootUrl, AuthApiService.LoginPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
 
-    return this.http
-      .request(
-        rb.build({
-          responseType: 'json',
-          accept: 'application/json',
-        })
-      )
-      .pipe(
-        filter((r: any) => r instanceof HttpResponse),
-        map((r: HttpResponse<any>) => {
-          return r as StrictHttpResponse<AuthenticationResponse>;
-        })
-      );
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<AuthenticationResponse>;
+      })
+    );
   }
 
   /**
@@ -69,13 +65,12 @@ export class AuthApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   login(params: {
-    body: AuthenticationRequest;
+    body: AuthenticationRequest
   }): Observable<AuthenticationResponse> {
+
     return this.login$Response(params).pipe(
-      map(
-        (r: StrictHttpResponse<AuthenticationResponse>) =>
-          r.body as AuthenticationResponse
-      )
+      map((r: StrictHttpResponse<AuthenticationResponse>) => r.body as AuthenticationResponse)
     );
   }
+
 }

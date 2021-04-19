@@ -5,7 +5,6 @@ import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { AdminComponent } from './modules/admin/components/admin/admin.component';
 import { DashboardComponent } from './modules/admin/components/dashboard/dashboard.component';
-import { NewEmployeeComponent } from './modules/admin/components/new-employee/new-employee.component';
 import { NewProjectComponent } from './modules/admin/components/new-project/new-project.component';
 import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
 import { ProjectsTableComponent } from './modules/user/components/projects-table/projects-table.component';
@@ -63,7 +62,6 @@ const routes: Routes = [
             redirectTo: 'dashboard',
           },
           { path: 'dashboard', component: DashboardComponent },
-          { path: 'new-employee', component: NewEmployeeComponent },
           { path: 'new-project', component: NewProjectComponent },
           { path: 'new-members-board', component: NewMembersBoardComponent },
         ],

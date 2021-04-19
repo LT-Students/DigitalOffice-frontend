@@ -13,3 +13,4 @@ export interface User {
   middleName?: string;
   removedOn?: any;
 }
+

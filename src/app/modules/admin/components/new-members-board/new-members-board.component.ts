@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, forkJoin } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { User } from '@data/api/user-service/models/user';
-import { IUser } from '@data/models/user';
+import { UserResponse } from '@data/api/user-service/models/user-response';
+
+type User = UserResponse & { level: string; specialization: string };
 
 @Component({
   selector: 'do-new-members-board',
@@ -12,9 +13,9 @@ import { IUser } from '@data/models/user';
   styleUrls: ['./new-members-board.component.scss'],
 })
 export class NewMembersBoardComponent implements OnInit, OnDestroy {
-  public members: IUser[];
-  public visibleMembers: IUser[];
-  public checkedMembers: IUser[] = [];
+  public members: User[];
+  public visibleMembers: User[];
+  public checkedMembers: User[] = [];
   public selectedSpecialization;
   public selectedLevel;
   public searchName = null;
@@ -37,28 +38,30 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
 
   getMembers(): void {
     this.getMembersSubscription = this.userApiService
-      .getAllUsers({
+      .findUsers({
         skipCount: 0,
         takeCount: 50,
-        userNameFilter: this.searchName,
+        // userNameFilter: this.searchName,
       })
       .pipe(
+        mergeMap(({ users }) => {
+          const subs = users.map((user) =>
+            this.userApiService.getUser({ userId: user.id })
+          );
+          return forkJoin([...subs]);
+        }),
         map((data: User[]) =>
-          data.map((userDb) => ({
-            id: userDb.id,
-            firstName: userDb.firstName,
-            lastName: userDb.lastName,
-            middleName: userDb.middleName,
-            photo: userDb.avatarFileId,
-            projectsCount: 0,
+          data.map((user) => ({
+            ...user,
+            ...user.user,
             level: '',
             specialization: '',
           }))
         )
       )
-      .subscribe((data: User[]) => {
-        // TODO: change this part when USERSCHEMA is ready
-        // this.members = data;
+      .subscribe((data) => {
+        console.log(data);
+        this.members = data;
         this.visibleMembers = [...this.members];
       });
   }
@@ -94,7 +97,7 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
     } else {
       let uncheckedUserIndex;
       this.checkedMembers.map((x, index) => {
-        if (x.id === user.id) {
+        if (x.user.id === user.id) {
           uncheckedUserIndex = index;
         }
       });

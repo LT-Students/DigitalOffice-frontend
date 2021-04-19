@@ -38,7 +38,7 @@ select {
   }
 
   .mat-select-value {
-    padding: 0 8px;
+    padding: 0 15px;
 
     height: 36px;
 
@@ -46,7 +46,7 @@ select {
 
     .mat-select-placeholder {
       @extend .regular_text;
-      @extend .text_color_dark-1;
+      @extend .text-gray1;
     }
   }
 

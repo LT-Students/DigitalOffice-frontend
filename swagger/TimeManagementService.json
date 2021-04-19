@@ -1,42 +1,29 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "TimeManagement service",
-    "description": "TimeManagement is an API intended to work with the \n  - Work time\n  - Leave time\n\n**What's new since 1.1.2:**\n  * `Updated server urls.`\n  * `Added header parameter (securityToken)`\n  \n",
-    "version": "1.1.2"
+    "version": "1.1.5",
+    "title": "TimeService",
+    "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
   "servers": [
     {
-      "url": "https://84.201.146.123:9805/api"
-    },
-    {
-      "url": "http://84.201.146.123:9806/api"
+      "url": "https://time.ltdo.xyz"
     }
   ],
   "paths": {
     "/leavetime/addLeaveTime": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "post": {
         "tags": [
           "LeaveTime"
         ],
-        "summary": "Sets the leavetime for the user.",
         "operationId": "addLeaveTime",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          }
-        ],
+        "description": "Sets the leavetime for the user.",
         "requestBody": {
-          "description": "Needed for set leavetime.",
           "content": {
             "application/json": {
               "schema": {
@@ -44,6 +31,7 @@
               }
             }
           },
+          "description": "Needed for set leavetime.",
           "required": true
         },
         "responses": {
@@ -52,8 +40,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
                   "description": "LeaveTime id",
+                  "type": "string",
                   "format": "uuid"
                 }
               }
@@ -69,28 +57,18 @@
       }
     },
     "/worktime/addWorkTime": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "post": {
         "tags": [
           "WorkTime"
         ],
-        "summary": "Sets the worktime for the user.",
         "operationId": "addWorkTime",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          }
-        ],
+        "description": "Sets the worktime for the user.",
         "requestBody": {
-          "description": "Needed for set worktime.",
           "content": {
             "application/json": {
               "schema": {
@@ -98,6 +76,7 @@
               }
             }
           },
+          "description": "Needed for set worktime.",
           "required": true
         },
         "responses": {
@@ -106,8 +85,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
                   "description": "WorkTime id",
+                  "type": "string",
                   "format": "uuid"
                 }
               }
@@ -123,28 +102,18 @@
       }
     },
     "/worktime/editWorkTime": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "post": {
         "tags": [
           "WorkTime"
         ],
-        "summary": "Edit the worktime by Id.",
         "operationId": "editWorkTime",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "header",
-            "description": "The JWT token.",
-            "required": true,
-            "style": "simple",
-            "explode": false,
-            "schema": {
-              "type": "string",
-              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-            }
-          }
-        ],
+        "description": "Edit the worktime by Id.",
         "requestBody": {
-          "description": "Needed for edit worktime.",
           "content": {
             "application/json": {
               "schema": {
@@ -152,6 +121,7 @@
               }
             }
           },
+          "description": "Needed for edit worktime.",
           "required": true
         },
         "responses": {
@@ -171,134 +141,140 @@
   "components": {
     "schemas": {
       "LeaveTimeRequest": {
-        "required": [
-          "EndLeave",
-          "LeaveType",
-          "StartLeave",
-          "WorkerUserId"
-        ],
         "type": "object",
+        "required": [
+          "WorkerUserId",
+          "StartLeave",
+          "EndLeave",
+          "LeaveType"
+        ],
         "properties": {
           "WorkerUserId": {
-            "type": "string",
             "description": "Users working on the current project.",
+            "type": "string",
             "format": "UUID",
             "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
           },
           "StartLeave": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
             "description": "Start time leave from task.",
-            "format": "date-time"
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
           },
           "EndLeave": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
             "description": "End time leave from task.",
-            "format": "date-time"
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
           },
           "LeaveType": {
-            "type": "integer",
             "description": "The reason for which lost time.",
+            "type": "integer",
             "example": 1
           },
           "Comment": {
-            "type": "string",
-            "description": "Description for alloted time."
+            "description": "Description for alloted time.",
+            "type": "string"
           }
         }
       },
       "EditWorkTimeRequest": {
-        "required": [
-          "EndTime",
-          "Id",
-          "ProjectId",
-          "StartTime",
-          "WorkerUserId"
-        ],
         "type": "object",
+        "required": [
+          "Id",
+          "WorkerUserId",
+          "StartTime",
+          "EndTime",
+          "ProjectId"
+        ],
         "properties": {
           "Id": {
-            "type": "string",
             "description": "WorkTime id",
+            "type": "string",
             "format": "UUID",
             "example": "06d525f7-27d2-4549-be07-ed63d96d287f"
           },
           "WorkerUserId": {
-            "type": "string",
             "description": "Users working on the current project.",
+            "type": "string",
             "format": "UUID",
             "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
           },
           "StartTime": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
             "description": "Start date task execution.",
-            "format": "date-time"
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
           },
           "EndTime": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
             "description": "Task finish deadline.",
-            "format": "date-time"
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
           },
           "Title": {
-            "type": "string",
-            "description": "Short description of the task"
+            "description": "Short description of the task",
+            "type": "string"
           },
           "ProjectId": {
-            "type": "string",
             "description": "The specify project's Id.",
+            "type": "string",
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
           "Description": {
-            "type": "string",
-            "description": "Description for alloted time."
+            "description": "Description for alloted time.",
+            "type": "string"
           }
         }
       },
       "WorkTimeRequest": {
+        "type": "object",
         "required": [
+          "WorkerUserId",
+          "StartTime",
           "EndTime",
           "ProjectId",
-          "StartTime",
-          "Title",
-          "WorkerUserId"
+          "Title"
         ],
-        "type": "object",
         "properties": {
           "WorkerUserId": {
-            "type": "string",
             "description": "Users working on the current project.",
+            "type": "string",
             "format": "UUID",
             "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
           },
           "StartTime": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
             "description": "Start date task execution.",
-            "format": "date-time"
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
           },
           "EndTime": {
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "type": "string",
             "description": "Task finish deadline.",
-            "format": "date-time"
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
           },
           "Title": {
-            "type": "string",
-            "description": "Short description of the task"
+            "description": "Short description of the task",
+            "type": "string"
           },
           "ProjectId": {
-            "type": "string",
             "description": "The specify project's Id.",
+            "type": "string",
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
           "Description": {
-            "type": "string",
-            "description": "Description for alloted time."
+            "description": "Description for alloted time.",
+            "type": "string"
           }
         }
       }
@@ -308,13 +284,11 @@
         "name": "token",
         "in": "header",
         "description": "The JWT token.",
-        "required": true,
-        "style": "simple",
-        "explode": false,
         "schema": {
           "type": "string",
           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
-        }
+        },
+        "required": true
       }
     }
   }
