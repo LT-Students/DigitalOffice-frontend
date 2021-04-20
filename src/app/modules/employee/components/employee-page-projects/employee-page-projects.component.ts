@@ -10,8 +10,7 @@ interface UserProject extends Project {
 interface Group {
   name: string;
   projects: UserProject[];
-  expanded: boolean;
-  plural: {};
+  plural: object;
 }
 
 @Component({
@@ -54,13 +53,11 @@ export class EmployeePageProjectsComponent implements OnInit {
       {
         name: 'В работе',
         projects: this.activeProjects,
-        expanded: false,
         plural: this.pluralForm.activeProjectsTitle,
       },
       {
         name: 'Участвовал в',
         projects: this.closedProjects,
-        expanded: false,
         plural: this.pluralForm.closedProjectsTitle,
       },
     ];
