@@ -8,7 +8,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { EmployeePageComponent } from './employee-page.component';
 import { SkillsComponent } from './components/skills/skills.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
-import { EmployeePageProjectsComponent } from './components/employee-page-projects/employee-page-projects.component';
+import { ProjectsComponent } from './components/projects/projects.component';
 
 
 @NgModule({
@@ -16,7 +16,7 @@ import { EmployeePageProjectsComponent } from './components/employee-page-projec
 		EmployeePageComponent,
 		SkillsComponent,
 		MainInfoComponent,
-		EmployeePageProjectsComponent
+		ProjectsComponent
 	],
 	imports: [
 		CommonModule,

@@ -15,10 +15,10 @@ interface Group {
 
 @Component({
   selector: 'do-employee-page-projects',
-  templateUrl: './employee-page-projects.component.html',
-  styleUrls: ['./employee-page-projects.component.scss'],
+  templateUrl: './projects.component.html',
+  styleUrls: ['./projects.component.scss'],
 })
-export class EmployeePageProjectsComponent implements OnInit {
+export class ProjectsComponent implements OnInit {
   public userProjects: UserProject[];
   public activeProjects: UserProject[] = [];
   public closedProjects: UserProject[] = [];
