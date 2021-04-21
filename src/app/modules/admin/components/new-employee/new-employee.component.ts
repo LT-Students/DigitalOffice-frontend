@@ -7,11 +7,31 @@ import { PositionApiService } from '@data/api/company-service/services/position-
 import { PositionResponse } from '@data/api/company-service/models/position-response';
 import { MatDialogRef } from '@angular/material/dialog';
 import { IUser } from '@data/models/user';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+
+export const DATE_FORMAT = {
+  parse: {
+    dateInput: 'LL',
+  },
+  display: {
+    dateInput: 'd MMMM y',
+    monthYearLabel: 'YYYY',
+  },
+};
 
 @Component({
   selector: 'do-new-employee',
   templateUrl: './new-employee.component.html',
   styleUrls: ['./new-employee.component.scss'],
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
+  ],
 })
 export class NewEmployeeComponent implements OnInit {
   public user: IUser;
