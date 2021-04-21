@@ -11,17 +11,6 @@
     grid-column: span 2;
   }
 
-  &__title::after {
-    content: '';
-
-    display: block;
-
-    width: 237px;
-    height: 4px;
-
-    background-color: $accent_color_bright;
-  }
-
   &__heading {
     margin-top: 30px;
   }
@@ -45,28 +34,6 @@
     justify-content: space-between;
   }
 
-  &__label {
-    display: block;
-
-    text-align: start;
-  }
-
-  &__required {
-    margin-left: 1px;
-
-    vertical-align: top;
-
-    color: $negative_accent;
-  }
-
-  &__form-field {
-    display: block;
-  }
-
-  &__input {
-    font-family: $regular_font !important;
-  }
-
   &__hint {
     margin-left: 2px;
 
@@ -83,9 +50,5 @@
     align-self: center;
 
     height: 24px;
-  }
-
-  .small_text {
-    margin: 14px 0 3px 0;
   }
 }
