@@ -10,7 +10,7 @@ interface UserProject extends Project {
 interface Group {
   name: string;
   projects: UserProject[];
-  plural: object;
+  plural: {[p: string]: string};
 }
 
 @Component({
