@@ -1,15 +1,13 @@
 <mat-dialog-content class="new-employee">
   <form [formGroup]="userForm" (ngSubmit)="createEmployee()" autocomplete="off">
-    <h1 class="new-employee__title h2 text_dark_1">
-      Новая карточка сотрудника
-    </h1>
+    <h2 doText underlined color="dark_1">Новая карточка сотрудника</h2>
     <div class="new-employee__personal-info">
-      <h2 class="new-employee__heading h3 text_dark_1 new-employee__flex-label">
-        <span>Личные данные</span>
-        <span class="regular_text text-negative_accent"
+      <div class="new-employee__heading new-employee__flex-label">
+        <h3 doText color="dark_1">Личные данные</h3>
+        <span doText color="negative_accent"
           ><sup>*</sup>Обязательные поля</span
         >
-      </h2>
+      </div>
       <div class="new-employee__inputs">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Фамилия</mat-label>
@@ -82,7 +80,9 @@
       </div>
     </div>
     <div class="new-employee__working-info">
-      <h2 class="new-employee__heading h3 text_dark_1">Рабочая информация</h2>
+      <h3 doText color="dark_1" class="new-employee__heading">
+        Рабочая информация
+      </h3>
       <div class="new-employee__inputs">
         <mat-form-field
           class="mat-form-field_default-select"
@@ -180,7 +180,9 @@
       </div>
     </div>
     <div class="new-employee__auth">
-      <h2 class="new-employee__heading h3 text_dark_1">Аутентификация</h2>
+      <h3 doText color="dark_1" class="new-employee__heading">
+        Аутентификация
+      </h3>
       <div class="new-employee__inputs">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>E-mail</mat-label>
@@ -203,27 +205,27 @@
               >help_outline
             </mat-icon>
           </mat-label>
-<!--          <div class="new-employee__flex-label">-->
-<!--            <mat-label-->
-<!--            >Пароль-->
-<!--              <mat-icon-->
-<!--                class="new-employee__hint"-->
-<!--                aria-label="Hint"-->
-<!--                matTooltipClass="tooltip"-->
-<!--                matTooltip="Пароль будет отправлен сотруднику автоматически"-->
-<!--                [matTooltipPosition]="'above'"-->
-<!--              >help_outline-->
-<!--              </mat-icon>-->
-<!--            </mat-label>-->
-<!--            <button-->
-<!--              mat-flat-button-->
-<!--              class="text-negative_accent new-employee__generate"-->
-<!--              type="button"-->
-<!--              (click)="generateCredentials()"-->
-<!--            >-->
-<!--              Сгенерировать-->
-<!--            </button>-->
-<!--          </div>-->
+          <!--          <div class="new-employee__flex-label">-->
+          <!--            <mat-label-->
+          <!--            >Пароль-->
+          <!--              <mat-icon-->
+          <!--                class="new-employee__hint"-->
+          <!--                aria-label="Hint"-->
+          <!--                matTooltipClass="tooltip"-->
+          <!--                matTooltip="Пароль будет отправлен сотруднику автоматически"-->
+          <!--                [matTooltipPosition]="'above'"-->
+          <!--              >help_outline-->
+          <!--              </mat-icon>-->
+          <!--            </mat-label>-->
+          <!--            <button-->
+          <!--              mat-flat-button-->
+          <!--              class="text-negative_accent new-employee__generate"-->
+          <!--              type="button"-->
+          <!--              (click)="generateCredentials()"-->
+          <!--            >-->
+          <!--              Сгенерировать-->
+          <!--            </button>-->
+          <!--          </div>-->
           <input
             matInput
             formControlName="password"
