@@ -2,28 +2,12 @@
 @import '../base/fonts';
 
 // Могло поломать другие стили, нужно проверить на остальных инпутах
-.mat-form-field.mat-form-field__form-control.mat-form-field-type-mat-input.mat-form-field-can-float.mat-form-field-should-float.mat-form-field-has-label {
+.mat-form-field,
+.mat-form-field.mat-form-field-appearance-legacy {
   display: block;
 
   .mat-form-field-wrapper {
-    @extend %regular_font_basic;
-    font-size: 16px;
-    line-height: 24px;
-
-    .mat-input-element {
-      padding: 10px 15px;
-
-      width: 100%;
-
-      color: $dark_1;
-      background-color: $light_2;
-      border-radius: 5px;
-      caret-color: $dark_1;
-    }
-
-    textarea.mat-input-element {
-      min-height: 82px;
-    }
+    padding: 1em 0;
 
     .mat-form-field-infix {
       padding: 0;
@@ -31,9 +15,13 @@
       border: 0;
 
       .mat-form-field-label-wrapper {
+        padding-top: 0;
+
         overflow: visible;
 
         .mat-form-field-label {
+          top: 0;
+
           display: inline;
           overflow: visible;
 
@@ -41,6 +29,8 @@
           line-height: 24px;
 
           color: $gray1;
+
+          transform: none;
 
           @extend %regular_font_basic;
 
@@ -59,17 +49,17 @@
   .mat-form-field-subscript-wrapper {
     margin-top: 0;
   }
+}
 
-  &.mat-form-field_time-input {
-    .mat-input-element {
-      padding: 0;
-
-      background-color: transparent;
-    }
-
+.mat-form-field__stepper {
+  .mat-form-field-wrapper {
     .mat-form-field-infix {
       .mat-input-element {
-        color: $dark_1;
+        text-align: center;
+      }
+
+      .mat-form-field-label-wrapper {
+        left: -40px;
       }
     }
   }
@@ -85,8 +75,6 @@
   padding: 5px 5px;
 
   min-height: 30px;
-
-  color: #fff;
 
   &:focus {
     outline: none;

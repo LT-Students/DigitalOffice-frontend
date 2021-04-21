@@ -26,15 +26,15 @@ export class UserService {
   }
 
   isAdmin(): boolean {
-    const user: IUser = this.localStorageService.get('user');
-    if (user) {
-      return user.isAdmin;
+    const userInfo: UserResponse = this.localStorageService.get('user');
+    if (userInfo) {
+      return userInfo.user.isAdmin;
     }
     return false;
   }
 
-  getCurrentUser(): User | null {
-    const user: User = this.localStorageService.get('user');
-    return user ? user : null;
+  getCurrentUser(): UserResponse | null {
+    const userInfo: UserResponse = this.localStorageService.get('user');
+    return userInfo ? userInfo : null;
   }
 }

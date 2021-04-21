@@ -1,16 +1,21 @@
 @import '../../../../../stylesheets/base/variables';
 
 .employee-info {
+  &__wrapper {
+    display: grid;
+
+    width: 100%;
+
+    grid-template-columns: 25% 41% 31% 3%;
+  }
+
   &__form {
-    display: flex;
-    justify-content: space-evenly;
+    width: 100%;
   }
 
   &__main {
     display: flex;
     flex-direction: column;
-
-    width: 26%;
 
     text-align: center;
   }
@@ -18,17 +23,28 @@
   &__general {
     margin-right: 32px;
     margin-left: 32px;
-
-    width: 41%;
   }
 
   &__additional {
-    position: relative;
+    display: flex;
 
-    width: 33%;
+    width: 100%;
 
     .h4:last-of-type {
       margin: 42px 0 13px 0;
+    }
+
+    .additional__line {
+      margin-right: 70px;
+
+      width: 2px;
+      height: 70%;
+
+      align-self: center;
+    }
+
+    .form__column {
+      width: 100%;
     }
   }
 
@@ -39,9 +55,9 @@
   }
 
   &__photo {
-    align-self: center;
-
     position: relative;
+
+    margin-bottom: 12px;
 
     overflow: hidden;
 
@@ -49,16 +65,20 @@
     height: 180px;
 
     border-radius: 50%;
+    align-self: center;
   }
 
   &__upload-button {
     position: absolute;
+    left: 0;
     bottom: 0;
 
     padding-top: 8px;
 
     width: 180px;
     height: 60px;
+
+    cursor: pointer;
 
     background-color: rgba(67, 67, 72, 0.6);
   }
@@ -75,25 +95,14 @@
 
     display: flex;
     justify-content: center;
+
+    grid-column: 1 / 4;
   }
 
   &__submit {
     margin-left: 87px;
 
     width: 185px;
-  }
-
-  &__label {
-    align-self: flex-start;
-
-    display: block;
-
-    &_for_textarea {
-      align-self: stretch;
-
-      display: flex;
-      justify-content: space-between;
-    }
   }
 
   &__form-field {
@@ -103,7 +112,7 @@
   &__working-hours {
     display: inline-block;
 
-    width: 80px;
+    width: 45%;
   }
 
   &__substitute {
@@ -136,8 +145,6 @@
   }
 
   &__columns {
-    margin-top: -14px;
-
     display: flex;
     justify-content: space-between;
   }
@@ -187,15 +194,5 @@
 
   .small_text {
     margin: 14px 0 3px 0;
-  }
-
-  .h3 {
-    line-height: 33px;
-  }
-
-  .h4 {
-    margin-bottom: 25px;
-
-    font-size: 18px;
   }
 }

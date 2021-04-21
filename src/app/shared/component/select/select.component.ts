@@ -13,10 +13,13 @@ export class SelectComponent implements OnInit {
   @Input() isEdit = true;
   @Input() placeholder = '';
   @Input() options: string[];
+  @Input() textSize: 'regular' | 'small';
 
   control: FormControl | undefined;
 
-  constructor(private formGroupDir: FormGroupDirective) {}
+  constructor(private formGroupDir: FormGroupDirective) {
+    this.textSize = 'regular';
+  }
 
   ngOnInit() {
     this.control = this.formGroupDir.control?.get(
