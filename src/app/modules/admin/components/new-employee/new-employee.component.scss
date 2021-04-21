@@ -12,7 +12,8 @@
   }
 
   &__heading {
-    margin-top: 30px;
+    margin-top: 32px;
+    margin-bottom: 12px;
   }
 
   &__buttons {
@@ -50,5 +51,13 @@
     align-self: center;
 
     height: 24px;
+  }
+
+  &__stepper-button:disabled {
+    padding: 0;
+
+    min-width: 0;
+
+    background-color: transparent;
   }
 }
