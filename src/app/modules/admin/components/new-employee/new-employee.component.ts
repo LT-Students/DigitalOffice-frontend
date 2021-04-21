@@ -131,4 +131,10 @@ export class NewEmployeeComponent implements OnInit {
       this.passwordType = 'password';
     }
   }
+
+  changeWorkingRate(step: number): void {
+    this.userForm.patchValue({
+      rate: +this.userForm.get('rate').value + step,
+    });
+  }
 }

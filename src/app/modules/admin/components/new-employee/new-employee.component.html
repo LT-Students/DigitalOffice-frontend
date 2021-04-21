@@ -11,132 +11,235 @@
         >
       </h2>
       <div class="new-employee__inputs">
-        <do-input
-          controlName="lastName"
-          label="Фамилия"
-          required="true"
-          placeholder="Введите фамилию"
-        ></do-input>
-        <do-input
-          controlName="firstName"
-          label="Имя"
-          required="true"
-          placeholder="Введите имя"
-        ></do-input>
-        <do-input
-          controlName="middleName"
-          label="Отчество"
-          placeholder="Введите отчество"
-        ></do-input>
-        <do-select
-          controlName="sex"
-          label="Пол"
-          [options]="sex"
-          placeholder="Выберите пол"
-        ></do-select>
-        <do-datepicker
-          controlName="birthDate"
-          label="Дата рождения"
-          placeholder="ДД месяц ГГГГ"
-        ></do-datepicker>
-        <do-input
-          controlName="city"
-          label="Город"
-          required="true"
-          placeholder="Введите город"
-        ></do-input>
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Фамилия</mat-label>
+          <input
+            matInput
+            placeholder="Введите фамилию"
+            formControlName="lastName"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Имя</mat-label>
+          <input
+            matInput
+            placeholder="Введите имя"
+            formControlName="firstName"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Отчество</mat-label>
+          <input
+            matInput
+            placeholder="Введите отчество"
+            formControlName="middleName"
+          />
+        </mat-form-field>
+        <mat-form-field
+          class="mat-form-field_default-select"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <mat-label>Пол</mat-label>
+          <mat-select
+            class="select"
+            placeholder="Выберите пол"
+            formControlName="sex"
+          >
+            <mat-option *ngFor="let option of sex" [value]="option">{{
+              option
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          class="mat-form-field__form-control"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <mat-label>Дата рождения</mat-label>
+          <input
+            matInput
+            formControlName="birthDate"
+            [matDatepicker]="picker_birth"
+            placeholder="ДД месяц ГГГГ"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker_birth">
+            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker_birth></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Город</mat-label>
+          <input
+            matInput
+            placeholder="Введите город"
+            formControlName="city"
+            required
+          />
+        </mat-form-field>
       </div>
     </div>
     <div class="new-employee__working-info">
       <h2 class="new-employee__heading h3 text_dark_1">Рабочая информация</h2>
       <div class="new-employee__inputs">
-        <do-select
-          controlName="position"
-          label="Должность"
-          [options]="positions"
-          required="true"
-          placeholder="Выберите должность"
-        ></do-select>
-        <do-select
-          controlName="department"
-          label="Департамент"
-          [options]="departments"
-          required="true"
-          placeholder="Выберите департамент"
-        ></do-select>
-        <do-stepper
-          controlName="rate"
-          label="Ставка"
-          required="true"
-        ></do-stepper>
-        <do-datepicker
-          controlName="workingSince"
-          label="Начало работы"
-          required="true"
-          placeholder="ДД месяц ГГГГ"
-        ></do-datepicker>
-        <do-select
-          class="new-employee__office"
-          controlName="office"
-          [options]="offices"
-          label="Офис"
-          required="true"
-          placeholder="Выберите офис"
-        ></do-select>
+        <mat-form-field
+          class="mat-form-field_default-select"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <mat-label>Должность</mat-label>
+          <mat-select
+            class="select"
+            placeholder="Выберите должность"
+            formControlName="position"
+            required
+          >
+            <mat-option *ngFor="let position of positions" [value]="position">{{
+              position
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field
+          class="mat-form-field_default-select"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <mat-label>Департмент</mat-label>
+          <mat-select
+            class="select"
+            placeholder="Выберите департамент"
+            formControlName="department"
+            required
+          >
+            <mat-option
+              *ngFor="let department of departments"
+              [value]="department"
+              >{{ department }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Ставка</mat-label>
+          <button
+            mat-icon-button
+            matPrefix
+            type="button"
+            (click)="changeWorkingRate(-0.25)"
+            [disabled]="rate.value === '0.25'"
+          >
+            -
+          </button>
+          <input #rate matInput readonly formControlName="rate" required />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="changeWorkingRate(0.25)"
+            [disabled]="rate.value === '1'"
+          >
+            +
+          </button>
+        </mat-form-field>
+        <mat-form-field
+          class="mat-form-field__form-control"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <mat-label>Начало работы</mat-label>
+          <input
+            matInput
+            formControlName="workingSince"
+            [matDatepicker]="picker_work"
+            placeholder="ДД месяц ГГГГ"
+            required
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker_work">
+            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker_work></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field
+          class="mat-form-field_default-select new-employee__office"
+          appearance="fill"
+          floatLabel="always"
+        >
+          <mat-label>Офис</mat-label>
+          <mat-select
+            class="select"
+            placeholder="Выберите офис"
+            formControlName="office"
+            required
+          >
+            <mat-option *ngFor="let office of offices" [value]="office">{{
+              office
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
     <div class="new-employee__auth">
       <h2 class="new-employee__heading h3 text_dark_1">Аутентификация</h2>
       <div class="new-employee__inputs">
-        <do-input
-          controlName="email"
-          label="E-mail"
-          required="true"
-          placeholder="Введите E-mail"
-        ></do-input>
-        <div>
-          <div class="new-employee__flex-label">
-            <label
-              class="small_text text-gray new-employee__label"
-              for="password"
-              >Пароль<sup class="new-employee__required">*</sup>
-              <mat-icon
-                class="new-employee__hint"
-                aria-label="Hint"
-                matTooltipClass="tooltip"
-                matTooltip="Пароль будет отправлен сотруднику автоматически"
-                [matTooltipPosition]="'above'"
-                >help_outline
-              </mat-icon>
-            </label>
-            <button
-              mat-flat-button
-              class="text-negative_accent new-employee__generate"
-              type="button"
-              (click)="generateCredentials()"
-            >
-              Сгенерировать
-            </button>
-          </div>
-          <mat-form-field class="new-employee__form-field" appearance="fill">
-            <input
-              matInput
-              class="bg-light_2 new-employee__input"
-              formControlName="password"
-              id="password"
-              [type]="passwordType"
-              placeholder="Сгенерируйте пароль"
-            />
-            <button
-              mat-icon-button
-              matSuffix
-              type="button"
-              (click)="toggleVisibility()"
-            >
-              <mat-icon class="text-gray1">{{ passwordIcon }}</mat-icon>
-            </button></mat-form-field
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>E-mail</mat-label>
+          <input
+            matInput
+            placeholder="Введите E-mail"
+            formControlName="lastName"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>
+            Пароль
+            <mat-icon
+              class="new-employee__hint"
+              aria-label="Hint"
+              matTooltipClass="tooltip"
+              matTooltip="Пароль будет отправлен сотруднику автоматически"
+              [matTooltipPosition]="'above'"
+              >help_outline
+            </mat-icon>
+          </mat-label>
+<!--          <div class="new-employee__flex-label">-->
+<!--            <mat-label-->
+<!--            >Пароль-->
+<!--              <mat-icon-->
+<!--                class="new-employee__hint"-->
+<!--                aria-label="Hint"-->
+<!--                matTooltipClass="tooltip"-->
+<!--                matTooltip="Пароль будет отправлен сотруднику автоматически"-->
+<!--                [matTooltipPosition]="'above'"-->
+<!--              >help_outline-->
+<!--              </mat-icon>-->
+<!--            </mat-label>-->
+<!--            <button-->
+<!--              mat-flat-button-->
+<!--              class="text-negative_accent new-employee__generate"-->
+<!--              type="button"-->
+<!--              (click)="generateCredentials()"-->
+<!--            >-->
+<!--              Сгенерировать-->
+<!--            </button>-->
+<!--          </div>-->
+          <input
+            matInput
+            formControlName="password"
+            [type]="passwordType"
+            placeholder="Сгенерируйте пароль"
+            required
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="toggleVisibility()"
           >
-        </div>
+            <mat-icon class="text-gray1">{{ passwordIcon }}</mat-icon>
+          </button></mat-form-field
+        >
         <button
           mat-flat-button
           mat-dialog-close
