@@ -1,15 +1,21 @@
 <div class="projects-table">
-  <h3 class="projects-table__card-title" doText underlined underlinedSize="sm">
+  <h3
+    class="projects-table__card-title"
+    doText
+    color="dark_2"
+    underlined
+    underlinedSize="sm"
+  >
     Проекты
   </h3>
   <ng-container *ngFor="let group of groups">
     <div *ngIf="group.projects.length > 0" class="projects-table__section">
-      <h4 class="projects-table__group-title h3_light">
+      <h3 doText color="dark_1" class="projects-table__group-title">
         {{ group.name }}
         <span class="text-accent_color_bright">{{
           group.projects.length | i18nPlural: group.plural
         }}</span>
-      </h4>
+      </h3>
       <div class="projects-table__container">
         <div
           *ngFor="let project of group.projects"
