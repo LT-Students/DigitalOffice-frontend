@@ -9,7 +9,7 @@
     Проекты
   </h3>
   <ng-container *ngFor="let group of groups">
-    <div *ngIf="group.projects.length > 0" class="projects-table__section">
+    <div *ngIf="group.projects.length && group.projects" class="projects-table__section">
       <h3 doText color="dark_1" class="projects-table__group-title">
         {{ group.name }}
         <span class="text-accent_color_bright">{{
@@ -35,7 +35,7 @@
               >по {{ project.endedAt | date: 'd.MM.y' }}</span
             >
           </p>
-          <p class="projects-table__arrow-button" doText color="gray1">
+          <p class="projects-table__arrow-button" doText color="gray1" (click)='onMoreClicked(project.id)'>
             Подробнее
             <mat-icon class="projects-table__arrow"
               >keyboard_arrow_right</mat-icon

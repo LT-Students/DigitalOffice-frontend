@@ -76,3 +76,22 @@ export const employee = {
 	vacationUntil: new Date(2020, 9, 20),
 	isAdmin: true,
 };
+
+export const activeProject = {
+	id: '1',
+	name: 'Алиса в стране Чудес',
+	shortName: 'something',
+	description:
+		'Разработка и внедрение  системы дополненной реальности под PS VR',
+	departmentId: 'random id',
+	isActive: true,
+	consumer: { name: 'Iponkin Brothers', description: 'lalalal' },
+	role: 'Product Manager (Middle)',
+	startedAt: new Date(2020, 0, 20),
+};
+
+export const closedProject = {
+	...activeProject,
+	isActive: false,
+	endedAt: new Date(2021, 5, 5),
+};
