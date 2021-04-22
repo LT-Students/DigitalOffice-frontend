@@ -25,6 +25,12 @@
     display: block;
   }
 
+  &__required::after {
+    content: '*';
+
+    color: $negative_accent;
+  }
+
   &__buttons {
     margin-top: 35px;
 
