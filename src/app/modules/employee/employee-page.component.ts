@@ -60,9 +60,8 @@ export class EmployeePageComponent implements OnInit {
   ngOnInit(): void {
     const user = this.userService.getCurrentUser();
 
-    this.userService.getUser(user.user.id).pipe(
-        tap(() => this.userProjects = this._getUserProjects())
-    ).subscribe((userResponse: UserResponse) => {
+    this.userProjects = this._getUserProjects();
+    this.userService.getUser(user.user.id).subscribe((userResponse: UserResponse) => {
       console.log(userResponse);
       this.userInfo = userResponse;
     });

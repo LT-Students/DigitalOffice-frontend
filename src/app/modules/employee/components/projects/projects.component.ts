@@ -24,9 +24,6 @@ export class ProjectsComponent implements OnInit {
   public groups: Group[];
 
   constructor(private router: Router) {
-    this.activeProjects = this.userProjects.filter((project: UserProject) => project.isActive);
-    this.closedProjects = this.userProjects.filter((project: UserProject) => !project.isActive);
-
     this.pluralForm = {
       activeProjectsTitle: {
         one: '# проект',
@@ -38,6 +35,11 @@ export class ProjectsComponent implements OnInit {
         other: '# проектах',
       },
     };
+  }
+
+  ngOnInit(): void {
+    this.activeProjects = this.userProjects.filter((project: UserProject) => project.isActive);
+    this.closedProjects = this.userProjects.filter((project: UserProject) => !project.isActive);
 
     this.groups = [
       {
@@ -52,8 +54,6 @@ export class ProjectsComponent implements OnInit {
       },
     ];
   }
-
-  ngOnInit(): void {}
 
   public expandProjects(group): void {
     group.expanded = !group.expanded;
