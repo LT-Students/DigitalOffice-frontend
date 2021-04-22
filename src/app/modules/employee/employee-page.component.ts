@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { EducationModel, StudyType } from '@app/models/education.model';
 import { courses, institutes, skills } from './mock';
+import { UserApiService } from '@data/api/user-service/services/user-api.service';
+import { LocalStorageService } from '@app/services/local-storage.service';
+import { UserService } from '@app/services/user.service';
+import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserResponse } from '@data/api/user-service/models/user-response';
+import { UsersResponse } from '@data/api/user-service/models';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -27,7 +33,9 @@ export class EmployeePageComponent implements OnInit {
   public courses: EducationModel[];
   public studyTypes: StudyType[];
 
-  constructor() {
+  public userInfo: UserResponse;
+
+  constructor(private userService: UserService) {
     this.skills = skills;
     this.institutes = institutes;
     this.courses = courses;
@@ -41,5 +49,11 @@ export class EmployeePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const user = this.userService.getCurrentUser();
+
+    this.userService.getUser(user.user.id).subscribe((userResponse: UserResponse) => {
+      console.log(userResponse);
+      this.userInfo = userResponse;
+    });
   }
 }
