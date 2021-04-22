@@ -1,6 +1,8 @@
 <mat-dialog-content class="new-employee">
   <form [formGroup]="userForm" (ngSubmit)="createEmployee()" autocomplete="off">
-    <h2 doText underlined color="dark_1">Новая карточка сотрудника</h2>
+    <h2 doText underlined underlinedSize="sm" color="dark_1">
+      Новая карточка сотрудника
+    </h2>
     <div class="new-employee__personal-info">
       <div class="new-employee__heading new-employee__flex-label">
         <h3 doText color="dark_1">Личные данные</h3>
@@ -9,74 +11,117 @@
         >
       </div>
       <div class="new-employee__inputs">
-        <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>Фамилия</mat-label>
-          <input
-            matInput
-            placeholder="Введите фамилию"
-            formControlName="lastName"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>Имя</mat-label>
-          <input
-            matInput
-            placeholder="Введите имя"
-            formControlName="firstName"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>Отчество</mat-label>
-          <input
-            matInput
-            placeholder="Введите отчество"
-            formControlName="middleName"
-          />
-        </mat-form-field>
-        <mat-form-field
-          class="mat-form-field_default-select"
-          appearance="fill"
-          floatLabel="always"
-        >
-          <mat-label>Пол</mat-label>
-          <mat-select
-            class="select"
-            placeholder="Выберите пол"
-            formControlName="sex"
+        <div>
+          <label class="new-employee__label" doText color="gray1" for="lastName"
+            >Фамилия</label
           >
-            <mat-option *ngFor="let option of sex" [value]="option">{{
-              option
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field
-          class="mat-form-field__form-control"
-          appearance="fill"
-          floatLabel="always"
-        >
-          <mat-label>Дата рождения</mat-label>
-          <input
-            matInput
-            formControlName="birthDate"
-            [matDatepicker]="picker_birth"
-            placeholder="ДД месяц ГГГГ"
-          />
-          <mat-datepicker-toggle matSuffix [for]="picker_birth">
-            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-          </mat-datepicker-toggle>
-          <mat-datepicker #picker_birth></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>Город</mat-label>
-          <input
-            matInput
-            placeholder="Введите город"
-            formControlName="city"
-            required
-          />
-        </mat-form-field>
+          <mat-form-field
+            class="new-employee__form-field"
+            appearance="fill"
+            floatLabel="always"
+          >
+            <input
+              id="lastName"
+              matInput
+              placeholder="Введите фамилию"
+              formControlName="lastName"
+              required
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <label
+            class="new-employee__label"
+            doText
+            color="gray1"
+            for="firstName"
+            >Имя</label
+          >
+          <mat-form-field class="new-employee__form-field" appearance="fill">
+            <input
+              id="firstName"
+              matInput
+              placeholder="Введите имя"
+              formControlName="firstName"
+              required
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <label
+            class="new-employee__label"
+            doText
+            color="gray1"
+            for="middleName"
+            >Отчество</label
+          >
+          <mat-form-field class="new-employee__form-field" appearance="fill">
+            <input
+              id="middleName"
+              matInput
+              placeholder="Введите отчество"
+              formControlName="middleName"
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="new-employee__label" doText color="gray1" for="sex"
+            >Пол</label
+          >
+          <mat-form-field
+            class="mat-form-field_default-select new-employee__form-field"
+            appearance="fill"
+          >
+            <mat-select
+              id="sex"
+              placeholder="Выберите пол"
+              formControlName="sex"
+            >
+              <mat-option *ngFor="let option of sex" [value]="option">{{
+                option
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <label
+            class="new-employee__label"
+            doText
+            color="gray1"
+            for="birthDate"
+            >Дата рождения</label
+          >
+          <mat-form-field
+            class="mat-form-field__form-control new-employee__form-field"
+            appearance="fill"
+          >
+            <input
+              id="birthDate"
+              matInput
+              formControlName="birthDate"
+              [matDatepicker]="picker_birth"
+              placeholder="ДД месяц ГГГГ"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker_birth">
+              <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker_birth></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="new-employee__label" doText color="gray1" for="city"
+            >Город</label
+          >
+          <mat-form-field class="new-employee__form-field" appearance="fill">
+            <input
+              id="city"
+              matInput
+              placeholder="Введите город"
+              formControlName="city"
+              required
+            />
+          </mat-form-field>
+        </div>
       </div>
     </div>
     <div class="new-employee__working-info">
@@ -84,101 +129,137 @@
         Рабочая информация
       </h3>
       <div class="new-employee__inputs">
-        <mat-form-field
-          class="mat-form-field_default-select"
-          appearance="fill"
-          floatLabel="always"
-        >
-          <mat-label>Должность</mat-label>
-          <mat-select
-            class="select"
-            placeholder="Выберите должность"
-            formControlName="position"
-            required
+        <div>
+          <label class="new-employee__label" doText color="gray1" for="position"
+            >Должность</label
           >
-            <mat-option *ngFor="let position of positions" [value]="position">{{
-              position
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field
-          class="mat-form-field_default-select"
-          appearance="fill"
-          floatLabel="always"
-        >
-          <mat-label>Департмент</mat-label>
-          <mat-select
-            class="select"
-            placeholder="Выберите департамент"
-            formControlName="department"
-            required
+          <mat-form-field
+            class="mat-form-field_default-select new-employee__form-field"
+            appearance="fill"
           >
-            <mat-option
-              *ngFor="let department of departments"
-              [value]="department"
-              >{{ department }}</mat-option
+            <mat-select
+              id="position"
+              placeholder="Выберите должность"
+              formControlName="position"
+              required
             >
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>Ставка</mat-label>
-          <button
-            class="new-employee__stepper-button"
-            mat-icon-button
-            matPrefix
-            type="button"
-            (click)="changeWorkingRate(-0.25)"
-            [disabled]="rate.value === '0.25'"
+              <mat-option
+                *ngFor="let position of positions"
+                [value]="position"
+                >{{ position }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <label
+            class="new-employee__label"
+            doText
+            color="gray1"
+            for="department"
+            >Департмент</label
           >
-            -
-          </button>
-          <input #rate matInput readonly formControlName="rate" required />
-          <button
-            class="new-employee__stepper-button"
-            mat-icon-button
-            matSuffix
-            type="button"
-            (click)="changeWorkingRate(0.25)"
-            [disabled]="rate.value === '1'"
+          <mat-form-field
+            class="mat-form-field_default-select new-employee__form-field"
+            appearance="fill"
           >
-            +
-          </button>
-        </mat-form-field>
-        <mat-form-field
-          class="mat-form-field__form-control"
-          appearance="fill"
-          floatLabel="always"
-        >
-          <mat-label>Начало работы</mat-label>
-          <input
-            matInput
-            formControlName="workingSince"
-            [matDatepicker]="picker_work"
-            placeholder="ДД месяц ГГГГ"
-            required
-          />
-          <mat-datepicker-toggle matSuffix [for]="picker_work">
-            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-          </mat-datepicker-toggle>
-          <mat-datepicker #picker_work></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field
-          class="mat-form-field_default-select new-employee__office"
-          appearance="fill"
-          floatLabel="always"
-        >
-          <mat-label>Офис</mat-label>
-          <mat-select
-            class="select"
-            placeholder="Выберите офис"
-            formControlName="office"
-            required
+            <mat-select
+              id="department"
+              placeholder="Выберите департамент"
+              formControlName="department"
+              required
+            >
+              <mat-option
+                *ngFor="let department of departments"
+                [value]="department"
+                >{{ department }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="new-employee__label" doText color="gray1" for="rate"
+            >Ставка</label
           >
-            <mat-option *ngFor="let office of offices" [value]="office">{{
-              office
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field class="new-employee__form-field" appearance="fill">
+            <input
+              id="rate"
+              #rate
+              matInput
+              readonly
+              formControlName="rate"
+              required
+              hidden
+            />
+            <div class="new-employee__rate">
+              <button
+                class="new-employee__rate-button"
+                mat-icon-button
+                type="button"
+                (click)="changeWorkingRate(-0.25)"
+                [disabled]="rate.value === '0.25'"
+              >
+                -
+              </button>
+              <span>{{ rate.value }}</span>
+              <button
+                class="new-employee__rate-button"
+                mat-icon-button
+                type="button"
+                (click)="changeWorkingRate(0.25)"
+                [disabled]="rate.value === '1'"
+              >
+                +
+              </button>
+            </div>
+          </mat-form-field>
+        </div>
+        <div>
+          <label
+            class="new-employee__label"
+            doText
+            color="gray1"
+            for="workingSince"
+            >Начало работы</label
+          >
+          <mat-form-field
+            class="mat-form-field__form-control new-employee__form-field"
+            appearance="fill"
+          >
+            <input
+              id="workingSince"
+              matInput
+              formControlName="workingSince"
+              [matDatepicker]="picker_work"
+              placeholder="ДД месяц ГГГГ"
+              required
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker_work">
+              <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker_work></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="new-employee__office">
+          <label class="new-employee__label" doText color="gray1" for="office"
+            >Офис</label
+          >
+          <mat-form-field
+            class="mat-form-field_default-select new-employee__form-field"
+            appearance="fill"
+          >
+            <mat-select
+              id="office"
+              placeholder="Выберите офис"
+              formControlName="office"
+              required
+            >
+              <mat-option *ngFor="let office of offices" [value]="office">{{
+                office
+              }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </div>
     <div class="new-employee__auth">
@@ -186,64 +267,64 @@
         Аутентификация
       </h3>
       <div class="new-employee__inputs">
-        <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>E-mail</mat-label>
-          <input
-            matInput
-            placeholder="Введите E-mail"
-            formControlName="email"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>
-            Пароль
-            <mat-icon
-              class="new-employee__hint"
-              aria-label="Hint"
-              matTooltipClass="tooltip"
-              matTooltip="Пароль будет отправлен сотруднику автоматически"
-              [matTooltipPosition]="'above'"
-              >help_outline
-            </mat-icon>
-          </mat-label>
-          <!--          <div class="new-employee__flex-label">-->
-          <!--            <mat-label-->
-          <!--            >Пароль-->
-          <!--              <mat-icon-->
-          <!--                class="new-employee__hint"-->
-          <!--                aria-label="Hint"-->
-          <!--                matTooltipClass="tooltip"-->
-          <!--                matTooltip="Пароль будет отправлен сотруднику автоматически"-->
-          <!--                [matTooltipPosition]="'above'"-->
-          <!--              >help_outline-->
-          <!--              </mat-icon>-->
-          <!--            </mat-label>-->
-          <!--            <button-->
-          <!--              mat-flat-button-->
-          <!--              class="text-negative_accent new-employee__generate"-->
-          <!--              type="button"-->
-          <!--              (click)="generateCredentials()"-->
-          <!--            >-->
-          <!--              Сгенерировать-->
-          <!--            </button>-->
-          <!--          </div>-->
-          <input
-            matInput
-            formControlName="password"
-            [type]="passwordType"
-            placeholder="Сгенерируйте пароль"
-            required
-          />
-          <button
-            mat-icon-button
-            matSuffix
-            type="button"
-            (click)="toggleVisibility()"
+        <div>
+          <label class="new-employee__label" doText color="gray1" for="email"
+            >E-mail</label
           >
-            <mat-icon class="text-gray1">{{ passwordIcon }}</mat-icon>
-          </button></mat-form-field
-        >
+          <mat-form-field class="new-employee__form-field" appearance="fill">
+            <input
+              id="email"
+              matInput
+              placeholder="Введите E-mail"
+              formControlName="email"
+              required
+            />
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="new-employee__label" doText color="gray1" for="password"
+            >Пароль</label
+          >
+          <mat-form-field class="new-employee__form-field" appearance="fill">
+            <!--          <div class="new-employee__flex-label">-->
+            <!--            <mat-label-->
+            <!--            >Пароль-->
+            <!--              <mat-icon-->
+            <!--                class="new-employee__hint"-->
+            <!--                aria-label="Hint"-->
+            <!--                matTooltipClass="tooltip"-->
+            <!--                matTooltip="Пароль будет отправлен сотруднику автоматически"-->
+            <!--                [matTooltipPosition]="'above'"-->
+            <!--              >help_outline-->
+            <!--              </mat-icon>-->
+            <!--            </mat-label>-->
+            <!--            <button-->
+            <!--              mat-flat-button-->
+            <!--              class="text-negative_accent new-employee__generate"-->
+            <!--              type="button"-->
+            <!--              (click)="generateCredentials()"-->
+            <!--            >-->
+            <!--              Сгенерировать-->
+            <!--            </button>-->
+            <!--          </div>-->
+            <input
+              id="password"
+              matInput
+              formControlName="password"
+              [type]="passwordType"
+              placeholder="Сгенерируйте пароль"
+              required
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="toggleVisibility()"
+            >
+              <mat-icon class="text-gray1">{{ passwordIcon }}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
         <button
           mat-flat-button
           mat-dialog-close

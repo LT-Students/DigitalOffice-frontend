@@ -3,7 +3,7 @@
 .new-employee {
   &__inputs {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 300px 300px;
     column-gap: 20px;
     row-gap: 6px;
   }
@@ -15,6 +15,14 @@
   &__heading {
     margin-top: 32px;
     margin-bottom: 12px;
+  }
+
+  &__form-field {
+    width: 100%;
+  }
+
+  &__label {
+    display: block;
   }
 
   &__buttons {
@@ -54,7 +62,13 @@
     height: 24px;
   }
 
-  &__stepper-button:disabled {
+  &__rate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__rate-button:disabled {
     padding: 0;
 
     min-width: 0;
