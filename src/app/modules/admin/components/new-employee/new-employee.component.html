@@ -11,19 +11,11 @@
         >
       </div>
       <div class="new-employee__inputs">
-        <div>
-          <label
-            class="new-employee__label new-employee__required"
-            doText
-            color="gray1"
-            for="lastName"
-            >Фамилия</label
+        <div class="new-employee__form-element">
+          <label class="new-employee__label" doText color="gray1" for="lastName"
+            >Фамилия<sup doText color="negative_accent">*</sup></label
           >
-          <mat-form-field
-            class="new-employee__form-field"
-            appearance="fill"
-            floatLabel="always"
-          >
+          <mat-form-field class="new-employee__form-field" appearance="fill">
             <input
               id="lastName"
               matInput
@@ -33,13 +25,13 @@
             />
           </mat-form-field>
         </div>
-        <div>
+        <div class="new-employee__form-element">
           <label
-            class="new-employee__label new-employee__required"
+            class="new-employee__label"
             doText
             color="gray1"
             for="firstName"
-            >Имя</label
+            >Имя<sup doText color="negative_accent">*</sup></label
           >
           <mat-form-field class="new-employee__form-field" appearance="fill">
             <input
@@ -51,7 +43,7 @@
             />
           </mat-form-field>
         </div>
-        <div>
+        <div class="new-employee__form-element">
           <label
             class="new-employee__label"
             doText
@@ -68,7 +60,7 @@
             />
           </mat-form-field>
         </div>
-        <div>
+        <div class="new-employee__form-element">
           <label class="new-employee__label" doText color="gray1" for="sex"
             >Пол</label
           >
@@ -87,7 +79,7 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div>
+        <div class="new-employee__form-element">
           <label
             class="new-employee__label"
             doText
@@ -112,13 +104,9 @@
             <mat-datepicker #picker_birth></mat-datepicker>
           </mat-form-field>
         </div>
-        <div>
-          <label
-            class="new-employee__label new-employee__required"
-            doText
-            color="gray1"
-            for="city"
-            >Город</label
+        <div class="new-employee__form-element">
+          <label class="new-employee__label" doText color="gray1" for="city"
+            >Город<sup doText color="negative_accent">*</sup></label
           >
           <mat-form-field class="new-employee__form-field" appearance="fill">
             <input
@@ -137,13 +125,9 @@
         Рабочая информация
       </h3>
       <div class="new-employee__inputs">
-        <div>
-          <label
-            class="new-employee__label new-employee__required"
-            doText
-            color="gray1"
-            for="position"
-            >Должность</label
+        <div class="new-employee__form-element">
+          <label class="new-employee__label" doText color="gray1" for="position"
+            >Должность<sup doText color="negative_accent">*</sup></label
           >
           <mat-form-field
             class="mat-form-field_default-select new-employee__form-field"
@@ -163,13 +147,13 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div>
+        <div class="new-employee__form-element">
           <label
-            class="new-employee__label new-employee__required"
+            class="new-employee__label"
             doText
             color="gray1"
             for="department"
-            >Департмент</label
+            >Департмент<sup doText color="negative_accent">*</sup></label
           >
           <mat-form-field
             class="mat-form-field_default-select new-employee__form-field"
@@ -189,54 +173,48 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div>
-          <label
-            class="new-employee__label new-employee__required"
-            doText
-            color="gray1"
-            for="rate"
-            >Ставка</label
+        <div class="new-employee__form-element">
+          <label class="new-employee__label" doText color="gray1" for="rate"
+            >Ставка<sup doText color="negative_accent">*</sup></label
           >
           <mat-form-field class="new-employee__form-field" appearance="fill">
+            <button
+              class="new-employee__rate-button"
+              mat-icon-button
+              matPrefix
+              type="button"
+              (click)="changeWorkingRate(-0.25)"
+              [disabled]="rate.value === '0.25'"
+            >
+              -
+            </button>
             <input
-              id="rate"
               #rate
+              id="rate"
+              class="new-employee__rate"
               matInput
-              readonly
               formControlName="rate"
-              required
-              hidden
+              readonly
             />
-            <div class="new-employee__rate">
-              <button
-                class="new-employee__rate-button"
-                mat-icon-button
-                type="button"
-                (click)="changeWorkingRate(-0.25)"
-                [disabled]="rate.value === '0.25'"
-              >
-                -
-              </button>
-              <span>{{ rate.value }}</span>
-              <button
-                class="new-employee__rate-button"
-                mat-icon-button
-                type="button"
-                (click)="changeWorkingRate(0.25)"
-                [disabled]="rate.value === '1'"
-              >
-                +
-              </button>
-            </div>
+            <button
+              class="new-employee__rate-button"
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="changeWorkingRate(0.25)"
+              [disabled]="rate.value === '1'"
+            >
+              +
+            </button>
           </mat-form-field>
         </div>
-        <div>
+        <div class="new-employee__form-element">
           <label
-            class="new-employee__label new-employee__required"
+            class="new-employee__label"
             doText
             color="gray1"
             for="workingSince"
-            >Начало работы</label
+            >Начало работы<sup doText color="negative_accent">*</sup></label
           >
           <mat-form-field
             class="mat-form-field__form-control new-employee__form-field"
@@ -257,12 +235,8 @@
           </mat-form-field>
         </div>
         <div class="new-employee__office">
-          <label
-            class="new-employee__label new-employee__required"
-            doText
-            color="gray1"
-            for="office"
-            >Офис</label
+          <label class="new-employee__label" doText color="gray1" for="office"
+            >Офис<sup doText color="negative_accent">*</sup></label
           >
           <mat-form-field
             class="mat-form-field_default-select new-employee__form-field"
@@ -287,13 +261,9 @@
         Аутентификация
       </h3>
       <div class="new-employee__inputs">
-        <div>
-          <label
-            class="new-employee__label new-employee__required"
-            doText
-            color="gray1"
-            for="email"
-            >E-mail</label
+        <div class="new-employee__form-element">
+          <label class="new-employee__label" doText color="gray1" for="email"
+            >E-mail<sup doText color="negative_accent">*</sup></label
           >
           <mat-form-field class="new-employee__form-field" appearance="fill">
             <input
@@ -305,36 +275,32 @@
             />
           </mat-form-field>
         </div>
-        <div>
-          <label
-            class="new-employee__label new-employee__required"
-            doText
-            color="gray1"
-            for="password"
-            >Пароль</label
-          >
+        <div class="new-employee__form-element">
+          <div class="new-employee__flex-label new-employee__label">
+            <label
+              doText
+              color="gray1"
+              for="password"
+              >Пароль<sup doText color="negative_accent">*</sup>
+              <mat-icon
+                class="new-employee__hint"
+                aria-label="Hint"
+                matTooltipClass="tooltip"
+                matTooltip="Пароль будет отправлен сотруднику автоматически"
+                [matTooltipPosition]="'above'"
+                >help_outline
+              </mat-icon>
+            </label>
+            <button
+              mat-flat-button
+              class="text-negative_accent new-employee__generate"
+              type="button"
+              (click)="generateCredentials()"
+            >
+              Сгенерировать
+            </button>
+          </div>
           <mat-form-field class="new-employee__form-field" appearance="fill">
-            <!--          <div class="new-employee__flex-label">-->
-            <!--            <mat-label-->
-            <!--            >Пароль-->
-            <!--              <mat-icon-->
-            <!--                class="new-employee__hint"-->
-            <!--                aria-label="Hint"-->
-            <!--                matTooltipClass="tooltip"-->
-            <!--                matTooltip="Пароль будет отправлен сотруднику автоматически"-->
-            <!--                [matTooltipPosition]="'above'"-->
-            <!--              >help_outline-->
-            <!--              </mat-icon>-->
-            <!--            </mat-label>-->
-            <!--            <button-->
-            <!--              mat-flat-button-->
-            <!--              class="text-negative_accent new-employee__generate"-->
-            <!--              type="button"-->
-            <!--              (click)="generateCredentials()"-->
-            <!--            >-->
-            <!--              Сгенерировать-->
-            <!--            </button>-->
-            <!--          </div>-->
             <input
               id="password"
               matInput
