@@ -33,6 +33,14 @@
     display: block;
   }
 
+  &__required {
+    margin-left: 1px;
+
+    vertical-align: top;
+
+    color: $negative_accent;
+  }
+
   &__buttons {
     margin-top: 35px;
 
