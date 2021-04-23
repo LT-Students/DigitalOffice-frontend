@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
@@ -6,6 +6,7 @@ import { Time } from '@angular/common';
 import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
 import { employee } from '../../mock';
 import { DateType } from '@app/models/date.model';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 
 interface ExtendedUser extends IUser {
   about?: string;
@@ -33,6 +34,11 @@ interface ExtendedUser extends IUser {
   styleUrls: ['./main-info.component.scss'],
 })
 export class MainInfoComponent implements OnInit {
+  @Input() avatar: object;
+  @Input() user: UserInfo;
+  @Input() department: object;
+
+
   public pageId: string;
   public employeeInfoForm: FormGroup;
   public employee: ExtendedUser;
