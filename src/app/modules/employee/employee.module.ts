@@ -9,6 +9,7 @@ import { EmployeePageComponent } from './employee-page.component';
 import { SkillsComponent } from './components/skills/skills.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
 import { ProjectsComponent } from './components/projects/projects.component';
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ProjectsComponent } from './components/projects/projects.component';
 		EmployeePageComponent,
 		SkillsComponent,
 		MainInfoComponent,
-		ProjectsComponent
+		ProjectsComponent,
+		BreadcrumbsComponent
 	],
 	imports: [
 		CommonModule,
