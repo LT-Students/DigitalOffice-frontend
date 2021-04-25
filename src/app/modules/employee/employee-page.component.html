@@ -1,17 +1,29 @@
-<do-breadcrumbs></do-breadcrumbs>
-<div class='card card_employee'>
-  <do-employee-page-main-info></do-employee-page-main-info>
+<div class="flex">
+    <do-breadcrumbs></do-breadcrumbs>
+    <div class="flex" doText color="gray1">
+      <ng-container>
+        <mat-icon>archive</mat-icon>
+        <span>Добавить в архив</span>
+      </ng-container>
+      <ng-container>
+        <mat-icon>live_help</mat-icon>
+        <span>Запрос администратору</span>
+      </ng-container>
+    </div>
 </div>
-<div class='card card_employee'>
-  <do-employee-page-skills
-    [skills]='skills'
-    [institutes]='institutes'
-    [courses]='courses'
-    [studyTypes]='studyTypes'
-  ></do-employee-page-skills>
+<div class="card card_employee">
+    <do-employee-page-main-info></do-employee-page-main-info>
 </div>
-<div class='card card_employee'>
-  <do-employee-page-projects
-    [userProjects]='userProjects'
-  ></do-employee-page-projects>
+<div class="card card_employee">
+    <do-employee-page-skills
+        [skills]="skills"
+        [institutes]="institutes"
+        [courses]="courses"
+        [studyTypes]="studyTypes"
+    ></do-employee-page-skills>
+</div>
+<div class="card card_employee">
+    <do-employee-page-projects
+        [userProjects]="userProjects"
+    ></do-employee-page-projects>
 </div>
