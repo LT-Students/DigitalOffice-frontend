@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EducationModel, StudyType } from '@app/models/education.model';
-import { activeProject, closedProject, courses, institutes, skills } from './mock';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { UserService } from '@app/services/user.service';
@@ -9,6 +8,9 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UsersResponse } from '@data/api/user-service/models';
 import { Project } from '@data/models/project';
 import { tap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { NewEmployeeComponent } from '../admin/components/new-employee/new-employee.component';
+import { activeProject, closedProject, courses, institutes, skills } from './mock';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -29,6 +31,11 @@ export interface UserProject extends Project {
   endedAt?: Date;
 }
 
+export interface Path {
+  title: string;
+  url?: string;
+}
+
 @Component({
   selector: 'do-employee-page',
   templateUrl: './employee-page.component.html',
@@ -41,10 +48,11 @@ export class EmployeePageComponent implements OnInit {
   public courses: EducationModel[];
   public studyTypes: StudyType[];
   public userProjects: UserProject[];
+  public paths: Path[];
 
   public userInfo: UserResponse;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, public dialog: MatDialog) {
     this.skills = skills;
     this.institutes = institutes;
     this.courses = courses;
@@ -64,6 +72,12 @@ export class EmployeePageComponent implements OnInit {
     this.userService.getUser(user.user.id).subscribe((userResponse: UserResponse) => {
       console.log(userResponse);
       this.userInfo = userResponse;
+
+      this.paths = [
+        { title: 'Сотрудники', url: 'user/attendance' },
+        { title: 'Департамент Цифровых Технологий', url: 'user/attendance' },
+        { title: `${this.userInfo.user.firstName} ${this.userInfo.user.lastName}`, },
+      ];
     });
   }
 
@@ -78,6 +92,10 @@ export class EmployeePageComponent implements OnInit {
       },
         ...Array(5).fill(closedProject)
     ];
+  }
+
+  onOpenNewEmployee(): void {
+    const dialogRef = this.dialog.open(NewEmployeeComponent, {});
   }
 
 }
