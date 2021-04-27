@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Path } from '../../employee-page.component';
 
 @Component({
     selector: 'do-breadcrumbs',
@@ -7,22 +8,13 @@ import { Router } from '@angular/router';
     styleUrls: ['./breadcrumbs.component.scss'],
 })
 export class BreadcrumbsComponent implements OnInit {
-    @Input() department: string = 'Департамент Цифровых Решений';
-    @Input() employeeName: string = 'Ангелина Иванова';
+    @Input() paths: Path[];
 
-    paths: any[];
-
-    constructor(private router: Router) {
-        this.paths = [
-            { label: 'Сотрудники', route: 'user/attendance' },
-            { label: this.department, route: 'user/attendance' },
-            { label: this.employeeName, },
-        ];
-    }
+    constructor(private router: Router) {}
 
     ngOnInit(): void {}
 
-    onClickBreadcrumbs(route: string) {
+    navigateTo(route: string) {
         this.router.navigate([route]);
     }
 }
