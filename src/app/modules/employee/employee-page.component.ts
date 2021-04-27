@@ -9,6 +9,7 @@ import { UsersResponse } from '@data/api/user-service/models';
 import { Project } from '@data/models/project';
 import { tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { NewEmployeeComponent } from '../admin/components/new-employee/new-employee.component';
 import { activeProject, closedProject, courses, institutes, skills } from './mock';
 
@@ -49,10 +50,16 @@ export class EmployeePageComponent implements OnInit {
   public studyTypes: StudyType[];
   public userProjects: UserProject[];
   public paths: Path[];
+  public pageId: string;
+  public isOwner: boolean;
 
   public userInfo: UserResponse;
 
-  constructor(private userService: UserService, public dialog: MatDialog) {
+  constructor(
+    private userService: UserService,
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+  ) {
     this.skills = skills;
     this.institutes = institutes;
     this.courses = courses;
@@ -63,6 +70,7 @@ export class EmployeePageComponent implements OnInit {
       StudyType.OFFLINE,
       StudyType.ONLINE,
     ];
+    this.pageId = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
@@ -78,6 +86,7 @@ export class EmployeePageComponent implements OnInit {
         { title: 'Департамент Цифровых Технологий', url: 'user/attendance' },
         { title: `${this.userInfo.user.firstName} ${this.userInfo.user.lastName}`, },
       ];
+      this.isOwner = this.userInfo.user.id === this.pageId;
     });
   }
 
