@@ -11,8 +11,8 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project } from '@data/models/project';
 import { Task } from '@data/models/task';
-import { timeValidator } from './add-hours.validators';
 import { IUser } from '@data/models/user';
+import { timeValidator } from './add-hours.validators';
 
 @Component({
   selector: 'do-add-hours',
@@ -109,15 +109,6 @@ export class AddHoursComponent implements OnInit, OnDestroy {
           { id: 0, name: 'Ежегодный' },
           { id: 1, name: 'За свой счёт' },
           { id: 2, name: 'Декретный' },
-        ],
-      },
-      {
-        name: 'Отгул',
-        options: [
-          { id: 0, name: 'Суд' },
-          { id: 1, name: 'ДТП' },
-          { id: 2, name: 'Форс-мажор' },
-          { id: 3, name: 'Похороны' },
         ],
       },
     ];
