@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { User } from '@data/api/user-service/models/user';
-import { IUser } from '@data/models/user';
+import { UsersResponse } from '@data/api/user-service/models/users-response';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 
 @Component({
   selector: 'do-new-members-board',
@@ -12,12 +12,12 @@ import { IUser } from '@data/models/user';
   styleUrls: ['./new-members-board.component.scss'],
 })
 export class NewMembersBoardComponent implements OnInit, OnDestroy {
-  public members: IUser[];
-  public visibleMembers: IUser[];
-  public checkedMembers: IUser[] = [];
+  public members: UserInfo[];
+  public visibleMembers: UserInfo[];
+  public checkedMembers: UserInfo[];
   public selectedSpecialization;
   public selectedLevel;
-  public searchName = null;
+  public searchName: string ;
   private getMembersSubscription: Subscription;
 
   public specializations: string[] = [
@@ -29,7 +29,10 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   ];
   public levels: string[] = ['Junior', 'Middle', 'Senior'];
 
-  constructor(private userApiService: UserApiService) {}
+  constructor(private userApiService: UserApiService) {
+    this.checkedMembers = [];
+    this.searchName = null;
+  }
 
   ngOnInit(): void {
     this.getMembers();
@@ -37,26 +40,13 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
 
   getMembers(): void {
     this.getMembersSubscription = this.userApiService
-      .getAllUsers({
-        skipCount: 0,
-        takeCount: 50,
-        userNameFilter: this.searchName,
-      })
-      .pipe(
-        map((data: User[]) =>
-          data.map((userDb) => ({
-            id: userDb.id,
-            firstName: userDb.firstName,
-            lastName: userDb.lastName,
-            middleName: userDb.middleName,
-            photo: userDb.avatarFileId,
-            projectsCount: 0,
-            level: '',
-            specialization: '',
-          }))
+         /* TODO: Подумать, как получать конкретные данные о каждом юзере
+         *   при получении данных о всех юзера
+         * */
+      .findUsers({ skipCount: 0, takeCount: 50, }).pipe(
+          switchMap((usersResponse: UsersResponse) => of(usersResponse.users))
         )
-      )
-      .subscribe((data: IUser[]) => {
+      .subscribe((data: UserInfo[]) => {
         this.members = data;
         this.visibleMembers = [...this.members];
       });
@@ -65,15 +55,18 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   onSelect() {
     this.visibleMembers = this.members;
     if (this.selectedSpecialization) {
-      this.visibleMembers = this.visibleMembers.filter((user) =>
-        user.specialization.includes(this.selectedSpecialization)
+      this.visibleMembers = this.visibleMembers.filter((user: UserInfo) => true
+        //  TODO: refactor when api will be ready
+        // user.specialization.includes(this.selectedSpecialization)
       );
     }
 
     if (this.selectedLevel) {
+      /* В эту ветку не попадем, т.к. не задано начальное значение
+        TODO: refactor when api will be ready
       this.visibleMembers = this.visibleMembers.filter(
         (user) => user.level === this.selectedLevel
-      );
+      );*/
     }
     return this.visibleMembers;
   }

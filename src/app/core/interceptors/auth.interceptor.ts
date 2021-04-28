@@ -3,7 +3,7 @@ import {
   HttpInterceptor,
   HttpRequest,
   HttpHandler,
-  HttpEvent,
+  HttpEvent, HttpHeaders,
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -20,15 +20,13 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = this.localStorageService.get('access_token');
+    let headers: HttpHeaders = req.headers.set('Access-Control-Allow-Origin','*');
 
     if (token) {
-      let headers = req.headers.set('token', token);
-      const cloned = req.clone({
-        headers,
-      });
-      return next.handle(cloned);
-    } else {
-      return next.handle(req);
+      headers = headers.set('token', token);
     }
+    const cloned = req.clone({ headers });
+
+    return next.handle(cloned);
   }
 }

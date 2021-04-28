@@ -3,10 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { User } from '@data/api/user-service/models/user';
-import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
 import { PositionResponse } from '@data/api/company-service/models/position-response';
+import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
+import { CommunicationType, CreateUserRequest, UserInfo } from '@data/api/user-service/models';
+import { UserService } from '@app/services/user.service';
+import { UserStatus } from '@app/models/user-status.model';
 
 @Component({
   selector: 'do-new-employee',
@@ -14,7 +16,7 @@ import { PositionResponse } from '@data/api/company-service/models/position-resp
   styleUrls: ['./new-employee.component.scss'],
 })
 export class NewEmployeeComponent implements OnInit {
-  public user: User;
+  public user: UserInfo;
   public message: string;
   public imagePath;
   public imgURL: any;
@@ -30,7 +32,7 @@ export class NewEmployeeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private positionApiService: PositionApiService,
-    private userApiService: UserApiService,
+    private userService: UserService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -65,21 +67,10 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   createEmployee(): void {
-    this.userApiService
-      .createUser({
-        body: {
-          email: this.userForm.controls['email'].value,
-          login: this.userForm.controls['login'].value,
-          firstName: this.userForm.controls['firstName'].value,
-          lastName: this.userForm.controls['lastName'].value,
-          middleName: this.userForm.controls['middleName'].value,
-          password: this.userForm.controls['password'].value,
-          isAdmin: true,
-          isActive: true,
-        },
-      })
-      .subscribe(
-        (res) => {
+    const params = this._convertFormDataToCreateUserParams();
+
+    this.userService.createUser(params).subscribe(
+        () => {
           this.snackBar.open('New user added successfully', 'done', {
             duration: 3000,
           });
@@ -88,7 +79,7 @@ export class NewEmployeeComponent implements OnInit {
           this.snackBar.open(error.error.Message, 'accept');
           throw error;
         }
-      );
+    );
   }
 
   generateCredentials(): void {
@@ -112,5 +103,23 @@ export class NewEmployeeComponent implements OnInit {
     reader.onload = (event) => {
       this.imgURL = reader.result;
     };
+  }
+
+  private _convertFormDataToCreateUserParams(): CreateUserRequest {
+    const communications: CommunicationInfo[] = [{type: CommunicationType.Email, value: this.userForm.get('email').value}];
+
+    const params: CreateUserRequest = {
+      firstName: this.userForm.get('firstName').value as string,
+      lastName: this.userForm.get('lastName').value as string,
+      middleName: this.userForm.get('middleName').value as string,
+      password: this.userForm.get('password').value as string,
+      rate: this.userForm.get('rate').value as number,
+      isAdmin: true,
+      communications: communications,
+      startWorkingAt: new Date().toDateString(),
+      status: UserStatus.WorkFromHome
+    }
+
+    return params;
   }
 }

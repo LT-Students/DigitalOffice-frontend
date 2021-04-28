@@ -24,29 +24,23 @@ export class AuthService {
       authenticationRequest: AuthenticationRequest,
   ): Observable<AuthenticationResponse> {
     return this.authApiService.login({ body: authenticationRequest }).pipe(
-        tap({
-          next: (val) => {
-            this.localStorageService.set('access_token', val.token);
-            this.localStorageService.set('userId', val.userId);
-          },
-          error: (error) => {
-            console.log('Authentication failed.', error);
-          },
-        }),
+        tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
     );
   }
 
-  isAuthenticated(): boolean {
-    const token = this.localStorageService.get('access_token');
-    return token != null;
-  }
+    isAuthenticated(): boolean {
+        const token = this.localStorageService.get('access_token');
+        return token != null;
+    }
 
-  signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
-    return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
-        tap((val: AuthenticationResponse) => {
-            this.localStorageService.set('access_token', val.token);
-            this.localStorageService.set('userId', val.userId);
-        }),
-    );
-  }
+    signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
+        return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
+            tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
+        );
+    }
+
+    private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse) {
+        this.localStorageService.set('access_token', authenticationInfo.token);
+        this.localStorageService.set('userId', authenticationInfo.userId);
+    }
 }

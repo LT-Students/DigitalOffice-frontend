@@ -6,6 +6,8 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { LocalStorageService } from './local-storage.service';
 import { UserResponse } from '@data/api/user-service/models/user-response';
+import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
+import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 
 @Injectable({
   providedIn: 'root',
@@ -35,5 +37,9 @@ export class UserService {
   getCurrentUser(): UserInfo | null {
     const user: UserInfo = this.localStorageService.get('user');
     return user ? user : null;
+  }
+
+  createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
+    return this.userApiService.createUser({ body: params });
   }
 }

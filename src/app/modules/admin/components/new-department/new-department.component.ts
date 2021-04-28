@@ -1,18 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { User } from '@data/api/user-service/models/user';
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
+import { UsersResponse } from '@data/api/user-service/models/users-response';
+import { switchMap } from 'rxjs/operators';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 
 @Component({
   selector: 'do-new-department',
@@ -20,7 +17,7 @@ import { NewMembersBoardComponent } from '../new-members-board/new-members-board
   styleUrls: ['./new-department.component.scss'],
 })
 export class NewDepartmentComponent implements OnInit {
-  public directors: User[] = [];
+  public directors: UserInfo[] = [];
   private getDirectorsSubscription: Subscription;
 
   public departmentForm = new FormGroup({
@@ -63,14 +60,12 @@ export class NewDepartmentComponent implements OnInit {
 
   getDirectors(): void {
     //Rework when will api with specialization sort
-    this.getDirectorsSubscription = this.userApiService
-      .getAllUsers({
-        skipCount: 0,
-        takeCount: 50,
-      })
-      .subscribe((data: User[]) => {
-        this.directors = data;
-      });
+    this.getDirectorsSubscription = this.userApiService.findUsers({
+      skipCount: 0,
+      takeCount: 50,
+    }).pipe(
+        switchMap((usersResponse: UsersResponse) => of(usersResponse.users)),
+    ).subscribe((data: UserInfo[]) => this.directors = data);
   }
 
   postDepartment(): void {
