@@ -10,8 +10,8 @@ import { Project } from '@data/models/project';
 import { tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { NewEmployeeComponent } from '../admin/components/new-employee/new-employee.component';
 import { activeProject, closedProject, courses, institutes, skills } from './mock';
+import { AdminRequestComponent } from './components/admin-request/admin-request.component';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -103,8 +103,8 @@ export class EmployeePageComponent implements OnInit {
     ];
   }
 
-  onOpenNewEmployee(): void {
-    const dialogRef = this.dialog.open(NewEmployeeComponent, {});
+  openDialog(): void {
+    const dialogRef = this.dialog.open(AdminRequestComponent, {});
   }
 
 }
