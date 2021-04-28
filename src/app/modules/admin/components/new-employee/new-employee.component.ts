@@ -64,7 +64,7 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getPositions();
+    // this.getPositions();
     this.userForm = this.formBuilder.group({
       lastName: ['', [Validators.required, Validators.maxLength(32)]],
       firstName: ['', [Validators.required, Validators.maxLength(32)]],

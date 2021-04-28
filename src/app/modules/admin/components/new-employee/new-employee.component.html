@@ -90,29 +90,12 @@
           </mat-form-field>
         </div>
         <div class="new-employee__form-element">
-          <label
-            class="new-employee__label"
-            doText
-            color="gray1"
-            for="birthDate"
-            >Дата рождения</label
-          >
-          <mat-form-field
-            class="mat-form-field__form-control new-employee__form-field"
-            appearance="fill"
-          >
-            <input
-              id="birthDate"
-              matInput
-              formControlName="birthDate"
-              [matDatepicker]="picker_birth"
-              placeholder="ДД месяц ГГГГ"
-            />
-            <mat-datepicker-toggle matSuffix [for]="picker_birth">
-              <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #picker_birth></mat-datepicker>
-          </mat-form-field>
+          <do-datepicker
+            controlName="birthDate"
+            label="Дата рождения"
+            format='full'
+            [isEdit]='true'
+          ></do-datepicker>
         </div>
         <div class="new-employee__form-element">
           <label class="new-employee__label" doText color="gray1" for="city"
@@ -239,35 +222,13 @@
           </mat-form-field>
         </div>
         <div class="new-employee__form-element">
-          <label
-            class="new-employee__label"
-            doText
-            color="gray1"
-            for="workingSince"
-            >Начало работы<sup
-              class="new-employee__required"
-              doText
-              color="negative_accent"
-              >*</sup
-            ></label
-          >
-          <mat-form-field
-            class="mat-form-field__form-control new-employee__form-field"
-            appearance="fill"
-          >
-            <input
-              id="workingSince"
-              matInput
-              formControlName="workingSince"
-              [matDatepicker]="picker_work"
-              placeholder="ДД месяц ГГГГ"
-              required
-            />
-            <mat-datepicker-toggle matSuffix [for]="picker_work">
-              <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #picker_work></mat-datepicker>
-          </mat-form-field>
+          <do-datepicker
+            controlName="workingSince"
+            label="Начало работы"
+            format='full'
+            [isEdit]='true'
+            [required]='true'
+          ></do-datepicker>
         </div>
         <div class="new-employee__office">
           <label class="new-employee__label" doText color="gray1" for="office"
