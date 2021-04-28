@@ -7,6 +7,9 @@
         [matMenuTriggerFor]="menu"
         class="mat-flat-button add-hours__menu-button"
         aria-label="Choose category"
+        matTooltipClass="tooltip"
+        matTooltip="Здесь ты можешь внести изменения, например выбрать: Отпуск."
+        [matTooltipPosition]="'above'"
       >
         <mat-icon
           class="add-hours__icon"
@@ -70,17 +73,7 @@
     }}</mat-error>
 
     <label class="add-hours__label add-hours__label_for_project" for="project">
-      <span>{{ chosenCategory.name }}</span>
-      <mat-icon
-        class="add-hours__icon add-hours__icon_hint"
-        svgIcon="hint"
-        aria-label="Hint"
-        matTooltipClass="tooltip"
-        matTooltip="Здесь ты можешь внести изменения, например выбрать: {{
-          chosenCategory.name
-        }}."
-        [matTooltipPosition]="'above'"
-      ></mat-icon>
+      {{ chosenCategory.name }}
     </label>
 
     <mat-form-field
