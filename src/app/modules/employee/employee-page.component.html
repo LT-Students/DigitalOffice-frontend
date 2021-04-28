@@ -1,14 +1,21 @@
 <div class="employee-page__header flex">
-    <do-breadcrumbs [paths]='paths'></do-breadcrumbs>
-    <div class="employee-page__button flex" doText color="gray1">
-      <ng-container *ngIf='userInfo.user.isAdmin'>
-        <mat-icon>archive</mat-icon>
-        <span class="employee-page__button-label">Добавить в архив</span>
-      </ng-container>
-      <ng-container *ngIf='isOwner && !userInfo.user.isAdmin'>
-        <mat-icon>live_help</mat-icon>
-        <span class="employee-page__button-label">Запрос администратору</span>
-      </ng-container>
+    <do-breadcrumbs [paths]="paths"></do-breadcrumbs>
+    <div
+        (click)="openDialog()"
+        class="employee-page__button flex"
+        doText
+        color="gray1"
+    >
+        <ng-container *ngIf="userInfo.user.isAdmin">
+            <mat-icon>archive</mat-icon>
+            <span class="employee-page__button-label">Добавить в архив</span>
+        </ng-container>
+        <ng-container *ngIf="isOwner && !userInfo.user.isAdmin">
+            <mat-icon>live_help</mat-icon>
+            <span class="employee-page__button-label"
+                >Запрос администратору</span
+            >
+        </ng-container>
     </div>
 </div>
 <div class="card card_employee">
