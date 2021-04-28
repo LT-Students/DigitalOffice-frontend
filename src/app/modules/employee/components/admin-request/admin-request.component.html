@@ -1,0 +1,31 @@
+<div class="admin-request">
+    <h3 doText color="dark_1">Запрос на внесение изменений</h3>
+    <mat-form-field appearance="none">
+        <textarea
+            class="admin-request__textarea"
+            matInput
+            placeholder="Пожалуйста, подробно опишите здесь ваш запрос на внесение изменений
+            в личную информацию. Администраторы свяжутся с вами в ближайшее
+            время"
+        ></textarea>
+    </mat-form-field>
+    <div>
+        <button
+            mat-flat-button
+            mat-dialog-close
+            type="button"
+            doText
+            color="gray1"
+            class='admin-request__buttons'
+        >
+            Отмена
+        </button>
+        <button
+            mat-flat-button
+            type="submit"
+            class="admin-request__buttons bg-accent_color_bright"
+        >
+            Сохранить
+        </button>
+    </div>
+</div>

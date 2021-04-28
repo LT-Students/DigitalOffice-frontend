@@ -10,6 +10,7 @@ import { SkillsComponent } from './components/skills/skills.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import { AdminRequestComponent } from './components/admin-request/admin-request.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 		SkillsComponent,
 		MainInfoComponent,
 		ProjectsComponent,
-		BreadcrumbsComponent
+		BreadcrumbsComponent,
+		AdminRequestComponent
 	],
 	imports: [
 		CommonModule,
