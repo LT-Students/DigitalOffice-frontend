@@ -1,13 +1,13 @@
-<div class="flex">
+<div class="employee-page__header flex">
     <do-breadcrumbs [paths]='paths'></do-breadcrumbs>
-    <div class="flex" doText color="gray1">
+    <div class="employee-page__button flex" doText color="gray1">
       <ng-container *ngIf='userInfo.user.isAdmin'>
         <mat-icon>archive</mat-icon>
-        <span>Добавить в архив</span>
+        <span class="employee-page__button-label">Добавить в архив</span>
       </ng-container>
       <ng-container *ngIf='isOwner && !userInfo.user.isAdmin'>
         <mat-icon>live_help</mat-icon>
-        <span>Запрос администратору</span>
+        <span class="employee-page__button-label">Запрос администратору</span>
       </ng-container>
     </div>
 </div>
