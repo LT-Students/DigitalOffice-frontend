@@ -7,12 +7,12 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from '@app/services/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { User } from '@data/api/user-service/models/user';
+import { UserResponse } from '@data/api/user-service/models/user-response';
 
 @Component({
   selector: 'do-initial-form',
-  templateUrl: './initial-form.component.html',
-  styleUrls: ['./initial-form.component.scss'],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -57,8 +57,8 @@ export class LoginComponent implements OnInit {
         })
       )
       .subscribe(
-        (user: User) => {
-          if (user.isAdmin) {
+        (user: UserResponse) => {
+          if (user.user.isAdmin) {
             this.router.navigate(['/admin/dashboard']);
           } else {
             this.router.navigate(['/user/attendance']);
@@ -69,9 +69,6 @@ export class LoginComponent implements OnInit {
         }
       );
   }
-    signUp(): void {
-    }
-
   get email() {
     return this.loginForm.get('email');
   }

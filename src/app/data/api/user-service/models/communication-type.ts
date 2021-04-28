@@ -2,11 +2,12 @@
 /* eslint-disable */
 
 /**
- * Connection type.
+ * Communication type.
  */
-export enum ConnectionType {
+export enum CommunicationType {
   Skype = 'Skype',
   Phone = 'Phone',
   Email = 'Email',
   Telegram = 'Telegram',
+  Twitter = 'Twitter'
 }
