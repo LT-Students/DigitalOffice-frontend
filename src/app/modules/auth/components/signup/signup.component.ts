@@ -17,7 +17,6 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 export class SignupComponent implements OnInit {
     userId: string;
     loginForm: FormGroup;
-    signUpError: string;
     isWaiting = false;
 
     constructor(
@@ -51,7 +50,12 @@ export class SignupComponent implements OnInit {
                 return this.userService.getUser(val.userId);
             }),
             catchError((error) => {
-                this.signUpError = error.message;
+                this.loginForm.setErrors({
+                    busy: {
+                        userFriendlyMessage: 'Введённый логин уже занят :(',
+                        error: error.message,
+                    },
+                });
                 this.isWaiting = false;
                 throw error;
             }),
@@ -76,5 +80,4 @@ export class SignupComponent implements OnInit {
     get password() {
         return this.loginForm.get('password');
     }
-
 }
