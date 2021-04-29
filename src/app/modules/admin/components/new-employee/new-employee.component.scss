@@ -8,10 +8,6 @@
         row-gap: 6px;
     }
 
-    &__office {
-        grid-column: span 2;
-    }
-
     &__heading {
         margin-top: 32px;
         margin-bottom: 12px;
@@ -19,6 +15,10 @@
 
     &__form-element {
         margin-bottom: 8px;
+    }
+
+    &__form-element_span_2 {
+        grid-column: span 2;
     }
 
     &__form-field {

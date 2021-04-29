@@ -43,9 +43,6 @@ export class NewEmployeeComponent implements OnInit {
   public departments: string[];
   public offices: string[];
   public sex: string[];
-  public isVisible: boolean;
-  public passwordIcon: string;
-  public passwordType: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -58,9 +55,6 @@ export class NewEmployeeComponent implements OnInit {
     this.departments = ['Pug Department', 'Corgi Department'];
     this.offices = ['м. Чернышевская', 'Улица Пушкина, дом Колотушкина'];
     this.sex = ['Мужской', 'Женский', 'Не определён'];
-    this.isVisible = false;
-    this.passwordIcon = 'visibility_off';
-    this.passwordType = 'password';
   }
 
   ngOnInit(): void {
@@ -78,7 +72,6 @@ export class NewEmployeeComponent implements OnInit {
       department: ['', [Validators.required]],
       office: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
     });
   }
 
@@ -126,30 +119,6 @@ export class NewEmployeeComponent implements OnInit {
       duration: 3000,
     });
     this.dialogRef.close();
-  }
-
-  generateCredentials(): void {
-    // this.userApiService.generatePassword().subscribe(
-    //   (res) => {
-    //     this.userForm.patchValue({ password: res });
-    //   },
-    //   (error: HttpErrorResponse) => {
-    //     this.snackBar.open(error.error.Message, 'accept');
-    //     throw error;
-    //   }
-    // );
-    this.userForm.patchValue({ password: 'some-random-string' });
-  }
-
-  toggleVisibility(): void {
-    this.isVisible = !this.isVisible;
-    if (this.isVisible) {
-      this.passwordIcon = 'visibility';
-      this.passwordType = 'text';
-    } else {
-      this.passwordIcon = 'visibility_off';
-      this.passwordType = 'password';
-    }
   }
 
   changeWorkingRate(step: number): void {

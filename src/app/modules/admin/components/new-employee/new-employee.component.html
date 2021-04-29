@@ -230,7 +230,7 @@
             [required]='true'
           ></do-datepicker>
         </div>
-        <div class="new-employee__office">
+        <div class="new-employee__form-element new-employee__form-element_span_2">
           <label class="new-employee__label" doText color="gray1" for="office"
             >Офис<sup
               class="new-employee__required"
@@ -262,14 +262,22 @@
         Аутентификация
       </h3>
       <div class="new-employee__inputs">
-        <div class="new-employee__form-element">
+        <div class="new-employee__form-element new-employee__form-element_span_2">
           <label class="new-employee__label" doText color="gray1" for="email"
             >E-mail<sup
               class="new-employee__required"
               doText
               color="negative_accent"
               >*</sup
-            ></label
+            >
+            <mat-icon
+              class="new-employee__hint"
+              aria-label="Hint"
+              matTooltipClass="tooltip"
+              matTooltip="На эту почту пользователю придет ссылка для регистрации"
+              [matTooltipPosition]="'above'"
+            >help_outline
+            </mat-icon></label
           >
           <mat-form-field class="new-employee__form-field" appearance="fill">
             <input
@@ -279,52 +287,6 @@
               formControlName="email"
               required
             />
-          </mat-form-field>
-        </div>
-        <div class="new-employee__form-element">
-          <div class="new-employee__label new-employee__label_flex">
-            <label doText color="gray1" for="password"
-              >Пароль<sup
-                class="new-employee__required"
-                doText
-                color="negative_accent"
-                >*</sup
-              >
-              <mat-icon
-                class="new-employee__hint"
-                aria-label="Hint"
-                matTooltipClass="tooltip"
-                matTooltip="Пароль будет отправлен сотруднику автоматически"
-                [matTooltipPosition]="'above'"
-                >help_outline
-              </mat-icon>
-            </label>
-            <button
-              mat-flat-button
-              class="text-negative_accent new-employee__generate"
-              type="button"
-              (click)="generateCredentials()"
-            >
-              Сгенерировать
-            </button>
-          </div>
-          <mat-form-field class="new-employee__form-field" appearance="fill">
-            <input
-              id="password"
-              matInput
-              formControlName="password"
-              [type]="passwordType"
-              placeholder="Сгенерируйте пароль"
-              required
-            />
-            <button
-              mat-icon-button
-              matSuffix
-              type="button"
-              (click)="toggleVisibility()"
-            >
-              <mat-icon class="text-gray1">{{ passwordIcon }}</mat-icon>
-            </button>
           </mat-form-field>
         </div>
         <button
