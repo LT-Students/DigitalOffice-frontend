@@ -3,27 +3,42 @@
 .new-employee {
     &__inputs {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 300px 300px;
         column-gap: 20px;
-    }
-
-    &__office {
-        grid-column: span 2;
-    }
-
-    &__title::after {
-        content: '';
-
-        display: block;
-
-        width: 237px;
-        height: 4px;
-
-        background-color: $accent_color_bright;
+        row-gap: 6px;
     }
 
     &__heading {
-        margin-top: 30px;
+        margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    &__form-element {
+        margin-bottom: 8px;
+    }
+
+    &__form-element_span_2 {
+        grid-column: span 2;
+    }
+
+    &__form-field {
+        margin: -1em 0;
+
+        width: 100%;
+    }
+
+    &__label {
+        margin-bottom: 4px;
+
+        display: block;
+    }
+
+    &__required {
+        margin-left: 2px;
+
+        vertical-align: middle;
+
+        color: $negative_accent;
     }
 
     &__buttons {
@@ -40,31 +55,9 @@
         justify-self: start;
     }
 
-    &__flex-label {
+    &__label_flex {
         display: flex;
         justify-content: space-between;
-    }
-
-    &__label {
-        display: block;
-
-        text-align: start;
-    }
-
-    &__required {
-        margin-left: 1px;
-
-        vertical-align: top;
-
-        color: $negative_accent;
-    }
-
-    &__form-field {
-        display: block;
-    }
-
-    &__input {
-        font-family: $regular_font !important;
     }
 
     &__hint {
@@ -85,7 +78,19 @@
         height: 24px;
     }
 
-    .small_text {
-        margin: 14px 0 3px 0;
+    &__rate {
+        text-align: center;
+    }
+
+    &__rate-button {
+        padding: 0 40px;
+
+        background-color: $light-2;
+
+        &:disabled {
+            min-width: 0;
+
+            background-color: transparent;
+        }
     }
 }

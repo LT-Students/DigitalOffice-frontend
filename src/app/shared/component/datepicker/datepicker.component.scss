@@ -1,12 +1,22 @@
 @import '../../../../stylesheets/base/variables';
 
-.datepicker__form-field {
-    input {
-        display: none;
+.datepicker {
+    &__form-field {
+        margin: -1em 0;
+
+        width: 100%;
     }
 
-    p {
-        margin: 6px 0 6px 12px;
+    &__label {
+        margin-bottom: 4px;
+
+        display: block;
+    }
+
+    &__required {
+        margin-left: 2px;
+
+        vertical-align: middle;
     }
 }
 
