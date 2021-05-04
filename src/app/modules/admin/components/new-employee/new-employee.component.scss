@@ -1,219 +1,91 @@
 @import 'base/variables';
 
-.new-employee-container {
-  display: flex;
-
-  width: 100%;
-
-  background-color: $light_2;
-
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    width: 100%;
-
-    .regular_text_dark_1 {
-      color: $dark_1;
+.new-employee {
+    &__inputs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 20px;
     }
 
-    .regular_text_accent_color_bright {
-      color: $accent_color_bright;
+    &__office {
+        grid-column: span 2;
     }
 
-    .regular_text_accent_color {
-      color: $accent_color;
+    &__title::after {
+        content: '';
+
+        display: block;
+
+        width: 237px;
+        height: 4px;
+
+        background-color: $accent_color_bright;
     }
 
-    .regular_text_light_1 {
-      color: $light_1;
+    &__heading {
+        margin-top: 30px;
     }
 
-    .h1_dark_2 {
-      color: $dark_2;
+    &__buttons {
+        margin-top: 35px;
+
+        width: 216px;
     }
 
-    .title {
-      margin-bottom: 26.5px;
+    &__reset {
+        justify-self: end;
     }
 
-    .form-container {
-      padding-top: 66px;
-      padding-bottom: 66px;
+    &__submit {
+        justify-self: start;
+    }
 
-      display: flex;
-      justify-content: center;
-
-      width: 100%;
-      min-height: 884px;
-
-      background-color: #fff;
-      border-radius: 5px;
-      align-self: center;
-
-      .data-form {
+    &__flex-label {
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
-
-        width: 75%;
-
-        .h3_dark_1,
-        .h5_dark_1 {
-          color: $dark_1;
-        }
-
-        &__input-content {
-          display: flex;
-          flex-direction: column;
-
-          min-width: 220px;
-          min-height: 5em;
-        }
-
-        &__title::after {
-          content: '';
-
-          display: block;
-
-          width: 123px;
-          height: 4px;
-
-          background-color: $accent_color_bright;
-        }
-
-        .main-info {
-          display: flex;
-          flex-direction: row;
-
-          min-height: 216px;
-
-          .content {
-            &__photo {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              width: 30%;
-
-              .photo-container {
-                position: relative;
-
-                display: flex;
-                overflow: hidden;
-                justify-content: center;
-                align-items: center;
-
-                width: 128px;
-                height: 128px;
-
-                cursor: pointer;
-
-                background: linear-gradient(180deg, #ffa386 0%, #ffd3b8 100%);
-                border-radius: 50%;
-
-                label {
-                  cursor: pointer;
-                }
-
-                img {
-                  width: auto;
-                  height: 100%;
-
-                  cursor: pointer;
-                }
-
-                .filled_avatar {
-                  width: 140px;
-                }
-
-                #choose-avatar {
-                  display: none;
-                }
-              }
-            }
-
-            &__inputs {
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
-              flex: 1 0 auto;
-            }
-          }
-        }
-
-        mat-error {
-          color: $accent_color_bright;
-        }
-
-        .job-info {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-
-          min-height: 140px;
-
-          .position-info {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            div {
-              width: 48%;
-            }
-          }
-        }
-
-        .login-info {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-
-          .content__inputs {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            width: 100%;
-          }
-        }
-
-        .buttons {
-          display: flex;
-          flex-direction: row;
-          justify-content: flex-end;
-
-          width: 100%;
-
-          .btn-generate-credentials,
-          .btn-create-employee {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-
-            cursor: pointer;
-          }
-
-          .btn-generate-credentials {
-            margin-right: 15px;
-
-            background-color: transparent;
-            border: 1px solid $accent_color_bright;
-
-            img {
-              margin-right: 11px;
-            }
-          }
-
-          .btn-create-employee {
-            padding: 0 30px;
-
-            background-color: $accent_color_bright;
-          }
-        }
-      }
     }
-  }
+
+    &__label {
+        display: block;
+
+        text-align: start;
+    }
+
+    &__required {
+        margin-left: 1px;
+
+        vertical-align: top;
+
+        color: $negative_accent;
+    }
+
+    &__form-field {
+        display: block;
+    }
+
+    &__input {
+        font-family: $regular_font !important;
+    }
+
+    &__hint {
+        margin-left: 2px;
+
+        width: 16px;
+        height: 16px;
+
+        font-size: 16px;
+
+        vertical-align: -20%;
+    }
+
+    &__generate {
+        padding: 0;
+        align-self: center;
+
+        height: 24px;
+    }
+
+    .small_text {
+        margin: 14px 0 3px 0;
+    }
 }

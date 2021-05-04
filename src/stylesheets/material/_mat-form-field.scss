@@ -2,77 +2,67 @@
 @import '../base/fonts';
 
 // Могло поломать другие стили, нужно проверить на остальных инпутах
-.mat-form-field.mat-form-field__form-control.mat-form-field-type-mat-input.mat-form-field-can-float.mat-form-field-should-float.mat-form-field-has-label {
-  display: block;
+.mat-form-field,
+.mat-form-field.mat-form-field-appearance-legacy {
+    display: block;
 
-  .mat-form-field-wrapper {
-    @extend %regular_font_basic;
-    font-size: 16px;
-    line-height: 24px;
+    .mat-form-field-wrapper {
+        padding: 1em 0;
 
-    .mat-input-element {
-      padding: 10px 15px;
+        .mat-form-field-infix {
+            padding: 0;
 
-      width: 100%;
+            border: 0;
 
-      color: $dark_1;
-      background-color: $light_2;
-      border-radius: 5px;
-      caret-color: $dark_1;
-    }
+            .mat-form-field-label-wrapper {
+                padding-top: 0;
 
-    textarea.mat-input-element {
-      min-height: 82px;
-    }
+                overflow: visible;
 
-    .mat-form-field-infix {
-      padding: 0;
+                .mat-form-field-label {
+                    top: 0;
 
-      border: 0;
+                    display: inline;
+                    overflow: visible;
 
-      .mat-form-field-label-wrapper {
-        overflow: visible;
+                    font-size: 16px;
+                    line-height: 24px;
 
-        .mat-form-field-label {
-          display: inline;
-          overflow: visible;
+                    color: $gray1;
 
-          font-size: 16px;
-          line-height: 24px;
+                    transform: none;
 
-          color: $gray1;
+                    @extend %regular_font_basic;
 
-          @extend %regular_font_basic;
-
-          .mat-placeholder-required {
-            color: $negative_accent;
-          }
+                    .mat-placeholder-required {
+                        color: $negative_accent;
+                    }
+                }
+            }
         }
-      }
+
+        .mat-form-field-underline {
+            display: none;
+        }
     }
 
-    .mat-form-field-underline {
-      display: none;
+    .mat-form-field-subscript-wrapper {
+        margin-top: 0;
     }
-  }
+}
 
-  .mat-form-field-subscript-wrapper {
-    margin-top: 0;
-  }
+.mat-form-field__stepper {
+    .mat-form-field-wrapper {
+        .mat-form-field-infix {
+            .mat-input-element {
+                text-align: center;
+            }
 
-  &.mat-form-field_time-input {
-    .mat-input-element {
-      padding: 0;
-
-      background-color: transparent;
+            .mat-form-field-label-wrapper {
+                left: -40px;
+            }
+        }
     }
-
-    .mat-form-field-infix {
-      .mat-input-element {
-        color: $dark_1;
-      }
-    }
-  }
 }
 
 //styles for FormControl
@@ -82,23 +72,21 @@
 .ng-pristine textarea,
 .ng-valid textarea,
 .ng-invalid textarea {
-  padding: 5px 5px;
+    padding: 5px 5px;
 
-  min-height: 30px;
+    min-height: 30px;
 
-  color: #fff;
-
-  &:focus {
-    outline: none;
-  }
+    &:focus {
+        outline: none;
+    }
 }
 
 // type="number"
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
 input[type='number'] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }

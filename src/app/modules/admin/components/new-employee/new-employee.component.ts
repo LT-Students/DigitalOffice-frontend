@@ -9,6 +9,7 @@ import { CommunicationInfo } from '@data/api/user-service/models/communication-i
 import { CommunicationType, CreateUserRequest, UserInfo } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 import { UserStatus } from '@app/models/user-status.model';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'do-new-employee',
@@ -16,35 +17,49 @@ import { UserStatus } from '@app/models/user-status.model';
   styleUrls: ['./new-employee.component.scss'],
 })
 export class NewEmployeeComponent implements OnInit {
-  public user: UserInfo;
+  public user: User;
   public message: string;
   public imagePath;
   public imgURL: any;
   public userForm: FormGroup;
-  public positions = [];
-  public rates = [0, 0.5, 1, 1.5, 2];
-  public departments = [
-    { name: 'department1' },
-    { name: 'department2' },
-    { name: 'department3' },
-  ];
+  public positions;
+  public departments: string[];
+  public offices: string[];
+  public sex: string[];
+  public isVisible: boolean;
+  public passwordIcon: string;
+  public passwordType: string;
 
   constructor(
     private formBuilder: FormBuilder,
     private positionApiService: PositionApiService,
     private userService: UserService,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private dialogRef: MatDialogRef<any>
+  ) {
+    this.positions = ['Junior Pug', 'Boss Pug'];
+    this.departments = ['Pug Department', 'Corgi Department'];
+    this.offices = ['м. Чернышевская', 'Улица Пушкина, дом Колотушкина'];
+    this.sex = ['Мужской', 'Женский', 'Не определён'];
+    this.isVisible = false;
+    this.passwordIcon = 'visibility_off';
+    this.passwordType = 'password';
+  }
 
   ngOnInit(): void {
     this.getPositions();
     this.userForm = this.formBuilder.group({
       lastName: ['', [Validators.required, Validators.maxLength(32)]],
       firstName: ['', [Validators.required, Validators.maxLength(32)]],
-      middleName: ['', [Validators.required, Validators.maxLength(32)]],
-      position: [''],
-      rate: [''],
-      department: [''],
+      middleName: ['', [Validators.maxLength(32)]],
+      position: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      sex: [''],
+      birthDate: [''],
+      workingSince: ['', [Validators.required]],
+      rate: ['1', [Validators.required]],
+      department: ['', [Validators.required]],
+      office: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       login: [
         '',

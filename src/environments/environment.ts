@@ -4,8 +4,6 @@
 
 export const environment = {
   production: false,
-  authenticationServiceUri: 'https://localhost:9817/api',
-  userServiceUri: 'https://localhost:9801/api',
 };
 
 /*

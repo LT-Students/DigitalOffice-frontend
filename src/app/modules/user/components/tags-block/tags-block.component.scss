@@ -1,204 +1,203 @@
-@import url(//db.onlinewebfonts.com/c/07a38bbad54db72a40b406bed1c72f53?family=Gotham+Pro);
 $button-color-orange1: hsl(14, 94%, 66%);
 $background-color-white1: hsl(0, 0%, 100%);
 $font-black1: hsl(250, 6%, 20%);
 $bar-color-orange1: hsl (22, 100%, 77%);
 
 .wrapper {
-  width: 928px;
-  height: 345px;
+    width: 928px;
+    height: 345px;
 
-  background: linear-gradient(135deg, #fff, #ffdfc7);
+    background: linear-gradient(135deg, #fff, #ffdfc7);
 }
 
 /* контент */
 .content {
-  padding: 48px 48px 36px 48px;
+    padding: 48px 48px 36px 48px;
 
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 
-  width: 832px;
+    width: 832px;
 }
 
 /* шапка с названием блока */
 .head p {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 
-  max-width: 364px;
-  height: 24px;
+    max-width: 364px;
+    height: 24px;
 
-  font-family: Gotham Pro, sans-serif;
-  font-size: 28px;
-  font-weight: bold;
-  font-style: normal;
-  line-height: 32px;
+    font-family: Gotham Pro, sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    font-style: normal;
+    line-height: 32px;
 
-  color: $font-black1;
+    color: $font-black1;
 }
 
 /* Всего */
 .main > p {
-  font-family: Gill Sans, sans-serif;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  line-height: 24px;
-  text-align: right;
+    font-family: Gill Sans, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 24px;
+    text-align: right;
 
-  color: #bdbdbd;
+    color: #bdbdbd;
 }
 
 /* строки с проектами */
 .row {
-  position: relative;
+    position: relative;
 
-  margin-bottom: 24px;
+    margin-bottom: 24px;
 
-  display: flex;
-  justify-content: space-between;
-  flex-flow: row nowrap;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row nowrap;
 
-  &::after {
-    content: '';
+    &::after {
+        content: '';
 
-    position: absolute;
-    left: 0;
-    bottom: 0;
+        position: absolute;
+        left: 0;
+        bottom: 0;
 
-    width: 832px;
-    height: 1px;
+        width: 832px;
+        height: 1px;
 
-    background-color: #f1f1ef;
-  }
+        background-color: #f1f1ef;
+    }
 }
 
 .rowName {
-  padding-right: 20px;
+    padding-right: 20px;
 
-  width: 80px;
+    width: 80px;
 }
 
 .rowName p {
-  font-family: Gill Sans, sans-serif;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
+    font-family: Gill Sans, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    font-style: normal;
 }
 
 .main__column2 {
-  display: flex;
-  justify-content: flex-start;
+    display: flex;
+    justify-content: flex-start;
 
-  max-width: 700px;
+    max-width: 700px;
 }
 
 .bar {
-  height: 20px;
+    height: 20px;
 
-  border-radius: 5px;
+    border-radius: 5px;
 
-  p {
-    font-family: Gotham Pro, sans-serif;
-    font-size: 10px;
-    font-weight: lighter;
-    font-style: normal;
-    line-height: 24px;
+    p {
+        font-family: Gotham Pro, sans-serif;
+        font-size: 10px;
+        font-weight: lighter;
+        font-style: normal;
+        line-height: 24px;
 
-    color: #434348;
-  }
+        color: #434348;
+    }
 }
 
 .bar1 {
-  width: 429px;
-  height: 20px;
+    width: 429px;
+    height: 20px;
 
-  background: #ffb78c;
-  border-radius: 5px;
+    background: #ffb78c;
+    border-radius: 5px;
 }
 
 .bar2 {
-  width: 71.5px;
-  height: 20px;
+    width: 71.5px;
+    height: 20px;
 
-  background: #d0bbf1;
+    background: #d0bbf1;
 }
 
 .bar3 {
-  width: 143px;
-  height: 20px;
+    width: 143px;
+    height: 20px;
 
-  background: #8bb6ce;
+    background: #8bb6ce;
 }
 
 .bar4 {
-  width: 71.5px;
-  height: 20px;
+    width: 71.5px;
+    height: 20px;
 
-  background: #8bb6ce;
+    background: #8bb6ce;
 }
 
 .time {
-  max-width: 51px;
+    max-width: 51px;
 
-  font-family: Gotham Pro, sans-serif;
-  font-size: 16px;
-  font-weight: bold;
-  font-style: normal;
-  line-height: 24px;
-
-  color: #434348;
-}
-
-/* трока с тегами */
-.tagsRow {
-  padding-top: 36px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  p {
     font-family: Gotham Pro, sans-serif;
     font-size: 16px;
     font-weight: bold;
     font-style: normal;
     line-height: 24px;
-  }
+
+    color: #434348;
+}
+
+/* трока с тегами */
+.tagsRow {
+    padding-top: 36px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    p {
+        font-family: Gotham Pro, sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        font-style: normal;
+        line-height: 24px;
+    }
 }
 
 .tags__column2 {
-  display: flex;
+    display: flex;
 }
 
 .tag {
-  margin: 0 12px;
+    margin: 0 12px;
 
-  border-radius: 10px;
+    border-radius: 10px;
 
-  p {
-    font-family: Gill Sans, sans-serif;
-    font-size: 16px;
-    font-weight: lighter;
-    font-style: normal;
-    line-height: 24px;
-  }
+    p {
+        font-family: Gill Sans, sans-serif;
+        font-size: 16px;
+        font-weight: lighter;
+        font-style: normal;
+        line-height: 24px;
+    }
 }
 
 .tag1 {
-  max-width: 56px;
+    max-width: 56px;
 
-  background: #ffb78c;
+    background: #ffb78c;
 }
 
 .tag2 {
-  max-width: 122px;
+    max-width: 122px;
 
-  background: #8bb6ce;
+    background: #8bb6ce;
 }
 
 .tag3 {
-  max-width: 118px;
+    max-width: 118px;
 
-  background: #d0bbf1;
+    background: #d0bbf1;
 }

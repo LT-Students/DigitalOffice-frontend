@@ -1,0 +1,61 @@
+.projects-table {
+    &__card-title {
+        margin-bottom: -10px;
+    }
+
+    &__section {
+        margin-top: 48px;
+    }
+
+    &__group-title {
+        margin-bottom: 26px;
+    }
+
+    &__container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto;
+        grid-gap: 40px;
+    }
+
+    &__project {
+        padding: 32px 32px 20px;
+
+        .regular_text {
+            &:nth-of-type(2) {
+                margin: 20px 0;
+            }
+
+            &:nth-of-type(4) {
+                margin-bottom: 12px;
+            }
+
+            &:last-of-type {
+                margin-top: 17px;
+            }
+        }
+    }
+
+    &__description {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+
+        height: 72px;
+    }
+
+    &__arrow {
+        vertical-align: middle;
+    }
+
+    &__arrow-button {
+        margin-top: 30px;
+
+        cursor: pointer;
+
+        &:hover {
+            color: #808080;
+        }
+    }
+}

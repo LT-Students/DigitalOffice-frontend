@@ -6,6 +6,7 @@ import { Project } from '@data/models/project';
 import { NewCompanyComponent } from '../new-company/new-company.component';
 import { NewDepartmentComponent } from '../new-department/new-department.component';
 import { NewSpecializationComponent } from '../new-specialization/new-specialization.component';
+import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 
 @Component({
   selector: 'do-dashboard',
@@ -115,5 +116,9 @@ export class DashboardComponent implements OnInit {
   }
   onOpenNewSpecialization(): void {
     const dialogRef = this.dialog.open(NewSpecializationComponent, {});
+  }
+
+  onOpenNewEmployee(): void {
+    const dialogRef = this.dialog.open(NewEmployeeComponent, {});
   }
 }

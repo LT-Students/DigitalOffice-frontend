@@ -13,10 +13,13 @@ export class InputComponent implements OnInit {
   @Input() placeholder = '';
   @Input() controlName = '';
   @Input() isEdit = false;
+  @Input() textSize: 'regular' | 'small';
 
   control: FormControl | undefined;
 
-  constructor(private formGroupDir: FormGroupDirective) {}
+  constructor(private formGroupDir: FormGroupDirective) {
+    this.textSize = 'regular';
+  }
 
   ngOnInit() {
     this.control = this.formGroupDir.control?.get(

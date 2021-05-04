@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
 import { Time } from '@angular/common';
 import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
 import { employee } from '../../mock';
+import { DateType } from '@app/models/date.model';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 
 interface ExtendedUser extends IUser {
   about?: string;
@@ -15,7 +17,7 @@ interface ExtendedUser extends IUser {
   office: string;
   workingRate: number;
   workingHours: { startAt: Time; endAt: Time };
-  workingSince: Date;
+  workingSince?: Date;
   birthDate: Date;
   email: string,
   phone: string,
@@ -32,6 +34,11 @@ interface ExtendedUser extends IUser {
   styleUrls: ['./main-info.component.scss'],
 })
 export class MainInfoComponent implements OnInit {
+  @Input() avatar: object;
+  @Input() user: UserInfo;
+  @Input() department: object;
+
+
   public pageId: string;
   public employeeInfoForm: FormGroup;
   public employee: ExtendedUser;
@@ -39,6 +46,7 @@ export class MainInfoComponent implements OnInit {
   public isEditing: boolean;
   public previewPhoto: string;
   public userStatus: typeof UserStatus = UserStatus;
+  public dateType: typeof DateType = DateType;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {
     this.employee = employee;
@@ -60,7 +68,7 @@ export class MainInfoComponent implements OnInit {
       middleName: [''],
       photo: [''],
       status: [null],
-      aboutMe: [''],
+      about: [''],
       jobPosition: ['', Validators.required],
       department: ['', Validators.required],
       location: ['', Validators.required],
@@ -70,7 +78,7 @@ export class MainInfoComponent implements OnInit {
         startAt: [''],
         endAt: [''],
       }),
-      workingSince: [''],
+      workingSince: [null],
       birthDate: [''],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
@@ -80,7 +88,6 @@ export class MainInfoComponent implements OnInit {
       vacationUntil: ['', Validators.required],
       vacationDays: ['', Validators.required],
     });
-    this.fillForm();
 
     this.pageId = this.route.snapshot.paramMap.get('id');
   }
@@ -104,11 +111,12 @@ export class MainInfoComponent implements OnInit {
     return this.employee.id === this.pageId;
   }
 
-  isVisitor() {
+  canEdit() {
     return this.employee.isAdmin || this.isOwner();
   }
 
   toggleEditMode() {
+    this.fillForm();
     this.isEditing = !this.isEditing;
   }
 
@@ -136,6 +144,7 @@ export class MainInfoComponent implements OnInit {
   }
 
   onReset() {
+    this.employeeInfoForm.reset();
     this.toggleEditMode();
   }
 
