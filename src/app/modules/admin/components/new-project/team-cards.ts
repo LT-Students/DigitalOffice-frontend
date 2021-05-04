@@ -45,6 +45,92 @@ export const teamCards: TeamCard[] = [
         profileImgSrc: '',
         level: 'middle',
       },
+      {
+        name: 'Anna',
+        profileImgSrc: '',
+        lead: true,
+        level: 'junior',
+      },
+      {
+        name: 'Mariya',
+        profileImgSrc: '',
+        level: 'junior',
+      },
+      {
+        name: 'Vladimir',
+        profileImgSrc: '',
+        level: 'middle',
+      },{
+        name: 'Anna',
+        profileImgSrc: '',
+        lead: true,
+        level: 'junior',
+      },
+      {
+        name: 'Mariya',
+        profileImgSrc: '',
+        level: 'junior',
+      },
+      {
+        name: 'Vladimir',
+        profileImgSrc: '',
+        level: 'middle',
+      },{
+        name: 'Anna',
+        profileImgSrc: '',
+        lead: true,
+        level: 'junior',
+      },
+      {
+        name: 'Mariya',
+        profileImgSrc: '',
+        level: 'junior',
+      },
+      {
+        name: 'Vladimir',
+        profileImgSrc: '',
+        level: 'middle',
+      },{
+        name: 'Anna',
+        profileImgSrc: '',
+        lead: true,
+        level: 'junior',
+      },
+      {
+        name: 'Mariya',
+        profileImgSrc: '',
+        level: 'junior',
+      },
+      {
+        name: 'Vladimir',
+        profileImgSrc: '',
+        level: 'middle',
+      },{
+        name: 'Anna',
+        profileImgSrc: '',
+        lead: true,
+        level: 'junior',
+      },
+      {
+        name: 'Mariya',
+        profileImgSrc: '',
+        level: 'junior',
+      },
+      {
+        name: 'Vladimir',
+        profileImgSrc: '',
+        level: 'middle',
+      },
+      {
+        name: 'Vladimir',
+        profileImgSrc: '',
+        level: 'middle',
+      },
+      {
+        name: 'Vladimir',
+        profileImgSrc: '',
+        level: 'middle',
+      },
     ],
   },
   {

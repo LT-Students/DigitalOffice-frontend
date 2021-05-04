@@ -1,48 +1,32 @@
-<mat-card class="team-card bg-light_1">
-  <div class="team-card__header">
-    <mat-card-title class="team-card__name h4 text_bold text_dark_1">{{
-      teamCard.name
-    }}</mat-card-title>
-    <div class="team-card__people-count-container">
-      <mat-icon class="team-card__people-count-icon">
-        <img src="assets/svg/member-icon.svg" width="16" height="16" alt="" />
-      </mat-icon>
-      <p class="team-card__people-count regular_text text_dark_1">
-        {{ teamCard.members.length }}
-      </p>
+<div class='team-card'>
+  <div class='team-card__general-info'>
+    <div class='name'>{{ teamCard.name }}</div>
+    <div class='total-number'> {{ teamCard.members.length }}</div>
+  </div>
+  <div class='team-card__button_edit'>
+    <button mat-mini-fab>
+      <img src='../../../../../assets/svg/edit.svg' alt="edit team"/>
+    </button>
+  </div>
+  <div class='team-card__members' #membersSection>
+    <div class='member' *ngFor='let member of visibleMembers'>
+      <!-- TODO: Replace when api ready -->
+      <img class='member__image' src='https://www.fillmurray.com/200/200' width='32' height='32' alt='profile image' />
+    </div>
+    <div class='member member_empty' *ngIf='this.membersCountNotVisible'>
+      <span class='counter'>
+      + {{ this.membersCountNotVisible }}
+      </span>
     </div>
   </div>
-  <p class="team-card__level-labels regular_text">
-    {{ countLevels(teamCard.members) | titlecase }}
-  </p>
-  <div class="team-card__team-members">
-    <button
-      mat-mini-fab
-      class="team-card__new-member mat-mini-fab-override mat-elevation-z0"
-      (click)="addMember(teamCard.members)"
-    >
-      <img
-        src="assets/svg/plus.svg"
-        width="26"
-        height="26"
-        alt="Добавить сотрудника."
-      />
+  <div class='team-card__button_delete'>
+    <button mat-mini-fab>
+      <img src='../../../../../assets/svg/delete-task.svg' alt="delete team"/>
     </button>
-    <ul class="team-card__members-list">
-      <li class="team-card__member" *ngFor="let member of teamCard.members">
-        <a href="#" [title]="member.name">
-          <do-profile-image
-            [src]="member.profileImgSrc"
-            *ngIf="member.profileImgSrc; else iconDummy"
-          ></do-profile-image>
-          <ng-template #iconDummy>
-            <div
-              class="team-card__icon-dummy"
-              [class.team-card__icon-dummy_lead]="member.lead"
-            ></div>
-          </ng-template>
-        </a>
-      </li>
-    </ul>
   </div>
-</mat-card>
+</div>
+
+
+<ng-template #extendedItem>
+
+</ng-template>

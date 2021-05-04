@@ -3,17 +3,15 @@
   К доске проектов
 </a>
 
-<h1 class="h1 h1_dark_2">Новый проект</h1>
-<div class="content-container bg-white">
+<h1 doText color='dark_2'>Новый проект</h1>
+<div class="content-container card">
   <form
     [formGroup]="projectForm"
     autocomplete="off"
     class="project-info__form regular_text"
   >
     <fieldset class="content-container__section">
-      <legend>
-        <h2 class="project-info__title h3">Общая информация</h2>
-      </legend>
+      <h3 class="project-info__title" doText color='dark_2' underlined underlinedSize='sm'>Общая информация</h3>
       <div class="project-info__name">
         <label class="project-info__label" for="name">Название проекта</label>
         <mat-form-field>
@@ -21,26 +19,34 @@
         </mat-form-field>
       </div>
       <div class="project-info__abbr-name">
-        <label class="project-info__label" for="abbr-name"
-          >Сокращенное название</label
-        >
-        <mat-form-field>
-          <input
-            matInput
-            type="text"
-            id="abbr-name"
-            formControlName="shortName"
-          />
-        </mat-form-field>
-      </div>
-      <div class="project-info__department">
         <label class="project-info__label" for="department">Департамент</label>
         <mat-form-field class="mat-form-field_default-select" appearance="none">
-          <mat-select id="department" formControlName="departments">
-            <mat-option
-              *ngFor="let department of departments"
-              [value]="department"
-            >
+          <mat-select id="department" formControlName="department">
+            <mat-option *ngFor="let department of departments" [value]="department">
+              {{ department }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="project-info__name">
+        <label class="project-info__label" for="customer">Заказчик</label>
+        <mat-form-field>
+          <input matInput type="text" id="customer" formControlName="customer" />
+        </mat-form-field>
+      </div>
+      <div class='project-info__date'>
+        <do-datepicker
+            controlName="date"
+            label="Дата запуска"
+            format='full'
+            [isEdit]='true'
+        ></do-datepicker>
+      </div>
+      <div class="project-info__status">
+        <label class="project-info__label" for="status">Статус</label>
+        <mat-form-field class="mat-form-field_default-select" appearance="none">
+          <mat-select id="status" formControlName="status">
+            <mat-option *ngFor="let department of departments" [value]="department">
               {{ department }}
             </mat-option>
           </mat-select>
@@ -58,90 +64,41 @@
         </mat-form-field>
       </div>
     </fieldset>
+    <fieldset class="content-container__section">
+      <h3 class="project-info__title" doText color='dark_2' underlined underlinedSize='sm'>Участие</h3>
+      <div class="project-info__name">
+        <label class="project-info__label" for="name">Название проекта</label>
+        <mat-form-field>
+          <input matInput type="text" id="name" formControlName="name" />
+        </mat-form-field>
+      </div>
+    </fieldset>
+    <fieldset class="content-container__section">
+      <div class='project-info__header'>
+        <div class='left'>
+          <h3 class="project-info__title" doText color='dark_2' underlined underlinedSize='sm'>Команда</h3>
+          <h3 class="project-info__title" doText color='accent_positive'>{{ team.length }} человек</h3>
+        </div>
+        <div class='right'>
+          <button mat-flat-button color="primary" (click)="showTeam()">Посмотреть всю команду</button>
+        </div>
+      </div>
+      <div class="project-info__content">
+          <do-team-card
+              *ngFor="let team of teams"
+              [teamCard]="team"
+          ></do-team-card>
+      </div>
+    </fieldset>
     <section class="team">
-      <h2 class="team__section-title h3 text_bold text_dark_1">Команда</h2>
+      <h3 class="project-info__title" doText color='dark_2' underlined underlinedSize='sm'>Команда</h3>
       <p class="team__members-count regular_text text_dark_1">
         {{ team.length }} участников
       </p>
-      <mat-tab-group
-        class="team__tabs mat-tab-group-override mat-tab-shadow-fix"
-      >
-        <mat-tab label="Список" class="mat-tab-first team__tab">
-          <div class="team-list">
-            <button
-              mat-mini-fab
-              class="team-list__new-member mat-mini-fab-override mat-elevation-z0"
-              (click)="addMember()"
-            >
-              <img
-                src="assets/svg/plus.svg"
-                width="26"
-                height="26"
-                alt="Добавить сотрудника."
-              />
-            </button>
-            <ul class="team-list__members-list">
-              <li class="team-list__member" *ngFor="let member of team">
-                <a href="#" [title]="member.name">
-                  <do-profile-image
-                    [src]="member.profileImgSrc"
-                    *ngIf="member.profileImgSrc; else iconDummy"
-                  ></do-profile-image>
-                  <ng-template #iconDummy>
-                    <div class="team-list__icon-dummy"></div>
-                  </ng-template>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </mat-tab>
-        <mat-tab label="Карточки" class="mat-tab-last team__tab">
-          <div class="team-cards">
-            <do-team-card
-              *ngFor="let team of teams"
-              [teamCard]="team"
-            ></do-team-card>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
     </section>
-    <fieldset class="content-container__section">
-      <legend>
-        <h2 class="project-info__addition__title h3">Дополнительно</h2>
-      </legend>
-      <div class="project-info__addition">
-        <label class="project-info__label regular_text" for="additionInfo"
-          >Информация для команды</label
-        >
-        <mat-form-field appearance="none">
-          <textarea
-            matInput
-            id="additionInfo"
-            formControlName="additionInfo"
-            placeholder=""
-          >
-          </textarea>
-        </mat-form-field>
-      </div>
-      <div>
-        <do-upload></do-upload>
-      </div>
-    </fieldset>
-    <fieldset class="content-container__section">
-      <legend>
-        <h2 class="project-info__addition__title h3">Приватность</h2>
-      </legend>
-      <div class="content-container__section-private">
-        <mat-checkbox
-          class="regular_text"
-          id="checkControl"
-          formControlName="checkControl"
-          placeholder=""
-        >
-          Просмотр проекта только для членов команды</mat-checkbox
-        >
-      </div>
-    </fieldset>
+
+
+
     <div class="content-container__button">
       <button
         mat-stroked-button

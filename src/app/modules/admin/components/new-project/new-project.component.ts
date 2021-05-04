@@ -40,6 +40,9 @@ export class NewProjectComponent implements OnInit {
       checkControl: ['', [Validators.required]],
       additionInfo: [''],
       department: [''],
+      customer: [''],
+      status: [''],
+      picker: [''],
     });
   }
 
@@ -51,6 +54,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   public createProject(): void {}
+  public showTeam(): void {}
   public saveDraft(): void {
     console.log('Сохранить черновик');
   }
