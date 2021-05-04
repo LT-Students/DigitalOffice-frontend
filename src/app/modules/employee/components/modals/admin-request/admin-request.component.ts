@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'do-admin-request',
@@ -6,10 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-request.component.scss']
 })
 export class AdminRequestComponent implements OnInit {
+  textArea = '';
 
-  constructor() { }
+  constructor(private dialogRef: MatDialogRef<AdminRequestComponent>) { }
 
   ngOnInit(): void {
+  }
+
+  closeDialog() {
+    this.dialogRef.close(this.textArea);
   }
 
 }

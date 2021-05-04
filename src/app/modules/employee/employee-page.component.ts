@@ -10,6 +10,7 @@ import { Project } from '@data/models/project';
 import { tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { activeProject, closedProject, courses, institutes, skills } from './mock';
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
 
@@ -59,6 +60,7 @@ export class EmployeePageComponent implements OnInit {
     private userService: UserService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
   ) {
     this.skills = skills;
     this.institutes = institutes;
@@ -103,8 +105,18 @@ export class EmployeePageComponent implements OnInit {
     ];
   }
 
-  openDialog(): void {
+  openRequestDialog(): void {
     const dialogRef = this.dialog.open(AdminRequestComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      this.snackBar.open(result, 'accept');
+    });
+  }
+
+  openArchiveDialog(): void {
+    const dialogRef = this.dialog.open(AdminRequestComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      this.snackBar.open(result, 'accept');
+    });
   }
 
 }
