@@ -11,7 +11,7 @@ import { tap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { activeProject, closedProject, courses, institutes, skills } from './mock';
-import { AdminRequestComponent } from './components/admin-request/admin-request.component';
+import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
