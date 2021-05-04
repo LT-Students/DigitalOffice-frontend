@@ -14,7 +14,9 @@ export class BreadcrumbsComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    navigateTo(route: string) {
-        this.router.navigate([route]);
+    onRouteClicked(route: string) {
+        if (route) {
+          this.router.navigate([route]);
+        }
     }
 }
