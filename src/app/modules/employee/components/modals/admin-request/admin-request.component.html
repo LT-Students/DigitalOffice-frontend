@@ -24,7 +24,7 @@
         </button>
         <button
             mat-flat-button
-            [mat-dialog-close]='textArea'
+            (click)='closeDialog()'
             [disabled]='textArea.length === 0'
             type="submit"
             class="admin-request__button"
