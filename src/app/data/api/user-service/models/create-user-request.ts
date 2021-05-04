@@ -50,6 +50,11 @@ export interface CreateUserRequest {
   positionId?: null | string;
 
   /**
+   * User rate
+   */
+  rate: number;
+
+  /**
    * Time when the user started working for the company.
    */
   startWorkingAt: string;

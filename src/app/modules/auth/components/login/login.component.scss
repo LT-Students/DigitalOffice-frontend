@@ -14,6 +14,29 @@
   }
 }
 
+.nav-link__login {
+  position: absolute;
+  top: 33px;
+  left: 50px;
+
+  display: flex;
+  align-items: center;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  opacity: 0.23;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.nav-link__arrow-back {
+  margin-right: 20px;
+}
+
 .disabled {
   opacity: 0.5;
 }
