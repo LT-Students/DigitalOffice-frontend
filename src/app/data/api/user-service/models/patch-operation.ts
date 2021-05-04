@@ -10,7 +10,7 @@ export interface PatchOperation {
   /**
    * A JSON-Pointer.
    */
-  path: '/FirstName' | '/LastName' | '/MiddleName' | '/AvatarImage' | '/Status' | '/Certificates';
+  path: '/FirstName' | '/LastName' | '/MiddleName' | '/AvatarImage' | '/Status' | '/Certificates' | '/Rate';
 
   /**
    * The value to be used within the operations.

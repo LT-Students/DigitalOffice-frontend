@@ -1,29 +1,29 @@
 .-underlined {
-  position: relative;
+    position: relative;
 
-  &::after {
-    content: '';
+    &::after {
+        content: '';
 
-    position: absolute;
+        position: absolute;
 
-    margin-bottom: 35px;
+        margin-bottom: 35px;
 
-    display: block;
+        display: block;
 
-    height: 4px;
+        height: 4px;
 
-    background-color: $accent_color_bright;
-  }
+        background-color: $accent_color_bright;
+    }
 }
 
 .-underlined-sm {
-  &::after {
-    width: 50px;
-  }
+    &::after {
+        width: 50px;
+    }
 }
 
 .-underlined-l {
-  &::after {
-    width: 100%;
-  }
+    &::after {
+        width: 100%;
+    }
 }

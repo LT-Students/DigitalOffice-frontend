@@ -8,9 +8,9 @@ $theme-warn: mat-palette($mat-red);
 $app-theme: mat-light-theme($theme-primary, $theme-accent, $mat-red);
 
 $custom-typography: mat-typography-config(
-  $font-family: 'Gotham Pro,"GillSansWGL", sans-serif',
-  $input: mat-typography-level(16px, 1.5, 400, '"GillSansWGL", sans-serif'),
-  $button: mat-typography-level(16px, 24px, 400, '"GillSansWGL", sans-serif'),
+    $font-family: 'Gotham Pro,"GillSansWGL", sans-serif',
+    $input: mat-typography-level(16px, 1.5, 400, '"GillSansWGL", sans-serif'),
+    $button: mat-typography-level(16px, 24px, 400, '"GillSansWGL", sans-serif'),
 );
 
 @include angular-material-theme($app-theme);

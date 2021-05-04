@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.3",
+    "version": "1.2.4",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -615,7 +615,8 @@
           "Password",
           "Status",
           "StartWorkingAt",
-          "Communications"
+          "Communications",
+          "Rate"
         ],
         "properties": {
           "FirstName": {
@@ -639,6 +640,12 @@
             "type": "string",
             "example": "2021-01-21T00:00:00.000Z",
             "format": "date"
+          },
+          "Rate": {
+            "description": "User rate",
+            "type": "number",
+            "example": 0.25,
+            "format": "float"
           },
           "Status": {
             "$ref": "#/components/schemas/UserStatus"
@@ -726,7 +733,8 @@
               "/MiddleName",
               "/AvatarImage",
               "/Status",
-              "/Certificates"
+              "/Certificates",
+              "/Rate"
             ]
 
           },
@@ -868,6 +876,9 @@
           },
           "StartWorkingAt": {
             "type": "string"
+          },
+          "Rate": {
+            "type": "number"
           }
         }
       },

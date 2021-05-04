@@ -11,6 +11,11 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
+import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
+import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
+import { UserStatus } from '@app/models/user-status.model';
+import { CommunicationType } from '@data/api/user-service/models';
+import { UserService } from '@app/services/user.service';
 
 export const DATE_FORMAT = {
   parse: {
@@ -49,7 +54,7 @@ export class NewEmployeeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private positionApiService: PositionApiService,
-    private userApiService: UserApiService,
+    private userService: UserService,
     private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<any>
   ) {
@@ -86,28 +91,10 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   createEmployee(): void {
-    this.userApiService
-      .createUser({
-        body: {
-          lastName: this.userForm.controls['lastName'].value,
-          firstName: this.userForm.controls['firstName'].value,
-          middleName: this.userForm.controls['middleName'].value,
-          positionId: this.userForm.controls['positionId'].value,
-          // city: this.userForm.controls['city'].value,
-          // sex: this.userForm.controls['sex'].value,
-          // birthDate: this.userForm.controls['birthDate'].value,
-          startWorkingAt: this.userForm.controls['startWorkingAt'].value,
-          // rate: this.userForm.controls['rate'].value,
-          departmentId: this.userForm.controls['departmentId'].value,
-          // office: this.userForm.controls['office'].value,
-          communications: this.userForm.controls['email'].value,
-          password: this.userForm.controls['password'].value,
-          isAdmin: true,
-          // isActive: true,
-        },
-      })
-      .subscribe(
-        (res) => {
+    const params = this._convertFormDataToCreateUserParams();
+
+    this.userService.createUser(params).subscribe(
+        () => {
           this.snackBar.open('New user added successfully', 'done', {
             duration: 3000,
           });
@@ -116,16 +103,31 @@ export class NewEmployeeComponent implements OnInit {
           this.snackBar.open(error.error.Message, 'accept');
           throw error;
         }
-      );
-    this.snackBar.open('New user added successfully', 'done', {
-      duration: 3000,
-    });
-    this.dialogRef.close();
+    );
   }
+
 
   changeWorkingRate(step: number): void {
     this.userForm.patchValue({
       rate: +this.userForm.get('rate').value + step,
     });
+  }
+
+  private _convertFormDataToCreateUserParams(): CreateUserRequest {
+    const communications: CommunicationInfo[] = [{type: CommunicationType.Email, value: this.userForm.get('email').value}];
+
+    const params: CreateUserRequest = {
+      firstName: this.userForm.get('firstName').value as string,
+      lastName: this.userForm.get('lastName').value as string,
+      middleName: this.userForm.get('middleName').value as string,
+      password: this.userForm.get('password').value as string,
+      rate: this.userForm.get('rate').value as number,
+      isAdmin: true,
+      communications: communications,
+      startWorkingAt: new Date().toDateString(),
+      status: UserStatus.WorkFromHome
+    }
+
+    return params;
   }
 }
