@@ -108,7 +108,9 @@ export class EmployeePageComponent implements OnInit {
   openRequestDialog(): void {
     const dialogRef = this.dialog.open(AdminRequestComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
-      this.snackBar.open(result, 'accept');
+      if (result.length > 0) {
+        this.snackBar.open(result, 'accept');
+      }
     });
   }
 
