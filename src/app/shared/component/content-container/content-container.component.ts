@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '@app/services/user.service';
-import { IUser } from '@data/models/user';
-import { UserInfo, UserResponse } from '@data/api/user-service/models';
+import { UserInfo } from '@data/api/user-service/models';
 
 @Component({
   selector: 'do-content-container',
@@ -12,15 +11,14 @@ import { UserInfo, UserResponse } from '@data/api/user-service/models';
 export class ContentContainerComponent implements OnInit {
   user: UserInfo;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+
+  }
 
   ngOnInit() {
-    this.user = this.userService.getCurrentUser().user;
+    this.user = this.userService.getCurrentUser();
     if (!this.user) {
-      this.user = {
-        firstName: 'сотрудник',
-        lastName: 'сотрудник',
-      };
+      this.user = { firstName: 'сотрудник', lastName: 'сотрудник' };
     }
   }
 }

@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from '@app/services/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { UserResponse as User } from '@data/api/user-service/models/user-response';
+import { UserResponse } from '@data/api/user-service/models/user-response';
 
 @Component({
   selector: 'do-login',
@@ -44,9 +44,9 @@ export class LoginComponent implements OnInit {
     this.authService
       .login(authenticationRequest)
       .pipe(
-        switchMap((val: AuthenticationResponse) => {
+        switchMap((authResponse: AuthenticationResponse) => {
           this.isWaiting = false;
-          return this.userService.getUser(val.userId);
+          return this.userService.getUser(authResponse.userId);
         }),
         catchError((error) => {
           this.loginError = error.message;
@@ -55,8 +55,8 @@ export class LoginComponent implements OnInit {
         })
       )
       .subscribe(
-        (userInfo: User) => {
-          if (userInfo.user.isAdmin) {
+        (user: UserResponse) => {
+          if (user.user.isAdmin) {
             this.router.navigate(['/admin/dashboard']);
           } else {
             this.router.navigate(['/user/attendance']);

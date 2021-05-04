@@ -77,7 +77,7 @@ export class EmployeePageComponent implements OnInit {
     const user = this.userService.getCurrentUser();
 
     this.userProjects = this._getUserProjects();
-    this.userService.getUser(user.user.id).subscribe((userResponse: UserResponse) => {
+    this.userService.getUser(user.id).subscribe((userResponse: UserResponse) => {
       console.log(userResponse);
       this.userInfo = userResponse;
 

@@ -1,19 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription } from 'rxjs';
+import { of, Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { UsersResponse } from '@data/api/user-service/models/users-response';
-import { UserInfo } from '@data/api/user-service/models/user-info';
 import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
+import { UsersResponse } from '@data/api/user-service/models/users-response';
+import { switchMap } from 'rxjs/operators';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 
 @Component({
   selector: 'do-new-department',
@@ -64,14 +60,12 @@ export class NewDepartmentComponent implements OnInit {
 
   getDirectors(): void {
     //Rework when will api with specialization sort
-    this.getDirectorsSubscription = this.userApiService
-      .findUsers({
-        skipCount: 0,
-        takeCount: 50,
-      })
-      .subscribe((data: UsersResponse) => {
-        this.directors = data.users;
-      });
+    this.getDirectorsSubscription = this.userApiService.findUsers({
+      skipCount: 0,
+      takeCount: 50,
+    }).pipe(
+        switchMap((usersResponse: UsersResponse) => of(usersResponse.users)),
+    ).subscribe((data: UserInfo[]) => this.directors = data);
   }
 
   postDepartment(): void {
