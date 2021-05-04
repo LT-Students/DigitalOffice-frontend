@@ -1,15 +1,25 @@
 @import '../../../../stylesheets/base/variables';
 
-.datepicker__form-field {
-  input {
-    display: none;
-  }
+.datepicker {
+    &__form-field {
+        margin: -1em 0;
 
-  p {
-    margin: 6px 0 6px 12px;
-  }
+        width: 100%;
+    }
+
+    &__label {
+        margin-bottom: 4px;
+
+        display: block;
+    }
+
+    &__required {
+        margin-left: 2px;
+
+        vertical-align: middle;
+    }
 }
 
 .small_text {
-  margin: 14px 0 3px 0;
+    margin: 14px 0 3px 0;
 }
