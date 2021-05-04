@@ -21,17 +21,16 @@ export class UserService {
   getUser(userId: string): Observable<UserResponse> {
     return this.userApiService.getUser({ userId: userId }).pipe(
       tap((user: UserResponse) => {
-        this.localStorageService.set('user', user);
+        /*Не думаю, что нужно класть данные пользователя в локальное хранилище
+        * поэтому предлагаю класть только основную информацию */
+        this.localStorageService.set('user', user.user);
       })
     );
   }
 
   isAdmin(): boolean {
     const user: UserInfo = this.localStorageService.get('user');
-    if (user) {
-      return user.isAdmin;
-    }
-    return false;
+    return (user) ? user.isAdmin : false;
   }
 
   getCurrentUser(): UserInfo | null {

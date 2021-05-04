@@ -45,9 +45,9 @@ export class SignupComponent implements OnInit {
         this.authService.signUp$({
             login: login, password: password, userId: this.userId,
         }).pipe(
-            switchMap((val: AuthenticationResponse) => {
+            switchMap((authResponse: AuthenticationResponse) => {
                 this.isWaiting = false;
-                return this.userService.getUser(val.userId);
+                return this.userService.getUser(authResponse.userId);
             }),
             catchError((error) => {
                 this.loginForm.setErrors({

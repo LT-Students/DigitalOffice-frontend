@@ -17,7 +17,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./new-employee.component.scss'],
 })
 export class NewEmployeeComponent implements OnInit {
-  public user: User;
+  public user: UserInfo;
   public message: string;
   public imagePath;
   public imgURL: any;
