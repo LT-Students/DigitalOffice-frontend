@@ -11,6 +11,7 @@ import { MainInfoComponent } from './components/main-info/main-info.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
+import { ArchiveComponent } from './components/modals/archive/archive.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AdminRequestComponent } from './components/modals/admin-request/admin-r
 		MainInfoComponent,
 		ProjectsComponent,
 		BreadcrumbsComponent,
-		AdminRequestComponent
+		AdminRequestComponent,
+		ArchiveComponent
 	],
 	imports: [
 		CommonModule,

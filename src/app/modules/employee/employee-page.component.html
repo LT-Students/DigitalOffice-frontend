@@ -1,7 +1,7 @@
 <div class="employee-page__header flex">
     <do-breadcrumbs [paths]="paths"></do-breadcrumbs>
     <div
-        (click)="openRequestDialog()"
+        (click)="userInfo.user.isAdmin ? openRequestDialog() : openArchiveDialog()"
         class="employee-page__button flex"
         doText
         color="gray1"

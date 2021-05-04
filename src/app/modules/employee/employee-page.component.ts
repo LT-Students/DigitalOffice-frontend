@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { activeProject, closedProject, courses, institutes, skills } from './mock';
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
+import { ArchiveComponent } from './components/modals/archive/archive.component';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -115,9 +116,11 @@ export class EmployeePageComponent implements OnInit {
   }
 
   openArchiveDialog(): void {
-    const dialogRef = this.dialog.open(AdminRequestComponent, {});
+    const dialogRef = this.dialog.open(ArchiveComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
-      this.snackBar.open(result, 'accept');
+      if (result) {
+        this.snackBar.open('Карточка успешно добавлена в архив', 'accept');
+      }
     });
   }
 

@@ -1,0 +1,22 @@
+<mat-dialog-content class="admin-request">
+  <h3 doText color="dark_1">Добавить эту карточку в архив?</h3>
+  <mat-dialog-actions align='center'>
+    <button
+      mat-flat-button
+      mat-dialog-close
+      type="button"
+      class="admin-request__button"
+    >
+      Отменить
+    </button>
+    <button
+      mat-flat-button
+      [mat-dialog-close]='true'
+      type="submit"
+      class="admin-request__button"
+      color="primary"
+    >
+      Добавить
+    </button>
+  </mat-dialog-actions>
+</mat-dialog-content>
