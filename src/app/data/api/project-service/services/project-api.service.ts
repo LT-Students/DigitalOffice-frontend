@@ -10,9 +10,10 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { EditProjectRequest } from '../models/edit-project-request';
-import { Project } from '../models/project';
-import { ProjectExpandedRequest } from '../models/project-expanded-request';
 import { ProjectExpandedResponse } from '../models/project-expanded-response';
+import { ProjectInfo } from '../models/project-info';
+import { ProjectRequest } from '../models/project-request';
+import { ProjectsResponse } from '../models/projects-response';
 
 @Injectable({
   providedIn: 'root',
@@ -26,21 +27,51 @@ export class ProjectApiService extends BaseService {
   }
 
   /**
-   * Path part for operation getProjects
+   * Path part for operation findprojects
    */
-  static readonly GetProjectsPath = '/project/getProjects';
+  static readonly FindprojectsPath = '/project/find';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getProjects()` instead.
+   * To access only the response body, use `findprojects()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getProjects$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<Project>>> {
+  findprojects$Response(params: {
 
-    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectsPath, 'get');
+    /**
+     * The part that the project name should contain.
+     */
+    name?: string;
+
+    /**
+     * The part that the project shortname should contain.
+     */
+    shortname?: string;
+
+    /**
+     * The part that should be contained in the name of the department to which the project belongs.
+     */
+    departmentname?: string;
+
+    /**
+     * Number of pages to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of users on one page.
+     */
+    takeCount: number;
+  }): Observable<StrictHttpResponse<ProjectsResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindprojectsPath, 'get');
     if (params) {
+      rb.query('name', params.name, {});
+      rb.query('shortname', params.shortname, {});
+      rb.query('departmentname', params.departmentname, {});
+      rb.query('skipCount', params.skipCount, {});
+      rb.query('takeCount', params.takeCount, {});
     }
 
     return this.http.request(rb.build({
@@ -49,22 +80,47 @@ export class ProjectApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<Project>>;
+        return r as StrictHttpResponse<ProjectsResponse>;
       })
     );
   }
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getProjects$Response()` instead.
+   * To access the full response (for headers, for example), `findprojects$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getProjects(params?: {
-  }): Observable<Array<Project>> {
+  findprojects(params: {
 
-    return this.getProjects$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<Project>>) => r.body as Array<Project>)
+    /**
+     * The part that the project name should contain.
+     */
+    name?: string;
+
+    /**
+     * The part that the project shortname should contain.
+     */
+    shortname?: string;
+
+    /**
+     * The part that should be contained in the name of the department to which the project belongs.
+     */
+    departmentname?: string;
+
+    /**
+     * Number of pages to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of users on one page.
+     */
+    takeCount: number;
+  }): Observable<ProjectsResponse> {
+
+    return this.findprojects$Response(params).pipe(
+      map((r: StrictHttpResponse<ProjectsResponse>) => r.body as ProjectsResponse)
     );
   }
 
@@ -123,24 +179,24 @@ export class ProjectApiService extends BaseService {
   }
 
   /**
-   * Path part for operation createNewProject
+   * Path part for operation createProject
    */
-  static readonly CreateNewProjectPath = '/project/createNewProject';
+  static readonly CreateProjectPath = '/project/create';
 
   /**
    * Creating new project.
    * *  __The user must have access right__ -- Add/Edit/Remove projects.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `createNewProject()` instead.
+   * To access only the response body, use `createProject()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createNewProject$Response(params: {
-    body: ProjectExpandedRequest
-  }): Observable<StrictHttpResponse<string>> {
+  createProject$Response(params: {
+    body: ProjectRequest
+  }): Observable<StrictHttpResponse<ProjectInfo>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.CreateNewProjectPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.CreateProjectPath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
@@ -151,7 +207,7 @@ export class ProjectApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return r as StrictHttpResponse<ProjectInfo>;
       })
     );
   }
@@ -161,43 +217,43 @@ export class ProjectApiService extends BaseService {
    * *  __The user must have access right__ -- Add/Edit/Remove projects.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `createNewProject$Response()` instead.
+   * To access the full response (for headers, for example), `createProject$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createNewProject(params: {
-    body: ProjectExpandedRequest
-  }): Observable<string> {
+  createProject(params: {
+    body: ProjectRequest
+  }): Observable<ProjectInfo> {
 
-    return this.createNewProject$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+    return this.createProject$Response(params).pipe(
+      map((r: StrictHttpResponse<ProjectInfo>) => r.body as ProjectInfo)
     );
   }
 
   /**
-   * Path part for operation editProjectById
+   * Path part for operation editProject
    */
-  static readonly EditProjectByIdPath = '/project/editProjectById';
+  static readonly EditProjectPath = '/project/edit';
 
   /**
    * Editing specific project by Id.
    * *  __The user must have access right__ -- Add/Edit/Remove projects.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `editProjectById()` instead.
+   * To access only the response body, use `editProject()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editProjectById$Response(params: {
+  editProject$Response(params: {
 
     /**
      * Project global unique identifier.
      */
     projectId: string;
-    body: EditProjectRequest
-  }): Observable<StrictHttpResponse<string>> {
+    body: Array<EditProjectRequest>
+  }): Observable<StrictHttpResponse<boolean>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.EditProjectByIdPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, ProjectApiService.EditProjectPath, 'patch');
     if (params) {
       rb.query('projectId', params.projectId, {});
       rb.body(params.body, 'application/json');
@@ -209,7 +265,7 @@ export class ProjectApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return (r as HttpResponse<any>).clone({ body: String((r as HttpResponse<any>).body) === 'true' }) as StrictHttpResponse<boolean>;
       })
     );
   }
@@ -219,21 +275,21 @@ export class ProjectApiService extends BaseService {
    * *  __The user must have access right__ -- Add/Edit/Remove projects.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `editProjectById$Response()` instead.
+   * To access the full response (for headers, for example), `editProject$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editProjectById(params: {
+  editProject(params: {
 
     /**
      * Project global unique identifier.
      */
     projectId: string;
-    body: EditProjectRequest
-  }): Observable<string> {
+    body: Array<EditProjectRequest>
+  }): Observable<boolean> {
 
-    return this.editProjectById$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+    return this.editProject$Response(params).pipe(
+      map((r: StrictHttpResponse<boolean>) => r.body as boolean)
     );
   }
 

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.2",
+    "version": "1.3.4",
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments."
   },
@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/position/getPositionById": {
+    "/position/get": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -55,7 +55,7 @@
         }
       }
     },
-    "/position/getPositionsList": {
+    "/position/find": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -131,7 +131,7 @@
         }
       }
     },
-    "/position/editPosition": {
+    "/position/edit": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -166,7 +166,7 @@
         }
       }
     },
-    "/position/disablePositionById": {
+    "/position/disable": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -278,6 +278,30 @@
           },
           "404": {
             "description": "Not found.\n* Department with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/department/find": {
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "get",
+        "description": "Returns finded departments.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned departments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentResponse"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -439,6 +463,78 @@
             "type": "string",
             "format": "uuid",
             "description": "Specific position id."
+          }
+        }
+      },
+      "DepartmentResponse": {
+        "type": "object",
+        "properties": {
+          "Count": {
+            "type": "integer",
+            "description": "Total number of all departments."
+          },
+          "Departments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DepartmentInfo": {
+        "type": "object",
+        "description": "Specific department data.",
+        "properties": {
+          "Id": {
+            "description": "Department id.",
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "description": "Department name.",
+            "type": "string"
+          },
+          "Description": {
+            "description": "Department description.",
+            "type": "string"
+          },
+          "Director": {
+            "$ref": "#/components/schemas/User"
+          },
+          "Users": {
+            "type": "array",
+            "description": "Workers of this department.",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "description": "User data.",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "FirstName": {
+            "type": "string",
+            "example": "Spartak"
+          },
+          "LastName": {
+            "type": "string",
+            "example": "Ryabtsev"
+          },
+          "MiddleName": {
+            "type": "string",
+            "example": "Alexandrovich"
           }
         }
       }

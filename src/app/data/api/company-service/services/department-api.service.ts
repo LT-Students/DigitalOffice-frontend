@@ -11,6 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { AddDepartmentRequest } from '../models/add-department-request';
 import { Department } from '../models/department';
+import { DepartmentResponse } from '../models/department-response';
 
 @Injectable({
   providedIn: 'root',
@@ -130,6 +131,53 @@ export class DepartmentApiService extends BaseService {
 
     return this.get$Response(params).pipe(
       map((r: StrictHttpResponse<Department>) => r.body as Department)
+    );
+  }
+
+  /**
+   * Path part for operation get_1
+   */
+  static readonly Get_1Path = '/department/find';
+
+  /**
+   * Returns finded departments.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `get_1()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  get_1$Response(params?: {
+  }): Observable<StrictHttpResponse<Array<DepartmentResponse>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.Get_1Path, 'get');
+    if (params) {
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<DepartmentResponse>>;
+      })
+    );
+  }
+
+  /**
+   * Returns finded departments.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `get_1$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  get_1(params?: {
+  }): Observable<Array<DepartmentResponse>> {
+
+    return this.get_1$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<DepartmentResponse>>) => r.body as Array<DepartmentResponse>)
     );
   }
 

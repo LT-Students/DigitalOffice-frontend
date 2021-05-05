@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface ProjectFile {
+export interface ProjectFileInfo {
   fileId?: string;
   projectId?: string;
 }

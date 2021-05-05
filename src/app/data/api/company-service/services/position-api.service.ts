@@ -27,7 +27,7 @@ export class PositionApiService extends BaseService {
   /**
    * Path part for operation getPositionById
    */
-  static readonly GetPositionByIdPath = '/position/getPositionById';
+  static readonly GetPositionByIdPath = '/position/get';
 
   /**
    * Returns position by id.
@@ -85,7 +85,7 @@ export class PositionApiService extends BaseService {
   /**
    * Path part for operation getPositionsList
    */
-  static readonly GetPositionsListPath = '/position/getPositionsList';
+  static readonly GetPositionsListPath = '/position/find';
 
   /**
    * Returns all added positions.
@@ -182,7 +182,7 @@ export class PositionApiService extends BaseService {
   /**
    * Path part for operation editPosition
    */
-  static readonly EditPositionPath = '/position/editPosition';
+  static readonly EditPositionPath = '/position/edit';
 
   /**
    * Edits a specified position.
@@ -232,7 +232,7 @@ export class PositionApiService extends BaseService {
   /**
    * Path part for operation disablePositionById
    */
-  static readonly DisablePositionByIdPath = '/position/disablePositionById';
+  static readonly DisablePositionByIdPath = '/position/disable';
 
   /**
    * Deletes the specified position.

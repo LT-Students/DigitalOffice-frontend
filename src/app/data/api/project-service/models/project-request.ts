@@ -1,16 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ProjectStatusType } from './project-status-type';
+import { ProjectUser } from './project-user';
 export interface ProjectRequest {
-
-  /**
-   * Project closed reason. May be empty if the project is not closed.
-   */
-  closedReason?: number;
   departmentId: string;
-  description: string;
-  id?: string;
-  isActive: boolean;
+  description?: string;
   name: string;
+  shortDescription?: string;
   shortName: string;
+  status?: ProjectStatusType;
+  users?: Array<ProjectUser>;
 }
 

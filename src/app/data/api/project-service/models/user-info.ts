@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface User {
+export interface UserInfo {
   addedOn?: any;
   firstName?: string;
 

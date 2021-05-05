@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface Role {
-  description?: string;
+export interface DepartmentInfo {
   id?: string;
   name?: string;
 }
