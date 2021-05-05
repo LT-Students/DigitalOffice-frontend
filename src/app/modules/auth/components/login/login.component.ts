@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loginError: string;
   isWaiting = false;
+  isSignUp = false;
 
   constructor(
     private authService: AuthService,

@@ -1,5 +1,5 @@
 <form class='form' [formGroup]='loginForm' (ngSubmit)='signUp()' autocomplete='off'>
-    <label class='form__title h1 text_white'>trrak!</label>
+    <label class='form__title h1 text_white'>Digital Office</label>
     <div class="form__description"><p class="regular_text">Придумайте логин и введите пароль из письма</p></div>
     <div class='form__error' *ngIf='loginForm.hasError("busy") || (loginForm.touched && loginForm.invalid)'>
         <small *ngIf='login.touched && login.invalid'
