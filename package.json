@@ -12,11 +12,15 @@
     "branch": "sh .githooks/pre-commit",
     "prettier": "prettier --write src/**/*.{ts,scss}",
     "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
-    "generate.time": "ng-openapi-gen -c swagger/config/time.json",
-    "generate.project": "ng-openapi-gen -c swagger/config/project.json",
-    "generate.user": "ng-openapi-gen -c swagger/config/user.json",
     "generate.company": "ng-openapi-gen -c swagger/config/company.json",
-    "generate-api": "npm run generate.auth && npm run generate.time && npm run generate.project && npm run generate.user && npm run generate.company"
+    "generate.file": "ng-openapi-gen -c swagger/config/file.json",
+    "generate.message": "ng-openapi-gen -c swagger/config/message.json",
+    "generate.news": "ng-openapi-gen -c swagger/config/news.json",
+    "generate.project": "ng-openapi-gen -c swagger/config/project.json",
+    "generate.rights": "ng-openapi-gen -c swagger/config/rights.json",
+    "generate.time": "ng-openapi-gen -c swagger/config/time.json",
+    "generate.user": "ng-openapi-gen -c swagger/config/user.json",
+    "generate-api": "node swagger/generate.js"
   },
   "private": true,
   "dependencies": {
