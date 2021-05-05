@@ -28,6 +28,10 @@ export class AuthService {
     );
   }
 
+  logout(){
+      this._removeCredentialsFromLocalStorage();
+  }
+
     isAuthenticated(): boolean {
         const token = this.localStorageService.get('access_token');
         return token != null;
@@ -43,4 +47,9 @@ export class AuthService {
         this.localStorageService.set('access_token', authenticationInfo.token);
         this.localStorageService.set('userId', authenticationInfo.userId);
     }
+
+    private _removeCredentialsFromLocalStorage() {
+      this.localStorageService.remove('access_token');
+      this.localStorageService.remove('userId');
+  }
 }

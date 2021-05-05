@@ -21,6 +21,7 @@
     </div>
     <div class="header-navigation__logo">
       <a class="h3 text-dark_2" routerLink="/user/attendance">Digital Office</a>
+
     </div>
     <nav class="header-navigation__links">
       <a routerLink="/user/attendance" class="regular_text text-gray"
@@ -53,6 +54,9 @@
         class="header__notification__light"
         *ngIf="hasNotification"
       />
+      
     </div>
+    <div><a  routerLink ="/auth/login"  (click) ="doLogout()" 
+      ><span class="regular_text  text-gray">Выход</span></a></div>
   </div>
 </div>

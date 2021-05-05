@@ -1,4 +1,6 @@
 import { Input, Component, OnInit } from '@angular/core';
+import { AuthApiService } from '@data/api/auth-service/services';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'do-header',
@@ -7,10 +9,20 @@ import { Input, Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   hasNotification = false;
+  //_authService:AuthService;
   @Input() userName;
   @Input() magnifierLocation: 'right' | 'left' = 'left';
 
-  constructor() {}
+  constructor( private authService:AuthService ) {
+
+  }
 
   ngOnInit() {}
+
+  doLogout(){
+    console.log("do logout");
+    this.authService.logout();
+  }
+
+  
 }
