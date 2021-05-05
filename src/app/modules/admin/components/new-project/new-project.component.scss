@@ -1,172 +1,47 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-.h1 {
-    margin: 32px 0 31px;
-}
-
-.h1_dark_2,
-.h3 {
-    color: $dark_2;
-}
-
-.content-container {
+.project-info {
+    margin-bottom: 45px;
     padding: 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     width: 100%;
 
-    border-radius: 5px;
-
-    textarea {
-        padding-top: 13px;
-
-        height: 96px;
-    }
-
     &__section {
-        border: none;
+        margin-bottom: 40px;
 
-        &-private {
-            margin-bottom: 52px;
-        }
-    }
+        width: 100%;
 
-    &__button {
-        display: flex;
-        justify-content: center;
-    }
-
-    .team {
-        position: relative;
-
-        padding-top: 42px;
-        padding-bottom: 39px;
-
-        &__section-title {
-            padding-bottom: 5px;
-        }
-
-        &__members-count {
-            position: absolute;
-            top: 99px;
-            right: 0;
-        }
-
-        &__tabs {
-            margin-top: 25px;
-        }
-
-        .team-list {
-            margin-top: 10px;
+        .section__title {
+            margin-bottom: 36px;
 
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
+            justify-content: space-between;
+            flex-flow: wrap;
 
-            &__members-list {
-                margin-bottom: 0;
-
+            &_left {
                 display: flex;
-                justify-content: flex-start;
-                align-items: flex-end;
-
-                list-style: none;
-                flex-wrap: wrap;
-            }
-
-            &__new-member {
-                margin-top: 13px;
-                margin-right: 13px;
-
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                width: 48px;
-                height: 48px;
-                align-self: flex-start;
-            }
-
-            &__member {
-                position: relative;
-
-                margin-top: 12px;
-                margin-right: 12px;
-            }
-
-            &__icon-dummy {
-                width: 48px;
-                height: 48px;
-
-                background-color: $gray;
-                border-radius: 50%;
-            }
-
-            &__icon-dummy_lead {
-                &::before {
-                    @extend .h6;
-                    @extend .text_white;
-                    content: 'lead';
-
-                    position: absolute;
-                    top: -6px;
-                    right: -14px;
-
-                    padding: 0 3px;
-
-                    text-align: center;
-                    text-transform: uppercase;
-
-                    background-color: $blue_3;
-                    border-radius: 6px;
-                }
             }
         }
-
-        .team-cards {
-            margin: 40px 4px 4px 4px;
-
-            display: grid;
-            column-gap: 32px;
-            grid-auto-rows: min-content;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            row-gap: 20px;
-        }
-    }
-}
-
-.project-info {
-    margin-bottom: 45px;
-
-    &__title {
-        margin-bottom: 39px;
     }
 
     &__name {
-        margin-right: 60px;
-
         display: inline-block;
 
         width: 68%;
     }
 
-    &__abbr-name {
-        display: inline-block;
-
-        width: 25.2%;
-    }
-
     &__department {
-        margin-bottom: 23px;
-
         display: inline-block;
 
         width: 68%;
     }
 
     &__date {
-        margin-bottom: 23px;
-
         display: inline-block;
 
         width: 68%;
@@ -177,21 +52,12 @@
     }
 
     &__name,
-    &__abbr-name,
     &__department,
     &__description,
     &__addition,
     &__date {
         mat-form-field {
             width: 100%;
-        }
-    }
-
-    &__addition {
-        padding-bottom: 18px;
-
-        &__title {
-            padding-bottom: 15px;
         }
     }
 
@@ -205,14 +71,11 @@
         color: $dark_1;
     }
 
-    &__content {
-        .team-area {
-            margin-bottom: 12px;
+    &__actions {
+        display: flex;
+        justify-content: space-between;
 
-            &:last-of-type {
-                margin-bottom: 0;
-            }
-        }
+        width: 30%;
     }
 }
 
@@ -226,8 +89,4 @@ textarea#additionInfo {
     padding: 0 40px !important;
 
     min-width: 0 !important;
-}
-
-::ng-deep.mat-flat-button.mat-button-base.mat-primary {
-    margin-left: 24px;
 }
