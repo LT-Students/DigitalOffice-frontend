@@ -1,9 +1,9 @@
 {
   "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
-  "input": "swagger/TimeService.json",
-  "output": "src/app/data/api/time-service",
+  "input": "swagger/FileService.json",
+  "output": "src/app/data/api/file-service",
   "templates": "swagger/templates",
-  "module": "TimeApiModule",
+  "module": "FileApiModule",
   "excludeParameters": ["token"],
   "serviceSuffix": "ApiService"
 }

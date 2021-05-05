@@ -1,0 +1,9 @@
+export { EmailTemplateRequest } from './models/email-template-request';
+export { EditEmailTemplateRequest } from './models/edit-email-template-request';
+export { Workspace } from './models/workspace';
+export { ImageInfo } from './models/image-info';
+export { EmailTemplateTextInfo } from './models/email-template-text-info';
+export { OperationResultResponse } from './models/operation-result-response';
+export { ErrorResponse } from './models/error-response';
+export { OperationResultStatusType } from './models/operation-result-status-type';
+export { EmailTemplateType } from './models/email-template-type';

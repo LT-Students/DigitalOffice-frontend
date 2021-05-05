@@ -9,11 +9,11 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = 'https://time.ltdo.xyz';
+  rootUrl: string = 'https://message.ltdo.xyz';
 }
 
 /**
- * Parameters for `TimeManagementApiModule.forRoot()`
+ * Parameters for `MessageApiModule.forRoot()`
  */
 export interface ApiConfigurationParams {
   rootUrl?: string;
