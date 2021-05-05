@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  ViewChild
+} from "@angular/core";
 
 import { TeamCard } from '../new-project/team-cards';
 
@@ -10,19 +19,39 @@ import { TeamCard } from '../new-project/team-cards';
 export class TeamCardComponent implements AfterViewInit {
   @Input() public teamCard: TeamCard;
   @ViewChild('membersSection') membersDivElement: ElementRef<HTMLDivElement>;
+  @Output() modal: EventEmitter<string>;
 
   public visibleMembers: { name: string; level?: string; lead?: boolean; profileImgSrc: string; }[];
   public hiddenMembers: { name: string; level?: string; lead?: boolean; profileImgSrc: string; }[];
   public membersCountNotVisible: number;
   public maxImages: number;
+  public cardOpenState: boolean;
 
   constructor() {
     this.membersCountNotVisible = null;
     this.maxImages = null;
+    this.cardOpenState = false;
   }
 
   public ngAfterViewInit() {
     this.resizeListener();
+  }
+
+  public onEditTeam(event: MouseEvent) {
+    this._handleClickEvent(event);
+    /* TODO: enum The type of modal to open */
+    this.modal.emit('test');
+  }
+
+  public onDeleteTeam(event: MouseEvent) {
+    this._handleClickEvent(event);
+    /* TODO: enum The type of modal to open */
+    this.modal.emit('test');
+  }
+
+  private _handleClickEvent(event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   private setVisibleMembers(): void {

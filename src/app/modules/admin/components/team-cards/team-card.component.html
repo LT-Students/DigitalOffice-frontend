@@ -1,32 +1,48 @@
-<div class='team-card'>
-  <div class='team-card__general-info'>
-    <div class='name'>{{ teamCard.name }}</div>
-    <div class='total-number'> {{ teamCard.members.length }}</div>
-  </div>
-  <div class='team-card__button_edit'>
-    <button mat-mini-fab>
-      <img src='../../../../../assets/svg/edit.svg' alt="edit team"/>
-    </button>
-  </div>
-  <div class='team-card__members' #membersSection>
-    <div class='member' *ngFor='let member of visibleMembers'>
-      <!-- TODO: Replace when api ready -->
-      <img class='member__image' src='https://www.fillmurray.com/200/200' width='32' height='32' alt='profile image' />
-    </div>
-    <div class='member member_empty' *ngIf='this.membersCountNotVisible'>
-      <span class='counter'>
-      + {{ this.membersCountNotVisible }}
-      </span>
-    </div>
-  </div>
-  <div class='team-card__button_delete'>
-    <button mat-mini-fab>
-      <img src='../../../../../assets/svg/delete-task.svg' alt="delete team"/>
-    </button>
-  </div>
-</div>
+<mat-expansion-panel class="team-card" (opened)="cardOpenState = true"
+                       (closed)="cardOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title class='team-card__general-info'>
+        <div class='name'>{{ teamCard.name }}</div>
+        <div class='total-number' doText color="gray1"> {{ teamCard.members.length }} человека</div>
+      </mat-panel-title>
+      <mat-panel-description>
+        <div class='team-card__button_edit' (click)="onEditTeam($event)">
+          <button mat-mini-fab><img src='../../../../../assets/svg/edit.svg' alt="edit team"/></button>
+        </div>
+        <div class='team-card__members' #membersSection>
+          <div class='member' *ngFor='let member of visibleMembers;'>
+            <!-- TODO: Replace when api ready -->
+            <img class='member__image' src='https://www.fillmurray.com/200/200' width='32' height='32'
+                 alt='profile image' />
+          </div>
+          <div class='member member_empty' *ngIf='this.membersCountNotVisible'>
+            <span class='counter'>+ {{ this.membersCountNotVisible }}</span>
+          </div>
+        </div>
+        <div class='team-card__button_delete' (click)="onDeleteTeam($event)">
+          <button mat-mini-fab><img src='../../../../../assets/svg/delete-task.svg' alt="delete team"/></button>
+        </div>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <ng-template matExpansionPanelContent>
+      <div class="user-row" *ngFor="let member of teamCard.members">
+        <div class="user-row__image">
+          <img src='https://www.fillmurray.com/200/200' width='48' height='48' alt="user image">
+          <span class="label_lead" *ngIf="member.lead" doText regularTextSize="small">ЛИД</span>
+        </div>
+        <div class="user-row__general-info">
+          <div class='name'>{{ member.name }}</div>
+          <div class='position' doText color="gray1"> {{ member.level }}</div>
+        </div>
+        <div class="user-row__department">
+            <span doText color="gray1">Департамент тестовый</span>
+        </div>
+        <div class="user-row__projects-count">
+            <span doText color="gray1">1 проект</span>
+        </div>
+      </div>
+    </ng-template>
+  </mat-expansion-panel>
 
 
-<ng-template #extendedItem>
-
-</ng-template>

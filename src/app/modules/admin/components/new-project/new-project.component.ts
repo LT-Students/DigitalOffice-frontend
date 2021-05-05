@@ -8,6 +8,13 @@ import { ProjectStatus } from '@app/models/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { ProjectService } from '@app/services/project.service';
 
+export enum ModalType {
+  CREATE,
+  DELETE,
+  ADD,
+  WATCH
+}
+
 @Component({
   selector: 'do-new-project',
   templateUrl: './new-project.component.html',
