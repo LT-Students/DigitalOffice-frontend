@@ -7,7 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./admin-request.component.scss']
 })
 export class AdminRequestComponent implements OnInit {
-  textArea = '';
+  requestMessage = '';
 
   constructor(private dialogRef: MatDialogRef<AdminRequestComponent>) { }
 
@@ -15,7 +15,7 @@ export class AdminRequestComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close(this.textArea);
+    this.dialogRef.close(this.requestMessage);
   }
 
 }

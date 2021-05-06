@@ -4,7 +4,7 @@
         <textarea
             class="admin-request__textarea"
             matInput
-            [(ngModel)]='textArea'
+            [(ngModel)]='requestMessage'
             matTextareaAutosize
             matAutosizeMinRows='3'
             matAutosizeMaxRows='3'
@@ -25,7 +25,7 @@
         <button
             mat-flat-button
             (click)='closeDialog()'
-            [disabled]='textArea.length === 0'
+            [disabled]='requestMessage.length === 0'
             type="submit"
             class="admin-request__button"
             color="primary"
