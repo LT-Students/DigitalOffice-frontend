@@ -1,10 +1,10 @@
 <div class="employee-page__header flex">
     <do-breadcrumbs [paths]="paths"></do-breadcrumbs>
     <div
-        (click)="userInfo.user.isAdmin ? openRequestDialog() : openArchiveDialog()"
         class="employee-page__button flex"
         doText
         color="gray1"
+        (click)="onOpenDialog()"
     >
         <ng-container *ngIf="userInfo.user.isAdmin">
             <mat-icon>archive</mat-icon>

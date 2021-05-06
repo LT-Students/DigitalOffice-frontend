@@ -106,6 +106,14 @@ export class EmployeePageComponent implements OnInit {
     ];
   }
 
+  onOpenDialog(): void {
+    if (this.userInfo.user.isAdmin) {
+      this.openArchiveDialog();
+    } else {
+      this.openRequestDialog();
+    }
+  }
+
   openRequestDialog(): void {
     const dialogRef = this.dialog.open(AdminRequestComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
