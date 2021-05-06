@@ -118,7 +118,7 @@ export class EmployeePageComponent implements OnInit {
     const dialogRef = this.dialog.open(AdminRequestComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
       if (result.length > 0) {
-        this.snackBar.open(result, 'accept', { duration: 3000 });
+        this.showMessage(result);
       }
     });
   }
@@ -127,12 +127,13 @@ export class EmployeePageComponent implements OnInit {
     const dialogRef = this.dialog.open(ArchiveComponent, {});
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.snackBar.open(
-          'Карточка успешно добавлена в архив',
-          'accept',
-          { duration: 3000 });
+        this.showMessage(result);
       }
     });
+  }
+
+  showMessage(message): void {
+    this.snackBar.open(message, 'accept', { duration: 3000 });
   }
 
 }
