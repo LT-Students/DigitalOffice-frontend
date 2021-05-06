@@ -8,7 +8,7 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UsersResponse } from '@data/api/user-service/models';
 import { Project } from '@data/models/project';
 import { tap } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { activeProject, closedProject, courses, institutes, skills } from './mock';
@@ -54,6 +54,7 @@ export class EmployeePageComponent implements OnInit {
   public paths: Path[];
   public pageId: string;
   public isOwner: boolean;
+  private dialogRef;
 
   public userInfo: UserResponse;
 
@@ -115,8 +116,8 @@ export class EmployeePageComponent implements OnInit {
   }
 
   openRequestDialog(): void {
-    const dialogRef = this.dialog.open(AdminRequestComponent, {});
-    dialogRef.afterClosed().subscribe((result) => {
+    this.dialogRef = this.dialog.open(AdminRequestComponent, {});
+    this.dialogRef.afterClosed().subscribe((result) => {
       if (result.length > 0) {
         this.showMessage(result);
       }
@@ -124,8 +125,8 @@ export class EmployeePageComponent implements OnInit {
   }
 
   openArchiveDialog(): void {
-    const dialogRef = this.dialog.open(ArchiveComponent, {});
-    dialogRef.afterClosed().subscribe((result) => {
+    this.dialogRef = this.dialog.open(ArchiveComponent, {});
+    this.dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.showMessage(result);
       }
