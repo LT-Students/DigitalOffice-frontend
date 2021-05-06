@@ -1,0 +1,215 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.2.3",
+    "title": "FileService",
+    "description": "FileService is an API intended to work with files and images."
+  },
+  "servers": [
+    {
+      "url": "https://file.ltdo.xyz"
+    }
+  ],
+  "paths": {
+    "/file/addNewFile": {
+      "post": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "addNewFile",
+        "summary": "Add a new file.",
+        "description": "The method attempts to add the new file.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/File"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "New file Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          }
+        }
+      }
+    },
+    "/file/getFileById": {
+      "get": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "getFileById",
+        "summary": "Returns the file by Id.",
+        "description": "The method attempts to get the file by id.",
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "query",
+            "description": "File global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned file.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/File"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.\n* File with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/file/disableFileById": {
+      "get": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "disableFileById",
+        "summary": "Disable the file by Id.",
+        "description": "The method attempts to disable file by id.",
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "query",
+            "description": "File global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully disabled file."
+          },
+          "404": {
+            "description": "Not Found.\n* File with this id was not found.\n"
+          }
+        }
+      }
+    },
+    "/file/addNewImage": {
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "addNewImage",
+        "summary": "Add a new image and thumb.",
+        "description": "The method attempts to add the new image and get new file Id. A smaller version of the image (thumb) will also be added. Acceptable image formats: .jpg, .jpeg, .png, , .gif, .bmp, .tga",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "New image Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n* The server couldn't process the image.\n"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "File": {
+        "type": "object",
+        "required": [
+          "Name",
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Id": {
+            "description": "File global unique identifier.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "description": "File name.",
+            "type": "string",
+            "example": "Avatar"
+          },
+          "Content": {
+            "description": "File content.",
+            "type": "string",
+            "example": "Avatar"
+          },
+          "Extension": {
+            "description": "File extension.",
+            "type": "string",
+            "example": ".txt"
+          }
+        }
+      },
+      "ImageRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "Content"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Image name.",
+            "type": "string",
+            "example": "Avatar"
+          },
+          "Content": {
+            "description": "Image content.",
+            "type": "string",
+            "example": "Avatar"
+          },
+          "Extension": {
+            "description": "Image extension.",
+            "type": "string",
+            "example": ".txt"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.2.2",
+    "title": "RightsService",
+    "description": "RightsService, is intended to work with the user rights - create them, assign them to people, remove."
+  },
+  "servers": [
+    {
+      "url": "https://rights.ltdo.xyz"
+    }
+  ],
+  "paths": {
+    "/rights/addRightsForUser": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Rights"
+        ],
+        "operationId": "addRightsForUser",
+        "description": "Add rights for user.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "User global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "rightIds",
+            "in": "query",
+            "description": "Right identifiers.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Rights were added."
+          },
+          "400": {
+            "description": "Fail validation\n"
+          },
+          "401": {
+            "description": "Forbridden"
+          },
+          "404": {
+            "description": "Rights were not found"
+          }
+        }
+      }
+    },
+    "/rights/getRightsList": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Rights"
+        ],
+        "operationId": "getRightsList",
+        "description": "Add rights for user.",
+        "responses": {
+          "200": {
+            "description": "List of all Rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RightResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Rights were not found"
+          }
+        }
+      }
+    },
+    "/rights/removeRightsFromUser": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "delete": {
+        "tags": [
+          "Rights"
+        ],
+        "operationId": "removeRightsFromUser",
+        "description": "Remove rights from user.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "User global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "rightIds",
+            "in": "query",
+            "description": "Right identifiers.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rights were removed."
+          },
+          "401": {
+            "description": "Forbridden"
+          },
+          "404": {
+            "description": "rights not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RightResponse": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "integer"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

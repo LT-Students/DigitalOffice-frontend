@@ -1,0 +1,397 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.2.5",
+    "title": "MessageService",
+    "description": "MessageService, is intended to work with the messages, emails and email templates."
+  },
+  "servers": [
+    {
+      "url": "https://message.ltdo.xyz"
+    }
+  ],
+  "paths": {
+    "/email/addEmailTemplate": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "operationId": "addEmailTemplate",
+        "description": "Adds new email template and returns its Id.\n* __The user must have access to the right__ -- Add/Edit/Remove templates.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmailTemplateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "New email template Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n"
+          }
+        }
+      }
+    },
+    "/email/removeEmailTemplate": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Message"
+        ],
+        "operationId": "removeEmailTemplate",
+        "description": "Deletes email template.",
+        "parameters": [
+          {
+            "name": "emailTemplateId",
+            "in": "query",
+            "description": "Email template global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No content."
+          },
+          "404": {
+            "description": "Not Found.\n* Email template with this id was not found.\n"
+          }
+        }
+      }
+    },
+    "/email/editEmailTemplate": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "operationId": "editEmailTemplate",
+        "description": "Changes email templait.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditEmailTemplateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The message template was changed successfully.\n  * OK\n"
+          },
+          "204": {
+            "description": "No content."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "404": {
+            "description": "The email template with specific id does not exist. \n* Not found\n"
+          }
+        }
+      }
+    },
+    "/workspace/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "create",
+        "description": "Create a new workspace.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Workspace"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "New workspace Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n"
+          }
+        }
+      }
+    },
+    "/workspace/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "workspaceId",
+          "in": "query",
+          "description": "User global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "delete": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "remove",
+        "description": "Deletes the specified workspace by id.\n* The user must have to be owner or admin.\n",
+        "responses": {
+          "204": {
+            "description": "Remove workspace operation success (boolean) status will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "EmailTemplateRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "AuthorId"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Email template name.",
+            "type": "string"
+          },
+          "Type": {
+            "$ref": "#/components/schemas/EmailTemplateType"
+          },
+          "AuthorId": {
+            "description": "Id of the email template author.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "EmailTemplateTexts": {
+            "$ref": "#/components/schemas/EmailTemplateTextInfo"
+          }
+        }
+      },
+      "EditEmailTemplateRequest": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Subject",
+          "Body"
+        ],
+        "properties": {
+          "Id": {
+            "description": "Template Id.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "Subject": {
+            "type": "string"
+          },
+          "Body": {
+            "type": "string"
+          }
+        }
+      },
+      "Workspace": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "The workspace name.",
+            "type": "string"
+          },
+          "Description": {
+            "description": "The workspace description.",
+            "type": "string"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageInfo"
+          }
+        }
+      },
+      "ImageInfo": {
+        "type": "object",
+        "required": [
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          }
+        }
+      },
+      "EmailTemplateTextInfo": {
+        "type": "object",
+        "required": [
+          "Subject",
+          "Body",
+          "Language"
+        ],
+        "properties": {
+          "Subject": {
+            "description": "Template text subject.",
+            "type": "string"
+          },
+          "Text": {
+            "type": "string"
+          },
+          "Language": {
+            "description": "Template text language",
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      },
+      "EmailTemplateType": {
+        "type": "string",
+        "description": "Email template type.",
+        "enum": [
+          "Notification",
+          "Warning",
+          "Greeting"
+        ],
+        "example": "Notification"
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

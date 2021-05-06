@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
-import { Department } from './department';
-import { Project } from './project';
-import { ProjectFile } from './project-file';
-import { ProjectUser } from './project-user';
+import { DepartmentInfo } from './department-info';
+import { ProjectFileInfo } from './project-file-info';
+import { ProjectInfo } from './project-info';
+import { ProjectUserInfo } from './project-user-info';
 export interface ProjectExpandedResponse {
-  department?: Department;
-  project?: Project;
-  projectFile?: Array<ProjectFile>;
-  users?: Array<ProjectUser>;
+  department?: DepartmentInfo;
+  project?: ProjectInfo;
+  projectFile?: Array<ProjectFileInfo>;
+  users?: Array<ProjectUserInfo>;
 }
 
