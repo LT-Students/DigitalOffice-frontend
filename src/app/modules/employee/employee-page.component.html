@@ -6,7 +6,7 @@
         color="gray1"
         (click)="onOpenDialog()"
     >
-        <ng-container *ngIf="userInfo.user.isAdmin">
+        <ng-container *ngIf="userInfo.user.isAdmin && !isOwner">
             <mat-icon>archive</mat-icon>
             <span class="employee-page__button-label">Добавить в архив</span>
         </ng-container>
