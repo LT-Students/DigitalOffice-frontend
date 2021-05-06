@@ -1,16 +1,5 @@
 @import 'base/fonts';
-
-@mixin image-container($radius) {
-    width: $radius;
-    min-width: $radius;
-    height: $radius;
-
-    border-radius: 50%;
-
-    img {
-        border-radius: 50%;
-    }
-}
+@import '../user-row';
 
 .team-card {
     margin-bottom: 12px;
@@ -107,57 +96,5 @@
         .team-card__button_delete {
             visibility: visible;
         }
-    }
-}
-
-.user-row {
-    padding: 12px 24px;
-
-    display: flex;
-    justify-content: space-between;
-
-    height: 74px;
-
-    border-bottom: 1px solid map-get($colors, 'light_3');
-
-    &:last-of-type {
-        border-bottom: none;
-    }
-
-    &__image {
-        position: relative;
-
-        @include image-container(48px);
-
-        .label_lead {
-            position: absolute;
-            top: -7px;
-            right: -13px;
-
-            display: inline-flex;
-            justify-content: center;
-
-            width: 105%;
-
-            font-size: 12px;
-            line-height: 15px;
-
-            color: #fff;
-            background-color: $blue_3;
-            border-radius: 8px;
-        }
-    }
-
-    &__general-info {
-        width: 10%;
-    }
-
-    &__department {
-        width: 20%;
-    }
-
-    &__projects-count {
-        width: 60%;
-        max-width: 60%;
     }
 }

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { NewMembersBoardComponent } from '../new-members-board/new-members-board.component';
+import { NewMembersBoardComponent } from './modals/new-members-board/new-members-board.component';
 import { TeamCard, teamCards } from './team-cards';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatus } from '@app/models/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { ProjectService } from '@app/services/project.service';
+import { DeleteDirectionComponent, ModalApprovalConfig } from './modals/delete-direction/delete-direction.component';
 
 export enum ModalType {
   CREATE,
@@ -81,13 +82,39 @@ export class NewProjectComponent implements OnInit {
 
   public addMember(): void {
     this.dialog.open(NewMembersBoardComponent, {
+      data: teamCards[1],
       width: '720px',
       height: '650px',
     });
   }
 
   public createProject(): void {}
-  public onAddTeamClick(): void {}
+  public onAddTeamClick(): void {
+    this.addMember();
+  }
+  public callDeleteModal(teamName: string): void {
+    this.dialog.open<DeleteDirectionComponent, ModalApprovalConfig>(DeleteDirectionComponent, {
+      data: {
+        text: {
+          main: 'Удаление направления',
+          additional: `Вы действительно хотите удалить направление “${teamName}” вместе со всеми участниками?`
+        },
+        actions: {
+          negative: 'Отменить',
+          positive: 'Да, удалить'
+        }
+      },
+      width: '500px',
+    });
+  }
+  onModalCalled(modalType: ModalType) {
+    switch (modalType) {
+      case ModalType.DELETE:
+        this.callDeleteModal('Back-End Разработчики');
+        break;
+    //    TODO: delete handler for all types
+    }
+  }
   public showProjectTeam(): void {}
   public saveDraft(): void {
     console.log('Сохранить черновик');

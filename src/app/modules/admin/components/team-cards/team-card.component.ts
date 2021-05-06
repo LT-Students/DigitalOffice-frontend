@@ -6,10 +6,11 @@ import {
   HostListener,
   Input,
   Output,
-  ViewChild
-} from "@angular/core";
+  ViewChild,
+} from '@angular/core';
 
 import { TeamCard } from '../new-project/team-cards';
+import { ModalType } from '../new-project/new-project.component';
 
 @Component({
   selector: 'do-team-card',
@@ -19,7 +20,7 @@ import { TeamCard } from '../new-project/team-cards';
 export class TeamCardComponent implements AfterViewInit {
   @Input() public teamCard: TeamCard;
   @ViewChild('membersSection') membersDivElement: ElementRef<HTMLDivElement>;
-  @Output() modal: EventEmitter<string>;
+  @Output() modal: EventEmitter<ModalType>;
 
   public visibleMembers: { name: string; level?: string; lead?: boolean; profileImgSrc: string; }[];
   public hiddenMembers: { name: string; level?: string; lead?: boolean; profileImgSrc: string; }[];
@@ -31,22 +32,22 @@ export class TeamCardComponent implements AfterViewInit {
     this.membersCountNotVisible = null;
     this.maxImages = null;
     this.cardOpenState = false;
+    this.visibleMembers = null;
+    this.modal = new EventEmitter<ModalType>();
   }
 
   public ngAfterViewInit() {
-    this.resizeListener();
+    setTimeout(() => this.resizeListener());
   }
 
   public onEditTeam(event: MouseEvent) {
     this._handleClickEvent(event);
-    /* TODO: enum The type of modal to open */
-    this.modal.emit('test');
+    this.modal.emit(ModalType.CREATE);
   }
 
   public onDeleteTeam(event: MouseEvent) {
     this._handleClickEvent(event);
-    /* TODO: enum The type of modal to open */
-    this.modal.emit('test');
+    this.modal.emit(ModalType.DELETE);
   }
 
   private _handleClickEvent(event: MouseEvent): void {
@@ -68,7 +69,6 @@ export class TeamCardComponent implements AfterViewInit {
 
   private _countMaxImagesNumber(): number {
     const WIDTH = this.membersDivElement.nativeElement.clientWidth;
-    console.log(this.membersDivElement.nativeElement.clientWidth);
     const singleImageWidthWithMargin = 39;
 
     return Math.floor(WIDTH / singleImageWidthWithMargin) - 1;

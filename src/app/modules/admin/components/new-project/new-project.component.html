@@ -38,14 +38,14 @@
             <input matInput type="text" id="customer" formControlName="customer" />
           </mat-form-field>
         </div>
-        <div class='project-info__date'>
+        <!--<div class='project-info__date'>
           <do-datepicker
               controlName="date"
               label="Дата запуска"
               format='full'
               [isEdit]='true'
           ></do-datepicker>
-        </div>
+        </div>-->
         <div class="project-info__status">
           <label class="project-info__label" for="status">Статус</label>
           <mat-form-field class="mat-form-field_default-select" appearance="none">
@@ -92,7 +92,7 @@
         </div>
       </div>
       <div class='section__content'>
-        <do-team-card *ngFor="let team of teams" [teamCard]="team"></do-team-card>
+        <do-team-card *ngFor="let team of teams" [teamCard]="team" (modal)='onModalCalled($event)'></do-team-card>
         <button mat-flat-button color="primary" (click)="onAddTeamClick()">Добавить направление</button>
       </div>
     </div>

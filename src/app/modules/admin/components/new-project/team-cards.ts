@@ -1,11 +1,13 @@
+export interface TeamMember {
+  name: string;
+  level?: string;
+  lead?: boolean;
+  profileImgSrc: string;
+}
+
 export interface TeamCard {
   name: string;
-  members: {
-    name: string;
-    level?: string;
-    lead?: boolean;
-    profileImgSrc: string;
-  }[];
+  members: TeamMember[];
 }
 
 export const teamCards: TeamCard[] = [

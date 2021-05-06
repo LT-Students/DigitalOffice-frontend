@@ -10,7 +10,7 @@
           <button mat-mini-fab><img src='../../../../../assets/svg/edit.svg' alt="edit team"/></button>
         </div>
         <div class='team-card__members' #membersSection>
-          <div class='member' *ngFor='let member of visibleMembers;'>
+          <div class='member' *ngFor='let member of visibleMembers'>
             <!-- TODO: Replace when api ready -->
             <img class='member__image' src='https://www.fillmurray.com/200/200' width='32' height='32'
                  alt='profile image' />
@@ -29,7 +29,7 @@
       <div class="user-row" *ngFor="let member of teamCard.members">
         <div class="user-row__image">
           <img src='https://www.fillmurray.com/200/200' width='48' height='48' alt="user image">
-          <span class="label_lead" *ngIf="member.lead" doText regularTextSize="small">ЛИД</span>
+          <span class="label_lead label_lead_sm" *ngIf="member.lead" doText regularTextSize="small">ЛИД</span>
         </div>
         <div class="user-row__general-info">
           <div class='name'>{{ member.name }}</div>

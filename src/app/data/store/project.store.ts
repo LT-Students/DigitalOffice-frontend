@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
 import { Task } from '@data/models/task';
 import { Project } from '@data/models/project';
-import { WorkTimeApiService } from "@data/api/time-service/services";
+import { WorkTimeApiService } from '@data/api/time-service/services';
 
 @Injectable({
   providedIn: 'root',

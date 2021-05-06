@@ -8,7 +8,7 @@ import { DashboardComponent } from './modules/admin/components/dashboard/dashboa
 import { NewProjectComponent } from './modules/admin/components/new-project/new-project.component';
 import { AttendanceComponent } from './modules/user/components/attendance/attendance.component';
 import { ProjectsTableComponent } from './modules/user/components/projects-table/projects-table.component';
-import { NewMembersBoardComponent } from './modules/admin/components/new-members-board/new-members-board.component';
+import { NewMembersBoardComponent } from './modules/admin/components/new-project/modals/new-members-board/new-members-board.component';
 import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
 import { ProjectPageComponent } from './modules/user/components/project-page/project-page.component';
 import { EmployeePageComponent } from './modules/employee/employee-page.component';

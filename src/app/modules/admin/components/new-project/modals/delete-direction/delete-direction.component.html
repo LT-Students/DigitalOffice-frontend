@@ -1,0 +1,7 @@
+<h3 class='main' doText>{{ data.text.main }}</h3>
+<p class='additional' doText *ngIf='data.text.additional'>{{ data.text.additional }}</p>
+<mat-dialog-actions align='center'>
+	<button mat-button mat-dialog-close>{{ data.actions.negative }}</button>
+	<button mat-flat-button color='primary' [mat-dialog-close]='true'
+			cdkFocusInitial>{{ data.actions.positive }}</button>
+</mat-dialog-actions>

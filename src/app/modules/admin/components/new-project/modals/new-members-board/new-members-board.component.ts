@@ -1,10 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { of, Subscription } from 'rxjs';
 
 import { switchMap } from 'rxjs/operators';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { TeamCard, TeamMember } from '../../team-cards';
 
 @Component({
   selector: 'do-new-members-board',
@@ -29,7 +31,8 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   ];
   public levels: string[] = ['Junior', 'Middle', 'Senior'];
 
-  constructor(private userApiService: UserApiService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: TeamCard,
+              private userApiService: UserApiService) {
     this.checkedMembers = [];
     this.searchName = null;
   }
@@ -39,17 +42,7 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   }
 
   getMembers(): void {
-    this.getMembersSubscription = this.userApiService
-         /* TODO: Подумать, как получать конкретные данные о каждом юзере
-         *   при получении данных о всех юзера
-         * */
-      .findUsers({ skipCount: 0, takeCount: 50, }).pipe(
-          switchMap((usersResponse: UsersResponse) => of(usersResponse.users))
-        )
-      .subscribe((data: UserInfo[]) => {
-        this.members = data;
-        this.visibleMembers = [...this.members];
-      });
+    console.log('getMembers');
   }
 
   onSelect() {
@@ -77,7 +70,12 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getMembersSubscription.unsubscribe();
+    // this.getMembersSubscription.unsubscribe();
+  }
+
+  assignLead(member: TeamMember): void {
+    const index: number = this.data.members.findIndex((teamMember: TeamMember) => teamMember === member);
+    this.data.members[index].lead = (this.data.members[index].lead) ? !this.data.members[index].lead : true;
   }
 
   onCheckMember($event, user): void {

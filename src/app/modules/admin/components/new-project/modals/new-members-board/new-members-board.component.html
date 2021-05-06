@@ -1,0 +1,77 @@
+<div class="members-board">
+  <div class='members-board__title' mat-dialog-title>
+    <h3 doText color='dark_1'>Добавить участника</h3>
+    <button mat-icon-button class="members-board__close-button" mat-dialog-close><mat-icon>close</mat-icon></button>
+  </div>
+  <mat-form-field class="select members-form__select-spec" appearance="none">
+    <mat-select
+        class="regular_text text_color_dark-1"
+        placeholder="Выберите название направления"
+        disableOptionCentering="true">
+      <mat-option value="" class="regular_text text_color_dark-1">Все специализации</mat-option>
+      <mat-option class="regular_text text_color_dark-1"
+                  *ngFor="let specialization of specializations"
+                  [value]="specialization">
+        {{ specialization }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <form class="members-form">
+    <div class="filters-section">
+      <h4 doText>Поиск сотрудников</h4>
+      <div class='filters-section__content'>
+        <div class="name">
+          <do-search placeholder='Введите фамилию и имя сотрудника' (searchClick)="onSearchClick($event)"></do-search>
+        </div>
+        <div class="position">
+          <mat-form-field class="select members-form__select-lvl" appearance="none">
+            <mat-select
+                class="regular_text text_color_dark-1"
+                placeholder="Уровень">
+              <mat-option value="" class="regular_text text_color_dark-1"
+              >Все уровни</mat-option>
+              <mat-option
+                  class="regular_text text_color_dark-1"
+                  *ngFor="let level of levels"
+                  [value]="level">
+                {{ level }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="new-members">
+      <div class="user-row" *ngFor="let member of data.members">
+        <mat-checkbox
+            class='new-member__checkbox'>
+        </mat-checkbox>
+        <div class="user-row__image">
+          <img src='https://www.fillmurray.com/300/300' width='48' height='48' alt="user image">
+        </div>
+        <div class="user-row__general-info">
+          <div class='name'>{{ member.name }}</div>
+          <div class='position' doText color="gray1"> {{ member.level }}</div>
+        </div>
+        <div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>
+        <div class="user-row__lead">
+          <span class="label_lead label_lead_md" [ngClass]='{"label_lead_md": !member.lead  }'
+                doText regularTextSize="small"
+                (click)='assignLead(member)'>Лидер направления</span>
+        </div>
+      </div>
+    </div>
+    <div class="members-form__background" *ngIf="this.members && this.members.length">
+      <div class="no-members-icon">
+        <img src='/src/assets/images/tumbleweed.png' alt="tumbleweed" />
+        <span class="regular_text text_color_gray">Пока тут никого...</span>
+      </div>
+    </div>
+    <mat-dialog-actions align="center">
+        <div class="members-form__button-container">
+          <button mat-flat-button mat-dialog-close>Отмена</button>
+          <button mat-flat-button color="primary">Сохранить</button>
+        </div>
+    </mat-dialog-actions>
+  </form>
+</div>
