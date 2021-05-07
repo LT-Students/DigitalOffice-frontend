@@ -11,6 +11,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
+import { Department } from '@data/api/company-service/models/department';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
 import { UserStatus } from '@app/models/user-status.model';
@@ -45,8 +46,8 @@ export class NewEmployeeComponent implements OnInit {
   public message: string;
   public imagePath;
   public imgURL: any;
-  public userForm: FormGroup;
-  public positions;
+  public userForm: FormGroup = null;
+  public positions: PositionResponse[];
   public departments: string[];
   public offices: string[];
   public sex: string[];
@@ -54,11 +55,12 @@ export class NewEmployeeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private positionApiService: PositionApiService,
+    private departmentApiService: DepartmentApiService,
     private userService: UserService,
     private snackBar: MatSnackBar,
     private dialogRef: MatDialogRef<any>
   ) {
-    this.positions = ['Junior Pug', 'Boss Pug'];
+    this.positions = [{info:{name:'Junior Pug'}},{info:{name:'Boss Pug'}} ];
     this.departments = ['Pug Department', 'Corgi Department'];
     this.offices = ['м. Чернышевская', 'Улица Пушкина, дом Колотушкина'];
     this.sex = ['Мужской', 'Женский', 'Не определён'];
@@ -66,6 +68,8 @@ export class NewEmployeeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPositions();
+    this.getDepartments();
+
     this.userForm = this.formBuilder.group({
       lastName: ['', [Validators.required, Validators.maxLength(32)]],
       firstName: ['', [Validators.required, Validators.maxLength(32)]],
@@ -83,6 +87,8 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   getPositions(): void {
+
+    console.log("call getPositionList");
     this.positionApiService
       .getPositionsList()
       .subscribe((data: PositionResponse[]) => {
@@ -90,9 +96,16 @@ export class NewEmployeeComponent implements OnInit {
       });
   }
 
+
+  getDepartments(): void {
+
+    console.log("call getDepartmentList");
+   
+  }
+
   createEmployee(): void {
     const params = this._convertFormDataToCreateUserParams();
-
+    console.log("Try to ctrate new user");
     this.userService.createUser(params).subscribe(
         () => {
           this.snackBar.open('New user added successfully', 'done', {
@@ -113,6 +126,8 @@ export class NewEmployeeComponent implements OnInit {
     });
   }
 
+
+  // {"FirstName":"112","LastName":"122","MiddleName":"111","Password":"test@test.ru","Rate":1,"isAdmin":true,"Communications":[{"type":"Email","value":"test@test.ru"}],"StartWorkingAt":"2021-05-07","Status":"WorkFromHome" , "PositionId": null, "DepartmentId":null 
   private _convertFormDataToCreateUserParams(): CreateUserRequest {
     const communications: CommunicationInfo[] = [{type: CommunicationType.Email, value: this.userForm.get('email').value}];
 
@@ -120,11 +135,13 @@ export class NewEmployeeComponent implements OnInit {
       firstName: this.userForm.get('firstName').value as string,
       lastName: this.userForm.get('lastName').value as string,
       middleName: this.userForm.get('middleName').value as string,
-      password: this.userForm.get('password').value as string,
+      password: this.userForm.get('email').value as string,
+      positionId: this.userForm.get('positionId').value as string,
+      departmentId: this.userForm.get('departmentId').value as string,
       rate: this.userForm.get('rate').value as number,
-      isAdmin: true,
+      isAdmin: false,
       communications: communications,
-      startWorkingAt: new Date().toDateString(),
+      startWorkingAt: this.userForm.get("startWorkingAt").value as string,
       status: UserStatus.WorkFromHome
     }
 

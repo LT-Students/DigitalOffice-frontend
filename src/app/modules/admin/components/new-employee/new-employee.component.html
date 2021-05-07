@@ -137,15 +137,15 @@
             appearance="fill"
           >
             <mat-select
-              id="position"
+              id="positionId"
               placeholder="Выберите должность"
-              formControlName="position"
+              formControlName="positionId"
               required
             >
               <mat-option
                 *ngFor="let position of positions"
-                [value]="position"
-                >{{ position }}</mat-option
+                [value]="position.info.name"
+                >{{ position.info.name }}</mat-option
               >
             </mat-select>
           </mat-form-field>
@@ -168,9 +168,9 @@
             appearance="fill"
           >
             <mat-select
-              id="department"
+              id="departmentId"
               placeholder="Выберите департамент"
-              formControlName="department"
+              formControlName="departmentId"
               required
             >
               <mat-option
