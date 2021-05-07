@@ -1,27 +1,30 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { of, Subscription } from 'rxjs';
+import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { switchMap } from 'rxjs/operators';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TeamCard, TeamMember } from '../../team-cards';
+import { Team, teamCards, TeamMember } from '../../team-cards';
+import { WorkFlowMode } from '../../../../../employee/employee-page.component';
+import { UserSearchModalConfig } from '@app/services/modal.service';
+
 
 @Component({
   selector: 'do-new-members-board',
-  templateUrl: './new-members-board.component.html',
-  styleUrls: ['./new-members-board.component.scss'],
+  templateUrl: './user-search.component.html',
+  styleUrls: ['./user-search.component.scss'],
 })
-export class NewMembersBoardComponent implements OnInit, OnDestroy {
+export class UserSearchComponent implements OnInit, OnDestroy {
+  @Input() mode: WorkFlowMode;
   public members: UserInfo[];
+  public memberss: TeamMember[];
+  public membersAll: TeamMember[];
   public visibleMembers: UserInfo[];
   public checkedMembers: UserInfo[];
   public selectedSpecialization;
   public selectedLevel;
   public searchName: string ;
-  private getMembersSubscription: Subscription;
-
   public specializations: string[] = [
     'Front-End Developer',
     'Backend-End Developer',
@@ -30,22 +33,30 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
     'QA Tester',
   ];
   public levels: string[] = ['Junior', 'Middle', 'Senior'];
+  public WorkFlowMode = WorkFlowMode;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: TeamCard,
-              private userApiService: UserApiService) {
+  private getMembersSubscription: Subscription;
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: UserSearchModalConfig) {
+    this.memberss = data.users.members;
+    this.membersAll = teamCards.map((team: Team) => team.members)
+        .reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
     this.checkedMembers = [];
     this.searchName = null;
+    // teamCards.forEach((team: Team) => {
+    //   this.membersAll.push(...team.members)
+    // });
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getMembers();
   }
 
-  getMembers(): void {
+  public getMembers(): void {
     console.log('getMembers');
   }
 
-  onSelect() {
+  public onSelect() {
     this.visibleMembers = this.members;
     if (this.selectedSpecialization) {
       this.visibleMembers = this.visibleMembers.filter((user: UserInfo) => true
@@ -64,21 +75,21 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
     return this.visibleMembers;
   }
 
-  onSearchClick(value: string): void {
+  public onSearchClick(value: string): void {
     this.searchName = value;
     this.getMembers();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     // this.getMembersSubscription.unsubscribe();
   }
 
-  assignLead(member: TeamMember): void {
-    const index: number = this.data.members.findIndex((teamMember: TeamMember) => teamMember === member);
-    this.data.members[index].lead = (this.data.members[index].lead) ? !this.data.members[index].lead : true;
+  public assignLead(member: TeamMember): void {
+    const index: number = this.memberss.findIndex((teamMember: TeamMember) => teamMember === member);
+    this.memberss[index].lead = (this.memberss[index].lead) ? !this.memberss[index].lead : true;
   }
 
-  onCheckMember($event, user): void {
+  public onCheckMember($event, user): void {
     if ($event) {
       this.checkedMembers.push(user);
     } else {
@@ -89,6 +100,15 @@ export class NewMembersBoardComponent implements OnInit, OnDestroy {
         }
       });
       this.checkedMembers.splice(uncheckedUserIndex, 1);
+    }
+  }
+
+  public isMember(user: TeamMember): boolean {
+    /* TODO: add id to compare with id*/
+    if (this.memberss && this.memberss.length) {
+      return this.memberss.some((member: TeamMember) => user.id === member.id);
+    } else {
+      return false;
     }
   }
 }

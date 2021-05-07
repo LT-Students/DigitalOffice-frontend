@@ -85,14 +85,14 @@
       <div class="section__title">
         <div class='section__title_left'>
           <h3 doText color='dark_2' underlined underlinedSize='sm'>Команда</h3>&nbsp;
-          <h3 doText color='accent_color_bright'>{{ team.length }} человек</h3>
+          <h3 doText color='accent_color_bright'>{{ totalMembersCount() }} человек</h3>
         </div>
         <div class='section__title_right'>
           <button mat-flat-button color="primary" (click)="showProjectTeam()">Посмотреть всю команду</button>
         </div>
       </div>
       <div class='section__content'>
-        <do-team-card *ngFor="let team of teams" [teamCard]="team" (modal)='onModalCalled($event)'></do-team-card>
+        <do-team-card *ngFor="let team of teams" [teamCard]="team" [users]='teams'></do-team-card>
         <button mat-flat-button color="primary" (click)="onAddTeamClick()">Добавить направление</button>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { NewMembersBoardComponent } from '../new-project/modals/new-members-board/new-members-board.component';
+import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { switchMap } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
@@ -29,7 +29,7 @@ export class NewDepartmentComponent implements OnInit {
   constructor(
     public userApiService: UserApiService,
     public departmentApiService: DepartmentApiService,
-    private dialogRef: MatDialogRef<NewMembersBoardComponent>,
+    private dialogRef: MatDialogRef<UserSearchComponent>,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar
   ) {}

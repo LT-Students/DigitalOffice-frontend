@@ -1,53 +1,77 @@
 import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  EventEmitter,
-  HostListener,
-  Input,
-  Output,
-  ViewChild,
+	AfterViewInit,
+	Component,
+	ElementRef,
+	HostListener,
+	Input, OnInit,
+	ViewChild,
 } from '@angular/core';
 
-import { TeamCard } from '../new-project/team-cards';
-import { ModalType } from '../new-project/new-project.component';
+import { ModalService, UserSearchModalConfig } from '@app/services/modal.service';
+import { Team, TeamMember } from '../new-project/team-cards';
+import { DeleteDirectionComponent, ModalApprovalConfig, } from '../new-project/modals/delete-direction/delete-direction.component';
+import { WorkFlowMode } from '../../../employee/employee-page.component';
+import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 
 @Component({
   selector: 'do-team-card',
   templateUrl: './team-card.component.html',
   styleUrls: ['./team-card.component.scss'],
 })
-export class TeamCardComponent implements AfterViewInit {
-  @Input() public teamCard: TeamCard;
-  @ViewChild('membersSection') membersDivElement: ElementRef<HTMLDivElement>;
-  @Output() modal: EventEmitter<ModalType>;
+export class TeamCardComponent implements OnInit, AfterViewInit {
+	@Input() public users: Team[];
+	@Input() public teamCard: Team;
+	@ViewChild('membersSection') membersDivElement: ElementRef<HTMLDivElement>;
 
-  public visibleMembers: { name: string; level?: string; lead?: boolean; profileImgSrc: string; }[];
-  public hiddenMembers: { name: string; level?: string; lead?: boolean; profileImgSrc: string; }[];
+  public members: TeamMember[];
+  public visibleMembers: TeamMember[];
+  public hiddenMembers: TeamMember[];
   public membersCountNotVisible: number;
   public maxImages: number;
   public cardOpenState: boolean;
 
-  constructor() {
+  constructor(private _modalService: ModalService) {
     this.membersCountNotVisible = null;
     this.maxImages = null;
     this.cardOpenState = false;
     this.visibleMembers = null;
-    this.modal = new EventEmitter<ModalType>();
+    this.members = null;
+  }
+
+  public ngOnInit() {
+    this.members = this._sortLeads();
   }
 
   public ngAfterViewInit() {
     setTimeout(() => this.resizeListener());
   }
 
-  public onEditTeam(event: MouseEvent) {
-    this._handleClickEvent(event);
-    this.modal.emit(ModalType.CREATE);
-  }
+	public onEditTeam(event: MouseEvent) {
+		this._handleClickEvent(event);
+		const configData: UserSearchModalConfig = { users: this.teamCard, mode: WorkFlowMode.ADD };
+		this._modalService.openModal(UserSearchComponent, configData);
+	}
 
-  public onDeleteTeam(event: MouseEvent) {
-    this._handleClickEvent(event);
-    this.modal.emit(ModalType.DELETE);
+	public onDeleteTeam(event: MouseEvent) {
+		this._handleClickEvent(event);
+		const configData: ModalApprovalConfig = {
+			text: {
+				main: 'Удаление направления',
+				additional: `Вы действительно хотите удалить направление “${this.teamCard.name}” вместе со всеми участниками?`,
+			},
+			actions: {
+				negative: 'Отменить',
+				positive: 'Да, удалить',
+			},
+		};
+
+		this._modalService.openModal(DeleteDirectionComponent, configData);
+	}
+
+  private _sortLeads(): TeamMember[] {
+    const leads: TeamMember[] = this.teamCard.members.filter((member: TeamMember) => member.lead);
+    const ordinary: TeamMember[] = this.teamCard.members.filter((member: TeamMember) => !member.lead);
+    return [...leads, ...ordinary];
   }
 
   private _handleClickEvent(event: MouseEvent): void {
@@ -56,14 +80,14 @@ export class TeamCardComponent implements AfterViewInit {
   }
 
   private setVisibleMembers(): void {
-    if (this.maxImages >= this.teamCard.members.length) {
-      this.visibleMembers = this.teamCard.members;
+    if (this.maxImages >= this.members.length) {
+      this.visibleMembers = this.members;
       this.membersCountNotVisible = null;
     } else {
-      this.membersCountNotVisible = this.teamCard.members.length - this.maxImages;
+      this.membersCountNotVisible = this.members.length - this.maxImages;
 
-      this.visibleMembers = this.teamCard.members.slice(0, this.maxImages);
-      this.hiddenMembers = this.teamCard.members.slice(this.maxImages);
+      this.visibleMembers = this.members.slice(0, this.maxImages);
+      this.hiddenMembers = this.members.slice(this.maxImages);
     }
   }
 

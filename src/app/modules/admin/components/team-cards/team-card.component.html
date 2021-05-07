@@ -3,7 +3,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title class='team-card__general-info'>
         <div class='name'>{{ teamCard.name }}</div>
-        <div class='total-number' doText color="gray1"> {{ teamCard.members.length }} человека</div>
+        <div class='total-number' doText color="gray1"> {{ members.length }} человека</div>
       </mat-panel-title>
       <mat-panel-description>
         <div class='team-card__button_edit' (click)="onEditTeam($event)">
@@ -12,8 +12,9 @@
         <div class='team-card__members' #membersSection>
           <div class='member' *ngFor='let member of visibleMembers'>
             <!-- TODO: Replace when api ready -->
-            <img class='member__image' src='https://www.fillmurray.com/200/200' width='32' height='32'
+            <img class='member__image' [src]='member.profileImgSrc' width='32' height='32'
                  alt='profile image' />
+            <span class="label_lead label_lead_sm" *ngIf="member.lead" doText regularTextSize="small">Л</span>
           </div>
           <div class='member member_empty' *ngIf='this.membersCountNotVisible'>
             <span class='counter'>+ {{ this.membersCountNotVisible }}</span>
@@ -26,10 +27,10 @@
     </mat-expansion-panel-header>
 
     <ng-template matExpansionPanelContent>
-      <div class="user-row" *ngFor="let member of teamCard.members">
+      <div class="user-row" *ngFor="let member of members">
         <div class="user-row__image">
-          <img src='https://www.fillmurray.com/200/200' width='48' height='48' alt="user image">
-          <span class="label_lead label_lead_sm" *ngIf="member.lead" doText regularTextSize="small">ЛИД</span>
+          <img [src]='member.profileImgSrc' width='48' height='48' alt="user image">
+          <span class="label_lead label_lead_md" *ngIf="member.lead" doText regularTextSize="small">ЛИД</span>
         </div>
         <div class="user-row__general-info">
           <div class='name'>{{ member.name }}</div>

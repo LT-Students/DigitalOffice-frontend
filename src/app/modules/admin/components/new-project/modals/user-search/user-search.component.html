@@ -25,15 +25,9 @@
         </div>
         <div class="position">
           <mat-form-field class="select members-form__select-lvl" appearance="none">
-            <mat-select
-                class="regular_text text_color_dark-1"
-                placeholder="Уровень">
-              <mat-option value="" class="regular_text text_color_dark-1"
-              >Все уровни</mat-option>
-              <mat-option
-                  class="regular_text text_color_dark-1"
-                  *ngFor="let level of levels"
-                  [value]="level">
+            <mat-select class="regular_text text_color_dark-1" placeholder="Уровень">
+              <mat-option value="" class="regular_text text_color_dark-1">Все уровни</mat-option>
+              <mat-option class="regular_text text_color_dark-1" *ngFor="let level of levels" [value]="level">
                 {{ level }}
               </mat-option>
             </mat-select>
@@ -41,33 +35,35 @@
         </div>
       </div>
     </div>
-    <div class="new-members">
-      <div class="user-row" *ngFor="let member of data.members">
-        <mat-checkbox
-            class='new-member__checkbox'>
-        </mat-checkbox>
+    <div class='users'>
+      <!--   TODO: Добавить обработку, является ли человек выбранным участником команды   -->
+      <div class="user-row" *ngFor="let member of membersAll">
+        <div class='user-row__checkbox' *ngIf='data.mode !== WorkFlowMode.VIEW'>
+          <mat-checkbox class='new-member__checkbox' [checked]='isMember(member)'></mat-checkbox>
+        </div>
         <div class="user-row__image">
-          <img src='https://www.fillmurray.com/300/300' width='48' height='48' alt="user image">
+          <img [src]='member.profileImgSrc' width='48' height='48' alt="user image">
         </div>
         <div class="user-row__general-info">
           <div class='name'>{{ member.name }}</div>
           <div class='position' doText color="gray1"> {{ member.level }}</div>
         </div>
         <div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>
-        <div class="user-row__lead">
-          <span class="label_lead label_lead_md" [ngClass]='{"label_lead_md": !member.lead  }'
+        <div class="user-row__lead" *ngIf='data.mode'>
+         <!-- TODO: Сделать оотображение стилей кнопки для просмотра / редактирования-->
+          <span class="label_lead" [ngClass]='{"label_lead_l": !member.lead }'
                 doText regularTextSize="small"
                 (click)='assignLead(member)'>Лидер направления</span>
         </div>
       </div>
     </div>
-    <div class="members-form__background" *ngIf="this.members && this.members.length">
-      <div class="no-members-icon">
-        <img src='/src/assets/images/tumbleweed.png' alt="tumbleweed" />
-        <span class="regular_text text_color_gray">Пока тут никого...</span>
-      </div>
-    </div>
-    <mat-dialog-actions align="center">
+<!--    <div class="members-form__background" *ngIf="this.memberss && this.memberss.length">-->
+<!--      <div class="no-members-icon">-->
+<!--        <img src='/src/assets/images/tumbleweed.png' alt="tumbleweed" />-->
+<!--        <span class="regular_text text_color_gray">Пока тут никого...</span>-->
+<!--      </div>-->
+<!--    </div>-->
+    <mat-dialog-actions align="center" *ngIf='data.mode !== WorkFlowMode.VIEW'>
         <div class="members-form__button-container">
           <button mat-flat-button mat-dialog-close>Отмена</button>
           <button mat-flat-button color="primary">Сохранить</button>
@@ -75,3 +71,6 @@
     </mat-dialog-actions>
   </form>
 </div>
+
+
+<!--TODO: Добавить темплейты для просмотра / для редактирования-->
