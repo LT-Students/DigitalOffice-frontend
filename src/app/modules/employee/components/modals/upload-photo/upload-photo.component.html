@@ -1,1 +1,21 @@
-<p>upload-photo works!</p>
+<mat-dialog-content class="upload-photo">
+    <h3 class="upload-photo__heading" doText color="dark_1">
+        Загрузка новой фотографии<mat-icon>close</mat-icon>
+    </h3>
+    <div class="upload-photo__dropzone">
+        <p doText color="dark_1">
+            Коллегам будет проще узнать вас, если вы загрузите свою настоящую
+            фотографию. Вы можете загрузить изображение в формате JPG, GIF или
+            PNG.
+        </p>
+        <p doText color="gray1">Перетащите файл сюда или</p>
+        <button mat-flat-button (click)="uploadFile.click()" color="primary">
+            Выбрать файл
+        </button>
+        <input #uploadFile hidden type="file" />
+    </div>
+    <p class="upload-photo__hint" doText color="gray1">
+        Если у вас возникают проблемы с загрузкой, попробуйте выбрать фотографию
+        меньшего размера.
+    </p>
+</mat-dialog-content>

@@ -4,7 +4,7 @@
 
     <div class='employee-info__wrapper'>
       <div class='employee-info__main'>
-        <div class='employee-info__photo'>
+        <div class='employee-info__photo' (click)='onOpenDialog()'>
           <img [src]='employee?.photoUrl' alt='Employee photo' width='200' />
         </div>
         <h3 class='employee-info__name' doText color='dark_2'>

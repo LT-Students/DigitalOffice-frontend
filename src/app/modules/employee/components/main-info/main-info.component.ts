@@ -7,6 +7,8 @@ import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
 import { employee } from '../../mock';
 import { DateType } from '@app/models/date.model';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { MatDialog } from '@angular/material/dialog';
+import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
 
 interface ExtendedUser extends IUser {
   about?: string;
@@ -48,7 +50,7 @@ export class MainInfoComponent implements OnInit {
   public userStatus: typeof UserStatus = UserStatus;
   public dateType: typeof DateType = DateType;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private dialog: MatDialog) {
     this.employee = employee;
 
     this.selectOptions = {
@@ -160,5 +162,9 @@ export class MainInfoComponent implements OnInit {
     const currentValue = this.employeeInfoForm.get('workingRate').value;
     const rate = +currentValue + step;
     this.employeeInfoForm.patchValue({ workingRate: rate });
+  }
+
+  onOpenDialog() {
+    this.dialog.open(UploadPhotoComponent, {});
   }
 }
