@@ -4,7 +4,7 @@
   (ngSubmit)="login()"
   autocomplete="off"
 >
-  <label class="form__title h1 text_white">trrak!</label>
+  <label class="form__title h1 text_white">Digital office</label>
   <div class="form__error">
     <small *ngIf="email.touched && email.invalid"
       >Неправильно введен email адрес :(
@@ -52,17 +52,5 @@
       </svg>
     </ng-template>
   </div>
-  <ng-container  *ngIf="!isSignUp" >
-    <a
-    class="nav-link__forgot-password regular_text text_white"
-    routerLink="/auth/forgotpassword"
-    >О нет! Я забыл пароль</a
-  >
-  <a
-    class="nav-link__forgot-password regular_text text_white"
-    routerLink="/auth/signup"
-    >зарегистрироваться</a
-  >
-
-  </ng-container>
+    <a class="nav-link__forgot-password regular_text text_white" routerLink="/auth/forgotpassword">О нет! Я забыл пароль</a>
 </form>

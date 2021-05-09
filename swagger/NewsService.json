@@ -1,0 +1,251 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.2.3",
+    "title": "NewsService",
+    "description": "NewsService, is intended to work with the news - create them, update info and etc."
+  },
+  "servers": [
+    {
+      "url": "https://news.ltdo.xyz"
+    }
+  ],
+  "paths": {
+    "/news/createNews": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "createNews",
+        "description": "Adds news and returns its Id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "New news Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n"
+          }
+        }
+      }
+    },
+    "/news/editNews": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "editNews",
+        "description": "Updates news fields.",
+        "requestBody": {
+          "description": "The news data to edit.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "No content."
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* News with this id was not found.\n"
+          }
+        }
+      }
+    },
+    "/news/findnews": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "authorId",
+          "in": "query",
+          "description": "Author global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "departmentId",
+          "in": "query",
+          "description": "Department global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "Pseudonym",
+          "in": "query",
+          "description": "Pseudonym of news author.",
+          "schema": {
+            "type": "string"
+          },
+          "required": false
+        },
+        {
+          "name": "subject",
+          "in": "query",
+          "description": "Subject of news.",
+          "schema": {
+            "type": "string"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "findnews",
+        "description": "Returns all news information by filter.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned list of news.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NewsRequest": {
+        "type": "object",
+        "required": [
+          "Id",
+          "AuthorName",
+          "AuthorId",
+          "SenderId",
+          "Subject",
+          "Content"
+        ],
+        "properties": {
+          "Id": {
+            "description": "Id of the news. Required when it's wanted to be edited.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "Content": {
+            "description": "The news' content.",
+            "type": "string"
+          },
+          "Subject": {
+            "description": "The news' subject.",
+            "type": "string"
+          },
+          "AuthorName": {
+            "description": "The news' author name.",
+            "type": "string"
+          },
+          "AuthorId": {
+            "description": "Id of the news author.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "SenderId": {
+            "description": "Id of the news sender.",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "NewsResponse": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Subject": {
+            "type": "string"
+          },
+          "Author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "Sender": {
+            "$ref": "#/components/schemas/User"
+          },
+          "CreatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FIO": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

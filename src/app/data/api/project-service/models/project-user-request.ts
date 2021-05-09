@@ -1,9 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-import { UserRequest } from './user-request';
+import { UserRoleType } from './user-role-type';
 export interface ProjectUserRequest {
-  projectId?: string;
-  roleId: string;
-  user: UserRequest;
+  role: UserRoleType;
+  userId?: string;
 }
 
