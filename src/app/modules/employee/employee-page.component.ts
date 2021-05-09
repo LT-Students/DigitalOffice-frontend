@@ -117,24 +117,22 @@ export class EmployeePageComponent implements OnInit {
 
   openRequestDialog(): void {
     this.dialogRef = this.dialog.open(AdminRequestComponent, {});
-    this.dialogRef.afterClosed().subscribe((result) => {
-      if (result.length > 0) {
-        this.showMessage(result);
-      }
+    this.dialogRef.afterClosed().subscribe((result: string) => {
+      this.showMessage(result);
     });
   }
 
   openArchiveDialog(): void {
     this.dialogRef = this.dialog.open(ArchiveComponent, {});
-    this.dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.showMessage(result);
-      }
+    this.dialogRef.afterClosed().subscribe((result: string) => {
+      this.showMessage(result);
     });
   }
 
-  showMessage(message): void {
-    this.snackBar.open(message, 'accept', { duration: 3000 });
+  showMessage(message: string): void {
+    if (message) {
+      this.snackBar.open(message, 'accept', { duration: 3000 });
+    }
   }
 
 }
