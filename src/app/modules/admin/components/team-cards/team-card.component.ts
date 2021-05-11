@@ -1,15 +1,12 @@
-import {
-	AfterViewInit,
-	Component,
-	ElementRef,
-	HostListener,
-	Input, OnInit,
-	ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 
 import { ModalService, UserSearchModalConfig } from '@app/services/modal.service';
 import { Team, TeamMember } from '../new-project/team-cards';
-import { DeleteDirectionComponent, ModalApprovalConfig, } from '../new-project/modals/delete-direction/delete-direction.component';
+import {
+    DeleteDirectionComponent,
+    ModalApprovalConfig,
+    ModalResult,
+} from '../new-project/modals/delete-direction/delete-direction.component';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 
@@ -23,37 +20,38 @@ export class TeamCardComponent implements OnInit, AfterViewInit {
 	@Input() public teamCard: Team;
 	@ViewChild('membersSection') membersDivElement: ElementRef<HTMLDivElement>;
 
-  public members: TeamMember[];
-  public visibleMembers: TeamMember[];
-  public hiddenMembers: TeamMember[];
-  public membersCountNotVisible: number;
-  public maxImages: number;
-  public cardOpenState: boolean;
+	public members: TeamMember[];
+	public visibleMembers: TeamMember[];
+	public hiddenMembers: TeamMember[];
+	public membersCountNotVisible: number;
+	public maxImages: number;
+	public cardOpenState: boolean;
 
-  constructor(private _modalService: ModalService) {
-    this.membersCountNotVisible = null;
-    this.maxImages = null;
-    this.cardOpenState = false;
-    this.visibleMembers = null;
-    this.members = null;
-  }
+	constructor(private _modalService: ModalService) {
+		this.membersCountNotVisible = null;
+		this.maxImages = null;
+		this.cardOpenState = false;
+		this.visibleMembers = null;
+		this.members = null;
+	}
 
-  public ngOnInit() {
-    this.members = this._sortLeads();
-  }
+	public ngOnInit() {
+		this.members = this._sortLeads();
+	}
 
-  public ngAfterViewInit() {
-    setTimeout(() => this.resizeListener());
-  }
+	public ngAfterViewInit() {
+		setTimeout(() => this.resizeListener());
+	}
 
 	public onEditTeam(event: MouseEvent) {
 		this._handleClickEvent(event);
-		const configData: UserSearchModalConfig = { users: this.teamCard, mode: WorkFlowMode.ADD };
+		const configData: UserSearchModalConfig = { team: this.teamCard, mode: WorkFlowMode.EDIT };
 		this._modalService.openModal(UserSearchComponent, configData);
 	}
 
 	public onDeleteTeam(event: MouseEvent) {
 		this._handleClickEvent(event);
+
 		const configData: ModalApprovalConfig = {
 			text: {
 				main: 'Удаление направления',
@@ -65,7 +63,7 @@ export class TeamCardComponent implements OnInit, AfterViewInit {
 			},
 		};
 
-		this._modalService.openModal(DeleteDirectionComponent, configData);
+		const dialogRef = this._modalService.openModal(DeleteDirectionComponent, configData, ModalResult);
 	}
 
   private _sortLeads(): TeamMember[] {

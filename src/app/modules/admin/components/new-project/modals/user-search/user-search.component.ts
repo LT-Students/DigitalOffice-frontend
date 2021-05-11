@@ -1,8 +1,5 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-
-import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Team, teamCards, TeamMember } from '../../team-cards';
@@ -21,6 +18,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
   public memberss: TeamMember[];
   public membersAll: TeamMember[];
   public visibleMembers: UserInfo[];
+  public filteredUsers: UserInfo[];
   public checkedMembers: UserInfo[];
   public selectedSpecialization;
   public selectedLevel;
@@ -38,11 +36,25 @@ export class UserSearchComponent implements OnInit, OnDestroy {
   private getMembersSubscription: Subscription;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: UserSearchModalConfig) {
-    this.memberss = data.users.members;
-    this.membersAll = teamCards.map((team: Team) => team.members)
-        .reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
+
     this.checkedMembers = [];
     this.searchName = null;
+    this.memberss = null;
+    // TODO: Не показывать, пока не будет применён фильтр
+    switch (data.mode) {
+      case WorkFlowMode.VIEW: {
+        this.membersAll = (data.team) ? data.team.members : null;
+        break;
+      }
+      case WorkFlowMode.EDIT: {
+        this.memberss = data.team.members;
+        this._initSearchMode();
+        break;
+      }
+      case WorkFlowMode.ADD: {
+        break;
+      }
+    }
     // teamCards.forEach((team: Team) => {
     //   this.membersAll.push(...team.members)
     // });
@@ -110,5 +122,13 @@ export class UserSearchComponent implements OnInit, OnDestroy {
     } else {
       return false;
     }
+  }
+
+  private _initSearchMode(): void {
+    // add subscription to fetch Users
+
+    this.membersAll = teamCards.map((team: Team) => team.members)
+    .reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
+    console.log('initSearchMode');
   }
 }

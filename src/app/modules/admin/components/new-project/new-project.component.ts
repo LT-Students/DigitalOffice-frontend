@@ -83,7 +83,7 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public addMember(): void {
-		const modalData: UserSearchModalConfig = { users: this.teams[1], mode: WorkFlowMode.ADD };
+		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD };
 		this._modalService.openModal(UserSearchComponent, modalData);
 	}
 
@@ -94,7 +94,10 @@ export class NewProjectComponent implements OnInit {
 
 
 	public showProjectTeam(): void {
-		const configData: UserSearchModalConfig = { users: this.teams[1], mode: WorkFlowMode.VIEW };
+		const configData: UserSearchModalConfig = {
+			team: { name: 'all', members: this._getAllMembers() },
+			mode: WorkFlowMode.VIEW,
+		};
 		this._modalService.openModal(UserSearchComponent, configData);
 	}
 
@@ -105,6 +108,11 @@ export class NewProjectComponent implements OnInit {
 	public totalMembersCount(): number {
 		return this.teams.map((team: Team) => team.members.length)
 		.reduce((sum: number, teamTotalNumber) => sum + teamTotalNumber);
+	}
+
+	private _getAllMembers(): TeamMember[] {
+		return this.teams.map((team: Team) => team.members)
+		.reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
 	}
 
 	private _sortLeads(team: Team): void {

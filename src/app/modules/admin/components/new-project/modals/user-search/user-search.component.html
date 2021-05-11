@@ -1,24 +1,24 @@
 <div class="members-board">
   <div class='members-board__title' mat-dialog-title>
-    <h3 doText color='dark_1'>Добавить участника</h3>
+    <h3 doText color='dark_1' [ngSwitch]='data.mode'>
+      <ng-container *ngSwitchCase='WorkFlowMode.ADD'>Добавить участника</ng-container>
+      <ng-container *ngSwitchCase='WorkFlowMode.EDIT'>Редактирование направления<br/>"{{ data.team.name }}"</ng-container>
+      <ng-container *ngSwitchCase='WorkFlowMode.VIEW'>Просмотр команды</ng-container>
+    </h3>
     <button mat-icon-button class="members-board__close-button" mat-dialog-close><mat-icon>close</mat-icon></button>
   </div>
-  <mat-form-field class="select members-form__select-spec" appearance="none">
-    <mat-select
-        class="regular_text text_color_dark-1"
-        placeholder="Выберите название направления"
-        disableOptionCentering="true">
-      <mat-option value="" class="regular_text text_color_dark-1">Все специализации</mat-option>
-      <mat-option class="regular_text text_color_dark-1"
-                  *ngFor="let specialization of specializations"
-                  [value]="specialization">
-        {{ specialization }}
+  <mat-form-field class='select members-form__select-spec' appearance='none' *ngIf='data.mode === WorkFlowMode.ADD'>
+    <mat-select class='regular_text text_color_dark-1' placeholder='Выберите название направления'
+                disableOptionCentering='true'>
+      <mat-option value='' class='regular_text text_color_dark-1'>Все специализации</mat-option>
+      <mat-option class='regular_text text_color_dark-1' *ngFor='let spec of specializations' [value]='spec'>
+        {{ spec }}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <form class="members-form">
     <div class="filters-section">
-      <h4 doText>Поиск сотрудников</h4>
+      <h4 doText *ngIf='data.mode === WorkFlowMode.ADD'>Поиск сотрудников</h4>
       <div class='filters-section__content'>
         <div class="name">
           <do-search placeholder='Введите фамилию и имя сотрудника' (searchClick)="onSearchClick($event)"></do-search>
@@ -35,8 +35,8 @@
         </div>
       </div>
     </div>
-    <div class='users'>
-      <!--   TODO: Добавить обработку, является ли человек выбранным участником команды   -->
+    <div class='users' *ngIf='membersAll; else empty'>
+      <!--   TODO: Добавить вывод отфильтрованных пользователей  -->
       <div class="user-row" *ngFor="let member of membersAll">
         <div class='user-row__checkbox' *ngIf='data.mode !== WorkFlowMode.VIEW'>
           <mat-checkbox class='new-member__checkbox' [checked]='isMember(member)'></mat-checkbox>
@@ -57,12 +57,7 @@
         </div>
       </div>
     </div>
-<!--    <div class="members-form__background" *ngIf="this.memberss && this.memberss.length">-->
-<!--      <div class="no-members-icon">-->
-<!--        <img src='/src/assets/images/tumbleweed.png' alt="tumbleweed" />-->
-<!--        <span class="regular_text text_color_gray">Пока тут никого...</span>-->
-<!--      </div>-->
-<!--    </div>-->
+
     <mat-dialog-actions align="center" *ngIf='data.mode !== WorkFlowMode.VIEW'>
         <div class="members-form__button-container">
           <button mat-flat-button mat-dialog-close>Отмена</button>
@@ -72,5 +67,12 @@
   </form>
 </div>
 
-
 <!--TODO: Добавить темплейты для просмотра / для редактирования-->
+<ng-template #empty>
+  <div class="members-form__background">
+    <div class="no-members-icon">
+      <img src='../src/assets/images/fogg-176.png' alt="tumbleweed" />
+      <span class="regular_text text_color_gray">Пока тут никого...</span>
+    </div>
+  </div>
+</ng-template>

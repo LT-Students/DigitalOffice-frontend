@@ -15,7 +15,7 @@ $select-height: 36px;
     background: #fff;
 
     &__title {
-        margin-bottom: 34px;
+        margin-bottom: 16px;
 
         display: flex;
         justify-content: space-between;
@@ -35,6 +35,8 @@ $select-height: 36px;
 }
 
 .members-form {
+    margin-top: 16px;
+
     &__search {
         margin-bottom: 14px;
     }

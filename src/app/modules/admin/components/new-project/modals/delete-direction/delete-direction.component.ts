@@ -10,7 +10,11 @@ export interface ModalApprovalConfig {
     negative: string;
     positive: string;
 }
+}
 
+export enum ModalResult {
+  NEGATIVE,
+  POSITIVE
 }
 
 @Component({

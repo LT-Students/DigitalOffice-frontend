@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Team } from '../../modules/admin/components/new-project/team-cards';
 import { WorkFlowMode } from '../../modules/employee/employee-page.component';
 import { ComponentType } from '@angular/cdk/overlay';
+import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
 
 
 export enum ModalType {
@@ -13,7 +14,7 @@ export enum ModalType {
 }
 
 export interface UserSearchModalConfig {
-	users: Team,
+	team?: Team,
 	mode: WorkFlowMode
 }
 
@@ -25,8 +26,8 @@ export class ModalService {
 
 	constructor(private matDialog: MatDialog) {}
 
-	public openModal<C, T>(component: ComponentType<C>, modalContentConfig?: T){
-		this.matDialog.open<C, T>(component, {
+	public openModal<C, T, R>(component: ComponentType<C>, modalContentConfig?: T, result?: R): MatDialogRef<C, R>{
+		return this.matDialog.open<C, T, R>(component, {
 			data: modalContentConfig,
 			width: '720px',
 		});
