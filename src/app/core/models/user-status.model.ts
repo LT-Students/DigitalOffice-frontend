@@ -1,4 +1,5 @@
 // eslint-disable-next-line no-shadow
+// TODO: use enum from API
 export enum UserStatus {
 	Vacation,
 	Sick,

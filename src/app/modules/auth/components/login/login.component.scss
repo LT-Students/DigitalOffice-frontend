@@ -1,50 +1,50 @@
 .nav-link__forgot-password {
-  position: relative;
+	position: relative;
 
-  margin-top: 24px;
+	margin-top: 24px;
 
-  text-decoration: underline;
+	text-decoration: underline;
 
-  cursor: pointer;
+	cursor: pointer;
 
-  opacity: 0.2;
+	opacity: 0.2;
 
-  &:hover {
-    opacity: 0.5;
-  }
+	&:hover {
+		opacity: 0.5;
+	}
 }
 
 .nav-link__login {
-  position: absolute;
-  top: 33px;
-  left: 50px;
+	position: absolute;
+	top: 33px;
+	left: 50px;
 
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 
-  text-decoration: none;
+	text-decoration: none;
 
-  cursor: pointer;
+	cursor: pointer;
 
-  opacity: 0.23;
+	opacity: 0.23;
 
-  &:hover {
-    opacity: 0.5;
-  }
+	&:hover {
+		opacity: 0.5;
+	}
 }
 
 .nav-link__arrow-back {
-  margin-right: 20px;
+	margin-right: 20px;
 }
 
 .disabled {
-  opacity: 0.5;
+	opacity: 0.5;
 }
 
 #btn-enter {
-  width: 132px;
+	width: 132px;
 }
 
 small {
-  font-size: 14px;
+	font-size: 14px;
 }

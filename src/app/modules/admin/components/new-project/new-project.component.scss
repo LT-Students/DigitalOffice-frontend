@@ -1,214 +1,93 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-.h1 {
-  margin: 32px 0 31px;
-}
-
-.h1_dark_2,
-.h3 {
-  color: $dark_2;
-}
-
-.content-container {
-  padding: 40px;
-
-  width: 100%;
-
-  border-radius: 5px;
-
-  textarea {
-    padding-top: 13px;
-
-    height: 96px;
-  }
-
-  &__section {
-    border: none;
-
-    &-private {
-      margin-bottom: 52px;
-    }
-  }
-
-  &__button {
-    display: flex;
-    justify-content: center;
-  }
-
-  .team {
-    position: relative;
-
-    padding-top: 42px;
-    padding-bottom: 39px;
-
-    &__section-title {
-      padding-bottom: 5px;
-    }
-
-    &__members-count {
-      position: absolute;
-      top: 99px;
-      right: 0;
-    }
-
-    &__tabs {
-      margin-top: 25px;
-    }
-
-    .team-list {
-      margin-top: 10px;
-
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-
-      &__members-list {
-        margin-bottom: 0;
-
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-end;
-
-        list-style: none;
-        flex-wrap: wrap;
-      }
-
-      &__new-member {
-        margin-top: 13px;
-        margin-right: 13px;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        width: 48px;
-        height: 48px;
-        align-self: flex-start;
-      }
-
-      &__member {
-        position: relative;
-
-        margin-top: 12px;
-        margin-right: 12px;
-      }
-
-      &__icon-dummy {
-        width: 48px;
-        height: 48px;
-
-        background-color: $gray;
-        border-radius: 50%;
-      }
-
-      &__icon-dummy_lead {
-        &::before {
-          @extend .h6;
-          @extend .text_white;
-          content: 'lead';
-
-          position: absolute;
-          top: -6px;
-          right: -14px;
-
-          padding: 0 3px;
-
-          text-align: center;
-          text-transform: uppercase;
-
-          background-color: $blue_3;
-          border-radius: 6px;
-        }
-      }
-    }
-
-    .team-cards {
-      margin: 40px 4px 4px 4px;
-
-      display: grid;
-      column-gap: 32px;
-      grid-auto-rows: min-content;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      row-gap: 20px;
-    }
-  }
-}
-
 .project-info {
-  margin-bottom: 45px;
+	margin-bottom: 45px;
+	padding: 40px;
 
-  &__title {
-    margin-bottom: 39px;
-  }
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
-  &__name {
-    margin-right: 60px;
+	width: 100%;
 
-    display: inline-block;
+	&__section {
+		margin-bottom: 40px;
 
-    width: 68%;
-  }
+		width: 100%;
 
-  &__abbr-name {
-    display: inline-block;
+		.section__title {
+			margin-bottom: 36px;
 
-    width: 25.2%;
-  }
+			display: flex;
+			justify-content: space-between;
+			flex-flow: wrap;
 
-  &__department {
-    margin-bottom: 23px;
+			&_left {
+				display: flex;
+			}
+		}
 
-    display: inline-block;
+		.section__content {
+			display: grid;
 
-    width: 68%;
-  }
+			&_general {
+				grid-template-columns: 56% 20% 20%;
+				grid-gap: 2%;
+			}
+		}
+	}
 
-  &__description {
-    grid-area: desc;
-  }
+	&__department {
+		grid-column: 2 / 4;
+	}
 
-  &__name,
-  &__abbr-name,
-  &__department,
-  &__description,
-  &__addition {
-    mat-form-field {
-      width: 100%;
-    }
-  }
+	&__date {
+		display: inline-block;
 
-  &__addition {
-    padding-bottom: 18px;
+		width: 68%;
+	}
 
-    &__title {
-      padding-bottom: 15px;
-    }
-  }
+	&__description {
+		grid-column: 1 / 4;
+	}
 
-  &__label {
-    padding-bottom: 6px;
+	&__name,
+	&__department,
+	&__description,
+	&__addition,
+	&__date {
+		mat-form-field {
+			width: 100%;
+		}
+	}
 
-    display: block;
+	&__label {
+		padding-bottom: 6px;
 
-    font-size: 14px;
+		display: block;
 
-    color: $dark_1;
-  }
+		font-size: 14px;
+
+		color: $dark_1;
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: space-between;
+
+		width: 30%;
+	}
 }
 
 textarea#additionInfo {
-  height: 150px;
+	height: 150px;
 }
 
 ::ng-deep.mat-tab-link,
 ::ng-deep.mat-tab-label,
 ::ng-deep.mat-tab-label-active {
-  padding: 0 40px !important;
+	padding: 0 40px !important;
 
-  min-width: 0 !important;
-}
-
-::ng-deep.mat-flat-button.mat-button-base.mat-primary {
-  margin-left: 24px;
+	min-width: 0 !important;
 }
