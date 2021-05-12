@@ -13,6 +13,7 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
 import { ArchiveComponent } from './components/modals/archive/archive.component';
 import { UploadPhotoComponent } from './components/modals/upload-photo/upload-photo.component';
+import { AdminModule } from '../admin/admin.module';
 
 
 @NgModule({
@@ -27,14 +28,15 @@ import { UploadPhotoComponent } from './components/modals/upload-photo/upload-ph
 		ProjectsComponent,
 		UploadPhotoComponent
 	],
-	imports: [
-		CommonModule,
-		SharedModule,
-		MaterialModule,
-		ReactiveFormsModule,
-		FormsModule,
-		RouterModule,
-	],
+  imports: [
+    CommonModule,
+    SharedModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule,
+    AdminModule,
+  ],
 	providers: [],
 })
 export class EmployeeModule {}
