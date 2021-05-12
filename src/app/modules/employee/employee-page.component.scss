@@ -7,3 +7,26 @@
 .card_employee:last-child {
     margin-bottom: 0;
 }
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.employee-page {
+    &__header {
+        margin-bottom: 48px;
+    }
+
+    &__button {
+        cursor: pointer;
+
+        &:hover {
+            color: #707070;
+        }
+    }
+
+    &__button-label {
+        margin-left: 7px;
+    }
+}

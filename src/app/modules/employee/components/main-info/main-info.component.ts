@@ -4,9 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
 import { Time } from '@angular/common';
 import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
-import { employee } from '../../mock';
 import { DateType } from '@app/models/date.model';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { employee } from '../../mock';
 
 interface ExtendedUser extends IUser {
   about?: string;
