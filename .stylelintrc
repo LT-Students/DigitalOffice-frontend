@@ -27,7 +27,7 @@
     ],
     "at-rule-no-unknown": [
       true,
-      { "ignoreAtRules": ["extend", "include", "each"] }
+      { "ignoreAtRules": ["extend", "include", "each", "mixin"] }
     ],
     "string-quotes": "single",
     "order/order": ["custom-properties", "declarations", "rules"],
