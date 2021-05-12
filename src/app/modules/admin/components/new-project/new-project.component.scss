@@ -27,18 +27,19 @@
                 display: flex;
             }
         }
-    }
 
-    &__name {
-        display: inline-block;
+        .section__content {
+            display: grid;
 
-        width: 68%;
+            &_general {
+                grid-template-columns: 56% 20% 20%;
+                grid-gap: 2%;
+            }
+        }
     }
 
     &__department {
-        display: inline-block;
-
-        width: 68%;
+        grid-column: 2 / 4;
     }
 
     &__date {
@@ -48,7 +49,7 @@
     }
 
     &__description {
-        grid-area: desc;
+        grid-column: 1 / 4;
     }
 
     &__name,

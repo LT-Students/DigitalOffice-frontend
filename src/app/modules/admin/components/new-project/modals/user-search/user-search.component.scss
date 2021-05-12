@@ -71,10 +71,15 @@ $select-height: 36px;
         margin-bottom: 14px;
 
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
 
         height: 424px;
+
+        &--image {
+            height: 35%;
+        }
     }
 
     &__button-container {

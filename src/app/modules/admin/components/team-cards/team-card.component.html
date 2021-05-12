@@ -28,6 +28,7 @@
 
     <ng-template matExpansionPanelContent>
       <div class="user-row" *ngFor="let member of members">
+        <!-- TODO: Fix wrapper tag for big images-->
         <div class="user-row__image">
           <img [src]='member.profileImgSrc' width='48' height='48' alt="user image">
           <span class="label_lead label_lead_md" *ngIf="member.lead" doText regularTextSize="small">ЛИД</span>
