@@ -1,4 +1,8 @@
 // eslint-disable-next-line no-shadow
+import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
+import { EducationType } from '@data/api/user-service/models/education-type';
+import { ImageInfo } from '@data/api/user-service/models/image-info';
+
 export enum StudyType {
   /* заочно */
   ABSENTIA = 'заочно',
@@ -31,11 +35,11 @@ export class EducationModel {
   public get specialization(): string {
     return this._specialization;
   }
-  private _studyType: StudyType;
-  public get studyType(): StudyType {
+  private _studyType: EducationType;
+  public get studyType(): EducationType {
     return this._studyType;
   }
-  public set studyType(studyType: StudyType) {
+  public set studyType(studyType: EducationType) {
     this._studyType = studyType;
   }
   private _startYear: Date;
@@ -57,16 +61,36 @@ export class EducationModel {
     return this._certificateId;
   }
 
-  constructor(data: EducationPlace) {
-    this._educationInstitution = data.educationInstitution
-      ? data.educationInstitution
-      : null;
-    this._specialization = data.specialization ? data.specialization : null;
-    this._studyType = data.studyType ? data.studyType : null;
-    this._startYear = data.startYear ? data.startYear : null;
-    this._endYear = data.endYear ? data.endYear : null;
-    this._certificateId = data.certificateId ? data.certificateId : null;
+  private _image: ImageInfo;
+  public get imageInBase64(): string {
+    return this._image.content;
+  }
+
+  // constructor(data: EducationPlace) {
+  //   this._educationInstitution = data.educationInstitution
+  //     ? data.educationInstitution
+  //     : null;
+  //   this._specialization = data.specialization ? data.specialization : null;
+  //   this._studyType = data.studyType ? data.studyType : null;
+  //   this._startYear = data.startYear ? data.startYear : null;
+  //   this._endYear = data.endYear ? data.endYear : null;
+  //   this._certificateId = data.certificateId ? data.certificateId : null;
+  //   this.isEditing = false;
+  // }
+
+  constructor(data: CertificateInfo) {
+    this._educationInstitution = data.schoolName
+        ? data.schoolName
+        : null;
+    this._specialization = data.name ? data.name : null;
+    this._studyType = data.educationType ? data.educationType : null;
+    // this._startYear = data.startYear ? data.startYear : null;
+    this._endYear = data.receivedAt ? new Date(data.receivedAt) : null;
+    this._certificateId = data.id ? data.id : null;
+    this._image = data.image ? data.image : null;
     this.isEditing = false;
+    console.log(data.receivedAt);
+    console.log(this._endYear);
   }
 
   public getEducationalPeriod(): string {

@@ -20,6 +20,8 @@ import {
   MomentDateAdapter,
 } from '@angular/material-moment-adapter';
 import { WorkFlowMode } from '../../employee-page.component';
+import { UserResponse } from '@data/api/user-service/models/user-response';
+import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
 
 
 export const DATE_FORMAT = {
@@ -39,9 +41,9 @@ export interface Modes {
 }
 
 @Component({
-  selector: 'do-employee-page-skills',
-  templateUrl: 'skills.component.html',
-  styleUrls: ['skills.component.scss'],
+  selector: 'do-employee-page-competences',
+  templateUrl: 'competences.component.html',
+  styleUrls: ['competences.component.scss'],
   providers: [
     {
       provide: DateAdapter,
@@ -52,23 +54,20 @@ export interface Modes {
   ],
 })
 
-export class SkillsComponent implements OnInit {
+export class CompetencesComponent implements OnInit {
   @Input() public skills: string[];
   @Input() public institutes: EducationModel[];
   @Input() public courses: EducationModel[];
   @Input() public studyTypes: StudyType[];
+  @Input() public user: UserResponse;
 
-  public visible: boolean;
-  public selectable: boolean;
-  public removable: boolean;
-  public addOnBlur: boolean;
   public workFlowMode: typeof WorkFlowMode = WorkFlowMode;
   public filteredSkills: Observable<string[]>;
-  public skillsCtrl: FormControl;
   public selectedEducationItem: EducationModel;
-  readonly separatorKeysCodes: number[];
   public sectionModes: Modes;
   public editForm: FormGroup;
+  public certificates: EducationModel[];
+  public insts: EducationModel[];
 
   @ViewChild('skillsInput') skillsInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -76,18 +75,14 @@ export class SkillsComponent implements OnInit {
   @ViewChild('pickerEndYear') pickerEndYear: MatDatepicker<Date>;
 
   constructor() {
-    this.visible = true;
-    this.selectable = true;
-    this.removable = true;
-    this.addOnBlur = true;
-    this.separatorKeysCodes = [ENTER, COMMA];
     this.sectionModes = {
       skills: WorkFlowMode.VIEW,
       education: WorkFlowMode.VIEW,
       certificates: WorkFlowMode.VIEW,
     };
-    this.skillsCtrl = new FormControl();
     this.selectedEducationItem = null;
+    this.certificates = null;
+    this.insts = null;
 
     this.editForm = new FormGroup({
       educationInstitution: new FormControl(''),
@@ -97,47 +92,17 @@ export class SkillsComponent implements OnInit {
       startYear: new FormControl(''),
       certificateId: new FormControl(''),
     });
-
-    this.filteredSkills = this.skillsCtrl.valueChanges.pipe(
-        startWith(null),
-        map((skill: string | null) =>
-            skill ? this._filter(skill) : this.skills.slice()
-        )
-    );
   }
 
   ngOnInit(): void {
-    console.log(this.studyTypes);
+    this.certificates = this.user.certificates.map((certificate: CertificateInfo) => {
+      return new EducationModel(certificate);
+    })
+
+    this.insts = this.certificates;
+
+    console.log(this.certificates);
   }
-
-  public add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    // Add our fruit
-    if ((value || '').trim()) {
-      this.skills.push(value.trim());
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  public remove(skill: string): void {
-    const index = this.skills.indexOf(skill);
-
-    if (index >= 0) {
-      this.skills.splice(index, 1);
-    }
-  }
-
-  public selected(event: MatAutocompleteSelectedEvent): void {
-    this.skills.push(event.option.viewValue);
-    this.skillsCtrl.reset();
-  }
-
   public onStartYearSelected(selectedDate: any): void {
     const dateToSet: Date = new Date(selectedDate.year(), 0, 1);
     this.editForm.patchValue({ startYear: dateToSet });
@@ -234,13 +199,5 @@ export class SkillsComponent implements OnInit {
       const itemIndex: number = this.institutes.indexOf(item);
       this.institutes.splice(itemIndex, 1);
     }
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.skills.filter(
-        (skill) => skill.toLowerCase().indexOf(filterValue) === 0
-    );
   }
 }

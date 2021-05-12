@@ -13,53 +13,7 @@
       </div>
     </div>
     <div class="section__content">
-      <mat-form-field class="w-100">
-        <mat-chip-list #chipList>
-          <mat-chip
-            color="accent"
-            *ngFor="let skill of skills"
-            [selectable]="selectable"
-            [removable]="removable"
-            (removed)="remove(skill)"
-          >
-            {{ skill }}
-            <mat-icon matChipRemove *ngIf="sectionModes.skills === workFlowMode.EDIT"
-            >cancel</mat-icon
-            >
-          </mat-chip>
-          <input
-            placeholder="Введите навык, например, Google Analytics"
-            *ngIf="sectionModes.skills === workFlowMode.EDIT"
-            #skillsInput
-            [formControl]="skillsCtrl"
-            [matAutocomplete]="auto"
-            [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur"
-            (matChipInputTokenEnd)="add($event)"
-          />
-        </mat-chip-list>
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          (optionSelected)="selected($event)"
-        >
-          <mat-option
-            *ngFor="let skill of filteredSkills | async"
-            [value]="skill"
-          >
-            {{ skill }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-      <mat-form-field
-        *ngIf="sectionModes.skills === workFlowMode.VIEW"
-        class="mat-form-field_default-select"
-        appearance="none"
-      >
-        <mat-select class="select" placeholder="Показать все">
-          <mat-option></mat-option>
-        </mat-select>
-      </mat-form-field>
+      <do-skills [skills]='user.skills'></do-skills>
     </div>
   </div>
   <!--  Образование  -->
@@ -84,7 +38,7 @@
       <div *ngIf="sectionModes.education === workFlowMode.ADD" class="row">
         <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>
       </div>
-      <div *ngFor="let place of institutes" class="row">
+      <div *ngFor="let place of insts" class="row">
         <ng-container *ngIf="!place.isEditing; else editFormTemplate">
           <div class="row__main-info">
             <!--1 column-->
@@ -151,7 +105,7 @@
       <div *ngIf="sectionModes.certificates === workFlowMode.ADD" class="row">
         <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>
       </div>
-      <div *ngFor="let course of courses" class="row">
+      <div *ngFor="let course of certificates" class="row">
         <ng-container *ngIf="!course.isEditing; else editFormTemplate">
           <div class="row__main-info">
             <!--1 column-->

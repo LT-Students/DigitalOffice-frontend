@@ -7,6 +7,7 @@ import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { employee } from '../../mock';
+import { UserResponse } from '@data/api/user-service/models/user-response';
 
 interface ExtendedUser extends IUser {
   about?: string;
@@ -35,7 +36,7 @@ interface ExtendedUser extends IUser {
 })
 export class MainInfoComponent implements OnInit {
   @Input() avatar: object;
-  @Input() user: UserInfo;
+  @Input() user: UserResponse;
   @Input() department: object;
 
 

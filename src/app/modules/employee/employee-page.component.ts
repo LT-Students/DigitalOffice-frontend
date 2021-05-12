@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { EducationModel, StudyType } from '@app/models/education.model';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { LocalStorageService } from '@app/services/local-storage.service';
@@ -7,13 +7,14 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UsersResponse } from '@data/api/user-service/models';
 import { Project } from '@data/models/project';
-import { tap } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { activeProject, closedProject, courses, institutes, skills } from './mock';
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
 import { ArchiveComponent } from './components/modals/archive/archive.component';
+import { Subject, Subscription } from 'rxjs';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -45,7 +46,7 @@ export interface Path {
   styleUrls: ['./employee-page.component.scss'],
 })
 
-export class EmployeePageComponent implements OnInit {
+export class EmployeePageComponent implements OnInit, OnDestroy {
   public skills: string[];
   public institutes: EducationModel[];
   public courses: EducationModel[];
@@ -54,9 +55,11 @@ export class EmployeePageComponent implements OnInit {
   public paths: Path[];
   public pageId: string;
   public isOwner: boolean;
-  private dialogRef;
+  public userData: UserResponse;
 
-  public userInfo: UserResponse;
+  private dialogRef;
+  private _subscription: Subscription;
+  private _unsubscribe$: Subject<void>;
 
   constructor(
     private userService: UserService,
@@ -75,25 +78,38 @@ export class EmployeePageComponent implements OnInit {
       StudyType.ONLINE,
     ];
     this.pageId = this.route.snapshot.paramMap.get('id');
+    this.userData = null;
+    this._subscription = new Subscription();
+    this._unsubscribe$ = new Subject<void>();
   }
 
   ngOnInit(): void {
-    const user = this.userService.getCurrentUser();
+    const user: UserInfo = this.userService.getCurrentUser();
+
+    this.isOwner = user.id === this.pageId;
 
     this.userProjects = this._getUserProjects();
-    this.userService.getUser(user.id).subscribe((userResponse: UserResponse) => {
+    /*this.userService.getUser(user.id).subscribe((userResponse: UserResponse) => {
       console.log(userResponse);
-      this.userInfo = userResponse;
+      this.userData = userResponse;
+    });*/
+    /* TODO: BehaviorSubject with userResponse as initial value */
+    const user$ = this.userService.getMockUser().pipe(takeUntil(this._unsubscribe$))
+    .subscribe((userResponse: UserResponse) => this.userData = userResponse);
+    this._subscription.add(user$);
 
-      this.paths = [
-        { title: 'Сотрудники', url: 'user/attendance' },
-        { title: 'Департамент Цифровых Технологий', url: 'user/attendance' },
-        { title: `${this.userInfo.user.firstName} ${this.userInfo.user.lastName}`, },
-      ];
-      this.isOwner = this.userInfo.user.id === this.pageId;
-    });
+    this.paths = [
+      { title: 'Сотрудники', url: 'user/attendance' },
+      { title: `${this.userData.department.name}`, url: `departments/${this.userData.department.id}` },
+      { title: `${this.userData.user.firstName} ${this.userData.user.lastName}`},
+    ];
   }
 
+  ngOnDestroy() {
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
+    this._subscription.unsubscribe();
+  }
 
   private _getUserProjects(): UserProject[] {
     return [
@@ -108,9 +124,7 @@ export class EmployeePageComponent implements OnInit {
   }
 
   onOpenDialog(): void {
-    const dialogComponent = this.userInfo.user.isAdmin
-      ? ArchiveComponent
-      : AdminRequestComponent;
+    const dialogComponent = this.userData.user.isAdmin ? ArchiveComponent : AdminRequestComponent;
 
     this.dialogRef = this.dialog.open(dialogComponent, {});
     this.dialogRef.afterClosed().subscribe((result: string) => {

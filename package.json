@@ -100,7 +100,7 @@
     ],
     "src/**/*.{ts,html}, !src/data/api/**/*.ts": [
       "prettier --write",
-      "eslint"
+      "eslint --fix"
     ]
   }
 }
