@@ -3,7 +3,7 @@
 		Загрузка новой фотографии
 		<mat-icon mat-dialog-close>close</mat-icon>
 	</h3>
-	<ng-container *ngIf="!isPhotoUploaded; else adjustPhoto">
+	<ng-container *ngIf="!isPhotoUploaded; else preview">
 		<div
 			class="upload-photo__dropzone"
 			doDnd
@@ -26,6 +26,7 @@
 				#uploadFile
 				hidden
 				type="file"
+        accept="image/png, image/jpeg, image/gif"
 				(change)="onFileChanged($event)"
 			/>
 		</div>
@@ -36,37 +37,43 @@
 	>
 </mat-dialog-content>
 
-<ng-template #adjustPhoto>
-	<p doText color="dark_1">
-		Выбранная область будет показываться на вашей странице и на миниатюрах.
-		Если изображение ориентировано неправильно, фотографию можно повернуть.
-	</p>
-	<img [src]="photoPreview" alt="User photo" height="180" />
-	<div class="upload-photo__miniature">
-		<img [src]="photoPreview" alt="Photo miniature" height="48" />
+<ng-template #preview>
+	<div class="upload-photo__preview">
+		<p doText color="dark_1">
+			Выбранная область будет показываться на вашей странице и на
+			миниатюрах. Если изображение ориентировано неправильно, фотографию
+			можно повернуть.
+		</p>
+		<div class='upload-photo__images'>
+			<img [src]="photoPreview" alt="User photo" height="180" />
+      <div class='upload-photo__miniatures'>
+        <div class='upload-photo__miniature upload-photo__miniature_size_medium'>
+          <img [src]='photoPreview' alt='Photo miniature' height='48' />
+        </div>
+        <div class='upload-photo__miniature upload-photo__miniature_size_small'>
+          <img [src]='photoPreview' alt='Photo miniature' height='36' />
+        </div>
+      </div>
+		</div>
+		<mat-dialog-actions>
+			<button
+				mat-flat-button
+				type="button"
+				doText
+				color="gray1"
+				(click)="isPhotoUploaded = false"
+			>
+				Вернуться назад
+			</button>
+			<button
+				mat-flat-button
+				[mat-dialog-close]="photoPreview"
+				type="submit"
+				class="bg-dark_1"
+				color="primary"
+			>
+				Сохранить изменения
+			</button>
+		</mat-dialog-actions>
 	</div>
-	<div class="upload-photo__miniature">
-		<img [src]="photoPreview" alt="Photo miniature" height="36" />
-	</div>
-	<mat-dialog-actions>
-		<button
-			mat-flat-button
-			type="button"
-			class="archive__button"
-			doText
-			color="gray1"
-			(click)="isPhotoUploaded = false"
-		>
-			Вернуться назад
-		</button>
-		<button
-			mat-flat-button
-			[mat-dialog-close]="photoPreview"
-			type="submit"
-			class="archive__button bg-dark_1"
-			color="primary"
-		>
-			Сохранить изменения
-		</button>
-	</mat-dialog-actions>
 </ng-template>

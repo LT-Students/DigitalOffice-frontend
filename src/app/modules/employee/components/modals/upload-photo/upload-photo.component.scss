@@ -18,6 +18,26 @@
 		border-radius: 10px;
 	}
 
+	&__preview {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+
+		width: 650px;
+		height: 300px;
+
+		text-align: center;
+	}
+
+	&__images {
+		display: flex;
+	}
+
+	&__miniatures {
+		margin-left: 38px;
+	}
+
 	&__hint {
 		font-size: 14px;
 		text-align: center;
@@ -34,9 +54,20 @@
 	&__miniature {
 		overflow: hidden;
 
-		width: 48px;
-		height: 48px;
-
 		border-radius: 50%;
+
+		&_size {
+			&_small {
+				width: 36px;
+				height: 36px;
+			}
+
+			&_medium {
+				margin-bottom: 14px;
+
+				width: 48px;
+				height: 48px;
+			}
+		}
 	}
 }
