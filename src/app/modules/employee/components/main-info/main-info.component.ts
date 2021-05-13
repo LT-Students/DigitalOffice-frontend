@@ -4,10 +4,10 @@ import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
 import { Time } from '@angular/common';
 import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
-import { employee } from '../../mock';
 import { DateType } from '@app/models/date.model';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MatDialog } from '@angular/material/dialog';
+import { employee } from '../../mock';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
 
 interface ExtendedUser extends IUser {
@@ -68,7 +68,7 @@ export class MainInfoComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       middleName: [''],
-      photo: [''],
+      photoUrl: [''],
       status: [null],
       about: [''],
       jobPosition: ['', Validators.required],
@@ -122,20 +122,6 @@ export class MainInfoComponent implements OnInit {
     this.isEditing = !this.isEditing;
   }
 
-  onFileChange(event) {
-    if (event.target.files.length > 0) {
-      const reader = new FileReader();
-
-      reader.readAsDataURL(event.target.files[0]);
-      reader.onload = (evt) => {
-        this.employeeInfoForm.patchValue({
-          photo: evt.target.result,
-        });
-        this.previewPhoto = <string>evt.target.result;
-      };
-    }
-  }
-
   updateEmployeeInfo() {
     this.employee = { ...this.employee, ...this.employeeInfoForm.value };
   }
@@ -165,6 +151,14 @@ export class MainInfoComponent implements OnInit {
   }
 
   onOpenDialog() {
-    this.dialog.open(UploadPhotoComponent, {});
+    const dialogRef = this.dialog.open(UploadPhotoComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.employeeInfoForm.patchValue({
+          photoUrl: result,
+        });
+        this.previewPhoto = result;
+      }
+    })
   }
 }

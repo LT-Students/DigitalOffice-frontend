@@ -4,7 +4,7 @@
 
     <div class='employee-info__wrapper'>
       <div class='employee-info__main'>
-        <div class='employee-info__photo' (click)='onOpenDialog()'>
+        <div class='employee-info__photo'>
           <img [src]='employee?.photoUrl' alt='Employee photo' width='200' />
         </div>
         <h3 class='employee-info__name' doText color='dark_2'>
@@ -266,19 +266,12 @@
   <img [src]="previewPhoto" alt="Employee photo" width="200" />
   <label
     class="text_white employee-info__label employee-info__upload-button"
-    for="photo"
+    (click)='onOpenDialog()'
     ><mat-icon class="employee-info__upload-icon">
       <img src='../../../../../assets/svg/arrow-upload-file.svg' alt="Upload photo" />
     </mat-icon>
     Обновить фото</label
   >
-  <input
-    id="photo"
-    type="file"
-    formGroupName="photo"
-    (change)="onFileChange($event)"
-    hidden
-  />
 </ng-template>
 
 <ng-template #emoji [formGroup]="employeeInfoForm">
@@ -331,19 +324,13 @@
         <img [src]='previewPhoto' alt='Employee photo' width='200' />
         <label
             class='text_white employee-info__label employee-info__upload-button'
-            for='photo'
+            (click)='onOpenDialog()'
         >
           <mat-icon class='employee-info__upload-icon'>
             <img src='../../../../../assets/svg/arrow-upload-file.svg' alt='Upload photo' />
           </mat-icon>
           Обновить фото</label
         >
-        <input
-            id='photo'
-            type='file'
-            formGroupName='photo'
-            (change)='onFileChange($event)'
-            hidden />
       </div>
       <ng-container *ngIf='!employee.isAdmin; else nameEdit'>
         <h3 class='employee-info__name' doText color='dark_2'>
