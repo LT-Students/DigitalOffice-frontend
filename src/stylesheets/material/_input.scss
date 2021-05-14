@@ -7,49 +7,50 @@
 .ng-pristine textarea,
 .ng-valid textarea,
 .ng-invalid textarea {
-  padding: 5px 5px;
+    padding: 5px 5px;
 
-  min-height: 30px;
+    min-height: 30px;
 
-  &:focus {
-    outline: none;
-  }
+    &:focus {
+        outline: none;
+    }
 }
 
 .mat-form-field_time-input {
-  .mat-input-element {
-    padding: 0;
+    .mat-input-element {
+        padding: 0;
 
-    background-color: transparent;
-  }
+        background-color: transparent;
+    }
 }
 
 .mat-form-field {
-  .mat-input-element,
-  input.mat-input-element,
-  textarea.mat-input-element {
-    padding: 10px 15px;
+    .mat-input-element,
+    input.mat-input-element,
+    textarea.mat-input-element {
+        margin-top: 0;
+        padding: 0 15px;
 
-    width: 100%;
-    height: 36px;
+        width: 100%;
+        height: 40px;
 
-    color: $dark_1;
-    background-color: $light_2;
-    border-radius: 5px;
-    caret-color: $dark_1;
-  }
+        color: $dark_1;
+        background-color: $light_2;
+        border-radius: 5px;
+        caret-color: $dark_1;
+    }
 
-  textarea.mat-input-element {
-    min-height: 82px;
-  }
+    textarea.mat-input-element {
+        min-height: 82px;
+    }
 }
 
 // type="number"
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
 input[type='number'] {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }

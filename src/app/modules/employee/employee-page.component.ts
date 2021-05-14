@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EducationModel, StudyType } from '@app/models/education.model';
-import { activeProject, closedProject, courses, institutes, skills } from './mock';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { UserService } from '@app/services/user.service';
@@ -9,6 +8,12 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UsersResponse } from '@data/api/user-service/models';
 import { Project } from '@data/models/project';
 import { tap } from 'rxjs/operators';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { activeProject, closedProject, courses, institutes, skills } from './mock';
+import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
+import { ArchiveComponent } from './components/modals/archive/archive.component';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -29,6 +34,11 @@ export interface UserProject extends Project {
   endedAt?: Date;
 }
 
+export interface Path {
+  title: string;
+  url?: string;
+}
+
 @Component({
   selector: 'do-employee-page',
   templateUrl: './employee-page.component.html',
@@ -41,10 +51,19 @@ export class EmployeePageComponent implements OnInit {
   public courses: EducationModel[];
   public studyTypes: StudyType[];
   public userProjects: UserProject[];
+  public paths: Path[];
+  public pageId: string;
+  public isOwner: boolean;
+  private dialogRef;
 
   public userInfo: UserResponse;
 
-  constructor(private userService: UserService) {
+  constructor(
+    private userService: UserService,
+    public dialog: MatDialog,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
+  ) {
     this.skills = skills;
     this.institutes = institutes;
     this.courses = courses;
@@ -55,15 +74,23 @@ export class EmployeePageComponent implements OnInit {
       StudyType.OFFLINE,
       StudyType.ONLINE,
     ];
+    this.pageId = this.route.snapshot.paramMap.get('id');
   }
 
   ngOnInit(): void {
     const user = this.userService.getCurrentUser();
 
     this.userProjects = this._getUserProjects();
-    this.userService.getUser(user.user.id).subscribe((userResponse: UserResponse) => {
+    this.userService.getUser(user.id).subscribe((userResponse: UserResponse) => {
       console.log(userResponse);
       this.userInfo = userResponse;
+
+      this.paths = [
+        { title: 'Сотрудники', url: 'user/attendance' },
+        { title: 'Департамент Цифровых Технологий', url: 'user/attendance' },
+        { title: `${this.userInfo.user.firstName} ${this.userInfo.user.lastName}`, },
+      ];
+      this.isOwner = this.userInfo.user.id === this.pageId;
     });
   }
 
@@ -78,6 +105,23 @@ export class EmployeePageComponent implements OnInit {
       },
         ...Array(5).fill(closedProject)
     ];
+  }
+
+  onOpenDialog(): void {
+    const dialogComponent = this.userInfo.user.isAdmin
+      ? ArchiveComponent
+      : AdminRequestComponent;
+
+    this.dialogRef = this.dialog.open(dialogComponent, {});
+    this.dialogRef.afterClosed().subscribe((result: string) => {
+      this.showMessage(result);
+    });
+  }
+
+  showMessage(message: string): void {
+    if (message) {
+      this.snackBar.open(message, 'accept', { duration: 3000 });
+    }
   }
 
 }

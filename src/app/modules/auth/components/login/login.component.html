@@ -4,7 +4,7 @@
   (ngSubmit)="login()"
   autocomplete="off"
 >
-  <label class="form__title h1 text_white">trrak!</label>
+  <label class="form__title h1 text_white">Digital office</label>
   <div class="form__error">
     <small *ngIf="email.touched && email.invalid"
       >Неправильно введен email адрес :(
@@ -34,10 +34,10 @@
       *ngIf="!isWaiting; else spinner"
       type="submit"
       [disabled]="email.invalid || password.invalid"
-      (click)="login()"
       id="btn-enter"
     >
-      Войти
+      <p>Войти</p>
+      
     </button>
     <ng-template #spinner>
       <svg class="spinner" viewBox="0 0 50 50">
@@ -52,9 +52,5 @@
       </svg>
     </ng-template>
   </div>
-  <a
-    class="nav-link__forgot-password regular_text"
-    routerLink="/auth/forgotpassword"
-    >О нет! Я забыл пароль</a
-  >
+    <a class="nav-link__forgot-password regular_text text_white" routerLink="/auth/forgotpassword">О нет! Я забыл пароль</a>
 </form>

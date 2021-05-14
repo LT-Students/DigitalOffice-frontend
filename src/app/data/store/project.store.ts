@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
-import { WorkTimeApiService } from '@data/api/time-management-service/services/work-time-api.service';
 import { Task } from '@data/models/task';
 import { Project } from '@data/models/project';
+import { WorkTimeApiService } from '@data/api/time-service/services';
 
 @Injectable({
   providedIn: 'root',

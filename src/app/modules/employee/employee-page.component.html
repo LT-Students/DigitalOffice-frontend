@@ -1,16 +1,36 @@
-<div class='card card_employee'>
-  <do-employee-page-main-info></do-employee-page-main-info>
+<div class="employee-page__header flex">
+    <do-breadcrumbs [paths]="paths"></do-breadcrumbs>
+    <div
+        class="employee-page__button flex"
+        doText
+        color="gray1"
+        (click)="onOpenDialog()"
+    >
+        <ng-container *ngIf="userInfo.user.isAdmin && !isOwner">
+            <mat-icon>archive</mat-icon>
+            <span class="employee-page__button-label">Добавить в архив</span>
+        </ng-container>
+        <ng-container *ngIf="isOwner && !userInfo.user.isAdmin">
+            <mat-icon>live_help</mat-icon>
+            <span class="employee-page__button-label"
+                >Запрос администратору</span
+            >
+        </ng-container>
+    </div>
 </div>
-<div class='card card_employee'>
-  <do-employee-page-skills
-    [skills]='skills'
-    [institutes]='institutes'
-    [courses]='courses'
-    [studyTypes]='studyTypes'
-  ></do-employee-page-skills>
+<div class="card card_employee">
+    <do-employee-page-main-info></do-employee-page-main-info>
 </div>
-<div class='card card_employee'>
-  <do-employee-page-projects
-    [userProjects]='userProjects'
-  ></do-employee-page-projects>
+<div class="card card_employee">
+    <do-employee-page-skills
+        [skills]="skills"
+        [institutes]="institutes"
+        [courses]="courses"
+        [studyTypes]="studyTypes"
+    ></do-employee-page-skills>
+</div>
+<div class="card card_employee">
+    <do-employee-page-projects
+        [userProjects]="userProjects"
+    ></do-employee-page-projects>
 </div>

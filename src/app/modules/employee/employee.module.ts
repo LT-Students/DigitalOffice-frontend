@@ -9,6 +9,9 @@ import { EmployeePageComponent } from './employee-page.component';
 import { SkillsComponent } from './components/skills/skills.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
 import { ProjectsComponent } from './components/projects/projects.component';
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
+import { ArchiveComponent } from './components/modals/archive/archive.component';
 
 
 @NgModule({
@@ -16,7 +19,10 @@ import { ProjectsComponent } from './components/projects/projects.component';
 		EmployeePageComponent,
 		SkillsComponent,
 		MainInfoComponent,
-		ProjectsComponent
+		ProjectsComponent,
+		BreadcrumbsComponent,
+		AdminRequestComponent,
+		ArchiveComponent
 	],
 	imports: [
 		CommonModule,

@@ -11,8 +11,8 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project } from '@data/models/project';
 import { Task } from '@data/models/task';
-import { IUser } from '@data/models/user';
 import { timeValidator } from './add-hours.validators';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 
 @Component({
   selector: 'do-add-hours',
@@ -20,7 +20,7 @@ import { timeValidator } from './add-hours.validators';
   styleUrls: ['./add-hours.component.scss'],
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
-  @Input() user: IUser;
+  @Input() user: UserInfo;
   private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
   public projects: Project[];
@@ -109,6 +109,15 @@ export class AddHoursComponent implements OnInit, OnDestroy {
           { id: 0, name: 'Ежегодный' },
           { id: 1, name: 'За свой счёт' },
           { id: 2, name: 'Декретный' },
+        ],
+      },
+      {
+        name: 'Отгул',
+        options: [
+          { id: 0, name: 'Суд' },
+          { id: 1, name: 'ДТП' },
+          { id: 2, name: 'Форс-мажор' },
+          { id: 3, name: 'Похороны' },
         ],
       },
     ];

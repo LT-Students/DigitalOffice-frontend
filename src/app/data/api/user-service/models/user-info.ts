@@ -8,6 +8,7 @@ export interface UserInfo {
   isAdmin?: boolean;
   lastName?: string;
   middleName?: string;
+  rate?: number;
   startWorkingAt?: string;
   status?: UserStatus;
 }
