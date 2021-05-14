@@ -1,52 +1,46 @@
 @import 'base/variables';
 
 .content-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	overflow: hidden;
+	justify-content: center;
+	align-items: center;
 
-    width: 100%;
-    height: 100vh;
+	width: 100%;
+	height: 100vh;
 
-    background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
+	background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
 
-    .admin-router {
-        z-index: 10;
-    }
+	.admin-router {
+		z-index: 10;
+	}
 
-    .waves-container {
-        position: absolute;
-        bottom: -15px;
+	.waves {
+		position: absolute;
+		bottom: -30px;
 
-        display: inline-block;
+		width: 200%;
 
-        width: 100%;
+		background-repeat: no-repeat;
 
-        transition-duration: 10ms;
+		background-size: cover;
 
-        &.wave1,
-        &.wave2 {
-            position: absolute;
+		&.wave1 {
+			top: 494px;
 
-            bottom: 0;
+			background-image: url('/assets/svg/wave1.svg');
+		}
 
-            display: inline-block;
+		&.wave2 {
+			top: 390px;
 
-            background-repeat: no-repeat;
+			background-image: url('/assets/svg/wave2.svg');
+		}
 
-            background-size: cover;
-        }
+		&.wave3 {
+			top: 490px;
 
-        &.wave1 {
-            top: 494px;
-
-            background-image: url('/assets/svg/wave1.svg');
-        }
-
-        &.wave2 {
-            top: 390px;
-
-            background-image: url('/assets/svg/wave2.svg');
-        }
-    }
+			background-image: url('/assets/svg/wave3.svg');
+		}
+	}
 }
