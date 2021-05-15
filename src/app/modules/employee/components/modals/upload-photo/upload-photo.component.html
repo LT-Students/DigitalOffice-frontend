@@ -26,7 +26,7 @@
 				#uploadFile
 				hidden
 				type="file"
-        accept="image/png, image/jpeg, image/gif"
+				accept="image/png, image/jpeg, image/gif"
 				(change)="onFileChanged($event)"
 			/>
 		</div>
@@ -44,16 +44,28 @@
 			миниатюрах. Если изображение ориентировано неправильно, фотографию
 			можно повернуть.
 		</p>
-		<div class='upload-photo__images'>
+		<div class="upload-photo__images">
 			<img [src]="photoPreview" alt="User photo" height="180" />
-      <div class='upload-photo__miniatures'>
-        <div class='upload-photo__miniature upload-photo__miniature_size_medium'>
-          <img [src]='photoPreview' alt='Photo miniature' height='48' />
-        </div>
-        <div class='upload-photo__miniature upload-photo__miniature_size_small'>
-          <img [src]='photoPreview' alt='Photo miniature' height='36' />
-        </div>
-      </div>
+			<div class="upload-photo__miniatures">
+				<div
+					class="upload-photo__miniature upload-photo__miniature_size_medium"
+				>
+					<img
+						[src]="photoPreview"
+						alt="Photo miniature"
+						height="48"
+					/>
+				</div>
+				<div
+					class="upload-photo__miniature upload-photo__miniature_size_small"
+				>
+					<img
+						[src]="photoPreview"
+						alt="Photo miniature"
+						height="36"
+					/>
+				</div>
+			</div>
 		</div>
 		<mat-dialog-actions>
 			<button
