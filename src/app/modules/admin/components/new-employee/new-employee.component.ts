@@ -13,8 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { UserStatus } from '@app/models/user-status.model';
-import { CommunicationType } from '@data/api/user-service/models';
+import { CommunicationType, UserStatus } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 
 export const DATE_FORMAT = {
@@ -114,7 +113,10 @@ export class NewEmployeeComponent implements OnInit {
   }
 
   private _convertFormDataToCreateUserParams(): CreateUserRequest {
-    const communications: CommunicationInfo[] = [{type: CommunicationType.Email, value: this.userForm.get('email').value}];
+    const communications: CommunicationInfo[] = [{
+      type: CommunicationType.Email,
+      value: this.userForm.get('email').value,
+    }];
 
     const params: CreateUserRequest = {
       firstName: this.userForm.get('firstName').value as string,

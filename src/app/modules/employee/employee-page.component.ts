@@ -11,10 +11,13 @@ import { takeUntil, tap } from 'rxjs/operators';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { activeProject, closedProject, courses, institutes, skills } from './mock';
+import { activeProject, closedProject, skills } from './mock';
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
 import { ArchiveComponent } from './components/modals/archive/archive.component';
 import { Subject, Subscription } from 'rxjs';
+import { ProjectService } from '@app/services/project.service';
+import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { User } from '@app/models/user.model';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -56,20 +59,20 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
   public pageId: string;
   public isOwner: boolean;
   public userData: UserResponse;
+  public user: User;
 
   private dialogRef;
-  private _subscription: Subscription;
   private _unsubscribe$: Subject<void>;
 
   constructor(
-    private userService: UserService,
+    private _userService: UserService,
+    private _projectService: ProjectService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
   ) {
     this.skills = skills;
-    this.institutes = institutes;
-    this.courses = courses;
+    // TODO: Replace with enum values
     this.studyTypes = [
       StudyType.ABSENTIA,
       StudyType.CONFRONT,
@@ -79,52 +82,44 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
     ];
     this.pageId = this.route.snapshot.paramMap.get('id');
     this.userData = null;
-    this._subscription = new Subscription();
+    this.user = null;
     this._unsubscribe$ = new Subject<void>();
   }
 
   ngOnInit(): void {
-    const user: UserInfo = this.userService.getCurrentUser();
+    const user: UserInfo = this._userService.getCurrentUser();
 
     this.isOwner = user.id === this.pageId;
 
-    this.userProjects = this._getUserProjects();
     /*this.userService.getUser(user.id).subscribe((userResponse: UserResponse) => {
       console.log(userResponse);
       this.userData = userResponse;
     });*/
     /* TODO: BehaviorSubject with userResponse as initial value */
-    const user$ = this.userService.getMockUser().pipe(takeUntil(this._unsubscribe$))
-    .subscribe((userResponse: UserResponse) => this.userData = userResponse);
-    this._subscription.add(user$);
+    this._userService.getMockUser().pipe(takeUntil(this._unsubscribe$))
+    .subscribe((userResponse: UserResponse) => {
+      this.user = new User(userResponse);
+      this.userData = userResponse;
+    });
+
+    this._projectService.getUserProjectsInfo(this.user.projects).pipe(takeUntil(this._unsubscribe$)).subscribe((projects: ProjectInfo[]) => {
+      console.log(projects);
+    });
 
     this.paths = [
       { title: 'Сотрудники', url: 'user/attendance' },
-      { title: `${this.userData.department.name}`, url: `departments/${this.userData.department.id}` },
-      { title: `${this.userData.user.firstName} ${this.userData.user.lastName}`},
+      { title: `${ this.user.department.name }`, url: `departments/${ this.user.department.id }` },
+      { title: `${ this.user.firstName } ${ this.user.lastName }` },
     ];
   }
 
   ngOnDestroy() {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();
-    this._subscription.unsubscribe();
-  }
-
-  private _getUserProjects(): UserProject[] {
-    return [
-      activeProject,
-      {
-        ...activeProject,
-        description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      },
-        ...Array(5).fill(closedProject)
-    ];
   }
 
   onOpenDialog(): void {
-    const dialogComponent = this.userData.user.isAdmin ? ArchiveComponent : AdminRequestComponent;
+    const dialogComponent = this.user.isAdmin ? ArchiveComponent : AdminRequestComponent;
 
     this.dialogRef = this.dialog.open(dialogComponent, {});
     this.dialogRef.afterClosed().subscribe((result: string) => {

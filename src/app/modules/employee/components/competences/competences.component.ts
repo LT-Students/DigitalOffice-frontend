@@ -1,27 +1,13 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { EducationModel, StudyType } from '@app/models/education.model';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-} from '@angular/material/autocomplete';
+import { MatAutocomplete, } from '@angular/material/autocomplete';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
 import { MatDatepicker } from '@angular/material/datepicker';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE,
-} from '@angular/material/core';
-import {
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-  MomentDateAdapter,
-} from '@angular/material-moment-adapter';
-import { WorkFlowMode } from '../../employee-page.component';
-import { UserResponse } from '@data/api/user-service/models/user-response';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, } from '@angular/material/core';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
+import { User } from '@app/models/user.model';
+import { WorkFlowMode } from '../../employee-page.component';
 
 
 export const DATE_FORMAT = {
@@ -59,10 +45,9 @@ export class CompetencesComponent implements OnInit {
   @Input() public institutes: EducationModel[];
   @Input() public courses: EducationModel[];
   @Input() public studyTypes: StudyType[];
-  @Input() public user: UserResponse;
+  @Input() public user: User;
 
   public workFlowMode: typeof WorkFlowMode = WorkFlowMode;
-  public filteredSkills: Observable<string[]>;
   public selectedEducationItem: EducationModel;
   public sectionModes: Modes;
   public editForm: FormGroup;
@@ -95,9 +80,7 @@ export class CompetencesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.certificates = this.user.certificates.map((certificate: CertificateInfo) => {
-      return new EducationModel(certificate);
-    })
+    this.certificates = this.user.certificates.map((certificate: CertificateInfo) => new EducationModel(certificate))
 
     this.insts = this.certificates;
 
@@ -177,9 +160,7 @@ export class CompetencesComponent implements OnInit {
     this.selectedEducationItem = item;
     item.isEditing = true;
     this.editForm.setValue({
-      educationInstitution: item.educationInstitution
-          ? item.educationInstitution
-          : null,
+      educationInstitution: item.educationInstitution ? item.educationInstitution : null,
       specialization: item.specialization ? item.specialization : null,
       studyType: item.studyType ? item.studyType : null,
       endYear: item.endYear ? item.endYear : null,

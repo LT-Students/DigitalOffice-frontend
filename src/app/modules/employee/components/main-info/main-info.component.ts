@@ -1,18 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
 import { Time } from '@angular/common';
-import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
+import { IUserStatus, UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
-import { UserInfo } from '@data/api/user-service/models/user-info';
 import { employee } from '../../mock';
-import { UserResponse } from '@data/api/user-service/models/user-response';
+import { UserStatus } from '@data/api/user-service/models/user-status';
+import { User } from '@app/models/user.model';
+import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
 
 interface ExtendedUser extends IUser {
   about?: string;
   photoUrl: string;
-  jobPosition: string;
+  position: string;
   department: string;
   location: string;
   office: string;
@@ -35,10 +36,7 @@ interface ExtendedUser extends IUser {
   styleUrls: ['./main-info.component.scss'],
 })
 export class MainInfoComponent implements OnInit {
-  @Input() avatar: object;
-  @Input() user: UserResponse;
-  @Input() department: object;
-
+  @Input() user: User;
 
   public pageId: string;
   public employeeInfoForm: FormGroup;
@@ -48,12 +46,13 @@ export class MainInfoComponent implements OnInit {
   public previewPhoto: string;
   public userStatus: typeof UserStatus = UserStatus;
   public dateType: typeof DateType = DateType;
+  public status: IUserStatus;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {
     this.employee = employee;
 
     this.selectOptions = {
-      jobPosition: ['Middle Product Manager', 'Senior Product Manager'],
+      position: ['Middle Product Manager', 'Senior Product Manager'],
       department: ['Департамент цифровых технологий', 'Департамент мопсиков'],
       office: ['м. Чернышевская', 'м. Площадь Восстания'],
       statuses: UserStatusModel.getAllStatuses(),
@@ -61,7 +60,7 @@ export class MainInfoComponent implements OnInit {
     };
 
     this.isEditing = false;
-    this.previewPhoto = this.employee.photoUrl;
+    this.previewPhoto = null;
 
     this.employeeInfoForm = this.fb.group({
       firstName: ['', Validators.required],
@@ -70,34 +69,25 @@ export class MainInfoComponent implements OnInit {
       photo: [''],
       status: [null],
       about: [''],
-      jobPosition: ['', Validators.required],
+      position: ['', Validators.required],
       department: ['', Validators.required],
-      location: ['', Validators.required],
-      office: ['', Validators.required],
-      workingRate: ['', Validators.required],
-      workingHours: this.fb.group({
-        startAt: [''],
-        endAt: [''],
-      }),
+      rate: ['', Validators.required],
       workingSince: [null],
-      birthDate: [''],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      telegram: [''],
-      vacationSince: ['', Validators.required],
-      sickSince: ['', Validators.required],
-      vacationUntil: ['', Validators.required],
-      vacationDays: ['', Validators.required],
+      communications: this.fb.array([])
     });
 
     this.pageId = this.route.snapshot.paramMap.get('id');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.previewPhoto = this.user.avatar.content;
+    this.status = UserStatusModel.getUserStatusInfoByType(this.user.user.status);
+    this._getCommunications().forEach((communicationControl: FormGroup) => this.communications.push(communicationControl));
 
-  get fullName() {
-    const { lastName, firstName, middleName } = this.employee;
-    return `${lastName} ${firstName} ${middleName}`;
+  }
+
+  public get communications(): FormArray {
+    return this.employeeInfoForm.get('communications') as FormArray;
   }
 
   get workingHours() {
@@ -109,11 +99,11 @@ export class MainInfoComponent implements OnInit {
   }
 
   isOwner() {
-    return this.employee.id === this.pageId;
+    return this.user.id === this.pageId;
   }
 
   canEdit() {
-    return this.employee.isAdmin || this.isOwner();
+    return this.user.isAdmin || this.isOwner();
   }
 
   toggleEditMode() {
@@ -130,7 +120,7 @@ export class MainInfoComponent implements OnInit {
         this.employeeInfoForm.patchValue({
           photo: evt.target.result,
         });
-        this.previewPhoto = <string>evt.target.result;
+        this.previewPhoto = evt.target.result as string;
       };
     }
   }
@@ -150,7 +140,19 @@ export class MainInfoComponent implements OnInit {
   }
 
   fillForm() {
-    this.employeeInfoForm.patchValue(this.employee);
+    this.employeeInfoForm.patchValue({
+      firstName: [this.user.firstName],
+      lastName: [this.user.lastName],
+      middleName: this.user.middleName,
+      photo: `data:image/jpeg;base64,${this.user.avatar.content}`,
+      status: this.user.status,
+      about: this.user.user.about,
+      position: this.user.position,
+      department: this.user.department.name,
+      rate: this.user.user.rate,
+      workingSince: this.user.startWorkingDate,
+      // communications: this._getCommunications(),
+    });
   }
 
   compareEmoji(option, value) {
@@ -158,8 +160,17 @@ export class MainInfoComponent implements OnInit {
   }
 
   changeWorkingRate(step) {
-    const currentValue = this.employeeInfoForm.get('workingRate').value;
+    const currentValue = this.employeeInfoForm.get('rate').value;
     const rate = +currentValue + step;
-    this.employeeInfoForm.patchValue({ workingRate: rate });
+    this.employeeInfoForm.patchValue({ rate: rate });
+  }
+
+  private _getCommunications(): FormGroup[] {
+    return this.user.communications.map((communication: CommunicationInfo) => {
+      return this.fb.group({
+        type: communication.type,
+        value: communication.value
+      });
+    });
   }
 }

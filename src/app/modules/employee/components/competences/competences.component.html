@@ -61,12 +61,8 @@
           <div class="row__edit text-gray1">
             <mat-form-field class="mat-form-field_none" appearance="none">
               <mat-select class="none" #matSelect>
-                <mat-option (click)="onRowEditClicked(place)"
-                ><img
-                  src='../../../../../assets/svg/edit.svg'
-                  alt="edit"
-                />&nbsp;Редактировать</mat-option
-                >
+                <mat-option (click)="onRowEditClicked(place)"><img src='../../../../../assets/svg/edit.svg' alt="edit"
+                />&nbsp;Редактировать</mat-option>
                 <mat-option (click)="onRowDeleteClicked(place)"
                 ><img
                   src='../../../../../assets/svg/delete.svg'
@@ -169,11 +165,7 @@
 
 <!-- edit form -->
 <ng-template #editFormTemplate>
-  <form
-    class="row__edit-form edit-form"
-    [formGroup]="editForm"
-    (ngSubmit)="onSubmit()"
-  >
+  <form class="row__edit-form edit-form" [formGroup]="editForm" (ngSubmit)="onSubmit()">
     <mat-form-field
       class="mat-form-field__form-control edit-form__institution"
       appearance="fill"
@@ -230,7 +222,7 @@
       [isEdit]="true"
       label="Год окончания"
       required="true"></do-datepicker>
-    <button mat-flat-button>
+    <button mat-flat-button *ngIf='sectionModes.certificates !== workFlowMode.VIEW'>
       <img src='../../../../../assets/svg/pin.svg' alt="ping" />&nbsp;Загрузить сертификат
     </button>
     <div class="edit-form__action">

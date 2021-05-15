@@ -79,9 +79,7 @@ export class EducationModel {
   // }
 
   constructor(data: CertificateInfo) {
-    this._educationInstitution = data.schoolName
-        ? data.schoolName
-        : null;
+    this._educationInstitution = data.schoolName ? data.schoolName : null;
     this._specialization = data.name ? data.name : null;
     this._studyType = data.educationType ? data.educationType : null;
     // this._startYear = data.startYear ? data.startYear : null;
@@ -89,8 +87,6 @@ export class EducationModel {
     this._certificateId = data.id ? data.id : null;
     this._image = data.image ? data.image : null;
     this.isEditing = false;
-    console.log(data.receivedAt);
-    console.log(this._endYear);
   }
 
   public getEducationalPeriod(): string {
