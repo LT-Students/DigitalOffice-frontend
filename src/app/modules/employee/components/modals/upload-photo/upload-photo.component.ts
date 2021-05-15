@@ -26,7 +26,7 @@ export class UploadPhotoComponent implements OnInit {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
 		reader.onload = (evt) => {
-			this.photoPreview = <string>evt.target.result;
+			this.photoPreview = evt.target.result as string;
 		};
 	}
 }
