@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
@@ -10,15 +10,21 @@ import { CreateUserRequest } from '@data/api/user-service/models/create-user-req
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { userResponse } from '../../modules/employee/mock';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class UserService {
+	public selectedUser: BehaviorSubject<UserResponse>;
+
 	constructor(
 		private userApiService: UserApiService,
+		private route: ActivatedRoute,
 		private localStorageService: LocalStorageService
-	) {}
+	) {
+		this.selectedUser = new BehaviorSubject<UserResponse>(null);
+	}
 
 	public getUser(userId: string): Observable<UserResponse> {
 		return this.userApiService.getUser({ userId: userId }).pipe(
@@ -26,6 +32,7 @@ export class UserService {
 				/*Не думаю, что нужно класть данные пользователя в локальное хранилище
 				* поэтому предлагаю класть только основную информацию */
 				this.localStorageService.set('user', user.user);
+				this.selectedUser.next(user);
 			})
 		);
 	}
@@ -40,8 +47,9 @@ export class UserService {
 		);
 	}
 
-	public getMockUser(): Observable<UserResponse> {
-		return of(userResponse[2]).pipe(tap((value) => console.log(value)));
+	public getMockUser(userId: string): Observable<UserResponse> {
+		const userData: UserResponse = userResponse.find((user: UserResponse) => user.user.id === userId);
+		return of(userData).pipe(tap((value: UserResponse) => console.log(value)));
 	}
 
 	public isAdmin(): boolean {

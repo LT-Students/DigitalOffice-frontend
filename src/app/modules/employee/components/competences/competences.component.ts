@@ -80,7 +80,7 @@ export class CompetencesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.certificates = this.user.certificates.map((certificate: CertificateInfo) => new EducationModel(certificate))
+    this.certificates = (this.user.certificates) ? this.user.certificates.map((certificate: CertificateInfo) => new EducationModel(certificate)) : null;
 
     this.insts = this.certificates;
 

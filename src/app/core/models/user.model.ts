@@ -51,12 +51,24 @@ export class User implements UserResponse {
 		return this.user.firstName;
 	}
 
+	public set firstName(firstName: string) {
+		this.user.firstName = firstName;
+	}
+
 	public get lastName(): string {
 		return this.user.lastName;
 	}
 
+	public set lastName(lastName: string) {
+		this.user.lastName = lastName;
+	}
+
 	public get middleName(): string {
 		return this.user.middleName;
+	}
+
+	public set middleName(middleName: string) {
+		this.user.middleName = middleName;
 	}
 
 	public get status(): IUserStatus {
@@ -64,7 +76,7 @@ export class User implements UserResponse {
 	}
 
 	public getFioFull() {
-		return `${this.lastName} ${this.firstName} ${this.middleName}`;
+		return [this.lastName, this.firstName, this.middleName].filter(Boolean).join(' ');
 	}
 
 	private _setProperty<T>(property: T) {

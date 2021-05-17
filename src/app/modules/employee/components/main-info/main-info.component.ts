@@ -1,14 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
 import { Time } from '@angular/common';
 import { IUserStatus, UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
-import { employee } from '../../mock';
+import { employee, userResponse } from '../../mock';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
+import { promptGlobalAnalytics } from '@angular/cli/models/analytics';
+import { UserResponse } from '@data/api/user-service/models/user-response';
+import { UserService } from '@app/services/user.service';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { DepartmentService } from '@app/services/department.service';
+import { DepartmentInfo } from '@data/api/user-service/models/department-info';
+import { ProjectService } from '@app/services/project.service';
+import { PositionInfo } from '@data/api/user-service/models/position-info';
+import { CommunicationType } from '@data/api/user-service/models';
 
 interface ExtendedUser extends IUser {
   about?: string;
@@ -36,8 +46,6 @@ interface ExtendedUser extends IUser {
   styleUrls: ['./main-info.component.scss'],
 })
 export class MainInfoComponent implements OnInit {
-  @Input() user: User;
-
   public pageId: string;
   public employeeInfoForm: FormGroup;
   public employee: ExtendedUser;
@@ -46,44 +54,40 @@ export class MainInfoComponent implements OnInit {
   public previewPhoto: string;
   public userStatus: typeof UserStatus = UserStatus;
   public dateType: typeof DateType = DateType;
-  public status: IUserStatus;
+  public user: User;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private _userService: UserService, private _departmentService: DepartmentService,
+              private _projectService: ProjectService) {
     this.employee = employee;
 
     this.selectOptions = {
-      position: ['Middle Product Manager', 'Senior Product Manager'],
-      department: ['Департамент цифровых технологий', 'Департамент мопсиков'],
+      positions: [],
+      departments: [],
       office: ['м. Чернышевская', 'м. Площадь Восстания'],
       statuses: UserStatusModel.getAllStatuses(),
       workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
     };
-
     this.isEditing = false;
     this.previewPhoto = null;
-
-    this.employeeInfoForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      middleName: [''],
-      photo: [''],
-      status: [null],
-      about: [''],
-      position: ['', Validators.required],
-      department: ['', Validators.required],
-      rate: ['', Validators.required],
-      workingSince: [null],
-      communications: this.fb.array([])
-    });
-
+    this.user = null;
     this.pageId = this.route.snapshot.paramMap.get('id');
+    this._initEditForm();
   }
 
   ngOnInit(): void {
-    this.previewPhoto = this.user.avatar.content;
-    this.status = UserStatusModel.getUserStatusInfoByType(this.user.user.status);
-    this._getCommunications().forEach((communicationControl: FormGroup) => this.communications.push(communicationControl));
+    this._userService.getUser(this.pageId).pipe(
+        switchMap((userResponse: UserResponse) => of(new User(userResponse)))
+    ).subscribe((user: User) => this.user = user);
+    this._initEditForm();
 
+    this._departmentService.getDepartments().subscribe((departments: DepartmentInfo[]) => {
+      this.selectOptions.departments = departments;
+    })
+
+    this._projectService.getProjectPositions().subscribe((positions: PositionInfo[]) => {
+      this.selectOptions.positions = positions;
+    })
+    // this.previewPhoto = this.user.avatar.content;
   }
 
   public get communications(): FormArray {
@@ -99,11 +103,13 @@ export class MainInfoComponent implements OnInit {
   }
 
   isOwner() {
-    return this.user.id === this.pageId;
+    // return this.user.id === this.pageId;
+    return true;
   }
 
   canEdit() {
-    return this.user.isAdmin || this.isOwner();
+    // return this.user.isAdmin || this.isOwner();
+    return true;
   }
 
   toggleEditMode() {
@@ -126,37 +132,54 @@ export class MainInfoComponent implements OnInit {
   }
 
   updateEmployeeInfo() {
-    this.employee = { ...this.employee, ...this.employeeInfoForm.value };
+    console.log(this.employeeInfoForm.value);
+    /*TODO send APi request and rerender page*/
+    this.user.avatar.content = this.employeeInfoForm.value.photo;
+    this.user.user.about = this.employeeInfoForm.value.about;
+    this.user.communications = this.employeeInfoForm.value.communications;
+    this.user.position = { ...this.employeeInfoForm.value.position, receivedAt: new Date().toISOString() };
+    this.user.department = this.employeeInfoForm.value.department;
+    this.user.firstName = this.employeeInfoForm.value.firstName;
+    this.user.lastName = this.employeeInfoForm.value.lastName;
+    this.user.middleName = this.employeeInfoForm.value.middleName;
+    this.user.user.rate = +this.employeeInfoForm.value.rate;
+    this.user.user.status = this.employeeInfoForm.value.status;
+    this.user.user.startWorkingAt = this.employeeInfoForm.value.workingSince.toISOString();
+    // this.employee = { ...this.employee, ...this.employeeInfoForm.value };
   }
 
   onSubmit() {
     this.updateEmployeeInfo();
-    this.toggleEditMode();
+    this.isEditing = !this.isEditing;
   }
 
   onReset() {
     this.employeeInfoForm.reset();
-    this.toggleEditMode();
+    this.isEditing = !this.isEditing;
   }
 
   fillForm() {
-    this.employeeInfoForm.patchValue({
-      firstName: [this.user.firstName],
-      lastName: [this.user.lastName],
-      middleName: this.user.middleName,
-      photo: `data:image/jpeg;base64,${this.user.avatar.content}`,
-      status: this.user.status,
-      about: this.user.user.about,
-      position: this.user.position,
-      department: this.user.department.name,
-      rate: this.user.user.rate,
-      workingSince: this.user.startWorkingDate,
-      // communications: this._getCommunications(),
-    });
-  }
+    const middleName = (this.user.middleName) ? this.user.middleName : '';
+    const photo = (this.user.avatar && this.user.avatar.content) ? `${this.user.avatar.content}` : '';
+    const status = (this.user.status) ? this.user.status.statusType : '';
+    const about = (this.user.user.about) ? this.user.user.about : '';
+    const position = (this.user.position) ? this.user.position : '';
+    const department = (this.user.department) ? this.user.department : '';
+    const rate = ( this.user.user.rate) ?  this.user.user.rate : '';
 
-  compareEmoji(option, value) {
-    return option.emoji === value.emoji;
+    this.employeeInfoForm.patchValue({
+      firstName: this.user.firstName,
+      lastName: this.user.lastName,
+      middleName: middleName,
+      photo: photo,
+      status: status,
+      about: about,
+      position: position,
+      department: department,
+      rate: rate,
+      workingSince: this.user.startWorkingDate,
+      communications: this._enrichCommunications()
+    });
   }
 
   changeWorkingRate(step) {
@@ -165,12 +188,44 @@ export class MainInfoComponent implements OnInit {
     this.employeeInfoForm.patchValue({ rate: rate });
   }
 
-  private _getCommunications(): FormGroup[] {
-    return this.user.communications.map((communication: CommunicationInfo) => {
-      return this.fb.group({
-        type: communication.type,
-        value: communication.value
-      });
+  comparePositions(option: PositionInfo, value: PositionInfo) {
+    return option.id === value.id;
+  }
+
+  private _initEditForm(): void {
+    this.employeeInfoForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      middleName: [''],
+      photo: [''],
+      status: [null],
+      about: [''],
+      position: ['', Validators.required],
+      department: ['', Validators.required],
+      rate: ['', Validators.required],
+      workingSince: [null],
+      communications: this.fb.array([
+        this.fb.group( { type: CommunicationType.Email, value: ['', Validators.required] }),
+        this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
+      ])
     });
+  }
+
+  private _initCommunications(): void {
+    if (this.user && this.user.communications) {
+      this.user.communications.map((communication: CommunicationInfo) => {
+        return this.fb.group({ type: '', value: '' });
+      }).forEach((group: FormGroup) => this.communications.push(group));
+    }
+  }
+
+  private _enrichCommunications(): CommunicationInfo[] {
+    if (this.user && this.user.communications) {
+      return this.user.communications.map((communication: CommunicationInfo) => {
+        return { type: communication.type, value: communication.value };
+      });
+    } else {
+     return [];
+    };
   }
 }

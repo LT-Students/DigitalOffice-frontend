@@ -13,9 +13,9 @@
 </div>
 <!-- TODO: use behaviorsubject -->
 <div class="card card_employee">
-    <do-employee-page-main-info [user]='user'></do-employee-page-main-info>
+    <do-employee-page-main-info></do-employee-page-main-info>
 </div>
-<div class="card card_employee">
+<div class="card card_employee" *ngIf='user?.certificates'>
     <do-employee-page-competences
         [user]='user'
         [skills]="skills"
@@ -24,7 +24,7 @@
         [studyTypes]="studyTypes"
     ></do-employee-page-competences>
 </div>
-<div class="card card_employee">
+<div class="card card_employee" *ngIf='user?.projects'>
     <do-employee-page-projects
         [projects]='user.projects'
     ></do-employee-page-projects>

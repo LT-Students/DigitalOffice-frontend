@@ -41,6 +41,11 @@
 
 		.form__column {
 			width: 100%;
+
+			.communications {
+				display: flex;
+				flex-direction: column;
+			}
 		}
 	}
 
