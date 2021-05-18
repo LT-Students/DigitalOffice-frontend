@@ -1,36 +1,28 @@
 <div class="employee-page__header flex">
     <do-breadcrumbs [paths]="paths"></do-breadcrumbs>
-    <div
-        class="employee-page__button flex"
-        doText
-        color="gray1"
-        (click)="onOpenDialog()"
-    >
-        <ng-container *ngIf="userInfo.user.isAdmin && !isOwner">
+    <div class="employee-page__button flex" doText color="gray1" (click)="onOpenDialog()">
+        <ng-container *ngIf="user?.isAdmin">
             <mat-icon>archive</mat-icon>
             <span class="employee-page__button-label">Добавить в архив</span>
         </ng-container>
-        <ng-container *ngIf="isOwner && !userInfo.user.isAdmin">
+        <ng-container *ngIf="!user?.isAdmin && isOwner">
             <mat-icon>live_help</mat-icon>
-            <span class="employee-page__button-label"
-                >Запрос администратору</span
-            >
+            <span class="employee-page__button-label">Запрос администратору</span>
         </ng-container>
     </div>
 </div>
+<!-- TODO: use behaviorsubject -->
 <div class="card card_employee">
     <do-employee-page-main-info></do-employee-page-main-info>
 </div>
-<div class="card card_employee">
-    <do-employee-page-skills
-        [skills]="skills"
-        [institutes]="institutes"
-        [courses]="courses"
+<div class="card card_employee" *ngIf='user'>
+    <do-employee-page-competences
+        [user]='user'
         [studyTypes]="studyTypes"
-    ></do-employee-page-skills>
+    ></do-employee-page-competences>
 </div>
-<div class="card card_employee">
+<div class="card card_employee" *ngIf='user?.projects'>
     <do-employee-page-projects
-        [userProjects]="userProjects"
+        [projects]='user.projects'
     ></do-employee-page-projects>
 </div>

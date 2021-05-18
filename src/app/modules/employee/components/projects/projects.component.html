@@ -10,11 +10,9 @@
   </h3>
   <ng-container *ngFor="let group of groups">
     <div *ngIf="group.projects.length && group.projects" class="projects-table__section">
-      <h3 doText color="dark_1" class="projects-table__group-title">
+      <h3 doText color='dark_1' class='projects-table__group-title'>
         {{ group.name }}
-        <span class="text-accent_color_bright">{{
-          group.projects.length | i18nPlural: group.plural
-        }}</span>
+        <span class='text-accent_color_bright'>{{ group.projects.length | i18nPlural: group.plural }}</span>
       </h3>
       <div class="projects-table__container">
         <div
@@ -22,24 +20,18 @@
           class="projects-table__project bg-light_2 card"
         >
           <h4 doText color="dark_2">{{ project.name }}</h4>
-          <p doText color="gray1">{{ project.consumer.name }}</p>
-          <p class="projects-table__description" doText color="dark_1">
-            {{ project.description }}
-          </p>
+<!--          <p doText color="gray1">project.consumer.name</p>-->
+          <p class="projects-table__description" doText color="dark_1">{{ project.description }}</p>
           <p doText color="gray1">Направление</p>
-          <p doText color="dark_1">{{ project.role }}</p>
-          <p doText color="gray1">В проекте</p>
+          <p doText color="dark_1">{{ project.shortName }}</p>
+          <!--<p doText color="gray1">В проекте</p>
           <p doText color="dark_1">
-            С {{ project.startedAt | date: 'd.MM.y' }}
-            <span *ngIf="project.endedAt"
-              >по {{ project.endedAt | date: 'd.MM.y' }}</span
-            >
-          </p>
+            С project.startedAt
+            <span>по project.endedAt</span>
+          </p>-->
           <p class="projects-table__arrow-button" doText color="gray1" (click)='onMoreClicked(project.id)'>
             Подробнее
-            <mat-icon class="projects-table__arrow"
-              >keyboard_arrow_right</mat-icon
-            >
+            <mat-icon class="projects-table__arrow">keyboard_arrow_right</mat-icon>
           </p>
         </div>
       </div>

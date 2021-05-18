@@ -16,7 +16,7 @@ export const DATE_FORMAT = {
     dateInput: 'LL',
   },
   display: {
-    dateInput: 'd MMMM y',
+    dateInput: 'dd MMMM y',
     monthYearLabel: 'YYYY',
   },
 };
