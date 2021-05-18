@@ -90,7 +90,7 @@
         "@typescript-eslint/type-annotation-spacing": "error",
         "space-infix-ops": "error",
         "object-curly-spacing": ["error", "always"],
-        "arrow-body-style": "error",
+        "arrow-body-style":  "off",
         "arrow-parens": ["off", "always"],
         "brace-style": ["off", "off"],
         "comma-dangle": "off",

@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
 import { Time } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
+import { UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
-import { employee, userResponse } from '../../mock';
+import { employee } from '../../mock';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
@@ -240,7 +240,7 @@ export class MainInfoComponent implements OnInit {
         return { type: communication.type, value: communication.value };
       });
     } else {
-     return [];
+      return [];
     };
   }
 }
