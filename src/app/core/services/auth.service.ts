@@ -41,6 +41,5 @@ export class AuthService {
 
     private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse) {
         this.localStorageService.set('access_token', authenticationInfo.token);
-        this.localStorageService.set('userId', authenticationInfo.userId);
     }
 }

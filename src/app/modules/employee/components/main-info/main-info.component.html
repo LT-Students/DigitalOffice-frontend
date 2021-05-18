@@ -336,7 +336,7 @@
              <mat-label doText color='gray' regularTextSize='small' class='employee-info__label' for='position'>
                Должность
              </mat-label>
-             <mat-select class='employee-info__input' id='position' formControlName='position' appearance='fill' [compareWith]='comparePositions' required>
+             <mat-select class='employee-info__input' id='position' formControlName='position' appearance='fill' [compareWith]='compareSelectValues' required>
                <mat-option class='employee-info__input' *ngFor='let option of selectOptions.positions'  [value]='option'>
                  {{ option.name }}
                </mat-option>
@@ -346,7 +346,7 @@
              <mat-label doText color='gray' regularTextSize='small' class='employee-info__label' for='department'>
                Департамент
              </mat-label>
-             <mat-select class='employee-info__input' id='department' formControlName='department' appearance='fill' required>
+             <mat-select class='employee-info__input' id='department' formControlName='department' appearance='fill' [compareWith]='compareSelectValues' required>
                <mat-option class='employee-info__input' *ngFor='let option of selectOptions.departments' [value]='option'>
                  {{ option.name }}
                </mat-option>

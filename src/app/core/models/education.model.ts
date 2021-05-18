@@ -14,13 +14,7 @@ export enum StudyType {
   ONLINE = 'online',
 }
 
-export interface EducationPlace {
-  educationInstitution: string;
-  specialization: string;
-  studyType: StudyType;
-  endYear: Date;
-  startYear?: Date;
-  certificateId?: string;
+export interface CertificateInfoExtended extends CertificateInfo {
   isEditing?: boolean;
 }
 
@@ -49,13 +43,13 @@ export class EducationModel {
   public set startYear(year: Date) {
     this._startYear = year;
   }
-  private _endYear: Date;
+  private _endYear: string;
   public get endYear(): Date {
-    return this._endYear;
+    return new Date(this._endYear);
   }
-  public set endYear(year: Date) {
-    this._endYear = year;
-  }
+  // public set endYear(year: Date) {
+  //   this._endYear = year;
+  // }
   private _certificateId: string;
   public get certificateId(): string {
     return this._certificateId;
@@ -83,7 +77,7 @@ export class EducationModel {
     this._specialization = data.name ? data.name : null;
     this._studyType = data.educationType ? data.educationType : null;
     // this._startYear = data.startYear ? data.startYear : null;
-    this._endYear = data.receivedAt ? new Date(data.receivedAt) : null;
+    this._endYear = data.receivedAt ? data.receivedAt : null;
     this._certificateId = data.id ? data.id : null;
     this._image = data.image ? data.image : null;
     this.isEditing = false;
@@ -91,7 +85,7 @@ export class EducationModel {
 
   public getEducationalPeriod(): string {
     return this._startYear
-      ? `${this._startYear.getFullYear()}-${this._endYear.getFullYear()}`
-      : this._endYear.getFullYear().toString();
+      ? `${this._startYear.getFullYear()}-${this.endYear.getFullYear()}`
+      : this.endYear.getFullYear().toString();
   }
 }

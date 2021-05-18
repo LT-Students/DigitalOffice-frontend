@@ -5,7 +5,7 @@ import { forkJoin, Observable, of } from 'rxjs';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { switchMap } from 'rxjs/operators';
 import { ProjectExpandedResponse, ProjectsResponse } from '@data/api/project-service/models';
-import { departments, positions } from '../../modules/employee/mock';
+import { departments, positions, projects } from '../../modules/employee/mock';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 
 @Injectable({
@@ -35,6 +35,10 @@ export class ProjectService {
                 );
             }),
         );
+    }
+
+    public getMockUserProjectsInfo(): Observable<ProjectInfo[]> {
+        return of(projects);
     }
 
     public getProjectPositions(): Observable<PositionInfo[]> {

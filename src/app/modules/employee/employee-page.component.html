@@ -15,12 +15,9 @@
 <div class="card card_employee">
     <do-employee-page-main-info></do-employee-page-main-info>
 </div>
-<div class="card card_employee" *ngIf='user?.certificates'>
+<div class="card card_employee" *ngIf='user'>
     <do-employee-page-competences
         [user]='user'
-        [skills]="skills"
-        [institutes]="institutes"
-        [courses]="courses"
         [studyTypes]="studyTypes"
     ></do-employee-page-competences>
 </div>

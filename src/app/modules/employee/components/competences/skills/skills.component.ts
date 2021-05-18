@@ -5,6 +5,7 @@ import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { map, startWith } from 'rxjs/operators';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { WorkFlowMode } from '../../../employee-page.component';
 
 @Component({
 	selector: 'do-skills',
@@ -13,6 +14,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 })
 export class SkillsComponent implements OnInit {
 	@Input() public skills: string[];
+	@Input() public mode: WorkFlowMode;
 
 	public visible: boolean;
 	public selectable: boolean;
@@ -20,20 +22,19 @@ export class SkillsComponent implements OnInit {
 	public addOnBlur: boolean;
 	public filteredSkills: Observable<string[]>;
 	public skillsCtrl: FormControl;
+	public workFlowMode: typeof WorkFlowMode = WorkFlowMode;
 	readonly separatorKeysCodes: number[];
 
 	@ViewChild('skillsInput') skillsInput: ElementRef<HTMLInputElement>;
 	@ViewChild('auto') matAutocomplete: MatAutocomplete;
 
 	constructor() {
-		this.visible = true;
-		this.selectable = true;
-		this.removable = true;
-		this.addOnBlur = true;
+		this.visible = false;
+		this.selectable = false;
+		this.removable = false;
+		this.addOnBlur = false;
 		this.separatorKeysCodes = [ENTER, COMMA];
 		this.skillsCtrl = new FormControl();
-
-
 
 		this.filteredSkills = this.skillsCtrl.valueChanges.pipe(
 			startWith(null),
@@ -44,6 +45,11 @@ export class SkillsComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		if (this.mode !== WorkFlowMode.VIEW) {
+			this.selectable = true;
+			this.removable = true;
+			this.addOnBlur = true;
+		}
 	}
 
 	public add(event: MatChipInputEvent): void {

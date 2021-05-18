@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProjectInfo } from '@data/api/user-service/models/project-info';
-import { UserProject } from '../../employee-page.component';
+import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { ProjectService } from '@app/services/project.service';
+import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 
 
 interface Group {
@@ -23,7 +24,7 @@ export class ProjectsComponent implements OnInit {
 	public pluralForm;
 	public groups: Group[];
 
-	constructor(private router: Router) {
+	constructor(private router: Router, private _projectService: ProjectService) {
 		this.activeProjects = null;
 		this.closedProjects = null;
 		this.pluralForm = {
@@ -41,8 +42,9 @@ export class ProjectsComponent implements OnInit {
 
 	ngOnInit(): void {
 		// TODO: add full project data fetching after initalizing
-		this._filterProject(this.projects);
-
+		this._projectService.getMockUserProjectsInfo().subscribe((projects: ProjectInfo[]) => {
+			this._filterProject(projects);
+		})
 		this.groups = [
 			{
 				name: 'В работе',
@@ -66,7 +68,13 @@ export class ProjectsComponent implements OnInit {
 	}
 
 	private _filterProject(rawProjects: ProjectInfo[]) {
-		this.activeProjects = rawProjects.filter((project: UserProject) => project.isActive);
-		this.closedProjects = rawProjects.filter((project: UserProject) => !project.isActive);
+		this.activeProjects = rawProjects.filter((project: ProjectInfo) => {
+			const projectStatus = project.status as ProjectStatusType;
+			return projectStatus === ProjectStatusType.Active;
+		});
+		this.closedProjects = rawProjects.filter((project: ProjectInfo) => {
+			const projectStatus = project.status as ProjectStatusType;
+			return projectStatus === ProjectStatusType.Closed;
+		});
 	}
 }

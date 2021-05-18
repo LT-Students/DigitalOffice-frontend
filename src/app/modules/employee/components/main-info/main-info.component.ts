@@ -73,9 +73,8 @@ export class MainInfoComponent implements OnInit {
     this.pageId = this.route.snapshot.paramMap.get('id');
     this._initEditForm();
   }
-
   ngOnInit(): void {
-    this._userService.getUser(this.pageId).pipe(
+    this._userService.getMockUser(this.pageId).pipe(
         switchMap((userResponse: UserResponse) => of(new User(userResponse)))
     ).subscribe((user: User) => this.user = user);
     this._initEditForm();
@@ -188,7 +187,8 @@ export class MainInfoComponent implements OnInit {
     this.employeeInfoForm.patchValue({ rate: rate });
   }
 
-  comparePositions(option: PositionInfo, value: PositionInfo) {
+  compareSelectValues(option: any, value: any) {
+    console.log(option, value);
     return option.id === value.id;
   }
 

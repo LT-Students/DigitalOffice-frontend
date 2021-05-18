@@ -12,9 +12,7 @@ import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { userResponse } from '../../modules/employee/mock';
 import { ActivatedRoute } from '@angular/router';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class UserService {
 	public selectedUser: BehaviorSubject<UserResponse>;
 

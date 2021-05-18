@@ -1,20 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { EducationModel, StudyType } from '@app/models/education.model';
-import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { LocalStorageService } from '@app/services/local-storage.service';
+import { EducationModel } from '@app/models/education.model';
 import { UserService } from '@app/services/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserResponse } from '@data/api/user-service/models/user-response';
-import { UsersResponse } from '@data/api/user-service/models';
+import { EducationType } from '@data/api/user-service/models';
 import { Project } from '@data/models/project';
-import { takeUntil, tap } from 'rxjs/operators';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { activeProject, closedProject, skills } from './mock';
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
 import { ArchiveComponent } from './components/modals/archive/archive.component';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { User } from '@app/models/user.model';
@@ -50,10 +47,9 @@ export interface Path {
 })
 
 export class EmployeePageComponent implements OnInit, OnDestroy {
-  public skills: string[];
   public institutes: EducationModel[];
   public courses: EducationModel[];
-  public studyTypes: StudyType[];
+  public studyTypes: EducationType[];
   public userProjects: UserProject[];
   public paths: Path[];
   public pageId: string;
@@ -77,14 +73,10 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
     if (!this.pageId) {
       this.router.navigate([`employee/${user.id}`]);
     }
-    this.skills = skills;
     // TODO: Replace with enum values
     this.studyTypes = [
-      StudyType.ABSENTIA,
-      StudyType.CONFRONT,
-      StudyType.PARTTIME,
-      StudyType.OFFLINE,
-      StudyType.ONLINE,
+      EducationType.Offline,
+      EducationType.Online,
     ];
     this.user = null;
     this._unsubscribe$ = new Subject<void>();
@@ -95,7 +87,13 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 
     this.isOwner = user.id === this.pageId;
 
-    this._userService.getUser(this.pageId).pipe(takeUntil(this._unsubscribe$))
+    // this._userService.getUser(this.pageId).pipe(takeUntil(this._unsubscribe$))
+    // .subscribe((userResponse: UserResponse) => {
+    //   this.user = new User(userResponse);
+    //
+    // });
+    /* TODO: BehaviorSubject with userResponse as initial value */
+    this._userService.getMockUser(this.pageId).pipe(takeUntil(this._unsubscribe$))
     .subscribe((userResponse: UserResponse) => {
       this.user = new User(userResponse);
       this.paths = [
@@ -107,16 +105,10 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
         { title: `${ this.user.firstName } ${ this.user.lastName }` },
       ];
     });
-    /* TODO: BehaviorSubject with userResponse as initial value */
-    // this._userService.getMockUser(this.pageId).pipe(takeUntil(this._unsubscribe$))
-    // .subscribe((userResponse: UserResponse) => {
-    //   this.user = new User(userResponse);
-    //   this.userData = userResponse;
-    // });
 
-    // this._projectService.getUserProjectsInfo(this.user.projects).pipe(takeUntil(this._unsubscribe$)).subscribe((projects: ProjectInfo[]) => {
-    //   console.log(projects);
-    // });
+    this._projectService.getUserProjectsInfo(this.user.projects).pipe(takeUntil(this._unsubscribe$)).subscribe((projects: ProjectInfo[]) => {
+      console.log(projects);
+    });
   }
 
   ngOnDestroy() {

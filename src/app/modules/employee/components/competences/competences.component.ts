@@ -1,13 +1,14 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { EducationModel, StudyType } from '@app/models/education.model';
-import { MatAutocomplete, } from '@angular/material/autocomplete';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, } from '@angular/material/core';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
 import { User } from '@app/models/user.model';
 import { WorkFlowMode } from '../../employee-page.component';
+import { EducationType } from '@data/api/user-service/models/education-type';
+import { ImageInfo } from '@data/api/user-service/models/image-info';
 
 
 export const DATE_FORMAT = {
@@ -41,10 +42,7 @@ export interface Modes {
 })
 
 export class CompetencesComponent implements OnInit {
-  @Input() public skills: string[];
-  @Input() public institutes: EducationModel[];
-  @Input() public courses: EducationModel[];
-  @Input() public studyTypes: StudyType[];
+  @Input() public studyTypes: EducationType[];
   @Input() public user: User;
 
   public workFlowMode: typeof WorkFlowMode = WorkFlowMode;
@@ -52,10 +50,8 @@ export class CompetencesComponent implements OnInit {
   public sectionModes: Modes;
   public editForm: FormGroup;
   public certificates: EducationModel[];
-  public insts: EducationModel[];
+  public institutes: EducationModel[];
 
-  @ViewChild('skillsInput') skillsInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
   @ViewChild('pickerStartYear') pickerStartYear: MatDatepicker<Date>;
   @ViewChild('pickerEndYear') pickerEndYear: MatDatepicker<Date>;
 
@@ -67,22 +63,22 @@ export class CompetencesComponent implements OnInit {
     };
     this.selectedEducationItem = null;
     this.certificates = null;
-    this.insts = null;
+    this.institutes = null;
 
     this.editForm = new FormGroup({
-      educationInstitution: new FormControl(''),
-      specialization: new FormControl(''),
-      studyType: new FormControl(''),
-      endYear: new FormControl(''),
+      schoolName: new FormControl(''),
+      name: new FormControl(''),
+      educationType: new FormControl(''),
+      receivedAt: new FormControl(''),
       startYear: new FormControl(''),
-      certificateId: new FormControl(''),
+      id: new FormControl(''),
     });
   }
 
   ngOnInit(): void {
     this.certificates = (this.user.certificates) ? this.user.certificates.map((certificate: CertificateInfo) => new EducationModel(certificate)) : null;
 
-    this.insts = this.certificates;
+    this.institutes = this.certificates;
 
     console.log(this.certificates);
   }
@@ -107,24 +103,11 @@ export class CompetencesComponent implements OnInit {
 
     // Edit mode
     if (this.selectedEducationItem) {
-      let itemIndex: number = this.courses.indexOf(this.selectedEducationItem);
-
-      if (itemIndex === -1) {
-        itemIndex = this.institutes.indexOf(this.selectedEducationItem);
-        this.institutes[itemIndex] = educationPlaceToAdd;
-      } else {
-        this.courses[itemIndex] = educationPlaceToAdd;
-      }
+      let itemIndex: number = this.certificates.indexOf(this.selectedEducationItem);
+        this.certificates[itemIndex] = educationPlaceToAdd;
     } else {
-      // Add mode
-      /* check which type is adding */
-      if (this.sectionModes.education === WorkFlowMode.ADD) {
-        this.institutes.unshift(educationPlaceToAdd);
-        this.sectionModes.education = WorkFlowMode.VIEW;
-      } else if (this.sectionModes.certificates === WorkFlowMode.ADD) {
-        this.courses.unshift(educationPlaceToAdd);
-        this.sectionModes.certificates = WorkFlowMode.VIEW;
-      }
+        this.certificates.unshift(educationPlaceToAdd);
+      this.sectionModes.certificates = WorkFlowMode.VIEW;
     }
   }
 
@@ -148,37 +131,26 @@ export class CompetencesComponent implements OnInit {
     this.sectionModes.certificates = WorkFlowMode.ADD;
   }
 
-  public onRowEditClicked(
-      item: EducationModel,
-      course: boolean = false
-  ): void {
-    if (course) {
-      this.sectionModes.certificates = WorkFlowMode.EDIT;
-    } else {
-      this.sectionModes.education = WorkFlowMode.EDIT;
-    }
+  public onSkillsEditClicked(): void {
+    this.sectionModes.skills = (this.sectionModes.skills === WorkFlowMode.VIEW) ? WorkFlowMode.EDIT : WorkFlowMode.VIEW;
+  }
+
+  public onRowEditClicked(item: EducationModel): void {
+    this.sectionModes.certificates = WorkFlowMode.EDIT;
     this.selectedEducationItem = item;
     item.isEditing = true;
     this.editForm.setValue({
-      educationInstitution: item.educationInstitution ? item.educationInstitution : null,
-      specialization: item.specialization ? item.specialization : null,
-      studyType: item.studyType ? item.studyType : null,
-      endYear: item.endYear ? item.endYear : null,
+      schoolName: item.educationInstitution ? item.educationInstitution : null,
+      name: item.specialization ? item.specialization : null,
+      educationType: item.studyType ? item.studyType : null,
+      receivedAt: item.endYear ? item.endYear : null,
       startYear: item.startYear ? item.startYear : null,
-      certificateId: item.certificateId ? item.certificateId : null,
+      id: item.certificateId ? item.certificateId : null,
     });
   }
 
-  public onRowDeleteClicked(
-      item: EducationModel,
-      course: boolean = false
-  ): void {
-    if (course) {
-      const itemIndex: number = this.courses.indexOf(item);
-      this.courses.splice(itemIndex, 1);
-    } else {
-      const itemIndex: number = this.institutes.indexOf(item);
-      this.institutes.splice(itemIndex, 1);
-    }
+  public onRowDeleteClicked(item: EducationModel): void {
+      const itemIndex: number = this.certificates.indexOf(item);
+      this.certificates.splice(itemIndex, 1);
   }
 }
