@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IUser } from '@data/models/user';
 import { Time } from '@angular/common';
-import { IUserStatus, UserStatusModel } from '@app/models/user-status.model';
+import { MatDialog } from '@angular/material/dialog';
+import { UserStatus, UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
 import { employee, userResponse } from '../../mock';
 import { UserStatus } from '@data/api/user-service/models/user-status';
@@ -19,6 +20,8 @@ import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CommunicationType } from '@data/api/user-service/models';
+import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
+
 
 interface ExtendedUser extends IUser {
   about?: string;
@@ -57,7 +60,7 @@ export class MainInfoComponent implements OnInit {
   public user: User;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private _userService: UserService, private _departmentService: DepartmentService,
-              private _projectService: ProjectService) {
+              private dialog: MatDialog, private _projectService: ProjectService) {
     this.employee = employee;
 
     this.selectOptions = {
@@ -149,12 +152,12 @@ export class MainInfoComponent implements OnInit {
 
   onSubmit() {
     this.updateEmployeeInfo();
-    this.isEditing = !this.isEditing;
+    this.toggleEditMode();
   }
 
   onReset() {
     this.employeeInfoForm.reset();
-    this.isEditing = !this.isEditing;
+    this.toggleEditMode();
   }
 
   fillForm() {
@@ -190,6 +193,18 @@ export class MainInfoComponent implements OnInit {
   compareSelectValues(option: any, value: any) {
     console.log(option, value);
     return option.id === value.id;
+  }
+
+  onOpenDialog() {
+    const dialogRef = this.dialog.open(UploadPhotoComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.employeeInfoForm.patchValue({
+          photoUrl: result,
+        });
+        this.previewPhoto = result;
+      }
+    });
   }
 
   private _initEditForm(): void {

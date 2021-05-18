@@ -305,7 +305,8 @@
          <ng-container *ngIf='!employeeInfoForm.get("photo").value'>
            <img src="../../../../../assets/images/IAFOR-Blank-Avatar-Image.jpg" alt='Employee photo' width='180' />
          </ng-container>
-         <label class='text_white employee-info__label employee-info__upload-button' for='photo'>
+         <label class='text_white employee-info__label employee-info__upload-button' for='photo'
+                (click)="onOpenDialog()">
            <mat-icon class='employee-info__upload-icon'>
              <img src='../../../../../assets/svg/arrow-upload-file.svg' alt='Upload photo' />
            </mat-icon>

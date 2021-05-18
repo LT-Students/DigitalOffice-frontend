@@ -1,11 +1,11 @@
 .archive {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 
-    height: 187px;
+	height: 187px;
 
-    &__button {
-        width: 180px;
-    }
+	&__button {
+		width: 180px;
+	}
 }

@@ -13,6 +13,8 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
 import { ArchiveComponent } from './components/modals/archive/archive.component';
 import { SkillsComponent } from './components/competences/skills/skills.component';
+import { UploadPhotoComponent } from './components/modals/upload-photo/upload-photo.component';
+import { AdminModule } from '../admin/admin.module';
 
 
 @NgModule({
@@ -20,20 +22,23 @@ import { SkillsComponent } from './components/competences/skills/skills.componen
 		EmployeePageComponent,
 		CompetencesComponent,
 		MainInfoComponent,
-		ProjectsComponent,
 		BreadcrumbsComponent,
 		AdminRequestComponent,
 		ArchiveComponent,
-		SkillsComponent
+		SkillsComponent,
+		ArchiveComponent,
+		ProjectsComponent,
+		UploadPhotoComponent
 	],
-	imports: [
-		CommonModule,
-		SharedModule,
-		MaterialModule,
-		ReactiveFormsModule,
-		FormsModule,
-		RouterModule,
-	],
+  imports: [
+    CommonModule,
+    SharedModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule,
+    RouterModule,
+    AdminModule,
+  ],
 	providers: [],
 })
 export class EmployeeModule {}

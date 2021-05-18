@@ -45,6 +45,6 @@ import { DeleteDirectionComponent } from './components/new-project/modals/delete
     MaterialModule,
     SharedModule,
   ],
-  exports: [ProjectCardComponent],
+  exports: [ProjectCardComponent, DndDirective],
 })
 export class AdminModule {}

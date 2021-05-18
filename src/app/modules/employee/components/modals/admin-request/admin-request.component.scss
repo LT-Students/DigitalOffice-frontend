@@ -1,22 +1,22 @@
 @import '../../../../../../stylesheets/base/variables';
 
 .admin-request {
-    &__form-field {
-        width: 652px;
-    }
+	&__form-field {
+		width: 652px;
+	}
 
-    &__textarea {
-        white-space: normal;
-    }
+	&__textarea {
+		white-space: normal;
+	}
 
-    &__buttons {
-        display: flex;
-        justify-content: center;
-    }
+	&__buttons {
+		display: flex;
+		justify-content: center;
+	}
 
-    &__button {
-        width: 180px;
+	&__button {
+		width: 180px;
 
-        color: $gray1;
-    }
+		color: $gray1;
+	}
 }

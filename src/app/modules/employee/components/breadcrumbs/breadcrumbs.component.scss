@@ -1,18 +1,18 @@
 @import '../../../../../stylesheets/base/variables';
 
 .breadcrumbs {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 
-    &__item {
-        cursor: pointer;
+	&__item {
+		cursor: pointer;
 
-        &:hover {
-            color: #707070;
-        }
+		&:hover {
+			color: #707070;
+		}
 
-        &:last-child {
-            color: $dark_1;
-        }
-    }
+		&:last-child {
+			color: $dark_1;
+		}
+	}
 }
