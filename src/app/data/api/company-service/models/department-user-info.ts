@@ -4,7 +4,7 @@
 /**
  * User data of specific department.
  */
-export interface DepartmentUser {
+export interface DepartmentUserInfo {
 
   /**
    * Specific position id.

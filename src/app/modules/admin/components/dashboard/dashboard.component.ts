@@ -1,12 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Project } from '@data/models/project';
+import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
+import { OperationResultStatusType } from '@data/api/user-service/models/operation-result-status-type';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NewCompanyComponent } from '../new-company/new-company.component';
 import { NewDepartmentComponent } from '../new-department/new-department.component';
 import { NewSpecializationComponent } from '../new-specialization/new-specialization.component';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'do-dashboard',
@@ -14,12 +19,14 @@ import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 	styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-	projects: Project[] = [];
+	public projects: Project[] = [];
 	public today = Date.now();
 
-	constructor(private router: Router, public dialog: MatDialog) {}
+	constructor(private _router: Router,
+				private _matSnackBar: MatSnackBar,
+				public dialog: MatDialog) {}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		const active: Project = {
 			id: '1',
 			name: 'Меркурий – лечу на орбиту',
@@ -95,7 +102,7 @@ export class DashboardComponent implements OnInit {
 	}
 
 	onOpenNewProject() {
-		this.router.navigate(['admin/new-project']);
+		this._router.navigate(['admin/new-project']);
 	}
 
 	onOpenNewCompany(): void {
@@ -105,6 +112,7 @@ export class DashboardComponent implements OnInit {
 		dialogRef.afterClosed().subscribe((result) => {
 			console.log(`Dialog result: ${result}`);
 		});
+
 	}
 	onOpenNewDepartment(): void {
 		const dialogRef = this.dialog.open(NewDepartmentComponent, {
@@ -120,5 +128,16 @@ export class DashboardComponent implements OnInit {
 
 	onOpenNewEmployee(): void {
 		const dialogRef = this.dialog.open(NewEmployeeComponent, {});
+
+		dialogRef.afterClosed().subscribe((result: OperationResultResponse) => {
+				if (result && result.status &&
+					(result.status === OperationResultStatusType.FullSuccess || result.status === OperationResultStatusType.PartialSuccess)) {
+					this._matSnackBar.open('Новый пользователь успешно добавлен!', 'Закрыть', { duration: 3000 });
+					console.log(`Dialog result: ${ result }`);
+				}
+			}
+		);
+		//
+		//
 	}
 }

@@ -53,7 +53,6 @@ export class NewSpecializationComponent implements OnInit {
         body: {
           name: this.specializationForm.controls['name'].value,
           description: this.specializationForm.controls['description'].value,
-          isActive: true,
         },
       })
       .subscribe(

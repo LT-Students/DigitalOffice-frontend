@@ -9,7 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { AddPositionRequest } from '../models/add-position-request';
+import { CreatePositionRequest } from '../models/create-position-request';
 import { EditPositionRequest } from '../models/edit-position-request';
 import { PositionResponse } from '../models/position-response';
 
@@ -143,7 +143,7 @@ export class PositionApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addPosition$Response(params: {
-    body: AddPositionRequest
+    body: CreatePositionRequest
   }): Observable<StrictHttpResponse<string>> {
 
     const rb = new RequestBuilder(this.rootUrl, PositionApiService.AddPositionPath, 'post');
@@ -171,7 +171,7 @@ export class PositionApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addPosition(params: {
-    body: AddPositionRequest
+    body: CreatePositionRequest
   }): Observable<string> {
 
     return this.addPosition$Response(params).pipe(

@@ -4,17 +4,12 @@
 /**
  * Specific position data.
  */
-export interface AddPositionRequest {
+export interface CreatePositionRequest {
 
   /**
    * Position description.
    */
   description: null | string;
-
-  /**
-   * Marks whether position is active or not.
-   */
-  isActive: boolean;
 
   /**
    * Position name.

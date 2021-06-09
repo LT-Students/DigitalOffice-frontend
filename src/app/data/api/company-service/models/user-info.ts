@@ -4,7 +4,7 @@
 /**
  * User data.
  */
-export interface User {
+export interface UserInfo {
   firstName?: string;
   id?: string;
   lastName?: string;

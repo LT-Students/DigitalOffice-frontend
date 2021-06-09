@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
@@ -8,6 +9,10 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
+import { LocalStorageService } from '@app/services/local-storage.service';
+import { OperationResultStatusType } from '@data/api/user-service/models';
+import { HttpErrorResponse } from '@angular/common/http';
+import { userResponse } from '../../modules/employee/mock';
 
 @Injectable()
 export class UserService {
@@ -55,8 +60,12 @@ export class UserService {
 		return user ? user : null;
 	}
 
-
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
-		return this.userApiService.createUser({ body: params });
+		return this.userApiService.createUser({ body: params }).pipe(
+			switchMap((res: OperationResultResponse) => {
+				return (res.status === OperationResultStatusType.Failed || res instanceof HttpErrorResponse) ? throwError(res) : of(res)
+			}),
+			catchError((error) =>  throwError(error))
+		);
 	}
 }

@@ -1,23 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { PositionApiService } from '@data/api/company-service/services/position-api.service';
-import { PositionResponse } from '@data/api/company-service/models/position-response';
 import { MatDialogRef } from '@angular/material/dialog';
 import { IUser } from '@data/models/user';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
-import { Department } from '@data/api/company-service/models/department';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { CommunicationType, UserStatus } from '@data/api/user-service/models';
+import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserStatus, } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 import { NetService } from '@app/services/net.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 export const DATE_FORMAT = {
 	parse: {
@@ -42,35 +39,74 @@ export const DATE_FORMAT = {
 		{ provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
 	],
 })
-export class NewEmployeeComponent implements OnInit {
+export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public user: IUser;
 	public message: string;
 	public imagePath;
 	public imgURL: any;
 	public userForm: FormGroup = null;
-	public position$: Observable<PositionResponse[]>;
-	public department$: Observable<Department>;
-	public departments: string[];
+	public position$: Observable<PositionInfo[]>;
+	public department$: Observable<DepartmentInfo[]>;
 	public offices: string[];
 	public sex: string[];
+
+	private _unsubscribe$: Subject<void>;
 
 	constructor(
 		private formBuilder: FormBuilder,
 		private _netService: NetService,
 		private departmentApiService: DepartmentApiService,
 		private userService: UserService,
-		private snackBar: MatSnackBar,
+		private _matSnackBar: MatSnackBar,
 		private dialogRef: MatDialogRef<any>
 	) {
-		this.departments = ['Pug Department', 'Corgi Department'];
+		this._unsubscribe$ = new Subject<void>();
 		this.offices = ['м. Чернышевская', 'Улица Пушкина, дом Колотушкина'];
 		this.sex = ['Мужской', 'Женский', 'Не определён'];
 	}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		this.getPositions();
 		this.getDepartments();
+		this._initForm();
+	}
 
+	public ngOnDestroy() {
+		this._unsubscribe$.next();
+		this._unsubscribe$.complete();
+	}
+
+	public getPositions(): void {
+		this.position$ = this._netService.getPositionsList();
+	}
+
+	public getDepartments(): void {
+		this.department$ = this._netService.getDepartmentsList();
+	}
+
+	public createEmployee(): void {
+		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
+
+		this.userService.createUser(params).pipe(takeUntil(this._unsubscribe$))
+		.subscribe(
+			(result: OperationResultResponse) => this.dialogRef.close(result),
+			(error: OperationResultResponse | HttpErrorResponse) => {
+				const message = (error && 'errors' in error) ? error.errors[0] : ('error' in error) ? error.error.Message : 'Упс! Что-то пошло не так.';
+				this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть.');
+			});
+	}
+
+	public changeWorkingRate(step: number): void {
+		this.userForm.patchValue({
+			rate: +this.userForm.get('rate').value + step,
+		});
+	}
+
+	public onCancelClick() {
+		return this._matSnackBar._openedSnackBarRef.dismissWithAction();
+	}
+
+	private _initForm(): void {
 		this.userForm = this.formBuilder.group({
 			lastName: ['', [Validators.required, Validators.maxLength(32)]],
 			firstName: ['', [Validators.required, Validators.maxLength(32)]],
@@ -87,34 +123,11 @@ export class NewEmployeeComponent implements OnInit {
 		});
 	}
 
-	getPositions(): void {
-		this.position$ = this._netService.getPositionsList();
-	}
-
-	getDepartments(): void {
-		this.department$ = this._netService.getDepartmentsList();
-	}
-
-	createEmployee(): void {
-		const params = this._convertFormDataToCreateUserParams();
-		this.userService.createUser(params).subscribe(
-			() => this.snackBar.open('Новый пользователь успешно добавлен!', 'done', { duration: 3000 }),
-			(error: HttpErrorResponse) => {
-				this.snackBar.open(error.error.Message, 'accept');
-				throw error;
-			}
-		);
-	}
-
-	changeWorkingRate(step: number): void {
-		this.userForm.patchValue({
-			rate: +this.userForm.get('rate').value + step,
-		});
-	}
-
-	// {"FirstName":"112","LastName":"122","MiddleName":"111","Password":"test@test.ru","Rate":1,"isAdmin":true,"Communications":[{"type":"Email","value":"test@test.ru"}],"StartWorkingAt":"2021-05-07","Status":"WorkFromHome" , "PositionId": null, "DepartmentId":null
 	private _convertFormDataToCreateUserParams(): CreateUserRequest {
-		const communications: CommunicationInfo[] = [{type: CommunicationType.Email, value: this.userForm.get('email').value}];
+		const communications: CommunicationInfo[] = [ {
+			type: CommunicationType.Email,
+			value: this.userForm.get('email').value as string,
+		} ];
 
 		const params: CreateUserRequest = {
 			firstName: this.userForm.get('firstName').value as string,

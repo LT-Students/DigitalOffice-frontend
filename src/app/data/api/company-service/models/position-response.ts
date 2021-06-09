@@ -1,12 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-import { Position } from './position';
+import { PositionInfo } from './position-info';
 export interface PositionResponse {
-  info?: Position;
-
-  /**
-   * List specific users id.
-   */
+  info?: PositionInfo;
   userIds?: Array<string>;
 }
 

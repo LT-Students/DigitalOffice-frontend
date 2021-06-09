@@ -4,7 +4,7 @@
 /**
  * Specific department data.
  */
-export interface Department {
+export interface BaseDepartmentInfo {
 
   /**
    * Department description.
@@ -15,6 +15,11 @@ export interface Department {
    * Specific director user id this department.
    */
   directorUserId?: string;
+
+  /**
+   * Department id.
+   */
+  id?: string;
 
   /**
    * Department name.
