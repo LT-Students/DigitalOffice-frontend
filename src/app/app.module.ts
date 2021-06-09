@@ -24,6 +24,7 @@ import { MaterialModule } from './shared/material.module';
 import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
+import { NetService } from '@app/services/net.service';
 
 registerLocaleData(localeRu);
 
@@ -49,6 +50,7 @@ registerLocaleData(localeRu);
     UserService,
     LocalStorageService,
     AttendanceService,
+    NetService,
     ProjectStore,
     {
       provide: HTTP_INTERCEPTORS,

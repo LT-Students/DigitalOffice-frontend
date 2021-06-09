@@ -88,7 +88,7 @@
         "@typescript-eslint/quotes": "off",
         "@typescript-eslint/semi": ["off", null],
         "@typescript-eslint/type-annotation-spacing": "off",
-        "arrow-body-style": "error",
+        "arrow-body-style": "off",
         "arrow-parens": ["off", "always"],
         "brace-style": ["off", "off"],
         "comma-dangle": "off",

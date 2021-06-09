@@ -31,7 +31,7 @@
   <div class="form__submit">
     <button
       class="regular_text"
-      *ngIf="!isWaiting; else spinner"
+      *ngIf="!isLoading; else spinner"
       type="submit"
       [disabled]="email.invalid || password.invalid"
       id="btn-enter"
