@@ -9,7 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
-  declarations: [AuthComponent, LoginComponent, ForgotPasswordComponent, SignupComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, AuthRoutingModule],
+	declarations: [AuthComponent, LoginComponent, ForgotPasswordComponent, SignupComponent],
+	imports: [CommonModule, FormsModule, ReactiveFormsModule, AuthRoutingModule],
 })
 export class AuthModule {}

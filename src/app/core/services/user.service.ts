@@ -18,11 +18,7 @@ import { userResponse } from '../../modules/employee/mock';
 export class UserService {
 	public selectedUser: BehaviorSubject<UserResponse>;
 
-	constructor(
-		private userApiService: UserApiService,
-		private route: ActivatedRoute,
-		private localStorageService: LocalStorageService
-	) {
+	constructor(private userApiService: UserApiService, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
 		this.selectedUser = new BehaviorSubject<UserResponse>(null);
 	}
 
@@ -36,12 +32,13 @@ export class UserService {
 	}
 
 	public getUsers(): Observable<UserInfo[]> {
-		return this.userApiService
-		/* TODO: Подумать, как получать конкретные данные о каждом юзере
-		*   при получении данных о всех юзера
-		* */
-		.findUsers({ skipCount: 0, takeCount: 50 }).pipe(
-			switchMap((usersResponse: UsersResponse) => of(usersResponse.users))
+		return (
+			this.userApiService
+				/* TODO: Подумать, как получать конкретные данные о каждом юзере
+				 *   при получении данных о всех юзера
+				 * */
+				.findUsers({ skipCount: 0, takeCount: 50 })
+				.pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
 		);
 	}
 
@@ -52,7 +49,7 @@ export class UserService {
 
 	public isAdmin(): boolean {
 		const user: UserInfo = this.localStorageService.get('user');
-		return (user) ? user.isAdmin : false;
+		return user ? user.isAdmin : false;
 	}
 
 	public getCurrentUser(): UserInfo | null {
@@ -63,9 +60,9 @@ export class UserService {
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
 		return this.userApiService.createUser({ body: params }).pipe(
 			switchMap((res: OperationResultResponse) => {
-				return (res.status === OperationResultStatusType.Failed || res instanceof HttpErrorResponse) ? throwError(res) : of(res)
+				return res.status === OperationResultStatusType.Failed || res instanceof HttpErrorResponse ? throwError(res) : of(res);
 			}),
-			catchError((error) =>  throwError(error))
+			catchError((error) => throwError(error))
 		);
 	}
 }

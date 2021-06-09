@@ -9,70 +9,60 @@ import { DateService } from '@app/services/date.service';
 import { Project } from '@data/models/project';
 
 @Component({
-  selector: 'do-user-tasks',
-  templateUrl: './user-tasks.component.html',
-  styleUrls: ['./user-tasks.component.scss'],
+	selector: 'do-user-tasks',
+	templateUrl: './user-tasks.component.html',
+	styleUrls: ['./user-tasks.component.scss'],
 })
 export class UserTasksComponent implements OnInit, OnDestroy {
-  @Input() timePeriodSelected: DatePeriod;
+	@Input() timePeriodSelected: DatePeriod;
 
-  private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
+	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-  public projects: Project[];
+	public projects: Project[];
 
-  isOrderedByProject = false;
-  isOrderedByHours = false;
-  startPeriod: Date;
-  endPeriod: Date;
-  tasksCount = 0;
-  searchText = '';
+	isOrderedByProject = false;
+	isOrderedByHours = false;
+	startPeriod: Date;
+	endPeriod: Date;
+	tasksCount = 0;
+	searchText = '';
 
-  public startDate: Date | null;
-  public endDate: Date | null;
+	public startDate: Date | null;
+	public endDate: Date | null;
 
-  constructor(
-    public attendanceService: AttendanceService,
-    private projectStore: ProjectStore,
-    public dateService: DateService
-  ) {}
+	constructor(public attendanceService: AttendanceService, private projectStore: ProjectStore, public dateService: DateService) {}
 
-  ngOnInit() {
-    this.projectStore.projects$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((projects) => (this.projects = projects));
+	ngOnInit() {
+		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => (this.projects = projects));
 
-    this.attendanceService.datePeriod$
-      .pipe(takeUntil(this.onDestroy$))
-      .subscribe((datePeriod) => {
-        this.startDate = datePeriod.startDate;
-        this.endDate = datePeriod.endDate;
-      });
+		this.attendanceService.datePeriod$.pipe(takeUntil(this.onDestroy$)).subscribe((datePeriod) => {
+			this.startDate = datePeriod.startDate;
+			this.endDate = datePeriod.endDate;
+		});
 
-    const now = new Date();
-    this.startPeriod = new Date();
-    this.startPeriod.setDate(now.getDate() - 3);
-    this.endPeriod = new Date();
-    this.endPeriod.setDate(now.getDate() + 3);
-    if (this.projects.length !== 0) {
-      this.tasksCount = this.projects
-        .map((p) => p.tasks)
-        .reduce((all, tasks) => all.concat(tasks)).length;
-    }
-  }
+		const now = new Date();
+		this.startPeriod = new Date();
+		this.startPeriod.setDate(now.getDate() - 3);
+		this.endPeriod = new Date();
+		this.endPeriod.setDate(now.getDate() + 3);
+		if (this.projects.length !== 0) {
+			this.tasksCount = this.projects.map((p) => p.tasks).reduce((all, tasks) => all.concat(tasks)).length;
+		}
+	}
 
-  ngOnDestroy() {
-    this.onDestroy$.next(null);
-    this.onDestroy$.complete();
-  }
+	ngOnDestroy() {
+		this.onDestroy$.next(null);
+		this.onDestroy$.complete();
+	}
 
-  sortByProject(): void {
-    this.isOrderedByProject = !this.isOrderedByProject;
-  }
-  sortByHours(): void {
-    this.isOrderedByHours = !this.isOrderedByHours;
-  }
+	sortByProject(): void {
+		this.isOrderedByProject = !this.isOrderedByProject;
+	}
+	sortByHours(): void {
+		this.isOrderedByHours = !this.isOrderedByHours;
+	}
 
-  onSearch(text: string) {
-    this.searchText = text;
-  }
+	onSearch(text: string) {
+		this.searchText = text;
+	}
 }

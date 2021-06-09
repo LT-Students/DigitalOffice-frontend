@@ -3,20 +3,20 @@ import { Router } from '@angular/router';
 import { Path } from '../../employee-page.component';
 
 @Component({
-    selector: 'do-breadcrumbs',
-    templateUrl: './breadcrumbs.component.html',
-    styleUrls: ['./breadcrumbs.component.scss'],
+	selector: 'do-breadcrumbs',
+	templateUrl: './breadcrumbs.component.html',
+	styleUrls: ['./breadcrumbs.component.scss'],
 })
 export class BreadcrumbsComponent implements OnInit {
-    @Input() paths: Path[];
+	@Input() paths: Path[];
 
-    constructor(private router: Router) {}
+	constructor(private router: Router) {}
 
-    ngOnInit(): void {}
+	ngOnInit(): void {}
 
-    onRouteClicked(route: Path) {
-        if (route.url) {
-          this.router.navigate([route.url]);
-        }
-    }
+	onRouteClicked(route: Path) {
+		if (route.url) {
+			this.router.navigate([route.url]);
+		}
+	}
 }

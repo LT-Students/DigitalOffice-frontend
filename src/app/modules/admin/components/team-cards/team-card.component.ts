@@ -2,18 +2,14 @@ import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, View
 
 import { ModalService, UserSearchModalConfig } from '@app/services/modal.service';
 import { Team, TeamMember } from '../new-project/team-cards';
-import {
-    DeleteDirectionComponent,
-    ModalApprovalConfig,
-    ModalResult,
-} from '../new-project/modals/delete-direction/delete-direction.component';
+import { DeleteDirectionComponent, ModalApprovalConfig, ModalResult } from '../new-project/modals/delete-direction/delete-direction.component';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 
 @Component({
-  selector: 'do-team-card',
-  templateUrl: './team-card.component.html',
-  styleUrls: ['./team-card.component.scss'],
+	selector: 'do-team-card',
+	templateUrl: './team-card.component.html',
+	styleUrls: ['./team-card.component.scss'],
 })
 export class TeamCardComponent implements OnInit, AfterViewInit {
 	@Input() public users: Team[];
@@ -66,39 +62,39 @@ export class TeamCardComponent implements OnInit, AfterViewInit {
 		const dialogRef = this._modalService.openModal(DeleteDirectionComponent, configData, ModalResult);
 	}
 
-  private _sortLeads(): TeamMember[] {
-    const leads: TeamMember[] = this.teamCard.members.filter((member: TeamMember) => member.lead);
-    const ordinary: TeamMember[] = this.teamCard.members.filter((member: TeamMember) => !member.lead);
-    return [...leads, ...ordinary];
-  }
+	private _sortLeads(): TeamMember[] {
+		const leads: TeamMember[] = this.teamCard.members.filter((member: TeamMember) => member.lead);
+		const ordinary: TeamMember[] = this.teamCard.members.filter((member: TeamMember) => !member.lead);
+		return [...leads, ...ordinary];
+	}
 
-  private _handleClickEvent(event: MouseEvent): void {
-    event.stopPropagation();
-    event.preventDefault();
-  }
+	private _handleClickEvent(event: MouseEvent): void {
+		event.stopPropagation();
+		event.preventDefault();
+	}
 
-  private setVisibleMembers(): void {
-    if (this.maxImages >= this.members.length) {
-      this.visibleMembers = this.members;
-      this.membersCountNotVisible = null;
-    } else {
-      this.membersCountNotVisible = this.members.length - this.maxImages;
+	private setVisibleMembers(): void {
+		if (this.maxImages >= this.members.length) {
+			this.visibleMembers = this.members;
+			this.membersCountNotVisible = null;
+		} else {
+			this.membersCountNotVisible = this.members.length - this.maxImages;
 
-      this.visibleMembers = this.members.slice(0, this.maxImages);
-      this.hiddenMembers = this.members.slice(this.maxImages);
-    }
-  }
+			this.visibleMembers = this.members.slice(0, this.maxImages);
+			this.hiddenMembers = this.members.slice(this.maxImages);
+		}
+	}
 
-  private _countMaxImagesNumber(): number {
-    const WIDTH = this.membersDivElement.nativeElement.clientWidth;
-    const singleImageWidthWithMargin = 39;
+	private _countMaxImagesNumber(): number {
+		const WIDTH = this.membersDivElement.nativeElement.clientWidth;
+		const singleImageWidthWithMargin = 39;
 
-    return Math.floor(WIDTH / singleImageWidthWithMargin) - 1;
-  }
+		return Math.floor(WIDTH / singleImageWidthWithMargin) - 1;
+	}
 
-  @HostListener('window:resize', ['$event.target'])
-  public resizeListener(): void {
-    this.maxImages = this._countMaxImagesNumber();
-    this.setVisibleMembers();
-  }
+	@HostListener('window:resize', ['$event.target'])
+	public resizeListener(): void {
+		this.maxImages = this._countMaxImagesNumber();
+		this.setVisibleMembers();
+	}
 }

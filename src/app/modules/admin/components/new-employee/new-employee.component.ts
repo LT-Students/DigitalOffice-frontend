@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserStatus, } from '@data/api/user-service/models';
+import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserStatus } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
@@ -87,13 +87,17 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public createEmployee(): void {
 		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
 
-		this.userService.createUser(params).pipe(takeUntil(this._unsubscribe$))
-		.subscribe(
-			(result: OperationResultResponse) => this.dialogRef.close(result),
-			(error: OperationResultResponse | HttpErrorResponse) => {
-				const message = (error && 'errors' in error) ? error.errors[0] : ('error' in error) ? error.error.Message : 'Упс! Что-то пошло не так.';
-				this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть.');
-			});
+		this.userService
+			.createUser(params)
+			.pipe(takeUntil(this._unsubscribe$))
+			.subscribe(
+				(result: OperationResultResponse) => this.dialogRef.close(result),
+				(error: OperationResultResponse | HttpErrorResponse) => {
+					const message =
+						error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.Message : 'Упс! Что-то пошло не так.';
+					this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть.');
+				}
+			);
 	}
 
 	public changeWorkingRate(step: number): void {
@@ -124,10 +128,12 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	private _convertFormDataToCreateUserParams(): CreateUserRequest {
-		const communications: CommunicationInfo[] = [ {
-			type: CommunicationType.Email,
-			value: this.userForm.get('email').value as string,
-		} ];
+		const communications: CommunicationInfo[] = [
+			{
+				type: CommunicationType.Email,
+				value: this.userForm.get('email').value as string,
+			},
+		];
 
 		const params: CreateUserRequest = {
 			firstName: this.userForm.get('firstName').value as string,
@@ -140,8 +146,8 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			isAdmin: false,
 			communications: communications,
 			startWorkingAt: this.userForm.get('startWorkingAt').value as string,
-			status: UserStatus.WorkFromHome
-		}
+			status: UserStatus.WorkFromHome,
+		};
 
 		return params;
 	}

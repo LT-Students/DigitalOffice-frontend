@@ -2,29 +2,26 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 
 @Component({
-  selector: 'do-stepper',
-  templateUrl: './stepper.component.html',
-  styleUrls: ['./stepper.component.scss']
+	selector: 'do-stepper',
+	templateUrl: './stepper.component.html',
+	styleUrls: ['./stepper.component.scss'],
 })
 export class StepperComponent implements OnInit {
-  @Input() label = '';
-  @Input() required = false;
-  @Input() type = 'number';
-  @Input() controlName = '';
-  @Input() isEdit = true;
+	@Input() label = '';
+	@Input() required = false;
+	@Input() type = 'number';
+	@Input() controlName = '';
+	@Input() isEdit = true;
 
-  control: FormControl | undefined;
+	control: FormControl | undefined;
 
-  constructor(private formGroupDir: FormGroupDirective) {}
+	constructor(private formGroupDir: FormGroupDirective) {}
 
-  ngOnInit() {
-    this.control = this.formGroupDir.control?.get(
-      this.controlName
-    ) as FormControl;
-  }
+	ngOnInit() {
+		this.control = this.formGroupDir.control?.get(this.controlName) as FormControl;
+	}
 
-  changeWorkingRate(input, step) {
-    input.value = +input.value + step;
-  }
-
+	changeWorkingRate(input, step) {
+		input.value = +input.value + step;
+	}
 }

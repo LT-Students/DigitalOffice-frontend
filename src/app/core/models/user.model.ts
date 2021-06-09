@@ -9,7 +9,6 @@ import { ProjectInfo } from '@data/api/user-service/models/project-info';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { IUserStatus, UserStatusModel } from '@app/models/user-status.model';
 
-
 export class User implements UserResponse {
 	achievements: Array<UserAchievementInfo>;
 	avatar: ImageInfo;
@@ -80,6 +79,6 @@ export class User implements UserResponse {
 	}
 
 	private _setProperty<T>(property: T) {
-		return (property) ? property : null;
+		return property ? property : null;
 	}
 }

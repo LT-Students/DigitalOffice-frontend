@@ -22,9 +22,7 @@ export class DashboardComponent implements OnInit {
 	public projects: Project[] = [];
 	public today = Date.now();
 
-	constructor(private _router: Router,
-				private _matSnackBar: MatSnackBar,
-				public dialog: MatDialog) {}
+	constructor(private _router: Router, private _matSnackBar: MatSnackBar, public dialog: MatDialog) {}
 
 	public ngOnInit(): void {
 		const active: Project = {
@@ -112,7 +110,6 @@ export class DashboardComponent implements OnInit {
 		dialogRef.afterClosed().subscribe((result) => {
 			console.log(`Dialog result: ${result}`);
 		});
-
 	}
 	onOpenNewDepartment(): void {
 		const dialogRef = this.dialog.open(NewDepartmentComponent, {
@@ -130,14 +127,14 @@ export class DashboardComponent implements OnInit {
 		const dialogRef = this.dialog.open(NewEmployeeComponent, {});
 
 		dialogRef.afterClosed().subscribe((result: OperationResultResponse) => {
-				if (result && result.status &&
-					(result.status === OperationResultStatusType.FullSuccess || result.status === OperationResultStatusType.PartialSuccess)) {
-					this._matSnackBar.open('Новый пользователь успешно добавлен!', 'Закрыть', { duration: 3000 });
-					console.log(`Dialog result: ${ result }`);
-				}
+			if (
+				result &&
+				result.status &&
+				(result.status === OperationResultStatusType.FullSuccess || result.status === OperationResultStatusType.PartialSuccess)
+			) {
+				this._matSnackBar.open('Новый пользователь успешно добавлен!', 'Закрыть', { duration: 3000 });
+				console.log(`Dialog result: ${result}`);
 			}
-		);
-		//
-		//
+		});
 	}
 }
