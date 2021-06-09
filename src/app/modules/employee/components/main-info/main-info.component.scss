@@ -1,198 +1,199 @@
 @import '../../../../../stylesheets/base/variables';
 
 .employee-info {
-    &__wrapper {
-        display: grid;
+	&__wrapper {
+		display: grid;
 
-        width: 100%;
+		width: 100%;
 
-        grid-template-columns: 25% 41% 31% 3%;
-    }
+		grid-template-columns: 25% 41% 31% 3%;
+	}
 
-    &__form {
-        width: 100%;
-    }
+	&__form {
+		width: 100%;
+	}
 
-    &__main {
-        display: flex;
-        flex-direction: column;
+	&__main {
+		display: flex;
+		flex-direction: column;
 
-        text-align: center;
-    }
+		text-align: center;
+	}
 
-    &__general {
-        margin-right: 32px;
-        margin-left: 32px;
-    }
+	&__general {
+		margin-right: 32px;
+		margin-left: 32px;
+	}
 
-    &__additional {
-        display: flex;
+	&__additional {
+		display: flex;
 
-        width: 100%;
+		width: 100%;
 
-        .h4:last-of-type {
-            margin: 42px 0 13px 0;
-        }
+		.additional__line {
+			margin-right: 70px;
 
-        .additional__line {
-            margin-right: 70px;
+			width: 2px;
+			height: 70%;
 
-            width: 2px;
-            height: 70%;
+			align-self: center;
+		}
 
-            align-self: center;
-        }
+		.form__column {
+			width: 100%;
 
-        .form__column {
-            width: 100%;
-        }
-    }
+			.communications {
+				display: flex;
+				flex-direction: column;
+			}
+		}
+	}
 
-    &__memo {
-        position: absolute;
-        right: 47px;
-        bottom: 42px;
-    }
+	&__memo {
+		position: absolute;
+		right: 47px;
+		bottom: 42px;
+	}
 
-    &__photo {
-        position: relative;
+	&__photo {
+		position: relative;
 
-        margin-bottom: 12px;
+		margin-bottom: 12px;
 
-        overflow: hidden;
+		overflow: hidden;
 
-        width: 180px;
-        height: 180px;
+		width: 180px;
+		height: 180px;
 
-        border-radius: 50%;
-        align-self: center;
-    }
+		border-radius: 50%;
+		align-self: center;
+	}
 
-    &__upload-button {
-        position: absolute;
-        left: 0;
-        bottom: 0;
+	&__upload-button {
+		position: absolute;
+		left: 0;
+		bottom: 0;
 
-        padding-top: 8px;
+		padding-top: 8px;
 
-        width: 180px;
-        height: 60px;
+		width: 180px;
+		height: 60px;
 
-        cursor: pointer;
+		cursor: pointer;
 
-        background-color: rgba(67, 67, 72, 0.6);
-    }
+		background-color: rgba(67, 67, 72, 0.6);
+	}
 
-    &__upload-icon {
-        width: 16px;
-        height: 16px;
-    }
+	&__upload-icon {
+		width: 16px;
+		height: 16px;
+	}
 
-    &__form-buttons {
-        position: relative;
+	&__form-buttons {
+		position: relative;
 
-        margin-top: 32px;
+		margin-top: 32px;
 
-        display: flex;
-        justify-content: center;
+		display: flex;
+		justify-content: center;
 
-        grid-column: 1 / 4;
-    }
+		grid-column: 1 / 4;
+	}
 
-    &__submit {
-        margin-left: 87px;
+	&__submit {
+		margin-left: 87px;
 
-        width: 185px;
-    }
+		width: 185px;
+	}
 
-    &__form-field {
-        display: block;
-    }
+	&__form-field {
+		display: block;
+	}
 
-    &__working-hours {
-        display: inline-block;
+	&__working-hours {
+		display: inline-block;
 
-        width: 45%;
-    }
+		width: 45%;
+	}
 
-    &__substitute {
-        text-decoration: underline;
-        text-underline-offset: 1px;
-    }
+	&__substitute {
+		text-decoration: underline;
+		text-underline-offset: 1px;
+	}
 
-    &__stepper {
-        text-align: center;
-    }
+	&__stepper {
+		text-align: center;
+	}
 
-    &__stepper-button {
-        font-family: $header_font;
+	&__stepper-button {
+		font-family: $header_font;
 
-        &:disabled {
-            padding: 0;
+		&:disabled {
+			padding: 0;
 
-            min-width: 0;
+			min-width: 0;
 
-            background-color: transparent;
-        }
-    }
+			background-color: transparent;
+		}
+	}
 
-    &__input {
-        font-family: $regular_font !important;
-    }
+	&__input {
+		font-family: $regular_font !important;
+	}
 
-    &__about {
-        line-height: 21px;
-    }
+	&__about {
+		line-height: 21px;
+	}
 
-    &__columns {
-        display: flex;
-        justify-content: space-between;
-    }
+	&__columns {
+		display: flex;
+		justify-content: space-between;
+	}
 
-    &__first-column {
-        width: 100%;
-    }
+	&__first-column {
+		width: 100%;
+	}
 
-    &__second-column {
-        margin-left: 32px;
+	&__second-column {
+		margin-left: 32px;
 
-        width: 185px;
-    }
+		width: 185px;
+	}
 
-    &__border {
-        margin: 50px 50px 0 50px;
+	&__border {
+		margin: 50px 50px 0 50px;
 
-        height: 320px;
+		height: 320px;
 
-        border-left: 1px solid $light_3;
-    }
+		border-left: 1px solid $light_3;
+	}
 
-    &__hint {
-        margin-left: 2px;
+	&__hint {
+		margin-left: 2px;
 
-        width: 16px;
-        height: 16px;
+		width: 16px;
+		height: 16px;
 
-        font-size: 16px;
+		font-size: 16px;
 
-        vertical-align: -20%;
-    }
+		vertical-align: -20%;
+	}
 
-    &__required {
-        margin-left: 1px;
+	&__required {
+		margin-left: 1px;
 
-        vertical-align: top;
+		vertical-align: top;
 
-        color: $negative_accent;
-    }
+		color: $negative_accent;
+	}
 
-    &__required-block {
-        position: absolute;
+	&__required-block {
+		position: absolute;
 
-        right: 0;
-    }
+		right: 0;
+	}
 
-    .small_text {
-        margin: 14px 0 3px 0;
-    }
+	.small_text {
+		margin: 14px 0 3px 0;
+	}
 }

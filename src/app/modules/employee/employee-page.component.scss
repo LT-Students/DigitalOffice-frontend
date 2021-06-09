@@ -1,9 +1,32 @@
 .card_employee {
-    margin-bottom: 45px;
+	margin-bottom: 45px;
 
-    padding: 52px 47px;
+	padding: 52px 47px;
 }
 
 .card_employee:last-child {
-    margin-bottom: 0;
+	margin-bottom: 0;
+}
+
+.flex {
+	display: flex;
+	justify-content: space-between;
+}
+
+.employee-page {
+	&__header {
+		margin-bottom: 48px;
+	}
+
+	&__button {
+		cursor: pointer;
+
+		&:hover {
+			color: #707070;
+		}
+	}
+
+	&__button-label {
+		margin-left: 7px;
+	}
 }

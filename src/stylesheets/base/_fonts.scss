@@ -1,97 +1,97 @@
 @import 'variables';
 
 %header_font_basic {
-    font-family: $header_font;
-    font-weight: bold;
-    font-style: normal;
+	font-family: $header_font;
+	font-weight: bold;
+	font-style: normal;
 }
 
 %regular_font_basic {
-    font-family: $regular_font;
-    font-weight: normal;
-    font-style: normal;
+	font-family: $regular_font;
+	font-weight: normal;
+	font-style: normal;
 }
 
 .h1 {
-    @extend %header_font_basic;
-    font-size: 35px;
-    line-height: 40px;
+	@extend %header_font_basic;
+	font-size: 35px;
+	line-height: 40px;
 }
 
 .h2 {
-    @extend %header_font_basic;
-    font-size: 28px;
-    line-height: 32px;
+	@extend %header_font_basic;
+	font-size: 28px;
+	line-height: 32px;
 }
 
 .h3 {
-    @extend %header_font_basic;
-    font-size: 22px;
-    line-height: 28px;
+	@extend %header_font_basic;
+	font-size: 22px;
+	line-height: 28px;
 }
 
 .h4 {
-    @extend %header_font_basic;
-    margin-bottom: 32px;
+	@extend %header_font_basic;
+	margin-bottom: 12px;
 
-    font-size: 16px;
-    line-height: 24px;
+	font-size: 16px;
+	line-height: 24px;
 }
 
 .h5 {
-    @extend %header_font_basic;
-    font-size: 14px;
-    line-height: 24px;
+	@extend %header_font_basic;
+	font-size: 14px;
+	line-height: 24px;
 }
 
 .h6 {
-    @extend %header_font_basic;
-    font-size: 10px;
-    font-weight: normal;
-    line-height: 15px;
+	@extend %header_font_basic;
+	font-size: 10px;
+	font-weight: normal;
+	line-height: 15px;
 }
 
 .regular_text {
-    @extend %regular_font_basic;
-    font-size: 16px;
-    line-height: 24px;
+	@extend %regular_font_basic;
+	font-size: 16px;
+	line-height: 24px;
 }
 
 .small_text {
-    @extend %regular_font_basic;
-    font-size: 14px;
-    line-height: 24px;
+	@extend %regular_font_basic;
+	font-size: 14px;
+	line-height: 24px;
 }
 
 .h3_light {
-    @extend %header_font_basic;
-    font-size: 22px;
-    font-weight: 500;
-    line-height: 28px;
+	@extend %header_font_basic;
+	font-size: 22px;
+	font-weight: 500;
+	line-height: 28px;
 }
 
 .text_bold {
-    font-weight: bold;
+	font-weight: bold;
 }
 
 .text_color {
-    &_white {
-        color: #fff;
-    }
+	&_white {
+		color: #fff;
+	}
 
-    &_dark-1 {
-        color: $dark_1;
-    }
+	&_dark-1 {
+		color: $dark_1;
+	}
 
-    &_light-1 {
-        color: $light_1;
-    }
+	&_light-1 {
+		color: $light_1;
+	}
 
-    &_gray {
-        color: $gray;
-    }
+	&_gray {
+		color: $gray;
+	}
 }
 
 .text_white {
-    color: #fff;
+	color: #fff;
 }

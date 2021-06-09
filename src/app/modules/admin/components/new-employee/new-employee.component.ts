@@ -14,8 +14,7 @@ import { DepartmentApiService } from '@data/api/company-service/services/departm
 import { Department } from '@data/api/company-service/models/department';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { UserStatus } from '@app/models/user-status.model';
-import { CommunicationType } from '@data/api/user-service/models';
+import { CommunicationType, UserStatus } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable } from 'rxjs';
@@ -112,7 +111,6 @@ export class NewEmployeeComponent implements OnInit {
 			rate: +this.userForm.get('rate').value + step,
 		});
 	}
-
 
 	// {"FirstName":"112","LastName":"122","MiddleName":"111","Password":"test@test.ru","Rate":1,"isAdmin":true,"Communications":[{"type":"Email","value":"test@test.ru"}],"StartWorkingAt":"2021-05-07","Status":"WorkFromHome" , "PositionId": null, "DepartmentId":null
 	private _convertFormDataToCreateUserParams(): CreateUserRequest {

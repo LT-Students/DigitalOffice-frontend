@@ -1,10 +1,7 @@
 // eslint-disable-next-line no-shadow
-export enum UserStatus {
-	Vacation,
-	Sick,
-	WorkFromOffice,
-	WorkFromHome
-}
+// TODO: use enum from API
+
+import { UserStatus } from '@data/api/user-service/models/user-status';
 
 export interface IUserStatus {
 	emojiIcon: string;

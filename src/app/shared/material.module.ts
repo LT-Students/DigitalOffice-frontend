@@ -19,6 +19,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatMenuModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    MatExpansionModule
   ],
   exports: [
     MatButtonModule,
@@ -63,6 +65,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatMenuModule,
     MatTooltipModule,
     MatAutocompleteModule,
+    MatExpansionModule
   ],
   providers: [{ provide: MatDialogRef, useValue: {} }],
 })

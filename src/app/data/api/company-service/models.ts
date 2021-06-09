@@ -5,3 +5,6 @@ export { PositionResponse } from './models/position-response';
 export { Position } from './models/position';
 export { Department } from './models/department';
 export { DepartmentUser } from './models/department-user';
+export { DepartmentResponse } from './models/department-response';
+export { DepartmentInfo } from './models/department-info';
+export { User } from './models/user';

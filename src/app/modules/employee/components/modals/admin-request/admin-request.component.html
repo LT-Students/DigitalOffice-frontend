@@ -1,0 +1,36 @@
+<mat-dialog-content class="admin-request">
+    <h3 doText color="dark_1">Запрос на внесение изменений</h3>
+    <mat-form-field class="admin-request__form-field" appearance="none">
+        <textarea
+            class="admin-request__textarea"
+            matInput
+            [(ngModel)]='requestMessage'
+            matTextareaAutosize
+            matAutosizeMinRows='3'
+            matAutosizeMaxRows='3'
+            placeholder="Пожалуйста, подробно опишите здесь ваш запрос на внесение изменений
+            в личную информацию. Администраторы свяжутся с вами в ближайшее
+            время"
+        ></textarea>
+    </mat-form-field>
+    <mat-dialog-actions align='center'>
+        <button
+            mat-flat-button
+            mat-dialog-close
+            type="button"
+            class="admin-request__button"
+        >
+            Отменить
+        </button>
+        <button
+            mat-flat-button
+            (click)='closeDialog()'
+            [disabled]='requestMessage.length === 0'
+            type="submit"
+            class="admin-request__button"
+            color="primary"
+        >
+            Сохранить
+        </button>
+    </mat-dialog-actions>
+</mat-dialog-content>

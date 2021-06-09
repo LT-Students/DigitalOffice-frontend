@@ -1,109 +1,102 @@
 @import 'base/fonts';
+@import '../user-row';
 
 .team-card {
-  padding: 24px;
+	margin-bottom: 12px;
 
-  box-sizing: border-box;
-  min-width: 300px;
-  height: 100%;
+	overflow: visible;
 
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
+	width: 100%;
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+	border-radius: 8px;
 
-  &__name {
-    margin: 0;
-  }
+	// angular material specific part
+	.mat-expansion-panel-header {
+		height: 74px;
 
-  &__people-count-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+		background-color: $light_2;
 
-  &__people-count-icon {
-    margin-right: 8px;
+		&.mat-expanded,
+		&:hover {
+			background-color: $accent_color_light;
+		}
+	}
 
-    display: block;
+	::ng-deep .mat-expansion-panel-content {
+		overflow: auto;
 
-    width: 16px;
-    height: 16px;
-  }
+		max-height: 333px;
+	}
 
-  &__level-labels {
-    margin-top: 6px;
-  }
+	::ng-deep .mat-content {
+		overflow: visible;
+	}
 
-  &__team-members {
-    margin-top: 12px;
+	&__general-info {
+		margin-right: 0;
 
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
+		display: block;
 
-  &__members-list {
-    margin-bottom: 0;
+		width: 25%;
+		min-width: 25%;
+		max-width: 25%;
 
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
+		white-space: nowrap;
+	}
 
-    list-style: none;
-    flex-wrap: wrap;
-  }
+	&__button_edit {
+		margin-right: 7px;
+	}
 
-  &__new-member {
-    margin-top: 12px;
-    margin-right: 12px;
+	&__members {
+		display: flex;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-self: flex-start;
-  }
+		align-items: center;
 
-  &__plus {
-    width: 26px;
-    height: 26px;
-  }
+		width: 66%;
+		max-width: 66%;
 
-  &__member {
-    position: relative;
+		.member {
+			position: relative;
 
-    margin-top: 12px;
-    margin-right: 12px;
-  }
+			margin-right: 7px;
 
-  &__icon-dummy {
-    width: 36px;
-    height: 36px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 
-    background-color: $gray;
-    border-radius: 50%;
-  }
+			@include image-container(32px);
 
-  &__icon-dummy_lead {
-    &::before {
-      @extend .h6;
-      @extend .text_white;
-      content: 'lead';
+			&_empty {
+				margin-left: 0;
 
-      position: absolute;
-      top: -6px;
-      right: -14px;
+				color: $gray1;
+				background-color: map-get($colors, 'light_4');
 
-      padding: 0 3px;
+				.counter {
+					white-space: nowrap;
+				}
+			}
 
-      text-align: center;
-      text-transform: uppercase;
+			&__image {
+				border-radius: 50%;
+			}
+		}
+	}
 
-      background-color: $blue_3;
-      border-radius: 6px;
-    }
-  }
+	&__button_delete {
+		position: absolute;
+		right: -40px;
+
+		display: flex;
+		visibility: hidden;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	&:hover {
+		.team-card__button_delete {
+			visibility: visible;
+		}
+	}
 }
