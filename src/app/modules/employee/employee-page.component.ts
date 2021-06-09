@@ -1,8 +1,10 @@
+
+import { EducationModel, StudyType } from '@app/models/education.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { EducationModel } from '@app/models/education.model';
 import { UserService } from '@app/services/user.service';
-import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserResponse } from '@data/api/user-service/models/user-response';
+import { Project } from '@data/models/project';
+import { activeProject, closedProject, courses, institutes, skills } from './mock';
 import { EducationType } from '@data/api/user-service/models';
 import { Project } from '@data/models/project';
 import { takeUntil } from 'rxjs/operators';
@@ -18,21 +20,21 @@ import { User } from '@app/models/user.model';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
-  EDIT = 'EDIT',
-  VIEW = 'VIEW',
-  ADD = 'ADD',
+	EDIT = 'EDIT',
+	VIEW = 'VIEW',
+	ADD = 'ADD',
 }
 
 export interface Modes {
-  skills: WorkFlowMode;
-  education: WorkFlowMode;
-  certificates: WorkFlowMode;
+	skills: WorkFlowMode;
+	education: WorkFlowMode;
+	certificates: WorkFlowMode;
 }
 
 export interface UserProject extends Project {
-  role: string;
-  startedAt: Date;
-  endedAt?: Date;
+	role: string;
+	startedAt: Date;
+	endedAt?: Date;
 }
 
 export interface Path {
@@ -41,11 +43,10 @@ export interface Path {
 }
 
 @Component({
-  selector: 'do-employee-page',
-  templateUrl: './employee-page.component.html',
-  styleUrls: ['./employee-page.component.scss'],
+	selector: 'do-employee-page',
+	templateUrl: './employee-page.component.html',
+	styleUrls: ['./employee-page.component.scss'],
 })
-
 export class EmployeePageComponent implements OnInit, OnDestroy {
   public institutes: EducationModel[];
   public courses: EducationModel[];
@@ -116,6 +117,19 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
     this._unsubscribe$.complete();
   }
 
+
+	private _getUserProjects(): UserProject[] {
+		return [
+			activeProject,
+			{
+				...activeProject,
+				description:
+					'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+			},
+			...Array(5).fill(closedProject)
+		];
+	}
+
   onOpenDialog(): void {
     const dialogComponent = this.user.isAdmin ? ArchiveComponent : AdminRequestComponent;
 
@@ -130,5 +144,4 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
       this.snackBar.open(message, 'accept', { duration: 3000 });
     }
   }
-
 }

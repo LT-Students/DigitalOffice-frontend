@@ -4,7 +4,7 @@
   (ngSubmit)="login()"
   autocomplete="off"
 >
-  <label class="form__title h1 text_white">Digital office</label>
+  <label class="form__title h1 text_white">Digital Office</label>
   <div class="form__error">
     <small *ngIf="email.touched && email.invalid"
       >Неправильно введен email адрес :(
@@ -31,7 +31,7 @@
   <div class="form__submit">
     <button
       class="regular_text"
-      *ngIf="!isWaiting; else spinner"
+      *ngIf="!isLoading; else spinner"
       type="submit"
       [disabled]="email.invalid || password.invalid"
       id="btn-enter"

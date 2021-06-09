@@ -1,16 +1,20 @@
 import { Input, Component, OnInit } from '@angular/core';
+import { AuthService } from '@app/services/auth.service';
 
 @Component({
-  selector: 'do-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+	selector: 'do-header',
+	templateUrl: './header.component.html',
+	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  hasNotification = false;
-  @Input() userName;
-  @Input() magnifierLocation: 'right' | 'left' = 'left';
+	@Input() userName;
+	@Input() magnifierLocation: 'right' | 'left' = 'left';
 
-  constructor() {}
+	constructor(private authService: AuthService) {}
 
-  ngOnInit() {}
+	ngOnInit() {}
+
+	onLogoutClick(){
+		this.authService.logout();
+	}
 }

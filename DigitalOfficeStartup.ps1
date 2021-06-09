@@ -3,8 +3,8 @@
 
 New-Item DigitalOffice -ItemType Directory
 
-$allServices = "CheckRightsService", "MessageService", "FileService",
- "NewsService", "TimeManagementService", "CompanyService"
+$allServices = "RightsService", "MessageService", "FileService",
+ "NewsService", "TimeService", "CompanyService" , "AuthService" , "ProjectService"  , "SearchService"
 
 cd .\DigitalOffice
 
@@ -16,6 +16,7 @@ if ( -not (Test-Path '.\DigitalOffice' -PathType Container) )
 	git clone https://github.com/LT-Students/DigitalOffice-$service/
     }
 }
+
 
 foreach($service in $allServices)
 {
@@ -29,6 +30,8 @@ foreach($service in $allServices)
     cd ..\
 }
 
+
+pwd
 foreach($service in $allServices)
 {
     Write-Host Starting DigitalOffice-$service
