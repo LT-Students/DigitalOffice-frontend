@@ -4,11 +4,10 @@ import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { ProjectService } from '@app/services/project.service';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 
-
 interface Group {
 	name: string;
 	projects: ProjectInfo[];
-	plural: {[p: string]: string};
+	plural: { [p: string]: string };
 }
 
 @Component({
@@ -31,11 +30,11 @@ export class ProjectsComponent implements OnInit {
 			activeProjectsTitle: {
 				one: '# проект',
 				few: '# проекта',
-				other: '# проектов'
+				other: '# проектов',
 			},
 			closedProjectsTitle: {
 				one: '# проекте',
-				other: '# проектах'
+				other: '# проектах',
 			},
 		};
 	}
@@ -44,7 +43,7 @@ export class ProjectsComponent implements OnInit {
 		// TODO: add full project data fetching after initalizing
 		this._projectService.getMockUserProjectsInfo().subscribe((projects: ProjectInfo[]) => {
 			this._filterProject(projects);
-		})
+		});
 		this.groups = [
 			{
 				name: 'В работе',

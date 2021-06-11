@@ -12,27 +12,21 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 @Component({
 	selector: 'do-login',
 	templateUrl: './login.component.html',
-	styleUrls: [ './login.component.scss' ],
+	styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
 	public loginForm: FormGroup;
 	public loginError: string;
 	public isLoading = false;
 
-	constructor(
-		private _authService: AuthService,
-		private _userService: UserService,
-		private _router: Router,
-		private formBuilder: FormBuilder,
-	) {
+	constructor(private _authService: AuthService, private _userService: UserService, private _router: Router, private formBuilder: FormBuilder) {
 		this.loginForm = this.formBuilder.group({
-			email: [ '', Validators.required ],
-			password: [ '', Validators.required ],
+			email: ['', Validators.required],
+			password: ['', Validators.required],
 		});
 	}
 
-	public ngOnInit(): void {
-	}
+	public ngOnInit(): void {}
 
 	public login(): void {
 		this.isLoading = true;
@@ -42,19 +36,20 @@ export class LoginComponent implements OnInit {
 			password: this.loginForm.get('password').value,
 		};
 
-
-		this._authService.login(authenticationRequest).pipe(
-			finalize(() => this.isLoading = false),
-			catchError((error) => {
-				this.loginError = error.message;
-				this.isLoading = false;
-				console.log('Getting user info failed.', error.message);
-				throw error;
-			})
-		).subscribe((user: UserResponse) => {
-				this._router.navigate([ (user.user.isAdmin) ? '/admin/dashboard' : '/user/attendance' ]);
-			}
-		);
+		this._authService
+			.login(authenticationRequest)
+			.pipe(
+				finalize(() => (this.isLoading = false)),
+				catchError((error) => {
+					this.loginError = error.message;
+					this.isLoading = false;
+					console.log('Getting user info failed.', error.message);
+					throw error;
+				})
+			)
+			.subscribe((user: UserResponse) => {
+				this._router.navigate([user.user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
+			});
 	}
 
 	public get email() {

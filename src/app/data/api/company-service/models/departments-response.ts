@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { DepartmentInfo } from './department-info';
-export interface DepartmentResponse {
+export interface DepartmentsResponse {
 
   /**
    * Total number of all departments.

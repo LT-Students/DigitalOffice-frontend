@@ -47,10 +47,24 @@
             }
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not found.\n* Position with this id not found.\n"
+            "description": "Not Found.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -82,7 +96,14 @@
             }
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n   \n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -103,7 +124,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddPositionRequest"
+                "$ref": "#/components/schemas/CreatePositionRequest"
               }
             }
           },
@@ -123,10 +144,24 @@
             }
           },
           "400": {
-            "description": "Bad request.\n* Incorrect position data.\n* This position id already exist.\n"
+            "description": "Bad request.\n* Incorrect position data.\n* This position id already exist.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* Not enough rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -158,10 +193,24 @@
             "description": "Ok.\n* Position was successfully changed.\n"
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* Not enough rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found.\n* Position with this id not found.\n"
+            "description": "Not Found.\n* Position with this id not found.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -195,10 +244,24 @@
             "description": "Ok.\n* Position was successfully removed.\n"
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* Not enough rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found.\n* Position with this id not found.\n"
+            "description": "Not Found.\n* Position with this id not found.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -219,7 +282,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddDepartmentRequest"
+                "$ref": "#/components/schemas/NewDepartmentRequest"
               }
             }
           },
@@ -238,10 +301,24 @@
             }
           },
           "400": {
-            "description": "Bad request.\n* Incorrect department data.\n* This department id already exist.\n"
+            "description": "Bad request.\n* Incorrect department data.\n* This department id already exist.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* Not enough rights.\n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -271,13 +348,30 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Department"
+                  "$ref": "#/components/schemas/DepartmentInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
           "404": {
-            "description": "Not found.\n* Department with this id not found.\n"
+            "description": "Not found.\n* Department with this id not found.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -297,7 +391,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DepartmentResponse"
+                    "$ref": "#/components/schemas/DepartmentsResponse"
                   }
                 }
               }
@@ -309,13 +403,12 @@
   },
   "components": {
     "schemas": {
-      "AddPositionRequest": {
+      "CreatePositionRequest": {
         "type": "object",
         "description": "Specific position data.",
         "required": [
           "Name",
-          "Description",
-          "IsActive"
+          "Description"
         ],
         "properties": {
           "Name": {
@@ -328,10 +421,6 @@
             "type": "string",
             "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
             "nullable": true
-          },
-          "IsActive": {
-            "description": "Marks whether position is active or not.",
-            "type": "boolean"
           }
         }
       },
@@ -367,7 +456,7 @@
           }
         }
       },
-      "AddDepartmentRequest": {
+      "NewDepartmentRequest": {
         "type": "object",
         "required": [
           "Info",
@@ -375,12 +464,12 @@
         ],
         "properties": {
           "Info": {
-            "$ref": "#/components/schemas/Department"
+            "$ref": "#/components/schemas/BaseDepartmentInfo"
           },
           "Users": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/DepartmentUser"
+              "$ref": "#/components/schemas/DepartmentUserInfo"
             }
           }
         }
@@ -389,11 +478,10 @@
         "type": "object",
         "properties": {
           "Info": {
-            "$ref": "#/components/schemas/Position"
+            "$ref": "#/components/schemas/PositionInfo"
           },
           "UserIds": {
             "type": "array",
-            "description": "List specific users id.",
             "items": {
               "type": "string",
               "format": "uuid"
@@ -401,9 +489,8 @@
           }
         }
       },
-      "Position": {
+      "PositionInfo": {
         "type": "object",
-        "description": "Specific position data.",
         "properties": {
           "Id": {
             "description": "Specific position id.",
@@ -427,7 +514,7 @@
           }
         }
       },
-      "Department": {
+      "BaseDepartmentInfo": {
         "type": "object",
         "description": "Specific department data.",
         "required": [
@@ -435,6 +522,11 @@
           "Description"
         ],
         "properties": {
+          "Id": {
+            "description": "Department id.",
+            "type": "string",
+            "format": "guid"
+          },
           "Name": {
             "description": "Department name.",
             "type": "string"
@@ -450,7 +542,7 @@
           }
         }
       },
-      "DepartmentUser": {
+      "DepartmentUserInfo": {
         "type": "object",
         "description": "User data of specific department.",
         "properties": {
@@ -466,7 +558,7 @@
           }
         }
       },
-      "DepartmentResponse": {
+      "DepartmentsResponse": {
         "type": "object",
         "properties": {
           "Count": {
@@ -505,18 +597,18 @@
             "type": "string"
           },
           "Director": {
-            "$ref": "#/components/schemas/User"
+            "$ref": "#/components/schemas/UserInfo"
           },
           "Users": {
             "type": "array",
             "description": "Workers of this department.",
             "items": {
-              "$ref": "#/components/schemas/User"
+              "$ref": "#/components/schemas/UserInfo"
             }
           }
         }
       },
-      "User": {
+      "UserInfo": {
         "type": "object",
         "description": "User data.",
         "properties": {
@@ -535,6 +627,22 @@
           "MiddleName": {
             "type": "string",
             "example": "Alexandrovich"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
           }
         }
       }

@@ -32,7 +32,7 @@ export class AuthService {
 		);
 	}
 
-	logout(){
+	logout() {
 		this._removeCredentialsFromLocalStorage();
 		this._router.navigate(['/auth/login']);
 	}
@@ -43,9 +43,9 @@ export class AuthService {
 	}
 
 	signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
-		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
-			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
-		);
+		return this.credentialsApiService
+			.createCredentials({ body: createCredentialsRequest })
+			.pipe(tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)));
 	}
 
 	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse) {

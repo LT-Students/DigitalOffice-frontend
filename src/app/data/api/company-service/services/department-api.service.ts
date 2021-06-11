@@ -9,9 +9,9 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { AddDepartmentRequest } from '../models/add-department-request';
-import { Department } from '../models/department';
-import { DepartmentResponse } from '../models/department-response';
+import { DepartmentInfo } from '../models/department-info';
+import { DepartmentsResponse } from '../models/departments-response';
+import { NewDepartmentRequest } from '../models/new-department-request';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +39,7 @@ export class DepartmentApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addDepartment$Response(params: {
-    body: AddDepartmentRequest
+    body: NewDepartmentRequest
   }): Observable<StrictHttpResponse<string>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.AddDepartmentPath, 'post');
@@ -68,7 +68,7 @@ export class DepartmentApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addDepartment(params: {
-    body: AddDepartmentRequest
+    body: NewDepartmentRequest
   }): Observable<string> {
 
     return this.addDepartment$Response(params).pipe(
@@ -95,7 +95,7 @@ export class DepartmentApiService extends BaseService {
      * Department global unique identifier.
      */
     departmentId: string;
-  }): Observable<StrictHttpResponse<Department>> {
+  }): Observable<StrictHttpResponse<DepartmentInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetPath, 'get');
     if (params) {
@@ -108,7 +108,7 @@ export class DepartmentApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Department>;
+        return r as StrictHttpResponse<DepartmentInfo>;
       })
     );
   }
@@ -127,10 +127,10 @@ export class DepartmentApiService extends BaseService {
      * Department global unique identifier.
      */
     departmentId: string;
-  }): Observable<Department> {
+  }): Observable<DepartmentInfo> {
 
     return this.get$Response(params).pipe(
-      map((r: StrictHttpResponse<Department>) => r.body as Department)
+      map((r: StrictHttpResponse<DepartmentInfo>) => r.body as DepartmentInfo)
     );
   }
 
@@ -148,7 +148,7 @@ export class DepartmentApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   get_1$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<DepartmentResponse>>> {
+  }): Observable<StrictHttpResponse<Array<DepartmentsResponse>>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.Get_1Path, 'get');
     if (params) {
@@ -160,7 +160,7 @@ export class DepartmentApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<DepartmentResponse>>;
+        return r as StrictHttpResponse<Array<DepartmentsResponse>>;
       })
     );
   }
@@ -174,10 +174,10 @@ export class DepartmentApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   get_1(params?: {
-  }): Observable<Array<DepartmentResponse>> {
+  }): Observable<DepartmentsResponse> {
 
     return this.get_1$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<DepartmentResponse>>) => r.body as Array<DepartmentResponse>)
+      map((r: StrictHttpResponse<Array<DepartmentsResponse>>) => r.body as DepartmentsResponse)
     );
   }
 

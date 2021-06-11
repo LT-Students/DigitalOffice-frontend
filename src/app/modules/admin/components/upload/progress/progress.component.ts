@@ -1,14 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'do-progress',
-  templateUrl: './progress.component.html',
-  styleUrls: ['./progress.component.scss'],
+	selector: 'do-progress',
+	templateUrl: './progress.component.html',
+	styleUrls: ['./progress.component.scss'],
 })
 export class ProgressComponent implements OnInit {
-  @Input() progress = 0;
+	@Input() progress = 0;
 
-  constructor() {}
+	constructor() {}
 
-  ngOnInit(): void {}
+	ngOnInit(): void {}
 }

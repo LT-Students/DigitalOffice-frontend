@@ -58,28 +58,28 @@
     <div class="new-employee__working-info">
       <h3 doText color="dark_1" class="new-employee__heading">Рабочая информация</h3>
       <div class="new-employee__inputs">
-        <div class="new-employee__form-element">
+        <div class="new-employee__form-element" *ngIf='position$ | async as positionList'>
           <label class="new-employee__label" doText color="gray1">
             Должность
             <sup class="new-employee__required" doText color="negative_accent">*</sup>
           </label>
           <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
             <mat-select id="positionId" placeholder="Выберите должность" formControlName="positionId" required>
-              <mat-option *ngFor="let position of position$ | async" [value]="position.info.name">
-                {{ position.info.name }}
+              <mat-option *ngFor="let position of positionList" [value]="position.id">
+                {{ position?.name }}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="new-employee__form-element">
+        <div class="new-employee__form-element" *ngIf='department$ | async as departmentList'>
           <label class="new-employee__label" doText color="gray1">
-            Департмент
+            Департамент
             <sup class="new-employee__required" doText color="negative_accent">*</sup>
           </label>
           <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
             <mat-select id="departmentId" placeholder="Выберите департамент" formControlName="departmentId" required>
-              <mat-option *ngFor="let department of departments" [value]="department">
-                {{ department }}
+              <mat-option *ngFor="let department of departmentList" [value]="department.id">
+                {{ department?.name }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -161,7 +161,11 @@
             <input id="email" matInput placeholder="Введите E-mail" formControlName="email" required />
           </mat-form-field>
         </div>
-        <button class="text-gray new-employee__reset new-employee__buttons" mat-flat-button mat-dialog-close type="button">
+        <button
+            class="text-gray new-employee__reset new-employee__buttons"
+            mat-flat-button mat-dialog-close
+            type="button"
+            (click)='onCancelClick()'>
           Отмена
         </button>
         <button

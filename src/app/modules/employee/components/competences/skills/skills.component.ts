@@ -10,7 +10,7 @@ import { WorkFlowMode } from '../../../employee-page.component';
 @Component({
 	selector: 'do-skills',
 	templateUrl: './skills.component.html',
-	styleUrls: ['./skills.component.scss']
+	styleUrls: ['./skills.component.scss'],
 })
 export class SkillsComponent implements OnInit {
 	@Input() public skills: string[];
@@ -38,9 +38,7 @@ export class SkillsComponent implements OnInit {
 
 		this.filteredSkills = this.skillsCtrl.valueChanges.pipe(
 			startWith(null),
-			map((skill: string | null) =>
-				skill ? this._filter(skill) : this.skills.slice()
-			)
+			map((skill: string | null) => (skill ? this._filter(skill) : this.skills.slice()))
 		);
 	}
 
@@ -81,8 +79,6 @@ export class SkillsComponent implements OnInit {
 	private _filter(value: string): string[] {
 		const filterValue = value.toLowerCase();
 
-		return this.skills.filter(
-			(skill) => skill.toLowerCase().indexOf(filterValue) === 0
-		);
+		return this.skills.filter((skill) => skill.toLowerCase().indexOf(filterValue) === 0);
 	}
 }

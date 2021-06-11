@@ -7,12 +7,10 @@ import { ProjectsResponse } from '@data/api/project-service/models/projects-resp
 import { departments } from '../../modules/employee/mock';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class DepartmentService {
-
-	constructor(private _departmentService: DepartmentApiService) {
-	}
+	constructor(private _departmentService: DepartmentApiService) {}
 
 	public getDepartments(): Observable<DepartmentInfo[]> {
 		return of(departments);

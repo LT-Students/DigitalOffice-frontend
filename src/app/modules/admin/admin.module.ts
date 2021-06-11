@@ -21,30 +21,23 @@ import { NewSpecializationComponent } from './components/new-specialization/new-
 import { DeleteDirectionComponent } from './components/new-project/modals/delete-direction/delete-direction.component';
 
 @NgModule({
-  declarations: [
-    DashboardComponent,
-    AdminComponent,
-    ProjectCardComponent,
-    NewEmployeeComponent,
-    NewProjectComponent,
-    UserSearchComponent,
-    NewCompanyComponent,
-    TeamCardComponent,
-    UploadComponent,
-    DndDirective,
-    ProgressComponent,
-    NewDepartmentComponent,
-    NewSpecializationComponent,
-    DeleteDirectionComponent,
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MaterialModule,
-    SharedModule,
-  ],
-  exports: [ProjectCardComponent, DndDirective],
+	declarations: [
+		DashboardComponent,
+		AdminComponent,
+		ProjectCardComponent,
+		NewEmployeeComponent,
+		NewProjectComponent,
+		UserSearchComponent,
+		NewCompanyComponent,
+		TeamCardComponent,
+		UploadComponent,
+		DndDirective,
+		ProgressComponent,
+		NewDepartmentComponent,
+		NewSpecializationComponent,
+		DeleteDirectionComponent,
+	],
+	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, SharedModule],
+	exports: [ProjectCardComponent, DndDirective],
 })
 export class AdminModule {}

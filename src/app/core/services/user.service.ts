@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
@@ -8,16 +9,16 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
+import { LocalStorageService } from '@app/services/local-storage.service';
+import { OperationResultStatusType } from '@data/api/user-service/models';
+import { HttpErrorResponse } from '@angular/common/http';
+import { userResponse } from '../../modules/employee/mock';
 
 @Injectable()
 export class UserService {
 	public selectedUser: BehaviorSubject<UserResponse>;
 
-	constructor(
-		private userApiService: UserApiService,
-		private route: ActivatedRoute,
-		private localStorageService: LocalStorageService
-	) {
+	constructor(private userApiService: UserApiService, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
 		this.selectedUser = new BehaviorSubject<UserResponse>(null);
 	}
 
@@ -31,12 +32,13 @@ export class UserService {
 	}
 
 	public getUsers(): Observable<UserInfo[]> {
-		return this.userApiService
-		/* TODO: Подумать, как получать конкретные данные о каждом юзере
-		*   при получении данных о всех юзера
-		* */
-		.findUsers({ skipCount: 0, takeCount: 50 }).pipe(
-			switchMap((usersResponse: UsersResponse) => of(usersResponse.users))
+		return (
+			this.userApiService
+				/* TODO: Подумать, как получать конкретные данные о каждом юзере
+				 *   при получении данных о всех юзера
+				 * */
+				.findUsers({ skipCount: 0, takeCount: 50 })
+				.pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
 		);
 	}
 
@@ -47,7 +49,7 @@ export class UserService {
 
 	public isAdmin(): boolean {
 		const user: UserInfo = this.localStorageService.get('user');
-		return (user) ? user.isAdmin : false;
+		return user ? user.isAdmin : false;
 	}
 
 	public getCurrentUser(): UserInfo | null {
@@ -55,8 +57,12 @@ export class UserService {
 		return user ? user : null;
 	}
 
-
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
-		return this.userApiService.createUser({ body: params });
+		return this.userApiService.createUser({ body: params }).pipe(
+			switchMap((res: OperationResultResponse) => {
+				return res.status === OperationResultStatusType.Failed || res instanceof HttpErrorResponse ? throwError(res) : of(res);
+			}),
+			catchError((error) => throwError(error))
+		);
 	}
 }

@@ -5,28 +5,29 @@ export interface UnderlinedOptions {
 	size: string;
 }
 
-type color_style = 'accent_color' |
-	'accent_color_bright' |
-	'accent_color_light' |
-	'accent_positive' |
-	'accent_positive_dark' |
-	'positive_accent_bright' |
-	'light_1' |
-	'light_2' |
-	'light_3' |
-	'gray' |
-	'gray1' |
-	'dark_1' |
-	'dark_2' |
-	'dark_3' |
-	'dark_4' |
-	'overtime' |
-	'negative_accent' |
-	'preza_dc' |
-	'ultimate_orange' |
-	'font_color' |
-	'button_orange' |
-	'blue_3';
+type color_style =
+	| 'accent_color'
+	| 'accent_color_bright'
+	| 'accent_color_light'
+	| 'accent_positive'
+	| 'accent_positive_dark'
+	| 'positive_accent_bright'
+	| 'light_1'
+	| 'light_2'
+	| 'light_3'
+	| 'gray'
+	| 'gray1'
+	| 'dark_1'
+	| 'dark_2'
+	| 'dark_3'
+	| 'dark_4'
+	| 'overtime'
+	| 'negative_accent'
+	| 'preza_dc'
+	| 'ultimate_orange'
+	| 'font_color'
+	| 'button_orange'
+	| 'blue_3';
 
 @Directive({
 	selector: '[doText]',
@@ -38,9 +39,12 @@ export class TextDirective implements OnInit {
 	@Input() regularTextSize: 'regular' | 'small';
 	@Input() underlinedSize: 'sm' | 'l';
 	@Input()
-	get underlined() { return this._underlined; }
-	set underlined(value: boolean) { this._underlined = coerceBooleanProperty(value); }
-
+	get underlined() {
+		return this._underlined;
+	}
+	set underlined(value: boolean) {
+		this._underlined = coerceBooleanProperty(value);
+	}
 
 	constructor(private el: ElementRef, private renderer: Renderer2) {
 		this.underlinedSize = 'l';
@@ -56,7 +60,6 @@ export class TextDirective implements OnInit {
 		if (this.color) {
 			this.renderer.addClass(this.el.nativeElement, `text-${this.color}`);
 		}
-
 	}
 
 	private _handleTagName(tagName: string): void {
@@ -77,16 +80,14 @@ export class TextDirective implements OnInit {
 				this._setRegularTextAttributes();
 				break;
 			}
-
 		}
 	}
 
 	private _setHeaderAttributes(className: string): void {
 		this.renderer.addClass(this.el.nativeElement, className);
-
 	}
 
 	private _setRegularTextAttributes(): void {
-		this.renderer.addClass(this.el.nativeElement, `${this.regularTextSize}_text`)
+		this.renderer.addClass(this.el.nativeElement, `${this.regularTextSize}_text`);
 	}
 }

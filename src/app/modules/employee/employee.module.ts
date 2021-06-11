@@ -16,7 +16,6 @@ import { SkillsComponent } from './components/competences/skills/skills.componen
 import { UploadPhotoComponent } from './components/modals/upload-photo/upload-photo.component';
 import { AdminModule } from '../admin/admin.module';
 
-
 @NgModule({
 	declarations: [
 		EmployeePageComponent,
@@ -28,17 +27,9 @@ import { AdminModule } from '../admin/admin.module';
 		SkillsComponent,
 		ArchiveComponent,
 		ProjectsComponent,
-		UploadPhotoComponent
+		UploadPhotoComponent,
 	],
-  imports: [
-    CommonModule,
-    SharedModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    FormsModule,
-    RouterModule,
-    AdminModule,
-  ],
+	imports: [CommonModule, SharedModule, MaterialModule, ReactiveFormsModule, FormsModule, RouterModule, AdminModule],
 	providers: [],
 })
 export class EmployeeModule {}

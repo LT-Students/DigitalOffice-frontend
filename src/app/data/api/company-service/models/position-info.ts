@@ -1,10 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-
-/**
- * Specific position data.
- */
-export interface Position {
+export interface PositionInfo {
 
   /**
    * Position description.

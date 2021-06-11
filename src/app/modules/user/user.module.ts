@@ -20,29 +20,21 @@ import { ProjectPageComponent } from './components/project-page/project-page.com
 import { TaskFilterPipe } from './pipes/task-filter.pipe';
 
 @NgModule({
-  declarations: [
-    TagsBlockComponent,
-    DateDescComponent,
-    AttendanceComponent,
-    DoughnutChartComponent,
-    AddHoursComponent,
-    GradientGraphicsComponent,
-    UserTasksComponent,
-    ProjectComponent,
-    TaskComponent,
-    ProjectsTableComponent,
-    ProjectPageComponent,
-    TaskFilterPipe,
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    NgbDatepickerModule,
-    MaterialModule,
-    ReactiveFormsModule,
-    FormsModule,
-    AdminModule,
-  ],
-  providers: [],
+	declarations: [
+		TagsBlockComponent,
+		DateDescComponent,
+		AttendanceComponent,
+		DoughnutChartComponent,
+		AddHoursComponent,
+		GradientGraphicsComponent,
+		UserTasksComponent,
+		ProjectComponent,
+		TaskComponent,
+		ProjectsTableComponent,
+		ProjectPageComponent,
+		TaskFilterPipe,
+	],
+	imports: [CommonModule, SharedModule, NgbDatepickerModule, MaterialModule, ReactiveFormsModule, FormsModule, AdminModule],
+	providers: [],
 })
 export class UserModule {}
