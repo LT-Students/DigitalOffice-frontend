@@ -1070,9 +1070,14 @@
         "default": "WorkFromHome"
       },
       "OperationResultStatusType": {
-        "type": "string",
+        "type": "integer",
         "description": "Operation complition result status.",
         "enum": [
+          0,
+          1,
+          2
+        ],
+        "x-enumNames": [
           "FullSuccess",
           "PartialSuccess",
           "Failed"

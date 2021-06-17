@@ -12,6 +12,14 @@ export enum ModalType {
 	WATCH,
 }
 
+export enum AdminDashboardModalType {
+	NEW_COMPANY,
+	NEW_EMPLOYEE,
+	NEW_DEPARTMENT,
+	NEW_SPECIALIZATION,
+	NEW_PROJECT
+}
+
 export interface UserSearchModalConfig {
 	team?: Team;
 	mode: WorkFlowMode;

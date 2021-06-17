@@ -1,16 +1,8 @@
 <div class="content-container">
   <div class="board">
     <div class="user-board">
-      <img
-        class="user-board__content"
-        src="assets/images/fon.png"
-        alt="background"
-      />
-      <img
-        class="user-board__photo"
-        src="assets/admin/dashboard/avatar.png"
-        alt="avatar"
-      />
+      <img class="user-board__content" src="assets/images/fon.png" alt="background" />
+      <img class="user-board__photo" src="assets/admin/dashboard/avatar.png" alt="avatar" />
       <div class="user-board__date">
         <span class="h2 h2_ultimate-orange"
           >Сегодня {{ today | date: 'd MMMM' }}</span
@@ -21,26 +13,26 @@
     <div class="manage-board">
       <span class="h3 h3_dark_1">Управление системой</span>
       <div class="manage-board__content">
-        <button class="btn-first" (click)="onOpenNewEmployee()">
+        <button class="btn-first" (click)="openModalClick.next(modalType.NEW_EMPLOYEE)">
           <img src="assets/admin/dashboard/add-employee-icon.png" alt="add-employee-icon" />
           <span class="h4 h4_ultimate-orange">Добавить сотрудника</span>
         </button>
-        <button class="btn-last" (click)="onOpenNewProject()">
+        <button class="btn-last" (click)="openModalClick.next(modalType.NEW_PROJECT)">
           <img src="assets/admin/dashboard/add-project-icon.png" alt="add-project-icon"
           />
           <span class="h4 h4_dark_1">Добавить проект</span>
         </button>
-        <button class="btn-last" (click)="onOpenNewDepartment()">
+        <button class="btn-last" (click)="openModalClick.next(modalType.NEW_DEPARTMENT)">
           <img src="assets/admin/dashboard/add-project-icon.png" alt="add-project-icon" />
           <span class="h4 h4_dark_1">Добавить департамент</span>
         </button>
-        <button class="btn-last" (click)="onOpenNewSpecialization()">
+        <button class="btn-last" (click)="openModalClick.next(modalType.NEW_SPECIALIZATION)">
           <img src="assets/admin/dashboard/add-project-icon.png" alt="add-project-icon" />
           <span class="h4 h4_dark_1">Добавить специализацию</span>
         </button>
       </div>
     </div>
-    <div class="projects-board">
+    <!--<div class="projects-board">
       <span class="h3 h3_dark_1">Мои проекты</span>
       <div class="projects-board__content">
         <ng-container *ngFor="let project of projects">
@@ -50,6 +42,6 @@
           ></do-project-card>
         </ng-container>
       </div>
-    </div>
+    </div>-->
   </div>
 </div>

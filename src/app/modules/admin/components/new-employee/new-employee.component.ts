@@ -87,23 +87,35 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public createEmployee(): void {
 		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
 
-		this.userService
-			.createUser(params)
-			.pipe(takeUntil(this._unsubscribe$))
-			.subscribe(
-				(result: OperationResultResponse) => this.dialogRef.close(result),
-				(error: OperationResultResponse | HttpErrorResponse) => {
-					const message =
-						error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.Message : 'Упс! Что-то пошло не так.';
-					this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть.');
+		this.userService.createUser(params).pipe(takeUntil(this._unsubscribe$))
+		.subscribe(
+			(result: OperationResultResponse) => {
+				if (result.errors && result.errors.length) {
+					const message = result.errors.join('\n');
+					this._matSnackBar.open(message, 'Закрыть');
 				}
-			);
+				this.dialogRef.close(result);
+			},
+			(error: OperationResultResponse | HttpErrorResponse) => {
+				const message =
+					error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
+				this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
+			},
+		);
 	}
 
 	public changeWorkingRate(step: number): void {
 		this.userForm.patchValue({
 			rate: +this.userForm.get('rate').value + step,
 		});
+	}
+
+	public generatePassword() {
+		return this._netService.generatePassword().pipe(takeUntil(this._unsubscribe$))
+			.subscribe((password: string) => {
+				this.userForm.patchValue({ password: password });
+				this.userForm.updateValueAndValidity();
+			})
 	}
 
 	public onCancelClick() {
@@ -124,6 +136,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			departmentId: ['', [Validators.required]],
 			office: ['', [Validators.required]],
 			email: ['', [Validators.required, Validators.email]],
+			password: ['', [Validators.required]],
 		});
 	}
 
@@ -139,7 +152,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			firstName: this.userForm.get('firstName').value as string,
 			lastName: this.userForm.get('lastName').value as string,
 			middleName: this.userForm.get('middleName').value as string,
-			password: this.userForm.get('email').value as string,
+			password: this.userForm.get('password').value as string,
 			positionId: this.userForm.get('positionId').value as string,
 			departmentId: this.userForm.get('departmentId').value as string,
 			rate: this.userForm.get('rate').value as number,

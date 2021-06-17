@@ -3,7 +3,7 @@
     <h2 doText underlined underlinedSize="sm" color="dark_1">
       Новая карточка сотрудника
     </h2>
-    <div class="new-employee__personal-info">
+    <div class="section new-employee__personal-info">
       <div class="new-employee__heading new-employee__label_flex">
         <h3 doText color="dark_1">Личные данные</h3>
         <span doText color="negative_accent"><sup>*</sup>Обязательные поля</span>
@@ -55,7 +55,7 @@
         </div>
       </div>
     </div>
-    <div class="new-employee__working-info">
+    <div class="section new-employee__working-info">
       <h3 doText color="dark_1" class="new-employee__heading">Рабочая информация</h3>
       <div class="new-employee__inputs">
         <div class="new-employee__form-element" *ngIf='position$ | async as positionList'>
@@ -142,39 +142,67 @@
         </div>
       </div>
     </div>
-    <div class="new-employee__auth">
+    <div class="section new-employee__auth">
       <h3 doText color="dark_1" class="new-employee__heading">Аутентификация</h3>
-      <div class="new-employee__inputs">
-        <div class="new-employee__form-element new-employee__form-element_span_2">
-          <label class="new-employee__label" doText color="gray1" for="email">
+      <div class='new-employee__inputs'>
+        <div class='new-employee__form-element new-employee__form-element_span_2'>
+          <label class='new-employee__label' doText color='gray1' for='email'>
             E-mail
-            <sup class="new-employee__required" doText color="negative_accent">*</sup>
+            <sup class='new-employee__required' doText color='negative_accent'>*</sup>
             <mat-icon
-              class="new-employee__hint"
-              aria-label="Hint"
-              matTooltipClass="tooltip"
-              matTooltip="На эту почту пользователю придет ссылка для регистрации"
-              [matTooltipPosition]="'above'"
-            >help_outline</mat-icon>
+                class='new-employee__hint'
+                aria-label='Hint'
+                matTooltipClass='tooltip'
+                matTooltip='На эту почту пользователю придет ссылка для регистрации'
+                [matTooltipPosition]="'above'"
+            >help_outline
+            </mat-icon>
           </label>
-          <mat-form-field class="new-employee__form-field" appearance="fill">
-            <input id="email" matInput placeholder="Введите E-mail" formControlName="email" required />
+          <mat-form-field class='new-employee__form-field' appearance='fill'>
+            <input id='email' matInput placeholder='Введите E-mail' formControlName='email' required />
           </mat-form-field>
         </div>
-        <button
-            class="text-gray new-employee__reset new-employee__buttons"
-            mat-flat-button mat-dialog-close
-            type="button"
-            (click)='onCancelClick()'>
-          Отмена
-        </button>
-        <button
-            class="bg-accent_color_bright text-light_1 new-employee__submit new-employee__buttons"
-            type="submit"
-            mat-flat-button
-            [disabled]="userForm.invalid"
-        >Сохранить</button>
+        <div class='new-employee__form-element'>
+          <label class='new-employee__label' doText color='gray1' for='email'>
+            Пароль
+            <sup class='new-employee__required' doText color='negative_accent'>*</sup>
+            <mat-icon
+                class='new-employee__hint'
+                aria-label='Hint'
+                matTooltipClass='tooltip'
+                matTooltip='На эту почту пользователю придет ссылка для регистрации'
+                [matTooltipPosition]="'above'"
+            >help_outline
+            </mat-icon>
+          </label>
+          <mat-form-field class='new-employee__form-field' appearance='fill'>
+            <input id='password' matInput placeholder='Введите или сгенерируйте пароль' formControlName='password'
+                   type='password' required />
+          </mat-form-field>
+        </div>
+        <div class='new-employee__form-element' style='align-self: flex-end'>
+          <button
+              class='bg-accent_color_bright text-light_1 new-employee__button'
+              mat-flat-button
+              type="button"
+              (click)='generatePassword()'>Сгенерировать</button>
+        </div>
       </div>
+    </div>
+    <div class='new-employee__actions'>
+      <button
+          class="text-gray new-employee__reset new-employee__button"
+          mat-flat-button mat-dialog-close
+          type="button"
+          (click)='onCancelClick()'>
+        Отмена
+      </button>
+      <button
+          class="bg-accent_color_bright text-light_1 new-employee__submit new-employee__button"
+          type="submit"
+          mat-flat-button
+          [disabled]="userForm.invalid"
+      >Сохранить</button>
     </div>
   </form>
 </mat-dialog-content>
