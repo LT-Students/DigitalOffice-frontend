@@ -7,10 +7,15 @@ import { DepartmentApiService } from '@data/api/company-service/services/departm
 import { DepartmentsResponse } from '@data/api/company-service/models/departments-response';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
+import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
 
 @Injectable()
 export class NetService {
-	constructor(private _positionApiService: PositionApiService, private _departmentApiService: DepartmentApiService) {}
+	constructor(
+		private _positionApiService: PositionApiService,
+		private _departmentApiService: DepartmentApiService,
+		private _credentialsApiService: CredentialsApiService
+	) {}
 
 	private _mockPositions: PositionInfo[] = [
 		{ id: 'id', name: 'Junior Pug' },
@@ -33,5 +38,9 @@ export class NetService {
 				return throwError(error);
 			})
 		);
+	}
+
+	public generatePassword(): Observable<string> {
+		return this._credentialsApiService.generatePassword();
 	}
 }
