@@ -1,21 +1,13 @@
-@import 'base/variables';
-
-.dashboard {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-
-	width: 100%;
-}
-
 .section {
-	margin-top: 3.38%;
+	margin: 40px 0;
 
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 
-	width: 100%;
+	&:first-of-type {
+		margin-bottom: 80px;
+	}
 
 	&__content {
 		margin-top: 30px;
