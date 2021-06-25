@@ -39,5 +39,19 @@
 			position: relative;
 			top: 30px;
 		}
+
+		&_color {
+			&_green:hover {
+				background: rgba(250, 255, 250, 1);
+			}
+
+			&_orange:hover {
+				background: rgba(255, 251, 250, 1);
+			}
+
+			&_purple:hover {
+				background: rgba(253, 251, 255, 1);
+			}
+		}
 	}
 }
