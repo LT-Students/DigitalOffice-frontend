@@ -1,24 +1,16 @@
-/*
-todo we will add separate routing module later
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { RouteType } from '../../app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AdminComponent } from './components/admin/admin.component';
-import { NewEmployeeComponent } from './components/new-employee/new-employee.component';
-import { NewProjectComponent} from './components/new-project/new-project.component';
+import { NewProjectComponent } from './components/new-project/new-project.component';
 
 
 const adminRoutes: Routes = [
-    {
-        path: '',
-        component: AdminComponent,
-        children: [
-            { path: 'dashboard', component: DashboardComponent },
-            { path: 'new-employee', component: NewEmployeeComponent },
-            { path: 'new-project', component: NewProjectComponent}
-        ]
-    }
+	{ path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+	{ path: 'dashboard', component: DashboardComponent },
+	{ path: 'new-project', component: NewProjectComponent },
+	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
 ];
 
 @NgModule({
@@ -26,4 +18,3 @@ const adminRoutes: Routes = [
   exports: [RouterModule]
 })
 export class AdminRoutingModule { }
-*/
