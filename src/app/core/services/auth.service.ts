@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { switchMap, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
@@ -11,6 +11,7 @@ import { CreateCredentialsRequest } from '@data/api/user-service/models/create-c
 import { CredentialsResponse } from '@data/api/user-service/models/credentials-response';
 import { UserService } from '@app/services/user.service';
 import { UserResponse } from '@data/api/user-service/models/user-response';
+import { HttpErrorResponse } from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -43,9 +44,29 @@ export class AuthService {
 	}
 
 	signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
-		return this.credentialsApiService
-			.createCredentials({ body: createCredentialsRequest })
-			.pipe(tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)));
+		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
+			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
+			catchError((error: HttpErrorResponse) => {
+				switch (error.status) {
+					case 400: {
+						return throwError(error.error.Message);
+						break;
+					}
+					case 403: {
+						return throwError(error.error.Message);
+						break;
+					}
+					case 404: {
+						return throwError(error.error.Message);
+						break;
+					}
+					default: {
+						return throwError('Упс! Возникла ошибка');
+						break;
+					}
+				}
+			})
+		);
 	}
 
 	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse) {

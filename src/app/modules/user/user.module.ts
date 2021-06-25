@@ -18,6 +18,7 @@ import { TaskComponent } from './components/project/task/task.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TaskFilterPipe } from './pipes/task-filter.pipe';
+import { UserRoutingModule } from './user-routing.module';
 
 @NgModule({
 	declarations: [
@@ -34,7 +35,16 @@ import { TaskFilterPipe } from './pipes/task-filter.pipe';
 		ProjectPageComponent,
 		TaskFilterPipe,
 	],
-	imports: [CommonModule, SharedModule, NgbDatepickerModule, MaterialModule, ReactiveFormsModule, FormsModule, AdminModule],
+	imports: [
+		CommonModule,
+		SharedModule,
+		NgbDatepickerModule,
+		MaterialModule,
+		ReactiveFormsModule,
+		FormsModule,
+		AdminModule,
+		UserRoutingModule,
+	],
 	providers: [],
 })
 export class UserModule {}
