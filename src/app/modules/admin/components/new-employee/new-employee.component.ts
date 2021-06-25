@@ -48,7 +48,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public position$: Observable<PositionInfo[]>;
 	public department$: Observable<DepartmentInfo[]>;
 	public offices: string[];
-	public sex: string[];
 
 	private _unsubscribe$: Subject<void>;
 
@@ -61,8 +60,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		private dialogRef: MatDialogRef<any>
 	) {
 		this._unsubscribe$ = new Subject<void>();
-		this.offices = ['м. Чернышевская', 'Улица Пушкина, дом Колотушкина'];
-		this.sex = ['Мужской', 'Женский', 'Не определён'];
 	}
 
 	public ngOnInit(): void {
@@ -128,12 +125,9 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			firstName: ['', [Validators.required, Validators.maxLength(32)]],
 			middleName: ['', [Validators.maxLength(32)]],
 			positionId: ['', [Validators.required]],
-			city: ['', [Validators.required]],
-			sex: [''],
-			birthDate: [''],
-			startWorkingAt: ['', [Validators.required]],
+			startWorkingAt: [''],
 			rate: ['1', [Validators.required]],
-			departmentId: ['', [Validators.required]],
+			departmentId: [''],
 			office: ['', [Validators.required]],
 			email: ['', [Validators.required, Validators.email]],
 			password: ['', [Validators.required]],
