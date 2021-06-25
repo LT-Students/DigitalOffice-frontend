@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth.service';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -8,6 +8,8 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models';
 import { LocalStorageService } from '@app/services/local-storage.service';
+import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
+import { throwError } from 'rxjs';
 
 @Component({
 	selector: 'do-signup',
@@ -15,25 +17,34 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 	styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
-	userId: string;
-	loginForm: FormGroup;
-	isWaiting = false;
+	public userId: string;
+	public loginForm: FormGroup;
+	public isWaiting = false;
+	public get login() {
+		return this.loginForm.get('login');
+	}
+
+	public get password() {
+		return this.loginForm.get('password');
+	}
 
 	constructor(
-		private authService: AuthService,
-		private userService: UserService,
-		private activatedRoute: ActivatedRoute,
-		private router: Router,
-		private formBuilder: FormBuilder
+		private _authService: AuthService,
+		private _userService: UserService,
+		private _activatedRoute: ActivatedRoute,
+		private _router: Router,
+		private _fb: FormBuilder
 	) {
-		this.loginForm = this.formBuilder.group({
+		this.userId = null;
+		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
 			password: ['', Validators.required],
 		});
 	}
 
 	ngOnInit(): void {
-		this.activatedRoute.queryParams.subscribe((params) => {
+		this._activatedRoute.queryParams.subscribe((params: Params) => {
+			console.log(params);
 			this.userId = params['userId'];
 		});
 	}
@@ -41,47 +52,32 @@ export class SignupComponent implements OnInit {
 	public signUp(): void {
 		this.isWaiting = true;
 		const { login, password } = this.loginForm.getRawValue();
-		this.authService
-			.signUp$({
-				login: login,
-				password: password,
-				userId: this.userId,
-			})
-			.pipe(
+		const createCredentialsRequest: CreateCredentialsRequest = { login, password, userId: this.userId };
+
+		this._authService.signUp$(createCredentialsRequest).pipe(
 				switchMap((authResponse: AuthenticationResponse) => {
 					this.isWaiting = false;
-					return this.userService.getUser(authResponse.userId);
+					return this._userService.getUser(authResponse.userId);
 				}),
-				catchError((error) => {
+				catchError((error: string) => {
+					console.log(error);
 					this.loginForm.setErrors({
 						busy: {
-							userFriendlyMessage: 'Введённый логин уже занят :(',
-							error: error.message,
+							userFriendlyMessage: 'Упс! Возникла ошибка',
+							error: error,
 						},
 					});
 					this.isWaiting = false;
-					throw error;
+					return throwError(error);
 				})
-			)
-			.subscribe(
+			).subscribe(
 				(user: UserResponse) => {
-					if (user.user.isAdmin) {
-						this.router.navigate(['/admin/dashboard']);
-					} else {
-						this.router.navigate(['/user/attendance']);
-					}
+					const nextUrl: string = (user.user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+					this._router.navigate([nextUrl]);
 				},
-				(error) => {
-					console.log('Getting user info failed.', error.message);
+				(error: string) => {
+					console.log('Getting user info failed.', error);
 				}
 			);
-	}
-
-	get login() {
-		return this.loginForm.get('login');
-	}
-
-	get password() {
-		return this.loginForm.get('password');
 	}
 }

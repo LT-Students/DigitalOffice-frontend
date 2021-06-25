@@ -19,6 +19,7 @@ import { ProgressComponent } from './components/upload/progress/progress.compone
 import { NewDepartmentComponent } from './components/new-department/new-department.component';
 import { NewSpecializationComponent } from './components/new-specialization/new-specialization.component';
 import { DeleteDirectionComponent } from './components/new-project/modals/delete-direction/delete-direction.component';
+import { AdminRoutingModule } from './admin-routing.module';
 
 @NgModule({
 	declarations: [
@@ -37,7 +38,18 @@ import { DeleteDirectionComponent } from './components/new-project/modals/delete
 		NewSpecializationComponent,
 		DeleteDirectionComponent,
 	],
-	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, SharedModule],
-	exports: [ProjectCardComponent, DndDirective],
+	imports: [
+		CommonModule,
+		RouterModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule,
+		SharedModule,
+		AdminRoutingModule
+	],
+	exports: [
+		ProjectCardComponent,
+		DndDirective
+	],
 })
 export class AdminModule {}

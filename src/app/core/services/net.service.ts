@@ -24,7 +24,6 @@ export class NetService {
 
 	public getPositionsList(): Observable<PositionInfo[]> {
 		return this._positionApiService.getPositionsList().pipe(
-			tap((res) => console.log(res)),
 			switchMap((res: PositionResponse[]) => {
 				return res && res.length ? of(res.map((position) => position.info)) : of(this._mockPositions);
 			})

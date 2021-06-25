@@ -1,22 +1,28 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthComponent } from './components/auth/auth.component';
+import { RouteType } from '../../app-routing.module';
 import { LoginComponent } from './components/login/login.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { AuthComponent } from './components/auth/auth.component';
 
 const authRoutes: Routes = [
 	{
-		path: 'auth',
+		path: '',
 		component: AuthComponent,
 		children: [
+			{
+				path: '',
+				pathMatch: 'full',
+				redirectTo: 'login',
+			},
 			{ path: 'login', component: LoginComponent },
 			{ path: 'forgotpassword', component: ForgotPasswordComponent },
 			{ path: 'firstlogin', component: SignupComponent },
-			{ path: '**', redirectTo: 'login', pathMatch: 'full' },
-		],
+		]
 	},
+	{ path: '**', redirectTo: RouteType.AUTH, pathMatch: 'full' },
 ];
 
 @NgModule({
