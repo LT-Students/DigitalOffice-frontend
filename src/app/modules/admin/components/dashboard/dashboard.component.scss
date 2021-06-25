@@ -20,12 +20,9 @@
 	&__content {
 		margin-top: 30px;
 
-		display: grid;
-
-		width: 100%;
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-column-gap: 15%;
-		grid-row-gap: 40px;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 32px;
 	}
 
 	&__button {
