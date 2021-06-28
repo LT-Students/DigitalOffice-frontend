@@ -17,6 +17,7 @@ export enum AdminDashboardModalType {
 	NEW_EMPLOYEE,
 	NEW_DEPARTMENT,
 	NEW_SPECIALIZATION,
+  NEW_ROLE,
 	NEW_PROJECT
 }
 

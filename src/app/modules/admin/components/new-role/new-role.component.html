@@ -1,0 +1,28 @@
+<mat-dialog-content class="new-role">
+	<a class="nav-link" doText routerLink="/admin/dashboard">
+		<img src="assets/svg/vector-arrow-back.svg" alt="back" />
+		К дашборду
+	</a>
+	<h2 doText>Новая роль</h2>
+	<div class="new-role__form">
+		<form autocomplete="off" [formGroup]="roleForm" (ngSubmit)="postRole()">
+			<div class="new-role__input-container">
+				<div class="new-role__input">
+					<label doText color="dark_1" for="name">Название</label>
+					<mat-form-field>
+						<input matInput type="text" id="name" formControlName="name" />
+					</mat-form-field>
+				</div>
+				<div class="new-role__input">
+					<p doText color="dark_1">Выберите права</p>
+					<p *ngFor="let right of rights">
+						<mat-checkbox>{{ right.name }}</mat-checkbox>
+					</p>
+				</div>
+			</div>
+			<button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid">
+				<span doText color="light_1">Добавить роль</span>
+			</button>
+		</form>
+	</div>
+</mat-dialog-content>
