@@ -47,7 +47,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public userForm: FormGroup = null;
 	public position$: Observable<PositionInfo[]>;
 	public department$: Observable<DepartmentInfo[]>;
-	public offices: string[];
 
 	private _unsubscribe$: Subject<void>;
 
