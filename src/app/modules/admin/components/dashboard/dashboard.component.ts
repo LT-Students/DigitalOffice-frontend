@@ -45,6 +45,8 @@ export class DashboardComponent implements OnInit {
 					? this.dialog.open(NewEmployeeComponent, {}).afterClosed()
 					: (value === this.modalType.NEW_PROJECT)
 					? fromPromise(this._router.navigate(['admin/new-project']))
+					: (value === this.modalType.MANAGE_USERS)
+					? fromPromise(this._router.navigate(['admin/manage-users']))
 					: of(false)
 			})).subscribe((result: boolean | any | OperationResultResponse) => {
 			if (
