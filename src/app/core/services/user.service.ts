@@ -18,17 +18,22 @@ import { userResponse } from '../../modules/employee/mock';
 export class UserService {
 	public selectedUser: BehaviorSubject<UserResponse>;
 
-	constructor(private userApiService: UserApiService, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
+	constructor(
+		private userApiService: UserApiService,
+		private route: ActivatedRoute,
+		private localStorageService: LocalStorageService
+	) {
 		this.selectedUser = new BehaviorSubject<UserResponse>(null);
 	}
 
+
+
 	public getUser(userId: string): Observable<UserResponse> {
-		return this.userApiService.getUser({ userId: userId }).pipe(
-			tap((user: UserResponse) => {
-				this.localStorageService.set('user', user.user);
-				this.selectedUser.next(user);
-			})
-		);
+		return this.userApiService.getUser({ userId: userId });
+	}
+
+	public getUserSetCredentials(userId: string): Observable<UserResponse> {
+		return this.getUser(userId).pipe(tap(this._setUser.bind(this)));
 	}
 
 	public getUsers(): Observable<UserInfo[]> {
@@ -37,7 +42,7 @@ export class UserService {
 				/* TODO: Подумать, как получать конкретные данные о каждом юзере
 				 *   при получении данных о всех юзера
 				 * */
-				.findUsers({ skipCount: 0, takeCount: 50 })
+				.findUsers({ skipCount: 0, takeCount: 10 })
 				.pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
 		);
 	}
@@ -64,5 +69,10 @@ export class UserService {
 			}),
 			catchError((error) => throwError(error))
 		);
+	}
+
+	private _setUser(user: UserResponse): void {
+		this.localStorageService.set('user', user.user);
+		this.selectedUser.next(user);
 	}
 }

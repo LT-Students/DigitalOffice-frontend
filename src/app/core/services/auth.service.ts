@@ -29,7 +29,7 @@ export class AuthService {
 	login(authenticationRequest: AuthenticationRequest): Observable<UserResponse> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
 			tap((authenticationInfo: AuthenticationResponse) => this.localStorageService.set('access_token', authenticationInfo.token)),
-			switchMap((authResponse: AuthenticationResponse) => this._userService.getUser(authResponse.userId))
+			switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId))
 		);
 	}
 

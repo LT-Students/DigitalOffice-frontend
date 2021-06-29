@@ -20,6 +20,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
 	imports: [
@@ -44,6 +46,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 		MatTooltipModule,
 		MatAutocompleteModule,
 		MatExpansionModule,
+		MatTableModule,
+		MatSortModule
 	],
 	exports: [
 		MatButtonModule,
@@ -66,6 +70,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 		MatTooltipModule,
 		MatAutocompleteModule,
 		MatExpansionModule,
+		MatTableModule,
+		MatSortModule
 	],
 	providers: [{ provide: MatDialogRef, useValue: {} }],
 })
