@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { of, Subscription } from 'rxjs';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -25,18 +25,32 @@ export class NewRoleComponent implements OnInit {
 	constructor(
 		public rightsApiService: RightsApiService,
 		private dialogRef: MatDialogRef<UserSearchComponent>,
-		private formBuilder: FormBuilder,
+		private fb: FormBuilder,
 		private snackBar: MatSnackBar
 	) {}
 
 	ngOnInit(): void {
 		this.getRights();
-
-		this.roleForm = this.formBuilder.group({
+		this.roleForm = this.fb.group({
 			name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
 			description: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      rights: [[], [Validators.required]],
+			rights: this.fb.array([]),
 		});
+	}
+
+	onCheckboxChange(e): void {
+		const rights: FormArray = this.roleForm.get('rights') as FormArray;
+
+		if (e.checked) {
+			rights.push(new FormControl(e.source.value));
+		} else {
+			rights.controls.forEach((item: FormControl, i) => {
+				if (item.value === e.source.value) {
+					rights.removeAt(i);
+					return;
+				}
+			});
+		}
 	}
 
 	getRights(): void {
@@ -44,14 +58,13 @@ export class NewRoleComponent implements OnInit {
 	}
 
 	postRole(): void {
-		// this.departmentApiService
-		// 	.addDepartment({
+		console.log(this.roleForm.value, this.rights);
+		// this.rightsApiService
+		// 	.addRole({
 		// 		body: {
-		// 			info: {
-		// 				name: this.roleForm.controls['name'].value,
-		// 				description: this.roleForm.controls['description'].value,
-		// 				directorUserId: this.roleForm.controls['directorId'].value,
-		// 			},
+		// 			name: this.roleForm.get('name').value,
+		// 			description: this.roleForm.get('description').value,
+		// 			rights: this.roleForm.get('rights').value,
 		// 		},
 		// 	})
 		// 	.subscribe(
