@@ -1,4 +1,8 @@
 .card {
-  background-color: #fff;
-  border-radius: 5px;
+	background-color: #fff;
+	border-radius: 5px;
+
+	&_standard {
+		padding: 52px 48px;
+	}
 }

@@ -1,0 +1,17 @@
+.table {
+	&-header {
+		margin-bottom: 20px;
+
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&-content {
+		width: 100%;
+	}
+
+	&-filters {
+		display: flex;
+		justify-content: space-between;
+	}
+}
