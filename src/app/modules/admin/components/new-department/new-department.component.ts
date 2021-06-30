@@ -6,10 +6,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { switchMap } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 
 @Component({
 	selector: 'do-new-department',
@@ -39,8 +39,8 @@ export class NewDepartmentComponent implements OnInit {
 
 		this.departmentForm = this.formBuilder.group({
 			name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-			description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1000)]],
-			directorId: ['', [Validators.required, Validators.minLength(1)]],
+			description: [''],
+			directorId: [''],
 		});
 	}
 
