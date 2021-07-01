@@ -8,6 +8,6 @@ export interface UserInfo {
   firstName?: string;
   id?: string;
   lastName?: string;
-  middleName?: string;
+  middleName?: null | string;
 }
 

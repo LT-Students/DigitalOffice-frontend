@@ -77,19 +77,19 @@ export class DepartmentApiService extends BaseService {
   }
 
   /**
-   * Path part for operation get
+   * Path part for operation getDepartment
    */
-  static readonly GetPath = '/department/get';
+  static readonly GetDepartmentPath = '/department/get';
 
   /**
    * Returns department by id.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `get()` instead.
+   * To access only the response body, use `getDepartment()` instead.
    *
    * This method doesn't expect any request body.
    */
-  get$Response(params: {
+  getDepartment$Response(params: {
 
     /**
      * Department global unique identifier.
@@ -97,7 +97,7 @@ export class DepartmentApiService extends BaseService {
     departmentId: string;
   }): Observable<StrictHttpResponse<DepartmentInfo>> {
 
-    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetDepartmentPath, 'get');
     if (params) {
       rb.query('departmentId', params.departmentId, {});
     }
@@ -117,11 +117,11 @@ export class DepartmentApiService extends BaseService {
    * Returns department by id.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `get$Response()` instead.
+   * To access the full response (for headers, for example), `getDepartment$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  get(params: {
+  getDepartment(params: {
 
     /**
      * Department global unique identifier.
@@ -129,28 +129,28 @@ export class DepartmentApiService extends BaseService {
     departmentId: string;
   }): Observable<DepartmentInfo> {
 
-    return this.get$Response(params).pipe(
+    return this.getDepartment$Response(params).pipe(
       map((r: StrictHttpResponse<DepartmentInfo>) => r.body as DepartmentInfo)
     );
   }
 
   /**
-   * Path part for operation get_1
+   * Path part for operation getDepartments
    */
-  static readonly Get_1Path = '/department/find';
+  static readonly GetDepartmentsPath = '/department/find';
 
   /**
    * Returns finded departments.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `get_1()` instead.
+   * To access only the response body, use `getDepartments()` instead.
    *
    * This method doesn't expect any request body.
    */
-  get_1$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<DepartmentsResponse>>> {
+  getDepartments$Response(params?: {
+  }): Observable<StrictHttpResponse<DepartmentsResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.Get_1Path, 'get');
+    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetDepartmentsPath, 'get');
     if (params) {
     }
 
@@ -160,7 +160,7 @@ export class DepartmentApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<DepartmentsResponse>>;
+        return r as StrictHttpResponse<DepartmentsResponse>;
       })
     );
   }
@@ -169,15 +169,15 @@ export class DepartmentApiService extends BaseService {
    * Returns finded departments.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `get_1$Response()` instead.
+   * To access the full response (for headers, for example), `getDepartments$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  get_1(params?: {
+  getDepartments(params?: {
   }): Observable<DepartmentsResponse> {
 
-    return this.get_1$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<DepartmentsResponse>>) => r.body as DepartmentsResponse)
+    return this.getDepartments$Response(params).pipe(
+      map((r: StrictHttpResponse<DepartmentsResponse>) => r.body as DepartmentsResponse)
     );
   }
 

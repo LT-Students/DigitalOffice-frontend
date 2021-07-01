@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.4",
+    "version": "1.3.5",
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments."
   },
@@ -324,11 +324,16 @@
       }
     },
     "/department/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "get": {
         "tags": [
           "Department"
         ],
-        "operationId": "get",
+        "operationId": "getDepartment",
         "description": "Returns department by id.",
         "parameters": [
           {
@@ -377,11 +382,16 @@
       }
     },
     "/department/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "get": {
         "tags": [
           "Department"
         ],
-        "operationId": "get",
+        "operationId": "getDepartments",
         "description": "Returns finded departments.",
         "responses": {
           "200": {
@@ -389,10 +399,191 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DepartmentsResponse"
-                  }
+                  "$ref": "#/components/schemas/DepartmentsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "createCompany",
+        "description": "Adds a new company.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created company.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "getCompany",
+        "responses": {
+          "200": {
+            "description": "Successfully returned a company.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompanyInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/office/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Office"
+        ],
+        "operationId": "createOffice",
+        "description": "Adds a new office to company.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOfficeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created office.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/office/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "findOffices",
+        "responses": {
+          "200": {
+            "description": "Successfully returned all offices.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfficesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -485,7 +676,8 @@
             "items": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "nullable": true
           }
         }
       },
@@ -533,12 +725,14 @@
           },
           "Description": {
             "description": "Department description.",
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "DirectorUserId": {
             "description": "Specific director user id this department.",
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
           }
         }
       },
@@ -594,10 +788,12 @@
           },
           "Description": {
             "description": "Department description.",
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "Director": {
-            "$ref": "#/components/schemas/UserInfo"
+            "$ref": "#/components/schemas/UserInfo",
+            "nullable": true
           },
           "Users": {
             "type": "array",
@@ -626,7 +822,8 @@
           },
           "MiddleName": {
             "type": "string",
-            "example": "Alexandrovich"
+            "example": "Alexandrovich",
+            "nullable": true
           }
         }
       },
@@ -642,6 +839,226 @@
           },
           "Message": {
             "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "CreateCompanyRequest": {
+        "type": "object",
+        "required": [
+          "CompanyName",
+          "SMTP",
+          "AdminInfo"
+        ],
+        "properties": {
+          "PortalName": {
+            "type": "string"
+          },
+          "CompanyName": {
+            "type": "string"
+          },
+          "SiteUrl": {
+            "type": "string"
+          },
+          "SMTP": {
+            "$ref": "#/components/schemas/SMTP"
+          },
+          "AdminInfo": {
+            "$ref": "#/components/schemas/AdminInfo"
+          }
+        }
+      },
+      "CreateOfficeRequest": {
+        "type": "object",
+        "required": [
+          "City",
+          "Address"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Address": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "PortalName": {
+            "type": "string"
+          },
+          "CompanyName": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "Tagline": {
+            "type": "string"
+          },
+          "SiteUrl": {
+            "type": "string"
+          },
+          "Logo": {
+            "$ref": "#/components/schemas/ImageInfo"
+          },
+          "Departments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShortDepartmentInfo"
+            }
+          },
+          "Positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PositionInfo"
+            }
+          },
+          "Offices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfficeInfo"
+            }
+          }
+        }
+      },
+      "ShortDepartmentInfo": {
+        "type": "object",
+        "description": "Specific department data.",
+        "properties": {
+          "Id": {
+            "description": "Department id.",
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "description": "Department name.",
+            "type": "string"
+          },
+          "Description": {
+            "description": "Department description.",
+            "type": "string",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OfficeInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Address": {
+            "type": "string"
+          }
+        }
+      },
+      "OfficesResponse": {
+        "type": "object",
+        "properties": {
+          "Offices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfficeInfo"
+            }
+          }
+        }
+      },
+      "ImageInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Content": {
+            "type": "string",
+            "format": "byte"
+          },
+          "Extension": {
+            "type": "string"
+          }
+        }
+      },
+      "SMTP": {
+        "type": "object",
+        "required": [
+          "Host",
+          "Port",
+          "EnableSsl",
+          "Email",
+          "Password"
+        ],
+        "properties": {
+          "Host": {
+            "type": "string"
+          },
+          "Port": {
+            "type": "integer"
+          },
+          "EnableSsl": {
+            "type": "boolean"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "Password": {
+            "type": "string"
+          }
+        }
+      },
+      "AdminInfo": {
+        "type": "object",
+        "required": [
+          "FirstName",
+          "LastName",
+          "Email",
+          "Login",
+          "Password"
+        ],
+        "properties": {
+          "FirstName": {
+            "type": "string"
+          },
+          "MiddleName": {
+            "type": "integer"
+          },
+          "LastName": {
+            "type": "boolean"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "Login": {
+            "type": "string"
+          },
+          "Password": {
             "type": "string"
           }
         }
