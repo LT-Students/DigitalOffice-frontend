@@ -16,6 +16,7 @@ import { AuthGuard } from '@app/guards/auth.guard';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 
+import { NetService } from '@app/services/net.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -24,7 +25,7 @@ import { MaterialModule } from './shared/material.module';
 import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
-import { NetService } from '@app/services/net.service';
+import { InstallerModule } from './modules/installer/installer.module';
 
 registerLocaleData(localeRu);
 
@@ -43,6 +44,7 @@ registerLocaleData(localeRu);
     NgbModule,
     BrowserAnimationsModule,
     MaterialModule,
+	  InstallerModule,
   ],
   providers: [
     AuthService,
