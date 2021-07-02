@@ -1,4 +1,13 @@
-.inputs {
-	display: flex;
-	flex-direction: column;
+.wizard {
+	&__form {
+		margin-top: 20px;
+
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	&__buttons {
+		//justify-self: flex-end;
+	}
 }
