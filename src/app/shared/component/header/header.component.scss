@@ -80,12 +80,6 @@
 
 			p {
 				padding: 0 15px 0 19px;
-
-				color: $dark_2;
-
-				span {
-					color: $dark_2;
-				}
 			}
 		}
 
@@ -102,30 +96,6 @@
 			&__light {
 				width: 8px;
 				height: 8px;
-			}
-		}
-	}
-
-	.header-navigation {
-		display: flex;
-		align-items: center;
-		flex-wrap: nowrap;
-
-		&__logo {
-			margin-right: 40px;
-
-			cursor: pointer;
-		}
-
-		&__links {
-			line-height: 25px;
-
-			a {
-				margin-right: 45px;
-
-				&:last-of-type {
-					margin-right: 0;
-				}
 			}
 		}
 	}
@@ -176,6 +146,30 @@
 			height: 100%;
 
 			transition: all 250ms ease-in;
+		}
+	}
+}
+
+.header-navigation {
+	display: flex;
+	align-items: center;
+	flex-wrap: nowrap;
+
+	&__logo {
+		margin-right: 40px;
+
+		cursor: pointer;
+	}
+
+	&__links {
+		line-height: 25px;
+
+		a {
+			margin-right: 45px;
+
+			&:last-of-type {
+				margin-right: 0;
+			}
 		}
 	}
 }

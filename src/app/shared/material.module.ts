@@ -22,6 +22,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
 	imports: [
@@ -47,7 +49,9 @@ import { MatSortModule } from '@angular/material/sort';
 		MatAutocompleteModule,
 		MatExpansionModule,
 		MatTableModule,
-		MatSortModule
+		MatSortModule,
+		MatToolbarModule,
+		OverlayModule,
 	],
 	exports: [
 		MatButtonModule,
@@ -71,7 +75,9 @@ import { MatSortModule } from '@angular/material/sort';
 		MatAutocompleteModule,
 		MatExpansionModule,
 		MatTableModule,
-		MatSortModule
+		MatSortModule,
+		MatToolbarModule,
+		OverlayModule,
 	],
 	providers: [{ provide: MatDialogRef, useValue: {} }],
 })

@@ -65,9 +65,9 @@ export class TextDirective implements OnInit {
 	private _handleTagName(tagName: string): void {
 		switch (tagName) {
 			case 'H1':
-			case 'H2':
-			case 'H3':
-			case 'H4': {
+			// case 'H2':
+			case 'H3': {
+			// case 'H4': {
 				this._setHeaderAttributes(tagName.toLowerCase());
 				break;
 			}
@@ -88,6 +88,6 @@ export class TextDirective implements OnInit {
 	}
 
 	private _setRegularTextAttributes(): void {
-		this.renderer.addClass(this.el.nativeElement, `${this.regularTextSize}_text`);
+		// this.renderer.addClass(this.el.nativeElement, `${this.regularTextSize}_text`);
 	}
 }
