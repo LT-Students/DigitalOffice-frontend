@@ -20,11 +20,7 @@ export class NewDepartmentComponent implements OnInit {
 	public directors: UserInfo[] = [];
 	private getDirectorsSubscription: Subscription;
 
-	public departmentForm = new FormGroup({
-		name: new FormControl(null, [Validators.required]),
-		description: new FormControl(null, [Validators.required]),
-		directorId: new FormControl(null, [Validators.required]),
-	});
+	public departmentForm: FormGroup;
 
 	constructor(
 		public userApiService: UserApiService,
