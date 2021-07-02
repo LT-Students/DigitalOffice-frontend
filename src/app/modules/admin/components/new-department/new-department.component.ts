@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -56,9 +56,9 @@ export class NewDepartmentComponent implements OnInit {
 			.addDepartment({
 				body: {
 					info: {
-						name: this.departmentForm.controls['name'].value,
-						description: this.departmentForm.controls['description'].value,
-						directorUserId: this.departmentForm.controls['directorId'].value,
+						name: this.departmentForm.get('name').value,
+						description: this.departmentForm.get('description').value,
+						directorUserId: this.departmentForm.get('directorId').value,
 					},
 				},
 			})
