@@ -1,53 +1,53 @@
 <mat-horizontal-stepper #stepper class="wizard">
-	<mat-step [stepControl]="firstFormGroup" editable>
-		<form [formGroup]="firstFormGroup">
+	<mat-step [stepControl]="companyForm" editable>
+		<form [formGroup]="companyForm">
 			<ng-template matStepLabel>Введите данные о компании</ng-template>
 			<div class="wizard__form">
 				<mat-form-field appearance="fill">
 					<mat-label>Название компании</mat-label>
-					<input matInput formControlName="firstCtrl" placeholder="Введите название компании" required />
+					<input matInput formControlName="companyName" placeholder="Введите название компании" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Название портала</mat-label>
-					<input matInput formControlName="firstCtrl" placeholder="Введите название портала" required />
+					<input matInput formControlName="portalName" placeholder="Введите название портала" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Доменное имя</mat-label>
-					<input matInput formControlName="firstCtrl" placeholder="Введите доменное имя" required />
+					<input matInput formControlName="siteUrl" placeholder="Введите доменное имя" required />
 				</mat-form-field>
-				<div class='wizard__buttons'>
+				<div class="wizard__buttons">
 					<button mat-button matStepperNext>Далее</button>
 				</div>
 			</div>
 		</form>
 	</mat-step>
-	<mat-step [stepControl]="secondFormGroup" editable>
-		<form [formGroup]="secondFormGroup">
+	<mat-step [stepControl]="adminForm" editable>
+		<form [formGroup]="adminForm">
 			<ng-template matStepLabel>Введите данные об админе</ng-template>
 			<div class="wizard__form">
 				<mat-form-field appearance="fill">
 					<mat-label>Имя</mat-label>
-					<input matInput formControlName="secondCtrl" placeholder="Иван" required />
+					<input matInput formControlName="firstName" placeholder="Иван" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Фамилия</mat-label>
-					<input matInput formControlName="secondCtrl" placeholder="Иванов" required />
+					<input matInput formControlName="lastName" placeholder="Иванов" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Отчество</mat-label>
-					<input matInput formControlName="secondCtrl" placeholder="Иванович" required />
+					<input matInput formControlName="middleName" placeholder="Иванович" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>E-mail</mat-label>
-					<input matInput formControlName="secondCtrl" placeholder="example@mail.com" required />
+					<input matInput formControlName="email" placeholder="example@mail.com" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Логин</mat-label>
-					<input matInput formControlName="secondCtrl" placeholder="Введите логин" required />
+					<input matInput formControlName="login" placeholder="Введите логин" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Пароль</mat-label>
-					<input matInput formControlName="secondCtrl" placeholder="Придумайте пароль" required />
+					<input matInput formControlName="password" placeholder="Придумайте пароль" required />
 				</mat-form-field>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
@@ -57,29 +57,29 @@
 		</form>
 	</mat-step>
 	<mat-step editable>
-		<form [formGroup]="secondFormGroup">
+		<form [formGroup]="smtpForm">
 			<ng-template matStepLabel>Введите SMTP-данные</ng-template>
 			<div class="wizard__form">
 				<mat-form-field appearance="fill">
 					<mat-label>Хост</mat-label>
-					<input matInput formControlName="secondCtrl" placeholder="хост" required />
+					<input matInput formControlName="host" placeholder="хост" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Порт</mat-label>
-					<input matInput formControlName="secondCtrl" placeholder="порт" required />
+					<input matInput formControlName="port" placeholder="порт" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
-                    <mat-label>E-mail</mat-label>
-                    <input matInput formControlName="secondCtrl" placeholder="example@mail.com" required />
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Пароль</mat-label>
-                    <input matInput formControlName="secondCtrl" placeholder="Придумайте пароль" required />
-                </mat-form-field>
-                <mat-checkbox formControlName="secondCtrl" required>Включить SSL</mat-checkbox>
-                <div>
+					<mat-label>E-mail</mat-label>
+					<input matInput formControlName="email" placeholder="example@mail.com" required />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Пароль</mat-label>
+					<input matInput formControlName="password" placeholder="Придумайте пароль" required />
+				</mat-form-field>
+				<mat-checkbox formControlName="enableSSL" required>Включить SSL</mat-checkbox>
+				<div>
 					<button mat-button matStepperPrevious>Назад</button>
-					<button mat-button matStepperPrevious>Завершить</button>
+					<button mat-button type="submit" (click)='submitForm()'>Завершить</button>
 				</div>
 			</div>
 		</form>
