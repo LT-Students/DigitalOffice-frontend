@@ -7,13 +7,13 @@ import { ShortDepartmentInfo } from './short-department-info';
 export interface CompanyInfo {
   companyName?: string;
   departments?: Array<ShortDepartmentInfo>;
-  description?: string;
+  description?: null | string;
   id?: string;
   logo?: ImageInfo;
   offices?: Array<OfficeInfo>;
   portalName?: string;
   positions?: Array<PositionInfo>;
   siteUrl?: string;
-  tagline?: string;
+  tagline?: null | string;
 }
 

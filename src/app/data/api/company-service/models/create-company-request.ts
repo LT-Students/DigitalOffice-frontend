@@ -5,8 +5,8 @@ import { Smtp } from './smtp';
 export interface CreateCompanyRequest {
   adminInfo: AdminInfo;
   companyName: string;
-  portalName?: string;
+  portalName: string;
   sMTP: Smtp;
-  siteUrl?: string;
+  siteUrl: string;
 }
 

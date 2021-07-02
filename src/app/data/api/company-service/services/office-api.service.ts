@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { CreateOfficeRequest } from '../models/create-office-request';
+import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,7 @@ export class OfficeApiService extends BaseService {
    */
   createOffice$Response(params: {
     body: CreateOfficeRequest
-  }): Observable<StrictHttpResponse<string>> {
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, OfficeApiService.CreateOfficePath, 'post');
     if (params) {
@@ -50,7 +51,7 @@ export class OfficeApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -65,10 +66,10 @@ export class OfficeApiService extends BaseService {
    */
   createOffice(params: {
     body: CreateOfficeRequest
-  }): Observable<string> {
+  }): Observable<OperationResultResponse> {
 
     return this.createOffice$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 

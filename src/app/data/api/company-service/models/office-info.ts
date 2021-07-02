@@ -4,6 +4,6 @@ export interface OfficeInfo {
   address?: string;
   city?: string;
   id?: string;
-  name?: string;
+  name?: null | string;
 }
 

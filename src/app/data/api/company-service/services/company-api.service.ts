@@ -9,9 +9,10 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { CompanyInfo } from '../models/company-info';
 import { CreateCompanyRequest } from '../models/create-company-request';
-import { OfficesResponse } from '../models/offices-response';
+import { FindOfficesResponse } from '../models/find-offices-response';
+import { OperationResultResponse } from '../models/operation-result-response';
+import { OperationResultResponseCompanyInfo } from '../models/operation-result-response-company-info';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +40,7 @@ export class CompanyApiService extends BaseService {
    */
   createCompany$Response(params: {
     body: CreateCompanyRequest
-  }): Observable<StrictHttpResponse<string>> {
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.CreateCompanyPath, 'post');
     if (params) {
@@ -52,7 +53,7 @@ export class CompanyApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -67,10 +68,10 @@ export class CompanyApiService extends BaseService {
    */
   createCompany(params: {
     body: CreateCompanyRequest
-  }): Observable<string> {
+  }): Observable<OperationResultResponse> {
 
     return this.createCompany$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 
@@ -86,7 +87,7 @@ export class CompanyApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   getCompany$Response(params?: {
-  }): Observable<StrictHttpResponse<CompanyInfo>> {
+  }): Observable<StrictHttpResponse<OperationResultResponseCompanyInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.GetCompanyPath, 'get');
     if (params) {
@@ -98,7 +99,7 @@ export class CompanyApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<CompanyInfo>;
+        return r as StrictHttpResponse<OperationResultResponseCompanyInfo>;
       })
     );
   }
@@ -110,10 +111,10 @@ export class CompanyApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   getCompany(params?: {
-  }): Observable<CompanyInfo> {
+  }): Observable<OperationResultResponseCompanyInfo> {
 
     return this.getCompany$Response(params).pipe(
-      map((r: StrictHttpResponse<CompanyInfo>) => r.body as CompanyInfo)
+      map((r: StrictHttpResponse<OperationResultResponseCompanyInfo>) => r.body as OperationResultResponseCompanyInfo)
     );
   }
 
@@ -129,7 +130,7 @@ export class CompanyApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   findOffices$Response(params?: {
-  }): Observable<StrictHttpResponse<OfficesResponse>> {
+  }): Observable<StrictHttpResponse<FindOfficesResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.FindOfficesPath, 'get');
     if (params) {
@@ -141,7 +142,7 @@ export class CompanyApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<OfficesResponse>;
+        return r as StrictHttpResponse<FindOfficesResponse>;
       })
     );
   }
@@ -153,10 +154,10 @@ export class CompanyApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   findOffices(params?: {
-  }): Observable<OfficesResponse> {
+  }): Observable<FindOfficesResponse> {
 
     return this.findOffices$Response(params).pipe(
-      map((r: StrictHttpResponse<OfficesResponse>) => r.body as OfficesResponse)
+      map((r: StrictHttpResponse<FindOfficesResponse>) => r.body as FindOfficesResponse)
     );
   }
 
