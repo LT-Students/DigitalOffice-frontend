@@ -16,42 +16,20 @@
 
 	.waves-container {
 		position: absolute;
-		bottom: -15px;
-
-		display: inline-block;
 
 		width: 100%;
-
-		&.wave1,
-		&.wave2,
-		&.wave3 {
-			position: absolute;
-
-			bottom: 0;
-
-			display: inline-block;
-
-			background-repeat: no-repeat;
-
-			background-size: cover;
-		}
+		height: 100%;
 
 		&.wave1 {
-			top: 494px;
-
-			background-image: url('/assets/svg/wave1.svg');
+			background: url('/assets/svg/wave1.svg') no-repeat bottom center / contain;
 		}
 
 		&.wave2 {
-			top: 390px;
-
-			background-image: url('/assets/svg/wave2.svg');
+			background: url('/assets/svg/wave2.svg') no-repeat bottom center / contain;
 		}
 
 		&.wave3 {
-			top: 454px;
-
-			background-image: url('/assets/svg/wave3.svg');
+			background: url('/assets/svg/wave3.svg') no-repeat bottom center / contain;
 		}
 	}
 }
