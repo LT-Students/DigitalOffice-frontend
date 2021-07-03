@@ -33,7 +33,6 @@
       class="regular_text"
       *ngIf="!isLoading; else spinner"
       type="submit"
-      [disabled]="email.invalid || password.invalid"
       id="btn-enter"
     >Войти</button>
     <ng-template #spinner>
@@ -49,5 +48,5 @@
       </svg>
     </ng-template>
   </div>
-    <a class="nav-link__forgot-password regular_text text_white" routerLink="/auth/forgotpassword">О нет! Я забыл пароль</a>
+    <a doText color="gray" class="nav-link__forgot-password" routerLink="/auth/forgotpassword">О нет! Я забыл пароль</a>
 </form>
