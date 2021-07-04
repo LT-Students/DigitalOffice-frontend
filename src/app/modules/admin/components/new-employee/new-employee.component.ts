@@ -7,7 +7,6 @@ import { IUser } from '@data/models/user';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
 import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserStatus } from '@data/api/user-service/models';
@@ -15,6 +14,9 @@ import { UserService } from '@app/services/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
+import { RolesResponse } from '@data/api/rights-service/models/roles-response';
+import { RoleInfo } from '@data/api/rights-service/models/role-info';
 
 export const DATE_FORMAT = {
 	parse: {
@@ -47,16 +49,17 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public userForm: FormGroup = null;
 	public position$: Observable<PositionInfo[]>;
 	public department$: Observable<DepartmentInfo[]>;
+	public roles: Array<RoleInfo>;
 
 	private _unsubscribe$: Subject<void>;
 
 	constructor(
 		private formBuilder: FormBuilder,
 		private _netService: NetService,
-		private departmentApiService: DepartmentApiService,
 		private userService: UserService,
 		private _matSnackBar: MatSnackBar,
-		private dialogRef: MatDialogRef<any>
+		private dialogRef: MatDialogRef<any>,
+		private roleApiService: RoleApiService
 	) {
 		this._unsubscribe$ = new Subject<void>();
 	}
@@ -64,6 +67,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public ngOnInit(): void {
 		this.getPositions();
 		this.getDepartments();
+		this.getRoles();
 		this._initForm();
 	}
 
@@ -80,24 +84,34 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		this.department$ = this._netService.getDepartmentsList();
 	}
 
+	public getRoles(): void {
+		this.roleApiService
+			.findRoles({ skipCount: 0, takeCount: 10 })
+			.subscribe((result: RolesResponse) => {
+				this.roles = result.roles;
+			});
+	}
+
 	public createEmployee(): void {
 		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
 
-		this.userService.createUser(params).pipe(takeUntil(this._unsubscribe$))
-		.subscribe(
-			(result: OperationResultResponse) => {
-				if (result.errors && result.errors.length) {
-					const message = result.errors.join('\n');
-					this._matSnackBar.open(message, 'Закрыть');
+		this.userService
+			.createUser(params)
+			.pipe(takeUntil(this._unsubscribe$))
+			.subscribe(
+				(result: OperationResultResponse) => {
+					if (result.errors && result.errors.length) {
+						const message = result.errors.join('\n');
+						this._matSnackBar.open(message, 'Закрыть');
+					}
+					this.dialogRef.close(result);
+				},
+				(error: OperationResultResponse | HttpErrorResponse) => {
+					const message =
+						error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
+					this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
 				}
-				this.dialogRef.close(result);
-			},
-			(error: OperationResultResponse | HttpErrorResponse) => {
-				const message =
-					error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
-				this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
-			},
-		);
+			);
 	}
 
 	public changeWorkingRate(step: number): void {
@@ -107,11 +121,13 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	public generatePassword() {
-		return this._netService.generatePassword().pipe(takeUntil(this._unsubscribe$))
+		return this._netService
+			.generatePassword()
+			.pipe(takeUntil(this._unsubscribe$))
 			.subscribe((password: string) => {
 				this.userForm.patchValue({ password: password });
 				this.userForm.updateValueAndValidity();
-			})
+			});
 	}
 
 	public onCancelClick() {
@@ -130,6 +146,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			office: ['', [Validators.required]],
 			email: ['', [Validators.required, Validators.email]],
 			password: ['', [Validators.required]],
+			roleId: ['']
 		});
 	}
 
