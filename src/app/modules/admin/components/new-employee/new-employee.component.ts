@@ -87,8 +87,8 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public getRoles(): void {
 		this.roleApiService
 			.findRoles({ skipCount: 0, takeCount: 10 })
-			.subscribe((result: RolesResponse) => {
-				this.roles = result.roles;
+			.subscribe(({ roles }: RolesResponse) => {
+				this.roles = roles;
 			});
 	}
 
