@@ -1,7 +1,7 @@
 <mat-dialog-content class="new-role">
 	<h2 doText>Новая роль</h2>
 	<div class="new-role__form">
-		<form autocomplete="off" [formGroup]="roleForm" (ngSubmit)="postRole()">
+		<form autocomplete="off" [formGroup]="roleForm" (ngSubmit)="createRole()">
 			<div class="new-role__input-container">
 				<div class="new-role__input">
 					<label doText color="dark_1" for="name">Название</label>

@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { UserInfo } from '@data/api/user-service/models/user-info';
-import { of, Subscription } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { switchMap } from 'rxjs/operators';
-import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
 import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
+import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 
 @Component({
 	selector: 'do-new-role',
@@ -23,7 +18,8 @@ export class NewRoleComponent implements OnInit {
 	public roleForm: FormGroup;
 
 	constructor(
-		public rightsApiService: RightsApiService,
+		private rightsApiService: RightsApiService,
+		private roleApiService: RoleApiService,
 		private dialogRef: MatDialogRef<UserSearchComponent>,
 		private fb: FormBuilder,
 		private snackBar: MatSnackBar
@@ -57,26 +53,25 @@ export class NewRoleComponent implements OnInit {
 		this.rightsApiService.getRightsList().subscribe((rights) => (this.rights = rights));
 	}
 
-	postRole(): void {
-		console.log(this.roleForm.value, this.rights);
-		// this.rightsApiService
-		// 	.addRole({
-		// 		body: {
-		// 			name: this.roleForm.get('name').value,
-		// 			description: this.roleForm.get('description').value,
-		// 			rights: this.roleForm.get('rights').value,
-		// 		},
-		// 	})
-		// 	.subscribe(
-		// 		(res) => {
-		// 			this.snackBar.open('New role added successfully', 'done', {
-		// 				duration: 3000,
-		// 			});
-		// 		},
-		// 		(error: HttpErrorResponse) => {
-		// 			this.snackBar.open(error.error.Message, 'accept');
-		// 			throw error;
-		// 		}
-		// 	);
+	createRole(): void {
+		this.roleApiService
+			.createRole({
+				body: {
+					name: this.roleForm.get('name').value,
+					description: this.roleForm.get('description').value,
+					rights: this.roleForm.get('rights').value,
+				},
+			})
+			.subscribe(
+				(res) => {
+					this.snackBar.open('New role added successfully', 'done', {
+						duration: 3000,
+					});
+				},
+				(error: HttpErrorResponse) => {
+					this.snackBar.open(error.error.Message, 'accept');
+					throw error;
+				}
+			);
 	}
 }
