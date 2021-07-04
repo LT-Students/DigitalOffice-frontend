@@ -3,11 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
+import { InstallerGuard } from '@app/guards/installer.guard';
 import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
 import { ProjectPageComponent } from './modules/user/components/project-page/project-page.component';
 import { EmployeePageComponent } from './modules/employee/employee-page.component';
 import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
-import { InstallerGuard } from '@app/guards/installer.guard';
 
 export const enum RouteType {
   AUTH = 'auth',

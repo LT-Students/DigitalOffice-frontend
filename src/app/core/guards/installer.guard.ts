@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { PositionApiService } from '@data/api/company-service/services/position-api.service';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root',
@@ -14,13 +14,15 @@ export class InstallerGuard implements CanActivate, CanLoad {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		this.companyApiService.getCompany().subscribe(res => console.log(res));
-		if (this.companyApiService.getCompany()) {
-			return true;
-		} else {
-			this.router.navigate(['installer']);
-			return false;
-		}
+		return this.companyApiService.getCompany().pipe(
+			map((result) => {
+				if (result.body !== null) {
+					return true;
+				}
+				this.router.navigate(['installer']);
+				return false;
+			})
+		);
 	}
 	canLoad(route: Route, segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		return true;
