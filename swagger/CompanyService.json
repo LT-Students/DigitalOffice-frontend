@@ -367,16 +367,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not found.\n* Department with this id not found.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -408,8 +398,6 @@
       }
     },
     "/company/create": {
-      "parameters": [
-      ],
       "post": {
         "tags": [
           "Company"
@@ -461,11 +449,6 @@
       }
     },
     "/company/get": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
       "get": {
         "tags": [
           "Company"
