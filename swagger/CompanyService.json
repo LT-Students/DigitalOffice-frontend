@@ -367,6 +367,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not found.\n* Department with this id not found.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -461,16 +471,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/OperationResultResponseCompanyInfo"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
