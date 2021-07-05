@@ -1,14 +1,20 @@
 .form__container {
-  padding: 20px;
+	padding: 20px;
 
-  background: #fff;
+	background: #fff;
 }
 
-.new-department__input {
-  display: flex;
-  flex-direction: column;
+.new-department {
+	&__input {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__input-container {
+		margin-bottom: 20px;
+	}
 }
 
-.new-department__input-container {
-  margin-bottom: 20px;
+.required {
+	color: #f00;
 }
