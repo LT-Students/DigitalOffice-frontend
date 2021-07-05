@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.4",
+    "version": "1.3.0",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -115,6 +115,15 @@
             "type": "boolean"
           },
           "required": false
+        },
+        {
+          "name": "includeeducations",
+          "in": "query",
+          "description": "Include educations info in answer.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
         }
       ],
       "get": {
@@ -125,7 +134,7 @@
         "description": "Returns user information.",
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Ok.",
             "content": {
               "application/json": {
                 "schema": {
@@ -135,7 +144,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad Request.\n* You must specify 'userId' or|and 'name' or|and 'email'.",
             "content": {
               "application/json": {
                 "schema": {
@@ -145,7 +154,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.\n* Enter tokken.",
             "content": {
               "application/json": {
                 "schema": {
@@ -155,7 +164,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Not Found.\n* User was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -171,6 +180,16 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Specific department of users.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
         },
         {
           "name": "skipCount",
@@ -199,7 +218,7 @@
         "description": "Returns all users information with pagination.",
         "responses": {
           "200": {
-            "description": "Successfully returned list of users information.",
+            "description": "Ok.\n* Successfully returned list of users information.",
             "content": {
               "application/json": {
                 "schema": {
@@ -209,7 +228,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -219,7 +238,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -254,8 +273,8 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Created user Id (uuid) will be in response Body property.",
+          "201": {
+            "description": "Ok.\n* Created user Id (uuid) will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -265,7 +284,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad Request.\n* Something went wrong.",
             "content": {
               "application/json": {
                 "schema": {
@@ -275,7 +294,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.\n* User is not admin and don't has rights.",
             "content": {
               "application/json": {
                 "schema": {
@@ -316,7 +335,7 @@
                 "minItems": 1,
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/PatchOperation"
+                  "$ref": "#/components/schemas/EditUserRequest"
                 }
               }
             }
@@ -324,7 +343,7 @@
         },
         "responses": {
           "200": {
-            "description": "Update user operation success (boolean) status will be in response Body property.",
+            "description": "Ok.\n* Update user operation success (boolean) status will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -334,17 +353,17 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/BadRequest"
                 }
               }
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
@@ -354,7 +373,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -389,8 +408,8 @@
         "operationId": "disableUser",
         "description": "Delete the specified user by id. The user must have right - Add/Edit/Remove users.",
         "responses": {
-          "204": {
-            "description": "Disable user operation success (boolean) status will be in response Body property.",
+          "200": {
+            "description": "Ok.\n* Disable user operation success (boolean) status will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -400,7 +419,7 @@
             }
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -410,7 +429,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -440,7 +459,7 @@
         },
         "responses": {
           "201": {
-            "description": "test",
+            "description": "Ok. Success create credentionals.",
             "content": {
               "application/json": {
                 "schema": {
@@ -450,7 +469,17 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. Request password not equal user password.",
             "content": {
               "application/json": {
                 "schema": {
@@ -460,7 +489,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Not Found. User with this id not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -486,7 +515,7 @@
         "description": "Returns randomly generated password.",
         "responses": {
           "200": {
-            "description": "Successfully returned password string.",
+            "description": "Ok.\n* Successfully returned password string.",
             "content": {
               "application/json": {
                 "schema": {
@@ -521,7 +550,7 @@
         },
         "responses": {
           "200": {
-            "description": "Change user password operation success (boolean) status will be in response Body property.",
+            "description": "Ok.\n* Change user password operation success (boolean) status will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -531,7 +560,17 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad Request.\n* Login or new password empty. ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Invalid user data.",
             "content": {
               "application/json": {
                 "schema": {
@@ -541,7 +580,7 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Not Found.\n* User credentionals was not found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -559,7 +598,8 @@
           "name": "userEmail",
           "in": "query",
           "schema": {
-            "type": "string"
+            "type": "string",
+            "example": "la@gmail.com"
           },
           "required": true
         }
@@ -572,7 +612,7 @@
         "description": "Initiates sending a email with instructions on how to change the user's password.",
         "responses": {
           "200": {
-            "description": "Send email operation success (boolean) status will be in response Body property.",
+            "description": "Ok.\n* Send email operation success (boolean) status will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -582,7 +622,7 @@
             }
           },
           "400": {
-            "description": "Bad Request",
+            "description": "Bad Request.\n* Incorrect email.",
             "content": {
               "application/json": {
                 "schema": {
@@ -592,7 +632,409 @@
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "Not Found. User with this email was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/education/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Education"
+        ],
+        "operationId": "createEducation",
+        "description": "The method attempts to add the education. The user must have the rights to add education to other users - Add/Edit/Remove users.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEducationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Created education Id (uuid) will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/education/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "educationId",
+          "in": "query",
+          "description": "Specific education id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Education"
+        ],
+        "operationId": "editEducation",
+        "description": "Update education properties. The user must have the rights to edit education to other users - Add/Edit/Remove users.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EditEducationRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Update education operation success (boolean) status will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/education/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "educationId",
+          "in": "query",
+          "description": "Education global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "delete": {
+        "tags": [
+          "Education"
+        ],
+        "operationId": "removeEducation",
+        "description": "Remove the specified education by id. The user must have the rights to remove education to other users - Add/Edit/Remove users.",
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Remove education operation success (boolean) status will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.\n* This education not linked with this user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/certificate/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Certificate"
+        ],
+        "operationId": "createCertificate",
+        "description": "The method attempts to add the certificate. The user must have the rights to add education to other users - Add/Edit/Remove users.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCertificateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/certificate/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "certificateId",
+          "in": "query",
+          "description": "Specific certificate id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Certificate"
+        ],
+        "operationId": "editCertificate",
+        "description": "Update certificate properties. The user must have the rights to edit certificate to other users - Add/Edit/Remove users.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EditCertificateRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/certificate/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "certificateId",
+          "in": "query",
+          "description": "Specific certificate id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "delete": {
+        "tags": [
+          "Certificate"
+        ],
+        "operationId": "removeCertificate",
+        "description": "Remove the specified certificate by id. The user must have the rights to remove certificate to other users - Add/Edit/Remove users.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -612,48 +1054,52 @@
         "required": [
           "FirstName",
           "LastName",
-          "Password",
+          "Gender",
           "Status",
-          "StartWorkingAt",
-          "Communications",
-          "Rate"
+          "Rate",
+          "PositionId",
+          "Communications"
         ],
         "properties": {
           "FirstName": {
             "description": "First name of a user.",
             "type": "string",
-            "example": "Ivan"
+            "example": "Ivan",
+            "nullable": false
           },
           "LastName": {
             "description": "Last name of a user.",
             "type": "string",
-            "example": "Ivanov"
+            "example": "Ivanov",
+            "nullable": false
           },
           "MiddleName": {
-            "description": "Last name of a user.",
+            "description": "Middle name of a user.",
             "type": "string",
             "example": "Ivanovich",
             "nullable": true
           },
-          "StartWorkingAt": {
-            "description": "Time when the user started working for the company.",
-            "type": "string",
-            "example": "2021-01-21T00:00:00.000Z",
-            "format": "date"
+          "Gender": {
+            "$ref": "#/components/schemas/UserGender"
           },
-          "Rate": {
-            "description": "User rate",
-            "type": "number",
-            "example": 0.25,
-            "format": "float"
+          "DayOfBirth": {
+            "description": "Date of user birth.",
+            "type": "string",
+            "format": "date",
+            "example": "2021-01-21T00:00:00.000Z",
+            "nullable": true
+          },
+          "City": {
+            "description": "User city.",
+            "type": "string",
+            "example": "Moscow",
+            "nullable": true
+          },
+          "AvatarImage": {
+            "$ref": "#/components/schemas/AddImageRequest"
           },
           "Status": {
             "$ref": "#/components/schemas/UserStatus"
-          },
-          "Password": {
-            "description": "User password.",
-            "type": "string",
-            "example": "MySecretPassword123!"
           },
           "IsAdmin": {
             "description": "Mark whether the user is an administrator.",
@@ -661,22 +1107,38 @@
             "default": false,
             "nullable": true
           },
-          "AvatarImage": {
-            "description": "Avatar image file content encoded in base64 string.",
+          "StartWorkingAt": {
+            "description": "Time when the user started working for the company.",
             "type": "string",
-            "format": "base64",
+            "format": "date",
+            "example": "2021-01-21T00:00:00.000Z",
             "nullable": true
+          },
+          "Rate": {
+            "description": "User rate",
+            "type": "number",
+            "example": 0.25,
+            "format": "float",
+            "nullable": false
           },
           "PositionId": {
             "description": "User position ID.",
             "type": "string",
             "format": "uuid",
-            "nullable": true
+            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4",
+            "nullable": false
           },
           "DepartmentId": {
             "description": "User department ID.",
             "type": "string",
             "format": "uuid",
+            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4",
+            "nullable": true
+          },
+          "Password": {
+            "description": "User password.",
+            "type": "string",
+            "example": "MySecretPassword",
             "nullable": true
           },
           "Communications": {
@@ -697,18 +1159,165 @@
         ],
         "properties": {
           "UserId": {
+            "description": "Unique user identifier.",
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
           },
           "Login": {
-            "type": "string"
+            "description": "User login.",
+            "type": "string",
+            "example": "Mylogin"
           },
           "Password": {
-            "type": "string"
+            "description": "User password received by email.",
+            "type": "string",
+            "example": "Sicretpassword"
           }
         }
       },
-      "PatchOperation": {
+      "EditUserRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/FirstName",
+            "value": {
+              "description": "New user first name",
+              "type": "string",
+              "example": "Ivan"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/LastName",
+            "value": {
+              "description": "New user last name",
+              "type": "string",
+              "example": "Ivanov"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/MiddleName",
+            "value": {
+              "description": "User middle name",
+              "type": "string",
+              "example": "Ivanovich"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/MiddleName",
+            "value": {
+              "description": "New user middle name",
+              "type": "string",
+              "example": "Ivanovich"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Gender",
+            "value": {
+              "$ref": "#/components/schemas/UserGender"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/DateOfBirth",
+            "value": {
+              "description": "Date of user birth.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/DateOfBirth",
+            "value": {
+              "description": "Date of user birth.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/City",
+            "value": {
+              "description": "User city.",
+              "type": "string",
+              "example": "Moscow"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/City",
+            "value": {
+              "description": "User city.",
+              "type": "string",
+              "example": "Moscow"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Status",
+            "value": {
+              "$ref": "#/components/schemas/UserStatus"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/StartWorkingAt",
+            "value": {
+              "description": "Time when the user started working for the company.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/StartWorkingAt",
+            "value": {
+              "description": "Time when the user started working for the company.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Rate",
+            "value": {
+              "description": "User rate.",
+              "type": "number",
+              "format": "float",
+              "example": 0.25
+            }
+          },
+          {
+            "op": "add",
+            "path": "/AvatarImage",
+            "value": {
+              "$ref": "#/components/schemas/AddImageRequest"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/AvatarImage",
+            "value": {
+              "$ref": "#/components/schemas/AddImageRequest"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchUserDocument"
+        }
+      },
+      "PatchUserDocument": {
         "type": "object",
         "required": [
           "op",
@@ -720,7 +1329,6 @@
             "description": "The operation to be performed.",
             "enum": [
               "add",
-              "remove",
               "replace"
             ]
           },
@@ -731,12 +1339,14 @@
               "/FirstName",
               "/LastName",
               "/MiddleName",
+              "/Gender",
+              "/DateOfBirth",
+              "/City",
               "/AvatarImage",
               "/Status",
-              "/Certificates",
+              "/StartWorkingAt",
               "/Rate"
             ]
-
           },
           "value": {
             "type": "object",
@@ -792,6 +1402,12 @@
           "Position": {
             "$ref": "#/components/schemas/PositionInfo"
           },
+          "Skills": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
           "Communications": {
             "type": "array",
             "items": {
@@ -816,10 +1432,10 @@
               "$ref": "#/components/schemas/ProjectInfo"
             }
           },
-          "Skills": {
+          "Educations": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/EducationInfo"
             }
           },
           "Errors": {
@@ -863,7 +1479,20 @@
             "type": "string"
           },
           "MiddleName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
+          },
+          "Gender": {
+            "$ref": "#/components/schemas/UserGender"
+          },
+          "DateOfBirth": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "City": {
+            "type": "string",
+            "nullable": true
           },
           "Status": {
             "$ref": "#/components/schemas/UserStatus"
@@ -872,10 +1501,13 @@
             "type": "boolean"
           },
           "About": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "StartWorkingAt": {
-            "type": "string"
+            "type": "string",
+            "format": "date",
+            "nullable": true
           },
           "Rate": {
             "type": "number"
@@ -902,13 +1534,16 @@
         "properties": {
           "Id": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": false
           },
           "Name": {
-            "type": "string"
+            "type": "string",
+            "nullable": false
           },
           "ReceivedAt": {
-            "type": "string"
+            "type": "string",
+            "nullable": false
           }
         }
       },
@@ -980,8 +1615,8 @@
           "Name": {
             "type": "string"
           },
-          "IsActive": {
-            "type": "boolean"
+          "Status": {
+            "type": "string"
           }
         }
       },
@@ -989,17 +1624,25 @@
         "type": "object",
         "properties": {
           "UserId": {
+            "description": "Unique user identifier.",
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
           },
           "Secret": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid",
+            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
           },
           "Login": {
-            "type": "string"
+            "description": "User login.",
+            "type": "string",
+            "example": "login"
           },
           "NewPassword": {
-            "type": "string"
+            "description": "New user password.",
+            "type": "string",
+            "example": "Mypassword"
           }
         }
       },
@@ -1055,7 +1698,19 @@
         "enum": [
           "Online",
           "Offline"
-        ]
+        ],
+        "example": "Online"
+      },
+      "UserGender": {
+        "type": "string",
+        "description": "Mode for user gender.",
+        "enum": [
+          "NotSelected",
+          "Male",
+          "Female"
+        ],
+        "example": "Male",
+        "default": "NotSelected"
       },
       "UserStatus": {
         "type": "string",
@@ -1067,23 +1722,385 @@
           "WorkFromHome"
         ],
         "example": "Sick",
-        "default": "WorkFromHome"
+        "default": "WorkFromOffice"
       },
       "OperationResultStatusType": {
-        "type": "integer",
+        "type": "string",
         "description": "Operation complition result status.",
         "enum": [
-          0,
-          1,
-          2
-        ],
-        "x-enumNames": [
           "FullSuccess",
           "PartialSuccess",
           "Failed"
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"
+      },
+      "FormEducation": {
+        "type": "string",
+        "description": "Education form.",
+        "enum": [
+          "FullTime",
+          "Distance"
+        ],
+        "example": "FullTime"
+      },
+      "EditEducationRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/UniversityName",
+            "value": {
+              "description": "New university name",
+              "type": "string",
+              "example": "State University"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/QualificationName",
+            "value": {
+              "description": "New qualification name.",
+              "type": "string",
+              "example": "Qualification"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/FormEducation",
+            "value": {
+              "$ref": "#/components/schemas/FormEducation"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/AdmissionAt",
+            "value": {
+              "description": "Date of admission.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/IssueAt",
+            "value": {
+              "description": "Date of issue.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/IsActive",
+            "value": {
+              "description": "Is active certificate.",
+              "type": "bool",
+              "example": "false"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchEducationDocument"
+        }
+      },
+      "PatchEducationDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace",
+              "add"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/UniversityName",
+              "/QualificationName",
+              "/FormEducation",
+              "/AdmissiomAt",
+              "/IssueAt",
+              "/IsActive"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "CreateEducationRequest": {
+        "type": "object",
+        "required": [
+          "UserId",
+          "UniversityName",
+          "QualificationName",
+          "FormEducation",
+          "AdmissionAt"
+        ],
+        "properties": {
+          "UserId": {
+            "description": "Unique user identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
+          },
+          "UniversityName": {
+            "description": "Name of univerity.",
+            "type": "string",
+            "example": "Orel State University",
+            "maxLength": 100
+          },
+          "QualificationName": {
+            "description": "Name of qualification.",
+            "type": "string",
+            "example": "Computer Programmer",
+            "maxLength": 100
+          },
+          "FormEducation": {
+            "$ref": "#/components/schemas/FormEducation"
+          },
+          "AdmissionAt": {
+            "description": "Date of admission.",
+            "type": "string",
+            "format": "date",
+            "example": "2021-01-21T00:00:00.000Z"
+          },
+          "IssueAt": {
+            "description": "Date of issuue.",
+            "type": "string",
+            "format": "date",
+            "example": "2021-01-21T00:00:00.000Z"
+          }
+        }
+      },
+      "BadRequest": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "description": "contains arrays of error messages (format: strings)"
+          },
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "traceId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "EducationInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "UniversityName": {
+            "type": "string"
+          },
+          "QualificationName": {
+            "type": "string"
+          },
+          "FormEducation": {
+            "$ref": "#/components/schemas/FormEducation"
+          },
+          "AdmissionAt": {
+            "type": "string"
+          },
+          "IssueAt": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "AddImageRequest": {
+        "type": "object",
+        "required": [
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Image name.",
+            "type": "string",
+            "example": "Avatar"
+          },
+          "Content": {
+            "description": "Image content.",
+            "type": "string",
+            "format": "byte"
+          },
+          "Extension": {
+            "description": "Image extension.",
+            "type": "string",
+            "example": ".png"
+          }
+        }
+      },
+      "CreateCertificateRequest": {
+        "type": "object",
+        "required": [
+          "UserId",
+          "Name",
+          "SchoolName",
+          "ReceivedAt",
+          "EducationType",
+          "Image"
+        ],
+        "properties": {
+          "UserId": {
+            "description": "Гnique user identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
+          },
+          "Name": {
+            "description": "Certificate name.",
+            "type": "string",
+            "example": "Frontend developer."
+          },
+          "SchoolName": {
+            "description": "Name of school.",
+            "type": "string",
+            "example": "Summer school."
+          },
+          "ReceivedAt": {
+            "description": "Date of issue of the certificate.",
+            "type": "string",
+            "format": "date",
+            "example": "2021-01-21T00:00:00.000Z"
+          },
+          "EducationType": {
+            "$ref": "#/components/schemas/EducationType"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/AddImageRequest"
+          }
+        }
+      },
+      "EditCertificateRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/UserId",
+            "value": {
+              "description": "New unique user identifier.",
+              "type": "string",
+              "format": "uuid",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/EducationType",
+            "value": {
+              "$ref": "#/components/schemas/EducationType"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "description": "New name",
+              "type": "string",
+              "example": "Frontend developer"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/SchoolName",
+            "value": {
+              "description": "New school name.",
+              "type": "string",
+              "example": "Semmer school"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/ReceivedAt",
+            "value": {
+              "description": "Date of issue of the certificate.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/IsActive",
+            "value": {
+              "description": "Is active certificate.",
+              "type": "bool",
+              "example": "false"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Image",
+            "value": {
+              "$ref": "#/components/schemas/AddImageRequest"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchCertificateDocument"
+        }
+      },
+      "PatchCertificateDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/UserId",
+              "/Name",
+              "/SchoolName",
+              "/EducationType",
+              "/ReceivedAt",
+              "/IsActive",
+              "/Image"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
       }
     },
     "parameters": {
