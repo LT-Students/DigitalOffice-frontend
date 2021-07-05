@@ -1,62 +1,38 @@
 <div class="new-department">
-  <a class="nav-link regular_text" routerLink="/admin/dashboard">
-    <img src="assets/svg/vector-arrow-back.svg" alt="back">
-    К дашборду
-  </a>
-  <span class="title h1 h1_dark_2">Новый департамент</span>
-  <div class="form__container">
-    <form
-      autocomplete="off"
-      class="data-form"
-      [formGroup]="departmentForm"
-      (ngSubmit)="postDepartment()"
-    >
-      <div class="new-department__input-container">
-        <div class="new-department__input">
-          <label class="h5 h5_dark_1" for="name">Название<sup class='required'>*</sup></label>
-          <mat-form-field>
-            <input matInput type="text" id="name" formControlName="name" />
-          </mat-form-field>
-        </div>
-        <div class="new-department__input">
-          <label class="h5 h5_dark_1" for="description">Описание</label>
-          <mat-form-field>
-            <input
-              matInput
-              type="text"
-              id="description"
-              formControlName="description"
-            />
-          </mat-form-field>
-        </div>
-        <div class="new-department__input">
-          <label class="h5 h5_dark_1" for="description">Директор</label>
-          <mat-form-field
-            class="mat-form-field_default-select"
-            appearance="none"
-          >
-            <mat-select id="director" formControlName="directorId">
-              <mat-option
-                *ngFor="let director of directors"
-                [value]="director.id"
-              >
-                {{ director.lastName + ' ' + director.firstName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <button
-        mat-flat-button
-        color="primary"
-        class="btn-create-department"
-        type="submit"
-        [disabled]="departmentForm.invalid"
-      >
-        <span class="regular_text regular_text_light_1"
-          >Добавить департамент</span
-        >
-      </button>
-    </form>
-  </div>
+	<a class="nav-link regular_text" routerLink="/admin/dashboard">
+		<img src="assets/svg/vector-arrow-back.svg" alt="back" />
+		К дашборду
+	</a>
+	<span class="title h1 h1_dark_2">Новый департамент</span>
+	<div class="form__container">
+		<form autocomplete="off" class="data-form" [formGroup]="departmentForm" (ngSubmit)="postDepartment()">
+			<div class="new-department__input-container">
+				<div class="new-department__input">
+					<label class="h5 h5_dark_1" for="name">Название<sup doText color="negative_accent">*</sup></label>
+					<mat-form-field>
+						<input matInput type="text" id="name" formControlName="name" />
+					</mat-form-field>
+				</div>
+				<div class="new-department__input">
+					<label class="h5 h5_dark_1" for="description">Описание</label>
+					<mat-form-field>
+						<input matInput type="text" id="description" formControlName="description" />
+					</mat-form-field>
+				</div>
+				<div class="new-department__input">
+					<label class="h5 h5_dark_1" for="description">Директор</label>
+					<mat-form-field class="mat-form-field_default-select" appearance="none">
+						<mat-select id="director" formControlName="directorId">
+							<mat-option *ngFor="let director of directors" [value]="director.id">
+								{{ director.lastName + ' ' + director.firstName }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+			</div>
+			<button mat-flat-button color="primary" class="btn-create-department" type="submit" [disabled]="departmentForm.invalid">
+				<span class="regular_text regular_text_light_1">Добавить департамент</span>
+			</button>
+		</form>
+	</div>
 </div>
