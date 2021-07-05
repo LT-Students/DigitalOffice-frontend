@@ -64,7 +64,12 @@
                 <td>{{ userInfo?.user?.status }}</td>
                 <td>
                     <button mat-icon-button>
-                        <img src='../../../../../assets/svg/edit.svg' alt='edit' />
+                        <img src='/assets/svg/edit.svg' alt='edit' />
+                    </button>
+                </td>
+                <td>
+                    <button mat-icon-button (click)='disableUser(userInfo?.user?.id)'>
+                        <img src='/assets/svg/delete.svg' alt='Delete user' />
                     </button>
                 </td>
             </tr>
