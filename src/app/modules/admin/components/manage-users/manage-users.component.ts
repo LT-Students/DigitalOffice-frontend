@@ -8,24 +8,23 @@ import { UserService } from '@app/services/user.service';
 import { forkJoin, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { EducationType } from '@data/api/user-service/models/education-type';
+import { UserApiService } from '@data/api/user-service/services/user-api.service';
 
 @Component({
 	selector: 'do-manage-users',
 	templateUrl: './manage-users.component.html',
-	styleUrls: ['./manage-users.component.scss']
+	styleUrls: ['./manage-users.component.scss'],
 })
 export class ManageUsersComponent implements OnInit {
 	@ViewChild(MatSort) sort: MatSort;
 
 	public displayedColumns: string[];
 	public userInfo: UserResponse[];
-	public sortedUserInfo:  UserResponse[];
+	public sortedUserInfo: UserResponse[];
 	public studyTypes: EducationType[];
 	private _unsubscribe$: Subject<void>;
 
-	constructor(
-		private _userService: UserService
-	) {
+	constructor(private _userService: UserService, private userApiService: UserApiService) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
 		this.userInfo = null;
@@ -34,14 +33,17 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this._userService.getUsers().pipe(
-			switchMap((res: UserInfo[]) => {
-				return forkJoin(res.map((userInfo: UserInfo) => this._userService.getUser(userInfo.id)));
-			})
-		).subscribe((data: UserResponse[]) => {
-			this.userInfo = data.slice();
-			this.sortedUserInfo = data.slice();
-		});
+		this._userService
+			.getUsers()
+			.pipe(
+				switchMap((res: UserInfo[]) => {
+					return forkJoin(res.map((userInfo: UserInfo) => this._userService.getUser(userInfo.id)));
+				})
+			)
+			.subscribe((data: UserResponse[]) => {
+				this.userInfo = data.slice();
+				this.sortedUserInfo = data.slice();
+			});
 	}
 
 	public onAddEmployeeClick() {
@@ -55,21 +57,37 @@ export class ManageUsersComponent implements OnInit {
 			return;
 		}
 
-		this.sortedUserInfo =  data.sort((a: UserResponse, b: UserResponse) => {
+		this.sortedUserInfo = data.sort((a: UserResponse, b: UserResponse) => {
 			const isAsc = sort.direction === 'asc';
 			switch (sort.active) {
-				case 'name': return this._compare(a.user.firstName, b.user.firstName, isAsc);
-				case 'department': return this._compare(a.department?.name, b.department?.name, isAsc);
-				case 'role': return this._compare(a.position?.name, b.position?.name, isAsc);
-				case 'rate': return this._compare(a.user?.rate, b.user?.rate, isAsc);
-				case 'status': return this._compare(a.user.status, b.user.status, isAsc);
-				default: return 0;
+				case 'name':
+					return this._compare(a.user.firstName, b.user.firstName, isAsc);
+				case 'department':
+					return this._compare(a.department?.name, b.department?.name, isAsc);
+				case 'role':
+					return this._compare(a.position?.name, b.position?.name, isAsc);
+				case 'rate':
+					return this._compare(a.user?.rate, b.user?.rate, isAsc);
+				case 'status':
+					return this._compare(a.user.status, b.user.status, isAsc);
+				default:
+					return 0;
 			}
 		});
 	}
 
+	public disableUser(userId) {
+		console.log(userId);
+		this.userApiService.disableUser(userId).subscribe(
+			(res) => console.log('User was disabled successfully', res),
+			(err) => console.log(err)
+		);
+	}
+
 	private _compare(a: number | string, b: number | string, isAsc: boolean) {
-		if (typeof a === 'undefined' || typeof b === 'undefined') { return 0; }
+		if (typeof a === 'undefined' || typeof b === 'undefined') {
+			return 0;
+		}
 		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 	}
 }

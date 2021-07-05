@@ -71,6 +71,10 @@ export class UserService {
 		);
 	}
 
+	public disableUser(userId: string) {
+		return this.userApiService.disableUser({ userId });
+	}
+
 	private _setUser(user: UserResponse): void {
 		this.localStorageService.set('user', user.user);
 		this.selectedUser.next(user);
