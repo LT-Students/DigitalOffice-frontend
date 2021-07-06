@@ -34,8 +34,8 @@ export class NewDepartmentComponent implements OnInit {
 		this.getDirectors();
 
 		this.departmentForm = this.formBuilder.group({
-			name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-			description: [''],
+			name: ['', [Validators.required]],
+			description: [null],
 			directorId: [null],
 		});
 	}
@@ -60,6 +60,7 @@ export class NewDepartmentComponent implements OnInit {
 						description: this.departmentForm.get('description').value,
 						directorUserId: this.departmentForm.get('directorId').value,
 					},
+					users: [],
 				},
 			})
 			.subscribe(
