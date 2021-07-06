@@ -23,7 +23,7 @@ export class NetService {
 	];
 
 	public getPositionsList(): Observable<PositionInfo[]> {
-		return this._positionApiService.getPositionsList().pipe(
+		return this._positionApiService.findPositions().pipe(
 			switchMap((res: PositionResponse[]) => {
 				return res && res.length ? of(res.map((position) => position.info)) : of(this._mockPositions);
 			})
