@@ -31,7 +31,7 @@ export class NetService {
 	}
 
 	public getDepartmentsList(): Observable<DepartmentInfo[]> {
-		return this._departmentApiService.get_1().pipe(
+		return this._departmentApiService.findDepartments().pipe(
 			switchMap((res: DepartmentsResponse) => of(res.departments)),
 			catchError((error) => {
 				return throwError(error);
