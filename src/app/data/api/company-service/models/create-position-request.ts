@@ -9,7 +9,7 @@ export interface CreatePositionRequest {
   /**
    * Position description.
    */
-  description: null | string;
+  description?: null | string;
 
   /**
    * Position name.
