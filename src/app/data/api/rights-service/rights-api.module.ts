@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { RightsApiService } from './services/rights-api.service';
+import { RoleApiService } from './services/role-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -15,6 +16,7 @@ import { RightsApiService } from './services/rights-api.service';
   declarations: [],
   providers: [
     RightsApiService,
+    RoleApiService,
     ApiConfiguration
   ],
 })
