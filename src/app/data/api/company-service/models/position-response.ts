@@ -3,6 +3,6 @@
 import { PositionInfo } from './position-info';
 export interface PositionResponse {
   info?: PositionInfo;
-  userIds?: Array<string>;
+  userIds?: null | Array<string>;
 }
 
