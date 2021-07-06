@@ -28,8 +28,8 @@ export class NewRoleComponent implements OnInit {
 	ngOnInit(): void {
 		this.getRights();
 		this.roleForm = this.fb.group({
-			name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-			description: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+			name: ['', [Validators.required]],
+			description: [''],
 			rights: this.fb.array([]),
 		});
 	}
