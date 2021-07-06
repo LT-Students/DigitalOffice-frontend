@@ -8,7 +8,6 @@ import { DepartmentsResponse } from '@data/api/company-service/models/department
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
-import { OfficeApiService } from '@data/api/company-service/services/office-api.service';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 
 @Injectable()
@@ -43,10 +42,7 @@ export class NetService {
 	}
 
 	public getOfficesList() {
-		return this._companyApiService.findOffices({
-		body: {
-			takeCount: 10,
-		} });
+		return this._companyApiService.findOffices({ skipCount: 0, takeCount: 10 });
 	}
 
 	public generatePassword(): Observable<string> {
