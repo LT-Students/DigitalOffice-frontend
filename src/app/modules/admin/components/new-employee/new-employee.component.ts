@@ -13,8 +13,9 @@ import { CommunicationInfo } from '@data/api/user-service/models/communication-i
 import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserStatus } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 import { NetService } from '@app/services/net.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { OfficeInfo } from '@data/api/company-service/models/office-info';
 
 export const DATE_FORMAT = {
 	parse: {
@@ -47,6 +48,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public userForm: FormGroup = null;
 	public position$: Observable<PositionInfo[]>;
 	public department$: Observable<DepartmentInfo[]>;
+	public offices: OfficeInfo[];
 
 	private _unsubscribe$: Subject<void>;
 
@@ -64,6 +66,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public ngOnInit(): void {
 		this.getPositions();
 		this.getDepartments();
+		this.getOffices();
 		this._initForm();
 	}
 
@@ -80,24 +83,35 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		this.department$ = this._netService.getDepartmentsList();
 	}
 
+	public getOffices(): void {
+		this._netService.getOfficesList().subscribe(
+			({ offices }) => {
+				this.offices = offices;
+			},
+			(error) => console.log(error)
+		);
+	}
+
 	public createEmployee(): void {
 		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
 
-		this.userService.createUser(params).pipe(takeUntil(this._unsubscribe$))
-		.subscribe(
-			(result: OperationResultResponse) => {
-				if (result.errors && result.errors.length) {
-					const message = result.errors.join('\n');
-					this._matSnackBar.open(message, 'Закрыть');
+		this.userService
+			.createUser(params)
+			.pipe(takeUntil(this._unsubscribe$))
+			.subscribe(
+				(result: OperationResultResponse) => {
+					if (result.errors && result.errors.length) {
+						const message = result.errors.join('\n');
+						this._matSnackBar.open(message, 'Закрыть');
+					}
+					this.dialogRef.close(result);
+				},
+				(error: OperationResultResponse | HttpErrorResponse) => {
+					const message =
+						error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
+					this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
 				}
-				this.dialogRef.close(result);
-			},
-			(error: OperationResultResponse | HttpErrorResponse) => {
-				const message =
-					error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
-				this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
-			},
-		);
+			);
 	}
 
 	public changeWorkingRate(step: number): void {
@@ -107,11 +121,13 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	public generatePassword() {
-		return this._netService.generatePassword().pipe(takeUntil(this._unsubscribe$))
+		return this._netService
+			.generatePassword()
+			.pipe(takeUntil(this._unsubscribe$))
 			.subscribe((password: string) => {
 				this.userForm.patchValue({ password: password });
 				this.userForm.updateValueAndValidity();
-			})
+			});
 	}
 
 	public onCancelClick() {
