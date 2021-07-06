@@ -129,11 +129,23 @@ export class CompanyApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findOffices$Response(params?: {
+  findOffices$Response(params: {
+
+    /**
+     * Number of pages to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of offices on one page.
+     */
+    takeCount: number;
   }): Observable<StrictHttpResponse<FindOfficesResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.FindOfficesPath, 'get');
     if (params) {
+      rb.query('skipCount', params.skipCount, {});
+      rb.query('takeCount', params.takeCount, {});
     }
 
     return this.http.request(rb.build({
@@ -153,7 +165,17 @@ export class CompanyApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findOffices(params?: {
+  findOffices(params: {
+
+    /**
+     * Number of pages to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of offices on one page.
+     */
+    takeCount: number;
   }): Observable<FindOfficesResponse> {
 
     return this.findOffices$Response(params).pipe(

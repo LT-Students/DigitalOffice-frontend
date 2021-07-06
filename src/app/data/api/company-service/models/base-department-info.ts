@@ -9,7 +9,7 @@ export interface BaseDepartmentInfo {
   /**
    * Department description.
    */
-  description: null | string;
+  description?: null | string;
 
   /**
    * Specific director user id this department.

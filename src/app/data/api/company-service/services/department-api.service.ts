@@ -135,22 +135,22 @@ export class DepartmentApiService extends BaseService {
   }
 
   /**
-   * Path part for operation getDepartments
+   * Path part for operation findDepartments
    */
-  static readonly GetDepartmentsPath = '/department/find';
+  static readonly FindDepartmentsPath = '/department/find';
 
   /**
    * Returns finded departments.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getDepartments()` instead.
+   * To access only the response body, use `findDepartments()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getDepartments$Response(params?: {
+  findDepartments$Response(params?: {
   }): Observable<StrictHttpResponse<DepartmentsResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetDepartmentsPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.FindDepartmentsPath, 'get');
     if (params) {
     }
 
@@ -169,14 +169,14 @@ export class DepartmentApiService extends BaseService {
    * Returns finded departments.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getDepartments$Response()` instead.
+   * To access the full response (for headers, for example), `findDepartments$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getDepartments(params?: {
+  findDepartments(params?: {
   }): Observable<DepartmentsResponse> {
 
-    return this.getDepartments$Response(params).pipe(
+    return this.findDepartments$Response(params).pipe(
       map((r: StrictHttpResponse<DepartmentsResponse>) => r.body as DepartmentsResponse)
     );
   }

@@ -1,1 +1,9 @@
 export { RightResponse } from './models/right-response';
+export { CreateRoleRequest } from './models/create-role-request';
+export { RolesResponse } from './models/roles-response';
+export { RoleResponse } from './models/role-response';
+export { RoleInfo } from './models/role-info';
+export { UserInfo } from './models/user-info';
+export { ErrorResponse } from './models/error-response';
+export { OperationResultResponse } from './models/operation-result-response';
+export { OperationResultStatusType } from './models/operation-result-status-type';

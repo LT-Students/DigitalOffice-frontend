@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { CreateUserRequest } from '../models/create-user-request';
+import { EditUserRequest } from '../models/edit-user-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { PatchOperation } from '../models/patch-operation';
 import { UserResponse } from '../models/user-response';
 import { UsersResponse } from '../models/users-response';
 
@@ -95,6 +95,11 @@ export class UserApiService extends BaseService {
      * Include images content in answer.
      */
     includeimages?: boolean;
+
+    /**
+     * Include educations info in answer.
+     */
+    includeeducations?: boolean;
   }): Observable<StrictHttpResponse<UserResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.GetUserPath, 'get');
@@ -110,6 +115,7 @@ export class UserApiService extends BaseService {
       rb.query('includeskills', params.includeskills, {});
       rb.query('includeprojects', params.includeprojects, {});
       rb.query('includeimages', params.includeimages, {});
+      rb.query('includeeducations', params.includeeducations, {});
     }
 
     return this.http.request(rb.build({
@@ -187,6 +193,11 @@ export class UserApiService extends BaseService {
      * Include images content in answer.
      */
     includeimages?: boolean;
+
+    /**
+     * Include educations info in answer.
+     */
+    includeeducations?: boolean;
   }): Observable<UserResponse> {
 
     return this.getUser$Response(params).pipe(
@@ -210,6 +221,11 @@ export class UserApiService extends BaseService {
   findUsers$Response(params: {
 
     /**
+     * Specific department of users.
+     */
+    departmentid?: string;
+
+    /**
      * Number of pages to skip.
      */
     skipCount: number;
@@ -222,6 +238,7 @@ export class UserApiService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
     if (params) {
+      rb.query('departmentid', params.departmentid, {});
       rb.query('skipCount', params.skipCount, {});
       rb.query('takeCount', params.takeCount, {});
     }
@@ -246,6 +263,11 @@ export class UserApiService extends BaseService {
    * This method doesn't expect any request body.
    */
   findUsers(params: {
+
+    /**
+     * Specific department of users.
+     */
+    departmentid?: string;
 
     /**
      * Number of pages to skip.
@@ -332,7 +354,7 @@ export class UserApiService extends BaseService {
      * Specific user id
      */
     userId: string;
-    body?: Array<PatchOperation>
+    body?: Array<EditUserRequest>
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserPath, 'patch');
@@ -366,7 +388,7 @@ export class UserApiService extends BaseService {
      * Specific user id
      */
     userId: string;
-    body?: Array<PatchOperation>
+    body?: Array<EditUserRequest>
   }): Observable<OperationResultResponse> {
 
     return this.editUser$Response(params).pipe(
