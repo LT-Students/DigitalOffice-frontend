@@ -23,7 +23,7 @@ export class NetService {
 	];
 
 	public getPositionsList(): Observable<PositionInfo[]> {
-		return this._positionApiService.getPositionsList().pipe(
+		return this._positionApiService.findPositions().pipe(
 			switchMap((res: PositionResponse[]) => {
 				return res && res.length ? of(res.map((position) => position.info)) : of(this._mockPositions);
 			})
@@ -31,7 +31,7 @@ export class NetService {
 	}
 
 	public getDepartmentsList(): Observable<DepartmentInfo[]> {
-		return this._departmentApiService.getDepartments().pipe(
+		return this._departmentApiService.findDepartments().pipe(
 			switchMap((res: DepartmentsResponse) => of(res.departments)),
 			catchError((error) => {
 				return throwError(error);
