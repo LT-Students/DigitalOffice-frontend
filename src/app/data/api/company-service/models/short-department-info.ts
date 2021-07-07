@@ -4,26 +4,22 @@
 /**
  * Specific department data.
  */
-export interface BaseDepartmentInfo {
+export interface ShortDepartmentInfo {
 
   /**
    * Department description.
    */
-  description: null | string;
-
-  /**
-   * Specific director user id this department.
-   */
-  directorUserId?: null | string;
+  description?: null | string;
 
   /**
    * Department id.
    */
   id?: string;
+  isActive?: boolean;
 
   /**
    * Department name.
    */
-  name: string;
+  name?: string;
 }
 

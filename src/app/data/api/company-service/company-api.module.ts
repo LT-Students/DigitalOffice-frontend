@@ -6,6 +6,8 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { PositionApiService } from './services/position-api.service';
 import { DepartmentApiService } from './services/department-api.service';
+import { CompanyApiService } from './services/company-api.service';
+import { OfficeApiService } from './services/office-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,6 +19,8 @@ import { DepartmentApiService } from './services/department-api.service';
   providers: [
     PositionApiService,
     DepartmentApiService,
+    CompanyApiService,
+    OfficeApiService,
     ApiConfiguration
   ],
 })
