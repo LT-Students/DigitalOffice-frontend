@@ -19,7 +19,7 @@ export const enum RouteType {
 const routes: Routes = [
 	{
 		path: '',
-		// canActivate: [ InstallerGuard ],
+		canActivate: [ InstallerGuard ],
 		children: [ {
 			path: '',
 			component: ContentContainerComponent,

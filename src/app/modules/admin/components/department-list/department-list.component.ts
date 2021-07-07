@@ -1,43 +1,56 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { UserResponse } from '@data/api/user-service/models/user-response';
+import { NetService } from '@app/services/net.service';
+import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 
 @Component({
-	selector: 'app-department-list',
+	selector: 'do-department-list',
 	templateUrl: './department-list.component.html',
 	styleUrls: ['./department-list.component.scss'],
 })
 export class DepartmentListComponent implements OnInit {
 	@ViewChild(MatSort) sort: MatSort;
 
-	constructor() {}
+	public displayedColumns: string[];
+	public departmentInfo: DepartmentInfo[];
+	public sortedDepartmentInfo: DepartmentInfo[];
 
-	ngOnInit(): void {}
+	constructor(private netService: NetService) {
+		this.displayedColumns = ['name', 'description', 'director', 'amount'];
+		this.departmentInfo = null;
+		this.sortedDepartmentInfo = null;
+	}
+
+	ngOnInit(): void {
+		this.netService.getDepartmentsList().subscribe((data) => {
+			this.departmentInfo = data.slice();
+			this.sortedDepartmentInfo = data.slice();
+			console.log(data);
+		})
+	}
 
 	public onAddEmployeeClick() {
 		console.log('onAddEmployeeClick');
 	}
 
 	public sortData(sort: Sort): void {
-		const data = this.userInfo.slice();
+		const data = this.departmentInfo.slice();
 		if (!sort.active || sort.direction === '') {
-			this.sortedUserInfo = data;
+			this.sortedDepartmentInfo = data;
 			return;
 		}
 
-		this.sortedUserInfo = data.sort((a: UserResponse, b: UserResponse) => {
+		this.sortedDepartmentInfo = data.sort((a: DepartmentInfo, b: DepartmentInfo) => {
 			const isAsc = sort.direction === 'asc';
 			switch (sort.active) {
 				case 'name':
-					return this._compare(a.user.firstName, b.user.firstName, isAsc);
-				case 'department':
-					return this._compare(a.department?.name, b.department?.name, isAsc);
-				case 'role':
-					return this._compare(a.position?.name, b.position?.name, isAsc);
-				case 'rate':
-					return this._compare(a.user?.rate, b.user?.rate, isAsc);
-				case 'status':
-					return this._compare(a.user.status, b.user.status, isAsc);
+					return this._compare(a.name, b.name, isAsc);
+				case 'description':
+					return this._compare(a.description, b.description, isAsc);
+				case 'director':
+					return this._compare(a.director?.firstName, b.director?.firstName, isAsc);
+				case 'amount':
+					return this._compare(a.users.length, b.users.length, isAsc);
 				default:
 					return 0;
 			}
