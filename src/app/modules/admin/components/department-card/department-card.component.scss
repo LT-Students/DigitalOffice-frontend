@@ -1,0 +1,36 @@
+.title {
+	margin-bottom: 40px;
+}
+
+.department {
+	&__info {
+		margin-bottom: 40px;
+		padding-bottom: 40px;
+
+		border-bottom: 1px solid #fafafa;
+	}
+
+	&__label {
+		margin-top: 16px;
+
+		width: 50%;
+	}
+}
+
+.table {
+	&__header {
+		margin-bottom: 20px;
+
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__content {
+		width: 100%;
+	}
+
+	&__filters {
+		display: flex;
+		justify-content: space-between;
+	}
+}

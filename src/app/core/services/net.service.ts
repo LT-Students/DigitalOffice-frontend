@@ -5,7 +5,7 @@ import { PositionResponse } from '@data/api/company-service/models/position-resp
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { DepartmentsResponse } from '@data/api/company-service/models/departments-response';
-import { DepartmentInfo } from '@data/api/user-service/models/department-info';
+import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
@@ -43,6 +43,10 @@ export class NetService {
 
 	public getOfficesList() {
 		return this._companyApiService.findOffices({ skipCount: 0, takeCount: 10 });
+	}
+
+	public getDepartment(departmentId: string): Observable<DepartmentInfo> {
+		return this._departmentApiService.getDepartment({ departmentId });
 	}
 
 	public generatePassword(): Observable<string> {

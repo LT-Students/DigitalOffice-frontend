@@ -5,7 +5,6 @@ import { RouteType } from '../../app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
-import { DepartmentListComponent } from './components/department-list/department-list.component';
 
 
 const adminRoutes: Routes = [
@@ -13,7 +12,6 @@ const adminRoutes: Routes = [
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'new-project', component: NewProjectComponent },
 	{ path: 'manage-users', component: ManageUsersComponent },
-	{ path: 'departments', component: DepartmentListComponent },
 	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
 ];
 
