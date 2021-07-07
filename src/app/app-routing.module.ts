@@ -11,7 +11,6 @@ export const enum RouteType {
   AUTH = 'auth',
   USER = 'user',
   ADMIN = 'admin',
-  EMPLOYEE = 'employee',
   PROJECT = 'project',
 }
 
@@ -36,11 +35,11 @@ const routes: Routes = [
         canActivate: [AdminGuard],
       },
       {
-        path: `${RouteType.EMPLOYEE}/:id`,
+        path: `${RouteType.USER}/:id`,
         component: EmployeePageComponent,
       },
       {
-        path: RouteType.EMPLOYEE,
+        path: RouteType.USER,
         component: EmployeePageComponent,
       },
       {
