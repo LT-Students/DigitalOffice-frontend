@@ -23,6 +23,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { NewRoleComponent } from './components/new-role/new-role.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 import { NewOfficeComponent } from './components/new-office/new-office.component';
+import { DepartmentListComponent } from './components/department-list/department-list.component';
 
 @NgModule({
 	declarations: [
@@ -43,6 +44,7 @@ import { NewOfficeComponent } from './components/new-office/new-office.component
 		NewRoleComponent,
 		ManageUsersComponent,
 		NewOfficeComponent,
+		DepartmentListComponent,
 	],
 	imports: [
 		CommonModule,

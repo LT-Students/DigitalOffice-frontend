@@ -21,6 +21,7 @@ export enum AdminDashboardModalType {
 	NEW_PROJECT,
 	MANAGE_USERS,
 	NEW_OFFICE,
+	DEPARTMENT_LIST,
 }
 
 export interface UserSearchModalConfig {
