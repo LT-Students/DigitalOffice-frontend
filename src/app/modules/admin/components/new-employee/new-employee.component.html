@@ -113,7 +113,7 @@
             <sup class="new-employee__required" doText color="negative_accent">*</sup>
           </label>
             <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
-                <mat-select id="office" placeholder="Выберите офис" formControlName="office" required>
+                <mat-select id="office" placeholder="Выберите офис" formControlName="officeId" required>
                     <mat-option *ngFor="let office of offices" [value]="office.id">
                         {{ office.city }}, {{ office.address }}
                     </mat-option>

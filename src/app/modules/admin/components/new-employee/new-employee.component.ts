@@ -88,11 +88,9 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	public getRoles(): void {
-		this.roleApiService
-			.findRoles({ skipCount: 0, takeCount: 10 })
-			.subscribe(({ roles }: RolesResponse) => {
-				this.roles = roles;
-			});
+		this.roleApiService.findRoles({ skipCount: 0, takeCount: 10 }).subscribe(({ roles }: RolesResponse) => {
+			this.roles = roles;
+		});
 	}
 
 	public getOffices(): void {
@@ -119,6 +117,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 					this.dialogRef.close(result);
 				},
 				(error: OperationResultResponse | HttpErrorResponse) => {
+					console.log(error);
 					const message =
 						error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
 					this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
@@ -142,12 +141,12 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			firstName: ['', [Validators.required, Validators.maxLength(32)]],
 			middleName: ['', [Validators.maxLength(32)]],
 			positionId: ['', [Validators.required]],
-			startWorkingAt: [''],
+			startWorkingAt: [null],
 			rate: ['1', [Validators.required]],
 			departmentId: [''],
-			office: ['', [Validators.required]],
+			officeId: ['', [Validators.required]],
 			email: ['', [Validators.required, Validators.email]],
-			roleId: ['']
+			roleId: [null],
 		});
 	}
 
@@ -171,6 +170,8 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			startWorkingAt: this.userForm.get('startWorkingAt').value as string,
 			status: UserStatus.WorkFromHome,
 			gender: UserGender.NotSelected,
+			officeId: this.userForm.get('officeId').value,
+			roleId: this.userForm.get('roleId').value,
 		};
 
 		return params;
