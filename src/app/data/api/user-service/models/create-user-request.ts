@@ -49,6 +49,11 @@ export interface CreateUserRequest {
   middleName?: null | string;
 
   /**
+   * User office ID.
+   */
+  officeId: string;
+
+  /**
    * User password.
    */
   password?: null | string;
@@ -62,6 +67,11 @@ export interface CreateUserRequest {
    * User rate
    */
   rate: number;
+
+  /**
+   * User role ID.
+   */
+  roleId?: null | string;
 
   /**
    * Time when the user started working for the company.

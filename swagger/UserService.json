@@ -1058,6 +1058,7 @@
           "Status",
           "Rate",
           "PositionId",
+          "OfficeId",
           "Communications"
         ],
         "properties": {
@@ -1130,6 +1131,20 @@
           },
           "DepartmentId": {
             "description": "User department ID.",
+            "type": "string",
+            "format": "uuid",
+            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4",
+            "nullable": true
+          },
+          "OfficeId": {
+            "description": "User office ID.",
+            "type": "string",
+            "format": "uuid",
+            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4",
+            "nullable": false
+          },
+          "RoleId": {
+            "description": "User role ID.",
             "type": "string",
             "format": "uuid",
             "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4",
