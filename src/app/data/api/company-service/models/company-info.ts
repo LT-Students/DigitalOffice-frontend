@@ -4,16 +4,18 @@ import { ImageInfo } from './image-info';
 import { OfficeInfo } from './office-info';
 import { PositionInfo } from './position-info';
 import { ShortDepartmentInfo } from './short-department-info';
+import { SmtpInfo } from './smtp-info';
 export interface CompanyInfo {
   companyName?: string;
-  departments?: Array<ShortDepartmentInfo>;
+  departments?: null | Array<ShortDepartmentInfo>;
   description?: null | string;
   id?: string;
   logo?: ImageInfo;
-  offices?: Array<OfficeInfo>;
+  offices?: null | Array<OfficeInfo>;
   portalName?: string;
-  positions?: Array<PositionInfo>;
+  positions?: null | Array<PositionInfo>;
   siteUrl?: string;
+  smtpInfo?: SmtpInfo;
   tagline?: null | string;
 }
 

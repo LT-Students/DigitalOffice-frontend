@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface Smtp {
+export interface SmtpInfo {
   email: string;
   enableSsl: boolean;
   host: string;

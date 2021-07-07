@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 import { AdminInfo } from './admin-info';
-import { Smtp } from './smtp';
+import { SmtpInfo } from './smtp-info';
 export interface CreateCompanyRequest {
   adminInfo: AdminInfo;
   companyName: string;
   portalName: string;
-  sMTP: Smtp;
   siteUrl: string;
+  smtpInfo: SmtpInfo;
 }
 
