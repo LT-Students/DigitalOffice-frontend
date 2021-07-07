@@ -1,7 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import { ProjectUserRequest } from './project-user-request';
-export interface AddUsersToProjectReques {
+export interface AddUsersToProjectRequest {
+
+  /**
+   * Unique project identifier.
+   */
   projectId: string;
   users: Array<ProjectUserRequest>;
 }

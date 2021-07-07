@@ -1,16 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface EditProjectRequest {
+export interface PatchDocument {
 
   /**
    * The operation to be performed
    */
-  op: 'replace';
+  op: 'replace' | 'add' | 'remove';
 
   /**
    * A JSON-Pointer.
    */
-  path: '/Name' | '/ShortName' | '/Description' | '/ShortDescription' | '/Status' | '/DepartmentId';
+  path: '/Name' | '/Description' | '/AssignedTo' | '/PriorityId' | '/StatusId' | '/TypeId' | '/PlannedMinutes';
 
   /**
    * The value to be used within the operations.
