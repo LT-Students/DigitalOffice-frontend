@@ -107,7 +107,7 @@
             [isEdit]='true'
           ></do-datepicker>
         </div>
-        <div class="new-employee__form-element new-employee__form-element_span_2">
+        <div class="new-employee__form-element">
           <label class="new-employee__label" doText color="gray1" for="office">
             Офис
             <sup class="new-employee__required" doText color="negative_accent">*</sup>
@@ -116,6 +116,18 @@
             <input id='office' matInput placeholder='Введите адрес офиса' formControlName='office' required />
           </mat-form-field>
         </div>
+          <div class="new-employee__form-element">
+              <label class="new-employee__label" doText color="gray1">
+                  Роль
+              </label>
+              <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
+                  <mat-select id="roleId" placeholder="Выберите роль" formControlName="roleId" required>
+                      <mat-option *ngFor="let role of roles" [value]="role.id">
+                          {{ role?.name }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
       </div>
     </div>
     <div class="section new-employee__auth">

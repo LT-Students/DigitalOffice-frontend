@@ -20,6 +20,7 @@ import { NewDepartmentComponent } from './components/new-department/new-departme
 import { NewSpecializationComponent } from './components/new-specialization/new-specialization.component';
 import { DeleteDirectionComponent } from './components/new-project/modals/delete-direction/delete-direction.component';
 import { AdminRoutingModule } from './admin-routing.module';
+import { NewRoleComponent } from './components/new-role/new-role.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 
 @NgModule({
@@ -38,6 +39,7 @@ import { ManageUsersComponent } from './components/manage-users/manage-users.com
 		NewDepartmentComponent,
 		NewSpecializationComponent,
 		DeleteDirectionComponent,
+		NewRoleComponent,
 		ManageUsersComponent,
 	],
 	imports: [
