@@ -14,6 +14,7 @@ import { NewDepartmentComponent } from '../new-department/new-department.compone
 import { NewSpecializationComponent } from '../new-specialization/new-specialization.component';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 import { NewRoleComponent } from '../new-role/new-role.component';
+import { NewOfficeComponent } from '../new-office/new-office.component';
 
 @Component({
 	selector: 'do-dashboard',
@@ -46,6 +47,8 @@ export class DashboardComponent implements OnInit {
 					? this.dialog.open(NewEmployeeComponent, {}).afterClosed()
 					: (value === this.modalType.NEW_ROLE)
 					? this.dialog.open(NewRoleComponent, {}).afterClosed()
+					: (value === this.modalType.NEW_OFFICE)
+					? this.dialog.open(NewOfficeComponent, { width: '503px' }).afterClosed()
 					: (value === this.modalType.NEW_PROJECT)
 					? fromPromise(this._router.navigate(['admin/new-project']))
 					: (value === this.modalType.MANAGE_USERS)

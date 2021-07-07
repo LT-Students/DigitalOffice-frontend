@@ -22,6 +22,7 @@ import { DeleteDirectionComponent } from './components/new-project/modals/delete
 import { AdminRoutingModule } from './admin-routing.module';
 import { NewRoleComponent } from './components/new-role/new-role.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { NewOfficeComponent } from './components/new-office/new-office.component';
 
 @NgModule({
 	declarations: [
@@ -41,6 +42,7 @@ import { ManageUsersComponent } from './components/manage-users/manage-users.com
 		DeleteDirectionComponent,
 		NewRoleComponent,
 		ManageUsersComponent,
+		NewOfficeComponent,
 	],
 	imports: [
 		CommonModule,

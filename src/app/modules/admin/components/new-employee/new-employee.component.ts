@@ -17,6 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { RolesResponse } from '@data/api/rights-service/models/roles-response';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
+import { OfficeInfo } from '@data/api/company-service/models/office-info';
 
 export const DATE_FORMAT = {
 	parse: {
@@ -49,7 +50,8 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public userForm: FormGroup = null;
 	public position$: Observable<PositionInfo[]>;
 	public department$: Observable<DepartmentInfo[]>;
-	public roles: Array<RoleInfo>;
+	public roles: RoleInfo[];
+	public offices: OfficeInfo[];
 
 	private _unsubscribe$: Subject<void>;
 
@@ -68,6 +70,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		this.getPositions();
 		this.getDepartments();
 		this.getRoles();
+		this.getOffices();
 		this._initForm();
 	}
 
@@ -90,6 +93,15 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			.subscribe(({ roles }: RolesResponse) => {
 				this.roles = roles;
 			});
+	}
+
+	public getOffices(): void {
+		this._netService.getOfficesList().subscribe(
+			({ offices }) => {
+				this.offices = offices;
+			},
+			(error) => console.log(error)
+		);
 	}
 
 	public createEmployee(): void {
