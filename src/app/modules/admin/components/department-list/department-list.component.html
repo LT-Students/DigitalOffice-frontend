@@ -1,7 +1,7 @@
 <div class="card card_standard">
-	<div class="table">
+	<div doText class="table">
 		<div class="table-header">
-			<h3 doText underlined underlinedSize="sm">Сотрудники</h3>
+			<h3 doText underlined underlinedSize="sm">Список департаментов</h3>
 			<button mat-flat-button color="primary" (click)="onAddEmployeeClick()">+ Добавить департамент</button>
 		</div>
 		<div class="table-filters">
@@ -21,16 +21,18 @@
 				<th mat-sort-header="director">Директор</th>
 				<th mat-sort-header="amount">Количество сотрудников</th>
 			</tr>
-			<tr *ngFor="let departmentInfo of sortedDepartmentInfo">
-				<td>
-					{{ departmentInfo.name }}
-				</td>
-				<td>
-					{{ departmentInfo.description ? departmentInfo.description : '—' }}
-				</td>
-				<td>{{ departmentInfo.director?.firstName ? departmentInfo.director?.firstName : '—' }}</td>
-				<td>{{ departmentInfo.users.length }}</td>
-			</tr>
+			<ng-container *ngFor="let departmentInfo of sortedDepartmentsInfo">
+				<tr (click)="onDepartmentClick(departmentInfo.id)">
+					<td>
+						{{ departmentInfo.name }}
+					</td>
+					<td>
+						{{ departmentInfo.description ? departmentInfo.description : '—' }}
+					</td>
+					<td>{{ departmentInfo.director?.firstName ? departmentInfo.director?.firstName : '—' }}</td>
+					<td>{{ departmentInfo.users.length }}</td>
+				</tr>
+			</ng-container>
 		</table>
 	</div>
 </div>
