@@ -11,6 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreatePositionRequest } from '../models/create-position-request';
 import { EditPositionRequest } from '../models/edit-position-request';
+import { OperationResultResponse } from '../models/operation-result-response';
 import { PositionResponse } from '../models/position-response';
 
 @Injectable({
@@ -25,19 +26,19 @@ export class PositionApiService extends BaseService {
   }
 
   /**
-   * Path part for operation getPositionById
+   * Path part for operation getPosition
    */
-  static readonly GetPositionByIdPath = '/position/get';
+  static readonly GetPositionPath = '/position/get';
 
   /**
    * Returns position by id.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getPositionById()` instead.
+   * To access only the response body, use `getPosition()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getPositionById$Response(params: {
+  getPosition$Response(params: {
 
     /**
      * Position global unique identifier.
@@ -45,7 +46,7 @@ export class PositionApiService extends BaseService {
     positionId: string;
   }): Observable<StrictHttpResponse<PositionResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.GetPositionByIdPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, PositionApiService.GetPositionPath, 'get');
     if (params) {
       rb.query('positionId', params.positionId, {});
     }
@@ -65,11 +66,11 @@ export class PositionApiService extends BaseService {
    * Returns position by id.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getPositionById$Response()` instead.
+   * To access the full response (for headers, for example), `getPosition$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getPositionById(params: {
+  getPosition(params: {
 
     /**
      * Position global unique identifier.
@@ -77,28 +78,28 @@ export class PositionApiService extends BaseService {
     positionId: string;
   }): Observable<PositionResponse> {
 
-    return this.getPositionById$Response(params).pipe(
+    return this.getPosition$Response(params).pipe(
       map((r: StrictHttpResponse<PositionResponse>) => r.body as PositionResponse)
     );
   }
 
   /**
-   * Path part for operation getPositionsList
+   * Path part for operation findPositions
    */
-  static readonly GetPositionsListPath = '/position/find';
+  static readonly FindPositionsPath = '/position/find';
 
   /**
    * Returns all added positions.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getPositionsList()` instead.
+   * To access only the response body, use `findPositions()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getPositionsList$Response(params?: {
+  findPositions$Response(params?: {
   }): Observable<StrictHttpResponse<Array<PositionResponse>>> {
 
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.GetPositionsListPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, PositionApiService.FindPositionsPath, 'get');
     if (params) {
     }
 
@@ -117,14 +118,14 @@ export class PositionApiService extends BaseService {
    * Returns all added positions.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getPositionsList$Response()` instead.
+   * To access the full response (for headers, for example), `findPositions$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getPositionsList(params?: {
+  findPositions(params?: {
   }): Observable<Array<PositionResponse>> {
 
-    return this.getPositionsList$Response(params).pipe(
+    return this.findPositions$Response(params).pipe(
       map((r: StrictHttpResponse<Array<PositionResponse>>) => r.body as Array<PositionResponse>)
     );
   }
@@ -144,7 +145,7 @@ export class PositionApiService extends BaseService {
    */
   addPosition$Response(params: {
     body: CreatePositionRequest
-  }): Observable<StrictHttpResponse<string>> {
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, PositionApiService.AddPositionPath, 'post');
     if (params) {
@@ -157,7 +158,7 @@ export class PositionApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -172,10 +173,10 @@ export class PositionApiService extends BaseService {
    */
   addPosition(params: {
     body: CreatePositionRequest
-  }): Observable<string> {
+  }): Observable<OperationResultResponse> {
 
     return this.addPosition$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 
@@ -230,19 +231,19 @@ export class PositionApiService extends BaseService {
   }
 
   /**
-   * Path part for operation disablePositionById
+   * Path part for operation disablePosition
    */
-  static readonly DisablePositionByIdPath = '/position/disable';
+  static readonly DisablePositionPath = '/position/disable';
 
   /**
    * Deletes the specified position.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `disablePositionById()` instead.
+   * To access only the response body, use `disablePosition()` instead.
    *
    * This method doesn't expect any request body.
    */
-  disablePositionById$Response(params: {
+  disablePosition$Response(params: {
 
     /**
      * Position global unique identifier.
@@ -250,7 +251,7 @@ export class PositionApiService extends BaseService {
     positionId: string;
   }): Observable<StrictHttpResponse<void>> {
 
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.DisablePositionByIdPath, 'delete');
+    const rb = new RequestBuilder(this.rootUrl, PositionApiService.DisablePositionPath, 'delete');
     if (params) {
       rb.query('positionId', params.positionId, {});
     }
@@ -270,11 +271,11 @@ export class PositionApiService extends BaseService {
    * Deletes the specified position.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `disablePositionById$Response()` instead.
+   * To access the full response (for headers, for example), `disablePosition$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  disablePositionById(params: {
+  disablePosition(params: {
 
     /**
      * Position global unique identifier.
@@ -282,7 +283,7 @@ export class PositionApiService extends BaseService {
     positionId: string;
   }): Observable<void> {
 
-    return this.disablePositionById$Response(params).pipe(
+    return this.disablePosition$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
     );
   }

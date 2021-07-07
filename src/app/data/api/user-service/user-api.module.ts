@@ -6,6 +6,8 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { UserApiService } from './services/user-api.service';
 import { CredentialsApiService } from './services/credentials-api.service';
+import { EducationApiService } from './services/education-api.service';
+import { CertificateApiService } from './services/certificate-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,6 +19,8 @@ import { CredentialsApiService } from './services/credentials-api.service';
   providers: [
     UserApiService,
     CredentialsApiService,
+    EducationApiService,
+    CertificateApiService,
     ApiConfiguration
   ],
 })

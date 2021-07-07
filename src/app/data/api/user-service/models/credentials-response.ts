@@ -1,7 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface CredentialsResponse {
-  token?: string;
+  accessToken?: string;
+  refreshToken?: string;
   userId?: string;
 }
 

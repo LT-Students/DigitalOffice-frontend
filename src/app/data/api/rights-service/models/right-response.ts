@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface RightResponse {
-  description?: string;
+  description?: null | string;
   id?: number;
   name?: string;
 }

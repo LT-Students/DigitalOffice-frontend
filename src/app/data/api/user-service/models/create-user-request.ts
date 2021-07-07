@@ -1,18 +1,26 @@
 /* tslint:disable */
 /* eslint-disable */
+import { AddImageRequest } from './add-image-request';
 import { CommunicationInfo } from './communication-info';
+import { UserGender } from './user-gender';
 import { UserStatus } from './user-status';
 export interface CreateUserRequest {
+  avatarImage?: AddImageRequest;
 
   /**
-   * Avatar image file content encoded in base64 string.
+   * User city.
    */
-  avatarImage?: null | string;
+  city?: null | string;
 
   /**
    * Minimum one communication with type Email must be added.
    */
   communications: Array<CommunicationInfo>;
+
+  /**
+   * Date of user birth.
+   */
+  dayOfBirth?: null | string;
 
   /**
    * User department ID.
@@ -23,6 +31,7 @@ export interface CreateUserRequest {
    * First name of a user.
    */
   firstName: string;
+  gender: UserGender;
 
   /**
    * Mark whether the user is an administrator.
@@ -35,19 +44,19 @@ export interface CreateUserRequest {
   lastName: string;
 
   /**
-   * Last name of a user.
+   * Middle name of a user.
    */
   middleName?: null | string;
 
   /**
    * User password.
    */
-  password: string;
+  password?: null | string;
 
   /**
    * User position ID.
    */
-  positionId?: null | string;
+  positionId: string;
 
   /**
    * User rate
@@ -57,7 +66,7 @@ export interface CreateUserRequest {
   /**
    * Time when the user started working for the company.
    */
-  startWorkingAt: string;
+  startWorkingAt?: null | string;
   status: UserStatus;
 }
 

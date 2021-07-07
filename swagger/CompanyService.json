@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.0",
+    "version": "1.4.1",
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments."
   },
@@ -21,7 +21,7 @@
         "tags": [
           "Position"
         ],
-        "operationId": "getPositionById",
+        "operationId": "getPosition",
         "description": "Returns position by id.",
         "parameters": [
           {
@@ -79,7 +79,7 @@
         "tags": [
           "Position"
         ],
-        "operationId": "getPositionsList",
+        "operationId": "findPositions",
         "description": "Returns all added positions.",
         "responses": {
           "200": {
@@ -131,14 +131,12 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "New position was successfully added.",
+          "201": {
+            "description": "Guid of the created position will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "Position global unique identifier.",
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -225,7 +223,7 @@
         "tags": [
           "Position"
         ],
-        "operationId": "disablePositionById",
+        "operationId": "disablePosition",
         "description": "Deletes the specified position.",
         "parameters": [
           {
@@ -367,16 +365,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not found.\n* Department with this id not found.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -391,7 +379,7 @@
         "tags": [
           "Department"
         ],
-        "operationId": "getDepartments",
+        "operationId": "findDepartments",
         "description": "Returns finded departments.",
         "responses": {
           "200": {
@@ -474,6 +462,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -538,6 +536,24 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of pages to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of offices on one page.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
         }
       ],
       "get": {
@@ -576,8 +592,7 @@
         "type": "object",
         "description": "Specific position data.",
         "required": [
-          "Name",
-          "Description"
+          "Name"
         ],
         "properties": {
           "Name": {
@@ -629,7 +644,7 @@
         "type": "object",
         "required": [
           "Info",
-          "UsersIds"
+          "Users"
         ],
         "properties": {
           "Info": {
@@ -680,7 +695,8 @@
           },
           "IsActive": {
             "description": "Marks whether position is active or not.",
-            "type": "boolean"
+            "type": "boolean",
+            "example": true
           }
         }
       },
@@ -688,8 +704,7 @@
         "type": "object",
         "description": "Specific department data.",
         "required": [
-          "Name",
-          "Description"
+          "Name"
         ],
         "properties": {
           "Id": {
@@ -733,10 +748,6 @@
       "DepartmentsResponse": {
         "type": "object",
         "properties": {
-          "Count": {
-            "type": "integer",
-            "description": "Total number of all departments."
-          },
           "Departments": {
             "type": "array",
             "items": {
