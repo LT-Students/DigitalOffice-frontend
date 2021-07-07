@@ -53,7 +53,7 @@ export class WizardComponent implements OnInit {
 						login: this.adminForm.get('login').value,
 						password: this.adminForm.get('password').value,
 					},
-					sMTP: {
+					smtpInfo: {
 						host: this.smtpForm.get('host').value,
 						port: this.smtpForm.get('port').value,
 						email: this.smtpForm.get('email').value,
