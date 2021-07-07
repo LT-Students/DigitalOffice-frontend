@@ -9,7 +9,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { HttpErrorResponse } from '@angular/common/http';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserStatus } from '@data/api/user-service/models';
+import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserGender, UserStatus } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
@@ -132,16 +132,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	public generatePassword() {
-		return this._netService
-			.generatePassword()
-			.pipe(takeUntil(this._unsubscribe$))
-			.subscribe((password: string) => {
-				this.userForm.patchValue({ password: password });
-				this.userForm.updateValueAndValidity();
-			});
-	}
-
 	public onCancelClick() {
 		return this._matSnackBar._openedSnackBarRef.dismissWithAction();
 	}
@@ -157,7 +147,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			departmentId: [''],
 			office: ['', [Validators.required]],
 			email: ['', [Validators.required, Validators.email]],
-			password: ['', [Validators.required]],
 			roleId: ['']
 		});
 	}
@@ -174,7 +163,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			firstName: this.userForm.get('firstName').value as string,
 			lastName: this.userForm.get('lastName').value as string,
 			middleName: this.userForm.get('middleName').value as string,
-			password: this.userForm.get('password').value as string,
 			positionId: this.userForm.get('positionId').value as string,
 			departmentId: this.userForm.get('departmentId').value as string,
 			rate: this.userForm.get('rate').value as number,
@@ -182,6 +170,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			communications: communications,
 			startWorkingAt: this.userForm.get('startWorkingAt').value as string,
 			status: UserStatus.WorkFromHome,
+			gender: UserGender.NotSelected,
 		};
 
 		return params;

@@ -154,31 +154,6 @@
             <input id='email' matInput placeholder='Введите E-mail' formControlName='email' required />
           </mat-form-field>
         </div>
-        <div class='new-employee__form-element'>
-          <label class='new-employee__label' doText color='gray1' for='email'>
-            Пароль
-            <sup class='new-employee__required' doText color='negative_accent'>*</sup>
-            <mat-icon
-                class='new-employee__hint'
-                aria-label='Hint'
-                matTooltipClass='tooltip'
-                matTooltip='На эту почту пользователю придет ссылка для регистрации'
-                [matTooltipPosition]="'above'"
-            >help_outline
-            </mat-icon>
-          </label>
-          <mat-form-field class='new-employee__form-field' appearance='fill'>
-            <input id='password' matInput placeholder='Введите или сгенерируйте пароль' formControlName='password'
-                   type='password' required />
-          </mat-form-field>
-        </div>
-        <div class='new-employee__form-element' style='align-self: flex-end'>
-          <button
-              class='bg-accent_color_bright text-light_1 new-employee__button'
-              mat-flat-button
-              type="button"
-              (click)='generatePassword()'>Сгенерировать</button>
-        </div>
       </div>
     </div>
     <div class='new-employee__actions'>
