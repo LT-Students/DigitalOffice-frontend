@@ -14,4 +14,8 @@
 		display: flex;
 		justify-content: space-between;
 	}
+
+	&-row:hover {
+		background-color: #f1f1ef;
+	}
 }

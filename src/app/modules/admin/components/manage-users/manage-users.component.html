@@ -1,78 +1,77 @@
-<div class='card card_standard'>
-    <div class='table'>
-        <div class='table-header'>
-            <h3 doText underlined underlinedSize='sm'>Сотрудники</h3>
-            <button mat-flat-button color='primary' (click)='onAddEmployeeClick()'>+ Добавить сотрудника</button>
-        </div>
-        <div class='table-filters'>
-            <mat-form-field class='mat-form-field__form-control edit-form__institution' appearance='fill'
-                            floatLabel='always'>
-                <input matInput placeholder='Поиск по фамилии и имени' />
-            </mat-form-field>
-            <mat-form-field class='mat-form-field_default-select' appearance='fill'>
-                <mat-select class='select' placeholder='Выберите должность'>
-                    <mat-option *ngFor='let studyType of studyTypes' [value]='studyType'>{{ studyType }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class='mat-form-field_default-select' appearance='fill'>
-                <mat-select class='select' placeholder='Выберите департамент'>
-                    <mat-option *ngFor='let studyType of studyTypes' [value]='studyType'>{{ studyType }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class='mat-form-field_default-select' appearance='fill'>
-                <mat-select class='select' placeholder='Статус'>
-                    <mat-option *ngFor='let studyType of studyTypes' [value]='studyType'>{{ studyType }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <table class='table-content' matSort (matSortChange)='sortData($event)'>
-            <tr>
-                <th></th>
-                <th mat-sort-header='name'>Имя</th>
-                <th mat-sort-header='department'>Департамент</th>
-                <th mat-sort-header='role'>Роль</th>
-                <th mat-sort-header='rate'>Ставка</th>
-                <th mat-sort-header='status'>Статус</th>
-                <th></th>
-            </tr>
-            <tr *ngFor='let userInfo of sortedUserInfo'>
-                <td> IMG</td>
-                <td>{{ userInfo.user?.firstName }}</td>
-                <td>
-                    <ng-container *ngIf='userInfo?.department?.name'>
-                        {{ userInfo.department.name }}
-                    </ng-container>
-                    <ng-container *ngIf='!userInfo?.department?.name'>
-                        <span doText color='negative_accent' regularTextSize='small'>
-                            <mat-icon aria-hidden='false' aria-label='error'>error</mat-icon>
-                            Отсутствует информация о департаменте
-                        </span>
-                    </ng-container>
-                </td>
-                <td>
-                    <ng-container *ngIf='userInfo?.position?.name'>
-                        {{ userInfo.department.name }}
-                    </ng-container>
-                    <ng-container *ngIf='!userInfo?.position?.name'>
-                        <span doText color='negative_accent' regularTextSize='small'>
-                            <mat-icon aria-hidden='false' aria-label='error'>error</mat-icon>
-                            Отсутствует информация о роли
-                        </span>
-                    </ng-container>
-                </td>
-                <td>{{ userInfo?.user?.rate }}</td>
-                <td>{{ userInfo?.user?.status }}</td>
-                <td>
-                    <button mat-icon-button>
-                        <img src='/assets/svg/edit.svg' alt='edit' />
-                    </button>
-                </td>
-                <td>
-                    <button mat-icon-button (click)='disableUser(userInfo?.user?.id)'>
-                        <img src='/assets/svg/delete.svg' alt='Delete user' />
-                    </button>
-                </td>
-            </tr>
-        </table>
-    </div>
+<div class="card card_standard">
+	<div class="table">
+		<div class="table-header">
+			<h3 doText underlined underlinedSize="sm">Сотрудники</h3>
+			<button mat-flat-button color="primary" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
+		</div>
+		<div class="table-filters">
+			<mat-form-field class="mat-form-field__form-control edit-form__institution" appearance="fill" floatLabel="always">
+				<input matInput placeholder="Поиск по фамилии и имени" />
+			</mat-form-field>
+			<mat-form-field class="mat-form-field_default-select" appearance="fill">
+				<mat-select class="select" placeholder="Выберите должность">
+					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-form-field class="mat-form-field_default-select" appearance="fill">
+				<mat-select class="select" placeholder="Выберите департамент">
+					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>
+				</mat-select>
+			</mat-form-field>
+			<mat-form-field class="mat-form-field_default-select" appearance="fill">
+				<mat-select class="select" placeholder="Статус">
+					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<table doText class="table-content" matSort (matSortChange)="sortData($event)">
+			<tr>
+				<th></th>
+				<th mat-sort-header="name">Имя</th>
+				<th mat-sort-header="department">Департамент</th>
+				<th mat-sort-header="role">Роль</th>
+				<th mat-sort-header="rate">Ставка</th>
+				<th mat-sort-header="status">Статус</th>
+				<th></th>
+			</tr>
+			<tr class="table-row" *ngFor="let userInfo of sortedUserInfo" (click)="onUserClick(userInfo.user.id)">
+				<td>IMG</td>
+				<td>{{ userInfo.user?.firstName }}</td>
+				<td>
+					<ng-container *ngIf="userInfo?.department?.name">
+						{{ userInfo.department.name }}
+					</ng-container>
+					<ng-container *ngIf="!userInfo?.department?.name">
+						<span doText color="negative_accent" regularTextSize="small">
+							<mat-icon aria-hidden="false" aria-label="error">error</mat-icon>
+							Отсутствует информация о департаменте
+						</span>
+					</ng-container>
+				</td>
+				<td>
+					<ng-container *ngIf="userInfo?.position?.name">
+						{{ userInfo.department.name }}
+					</ng-container>
+					<ng-container *ngIf="!userInfo?.position?.name">
+						<span doText color="negative_accent" regularTextSize="small">
+							<mat-icon aria-hidden="false" aria-label="error">error</mat-icon>
+							Отсутствует информация о роли
+						</span>
+					</ng-container>
+				</td>
+				<td>{{ userInfo?.user?.rate }}</td>
+				<td>{{ userInfo?.user?.status }}</td>
+				<td>
+					<button mat-icon-button>
+						<img src="/assets/svg/edit.svg" alt="edit" />
+					</button>
+				</td>
+				<td>
+					<button mat-icon-button (click)="disableUser(userInfo?.user?.id)">
+						<img src="/assets/svg/delete.svg" alt="Delete user" />
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>

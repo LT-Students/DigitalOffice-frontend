@@ -9,6 +9,9 @@ import { forkJoin, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { EducationType } from '@data/api/user-service/models/education-type';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-manage-users',
@@ -24,7 +27,7 @@ export class ManageUsersComponent implements OnInit {
 	public studyTypes: EducationType[];
 	private _unsubscribe$: Subject<void>;
 
-	constructor(private _userService: UserService, private userApiService: UserApiService) {
+	constructor(private _userService: UserService, private userApiService: UserApiService, private router: Router, private dialog: MatDialog) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
 		this.userInfo = null;
@@ -48,6 +51,11 @@ export class ManageUsersComponent implements OnInit {
 
 	public onAddEmployeeClick() {
 		console.log('onAddEmployeeClick');
+		this.dialog.open(NewEmployeeComponent);
+	}
+
+	public onUserClick(userId: string): void {
+		this.router.navigate([`/user/${userId}`]);
 	}
 
 	public sortData(sort: Sort): void {
