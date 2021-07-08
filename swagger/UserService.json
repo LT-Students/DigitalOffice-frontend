@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.0",
+    "version": "1.3.2",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -1529,6 +1529,12 @@
           },
           "Rate": {
             "type": "number"
+          },
+          "DepartmentInfo": {
+            "$ref": "#/components/schemas/DepartmentInfo"
+          },
+          "PositionInfo": {
+            "$ref": "#/components/schemas/PositionInfo"
           }
         }
       },
