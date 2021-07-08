@@ -6,7 +6,6 @@ import { Time } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
-import { employee } from '../../mock';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
@@ -20,6 +19,7 @@ import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CommunicationType } from '@data/api/user-service/models';
+import { employee } from '../../mock';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
 
 interface ExtendedUser extends IUser {
@@ -86,7 +86,9 @@ export class MainInfoComponent implements OnInit {
 			// .getMockUser(this.pageId)
 			.getUser(this.pageId)
 			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
-			.subscribe((user: User) => (this.user = user));
+			.subscribe((user: User) => {
+				this.user = user;
+			});
 		this._initEditForm();
 
 		this._departmentService.getDepartments().subscribe((departments: DepartmentInfo[]) => {
