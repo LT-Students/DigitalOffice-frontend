@@ -1,0 +1,30 @@
+<div class="new-office">
+	<h1 doText color="dark_2">Новый офис</h1>
+	<div class="form__container">
+		<form autocomplete="off" class="data-form" [formGroup]="officeForm" (ngSubmit)="createOffice()">
+			<div class="new-office__input-container">
+				<div class="new-office__input">
+					<label class="h5 h5_dark_1" for="city">Город<sup doText color="negative_accent">*</sup></label>
+					<mat-form-field>
+						<input matInput type="text" id="city" formControlName="city" />
+					</mat-form-field>
+				</div>
+				<div class="new-office__input">
+					<label class="h5 h5_dark_1" for="address">Адрес<sup doText color="negative_accent">*</sup></label>
+					<mat-form-field>
+						<input matInput type="text" id="address" formControlName="address" />
+					</mat-form-field>
+				</div>
+				<div class="new-office__input">
+					<label class="h5 h5_dark_1" for="name">Название офиса</label>
+					<mat-form-field>
+						<input matInput type="text" id="name" formControlName="name" />
+					</mat-form-field>
+				</div>
+			</div>
+			<button mat-flat-button color="primary" class="btn-create-department" type="submit" [disabled]="officeForm.invalid">
+				<span class="regular_text regular_text_light_1">Добавить офис</span>
+			</button>
+		</form>
+	</div>
+</div>

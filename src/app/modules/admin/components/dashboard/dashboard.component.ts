@@ -11,8 +11,10 @@ import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType } from '@app/services/modal.service';
 import { NewCompanyComponent } from '../new-company/new-company.component';
 import { NewDepartmentComponent } from '../new-department/new-department.component';
-import { NewSpecializationComponent } from '../new-specialization/new-specialization.component';
+import { NewPositionComponent } from '../new-position/new-position.component';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
+import { NewRoleComponent } from '../new-role/new-role.component';
+import { NewOfficeComponent } from '../new-office/new-office.component';
 
 @Component({
 	selector: 'do-dashboard',
@@ -39,14 +41,20 @@ export class DashboardComponent implements OnInit {
 					? this.dialog.open(NewCompanyComponent, { width: '503px' }).afterClosed()
 					: (value === this.modalType.NEW_DEPARTMENT)
 					? this.dialog.open(NewDepartmentComponent, { width: '503px' }).afterClosed()
-					: (value === this.modalType.NEW_SPECIALIZATION)
-					? this.dialog.open(NewSpecializationComponent, {}).afterClosed()
+					: (value === this.modalType.NEW_POSITION)
+					? this.dialog.open(NewPositionComponent, {}).afterClosed()
 					: (value === this.modalType.NEW_EMPLOYEE)
 					? this.dialog.open(NewEmployeeComponent, {}).afterClosed()
+					: (value === this.modalType.NEW_ROLE)
+					? this.dialog.open(NewRoleComponent, {}).afterClosed()
+					: (value === this.modalType.NEW_OFFICE)
+					? this.dialog.open(NewOfficeComponent, { width: '503px' }).afterClosed()
 					: (value === this.modalType.NEW_PROJECT)
 					? fromPromise(this._router.navigate(['admin/new-project']))
 					: (value === this.modalType.MANAGE_USERS)
 					? fromPromise(this._router.navigate(['admin/manage-users']))
+					: (value === this.modalType.DEPARTMENT_LIST)
+					? fromPromise(this._router.navigate(['admin/departments']))
 					: of(false)
 			})).subscribe((result: boolean | any | OperationResultResponse) => {
 			if (

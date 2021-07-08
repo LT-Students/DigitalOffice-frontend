@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.5",
+    "version": "1.3.0",
     "title": "AuthService",
     "description": "AuthService is an API intended to work with user authentication, create token for user."
   },
@@ -30,7 +30,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully user authentication, returned a user id and token.",
+            "description": "Successfully user authentication, returned a user id and tokens.",
             "content": {
               "application/json": {
                 "schema": {
@@ -40,13 +40,85 @@
             }
           },
           "400": {
-            "description": "Bad request.\n* Format error in the user email or password.\n"
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden.\n* Wrong user credentials.\n"
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found.\n* User was not found.\n"
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "refresh",
+        "description": "Get new tokens by refresh token.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok. New tokens will be in response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -54,6 +126,18 @@
   },
   "components": {
     "schemas": {
+      "RefreshRequest": {
+        "type": "object",
+        "required": [
+          "RefreshToken"
+        ],
+        "properties": {
+          "RefreshToken": {
+            "description": "Refresh JWT.",
+            "type": "string"
+          }
+        }
+      },
       "AuthenticationRequest": {
         "type": "object",
         "required": [
@@ -80,11 +164,64 @@
             "type": "string",
             "format": "uuid"
           },
-          "Token": {
-            "description": "User JWT.",
+          "AccessToken": {
+            "description": "User access JWT.",
+            "type": "string"
+          },
+          "RefreshToken": {
+            "description": "User refresh JWT.",
             "type": "string"
           }
         }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "x-enumNames": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
       }
     }
   }

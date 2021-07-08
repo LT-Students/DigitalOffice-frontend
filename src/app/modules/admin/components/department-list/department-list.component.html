@@ -1,0 +1,36 @@
+<div class="card card_standard">
+	<div class="table">
+		<div class="table-header">
+			<h3 doText underlined underlinedSize="sm">Сотрудники</h3>
+			<button mat-flat-button color="primary" (click)="onAddEmployeeClick()">+ Добавить департамент</button>
+		</div>
+		<div class="table-filters">
+			<mat-form-field class="mat-form-field__form-control edit-form__institution" appearance="fill" floatLabel="always">
+				<input matInput placeholder="Поиск по названию" />
+			</mat-form-field>
+			<mat-form-field class="mat-form-field_default-select" appearance="fill">
+				<mat-select class="select" placeholder="Выберите директора">
+<!--					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>-->
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<table class="table-content" matSort (matSortChange)="sortData($event)">
+			<tr>
+				<th mat-sort-header="name">Наименование</th>
+				<th mat-sort-header="description">Описание</th>
+				<th mat-sort-header="director">Директор</th>
+				<th mat-sort-header="amount">Количество сотрудников</th>
+			</tr>
+			<tr *ngFor="let departmentInfo of sortedDepartmentInfo">
+				<td>
+					{{ departmentInfo.name }}
+				</td>
+				<td>
+					{{ departmentInfo.description ? departmentInfo.description : '—' }}
+				</td>
+				<td>{{ departmentInfo.director?.firstName ? departmentInfo.director?.firstName : '—' }}</td>
+				<td>{{ departmentInfo.users.length }}</td>
+			</tr>
+		</table>
+	</div>
+</div>

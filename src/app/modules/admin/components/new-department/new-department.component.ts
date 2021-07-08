@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { switchMap } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 
 @Component({
 	selector: 'do-new-department',
@@ -20,11 +20,7 @@ export class NewDepartmentComponent implements OnInit {
 	public directors: UserInfo[] = [];
 	private getDirectorsSubscription: Subscription;
 
-	public departmentForm = new FormGroup({
-		name: new FormControl(null, [Validators.required]),
-		description: new FormControl(null, [Validators.required]),
-		directorId: new FormControl(null, [Validators.required]),
-	});
+	public departmentForm: FormGroup;
 
 	constructor(
 		public userApiService: UserApiService,
@@ -38,9 +34,9 @@ export class NewDepartmentComponent implements OnInit {
 		this.getDirectors();
 
 		this.departmentForm = this.formBuilder.group({
-			name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-			description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1000)]],
-			directorId: ['', [Validators.required, Validators.minLength(1)]],
+			name: ['', [Validators.required]],
+			description: [null],
+			directorId: [null],
 		});
 	}
 
@@ -60,10 +56,11 @@ export class NewDepartmentComponent implements OnInit {
 			.addDepartment({
 				body: {
 					info: {
-						name: this.departmentForm.controls['name'].value,
-						description: this.departmentForm.controls['description'].value,
-						directorUserId: this.departmentForm.controls['directorId'].value,
+						name: this.departmentForm.get('name').value,
+						description: this.departmentForm.get('description').value,
+						directorUserId: this.departmentForm.get('directorId').value,
 					},
+					users: [],
 				},
 			})
 			.subscribe(

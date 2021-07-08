@@ -1,50 +1,35 @@
 @import 'base/variables';
 
 .content-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-  width: 100%;
-  height: 100vh;
+	width: 100%;
+	height: 100vh;
 
-  background: linear-gradient(180deg, $dark_3 0%, $dark_4 100%);
+	background: #fff;
 
-  .admin-router {
-    z-index: 10;
-  }
+	.admin-router {
+		z-index: 10;
+	}
 
-  .waves-container {
-    position: absolute;
-    bottom: -15px;
+	.waves-container {
+		position: absolute;
 
-    display: inline-block;
+		width: 100%;
+		height: 100%;
 
-    width: 100%;
+		&.wave1 {
+			background: url('/assets/svg/wave1.svg') no-repeat bottom center / contain;
+		}
 
-    &.wave1,
-    &.wave2 {
-      position: absolute;
+		&.wave2 {
+			background: url('/assets/svg/wave2.svg') no-repeat bottom center / contain;
+		}
 
-      bottom: 0;
-
-      display: inline-block;
-
-      background-repeat: no-repeat;
-
-      background-size: cover;
-    }
-
-    &.wave1 {
-      top: 494px;
-
-      background-image: url('/assets/svg/wave1.svg');
-    }
-
-    &.wave2 {
-      top: 390px;
-
-      background-image: url('/assets/svg/wave2.svg');
-    }
-  }
+		&.wave3 {
+			background: url('/assets/svg/wave3.svg') no-repeat bottom center / contain;
+		}
+	}
 }

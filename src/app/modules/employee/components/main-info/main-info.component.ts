@@ -83,7 +83,8 @@ export class MainInfoComponent implements OnInit {
 	}
 	ngOnInit(): void {
 		this._userService
-			.getMockUser(this.pageId)
+			// .getMockUser(this.pageId)
+			.getUser(this.pageId)
 			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
 			.subscribe((user: User) => (this.user = user));
 		this._initEditForm();

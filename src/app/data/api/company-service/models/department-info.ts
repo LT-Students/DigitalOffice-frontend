@@ -10,8 +10,8 @@ export interface DepartmentInfo {
   /**
    * Department description.
    */
-  description?: string;
-  director?: UserInfo;
+  description?: null | string;
+  director?: null | UserInfo;
 
   /**
    * Department id.
