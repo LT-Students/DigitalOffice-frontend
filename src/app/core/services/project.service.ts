@@ -18,7 +18,7 @@ export class ProjectService {
 		return this._projectApiService.createProject({ body: request });
 	}
 
-	public getProjects(): Observable<ProjectInfo[]> {
+	public getProjectList(): Observable<ProjectInfo[]> {
 		return this._projectApiService
 			.findProjects({ skipCount: 0, takeCount: 10 })
 			.pipe(switchMap((projects: FindResponseProjectInfo) => of(projects.body)));
