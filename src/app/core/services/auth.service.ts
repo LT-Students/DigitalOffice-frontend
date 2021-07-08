@@ -28,7 +28,7 @@ export class AuthService {
 
 	login(authenticationRequest: AuthenticationRequest): Observable<UserResponse> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
-			tap((authenticationInfo: AuthenticationResponse) => this.localStorageService.set('access_token', authenticationInfo.token)),
+			tap((authenticationInfo: AuthenticationResponse) => this.localStorageService.set('access_token', authenticationInfo.accessToken)),
 			switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId))
 		);
 	}
@@ -64,7 +64,7 @@ export class AuthService {
 	}
 
 	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse) {
-		this.localStorageService.set('access_token', authenticationInfo.token);
+		this.localStorageService.set('access_token', authenticationInfo.accessToken);
 	}
 
 	private _removeCredentialsFromLocalStorage() {

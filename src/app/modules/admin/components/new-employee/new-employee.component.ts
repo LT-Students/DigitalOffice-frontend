@@ -7,14 +7,17 @@ import { IUser } from '@data/models/user';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserStatus } from '@data/api/user-service/models';
+import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserGender, UserStatus } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
+import { RolesResponse } from '@data/api/rights-service/models/roles-response';
+import { RoleInfo } from '@data/api/rights-service/models/role-info';
+import { OfficeInfo } from '@data/api/company-service/models/office-info';
 
 export const DATE_FORMAT = {
 	parse: {
@@ -47,16 +50,18 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public userForm: FormGroup = null;
 	public position$: Observable<PositionInfo[]>;
 	public department$: Observable<DepartmentInfo[]>;
+	public roles: RoleInfo[];
+	public offices: OfficeInfo[];
 
 	private _unsubscribe$: Subject<void>;
 
 	constructor(
 		private formBuilder: FormBuilder,
 		private _netService: NetService,
-		private departmentApiService: DepartmentApiService,
 		private userService: UserService,
 		private _matSnackBar: MatSnackBar,
-		private dialogRef: MatDialogRef<any>
+		private dialogRef: MatDialogRef<any>,
+		private roleApiService: RoleApiService
 	) {
 		this._unsubscribe$ = new Subject<void>();
 	}
@@ -64,6 +69,8 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public ngOnInit(): void {
 		this.getPositions();
 		this.getDepartments();
+		this.getRoles();
+		this.getOffices();
 		this._initForm();
 	}
 
@@ -80,38 +87,48 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		this.department$ = this._netService.getDepartmentsList();
 	}
 
+	public getRoles(): void {
+		this.roleApiService.findRoles({ skipCount: 0, takeCount: 10 }).subscribe(({ roles }: RolesResponse) => {
+			this.roles = roles;
+		});
+	}
+
+	public getOffices(): void {
+		this._netService.getOfficesList().subscribe(
+			({ offices }) => {
+				this.offices = offices;
+			},
+			(error) => console.log(error)
+		);
+	}
+
 	public createEmployee(): void {
 		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
 
-		this.userService.createUser(params).pipe(takeUntil(this._unsubscribe$))
-		.subscribe(
-			(result: OperationResultResponse) => {
-				if (result.errors && result.errors.length) {
-					const message = result.errors.join('\n');
-					this._matSnackBar.open(message, 'Закрыть');
+		this.userService
+			.createUser(params)
+			.pipe(takeUntil(this._unsubscribe$))
+			.subscribe(
+				(result: OperationResultResponse) => {
+					if (result.errors && result.errors.length) {
+						const message = result.errors.join('\n');
+						this._matSnackBar.open(message, 'Закрыть');
+					}
+					this.dialogRef.close(result);
+				},
+				(error: OperationResultResponse | HttpErrorResponse) => {
+					console.log(error);
+					const message =
+						error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
+					this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
 				}
-				this.dialogRef.close(result);
-			},
-			(error: OperationResultResponse | HttpErrorResponse) => {
-				const message =
-					error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
-				this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
-			},
-		);
+			);
 	}
 
 	public changeWorkingRate(step: number): void {
 		this.userForm.patchValue({
 			rate: +this.userForm.get('rate').value + step,
 		});
-	}
-
-	public generatePassword() {
-		return this._netService.generatePassword().pipe(takeUntil(this._unsubscribe$))
-			.subscribe((password: string) => {
-				this.userForm.patchValue({ password: password });
-				this.userForm.updateValueAndValidity();
-			})
 	}
 
 	public onCancelClick() {
@@ -124,12 +141,12 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			firstName: ['', [Validators.required, Validators.maxLength(32)]],
 			middleName: ['', [Validators.maxLength(32)]],
 			positionId: ['', [Validators.required]],
-			startWorkingAt: [''],
+			startWorkingAt: [null],
 			rate: ['1', [Validators.required]],
 			departmentId: [''],
-			office: ['', [Validators.required]],
+			officeId: ['', [Validators.required]],
 			email: ['', [Validators.required, Validators.email]],
-			password: ['', [Validators.required]],
+			roleId: [null],
 		});
 	}
 
@@ -145,7 +162,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			firstName: this.userForm.get('firstName').value as string,
 			lastName: this.userForm.get('lastName').value as string,
 			middleName: this.userForm.get('middleName').value as string,
-			password: this.userForm.get('password').value as string,
 			positionId: this.userForm.get('positionId').value as string,
 			departmentId: this.userForm.get('departmentId').value as string,
 			rate: this.userForm.get('rate').value as number,
@@ -153,6 +169,9 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			communications: communications,
 			startWorkingAt: this.userForm.get('startWorkingAt').value as string,
 			status: UserStatus.WorkFromHome,
+			gender: UserGender.NotSelected,
+			officeId: this.userForm.get('officeId').value,
+			roleId: this.userForm.get('roleId').value,
 		};
 
 		return params;

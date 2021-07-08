@@ -8,13 +8,15 @@ import { DepartmentsResponse } from '@data/api/company-service/models/department
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
+import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 
 @Injectable()
 export class NetService {
 	constructor(
 		private _positionApiService: PositionApiService,
 		private _departmentApiService: DepartmentApiService,
-		private _credentialsApiService: CredentialsApiService
+		private _credentialsApiService: CredentialsApiService,
+		private _companyApiService: CompanyApiService
 	) {}
 
 	private _mockPositions: PositionInfo[] = [
@@ -23,7 +25,7 @@ export class NetService {
 	];
 
 	public getPositionsList(): Observable<PositionInfo[]> {
-		return this._positionApiService.getPositionsList().pipe(
+		return this._positionApiService.findPositions().pipe(
 			switchMap((res: PositionResponse[]) => {
 				return res && res.length ? of(res.map((position) => position.info)) : of(this._mockPositions);
 			})
@@ -31,12 +33,16 @@ export class NetService {
 	}
 
 	public getDepartmentsList(): Observable<DepartmentInfo[]> {
-		return this._departmentApiService.get_1().pipe(
+		return this._departmentApiService.findDepartments().pipe(
 			switchMap((res: DepartmentsResponse) => of(res.departments)),
 			catchError((error) => {
 				return throwError(error);
 			})
 		);
+	}
+
+	public getOfficesList() {
+		return this._companyApiService.findOffices({ skipCount: 0, takeCount: 10 });
 	}
 
 	public generatePassword(): Observable<string> {

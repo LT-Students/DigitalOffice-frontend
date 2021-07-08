@@ -9,6 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { OperationResultResponse } from '../models/operation-result-response';
 import { RightResponse } from '../models/right-response';
 
 @Injectable({
@@ -46,7 +47,7 @@ export class RightsApiService extends BaseService {
      * Right identifiers.
      */
     rightIds: Array<number>;
-  }): Observable<StrictHttpResponse<void>> {
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, RightsApiService.AddRightsForUserPath, 'post');
     if (params) {
@@ -55,12 +56,12 @@ export class RightsApiService extends BaseService {
     }
 
     return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
+      responseType: 'json',
+      accept: 'application/json'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -84,10 +85,10 @@ export class RightsApiService extends BaseService {
      * Right identifiers.
      */
     rightIds: Array<number>;
-  }): Observable<void> {
+  }): Observable<OperationResultResponse> {
 
     return this.addRightsForUser$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 
@@ -97,7 +98,7 @@ export class RightsApiService extends BaseService {
   static readonly GetRightsListPath = '/rights/getRightsList';
 
   /**
-   * Add rights for user.
+   * Get all rights.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `getRightsList()` instead.
@@ -123,7 +124,7 @@ export class RightsApiService extends BaseService {
   }
 
   /**
-   * Add rights for user.
+   * Get all rights.
    *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `getRightsList$Response()` instead.
