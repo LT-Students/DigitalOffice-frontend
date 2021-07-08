@@ -8,6 +8,8 @@ import { ProjectStatusType } from '@data/api/project-service/models/project-stat
 import { ProjectService } from '@app/services/project.service';
 import { ModalService, ModalType, UserSearchModalConfig } from '@app/services/modal.service';
 import { NetService } from '@app/services/net.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProjectRequest } from '@data/api/project-service/models/project-request';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { DeleteDirectionComponent, ModalApprovalConfig } from './modals/delete-direction/delete-direction.component';
@@ -30,29 +32,13 @@ export class NewProjectComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private _projectService: ProjectService,
 		private _modalService: ModalService,
-		private _netService: NetService
+		private _netService: NetService,
+		private _snackBar: MatSnackBar
 	) {
 		this.statuses = [
 			new ProjectStatus(ProjectStatusType.Active),
 			new ProjectStatus(ProjectStatusType.Closed),
 			new ProjectStatus(ProjectStatusType.Suspend),
-		];
-		this.departments = [
-			{
-				id: 'cc289eba-ada8-11eb-8529-0242ac130003',
-				name: 'Департамент Цифровых решений',
-				startWorkingAt: '14/14/21',
-			},
-			{
-				id: 'f3a25346-ada8-11eb-8529-0242ac130003',
-				name: 'Департамент тестовых решений',
-				startWorkingAt: '14/14/21',
-			},
-			{
-				id: 'f6fd15ee-ada8-11eb-8529-0242ac130003',
-				name: 'Департамент медицинских решений',
-				startWorkingAt: '14/14/21',
-			},
 		];
 		this.teams = [];
 	}
@@ -88,17 +74,25 @@ export class NewProjectComponent implements OnInit {
 	public addMember(): void {
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD };
 		const dialogRef = this._modalService.openModal(UserSearchComponent, modalData);
-		dialogRef.afterClosed().subscribe((result) => {
-			const newTeam: Team = {
-				name: result.role as string,
-				members: result.users,
-			}
-			this.teams.push(newTeam);
-		})
+		// dialogRef.afterClosed().subscribe((result) => {
+		// 	const newTeam: Team = {
+		// 		name: result.role as string,
+		// 		members: result.users,
+		// 	};
+		// 	this.teams.push(newTeam);
+		// });
 	}
 
 	public createProject(): void {
-		console.log(this.projectForm.value);
+		const projectRequest: ProjectRequest = this.projectForm.value;
+		this._projectService.createProject(projectRequest).subscribe(
+			(result) => {
+				this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
+			},
+			(error) => {
+				this._snackBar.open(error.message, 'Закрыть');
+			}
+		);
 	}
 
 	public onAddTeamClick(): void {
