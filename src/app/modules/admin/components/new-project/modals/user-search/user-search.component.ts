@@ -1,10 +1,8 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '@app/services/user.service';
 import { UserSearchModalConfig } from '@app/services/modal.service';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserRoleType } from '@data/api/project-service/models/user-role-type';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { NetService } from '@app/services/net.service';
@@ -21,7 +19,6 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	public members: UserInfo[];
 	public membersAll: UserInfo[];
 	public visibleMembers: UserInfo[];
-	public filteredUsers: UserInfo[];
 	public checkedMembers: UserInfo[];
 	public selectedSpecialization;
 	public selectedLevel;
@@ -29,15 +26,13 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	public roles: UserRoleType[] = [UserRoleType.ProjectAdmin];
 	public positions: PositionInfo[];
 	public WorkFlowMode = WorkFlowMode;
-	public teamForm: FormGroup;
 
-	private getMembersSubscription: Subscription;
+	// private getMembersSubscription: Subscription;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: UserSearchModalConfig,
 		private _userService: UserService,
 		private _netService: NetService,
-		private _formBuilder: FormBuilder,
 		private _dialogRef: MatDialogRef<UserSearchComponent>
 	) {
 		this.checkedMembers = [];
@@ -61,10 +56,6 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		// teamCards.forEach((team: Team) => {
 		//   this.membersAll.push(...team.members)
 		// });
-		this.teamForm = _formBuilder.group({
-			role: [null, [Validators.required]],
-			users: _formBuilder.array([]),
-		});
 	}
 
 	public ngOnInit(): void {
@@ -90,21 +81,6 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		);
 	}
 
-	public onCheckboxChange(e): void {
-		const users: FormArray = this.teamForm.get('users') as FormArray;
-
-		if (e.checked) {
-			users.push(new FormControl(e.source.value));
-		} else {
-			users.controls.forEach((item: FormControl, i) => {
-				if (item.value === e.source.value) {
-					users.removeAt(i);
-					return;
-				}
-			});
-		}
-	}
-
 	public onSelect() {
 		this.visibleMembers = this.members;
 		if (this.selectedSpecialization) {
@@ -126,7 +102,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	public onSave(): void {
-		this._dialogRef.close(this.teamForm.value);
+		this._dialogRef.close(this.checkedMembers);
 	}
 
 	public onSearchClick(value: string): void {
@@ -138,19 +114,20 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		// this.getMembersSubscription.unsubscribe();
 	}
 
-	public assignLead(member: UserInfo): void {
-		const index: number = this.members.findIndex((teamMember: UserInfo) => teamMember === member);
-		this.members[index].lead = this.members[index].lead ? !this.members[index].lead : true;
-	}
+	// public assignLead(member: UserInfo): void {
+	// 	const index: number = this.members.findIndex((teamMember: UserInfo) => teamMember === member);
+	// 	this.members[index].lead = this.members[index].lead ? !this.members[index].lead : true;
+	// }
 
-	public onCheckMember($event, user): void {
-		if ($event) {
+	public onCheckMember($event, user: UserInfo): void {
+		if ($event.checked) {
 			this.checkedMembers.push(user);
 		} else {
 			let uncheckedUserIndex;
-			this.checkedMembers.map((x, index) => {
-				if (x.id === user.id) {
+			this.checkedMembers.forEach((u, index) => {
+				if (u.id === user.id) {
 					uncheckedUserIndex = index;
+					return;
 				}
 			});
 			this.checkedMembers.splice(uncheckedUserIndex, 1);

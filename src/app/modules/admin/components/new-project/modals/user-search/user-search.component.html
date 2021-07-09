@@ -1,5 +1,5 @@
 <div class="members-board">
-	<form class="members-form" [formGroup]="teamForm">
+	<form class="members-form">
 		<div class="members-board__title" mat-dialog-title>
 			<h3 doText color="dark_1" [ngSwitch]="data.mode">
 				<ng-container *ngSwitchCase="WorkFlowMode.ADD">Добавить участника</ng-container>
@@ -12,7 +12,6 @@
 			<mat-select
 				class="regular_text text_color_dark-1"
 				placeholder="Выберите направление"
-				formControlName="role"
 				disableOptionCentering="true"
 			>
 				<mat-option class="regular_text text_color_dark-1" *ngFor="let role of roles" [value]="role">
@@ -45,23 +44,23 @@
 						class="new-member__checkbox"
 						[value]="member.id"
 						[checked]="isMember(member)"
-						(change)="onCheckboxChange($event)"
+						(change)="onCheckMember($event, member)"
 					></mat-checkbox>
 				</div>
 				<div class="user-row__image">
-					<img [src]="member.profileImgSrc" width="48" height="48" alt="user image" />
+					<img [src]="member.avatar" width="48" height="48" alt="user image" />
 				</div>
 				<div class="user-row__general-info">
 					<div class="name">{{ member.firstName }} {{ member.lastName }}</div>
-					<div class="position" doText color="gray1">{{ member.status }}</div>
+					<div class="position" doText color="gray1">{{ member.positionInfo?.name }}</div>
 				</div>
 				<div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>
-				<div class="user-row__lead" *ngIf="data.mode">
-					<!-- TODO: Сделать оотображение стилей кнопки для просмотра / редактирования-->
-					<span class="label_lead" [ngClass]="{ label_lead_l: !member.lead }" doText regularTextSize="small" (click)="assignLead(member)"
-						>Лидер направления</span
-					>
-				</div>
+<!--				<div class="user-row__lead" *ngIf="data.mode">-->
+<!--					&lt;!&ndash; TODO: Сделать оотображение стилей кнопки для просмотра / редактирования&ndash;&gt;-->
+<!--					<span class="label_lead" [ngClass]="{ label_lead_l: !member.lead }" doText regularTextSize="small" (click)="assignLead(member)"-->
+<!--						>Лидер направления</span-->
+<!--					>-->
+<!--				</div>-->
 			</div>
 		</div>
 
