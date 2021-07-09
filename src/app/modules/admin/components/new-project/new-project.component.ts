@@ -10,10 +10,13 @@ import { ModalService, ModalType, UserSearchModalConfig } from '@app/services/mo
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectRequest } from '@data/api/project-service/models/project-request';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { DeleteDirectionComponent, ModalApprovalConfig } from './modals/delete-direction/delete-direction.component';
 import { Team, teamCards, TeamMember } from './team-cards';
+import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
+import { UserRoleType } from '@data/api/project-service/models/user-role-type';
 
 @Component({
 	selector: 'do-new-project',
@@ -26,6 +29,7 @@ export class NewProjectComponent implements OnInit {
 	// TODO: REPLACE WITH API
 	public departments: DepartmentInfo[];
 	public statuses: ProjectStatus[];
+	public membersAll: UserInfo[];
 
 	constructor(
 		public dialog: MatDialog,
@@ -41,6 +45,7 @@ export class NewProjectComponent implements OnInit {
 			new ProjectStatus(ProjectStatusType.Suspend),
 		];
 		this.teams = [];
+		this.membersAll = [];
 	}
 
 	ngOnInit(): void {
@@ -72,19 +77,16 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public addMember(): void {
-		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD };
+		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
 		const dialogRef = this._modalService.openModal(UserSearchComponent, modalData);
-		// dialogRef.afterClosed().subscribe((result) => {
-		// 	const newTeam: Team = {
-		// 		name: result.role as string,
-		// 		members: result.users,
-		// 	};
-		// 	this.teams.push(newTeam);
-		// });
+		dialogRef.afterClosed().subscribe((result: UserInfo[]) => {
+			this.membersAll = [...result];
+		});
 	}
 
 	public createProject(): void {
-		const projectRequest: ProjectRequest = this.projectForm.value;
+		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({ role: UserRoleType.ProjectAdmin, userId: user.id }));
+		const projectRequest: ProjectRequest = { ...this.projectForm.value, users: projectUsers };
 		this._projectService.createProject(projectRequest).subscribe(
 			(result) => {
 				this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
@@ -112,7 +114,8 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public totalMembersCount(): number {
-		return this.teams.map((team: Team) => team.members.length).reduce((sum: number, teamTotalNumber) => sum + teamTotalNumber, 0);
+		return this.membersAll.length;
+		// return this.teams.map((team: Team) => team.members.length).reduce((sum: number, teamTotalNumber) => sum + teamTotalNumber, 0);
 	}
 
 	private _getAllMembers(): TeamMember[] {

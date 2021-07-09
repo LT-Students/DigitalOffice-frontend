@@ -1,5 +1,6 @@
 @import 'base/variables';
 @import 'base/fonts';
+@import '../user-row';
 
 .project-info {
 	margin-bottom: 45px;
@@ -78,6 +79,17 @@
 
 		width: 30%;
 	}
+}
+
+.users {
+	padding-bottom: 10px;
+
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	height: 333px;
+
+	max-height: 333px;
 }
 
 textarea#additionInfo {

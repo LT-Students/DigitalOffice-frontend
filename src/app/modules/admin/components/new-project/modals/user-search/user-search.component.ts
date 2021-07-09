@@ -35,9 +35,9 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		private _netService: NetService,
 		private _dialogRef: MatDialogRef<UserSearchComponent>
 	) {
-		this.checkedMembers = [];
+		this.checkedMembers = [...data.members];
 		this.searchName = null;
-		this.members = null;
+		this.members = data.members;
 		// TODO: Не показывать, пока не будет применён фильтр
 		switch (data.mode) {
 			case WorkFlowMode.VIEW: {
