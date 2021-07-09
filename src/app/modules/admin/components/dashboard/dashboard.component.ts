@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
 			if (
 				result &&
 				result.status &&
-				!(result.errors && result.errors.length)
+				!(result.errors && result.errors.length) &&
 				(result.status === OperationResultStatusType.FullSuccess || result.status === OperationResultStatusType.PartialSuccess)
 			) {
 				this._matSnackBar.open('Новый пользователь успешно добавлен!', 'Закрыть', { duration: 7000 });

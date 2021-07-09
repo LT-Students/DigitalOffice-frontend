@@ -36,12 +36,12 @@
 			</tr>
 			<tr class="table-row" *ngFor="let userInfo of sortedUserInfo" (click)="onUserClick(userInfo.user.id)">
 				<td>IMG</td>
-				<td>{{ userInfo.user?.firstName }}</td>
+				<td>{{ userInfo.user?.firstName }} {{ userInfo.user?.lastName }}</td>
 				<td>
-					<ng-container *ngIf="userInfo?.department?.name">
-						{{ userInfo.department.name }}
+					<ng-container *ngIf="userInfo?.user?.departmentInfo?.name">
+						{{ userInfo.user.departmentInfo.name }}
 					</ng-container>
-					<ng-container *ngIf="!userInfo?.department?.name">
+					<ng-container *ngIf="!userInfo?.user?.departmentInfo?.name">
 						<span doText color="negative_accent" regularTextSize="small">
 							<mat-icon aria-hidden="false" aria-label="error">error</mat-icon>
 							Отсутствует информация о департаменте
@@ -49,10 +49,10 @@
 					</ng-container>
 				</td>
 				<td>
-					<ng-container *ngIf="userInfo?.position?.name">
-						{{ userInfo.department.name }}
+					<ng-container *ngIf="userInfo?.user?.positionInfo?.name">
+						{{ userInfo.user.positionInfo.name }}
 					</ng-container>
-					<ng-container *ngIf="!userInfo?.position?.name">
+					<ng-container *ngIf="!userInfo?.user?.positionInfo?.name">
 						<span doText color="negative_accent" regularTextSize="small">
 							<mat-icon aria-hidden="false" aria-label="error">error</mat-icon>
 							Отсутствует информация о роли
