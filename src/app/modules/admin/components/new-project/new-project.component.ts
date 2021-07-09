@@ -11,12 +11,12 @@ import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectRequest } from '@data/api/project-service/models/project-request';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
+import { UserRoleType } from '@data/api/project-service/models/user-role-type';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { DeleteDirectionComponent, ModalApprovalConfig } from './modals/delete-direction/delete-direction.component';
 import { Team, teamCards, TeamMember } from './team-cards';
-import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
-import { UserRoleType } from '@data/api/project-service/models/user-role-type';
 
 @Component({
 	selector: 'do-new-project',
