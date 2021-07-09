@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ProjectApiService } from './services/project-api.service';
 import { UserApiService } from './services/user-api.service';
+import { TaskPropertyApiService } from './services/task-property-api.service';
 import { TaskApiService } from './services/task-api.service';
 
 /**
@@ -18,6 +19,7 @@ import { TaskApiService } from './services/task-api.service';
   providers: [
     ProjectApiService,
     UserApiService,
+    TaskPropertyApiService,
     TaskApiService,
     ApiConfiguration
   ],

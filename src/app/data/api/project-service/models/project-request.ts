@@ -27,8 +27,8 @@ export interface ProjectRequest {
   /**
    * Project short name.
    */
-  shortName: string;
-  status: ProjectStatusType;
+  shortName?: string;
+  status?: ProjectStatusType;
   users?: Array<ProjectUserRequest>;
 }
 

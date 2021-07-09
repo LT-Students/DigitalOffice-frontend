@@ -13,8 +13,8 @@ export interface ProjectInfo {
    * Data and time created project.
    */
   createdAt?: any;
-  department?: DepartmentInfo;
-  description?: string;
+  department?: null | DepartmentInfo;
+  description?: null | string;
 
   /**
    * Unique project identifier.
@@ -25,12 +25,12 @@ export interface ProjectInfo {
    * Project name.
    */
   name?: string;
-  shortDescription?: string;
+  shortDescription?: null | string;
 
   /**
    * Project short name.
    */
-  shortName?: string;
+  shortName?: null | string;
   status?: ProjectStatusType;
 }
 

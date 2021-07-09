@@ -10,6 +10,6 @@ export interface DepartmentInfo {
   /**
    * The department name.
    */
-  name?: string;
+  name?: null | string;
 }
 

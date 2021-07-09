@@ -33,7 +33,7 @@ export interface TaskInfo {
   /**
    * Specific task's number.
    */
-  'Number '?: number;
+  number?: number;
 
   /**
    * Planed time at completed task.
@@ -44,12 +44,12 @@ export interface TaskInfo {
    * The task's priority name.
    */
   priorityName?: string;
-  'ProjectId '?: ProjectTaskInfo;
+  project?: ProjectTaskInfo;
 
   /**
    * The task's status name.
    */
-  'StatusName '?: string;
+  statusName?: string;
 
   /**
    * The task's type name.

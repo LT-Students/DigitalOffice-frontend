@@ -6,7 +6,7 @@ export interface FindResponseTaskInfo {
   errors?: Array<string>;
 
   /**
-   * Total number of finded by filter projects.
+   * Total number of finded by filter task.
    */
   totalCount?: number;
 }

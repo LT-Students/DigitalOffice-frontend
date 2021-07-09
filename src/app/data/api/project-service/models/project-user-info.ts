@@ -36,7 +36,7 @@ export interface ProjectUserInfo {
   /**
    * Data and time removed user from project.
    */
-  removedOn?: any;
+  removedOn?: null | any;
   role?: UserRoleType;
 }
 
