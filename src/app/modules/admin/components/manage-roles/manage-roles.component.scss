@@ -21,10 +21,31 @@ input {
 }
 
 th,
-.role_description {
+.role_description,
+a {
 	font: 400 16px/1.5 'GillSansWGL', sans-serif;
 
 	color: #a3a3a2;
+}
+
+.navigation {
+	margin-bottom: 50px;
+
+	mat-icon {
+		vertical-align: middle;
+	}
+
+	a {
+		display: inline-block;
+
+		height: 24px;
+
+		vertical-align: middle;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
 }
 
 .role_name {
