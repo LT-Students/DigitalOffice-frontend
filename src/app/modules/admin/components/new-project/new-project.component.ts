@@ -17,6 +17,7 @@ import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { DeleteDirectionComponent, ModalApprovalConfig } from './modals/delete-direction/delete-direction.component';
 import { Team, teamCards, TeamMember } from './team-cards';
+import { ErrorResponse } from '@data/api/project-service/models/error-response';
 
 @Component({
 	selector: 'do-new-project',
@@ -51,10 +52,10 @@ export class NewProjectComponent implements OnInit {
 	ngOnInit(): void {
 		this.projectForm = this.formBuilder.group({
 			name: ['', [Validators.required, Validators.maxLength(80)]],
-			description: ['', [Validators.required, Validators.maxLength(500)]],
-			departmentId: [''],
-			customer: [''],
-			status: [''],
+			departmentId: ['', [Validators.required]],
+			description: [null],
+			status: [ProjectStatusType.Active],
+			// customer: [''],
 			// shortName: ['', [Validators.required, Validators.maxLength(32)]],
 			// departments: ['', [Validators.required, Validators.maxLength(32)]],
 			// checkControl: ['', [Validators.required]],
@@ -80,7 +81,7 @@ export class NewProjectComponent implements OnInit {
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
 		const dialogRef = this._modalService.openModal(UserSearchComponent, modalData);
 		dialogRef.afterClosed().subscribe((result: UserInfo[]) => {
-			this.membersAll = [...result];
+			this.membersAll = result.length ? [...result] : [];
 		});
 	}
 
@@ -92,6 +93,7 @@ export class NewProjectComponent implements OnInit {
 				this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
 			},
 			(error) => {
+				console.log(typeof error);
 				this._snackBar.open(error.message, 'Закрыть');
 			}
 		);

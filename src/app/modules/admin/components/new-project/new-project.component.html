@@ -35,7 +35,7 @@
 				<div class="project-info__customer">
 					<label class="project-info__label" for="customer">Заказчик</label>
 					<mat-form-field>
-						<input matInput type="text" id="customer" formControlName="customer" />
+						<input matInput type="text" id="customer" />
 					</mat-form-field>
 				</div>
 				<!--<div class='project-info__date'>
@@ -50,7 +50,7 @@
 					<label class="project-info__label" for="status">Статус</label>
 					<mat-form-field class="mat-form-field_default-select" appearance="none">
 						<mat-select id="status" formControlName="status">
-							<mat-option *ngFor="let status of statuses" [value]="status">
+							<mat-option *ngFor="let status of statuses" [value]="status.type">
 								{{ status.name | titlecase }}
 							</mat-option>
 						</mat-select>

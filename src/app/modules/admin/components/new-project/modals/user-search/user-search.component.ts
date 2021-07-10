@@ -123,13 +123,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		if ($event.checked) {
 			this.checkedMembers.push(user);
 		} else {
-			let uncheckedUserIndex;
-			this.checkedMembers.forEach((u, index) => {
-				if (u.id === user.id) {
-					uncheckedUserIndex = index;
-					return;
-				}
-			});
+			const uncheckedUserIndex = this.checkedMembers.findIndex((u, index) => u.id === user.id);
 			this.checkedMembers.splice(uncheckedUserIndex, 1);
 		}
 	}
