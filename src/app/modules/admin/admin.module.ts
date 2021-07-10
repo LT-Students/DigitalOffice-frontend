@@ -24,6 +24,7 @@ import { NewRoleComponent } from './components/new-role/new-role.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 import { NewOfficeComponent } from './components/new-office/new-office.component';
 import { DepartmentListComponent } from './components/department-list/department-list.component';
+import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 
 @NgModule({
 	declarations: [
@@ -45,6 +46,7 @@ import { DepartmentListComponent } from './components/department-list/department
 		ManageUsersComponent,
 		NewOfficeComponent,
 		DepartmentListComponent,
+		ManageRolesComponent,
 	],
 	imports: [
 		CommonModule,

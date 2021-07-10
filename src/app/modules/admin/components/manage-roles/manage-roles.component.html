@@ -1,0 +1,24 @@
+<div class='card card-standart'>
+    <div class='table'>
+        <div class='table-header'>
+            <h3 doText underlined underlinedSize='sm'>Роли</h3>
+            <button mat-flat-button color='primary' (click)='onAddRoleClick()'>+ Добавить роль</button>
+        </div>
+        <div class="table-filters">
+            <mat-form-field  class='mat-form-field__form-control edit-form__institution' appearance='fill'
+            floatLabel='always'>
+                <input matInput placeholder='Поиск по названию'>
+            </mat-form-field>
+        </div>
+        <table class='table-content' matSort>
+            <tr>
+                <th mat-sort-header='name'>Название</th>
+                <th mat-sort-header='description'>Описание</th>
+            </tr>
+            <tr *ngFor="let role of roles">
+                <th>{{role.name}}</th>
+                <th>{{role.description}}</th>
+            </tr>
+        </table>
+    </div>
+</div>

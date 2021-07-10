@@ -19,6 +19,7 @@ export class DepartmentListComponent implements OnInit {
 		this.displayedColumns = ['name', 'description', 'director', 'amount'];
 		this.departmentInfo = null;
 		this.sortedDepartmentInfo = null;
+		//this.studyTypes = []
 	}
 
 	ngOnInit(): void {

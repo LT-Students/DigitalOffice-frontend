@@ -20,6 +20,7 @@ export enum AdminDashboardModalType {
     NEW_ROLE,
 	NEW_PROJECT,
 	MANAGE_USERS,
+	MANAGE_ROLES,
 	NEW_OFFICE,
 	DEPARTMENT_LIST,
 }
