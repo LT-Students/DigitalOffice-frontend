@@ -2,13 +2,15 @@
     <div class='table'>
         <div class='table-header'>
             <h3 doText underlined underlinedSize='sm'>Роли</h3>
-            <button mat-flat-button color='primary' (click)='onAddRoleClick()'>+ Добавить роль</button>
+            <button mat-button color="accent" (click)='onAddRoleClick()'>+ Добавить роль</button>
         </div>
         <div class="table-filters">
-            <mat-form-field  class='mat-form-field__form-control edit-form__institution' appearance='fill'
-            floatLabel='always'>
+            <div>
+            <span><mat-icon>search</mat-icon></span>
+            <mat-form-field  class='mat-form-field__form-control edit-form__institution' appearance='fill' floatLabel='always'>
                 <input matInput placeholder='Поиск по названию'>
             </mat-form-field>
+        </div>
         </div>
         <table class='table-content' matSort>
             <tr>
@@ -16,8 +18,8 @@
                 <th mat-sort-header='description'>Описание</th>
             </tr>
             <tr *ngFor="let role of roles">
-                <th>{{role.name}}</th>
-                <th>{{role.description}}</th>
+                <td class="role_name">{{role.name}}</td>
+                <td class="role_description">{{role.description}}</td>
             </tr>
         </table>
     </div>
