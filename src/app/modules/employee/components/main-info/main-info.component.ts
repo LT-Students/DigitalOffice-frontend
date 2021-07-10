@@ -14,11 +14,11 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { DepartmentService } from '@app/services/department.service';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CommunicationType } from '@data/api/user-service/models';
+import { NetService } from '@app/services/net.service';
 import { employee } from '../../mock';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
 
@@ -62,9 +62,8 @@ export class MainInfoComponent implements OnInit {
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
 		private _userService: UserService,
-		private _departmentService: DepartmentService,
+		private _netService: NetService,
 		private dialog: MatDialog,
-		private _projectService: ProjectService
 	) {
 		this.employee = employee;
 
@@ -84,18 +83,19 @@ export class MainInfoComponent implements OnInit {
 	ngOnInit(): void {
 		this._userService
 			// .getMockUser(this.pageId)
-			.getUser(this.pageId)
+			.getUser(this.pageId, true)
 			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
 			.subscribe((user: User) => {
 				this.user = user;
+				console.log(user);
 			});
 		this._initEditForm();
 
-		this._departmentService.getDepartments().subscribe((departments: DepartmentInfo[]) => {
+		this._netService.getDepartmentsList().subscribe((departments: DepartmentInfo[]) => {
 			this.selectOptions.departments = departments;
 		});
 
-		this._projectService.getProjectPositions().subscribe((positions: PositionInfo[]) => {
+		this._netService.getPositionsList().subscribe((positions: PositionInfo[]) => {
 			this.selectOptions.positions = positions;
 		});
 		// this.previewPhoto = this.user.avatar.content;
