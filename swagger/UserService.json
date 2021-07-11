@@ -332,11 +332,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "minItems": 1,
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EditUserRequest"
-                }
+                "$ref": "#/components/schemas/EditUserRequest"
               }
             }
           }
