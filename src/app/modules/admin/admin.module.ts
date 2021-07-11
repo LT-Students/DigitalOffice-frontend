@@ -17,7 +17,7 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
 import { UploadComponent } from './components/upload/upload.component';
 import { ProgressComponent } from './components/upload/progress/progress.component';
 import { NewDepartmentComponent } from './components/new-department/new-department.component';
-import { NewSpecializationComponent } from './components/new-specialization/new-specialization.component';
+import { NewPositionComponent } from './components/new-position/new-position.component';
 import { DeleteDirectionComponent } from './components/new-project/modals/delete-direction/delete-direction.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { NewRoleComponent } from './components/new-role/new-role.component';
@@ -40,7 +40,7 @@ import { DepartmentCardComponent } from './components/department-card/department
 		DndDirective,
 		ProgressComponent,
 		NewDepartmentComponent,
-		NewSpecializationComponent,
+		NewPositionComponent,
 		DeleteDirectionComponent,
 		NewRoleComponent,
 		ManageUsersComponent,

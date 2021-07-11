@@ -7,7 +7,8 @@ import { AuthService } from '@app/services/auth.service';
 	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-	@Input() userName;
+	@Input() userName: string;
+	@Input() userId: string;
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
 
 	constructor(private authService: AuthService) {}

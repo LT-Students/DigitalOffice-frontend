@@ -103,12 +103,12 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 				];
 			});
 
-		this._projectService
-			.getUserProjectsInfo(this.user.projects)
-			.pipe(takeUntil(this._unsubscribe$))
-			.subscribe((projects: ProjectInfo[]) => {
-				console.log(projects);
-			});
+		// this._projectService
+		// 	.getUserProjectsInfo(this.user.projects)
+		// 	.pipe(takeUntil(this._unsubscribe$))
+		// 	.subscribe((projects: ProjectInfo[]) => {
+		// 		console.log(projects);
+		// 	});
 	}
 
 	ngOnDestroy() {

@@ -11,7 +11,7 @@ import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType } from '@app/services/modal.service';
 import { NewCompanyComponent } from '../new-company/new-company.component';
 import { NewDepartmentComponent } from '../new-department/new-department.component';
-import { NewSpecializationComponent } from '../new-specialization/new-specialization.component';
+import { NewPositionComponent } from '../new-position/new-position.component';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 import { NewRoleComponent } from '../new-role/new-role.component';
 import { NewOfficeComponent } from '../new-office/new-office.component';
@@ -41,8 +41,8 @@ export class DashboardComponent implements OnInit {
 					? this.dialog.open(NewCompanyComponent, { width: '503px' }).afterClosed()
 					: (value === this.modalType.NEW_DEPARTMENT)
 					? this.dialog.open(NewDepartmentComponent, { width: '503px' }).afterClosed()
-					: (value === this.modalType.NEW_SPECIALIZATION)
-					? this.dialog.open(NewSpecializationComponent, {}).afterClosed()
+					: (value === this.modalType.NEW_POSITION)
+					? this.dialog.open(NewPositionComponent, {}).afterClosed()
 					: (value === this.modalType.NEW_EMPLOYEE)
 					? this.dialog.open(NewEmployeeComponent, {}).afterClosed()
 					: (value === this.modalType.NEW_ROLE)
@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
 			if (
 				result &&
 				result.status &&
-				!(result.errors && result.errors.length)
+				!(result.errors && result.errors.length) &&
 				(result.status === OperationResultStatusType.FullSuccess || result.status === OperationResultStatusType.PartialSuccess)
 			) {
 				this._matSnackBar.open('Новый пользователь успешно добавлен!', 'Закрыть', { duration: 7000 });

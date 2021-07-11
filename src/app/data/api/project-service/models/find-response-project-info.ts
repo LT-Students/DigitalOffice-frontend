@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { ProjectInfo } from './project-info';
-export interface ProjectsResponse {
+export interface FindResponseProjectInfo {
   body?: Array<ProjectInfo>;
   errors?: Array<string>;
 
