@@ -7,6 +7,7 @@ import { UserInfo } from '@data/api/company-service/models/user-info';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
+import { UserService } from '@app/services/user.service';
 
 const department = of({
 	id: 'yo',
@@ -39,16 +40,23 @@ export class DepartmentCardComponent implements OnInit {
 	public sortedUsersInfo: UserInfo[];
 	private _departmentId: string;
 
-	constructor(private _netService: NetService, private _router: Router, private _dialog: MatDialog, private _route: ActivatedRoute) {
+	constructor(
+		private _netService: NetService,
+		private _userService: UserService,
+		private _router: Router,
+		private _dialog: MatDialog,
+		private _route: ActivatedRoute
+	) {
 		this._departmentId = this._route.snapshot.params.id;
 	}
 
 	ngOnInit(): void {
 		this._netService.getDepartment(this._departmentId).subscribe((data: DepartmentInfo) => {
-			console.log('yoo', data);
+			console.log(data);
 			this.departmentInfo = data;
 			this.sortedUsersInfo = data.users.slice();
 		});
+		this.departmentInfo
 	}
 
 	onAddEmployeeClick() {

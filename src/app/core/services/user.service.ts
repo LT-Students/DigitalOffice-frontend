@@ -36,7 +36,10 @@ export class UserService {
 		return this.getUser(userId).pipe(tap(this._setUser.bind(this)));
 	}
 
-	public getUsers(): Observable<UserInfo[]> {
+	public getUsers(departmentId?: string): Observable<UserInfo[]> {
+		const config = {
+
+		}
 		return (
 			this.userApiService
 				/* TODO: Подумать, как получать конкретные данные о каждом юзере
