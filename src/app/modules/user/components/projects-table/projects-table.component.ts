@@ -165,7 +165,11 @@ export class ProjectsTableComponent implements OnInit {
 	// 	this.visiblyGroup = selectChange.value;
 	// }
 
-	onProjectClick(projectId: string): void {
+	public onProjectClick(projectId: string): void {
 		this._router.navigate([ `${ RouteType.PROJECT }/${ projectId }` ]);
+	}
+
+	public onAddProjectClick(): void {
+		this._router.navigate([ 'admin/new-project' ]);
 	}
 }
