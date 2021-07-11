@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Project } from '@data/models/project';
+import { ProjectService } from '@app/services/project.service';
 
 @Component({
 	selector: 'do-projects-table',
@@ -7,7 +8,7 @@ import { Project } from '@data/models/project';
 	styleUrls: ['./projects-table.component.scss'],
 })
 export class ProjectsTableComponent implements OnInit {
-	constructor() {}
+	constructor(private _projectService: ProjectService) {}
 
 	activeProjects: Project[] = [];
 	suspendedProjects: Project[] = [];
@@ -149,6 +150,8 @@ export class ProjectsTableComponent implements OnInit {
 		this.activeProjects.push(active, active, active, active);
 		this.suspendedProjects.push(suspended);
 		this.closedProjects.push(closed);
+
+		this._projectService.getProjectList().subscribe((result) => console.log(result));
 	}
 
 	onSelect(selectChange) {
