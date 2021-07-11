@@ -46,7 +46,7 @@ export class NetService {
 	}
 
 	public getDepartment(departmentId: string): Observable<DepartmentInfo> {
-		return this._departmentApiService.getDepartment({ departmentId });
+		return this._departmentApiService.getDepartment({ id: departmentId });
 	}
 
 	public generatePassword(): Observable<string> {
