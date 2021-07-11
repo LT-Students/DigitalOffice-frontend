@@ -1,17 +1,25 @@
 .table {
-	&-header {
+	&__header {
 		margin-bottom: 20px;
 
 		display: flex;
 		justify-content: space-between;
 	}
 
-	&-content {
+	&__content {
 		width: 100%;
+
+		border-collapse: collapse;
 	}
 
-	&-filters {
+	&__filters {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	&__row:hover {
+		cursor: pointer;
+
+		background-color: #f1f1ef;
 	}
 }

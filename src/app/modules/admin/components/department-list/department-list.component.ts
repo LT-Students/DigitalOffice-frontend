@@ -3,8 +3,8 @@ import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { MatDialog } from '@angular/material/dialog';
-import { NewDepartmentComponent } from '../new-department/new-department.component';
 import { Router } from '@angular/router';
+import { NewDepartmentComponent } from '../new-department/new-department.component';
 import { RouteType } from '../../../../app-routing.module';
 
 @Component({
