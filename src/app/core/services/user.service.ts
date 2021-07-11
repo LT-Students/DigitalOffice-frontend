@@ -108,6 +108,6 @@ export class UserService {
 			}
 		});
 
-		return this.userApiService.editUser({ userId, body: [editRequest] });
+		return this.userApiService.editUser({ userId, body: editRequest });
 	}
 }
