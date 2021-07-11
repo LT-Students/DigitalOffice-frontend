@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { RouteType } from '../../app-routing.module';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
-import { RouteType } from '../../app-routing.module';
 
 const userRoutes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'attendance' },

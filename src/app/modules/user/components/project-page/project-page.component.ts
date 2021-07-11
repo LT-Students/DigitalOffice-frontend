@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ProjectService } from '@app/services/project.service';
 
 @Component({
 	selector: 'do-project-page',
@@ -8,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProjectPageComponent implements OnInit {
 	projectId: string;
-	constructor(private route: ActivatedRoute) {}
+	constructor(private _route: ActivatedRoute, private _projectService: ProjectService) {}
 
 	projectPage = {
 		id: '1',
@@ -116,6 +117,9 @@ export class ProjectPageComponent implements OnInit {
 	valuesFromDescription = Object.values(this.projectPage.details);
 	userId = '89'; //временно
 	ngOnInit(): void {
-		this.projectId = this.route.snapshot.params.id;
+		this.projectId = this._route.snapshot.params.id;
+		this._projectService.getProjectInfo(this.projectId).subscribe((result) => {
+			console.log(result);
+		})
 	}
 }

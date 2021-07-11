@@ -18,6 +18,10 @@ export class ProjectService {
 		return this._projectApiService.createProject({ body: request });
 	}
 
+	public getProjectInfo(projectId: string): Observable<ProjectResponse> {
+		return this._projectApiService.getProject({ projectId: projectId, includeusers: true });
+	}
+
 	public getProjectList(): Observable<ProjectInfo[]> {
 		return this._projectApiService
 			.findProjects({ skipCount: 0, takeCount: 10 })
