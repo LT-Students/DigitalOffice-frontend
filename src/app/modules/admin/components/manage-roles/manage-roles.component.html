@@ -1,30 +1,30 @@
-<div class="navigation">
-    <a routerLink='/user/dashboard'>Администрирование </a>
-    <span><mat-icon>chevron_right</mat-icon></span>
-    <a routerLink='/admin/manage-roles'>Управление ролями</a>
+<div class='navigation' doText color='gray'>
+    <a class='navigation__link' routerLink='/user/dashboard'>Администрирование </a>
+    <span doText color='gray'><mat-icon>chevron_right</mat-icon></span>
+    <a class='navigation__link'>Управление ролями</a>
 </div>
-<div class='card card-standart'>
+<div class='card card-standard'>
     <div class='table'>
-        <div class='table-header'>
+        <div class='table__header'>
             <h3 doText underlined underlinedSize='sm'>Роли</h3>
-            <button mat-button color="accent" (click)='onAddRoleClick()'>+ Добавить роль</button>
+            <button mat-button color='accent' (click)='onAddRoleClick()'>+ Добавить роль</button>
         </div>
-        <div class="table-filters">
+        <div class='table__filters'>
             <div>
-            <span><mat-icon>search</mat-icon></span>
-            <mat-form-field  class='mat-form-field__form-control edit-form__institution' appearance='fill' floatLabel='always'>
-                <input matInput placeholder='Поиск по названию'>
+            <span doText color='gray'><mat-icon>search</mat-icon></span>
+            <mat-form-field appearance='fill' floatLabel='always'>
+                <input class='table__input' matInput placeholder='Поиск по названию'>
             </mat-form-field>
         </div>
         </div>
-        <table class='table-content' matSort>
-            <tr>
-                <th mat-sort-header='name'>Название</th>
-                <th mat-sort-header='description'>Описание</th>
+        <table class='table__content' matSort>
+            <tr doText color="gray" regularTextSize='regular'>
+                <th mat-sort-header='name' class='table__heading'>Название</th>
+                <th mat-sort-header='description' class='table__heading'>Описание</th>
             </tr>
             <tr *ngFor="let role of roles">
-                <td class="role_name">{{role.name}}</td>
-                <td class="role_description">{{role.description}}</td>
+                <td doText>{{role.name}}</td>
+                <td doText color='gray'>{{role.description}}</td>
             </tr>
         </table>
     </div>

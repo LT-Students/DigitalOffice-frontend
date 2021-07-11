@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { NewRoleComponent } from '../new-role/new-role.component';
-import { ROLES, Role } from './mock-roles'
+import { ROLES, Role } from './mock-roles';
 
 @Component({
   selector: 'app-manage-roles',
@@ -11,14 +11,14 @@ import { ROLES, Role } from './mock-roles'
 })
 export class ManageRolesComponent implements OnInit {
 
-  roles: Role[]
-  constructor(public dialog: MatDialog) { }
+  public roles: Role[];
+  constructor(private dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this.roles = ROLES
+  public ngOnInit(): void {
+    this.roles = ROLES;
   }
 
-  onAddRoleClick(): void {
-    this.dialog.open(NewRoleComponent)
+  public onAddRoleClick(): void {
+    this.dialog.open(NewRoleComponent);
   }
 }

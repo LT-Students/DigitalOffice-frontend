@@ -1,57 +1,43 @@
 .table {
-	&-header {
+	&__header {
 		margin-bottom: 20px;
 
 		display: flex;
 		justify-content: space-between;
 	}
 
-	&-content {
+	&__content {
 		width: 100%;
 	}
 
-	&-filters {
+	&__heading {
+		font-weight: 100 !important;
+	}
+
+	&__filters {
 		display: flex;
 		justify-content: space-between;
 	}
-}
 
-input {
-	width: 50%;
-}
-
-th,
-.role_description,
-a {
-	font: 400 16px/1.5 'GillSansWGL', sans-serif;
-
-	color: #a3a3a2;
+	&__input {
+		width: 50%;
+	}
 }
 
 .navigation {
 	margin-bottom: 50px;
 
-	mat-icon {
-		vertical-align: middle;
-	}
-
-	a {
+	&__link {
 		display: inline-block;
 
 		height: 24px;
 
-		vertical-align: middle;
+		vertical-align: top;
+
+		color: inherit;
 	}
 
-	a:hover {
+	&__link:hover {
 		text-decoration: underline;
 	}
-}
-
-.role_name {
-	font: 400 16px/1.5 'GillSansWGL', sans-serif;
-}
-
-span {
-	color: #a3a3a2;
 }
