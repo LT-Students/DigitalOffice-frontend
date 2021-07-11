@@ -18,26 +18,26 @@
 			</h3>
 			<button mat-flat-button color="primary" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 		</div>
-		<div class="table__filters">
-			<mat-form-field class="mat-form-field__form-control edit-form__institution" appearance="fill" floatLabel="always">
-				<input matInput placeholder="Поиск по фамилии и имени" />
-			</mat-form-field>
-			<mat-form-field class="mat-form-field_default-select" appearance="fill">
-				<mat-select class="select" placeholder="Выберите должность">
-					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>
-				</mat-select>
-			</mat-form-field>
-			<mat-form-field class="mat-form-field_default-select" appearance="fill">
-				<mat-select class="select" placeholder="Выберите роль">
-					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>
-				</mat-select>
-			</mat-form-field>
-			<mat-form-field class="mat-form-field_default-select" appearance="fill">
-				<mat-select class="select" placeholder="Статус">
-					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>
-				</mat-select>
-			</mat-form-field>
-		</div>
+<!--		<div class="table__filters">-->
+<!--			<mat-form-field class="mat-form-field__form-control edit-form__institution" appearance="fill" floatLabel="always">-->
+<!--				<input matInput placeholder="Поиск по фамилии и имени" />-->
+<!--			</mat-form-field>-->
+<!--			<mat-form-field class="mat-form-field_default-select" appearance="fill">-->
+<!--				<mat-select class="select" placeholder="Выберите должность">-->
+<!--					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>-->
+<!--				</mat-select>-->
+<!--			</mat-form-field>-->
+<!--			<mat-form-field class="mat-form-field_default-select" appearance="fill">-->
+<!--				<mat-select class="select" placeholder="Выберите роль">-->
+<!--					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>-->
+<!--				</mat-select>-->
+<!--			</mat-form-field>-->
+<!--			<mat-form-field class="mat-form-field_default-select" appearance="fill">-->
+<!--				<mat-select class="select" placeholder="Статус">-->
+<!--					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>-->
+<!--				</mat-select>-->
+<!--			</mat-form-field>-->
+<!--		</div>-->
 		<table doText class="table__content" matSort (matSortChange)="sortData($event)">
 			<tr>
 				<th></th>

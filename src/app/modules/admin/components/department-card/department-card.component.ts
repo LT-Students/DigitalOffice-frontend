@@ -4,7 +4,7 @@ import { Sort } from '@angular/material/sort';
 import { of } from 'rxjs';
 import { NetService } from '@app/services/net.service';
 import { UserInfo } from '@data/api/company-service/models/user-info';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 
@@ -37,22 +37,26 @@ const department = of({
 export class DepartmentCardComponent implements OnInit {
 	public departmentInfo: DepartmentInfo;
 	public sortedUsersInfo: UserInfo[];
+	private _departmentId: string;
 
-	constructor(private netService: NetService, private router: Router, private dialog: MatDialog) {}
+	constructor(private _netService: NetService, private _router: Router, private _dialog: MatDialog, private _route: ActivatedRoute) {
+		this._departmentId = this._route.snapshot.params.id;
+	}
 
 	ngOnInit(): void {
-		department.subscribe((data: DepartmentInfo) => {
+		this._netService.getDepartment(this._departmentId).subscribe((data: DepartmentInfo) => {
+			console.log('yoo', data);
 			this.departmentInfo = data;
 			this.sortedUsersInfo = data.users.slice();
-		})
+		});
 	}
 
 	onAddEmployeeClick() {
-		this.dialog.open(NewEmployeeComponent);
+		this._dialog.open(NewEmployeeComponent);
 	}
 
 	onUserClick(userId: string) {
-		this.router.navigate([`/user/${userId}`]);
+		this._router.navigate([`/user/${userId}`]);
 	}
 
 	public sortData(sort: Sort): void {
@@ -62,21 +66,21 @@ export class DepartmentCardComponent implements OnInit {
 			return;
 		}
 
-		this.sortedUsersInfo = data.sort((a: UserInfo, b: UserInfo) => {
-			const isAsc = sort.direction === 'asc';
-			switch (sort.active) {
-				case 'name':
-					return this._compare(a.firstName, b.firstName, isAsc);
-				case 'role':
-					return this._compare(a.role, b.role, isAsc);
-				case 'rate':
-					return this._compare(a.rate, b.rate, isAsc);
-				case 'status':
-					return this._compare(a.status, b.status, isAsc);
-				default:
-					return 0;
-			}
-		});
+		// this.sortedUsersInfo = data.sort((a: UserInfo, b: UserInfo) => {
+		// 	const isAsc = sort.direction === 'asc';
+		// 	switch (sort.active) {
+		// 		case 'name':
+		// 			return this._compare(a.firstName, b.firstName, isAsc);
+		// 		case 'role':
+		// 			return this._compare(a.role, b.role, isAsc);
+		// 		case 'rate':
+		// 			return this._compare(a.rate, b.rate, isAsc);
+		// 		case 'status':
+		// 			return this._compare(a.status, b.status, isAsc);
+		// 		default:
+		// 			return 0;
+		// 	}
+		// });
 	}
 
 	private _compare(a: number | string, b: number | string, isAsc: boolean) {
