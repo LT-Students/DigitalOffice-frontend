@@ -303,11 +303,10 @@
 								id="position"
 								formControlName="position"
 								appearance="fill"
-								[compareWith]="compareSelectValues"
 								required
 							>
-								<mat-option class="employee-info__input" *ngFor="let option of selectOptions.positions" [value]="option">
-									{{ option.name }}
+								<mat-option class="employee-info__input" *ngFor="let position of selectOptions.positions" [value]="position.id">
+									{{ position.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
@@ -320,11 +319,10 @@
 								id="department"
 								formControlName="department"
 								appearance="fill"
-								[compareWith]="compareSelectValues"
 								required
 							>
-								<mat-option class="employee-info__input" *ngFor="let option of selectOptions.departments" [value]="option">
-									{{ option.name }}
+								<mat-option class="employee-info__input" *ngFor="let department of selectOptions.departments" [value]="department.id">
+									{{ department.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>

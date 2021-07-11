@@ -10,7 +10,7 @@ import { CreateUserRequest } from '@data/api/user-service/models/create-user-req
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { OperationResultStatusType } from '@data/api/user-service/models';
+import { EditUserRequest, OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { userResponse } from '../../modules/employee/mock';
 
@@ -18,17 +18,19 @@ import { userResponse } from '../../modules/employee/mock';
 export class UserService {
 	public selectedUser: BehaviorSubject<UserResponse>;
 
-	constructor(
-		private userApiService: UserApiService,
-		private route: ActivatedRoute,
-		private localStorageService: LocalStorageService
-	) {
+	constructor(private userApiService: UserApiService, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
 		this.selectedUser = new BehaviorSubject<UserResponse>(null);
 	}
 
-
-
-	public getUser(userId: string): Observable<UserResponse> {
+	public getUser(userId: string, includeAll = false): Observable<UserResponse> {
+		if (includeAll) {
+			return this.userApiService.getUser({
+				userId: userId,
+				includedepartment: true,
+				// includeposition: true,
+				includecommunications: true,
+			});
+		}
 		return this.userApiService.getUser({ userId: userId });
 	}
 
@@ -74,5 +76,38 @@ export class UserService {
 	private _setUser(user: UserResponse): void {
 		this.localStorageService.set('user', user.user);
 		this.selectedUser.next(user);
+	}
+
+	public editUser(userId: string, changes: any) {
+		const editRequest: Array<PatchUserDocument> = [];
+		changes.forEach((item) => {
+			switch (item.path) {
+				case 'firstName':
+					editRequest.push({
+						op: 'replace',
+						path: '/FirstName',
+						value: item.value,
+					});
+					break;
+				case 'lastName':
+					editRequest.push({
+						op: 'replace',
+						path: '/LastName',
+						value: item.value,
+					});
+					break;
+				case 'middleName':
+					editRequest.push({
+						op: 'replace',
+						path: '/MiddleName',
+						value: item.value,
+					});
+					break;
+				default:
+					break;
+			}
+		});
+
+		return this.userApiService.editUser({ userId, body: [editRequest] });
 	}
 }

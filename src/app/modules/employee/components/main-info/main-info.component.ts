@@ -17,10 +17,11 @@ import { Observable, of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { CommunicationType } from '@data/api/user-service/models';
+import { CommunicationType, ErrorResponse } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { employee } from '../../mock';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface ExtendedUser extends IUser {
 	about?: string;
@@ -64,6 +65,7 @@ export class MainInfoComponent implements OnInit {
 		private _userService: UserService,
 		private _netService: NetService,
 		private dialog: MatDialog,
+		private _snackBar: MatSnackBar
 	) {
 		this.employee = employee;
 
@@ -161,9 +163,25 @@ export class MainInfoComponent implements OnInit {
 		// this.employee = { ...this.employee, ...this.employeeInfoForm.value };
 	}
 
+	public patchEditUser(): void {
+		const editRequest = Object.keys(this.employeeInfoForm.controls)
+			.filter((key) => this.employeeInfoForm.get(key).dirty)
+			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key).value }));
+		this._userService.editUser(this.user.id, editRequest).subscribe(
+			(result) => {
+				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
+			},
+			(error: ErrorResponse) => {
+				console.log(error);
+				this._snackBar.open(error.message, 'Close', { duration: 5000 });
+			}
+		);
+	}
+
 	onSubmit() {
-		this.updateEmployeeInfo();
-		this.toggleEditMode();
+		// this.updateEmployeeInfo();
+		this.patchEditUser();
+		// this.toggleEditMode();
 	}
 
 	onReset() {
