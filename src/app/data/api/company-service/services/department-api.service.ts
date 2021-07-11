@@ -94,12 +94,12 @@ export class DepartmentApiService extends BaseService {
     /**
      * Department global unique identifier.
      */
-    departmentId: string;
+    id: string;
   }): Observable<StrictHttpResponse<DepartmentInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetDepartmentPath, 'get');
     if (params) {
-      rb.query('departmentId', params.departmentId, {});
+      rb.query('id', params.id, {});
     }
 
     return this.http.request(rb.build({
@@ -126,7 +126,7 @@ export class DepartmentApiService extends BaseService {
     /**
      * Department global unique identifier.
      */
-    departmentId: string;
+    id: string;
   }): Observable<DepartmentInfo> {
 
     return this.getDepartment$Response(params).pipe(
