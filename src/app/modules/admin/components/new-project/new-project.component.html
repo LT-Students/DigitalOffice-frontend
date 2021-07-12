@@ -17,13 +17,13 @@
 			</div>
 			<div class="section__content section__content_general">
 				<div class="project-info__name">
-					<label class="project-info__label" for="name">Название проекта</label>
+					<label class="project-info__label" for="name">Название проекта<sup doText color="negative_accent">*</sup></label>
 					<mat-form-field>
 						<input matInput type="text" id="name" formControlName="name" />
 					</mat-form-field>
 				</div>
 				<div class="project-info__department">
-					<label class="project-info__label" for="department">Департамент</label>
+					<label class="project-info__label" for="department">Департамент<sup doText color="negative_accent">*</sup></label>
 					<mat-form-field class="mat-form-field_default-select" appearance="none">
 						<mat-select id="department" formControlName="departmentId">
 							<mat-option *ngFor="let department of departments" [value]="department.id">
@@ -88,29 +88,29 @@
 					&nbsp;
 					<h3 doText color="accent_color_bright">{{ totalMembersCount() }} человек</h3>
 				</div>
-<!--				<div class="section__title_right">-->
-<!--					<button mat-flat-button color="primary" type="button" (click)="showProjectTeam()">Посмотреть всю команду</button>-->
-<!--				</div>-->
+				<!--				<div class="section__title_right">-->
+				<!--					<button mat-flat-button color="primary" type="button" (click)="showProjectTeam()">Посмотреть всю команду</button>-->
+				<!--				</div>-->
 			</div>
 			<div class="section__content">
-<!--				<do-team-card *ngFor="let team of teams" [teamCard]="team" [users]="teams"></do-team-card>-->
-                <div class="user-row" *ngFor="let member of membersAll">
-                    <div class="user-row__image">
-                        <img [src]="member.profileImgSrc" width="48" height="48" alt="user image" />
-                    </div>
-                    <div class="user-row__general-info">
-                        <div class="name">{{ member.firstName }} {{ member.lastName }}</div>
-                        <div class="position" doText color="gray1">{{ member.positionInfo?.name }}</div>
-                    </div>
-                    <div>{{ member.departmentInfo?.name }}</div>
-                    <div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>
-<!--                    <div class="user-row__lead" *ngIf="data.mode">-->
-<!--                        &lt;!&ndash; TODO: Сделать оотображение стилей кнопки для просмотра / редактирования&ndash;&gt;-->
-<!--                        <span class="label_lead" [ngClass]="{ label_lead_l: !member.lead }" doText regularTextSize="small" (click)="assignLead(member)"-->
-<!--                        >Лидер направления</span-->
-<!--                        >-->
-<!--                    </div>-->
-                </div>
+				<!--				<do-team-card *ngFor="let team of teams" [teamCard]="team" [users]="teams"></do-team-card>-->
+				<div class="user-row" *ngFor="let member of membersAll">
+					<div class="user-row__image">
+						<img [src]="member.profileImgSrc" width="48" height="48" alt="user image" />
+					</div>
+					<div class="user-row__general-info">
+						<div class="name">{{ member.firstName }} {{ member.lastName }}</div>
+						<div class="position" doText color="gray1">{{ member.positionInfo?.name }}</div>
+					</div>
+					<div>{{ member.departmentInfo?.name }}</div>
+					<div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>
+					<!--                    <div class="user-row__lead" *ngIf="data.mode">-->
+					<!--                        &lt;!&ndash; TODO: Сделать оотображение стилей кнопки для просмотра / редактирования&ndash;&gt;-->
+					<!--                        <span class="label_lead" [ngClass]="{ label_lead_l: !member.lead }" doText regularTextSize="small" (click)="assignLead(member)"-->
+					<!--                        >Лидер направления</span-->
+					<!--                        >-->
+					<!--                    </div>-->
+				</div>
 				<button mat-flat-button color="primary" type="button" (click)="onAddTeamClick()">Добавить сотрудников</button>
 			</div>
 		</div>
