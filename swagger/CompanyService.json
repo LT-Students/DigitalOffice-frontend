@@ -335,7 +335,7 @@
         "description": "Returns department by id.",
         "parameters": [
           {
-            "name": "departmentId",
+            "name": "id",
             "in": "query",
             "description": "Department global unique identifier.",
             "schema": {
