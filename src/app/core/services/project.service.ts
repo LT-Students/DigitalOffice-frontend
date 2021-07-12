@@ -22,10 +22,9 @@ export class ProjectService {
 		return this._projectApiService.getProject({ projectId: projectId, includeusers: true });
 	}
 
-	public getProjectList(): Observable<ProjectInfo[]> {
-		return this._projectApiService
-			.findProjects({ skipCount: 0, takeCount: 50 })
-			.pipe(switchMap((projects: FindResponseProjectInfo) => of(projects.body)));
+	public getProjectList(skipPages = 0, pageSize = 10): Observable<FindResponseProjectInfo> {
+		return this._projectApiService.findProjects({ skipCount: skipPages, takeCount: pageSize });
+		// .pipe(switchMap((projects: FindResponseProjectInfo) => of(projects.body)));
 	}
 
 	public getUserProjectsInfo(projects: ProjectInfo[]): Observable<ProjectInfo[]> {

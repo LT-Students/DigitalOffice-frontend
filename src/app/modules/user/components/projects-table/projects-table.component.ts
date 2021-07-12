@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '@app/services/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { Router } from '@angular/router';
+import { PageEvent } from '@angular/material/paginator';
 import { RouteType } from '../../../../app-routing.module';
 
 @Component({
@@ -12,7 +13,15 @@ import { RouteType } from '../../../../app-routing.module';
 export class ProjectsTableComponent implements OnInit {
 	public projectList: ProjectInfo[];
 
-	constructor(private _projectService: ProjectService, private _router: Router) {}
+	public totalCount: number;
+	public pageSize: number;
+	public pageIndex: number;
+
+	constructor(private _projectService: ProjectService, private _router: Router) {
+		this.totalCount = 0;
+		this.pageSize = 10;
+		this.pageIndex = 0;
+	}
 
 	// activeProjects: Project[] = [];
 	// suspendedProjects: Project[] = [];
@@ -155,8 +164,9 @@ export class ProjectsTableComponent implements OnInit {
 		// this.suspendedProjects.push(suspended);
 		// this.closedProjects.push(closed);
 
-		this._projectService.getProjectList().subscribe((result) => {
-			this.projectList = result;
+		this._projectService.getProjectList(this.pageIndex, this.pageSize).subscribe((result) => {
+			this.totalCount = result.totalCount;
+			this.projectList = result.body;
 		});
 	}
 
@@ -164,11 +174,19 @@ export class ProjectsTableComponent implements OnInit {
 	// 	this.visiblyGroup = selectChange.value;
 	// }
 
+	public onPageChange(event: PageEvent): void {
+		this.pageSize = event.pageSize;
+		this.pageIndex = event.pageIndex;
+		this._projectService.getProjectList(this.pageIndex, this.pageSize).subscribe((data) => {
+			this.projectList = data.body;
+		});
+	}
+
 	public onProjectClick(projectId: string): void {
-		this._router.navigate([ `${ RouteType.PROJECT }/${ projectId }` ]);
+		this._router.navigate([`${RouteType.PROJECT}/${projectId}`]);
 	}
 
 	public onAddProjectClick(): void {
-		this._router.navigate([ 'admin/new-project' ]);
+		this._router.navigate(['admin/new-project']);
 	}
 }
