@@ -1,17 +1,38 @@
 .table {
-	&-header {
+	&__header {
 		margin-bottom: 20px;
 
 		display: flex;
 		justify-content: space-between;
 	}
 
-	&-content {
+	&__content {
 		width: 100%;
+
+		border-collapse: collapse;
 	}
 
-	&-filters {
+	&__filters {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	&__row {
+		height: 48px;
+
+		border-bottom: 1px solid #f1f1ef;
+
+		&:hover {
+			cursor: pointer;
+
+			background-color: #f1f1ef;
+		}
+	}
+
+	&__description {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	}
 }

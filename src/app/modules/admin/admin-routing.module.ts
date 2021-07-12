@@ -5,7 +5,6 @@ import { RouteType } from '../../app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
-import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 
 
@@ -15,7 +14,6 @@ const adminRoutes: Routes = [
 	{ path: 'new-project', component: NewProjectComponent },
 	{ path: 'manage-users', component: ManageUsersComponent },
 	{ path: 'manage-roles', component: ManageRolesComponent },
-	{ path: 'departments', component: DepartmentListComponent },
 	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
 ];
 

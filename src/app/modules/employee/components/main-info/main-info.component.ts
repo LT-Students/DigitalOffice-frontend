@@ -6,7 +6,6 @@ import { Time } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
-import { employee } from '../../mock';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
@@ -15,11 +14,13 @@ import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { DepartmentService } from '@app/services/department.service';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { CommunicationType } from '@data/api/user-service/models';
+import { CommunicationType, ErrorResponse } from '@data/api/user-service/models';
+import { NetService } from '@app/services/net.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { employee } from '../../mock';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
 
 interface ExtendedUser extends IUser {
@@ -31,7 +32,7 @@ interface ExtendedUser extends IUser {
 	office: string;
 	workingRate: number;
 	workingHours: { startAt: Time; endAt: Time };
-	workingSince?: Date;
+	startWorkingAt?: Date;
 	birthDate: Date;
 	email: string;
 	phone: string;
@@ -62,9 +63,9 @@ export class MainInfoComponent implements OnInit {
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
 		private _userService: UserService,
-		private _departmentService: DepartmentService,
+		private _netService: NetService,
 		private dialog: MatDialog,
-		private _projectService: ProjectService
+		private _snackBar: MatSnackBar
 	) {
 		this.employee = employee;
 
@@ -84,16 +85,19 @@ export class MainInfoComponent implements OnInit {
 	ngOnInit(): void {
 		this._userService
 			// .getMockUser(this.pageId)
-			.getUser(this.pageId)
+			.getUser(this.pageId, true)
 			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
-			.subscribe((user: User) => (this.user = user));
+			.subscribe((user: User) => {
+				this.user = user;
+				console.log(user);
+			});
 		this._initEditForm();
 
-		this._departmentService.getDepartments().subscribe((departments: DepartmentInfo[]) => {
+		this._netService.getDepartmentsList().subscribe((departments: DepartmentInfo[]) => {
 			this.selectOptions.departments = departments;
 		});
 
-		this._projectService.getProjectPositions().subscribe((positions: PositionInfo[]) => {
+		this._netService.getPositionsList().subscribe((positions: PositionInfo[]) => {
 			this.selectOptions.positions = positions;
 		});
 		// this.previewPhoto = this.user.avatar.content;
@@ -155,12 +159,28 @@ export class MainInfoComponent implements OnInit {
 		this.user.middleName = this.employeeInfoForm.value.middleName;
 		this.user.user.rate = +this.employeeInfoForm.value.rate;
 		this.user.user.status = this.employeeInfoForm.value.status;
-		this.user.user.startWorkingAt = this.employeeInfoForm.value.workingSince.toISOString();
+		this.user.user.startWorkingAt = this.employeeInfoForm.value.startWorkingAt.toISOString();
 		// this.employee = { ...this.employee, ...this.employeeInfoForm.value };
+	}
+
+	public patchEditUser(): void {
+		const editRequest = Object.keys(this.employeeInfoForm.controls)
+			.filter((key) => this.employeeInfoForm.get(key).dirty)
+			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key).value }));
+		this._userService.editUser(this.user.id, editRequest).subscribe(
+			(result) => {
+				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
+			},
+			(error: ErrorResponse) => {
+				console.log(error);
+				this._snackBar.open(error.message, 'Close', { duration: 5000 });
+			}
+		);
 	}
 
 	onSubmit() {
 		this.updateEmployeeInfo();
+		this.patchEditUser();
 		this.toggleEditMode();
 	}
 
@@ -188,7 +208,7 @@ export class MainInfoComponent implements OnInit {
 			position: position,
 			department: department,
 			rate: rate,
-			workingSince: this.user.startWorkingDate,
+			startWorkingAt: this.user.startWorkingDate,
 			communications: this._enrichCommunications(),
 		});
 	}
@@ -197,6 +217,10 @@ export class MainInfoComponent implements OnInit {
 		const currentValue = this.employeeInfoForm.get('rate').value;
 		const rate = +currentValue + step;
 		this.employeeInfoForm.patchValue({ rate: rate });
+
+		if (this.employeeInfoForm.get('rate').pristine) {
+			this.employeeInfoForm.get('rate').markAsDirty();
+		}
 	}
 
 	compareSelectValues(option: any, value: any) {
@@ -227,7 +251,7 @@ export class MainInfoComponent implements OnInit {
 			position: ['', Validators.required],
 			department: ['', Validators.required],
 			rate: ['', Validators.required],
-			workingSince: [null],
+			startWorkingAt: [null],
 			communications: this.fb.array([
 				this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
 				this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),

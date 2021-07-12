@@ -1,16 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ProjectTaskInfo } from './project-task-info';
+import { UserTaskInfo } from './user-task-info';
 export interface TaskInfo {
+  assignedTo?: UserTaskInfo;
 
   /**
-   * The task's assigned user Id.
+   * Task creator.
    */
-  'AssignedTo   '?: string;
-
-  /**
-   * The task's author Id.
-   */
-  authorId?: string;
+  author?: UserTaskInfo;
 
   /**
    * Data and time created task.
@@ -18,17 +16,12 @@ export interface TaskInfo {
   createdAt?: any;
 
   /**
-   * Data and time deadline task.
-   */
-  deadline?: any;
-
-  /**
    * The task's description.
    */
   description?: string;
 
   /**
-   * The task's Id.
+   * Unique task identifier.
    */
   id?: string;
 
@@ -40,12 +33,7 @@ export interface TaskInfo {
   /**
    * Specific task's number.
    */
-  'Number '?: number;
-
-  /**
-   * The task's parent Id.
-   */
-  'ParentId '?: string;
+  number?: number;
 
   /**
    * Planed time at completed task.
@@ -53,23 +41,19 @@ export interface TaskInfo {
   plannedMinutes?: number;
 
   /**
-   * The task's priority Id.
+   * The task's priority name.
    */
-  'PriorityId '?: string;
+  priorityName?: string;
+  project?: ProjectTaskInfo;
 
   /**
-   * The task's project Id.
+   * The task's status name.
    */
-  'ProjectId '?: string;
+  statusName?: string;
 
   /**
-   * The task's status Id.
+   * The task's type name.
    */
-  'StatusId '?: string;
-
-  /**
-   * The task's type Id.
-   */
-  typeId?: string;
+  typeName?: string;
 }
 
