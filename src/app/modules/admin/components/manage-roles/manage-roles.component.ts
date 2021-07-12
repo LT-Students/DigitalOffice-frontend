@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NewRoleComponent } from '../new-role/new-role.component';
 import { RoleApiService } from '@data/api/rights-service/services';
 import { ROLES, Role } from './mock-roles';
-import { RolesResponse } from '@data/api/rights-service/models';
+import { RoleInfo, RolesResponse } from '@data/api/rights-service/models';
 
 @Component({
   selector: 'app-manage-roles',
@@ -13,7 +13,7 @@ import { RolesResponse } from '@data/api/rights-service/models';
 })
 export class ManageRolesComponent implements OnInit {
 
-  public roles;
+  public roles: RoleInfo[];
   constructor(private dialog: MatDialog, private roleApiService: RoleApiService) { }
 
   public ngOnInit(): void {
