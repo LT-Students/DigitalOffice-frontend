@@ -8,6 +8,8 @@ import { UserService } from '@app/services/user.service';
 import { forkJoin, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { EducationType } from '@data/api/user-service/models/education-type';
+import { MatDialog } from '@angular/material/dialog';
+import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-manage-users',
@@ -24,7 +26,8 @@ export class ManageUsersComponent implements OnInit {
 	private _unsubscribe$: Subject<void>;
 
 	constructor(
-		private _userService: UserService
+		private _userService: UserService,
+		private _dialog: MatDialog,
 	) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
@@ -45,7 +48,7 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	public onAddEmployeeClick() {
-		console.log('onAddEmployeeClick');
+		this._dialog.open(NewEmployeeComponent);
 	}
 
 	public sortData(sort: Sort): void {

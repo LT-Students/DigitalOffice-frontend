@@ -34,29 +34,17 @@
 				<th mat-sort-header="status">Статус</th>
 				<th></th>
 			</tr>
-			<tr class="table__row" *ngFor="let userInfo of sortedUserInfo">
+			<tr class="table__row" *ngFor="let userInfo of sortedUserInfo" routerLink="/user/{{ userInfo.user.id }}">
 				<td>IMG</td>
-				<td>{{ userInfo.user?.firstName }}</td>
+				<td>{{ userInfo.user?.firstName }} {{ userInfo.user?.lastName }}</td>
 				<td>
-					<ng-container *ngIf="userInfo?.department?.name">
+					<ng-container *ngIf="userInfo?.department?.name; else empty">
 						{{ userInfo.department.name }}
-					</ng-container>
-					<ng-container *ngIf="!userInfo?.department?.name">
-						<span doText color="negative_accent" regularTextSize="small">
-							<mat-icon aria-hidden="false" aria-label="error">error</mat-icon>
-							Отсутствует информация о департаменте
-						</span>
 					</ng-container>
 				</td>
 				<td>
-					<ng-container *ngIf="userInfo?.position?.name">
+					<ng-container *ngIf="userInfo?.position?.name; else empty">
 						{{ userInfo.department.name }}
-					</ng-container>
-					<ng-container *ngIf="!userInfo?.position?.name">
-						<span doText color="negative_accent" regularTextSize="small">
-							<mat-icon aria-hidden="false" aria-label="error">error</mat-icon>
-							Отсутствует информация о роли
-						</span>
 					</ng-container>
 				</td>
 				<td>{{ userInfo?.user?.rate }}</td>
@@ -70,3 +58,7 @@
 		</table>
 	</div>
 </div>
+
+<ng-template #empty>
+	<p>—</p>
+</ng-template>
