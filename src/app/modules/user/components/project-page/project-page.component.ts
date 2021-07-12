@@ -122,7 +122,6 @@ export class ProjectPageComponent implements OnInit {
 	// };
 
 	// valuesFromDescription = Object.values(this.projectPage.details);
-	userId = '89'; //временно
 	ngOnInit(): void {
 		this.projectId = this._route.snapshot.params.id;
 		this._projectService.getProjectInfo(this.projectId).subscribe((result) => {
