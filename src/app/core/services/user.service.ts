@@ -12,8 +12,8 @@ import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { EditUserRequest, OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
 import { HttpErrorResponse } from '@angular/common/http';
-import { userResponse } from '../../modules/employee/mock';
 import { Moment } from 'moment';
+import { userResponse } from '../../modules/employee/mock';
 
 @Injectable()
 export class UserService {
@@ -39,15 +39,14 @@ export class UserService {
 		return this.getUser(userId).pipe(tap(this._setUser.bind(this)));
 	}
 
-	public getUsers(departmentId?: string): Observable<UserInfo[]> {
-
+	public getUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<UsersResponse> {
 		return (
 			this.userApiService
 				/* TODO: Подумать, как получать конкретные данные о каждом юзере
 				 *   при получении данных о всех юзера
 				 * */
-				.findUsers({ skipCount: 0, takeCount: 50, departmentid: departmentId })
-				.pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
+				.findUsers({ skipCount: skipPages, takeCount: pageSize, departmentid: departmentId })
+				// .pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
 		);
 	}
 
