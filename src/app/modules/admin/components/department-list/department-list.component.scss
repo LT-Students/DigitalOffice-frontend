@@ -17,9 +17,22 @@
 		justify-content: space-between;
 	}
 
-	&__row:hover {
-		cursor: pointer;
+	&__row {
+		height: 48px;
 
-		background-color: #f1f1ef;
+		border-bottom: 1px solid #f1f1ef;
+
+		&:hover {
+			cursor: pointer;
+
+			background-color: #f1f1ef;
+		}
+	}
+
+	&__description {
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	}
 }
