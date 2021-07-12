@@ -16,7 +16,7 @@
 	<div class="department__table table">
 		<div class="table__header">
 			<h3 doText underlined underlinedSize="sm">
-				Сотрудники <span class="text-accent_color_bright">{{ departmentInfo?.users.length }} человек</span>
+				Сотрудники <span class="text-accent_color_bright">{{ sortedUsersInfo.length }} человек</span>
 			</h3>
 			<button mat-flat-button color="primary" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 		</div>
@@ -47,25 +47,30 @@
 				<th mat-sort-header="role">Роль</th>
 				<th mat-sort-header="rate">Ставка</th>
 				<th mat-sort-header="status">Статус</th>
-				<th></th>
 			</tr>
 			<ng-container *ngFor="let userInfo of sortedUsersInfo">
 				<tr class="table__row" (click)="onUserClick(userInfo.id)">
 					<td>IMG</td>
-					<td>{{ userInfo.firstName }}</td>
-					<td>{{ userInfo.role ? userInfo.role : '—' }}</td>
-					<td>{{ userInfo.rate ? userInfo.rate : '—' }}</td>
-					<td>{{ userInfo.isActive ? userInfo.isActive : '—' }}</td>
+					<td>{{ userInfo.firstName }} {{ userInfo.lastName }}</td>
 					<td>
-						<button mat-icon-button>
-							<img src="assets/svg/edit.svg" alt="edit" />
-						</button>
+						<ng-container *ngIf="userInfo?.role; else empty">
+							{{ userInfo.role }}
+						</ng-container>
 					</td>
+					<td>
+						<ng-container *ngIf="userInfo?.rate; else empty">
+							{{ userInfo.rate }}
+						</ng-container>
+					</td>
+                    <td>
+                        <ng-container *ngIf="userInfo?.isActive; else empty">
+                            {{ userInfo.isActive }}
+                        </ng-container>
+                    </td>
 				</tr>
 			</ng-container>
 		</table>
 	</div>
 </div>
-
 
 <ng-template #empty><p>—</p></ng-template>

@@ -3,32 +3,11 @@ import { DepartmentInfo } from '@data/api/company-service/models/department-info
 import { Sort } from '@angular/material/sort';
 import { of } from 'rxjs';
 import { NetService } from '@app/services/net.service';
-import { UserInfo } from '@data/api/company-service/models/user-info';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 import { UserService } from '@app/services/user.service';
-
-const department = of({
-	id: 'yo',
-	director: {
-		firstName: 'Roma',
-		lastName: 'Tsinevich',
-	},
-	name: 'Департамент цифровых решений',
-	description:
-		'Департамент цифровых решений основан в 1834 году. Первым ДД был граф Дракула. В департаменте идет разработка философского камня и новых моделей Нимбусов. ',
-	users: [
-		{
-			firstName: 'Roma',
-			lastName: 'Tsinevich',
-		},
-		{
-			firstName: 'Viktor',
-			lastName: 'Timokhov',
-		},
-	],
-});
+import { UserInfo } from '@data/api/user-service/models/user-info';
+import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-department-card',
@@ -52,11 +31,11 @@ export class DepartmentCardComponent implements OnInit {
 
 	ngOnInit(): void {
 		this._netService.getDepartment(this._departmentId).subscribe((data: DepartmentInfo) => {
-			console.log(data);
 			this.departmentInfo = data;
-			this.sortedUsersInfo = data.users.slice();
 		});
-		this.departmentInfo
+		this._userService.getUsers(this._departmentId).subscribe((data) => {
+			this.sortedUsersInfo = data.slice();
+		});
 	}
 
 	onAddEmployeeClick() {

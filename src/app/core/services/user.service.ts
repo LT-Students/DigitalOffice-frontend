@@ -37,15 +37,13 @@ export class UserService {
 	}
 
 	public getUsers(departmentId?: string): Observable<UserInfo[]> {
-		const config = {
 
-		}
 		return (
 			this.userApiService
 				/* TODO: Подумать, как получать конкретные данные о каждом юзере
 				 *   при получении данных о всех юзера
 				 * */
-				.findUsers({ skipCount: 0, takeCount: 10 })
+				.findUsers({ skipCount: 0, takeCount: 10, departmentid: departmentId })
 				.pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
 		);
 	}

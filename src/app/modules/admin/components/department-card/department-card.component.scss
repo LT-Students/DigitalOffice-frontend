@@ -27,10 +27,19 @@
 
 	&__content {
 		width: 100%;
+
+		border-collapse: collapse;
 	}
 
-	&__filters {
-		display: flex;
-		justify-content: space-between;
+	&__row {
+		height: 48px;
+
+		border-bottom: 1px solid #f1f1ef;
+
+		&:hover {
+			cursor: pointer;
+
+			background-color: #f1f1ef;
+		}
 	}
 }
