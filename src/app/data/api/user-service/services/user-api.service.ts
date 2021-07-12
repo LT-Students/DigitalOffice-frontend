@@ -354,7 +354,7 @@ export class UserApiService extends BaseService {
      * Specific user id
      */
     userId: string;
-    body?: Array<EditUserRequest>
+    body?: EditUserRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserPath, 'patch');
@@ -388,7 +388,7 @@ export class UserApiService extends BaseService {
      * Specific user id
      */
     userId: string;
-    body?: Array<EditUserRequest>
+    body?: EditUserRequest
   }): Observable<OperationResultResponse> {
 
     return this.editUser$Response(params).pipe(
