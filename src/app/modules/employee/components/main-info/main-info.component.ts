@@ -19,9 +19,9 @@ import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CommunicationType, ErrorResponse } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { employee } from '../../mock';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface ExtendedUser extends IUser {
 	about?: string;
@@ -32,7 +32,7 @@ interface ExtendedUser extends IUser {
 	office: string;
 	workingRate: number;
 	workingHours: { startAt: Time; endAt: Time };
-	workingSince?: Date;
+	startWorkingAt?: Date;
 	birthDate: Date;
 	email: string;
 	phone: string;
@@ -159,7 +159,7 @@ export class MainInfoComponent implements OnInit {
 		this.user.middleName = this.employeeInfoForm.value.middleName;
 		this.user.user.rate = +this.employeeInfoForm.value.rate;
 		this.user.user.status = this.employeeInfoForm.value.status;
-		this.user.user.startWorkingAt = this.employeeInfoForm.value.workingSince.toISOString();
+		this.user.user.startWorkingAt = this.employeeInfoForm.value.startWorkingAt.toISOString();
 		// this.employee = { ...this.employee, ...this.employeeInfoForm.value };
 	}
 
@@ -179,9 +179,9 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	onSubmit() {
-		// this.updateEmployeeInfo();
+		this.updateEmployeeInfo();
 		this.patchEditUser();
-		// this.toggleEditMode();
+		this.toggleEditMode();
 	}
 
 	onReset() {
@@ -208,7 +208,7 @@ export class MainInfoComponent implements OnInit {
 			position: position,
 			department: department,
 			rate: rate,
-			workingSince: this.user.startWorkingDate,
+			startWorkingAt: this.user.startWorkingDate,
 			communications: this._enrichCommunications(),
 		});
 	}
@@ -217,6 +217,10 @@ export class MainInfoComponent implements OnInit {
 		const currentValue = this.employeeInfoForm.get('rate').value;
 		const rate = +currentValue + step;
 		this.employeeInfoForm.patchValue({ rate: rate });
+
+		if (this.employeeInfoForm.get('rate').pristine) {
+			this.employeeInfoForm.get('rate').markAsDirty();
+		}
 	}
 
 	compareSelectValues(option: any, value: any) {
@@ -247,7 +251,7 @@ export class MainInfoComponent implements OnInit {
 			position: ['', Validators.required],
 			department: ['', Validators.required],
 			rate: ['', Validators.required],
-			workingSince: [null],
+			startWorkingAt: [null],
 			communications: this.fb.array([
 				this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
 				this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),

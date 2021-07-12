@@ -13,6 +13,7 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 import { EditUserRequest, OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { userResponse } from '../../modules/employee/mock';
+import { Moment } from 'moment';
 
 @Injectable()
 export class UserService {
@@ -78,7 +79,7 @@ export class UserService {
 		this.selectedUser.next(user);
 	}
 
-	public editUser(userId: string, changes: any) {
+	public editUser(userId: string, changes: any): Observable<OperationResultResponse> {
 		const editRequest: Array<PatchUserDocument> = [];
 		changes.forEach((item) => {
 			switch (item.path) {
@@ -101,6 +102,28 @@ export class UserService {
 						op: 'replace',
 						path: '/MiddleName',
 						value: item.value,
+					});
+					break;
+				case 'rate':
+					editRequest.push({
+						op: 'replace',
+						path: '/Rate',
+						value: item.value,
+					});
+					break;
+				case 'status':
+					editRequest.push({
+						op: 'replace',
+						path: '/Status',
+						value: item.value,
+					});
+					break;
+				case 'startWorkingAt':
+					const date: Moment = item.value;
+					editRequest.push({
+						op: 'replace',
+						path: '/StartWorkingAt',
+						value: date.toISOString(),
 					});
 					break;
 				default:
