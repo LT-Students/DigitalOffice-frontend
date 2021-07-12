@@ -46,7 +46,7 @@ export class UserService {
 				/* TODO: Подумать, как получать конкретные данные о каждом юзере
 				 *   при получении данных о всех юзера
 				 * */
-				.findUsers({ skipCount: 0, takeCount: 10, departmentid: departmentId })
+				.findUsers({ skipCount: 0, takeCount: 50, departmentid: departmentId })
 				.pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
 		);
 	}

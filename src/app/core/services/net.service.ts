@@ -42,7 +42,7 @@ export class NetService {
 	}
 
 	public getOfficesList() {
-		return this._companyApiService.findOffices({ skipCount: 0, takeCount: 10 });
+		return this._companyApiService.findOffices({ skipCount: 0, takeCount: 50 });
 	}
 
 	public getDepartment(departmentId: string): Observable<DepartmentInfo> {
