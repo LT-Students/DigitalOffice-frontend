@@ -16,7 +16,7 @@
 	<div class="department__table table">
 		<div class="table__header">
 			<h3 doText underlined underlinedSize="sm">
-				Сотрудники <span class="text-accent_color_bright">{{ sortedUsersInfo.length }} человек</span>
+				Сотрудники <span class="text-accent_color_bright">{{ totalCount }} человек</span>
 			</h3>
 			<button mat-flat-button color="primary" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 		</div>
@@ -70,6 +70,7 @@
 				</tr>
 			</ng-container>
 		</table>
+        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 	</div>
 </div>
 

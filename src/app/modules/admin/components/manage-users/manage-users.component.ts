@@ -58,7 +58,7 @@ export class ManageUsersComponent implements OnInit {
 		});
 	}
 
-	public onPageChange(event: PageEvent) {
+	public onPageChange(event: PageEvent): void {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
 		this._userService.getUsers(this.pageIndex, this.pageSize).subscribe((data) => {

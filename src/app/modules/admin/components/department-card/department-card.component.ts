@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '@app/services/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
 	selector: 'do-department-card',
@@ -19,6 +20,10 @@ export class DepartmentCardComponent implements OnInit {
 	public sortedUsersInfo: UserInfo[];
 	private _departmentId: string;
 
+	public totalCount: number;
+	public pageSize: number;
+	public pageIndex: number;
+
 	constructor(
 		private _netService: NetService,
 		private _userService: UserService,
@@ -27,14 +32,26 @@ export class DepartmentCardComponent implements OnInit {
 		private _route: ActivatedRoute
 	) {
 		this._departmentId = this._route.snapshot.params.id;
+		this.totalCount = 0;
+		this.pageSize = 10;
+		this.pageIndex = 0;
 	}
 
 	ngOnInit(): void {
 		this._netService.getDepartment(this._departmentId).subscribe((data: DepartmentInfo) => {
 			this.departmentInfo = data;
 		});
-		this._userService.getUsers(this._departmentId).subscribe((data) => {
-			this.sortedUsersInfo = data.slice();
+		this._userService.getUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
+			this.totalCount = data.totalCount;
+			this.sortedUsersInfo = data.users.slice();
+		});
+	}
+
+	onPageChange(event: PageEvent): void {
+		this.pageSize = event.pageSize;
+		this.pageIndex = event.pageIndex;
+		this._userService.getUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
+			this.sortedUsersInfo = data.users.slice();
 		});
 	}
 
