@@ -66,7 +66,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	private _getMembers(): void {
 		this._userService.getUsers().subscribe(
 			(data) => {
-				this.membersAll = data;
+				this.membersAll = data.users;
 			},
 			(error) => console.log(error)
 		);
