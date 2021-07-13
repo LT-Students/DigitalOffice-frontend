@@ -10,6 +10,6 @@ import { ShortDepartmentInfo } from './short-department-info';
 export interface DepartmentResponse {
   department?: ShortDepartmentInfo;
   projects?: ProjectInfo;
-  users?: DepartmentUserInfo;
+  users?: Array<DepartmentUserInfo>;
 }
 

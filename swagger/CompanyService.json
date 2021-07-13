@@ -947,8 +947,10 @@
             "$ref": "#/components/schemas/ShortDepartmentInfo"
           },
           "Users": {
-            "type": "object",
-            "$ref": "#/components/schemas/DepartmentUserInfo"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentUserInfo"
+            }
           },
           "Projects": {
             "type": "object",
