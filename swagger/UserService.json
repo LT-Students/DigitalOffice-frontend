@@ -1340,7 +1340,8 @@
             "description": "The operation to be performed.",
             "enum": [
               "add",
-              "replace"
+              "replace",
+              "delete"
             ]
           },
           "path": {
@@ -1360,7 +1361,8 @@
               "/DepartmentId",
               "/PositionId",
               "/RoleId",
-              "/OfficeId"
+              "/OfficeId",
+              "/About"
             ]
           },
           "value": {
@@ -1397,7 +1399,7 @@
       "UsersResponse": {
         "type": "object",
         "properties": {
-          "Count": {
+          "TotalCount": {
             "type": "integer",
             "description": "Total number of all users."
           },
