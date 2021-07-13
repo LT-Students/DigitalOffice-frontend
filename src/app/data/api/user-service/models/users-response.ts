@@ -2,12 +2,12 @@
 /* eslint-disable */
 import { UserInfo } from './user-info';
 export interface UsersResponse {
+  errors?: Array<string>;
 
   /**
    * Total number of all users.
    */
-  count?: number;
-  errors?: Array<string>;
+  totalCount?: number;
   users?: Array<UserInfo>;
 }
 
