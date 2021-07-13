@@ -25,22 +25,22 @@
 					<h4 doText color="dark_2">Общие сведения</h4>
 					<div class="employee-info__columns">
 						<div class="employee-info__first-column">
-							<div *ngIf="user?.position">
+							<div *ngIf="user?.user?.position">
 								<p doText regularTextSize="small" color="gray">Должность</p>
-								<p doText>{{ user?.position?.name }}</p>
+								<p doText>{{ user.user.position.name }}</p>
 							</div>
-							<div *ngIf="user?.department">
+							<div *ngIf="user?.user?.department">
 								<p doText regularTextSize="small" color="gray">Департамент</p>
-								<p doText>{{ user?.department?.name }}</p>
+								<p doText>{{ user.user.department?.name }}</p>
 							</div>
 							<!-- TODO: Change when API will be ready
             <div>
               <p doText regularTextSize='small' color='gray'>Местоположение</p>
               <p doText>{{ employee.location }}</p>
             </div>-->
-							<div *ngIf="user?.user?.officeInfo">
+							<div *ngIf="user?.user?.office">
 								<p doText regularTextSize="small" color="gray">Офис</p>
-								<p doText>{{ user?.user?.officeInfo?.city }}, {{ user?.user?.officeInfo?.address }}</p>
+								<p doText>{{ user?.user?.office?.city }}, {{ user?.user?.office?.address }}</p>
 							</div>
 						</div>
 						<div class="employee-info__second-column">
@@ -298,7 +298,7 @@
 						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
 							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="position"> Должность </mat-label>
 							<mat-select class="employee-info__input" id="position" formControlName="position" appearance="fill" required>
-								<mat-option class="employee-info__input" *ngFor="let position of selectOptions.positions" [value]="position">
+								<mat-option class="employee-info__input" *ngFor="let position of selectOptions.positions" [value]="position.id">
 									{{ position.name }}
 								</mat-option>
 							</mat-select>
@@ -308,7 +308,7 @@
 								Департамент
 							</mat-label>
 							<mat-select class="employee-info__input" id="department" formControlName="department" appearance="fill" required>
-								<mat-option class="employee-info__input" *ngFor="let department of selectOptions.departments" [value]="department">
+								<mat-option class="employee-info__input" *ngFor="let department of selectOptions.departments" [value]="department.id">
 									{{ department.name }}
 								</mat-option>
 							</mat-select>
@@ -324,7 +324,7 @@
 						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
 							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="office"> Офис </mat-label>
 							<mat-select class="employee-info__input" id="office" formControlName="office" appearance="fill" required>
-								<mat-option class="employee-info__input" *ngFor="let office of selectOptions.offices" [value]="office">
+								<mat-option class="employee-info__input" *ngFor="let office of selectOptions.offices" [value]="office.id">
 									{{ office.city }}, {{ office.address }}
 								</mat-option>
 							</mat-select>

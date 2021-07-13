@@ -9,21 +9,21 @@ import { UserGender } from './user-gender';
 import { UserStatus } from './user-status';
 export interface UserInfo {
   about?: null | string;
+  avatar?: ImageInfo;
   city?: null | string;
   dateOfBirth?: null | string;
-  departmentInfo?: DepartmentInfo;
+  department?: DepartmentInfo;
   firstName?: string;
   gender?: UserGender;
   id?: string;
-  imageInfo?: ImageInfo;
   isActive?: boolean;
   isAdmin?: boolean;
   lastName?: string;
   middleName?: null | string;
-  officeInfo?: OfficeInfo;
-  positionInfo?: PositionInfo;
+  office?: OfficeInfo;
+  position?: PositionInfo;
   rate?: number;
-  roleInfo?: RoleInfo;
+  role?: RoleInfo;
   startWorkingAt?: null | string;
   status?: UserStatus;
 }

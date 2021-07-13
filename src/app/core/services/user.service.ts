@@ -28,7 +28,8 @@ export class UserService {
 			return this.userApiService.getUser({
 				userId: userId,
 				includedepartment: true,
-				// includeposition: true,
+				includeposition: true,
+				includeoffice: true,
 				includecommunications: true,
 			});
 		}
@@ -130,21 +131,21 @@ export class UserService {
 					editRequest.push({
 						op: 'replace',
 						path: '/DepartmentId',
-						value: item.value.id,
+						value: item.value,
 					});
 					break;
 				case 'position':
 					editRequest.push({
 						op: 'replace',
 						path: '/PositionId',
-						value: item.value.id,
+						value: item.value,
 					});
 					break;
 				case 'office':
 					editRequest.push({
 						op: 'replace',
 						path: '/OfficeId',
-						value: item.value.id,
+						value: item.value,
 					});
 					break;
 				case 'photo':

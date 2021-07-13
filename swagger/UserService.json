@@ -1570,19 +1570,19 @@
           "Rate": {
             "type": "number"
           },
-          "DepartmentInfo": {
+          "Department": {
             "$ref": "#/components/schemas/DepartmentInfo"
           },
-          "PositionInfo": {
+          "Position": {
             "$ref": "#/components/schemas/PositionInfo"
           },
-          "ImageInfo": {
+          "Avatar": {
             "$ref": "#/components/schemas/ImageInfo"
           },
-          "RoleInfo": {
+          "Role": {
             "$ref": "#/components/schemas/RoleInfo"
           },
-          "OfficeInfo": {
+          "Office": {
             "$ref": "#/components/schemas/OfficeInfo"
           }
         }
