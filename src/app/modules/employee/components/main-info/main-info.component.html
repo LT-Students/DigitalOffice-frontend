@@ -4,11 +4,8 @@
 			<div class="employee-info__wrapper">
 				<div class="employee-info__main">
 					<div class="employee-info__photo">
-						<ng-container *ngIf="user?.avatar?.content">
-							<img [src]="user?.avatar?.content" alt="Employee photo" width="180" />
-						</ng-container>
-						<ng-container *ngIf="!user?.avatar?.content">
-							<img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
+						<ng-container *ngIf="user?.user?.avatar?.content; else defaultAvatar">
+							<img [src]="user?.user?.avatar?.content" alt="Employee photo" width="180" />
 						</ng-container>
 					</div>
 					<h3 class="employee-info__name" doText color="dark_2">
@@ -33,12 +30,11 @@
 								<p doText regularTextSize="small" color="gray">Департамент</p>
 								<p doText>{{ user.user.department?.name }}</p>
 							</div>
-							<!-- TODO: Change when API will be ready
-            <div>
-              <p doText regularTextSize='small' color='gray'>Местоположение</p>
-              <p doText>{{ employee.location }}</p>
-            </div>-->
-							<div *ngIf="user?.user?.office">
+							<div *ngIf="user?.user?.city">
+								<p doText regularTextSize="small" color="gray">Местоположение</p>
+								<p doText>{{ user?.user?.city }}</p>
+							</div>
+							<div *ngIf="user?.user?.office?.city">
 								<p doText regularTextSize="small" color="gray">Офис</p>
 								<p doText>{{ user?.user?.office?.city }}, {{ user?.user?.office?.address }}</p>
 							</div>
@@ -48,9 +44,17 @@
 								<p doText regularTextSize="small" color="gray">Ставка</p>
 								<div doText>{{ user?.user?.rate }}</div>
 							</ng-container>
+                            <div *ngIf="user?.user?.role">
+                                <p doText regularTextSize="small" color="gray">Роль</p>
+                                <p doText>{{ user.user.role?.name }}</p>
+                            </div>
 							<div *ngIf="user?.user.startWorkingAt">
 								<p doText regularTextSize="small" color="gray">В компании с</p>
 								<p doText>{{ user.startWorkingDate | date: dateType.FULL }}</p>
+							</div>
+							<div *ngIf="user?.user.dateOfBirth">
+								<p doText regularTextSize="small" color="gray">Дата рождения</p>
+								<p doText>{{ user?.user?.dateOfBirth | date: dateType.FULL }}</p>
 							</div>
 							<!--TODO: Change when API will be ready
             <p doText regularTextSize='small' color='gray'>
@@ -66,10 +70,6 @@
             </p>
              <div>{{ workingHours }}</div>
 
-             <div>
-               <p doText regularTextSize='small' color='gray'>Дата рождения</p>
-               <p doText>{{ employee?.birthDate | date: dateType.FULL }}</p>
-             </div>
              <ng-container *ngIf='user?.user?.status === userStatus.Vacation'>
                <div>
                  <p doText regularTextSize='small' color='gray'>В отпуске с</p>
@@ -266,11 +266,8 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__photo">
-					<ng-container *ngIf="employeeInfoForm.get('photo').value">
-						<img [src]="employeeInfoForm.get('photo').value" alt="Employee photo" width="180" />
-					</ng-container>
-					<ng-container *ngIf="!employeeInfoForm.get('photo').value">
-						<img src="../../../../../assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
+					<ng-container *ngIf="employeeInfoForm.get('photo').value.content; else defaultAvatar">
+						<img [src]="employeeInfoForm.get('photo').value.content" alt="Employee photo" width="180" />
 					</ng-container>
 					<label class="text_white employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
@@ -307,20 +304,13 @@
 							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="department">
 								Департамент
 							</mat-label>
-							<mat-select class="employee-info__input" id="department" formControlName="department" appearance="fill" required>
+							<mat-select class="employee-info__input" id="department" formControlName="department" appearance="fill">
 								<mat-option class="employee-info__input" *ngFor="let department of selectOptions.departments" [value]="department.id">
 									{{ department.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<!--TODO: change when api ready
-           <do-input
-               controlName='location'
-               [isEdit]='user.isAdmin'
-               label='Местоположение'
-               textSize='small'
-               required='true'
-           ></do-input>-->
+						<do-input controlName="city" [isEdit]="true" label="Местоположение" textSize="small"></do-input>
 						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
 							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="office"> Офис </mat-label>
 							<mat-select class="employee-info__input" id="office" formControlName="office" appearance="fill" required>
@@ -352,13 +342,18 @@
 							</p>
 							<div>{{ workingHours }}</div>
 						</ng-container>
-						<!-- TODO: change when api ready
-           <do-datepicker
-               controlName='birthDate'
-               [isEdit]='true'
-               label='Дата рождения'
-           ></do-datepicker>-->
+                        <mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+                            <mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="role">
+                                Роль
+                            </mat-label>
+                            <mat-select class="employee-info__input" id="role" formControlName="role" appearance="fill">
+                                <mat-option class="employee-info__input" *ngFor="let role of selectOptions.roles" [value]="role.id">
+                                    {{ role.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
 						<do-datepicker controlName="startWorkingAt" [isEdit]="user.isAdmin" label="В компании с"></do-datepicker>
+						<do-datepicker controlName="dateOfBirth" [isEdit]="user.isAdmin" label="Дата рождения"></do-datepicker>
 						<!--TODO: Change when api will be ready
            <ng-container *ngIf="employeeInfoForm.get('status').value === userStatus.Vacation">
              <do-datepicker
@@ -458,4 +453,8 @@
 			</div>
 		</div>
 	</form>
+</ng-template>
+
+<ng-template #defaultAvatar>
+	<img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
 </ng-template>

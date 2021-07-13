@@ -42,6 +42,10 @@ export class User implements UserResponse {
 		return new Date(this.user.startWorkingAt);
 	}
 
+	public get dateOfBirth(): Date {
+		return new Date(this.user.dateOfBirth);
+	}
+
 	public get isAdmin(): boolean {
 		return this.user.isAdmin;
 	}

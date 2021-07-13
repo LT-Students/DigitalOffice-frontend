@@ -31,6 +31,8 @@ export class UserService {
 				includeposition: true,
 				includeoffice: true,
 				includecommunications: true,
+				includerole: true,
+				includeimages: true,
 			});
 		}
 		return this.userApiService.getUser({ userId: userId });
@@ -127,6 +129,14 @@ export class UserService {
 						value: date.toISOString(),
 					});
 					break;
+				case 'dateOfBirth':
+					const dateOfBirth: Moment = item.value;
+					editRequest.push({
+						op: 'replace',
+						path: '/DateOfBirth',
+						value: dateOfBirth.toISOString(),
+					});
+					break;
 				case 'department':
 					editRequest.push({
 						op: 'replace',
@@ -159,6 +169,20 @@ export class UserService {
 					editRequest.push({
 						op: 'replace',
 						path: '/About',
+						value: item.value,
+					});
+					break;
+				case 'city':
+					editRequest.push({
+						op: 'replace',
+						path: '/City',
+						value: item.value,
+					});
+					break;
+				case 'role':
+					editRequest.push({
+						op: 'replace',
+						path: '/RoleId',
 						value: item.value,
 					});
 					break;

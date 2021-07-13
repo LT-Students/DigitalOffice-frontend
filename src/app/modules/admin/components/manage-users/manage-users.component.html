@@ -36,8 +36,8 @@
 			</tr>
 			<tr class="table__row" *ngFor="let userInfo of sortedUserInfo" routerLink="/user/{{ userInfo?.id }}">
 				<td>
-					<ng-container *ngIf="userInfo?.imageInfo?.content; else defaultImage">
-						<img class="table__image" [src]="userInfo?.imageInfo?.content" alt="Employee photo" width="48" />
+					<ng-container *ngIf="userInfo?.avatar?.content; else defaultImage">
+						<img class="table__image" [src]="userInfo?.avatar?.content" alt="Employee photo" width="48" />
 					</ng-container>
 					<ng-template #defaultImage>
 						<img class="table__image" src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="48" />
@@ -45,16 +45,16 @@
 				</td>
 				<td>
 					<p>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</p>
-					<p>{{ userInfo?.positionInfo?.name }}</p>
+					<p>{{ userInfo?.position?.name }}</p>
 				</td>
 				<td>
-					<ng-container *ngIf="userInfo?.departmentInfo?.name; else empty">
-						{{ userInfo.departmentInfo.name }}
+					<ng-container *ngIf="userInfo?.department?.name; else empty">
+						{{ userInfo.department.name }}
 					</ng-container>
 				</td>
 				<td>
-					<ng-container *ngIf="userInfo?.roleInfo?.name; else empty">
-						{{ userInfo.roleInfo.name }}
+					<ng-container *ngIf="userInfo?.role?.name; else empty">
+						{{ userInfo.role.name }}
 					</ng-container>
 				</td>
 				<td>{{ userInfo?.rate }}</td>
