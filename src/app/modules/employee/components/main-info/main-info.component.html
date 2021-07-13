@@ -272,13 +272,12 @@
 					<ng-container *ngIf="!employeeInfoForm.get('photo').value">
 						<img src="../../../../../assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
 					</ng-container>
-					<label class="text_white employee-info__label employee-info__upload-button" for="photo" (click)="onOpenDialog()">
+					<label class="text_white employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
 						</mat-icon>
 						Обновить фото</label
 					>
-					<input id="photo" type="file" formGroupName="photo" (change)="onFileChange($event)" hidden />
 				</div>
 				<ng-container *ngIf="!user.isAdmin; else nameEdit">
 					<h3 class="employee-info__name" doText color="dark_2">
