@@ -1,36 +1,39 @@
 <div class="employee-info regular_text text_dark_1">
-  <ng-container *ngIf='user'>
-  <ng-container *ngIf='!canEdit() || !isEditing; else editForm'>
-    <div class='employee-info__wrapper'>
-      <div class='employee-info__main'>
-        <div class='employee-info__photo'>
-          <ng-container *ngIf='user?.avatar?.content'>
-            <img [src]="user?.avatar?.content" alt='Employee photo' width='180' />
-          </ng-container>
-          <ng-container *ngIf='!user?.avatar?.content'>
-            <img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt='Employee photo' width='180' />
-          </ng-container>
-        </div>
-        <h3 class='employee-info__name' doText color='dark_2'>
-          {{ user.getFioFull() }}&nbsp;<span
-            matTooltipClass='tooltip'
-            [matTooltip]="user.firstName + ' ' + (user.status?.statusInRussian | lowercase)"
-            [matTooltipPosition]="'above'">{{ user.status?.emojiIcon }}</span></h3>
-        <p *ngIf='user?.user?.about' doText color='gray' class='employee-info__about'>“{{ user?.user?.about }}”</p>
-      </div>
-      <div class='employee-info__general'>
-        <h4 doText color='dark_2'>Общие сведения</h4>
-        <div class='employee-info__columns'>
-          <div class='employee-info__first-column'>
-            <div *ngIf='user?.position'>
-              <p doText regularTextSize='small' color='gray'>Должность</p>
-              <p doText>{{ user?.position?.name }}</p>
-            </div>
-            <div *ngIf='user?.department'>
-              <p doText regularTextSize='small' color='gray'>Департамент</p>
-              <p doText>{{ user?.department?.name }}</p>
-            </div>
-           <!-- TODO: Change when API will be ready
+	<ng-container *ngIf="user">
+		<ng-container *ngIf="!canEdit() || !isEditing; else editForm">
+			<div class="employee-info__wrapper">
+				<div class="employee-info__main">
+					<div class="employee-info__photo">
+						<ng-container *ngIf="user?.avatar?.content">
+							<img [src]="user?.avatar?.content" alt="Employee photo" width="180" />
+						</ng-container>
+						<ng-container *ngIf="!user?.avatar?.content">
+							<img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
+						</ng-container>
+					</div>
+					<h3 class="employee-info__name" doText color="dark_2">
+						{{ user.getFioFull() }}&nbsp;<span
+							matTooltipClass="tooltip"
+							[matTooltip]="user.firstName + ' ' + (user.status?.statusInRussian | lowercase)"
+							[matTooltipPosition]="'above'"
+							>{{ user.status?.emojiIcon }}</span
+						>
+					</h3>
+					<p *ngIf="user?.user?.about" doText color="gray" class="employee-info__about">“{{ user?.user?.about }}”</p>
+				</div>
+				<div class="employee-info__general">
+					<h4 doText color="dark_2">Общие сведения</h4>
+					<div class="employee-info__columns">
+						<div class="employee-info__first-column">
+							<div *ngIf="user?.position">
+								<p doText regularTextSize="small" color="gray">Должность</p>
+								<p doText>{{ user?.position?.name }}</p>
+							</div>
+							<div *ngIf="user?.department">
+								<p doText regularTextSize="small" color="gray">Департамент</p>
+								<p doText>{{ user?.department?.name }}</p>
+							</div>
+							<!-- TODO: Change when API will be ready
             <div>
               <p doText regularTextSize='small' color='gray'>Местоположение</p>
               <p doText>{{ employee.location }}</p>
@@ -39,17 +42,17 @@
               <p doText regularTextSize='small' color='gray'>Офис</p>
               <p doText>{{ employee.office }}</p>
             </div>-->
-          </div>
-          <div class='employee-info__second-column'>
-            <ng-container *ngIf='user?.user?.rate'>
-              <p doText regularTextSize='small' color='gray'>Ставка</p>
-              <div doText>{{ user?.user?.rate }}</div>
-            </ng-container>
-            <div *ngIf='user?.user.startWorkingAt '>
-              <p doText regularTextSize='small' color='gray'>В компании с</p>
-              <p doText>{{ user.startWorkingDate | date: dateType.FULL }}</p>
-            </div>
-            <!--TODO: Change when API will be ready
+						</div>
+						<div class="employee-info__second-column">
+							<ng-container *ngIf="user?.user?.rate">
+								<p doText regularTextSize="small" color="gray">Ставка</p>
+								<div doText>{{ user?.user?.rate }}</div>
+							</ng-container>
+							<div *ngIf="user?.user.startWorkingAt">
+								<p doText regularTextSize="small" color="gray">В компании с</p>
+								<p doText>{{ user.startWorkingDate | date: dateType.FULL }}</p>
+							</div>
+							<!--TODO: Change when API will be ready
             <p doText regularTextSize='small' color='gray'>
               Рабочие часы
               <mat-icon
@@ -83,22 +86,22 @@
                  <p doText>{{ employee?.sickSince | date: dateType.FULL }}</p>
                </div>
              </ng-template>-->
-           </div>
-         </div>
-       </div>
-       <div class='employee-info__additional '>
-         <div class='additional__line bg-light_3'></div>
-         <div class='form__column'>
-           <h4 doText color='dark_2'>Контакты</h4>
-           <div class="employee-info__columns">
-             <div>
-               <div *ngFor='let communication of user?.communications'>
-                 <p doText regularTextSize='small' color='gray'>{{ communication.type }}</p>
-                 <p doText>{{ communication.value }}</p>
-               </div>
-             </div>
-           </div>
-           <!--  TODO: Change when API will be ready
+						</div>
+					</div>
+				</div>
+				<div class="employee-info__additional">
+					<div class="additional__line bg-light_3"></div>
+					<div class="form__column">
+						<h4 doText color="dark_2">Контакты</h4>
+						<div class="employee-info__columns">
+							<div>
+								<div *ngFor="let communication of user?.communications">
+									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>
+									<p doText>{{ communication.value }}</p>
+								</div>
+							</div>
+						</div>
+						<!--  TODO: Change when API will be ready
            <h4 doText color='dark_2'>
              Отпуск
              <mat-icon
@@ -116,109 +119,75 @@
              <p doText regularTextSize='small' color='gray'>Осталось отпускных дней</p>
              <div doText>{{ employee?.vacationDaysLeft }}</div>
            </div>-->
-         </div>
-       </div>
-       <div class='employee-info__edit-button'>
-         <button
-             type='button'
-             mat-icon-button
-             aria-label='Edit employee info'
-             (click)='toggleEditMode()'
-         ><img src='../../../../../assets/svg/edit.svg' alt='Edit' />
-         </button>
-       </div>
-     </div>
-   </ng-container>
-  </ng-container>
- </div>
+					</div>
+				</div>
+				<div class="employee-info__edit-button">
+					<button type="button" mat-icon-button aria-label="Edit employee info" (click)="toggleEditMode()">
+						<img src="../../../../../assets/svg/edit.svg" alt="Edit" />
+					</button>
+				</div>
+			</div>
+		</ng-container>
+	</ng-container>
+</div>
 
- <ng-template #nameEdit [formGroup]="employeeInfoForm">
-   <do-input
-     controlName="lastName"
-     [isEdit]="isEditing"
-     label="Фамилия"
-     textSize='small'
-     required="true"
-   ></do-input>
-   <do-input
-     controlName="firstName"
-     [isEdit]="isEditing"
-     label="Имя"
-     textSize='small'
-     required="true"
-   ></do-input>
-   <do-input
-     controlName="middleName"
-     [isEdit]="isEditing"
-     label="Отчество"
-     textSize='small'
-     required="true"
-   ></do-input>
- </ng-template>
+<ng-template #nameEdit [formGroup]="employeeInfoForm">
+	<do-input controlName="lastName" [isEdit]="isEditing" label="Фамилия" textSize="small" required="true"></do-input>
+	<do-input controlName="firstName" [isEdit]="isEditing" label="Имя" textSize="small" required="true"></do-input>
+	<do-input controlName="middleName" [isEdit]="isEditing" label="Отчество" textSize="small"></do-input>
+</ng-template>
 
- <ng-template #about [formGroup]="employeeInfoForm">
-   <ng-container *ngIf="user.isAdmin">
-     <label
-       class="small_text text-gray employee-info__label employee-info__label_for_textarea"
-       for="about">
-       <span>О себе <span>{{ employeeInfoForm.get('about').value.length }}/150</span></span></label
-     >
-     <mat-form-field class="employee-info__form-field" appearance="none">
-       <textarea
-         id="about"
-         formControlName="about"
-         matInput
-         class="bg-light_2 employee-info__input"
-         placeholder="Напишите немного о себе или оставьте заметку коллегам"
-         maxlength="150"
-         cdkTextareaAutosize="true"
-         textSize='small'
-       ></textarea>
-     </mat-form-field>
-   </ng-container>
- </ng-template>
+<ng-template #about [formGroup]="employeeInfoForm">
+	<ng-container *ngIf="user.isAdmin">
+		<label class="small_text text-gray employee-info__label employee-info__label_for_textarea" for="about">
+			<span
+				>О себе <span>{{ employeeInfoForm.get('about').value.length }}/150</span></span
+			></label
+		>
+		<mat-form-field class="employee-info__form-field" appearance="none">
+			<textarea
+				id="about"
+				formControlName="about"
+				matInput
+				class="bg-light_2 employee-info__input"
+				placeholder="Напишите немного о себе или оставьте заметку коллегам"
+				maxlength="150"
+				cdkTextareaAutosize="true"
+				textSize="small"
+			></textarea>
+		</mat-form-field>
+	</ng-container>
+</ng-template>
 
- <ng-template #stepper [formGroup]="employeeInfoForm">
-   <mat-form-field
-     class="employee-info__form-field mat-form-field__stepper"
-     appearance="fill"
-   >
-     <mat-label doText color='gray' regularTextSize='small'>Ставка</mat-label>
-     <button
-       class="employee-info__stepper-button h2"
-       mat-icon-button
-       matPrefix
-       type="button"
-       (click)="changeWorkingRate(-0.25)"
-       [disabled]="rate.value === '0'"
-     >
-       -
-     </button>
-     <input
-       #rate
-       id="rate"
-       formControlName="rate"
-       matInput
-       class="bg-light_2 employee-info__input"
-       type="number"
-       readonly
-       required
-     />
-     <button
-       class="employee-info__stepper-button h2"
-       mat-icon-button
-       matSuffix
-       type="button"
-       (click)="changeWorkingRate(0.25)"
-       [disabled]="rate.value === '1'"
-     >
-       +
-     </button>
-   </mat-form-field>
- </ng-template>
+<ng-template #stepper [formGroup]="employeeInfoForm">
+	<mat-form-field class="employee-info__form-field mat-form-field__stepper" appearance="fill">
+		<mat-label doText color="gray" regularTextSize="small">Ставка</mat-label>
+		<button
+			class="employee-info__stepper-button h2"
+			mat-icon-button
+			matPrefix
+			type="button"
+			(click)="changeWorkingRate(-0.25)"
+			[disabled]="rate.value === '0'"
+		>
+			-
+		</button>
+		<input #rate id="rate" formControlName="rate" matInput class="bg-light_2 employee-info__input" type="number" readonly required />
+		<button
+			class="employee-info__stepper-button h2"
+			mat-icon-button
+			matSuffix
+			type="button"
+			(click)="changeWorkingRate(0.25)"
+			[disabled]="rate.value === '1'"
+		>
+			+
+		</button>
+	</mat-form-field>
+</ng-template>
 
- <ng-template #hours [formGroup]="employeeInfoForm">
-   <!--TODO: Replace when api will be ready
+<ng-template #hours [formGroup]="employeeInfoForm">
+	<!--TODO: Replace when api will be ready
    <div
        style='display: flex; align-items: flex-start;'
        formGroupName="workingHours"
@@ -266,94 +235,98 @@
        </mat-select>
      </mat-form-field>
    </div>-->
- </ng-template>
+</ng-template>
 
+<ng-template #emoji [formGroup]="employeeInfoForm">
+	<mat-form-field
+		class="employee-info__form-field mat-form-field_default-select"
+		appearance="fill"
+		matTooltipClass="tooltip"
+		matTooltip="Статус будет отображаться рядом с именем пользователя"
+		[matTooltipPosition]="'above'"
+	>
+		<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="status">
+			Эмодзи-статус
+			<mat-icon class="employee-info__hint">help_outline</mat-icon>
+		</mat-label>
+		<mat-select class="employee-info__input" id="status" formControlName="status" appearance="fill">
+			<mat-option class="employee-info__input" *ngFor="let option of selectOptions.statuses" [value]="option.statusType">
+				{{ option.emojiIcon }} {{ option.statusInRussian | titlecase }}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<ng-container *ngIf="isEditing && employeeInfoForm.get('status').value === userStatus.Vacation">
+		<label class="small_text text-gray">Замещает: </label>
+		<span class="small_text text-gray employee-info__substitute">Назначить замещающего</span>
+	</ng-container>
+</ng-template>
 
- <ng-template #emoji [formGroup]="employeeInfoForm">
-   <mat-form-field
-     class="employee-info__form-field mat-form-field_default-select"
-     appearance="fill"
-     matTooltipClass="tooltip"
-     matTooltip="Статус будет отображаться рядом с именем пользователя"
-     [matTooltipPosition]="'above'"
-   >
-     <mat-label doText color='gray' regularTextSize='small' class="employee-info__label" for="status">
-       Эмодзи-статус
-       <mat-icon class="employee-info__hint">help_outline</mat-icon>
-     </mat-label>
-     <mat-select class="employee-info__input" id="status" formControlName="status" appearance="fill">
-       <mat-option class="employee-info__input" *ngFor="let option of selectOptions.statuses" [value]="option.statusType">
-         {{ option.emojiIcon }} {{ option.statusInRussian | titlecase }}
-       </mat-option>
-     </mat-select>
-   </mat-form-field>
-   <ng-container *ngIf="isEditing && employeeInfoForm.get('status').value === userStatus.Vacation">
-     <label class="small_text text-gray">Замещает: </label>
-     <span class="small_text text-gray employee-info__substitute"
-     >Назначить замещающего</span>
-   </ng-container>
- </ng-template>
-
- <ng-template #editForm>
-   <form class="employee-info__form" [formGroup]="employeeInfoForm" (ngSubmit)="onSubmit()">
-     <div class='employee-info__wrapper'>
-     <div class='employee-info__main'>
-       <div class='employee-info__photo'>
-         <ng-container *ngIf='employeeInfoForm.get("photo").value'>
-           <img [src]="employeeInfoForm.get('photo').value" alt='Employee photo' width='180' />
-         </ng-container>
-         <ng-container *ngIf='!employeeInfoForm.get("photo").value'>
-           <img src="../../../../../assets/images/IAFOR-Blank-Avatar-Image.jpg" alt='Employee photo' width='180' />
-         </ng-container>
-         <label class='text_white employee-info__label employee-info__upload-button' for='photo'
-                (click)="onOpenDialog()">
-           <mat-icon class='employee-info__upload-icon'>
-             <img src='../../../../../assets/svg/arrow-upload-file.svg' alt='Upload photo' />
-           </mat-icon>
-           Обновить фото</label>
-         <input
-             id='photo'
-             type='file'
-             formGroupName='photo'
-             (change)='onFileChange($event)'
-             hidden />
-       </div>
-       <ng-container *ngIf='!user.isAdmin; else nameEdit'>
-         <h3 class='employee-info__name' doText color='dark_2'>
-           {{ user.getFioFull() }}&nbsp;<span
-             matTooltipClass='tooltip'
-             [matTooltip]="user?.firstName + ' ' + (user.status.statusInRussian | lowercase)"
-             [matTooltipPosition]="'above'"
-         >{{ user.status.emojiIcon }}</span>
-         </h3>
-       </ng-container>
-       <ng-container *ngTemplateOutlet='about'></ng-container>
-     </div>
-     <div class='employee-info__general'>
-       <h4 doText color='dark_2'>Общие сведения</h4>
-       <div class='employee-info__columns'>
-         <div class='employee-info__first-column'>
-           <mat-form-field class='employee-info__form-field mat-form-field_default-select' appearance='fill'>
-             <mat-label doText color='gray' regularTextSize='small' class='employee-info__label' for='position'>
-               Должность
-             </mat-label>
-             <mat-select class='employee-info__input' id='position' formControlName='position' appearance='fill' [compareWith]='compareSelectValues' required>
-               <mat-option class='employee-info__input' *ngFor='let option of selectOptions.positions'  [value]='option'>
-                 {{ option.name }}
-               </mat-option>
-             </mat-select>
-           </mat-form-field>
-           <mat-form-field class='employee-info__form-field mat-form-field_default-select' appearance='fill' >
-             <mat-label doText color='gray' regularTextSize='small' class='employee-info__label' for='department'>
-               Департамент
-             </mat-label>
-             <mat-select class='employee-info__input' id='department' formControlName='department' appearance='fill' [compareWith]='compareSelectValues' required>
-               <mat-option class='employee-info__input' *ngFor='let option of selectOptions.departments' [value]='option'>
-                 {{ option.name }}
-               </mat-option>
-             </mat-select>
-           </mat-form-field>
-           <!--TODO: change when api ready
+<ng-template #editForm>
+	<form class="employee-info__form" [formGroup]="employeeInfoForm" (ngSubmit)="onSubmit()">
+		<div class="employee-info__wrapper">
+			<div class="employee-info__main">
+				<div class="employee-info__photo">
+					<ng-container *ngIf="employeeInfoForm.get('photo').value">
+						<img [src]="employeeInfoForm.get('photo').value" alt="Employee photo" width="180" />
+					</ng-container>
+					<ng-container *ngIf="!employeeInfoForm.get('photo').value">
+						<img src="../../../../../assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
+					</ng-container>
+					<label class="text_white employee-info__label employee-info__upload-button" for="photo" (click)="onOpenDialog()">
+						<mat-icon class="employee-info__upload-icon">
+							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
+						</mat-icon>
+						Обновить фото</label
+					>
+					<input id="photo" type="file" formGroupName="photo" (change)="onFileChange($event)" hidden />
+				</div>
+				<ng-container *ngIf="!user.isAdmin; else nameEdit">
+					<h3 class="employee-info__name" doText color="dark_2">
+						{{ user.getFioFull() }}&nbsp;<span
+							matTooltipClass="tooltip"
+							[matTooltip]="user?.firstName + ' ' + (user.status.statusInRussian | lowercase)"
+							[matTooltipPosition]="'above'"
+							>{{ user.status.emojiIcon }}</span
+						>
+					</h3>
+				</ng-container>
+				<ng-container *ngTemplateOutlet="about"></ng-container>
+			</div>
+			<div class="employee-info__general">
+				<h4 doText color="dark_2">Общие сведения</h4>
+				<div class="employee-info__columns">
+					<div class="employee-info__first-column">
+						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="position"> Должность </mat-label>
+							<mat-select
+								class="employee-info__input"
+								id="position"
+								formControlName="position"
+								appearance="fill"
+								required
+							>
+								<mat-option class="employee-info__input" *ngFor="let position of selectOptions.positions" [value]="position.id">
+									{{ position.name }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="department">
+								Департамент
+							</mat-label>
+							<mat-select
+								class="employee-info__input"
+								id="department"
+								formControlName="department"
+								appearance="fill"
+								required
+							>
+								<mat-option class="employee-info__input" *ngFor="let department of selectOptions.departments" [value]="department.id">
+									{{ department.name }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<!--TODO: change when api ready
            <do-input
                controlName='location'
                [isEdit]='user.isAdmin'
@@ -369,37 +342,37 @@
                textSize='small'
                required='true'
            ></do-select>-->
-           <ng-container *ngTemplateOutlet='emoji'></ng-container>
-         </div>
-         <div class='employee-info__second-column'>
-           <ng-container *ngIf='canEdit()'>
-             <ng-container *ngIf='!user.isAdmin; else stepper'>
-               <p doText regularTextSize='small' color='gray'>Ставка</p>
-               <div>{{ user.user.rate }}</div>
-             </ng-container>
-           </ng-container>
-           <ng-container *ngIf='false'>
-             <p doText regularTextSize='small' color='gray'>
-               Рабочие часы
-               <mat-icon
-                   class='employee-info__hint'
-                   aria-label='Hint'
-                   matTooltipClass='tooltip'
-                   matTooltip='Рабочие часы пользователя по вашему часовому поясу'
-                   matTooltipPosition='above'
-               >help_outline
-               </mat-icon>
-             </p>
-             <div>{{ workingHours }}</div>
-           </ng-container>
-           <!-- TODO: change when api ready
+						<ng-container *ngTemplateOutlet="emoji"></ng-container>
+					</div>
+					<div class="employee-info__second-column">
+						<ng-container *ngIf="canEdit()">
+							<ng-container *ngIf="!user.isAdmin; else stepper">
+								<p doText regularTextSize="small" color="gray">Ставка</p>
+								<div>{{ user.user.rate }}</div>
+							</ng-container>
+						</ng-container>
+						<ng-container *ngIf="false">
+							<p doText regularTextSize="small" color="gray">
+								Рабочие часы
+								<mat-icon
+									class="employee-info__hint"
+									aria-label="Hint"
+									matTooltipClass="tooltip"
+									matTooltip="Рабочие часы пользователя по вашему часовому поясу"
+									matTooltipPosition="above"
+									>help_outline
+								</mat-icon>
+							</p>
+							<div>{{ workingHours }}</div>
+						</ng-container>
+						<!-- TODO: change when api ready
            <do-datepicker
                controlName='birthDate'
                [isEdit]='true'
                label='Дата рождения'
            ></do-datepicker>-->
-           <do-datepicker controlName='workingSince' [isEdit]='user.isAdmin' label='В компании с'></do-datepicker>
-           <!--TODO: Change when api will be ready
+						<do-datepicker controlName="startWorkingAt" [isEdit]="user.isAdmin" label="В компании с"></do-datepicker>
+						<!--TODO: Change when api will be ready
            <ng-container *ngIf="employeeInfoForm.get('status').value === userStatus.Vacation">
              <do-datepicker
                  controlName='vacationSince'
@@ -422,24 +395,24 @@
                  required='true'
              ></do-datepicker>
            </ng-container>-->
-         </div>
-       </div>
-     </div>
-     <div class='employee-info__additional'>
-       <div class='additional__line bg-light_3'></div>
-       <div class='form__column'>
-           <h4 doText color='dark_2'>Контакты</h4>
-           <div class='communications' formArrayName='communications'>
-             <ng-container *ngFor='let communication of communications.controls; index as i'>
-               <ng-container [formGroup]='communication'>
-                 <mat-form-field class="mat-form-field__form-control"  appearance="fill" floatLabel="always">
-                   <mat-label>{{ communication.get('type').value }}</mat-label>
-                   <input matInput placeholder="Введите данные" formControlName='value' required/>
-                 </mat-form-field>
-               </ng-container>
-             </ng-container>
-           </div>
-         <!--TODO: Change when api will be ready
+					</div>
+				</div>
+			</div>
+			<div class="employee-info__additional">
+				<div class="additional__line bg-light_3"></div>
+				<div class="form__column">
+					<h4 doText color="dark_2">Контакты</h4>
+					<div class="communications" formArrayName="communications">
+						<ng-container *ngFor="let communication of communications.controls; index as i">
+							<ng-container [formGroup]="communication">
+								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">
+									<mat-label>{{ communication.get('type').value }}</mat-label>
+									<input matInput placeholder="Введите данные" formControlName="value" required />
+								</mat-form-field>
+							</ng-container>
+						</ng-container>
+					</div>
+					<!--TODO: Change when api will be ready
          <do-input
              controlName='email'
              [isEdit]='user.isAdmin'
@@ -480,20 +453,22 @@
                required='true'
            ></do-input>
          </ng-container>-->
-       </div>
-     </div>
-     <div class='employee-info__form-buttons'>
-       <button type='button' class='text-gray' mat-flat-button (click)='onReset()'>Отменить</button>
-       <button
-           [disabled]='employeeInfoForm.invalid'
-           type='submit'
-           class='bg-accent_color_bright text-light_1 employee-info__submit'
-           mat-flat-button>
-         Сохранить
-       </button>
-       <div class='employee-info__required-block'><span doText color='negative_accent'>
-       <sup>*</sup>&nbsp;Обязательное поле</span>
-       </div>
-     </div>
-   </div></form>
- </ng-template>
+				</div>
+			</div>
+			<div class="employee-info__form-buttons">
+				<button type="button" class="text-gray" mat-flat-button (click)="onReset()">Отменить</button>
+				<button
+					[disabled]="employeeInfoForm.invalid"
+					type="submit"
+					class="bg-accent_color_bright text-light_1 employee-info__submit"
+					mat-flat-button
+				>
+					Сохранить
+				</button>
+				<div class="employee-info__required-block">
+					<span doText color="negative_accent"> <sup>*</sup>&nbsp;Обязательное поле</span>
+				</div>
+			</div>
+		</div>
+	</form>
+</ng-template>

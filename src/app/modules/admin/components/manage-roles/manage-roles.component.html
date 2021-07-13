@@ -1,0 +1,32 @@
+<div class='navigation' doText color='gray'>
+    <a class='navigation__link' routerLink='/user/dashboard'>Администрирование </a>
+    <span doText color='gray'><mat-icon>chevron_right</mat-icon></span>
+    <a class='navigation__link'>Управление ролями</a>
+</div>
+<div class='card card_standard'>
+    <div class='table'>
+        <div class='table__header'>
+            <h3 doText underlined underlinedSize='sm'>Роли</h3>
+            <button mat-button color='accent' (click)='onAddRoleClick()'>+ Добавить роль</button>
+        </div>
+        <div class='table__filters'>
+            <div>
+            <span doText color='gray'><mat-icon>search</mat-icon></span>
+            <mat-form-field appearance='fill' floatLabel='always'>
+                <input class='table__input' matInput placeholder='Поиск по названию'>
+            </mat-form-field>
+        </div>
+        </div>
+        <table class='table__content' matSort>
+            <tr doText color="gray" regularTextSize='regular'>
+                <th mat-sort-header='name' class='table__heading'>Название</th>
+                <th mat-sort-header='description' class='table__heading'>Описание</th>
+            </tr>
+            <tr *ngFor="let role of roles">
+                <td doText>{{role.name}}</td>
+                <td doText color='gray'>{{role.description}}</td>
+            </tr>
+        </table>
+        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+    </div>
+</div>

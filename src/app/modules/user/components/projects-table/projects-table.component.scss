@@ -3,54 +3,85 @@
 @import 'base/fonts';
 
 .h1 {
-  font-weight: 700;
+	font-weight: 700;
 }
 
 .mat-form-field_default-select {
-  margin: 48px 0;
+	margin: 48px 0;
 
-  .select {
-    min-width: 155px;
-    height: 32px;
+	.select {
+		min-width: 155px;
+		height: 32px;
 
-    background-color: $light_1;
+		background-color: $light_1;
 
-    ::ng-deep .mat-select-placeholder {
-      color: $gray;
-    }
+		::ng-deep .mat-select-placeholder {
+			color: $gray;
+		}
 
-    ::ng-deep .mat-select-arrow {
-      margin-right: 6px;
+		::ng-deep .mat-select-arrow {
+			margin-right: 6px;
 
-      opacity: 0.3;
-    }
+			opacity: 0.3;
+		}
 
-    ::ng-deep .mat-select-value {
-      padding: 0 0 0 8px;
+		::ng-deep .mat-select-value {
+			padding: 0 0 0 8px;
 
-      color: $gray;
-    }
-  }
+			color: $gray;
+		}
+	}
 }
 
 .projects-table__projects-group {
-  margin-bottom: 48px;
+	margin-bottom: 48px;
 
-  .group-name {
-    margin-bottom: 18px;
-  }
+	.group-name {
+		margin-bottom: 18px;
+	}
 
-  .group-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+	.group-container {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
 
-    do-project-card {
-      margin-bottom: 12px;
-    }
-  }
+		do-project-card {
+			margin-bottom: 12px;
+		}
+	}
 }
 
 .projects-table__projects-group:last-child {
-  margin-bottom: 21px;
+	margin-bottom: 21px;
+}
+
+.table {
+	&__header {
+		margin-bottom: 20px;
+
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	&__content {
+		width: 100%;
+
+		border-collapse: collapse;
+	}
+
+	&__row {
+		height: 76px;
+
+		border-bottom: 1px solid #f1f1ef;
+
+		&:hover {
+			cursor: pointer;
+
+			background-color: #f1f1ef;
+		}
+	}
+}
+
+.heading {
+	margin-bottom: 40px;
 }

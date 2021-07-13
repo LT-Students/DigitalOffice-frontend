@@ -1,17 +1,40 @@
 .table {
-	&-header {
+	&__header {
 		margin-bottom: 20px;
 
 		display: flex;
 		justify-content: space-between;
 	}
 
-	&-content {
+	&__content {
 		width: 100%;
+
+		border-collapse: collapse;
 	}
 
-	&-filters {
+	&__filters {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	&__row {
+		height: 76px;
+
+		border-bottom: 1px solid #f1f1ef;
+
+		&:hover {
+			cursor: pointer;
+
+			background-color: #f1f1ef;
+		}
+	}
+
+	&__archived {
+		background-color: #eb5757;
+		border-radius: 5%;
+	}
+
+	&__image {
+		border-radius: 50%;
 	}
 }

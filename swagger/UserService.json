@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.0",
+    "version": "1.3.3",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -332,11 +332,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "minItems": 1,
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EditUserRequest"
-                }
+                "$ref": "#/components/schemas/EditUserRequest"
               }
             }
           }
@@ -1360,7 +1356,11 @@
               "/AvatarImage",
               "/Status",
               "/StartWorkingAt",
-              "/Rate"
+              "/Rate",
+              "/DepartmentId",
+              "/PositionId",
+              "/RoleId",
+              "/OfficeId"
             ]
           },
           "value": {
@@ -1381,6 +1381,16 @@
           },
           "RefreshToken": {
             "type": "string"
+          },
+          "accessTokenExpiresIn": {
+            "description": "AccessToken life time in minutes",
+            "type": "number",
+            "format": "double"
+          },
+          "refreshTokenExpiresIn": {
+            "description": "RefreshToken life time in minutes",
+            "type": "number",
+            "format": "double"
           }
         }
       },
@@ -1410,15 +1420,6 @@
         "properties": {
           "User": {
             "$ref": "#/components/schemas/UserInfo"
-          },
-          "Avatar": {
-            "$ref": "#/components/schemas/ImageInfo"
-          },
-          "Department": {
-            "$ref": "#/components/schemas/DepartmentInfo"
-          },
-          "Position": {
-            "$ref": "#/components/schemas/PositionInfo"
           },
           "Skills": {
             "type": "array",
@@ -1478,8 +1479,12 @@
           },
           "Content": {
             "type": "string",
-            "nullable": true,
+            "nullable": false,
             "description": "Image file content in base64 encoded string."
+          },
+          "Extension": {
+            "type": "string",
+            "nullable": false
           }
         }
       },
@@ -1518,6 +1523,9 @@
           "IsAdmin": {
             "type": "boolean"
           },
+          "IsActive": {
+            "type": "boolean"
+          },
           "About": {
             "type": "string",
             "nullable": true
@@ -1529,6 +1537,21 @@
           },
           "Rate": {
             "type": "number"
+          },
+          "DepartmentInfo": {
+            "$ref": "#/components/schemas/DepartmentInfo"
+          },
+          "PositionInfo": {
+            "$ref": "#/components/schemas/PositionInfo"
+          },
+          "ImageInfo": {
+            "$ref": "#/components/schemas/ImageInfo"
+          },
+          "RoleInfo": {
+            "$ref": "#/components/schemas/RoleInfo"
+          },
+          "OfficeInfo": {
+            "$ref": "#/components/schemas/OfficeInfo"
           }
         }
       },
@@ -1560,6 +1583,46 @@
             "nullable": false
           },
           "ReceivedAt": {
+            "type": "string",
+            "nullable": false
+          }
+        }
+      },
+      "RoleInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": false
+          },
+          "Name": {
+            "type": "string",
+            "nullable": false
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "OfficeInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": false
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "City": {
+            "type": "string",
+            "nullable": false
+          },
+          "Address": {
             "type": "string",
             "nullable": false
           }

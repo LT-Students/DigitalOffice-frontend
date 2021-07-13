@@ -2,157 +2,194 @@
 @import 'base/fonts';
 
 .project {
-  margin-top: 10px;
+	margin-top: 10px;
 
-  background: $light_1;
-  border-radius: 5px 5px 0 0;
+	background: $light_1;
+	border-radius: 5px 5px 0 0;
 
-  .project-header {
-    padding: 40px 40px 32px 40px;
+	.project-header {
+		padding: 40px 40px 32px 40px;
 
-    display: flex;
-    justify-content: space-between;
+		display: flex;
+		justify-content: space-between;
 
-    border-bottom: 1px solid $light_3;
-    flex-wrap: wrap;
+		border-bottom: 1px solid $light_3;
+		flex-wrap: wrap;
 
-    &__splitter {
-      width: 124px;
-      height: 4px;
+		&__splitter {
+			width: 124px;
+			height: 4px;
 
-      background: $accent_color_bright;
-    }
+			background: $accent_color_bright;
+		}
 
-    &__menu {
-      padding-top: 15px;
+		&__menu {
+			padding-top: 15px;
 
-      display: flex;
-    }
+			display: flex;
+		}
 
-    &__edit {
-      margin-right: 10px;
+		&__edit {
+			margin-right: 10px;
 
-      background-color: $accent_color_bright;
-      border: unset;
-    }
+			background-color: $accent_color_bright;
+			border: unset;
+		}
 
-    &__span {
-      vertical-align: initial;
-    }
+		&__span {
+			vertical-align: initial;
+		}
 
-    &__more {
-      margin-top: -3px;
-      padding: 0;
+		&__more {
+			margin-top: -3px;
+			padding: 0;
 
-      min-width: unset;
-    }
-  }
+			min-width: unset;
+		}
+	}
 
-  &__content {
-    margin-right: 60px;
-    padding: 20px 40px 40px 40px;
+	&__content {
+		margin-right: 60px;
+		padding: 20px 40px 40px 40px;
 
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
 
-  .project-description {
-    &__title {
-      margin-bottom: 24px;
-    }
+	.project-description {
+		&__title {
+			margin-bottom: 24px;
+		}
 
-    &__body {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: nowrap;
+		&__body {
+			display: flex;
+			justify-content: space-between;
+			flex-wrap: nowrap;
 
-      max-width: 320px;
+			max-width: 320px;
 
-      text-align: left;
-    }
+			text-align: left;
+		}
 
-    p {
-      margin-bottom: 5px;
+		p {
+			margin-bottom: 5px;
 
-      width: 160px;
-    }
-  }
+			width: 160px;
+		}
+	}
 
-  .project-time {
-    &__title {
-      margin: 34px 0 24px;
-    }
+	.project-time {
+		&__title {
+			margin: 34px 0 24px;
+		}
 
-    &__container {
-      display: flex;
-      flex-wrap: nowrap;
-    }
+		&__container {
+			display: flex;
+			flex-wrap: nowrap;
+		}
 
-    &__all-time {
-      margin-left: 50px;
-    }
-  }
+		&__all-time {
+			margin-left: 50px;
+		}
+	}
 
-  .project-team {
-    &__title {
-      margin-bottom: 23px;
-    }
+	.project-team {
+		&__title {
+			margin-bottom: 23px;
+		}
 
-    &__leaders {
-      margin-bottom: 32px;
+		&__leaders {
+			margin-bottom: 32px;
 
-      display: flex;
-    }
+			display: flex;
+		}
 
-    &__card {
-      display: flex;
-      flex-wrap: nowrap;
-      flex: 1 1 auto;
-    }
+		&__card {
+			display: flex;
+			flex-wrap: nowrap;
+			flex: 1 1 auto;
+		}
 
-    &__leaders-photo {
-      margin-right: 10px;
+		&__leaders-photo {
+			margin-right: 10px;
 
-      max-height: 48px;
-    }
+			max-height: 48px;
+		}
 
-    &__member {
-      margin-bottom: 45px;
-    }
+		&__member {
+			margin-bottom: 45px;
+		}
 
-    &__member-photo {
-      margin-right: 4px;
-    }
-  }
+		&__member-photo {
+			margin-right: 4px;
+		}
+	}
 
-  @media (max-width: 420px) {
-    padding: 10px;
-  }
+	@media (max-width: 420px) {
+		padding: 10px;
+	}
 
-  @media (max-width: 1024px) {
-    .project-description {
-      p {
-        margin-bottom: 15px;
-      }
-    }
+	@media (max-width: 1024px) {
+		.project-description {
+			p {
+				margin-bottom: 15px;
+			}
+		}
 
-    .project-team {
-      &__title {
-        margin-top: 30px;
-      }
+		.project-team {
+			&__title {
+				margin-top: 30px;
+			}
 
-      &__leaders {
-        display: inline;
-      }
+			&__leaders {
+				display: inline;
+			}
 
-      &__leaders-photo {
-        margin-bottom: 15px;
-      }
+			&__leaders-photo {
+				margin-bottom: 15px;
+			}
 
-      &__member-photo {
-        margin-right: -10px;
-      }
-    }
-  }
+			&__member-photo {
+				margin-right: -10px;
+			}
+		}
+	}
+}
+
+.table {
+	padding: 0 40px 32px;
+
+	&__header {
+		margin-bottom: 20px;
+
+		display: flex;
+	}
+
+	&__content {
+		width: 100%;
+
+		border-collapse: collapse;
+	}
+
+	&__row {
+		height: 48px;
+
+		border-bottom: 1px solid #f1f1ef;
+
+		&:hover {
+			cursor: pointer;
+
+			background-color: #f1f1ef;
+		}
+	}
+
+	&__archived {
+		background-color: #eb5757;
+		border-radius: 5%;
+	}
+
+	&__image {
+		border-radius: 50%;
+	}
 }

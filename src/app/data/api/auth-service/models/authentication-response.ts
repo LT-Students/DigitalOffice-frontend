@@ -16,5 +16,15 @@ export interface AuthenticationResponse {
    * User global unique identifier.
    */
   userId?: string;
+
+  /**
+   * AccessToken life time in minutes
+   */
+  accessTokenExpiresIn?: number;
+
+  /**
+   * RefreshToken life time in minutes
+   */
+  refreshTokenExpiresIn?: number;
 }
 

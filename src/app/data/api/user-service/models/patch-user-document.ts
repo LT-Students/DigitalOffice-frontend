@@ -10,7 +10,7 @@ export interface PatchUserDocument {
   /**
    * A JSON-Pointer.
    */
-  path: '/FirstName' | '/LastName' | '/MiddleName' | '/Gender' | '/DateOfBirth' | '/City' | '/AvatarImage' | '/Status' | '/StartWorkingAt' | '/Rate';
+  path: '/FirstName' | '/LastName' | '/MiddleName' | '/Gender' | '/DateOfBirth' | '/City' | '/AvatarImage' | '/Status' | '/StartWorkingAt' | '/Rate' | '/DepartmentId' | '/PositionId' | '/RoleId' | '/OfficeId';
 
   /**
    * The value to be used within the operations.
