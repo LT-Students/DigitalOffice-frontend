@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { Sort } from '@angular/material/sort';
-import { of } from 'rxjs';
 import { NetService } from '@app/services/net.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '@app/services/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 import { PageEvent } from '@angular/material/paginator';
+import { ShortDepartmentInfo } from '@data/api/company-service/models/short-department-info';
+import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-department-card',
@@ -16,7 +15,7 @@ import { PageEvent } from '@angular/material/paginator';
 	styleUrls: ['./department-card.component.scss'],
 })
 export class DepartmentCardComponent implements OnInit {
-	public departmentInfo: DepartmentInfo;
+	public departmentInfo: ShortDepartmentInfo;
 	public sortedUsersInfo: UserInfo[];
 	private _departmentId: string;
 
@@ -38,8 +37,8 @@ export class DepartmentCardComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this._netService.getDepartment(this._departmentId).subscribe((data: DepartmentInfo) => {
-			this.departmentInfo = data;
+		this._netService.getDepartment(this._departmentId).subscribe(({ body }) => {
+			this.departmentInfo = body.department;
 		});
 		this._userService.getUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
 			this.totalCount = data.totalCount;
@@ -64,11 +63,11 @@ export class DepartmentCardComponent implements OnInit {
 	}
 
 	public sortData(sort: Sort): void {
-		const data = this.departmentInfo.users.slice();
-		if (!sort.active || sort.direction === '') {
-			this.sortedUsersInfo = data;
-			return;
-		}
+		// const data = this.departmentInfo.users.slice();
+		// if (!sort.active || sort.direction === '') {
+		// 	this.sortedUsersInfo = data;
+		// 	return;
+		// }
 
 		// this.sortedUsersInfo = data.sort((a: UserInfo, b: UserInfo) => {
 		// 	const isAsc = sort.direction === 'asc';

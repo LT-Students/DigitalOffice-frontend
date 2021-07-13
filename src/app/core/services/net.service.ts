@@ -10,6 +10,7 @@ import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
+import { OperationResultResponseDepartmentInfo } from '@data/api/company-service/models/operation-result-response-department-info';
 
 @Injectable()
 export class NetService {
@@ -46,8 +47,8 @@ export class NetService {
 		return this._companyApiService.findOffices({ skipCount: 0, takeCount: 50 });
 	}
 
-	public getDepartment(departmentId: string): Observable<DepartmentInfo> {
-		return this._departmentApiService.getDepartment({ id: departmentId });
+	public getDepartment(departmentId: string): Observable<OperationResultResponseDepartmentInfo> {
+		return this._departmentApiService.getDepartment({ departmentid: departmentId });
 	}
 
 	public generatePassword(): Observable<string> {
