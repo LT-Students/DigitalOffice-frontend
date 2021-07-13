@@ -21,6 +21,7 @@ import { AddImageRequest, CommunicationType, ErrorResponse } from '@data/api/use
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
+import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { employee } from '../../mock';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
 
@@ -65,11 +66,13 @@ export class MainInfoComponent implements OnInit {
 		private _userService: UserService,
 		private _netService: NetService,
 		private dialog: MatDialog,
-		private _snackBar: MatSnackBar
+		private _snackBar: MatSnackBar,
+		private _roleService: RoleApiService,
 	) {
 		this.employee = employee;
 
 		this.selectOptions = {
+			roles: [],
 			positions: [],
 			departments: [],
 			offices: [],
@@ -95,6 +98,10 @@ export class MainInfoComponent implements OnInit {
 
 		this._netService.getOfficesList().subscribe(({ offices }: FindOfficesResponse) => {
 			this.selectOptions.offices = offices;
+		});
+
+		this._roleService.findRoles({ skipCount: 0, takeCount: 50 }).subscribe(({ roles }) => {
+			this.selectOptions.roles = roles;
 		});
 		// this.previewPhoto = this.user.avatar.content;
 	}
@@ -177,6 +184,7 @@ export class MainInfoComponent implements OnInit {
 		const position = this.user.user.position ? this.user.user.position.id : '';
 		const department = this.user.user.department ? this.user.user.department.id : '';
 		const office = this.user.user.office ? this.user.user.office.id : '';
+		const role = this.user.user.role ? this.user.user.role.id : '';
 		const rate = this.user.user.rate ? this.user.user.rate : '';
 		const city = this.user.user.city ? this.user.user.city : '';
 
@@ -190,6 +198,7 @@ export class MainInfoComponent implements OnInit {
 			position: position,
 			department: department,
 			office: office,
+			role: role,
 			rate: rate,
 			city: city,
 			startWorkingAt: this.user.startWorkingDate,
@@ -221,7 +230,7 @@ export class MainInfoComponent implements OnInit {
 					photo: result,
 				});
 				this.employeeInfoForm.get('photo').markAsDirty();
-				console.log(result, this.employeeInfoForm.get('photo').value);
+				console.log(result);
 			}
 		});
 	}
@@ -235,8 +244,9 @@ export class MainInfoComponent implements OnInit {
 			status: [null],
 			about: [''],
 			position: ['', Validators.required],
-			department: ['', Validators.required],
+			department: [''],
 			office: ['', Validators.required],
+			role: [''],
 			rate: ['', Validators.required],
 			city: [''],
 			startWorkingAt: [null],

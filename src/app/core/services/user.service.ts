@@ -179,6 +179,13 @@ export class UserService {
 						value: item.value,
 					});
 					break;
+				case 'role':
+					editRequest.push({
+						op: 'replace',
+						path: '/RoleId',
+						value: item.value,
+					});
+					break;
 				default:
 					break;
 			}
