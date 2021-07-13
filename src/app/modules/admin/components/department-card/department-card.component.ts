@@ -41,6 +41,7 @@ export class DepartmentCardComponent implements OnInit {
 			this.departmentInfo = body.department;
 			this.totalCount = body.users.length;
 			this.sortedUsersInfo = body.users.slice();
+			console.log(body)
 		});
 	}
 
