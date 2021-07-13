@@ -134,13 +134,13 @@ export class MainInfoComponent implements OnInit {
 
 	private _getUser(): void {
 		this._userService
-		// .getMockUser(this.pageId)
-		.getUser(this.pageId, true)
-		.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
-		.subscribe((user: User) => {
-			this.user = user;
-			console.log(user);
-		});
+			// .getMockUser(this.pageId)
+			.getUser(this.pageId, true)
+			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
+			.subscribe((user: User) => {
+				this.user = user;
+				console.log(user);
+			});
 	}
 
 	public patchEditUser(): void {
@@ -178,6 +178,7 @@ export class MainInfoComponent implements OnInit {
 		const department = this.user.user.department ? this.user.user.department.id : '';
 		const office = this.user.user.office ? this.user.user.office.id : '';
 		const rate = this.user.user.rate ? this.user.user.rate : '';
+		const city = this.user.user.city ? this.user.user.city : '';
 
 		this.employeeInfoForm.patchValue({
 			firstName: this.user.firstName,
@@ -190,6 +191,7 @@ export class MainInfoComponent implements OnInit {
 			department: department,
 			office: office,
 			rate: rate,
+			city: city,
 			startWorkingAt: this.user.startWorkingDate,
 			dateOfBirth: this.user.user.dateOfBirth,
 			communications: this._enrichCommunications(),
@@ -236,6 +238,7 @@ export class MainInfoComponent implements OnInit {
 			department: ['', Validators.required],
 			office: ['', Validators.required],
 			rate: ['', Validators.required],
+			city: [''],
 			startWorkingAt: [null],
 			dateOfBirth: [null],
 			communications: this.fb.array([

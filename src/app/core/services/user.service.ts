@@ -129,6 +129,14 @@ export class UserService {
 						value: date.toISOString(),
 					});
 					break;
+				case 'dateOfBirth':
+					const dateOfBirth: Moment = item.value;
+					editRequest.push({
+						op: 'replace',
+						path: '/DateOfBirth',
+						value: dateOfBirth.toISOString(),
+					});
+					break;
 				case 'department':
 					editRequest.push({
 						op: 'replace',
@@ -164,12 +172,11 @@ export class UserService {
 						value: item.value,
 					});
 					break;
-				case 'dateOfBirth':
-					const dateOfBirth: Moment = item.value;
+				case 'city':
 					editRequest.push({
 						op: 'replace',
-						path: '/DateOfBirth',
-						value: dateOfBirth.toISOString(),
+						path: '/City',
+						value: item.value,
 					});
 					break;
 				default:

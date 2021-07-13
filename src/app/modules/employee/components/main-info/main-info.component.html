@@ -30,11 +30,10 @@
 								<p doText regularTextSize="small" color="gray">Департамент</p>
 								<p doText>{{ user.user.department?.name }}</p>
 							</div>
-							<!-- TODO: Change when API will be ready
-            <div>
-              <p doText regularTextSize='small' color='gray'>Местоположение</p>
-              <p doText>{{ employee.location }}</p>
-            </div>-->
+							<div *ngIf="user?.user?.city">
+								<p doText regularTextSize="small" color="gray">Местоположение</p>
+								<p doText>{{ user?.user?.city }}</p>
+							</div>
 							<div *ngIf="user?.user?.office">
 								<p doText regularTextSize="small" color="gray">Офис</p>
 								<p doText>{{ user?.user?.office?.city }}, {{ user?.user?.office?.address }}</p>
@@ -49,10 +48,10 @@
 								<p doText regularTextSize="small" color="gray">В компании с</p>
 								<p doText>{{ user.startWorkingDate | date: dateType.FULL }}</p>
 							</div>
-                            <div *ngIf="user?.user.dateOfBirth">
-                                <p doText regularTextSize='small' color='gray'>Дата рождения</p>
-                                <p doText>{{ user?.user?.dateOfBirth | date: dateType.FULL }}</p>
-                            </div>
+							<div *ngIf="user?.user.dateOfBirth">
+								<p doText regularTextSize="small" color="gray">Дата рождения</p>
+								<p doText>{{ user?.user?.dateOfBirth | date: dateType.FULL }}</p>
+							</div>
 							<!--TODO: Change when API will be ready
             <p doText regularTextSize='small' color='gray'>
               Рабочие часы
@@ -311,14 +310,7 @@
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<!--TODO: change when api ready
-           <do-input
-               controlName='location'
-               [isEdit]='user.isAdmin'
-               label='Местоположение'
-               textSize='small'
-               required='true'
-           ></do-input>-->
+						<do-input controlName="city" [isEdit]="true" label="Местоположение" textSize="small"></do-input>
 						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
 							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="office"> Офис </mat-label>
 							<mat-select class="employee-info__input" id="office" formControlName="office" appearance="fill" required>
@@ -356,11 +348,7 @@
                [isEdit]='true'
                label='Дата рождения'
            ></do-datepicker>-->
-                        <do-datepicker
-                            controlName='dateOfBirth'
-                            [isEdit]='true'
-                            label='Дата рождения'
-                        ></do-datepicker>
+						<do-datepicker controlName="dateOfBirth" [isEdit]="true" label="Дата рождения"></do-datepicker>
 						<do-datepicker controlName="startWorkingAt" [isEdit]="user.isAdmin" label="В компании с"></do-datepicker>
 						<!--TODO: Change when api will be ready
            <ng-container *ngIf="employeeInfoForm.get('status').value === userStatus.Vacation">
@@ -463,7 +451,6 @@
 	</form>
 </ng-template>
 
-
 <ng-template #defaultAvatar>
-    <img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
+	<img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
 </ng-template>
