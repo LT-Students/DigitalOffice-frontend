@@ -34,7 +34,7 @@
 								<p doText regularTextSize="small" color="gray">Местоположение</p>
 								<p doText>{{ user?.user?.city }}</p>
 							</div>
-							<div *ngIf="user?.user?.office">
+							<div *ngIf="user?.user?.office?.city">
 								<p doText regularTextSize="small" color="gray">Офис</p>
 								<p doText>{{ user?.user?.office?.city }}, {{ user?.user?.office?.address }}</p>
 							</div>
