@@ -149,7 +149,7 @@ export class MainInfoComponent implements OnInit {
 	updateEmployeeInfo() {
 		console.log(this.employeeInfoForm.value);
 		/*TODO send APi request and rerender page*/
-		this.user.avatar.content = this.employeeInfoForm.value.photo;
+		// this.user.avatar.content = this.employeeInfoForm.value.photo;
 		this.user.user.about = this.employeeInfoForm.value.about;
 		this.user.communications = this.employeeInfoForm.value.communications;
 		this.user.position = { ...this.employeeInfoForm.value.position, receivedAt: new Date().toISOString() };
@@ -167,15 +167,16 @@ export class MainInfoComponent implements OnInit {
 		const editRequest = Object.keys(this.employeeInfoForm.controls)
 			.filter((key) => this.employeeInfoForm.get(key).dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key).value }));
-		this._userService.editUser(this.user.id, editRequest).subscribe(
-			(result) => {
-				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
-			},
-			(error: ErrorResponse) => {
-				console.log(error);
-				this._snackBar.open(error.message, 'Close', { duration: 5000 });
-			}
-		);
+		// this._userService.editUser(this.user.id, editRequest).subscribe(
+		// 	(result) => {
+		// 		this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
+		// 	},
+		// 	(error: ErrorResponse) => {
+		// 		console.log(error);
+		// 		this._snackBar.open(error.message, 'Close', { duration: 5000 });
+		// 	}
+		// );
+		console.log(editRequest, this.user.avatar);
 	}
 
 	onSubmit() {

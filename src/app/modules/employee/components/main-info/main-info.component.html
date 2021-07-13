@@ -305,7 +305,7 @@
 								appearance="fill"
 								required
 							>
-								<mat-option class="employee-info__input" *ngFor="let position of selectOptions.positions" [value]="position.id">
+								<mat-option class="employee-info__input" *ngFor="let position of selectOptions.positions" [value]="position">
 									{{ position.name }}
 								</mat-option>
 							</mat-select>
@@ -321,7 +321,7 @@
 								appearance="fill"
 								required
 							>
-								<mat-option class="employee-info__input" *ngFor="let department of selectOptions.departments" [value]="department.id">
+								<mat-option class="employee-info__input" *ngFor="let department of selectOptions.departments" [value]="department">
 									{{ department.name }}
 								</mat-option>
 							</mat-select>

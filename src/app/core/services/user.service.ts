@@ -126,6 +126,34 @@ export class UserService {
 						value: date.toISOString(),
 					});
 					break;
+				case 'department':
+					editRequest.push({
+						op: 'replace',
+						path: '/DepartmentId',
+						value: item.value.id,
+					});
+					break;
+				case 'position':
+					editRequest.push({
+						op: 'replace',
+						path: '/PositionId',
+						value: item.value.id,
+					});
+					break;
+				case 'office':
+					editRequest.push({
+						op: 'replace',
+						path: '/OfficeId',
+						value: item.value.id,
+					});
+					break;
+				case 'avatar':
+					editRequest.push({
+						op: 'replace',
+						path: '/AvatarImage',
+						value: item.value,
+					});
+					break;
 				default:
 					break;
 			}
