@@ -84,14 +84,7 @@ export class MainInfoComponent implements OnInit {
 		this._initEditForm();
 	}
 	ngOnInit(): void {
-		this._userService
-			// .getMockUser(this.pageId)
-			.getUser(this.pageId, true)
-			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
-			.subscribe((user: User) => {
-				this.user = user;
-				console.log(user);
-			});
+		this._getUser();
 		this._initEditForm();
 
 		this._netService.getDepartmentsList().subscribe((departments: DepartmentInfo[]) => {
@@ -138,21 +131,18 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	updateEmployeeInfo() {
-		console.log(this.employeeInfoForm.value);
-		/*TODO send APi request and rerender page*/
-		// this.user.avatar.content = this.employeeInfoForm.value.photo;
-		this.user.user.about = this.employeeInfoForm.value.about;
-		this.user.communications = this.employeeInfoForm.value.communications;
-		this.user.position = this.employeeInfoForm.value.position;
-		this.user.department = this.employeeInfoForm.value.department;
-		this.user.user.officeInfo = this.employeeInfoForm.value.office;
-		this.user.firstName = this.employeeInfoForm.value.firstName;
-		this.user.lastName = this.employeeInfoForm.value.lastName;
-		this.user.middleName = this.employeeInfoForm.value.middleName;
-		this.user.user.rate = +this.employeeInfoForm.value.rate;
-		this.user.user.status = this.employeeInfoForm.value.status;
-		this.user.user.startWorkingAt = this.employeeInfoForm.value.startWorkingAt.toISOString();
-		// this.employee = { ...this.employee, ...this.employeeInfoForm.value };
+		this._getUser();
+	}
+
+	private _getUser(): void {
+		this._userService
+		// .getMockUser(this.pageId)
+		.getUser(this.pageId, true)
+		.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
+		.subscribe((user: User) => {
+			this.user = user;
+			console.log(user);
+		});
 	}
 
 	public patchEditUser(): void {
@@ -162,6 +152,7 @@ export class MainInfoComponent implements OnInit {
 		this._userService.editUser(this.user.id, editRequest).subscribe(
 			(result) => {
 				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
+				this.updateEmployeeInfo();
 			},
 			(error: ErrorResponse) => {
 				console.log(error);
@@ -171,7 +162,6 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	onSubmit() {
-		this.updateEmployeeInfo();
 		this.patchEditUser();
 		this.toggleEditMode();
 	}
@@ -186,9 +176,9 @@ export class MainInfoComponent implements OnInit {
 		const photo = this.user.avatar && this.user.avatar.content ? `${this.user.avatar.content}` : '';
 		const status = this.user.status ? this.user.status.statusType : '';
 		const about = this.user.user.about ? this.user.user.about : '';
-		const position = this.user.position ? this.user.position : '';
-		const department = this.user.department ? this.user.department : '';
-		const office = this.user.user.officeInfo ? this.user.user.officeInfo : '';
+		const position = this.user.user.position ? this.user.user.position.id : '';
+		const department = this.user.user.department ? this.user.user.department.id : '';
+		const office = this.user.user.office ? this.user.user.office.id : '';
 		const rate = this.user.user.rate ? this.user.user.rate : '';
 
 		this.employeeInfoForm.patchValue({
