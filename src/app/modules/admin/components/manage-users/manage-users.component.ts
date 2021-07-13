@@ -84,9 +84,9 @@ export class ManageUsersComponent implements OnInit {
 				case 'name':
 					return this._compare(a.firstName, b.firstName, isAsc);
 				case 'department':
-					return this._compare(a.departmentInfo?.name, b.departmentInfo?.name, isAsc);
+					return this._compare(a.department?.name, b.department?.name, isAsc);
 				case 'role':
-					return this._compare(a.positionInfo?.name, b.positionInfo?.name, isAsc);
+					return this._compare(a.position?.name, b.position?.name, isAsc);
 				case 'rate':
 					return this._compare(a.rate, b.rate, isAsc);
 				case 'status':
