@@ -93,7 +93,7 @@ export class EducationApiService extends BaseService {
      * Specific education id
      */
     educationId: string;
-    body?: Array<EditEducationRequest>
+    body?: EditEducationRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, EducationApiService.EditEducationPath, 'patch');
@@ -127,7 +127,7 @@ export class EducationApiService extends BaseService {
      * Specific education id
      */
     educationId: string;
-    body?: Array<EditEducationRequest>
+    body?: EditEducationRequest
   }): Observable<OperationResultResponse> {
 
     return this.editEducation$Response(params).pipe(
