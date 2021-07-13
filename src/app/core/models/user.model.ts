@@ -23,12 +23,12 @@ export class User implements UserResponse {
 
 	constructor(data: UserResponse) {
 		this.achievements = this._setProperty(data.achievements);
-		this.avatar = this._setProperty(data.avatar);
+		// this.avatar = this._setProperty(data.avatar);
 		this.certificates = this._setProperty(data.certificates);
 		this.communications = this._setProperty(data.communications);
-		this.department = this._setProperty(data.department);
+		// this.department = this._setProperty(data.department);
 		this.errors = this._setProperty(data.errors);
-		this.position = this._setProperty(data.position);
+		// this.position = this._setProperty(data.position);
 		this.projects = this._setProperty(data.projects);
 		this.skills = this._setProperty(data.skills);
 		this.user = this._setProperty(data.user);

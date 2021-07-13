@@ -22,7 +22,7 @@ export interface CreateCertificateRequest {
   schoolName: string;
 
   /**
-   * Гnique user identifier.
+   * Unique user identifier.
    */
   userId: string;
 }
