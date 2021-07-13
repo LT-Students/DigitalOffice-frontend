@@ -28,7 +28,8 @@ export class UserService {
 			return this.userApiService.getUser({
 				userId: userId,
 				includedepartment: true,
-				// includeposition: true,
+				includeposition: true,
+				includeoffice: true,
 				includecommunications: true,
 			});
 		}
