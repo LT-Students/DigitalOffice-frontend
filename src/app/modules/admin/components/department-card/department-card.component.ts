@@ -39,11 +39,8 @@ export class DepartmentCardComponent implements OnInit {
 	ngOnInit(): void {
 		this._netService.getDepartment(this._departmentId).subscribe(({ body }) => {
 			this.departmentInfo = body.department;
-			console.log(body);
-		});
-		this._userService.getUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
-			this.totalCount = data.totalCount;
-			this.sortedUsersInfo = data.users.slice();
+			this.totalCount = body.users.length;
+			this.sortedUsersInfo = body.users.slice();
 		});
 	}
 
