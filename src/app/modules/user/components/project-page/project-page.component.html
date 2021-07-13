@@ -134,7 +134,14 @@
 				<th mat-sort-header="status">Статус</th>
 			</tr>
 			<tr class="table__row" *ngFor="let userInfo of projectUsers" routerLink="/user/{{ userInfo.id }}">
-				<td>IMG</td>
+				<td>
+                    <ng-container *ngIf="userInfo?.imageInfo?.content; else defaultImage">
+                        <img class="table__image" [src]="userInfo?.imageInfo?.content" alt="Employee photo" width="48" />
+                    </ng-container>
+                    <ng-template #defaultImage>
+                        <img class="table__image" src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="48" />
+                    </ng-template>
+                </td>
 				<td>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
 				<td>
 					<ng-container *ngIf="userInfo?.department?.name; else empty">
@@ -152,9 +159,12 @@
 					</ng-container>
 				</td>
 				<td>
-					<ng-container *ngIf="userInfo?.status; else empty">
-						{{ userInfo.status }}
-					</ng-container>
+                    <ng-container *ngIf="userInfo?.isActive; else archived">
+                        <p>Активен</p>
+                    </ng-container>
+                    <ng-template #archived>
+                        <p class="table__archived" doText color="light_1">В архиве</p>
+                    </ng-template>
 				</td>
 			</tr>
 		</table>

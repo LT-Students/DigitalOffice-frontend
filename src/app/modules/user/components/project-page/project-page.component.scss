@@ -183,4 +183,13 @@
 			background-color: #f1f1ef;
 		}
 	}
+
+	&__archived {
+		background-color: #eb5757;
+		border-radius: 5%;
+	}
+
+	&__image {
+		border-radius: 50%;
+	}
 }
