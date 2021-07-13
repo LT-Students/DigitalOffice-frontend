@@ -18,7 +18,7 @@
 	}
 
 	&__row {
-		height: 48px;
+		height: 76px;
 
 		border-bottom: 1px solid #f1f1ef;
 
@@ -27,5 +27,14 @@
 
 			background-color: #f1f1ef;
 		}
+	}
+
+	&__archived {
+		background-color: #eb5757;
+		border-radius: 5%;
+	}
+
+	&__image {
+		border-radius: 50%;
 	}
 }
