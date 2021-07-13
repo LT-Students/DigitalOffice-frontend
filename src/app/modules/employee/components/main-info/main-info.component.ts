@@ -191,6 +191,7 @@ export class MainInfoComponent implements OnInit {
 			office: office,
 			rate: rate,
 			startWorkingAt: this.user.startWorkingDate,
+			dateOfBirth: this.user.user.dateOfBirth,
 			communications: this._enrichCommunications(),
 		});
 	}
@@ -236,6 +237,7 @@ export class MainInfoComponent implements OnInit {
 			office: ['', Validators.required],
 			rate: ['', Validators.required],
 			startWorkingAt: [null],
+			dateOfBirth: [null],
 			communications: this.fb.array([
 				this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
 				this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),

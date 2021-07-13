@@ -164,6 +164,14 @@ export class UserService {
 						value: item.value,
 					});
 					break;
+				case 'dateOfBirth':
+					const dateOfBirth: Moment = item.value;
+					editRequest.push({
+						op: 'replace',
+						path: '/DateOfBirth',
+						value: dateOfBirth.toISOString(),
+					});
+					break;
 				default:
 					break;
 			}

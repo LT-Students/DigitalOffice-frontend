@@ -49,6 +49,10 @@
 								<p doText regularTextSize="small" color="gray">В компании с</p>
 								<p doText>{{ user.startWorkingDate | date: dateType.FULL }}</p>
 							</div>
+                            <div *ngIf="user?.user.dateOfBirth">
+                                <p doText regularTextSize='small' color='gray'>Дата рождения</p>
+                                <p doText>{{ user?.user?.dateOfBirth | date: dateType.FULL }}</p>
+                            </div>
 							<!--TODO: Change when API will be ready
             <p doText regularTextSize='small' color='gray'>
               Рабочие часы
@@ -352,6 +356,11 @@
                [isEdit]='true'
                label='Дата рождения'
            ></do-datepicker>-->
+                        <do-datepicker
+                            controlName='dateOfBirth'
+                            [isEdit]='true'
+                            label='Дата рождения'
+                        ></do-datepicker>
 						<do-datepicker controlName="startWorkingAt" [isEdit]="user.isAdmin" label="В компании с"></do-datepicker>
 						<!--TODO: Change when api will be ready
            <ng-container *ngIf="employeeInfoForm.get('status').value === userStatus.Vacation">
