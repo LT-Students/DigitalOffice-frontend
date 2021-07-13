@@ -4,11 +4,8 @@
 			<div class="employee-info__wrapper">
 				<div class="employee-info__main">
 					<div class="employee-info__photo">
-						<ng-container *ngIf="user?.avatar?.content">
-							<img [src]="user?.avatar?.content" alt="Employee photo" width="180" />
-						</ng-container>
-						<ng-container *ngIf="!user?.avatar?.content">
-							<img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
+						<ng-container *ngIf="user?.user?.avatar?.content; else defaultAvatar">
+							<img [src]="user?.user?.avatar?.content" alt="Employee photo" width="180" />
 						</ng-container>
 					</div>
 					<h3 class="employee-info__name" doText color="dark_2">
@@ -266,11 +263,8 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__photo">
-					<ng-container *ngIf="employeeInfoForm.get('photo').value">
-						<img [src]="employeeInfoForm.get('photo').value" alt="Employee photo" width="180" />
-					</ng-container>
-					<ng-container *ngIf="!employeeInfoForm.get('photo').value">
-						<img src="../../../../../assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
+					<ng-container *ngIf="employeeInfoForm.get('photo').value.content; else defaultAvatar">
+						<img [src]="employeeInfoForm.get('photo').value.content" alt="Employee photo" width="180" />
 					</ng-container>
 					<label class="text_white employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
@@ -458,4 +452,9 @@
 			</div>
 		</div>
 	</form>
+</ng-template>
+
+
+<ng-template #defaultAvatar>
+    <img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
 </ng-template>

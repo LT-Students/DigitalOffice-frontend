@@ -32,6 +32,7 @@ export class UserService {
 				includeoffice: true,
 				includecommunications: true,
 				includerole: true,
+				includeimages: true,
 			});
 		}
 		return this.userApiService.getUser({ userId: userId });

@@ -17,7 +17,7 @@ import { Observable, of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { CommunicationType, ErrorResponse } from '@data/api/user-service/models';
+import { AddImageRequest, CommunicationType, ErrorResponse } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
@@ -55,7 +55,6 @@ export class MainInfoComponent implements OnInit {
 	public employee: ExtendedUser;
 	public selectOptions;
 	public isEditing: boolean;
-	public previewPhoto: string;
 	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
 	public user: User;
@@ -78,7 +77,6 @@ export class MainInfoComponent implements OnInit {
 			workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
 		};
 		this.isEditing = false;
-		this.previewPhoto = null;
 		this.user = null;
 		this.pageId = this.route.snapshot.paramMap.get('id');
 		this._initEditForm();
@@ -173,7 +171,7 @@ export class MainInfoComponent implements OnInit {
 
 	fillForm() {
 		const middleName = this.user.middleName ? this.user.middleName : '';
-		const photo = this.user.avatar && this.user.avatar.content ? `${this.user.avatar.content}` : '';
+		const photo = this.user.user.avatar && this.user.user.avatar.content ? this.user.user.avatar : '';
 		const status = this.user.status ? this.user.status.statusType : '';
 		const about = this.user.user.about ? this.user.user.about : '';
 		const position = this.user.user.position ? this.user.user.position.id : '';
@@ -220,7 +218,7 @@ export class MainInfoComponent implements OnInit {
 					photo: result,
 				});
 				this.employeeInfoForm.get('photo').markAsDirty();
-				this.previewPhoto = result;
+				console.log(result, this.employeeInfoForm.get('photo').value);
 			}
 		});
 	}
