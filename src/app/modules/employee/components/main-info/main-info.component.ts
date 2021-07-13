@@ -20,6 +20,7 @@ import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CommunicationType, ErrorResponse } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
 import { employee } from '../../mock';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
 
@@ -72,7 +73,7 @@ export class MainInfoComponent implements OnInit {
 		this.selectOptions = {
 			positions: [],
 			departments: [],
-			office: ['м. Чернышевская', 'м. Площадь Восстания'],
+			offices: [],
 			statuses: UserStatusModel.getAllStatuses(),
 			workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
 		};
@@ -99,6 +100,10 @@ export class MainInfoComponent implements OnInit {
 
 		this._netService.getPositionsList().subscribe((positions: PositionInfo[]) => {
 			this.selectOptions.positions = positions;
+		});
+
+		this._netService.getOfficesList().subscribe(({ offices }: FindOfficesResponse) => {
+			this.selectOptions.offices = offices;
 		});
 		// this.previewPhoto = this.user.avatar.content;
 	}
@@ -132,28 +137,15 @@ export class MainInfoComponent implements OnInit {
 		this.isEditing = !this.isEditing;
 	}
 
-	onFileChange(event) {
-		if (event.target.files.length > 0) {
-			const reader = new FileReader();
-
-			reader.readAsDataURL(event.target.files[0]);
-			reader.onload = (evt) => {
-				this.employeeInfoForm.patchValue({
-					photo: evt.target.result,
-				});
-				this.previewPhoto = evt.target.result as string;
-			};
-		}
-	}
-
 	updateEmployeeInfo() {
 		console.log(this.employeeInfoForm.value);
 		/*TODO send APi request and rerender page*/
 		// this.user.avatar.content = this.employeeInfoForm.value.photo;
 		this.user.user.about = this.employeeInfoForm.value.about;
 		this.user.communications = this.employeeInfoForm.value.communications;
-		this.user.position = { ...this.employeeInfoForm.value.position, receivedAt: new Date().toISOString() };
+		this.user.position = this.employeeInfoForm.value.position;
 		this.user.department = this.employeeInfoForm.value.department;
+		this.user.user.officeInfo = this.employeeInfoForm.value.office;
 		this.user.firstName = this.employeeInfoForm.value.firstName;
 		this.user.lastName = this.employeeInfoForm.value.lastName;
 		this.user.middleName = this.employeeInfoForm.value.middleName;
@@ -176,7 +168,7 @@ export class MainInfoComponent implements OnInit {
 		// 		this._snackBar.open(error.message, 'Close', { duration: 5000 });
 		// 	}
 		// );
-		console.log(editRequest, this.user.avatar);
+		this._userService.editUser(this.user.id, editRequest);
 	}
 
 	onSubmit() {
@@ -197,6 +189,7 @@ export class MainInfoComponent implements OnInit {
 		const about = this.user.user.about ? this.user.user.about : '';
 		const position = this.user.position ? this.user.position : '';
 		const department = this.user.department ? this.user.department : '';
+		const office = this.user.user.officeInfo ? this.user.user.officeInfo : '';
 		const rate = this.user.user.rate ? this.user.user.rate : '';
 
 		this.employeeInfoForm.patchValue({
@@ -208,6 +201,7 @@ export class MainInfoComponent implements OnInit {
 			about: about,
 			position: position,
 			department: department,
+			office: office,
 			rate: rate,
 			startWorkingAt: this.user.startWorkingDate,
 			communications: this._enrichCommunications(),
@@ -251,6 +245,7 @@ export class MainInfoComponent implements OnInit {
 			about: [''],
 			position: ['', Validators.required],
 			department: ['', Validators.required],
+			office: ['', Validators.required],
 			rate: ['', Validators.required],
 			startWorkingAt: [null],
 			communications: this.fb.array([
