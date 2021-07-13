@@ -40,7 +40,7 @@
             </div>-->
 							<div *ngIf="user?.user?.officeInfo">
 								<p doText regularTextSize="small" color="gray">Офис</p>
-								<p doText>{{ user?.user?.officeInfo?.name }}</p>
+								<p doText>{{ user?.user?.officeInfo?.city }}, {{ user?.user?.officeInfo?.address }}</p>
 							</div>
 						</div>
 						<div class="employee-info__second-column">
@@ -321,16 +321,14 @@
                textSize='small'
                required='true'
            ></do-input>-->
-                        <mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
-                            <mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="office">
-                                Офис
-                            </mat-label>
-                            <mat-select class="employee-info__input" id="office" formControlName="office" appearance="fill" required>
-                                <mat-option class="employee-info__input" *ngFor="let office of selectOptions.offices" [value]="office">
-                                    {{ office.city }}, {{ office.address }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="office"> Офис </mat-label>
+							<mat-select class="employee-info__input" id="office" formControlName="office" appearance="fill" required>
+								<mat-option class="employee-info__input" *ngFor="let office of selectOptions.offices" [value]="office">
+									{{ office.city }}, {{ office.address }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
 						<ng-container *ngTemplateOutlet="emoji"></ng-container>
 					</div>
 					<div class="employee-info__second-column">
