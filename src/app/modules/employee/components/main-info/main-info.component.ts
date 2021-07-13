@@ -159,16 +159,15 @@ export class MainInfoComponent implements OnInit {
 		const editRequest = Object.keys(this.employeeInfoForm.controls)
 			.filter((key) => this.employeeInfoForm.get(key).dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key).value }));
-		// this._userService.editUser(this.user.id, editRequest).subscribe(
-		// 	(result) => {
-		// 		this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
-		// 	},
-		// 	(error: ErrorResponse) => {
-		// 		console.log(error);
-		// 		this._snackBar.open(error.message, 'Close', { duration: 5000 });
-		// 	}
-		// );
-		this._userService.editUser(this.user.id, editRequest);
+		this._userService.editUser(this.user.id, editRequest).subscribe(
+			(result) => {
+				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
+			},
+			(error: ErrorResponse) => {
+				console.log(error);
+				this._snackBar.open(error.message, 'Close', { duration: 5000 });
+			}
+		);
 	}
 
 	onSubmit() {
@@ -228,8 +227,9 @@ export class MainInfoComponent implements OnInit {
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({
-					photoUrl: result,
+					photo: result,
 				});
+				this.employeeInfoForm.get('photo').markAsDirty();
 				this.previewPhoto = result;
 			}
 		});

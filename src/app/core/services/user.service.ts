@@ -147,10 +147,17 @@ export class UserService {
 						value: item.value.id,
 					});
 					break;
-				case 'avatar':
+				case 'photo':
 					editRequest.push({
 						op: 'replace',
 						path: '/AvatarImage',
+						value: item.value,
+					});
+					break;
+				case 'about':
+					editRequest.push({
+						op: 'replace',
+						path: '/About',
 						value: item.value,
 					});
 					break;
