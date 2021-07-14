@@ -38,3 +38,21 @@
 		border-radius: 50%;
 	}
 }
+
+.navigation {
+	margin-bottom: 40px;
+
+	&__link {
+		display: inline-block;
+
+		height: 24px;
+
+		vertical-align: top;
+
+		color: inherit;
+	}
+
+	&__link:hover {
+		text-decoration: underline;
+	}
+}
