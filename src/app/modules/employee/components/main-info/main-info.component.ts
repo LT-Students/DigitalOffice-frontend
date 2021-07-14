@@ -13,37 +13,16 @@ import { promptGlobalAnalytics } from '@angular/cli/models/analytics';
 import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
-import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { AddImageRequest, CommunicationType, ErrorResponse } from '@data/api/user-service/models';
+import { CommunicationType, ErrorResponse, UserGender } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
-import { employee } from '../../mock';
+import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
-
-interface ExtendedUser extends IUser {
-	about?: string;
-	photoUrl: string;
-	position: string;
-	department: string;
-	location: string;
-	office: string;
-	workingRate: number;
-	workingHours: { startAt: Time; endAt: Time };
-	startWorkingAt?: Date;
-	birthDate: Date;
-	email: string;
-	phone: string;
-	telegram: string;
-	vacationDaysLeft: number;
-	vacationSince?: Date;
-	vacationUntil?: Date;
-	sickSince?: Date;
-}
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -53,12 +32,12 @@ interface ExtendedUser extends IUser {
 export class MainInfoComponent implements OnInit {
 	public pageId: string;
 	public employeeInfoForm: FormGroup;
-	public employee: ExtendedUser;
 	public selectOptions;
 	public isEditing: boolean;
 	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
 	public user: User;
+	public genders: IUserGender[];
 
 	constructor(
 		private fb: FormBuilder,
@@ -69,7 +48,6 @@ export class MainInfoComponent implements OnInit {
 		private _snackBar: MatSnackBar,
 		private _roleService: RoleApiService,
 	) {
-		this.employee = employee;
 
 		this.selectOptions = {
 			roles: [],
@@ -79,6 +57,7 @@ export class MainInfoComponent implements OnInit {
 			statuses: UserStatusModel.getAllStatuses(),
 			workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
 		};
+		this.genders = UserGenderModel.getAllGenders();
 		this.isEditing = false;
 		this.user = null;
 		this.pageId = this.route.snapshot.paramMap.get('id');
@@ -103,22 +82,21 @@ export class MainInfoComponent implements OnInit {
 		this._roleService.findRoles({ skipCount: 0, takeCount: 50 }).subscribe(({ roles }) => {
 			this.selectOptions.roles = roles;
 		});
-		// this.previewPhoto = this.user.avatar.content;
 	}
 
 	public get communications(): FormArray {
 		return this.employeeInfoForm.get('communications') as FormArray;
 	}
 
-	get workingHours() {
-		const getTime = (timeObj: Time) => {
-			const minutes = timeObj.minutes < 10 ? timeObj.minutes + '0' : timeObj.minutes;
-			return `${timeObj.hours}:${minutes}`;
-		};
-		return Object.values(this.employee.workingHours)
-			.map((timeObj: Time) => getTime(timeObj))
-			.join('-');
-	}
+	// get workingHours() {
+	// 	const getTime = (timeObj: Time) => {
+	// 		const minutes = timeObj.minutes < 10 ? timeObj.minutes + '0' : timeObj.minutes;
+	// 		return `${timeObj.hours}:${minutes}`;
+	// 	};
+	// 	return Object.values(this.employee.workingHours)
+	// 		.map((timeObj: Time) => getTime(timeObj))
+	// 		.join('-');
+	// }
 
 	isOwner() {
 		// return this.user.id === this.pageId;
@@ -141,7 +119,6 @@ export class MainInfoComponent implements OnInit {
 
 	private _getUser(): void {
 		this._userService
-			// .getMockUser(this.pageId)
 			.getUser(this.pageId, true)
 			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
 			.subscribe((user: User) => {
@@ -150,7 +127,7 @@ export class MainInfoComponent implements OnInit {
 			});
 	}
 
-	public patchEditUser(): void {
+	private _patchEditUser(): void {
 		const editRequest = Object.keys(this.employeeInfoForm.controls)
 			.filter((key) => this.employeeInfoForm.get(key).dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key).value }));
@@ -167,7 +144,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	onSubmit() {
-		this.patchEditUser();
+		this._patchEditUser();
 		this.toggleEditMode();
 	}
 
@@ -178,7 +155,6 @@ export class MainInfoComponent implements OnInit {
 
 	fillForm() {
 		const middleName = this.user.middleName ? this.user.middleName : '';
-		const photo = this.user.user.avatar && this.user.user.avatar.content ? this.user.user.avatar : '';
 		const status = this.user.status ? this.user.status.statusType : '';
 		const about = this.user.user.about ? this.user.user.about : '';
 		const position = this.user.user.position ? this.user.user.position.id : '';
@@ -192,7 +168,7 @@ export class MainInfoComponent implements OnInit {
 			firstName: this.user.firstName,
 			lastName: this.user.lastName,
 			middleName: middleName,
-			photo: photo,
+			photo: this.user.avatarImage,
 			status: status,
 			about: about,
 			position: position,
@@ -201,6 +177,7 @@ export class MainInfoComponent implements OnInit {
 			role: role,
 			rate: rate,
 			city: city,
+			gender: this.user.user.gender,
 			dateOfBirth: this.user.dateOfBirth,
 			startWorkingAt: this.user.startWorkingDate,
 			communications: this._enrichCommunications(),
@@ -251,10 +228,11 @@ export class MainInfoComponent implements OnInit {
 			city: [''],
 			startWorkingAt: [null],
 			dateOfBirth: [null],
-			communications: this.fb.array([
-				this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
-				this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
-			]),
+			gender: [UserGender],
+			// communications: this.fb.array([
+			// 	this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
+			// 	this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
+			// ]),
 		});
 	}
 

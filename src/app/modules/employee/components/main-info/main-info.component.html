@@ -4,8 +4,8 @@
 			<div class="employee-info__wrapper">
 				<div class="employee-info__main">
 					<div class="employee-info__photo">
-						<ng-container *ngIf="user?.user?.avatar?.content; else defaultAvatar">
-							<img [src]="user?.user?.avatar?.content" alt="Employee photo" width="180" />
+						<ng-container *ngIf="user?.avatarImage; else defaultAvatar">
+							<img [src]="user?.avatarImage" alt="Employee photo" width="180" />
 						</ng-container>
 					</div>
 					<h3 class="employee-info__name" doText color="dark_2">
@@ -43,6 +43,10 @@
 							<ng-container *ngIf="user?.user?.rate">
 								<p doText regularTextSize="small" color="gray">Ставка</p>
 								<div doText>{{ user?.user?.rate }}</div>
+							</ng-container>
+							<ng-container>
+								<p doText regularTextSize="small" color="gray">Пол</p>
+								<div doText>{{ user?.user?.gender }}</div>
 							</ng-container>
                             <div *ngIf="user?.user?.role">
                                 <p doText regularTextSize="small" color="gray">Роль</p>
@@ -96,7 +100,8 @@
 						<div class="employee-info__columns">
 							<div>
 								<div *ngFor="let communication of user?.communications">
-									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>
+									<p doText regularTextSize="small" color="gray">E-mail</p>
+<!--									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>-->
 									<p doText>{{ communication.value }}</p>
 								</div>
 							</div>
@@ -266,8 +271,8 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__photo">
-					<ng-container *ngIf="employeeInfoForm.get('photo').value.content; else defaultAvatar">
-						<img [src]="employeeInfoForm.get('photo').value.content" alt="Employee photo" width="180" />
+					<ng-container *ngIf="employeeInfoForm.get('photo').value; else defaultAvatar">
+						<img [src]="employeeInfoForm.get('photo').value" alt="Employee photo" width="180" />
 					</ng-container>
 					<label class="text_white employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
@@ -328,20 +333,30 @@
 								<div>{{ user.user.rate }}</div>
 							</ng-container>
 						</ng-container>
-						<ng-container *ngIf="false">
-							<p doText regularTextSize="small" color="gray">
-								Рабочие часы
-								<mat-icon
-									class="employee-info__hint"
-									aria-label="Hint"
-									matTooltipClass="tooltip"
-									matTooltip="Рабочие часы пользователя по вашему часовому поясу"
-									matTooltipPosition="above"
-									>help_outline
-								</mat-icon>
-							</p>
-							<div>{{ workingHours }}</div>
-						</ng-container>
+<!--						<ng-container *ngIf="false">-->
+<!--							<p doText regularTextSize="small" color="gray">-->
+<!--								Рабочие часы-->
+<!--								<mat-icon-->
+<!--									class="employee-info__hint"-->
+<!--									aria-label="Hint"-->
+<!--									matTooltipClass="tooltip"-->
+<!--									matTooltip="Рабочие часы пользователя по вашему часовому поясу"-->
+<!--									matTooltipPosition="above"-->
+<!--									>help_outline-->
+<!--								</mat-icon>-->
+<!--							</p>-->
+<!--							<div>{{ workingHours }}</div>-->
+<!--						</ng-container>-->
+                        <mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+                            <mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="gender">
+                                Пол
+                            </mat-label>
+                            <mat-select class="employee-info__input" id="gender" formControlName="gender" appearance="fill">
+                                <mat-option class="employee-info__input" *ngFor="let gender of genders" [value]="gender">
+                                    {{ gender }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                         <mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
                             <mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="role">
                                 Роль
@@ -384,16 +399,25 @@
 				<div class="additional__line bg-light_3"></div>
 				<div class="form__column">
 					<h4 doText color="dark_2">Контакты</h4>
-					<div class="communications" formArrayName="communications">
-						<ng-container *ngFor="let communication of communications.controls; index as i">
-							<ng-container [formGroup]="communication">
-								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">
-									<mat-label>{{ communication.get('type').value }}</mat-label>
-									<input matInput placeholder="Введите данные" formControlName="value" required />
-								</mat-form-field>
-							</ng-container>
-						</ng-container>
-					</div>
+                    <div class="employee-info__columns">
+                        <div>
+                            <div *ngFor="let communication of user?.communications">
+                                <p doText regularTextSize="small" color="gray">E-mail</p>
+                                <!--									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>-->
+                                <p doText>{{ communication.value }}</p>
+                            </div>
+                        </div>
+                    </div>
+<!--					<div class="communications" formArrayName="communications">-->
+<!--						<ng-container *ngFor="let communication of communications.controls; index as i">-->
+<!--							<ng-container [formGroup]="communication">-->
+<!--								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">-->
+<!--									<mat-label>{{ communication.get('type').value }}</mat-label>-->
+<!--									<input matInput placeholder="Введите данные" formControlName="value" required />-->
+<!--								</mat-form-field>-->
+<!--							</ng-container>-->
+<!--						</ng-container>-->
+<!--					</div>-->
 					<!--TODO: Change when api will be ready
          <do-input
              controlName='email'
