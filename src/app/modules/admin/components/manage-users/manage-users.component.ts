@@ -51,24 +51,27 @@ export class ManageUsersComponent implements OnInit {
 		// 	this.userInfo = data.slice();
 		// 	this.sortedUserInfo = data.slice();
 		// });
-		this._userService.getUsers(this.pageIndex, this.pageSize).subscribe((data) => {
-			this.totalCount = data.totalCount;
-			this.userInfo = data.users.slice();
-			this.sortedUserInfo = data.users.slice();
-		});
+		this._getPageUsers();
 	}
 
 	public onPageChange(event: PageEvent): void {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
-		this._userService.getUsers(this.pageIndex, this.pageSize).subscribe((data) => {
-			this.userInfo = data.users.slice();
-			this.sortedUserInfo = data.users.slice();
-		});
+		this._getPageUsers();
 	}
 
 	public onAddEmployeeClick() {
 		this._dialog.open(NewEmployeeComponent);
+	}
+
+	public archiveUser(user: UserInfo, evt: Event): void {
+		evt.stopPropagation();
+		console.log(evt)
+		if (user.isActive) {
+			this._userService.disableUser(user.id).subscribe(() => {
+				this._getPageUsers();
+			});
+		}
 	}
 
 	public sortData(sort: Sort): void {
@@ -102,5 +105,13 @@ export class ManageUsersComponent implements OnInit {
 			return 0;
 		}
 		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+	}
+
+	private _getPageUsers(): void {
+		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
+			this.totalCount = data.totalCount;
+			this.userInfo = data.users.slice();
+			this.sortedUserInfo = data.users.slice();
+		});
 	}
 }

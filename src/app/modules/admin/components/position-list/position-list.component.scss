@@ -12,54 +12,34 @@
 		border-collapse: collapse;
 	}
 
+	&__heading {
+		font-weight: 100;
+	}
+
 	&__filters {
 		display: flex;
 		justify-content: space-between;
 	}
 
-	&__row {
-		position: relative;
+	&__input {
+		width: 50%;
+	}
 
+	&__row {
 		height: 76px;
 
 		border-bottom: 1px solid #f1f1ef;
 
-		&:hover {
-			cursor: pointer;
-
-			.table__cell {
-				background-color: #f1f1ef;
-			}
-
-			.table__delete-button {
-				visibility: visible;
-			}
-		}
-
-		&:focus {
-			outline: none;
-		}
-	}
-
-	&__archived {
-		background-color: #eb5757;
-		border-radius: 5%;
-	}
-
-	&__image {
-		border-radius: 50%;
-	}
-
-	&__delete-button {
-		position: relative;
-		right: -10px;
-
-		visibility: hidden;
+		//&:hover {
+		//	cursor: pointer;
+		//
+		//	background-color: #f1f1ef;
+		//}
 	}
 }
 
 .navigation {
-	margin-bottom: 40px;
+	margin-bottom: 50px;
 
 	&__link {
 		display: inline-block;

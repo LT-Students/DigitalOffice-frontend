@@ -10,7 +10,7 @@ import { CreateUserRequest } from '@data/api/user-service/models/create-user-req
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { EditUserRequest, OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
+import { AddImageRequest, EditUserRequest, OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Moment } from 'moment';
 import { userResponse } from '../../modules/employee/mock';
@@ -39,7 +39,7 @@ export class UserService {
 	}
 
 	public getUserSetCredentials(userId: string): Observable<UserResponse> {
-		return this.getUser(userId).pipe(tap(this._setUser.bind(this)));
+		return this.getUser(userId, true).pipe(tap(this._setUser.bind(this)));
 	}
 
 	public getUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<UsersResponse> {
@@ -49,7 +49,7 @@ export class UserService {
 				 *   при получении данных о всех юзера
 				 * */
 				.findUsers({ skipCount: skipPages, takeCount: pageSize, departmentid: departmentId })
-				// .pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
+			// .pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
 		);
 	}
 
@@ -75,6 +75,15 @@ export class UserService {
 			}),
 			catchError((error) => throwError(error))
 		);
+	}
+
+	public disableUser(userId: string): Observable<OperationResultResponse> {
+		const disableRequest: PatchUserDocument = {
+			op: 'replace',
+			path: '/IsActive',
+			value: false,
+		};
+		return this.userApiService.editUser({ userId, body: [disableRequest] });
 	}
 
 	private _setUser(user: UserResponse): void {
@@ -183,6 +192,13 @@ export class UserService {
 					editRequest.push({
 						op: 'replace',
 						path: '/RoleId',
+						value: item.value,
+					});
+					break;
+				case 'gender':
+					editRequest.push({
+						op: 'replace',
+						path: '/Gender',
 						value: item.value,
 					});
 					break;

@@ -16,10 +16,10 @@
 		<!--      </div>-->
 		<!--    </div>-->
 		<div class="header-navigation__logo">
-			<a class="h3 text-dark_2" routerLink="/user/attendance">Digital Office</a>
+			<a class="h3 text-dark_2" routerLink="/user/{{ userId }}">Digital Office</a>
 		</div>
 		<nav class="header-navigation__links">
-			<a routerLink="/user/attendance" class="regular_text text-gray">Учет заполнения</a>
+			<!-- <a routerLink="/user/attendance" class="regular_text text-gray">Учет заполнения</a> -->
 			<a routerLink="/user/projects-table" class="regular_text text-gray">Доска проектов</a>
 			<a routerLink="/admin/dashboard" class="regular_text text-gray">Администрирование</a>
 		</nav>
@@ -27,7 +27,7 @@
 	<div class="header__privacy">
 		<a routerLink="/auth/login" class="regular_text text-gray" (click)="onLogoutClick()">Выход</a>
 		<a class="header__privacy__greeting" routerLink="/user/{{ userId }}">
-			<img src="../../../../assets/svg/greeting-photo.svg" alt="" />
+			<do-profile-image [image]="avatar" size='s'></do-profile-image>
 			<p class="regular_text">
 				Привет, <span class="h4">{{ userName }}</span>
 			</p>

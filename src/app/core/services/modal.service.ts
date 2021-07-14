@@ -24,6 +24,8 @@ export enum AdminDashboardModalType {
 	MANAGE_ROLES,
 	NEW_OFFICE,
 	DEPARTMENT_LIST,
+	OFFICE_LIST,
+	POSITION_LIST
 }
 
 export interface UserSearchModalConfig {

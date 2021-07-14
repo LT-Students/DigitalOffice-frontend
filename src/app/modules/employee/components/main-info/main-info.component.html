@@ -3,10 +3,8 @@
 		<ng-container *ngIf="!canEdit() || !isEditing; else editForm">
 			<div class="employee-info__wrapper">
 				<div class="employee-info__main">
-					<div class="employee-info__photo">
-						<ng-container *ngIf="user?.user?.avatar?.content; else defaultAvatar">
-							<img [src]="user?.user?.avatar?.content" alt="Employee photo" width="180" />
-						</ng-container>
+					<div class="employee-info__avatar">
+						<do-profile-image [image]="user?.user?.avatar" size="l"></do-profile-image>
 					</div>
 					<h3 class="employee-info__name" doText color="dark_2">
 						{{ user.getFioFull() }}&nbsp;<span
@@ -44,10 +42,14 @@
 								<p doText regularTextSize="small" color="gray">Ставка</p>
 								<div doText>{{ user?.user?.rate }}</div>
 							</ng-container>
-                            <div *ngIf="user?.user?.role">
-                                <p doText regularTextSize="small" color="gray">Роль</p>
-                                <p doText>{{ user.user.role?.name }}</p>
-                            </div>
+							<ng-container>
+								<p doText regularTextSize="small" color="gray">Пол</p>
+								<div doText>{{ user?.gender?.genderInRussian }}</div>
+							</ng-container>
+							<div *ngIf="user?.user?.role">
+								<p doText regularTextSize="small" color="gray">Роль</p>
+								<p doText>{{ user.user.role?.name }}</p>
+							</div>
 							<div *ngIf="user?.user.startWorkingAt">
 								<p doText regularTextSize="small" color="gray">В компании с</p>
 								<p doText>{{ user.startWorkingDate | date: dateType.FULL }}</p>
@@ -96,7 +98,8 @@
 						<div class="employee-info__columns">
 							<div>
 								<div *ngFor="let communication of user?.communications">
-									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>
+									<p doText regularTextSize="small" color="gray">E-mail</p>
+									<!--									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>-->
 									<p doText>{{ communication.value }}</p>
 								</div>
 							</div>
@@ -265,10 +268,8 @@
 	<form class="employee-info__form" [formGroup]="employeeInfoForm" (ngSubmit)="onSubmit()">
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
-				<div class="employee-info__photo">
-					<ng-container *ngIf="employeeInfoForm.get('photo').value.content; else defaultAvatar">
-						<img [src]="employeeInfoForm.get('photo').value.content" alt="Employee photo" width="180" />
-					</ng-container>
+				<div class="employee-info__avatar">
+                    <do-profile-image [image]="employeeInfoForm.get('photo').value" size="l"></do-profile-image>
 					<label class="text_white employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
@@ -328,30 +329,36 @@
 								<div>{{ user.user.rate }}</div>
 							</ng-container>
 						</ng-container>
-						<ng-container *ngIf="false">
-							<p doText regularTextSize="small" color="gray">
-								Рабочие часы
-								<mat-icon
-									class="employee-info__hint"
-									aria-label="Hint"
-									matTooltipClass="tooltip"
-									matTooltip="Рабочие часы пользователя по вашему часовому поясу"
-									matTooltipPosition="above"
-									>help_outline
-								</mat-icon>
-							</p>
-							<div>{{ workingHours }}</div>
-						</ng-container>
-                        <mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
-                            <mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="role">
-                                Роль
-                            </mat-label>
-                            <mat-select class="employee-info__input" id="role" formControlName="role" appearance="fill">
-                                <mat-option class="employee-info__input" *ngFor="let role of selectOptions.roles" [value]="role.id">
-                                    {{ role.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+						<!--						<ng-container *ngIf="false">-->
+						<!--							<p doText regularTextSize="small" color="gray">-->
+						<!--								Рабочие часы-->
+						<!--								<mat-icon-->
+						<!--									class="employee-info__hint"-->
+						<!--									aria-label="Hint"-->
+						<!--									matTooltipClass="tooltip"-->
+						<!--									matTooltip="Рабочие часы пользователя по вашему часовому поясу"-->
+						<!--									matTooltipPosition="above"-->
+						<!--									>help_outline-->
+						<!--								</mat-icon>-->
+						<!--							</p>-->
+						<!--							<div>{{ workingHours }}</div>-->
+						<!--						</ng-container>-->
+						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="gender"> Пол </mat-label>
+							<mat-select class="employee-info__input" id="gender" formControlName="gender" appearance="fill">
+								<mat-option class="employee-info__input" *ngFor="let gender of genders" [value]="gender.genderType">
+									{{ gender.genderInRussian }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+							<mat-label doText color="gray" regularTextSize="small" class="employee-info__label" for="role"> Роль </mat-label>
+							<mat-select class="employee-info__input" id="role" formControlName="role" appearance="fill">
+								<mat-option class="employee-info__input" *ngFor="let role of selectOptions.roles" [value]="role.id">
+									{{ role.name }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
 						<do-datepicker controlName="startWorkingAt" [isEdit]="user.isAdmin" label="В компании с"></do-datepicker>
 						<do-datepicker controlName="dateOfBirth" [isEdit]="user.isAdmin" label="Дата рождения"></do-datepicker>
 						<!--TODO: Change when api will be ready
@@ -384,16 +391,25 @@
 				<div class="additional__line bg-light_3"></div>
 				<div class="form__column">
 					<h4 doText color="dark_2">Контакты</h4>
-					<div class="communications" formArrayName="communications">
-						<ng-container *ngFor="let communication of communications.controls; index as i">
-							<ng-container [formGroup]="communication">
-								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">
-									<mat-label>{{ communication.get('type').value }}</mat-label>
-									<input matInput placeholder="Введите данные" formControlName="value" required />
-								</mat-form-field>
-							</ng-container>
-						</ng-container>
+					<div class="employee-info__columns">
+						<div>
+							<div *ngFor="let communication of user?.communications">
+								<p doText regularTextSize="small" color="gray">E-mail</p>
+								<!--									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>-->
+								<p doText>{{ communication.value }}</p>
+							</div>
+						</div>
 					</div>
+					<!--					<div class="communications" formArrayName="communications">-->
+					<!--						<ng-container *ngFor="let communication of communications.controls; index as i">-->
+					<!--							<ng-container [formGroup]="communication">-->
+					<!--								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">-->
+					<!--									<mat-label>{{ communication.get('type').value }}</mat-label>-->
+					<!--									<input matInput placeholder="Введите данные" formControlName="value" required />-->
+					<!--								</mat-form-field>-->
+					<!--							</ng-container>-->
+					<!--						</ng-container>-->
+					<!--					</div>-->
 					<!--TODO: Change when api will be ready
          <do-input
              controlName='email'
@@ -453,8 +469,4 @@
 			</div>
 		</div>
 	</form>
-</ng-template>
-
-<ng-template #defaultAvatar>
-	<img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
 </ng-template>

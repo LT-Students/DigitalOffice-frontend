@@ -1,3 +1,8 @@
+<div class="navigation" doText color="gray">
+	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
+	<span doText color="gray"><mat-icon>chevron_right</mat-icon></span>
+	<a class="navigation__link">Управление сотрудниками</a>
+</div>
 <div class="card card_standard">
 	<div class="table">
 		<div class="table__header">
@@ -32,33 +37,28 @@
 				<th mat-sort-header="role">Роль</th>
 				<th mat-sort-header="rate">Ставка</th>
 				<th mat-sort-header="status">Статус</th>
-				<!--				<th></th>-->
+				<th></th>
 			</tr>
 			<tr class="table__row" *ngFor="let userInfo of sortedUserInfo" routerLink="/user/{{ userInfo?.id }}">
-				<td>
-					<ng-container *ngIf="userInfo?.avatar?.content; else defaultImage">
-						<img class="table__image" [src]="userInfo?.avatar?.content" alt="Employee photo" width="48" />
-					</ng-container>
-					<ng-template #defaultImage>
-						<img class="table__image" src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="48" />
-					</ng-template>
+				<td class="table__cell">
+					<do-profile-image [image]="userInfo?.avatar"></do-profile-image>
 				</td>
-				<td>
+				<td class="table__cell">
 					<p>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</p>
 					<p>{{ userInfo?.position?.name }}</p>
 				</td>
-				<td>
+				<td class="table__cell">
 					<ng-container *ngIf="userInfo?.department?.name; else empty">
 						{{ userInfo.department.name }}
 					</ng-container>
 				</td>
-				<td>
+				<td class="table__cell">
 					<ng-container *ngIf="userInfo?.role?.name; else empty">
 						{{ userInfo.role.name }}
 					</ng-container>
 				</td>
-				<td>{{ userInfo?.rate }}</td>
-				<td>
+				<td class="table__cell">{{ userInfo?.rate }}</td>
+				<td class="table__cell">
 					<ng-container *ngIf="userInfo?.isActive; else archived">
 						<p>Активен</p>
 					</ng-container>
@@ -66,11 +66,11 @@
 						<p class="table__archived" doText color="light_1">В архиве</p>
 					</ng-template>
 				</td>
-				<!--				<td>-->
-				<!--					<button mat-icon-button>-->
-				<!--						<img src="../../../../../assets/svg/edit.svg" alt="edit" />-->
-				<!--					</button>-->
-				<!--				</td>-->
+				<td class="table__delete-button">
+					<button mat-mini-fab color="primary" (click)="archiveUser(userInfo, $event)">
+						<img src="../../../../../assets/svg/delete.svg" alt="Archive employee" />
+					</button>
+				</td>
 			</tr>
 		</table>
 		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>

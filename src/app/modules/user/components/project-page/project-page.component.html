@@ -135,12 +135,7 @@
 			</tr>
 			<tr class="table__row" *ngFor="let userInfo of projectUsers" routerLink="/user/{{ userInfo.id }}">
 				<td>
-                    <ng-container *ngIf="userInfo?.imageInfo?.content; else defaultImage">
-                        <img class="table__image" [src]="userInfo?.imageInfo?.content" alt="Employee photo" width="48" />
-                    </ng-container>
-                    <ng-template #defaultImage>
-                        <img class="table__image" src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="48" />
-                    </ng-template>
+                    <do-profile-image [image]='userInfo?.avatar'></do-profile-image>
                 </td>
 				<td>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
 				<td>
