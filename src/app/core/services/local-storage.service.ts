@@ -8,7 +8,8 @@ export class LocalStorageService {
 
 	get(key: string): any | null {
 		const value: string | null = localStorage.getItem(key);
-		return value ? JSON.parse(value) : null;
+		const undefinedCheck = value === 'undefined' ? null : value;
+		return undefinedCheck ? JSON.parse(value) : null;
 	}
 
 	set(key: string, value: any): void {
