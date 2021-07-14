@@ -3,9 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 
 import { PositionApiService } from '@data/api/company-service/services';
-import { PositionInfo } from '@data/api/user-service/models';
 
 import { NewPositionComponent } from '../new-position/new-position.component';
+import { PositionInfo } from '@data/api/company-service/models/position-info';
 
 @Component({
   selector: 'do-position-list',
@@ -19,7 +19,7 @@ export class PositionListComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 
-  constructor(private dialog: MatDialog, private positionApiService: PositionApiService) { 
+  constructor(private dialog: MatDialog, private positionApiService: PositionApiService) {
     this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
@@ -28,7 +28,7 @@ export class PositionListComponent implements OnInit {
 
   public ngOnInit(): void {
     this.positionApiService.findPositions({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe(data => {
-      data.forEach(positionResponse => { 
+      data.forEach(positionResponse => {
         this.positions.push(positionResponse.info);
         //@ts-ignore TODO remove ts-ignore when API is fixed
         this.totalCount = positionResponse.totalCount;
