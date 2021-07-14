@@ -48,11 +48,11 @@
 					></mat-checkbox>
 				</div>
 				<div class="user-row__image">
-					<img [src]="member.avatar" width="48" height="48" alt="user image" />
+                    <do-profile-image [image]="member?.avatar"></do-profile-image>
 				</div>
 				<div class="user-row__general-info">
 					<div class="name">{{ member.firstName }} {{ member.lastName }}</div>
-					<div class="position" doText color="gray1">{{ member.positionInfo?.name }}</div>
+					<div class="position" doText color="gray1">{{ member.position?.name }}</div>
 				</div>
 				<div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>
 <!--				<div class="user-row__lead" *ngIf="data.mode">-->
