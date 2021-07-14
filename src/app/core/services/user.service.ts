@@ -159,14 +159,10 @@ export class UserService {
 					});
 					break;
 				case 'photo':
-					const resultFile: AddImageRequest = {
-						...item.value,
-						content: item.value.content.split(',')[1],
-					};
 					editRequest.push({
 						op: 'replace',
 						path: '/AvatarImage',
-						value: resultFile,
+						value: item.value,
 					});
 					break;
 				case 'about':
