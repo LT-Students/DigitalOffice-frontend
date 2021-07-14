@@ -39,7 +39,7 @@ export class UserService {
 	}
 
 	public getUserSetCredentials(userId: string): Observable<UserResponse> {
-		return this.getUser(userId).pipe(tap(this._setUser.bind(this)));
+		return this.getUser(userId, true).pipe(tap(this._setUser.bind(this)));
 	}
 
 	public getUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<UsersResponse> {

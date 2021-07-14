@@ -135,6 +135,7 @@ export class MainInfoComponent implements OnInit {
 			(result) => {
 				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
 				this.updateEmployeeInfo();
+				// this._userService.getUserSetCredentials(res)
 			},
 			(error: ErrorResponse) => {
 				console.log(error);
