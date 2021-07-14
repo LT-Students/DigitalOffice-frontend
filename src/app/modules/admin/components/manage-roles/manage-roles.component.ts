@@ -3,11 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { RoleInfo } from '@data/api/rights-service/models';
 import { RoleApiService } from '@data/api/rights-service/services';
-import { NewRoleComponent } from '../new-role/new-role.component';
 import { PageEvent } from '@angular/material/paginator';
+import { NewRoleComponent } from '../new-role/new-role.component';
 
 @Component({
-	selector: 'app-manage-roles',
+	selector: 'do-manage-roles',
 	templateUrl: './manage-roles.component.html',
 	styleUrls: ['./manage-roles.component.scss'],
 })
