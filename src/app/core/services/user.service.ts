@@ -10,7 +10,7 @@ import { CreateUserRequest } from '@data/api/user-service/models/create-user-req
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { EditUserRequest, OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
+import { AddImageRequest, EditUserRequest, OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Moment } from 'moment';
 import { userResponse } from '../../modules/employee/mock';
@@ -49,7 +49,7 @@ export class UserService {
 				 *   при получении данных о всех юзера
 				 * */
 				.findUsers({ skipCount: skipPages, takeCount: pageSize, departmentid: departmentId })
-				// .pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
+			// .pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
 		);
 	}
 
@@ -159,10 +159,14 @@ export class UserService {
 					});
 					break;
 				case 'photo':
+					const resultFile: AddImageRequest = {
+						...item.value,
+						content: item.value.content.split(',')[1],
+					};
 					editRequest.push({
 						op: 'replace',
 						path: '/AvatarImage',
-						value: item.value,
+						value: resultFile,
 					});
 					break;
 				case 'about':
@@ -183,6 +187,13 @@ export class UserService {
 					editRequest.push({
 						op: 'replace',
 						path: '/RoleId',
+						value: item.value,
+					});
+					break;
+				case 'gender':
+					editRequest.push({
+						op: 'replace',
+						path: '/Gender',
 						value: item.value,
 					});
 					break;

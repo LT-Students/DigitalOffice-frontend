@@ -8,6 +8,7 @@ import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { ProjectInfo } from '@data/api/user-service/models/project-info';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { IUserStatus, UserStatusModel } from '@app/models/user-status.model';
+import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
 
 export class User implements UserResponse {
 	achievements: Array<UserAchievementInfo>;
@@ -83,6 +84,10 @@ export class User implements UserResponse {
 			return `data:image/${ this.user.avatar.extension.slice(1) };base64,${ this.user.avatar.content }`;
 		}
 		return null;
+	}
+
+	public get gender(): IUserGender {
+		return UserGenderModel.getGenderInfoByGenderType(this.user.gender);
 	}
 
 	public getFioFull() {

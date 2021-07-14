@@ -46,7 +46,7 @@
 							</ng-container>
 							<ng-container>
 								<p doText regularTextSize="small" color="gray">Пол</p>
-								<div doText>{{ user?.user?.gender }}</div>
+								<div doText>{{ user?.gender?.genderInRussian }}</div>
 							</ng-container>
                             <div *ngIf="user?.user?.role">
                                 <p doText regularTextSize="small" color="gray">Роль</p>
@@ -352,8 +352,8 @@
                                 Пол
                             </mat-label>
                             <mat-select class="employee-info__input" id="gender" formControlName="gender" appearance="fill">
-                                <mat-option class="employee-info__input" *ngFor="let gender of genders" [value]="gender">
-                                    {{ gender }}
+                                <mat-option class="employee-info__input" *ngFor="let gender of genders" [value]="gender.genderType">
+                                    {{ gender.genderInRussian }}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
