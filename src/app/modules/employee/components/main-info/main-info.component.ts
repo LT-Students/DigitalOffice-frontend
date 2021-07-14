@@ -12,7 +12,7 @@ import { CommunicationInfo } from '@data/api/user-service/models/communication-i
 import { promptGlobalAnalytics } from '@angular/cli/models/analytics';
 import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
@@ -46,9 +46,8 @@ export class MainInfoComponent implements OnInit {
 		private _netService: NetService,
 		private dialog: MatDialog,
 		private _snackBar: MatSnackBar,
-		private _roleService: RoleApiService,
+		private _roleService: RoleApiService
 	) {
-
 		this.selectOptions = {
 			roles: [],
 			positions: [],
@@ -64,8 +63,16 @@ export class MainInfoComponent implements OnInit {
 		this._initEditForm();
 	}
 	ngOnInit(): void {
-		this._getUser();
-		this._initEditForm();
+		this.route.params.pipe(
+			map((params) => params.id),
+			map((pageId) => {
+				this.pageId = pageId;
+				this._getUser();
+				this._initEditForm();
+			})
+		).subscribe();
+		// this._getUser();
+		// this._initEditForm();
 
 		this._netService.getDepartmentsList().subscribe((departments: DepartmentInfo[]) => {
 			this.selectOptions.departments = departments;
