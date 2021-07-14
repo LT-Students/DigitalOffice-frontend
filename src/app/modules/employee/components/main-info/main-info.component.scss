@@ -56,9 +56,18 @@
 	}
 
 	&__avatar {
+		position: relative;
+
 		margin-bottom: 12px;
 
+		overflow: hidden;
+
+		width: 180px;
+		height: 180px;
+
 		align-self: center;
+
+		border-radius: 50%;
 	}
 
 	&__upload-button {

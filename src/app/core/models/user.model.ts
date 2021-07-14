@@ -79,11 +79,8 @@ export class User implements UserResponse {
 		return UserStatusModel.getUserStatusInfoByType(this.user.status);
 	}
 
-	public get avatarImage(): string {
-		if (this.user.avatar.content && this.user.avatar.extension) {
-			return `data:image/${ this.user.avatar.extension.slice(1) };base64,${ this.user.avatar.content }`;
-		}
-		return null;
+	public get avatarImage(): ImageInfo {
+		return this.user.avatar;
 	}
 
 	public get gender(): IUserGender {

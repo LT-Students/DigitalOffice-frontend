@@ -268,10 +268,8 @@
 	<form class="employee-info__form" [formGroup]="employeeInfoForm" (ngSubmit)="onSubmit()">
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
-				<div class="employee-info__photo">
-					<ng-container *ngIf="employeeInfoForm.get('photo').value; else defaultAvatar">
-						<img [src]="employeeInfoForm.get('photo').value" alt="Employee photo" width="180" />
-					</ng-container>
+				<div class="employee-info__avatar">
+                    <do-profile-image [image]="employeeInfoForm.get('photo').value" size="l"></do-profile-image>
 					<label class="text_white employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
@@ -471,8 +469,4 @@
 			</div>
 		</div>
 	</form>
-</ng-template>
-
-<ng-template #defaultAvatar>
-	<img src="assets/images/IAFOR-Blank-Avatar-Image.jpg" alt="Employee photo" width="180" />
 </ng-template>

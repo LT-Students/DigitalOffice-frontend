@@ -207,7 +207,6 @@ export class MainInfoComponent implements OnInit {
 					photo: result,
 				});
 				this.employeeInfoForm.get('photo').markAsDirty();
-				console.log(result);
 			}
 		});
 	}

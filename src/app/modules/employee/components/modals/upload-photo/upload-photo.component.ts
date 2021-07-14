@@ -36,7 +36,7 @@ export class UploadPhotoComponent implements OnInit {
 		reader.onload = (evt) => {
 			this.photoPreview = evt.target.result as string;
 			this.resultFile = {
-				content: this.photoPreview,
+				content: this.photoPreview.split(',')[1],
 				extension: '.' + extension,
 			};
 		};
