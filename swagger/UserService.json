@@ -1392,7 +1392,8 @@
               "/PositionId",
               "/RoleId",
               "/OfficeId",
-              "/About"
+              "/About",
+              "/IsActive"
             ]
           },
           "value": {
