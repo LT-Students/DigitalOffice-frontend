@@ -26,6 +26,8 @@ import { NewOfficeComponent } from './components/new-office/new-office.component
 import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { DepartmentCardComponent } from './components/department-card/department-card.component';
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
+import { OfficeListComponent } from './components/office-list/office-list.component';
+import { PositionListComponent } from './components/position-list/position-list.component'
 
 @NgModule({
 	declarations: [
@@ -49,6 +51,8 @@ import { ManageRolesComponent } from './components/manage-roles/manage-roles.com
 		DepartmentListComponent,
 		DepartmentCardComponent,
 		ManageRolesComponent,
+		OfficeListComponent,
+		PositionListComponent
 	],
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
 	exports: [ProjectCardComponent, DndDirective],
