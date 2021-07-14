@@ -62,6 +62,7 @@
 <!--					>-->
 <!--				</div>-->
 			</div>
+            <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 		</div>
 
 		<mat-dialog-actions align="center" *ngIf="data.mode !== WorkFlowMode.VIEW">

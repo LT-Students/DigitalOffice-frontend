@@ -6,6 +6,7 @@ import { UserSearchModalConfig } from '@app/services/modal.service';
 import { UserRoleType } from '@data/api/project-service/models/user-role-type';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { NetService } from '@app/services/net.service';
+import { PageEvent } from '@angular/material/paginator';
 import { Team, teamCards } from '../../team-cards';
 import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 
@@ -26,6 +27,10 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	public roles: UserRoleType[] = [UserRoleType.ProjectAdmin];
 	public positions: PositionInfo[];
 	public WorkFlowMode = WorkFlowMode;
+
+	public totalCount: number;
+	public pageSize: number;
+	public pageIndex: number;
 
 	// private getMembersSubscription: Subscription;
 
@@ -53,6 +58,10 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 				break;
 			}
 		}
+
+		this.totalCount = 0;
+		this.pageSize = 10;
+		this.pageIndex = 0;
 		// teamCards.forEach((team: Team) => {
 		//   this.membersAll.push(...team.members)
 		// });
@@ -64,9 +73,10 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	private _getMembers(): void {
-		this._userService.getUsers().subscribe(
+		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe(
 			(data) => {
 				this.membersAll = data.users;
+				this.totalCount = data.totalCount;
 			},
 			(error) => console.log(error)
 		);
@@ -102,7 +112,14 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	public onSave(): void {
+		console.log(this.checkedMembers);
 		this._dialogRef.close(this.checkedMembers);
+	}
+
+	public onPageChange(event: PageEvent): void {
+		this.pageSize = event.pageSize;
+		this.pageIndex = event.pageIndex;
+		this._getMembers();
 	}
 
 	public onSearchClick(value: string): void {
@@ -130,8 +147,8 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 
 	public isMember(user: UserInfo): boolean {
 		/* TODO: add id to compare with id*/
-		if (this.members && this.members.length) {
-			return this.members.some((member: UserInfo) => user.id === member.id);
+		if (this.checkedMembers && this.checkedMembers.length) {
+			return this.checkedMembers.some((member: UserInfo) => user.id === member.id);
 		} else {
 			return false;
 		}
