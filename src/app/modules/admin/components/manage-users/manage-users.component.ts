@@ -64,6 +64,16 @@ export class ManageUsersComponent implements OnInit {
 		this._dialog.open(NewEmployeeComponent);
 	}
 
+	public archiveUser(user: UserInfo, evt: Event): void {
+		evt.stopPropagation();
+		console.log(evt)
+		if (user.isActive) {
+			this._userService.disableUser(user.id).subscribe(() => {
+				this._getPageUsers();
+			});
+		}
+	}
+
 	public sortData(sort: Sort): void {
 		const data = this.userInfo.slice();
 		if (!sort.active || sort.direction === '') {

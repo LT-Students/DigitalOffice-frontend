@@ -18,6 +18,8 @@
 	}
 
 	&__row {
+		position: relative;
+
 		height: 76px;
 
 		border-bottom: 1px solid #f1f1ef;
@@ -25,7 +27,17 @@
 		&:hover {
 			cursor: pointer;
 
-			background-color: #f1f1ef;
+			.table__cell {
+				background-color: #f1f1ef;
+			}
+
+			.table__delete-button {
+				visibility: visible;
+			}
+		}
+
+		&:focus {
+			outline: none;
 		}
 	}
 
@@ -36,6 +48,13 @@
 
 	&__image {
 		border-radius: 50%;
+	}
+
+	&__delete-button {
+		position: relative;
+		right: -10px;
+
+		visibility: hidden;
 	}
 }
 

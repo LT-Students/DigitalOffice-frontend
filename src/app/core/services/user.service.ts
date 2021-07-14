@@ -77,8 +77,13 @@ export class UserService {
 		);
 	}
 
-	public disableUser(userId: string) {
-		return this.userApiService.disableUser({ userId });
+	public disableUser(userId: string): Observable<OperationResultResponse> {
+		const disableRequest: PatchUserDocument = {
+			op: 'replace',
+			path: '/IsActive',
+			value: false,
+		};
+		return this.userApiService.editUser({ userId, body: [disableRequest] });
 	}
 
 	private _setUser(user: UserResponse): void {
