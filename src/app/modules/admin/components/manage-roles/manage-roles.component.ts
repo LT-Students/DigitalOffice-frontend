@@ -26,6 +26,7 @@ export class ManageRolesComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this.roleApiService.findRoles({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe((res) => {
+			//@ts-ignore TODO remove ts-ignore when API is fixed
 			this.totalCount = res.totalCount;
 			this.roles = res.roles;
 		});

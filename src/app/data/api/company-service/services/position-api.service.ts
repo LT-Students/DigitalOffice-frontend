@@ -194,21 +194,27 @@ export class PositionApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editPosition$Response(params: {
-    body: EditPositionRequest
-  }): Observable<StrictHttpResponse<void>> {
 
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.EditPositionPath, 'post');
+    /**
+     * Specific position id
+     */
+    positionId: string;
+    body?: EditPositionRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, PositionApiService.EditPositionPath, 'patch');
     if (params) {
+      rb.query('positionId', params.positionId, {});
       rb.body(params.body, 'application/json');
     }
 
     return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
+      responseType: 'json',
+      accept: 'application/json'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -222,69 +228,16 @@ export class PositionApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editPosition(params: {
-    body: EditPositionRequest
-  }): Observable<void> {
+
+    /**
+     * Specific position id
+     */
+    positionId: string;
+    body?: EditPositionRequest
+  }): Observable<OperationResultResponse> {
 
     return this.editPosition$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
-    );
-  }
-
-  /**
-   * Path part for operation disablePosition
-   */
-  static readonly DisablePositionPath = '/position/disable';
-
-  /**
-   * Deletes the specified position.
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `disablePosition()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  disablePosition$Response(params: {
-
-    /**
-     * Position global unique identifier.
-     */
-    positionId: string;
-  }): Observable<StrictHttpResponse<void>> {
-
-    const rb = new RequestBuilder(this.rootUrl, PositionApiService.DisablePositionPath, 'delete');
-    if (params) {
-      rb.query('positionId', params.positionId, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-      })
-    );
-  }
-
-  /**
-   * Deletes the specified position.
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `disablePosition$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  disablePosition(params: {
-
-    /**
-     * Position global unique identifier.
-     */
-    positionId: string;
-  }): Observable<void> {
-
-    return this.disablePosition$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 

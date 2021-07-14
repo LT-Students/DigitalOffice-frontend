@@ -5,12 +5,12 @@ export interface PatchUserDocument {
   /**
    * The operation to be performed.
    */
-  op: 'add' | 'replace';
+  op: 'add' | 'replace' | 'delete';
 
   /**
    * A JSON-Pointer.
    */
-  path: '/FirstName' | '/LastName' | '/MiddleName' | '/Gender' | '/DateOfBirth' | '/City' | '/AvatarImage' | '/Status' | '/StartWorkingAt' | '/Rate' | '/DepartmentId' | '/PositionId' | '/RoleId' | '/OfficeId';
+  path: '/FirstName' | '/LastName' | '/MiddleName' | '/Gender' | '/DateOfBirth' | '/City' | '/AvatarImage' | '/Status' | '/StartWorkingAt' | '/Rate' | '/DepartmentId' | '/PositionId' | '/RoleId' | '/OfficeId' | '/About';
 
   /**
    * The value to be used within the operations.

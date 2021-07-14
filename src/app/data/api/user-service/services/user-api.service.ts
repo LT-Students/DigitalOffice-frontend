@@ -82,6 +82,16 @@ export class UserApiService extends BaseService {
     includeposition?: boolean;
 
     /**
+     * Include user office info in answer.
+     */
+    includeoffice?: boolean;
+
+    /**
+     * Include user role info in answer.
+     */
+    includerole?: boolean;
+
+    /**
      * Include user skills info in answer.
      */
     includeskills?: boolean;
@@ -112,6 +122,8 @@ export class UserApiService extends BaseService {
       rb.query('includeachievements', params.includeachievements, {});
       rb.query('includedepartment', params.includedepartment, {});
       rb.query('includeposition', params.includeposition, {});
+      rb.query('includeoffice', params.includeoffice, {});
+      rb.query('includerole', params.includerole, {});
       rb.query('includeskills', params.includeskills, {});
       rb.query('includeprojects', params.includeprojects, {});
       rb.query('includeimages', params.includeimages, {});
@@ -178,6 +190,16 @@ export class UserApiService extends BaseService {
      * Include user position info in answer.
      */
     includeposition?: boolean;
+
+    /**
+     * Include user office info in answer.
+     */
+    includeoffice?: boolean;
+
+    /**
+     * Include user role info in answer.
+     */
+    includerole?: boolean;
 
     /**
      * Include user skills info in answer.

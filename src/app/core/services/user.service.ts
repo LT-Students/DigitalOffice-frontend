@@ -28,8 +28,11 @@ export class UserService {
 			return this.userApiService.getUser({
 				userId: userId,
 				includedepartment: true,
-				// includeposition: true,
+				includeposition: true,
+				includeoffice: true,
 				includecommunications: true,
+				includerole: true,
+				includeimages: true,
 			});
 		}
 		return this.userApiService.getUser({ userId: userId });
@@ -124,6 +127,63 @@ export class UserService {
 						op: 'replace',
 						path: '/StartWorkingAt',
 						value: date.toISOString(),
+					});
+					break;
+				case 'dateOfBirth':
+					const dateOfBirth: Moment = item.value;
+					editRequest.push({
+						op: 'replace',
+						path: '/DateOfBirth',
+						value: dateOfBirth.toISOString(),
+					});
+					break;
+				case 'department':
+					editRequest.push({
+						op: 'replace',
+						path: '/DepartmentId',
+						value: item.value,
+					});
+					break;
+				case 'position':
+					editRequest.push({
+						op: 'replace',
+						path: '/PositionId',
+						value: item.value,
+					});
+					break;
+				case 'office':
+					editRequest.push({
+						op: 'replace',
+						path: '/OfficeId',
+						value: item.value,
+					});
+					break;
+				case 'photo':
+					editRequest.push({
+						op: 'replace',
+						path: '/AvatarImage',
+						value: item.value,
+					});
+					break;
+				case 'about':
+					editRequest.push({
+						op: 'replace',
+						path: '/About',
+						value: item.value,
+					});
+					break;
+				case 'city':
+					editRequest.push({
+						op: 'replace',
+						path: '/City',
+						value: item.value,
+					});
+					break;
+				case 'role':
+					editRequest.push({
+						op: 'replace',
+						path: '/RoleId',
+						value: item.value,
 					});
 					break;
 				default:

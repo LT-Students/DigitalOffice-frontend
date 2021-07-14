@@ -90,6 +90,24 @@
           "required": false
         },
         {
+          "name": "includeoffice",
+          "in": "query",
+          "description": "Include user office info in answer.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includerole",
+          "in": "query",
+          "description": "Include user role info in answer.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
           "name": "includeskills",
           "in": "query",
           "description": "Include user skills info in answer.",
@@ -302,6 +320,16 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "Conflict.\n* User with this communication value already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -486,6 +514,16 @@
           },
           "404": {
             "description": "Not Found. User with this id not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. User with this login already exits.",
             "content": {
               "application/json": {
                 "schema": {
@@ -722,11 +760,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "minItems": 1,
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EditEducationRequest"
-                }
+                "$ref": "#/components/schemas/EditEducationRequest"
               }
             }
           }
@@ -923,11 +957,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "minItems": 1,
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EditCertificateRequest"
-                }
+                "$ref": "#/components/schemas/EditCertificateRequest"
               }
             }
           }
@@ -1340,7 +1370,8 @@
             "description": "The operation to be performed.",
             "enum": [
               "add",
-              "replace"
+              "replace",
+              "delete"
             ]
           },
           "path": {
@@ -1360,7 +1391,8 @@
               "/DepartmentId",
               "/PositionId",
               "/RoleId",
-              "/OfficeId"
+              "/OfficeId",
+              "/About"
             ]
           },
           "value": {
@@ -1397,7 +1429,7 @@
       "UsersResponse": {
         "type": "object",
         "properties": {
-          "Count": {
+          "TotalCount": {
             "type": "integer",
             "description": "Total number of all users."
           },
@@ -1538,19 +1570,19 @@
           "Rate": {
             "type": "number"
           },
-          "DepartmentInfo": {
+          "Department": {
             "$ref": "#/components/schemas/DepartmentInfo"
           },
-          "PositionInfo": {
+          "Position": {
             "$ref": "#/components/schemas/PositionInfo"
           },
-          "ImageInfo": {
+          "Avatar": {
             "$ref": "#/components/schemas/ImageInfo"
           },
-          "RoleInfo": {
+          "Role": {
             "$ref": "#/components/schemas/RoleInfo"
           },
-          "OfficeInfo": {
+          "Office": {
             "$ref": "#/components/schemas/OfficeInfo"
           }
         }
@@ -2050,7 +2082,7 @@
         ],
         "properties": {
           "UserId": {
-            "description": "Гnique user identifier.",
+            "description": "Unique user identifier.",
             "type": "string",
             "format": "uuid",
             "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
