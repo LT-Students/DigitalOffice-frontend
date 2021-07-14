@@ -24,14 +24,14 @@ export class OfficeListComponent implements OnInit {
 		this.pageIndex = 0;
    }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.companyApiService.findOffices({skipCount: this.pageIndex, takeCount: this.pageSize}).subscribe(data => {
       this.totalCount = data.totalCount;
       this.offices = data.offices
     })
   }
 
-  onPageChange(event: PageEvent) {
+  public onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
 		this.companyApiService.findOffices({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe((data) => {
@@ -39,7 +39,7 @@ export class OfficeListComponent implements OnInit {
 		});
   }
 
-  public onAddOfficeClick() {
+  public onAddOfficeClick(): void {
     this.dialog.open(NewOfficeComponent)
   }
 
