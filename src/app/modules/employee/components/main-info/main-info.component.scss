@@ -55,17 +55,9 @@
 		bottom: 42px;
 	}
 
-	&__photo {
-		position: relative;
-
+	&__avatar {
 		margin-bottom: 12px;
 
-		overflow: hidden;
-
-		width: 180px;
-		height: 180px;
-
-		border-radius: 50%;
 		align-self: center;
 	}
 
