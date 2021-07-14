@@ -13,11 +13,12 @@ import { ProjectRequest } from '@data/api/project-service/models/project-request
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
 import { UserRoleType } from '@data/api/project-service/models/user-role-type';
+import { ErrorResponse } from '@data/api/project-service/models/error-response';
+import { Location } from '@angular/common';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { DeleteDirectionComponent, ModalApprovalConfig } from './modals/delete-direction/delete-direction.component';
 import { Team, teamCards, TeamMember } from './team-cards';
-import { ErrorResponse } from '@data/api/project-service/models/error-response';
 
 @Component({
 	selector: 'do-new-project',
@@ -38,7 +39,8 @@ export class NewProjectComponent implements OnInit {
 		private _projectService: ProjectService,
 		private _modalService: ModalService,
 		private _netService: NetService,
-		private _snackBar: MatSnackBar
+		private _snackBar: MatSnackBar,
+		private _location: Location,
 	) {
 		this.statuses = [
 			new ProjectStatus(ProjectStatusType.Active),
@@ -118,6 +120,10 @@ export class NewProjectComponent implements OnInit {
 	public totalMembersCount(): number {
 		return this.membersAll.length;
 		// return this.teams.map((team: Team) => team.members.length).reduce((sum: number, teamTotalNumber) => sum + teamTotalNumber, 0);
+	}
+
+	public goBack(): void {
+		this._location.back();
 	}
 
 	private _getAllMembers(): TeamMember[] {
