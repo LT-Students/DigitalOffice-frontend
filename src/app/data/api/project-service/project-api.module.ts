@@ -5,8 +5,9 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ProjectApiService } from './services/project-api.service';
-import { TaskApiService } from './services/task-api.service';
 import { UserApiService } from './services/user-api.service';
+import { TaskPropertyApiService } from './services/task-property-api.service';
+import { TaskApiService } from './services/task-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,8 +18,9 @@ import { UserApiService } from './services/user-api.service';
   declarations: [],
   providers: [
     ProjectApiService,
-    TaskApiService,
     UserApiService,
+    TaskPropertyApiService,
+    TaskApiService,
     ApiConfiguration
   ],
 })

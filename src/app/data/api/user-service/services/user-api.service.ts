@@ -82,6 +82,16 @@ export class UserApiService extends BaseService {
     includeposition?: boolean;
 
     /**
+     * Include user office info in answer.
+     */
+    includeoffice?: boolean;
+
+    /**
+     * Include user role info in answer.
+     */
+    includerole?: boolean;
+
+    /**
      * Include user skills info in answer.
      */
     includeskills?: boolean;
@@ -112,6 +122,8 @@ export class UserApiService extends BaseService {
       rb.query('includeachievements', params.includeachievements, {});
       rb.query('includedepartment', params.includedepartment, {});
       rb.query('includeposition', params.includeposition, {});
+      rb.query('includeoffice', params.includeoffice, {});
+      rb.query('includerole', params.includerole, {});
       rb.query('includeskills', params.includeskills, {});
       rb.query('includeprojects', params.includeprojects, {});
       rb.query('includeimages', params.includeimages, {});
@@ -178,6 +190,16 @@ export class UserApiService extends BaseService {
      * Include user position info in answer.
      */
     includeposition?: boolean;
+
+    /**
+     * Include user office info in answer.
+     */
+    includeoffice?: boolean;
+
+    /**
+     * Include user role info in answer.
+     */
+    includerole?: boolean;
 
     /**
      * Include user skills info in answer.
@@ -354,7 +376,7 @@ export class UserApiService extends BaseService {
      * Specific user id
      */
     userId: string;
-    body?: Array<EditUserRequest>
+    body?: EditUserRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserPath, 'patch');
@@ -388,7 +410,7 @@ export class UserApiService extends BaseService {
      * Specific user id
      */
     userId: string;
-    body?: Array<EditUserRequest>
+    body?: EditUserRequest
   }): Observable<OperationResultResponse> {
 
     return this.editUser$Response(params).pipe(

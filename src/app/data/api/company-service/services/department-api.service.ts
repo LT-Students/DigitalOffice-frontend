@@ -9,9 +9,11 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { DepartmentInfo } from '../models/department-info';
 import { DepartmentsResponse } from '../models/departments-response';
+import { EditDepartmentRequest } from '../models/edit-department-request';
 import { NewDepartmentRequest } from '../models/new-department-request';
+import { OperationResultResponse } from '../models/operation-result-response';
+import { OperationResultResponseDepartmentInfo } from '../models/operation-result-response-department-info';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +42,7 @@ export class DepartmentApiService extends BaseService {
    */
   addDepartment$Response(params: {
     body: NewDepartmentRequest
-  }): Observable<StrictHttpResponse<string>> {
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.AddDepartmentPath, 'post');
     if (params) {
@@ -53,7 +55,7 @@ export class DepartmentApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -69,10 +71,10 @@ export class DepartmentApiService extends BaseService {
    */
   addDepartment(params: {
     body: NewDepartmentRequest
-  }): Observable<string> {
+  }): Observable<OperationResultResponse> {
 
     return this.addDepartment$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 
@@ -94,12 +96,24 @@ export class DepartmentApiService extends BaseService {
     /**
      * Department global unique identifier.
      */
-    departmentId: string;
-  }): Observable<StrictHttpResponse<DepartmentInfo>> {
+    departmentid: string;
+
+    /**
+     * Response would include department users.
+     */
+    includeusers?: boolean;
+
+    /**
+     * Response would include department projects.
+     */
+    includeprojects?: boolean;
+  }): Observable<StrictHttpResponse<OperationResultResponseDepartmentInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetDepartmentPath, 'get');
     if (params) {
-      rb.query('departmentId', params.departmentId, {});
+      rb.query('departmentid', params.departmentid, {});
+      rb.query('includeusers', params.includeusers, {});
+      rb.query('includeprojects', params.includeprojects, {});
     }
 
     return this.http.request(rb.build({
@@ -108,7 +122,7 @@ export class DepartmentApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<DepartmentInfo>;
+        return r as StrictHttpResponse<OperationResultResponseDepartmentInfo>;
       })
     );
   }
@@ -126,11 +140,21 @@ export class DepartmentApiService extends BaseService {
     /**
      * Department global unique identifier.
      */
-    departmentId: string;
-  }): Observable<DepartmentInfo> {
+    departmentid: string;
+
+    /**
+     * Response would include department users.
+     */
+    includeusers?: boolean;
+
+    /**
+     * Response would include department projects.
+     */
+    includeprojects?: boolean;
+  }): Observable<OperationResultResponseDepartmentInfo> {
 
     return this.getDepartment$Response(params).pipe(
-      map((r: StrictHttpResponse<DepartmentInfo>) => r.body as DepartmentInfo)
+      map((r: StrictHttpResponse<OperationResultResponseDepartmentInfo>) => r.body as OperationResultResponseDepartmentInfo)
     );
   }
 
@@ -178,6 +202,63 @@ export class DepartmentApiService extends BaseService {
 
     return this.findDepartments$Response(params).pipe(
       map((r: StrictHttpResponse<DepartmentsResponse>) => r.body as DepartmentsResponse)
+    );
+  }
+
+  /**
+   * Path part for operation editDepartment
+   */
+  static readonly EditDepartmentPath = '/department/edit';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `editDepartment()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editDepartment$Response(params: {
+
+    /**
+     * Specific position id
+     */
+    departmentId: string;
+    body?: EditDepartmentRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.EditDepartmentPath, 'patch');
+    if (params) {
+      rb.query('departmentId', params.departmentId, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `editDepartment$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editDepartment(params: {
+
+    /**
+     * Specific position id
+     */
+    departmentId: string;
+    body?: EditDepartmentRequest
+  }): Observable<OperationResultResponse> {
+
+    return this.editDepartment$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 

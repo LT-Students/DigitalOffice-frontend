@@ -1,36 +1,53 @@
+<div class="navigation" doText color="gray">
+    <a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
+    <span doText color="gray"><mat-icon>chevron_right</mat-icon></span>
+    <a class="navigation__link">Список департаментов</a>
+</div>
 <div class="card card_standard">
-	<div class="table">
-		<div class="table-header">
-			<h3 doText underlined underlinedSize="sm">Сотрудники</h3>
+	<div doText class="table">
+		<div class="table__header">
+			<h3 doText underlined underlinedSize="sm">Список департаментов</h3>
 			<button mat-flat-button color="primary" (click)="onAddEmployeeClick()">+ Добавить департамент</button>
 		</div>
-		<div class="table-filters">
-			<mat-form-field class="mat-form-field__form-control edit-form__institution" appearance="fill" floatLabel="always">
-				<input matInput placeholder="Поиск по названию" />
-			</mat-form-field>
-			<mat-form-field class="mat-form-field_default-select" appearance="fill">
-				<mat-select class="select" placeholder="Выберите директора">
-<!--					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>-->
-				</mat-select>
-			</mat-form-field>
-		</div>
-		<table class="table-content" matSort (matSortChange)="sortData($event)">
+		<!--		<div class="table__filters">-->
+		<!--			<mat-form-field class="mat-form-field__form-control edit-form__institution" appearance="fill" floatLabel="always">-->
+		<!--				<input matInput placeholder="Поиск по названию" />-->
+		<!--			</mat-form-field>-->
+		<!--			<mat-form-field class="mat-form-field_default-select" appearance="fill">-->
+		<!--				<mat-select class="select" placeholder="Выберите директора">-->
+		<!--					<mat-option *ngFor="let studyType of studyTypes" [value]="studyType">{{ studyType }}</mat-option>-->
+		<!--				</mat-select>-->
+		<!--			</mat-form-field>-->
+		<!--		</div>-->
+		<table class="table__content" matSort (matSortChange)="sortData($event)">
 			<tr>
 				<th mat-sort-header="name">Наименование</th>
 				<th mat-sort-header="description">Описание</th>
 				<th mat-sort-header="director">Директор</th>
 				<th mat-sort-header="amount">Количество сотрудников</th>
 			</tr>
-			<tr *ngFor="let departmentInfo of sortedDepartmentInfo">
-				<td>
-					{{ departmentInfo.name }}
-				</td>
-				<td>
-					{{ departmentInfo.description ? departmentInfo.description : '—' }}
-				</td>
-				<td>{{ departmentInfo.director?.firstName ? departmentInfo.director?.firstName : '—' }}</td>
-				<td>{{ departmentInfo.users.length }}</td>
-			</tr>
+			<ng-container *ngFor="let departmentInfo of sortedDepartmentsInfo">
+				<tr class="table__row" (click)="onDepartmentClick(departmentInfo.id)">
+					<td>
+						<ng-container *ngIf="departmentInfo?.name; else empty">{{ departmentInfo.name }}</ng-container>
+					</td>
+					<td>
+						<ng-container *ngIf="departmentInfo?.description; else empty">
+							<div class="table__description">{{ departmentInfo.description }}</div></ng-container
+						>
+					</td>
+					<td>
+						<ng-container *ngIf="departmentInfo?.director; else empty">
+							{{ departmentInfo?.director?.firstName }} {{ departmentInfo?.director?.lastName }}
+						</ng-container>
+					</td>
+					<td>{{ departmentInfo.users.length }}</td>
+				</tr>
+			</ng-container>
 		</table>
 	</div>
 </div>
+
+<ng-template #empty>
+	<p>—</p>
+</ng-template>

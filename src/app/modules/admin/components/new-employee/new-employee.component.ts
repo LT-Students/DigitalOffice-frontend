@@ -88,7 +88,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	public getRoles(): void {
-		this.roleApiService.findRoles({ skipCount: 0, takeCount: 10 }).subscribe(({ roles }: RolesResponse) => {
+		this.roleApiService.findRoles({ skipCount: 0, takeCount: 50 }).subscribe(({ roles }: RolesResponse) => {
 			this.roles = roles;
 		});
 	}
@@ -143,7 +143,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			positionId: ['', [Validators.required]],
 			startWorkingAt: [null],
 			rate: ['1', [Validators.required]],
-			departmentId: [''],
+			departmentId: [null],
 			officeId: ['', [Validators.required]],
 			email: ['', [Validators.required, Validators.email]],
 			roleId: [null],

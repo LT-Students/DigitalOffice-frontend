@@ -177,7 +177,7 @@ export class CompanyApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editCompany$Response(params?: {
-    body?: Array<EditCompanyRequest>
+    body?: EditCompanyRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.EditCompanyPath, 'patch');
@@ -205,7 +205,7 @@ export class CompanyApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   editCompany(params?: {
-    body?: Array<EditCompanyRequest>
+    body?: EditCompanyRequest
   }): Observable<OperationResultResponse> {
 
     return this.editCompany$Response(params).pipe(
@@ -235,12 +235,18 @@ export class CompanyApiService extends BaseService {
      * Number of offices on one page.
      */
     takeCount: number;
+
+    /**
+     * If it is true, response will be have deactivated records.
+     */
+    includeDeactivated?: boolean;
   }): Observable<StrictHttpResponse<FindOfficesResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.FindOfficesPath, 'get');
     if (params) {
       rb.query('skipCount', params.skipCount, {});
       rb.query('takeCount', params.takeCount, {});
+      rb.query('includeDeactivated', params.includeDeactivated, {});
     }
 
     return this.http.request(rb.build({
@@ -271,6 +277,11 @@ export class CompanyApiService extends BaseService {
      * Number of offices on one page.
      */
     takeCount: number;
+
+    /**
+     * If it is true, response will be have deactivated records.
+     */
+    includeDeactivated?: boolean;
   }): Observable<FindOfficesResponse> {
 
     return this.findOffices$Response(params).pipe(

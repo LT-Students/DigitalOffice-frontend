@@ -23,6 +23,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
 	imports: [
@@ -50,6 +51,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 		MatTableModule,
 		MatSortModule,
 		MatStepperModule,
+		MatPaginatorModule,
 	],
 	exports: [
 		MatButtonModule,
@@ -75,6 +77,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 		MatTableModule,
 		MatSortModule,
 		MatStepperModule,
+		MatPaginatorModule,
 	],
 	providers: [{ provide: MatDialogRef, useValue: {} }],
 })

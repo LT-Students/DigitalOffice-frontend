@@ -10,8 +10,10 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { CreateTaskRequest } from '../models/create-task-request';
+import { EditTaskRequest } from '../models/edit-task-request';
+import { FindResponseTaskInfo } from '../models/find-response-task-info';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { TasksResponse } from '../models/tasks-response';
+import { OperationResultResponseTaskResponse } from '../models/operation-result-response-task-response';
 
 @Injectable({
   providedIn: 'root',
@@ -25,34 +27,97 @@ export class TaskApiService extends BaseService {
   }
 
   /**
-   * Path part for operation findTask
+   * Path part for operation editTask
    */
-  static readonly FindTaskPath = '/task/find';
+  static readonly EditTaskPath = '/task/edit';
+
+  /**
+   * Editing specific task by Id.
+   * *  __The user must be task's project participant, admin or department director of task's department
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `editTask()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editTask$Response(params: {
+
+    /**
+     * Task global unique identifier.
+     */
+    Id: string;
+    body: EditTaskRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, TaskApiService.EditTaskPath, 'patch');
+    if (params) {
+      rb.query('Id', params.Id, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
+
+  /**
+   * Editing specific task by Id.
+   * *  __The user must be task's project participant, admin or department director of task's department
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `editTask$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editTask(params: {
+
+    /**
+     * Task global unique identifier.
+     */
+    Id: string;
+    body: EditTaskRequest
+  }): Observable<OperationResultResponse> {
+
+    return this.editTask$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
+
+  /**
+   * Path part for operation findTasks
+   */
+  static readonly FindTasksPath = '/task/find';
 
   /**
    * Find specific task by parameters: projectId, number, assign.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `findTask()` instead.
+   * To access only the response body, use `findTasks()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findTask$Response(params: {
+  findTasks$Response(params: {
 
     /**
-     * The part that the task name should contain.
+     * The part of find query that the task name should contain.
      */
     number?: number;
 
     /**
-     * The part that the task shortname should contain.
+     * The part of find query that the task project Id should contain.
      */
-    projectId?: string;
+    projectid?: string;
 
     /**
-     * The part that the user assigned task should contain.
+     * The part of find query that the user assigned task should contain.
      */
-    assign?: string;
+    assignedto?: string;
 
     /**
      * Number of pages to skip.
@@ -63,13 +128,13 @@ export class TaskApiService extends BaseService {
      * Number of users on one page.
      */
     takeCount: number;
-  }): Observable<StrictHttpResponse<TasksResponse>> {
+  }): Observable<StrictHttpResponse<FindResponseTaskInfo>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TaskApiService.FindTaskPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, TaskApiService.FindTasksPath, 'get');
     if (params) {
       rb.query('number', params.number, {});
-      rb.query('projectId', params.projectId, {});
-      rb.query('assign', params.assign, {});
+      rb.query('projectid', params.projectid, {});
+      rb.query('assignedto', params.assignedto, {});
       rb.query('skipCount', params.skipCount, {});
       rb.query('takeCount', params.takeCount, {});
     }
@@ -80,7 +145,7 @@ export class TaskApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<TasksResponse>;
+        return r as StrictHttpResponse<FindResponseTaskInfo>;
       })
     );
   }
@@ -89,26 +154,26 @@ export class TaskApiService extends BaseService {
    * Find specific task by parameters: projectId, number, assign.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `findTask$Response()` instead.
+   * To access the full response (for headers, for example), `findTasks$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  findTask(params: {
+  findTasks(params: {
 
     /**
-     * The part that the task name should contain.
+     * The part of find query that the task name should contain.
      */
     number?: number;
 
     /**
-     * The part that the task shortname should contain.
+     * The part of find query that the task project Id should contain.
      */
-    projectId?: string;
+    projectid?: string;
 
     /**
-     * The part that the user assigned task should contain.
+     * The part of find query that the user assigned task should contain.
      */
-    assign?: string;
+    assignedto?: string;
 
     /**
      * Number of pages to skip.
@@ -119,10 +184,10 @@ export class TaskApiService extends BaseService {
      * Number of users on one page.
      */
     takeCount: number;
-  }): Observable<TasksResponse> {
+  }): Observable<FindResponseTaskInfo> {
 
-    return this.findTask$Response(params).pipe(
-      map((r: StrictHttpResponse<TasksResponse>) => r.body as TasksResponse)
+    return this.findTasks$Response(params).pipe(
+      map((r: StrictHttpResponse<FindResponseTaskInfo>) => r.body as FindResponseTaskInfo)
     );
   }
 
@@ -132,7 +197,8 @@ export class TaskApiService extends BaseService {
   static readonly CreateTaskPath = '/task/create';
 
   /**
-   * Creating new task
+   * Creating new task.
+   * *  __The user must have access right__ -- Add/Edit/Remove tasks.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `createTask()` instead.
@@ -160,7 +226,8 @@ export class TaskApiService extends BaseService {
   }
 
   /**
-   * Creating new task
+   * Creating new task.
+   * *  __The user must have access right__ -- Add/Edit/Remove tasks.
    *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `createTask$Response()` instead.
@@ -173,6 +240,60 @@ export class TaskApiService extends BaseService {
 
     return this.createTask$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
+
+  /**
+   * Path part for operation getTask
+   */
+  static readonly GetTaskPath = '/task/get';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getTask()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getTask$Response(params: {
+
+    /**
+     * Task global unique identifier.
+     */
+    Id: string;
+  }): Observable<StrictHttpResponse<OperationResultResponseTaskResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, TaskApiService.GetTaskPath, 'get');
+    if (params) {
+      rb.query('Id', params.Id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponseTaskResponse>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `getTask$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getTask(params: {
+
+    /**
+     * Task global unique identifier.
+     */
+    Id: string;
+  }): Observable<OperationResultResponseTaskResponse> {
+
+    return this.getTask$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponseTaskResponse>) => r.body as OperationResultResponseTaskResponse)
     );
   }
 

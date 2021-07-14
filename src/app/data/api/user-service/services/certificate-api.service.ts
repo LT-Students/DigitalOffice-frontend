@@ -93,7 +93,7 @@ export class CertificateApiService extends BaseService {
      * Specific certificate id
      */
     certificateId: string;
-    body?: Array<EditCertificateRequest>
+    body?: EditCertificateRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, CertificateApiService.EditCertificatePath, 'patch');
@@ -127,7 +127,7 @@ export class CertificateApiService extends BaseService {
      * Specific certificate id
      */
     certificateId: string;
-    body?: Array<EditCertificateRequest>
+    body?: EditCertificateRequest
   }): Observable<OperationResultResponse> {
 
     return this.editCertificate$Response(params).pipe(

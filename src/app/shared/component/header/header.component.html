@@ -27,7 +27,7 @@
 	<div class="header__privacy">
 		<a routerLink="/auth/login" class="regular_text text-gray" (click)="onLogoutClick()">Выход</a>
 		<a class="header__privacy__greeting" routerLink="/user/{{ userId }}">
-			<img src="../../../../assets/svg/greeting-photo.svg" alt="" />
+			<do-profile-image [image]="avatar" size='s'></do-profile-image>
 			<p class="regular_text">
 				Привет, <span class="h4">{{ userName }}</span>
 			</p>

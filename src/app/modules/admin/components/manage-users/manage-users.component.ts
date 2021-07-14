@@ -8,9 +8,8 @@ import { UserService } from '@app/services/user.service';
 import { forkJoin, Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { EducationType } from '@data/api/user-service/models/education-type';
-import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 
 @Component({
@@ -22,40 +21,47 @@ export class ManageUsersComponent implements OnInit {
 	@ViewChild(MatSort) sort: MatSort;
 
 	public displayedColumns: string[];
-	public userInfo: UserResponse[];
-	public sortedUserInfo: UserResponse[];
+	public userInfo: UserInfo[];
+	public sortedUserInfo: UserInfo[];
 	public studyTypes: EducationType[];
 	private _unsubscribe$: Subject<void>;
 
-	constructor(private _userService: UserService, private userApiService: UserApiService, private router: Router, private dialog: MatDialog) {
+	public totalCount: number;
+	public pageSize: number;
+	public pageIndex: number;
+
+	constructor(private _userService: UserService, private _dialog: MatDialog) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
 		this.userInfo = null;
 		this.sortedUserInfo = null;
 		this.studyTypes = [EducationType.Offline, EducationType.Online];
+
+		this.totalCount = 0;
+		this.pageSize = 10;
+		this.pageIndex = 0;
 	}
 
 	public ngOnInit(): void {
-		this._userService
-			.getUsers()
-			.pipe(
-				switchMap((res: UserInfo[]) => {
-					return forkJoin(res.map((userInfo: UserInfo) => this._userService.getUser(userInfo.id)));
-				})
-			)
-			.subscribe((data: UserResponse[]) => {
-				this.userInfo = data.slice();
-				this.sortedUserInfo = data.slice();
-			});
+		// this._userService.getUsers().pipe(
+		// 	switchMap((res: UserInfo[]) => {
+		// 		return forkJoin(res.map((userInfo: UserInfo) => this._userService.getUser(userInfo.id)));
+		// 	})
+		// ).subscribe((data: UserResponse[]) => {
+		// 	this.userInfo = data.slice();
+		// 	this.sortedUserInfo = data.slice();
+		// });
+		this._getPageUsers();
+	}
+
+	public onPageChange(event: PageEvent): void {
+		this.pageSize = event.pageSize;
+		this.pageIndex = event.pageIndex;
+		this._getPageUsers();
 	}
 
 	public onAddEmployeeClick() {
-		console.log('onAddEmployeeClick');
-		this.dialog.open(NewEmployeeComponent);
-	}
-
-	public onUserClick(userId: string): void {
-		this.router.navigate([`/user/${userId}`]);
+		this._dialog.open(NewEmployeeComponent);
 	}
 
 	public sortData(sort: Sort): void {
@@ -65,31 +71,23 @@ export class ManageUsersComponent implements OnInit {
 			return;
 		}
 
-		this.sortedUserInfo = data.sort((a: UserResponse, b: UserResponse) => {
+		this.sortedUserInfo = data.sort((a: UserInfo, b: UserInfo) => {
 			const isAsc = sort.direction === 'asc';
 			switch (sort.active) {
 				case 'name':
-					return this._compare(a.user.firstName, b.user.firstName, isAsc);
+					return this._compare(a.firstName, b.firstName, isAsc);
 				case 'department':
 					return this._compare(a.department?.name, b.department?.name, isAsc);
 				case 'role':
 					return this._compare(a.position?.name, b.position?.name, isAsc);
 				case 'rate':
-					return this._compare(a.user?.rate, b.user?.rate, isAsc);
+					return this._compare(a.rate, b.rate, isAsc);
 				case 'status':
-					return this._compare(a.user.status, b.user.status, isAsc);
+					return this._compare(a.status, b.status, isAsc);
 				default:
 					return 0;
 			}
 		});
-	}
-
-	public disableUser(userId) {
-		console.log(userId);
-		this.userApiService.disableUser(userId).subscribe(
-			(res) => console.log('User was disabled successfully', res),
-			(err) => console.log(err)
-		);
 	}
 
 	private _compare(a: number | string, b: number | string, isAsc: boolean) {
@@ -97,5 +95,13 @@ export class ManageUsersComponent implements OnInit {
 			return 0;
 		}
 		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+	}
+
+	private _getPageUsers(): void {
+		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
+			this.totalCount = data.totalCount;
+			this.userInfo = data.users.slice();
+			this.sortedUserInfo = data.users.slice();
+		});
 	}
 }

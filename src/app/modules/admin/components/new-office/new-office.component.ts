@@ -16,7 +16,7 @@ export class NewOfficeComponent implements OnInit {
 		this.officeForm = this.formBuilder.group({
 			city: ['', [Validators.required]],
 			address: ['', [Validators.required]],
-			name: [undefined],
+			name: [''],
 		});
 	}
 
