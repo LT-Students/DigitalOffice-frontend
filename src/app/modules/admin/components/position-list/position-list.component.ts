@@ -8,12 +8,12 @@ import { PositionInfo } from '@data/api/user-service/models';
 import { NewPositionComponent } from '../new-position/new-position.component';
 
 @Component({
-  selector: 'app-position-list',
+  selector: 'do-position-list',
   templateUrl: './position-list.component.html',
   styleUrls: ['./position-list.component.scss']
 })
 export class PositionListComponent implements OnInit {
-  public positions: PositionInfo[] = []
+  public positions: PositionInfo[];
 
   public totalCount: number;
 	public pageSize: number;
@@ -23,6 +23,7 @@ export class PositionListComponent implements OnInit {
     this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+    this.positions = [];
   }
 
   public ngOnInit(): void {
@@ -35,11 +36,11 @@ export class PositionListComponent implements OnInit {
     })
   }
 
-  public onAddPositionClick() {
+  public onAddPositionClick(): void {
     this.dialog.open(NewPositionComponent);
   }
 
-  public onPageChange(event: PageEvent) {
+  public onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
     this.positionApiService.findPositions({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe((data) => {

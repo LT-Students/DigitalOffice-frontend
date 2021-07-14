@@ -8,6 +8,8 @@
 
 	&__content {
 		width: 100%;
+
+		border-collapse: collapse;
 	}
 
 	&__heading {
@@ -21,6 +23,18 @@
 
 	&__input {
 		width: 50%;
+	}
+
+	&__row {
+		height: 76px;
+
+		border-bottom: 1px solid #f1f1ef;
+
+		&:hover {
+			cursor: pointer;
+
+			background-color: #f1f1ef;
+		}
 	}
 }
 
