@@ -1,16 +1,25 @@
+<div class="navigation" doText color="gray">
+    <a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
+    <span doText color="gray"><mat-icon>chevron_right</mat-icon></span>
+    <a class="navigation__link" routerLink="/departments">Список департаментов</a>
+    <span doText color="gray"><mat-icon>chevron_right</mat-icon></span>
+    <a class="navigation__link">{{ departmentInfo?.name }}</a>
+</div>
 <h1 doText class="title">{{ departmentInfo?.name }}</h1>
 <div class="card card_standard department">
 	<div class="department__info">
 		<h3 doText underlined underlinedSize="sm">Общая информация</h3>
 		<div class="department__label">
 			<p doText regularTextSize="small" color="gray1">Директор</p>
-			<p *ngIf="departmentInfo?.director; else empty" doText>
-				{{ departmentInfo?.director?.firstName }} {{ departmentInfo?.director?.lastName }}
-			</p>
+			<ng-container *ngIf="departmentInfo?.director; else empty">
+				<p doText>{{ departmentInfo?.director?.firstName }} {{ departmentInfo?.director?.lastName }}</p>
+			</ng-container>
 		</div>
 		<div class="department__label">
 			<p doText regularTextSize="small" color="gray1">Описание</p>
-			<p *ngIf="departmentInfo?.description; else empty" doText>{{ departmentInfo?.description }}</p>
+			<ng-container *ngIf="departmentInfo?.description; else empty"
+				><p doText>{{ departmentInfo?.description }}</p>
+			</ng-container>
 		</div>
 	</div>
 	<div class="department__table table">
@@ -51,7 +60,7 @@
 			<ng-container *ngFor="let userInfo of sortedUsersInfo">
 				<tr class="table__row" (click)="onUserClick(userInfo.id)">
 					<td>
-                        <do-profile-image [image]='userInfo?.avatar'></do-profile-image>
+						<do-profile-image [image]="userInfo?.avatar"></do-profile-image>
 					</td>
 					<td>
 						<p>{{ userInfo.firstName }} {{ userInfo.lastName }}</p>
