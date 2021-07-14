@@ -1,3 +1,3 @@
-<div class="profile-image" [ngClass]="size === 'sm' ? 'profile-image_size_sm' : null">
+<div class="profile-image" [ngClass]="getSizeClass()">
 	<img [src]="src" alt="Employee image" [width]="width" />
 </div>

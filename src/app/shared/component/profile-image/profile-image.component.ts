@@ -8,16 +8,24 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 })
 export class ProfileImageComponent implements OnInit, OnChanges {
 	@Input() image: ImageInfo;
-	@Input() size: 'l' | 'sm';
+	@Input() size: 'l' | 'm' | 's';
 	public src: string;
 	public width: number;
 
 	constructor() {
-		this.size = 'sm';
+		this.size = 'm';
 		this.width = 48;
 	}
 
-	ngOnInit(): void {}
+	ngOnInit(): void {
+		if (this.size === 's') {
+			this.width = 40;
+		} else if (this.size === 'l') {
+			this.width = 180;
+		} else {
+			this.width = 48;
+		}
+	}
 
 	public ngOnChanges(changes: SimpleChanges): void {
 		if (this.image?.content && this.image?.extension) {
@@ -25,6 +33,16 @@ export class ProfileImageComponent implements OnInit, OnChanges {
 		} else {
 			this.src = 'assets/images/IAFOR-Blank-Avatar-Image.jpg';
 		}
-		this.width = this.size === 'sm' ? 48 : 180;
+	}
+
+	public getSizeClass(): string {
+		switch (this.size) {
+			case 's':
+				return 'profile-image_size_s';
+			case 'l':
+				return 'profile-image_size_l';
+			default:
+				return null;
+		}
 	}
 }
