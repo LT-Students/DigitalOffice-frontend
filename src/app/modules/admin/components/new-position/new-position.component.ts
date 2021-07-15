@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
 	selector: 'do-new-position',
@@ -12,7 +13,12 @@ import { PositionApiService } from '@data/api/company-service/services/position-
 export class NewPositionComponent implements OnInit {
 	public positionForm: FormGroup;
 
-	constructor(public positionApiService: PositionApiService, private formBuilder: FormBuilder, private snackBar: MatSnackBar) {}
+	constructor(
+		public positionApiService: PositionApiService, 
+		private formBuilder: FormBuilder, 
+		private snackBar: MatSnackBar,
+		private dialogRef: MatDialogRef<NewPositionComponent>
+		) {}
 
 	ngOnInit(): void {
 		this.positionForm = this.formBuilder.group({
@@ -34,6 +40,7 @@ export class NewPositionComponent implements OnInit {
 					this.snackBar.open('New position added successfully', 'done', {
 						duration: 3000,
 					});
+					this.dialogRef.close();
 				},
 				(error: HttpErrorResponse) => {
 					this.snackBar.open(error.error.Message, 'accept');

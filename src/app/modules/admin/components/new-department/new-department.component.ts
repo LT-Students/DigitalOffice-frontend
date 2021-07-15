@@ -68,6 +68,7 @@ export class NewDepartmentComponent implements OnInit {
 					this.snackBar.open('New department added successfully', 'done', {
 						duration: 3000,
 					});
+					this.dialogRef.close();
 				},
 				(error: HttpErrorResponse) => {
 					this.snackBar.open(error.error.Message, 'accept');
