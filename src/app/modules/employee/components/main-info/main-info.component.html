@@ -277,13 +277,13 @@
 						Обновить фото</label
 					>
 				</div>
-				<ng-container *ngIf="!user.isAdmin; else nameEdit">
+				<ng-container *ngIf="!user.isAdmin; else nameEdit">]
 					<h3 class="employee-info__name" doText color="dark_2">
 						{{ user.getFioFull() }}&nbsp;<span
 							matTooltipClass="tooltip"
-							[matTooltip]="user?.firstName + ' ' + (user.status.statusInRussian | lowercase)"
+							[matTooltip]="user?.firstName + ' ' + (user?.status?.statusInRussian | lowercase)"
 							[matTooltipPosition]="'above'"
-							>{{ user.status.emojiIcon }}</span
+							>{{ user?.status?.emojiIcon }}</span
 						>
 					</h3>
 				</ng-container>
