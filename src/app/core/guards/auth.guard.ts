@@ -32,3 +32,19 @@ export class AuthGuard implements CanLoad, CanActivate {
 		}
 	}
 }
+
+@Injectable({
+	providedIn: 'root'
+})
+export class CanActivateAuthLogin implements CanActivate {
+	constructor(private authenticationService: AuthService, private router: Router) {}
+
+	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+		if(!this.authenticationService.isAuthenticated())
+			return true;
+		else {
+			this.router.navigate(['user/dashboard']);
+			return false;
+		}
+	}
+}
