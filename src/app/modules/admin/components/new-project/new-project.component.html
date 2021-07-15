@@ -70,16 +70,16 @@
 			</div>
 		</div>
 
-<!--		<div class="project-info__section">-->
-<!--			<div class="section__title">-->
-<!--				<div class="section__title_left">-->
-<!--					<h3 doText color="dark_2" underlined underlinedSize="sm">Участие</h3>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--			<div class="section__content">-->
-<!--				<mat-checkbox class="checkbox">Включить меня в команду Product Менеджеров</mat-checkbox>-->
-<!--			</div>-->
-<!--		</div>-->
+		<!--		<div class="project-info__section">-->
+		<!--			<div class="section__title">-->
+		<!--				<div class="section__title_left">-->
+		<!--					<h3 doText color="dark_2" underlined underlinedSize="sm">Участие</h3>-->
+		<!--				</div>-->
+		<!--			</div>-->
+		<!--			<div class="section__content">-->
+		<!--				<mat-checkbox class="checkbox">Включить меня в команду Product Менеджеров</mat-checkbox>-->
+		<!--			</div>-->
+		<!--		</div>-->
 
 		<div class="project-info__section">
 			<div class="section__title">
@@ -103,7 +103,7 @@
 						<div class="position" doText color="gray1">{{ member.position?.name }}</div>
 					</div>
 					<div>{{ member.department?.name }}</div>
-<!--					<div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>-->
+					<!--					<div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>-->
 					<!--                    <div class="user-row__lead" *ngIf="data.mode">-->
 					<!--                        &lt;!&ndash; TODO: Сделать оотображение стилей кнопки для просмотра / редактирования&ndash;&gt;-->
 					<!--                        <span class="label_lead" [ngClass]="{ label_lead_l: !member.lead }" doText regularTextSize="small" (click)="assignLead(member)"-->
@@ -117,7 +117,7 @@
 
 		<div class="project-info__actions">
 			<button mat-stroked-button color="warn" class="border-accent_color_bright" type="button" (click)="goBack()">Отмена</button>
-			<button mat-flat-button color="primary" (click)="createProject()">Создать проект</button>
+			<button mat-flat-button color="primary" [disabled]="projectForm.invalid" type="submit">Создать проект</button>
 		</div>
 	</form>
 </div>
