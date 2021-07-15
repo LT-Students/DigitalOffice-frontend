@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuard, CanActivateAuthLogin } from '@app/guards/auth.guard';
+import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
 import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
@@ -61,7 +61,6 @@ const routes: Routes = [
 			},
 			{
 				path: RouteType.AUTH,
-				canActivate: [CanActivateAuthLogin],
 				loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule)
 			},
 		],

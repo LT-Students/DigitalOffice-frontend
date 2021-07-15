@@ -12,7 +12,7 @@ import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
 import { UserService } from '@app/services/user.service';
 import { AuthService } from '@app/services/auth.service';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { AuthGuard, CanActivateAuthLogin } from '@app/guards/auth.guard';
+import { AuthGuard } from '@app/guards/auth.guard';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 
@@ -49,7 +49,6 @@ registerLocaleData(localeRu);
   providers: [
     AuthService,
     AuthGuard,
-    CanActivateAuthLogin,
     UserService,
     LocalStorageService,
     AttendanceService,
