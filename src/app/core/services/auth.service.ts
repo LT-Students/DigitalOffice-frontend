@@ -28,7 +28,7 @@ export class AuthService {
 
 	login(authenticationRequest: AuthenticationRequest): Observable<UserResponse> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
-			tap((authenticationInfo: AuthenticationResponse) => this.localStorageService.set('access_token', authenticationInfo.accessToken)),
+			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
 			switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId))
 		);
 	}
@@ -40,6 +40,16 @@ export class AuthService {
 
 	isAuthenticated(): boolean {
 		const token = this.localStorageService.get('access_token');
+
+		const jwtToken = JSON.parse(atob(token.split('.')[1]));
+		const expires = jwtToken.exp * 1000;
+
+		if (expires < Date.now()) {
+			this._router.navigate(['/auth/login']);
+
+			return;
+		}
+
 		return token != null;
 	}
 
