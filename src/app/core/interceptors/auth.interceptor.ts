@@ -15,15 +15,6 @@ export class AuthInterceptor implements HttpInterceptor {
 		const token = this.localStorageService.get('access_token');
 		let headers: HttpHeaders = req.headers.set('Access-Control-Allow-Origin', '*');
 
-		const jwtToken = JSON.parse(atob(token.split('.')[1]));
-		const expires = jwtToken.exp * 1000;
-
-		if (expires < Date.now()) {
-			this._router.navigate([ '/auth/login' ]);
-
-			return;
-		}
-
 		if (token) {
 			headers = headers.set('token', token);
 		}
