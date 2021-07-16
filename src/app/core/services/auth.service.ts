@@ -64,12 +64,24 @@ export class AuthService {
 		);
 	}
 
-	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse) {
-		this.localStorageService.set('access_token', authenticationInfo.accessToken);
+	public refreshToken() {
+		const refreshToken = this.localStorageService.get('refresh_token');
+
+		return this.authApiService.refresh(refreshToken).pipe(
+			tap((authResponse: AuthenticationResponse) => {
+				this._setCredentialsToLocalStorage(authResponse);
+			})
+		);
 	}
 
-	private _removeCredentialsFromLocalStorage() {
+	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse): void {
+		this.localStorageService.set('access_token', authenticationInfo.accessToken);
+		this.localStorageService.set('refresh_token', authenticationInfo.refreshToken);
+	}
+
+	private _removeCredentialsFromLocalStorage(): void {
 		this.localStorageService.remove('access_token');
+		this.localStorageService.remove('refresh_token');
 		this.localStorageService.remove('user');
 	}
 }
