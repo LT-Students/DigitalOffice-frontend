@@ -26,25 +26,25 @@ export class AuthService {
 		private _router: Router
 	) {}
 
-	login(authenticationRequest: AuthenticationRequest): Observable<UserResponse> {
+	public login(authenticationRequest: AuthenticationRequest): Observable<UserResponse> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
 			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
 			switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId))
 		);
 	}
 
-	logout() {
+	public logout(): void {
 		this._removeCredentialsFromLocalStorage();
 		this._router.navigate(['/auth/login']);
 	}
 
-	isAuthenticated(): boolean {
+	public isAuthenticated(): boolean {
 		const token = this.localStorageService.get('access_token');
 
 		return token != null;
 	}
 
-	signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
+	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
 			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
 			catchError((error: HttpErrorResponse) => {
