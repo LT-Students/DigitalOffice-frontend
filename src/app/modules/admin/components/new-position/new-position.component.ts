@@ -14,11 +14,11 @@ export class NewPositionComponent implements OnInit {
 	public positionForm: FormGroup;
 
 	constructor(
-		public positionApiService: PositionApiService, 
-		private formBuilder: FormBuilder, 
+		public positionApiService: PositionApiService,
+		private formBuilder: FormBuilder,
 		private snackBar: MatSnackBar,
 		private dialogRef: MatDialogRef<NewPositionComponent>
-		) {}
+	) {}
 
 	ngOnInit(): void {
 		this.positionForm = this.formBuilder.group({
@@ -43,7 +43,11 @@ export class NewPositionComponent implements OnInit {
 					this.dialogRef.close();
 				},
 				(error: HttpErrorResponse) => {
-					this.snackBar.open(error.error.Message, 'accept');
+					let errorMessage = error.error.errors;
+					if (error.status === 409) {
+						errorMessage = 'Должность с таким названием уже существует';
+					}
+					this.snackBar.open(errorMessage, 'accept');
 					throw error;
 				}
 			);
