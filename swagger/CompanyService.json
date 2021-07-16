@@ -160,6 +160,16 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "Conflict.\n* Position with this name already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -274,6 +284,16 @@
           },
           "403": {
             "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict.\n* Department with this name already exists.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1169,7 +1189,7 @@
             "nullable": true
           },
           "Director": {
-            "$ref": "#/components/schemas/UserInfo",
+            "$ref": "#/components/schemas/DepartmentUserInfo",
             "nullable": true
           },
           "IsActive": {
