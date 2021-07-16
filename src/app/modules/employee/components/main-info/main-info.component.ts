@@ -236,10 +236,10 @@ export class MainInfoComponent implements OnInit {
 			startWorkingAt: [null],
 			dateOfBirth: [null],
 			gender: [UserGender],
-			// communications: this.fb.array([
-			// 	this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
-			// 	this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
-			// ]),
+			communications: this.fb.array([
+				this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
+				this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
+			]),
 		});
 	}
 
