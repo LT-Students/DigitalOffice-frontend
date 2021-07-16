@@ -1,0 +1,8 @@
+<table class='table__content' matSort>
+    <tr doText color="gray" regularTextSize='regular'>
+        <th *ngFor="let head of _headingValues" [mat-sort-header]="head" class='table__heading'>{{head}}</th>
+    </tr>
+    <tr *ngFor="let record of data" class='table__row'>
+        <td doText *ngFor="let item of objectEntries(record)">{{item[1]? item[1] : '—'}}</td>
+    </tr>
+</table>

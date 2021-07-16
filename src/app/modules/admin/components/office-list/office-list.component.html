@@ -1,6 +1,8 @@
 <div class='navigation' doText color='gray'>
     <a class='navigation__link' routerLink='/admin/dashboard'>Администрирование </a>
-    <span doText color='gray'><mat-icon>chevron_right</mat-icon></span>
+    <span doText color='gray'>
+        <mat-icon>chevron_right</mat-icon>
+    </span>
     <a class='navigation__link'>Управление офисами</a>
 </div>
 <div class='card card_standard'>
@@ -17,7 +19,7 @@
             </mat-form-field>
         </div>
         </div> -->
-        <table class='table__content' matSort>
+        <!-- <table class='table__content' matSort>
             <tr doText color="gray" regularTextSize='regular'>
                 <th mat-sort-header='city' class='table__heading'>Город</th>
                 <th mat-sort-header='address' class='table__heading'>Адрес</th>
@@ -28,7 +30,9 @@
                 <td doText>{{office.address ? office.address : '-'}}</td>
                 <td doText>{{office.name ? office.name : '—'}}</td>
             </tr>
-        </table>
-        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+        </table> -->
+        <app-list-component [data]="offices" [headings]="[['name', 'Название'], ['city', 'Город'], ['address', 'Адрес']]"></app-list-component>
+        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
+            (page)="onPageChange($event)"></mat-paginator>
     </div>
 </div>

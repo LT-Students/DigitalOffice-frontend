@@ -28,6 +28,7 @@ import { DepartmentCardComponent } from './components/department-card/department
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component'
+import { ListComponentComponent } from './components/list-component/list-component.component';
 
 @NgModule({
 	declarations: [
@@ -52,7 +53,8 @@ import { PositionListComponent } from './components/position-list/position-list.
 		DepartmentCardComponent,
 		ManageRolesComponent,
 		OfficeListComponent,
-		PositionListComponent
+		PositionListComponent,
+		ListComponentComponent
 	],
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
 	exports: [ProjectCardComponent, DndDirective],
