@@ -41,15 +41,6 @@ export class AuthService {
 	isAuthenticated(): boolean {
 		const token = this.localStorageService.get('access_token');
 
-		const jwtToken = JSON.parse(atob(token.split('.')[1]));
-		const expires = jwtToken.exp * 1000;
-
-		if (expires < Date.now()) {
-			this._router.navigate(['/auth/login']);
-
-			return;
-		}
-
 		return token != null;
 	}
 
