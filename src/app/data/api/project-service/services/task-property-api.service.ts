@@ -107,12 +107,12 @@ export class TaskPropertyApiService extends BaseService {
     projectid?: string;
 
     /**
-     * Number of pages to skip.
+     * Number of entries to skip.
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of task properties to take.
      */
     takeCount: number;
   }): Observable<StrictHttpResponse<FindResponseTaskProperty>> {
@@ -163,12 +163,12 @@ export class TaskPropertyApiService extends BaseService {
     projectid?: string;
 
     /**
-     * Number of pages to skip.
+     * Number of entries to skip.
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of task properties to take.
      */
     takeCount: number;
   }): Observable<FindResponseTaskProperty> {

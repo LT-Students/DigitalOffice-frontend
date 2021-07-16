@@ -120,12 +120,12 @@ export class TaskApiService extends BaseService {
     assignedto?: string;
 
     /**
-     * Number of pages to skip.
+     * Number of entries to skip.
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of task to take.
      */
     takeCount: number;
   }): Observable<StrictHttpResponse<FindResponseTaskInfo>> {
@@ -176,12 +176,12 @@ export class TaskApiService extends BaseService {
     assignedto?: string;
 
     /**
-     * Number of pages to skip.
+     * Number of entries to skip.
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of task to take.
      */
     takeCount: number;
   }): Observable<FindResponseTaskInfo> {
