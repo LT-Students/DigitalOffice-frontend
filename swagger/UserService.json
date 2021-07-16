@@ -1124,7 +1124,18 @@
                 }
               }
             }
+          },
+          "409": {
+            "description": "Conflict.\n* Position with this name already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           }
+
         }
       }
     },
@@ -2417,7 +2428,7 @@
       "CreateCommunicationRequest": {
         "type": "object",
         "required": [
-          "CommunicationType",
+          "Type",
           "Value"
         ],
         "properties": {
@@ -2428,13 +2439,13 @@
             "nullable": true,
             "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
           },
-          "CommunicationType": {
+          "Type": {
             "$ref": "#/components/schemas/CommunicationType"
           },
           "Value": {
-            "description": "Name of school.",
+            "description": "Communication value",
             "type": "string",
-            "example": "Summer school."
+            "example": "mail@mail.ru"
           }
         }
       },

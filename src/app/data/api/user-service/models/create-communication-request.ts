@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { CommunicationType } from './communication-type';
 export interface CreateCommunicationRequest {
-  communicationType: CommunicationType;
+  type: CommunicationType;
 
   /**
    * Unique user identifier. Is null if create with user creating
@@ -10,7 +10,7 @@ export interface CreateCommunicationRequest {
   userId?: null | string;
 
   /**
-   * Name of school.
+   * Communication value
    */
   value: string;
 }
