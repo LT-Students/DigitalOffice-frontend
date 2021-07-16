@@ -1,0 +1,1778 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.2.1",
+    "title": "ProjectService",
+    "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
+  },
+  "servers": [
+    {
+      "url": "https://project.ltdo.xyz"
+    }
+  ],
+  "paths": {
+    "/project/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Find project with this departments id.",
+          "schema": {
+            "type": "string"
+          },
+          "required": false
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of projects to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "findProjects",
+        "responses": {
+          "200": {
+            "description": "Successfully returned a project information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResponseProjectInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          }
+        }
+      }
+    },
+    "/project/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/projectId"
+        },
+        {
+          "name": "includeusers",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "shownotactiveusers",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includefiles",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "getProject",
+        "responses": {
+          "200": {
+            "description": "Successfully returned a project information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjectResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "createProject",
+        "description": "Creating new project.\n*  __The user must have access right__ -- Add/Edit/Remove projects.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Base info new project.\n  * OK\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseProjectInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/projectId"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "editProject",
+        "description": "Editing specific project by Id.\n*  __The user must have been the department director projects. \n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Project respose.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          },
+          "404": {
+            "description": "Not Found. * Project with this id not found."
+          }
+        }
+      }
+    },
+    "/user/addUsersToProject": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "addUsersToProject",
+        "description": "Adding specific users to project.\n*  __The user must have access right__ -- Add/Edit/Remove projects.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUsersToProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Users of specific project added successfully."
+          },
+          "204": {
+            "description": "Project's Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* Project with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/user/removeUsersFromProject": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/projectId"
+        },
+        {
+          "name": "userIds",
+          "in": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/parameters/userId"
+                }
+              }
+            }
+          },
+          "required": true
+        }
+      ],
+      "delete": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "removeUsersFromProject",
+        "description": "Remove specific users from specific project.\n* __The user must have access right__ -- Add/Edit/Remove project. \n",
+        "responses": {
+          "200": {
+            "description": "Removed users by id successful.\n  * OK\n"
+          },
+          "204": {
+            "description": "No Content."
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          },
+          "404": {
+            "description": "Not Found. * User or Project with this id not found."
+          }
+        }
+      }
+    },
+    "/taskProperty/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "TaskProperty"
+        ],
+        "operationId": "createTaskProperty",
+        "description": "Creating new task property.\n*  __The user must have access right__ -- Add/Edit/Remove task property.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskPropertyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created task properties Ids (uuid) will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* Not enough rights\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/taskProperty/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "name",
+          "in": "query",
+          "description": "The part of find query that the task property name should contain.",
+          "schema": {
+            "type": "string"
+          },
+          "required": false
+        },
+        {
+          "name": "authorid",
+          "in": "query",
+          "description": "The part of find query that the task property author Id should contain.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "projectid",
+          "in": "query",
+          "description": "The part of find query that the task property projectid should contain.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of task properties to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "TaskProperty"
+        ],
+        "operationId": "findTaskProperties",
+        "description": "Find specific task property by parameters: projectId, authorId, name.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned a base task property information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResponseTaskProperty"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/taskId"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Task"
+        ],
+        "operationId": "editTask",
+        "description": "Editing specific task by Id.\n*  __The user must be task's project participant, admin or department director of task's department \n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditTaskRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Task respose.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n"
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          },
+          "404": {
+            "description": "Not Found. * Task with this id not found."
+          }
+        }
+      }
+    },
+    "/task/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "number",
+          "in": "query",
+          "description": "The part of find query that the task name should contain.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "projectid",
+          "in": "query",
+          "description": "The part of find query that the task project Id should contain.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "assignedto",
+          "in": "query",
+          "description": "The part of find query that the user assigned task should contain.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of task to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "operationId": "findTasks",
+        "description": "Find specific task by parameters: projectId, number, assign.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned a base task information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResponseTaskInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          }
+        }
+      }
+    },
+    "/task/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Task"
+        ],
+        "operationId": "createTask",
+        "description": "Creating new task.\n*  __The user must have access right__ -- Add/Edit/Remove tasks.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTaskRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description":  "Created task Id (uuid) will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* Not enough rights\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/taskId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Task"
+        ],
+        "operationId": "getTask",
+        "responses": {
+          "200": {
+            "description":  "Created TaskResponse will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseTaskResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.\n* Task with this id not found.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PatchDocument": {
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed",
+            "enum": [
+              "replace",
+              "add",
+              "remove"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Name",
+              "/Description",
+              "/AssignedTo",
+              "/PriorityId",
+              "/StatusId",
+              "/TypeId",
+              "/PlannedMinutes"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "DepartmentInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique department identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "20d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Name": {
+            "description": "The department name.",
+            "type": "string",
+            "example": "Department",
+            "nullable": true
+          }
+        }
+      },
+      "TaskProperty": {
+        "type": "object",
+        "required": [
+          "Name",
+          "PropertyType"
+        ],
+        "properties": {
+          "Name": {
+            "description": "The task property name.",
+            "type": "string",
+            "example": "New"
+          },
+          "Description": {
+            "description": "The task property description.",
+            "type": "string",
+            "example": "My description"
+          },
+          "PropertyType": {
+            "$ref": "#/components/schemas/PropertyType"
+          }
+        }
+      },
+      "TaskInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique task identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "20d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Name": {
+            "description": "The task's name.",
+            "type": "string",
+            "example": "Edit task"
+          },
+          "TypeName": {
+            "description": "The task's type name.",
+            "type": "string",
+            "example": "Feature"
+          },
+          "StatusName": {
+            "description": "The task's status name.",
+            "type": "string",
+            "example": "New"
+          },
+          "PriorityName": {
+            "description": "The task's priority name.",
+            "type": "string",
+            "example": "First"
+          },
+          "Description": {
+            "description": "The task's description.",
+            "type": "string",
+            "example": "My description"
+          },
+          "Number": {
+            "type": "integer",
+            "description": "Specific task's number.",
+            "example": "10"
+          },
+          "PlannedMinutes": {
+            "type": "integer",
+            "description": "Planed time at completed task."
+          },
+          "CreatedAt": {
+            "description": "Data and time created task.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "Author": {
+            "description": "Task creator.",
+            "$ref": "#/components/schemas/UserTaskInfo"
+          },
+          "AssignedTo": {
+            "$ref": "#/components/schemas/UserTaskInfo"
+          },
+          "Project": {
+            "$ref": "#/components/schemas/ProjectTaskInfo"
+          }
+        }
+      },
+      "ProjectUser": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique user identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "20d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Role": {
+            "$ref": "#/components/schemas/UserRoleType"
+          }
+        }
+      },
+      "TaskPropertyInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique task property identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "20d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "ProjectId": {
+            "description": "Unique project Id task property identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "20d03a19-872e-45bc-b1ed-a01d6fac3c0f",
+            "nullable": true
+          },
+          "AuthorId": {
+            "description": "Unique author Id task property identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "20d03a19-842e-45bc-b1ed-a01d6fac3c0f",
+            "nullable": true
+          },
+          "Name": {
+            "description": "The task property name.",
+            "type": "string",
+            "example": "New"
+          },
+          "Description": {
+            "description": "The task property description.",
+            "type": "string",
+            "example": "My description",
+            "nullable": true
+          },
+          "CreatedAt": {
+            "description": "Data and time created task property.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "IsActive": {
+            "description": "Task property is active.",
+            "format": "boolean"
+          },
+          "PropertyType": {
+            "$ref": "#/components/schemas/PropertyType"
+          }
+        }
+      },
+      "ProjectUserInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "FirstName": {
+            "description": "The user first name",
+            "type": "string",
+            "example": "Iya"
+          },
+          "MiddleName": {
+            "description": "The user middle name.",
+            "type": "string",
+            "example": "Sergeevith"
+          },
+          "LastName": {
+            "description": "The user last name.",
+            "type": "string",
+            "example": "Svetlov"
+          },
+          "AddedOn": {
+            "description": "Data and time added user to project.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "RemovedOn": {
+            "description": "Data and time removed user from project.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-12-10 04:13",
+            "nullable": true
+          },
+          "IsActive": {
+            "description": "User state.",
+            "type": "boolean",
+            "example": true
+          },
+          "Role": {
+            "$ref": "#/components/schemas/UserRoleType"
+          }
+        }
+      },
+      "ProjectFileInfo": {
+        "type": "object",
+        "properties": {
+          "ProjectId": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "FileId": {
+            "description": "Unique file identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          }
+        }
+      },
+      "ProjectInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "AuthorId": {
+            "description": "Unique project creater identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Name": {
+            "description": "Project name.",
+            "type": "string",
+            "example": "Digital Office",
+            "nullable": false
+          },
+          "ShortName": {
+            "description": "Project short name.",
+            "type": "string",
+            "example": "DO",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/ProjectStatusType",
+            "nullable": false
+          },
+          "Department": {
+            "$ref": "#/components/schemas/DepartmentInfo",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "ShortDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "CreatedAt": {
+            "description": "Data and time created project.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          }
+        }
+      },
+      "ProjectStatusType": {
+        "type": "string",
+        "description": "Project status.\nMay be empty, default value: 'Active'.\n,Enum numbers description\n* 0 - Active,\n* 1 - Failed,\n* 2 - Abandoned,\n* 3 - Rejected,\n* 4 - Closed,\n* 5 - Suspend",
+        "enum": [
+          "Active",
+          "Closed",
+          "Suspend"
+        ],
+        "nullable": false,
+        "example": "Suspend"
+      },
+      "PropertyType": {
+        "type": "string",
+        "description": "Project status.\nMay be empty, default value: 'Type'.\n\n,Enum numbers description\n* 0 - Type,\n* 1 - Status,\n* 2 - Priority",
+        "enum": [
+          "Type",
+          "Status",
+          "Priority"
+        ],
+        "example": "Type"
+      },
+      "ProjectTaskInfo": {
+        "type": "object",
+        "properties": {
+          "ProjectId": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "ShortName": {
+            "description": "Project short name.",
+            "type": "string",
+            "example": "DO"
+          }
+        }
+      },
+      "UserTaskInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique user identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "FirstName": {
+            "description": "User first name.",
+            "type": "string",
+            "example": "Ivan"
+          },
+          "LastName": {
+            "description": "User last name.",
+            "type": "string",
+            "example": "Ivanov"
+          }
+        }
+      },
+      "UserRoleType": {
+        "type": "string",
+        "description": "User role\n\n,Enum numbers description\n* 1 - Admin\n",
+        "enum": [
+          "ProjectAdmin"
+        ],
+        "example": "ProjectAdmin"
+      },
+      "ProjectRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "DepartmentId"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Project name.",
+            "type": "string",
+            "example": "Digital Office"
+          },
+          "ShortName": {
+            "description": "Project short name.",
+            "type": "string",
+            "example": "DO"
+          },
+          "Description": {
+            "description": "Project description.",
+            "type": "string",
+            "example": "Work spase"
+          },
+          "ShortDescription": {
+            "description": "Project short description.",
+            "type": "string",
+            "example": "Work spase"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/ProjectStatusType"
+          },
+          "DepartmentId": {
+            "description": "Unique department identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUserRequest"
+            }
+          }
+        }
+      },
+      "AddUsersToProjectRequest": {
+        "type": "object",
+        "required": [
+          "ProjectId",
+          "Users"
+        ],
+        "properties": {
+          "ProjectId": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUserRequest"
+            }
+          }
+        }
+      },
+      "EditProjectRequest": {
+        "type": "array",
+        "minItems": 1,
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "items": {
+          "$ref": "#/components/schemas/ProjectPatchDocument"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "type": "string",
+              "description": "new name"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/ShortName",
+            "value": {
+              "type": "string",
+              "description": "new short name"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Description",
+            "value": {
+              "type": "string",
+              "description": "new description"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/ShortDescription",
+            "value": {
+              "type": "string",
+              "description": "new short description"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Status",
+            "value": {
+              "type": "string",
+              "description": "project status",
+              "enum": [
+                "Active",
+                "Closed",
+                "Suspend"
+              ]
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/DepartmentId",
+            "value": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      },
+      "ProjectPatchDocument": {
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed",
+            "enum": [
+              "replace",
+              "add"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Name",
+              "/ShortName",
+              "/Description",
+              "/ShortDescription",
+              "/Status",
+              "/DepartmentId"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+
+      },
+      "ProjectUserRequest": {
+        "type": "object",
+        "required": [
+          "Role",
+          "UserId"
+        ],
+        "properties": {
+          "UserId": {
+            "description": "Unique user identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Role": {
+            "$ref": "#/components/schemas/UserRoleType"
+          }
+        }
+      },
+      "ProjectResponse": {
+        "type": "object",
+        "properties": {
+          "Project": {
+            "$ref": "#/components/schemas/ProjectInfo"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectUserInfo"
+            }
+          },
+          "Files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectFileInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TaskResponse": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "Number": {
+            "type": "integer"
+          },
+          "PlannedMinutes": {
+            "type": "integer",
+            "nullable": true
+          },
+          "CreatedAt": {
+            "description": "Data and time created task.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "Project": {
+            "$ref": "#/components/schemas/ProjectInfo"
+          },
+          "Author": {
+            "description": "Task creator.",
+            "$ref": "#/components/schemas/ProjectUserInfo"
+          },
+          "AssignedUser": {
+            "$ref": "#/components/schemas/ProjectUserInfo",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/TaskPropertyInfo"
+          },
+          "Priority": {
+            "$ref": "#/components/schemas/TaskPropertyInfo"
+          },
+          "Type": {
+            "$ref": "#/components/schemas/TaskPropertyInfo"
+          },
+          "ParentTask": {
+            "$ref": "#/components/schemas/TaskInfo",
+            "nullable": true
+          },
+          "Subtasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskInfo"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "FindResponseProjectInfo": {
+        "type": "object",
+        "properties": {
+          "TotalCount": {
+            "description": "Total number of finded by filter projects.",
+            "type": "integer",
+            "example": 10
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResponseTaskInfo": {
+        "type": "object",
+        "properties": {
+          "TotalCount": {
+            "description": "Total number of finded by filter task.",
+            "type": "integer",
+            "example": 10
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResponseTaskProperty": {
+        "type": "object",
+        "properties": {
+          "TotalCount": {
+            "description": "Total number of finded by filter task property.",
+            "type": "integer",
+            "example": 10
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskPropertyInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TasksResponse": {
+        "type": "object",
+        "properties": {
+          "TotalCount": {
+            "description": "Total number of finded by filter tasks.",
+            "type": "integer",
+            "example": 5
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TaskInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateTaskPropertyRequest": {
+        "type": "object",
+        "required": [
+          "ProjectId",
+          "TaskProperties"
+        ],
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "TaskProperties": {
+            "type": "array",
+            "$ref": "#/components/schemas/TaskProperty"
+          }
+        }
+      },
+      "CreateTaskRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "ProjectId",
+          "TypeId",
+          "StatusId",
+          "PriorityId"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "AssignedTo": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "TypeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "StatusId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "PriorityId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "PlannedMinutes": {
+            "type": "integer"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "AuthorId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "EditTaskRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "type": "string",
+              "description": "new name"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/Name",
+            "value": {
+              "type": "string",
+              "description": "new name"
+            }
+          },
+          {
+            "op": "remove",
+            "path": "/Name"
+          },
+          {
+            "op": "replace",
+            "path": "/Description",
+            "value": {
+              "type": "string",
+              "description": "new description"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/Description",
+            "value": {
+              "type": "string",
+              "description": "new description"
+            }
+          },
+          {
+            "op": "remove",
+            "path": "/Description"
+          },
+          {
+            "op": "replace",
+            "path": "/AssignedTo",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "new assign"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/AssignedTo",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "new assign to id"
+            }
+          },
+          {
+            "op": "remove",
+            "path": "/AssignedTo"
+          },
+          {
+            "op": "replace",
+            "path": "/PriorityId",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "task priorityId"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/DepartmentId",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "task department id"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/StatusId",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "task status id"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/TypeId",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "task type id"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/PlannedMinutes",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "task type id"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/PlannedMinutes",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "task type id"
+            }
+          },
+          {
+            "op": "remove",
+            "path": "/PlannedMinutes",
+            "value": {
+              "type": "string",
+              "format": "uuid",
+              "description": "task type id"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchDocument"
+        }
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseProjectInfo": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/ProjectInfo"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+
+      },
+      "OperationResultResponseTaskResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/TaskResponse"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      }
+    },
+    "parameters": {
+      "taskId": {
+        "name": "Id",
+        "in": "query",
+        "description": "Task global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "projectId": {
+        "name": "projectId",
+        "in": "query",
+        "description": "Project global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "userId": {
+        "name": "userId",
+        "in": "query",
+        "description": "User global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "fileId": {
+        "name": "fileId",
+        "in": "query",
+        "description": "File global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "roleId": {
+        "name": "roleId",
+        "in": "query",
+        "description": "Role global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

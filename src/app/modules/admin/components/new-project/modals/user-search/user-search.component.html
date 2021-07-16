@@ -1,0 +1,83 @@
+<div class="members-board">
+	<form class="members-form">
+		<div class="members-board__title" mat-dialog-title>
+			<h3 doText color="dark_1" [ngSwitch]="data.mode">
+				<ng-container *ngSwitchCase="WorkFlowMode.ADD">Добавить участника</ng-container>
+				<ng-container *ngSwitchCase="WorkFlowMode.EDIT">Редактирование направления<br />"{{ data.team.name }}"</ng-container>
+				<ng-container *ngSwitchCase="WorkFlowMode.VIEW">Просмотр команды</ng-container>
+			</h3>
+			<button mat-icon-button class="members-board__close-button" mat-dialog-close><mat-icon>close</mat-icon></button>
+		</div>
+		<mat-form-field class="select members-form__select-spec" appearance="none" *ngIf="data.mode === WorkFlowMode.ADD">
+			<mat-select
+				class="regular_text text_color_dark-1"
+				placeholder="Выберите направление"
+				disableOptionCentering="true"
+			>
+				<mat-option class="regular_text text_color_dark-1" *ngFor="let role of roles" [value]="role">
+					{{ role }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<div class="filters-section">
+			<h4 doText *ngIf="data.mode === WorkFlowMode.ADD">Поиск сотрудников</h4>
+			<div class="filters-section__content">
+				<div class="name">
+					<do-search placeholder="Введите фамилию и имя сотрудника" (searchClick)="onSearchClick($event)"></do-search>
+				</div>
+				<div class="position">
+					<mat-form-field class="select members-form__select-lvl" appearance="none">
+						<mat-select class="regular_text text_color_dark-1" placeholder="Выберите должность">
+							<mat-option class="regular_text text_color_dark-1" *ngFor="let position of positions" [value]="position.id">
+								{{ position.name }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+			</div>
+		</div>
+		<div class="users" *ngIf="membersAll; else empty">
+			<!--   TODO: Добавить вывод отфильтрованных пользователей  -->
+			<div class="user-row" *ngFor="let member of membersAll">
+				<div class="user-row__checkbox" *ngIf="data.mode !== WorkFlowMode.VIEW">
+					<mat-checkbox
+						class="new-member__checkbox"
+						[value]="member.id"
+						[checked]="isMember(member)"
+						(change)="onCheckMember($event, member)"
+					></mat-checkbox>
+				</div>
+				<div class="user-row__image">
+                    <do-profile-image [image]="member?.avatar"></do-profile-image>
+				</div>
+				<div class="user-row__general-info">
+					<div class="name">{{ member.firstName }} {{ member.lastName }}</div>
+					<div class="position" doText color="gray1">{{ member.position?.name }}</div>
+				</div>
+				<!-- <div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div> -->
+<!--				<div class="user-row__lead" *ngIf="data.mode">-->
+<!--					&lt;!&ndash; TODO: Сделать оотображение стилей кнопки для просмотра / редактирования&ndash;&gt;-->
+<!--					<span class="label_lead" [ngClass]="{ label_lead_l: !member.lead }" doText regularTextSize="small" (click)="assignLead(member)"-->
+<!--						>Лидер направления</span-->
+<!--					>-->
+<!--				</div>-->
+			</div>
+            <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+		</div>
+
+		<mat-dialog-actions align="center" *ngIf="data.mode !== WorkFlowMode.VIEW">
+			<div class="members-form__button-container">
+				<button mat-flat-button mat-dialog-close>Отмена</button>
+				<button mat-flat-button color="primary" (click)="onSave()">Сохранить</button>
+			</div>
+		</mat-dialog-actions>
+	</form>
+</div>
+
+<!--TODO: Добавить темплейты для просмотра / для редактирования-->
+<ng-template #empty>
+	<div class="members-form__background">
+		<img class="members-form__background--image" src="../assets/images/tumbleweed.png" alt="tumbleweed" />
+		<span doText color="gray">Пока тут никого...</span>
+	</div>
+</ng-template>

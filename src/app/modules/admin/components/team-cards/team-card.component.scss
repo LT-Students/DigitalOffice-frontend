@@ -1,0 +1,102 @@
+@import 'base/fonts';
+@import '../user-row';
+
+.team-card {
+	margin-bottom: 12px;
+
+	overflow: visible;
+
+	width: 100%;
+
+	border-radius: 8px;
+
+	// angular material specific part
+	.mat-expansion-panel-header {
+		height: 74px;
+
+		background-color: $light_2;
+
+		&.mat-expanded,
+		&:hover {
+			background-color: $accent_color_light;
+		}
+	}
+
+	::ng-deep .mat-expansion-panel-content {
+		overflow: auto;
+
+		max-height: 333px;
+	}
+
+	::ng-deep .mat-content {
+		overflow: visible;
+	}
+
+	&__general-info {
+		margin-right: 0;
+
+		display: block;
+
+		width: 25%;
+		min-width: 25%;
+		max-width: 25%;
+
+		white-space: nowrap;
+	}
+
+	&__button_edit {
+		margin-right: 7px;
+	}
+
+	&__members {
+		display: flex;
+
+		align-items: center;
+
+		width: 66%;
+		max-width: 66%;
+
+		.member {
+			position: relative;
+
+			margin-right: 7px;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			@include image-container(32px);
+
+			&_empty {
+				margin-left: 0;
+
+				color: $gray1;
+				background-color: map-get($colors, 'light_4');
+
+				.counter {
+					white-space: nowrap;
+				}
+			}
+
+			&__image {
+				border-radius: 50%;
+			}
+		}
+	}
+
+	&__button_delete {
+		position: absolute;
+		right: -40px;
+
+		display: flex;
+		visibility: hidden;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	&:hover {
+		.team-card__button_delete {
+			visibility: visible;
+		}
+	}
+}

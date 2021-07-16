@@ -1,0 +1,43 @@
+@import 'base/variables';
+
+.h3,
+.regular_text {
+  color: $dark_1;
+}
+
+.regular_text {
+  font-size: 14px;
+}
+
+.new-company {
+  &__container {
+    padding: 25px 12px 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100%;
+  }
+
+  &__buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    button {
+      width: 185px;
+
+      &:first-child {
+        margin: 0 15px;
+      }
+    }
+  }
+
+  &__form {
+    margin-top: 15px;
+
+    display: flex;
+    flex-direction: column;
+  }
+}

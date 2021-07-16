@@ -1,0 +1,1540 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.6.0",
+    "title": "CompanyService",
+    "description": "CompanyService is an API that intended to work with positions and departments."
+  },
+  "servers": [
+    {
+      "url": "https://company.ltdo.xyz"
+    }
+  ],
+  "paths": {
+    "/position/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Position"
+        ],
+        "operationId": "getPosition",
+        "description": "Returns position by id.",
+        "parameters": [
+          {
+            "name": "positionId",
+            "in": "query",
+            "description": "Position global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned a position.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PositionResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/position/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Position"
+        ],
+        "operationId": "findPositions",
+        "description": "Returns all added positions.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned added positions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PositionResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/position/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Position"
+        ],
+        "operationId": "addPosition",
+        "description": "Adds a new position.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePositionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created position will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Incorrect position data.\n* This position id already exist.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* Not enough rights.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict.\n* Position with this name already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/position/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "positionId",
+          "in": "query",
+          "description": "Specific position id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Position"
+        ],
+        "operationId": "editPosition",
+        "description": "Edits a specified position.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditPositionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Update position operation success (boolean) status will be in response Body property.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/department/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "addDepartment",
+        "description": "Adds a new department to company.\n* __The user must have access to the right__ -- Add/Edit/Remove departments.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewDepartmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created вузфкеьуте will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n* Incorrect department data.\n* This department id already exist.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict.\n* Department with this name already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/department/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "getDepartment",
+        "description": "Returns department by id.",
+        "parameters": [
+          {
+            "name": "departmentid",
+            "in": "query",
+            "description": "Department global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "name": "includeusers",
+            "in": "query",
+            "description": "Response would include department users.",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false
+          },
+          {
+            "name": "includeprojects",
+            "in": "query",
+            "description": "Response would include department projects.",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned department.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseDepartmentInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/department/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "findDepartments",
+        "description": "Returns finded departments.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned departments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/department/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentId",
+          "in": "query",
+          "description": "Specific position id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "editDepartment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditDepartmentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Update department operation success (boolean) status will be in response Body property.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/create": {
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "createCompany",
+        "description": "Adds a new company.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created company will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/get": {
+      "get": {
+        "parameters": [
+          {
+            "name": "includedepartments",
+            "in": "query",
+            "description": "Include departments info in answer.",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false
+          },
+          {
+            "name": "includepositions",
+            "in": "query",
+            "description": "Include positions info in answer.",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false
+          },
+          {
+            "name": "includeoffices",
+            "in": "query",
+            "description": "Include offices info in answer.",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false
+          },
+          {
+            "name": "includesmtpcredentials",
+            "in": "query",
+            "description": "Include smtp credentials in answer.",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false
+          }
+        ],
+        "tags": [
+          "Company"
+        ],
+        "operationId": "getCompany",
+        "responses": {
+          "200": {
+            "description": "Successfully returned a company.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseCompanyInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/company/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "editCompany",
+        "description": "update Company properties.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditCompanyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/office/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Office"
+        ],
+        "operationId": "createOffice",
+        "description": "Adds a new office to company.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOfficeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created office will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/office/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of pages to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of offices on one page.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "description": "If it is true, response will be have deactivated records.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "findOffices",
+        "responses": {
+          "200": {
+            "description": "Successfully returned all offices.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindOfficesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatePositionRequest": {
+        "type": "object",
+        "description": "Specific position data.",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Position name.",
+            "type": "string",
+            "example": "IT projects consultant"
+          },
+          "Description": {
+            "description": "Position description.",
+            "type": "string",
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+            "nullable": true
+          }
+        }
+      },
+      "EditPositionRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": {
+              "description": "New position name",
+              "type": "string",
+              "example": "portal"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchPositionDocument"
+        }
+      },
+      "NewDepartmentRequest": {
+        "type": "object",
+        "required": [
+          "Info",
+          "Users"
+        ],
+        "properties": {
+          "Info": {
+            "$ref": "#/components/schemas/BaseDepartmentInfo"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "PositionResponse": {
+        "type": "object",
+        "properties": {
+          "Info": {
+            "$ref": "#/components/schemas/PositionInfo"
+          },
+          "UserIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "PositionInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Specific position id.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "description": "Position name.",
+            "type": "string",
+            "example": "IT projects consultant"
+          },
+          "Description": {
+            "description": "Position description.",
+            "type": "string",
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+            "nullable": true
+          },
+          "IsActive": {
+            "description": "Marks whether position is active or not.",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "BaseDepartmentInfo": {
+        "type": "object",
+        "description": "Specific department data.",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "description": "Department id.",
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "description": "Department name.",
+            "type": "string"
+          },
+          "Description": {
+            "description": "Department description.",
+            "type": "string",
+            "nullable": true
+          },
+          "DirectorUserId": {
+            "description": "Specific director user id this department.",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        }
+      },
+      "DepartmentUserInfo": {
+        "type": "object",
+        "description": "User data of specific department.",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FirstName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "MiddleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Rate": {
+            "type": "number",
+            "format": "float"
+          },
+          "IsActive": {
+            "type": "boolean",
+            "example": true
+          },
+          "Image": {
+            "type": "object",
+            "$ref": "#/components/schemas/ImageInfo",
+            "nullable": true
+          },
+          "Position": {
+            "type": "object",
+            "$ref": "#/components/schemas/PositionInfo"
+          }
+        }
+      },
+      "DepartmentsResponse": {
+        "type": "object",
+        "properties": {
+          "Departments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "DepartmentResponse": {
+        "type": "object",
+        "description": "Full departmant information.",
+        "properties": {
+          "Department": {
+            "type": "object",
+            "$ref": "#/components/schemas/ShortDepartmentInfo"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentUserInfo"
+            }
+          },
+          "Projects": {
+            "type": "object",
+            "$ref": "#/components/schemas/ProjectInfo"
+          }
+        }
+      },
+      "DepartmentInfo": {
+        "type": "object",
+        "description": "Specific department data.",
+        "properties": {
+          "Id": {
+            "description": "Department id.",
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "description": "Department name.",
+            "type": "string"
+          },
+          "Description": {
+            "description": "Department description.",
+            "type": "string",
+            "nullable": true
+          },
+          "Director": {
+            "$ref": "#/components/schemas/UserInfo",
+            "nullable": true
+          },
+          "Users": {
+            "type": "array",
+            "description": "Workers of this department.",
+            "items": {
+              "$ref": "#/components/schemas/UserInfo"
+            }
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "description": "User data.",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "FirstName": {
+            "type": "string",
+            "example": "Spartak"
+          },
+          "LastName": {
+            "type": "string",
+            "example": "Ryabtsev"
+          },
+          "MiddleName": {
+            "type": "string",
+            "example": "Alexandrovich",
+            "nullable": true
+          }
+        }
+      },
+      "ProjectInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "ShortDescription": {
+            "type": "string"
+          },
+          "Status": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "CreateCompanyRequest": {
+        "type": "object",
+        "required": [
+          "PortalName",
+          "CompanyName",
+          "SiteUrl",
+          "SmtpInfo",
+          "AdminInfo"
+        ],
+        "properties": {
+          "PortalName": {
+            "type": "string"
+          },
+          "CompanyName": {
+            "type": "string"
+          },
+          "SiteUrl": {
+            "type": "string"
+          },
+          "SmtpInfo": {
+            "$ref": "#/components/schemas/SmtpInfo"
+          },
+          "AdminInfo": {
+            "$ref": "#/components/schemas/AdminInfo"
+          }
+        }
+      },
+      "CreateOfficeRequest": {
+        "type": "object",
+        "required": [
+          "City",
+          "Address"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Address": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "PortalName": {
+            "type": "string"
+          },
+          "CompanyName": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "Tagline": {
+            "type": "string",
+            "nullable": true
+          },
+          "SiteUrl": {
+            "type": "string"
+          },
+          "Logo": {
+            "$ref": "#/components/schemas/ImageInfo"
+          },
+          "SmtpInfo": {
+            "$ref": "#/components/schemas/SmtpInfo"
+          },
+          "Departments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShortDepartmentInfo"
+            },
+            "nullable": true
+          },
+          "Positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PositionInfo"
+            },
+            "nullable": true
+          },
+          "Offices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfficeInfo"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "ShortDepartmentInfo": {
+        "type": "object",
+        "description": "Specific department data.",
+        "properties": {
+          "Id": {
+            "description": "Department id.",
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "description": "Department name.",
+            "type": "string"
+          },
+          "Description": {
+            "description": "Department description.",
+            "type": "string",
+            "nullable": true
+          },
+          "Director": {
+            "$ref": "#/components/schemas/DepartmentUserInfo",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OfficeInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "City": {
+            "type": "string"
+          },
+          "Address": {
+            "type": "string"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FindOfficesResponse": {
+        "type": "object",
+        "properties": {
+          "Offices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfficeInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseCompanyInfo": {
+        "type": "object",
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/CompanyInfo"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseDepartmentInfo": {
+        "type": "object",
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/DepartmentResponse"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ImageInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Content": {
+            "type": "string",
+            "format": "byte"
+          },
+          "Extension": {
+            "type": "string"
+          }
+        }
+      },
+      "SmtpInfo": {
+        "type": "object",
+        "required": [
+          "Host",
+          "Port",
+          "EnableSsl",
+          "Email",
+          "Password"
+        ],
+        "properties": {
+          "Host": {
+            "type": "string"
+          },
+          "Port": {
+            "type": "integer"
+          },
+          "EnableSsl": {
+            "type": "boolean"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "Password": {
+            "type": "string"
+          }
+        }
+      },
+      "AdminInfo": {
+        "type": "object",
+        "required": [
+          "FirstName",
+          "LastName",
+          "Email",
+          "Login",
+          "Password"
+        ],
+        "properties": {
+          "FirstName": {
+            "type": "string"
+          },
+          "MiddleName": {
+            "type": "integer"
+          },
+          "LastName": {
+            "type": "boolean"
+          },
+          "Email": {
+            "type": "string"
+          },
+          "Login": {
+            "type": "string"
+          },
+          "Password": {
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "x-enumNames": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      },
+      "EditCompanyRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/portalname",
+            "value": {
+              "description": "New portal name",
+              "type": "string",
+              "example": "portal"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchCompanyDocument"
+        }
+      },
+      "PatchCompanyDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/portalname",
+              "/companyname",
+              "/siteurl",
+              "/tagline",
+              "/description",
+              "/logo",
+              "/host",
+              "/port",
+              "/enablessl",
+              "/email",
+              "/password"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "PatchPositionDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/name",
+              "/description",
+              "/isactive"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "EditDepartmentRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": {
+              "description": "New department name",
+              "type": "string",
+              "example": "deparment"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchDepartmentDocument"
+        }
+      },
+      "PatchDepartmentDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/name",
+              "/description",
+              "/isactive",
+              "/directorid"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

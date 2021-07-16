@@ -1,0 +1,21 @@
+.mat-mini-fab.mat-mini-fab-override {
+  width: 36px;
+  height: 36px;
+
+  .mat-button-wrapper {
+    padding: 0;
+
+    line-height: 36px;
+
+    .mat-icon {
+      svg {
+        padding-bottom: 100%;
+
+        overflow: visible;
+
+        width: 100%;
+        height: 1px;
+      }
+    }
+  }
+}

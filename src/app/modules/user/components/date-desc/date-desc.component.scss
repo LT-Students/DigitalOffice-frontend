@@ -1,0 +1,170 @@
+@import 'base/variables';
+@import 'base/fonts';
+
+.desc {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    margin-bottom: 16px;
+
+    text-align: left;
+
+    color: $dark_1;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    height: 240px;
+
+    background: url('/assets/svg/fon.svg') no-repeat;
+    background-size: cover;
+  }
+
+  .desc__calender {
+    margin: 36px 0 0 48px;
+  }
+
+  &__photo {
+    margin-right: 65px;
+
+    width: 189px;
+    align-self: flex-end;
+  }
+}
+
+.content__period {
+  color: $dark_2;
+}
+
+.content__week {
+  margin-top: 16px;
+  margin-bottom: 24px;
+
+  display: flex;
+
+  width: 380px;
+
+  color: $dark_1;
+
+  &__day {
+    margin-right: 43.9px;
+
+    flex-direction: column;
+
+    cursor: pointer;
+
+    &-single {
+      margin-bottom: 10px;
+
+      text-align: center;
+    }
+
+    &_orange {
+      width: 25px;
+
+      text-align: center;
+
+      color: $light_1;
+      background: $accent_color_bright;
+      border-radius: 50%;
+    }
+  }
+}
+
+.choose_date__wrapper {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 179px;
+  height: 32px;
+
+  .dropdown-menu {
+    background: #fff;
+
+    &.d-none {
+      display: none;
+    }
+  }
+
+  .btn_choose-date {
+    width: 179px;
+    height: 32px;
+  }
+
+  ngb-datepicker {
+    position: absolute;
+    z-index: 10;
+    top: 28px;
+  }
+}
+
+.custom-day {
+  padding: 0.185rem 0.25rem;
+
+  display: inline-block;
+
+  width: 2rem;
+  height: 2rem;
+
+  text-align: center;
+
+  outline: none;
+
+  &.focused {
+    background-color: #e6e6e6;
+  }
+
+  &.range,
+  &:hover {
+    color: #fff;
+    background-color: $accent_color_bright;
+    border: none;
+    outline: none;
+  }
+
+  &.faded {
+    color: #000;
+    background-color: $light_1;
+    border-top: 1px solid $accent_color_bright;
+    border-bottom: 1px solid $accent_color_bright;
+    border-radius: 0;
+  }
+}
+
+.datepicker {
+  &__btn {
+    position: relative;
+    top: -18px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 32px;
+
+    cursor: pointer;
+
+    background: $accent_color;
+  }
+
+  &__btn-text {
+    margin: 0;
+
+    display: inline;
+  }
+
+  &__btn-icon {
+    position: relative;
+    top: 1px;
+
+    margin-left: 5px;
+
+    display: inline;
+  }
+}

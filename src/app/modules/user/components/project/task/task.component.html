@@ -1,0 +1,43 @@
+<div class="task-row do-card bg-light_1">
+  <div class="time h4">
+    <span class="time__period">
+      {{ hours | number: '2.0' }}:{{ minutes | number: '2.0' }}
+    </span>
+    <span>&nbsp;ч</span>
+  </div>
+
+  <div class="note regular_text">
+    <div class="note__head">
+      <p>{{ task.title }}</p>
+    </div>
+    <div class="note__text">
+      <span *ngIf="!isEdited; else editForm">{{ task.description }}</span>
+      <ng-template #editForm>
+        <form class="note__input">
+          <mat-form-field class="note__form-input">
+            <textarea
+              type="text"
+              matInput
+              [value]="task.description"
+              (keydown.enter)="
+                changeDescription(task.projectId, task.id)($event.target.value)
+              "
+            ></textarea>
+          </mat-form-field>
+        </form>
+      </ng-template>
+    </div>
+    <div class="note__date">
+      <p>{{ task.createdAt | date: 'd MMMM в HH:mm' }}</p>
+    </div>
+  </div>
+
+  <div class="icons">
+    <button (click)="toggleInput()">
+      <img src='assets/svg/edit-task.svg' alt='edit'>
+    </button>
+    <button (click)="deleteTask(task.projectId, task.id)()">
+      <img src='assets/svg/delete-task.svg' alt='delete'>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+@import '../../../../stylesheets/base/variables';
+
+.select {
+  &__label {
+    align-self: flex-start;
+
+    display: block;
+  }
+
+  &__required {
+    margin-left: 1px;
+
+    vertical-align: top;
+
+    color: $negative_accent;
+  }
+
+  &__form-field {
+    display: block;
+  }
+
+  &__input {
+    font-family: $regular_font !important;
+  }
+}
+
+.small_text {
+  margin: 14px 0 3px 0;
+}

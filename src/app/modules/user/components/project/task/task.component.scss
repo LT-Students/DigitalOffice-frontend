@@ -1,0 +1,121 @@
+@import 'base/variables';
+
+button {
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+  overflow: visible;
+  justify-content: center;
+  align-items: flex-start;
+
+  width: 19px;
+  height: 19px;
+
+  cursor: pointer;
+
+  background: transparent;
+  border: none;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  &:hover {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+.task-row {
+  padding: 25px 24px 16px 24px;
+
+  display: flex;
+  flex-direction: row;
+
+  background: $light_1;
+  border-radius: 5px;
+
+  .time {
+    width: 12%;
+
+    &__period {
+      font-weight: bold;
+
+      color: $dark_2;
+    }
+  }
+
+  .note {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    width: 75%;
+
+    &__head {
+      margin-bottom: 12px;
+
+      font-weight: 600;
+
+      color: $dark_1;
+    }
+
+    &__text {
+      margin-bottom: 8px;
+
+      color: $dark_1;
+    }
+
+    &__input {
+      width: 100%;
+    }
+
+    &__form-input {
+      width: 100%;
+    }
+
+    &__date {
+      height: 24px;
+
+      font-size: 14px;
+    }
+  }
+
+  .icons {
+    margin-left: auto;
+
+    display: flex;
+    justify-content: space-around;
+
+    width: 13%;
+  }
+}
+
+.col {
+  border-radius: inherit;
+}
+
+.col-1 {
+  padding-right: 24px;
+
+  width: 10%;
+  min-width: 60px;
+}
+
+.col-2 {
+  padding-right: 42px;
+
+  width: 57%;
+}
+
+.col-3 {
+  margin-left: auto;
+
+  min-width: auto;
+}

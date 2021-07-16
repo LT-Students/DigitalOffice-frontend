@@ -1,0 +1,113 @@
+@mixin image-container($radius) {
+	width: $radius;
+	min-width: $radius;
+	height: $radius;
+
+	border-radius: 50%;
+
+	img {
+		border-radius: 50%;
+	}
+}
+
+.user-row {
+	position: relative;
+
+	padding: 12px 24px;
+
+	display: flex;
+	justify-content: space-between;
+
+	height: 74px;
+
+	border-bottom: 1px solid map-get($colors, 'light_3');
+
+	&:hover {
+		.label_lead_l {
+			visibility: visible;
+		}
+	}
+
+	&:last-of-type {
+		border-bottom: none;
+	}
+
+	&__checkbox {
+		margin-right: 20px;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__image {
+		position: relative;
+
+		margin-right: 20px;
+
+		@include image-container(48px);
+	}
+
+	&__general-info {
+		width: 10%;
+		flex-grow: 1;
+	}
+
+	&__department {
+		width: 20%;
+		flex-grow: 1;
+	}
+
+	&__projects-count {
+		width: 20%;
+		max-width: 60%;
+		flex-grow: 1;
+	}
+
+	&__lead {
+		position: relative;
+
+		width: 25%;
+	}
+}
+
+.label_lead {
+	position: absolute;
+
+	display: inline-flex;
+	justify-content: center;
+
+	width: 105%;
+
+	cursor: pointer;
+
+	color: #fff;
+	background-color: $blue_3;
+	border-radius: 8px;
+
+	&_sm {
+		right: 0;
+		bottom: 0;
+
+		width: 50%;
+
+		font-size: 12px;
+		line-height: 15px;
+
+		cursor: default;
+	}
+
+	&_md {
+		top: -7px;
+		right: -13px;
+
+		font-size: 12px;
+		line-height: 15px;
+
+		cursor: default;
+	}
+
+	&_l {
+		visibility: hidden;
+	}
+}

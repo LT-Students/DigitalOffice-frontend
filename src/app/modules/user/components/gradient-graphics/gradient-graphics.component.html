@@ -1,0 +1,55 @@
+<div class="gradient__graphics">
+  <div class="time__period">
+    <p class="h3">
+      Часы
+      <span *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)">
+        {{ startDate | date: 'd MMMM' }}
+      </span>
+      <span
+        *ngIf="
+          endDate &&
+          this.dateService.isSameMonth(startDate, endDate) &&
+          !this.dateService.isSameDay(startDate, endDate)
+        "
+      >
+        {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
+      </span>
+      <span
+        *ngIf="endDate && !this.dateService.isSameMonth(startDate, endDate)"
+      >
+        {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
+      </span>
+    </p>
+  </div>
+
+  <div class="graphics__container">
+    <div class="graphic__column" *ngFor="let column of amountOfDays">
+      <div class="graphic__item" *ngFor="let item of amountOfWorkHours">
+        <div
+          class="hours__processing regular_text"
+          *ngIf="item == 0 && processingArray[column] == true"
+        >
+          {{ dailyHoursData[column].hours }}:{{
+            dailyHoursData[column].minutes
+          }}
+        </div>
+        <div
+          class="item__description"
+          *ngIf="item >= 8 - dailyHoursData[column].hours"
+          [style.background-color]="colorsData[item]"
+        ></div>
+        <div
+          class="item__description"
+          *ngIf="item < 8 - dailyHoursData[column].hours"
+          [style.background-color]="gray"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dates__container">
+    <div class="column__date" *ngFor="let day of daysOfWeek">
+      {{ day | date: 'd' }}
+    </div>
+  </div>
+</div>

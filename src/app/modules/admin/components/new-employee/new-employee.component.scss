@@ -1,0 +1,104 @@
+@import 'base/variables';
+
+.section {
+	margin-top: 32px;
+}
+
+.new-employee {
+	&__inputs {
+		display: grid;
+		grid-template-columns: 300px 300px;
+		column-gap: 20px;
+		row-gap: 6px;
+	}
+
+	&__heading {
+		margin-bottom: 12px;
+	}
+
+	&__form-element {
+		margin-bottom: 8px;
+	}
+
+	&__form-element_span_2 {
+		grid-column: span 2;
+	}
+
+	&__form-field {
+		margin: -1em 0;
+
+		width: 100%;
+	}
+
+	&__label {
+		margin-bottom: 4px;
+
+		display: block;
+	}
+
+	&__required {
+		margin-left: 2px;
+
+		vertical-align: middle;
+
+		color: $negative_accent;
+	}
+
+	&__button {
+		width: 216px;
+	}
+
+	&__reset {
+		justify-self: end;
+	}
+
+	&__submit {
+		justify-self: start;
+	}
+
+	&__label_flex {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__hint {
+		margin-left: 2px;
+
+		width: 16px;
+		height: 16px;
+
+		font-size: 16px;
+
+		vertical-align: -20%;
+	}
+
+	&__generate {
+		padding: 0;
+		align-self: center;
+
+		height: 24px;
+	}
+
+	&__rate {
+		text-align: center;
+	}
+
+	&__rate-button {
+		padding: 0 40px;
+
+		background-color: $light-2;
+
+		&:disabled {
+			min-width: 0;
+
+			background-color: transparent;
+		}
+	}
+
+	&__actions {
+		margin-top: 35px;
+
+		display: flex;
+		justify-content: space-evenly;
+	}
+}

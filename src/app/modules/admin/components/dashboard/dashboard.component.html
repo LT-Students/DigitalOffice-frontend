@@ -1,0 +1,57 @@
+<div class="dashboard">
+	<h1 doText>Администрирование</h1>
+	<div class="section">
+		<h3 doText color="dark_1" underlined underlinedSize="sm">Быстрый доступ</h3>
+		<div class="section__content">
+			<div class="section__button section__button_color_purple" (click)="openModalClick.next(modalType.NEW_EMPLOYEE)">
+				<img src="assets/admin/dashboard/add-employee-icon.svg" alt="add-employee-icon" />
+				<h4 class="section__button-label" doText>Добавить сотрудника</h4>
+			</div>
+			<div class="section__button section__button_color_orange" (click)="openModalClick.next(modalType.NEW_PROJECT)">
+				<img src="assets/admin/dashboard/add-project-icon.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Создать проект</h4>
+			</div>
+			<div class="section__button section__button_color_orange" (click)="openModalClick.next(modalType.NEW_DEPARTMENT)">
+				<img src="assets/admin/dashboard/add-project-icon.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Создать департамент</h4>
+			</div>
+			<div class="section__button section__button_color_orange" (click)="openModalClick.next(modalType.NEW_POSITION)">
+				<img src="assets/admin/dashboard/add-project-icon.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Создать должность</h4>
+			</div>
+			<div class="section__button section__button_color_orange" (click)="openModalClick.next(modalType.NEW_ROLE)">
+				<img src="assets/admin/dashboard/add-project-icon.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Создать роль</h4>
+			</div>
+			<div class="section__button section__button_color_orange" (click)="openModalClick.next(modalType.NEW_OFFICE)">
+				<img src="assets/admin/dashboard/add-project-icon.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Добавить офис</h4>
+			</div>
+		</div>
+	</div>
+	<div class="section">
+		<h3 doText color="dark_1" underlined underlinedSize="sm">Сервисы администрирования</h3>
+		<div class="section__content">
+			<div class="section__button section__button_color_purple" (click)="openModalClick.next(modalType.MANAGE_USERS)">
+				<img src="assets/admin/dashboard/manage-employees.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Управление сотрудниками</h4>
+			</div>
+			<div class="section__button section__button_color_green" (click)="openModalClick.next(modalType.MANAGE_ROLES)">
+				<img src="assets/admin/dashboard/manage-roles.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Управление ролями</h4>
+			</div>
+			<div class="section__button section__button_color_green" (click)="openModalClick.next(modalType.DEPARTMENT_LIST)">
+				<img src="assets/admin/dashboard/manage-roles.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Список департаментов</h4>
+			</div>
+			<div class="section__button section__button_color_green" (click)="openModalClick.next(modalType.OFFICE_LIST)">
+				<img src="assets/admin/dashboard/manage-roles.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Список офисов</h4>
+			</div>
+			<div class="section__button section__button_color_green" (click)="openModalClick.next(modalType.POSITION_LIST)">
+				<img src="assets/admin/dashboard/manage-roles.svg" alt="add-project-icon" />
+				<h4 class="section__button-label" doText>Список должностей</h4>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,50 @@
+.nav-link__forgot-password {
+	position: relative;
+
+	margin-top: 24px;
+
+	text-decoration: underline;
+
+	cursor: pointer;
+
+	opacity: 0.6;
+
+	&:hover {
+		opacity: 1;
+	}
+}
+
+.nav-link__login {
+	position: absolute;
+	top: 33px;
+	left: 50px;
+
+	display: flex;
+	align-items: center;
+
+	text-decoration: none;
+
+	cursor: pointer;
+
+	opacity: 0.23;
+
+	&:hover {
+		opacity: 0.5;
+	}
+}
+
+.nav-link__arrow-back {
+	margin-right: 20px;
+}
+
+.disabled {
+	opacity: 0.5;
+}
+
+#btn-enter {
+	width: 132px;
+}
+
+small {
+	font-size: 14px;
+}

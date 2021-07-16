@@ -1,0 +1,11 @@
+<svg width="50" height="16" viewBox="0 0 50 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="1">
+  <path d="M9.48576 0.999593L1.48535 9L9.48576 17.0004"
+    stroke="#9d9d9d"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round" />
+  <path d="M49 10C49.5523 10 50 9.55228 50 9C50 8.44772 49.5523 8 49 8L49 10ZM1 9.99999L49 10L49 8L1 7.99999L1 9.99999Z"
+    fill="#9d9d9d"/>
+</g>
+</svg>

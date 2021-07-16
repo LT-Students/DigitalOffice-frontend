@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/UserService.json",
+  "output": "src/app/data/api/user-service",
+  "templates": "swagger/templates",
+  "module": "UserApiModule",
+  "excludeParameters": ["token"],
+  "serviceSuffix": "ApiService"
+}

@@ -1,0 +1,171 @@
+<div class="project">
+	<div class="project-header">
+		<div>
+			<h1 class="h1 text-dark_2">{{ projectInfo?.name }}</h1>
+			<div class="project-header__splitter"></div>
+			<p class="regular_text text-gray">{{ projectInfo?.department?.name }}</p>
+		</div>
+		<!--    <div class="project-header__menu">-->
+		<!--      <button mat-stroked-button class="project-header__edit">-->
+		<!--        <span class="regular_text text-light_1 project-header__span">-->
+		<!--          Редактировать-->
+		<!--        </span>-->
+		<!--      </button>-->
+		<!--      <button mat-flat-button class="project-header__more">-->
+		<!--        <img src="assets/svg/more-horiz.svg" alt="NaN" />-->
+		<!--      </button>-->
+		<!--    </div>-->
+	</div>
+	<div class="project__content">
+		<div>
+			<div class="project-description">
+				<h2 class="h4 text-dark_1 project-description__title">Детали проекта</h2>
+				<div class="project-description__body">
+					<div doText color="gray">
+						<!--            <p>Заказчик</p>-->
+						<p>Статус</p>
+						<p>Запуск проекта</p>
+						<p>Проект длится</p>
+						<p>Команда</p>
+					</div>
+					<div doText color="dark_1">
+						<!--              <p>{{ projectInfo?.shortName }}</p>-->
+						<p>{{ projectInfo?.status }}</p>
+						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
+						<p>{{ projectDuration }} дней</p>
+						<p>{{ projectUsers?.length }} участников</p>
+					</div>
+				</div>
+			</div>
+			<!--      <div class="project-time">-->
+			<!--        <h2 class="h4 text-dark_1 project-time__title">Прогресс команды</h2>-->
+			<!--        <div class="project-time__container">-->
+			<!--          <div>-->
+			<!--            <span class="h1 text-dark_2">-->
+			<!--              {{ projectPage.teamProgress.lastTime }} ч-->
+			<!--            </span>-->
+			<!--            <p class="regular_text text-gray">-->
+			<!--              {{ projectPage.teamProgress.lastMonth }}-->
+			<!--            </p>-->
+			<!--          </div>-->
+			<!--          <div class="project-time__all-time">-->
+			<!--            <span class="h1 text-dark_2">-->
+			<!--              {{ projectPage.teamProgress.allTime }} ч-->
+			<!--            </span>-->
+			<!--            <p class="regular_text text-gray">За все время</p>-->
+			<!--          </div>-->
+			<!--        </div>-->
+			<!--      </div>-->
+		</div>
+		<div class="project-team">
+			<h4 doText color="dark_1">Описание</h4>
+			<p doText>{{ projectInfo?.description ? projectInfo?.description : '—' }}</p>
+			<!--      <h2 class="h4 text-dark_1 project-team__title">Команда</h2>-->
+			<!--      <div>-->
+			<!--        <div class="project-team__leaders">-->
+			<!--          <ng-container *ngFor="let member of projectPage.members">-->
+			<!--            <div-->
+			<!--              class="project-team__card"-->
+			<!--              *ngIf="-->
+			<!--                member.role === 'Product Manager' || member.role === 'TeamLead'-->
+			<!--              "-->
+			<!--            >-->
+			<!--              <img-->
+			<!--                class="project-team__leaders-photo"-->
+			<!--                [src]="member.smallPhoto"-->
+			<!--                alt="NaN"-->
+			<!--              />-->
+			<!--              <div>-->
+			<!--                <p class="regular_text">-->
+			<!--                  {{ member.firstName }} {{ member.lastName }}-->
+			<!--                </p>-->
+			<!--                <p class="regular_text text-gray">{{ member.role }}</p>-->
+			<!--              </div>-->
+			<!--            </div>-->
+			<!--          </ng-container>-->
+			<!--        </div>-->
+			<!--        <div class="project-team__member">-->
+			<!--          <ng-container *ngFor="let member of projectPage.members">-->
+			<!--            <img-->
+			<!--              class="project-team__member-photo"-->
+			<!--              [src]="member.smallPhoto"-->
+			<!--              *ngIf="-->
+			<!--                member.role != 'Product Manager' && member.role != 'TeamLead'-->
+			<!--              "-->
+			<!--              alt="NaN"-->
+			<!--            />-->
+			<!--          </ng-container>-->
+			<!--        </div>-->
+			<!--      </div>-->
+			<!--      <div class="project-time" *ngFor="let member of projectPage.members">-->
+			<!--        <ng-container *ngIf="userId === member.id">-->
+			<!--          <h2 class="project-time__title h4 text-dark_1">Мой вклад</h2>-->
+			<!--          <div class="project-time__container">-->
+			<!--            <div class="project-time__progress">-->
+			<!--              <span class="h1 text-dark_2"-->
+			<!--                >{{ member.progress.lastTime }} ч</span-->
+			<!--              >-->
+			<!--              <p class="regular_text text-gray">-->
+			<!--                {{ member.progress.lastMonth }}-->
+			<!--              </p>-->
+			<!--            </div>-->
+			<!--            <div class="project-time__all-time">-->
+			<!--              <span class="h1 text-dark_2"-->
+			<!--                >{{ member.progress.allTime }} ч</span-->
+			<!--              >-->
+			<!--              <p class="regular_text text-gray">За все время</p>-->
+			<!--            </div>-->
+			<!--          </div>-->
+			<!--        </ng-container>-->
+			<!--      </div>-->
+		</div>
+	</div>
+	<div class="table">
+		<div class="table__header">
+			<h3 doText underlined underlinedSize="sm">Команда</h3>
+		</div>
+		<table doText class="table__content" matSort>
+			<tr>
+				<th></th>
+				<th mat-sort-header="name">Имя</th>
+				<th mat-sort-header="department">Департамент</th>
+				<th mat-sort-header="role">Роль</th>
+				<th mat-sort-header="rate">Ставка</th>
+				<th mat-sort-header="status">Статус</th>
+			</tr>
+			<tr class="table__row" *ngFor="let userInfo of projectUsers" routerLink="/user/{{ userInfo.id }}">
+				<td>
+                    <do-profile-image [image]='userInfo?.avatar'></do-profile-image>
+                </td>
+				<td>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
+				<td>
+					<ng-container *ngIf="userInfo?.department?.name; else empty">
+						{{ userInfo.department.name }}
+					</ng-container>
+				</td>
+				<td>
+					<ng-container *ngIf="userInfo?.position?.name; else empty">
+						{{ userInfo.position.name }}
+					</ng-container>
+				</td>
+				<td>
+					<ng-container *ngIf="userInfo?.rate; else empty">
+						{{ userInfo.rate }}
+					</ng-container>
+				</td>
+				<td>
+                    <ng-container *ngIf="userInfo?.isActive; else archived">
+                        <p>Активен</p>
+                    </ng-container>
+                    <ng-template #archived>
+                        <p class="table__archived" doText color="light_1">В архиве</p>
+                    </ng-template>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<ng-template #empty>
+	<p>—</p>
+</ng-template>

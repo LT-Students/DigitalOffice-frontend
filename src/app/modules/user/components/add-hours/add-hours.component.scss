@@ -1,0 +1,140 @@
+@import 'base/variables';
+@import 'base/fonts';
+
+.add-hours {
+  padding: 40px;
+
+  &__title {
+    color: $dark_1;
+
+    &::after {
+      content: '';
+
+      margin-bottom: 35px;
+
+      display: block;
+
+      width: 123px;
+      height: 4px;
+
+      background-color: $accent_color_bright;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__label {
+    margin-bottom: 8px;
+
+    span {
+      margin-right: 10px;
+    }
+
+    &_for_project {
+      margin-top: 16px;
+    }
+
+    &_for_task {
+      margin-top: 12px;
+    }
+
+    &_for_description {
+      margin-top: 8px;
+    }
+  }
+
+  &__form-element {
+    &_ctrl_hours {
+      max-width: 60px;
+    }
+
+    &_ctrl_minutes {
+      max-width: 50px;
+    }
+
+    &_ctrl_description {
+      textarea {
+        resize: none;
+
+        height: 86px;
+      }
+    }
+  }
+
+  &__period {
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+
+    span {
+      line-height: 32px;
+
+      color: $dark_1;
+    }
+  }
+
+  &__hours-char {
+    margin-left: 8px;
+  }
+
+  &__submit-btn {
+    margin-top: 21px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__icon {
+    vertical-align: middle;
+
+    &_hint {
+      margin-right: 7px;
+
+      float: right;
+    }
+  }
+
+  &__menu-title {
+    padding: 10px;
+
+    font-size: 18px;
+
+    &::after {
+      content: '';
+
+      margin-bottom: 10px;
+
+      display: block;
+
+      width: 123px;
+      height: 2px;
+
+      background-color: $accent_color_bright;
+    }
+  }
+
+  &__menu-button {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    color: $dark_2;
+    background-color: $light_3;
+  }
+
+  &__radio {
+    width: inherit;
+    height: inherit;
+
+    font-family: $header_font;
+    font-weight: 400;
+
+    &.mat-radio-button.mat-radio-checked {
+      color: $dark_1;
+    }
+  }
+}
