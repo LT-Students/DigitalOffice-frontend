@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-import { UserInfo } from './user-info';
+import { DepartmentUserInfo } from './department-user-info';
 
 /**
  * Specific department data.
@@ -11,7 +11,7 @@ export interface ShortDepartmentInfo {
    * Department description.
    */
   description?: null | string;
-  director?: null | UserInfo;
+  director?: null | DepartmentUserInfo;
 
   /**
    * Department id.

@@ -23,16 +23,16 @@ export class User implements UserResponse {
 	user: UserInfo;
 
 	constructor(data: UserResponse) {
-		this.achievements = this._setProperty(data.achievements);
+		this.achievements = this._setProperty(data?.achievements);
 		// this.avatar = this._setProperty(data.avatar);
-		this.certificates = this._setProperty(data.certificates);
-		this.communications = this._setProperty(data.communications);
+		this.certificates = this._setProperty(data?.certificates);
+		this.communications = this._setProperty(data?.communications);
 		// this.department = this._setProperty(data.department);
-		this.errors = this._setProperty(data.errors);
+		this.errors = this._setProperty(data?.errors);
 		// this.position = this._setProperty(data.position);
-		this.projects = this._setProperty(data.projects);
-		this.skills = this._setProperty(data.skills);
-		this.user = this._setProperty(data.user);
+		this.projects = this._setProperty(data?.projects);
+		this.skills = this._setProperty(data?.skills);
+		this.user = this._setProperty(data?.user);
 	}
 
 	public get id(): string {
@@ -48,11 +48,11 @@ export class User implements UserResponse {
 	}
 
 	public get isAdmin(): boolean {
-		return this.user.isAdmin;
+		return this.user?.isAdmin;
 	}
 
 	public get firstName(): string {
-		return this.user.firstName;
+		return this.user?.firstName;
 	}
 
 	public set firstName(firstName: string) {
@@ -60,7 +60,7 @@ export class User implements UserResponse {
 	}
 
 	public get lastName(): string {
-		return this.user.lastName;
+		return this.user?.lastName;
 	}
 
 	public set lastName(lastName: string) {

@@ -68,9 +68,14 @@ export class NewDepartmentComponent implements OnInit {
 					this.snackBar.open('New department added successfully', 'done', {
 						duration: 3000,
 					});
+					this.dialogRef.close();
 				},
 				(error: HttpErrorResponse) => {
-					this.snackBar.open(error.error.Message, 'accept');
+					let errorMessage = error.error.errors;
+					if (error.status === 409) {
+						errorMessage = 'Департамент с таким названием уже существует';
+					}
+					this.snackBar.open(errorMessage, 'accept');
 					throw error;
 				}
 			);

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.0",
+    "version": "1.2.1",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -17,27 +17,9 @@
           "$ref": "#/components/parameters/securityToken"
         },
         {
-          "name": "name",
+          "name": "departmentid",
           "in": "query",
-          "description": "The part that the project name should contain.",
-          "schema": {
-            "type": "string"
-          },
-          "required": false
-        },
-        {
-          "name": "shortname",
-          "in": "query",
-          "description": "The part that the project shortname should contain.",
-          "schema": {
-            "type": "string"
-          },
-          "required": false
-        },
-        {
-          "name": "departmentname",
-          "in": "query",
-          "description": "The part that should be contained in the name of the department to which the project belongs.",
+          "description": "Find project with this departments id.",
           "schema": {
             "type": "string"
           },
@@ -46,7 +28,7 @@
         {
           "name": "skipCount",
           "in": "query",
-          "description": "Number of pages to skip.",
+          "description": "Number of entries to skip",
           "schema": {
             "type": "integer"
           },
@@ -55,7 +37,7 @@
         {
           "name": "takeCount",
           "in": "query",
-          "description": "Number of users on one page.",
+          "description": "Number of projects to take.",
           "schema": {
             "type": "integer"
           },
@@ -448,7 +430,7 @@
         {
           "name": "skipCount",
           "in": "query",
-          "description": "Number of pages to skip.",
+          "description": "Number of entries to skip.",
           "schema": {
             "type": "integer"
           },
@@ -457,7 +439,7 @@
         {
           "name": "takeCount",
           "in": "query",
-          "description": "Number of users on one page.",
+          "description": "Number of task properties to take.",
           "schema": {
             "type": "integer"
           },
@@ -569,7 +551,7 @@
         {
           "name": "skipCount",
           "in": "query",
-          "description": "Number of pages to skip.",
+          "description": "Number of entries to skip.",
           "schema": {
             "type": "integer"
           },
@@ -578,7 +560,7 @@
         {
           "name": "takeCount",
           "in": "query",
-          "description": "Number of users on one page.",
+          "description": "Number of task to take.",
           "schema": {
             "type": "integer"
           },
@@ -1025,7 +1007,7 @@
       },
       "ProjectStatusType": {
         "type": "string",
-        "description": "Project status.\nMay be empty, default value: 'Active'.\n\n,Enum numbers description\n* 0 - Active,\n* 1 - Failed,\n* 2 - Abandoned,\n* 3 - Rejected,\n* 4 - Closed,\n* 5 - Suspend",
+        "description": "Project status.\nMay be empty, default value: 'Active'.\n,Enum numbers description\n* 0 - Active,\n* 1 - Failed,\n* 2 - Abandoned,\n* 3 - Rejected,\n* 4 - Closed,\n* 5 - Suspend",
         "enum": [
           "Active",
           "Closed",
@@ -1458,6 +1440,7 @@
             "format": "uuid"
           },
           "TaskProperties": {
+            "type": "array",
             "$ref": "#/components/schemas/TaskProperty"
           }
         }

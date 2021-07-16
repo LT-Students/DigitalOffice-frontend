@@ -4,7 +4,6 @@
 /**
  * Project status.
  * May be empty, default value: 'Active'.
- *
  * ,Enum numbers description
  * * 0 - Active,
  * * 1 - Failed,

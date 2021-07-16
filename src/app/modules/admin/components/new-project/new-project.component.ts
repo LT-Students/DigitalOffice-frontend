@@ -15,7 +15,9 @@ import { ProjectUserRequest } from '@data/api/project-service/models/project-use
 import { UserRoleType } from '@data/api/project-service/models/user-role-type';
 import { ErrorResponse } from '@data/api/project-service/models/error-response';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
+import { RouteType } from '../../../../app-routing.module';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { DeleteDirectionComponent, ModalApprovalConfig } from './modals/delete-direction/delete-direction.component';
 import { Team, teamCards, TeamMember } from './team-cards';
@@ -41,6 +43,7 @@ export class NewProjectComponent implements OnInit {
 		private _netService: NetService,
 		private _snackBar: MatSnackBar,
 		private _location: Location,
+		private _router: Router,
 	) {
 		this.statuses = [
 			new ProjectStatus(ProjectStatusType.Active),
@@ -93,10 +96,15 @@ export class NewProjectComponent implements OnInit {
 		this._projectService.createProject(projectRequest).subscribe(
 			(result) => {
 				this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
+				this._router.navigate([`${RouteType.PROJECT}/${result.body.id}`]);
 			},
 			(error) => {
-				console.log(typeof error);
-				this._snackBar.open(error.message, 'Закрыть');
+				let errorMessage = error.error.errors;
+				if (error.status === 409) {
+					errorMessage = 'Проект с таким названием уже существует';
+				}
+				this._snackBar.open(errorMessage, 'accept');
+				throw error;
 			}
 		);
 	}

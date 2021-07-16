@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanLoad, Route, Router, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate } from '@angular/router';
+import { CanLoad, Route, Router, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AuthService } from '../services/auth.service';
@@ -8,7 +8,8 @@ import { AuthService } from '../services/auth.service';
 	providedIn: 'root',
 })
 export class AuthGuard implements CanLoad, CanActivate {
-	constructor(private authenticationService: AuthService, private router: Router) {}
+	constructor(private authenticationService: AuthService, private router: Router) {
+	}
 
 	canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
 		if (this.authenticationService.isAuthenticated()) {
@@ -21,14 +22,22 @@ export class AuthGuard implements CanLoad, CanActivate {
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		if (this.authenticationService.isAuthenticated()) {
+			if (route.routeConfig.path === 'login') {
+				this.router.navigate(['/user/dashboard'])
+				return false;
+			}
 			return true;
 		} else {
-			this.router.navigate(['/auth/login'], {
-				queryParams: {
-					return: state.url,
-				},
-			});
-			return false;
+			if (route.routeConfig.path === 'login') {
+				return true;
+			  } else {
+				this.router.navigate(['/auth/login'], {
+					queryParams: {
+						return: state.url,
+					},
+				});
+				return false;
+			  }
 		}
 	}
 }

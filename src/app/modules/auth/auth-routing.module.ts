@@ -6,6 +6,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { AuthGuard } from '@app/guards/auth.guard';
 
 const authRoutes: Routes = [
 	{
@@ -17,7 +18,7 @@ const authRoutes: Routes = [
 				pathMatch: 'full',
 				redirectTo: 'login',
 			},
-			{ path: 'login', component: LoginComponent },
+			{ path: 'login', component: LoginComponent, canActivate: [AuthGuard], },
 			{ path: 'forgotpassword', component: ForgotPasswordComponent },
 			{ path: 'firstlogin', component: SignupComponent },
 		]

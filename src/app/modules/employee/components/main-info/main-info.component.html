@@ -46,7 +46,7 @@
 								<p doText regularTextSize="small" color="gray">Пол</p>
 								<div doText>{{ user?.gender?.genderInRussian }}</div>
 							</ng-container>
-							<div *ngIf="user?.user?.role">
+							<div *ngIf="user?.user?.role?.name">
 								<p doText regularTextSize="small" color="gray">Роль</p>
 								<p doText>{{ user.user.role?.name }}</p>
 							</div>
@@ -98,8 +98,7 @@
 						<div class="employee-info__columns">
 							<div>
 								<div *ngFor="let communication of user?.communications">
-									<p doText regularTextSize="small" color="gray">E-mail</p>
-									<!--									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>-->
+									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>
 									<p doText>{{ communication.value }}</p>
 								</div>
 							</div>
@@ -269,7 +268,7 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__avatar">
-                    <do-profile-image [image]="employeeInfoForm.get('photo').value" size="l"></do-profile-image>
+					<do-profile-image [image]="employeeInfoForm.get('photo').value" size="l"></do-profile-image>
 					<label class="text_white employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
@@ -277,13 +276,14 @@
 						Обновить фото</label
 					>
 				</div>
-				<ng-container *ngIf="!user.isAdmin; else nameEdit">
+				<ng-container *ngIf="!user.isAdmin; else nameEdit"
+					>]
 					<h3 class="employee-info__name" doText color="dark_2">
 						{{ user.getFioFull() }}&nbsp;<span
 							matTooltipClass="tooltip"
-							[matTooltip]="user?.firstName + ' ' + (user.status.statusInRussian | lowercase)"
+							[matTooltip]="user?.firstName + ' ' + (user?.status?.statusInRussian | lowercase)"
 							[matTooltipPosition]="'above'"
-							>{{ user.status.emojiIcon }}</span
+							>{{ user?.status?.emojiIcon }}</span
 						>
 					</h3>
 				</ng-container>
@@ -391,25 +391,24 @@
 				<div class="additional__line bg-light_3"></div>
 				<div class="form__column">
 					<h4 doText color="dark_2">Контакты</h4>
-					<div class="employee-info__columns">
-						<div>
-							<div *ngFor="let communication of user?.communications">
-								<p doText regularTextSize="small" color="gray">E-mail</p>
-								<!--									<p doText regularTextSize="small" color="gray">{{ communication.type }}</p>-->
-								<p doText>{{ communication.value }}</p>
-							</div>
-						</div>
-					</div>
-					<!--					<div class="communications" formArrayName="communications">-->
-					<!--						<ng-container *ngFor="let communication of communications.controls; index as i">-->
-					<!--							<ng-container [formGroup]="communication">-->
-					<!--								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">-->
-					<!--									<mat-label>{{ communication.get('type').value }}</mat-label>-->
-					<!--									<input matInput placeholder="Введите данные" formControlName="value" required />-->
-					<!--								</mat-form-field>-->
-					<!--							</ng-container>-->
-					<!--						</ng-container>-->
-					<!--					</div>-->
+                    <div class="employee-info__columns">
+                        <div>
+                            <div *ngFor="let communication of user?.communications">
+                                <p doText regularTextSize="small" color="gray">{{ communication.type }}</p>
+                                <p doText>{{ communication.value }}</p>
+                            </div>
+                        </div>
+                    </div>
+<!--					<div class="communications" formArrayName="communications">-->
+<!--						<ng-container *ngFor="let communication of communications.controls; index as i">-->
+<!--							<ng-container [formGroup]="communication">-->
+<!--								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">-->
+<!--									<mat-label>{{ communication.get('type').value }}</mat-label>-->
+<!--									<input matInput placeholder="Введите данные" formControlName="value" required />-->
+<!--								</mat-form-field>-->
+<!--							</ng-container>-->
+<!--						</ng-container>-->
+<!--					</div>-->
 					<!--TODO: Change when api will be ready
          <do-input
              controlName='email'

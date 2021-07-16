@@ -125,7 +125,7 @@
                   Роль
               </label>
               <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
-                  <mat-select id="roleId" placeholder="Выберите роль" formControlName="roleId" required>
+                  <mat-select id="roleId" placeholder="Выберите роль" formControlName="roleId">
                       <mat-option *ngFor="let role of roles" [value]="role.id">
                           {{ role?.name }}
                       </mat-option>

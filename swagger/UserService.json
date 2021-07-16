@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.3",
+    "version": "1.4.0",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -212,7 +212,7 @@
         {
           "name": "skipCount",
           "in": "query",
-          "description": "Number of pages to skip.",
+          "description": "Number of entries to skip.",
           "schema": {
             "type": "integer"
           },
@@ -221,7 +221,7 @@
         {
           "name": "takeCount",
           "in": "query",
-          "description": "Number of users on one page.",
+          "description": "Number of users to take.",
           "schema": {
             "type": "integer"
           },
@@ -1071,6 +1071,214 @@
           }
         }
       }
+    },
+    "/communication/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Communication"
+        ],
+        "operationId": "createCommunication",
+        "description": "The method attempts to add the communication. The user must have the rights to add education to other users - Add/Edit/Remove users.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommunicationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict.\n* Position with this name already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+
+        }
+      }
+    },
+    "/communication/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "communicationId",
+          "in": "query",
+          "description": "Specific communication id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Communication"
+        ],
+        "operationId": "editCommunication",
+        "description": "Update communication properties. The user must have the rights to edit communication to other users - Add/Edit/Remove users.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditCommunicationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/communication/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "communicationId",
+          "in": "query",
+          "description": "Specific communication id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "delete": {
+        "tags": [
+          "Communication"
+        ],
+        "operationId": "removeCommunication",
+        "description": "Remove the specified communication by id. The user must have the rights to remove communication to other users - Add/Edit/Remove users.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1186,7 +1394,7 @@
             "description": "Minimum one communication with type Email must be added.",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CommunicationInfo"
+              "$ref": "#/components/schemas/CreateCommunicationRequest"
             }
           }
         }
@@ -1458,7 +1666,8 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "nullable": true
           },
           "Communications": {
             "type": "array",
@@ -2208,6 +2417,75 @@
               "/ReceivedAt",
               "/IsActive",
               "/Image"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "CreateCommunicationRequest": {
+        "type": "object",
+        "required": [
+          "Type",
+          "Value"
+        ],
+        "properties": {
+          "UserId": {
+            "description": "Unique user identifier. Is null if create with user creating",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true,
+            "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
+          },
+          "Type": {
+            "$ref": "#/components/schemas/CommunicationType"
+          },
+          "Value": {
+            "description": "Communication value",
+            "type": "string",
+            "example": "mail@mail.ru"
+          }
+        }
+      },
+      "EditCommunicationRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/value",
+            "value": {
+              "type": "string"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchCommunicationDocument"
+        }
+      },
+      "PatchCommunicationDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Type",
+              "/Value"
             ]
           },
           "value": {

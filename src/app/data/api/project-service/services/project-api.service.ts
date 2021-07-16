@@ -41,36 +41,24 @@ export class ProjectApiService extends BaseService {
   findProjects$Response(params: {
 
     /**
-     * The part that the project name should contain.
+     * Find project with this departments id.
      */
-    name?: string;
+    departmentid?: string;
 
     /**
-     * The part that the project shortname should contain.
-     */
-    shortname?: string;
-
-    /**
-     * The part that should be contained in the name of the department to which the project belongs.
-     */
-    departmentname?: string;
-
-    /**
-     * Number of pages to skip.
+     * Number of entries to skip
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of projects to take.
      */
     takeCount: number;
   }): Observable<StrictHttpResponse<FindResponseProjectInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindProjectsPath, 'get');
     if (params) {
-      rb.query('name', params.name, {});
-      rb.query('shortname', params.shortname, {});
-      rb.query('departmentname', params.departmentname, {});
+      rb.query('departmentid', params.departmentid, {});
       rb.query('skipCount', params.skipCount, {});
       rb.query('takeCount', params.takeCount, {});
     }
@@ -95,27 +83,17 @@ export class ProjectApiService extends BaseService {
   findProjects(params: {
 
     /**
-     * The part that the project name should contain.
+     * Find project with this departments id.
      */
-    name?: string;
+    departmentid?: string;
 
     /**
-     * The part that the project shortname should contain.
-     */
-    shortname?: string;
-
-    /**
-     * The part that should be contained in the name of the department to which the project belongs.
-     */
-    departmentname?: string;
-
-    /**
-     * Number of pages to skip.
+     * Number of entries to skip
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of projects to take.
      */
     takeCount: number;
   }): Observable<FindResponseProjectInfo> {

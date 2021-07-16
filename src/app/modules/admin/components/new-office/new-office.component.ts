@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OfficeApiService } from '@data/api/company-service/services/office-api.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
 	selector: 'do-new-office',
@@ -10,7 +13,12 @@ import { OfficeApiService } from '@data/api/company-service/services/office-api.
 export class NewOfficeComponent implements OnInit {
 	public officeForm: FormGroup;
 
-	constructor(private formBuilder: FormBuilder, private officeApiService: OfficeApiService) {}
+	constructor(
+		private formBuilder: FormBuilder, 
+		private officeApiService: OfficeApiService,
+		private snackBar: MatSnackBar,
+		private dialogRef: MatDialogRef<NewOfficeComponent>
+		) {}
 
 	ngOnInit(): void {
 		this.officeForm = this.formBuilder.group({
@@ -30,8 +38,16 @@ export class NewOfficeComponent implements OnInit {
 				},
 			})
 			.subscribe(
-				(res) => console.log(res),
-				(err) => console.log(err)
+				(res) => {
+					this.snackBar.open('New office added successfully', 'done', {
+						duration: 3000
+					});
+					this.dialogRef.close();
+				},
+				(error: HttpErrorResponse) => {
+					this.snackBar.open(error.error.Message, 'accept');
+					throw error;
+				}
 			);
 	}
 }

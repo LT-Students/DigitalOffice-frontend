@@ -41,12 +41,12 @@ export class RoleApiService extends BaseService {
   findRoles$Response(params: {
 
     /**
-     * Number of pages to skip.
+     * Number of entries to skip
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of roles on one page.
      */
     takeCount: number;
   }): Observable<StrictHttpResponse<RolesResponse>> {
@@ -79,12 +79,12 @@ export class RoleApiService extends BaseService {
   findRoles(params: {
 
     /**
-     * Number of pages to skip.
+     * Number of entries to skip
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of roles on one page.
      */
     takeCount: number;
   }): Observable<RolesResponse> {

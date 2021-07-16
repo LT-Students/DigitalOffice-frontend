@@ -9,7 +9,15 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/mat
 import { HttpErrorResponse } from '@angular/common/http';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { CommunicationType, DepartmentInfo, OperationResultResponse, PositionInfo, UserGender, UserStatus } from '@data/api/user-service/models';
+import {
+	CommunicationType,
+	CreateCommunicationRequest,
+	DepartmentInfo,
+	OperationResultResponse,
+	PositionInfo,
+	UserGender,
+	UserStatus,
+} from '@data/api/user-service/models';
 import { UserService } from '@app/services/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
@@ -151,7 +159,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	private _convertFormDataToCreateUserParams(): CreateUserRequest {
-		const communications: CommunicationInfo[] = [
+		const communications: CreateCommunicationRequest[] = [
 			{
 				type: CommunicationType.Email,
 				value: this.userForm.get('email').value as string,
