@@ -11,6 +11,7 @@
             <h3 doText underlined underlinedSize='sm'>Офисы</h3>
             <button mat-button color='accent' (click)='onAddOfficeClick()'>+ Добавить офис</button>
         </div>
+        <!-- Удалить, когда унифицированный список будет готов -->
         <!-- <div class='table__filters'>
             <div>
             <span doText color='gray'><mat-icon>search</mat-icon></span>
@@ -31,7 +32,10 @@
                 <td doText>{{office.name ? office.name : '—'}}</td>
             </tr>
         </table> -->
-        <app-list-component [data]="offices" [headings]="[['name', 'Название'], ['city', 'Город'], ['address', 'Адрес']]"></app-list-component>
+        <app-list-component 
+        [data]="offices" 
+        [headings]="[['city', 'Город'], ['address', 'Адрес'], ['name', 'Название']]"
+        ></app-list-component>
         <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
             (page)="onPageChange($event)"></mat-paginator>
     </div>

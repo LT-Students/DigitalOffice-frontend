@@ -35,7 +35,7 @@ export class OfficeListComponent implements OnInit {
 	}
 
 	public onAddOfficeClick(): void {
-		this.dialog.open(NewOfficeComponent);
+		this.dialog.open(NewOfficeComponent).afterClosed().subscribe(() => this._getOfficeList());
 	}
 
 	private _getOfficeList(): void {
