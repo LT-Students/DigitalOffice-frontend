@@ -391,16 +391,24 @@
 				<div class="additional__line bg-light_3"></div>
 				<div class="form__column">
 					<h4 doText color="dark_2">Контакты</h4>
-					<div class="communications" formArrayName="communications">
-						<ng-container *ngFor="let communication of communications.controls; index as i">
-							<ng-container [formGroup]="communication">
-								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">
-									<mat-label>{{ communication.get('type').value }}</mat-label>
-									<input matInput placeholder="Введите данные" formControlName="value" required />
-								</mat-form-field>
-							</ng-container>
-						</ng-container>
-					</div>
+                    <div class="employee-info__columns">
+                        <div>
+                            <div *ngFor="let communication of user?.communications">
+                                <p doText regularTextSize="small" color="gray">{{ communication.type }}</p>
+                                <p doText>{{ communication.value }}</p>
+                            </div>
+                        </div>
+                    </div>
+<!--					<div class="communications" formArrayName="communications">-->
+<!--						<ng-container *ngFor="let communication of communications.controls; index as i">-->
+<!--							<ng-container [formGroup]="communication">-->
+<!--								<mat-form-field class="mat-form-field__form-control" appearance="fill" floatLabel="always">-->
+<!--									<mat-label>{{ communication.get('type').value }}</mat-label>-->
+<!--									<input matInput placeholder="Введите данные" formControlName="value" required />-->
+<!--								</mat-form-field>-->
+<!--							</ng-container>-->
+<!--						</ng-container>-->
+<!--					</div>-->
 					<!--TODO: Change when api will be ready
          <do-input
              controlName='email'
