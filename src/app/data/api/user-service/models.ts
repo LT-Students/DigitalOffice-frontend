@@ -33,3 +33,6 @@ export { AddImageRequest } from './models/add-image-request';
 export { CreateCertificateRequest } from './models/create-certificate-request';
 export { EditCertificateRequest } from './models/edit-certificate-request';
 export { PatchCertificateDocument } from './models/patch-certificate-document';
+export { CreateCommunicationRequest } from './models/create-communication-request';
+export { EditCommunicationRequest } from './models/edit-communication-request';
+export { PatchCommunicationDocument } from './models/patch-communication-document';

@@ -13,7 +13,7 @@ export interface UserResponse {
   educations?: Array<EducationInfo>;
   errors?: Array<string>;
   projects?: Array<ProjectInfo>;
-  skills?: Array<string>;
+  skills?: null | Array<string>;
   user?: UserInfo;
 }
 

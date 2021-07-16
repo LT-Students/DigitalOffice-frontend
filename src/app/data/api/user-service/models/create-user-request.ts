@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { AddImageRequest } from './add-image-request';
-import { CommunicationInfo } from './communication-info';
+import { CreateCommunicationRequest } from './create-communication-request';
 import { UserGender } from './user-gender';
 import { UserStatus } from './user-status';
 export interface CreateUserRequest {
@@ -15,7 +15,7 @@ export interface CreateUserRequest {
   /**
    * Minimum one communication with type Email must be added.
    */
-  communications: Array<CommunicationInfo>;
+  communications: Array<CreateCommunicationRequest>;
 
   /**
    * Date of user birth.
