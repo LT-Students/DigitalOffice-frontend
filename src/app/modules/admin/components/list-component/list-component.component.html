@@ -1,8 +1,18 @@
-<table class='table__content' matSort>
-    <tr doText color="gray" regularTextSize='regular'>
-        <th *ngFor="let head of headings" [mat-sort-header]="head" class='table__heading'>{{head[1]}}</th>
-    </tr>
-    <tr *ngFor="let record of _orderedList" class='table__row'>
-        <td doText *ngFor="let item of record">{{item? item : '—'}}</td>
-    </tr>
-</table>
+<div class='card card_standard'>
+    <div class='table'>
+        <div class='table__header'>
+            <h3 doText underlined underlinedSize='sm'>{{title}}</h3>
+            <button mat-button color='accent' (click)="onAddButtonClick()">{{addButtonText}}</button>
+        </div>
+        <table class='table__content' matSort>
+            <tr doText color="gray" regularTextSize='regular'>
+                <th *ngFor="let head of headings" [mat-sort-header]="head" class='table__heading'>{{head[1]}}</th>
+            </tr>
+            <tr *ngFor="let record of _orderedList" class='table__row'>
+                <td doText *ngFor="let item of record">{{item? item : '—'}}</td>
+            </tr>
+        </table>
+        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
+            (page)="onPageChange($event)"></mat-paginator>
+    </div>
+</div>

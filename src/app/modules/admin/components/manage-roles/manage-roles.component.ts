@@ -11,37 +11,24 @@ import { NewRoleComponent } from '../new-role/new-role.component';
 	templateUrl: './manage-roles.component.html',
 	styleUrls: ['./manage-roles.component.scss'],
 })
-export class ManageRolesComponent implements OnInit {
+export class ManageRolesComponent {
 	public roles: RoleInfo[];
-
 	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
 
-	constructor(private dialog: MatDialog, private roleApiService: RoleApiService) {
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
+	constructor(public roleApiService: RoleApiService) {}
+
+	public onAddRoleClick({skipCount, takeCount, dialog}): void {
+		dialog
+		.open(NewRoleComponent)
+		.afterClosed()
+		.subscribe(() => this.getRoleList(skipCount, takeCount));
 	}
 
-	public ngOnInit(): void {
-		this._getRoleList();
-	}
-
-	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getRoleList();
-	}
-
-	public onAddRoleClick(): void {
-		this.dialog.open(NewRoleComponent);
-	}
-
-	private _getRoleList(): void {
-		this.roleApiService.findRoles({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
-			this.totalCount = res.totalCount;
-			this.roles = res.roles;
-		});
+	public getRoleList(skipCount = 0, takeCount = 10) {
+		return this.roleApiService.findRoles({skipCount, takeCount}).subscribe(data => {
+			console.log('Data from getList: ', data)
+			this.roles = data.roles;
+			this.totalCount = data.totalCount;
+		})
 	}
 }

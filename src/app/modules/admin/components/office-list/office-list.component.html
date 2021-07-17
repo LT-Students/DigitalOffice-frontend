@@ -1,42 +1,15 @@
 <div class='navigation' doText color='gray'>
     <a class='navigation__link' routerLink='/admin/dashboard'>Администрирование </a>
-    <span doText color='gray'>
-        <mat-icon>chevron_right</mat-icon>
-    </span>
+    <span doText color='gray'><mat-icon>chevron_right</mat-icon></span>
     <a class='navigation__link'>Управление офисами</a>
 </div>
-<div class='card card_standard'>
-    <div class='table'>
-        <div class='table__header'>
-            <h3 doText underlined underlinedSize='sm'>Офисы</h3>
-            <button mat-button color='accent' (click)='onAddOfficeClick()'>+ Добавить офис</button>
-        </div>
-        <!-- Удалить, когда унифицированный список будет готов -->
-        <!-- <div class='table__filters'>
-            <div>
-            <span doText color='gray'><mat-icon>search</mat-icon></span>
-            <mat-form-field appearance='fill' floatLabel='always'>
-                <input class='table__input' matInput placeholder='Поиск по названию'>
-            </mat-form-field>
-        </div>
-        </div> -->
-        <!-- <table class='table__content' matSort>
-            <tr doText color="gray" regularTextSize='regular'>
-                <th mat-sort-header='city' class='table__heading'>Город</th>
-                <th mat-sort-header='address' class='table__heading'>Адрес</th>
-                <th mat-sort-header='name' class='table__heading'>Название</th>
-            </tr>
-            <tr *ngFor="let office of offices" class='table__row'>
-                <td doText>{{office.city ? office.city: '-'}}</td>
-                <td doText>{{office.address ? office.address : '-'}}</td>
-                <td doText>{{office.name ? office.name : '—'}}</td>
-            </tr>
-        </table> -->
-        <app-list-component 
-        [data]="offices" 
-        [headings]="[['city', 'Город'], ['address', 'Адрес'], ['name', 'Название']]"
-        ></app-list-component>
-        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
-            (page)="onPageChange($event)"></mat-paginator>
-    </div>
-</div>
+<app-list-component 
+    [data]="offices"
+    [totalCount]="totalCount"
+    [title]="'Офисы'"
+    [addButtonText]="'+ Добавить офис'"
+    [headings]="[['city', 'Город'], ['address', 'Адрес'], ['name', 'Название']]"
+    [getDataList]="getOfficeList.bind(this)"
+    (onAddClick)="onAddOfficeClick($event)"
+    >
+</app-list-component>
