@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component } from '@angular/core';
 
 import { RoleInfo } from '@data/api/rights-service/models';
 import { RoleApiService } from '@data/api/rights-service/services';
-import { PageEvent } from '@angular/material/paginator';
 import { NewRoleComponent } from '../new-role/new-role.component';
 
 @Component({

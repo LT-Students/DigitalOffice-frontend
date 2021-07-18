@@ -109,6 +109,7 @@ export class PositionApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
+        console.log('R: ', r)
         return r as StrictHttpResponse<Array<PositionResponse>>;
       })
     );

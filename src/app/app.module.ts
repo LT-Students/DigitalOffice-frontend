@@ -26,6 +26,7 @@ import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { InstallerModule } from './modules/installer/installer.module';
+import { ListService } from './core/services/list.service'
 
 registerLocaleData(localeRu);
 
@@ -54,6 +55,7 @@ registerLocaleData(localeRu);
     AttendanceService,
     NetService,
     ProjectStore,
+    ListService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

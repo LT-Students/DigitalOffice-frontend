@@ -1,7 +1,8 @@
-import { Component, Input, Output, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ListService } from '@app/services/list.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list-component',
@@ -10,29 +11,21 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ListComponentComponent implements OnInit, OnChanges {
   /**
-   * onAddClick - событие для триггера функции в родителськой компоненте для создания сущности. 
-   */
-  @Output() public onAddClick = new EventEmitter();
-  /**
     * totalCount - общее количество записей.
     */
-  @Input() public totalCount: number;
+  public totalCount: number;
   /**
    * title - тайтл таблицы.
    */
-  @Input() public title: string;
+  public title: string;
   /**
    * addButtonText - текст для кнопки добавления сущности.
    */
-  @Input() public addButtonText: string;
+  public addButtonText: string;
   /**
    * data - записи для таблицы.
    */
-  @Input() public data: any[];
-  /**
-   * getDataList - коллбек для триггера родителя для получения записей.
-   */
-  @Input() public getDataList;
+  public data: any[];
   /**
    * headings - заголовки таблицы.
    * headings имеет вид: [['propertyName', 'propertyValue'], [...], [...], ...]
@@ -40,7 +33,7 @@ export class ListComponentComponent implements OnInit, OnChanges {
    * propertyValue - это текст, который отображается на месте заголовка.
    * Порядок заголовков соответствует порядку элементов headings.
    */
-  @Input() public headings: any[];
+  public headings: any[];
   /**
    * _orderedList - массив записей, состоящий из подмассивов, где элементы расположены в соответствие с порядком заголовков.
    * _orderedList имеет вид: [['heading1_value', 'heding2_value', 'heading3_value', ...], [...], [...], ...]
@@ -53,41 +46,56 @@ export class ListComponentComponent implements OnInit, OnChanges {
   public pageIndex: number;
   public tempData: any[];
 
-  constructor(private dialog: MatDialog) {
+  constructor(
+    private dialog: MatDialog,
+    private listService: ListService,
+    private activatedRoute: ActivatedRoute) {
     this._orderedList = [];
     this.tempData = [];
-    this.data = [];
     this.totalCount = 0;
     this.pageSize = 10;
     this.pageIndex = 0;
+    this.data = [];
   }
 
   public ngOnInit(): void {
-    this.getDataList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+    this._getData();
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.data?.currentValue !== changes.data?.previousValue) {
-      this._orderedList = [];
-      if (this.data && this.headings) {
-        this.data.forEach(item => {
-          this.tempData = [];
-          this.headings.forEach(head => {
-            this.tempData.push(item[`${head[0]}`]);
-          })
-          this._orderedList.push(this.tempData);
-        })
-      }
-    }
-  }
+  public ngOnChanges(changes: SimpleChanges): void { }
 
   public onAddButtonClick(): void {
-    this.onAddClick.emit({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize, dialog: this.dialog })
+    this.listService.openModal(this.dialog, this.activatedRoute.routeConfig.path).subscribe(() => {
+      this._getData()
+    });
   }
 
   public onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
-    this.getDataList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+    this._getData()
+  }
+
+  private _getData() {
+    this.listService.getData(this.pageIndex * this.pageSize, this.pageSize, this.activatedRoute.routeConfig.path).subscribe(
+      data => {
+        console.log('Data: ', data);
+        this.data = data.data;
+        this.totalCount = data.totalCount;
+        this.headings = data.headings;
+        this.title = data.title;
+        this.addButtonText = data.addButtonText;
+
+        this._orderedList = [];
+        if (this.data && this.headings) {
+          this.data.forEach(item => {
+            this.tempData = [];
+            this.headings.forEach(head => {
+              this.tempData.push(item[`${head[0]}`]);
+            })
+            this._orderedList.push(this.tempData);
+          })
+        }
+      })
   }
 }

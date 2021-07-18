@@ -8,6 +8,7 @@ import { ManageUsersComponent } from './components/manage-users/manage-users.com
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component';
+import { ListComponentComponent } from './components/list-component/list-component.component';
 
 
 const adminRoutes: Routes = [
@@ -15,9 +16,9 @@ const adminRoutes: Routes = [
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'new-project', component: NewProjectComponent },
 	{ path: 'manage-users', component: ManageUsersComponent },
-	{ path: 'manage-roles', component: ManageRolesComponent },
-	{ path: 'offices', component: OfficeListComponent },
-	{ path: 'positions', component: PositionListComponent },
+	{ path: 'manage-roles', component: ListComponentComponent },
+	{ path: 'offices', component: ListComponentComponent },
+	{ path: 'positions', component: ListComponentComponent },
 	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
 ];
 

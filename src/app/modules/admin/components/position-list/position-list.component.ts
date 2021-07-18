@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
 
 import { PositionApiService } from '@data/api/company-service/services';
-
 import { NewPositionComponent } from '../new-position/new-position.component';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 
@@ -12,39 +9,30 @@ import { PositionInfo } from '@data/api/company-service/models/position-info';
   templateUrl: './position-list.component.html',
   styleUrls: ['./position-list.component.scss']
 })
-export class PositionListComponent implements OnInit {
-  public positions: PositionInfo[];
-
+export class PositionListComponent {
+  public positions: PositionInfo[] = [];
   public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
 
-  constructor(private dialog: MatDialog, private positionApiService: PositionApiService) {
-    this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-    this.positions = [];
+  constructor(private positionApiService: PositionApiService) { }
+
+  public onAddPositionClick({skipCount, takeCount, dialog}): void {
+    dialog
+		.open(NewPositionComponent)
+		.afterClosed()
+		.subscribe(() => this.getPositionList(skipCount, takeCount));
   }
 
-  public ngOnInit(): void {
-    this.positionApiService.findPositions({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe(data => {
-      data.forEach(positionResponse => {
+  public getPositionList(skipCount = 0, takeCount = 10) {
+		return this.positionApiService.findPositions({skipCount, takeCount}).subscribe(data => {
+      this.positions = [];
+			console.log('Data from positionList: ', data)
+			data.forEach(positionResponse => {
         this.positions.push(positionResponse.info);
         //@ts-ignore TODO remove ts-ignore when API is fixed
-        this.totalCount = positionResponse.totalCount;
+        // this.totalCount = positionResponse.totalCount;
+        //when API is fixed use totalCount from data
+        this.totalCount = 50;
       })
-    })
-  }
-
-  public onAddPositionClick(): void {
-    this.dialog.open(NewPositionComponent);
-  }
-
-  public onPageChange(event: PageEvent): void {
-    this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-    this.positionApiService.findPositions({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe((data) => {
-			data.forEach(positionResponse => this.positions.push(positionResponse.info))
-		});
-  }
+		})
+	}
 }
