@@ -44,9 +44,10 @@ export class AuthService {
 		return token != null;
 	}
 
-	signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
+	signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse | UserResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
 			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
+            switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId)),
 			catchError((error: HttpErrorResponse) => {
 				switch (error.status) {
 					case 400:
