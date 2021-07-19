@@ -34,21 +34,6 @@ export class AuthInterceptor implements HttpInterceptor {
 		const request = this._addAuthorizationHeader(req, token);
 
 		return next.handle(request);
-		// return next.handle(request).pipe(
-		// 	catchError((err) => {
-		// 		if (err instanceof HttpErrorResponse && err.status === 401) {
-		// 			const refreshToken = this.localStorageService.get('refresh_token');
-		// 			if (refreshToken && token) {
-		// 				return this._refreshToken(req, next);
-		// 			}
-		// 			return this._logoutAndRedirect(err);
-		// 		}
-		// 		if (err instanceof HttpErrorResponse && err.status === 403) {
-		// 			return this._logoutAndRedirect(err);
-		// 		}
-		// 		return throwError(err);
-		// 	})
-		// );
 	}
 
 	private _addAuthorizationHeader(req: HttpRequest<any>, token: string): HttpRequest<any> {
