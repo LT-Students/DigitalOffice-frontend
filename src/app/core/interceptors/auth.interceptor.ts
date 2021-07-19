@@ -18,23 +18,33 @@ export class AuthInterceptor implements HttpInterceptor {
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		const token = this.localStorageService.get('access_token');
+
+		if (token && this._isTokenExpired(token)) {
+			const refreshToken = this.localStorageService.get('refresh_token');
+			if (this._isTokenExpired(refreshToken)) {
+				return this._logoutAndRedirect('Refresh token is expired');
+			}
+			return this._refreshToken(req, next);
+		}
+
 		const request = this._addAuthorizationHeader(req, token);
 
-		return next.handle(request).pipe(
-			catchError((err) => {
-				if (err instanceof HttpErrorResponse && err.status === 401) {
-					const refreshToken = this.localStorageService.get('refresh_token');
-					if (refreshToken && token) {
-						return this._refreshToken(req, next);
-					}
-					return this._logoutAndRedirect(err);
-				}
-				if (err instanceof HttpErrorResponse && err.status === 403) {
-					return this._logoutAndRedirect(err);
-				}
-				return throwError(err);
-			})
-		);
+		return next.handle(request);
+		// return next.handle(request).pipe(
+		// 	catchError((err) => {
+		// 		if (err instanceof HttpErrorResponse && err.status === 401) {
+		// 			const refreshToken = this.localStorageService.get('refresh_token');
+		// 			if (refreshToken && token) {
+		// 				return this._refreshToken(req, next);
+		// 			}
+		// 			return this._logoutAndRedirect(err);
+		// 		}
+		// 		if (err instanceof HttpErrorResponse && err.status === 403) {
+		// 			return this._logoutAndRedirect(err);
+		// 		}
+		// 		return throwError(err);
+		// 	})
+		// );
 	}
 
 	private _addAuthorizationHeader(req: HttpRequest<any>, token: string): HttpRequest<any> {
@@ -75,5 +85,12 @@ export class AuthInterceptor implements HttpInterceptor {
 				})
 			);
 		}
+	}
+
+	private _isTokenExpired(token: string): boolean {
+		const parsedToken = JSON.parse(atob(token.split('.')[1]));
+		const tokenExpiresAt = parsedToken.exp * 1000;
+
+		return tokenExpiresAt < Date.now();
 	}
 }
