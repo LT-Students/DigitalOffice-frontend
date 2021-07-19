@@ -3,7 +3,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 
 import { Router } from '@angular/router';
-import { catchError, filter, switchMap, take } from 'rxjs/operators';
+import { catchError, filter, switchMap, take, tap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
 
@@ -19,9 +19,13 @@ export class AuthInterceptor implements HttpInterceptor {
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		const token = this.localStorageService.get('access_token');
 
+		if (req.body?.refreshToken) {
+			return next.handle(req);
+		}
+
 		if (token && this._isTokenExpired(token)) {
 			const refreshToken = this.localStorageService.get('refresh_token');
-			if (this._isTokenExpired(refreshToken)) {
+			if (!refreshToken || this._isTokenExpired(refreshToken)) {
 				return this._logoutAndRedirect('Refresh token is expired');
 			}
 			return this._refreshToken(req, next);
@@ -91,6 +95,6 @@ export class AuthInterceptor implements HttpInterceptor {
 		const parsedToken = JSON.parse(atob(token.split('.')[1]));
 		const tokenExpiresAt = parsedToken.exp * 1000;
 
-		return tokenExpiresAt < Date.now();
+		return tokenExpiresAt < Date.now() - 1000 * 60 * 2;
 	}
 }

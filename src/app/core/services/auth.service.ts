@@ -53,21 +53,19 @@ export class AuthService {
 					case 403:
 					case 404: {
 						return throwError(error.error.Message);
-						break;
 					}
 					default: {
 						return throwError('Упс! Возникла ошибка');
-						break;
 					}
 				}
 			})
 		);
 	}
 
-	public refreshToken() {
-		const refreshToken = this.localStorageService.get('refresh_token');
+	public refreshToken(): Observable<AuthenticationResponse> {
+		const refreshToken: string = this.localStorageService.get('refresh_token');
 
-		return this.authApiService.refresh(refreshToken).pipe(
+		return this.authApiService.refresh({ body: { refreshToken: refreshToken } }).pipe(
 			tap((authResponse: AuthenticationResponse) => {
 				this._setCredentialsToLocalStorage(authResponse);
 			})
