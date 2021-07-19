@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './list-component.component.html',
   styleUrls: ['./list-component.component.scss']
 })
-export class ListComponentComponent implements OnInit, OnChanges {
+export class ListComponentComponent {
   /**
     * totalCount - общее количество записей.
     */
@@ -35,11 +35,6 @@ export class ListComponentComponent implements OnInit, OnChanges {
    */
   public headings: any[];
   /**
-   * _orderedList - массив записей, состоящий из подмассивов, где элементы расположены в соответствие с порядком заголовков.
-   * _orderedList имеет вид: [['heading1_value', 'heding2_value', 'heading3_value', ...], [...], [...], ...]
-   */
-  public _orderedList: any[];
-  /**
    * Вспомогательные переменные.
    */
   public pageSize: number;
@@ -50,7 +45,6 @@ export class ListComponentComponent implements OnInit, OnChanges {
     private dialog: MatDialog,
     private listService: ListService,
     private activatedRoute: ActivatedRoute) {
-    this._orderedList = [];
     this.tempData = [];
     this.totalCount = 0;
     this.pageSize = 10;
@@ -85,17 +79,6 @@ export class ListComponentComponent implements OnInit, OnChanges {
         this.headings = data.headings;
         this.title = data.title;
         this.addButtonText = data.addButtonText;
-
-        this._orderedList = [];
-        if (this.data && this.headings) {
-          this.data.forEach(item => {
-            this.tempData = [];
-            this.headings.forEach(head => {
-              this.tempData.push(item[`${head[0]}`]);
-            })
-            this._orderedList.push(this.tempData);
-          })
-        }
       })
   }
 }

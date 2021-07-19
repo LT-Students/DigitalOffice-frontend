@@ -8,7 +8,7 @@
             <tr doText color="gray" regularTextSize='regular'>
                 <th *ngFor="let head of headings" [mat-sort-header]="head" class='table__heading'>{{head[1]}}</th>
             </tr>
-            <tr *ngFor="let record of _orderedList" class='table__row'>
+            <tr *ngFor="let record of data" class='table__row'>
                 <td doText *ngFor="let item of record">{{item? item : '—'}}</td>
             </tr>
         </table>
