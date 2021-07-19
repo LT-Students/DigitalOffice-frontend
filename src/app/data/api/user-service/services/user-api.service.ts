@@ -248,12 +248,12 @@ export class UserApiService extends BaseService {
     departmentid?: string;
 
     /**
-     * Number of pages to skip.
+     * Number of entries to skip.
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of users to take.
      */
     takeCount: number;
   }): Observable<StrictHttpResponse<UsersResponse>> {
@@ -292,12 +292,12 @@ export class UserApiService extends BaseService {
     departmentid?: string;
 
     /**
-     * Number of pages to skip.
+     * Number of entries to skip.
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of users to take.
      */
     takeCount: number;
   }): Observable<UsersResponse> {

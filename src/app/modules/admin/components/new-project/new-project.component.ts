@@ -99,8 +99,12 @@ export class NewProjectComponent implements OnInit {
 				this._router.navigate([`${RouteType.PROJECT}/${result.body.id}`]);
 			},
 			(error) => {
-				console.log(typeof error);
-				this._snackBar.open(error.message, 'Закрыть');
+				let errorMessage = error.error.errors;
+				if (error.status === 409) {
+					errorMessage = 'Проект с таким названием уже существует';
+				}
+				this._snackBar.open(errorMessage, 'accept');
+				throw error;
 			}
 		);
 	}

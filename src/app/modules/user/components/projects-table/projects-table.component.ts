@@ -164,10 +164,7 @@ export class ProjectsTableComponent implements OnInit {
 		// this.suspendedProjects.push(suspended);
 		// this.closedProjects.push(closed);
 
-		this._projectService.getProjectList(this.pageIndex, this.pageSize).subscribe((result) => {
-			this.totalCount = result.totalCount;
-			this.projectList = result.body;
-		});
+		this._getProjectList();
 	}
 
 	// onSelect(selectChange) {
@@ -177,9 +174,7 @@ export class ProjectsTableComponent implements OnInit {
 	public onPageChange(event: PageEvent): void {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
-		this._projectService.getProjectList(this.pageIndex, this.pageSize).subscribe((data) => {
-			this.projectList = data.body;
-		});
+		this._getProjectList();
 	}
 
 	public onProjectClick(projectId: string): void {
@@ -188,5 +183,12 @@ export class ProjectsTableComponent implements OnInit {
 
 	public onAddProjectClick(): void {
 		this._router.navigate(['admin/new-project']);
+	}
+
+	private _getProjectList(): void {
+		this._projectService.getProjectList(this.pageIndex * this.pageSize, this.pageSize).subscribe((result) => {
+			this.totalCount = result.totalCount;
+			this.projectList = result.body;
+		});
 	}
 }

@@ -2,12 +2,12 @@
 /* eslint-disable */
 import { RoleInfo } from './role-info';
 export interface RolesResponse {
+  errors?: Array<string>;
+  roles?: Array<RoleInfo>;
 
   /**
    * Total number of all roles.
    */
-  count?: number;
-  errors?: Array<string>;
-  roles?: Array<RoleInfo>;
+  totalCount?: number;
 }
 
