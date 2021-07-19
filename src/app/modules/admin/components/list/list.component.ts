@@ -1,15 +1,16 @@
-import { Component, Input, Output, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 import { ListService } from '@app/services/list.service';
 import { ActivatedRoute } from '@angular/router';
 
+import { Heading } from './heading-model'
+
 @Component({
-  selector: 'app-list-component',
-  templateUrl: './list-component.component.html',
-  styleUrls: ['./list-component.component.scss']
+  selector: 'do-list-component',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss']
 })
-export class ListComponentComponent {
+export class ListComponent implements OnInit {
   /**
     * totalCount - общее количество записей.
     */
@@ -33,33 +34,40 @@ export class ListComponentComponent {
    * propertyValue - это текст, который отображается на месте заголовка.
    * Порядок заголовков соответствует порядку элементов headings.
    */
-  public headings: any[];
+  public headings: Heading[];
   /**
-   * Вспомогательные переменные.
+   * Переменные для пагинации.
    */
   public pageSize: number;
   public pageIndex: number;
-  public tempData: any[];
+  /**
+   * Содержит текущий путь url.
+   */
+  public path: string
 
   constructor(
-    private dialog: MatDialog,
     private listService: ListService,
     private activatedRoute: ActivatedRoute) {
-    this.tempData = [];
     this.totalCount = 0;
     this.pageSize = 10;
     this.pageIndex = 0;
     this.data = [];
+    this.path = this.activatedRoute.routeConfig.path;
   }
 
   public ngOnInit(): void {
+    /**
+     * Я пробовал сделать деструктуризацию сразу с this свойствами, но выдавало ошибку и не давало такое провернуть :( поэтому так.
+     */
+    const { title, addButtonText } = this.listService.getInterfaceText(this.path)
+    this.title = title;
+    this.addButtonText = addButtonText;
+    this.headings = this.listService.getHeadings(this.path)
     this._getData();
   }
 
-  public ngOnChanges(changes: SimpleChanges): void { }
-
   public onAddButtonClick(): void {
-    this.listService.openModal(this.dialog, this.activatedRoute.routeConfig.path).subscribe(() => {
+    this.listService.openModal(this.path).subscribe(() => {
       this._getData()
     });
   }
@@ -73,12 +81,8 @@ export class ListComponentComponent {
   private _getData() {
     this.listService.getData(this.pageIndex * this.pageSize, this.pageSize, this.activatedRoute.routeConfig.path).subscribe(
       data => {
-        console.log('Data: ', data);
         this.data = data.data;
         this.totalCount = data.totalCount;
-        this.headings = data.headings;
-        this.title = data.title;
-        this.addButtonText = data.addButtonText;
       })
   }
 }

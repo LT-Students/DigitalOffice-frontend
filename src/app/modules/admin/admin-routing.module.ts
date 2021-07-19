@@ -5,10 +5,10 @@ import { RouteType } from '../../app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
-import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
-import { OfficeListComponent } from './components/office-list/office-list.component';
-import { PositionListComponent } from './components/position-list/position-list.component';
-import { ListComponentComponent } from './components/list-component/list-component.component';
+// import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
+// import { OfficeListComponent } from './components/office-list/office-list.component';
+// import { PositionListComponent } from './components/position-list/position-list.component';
+import { ListComponent } from './components/list/list.component';
 
 
 const adminRoutes: Routes = [
@@ -16,9 +16,9 @@ const adminRoutes: Routes = [
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'new-project', component: NewProjectComponent },
 	{ path: 'manage-users', component: ManageUsersComponent },
-	{ path: 'manage-roles', component: ListComponentComponent },
-	{ path: 'offices', component: ListComponentComponent },
-	{ path: 'positions', component: ListComponentComponent },
+	{ path: 'manage-roles', component: ListComponent },
+	{ path: 'offices', component: ListComponent },
+	{ path: 'positions', component: ListComponent },
 	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
 ];
 

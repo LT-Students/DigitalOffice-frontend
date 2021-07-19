@@ -1,81 +1,152 @@
 import { Injectable } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { FindOfficesResponse } from "@data/api/company-service/models";
-import { CompanyApiService } from "@data/api/company-service/services";
+import { CompanyApiService, PositionApiService } from "@data/api/company-service/services";
 import { RolesResponse } from "@data/api/rights-service/models";
 import { RoleApiService } from "@data/api/rights-service/services";
 import { NewOfficeComponent } from "src/app/modules/admin/components/new-office/new-office.component";
 import { NewRoleComponent } from "src/app/modules/admin/components/new-role/new-role.component";
+import { ModalService } from "./modal.service";
+import { Heading } from "src/app/modules/admin/components/list/heading-model";
+import { NewPositionComponent } from "src/app/modules/admin/components/new-position/new-position.component";
+
+
+const OFFICES = 'offices';
+const POSITIONS = 'positions'
+const MANAGE_ROLES = 'manage-roles'
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class ListService {
-    private orderedList: any[] = [];
-    private headings: any[] = [];
+    // TODO: добавить ещё типов для других используемых интерфейсов
+    private orderedList: string[][] = [];
+    private headings: Heading[] = [];
 
     constructor(
         private companyApiService: CompanyApiService,
-        private roleApiService: RoleApiService
+        private roleApiService: RoleApiService,
+        private positionApiService: PositionApiService,
+        private modalService: ModalService
     ) { }
 
-    private getData$(skipCount: number, takeCount: number, instance): Observable<FindOfficesResponse | RolesResponse | any> {
+    public getHeadings(instance: string) {
         switch (instance) {
-            case 'offices': {
-                this.headings = [['city', 'Город'], ['address', 'Адрес'], ['name', 'Название']]
+            case OFFICES: {
+                this.headings = [
+                    { headingProperty: 'city', headingName: 'Город' },
+                    { headingProperty: 'address', headingName: 'Адрес' },
+                    { headingProperty: 'name', headingName: 'Название' }
+                ]
+                return this.headings
+            }
+            case MANAGE_ROLES: {
+                this.headings = [
+                    { headingProperty: 'name', headingName: 'Название' },
+                    { headingProperty: 'description', headingName: 'Описание' }
+                ]
+                return this.headings
+            }
+            case POSITIONS: {
+                this.headings = [
+                    { headingProperty: 'name', headingName: 'Название' },
+                    { headingProperty: 'description', headingName: 'Описание' }
+                ]
+                return this.headings
+            }
+            default: return this.headings;
+        }
+    }
+
+    public getInterfaceText(instance: string) {
+        switch (instance) {
+            case OFFICES: {
+                return {
+                    title: 'Офисы',
+                    addButtonText: '+ Добавить офис'
+                }
+            }
+            case MANAGE_ROLES: {
+                return {
+                    title: 'Роли',
+                    addButtonText: '+ Добавить роль'
+                }
+            }
+            case POSITIONS: {
+                return {
+                    title: 'Должности',
+                    addButtonText: '+ Добавить должность'
+                }
+            }
+            default: {
+                return {
+                    title: '',
+                    addButtonText: ''
+                }
+            }
+        }
+    }
+
+    private getData$(skipCount: number, takeCount: number, instance: string): Observable<FindOfficesResponse | RolesResponse | any> {
+        switch (instance) {
+            case OFFICES: {
                 return this.companyApiService.findOffices({ skipCount, takeCount })
                     .pipe(
                         map(res => (
                             {
                                 data: this.orderData(res.offices),
                                 totalCount: res.totalCount,
-                                headings: this.headings,
-                                title: 'Офисы',
-                                addButtonText: '+ Добавить офис'
                             }))
                     )
             }
-            case 'manage-roles': {
-                this.headings = [['name', 'Название'], ['description', 'Описание']]
+            case MANAGE_ROLES: {
                 return this.roleApiService.findRoles({ skipCount, takeCount })
                     .pipe(
                         map((res) => (
                             {
                                 data: this.orderData(res.roles),
                                 totalCount: res.totalCount,
-                                headings: this.headings,
-                                title: 'Роли',
-                                addButtonText: '+ Добавить роль'
                             }))
+                    )
+            }
+            case POSITIONS: {
+                return this.positionApiService.findPositions({ skipCount, takeCount })
+                    .pipe(
+                        map((res) => {
+                            let positions = []
+                            res.forEach(position => positions.push(position.info))
+                            return {
+                                data: this.orderData(positions),
+                                //@ts-ignore
+                                totalCount: res.totalCount
+                            }
+                        })
                     )
             }
             default: return of(
                 {
                     data: [],
                     totalCount: 0,
-                    headings: [],
-                    title: '',
-                    addButtonText: ''
                 })
         }
     }
 
     private orderData(data) {
-        let tempData: any[];
+        console.log('DATA: ', data)
+        let tempData: string[];
         this.orderedList = [];
         if (data && this.headings) {
             data.forEach(item => {
                 tempData = [];
-                this.headings.forEach(head => {
-                    tempData.push(item[`${head[0]}`]);
-                })
+                this.headings.forEach(head => tempData.push(item[head.headingProperty]));
                 this.orderedList.push(tempData);
             })
         }
 
+        console.log('ORDERED: ', this.orderedList)
         return this.orderedList;
     }
 
@@ -83,13 +154,16 @@ export class ListService {
         return this.getData$(skipCount, takeCount, instance)
     }
 
-    public openModal(dialog: MatDialog, instance: string): Observable<any> {
+    public openModal(instance: string): Observable<any> {
         switch (instance) {
-            case 'offices': {
-                return dialog.open(NewOfficeComponent).afterClosed()
+            case OFFICES: {
+                return this.modalService.openModal(NewOfficeComponent).afterClosed();
             }
-            case 'manage-roles': {
-                return dialog.open(NewRoleComponent).afterClosed()
+            case MANAGE_ROLES: {
+                return this.modalService.openModal(NewRoleComponent).afterClosed();
+            }
+            case POSITIONS: {
+                return this.modalService.openModal(NewPositionComponent).afterClosed();
             }
         }
     }
