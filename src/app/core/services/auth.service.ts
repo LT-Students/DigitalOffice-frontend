@@ -13,6 +13,7 @@ import { UserService } from '@app/services/user.service';
 import { UserResponse } from '@data/api/user-service/models/user-response';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LocalStorageService } from './local-storage.service';
+import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -46,11 +47,15 @@ export class AuthService {
 
 	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<UserResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
-			tap((credentialsResponse: CredentialsResponse) => {
+			// tap((credentialsResponse: CredentialsResponse) => {
+			// 	console.log(credentialsResponse)
+			// 	this._setCredentialsToLocalStorage(credentialsResponse);
+			// }),
+			switchMap((response: OperationResultResponse) => {
+				const credentialsResponse = response.body;
+				console.log(credentialsResponse, response);
 				this._setCredentialsToLocalStorage(credentialsResponse);
-			}),
-			switchMap((authResponse: CredentialsResponse) => {
-				return this._userService.getUserSetCredentials(authResponse.userId);
+				return this._userService.getUserSetCredentials(credentialsResponse.userId);
 			}),
 			catchError((error: HttpErrorResponse) => {
 				switch (error.status) {
