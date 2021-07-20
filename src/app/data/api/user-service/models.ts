@@ -2,7 +2,6 @@ export { CreateUserRequest } from './models/create-user-request';
 export { CreateCredentialsRequest } from './models/create-credentials-request';
 export { EditUserRequest } from './models/edit-user-request';
 export { PatchUserDocument } from './models/patch-user-document';
-export { CredentialsResponse } from './models/credentials-response';
 export { UsersResponse } from './models/users-response';
 export { UserResponse } from './models/user-response';
 export { ImageInfo } from './models/image-info';

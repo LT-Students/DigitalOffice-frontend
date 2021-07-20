@@ -487,22 +487,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "Response object for action operations.",
-                  "type": "object",
-                  "properties": {
-                    "Body": {
-                      "$ref": "#/components/schemas/CredentialsResponse"
-                    },
-                    "Status": {
-                      "$ref": "#/components/schemas/OperationResultStatusType"
-                    },
-                    "Errors": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
