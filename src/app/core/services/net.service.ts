@@ -47,8 +47,12 @@ export class NetService {
 		return this._companyApiService.findOffices({ skipCount: 0, takeCount: 50 });
 	}
 
-	public getDepartment(departmentId: string): Observable<OperationResultResponseDepartmentInfo> {
-		return this._departmentApiService.getDepartment({ departmentid: departmentId, includeusers: true });
+	public getDepartment(params: {
+		departmentid: string;
+		includeusers?: boolean;
+		includeprojects?: boolean;
+	}): Observable<OperationResultResponseDepartmentInfo> {
+		return this._departmentApiService.getDepartment(params);
 	}
 
 	public generatePassword(): Observable<string> {
