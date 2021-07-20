@@ -87,9 +87,11 @@ export class ListComponent implements OnInit {
     switch (this.listType) {
       case 'users': {
         this._router.navigate([`/user/${record.id}`])
+        return;
       }
       case 'departments': {
         this._router.navigate([`/department/${record.id}`])
+        return;
       }
     }
   }
