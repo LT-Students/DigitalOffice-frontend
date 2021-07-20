@@ -15,7 +15,7 @@ const adminRoutes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'dashboard' },
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'new-project', component: NewProjectComponent },
-	{ path: 'manage-users', component: ManageUsersComponent },
+	{ path: 'manage-users', component: ListComponent },
 	{ path: 'manage-roles', component: ListComponent },
 	{ path: 'offices', component: ListComponent },
 	{ path: 'positions', component: ListComponent },
@@ -23,7 +23,7 @@ const adminRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(adminRoutes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(adminRoutes)],
+	exports: [RouterModule]
 })
 export class AdminRoutingModule { }

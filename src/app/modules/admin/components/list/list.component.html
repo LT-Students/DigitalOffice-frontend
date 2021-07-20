@@ -9,8 +9,26 @@
                 <th *ngFor="let head of headings" [mat-sort-header]="head" class='table__heading'>{{head.headingName}}
                 </th>
             </tr>
-            <tr *ngFor="let record of data" class='table__row'>
-                <td doText *ngFor="let item of record">{{item? item : '—'}}</td>
+            <tr *ngFor="let record of list.data" class='table__row' (click)="showMoreInfo(record, list.type)">
+                <td doText *ngFor="let item of record.data">
+                    <div [ngSwitch]='item.type'>
+                        <div *ngSwitchCase="'user'">
+                            <do-profile-image [image]='item?.avatar'></do-profile-image>
+                            <p>{{(item && item.mainInfo) ? item.mainInfo : '—'}}</p>
+                            <p>{{(item && item.userShortInfo)? item.userShortInfo : '—'}}</p>
+                        </div>
+                        <!-- ТУТ НАДО БУДЕТ СТИЛИ ДОБАВИТЬ -->
+                        <p *ngSwitchCase="'status'">
+                            <ng-container *ngIf="item?.status; else archived">
+                                <p>Активен</p>
+                            </ng-container>
+                        </p>
+                        <p *ngSwitchDefault>{{(item && item.mainInfo) ? item.mainInfo : '—'}}</p>
+                        <ng-template #archived>
+                            <p class="table__archived" doText color="light_1">В архиве</p>
+                        </ng-template>
+                    </div>
+                </td>
             </tr>
         </table>
         <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"

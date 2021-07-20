@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ListService } from '@app/services/list.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Heading } from './heading-model'
 
@@ -26,7 +26,7 @@ export class ListComponent implements OnInit {
   /**
    * data - записи для таблицы.
    */
-  public data: any[];
+  public list: any;
   /**
    * headings - заголовки таблицы.
    * headings имеет вид: [['propertyName', 'propertyValue'], [...], [...], ...]
@@ -47,11 +47,12 @@ export class ListComponent implements OnInit {
 
   constructor(
     private listService: ListService,
-    private activatedRoute: ActivatedRoute) {
+    private activatedRoute: ActivatedRoute,
+    private _router: Router) {
     this.totalCount = 0;
     this.pageSize = 10;
     this.pageIndex = 0;
-    this.data = [];
+    this.list = [];
     this.path = this.activatedRoute.routeConfig.path;
   }
 
@@ -72,6 +73,14 @@ export class ListComponent implements OnInit {
     });
   }
 
+  public showMoreInfo(record, listType) {
+    switch (listType) {
+      case 'users': {
+        this._router.navigate([`/user/${record.id}`])
+      }
+    }
+  }
+
   public onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
     this.pageIndex = event.pageIndex;
@@ -81,7 +90,9 @@ export class ListComponent implements OnInit {
   private _getData() {
     this.listService.getData(this.pageIndex * this.pageSize, this.pageSize, this.activatedRoute.routeConfig.path).subscribe(
       data => {
-        this.data = data.data;
+        console.log('ДАТАЧКА: ', data)
+        this.list = { data: data.data, type: data.type };
+        console.log('LIST: ', this.list)
         this.totalCount = data.totalCount;
       })
   }

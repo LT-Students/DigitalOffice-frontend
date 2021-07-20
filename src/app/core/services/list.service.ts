@@ -11,25 +11,26 @@ import { NewRoleComponent } from "src/app/modules/admin/components/new-role/new-
 import { ModalService } from "./modal.service";
 import { Heading } from "src/app/modules/admin/components/list/heading-model";
 import { NewPositionComponent } from "src/app/modules/admin/components/new-position/new-position.component";
-
+import { UserService } from '@app/services/user.service'
 
 const OFFICES = 'offices';
 const POSITIONS = 'positions'
 const MANAGE_ROLES = 'manage-roles'
-
+const MANAGE_USERS = 'manage-users'
 
 @Injectable({
     providedIn: 'root'
 })
 export class ListService {
     // TODO: добавить ещё типов для других используемых интерфейсов
-    private orderedList: string[][] = [];
+    private orderedList: any[] = [];
     private headings: Heading[] = [];
 
     constructor(
         private companyApiService: CompanyApiService,
         private roleApiService: RoleApiService,
         private positionApiService: PositionApiService,
+        private userApiService: UserService,
         private modalService: ModalService
     ) { }
 
@@ -37,25 +38,35 @@ export class ListService {
         switch (instance) {
             case OFFICES: {
                 this.headings = [
-                    { headingProperty: 'city', headingName: 'Город' },
-                    { headingProperty: 'address', headingName: 'Адрес' },
-                    { headingProperty: 'name', headingName: 'Название' }
-                ]
-                return this.headings
+                    { headingProperty: 'city', headingName: 'Город', type: 'default' },
+                    { headingProperty: 'address', headingName: 'Адрес', type: 'default' },
+                    { headingProperty: 'name', headingName: 'Название', type: 'default' }
+                ];
+                return this.headings;
             }
             case MANAGE_ROLES: {
                 this.headings = [
-                    { headingProperty: 'name', headingName: 'Название' },
-                    { headingProperty: 'description', headingName: 'Описание' }
-                ]
-                return this.headings
+                    { headingProperty: 'name', headingName: 'Название', type: 'default' },
+                    { headingProperty: 'description', headingName: 'Описание', type: 'default' }
+                ];
+                return this.headings;
             }
             case POSITIONS: {
                 this.headings = [
-                    { headingProperty: 'name', headingName: 'Название' },
-                    { headingProperty: 'description', headingName: 'Описание' }
-                ]
-                return this.headings
+                    { headingProperty: 'name', headingName: 'Название', type: 'default' },
+                    { headingProperty: 'description', headingName: 'Описание', type: 'default' }
+                ];
+                return this.headings;
+            }
+            case MANAGE_USERS: {
+                this.headings = [
+                    { headingProperty: 'name', headingName: 'Имя', type: 'user' },
+                    { headingProperty: 'department', headingName: 'Департамент', type: 'default' },
+                    { headingProperty: 'role', headingName: 'Роль', type: 'default' },
+                    { headingProperty: 'rate', headingName: 'Ставка', type: 'default' },
+                    { headingProperty: 'status', headingName: 'Статус', type: 'status' }
+                ];
+                return this.headings;
             }
             default: return this.headings;
         }
@@ -67,25 +78,31 @@ export class ListService {
                 return {
                     title: 'Офисы',
                     addButtonText: '+ Добавить офис'
-                }
+                };
             }
             case MANAGE_ROLES: {
                 return {
                     title: 'Роли',
                     addButtonText: '+ Добавить роль'
-                }
+                };
             }
             case POSITIONS: {
                 return {
                     title: 'Должности',
                     addButtonText: '+ Добавить должность'
-                }
+                };
+            }
+            case MANAGE_USERS: {
+                return {
+                    title: 'Сотрудники',
+                    addButtonText: '+ Добавить сотрудника'
+                };
             }
             default: {
                 return {
                     title: '',
                     addButtonText: ''
-                }
+                };
             }
         }
     }
@@ -99,6 +116,7 @@ export class ListService {
                             {
                                 data: this.orderData(res.offices),
                                 totalCount: res.totalCount,
+                                type: 'offices'
                             }))
                     )
             }
@@ -109,6 +127,7 @@ export class ListService {
                             {
                                 data: this.orderData(res.roles),
                                 totalCount: res.totalCount,
+                                type: 'roles'
                             }))
                     )
             }
@@ -121,7 +140,29 @@ export class ListService {
                             return {
                                 data: this.orderData(positions),
                                 //@ts-ignore
-                                totalCount: res.totalCount
+                                totalCount: res.totalCount,
+                                type: 'positions'
+                            }
+                        })
+                    )
+            }
+            case MANAGE_USERS: {
+                return this.userApiService.getUsers(skipCount, takeCount)
+                    .pipe(
+                        map((res) => {
+                            return {
+                                data: this.orderData(res.users.map(user => ({
+                                    ...user,
+                                    name: user.firstName,
+                                    department: user.department?.name,
+                                    role: user.role?.name,
+                                    rate: user.rate,
+                                    status: user.isActive,
+                                    shortInfo: user.about,
+                                    avatar: user.avatar
+                                }))),
+                                totalCount: res.totalCount,
+                                type: 'users'
                             }
                         })
                     )
@@ -136,13 +177,23 @@ export class ListService {
 
     private orderData(data) {
         console.log('DATA: ', data)
-        let tempData: string[];
+        let tempData: any[];
         this.orderedList = [];
+        console.log('headings: ', this.headings)
         if (data && this.headings) {
             data.forEach(item => {
+                console.log('item: ', item)
                 tempData = [];
-                this.headings.forEach(head => tempData.push(item[head.headingProperty]));
-                this.orderedList.push(tempData);
+                this.headings.forEach(head => tempData.push(
+                    {
+                        ...item,
+                        mainInfo: item[head.headingProperty],
+                        shortInfo: item.shortInfo,
+                        avatar: item.avatar,
+                        status: item.status,
+                        type: head.type
+                    }));
+                this.orderedList.push({ data: tempData, id: item.id });
             })
         }
 
@@ -150,7 +201,7 @@ export class ListService {
         return this.orderedList;
     }
 
-    public getData(skipCount: number, takeCount: number, instance: string): Observable<{ data, totalCount, headings, title, addButtonText }> {
+    public getData(skipCount: number, takeCount: number, instance: string): Observable<{ data, totalCount, type }> {
         return this.getData$(skipCount, takeCount, instance)
     }
 
