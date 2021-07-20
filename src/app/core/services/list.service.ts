@@ -14,6 +14,7 @@ import { NewPositionComponent } from "src/app/modules/admin/components/new-posit
 import { UserService } from '@app/services/user.service'
 import { NewEmployeeComponent } from "src/app/modules/admin/components/new-employee/new-employee.component";
 import { NetService } from "./net.service";
+import { NewDepartmentComponent } from "src/app/modules/admin/components/new-department/new-department.component";
 
 const OFFICES = 'offices';
 const POSITIONS = 'positions'
@@ -277,6 +278,9 @@ export class ListService {
             }
             case MANAGE_USERS: {
                 return this.modalService.openModal(NewEmployeeComponent).afterClosed();
+            }
+            case DEPARTMENTS: {
+                return this.modalService.openModal(NewDepartmentComponent).afterClosed();
             }
         }
     }
