@@ -44,6 +44,10 @@ export class ListComponent implements OnInit {
    * Содержит текущий путь url.
    */
   public path: string
+  /**
+   * описывает текущий тип сущностей (офис, пользователь, роли и т.д.)
+   */
+  public listType: string
 
   constructor(
     private listService: ListService,
@@ -57,13 +61,11 @@ export class ListComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    /**
-     * Я пробовал сделать деструктуризацию сразу с this свойствами, но выдавало ошибку и не давало такое провернуть :( поэтому так.
-     */
     const { title, addButtonText } = this.listService.getInterfaceText(this.path)
     this.title = title;
     this.addButtonText = addButtonText;
     this.headings = this.listService.getHeadings(this.path)
+    this.listType = this.listService.getListType(this.path);
     this._getData();
   }
 
@@ -73,10 +75,21 @@ export class ListComponent implements OnInit {
     });
   }
 
-  public showMoreInfo(record, listType) {
-    switch (listType) {
+  public isActive() {
+    switch (this.listType) {
+      case 'users': return true;
+      case 'departments': return true;
+      default: return false;
+    }
+  }
+
+  public showMoreInfo(record) {
+    switch (this.listType) {
       case 'users': {
         this._router.navigate([`/user/${record.id}`])
+      }
+      case 'departments': {
+        this._router.navigate([`/department/${record.id}`])
       }
     }
   }
@@ -90,9 +103,7 @@ export class ListComponent implements OnInit {
   private _getData() {
     this.listService.getData(this.pageIndex * this.pageSize, this.pageSize, this.activatedRoute.routeConfig.path).subscribe(
       data => {
-        console.log('ДАТАЧКА: ', data)
-        this.list = { data: data.data, type: data.type };
-        console.log('LIST: ', this.list)
+        this.list = data.list;
         this.totalCount = data.totalCount;
       })
   }
