@@ -10,9 +10,10 @@ import { CreateUserRequest } from '@data/api/user-service/models/create-user-req
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { AddImageRequest, EditUserRequest, OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
+import { OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Moment } from 'moment';
+import { UserGet } from '@app/models/user-get.model';
 import { userResponse } from '../../modules/employee/mock';
 
 @Injectable()
@@ -23,23 +24,22 @@ export class UserService {
 		this.selectedUser = new BehaviorSubject<UserResponse>(null);
 	}
 
-	public getUser(userId: string, includeAll = false): Observable<UserResponse> {
-		if (includeAll) {
-			return this.userApiService.getUser({
-				userId: userId,
-				includedepartment: true,
-				includeposition: true,
-				includeoffice: true,
-				includecommunications: true,
-				includerole: true,
-				includeimages: true,
-			});
-		}
-		return this.userApiService.getUser({ userId: userId });
+	public getUser(params: UserGet): Observable<UserResponse> {
+		return this.userApiService.getUser(params);
 	}
 
 	public getUserSetCredentials(userId: string): Observable<UserResponse> {
-		return this.getUser(userId, true).pipe(tap(this._setUser.bind(this)));
+		const params: UserGet = {
+			userId: userId,
+			includedepartment: true,
+			includeposition: true,
+			includeoffice: true,
+			includecommunications: true,
+			includerole: true,
+			includeimages: true,
+		};
+
+		return this.getUser(params).pipe(tap(this._setUser.bind(this)));
 	}
 
 	public getUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<UsersResponse> {
