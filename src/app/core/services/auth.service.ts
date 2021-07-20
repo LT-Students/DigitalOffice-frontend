@@ -26,25 +26,25 @@ export class AuthService {
 		private _router: Router
 	) {}
 
-	login(authenticationRequest: AuthenticationRequest): Observable<UserResponse> {
+	public login(authenticationRequest: AuthenticationRequest): Observable<UserResponse> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
 			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
 			switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId))
 		);
 	}
 
-	logout() {
+	public logout(): void {
 		this._removeCredentialsFromLocalStorage();
 		this._router.navigate(['/auth/login']);
 	}
 
-	isAuthenticated(): boolean {
+	public isAuthenticated(): boolean {
 		const token = this.localStorageService.get('access_token');
 
 		return token != null;
 	}
 
-	signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
+	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
 			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
 			catchError((error: HttpErrorResponse) => {
@@ -53,23 +53,33 @@ export class AuthService {
 					case 403:
 					case 404: {
 						return throwError(error.error.Message);
-						break;
 					}
 					default: {
 						return throwError('Упс! Возникла ошибка');
-						break;
 					}
 				}
 			})
 		);
 	}
 
-	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse) {
-		this.localStorageService.set('access_token', authenticationInfo.accessToken);
+	public refreshToken(): Observable<AuthenticationResponse> {
+		const refreshToken: string = this.localStorageService.get('refresh_token');
+
+		return this.authApiService.refresh({ body: { refreshToken: refreshToken } }).pipe(
+			tap((authResponse: AuthenticationResponse) => {
+				this._setCredentialsToLocalStorage(authResponse);
+			})
+		);
 	}
 
-	private _removeCredentialsFromLocalStorage() {
+	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse): void {
+		this.localStorageService.set('access_token', authenticationInfo.accessToken);
+		this.localStorageService.set('refresh_token', authenticationInfo.refreshToken);
+	}
+
+	private _removeCredentialsFromLocalStorage(): void {
 		this.localStorageService.remove('access_token');
+		this.localStorageService.remove('refresh_token');
 		this.localStorageService.remove('user');
 	}
 }
