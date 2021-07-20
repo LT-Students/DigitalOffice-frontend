@@ -11,7 +11,9 @@ import { map, filter } from 'rxjs/operators';
 
 import { ChangePasswordRequest } from '../models/change-password-request';
 import { CreateCredentialsRequest } from '../models/create-credentials-request';
+import { CredentialsResponse } from '../models/credentials-response';
 import { OperationResultResponse } from '../models/operation-result-response';
+import { OperationResultStatusType } from '../models/operation-result-status-type';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +41,7 @@ export class CredentialsApiService extends BaseService {
    */
   createCredentials$Response(params?: {
     body?: CreateCredentialsRequest
-  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+  }): Observable<StrictHttpResponse<{ 'OperationResultResponse'?: { 'Body'?: CredentialsResponse, 'Status'?: OperationResultStatusType, 'Errors'?: Array<string> } }>> {
 
     const rb = new RequestBuilder(this.rootUrl, CredentialsApiService.CreateCredentialsPath, 'post');
     if (params) {
@@ -52,7 +54,7 @@ export class CredentialsApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<OperationResultResponse>;
+        return r as StrictHttpResponse<{ 'OperationResultResponse'?: { 'Body'?: CredentialsResponse, 'Status'?: OperationResultStatusType, 'Errors'?: Array<string> } }>;
       })
     );
   }
@@ -67,10 +69,10 @@ export class CredentialsApiService extends BaseService {
    */
   createCredentials(params?: {
     body?: CreateCredentialsRequest
-  }): Observable<OperationResultResponse> {
+  }): Observable<{ 'OperationResultResponse'?: { 'Body'?: CredentialsResponse, 'Status'?: OperationResultStatusType, 'Errors'?: Array<string> } }> {
 
     return this.createCredentials$Response(params).pipe(
-      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+      map((r: StrictHttpResponse<{ 'OperationResultResponse'?: { 'Body'?: CredentialsResponse, 'Status'?: OperationResultStatusType, 'Errors'?: Array<string> } }>) => r.body as { 'OperationResultResponse'?: { 'Body'?: CredentialsResponse, 'Status'?: OperationResultStatusType, 'Errors'?: Array<string> } })
     );
   }
 
