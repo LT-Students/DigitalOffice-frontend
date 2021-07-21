@@ -55,9 +55,9 @@ export class SignupComponent implements OnInit {
 		const createCredentialsRequest: CreateCredentialsRequest = { login, password, userId: this.userId };
 
 		this._authService.signUp$(createCredentialsRequest).pipe(
-				switchMap((authResponse: AuthenticationResponse) => {
+				switchMap(({ body: credentialResponse }: { body: AuthenticationResponse }) => {
 					this.isWaiting = false;
-					return this._userService.getUser(authResponse.userId);
+					return this._userService.getUserSetCredentials(credentialResponse.userId);
 				}),
 				catchError((error: string) => {
 					console.log(error);

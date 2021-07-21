@@ -18,8 +18,13 @@ export class ProjectService {
 		return this._projectApiService.createProject({ body: request });
 	}
 
-	public getProjectInfo(projectId: string): Observable<ProjectResponse> {
-		return this._projectApiService.getProject({ projectId: projectId, includeusers: true });
+	public getProjectInfo(params: {
+		projectId: string;
+		includeusers?: boolean;
+		shownotactiveusers?: boolean;
+		includefiles?: boolean;
+	}): Observable<ProjectResponse> {
+		return this._projectApiService.getProject(params);
 	}
 
 	public getProjectList(skipPages = 0, pageSize = 10): Observable<FindResponseProjectInfo> {

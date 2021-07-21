@@ -22,6 +22,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
+import { UserGet } from '@app/models/user-get.model';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -125,8 +126,18 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _getUser(): void {
+		const params: UserGet = {
+			userId: this.pageId,
+			includedepartment: true,
+			includeposition: true,
+			includeoffice: true,
+			includecommunications: true,
+			includerole: true,
+			includeimages: true,
+		};
+
 		this._userService
-			.getUser(this.pageId, true)
+			.getUser(params)
 			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
 			.subscribe((user: User) => {
 				this.user = user;

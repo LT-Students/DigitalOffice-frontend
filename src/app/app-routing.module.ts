@@ -16,7 +16,7 @@ export const enum RouteType {
 	USER = 'user',
 	ADMIN = 'admin',
 	PROJECT = 'project',
-	DEPARTMENT = 'department',
+	DEPARTMENTS = 'departments',
 }
 
 const routes: Routes = [
@@ -55,8 +55,8 @@ const routes: Routes = [
 						path: `${RouteType.PROJECT}/:id`,
 						component: ProjectPageComponent,
 					},
-					{ path: 'departments', component: DepartmentListComponent },
-					{ path: `${RouteType.DEPARTMENT}/:id`, component: DepartmentCardComponent },
+					{ path: RouteType.DEPARTMENTS, component: DepartmentListComponent },
+					{ path: `${RouteType.DEPARTMENTS}/:id`, component: DepartmentCardComponent },
 				],
 			},
 			{
