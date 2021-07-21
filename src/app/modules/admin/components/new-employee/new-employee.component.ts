@@ -122,13 +122,16 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 						const message = result.errors.join('\n');
 						this._matSnackBar.open(message, 'Закрыть');
 					}
+					this._matSnackBar.open('Пользователь успешно создан', 'Закрыть', { duration: 3000 });
 					this.dialogRef.close(result);
 				},
 				(error: OperationResultResponse | HttpErrorResponse) => {
-					console.log(error);
-					const message =
-						error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
-					this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
+					let message = error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
+					if (error.status === 409) {
+						message = 'Пользователь с такой электронной почтой уже существует';
+					}
+					this._matSnackBar.open(message, 'Закрыть');
+					throw error;
 				}
 			);
 	}

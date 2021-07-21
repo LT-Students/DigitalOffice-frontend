@@ -8,10 +8,10 @@ import { AuthenticationResponse } from '@data/api/auth-service/models/authentica
 import { AuthApiService } from '@data/api/auth-service/services/auth-api.service';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { CredentialsResponse } from '@data/api/user-service/models/credentials-response';
 import { UserService } from '@app/services/user.service';
 import { UserResponse } from '@data/api/user-service/models/user-response';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CredentialsResponse } from '@data/api/user-service/models/credentials-response';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -44,9 +44,12 @@ export class AuthService {
 		return token != null;
 	}
 
-	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<CredentialsResponse> {
+	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<any> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
-			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
+			tap((response) => {
+				//@ts-ignore TODO remove when API is fixed
+				this._setCredentialsToLocalStorage(response.body);
+			}),
 			catchError((error: HttpErrorResponse) => {
 				switch (error.status) {
 					case 400:
@@ -72,7 +75,7 @@ export class AuthService {
 		);
 	}
 
-	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse): void {
+	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse | CredentialsResponse): void {
 		this.localStorageService.set('access_token', authenticationInfo.accessToken);
 		this.localStorageService.set('refresh_token', authenticationInfo.refreshToken);
 	}
