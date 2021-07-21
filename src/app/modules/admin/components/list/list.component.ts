@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ListService } from '@app/services/list.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { ListService, ListType } from '@app/services/list.service';
 import { Heading } from './heading-model'
 
 @Component({
@@ -26,7 +26,7 @@ export class ListComponent implements OnInit {
   /**
    * data - записи для таблицы.
    */
-  public list: any;
+  public list: any[];
   /**
    * headings - заголовки таблицы.
    * headings имеет вид: [['propertyName', 'propertyValue'], [...], [...], ...]
@@ -47,7 +47,7 @@ export class ListComponent implements OnInit {
   /**
    * описывает текущий тип сущностей (офис, пользователь, роли и т.д.)
    */
-  public listType: string
+  public listType: ListType
 
   constructor(
     private listService: ListService,
@@ -61,35 +61,36 @@ export class ListComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const { title, addButtonText } = this.listService.getInterfaceText(this.path)
+    this.listType = this.listService.getListType(this.path);
+
+    const { title, addButtonText } = this.listService.getInterfaceText(this.listType)
     this.title = title;
     this.addButtonText = addButtonText;
-    this.headings = this.listService.getHeadings(this.path)
-    this.listType = this.listService.getListType(this.path);
+    this.headings = this.listService.getHeadings(this.listType)
     this._getData();
   }
 
   public onAddButtonClick(): void {
-    this.listService.openModal(this.path).subscribe(() => {
+    this.listService.openModal(this.listType).subscribe(() => {
       this._getData()
     });
   }
 
-  public isActive() {
+  public isActive(): boolean {
     switch (this.listType) {
-      case 'users': return true;
-      case 'departments': return true;
+      case ListType.DEPARTMENTS: return true;
+      case ListType.MANAGE_USERS: return true;
       default: return false;
     }
   }
 
-  public showMoreInfo(record) {
+  public showMoreInfo(record): void {
     switch (this.listType) {
-      case 'users': {
+      case ListType.MANAGE_USERS: {
         this._router.navigate([`/user/${record.id}`])
         return;
       }
-      case 'departments': {
+      case ListType.DEPARTMENTS: {
         this._router.navigate([`/department/${record.id}`])
         return;
       }
@@ -102,9 +103,10 @@ export class ListComponent implements OnInit {
     this._getData()
   }
 
-  private _getData() {
-    this.listService.getData(this.pageIndex * this.pageSize, this.pageSize, this.activatedRoute.routeConfig.path).subscribe(
+  private _getData(): void {
+    this.listService.getData(this.pageIndex * this.pageSize, this.pageSize, this.listType).subscribe(
       data => {
+        console.log(data.list)
         this.list = data.list;
         this.totalCount = data.totalCount;
       })

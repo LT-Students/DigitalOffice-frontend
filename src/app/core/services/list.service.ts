@@ -2,25 +2,27 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { FindOfficesResponse } from "@data/api/company-service/models";
 import { CompanyApiService, PositionApiService } from "@data/api/company-service/services";
-import { RolesResponse } from "@data/api/rights-service/models";
 import { RoleApiService } from "@data/api/rights-service/services";
+import { ModalService } from "./modal.service";
+import { UserService } from '@app/services/user.service'
+import { NetService } from "./net.service";
+
+import { Heading } from "src/app/modules/admin/components/list/heading-model";
+
+import { NewDepartmentComponent } from "src/app/modules/admin/components/new-department/new-department.component";
 import { NewOfficeComponent } from "src/app/modules/admin/components/new-office/new-office.component";
 import { NewRoleComponent } from "src/app/modules/admin/components/new-role/new-role.component";
-import { ModalService } from "./modal.service";
-import { Heading } from "src/app/modules/admin/components/list/heading-model";
 import { NewPositionComponent } from "src/app/modules/admin/components/new-position/new-position.component";
-import { UserService } from '@app/services/user.service'
 import { NewEmployeeComponent } from "src/app/modules/admin/components/new-employee/new-employee.component";
-import { NetService } from "./net.service";
-import { NewDepartmentComponent } from "src/app/modules/admin/components/new-department/new-department.component";
 
-const OFFICES = 'offices';
-const POSITIONS = 'positions'
-const MANAGE_ROLES = 'manage-roles'
-const MANAGE_USERS = 'manage-users'
-const DEPARTMENTS = 'departments'
+export enum ListType {
+    OFFICES,
+    POSITIONS,
+    MANAGE_ROLES,
+    MANAGE_USERS,
+    DEPARTMENTS
+}
 
 @Injectable({
     providedIn: 'root'
@@ -39,19 +41,20 @@ export class ListService {
         private modalService: ModalService
     ) { }
 
-    public getListType(instance: string) {
+    public getListType(instance: string): ListType {
+        console.log(instance)
         switch (instance) {
-            case OFFICES: return OFFICES;
-            case POSITIONS: return POSITIONS;
-            case MANAGE_USERS: return 'users';
-            case MANAGE_ROLES: return 'roles';
-            case DEPARTMENTS: return 'departments';
+            case 'offices': return ListType.OFFICES;
+            case 'positions': return ListType.POSITIONS;
+            case 'manage-users': return ListType.MANAGE_USERS;
+            case 'manage-roles': return ListType.MANAGE_ROLES;
+            case 'departments': return ListType.DEPARTMENTS;
         }
     }
 
-    public getHeadings(instance: string) {
+    public getHeadings(instance: ListType): Heading[] {
         switch (instance) {
-            case OFFICES: {
+            case ListType.OFFICES: {
                 this.headings = [
                     { headingProperty: 'city', headingName: 'Город', type: 'default' },
                     { headingProperty: 'address', headingName: 'Адрес', type: 'default' },
@@ -59,21 +62,21 @@ export class ListService {
                 ];
                 return this.headings;
             }
-            case MANAGE_ROLES: {
+            case ListType.MANAGE_ROLES: {
                 this.headings = [
                     { headingProperty: 'name', headingName: 'Название', type: 'default' },
                     { headingProperty: 'description', headingName: 'Описание', type: 'default' }
                 ];
                 return this.headings;
             }
-            case POSITIONS: {
+            case ListType.POSITIONS: {
                 this.headings = [
                     { headingProperty: 'name', headingName: 'Название', type: 'default' },
                     { headingProperty: 'description', headingName: 'Описание', type: 'default' }
                 ];
                 return this.headings;
             }
-            case MANAGE_USERS: {
+            case ListType.MANAGE_USERS: {
                 this.headings = [
                     { headingProperty: 'name', headingName: 'Имя', type: 'user' },
                     { headingProperty: 'department', headingName: 'Департамент', type: 'default' },
@@ -83,7 +86,7 @@ export class ListService {
                 ];
                 return this.headings;
             }
-            case DEPARTMENTS: {
+            case ListType.DEPARTMENTS: {
                 this.headings = [
                     { headingProperty: 'name', headingName: 'Наименование', type: 'default' },
                     { headingProperty: 'description', headingName: 'Описание', type: 'default' },
@@ -96,33 +99,33 @@ export class ListService {
         }
     }
 
-    public getInterfaceText(instance: string) {
+    public getInterfaceText(instance: ListType): { title, addButtonText } {
         switch (instance) {
-            case OFFICES: {
+            case ListType.OFFICES: {
                 return {
                     title: 'Офисы',
                     addButtonText: '+ Добавить офис'
                 };
             }
-            case MANAGE_ROLES: {
+            case ListType.MANAGE_ROLES: {
                 return {
                     title: 'Роли',
                     addButtonText: '+ Добавить роль'
                 };
             }
-            case POSITIONS: {
+            case ListType.POSITIONS: {
                 return {
                     title: 'Должности',
                     addButtonText: '+ Добавить должность'
                 };
             }
-            case MANAGE_USERS: {
+            case ListType.MANAGE_USERS: {
                 return {
                     title: 'Сотрудники',
                     addButtonText: '+ Добавить сотрудника'
                 };
             }
-            case DEPARTMENTS: {
+            case ListType.DEPARTMENTS: {
                 return {
                     title: 'Список департаментов',
                     addButtonText: '+ Добавить департамент'
@@ -137,43 +140,43 @@ export class ListService {
         }
     }
 
-    private getData$(skipCount: number, takeCount: number, instance: string): Observable<FindOfficesResponse | RolesResponse | any> {
+    private getData$(skipCount: number, takeCount: number, instance: ListType): Observable<{ list, totalCount }> {
         switch (instance) {
-            case OFFICES: {
+            case ListType.OFFICES: {
                 return this.companyApiService.findOffices({ skipCount, takeCount })
                     .pipe(
                         map(res => (
                             {
-                                list: this.orderData(res.offices, 'offices'),
+                                list: this.orderData(res.offices, ListType.OFFICES),
                                 totalCount: res.totalCount,
                             }))
                     )
             }
-            case MANAGE_ROLES: {
+            case ListType.MANAGE_ROLES: {
                 return this.roleApiService.findRoles({ skipCount, takeCount })
                     .pipe(
                         map((res) => (
                             {
-                                list: this.orderData(res.roles, 'roles'),
+                                list: this.orderData(res.roles, ListType.MANAGE_ROLES),
                                 totalCount: res.totalCount,
                             }))
                     )
             }
-            case POSITIONS: {
+            case ListType.POSITIONS: {
                 return this.positionApiService.findPositions({ skipCount, takeCount })
                     .pipe(
                         map((res) => {
                             let positions = []
                             res.forEach(position => positions.push(position.info))
                             return {
-                                list: this.orderData(positions, 'positions'),
+                                list: this.orderData(positions, ListType.POSITIONS),
                                 //@ts-ignore
                                 totalCount: res.totalCount,
                             }
                         })
                     )
             }
-            case MANAGE_USERS: {
+            case ListType.MANAGE_USERS: {
                 return this.userApiService.getUsers(skipCount, takeCount)
                     .pipe(
                         map((res) => {
@@ -187,13 +190,13 @@ export class ListService {
                                     status: user.isActive,
                                     shortInfo: user.position?.name,
                                     avatar: user.avatar
-                                })), 'users'),
+                                })), ListType.MANAGE_USERS),
                                 totalCount: res.totalCount
                             }
                         })
                     )
             }
-            case DEPARTMENTS: {
+            case ListType.DEPARTMENTS: {
                 return this.netService.getDepartmentsList()
                     .pipe(
                         map((res) => {
@@ -207,7 +210,7 @@ export class ListService {
                                             department.director?.firstName + ' ' + department.director?.lastName : '',
                                         users: department.users.length
                                     })
-                                ), 'departments'),
+                                ), ListType.DEPARTMENTS),
                                 totalCount: res.length
                             }
                         })
@@ -221,16 +224,16 @@ export class ListService {
         }
     }
 
-    public getData(skipCount: number, takeCount: number, instance: string): Observable<{ list, totalCount }> {
+    public getData(skipCount: number, takeCount: number, instance: ListType): Observable<{ list, totalCount }> {
         return this.getData$(skipCount, takeCount, instance)
     }
 
     /**
      * Можно расширить для использования другими типами списка
      */
-    private setAdditionalProperties(item, type: string) {
+    private setAdditionalProperties(item, type: ListType) {
         switch (type) {
-            case 'users': return {
+            case ListType.MANAGE_USERS: return {
                 avatar: item.avatar,
                 status: item.status,
             }
@@ -238,7 +241,7 @@ export class ListService {
         }
     }
 
-    private orderData(data, type: string) {
+    private orderData(data, type: ListType) {
         // Вообще это удобная переменная, которая в данный момент используется для юзеров, но так-то можно и для любого другого типа списков.
         let additionalProperties = {};
         let tempData: any[];
@@ -265,21 +268,21 @@ export class ListService {
         return this.orderedList;
     }
 
-    public openModal(instance: string): Observable<any> {
+    public openModal(instance: ListType): Observable<any> {
         switch (instance) {
-            case OFFICES: {
+            case ListType.OFFICES: {
                 return this.modalService.openModal(NewOfficeComponent).afterClosed();
             }
-            case MANAGE_ROLES: {
+            case ListType.MANAGE_ROLES: {
                 return this.modalService.openModal(NewRoleComponent).afterClosed();
             }
-            case POSITIONS: {
+            case ListType.POSITIONS: {
                 return this.modalService.openModal(NewPositionComponent).afterClosed();
             }
-            case MANAGE_USERS: {
+            case ListType.MANAGE_USERS: {
                 return this.modalService.openModal(NewEmployeeComponent).afterClosed();
             }
-            case DEPARTMENTS: {
+            case ListType.DEPARTMENTS: {
                 return this.modalService.openModal(NewDepartmentComponent).afterClosed();
             }
         }
