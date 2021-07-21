@@ -37,11 +37,11 @@ export class DepartmentCardComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this._netService.getDepartment(this._departmentId).subscribe(({ body }) => {
+		this._netService.getDepartment({ departmentid: this._departmentId, includeusers: true }).subscribe(({ body }) => {
 			this.departmentInfo = body.department;
 			this.totalCount = body.users.length;
 			this.sortedUsersInfo = body.users.slice();
-			console.log(body)
+			console.log(body);
 		});
 	}
 
@@ -67,7 +67,6 @@ export class DepartmentCardComponent implements OnInit {
 		// 	this.sortedUsersInfo = data;
 		// 	return;
 		// }
-
 		// this.sortedUsersInfo = data.sort((a: UserInfo, b: UserInfo) => {
 		// 	const isAsc = sort.direction === 'asc';
 		// 	switch (sort.active) {
