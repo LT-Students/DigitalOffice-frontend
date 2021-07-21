@@ -8,12 +8,11 @@ import { AuthenticationResponse } from '@data/api/auth-service/models/authentica
 import { AuthApiService } from '@data/api/auth-service/services/auth-api.service';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { CredentialsResponse } from '@data/api/user-service/models/credentials-response';
 import { UserService } from '@app/services/user.service';
 import { UserResponse } from '@data/api/user-service/models/user-response';
 import { HttpErrorResponse } from '@angular/common/http';
+import { CredentialsResponse } from '@data/api/user-service/models/credentials-response';
 import { LocalStorageService } from './local-storage.service';
-import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -45,17 +44,11 @@ export class AuthService {
 		return token != null;
 	}
 
-	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<UserResponse> {
+	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<any> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
-			// tap((credentialsResponse: CredentialsResponse) => {
-			// 	console.log(credentialsResponse)
-			// 	this._setCredentialsToLocalStorage(credentialsResponse);
-			// }),
-			switchMap((response: OperationResultResponse) => {
-				const credentialsResponse = response.body;
-				console.log(credentialsResponse, response);
-				this._setCredentialsToLocalStorage(credentialsResponse);
-				return this._userService.getUserSetCredentials(credentialsResponse.userId);
+			tap((response) => {
+				//@ts-ignore TODO remove when API is fixed
+				this._setCredentialsToLocalStorage(response.body);
 			}),
 			catchError((error: HttpErrorResponse) => {
 				switch (error.status) {
@@ -82,7 +75,7 @@ export class AuthService {
 		);
 	}
 
-	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse): void {
+	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse | CredentialsResponse): void {
 		this.localStorageService.set('access_token', authenticationInfo.accessToken);
 		this.localStorageService.set('refresh_token', authenticationInfo.refreshToken);
 	}
