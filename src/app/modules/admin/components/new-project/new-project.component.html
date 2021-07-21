@@ -17,13 +17,15 @@
 			</div>
 			<div class="section__content section__content_general">
 				<div class="project-info__name">
-					<label class="project-info__label" for="name">Название проекта<sup doText color="negative_accent">*</sup></label>
+					<label class="project-info__label" for="name">Название проекта<sup doText
+							color="negative_accent">*</sup></label>
 					<mat-form-field>
 						<input matInput type="text" id="name" formControlName="name" />
 					</mat-form-field>
 				</div>
 				<div class="project-info__department">
-					<label class="project-info__label" for="department">Департамент<sup doText color="negative_accent">*</sup></label>
+					<label class="project-info__label" for="department">Департамент<sup doText
+							color="negative_accent">*</sup></label>
 					<mat-form-field class="mat-form-field_default-select" appearance="none">
 						<mat-select id="department" formControlName="departmentId">
 							<mat-option *ngFor="let department of departments" [value]="department.id">
@@ -59,12 +61,8 @@
 				<div class="project-info__description">
 					<label class="project-info__label" for="description">Описание</label>
 					<mat-form-field appearance="none">
-						<textarea
-							matInput
-							id="description"
-							formControlName="description"
-							placeholder="Краткое описание сути проекта на его публичной карточке"
-						></textarea>
+						<textarea matInput id="description" formControlName="description"
+							placeholder="Краткое описание сути проекта на его публичной карточке"></textarea>
 					</mat-form-field>
 				</div>
 			</div>
@@ -111,13 +109,16 @@
 					<!--                        >-->
 					<!--                    </div>-->
 				</div>
-				<button mat-flat-button color="primary" type="button" (click)="onAddTeamClick()">Добавить сотрудников</button>
+				<button mat-flat-button color="primary" type="button" (click)="onAddTeamClick()">Добавить
+					сотрудников</button>
 			</div>
 		</div>
 
 		<div class="project-info__actions">
-			<button mat-stroked-button color="warn" class="border-accent_color_bright" type="button" (click)="goBack()">Отмена</button>
-			<button mat-flat-button color="primary" [disabled]="projectForm.invalid" type="submit">Создать проект</button>
+			<button mat-stroked-button color="warn" class="border-accent_color_bright" type="button"
+				(click)="goBack()">Отмена</button>
+			<button mat-flat-button color="primary" [disabled]="projectForm.invalid" type="submit"
+				(click)="onCreateClick()">Создать проект</button>
 		</div>
 	</form>
 </div>

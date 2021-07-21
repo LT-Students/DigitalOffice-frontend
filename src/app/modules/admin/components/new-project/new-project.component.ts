@@ -1,7 +1,7 @@
 import { ComponentType } from '@angular/cdk/overlay';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatus } from '@app/models/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
@@ -44,6 +44,7 @@ export class NewProjectComponent implements OnInit {
 		private _snackBar: MatSnackBar,
 		private _location: Location,
 		private _router: Router,
+		private dialogRef: MatDialogRef<NewProjectComponent>
 	) {
 		this.statuses = [
 			new ProjectStatus(ProjectStatusType.Active),
@@ -142,5 +143,9 @@ export class NewProjectComponent implements OnInit {
 		const leads: TeamMember[] = team.members.filter((member: TeamMember) => member.lead);
 		const ordinary: TeamMember[] = team.members.filter((member: TeamMember) => !member.lead);
 		team.members = [...leads, ...ordinary];
+	}
+
+	public onCreateClick() {
+		this.dialogRef.close()
 	}
 }

@@ -17,7 +17,8 @@
                             <do-profile-image [image]='property?.avatar' class='table__img'></do-profile-image>
                             <div class="table__info">
                                 <p>{{(property && property.mainInfo) ? property.mainInfo : '—'}}</p>
-                                <p>{{(property && property.shortInfo)? property.shortInfo : '—'}}</p>
+                                <p doText color="gray">{{(property && property.shortInfo)? property.shortInfo : '—'}}
+                                </p>
                             </div>
                         </div>
                         <p *ngSwitchCase="'status'">

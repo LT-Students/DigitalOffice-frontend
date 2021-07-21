@@ -80,6 +80,7 @@ export class ListComponent implements OnInit {
     switch (this.listType) {
       case ListType.DEPARTMENTS: return true;
       case ListType.MANAGE_USERS: return true;
+      case ListType.PROJECTS: return true;
       default: return false;
     }
   }
@@ -93,6 +94,9 @@ export class ListComponent implements OnInit {
       case ListType.DEPARTMENTS: {
         this._router.navigate([`/department/${record.id}`])
         return;
+      }
+      case ListType.PROJECTS: {
+        this._router.navigate([`/project/${record.id}`])
       }
     }
   }

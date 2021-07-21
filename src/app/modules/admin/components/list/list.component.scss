@@ -33,6 +33,10 @@
 
 	&__row_active {
 		cursor: pointer;
+
+		&:hover {
+			background-color: #e5e6e8;
+		}
 	}
 
 	&__archived {

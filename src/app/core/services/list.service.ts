@@ -7,6 +7,7 @@ import { RoleApiService } from "@data/api/rights-service/services";
 import { ModalService } from "./modal.service";
 import { UserService } from '@app/services/user.service'
 import { NetService } from "./net.service";
+import { ProjectService } from '@app/services/project.service';
 
 import { Heading } from "src/app/modules/admin/components/list/heading-model";
 
@@ -15,13 +16,15 @@ import { NewOfficeComponent } from "src/app/modules/admin/components/new-office/
 import { NewRoleComponent } from "src/app/modules/admin/components/new-role/new-role.component";
 import { NewPositionComponent } from "src/app/modules/admin/components/new-position/new-position.component";
 import { NewEmployeeComponent } from "src/app/modules/admin/components/new-employee/new-employee.component";
+import { NewProjectComponent } from "src/app/modules/admin/components/new-project/new-project.component";
 
 export enum ListType {
     OFFICES,
     POSITIONS,
     MANAGE_ROLES,
     MANAGE_USERS,
-    DEPARTMENTS
+    DEPARTMENTS,
+    PROJECTS
 }
 
 @Injectable({
@@ -38,7 +41,8 @@ export class ListService {
         private positionApiService: PositionApiService,
         private userApiService: UserService,
         private netService: NetService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private projectService: ProjectService
     ) { }
 
     public getListType(instance: string): ListType {
@@ -49,6 +53,7 @@ export class ListService {
             case 'manage-users': return ListType.MANAGE_USERS;
             case 'manage-roles': return ListType.MANAGE_ROLES;
             case 'departments': return ListType.DEPARTMENTS;
+            case 'projects-table': return ListType.PROJECTS;
         }
     }
 
@@ -95,6 +100,13 @@ export class ListService {
                 ];
                 return this.headings;
             }
+            case ListType.PROJECTS: {
+                this.headings = [
+                    { headingProperty: 'name', headingName: 'Наименование', type: 'default' },
+                    { headingProperty: 'description', headingName: 'Описание', type: 'default' },
+                    { headingProperty: 'department', headingName: 'Департамент', type: 'default' }
+                ]
+            }
             default: return this.headings;
         }
     }
@@ -130,6 +142,12 @@ export class ListService {
                     title: 'Список департаментов',
                     addButtonText: '+ Добавить департамент'
                 }
+            }
+            case ListType.PROJECTS: {
+                return {
+                    title: 'Доска проектов',
+                    addButtonText: '+ Создать проект'
+                };
             }
             default: {
                 return {
@@ -183,7 +201,7 @@ export class ListService {
                             return {
                                 list: this.orderData(res.users.map(user => ({
                                     id: user.id,
-                                    name: user.firstName,
+                                    name: (user.firstName && user.lastName) ? user.firstName + ' ' + user.lastName : '',
                                     department: user.department?.name,
                                     role: user.role?.name,
                                     rate: user.rate,
@@ -216,6 +234,17 @@ export class ListService {
                         })
                     )
             }
+            case ListType.PROJECTS: {
+                return this.projectService.getProjectList(skipCount, takeCount)
+                    .pipe(
+                        map(res => {
+                            return {
+                                list: this.orderData(res.body.map(proj => ({ ...proj, department: proj.department?.name })), ListType.PROJECTS),
+                                totalCount: res.totalCount
+                            }
+                        })
+                    )
+            }
             default: return of(
                 {
                     list: [],
@@ -243,6 +272,7 @@ export class ListService {
 
     private orderData(data, type: ListType) {
         // Вообще это удобная переменная, которая в данный момент используется для юзеров, но так-то можно и для любого другого типа списков.
+        console.log('DATA: ', data)
         let additionalProperties = {};
         let tempData: any[];
         this.orderedList = [];
@@ -284,6 +314,9 @@ export class ListService {
             }
             case ListType.DEPARTMENTS: {
                 return this.modalService.openModal(NewDepartmentComponent).afterClosed();
+            }
+            case ListType.PROJECTS: {
+                return this.modalService.openModal(NewProjectComponent).afterClosed();
             }
         }
     }
