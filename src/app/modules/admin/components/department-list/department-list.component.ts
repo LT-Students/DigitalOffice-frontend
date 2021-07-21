@@ -33,7 +33,7 @@ export class DepartmentListComponent implements OnInit {
 	}
 
 	public onDepartmentClick(departmentId) {
-		this.router.navigate([ `${ RouteType.DEPARTMENT }/${ departmentId }` ]);
+		this.router.navigate([ `${ RouteType.DEPARTMENTS }/${ departmentId }` ]);
 	}
 
 	public sortData(sort: Sort): void {
