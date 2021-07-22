@@ -12,7 +12,7 @@ import { UserInfo } from './user-info';
  * Response object for action operations.
  */
 export interface OperationResultResponseUserResponse {
-  body?: { 'User'?: UserInfo, 'Skills'?: Array<string>, 'Communications'?: Array<CommunicationInfo>, 'Certificates'?: Array<CertificateInfo>, 'Achievements'?: Array<UserAchievementInfo>, 'Projects'?: Array<ProjectInfo>, 'Educations'?: Array<EducationInfo> };
+  body?: { 'user'?: UserInfo, 'skills'?: Array<string>, 'communications'?: Array<CommunicationInfo>, 'certificates'?: Array<CertificateInfo>, 'achievements'?: Array<UserAchievementInfo>, 'projects'?: Array<ProjectInfo>, 'educations'?: Array<EducationInfo> };
   errors?: Array<string>;
   status?: OperationResultStatusType;
 }

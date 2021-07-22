@@ -1280,41 +1280,41 @@
           "Body": {
             "type": "object",
             "properties": {
-              "User": {
+              "user": {
                 "$ref": "#/components/schemas/UserInfo"
               },
-              "Skills": {
+              "skills": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 },
                 "nullable": true
               },
-              "Communications": {
+              "communications": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/CommunicationInfo"
                 }
               },
-              "Certificates": {
+              "certificates": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/CertificateInfo"
                 }
               },
-              "Achievements": {
+              "achievements": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/UserAchievementInfo"
                 }
               },
-              "Projects": {
+              "projects": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ProjectInfo"
                 }
               },
-              "Educations": {
+              "educations": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/EducationInfo"
