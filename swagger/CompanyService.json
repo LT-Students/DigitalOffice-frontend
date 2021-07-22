@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.6.0",
+    "version": "1.6.2",
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments."
   },
@@ -41,7 +41,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PositionResponse"
+                  "$ref": "#/components/schemas/OperationResultResponsePositionInfo"
                 }
               }
             }
@@ -73,6 +73,33 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of positions to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of positions to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "description": "If it is true, response will be have deactivated records.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
         }
       ],
       "get": {
@@ -87,16 +114,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PositionResponse"
-                  }
+                  "$ref": "#/components/schemas/FindResultResponsePositionInfo"
                 }
               }
             }
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
@@ -255,7 +279,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewDepartmentRequest"
+                "$ref": "#/components/schemas/CreateDepartmentRequest"
               }
             }
           },
@@ -375,6 +399,33 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of deparments to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of departments to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "description": "If it is true, response will be have deactivated records.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
         }
       ],
       "get": {
@@ -389,7 +440,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DepartmentsResponse"
+                  "$ref": "#/components/schemas/FindResultResponseDepartmentInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -719,7 +780,7 @@
         {
           "name": "skipCount",
           "in": "query",
-          "description": "Number of pages to skip.",
+          "description": "Number of offices to skip.",
           "schema": {
             "type": "integer"
           },
@@ -728,7 +789,7 @@
         {
           "name": "takeCount",
           "in": "query",
-          "description": "Number of offices on one page.",
+          "description": "Number of offices to take.",
           "schema": {
             "type": "integer"
           },
@@ -755,13 +816,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindOfficesResponse"
+                  "$ref": "#/components/schemas/FindResultResponseOfficeInfo"
                 }
               }
             }
           },
-          "404": {
-            "description": "Not Found.",
+          "403": {
+            "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
@@ -796,33 +857,26 @@
           }
         }
       },
-      "EditPositionRequest": {
-        "type": "array",
-        "minItems": 1,
-        "example": [
-          {
-            "op": "replace",
-            "path": "/name",
-            "value": {
-              "description": "New position name",
-              "type": "string",
-              "example": "portal"
-            }
-          }
-        ],
-        "items": {
-          "$ref": "#/components/schemas/PatchPositionDocument"
-        }
-      },
-      "NewDepartmentRequest": {
+      "CreateDepartmentRequest": {
         "type": "object",
         "required": [
-          "Info",
-          "Users"
+          "Name"
         ],
         "properties": {
-          "Info": {
-            "$ref": "#/components/schemas/BaseDepartmentInfo"
+          "Name": {
+            "description": "Department name.",
+            "type": "string"
+          },
+          "Description": {
+            "description": "Department description.",
+            "type": "string",
+            "nullable": true
+          },
+          "DirectorUserId": {
+            "description": "Specific director user id this department.",
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           },
           "Users": {
             "type": "array",
@@ -830,22 +884,6 @@
               "type": "string",
               "format": "uuid"
             }
-          }
-        }
-      },
-      "PositionResponse": {
-        "type": "object",
-        "properties": {
-          "Info": {
-            "$ref": "#/components/schemas/PositionInfo"
-          },
-          "UserIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "nullable": true
           }
         }
       },
@@ -872,35 +910,6 @@
             "description": "Marks whether position is active or not.",
             "type": "boolean",
             "example": true
-          }
-        }
-      },
-      "BaseDepartmentInfo": {
-        "type": "object",
-        "description": "Specific department data.",
-        "required": [
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "description": "Department id.",
-            "type": "string",
-            "format": "guid"
-          },
-          "Name": {
-            "description": "Department name.",
-            "type": "string"
-          },
-          "Description": {
-            "description": "Department description.",
-            "type": "string",
-            "nullable": true
-          },
-          "DirectorUserId": {
-            "description": "Specific director user id this department.",
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
           }
         }
       },
@@ -941,13 +950,65 @@
           }
         }
       },
-      "DepartmentsResponse": {
+      "FindResultResponseDepartmentInfo": {
         "type": "object",
         "properties": {
-          "Departments": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Body": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DepartmentInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseOfficeInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfficeInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponsePositionInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PositionInfo"
             }
           },
           "Errors": {
@@ -964,7 +1025,7 @@
         "properties": {
           "Department": {
             "type": "object",
-            "$ref": "#/components/schemas/ShortDepartmentInfo"
+            "$ref": "#/components/schemas/DepartmentInfo"
           },
           "Users": {
             "type": "array",
@@ -1000,12 +1061,8 @@
             "$ref": "#/components/schemas/UserInfo",
             "nullable": true
           },
-          "Users": {
-            "type": "array",
-            "description": "Workers of this department.",
-            "items": {
-              "$ref": "#/components/schemas/UserInfo"
-            }
+          "CountUsers": {
+            "type": "integer"
           }
         }
       },
@@ -1029,6 +1086,18 @@
             "type": "string",
             "example": "Alexandrovich",
             "nullable": true
+          },
+          "Rate": {
+            "type": "number"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageInfo"
+          },
+          "Position": {
+            "$ref": "#/components/schemas/PositionInfo"
           }
         }
       },
@@ -1150,7 +1219,7 @@
           "Departments": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ShortDepartmentInfo"
+              "$ref": "#/components/schemas/DepartmentInfo"
             },
             "nullable": true
           },
@@ -1167,33 +1236,6 @@
               "$ref": "#/components/schemas/OfficeInfo"
             },
             "nullable": true
-          }
-        }
-      },
-      "ShortDepartmentInfo": {
-        "type": "object",
-        "description": "Specific department data.",
-        "properties": {
-          "Id": {
-            "description": "Department id.",
-            "type": "string",
-            "format": "guid"
-          },
-          "Name": {
-            "description": "Department name.",
-            "type": "string"
-          },
-          "Description": {
-            "description": "Department description.",
-            "type": "string",
-            "nullable": true
-          },
-          "Director": {
-            "$ref": "#/components/schemas/DepartmentUserInfo",
-            "nullable": true
-          },
-          "IsActive": {
-            "type": "boolean"
           }
         }
       },
@@ -1219,26 +1261,6 @@
           }
         }
       },
-      "FindOfficesResponse": {
-        "type": "object",
-        "properties": {
-          "Offices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OfficeInfo"
-            }
-          },
-          "TotalCount": {
-            "type": "integer"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
@@ -1261,7 +1283,57 @@
         "type": "object",
         "properties": {
           "Body": {
-            "$ref": "#/components/schemas/CompanyInfo"
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "portalName": {
+                "type": "string"
+              },
+              "companyName": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "tagline": {
+                "type": "string",
+                "nullable": true
+              },
+              "siteUrl": {
+                "type": "string"
+              },
+              "logo": {
+                "$ref": "#/components/schemas/ImageInfo"
+              },
+              "smtpInfo": {
+                "$ref": "#/components/schemas/SmtpInfo"
+              },
+              "departments": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DepartmentInfo"
+                },
+                "nullable": true
+              },
+              "positions": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PositionInfo"
+                },
+                "nullable": true
+              },
+              "offices": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OfficeInfo"
+                },
+                "nullable": true
+              }
+            }
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1278,7 +1350,64 @@
         "type": "object",
         "properties": {
           "Body": {
-            "$ref": "#/components/schemas/DepartmentResponse"
+            "type": "object",
+            "description": "Full departmant information.",
+            "properties": {
+              "department": {
+                "type": "object",
+                "$ref": "#/components/schemas/DepartmentInfo"
+              },
+              "users": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DepartmentUserInfo"
+                }
+              },
+              "projects": {
+                "type": "object",
+                "$ref": "#/components/schemas/ProjectInfo"
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponsePositionInfo": {
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "Specific position id.",
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "description": "Position name.",
+                "type": "string",
+                "example": "IT projects consultant"
+              },
+              "description": {
+                "description": "Position description.",
+                "type": "string",
+                "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+                "nullable": true
+              },
+              "isActive": {
+                "description": "Marks whether position is active or not.",
+                "type": "boolean",
+                "example": true
+              }
+            }
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1389,24 +1518,6 @@
         "example": "FullSuccess",
         "default": "FullSuccess"
       },
-      "EditCompanyRequest": {
-        "type": "array",
-        "minItems": 1,
-        "example": [
-          {
-            "op": "replace",
-            "path": "/portalname",
-            "value": {
-              "description": "New portal name",
-              "type": "string",
-              "example": "portal"
-            }
-          }
-        ],
-        "items": {
-          "$ref": "#/components/schemas/PatchCompanyDocument"
-        }
-      },
       "PatchCompanyDocument": {
         "type": "object",
         "required": [
@@ -1474,24 +1585,6 @@
           }
         }
       },
-      "EditDepartmentRequest": {
-        "type": "array",
-        "minItems": 1,
-        "example": [
-          {
-            "op": "replace",
-            "path": "/name",
-            "value": {
-              "description": "New department name",
-              "type": "string",
-              "example": "deparment"
-            }
-          }
-        ],
-        "items": {
-          "$ref": "#/components/schemas/PatchDepartmentDocument"
-        }
-      },
       "PatchDepartmentDocument": {
         "type": "object",
         "required": [
@@ -1521,6 +1614,60 @@
             "type": "object",
             "description": "The value to be used within the operations."
           }
+        }
+      },
+      "EditDepartmentRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": {
+              "description": "New department name",
+              "type": "string",
+              "example": "deparment"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchDepartmentDocument"
+        }
+      },
+      "EditCompanyRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/portalname",
+            "value": {
+              "description": "New portal name",
+              "type": "string",
+              "example": "portal"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchCompanyDocument"
+        }
+      },
+      "EditPositionRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": {
+              "description": "New position name",
+              "type": "string",
+              "example": "portal"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchPositionDocument"
         }
       }
     },

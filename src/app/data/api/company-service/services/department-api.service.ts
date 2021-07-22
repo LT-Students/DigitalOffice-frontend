@@ -9,9 +9,9 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { DepartmentsResponse } from '../models/departments-response';
+import { CreateDepartmentRequest } from '../models/create-department-request';
 import { EditDepartmentRequest } from '../models/edit-department-request';
-import { NewDepartmentRequest } from '../models/new-department-request';
+import { FindResultResponseDepartmentInfo } from '../models/find-result-response-department-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseDepartmentInfo } from '../models/operation-result-response-department-info';
 
@@ -41,7 +41,7 @@ export class DepartmentApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addDepartment$Response(params: {
-    body: NewDepartmentRequest
+    body: CreateDepartmentRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.AddDepartmentPath, 'post');
@@ -70,7 +70,7 @@ export class DepartmentApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addDepartment(params: {
-    body: NewDepartmentRequest
+    body: CreateDepartmentRequest
   }): Observable<OperationResultResponse> {
 
     return this.addDepartment$Response(params).pipe(
@@ -171,11 +171,29 @@ export class DepartmentApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findDepartments$Response(params?: {
-  }): Observable<StrictHttpResponse<DepartmentsResponse>> {
+  findDepartments$Response(params: {
+
+    /**
+     * Number of deparments to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of departments to take.
+     */
+    takeCount: number;
+
+    /**
+     * If it is true, response will be have deactivated records.
+     */
+    includeDeactivated?: boolean;
+  }): Observable<StrictHttpResponse<FindResultResponseDepartmentInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.FindDepartmentsPath, 'get');
     if (params) {
+      rb.query('skipCount', params.skipCount, {});
+      rb.query('takeCount', params.takeCount, {});
+      rb.query('includeDeactivated', params.includeDeactivated, {});
     }
 
     return this.http.request(rb.build({
@@ -184,7 +202,7 @@ export class DepartmentApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<DepartmentsResponse>;
+        return r as StrictHttpResponse<FindResultResponseDepartmentInfo>;
       })
     );
   }
@@ -197,11 +215,26 @@ export class DepartmentApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findDepartments(params?: {
-  }): Observable<DepartmentsResponse> {
+  findDepartments(params: {
+
+    /**
+     * Number of deparments to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of departments to take.
+     */
+    takeCount: number;
+
+    /**
+     * If it is true, response will be have deactivated records.
+     */
+    includeDeactivated?: boolean;
+  }): Observable<FindResultResponseDepartmentInfo> {
 
     return this.findDepartments$Response(params).pipe(
-      map((r: StrictHttpResponse<DepartmentsResponse>) => r.body as DepartmentsResponse)
+      map((r: StrictHttpResponse<FindResultResponseDepartmentInfo>) => r.body as FindResultResponseDepartmentInfo)
     );
   }
 
