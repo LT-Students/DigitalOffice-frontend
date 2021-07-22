@@ -70,7 +70,7 @@ export class SignupComponent implements OnInit {
 				})
 			).subscribe(
 				(user: OperationResultResponseUserResponse) => {
-					const nextUrl: string = (user.body.User.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+					const nextUrl: string = (user.body.user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
 					this._router.navigate([nextUrl]);
 				},
 				(error: string) => {

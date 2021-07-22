@@ -64,7 +64,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		private router: Router,
 		private snackBar: MatSnackBar
 	) {
-		const user: UserInfo = this._userService.getCurrentUser();
+		const user: User = this._userService.getCurrentUser();
 		this.pageId = this.route.snapshot.paramMap.get('id');
 		if (!this.pageId) {
 			this.router.navigate([`employee/${user.id}`]);
@@ -76,7 +76,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		const user: UserInfo = this._userService.getCurrentUser();
+		const user: User = this._userService.getCurrentUser();
 
 		this.isOwner = user.id === this.pageId;
 
