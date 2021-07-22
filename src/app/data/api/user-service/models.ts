@@ -1,12 +1,12 @@
+export { OperationResultResponseUserResponse } from './models/operation-result-response-user-response';
+export { FindResultResponseUserInfo } from './models/find-result-response-user-info';
 export { CreateUserRequest } from './models/create-user-request';
 export { CreateCredentialsRequest } from './models/create-credentials-request';
 export { EditUserRequest } from './models/edit-user-request';
 export { PatchUserDocument } from './models/patch-user-document';
-export { CredentialsResponse } from './models/credentials-response';
-export { UsersResponse } from './models/users-response';
-export { UserResponse } from './models/user-response';
-export { ImageInfo } from './models/image-info';
+export { OperationResultResponseCredentialsResponse } from './models/operation-result-response-credentials-response';
 export { UserInfo } from './models/user-info';
+export { ImageInfo } from './models/image-info';
 export { DepartmentInfo } from './models/department-info';
 export { PositionInfo } from './models/position-info';
 export { RoleInfo } from './models/role-info';
