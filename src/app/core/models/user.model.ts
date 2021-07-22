@@ -1,4 +1,3 @@
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserAchievementInfo } from '@data/api/user-service/models/user-achievement-info';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
@@ -9,8 +8,9 @@ import { ProjectInfo } from '@data/api/user-service/models/project-info';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { IUserStatus, UserStatusModel } from '@app/models/user-status.model';
 import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
+import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 
-export class User implements UserResponse {
+export class User implements OperationResultResponseUserResponse {
 	achievements: Array<UserAchievementInfo>;
 	avatar: ImageInfo;
 	certificates: Array<CertificateInfo>;
@@ -22,17 +22,17 @@ export class User implements UserResponse {
 	skills: Array<string>;
 	user: UserInfo;
 
-	constructor(data: UserResponse) {
-		this.achievements = this._setProperty(data?.achievements);
-		// this.avatar = this._setProperty(data.avatar);
-		this.certificates = this._setProperty(data?.certificates);
-		this.communications = this._setProperty(data?.communications);
-		// this.department = this._setProperty(data.department);
+	constructor(data: OperationResultResponseUserResponse) {
+		this.achievements = this._setProperty(data?.body.achievements);
+		this.certificates = this._setProperty(data?.body.certificates);
+		this.communications = this._setProperty(data?.body.communications);
 		this.errors = this._setProperty(data?.errors);
+		this.projects = this._setProperty(data?.body.projects);
+		this.skills = this._setProperty(data?.body.skills);
+		this.user = this._setProperty(data?.body.user);
+		// this.avatar = this._setProperty(data.avatar);
+		// this.department = this._setProperty(data.department);
 		// this.position = this._setProperty(data.position);
-		this.projects = this._setProperty(data?.projects);
-		this.skills = this._setProperty(data?.skills);
-		this.user = this._setProperty(data?.user);
 	}
 
 	public get id(): string {
@@ -75,7 +75,7 @@ export class User implements UserResponse {
 		this.user.middleName = middleName;
 	}
 
-	public get status(): IUserStatus {
+	public get statusEmoji(): IUserStatus {
 		return UserStatusModel.getUserStatusInfoByType(this.user.status);
 	}
 

@@ -26,6 +26,8 @@ import { RoleApiService } from '@data/api/rights-service/services/role-api.servi
 import { RolesResponse } from '@data/api/rights-service/models/roles-response';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
+import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
+import { FindResultResponsePositionInfo } from '@data/api/company-service/models/find-result-response-position-info';
 
 export const DATE_FORMAT = {
 	parse: {
@@ -56,8 +58,8 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public imagePath;
 	public imgURL: any;
 	public userForm: FormGroup = null;
-	public position$: Observable<PositionInfo[]>;
-	public department$: Observable<DepartmentInfo[]>;
+	public position$: Observable<FindResultResponsePositionInfo>;
+	public department$: Observable<FindResultResponseDepartmentInfo>;
 	public roles: RoleInfo[];
 	public offices: OfficeInfo[];
 
@@ -88,11 +90,11 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	public getPositions(): void {
-		this.position$ = this._netService.getPositionsList();
+		this.position$ = this._netService.getPositionsList({ skipCount: 0, takeCount: 100 });
 	}
 
 	public getDepartments(): void {
-		this.department$ = this._netService.getDepartmentsList();
+		this.department$ = this._netService.getDepartmentsList({ skipCount: 0, takeCount: 100 });
 	}
 
 	public getRoles(): void {
@@ -102,8 +104,8 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	public getOffices(): void {
-		this._netService.getOfficesList().subscribe(
-			({ offices }) => {
+		this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).subscribe(
+			({ body: offices }) => {
 				this.offices = offices;
 			},
 			(error) => console.log(error)
@@ -122,13 +124,16 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 						const message = result.errors.join('\n');
 						this._matSnackBar.open(message, 'Закрыть');
 					}
+					this._matSnackBar.open('Пользователь успешно создан', 'Закрыть', { duration: 3000 });
 					this.dialogRef.close(result);
 				},
 				(error: OperationResultResponse | HttpErrorResponse) => {
-					console.log(error);
-					const message =
-						error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
-					this._matSnackBar.open(message + ' Попробуйте позже', 'Закрыть');
+					let message = error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
+					if (error.status === 409) {
+						message = 'Пользователь с такой электронной почтой уже существует';
+					}
+					this._matSnackBar.open(message, 'Закрыть');
+					throw error;
 				}
 			);
 	}

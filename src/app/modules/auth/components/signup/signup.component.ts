@@ -4,12 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth.service';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
-import { AuthenticationRequest } from '@data/api/auth-service/models';
-import { LocalStorageService } from '@app/services/local-storage.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
 import { throwError } from 'rxjs';
+import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 
 @Component({
 	selector: 'do-signup',
@@ -55,9 +53,9 @@ export class SignupComponent implements OnInit {
 		const createCredentialsRequest: CreateCredentialsRequest = { login, password, userId: this.userId };
 
 		this._authService.signUp$(createCredentialsRequest).pipe(
-				switchMap((authResponse: AuthenticationResponse) => {
+				switchMap(({ body: credentialResponse }: { body: AuthenticationResponse }) => {
 					this.isWaiting = false;
-					return this._userService.getUser(authResponse.userId);
+					return this._userService.getUserSetCredentials(credentialResponse.userId);
 				}),
 				catchError((error: string) => {
 					console.log(error);
@@ -71,8 +69,8 @@ export class SignupComponent implements OnInit {
 					return throwError(error);
 				})
 			).subscribe(
-				(user: UserResponse) => {
-					const nextUrl: string = (user.user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+				(user: OperationResultResponseUserResponse) => {
+					const nextUrl: string = (user.body.user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
 					this._router.navigate([nextUrl]);
 				},
 				(error: string) => {

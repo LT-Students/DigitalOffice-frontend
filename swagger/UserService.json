@@ -156,7 +156,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserResponse"
+                  "$ref": "#/components/schemas/OperationResultResponseUserResponse"
                 }
               }
             }
@@ -240,7 +240,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UsersResponse"
+                  "$ref": "#/components/schemas/FindResultResponseUserInfo"
                 }
               }
             }
@@ -326,7 +326,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -487,17 +487,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CredentialsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponseCredentialsResponse"
                 }
               }
             }
@@ -527,7 +517,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponseCredentialsResponse"
                 }
               }
             }
@@ -1283,6 +1273,91 @@
   },
   "components": {
     "schemas": {
+      "OperationResultResponseUserResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "properties": {
+              "user": {
+                "$ref": "#/components/schemas/UserInfo"
+              },
+              "skills": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "nullable": true
+              },
+              "communications": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CommunicationInfo"
+                }
+              },
+              "certificates": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CertificateInfo"
+                }
+              },
+              "achievements": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserAchievementInfo"
+                }
+              },
+              "projects": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProjectInfo"
+                }
+              },
+              "educations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EducationInfo"
+                }
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseUserInfo": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "number"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+
+      },
       "CreateUserRequest": {
         "type": "object",
         "required": [
@@ -1610,123 +1685,43 @@
           }
         }
       },
-      "CredentialsResponse": {
+      "OperationResultResponseCredentialsResponse": {
+        "description": "Response object for action operations.",
         "type": "object",
         "properties": {
-          "UserId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "AccessToken": {
-            "type": "string"
-          },
-          "RefreshToken": {
-            "type": "string"
-          },
-          "accessTokenExpiresIn": {
-            "description": "AccessToken life time in minutes",
-            "type": "number",
-            "format": "double"
-          },
-          "refreshTokenExpiresIn": {
-            "description": "RefreshToken life time in minutes",
-            "type": "number",
-            "format": "double"
-          }
-        }
-      },
-      "UsersResponse": {
-        "type": "object",
-        "properties": {
-          "TotalCount": {
-            "type": "integer",
-            "description": "Total number of all users."
-          },
-          "Users": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserInfo"
+          "Body": {
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "accessToken": {
+                "type": "string"
+              },
+              "refreshToken": {
+                "type": "string"
+              },
+              "accessTokenExpiresIn": {
+                "description": "AccessToken life time in minutes",
+                "type": "number",
+                "format": "double"
+              },
+              "refreshTokenExpiresIn": {
+                "description": "RefreshToken life time in minutes",
+                "type": "number",
+                "format": "double"
+              }
             }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "UserResponse": {
-        "type": "object",
-        "properties": {
-          "User": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
-          "Skills": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "Communications": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CommunicationInfo"
-            }
-          },
-          "Certificates": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CertificateInfo"
-            }
-          },
-          "Achievements": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserAchievementInfo"
-            }
-          },
-          "Projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectInfo"
-            }
-          },
-          "Educations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EducationInfo"
-            }
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "ImageInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ParentId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "Content": {
-            "type": "string",
-            "nullable": false,
-            "description": "Image file content in base64 encoded string."
-          },
-          "Extension": {
-            "type": "string",
-            "nullable": false
           }
         }
       },
@@ -1794,6 +1789,29 @@
           },
           "Office": {
             "$ref": "#/components/schemas/OfficeInfo"
+          }
+        }
+      },
+      "ImageInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "Content": {
+            "type": "string",
+            "nullable": false,
+            "description": "Image file content in base64 encoded string."
+          },
+          "Extension": {
+            "type": "string",
+            "nullable": false
           }
         }
       },

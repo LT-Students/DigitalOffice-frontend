@@ -14,20 +14,19 @@ export class OfficeListComponent {
 	public offices: OfficeInfo[];
 	public totalCount: number;
 
-	constructor(public companyApiService: CompanyApiService) {}
+	constructor(public companyApiService: CompanyApiService) { }
 
-	public onAddOfficeClick({skipCount, takeCount, dialog}): void {
+	public onAddOfficeClick({ skipCount, takeCount, dialog }): void {
 		dialog
-		.open(NewOfficeComponent)
-		.afterClosed()
-		.subscribe(() => this.getOfficeList(skipCount, takeCount));
+			.open(NewOfficeComponent)
+			.afterClosed()
+			.subscribe(() => this.getOfficeList(skipCount, takeCount));
 	}
 
-	public getOfficeList(skipCount = 0, takeCount = 10) {
-		return this.companyApiService.findOffices({skipCount, takeCount}).subscribe(data => {
-			console.log('Data from getList: ', data)
-			this.offices = data.offices;
+	private _getOfficeList(): void {
+		this.companyApiService.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
 			this.totalCount = data.totalCount;
-		})
+			this.offices = data.body;
+		});
 	}
 }

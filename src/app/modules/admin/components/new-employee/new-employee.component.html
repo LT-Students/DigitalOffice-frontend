@@ -45,7 +45,7 @@
           </label>
           <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
             <mat-select id="positionId" placeholder="Выберите должность" formControlName="positionId" required>
-              <mat-option *ngFor="let position of positionList" [value]="position.id">
+              <mat-option *ngFor="let position of positionList.body" [value]="position.id">
                 {{ position?.name }}
               </mat-option>
             </mat-select>
@@ -57,7 +57,7 @@
           </label>
           <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
             <mat-select id="departmentId" placeholder="Выберите департамент" formControlName="departmentId">
-              <mat-option *ngFor="let department of departmentList" [value]="department.id">
+              <mat-option *ngFor="let department of departmentList.body" [value]="department.id">
                 {{ department?.name }}
               </mat-option>
             </mat-select>

@@ -1,38 +1,48 @@
 import { Component, OnInit } from '@angular/core';
 
-import { PositionApiService } from '@data/api/company-service/services';
-import { NewPositionComponent } from '../new-position/new-position.component';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
+import { NetService } from '@app/services/net.service';
+import { NewPositionComponent } from '../new-position/new-position.component';
 
 @Component({
-  selector: 'do-position-list',
-  templateUrl: './position-list.component.html',
-  styleUrls: ['./position-list.component.scss']
+	selector: 'do-position-list',
+	templateUrl: './position-list.component.html',
+	styleUrls: ['./position-list.component.scss'],
 })
-export class PositionListComponent {
-  public positions: PositionInfo[] = [];
-  public totalCount: number;
+export class PositionListComponent implements OnInit {
+	public positions: PositionInfo[];
 
-  constructor(private positionApiService: PositionApiService) { }
+	public totalCount: number;
+	public pageSize: number;
+	public pageIndex: number;
 
-  public onAddPositionClick({skipCount, takeCount, dialog}): void {
-    dialog
-		.open(NewPositionComponent)
-		.afterClosed()
-		.subscribe(() => this.getPositionList(skipCount, takeCount));
-  }
+	constructor(private dialog: MatDialog, private _netService: NetService) {
+		this.totalCount = 0;
+		this.pageSize = 10;
+		this.pageIndex = 0;
+		this.positions = [];
+	}
 
-  public getPositionList(skipCount = 0, takeCount = 10) {
-		return this.positionApiService.findPositions({skipCount, takeCount}).subscribe(data => {
-      this.positions = [];
-			console.log('Data from positionList: ', data)
-			data.forEach(positionResponse => {
-        this.positions.push(positionResponse.info);
-        //@ts-ignore TODO remove ts-ignore when API is fixed
-        // this.totalCount = positionResponse.totalCount;
-        //when API is fixed use totalCount from data
-        this.totalCount = 50;
-      })
-		})
+	public ngOnInit(): void {
+		this._getPositions();
+	}
+
+	public onAddPositionClick(): void {
+		this.dialog.open(NewPositionComponent);
+	}
+
+	public onPageChange(event: PageEvent): void {
+		this.pageSize = event.pageSize;
+		this.pageIndex = event.pageIndex;
+		this._getPositions();
+	}
+
+	private _getPositions(): void {
+		this._netService.getPositionsList({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe((data) => {
+			data.body.forEach((positionResponse) => {
+				this.positions.push(positionResponse);
+			});
+			this.totalCount = data.totalCount;
+		});
 	}
 }
