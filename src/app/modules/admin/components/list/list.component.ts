@@ -3,6 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ListService, ListType } from '@app/services/list.service';
+import { Observable } from 'rxjs';
 import { Heading } from './heading-model'
 
 @Component({
@@ -71,7 +72,7 @@ export class ListComponent implements OnInit {
   }
 
   public onAddButtonClick(): void {
-    this.listService.openModal(this.listType).subscribe(() => {
+    this.listService.onAddClick(this.listType).subscribe(() => {
       this._getData()
     });
   }

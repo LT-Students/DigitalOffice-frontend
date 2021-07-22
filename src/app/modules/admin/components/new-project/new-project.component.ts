@@ -144,8 +144,4 @@ export class NewProjectComponent implements OnInit {
 		const ordinary: TeamMember[] = team.members.filter((member: TeamMember) => !member.lead);
 		team.members = [...leads, ...ordinary];
 	}
-
-	public onCreateClick() {
-		this.dialogRef.close()
-	}
 }

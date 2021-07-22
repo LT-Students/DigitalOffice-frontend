@@ -17,16 +17,16 @@ export class OfficeListComponent {
 	constructor(public companyApiService: CompanyApiService) { }
 
 	public onAddOfficeClick({ skipCount, takeCount, dialog }): void {
-		dialog
-			.open(NewOfficeComponent)
-			.afterClosed()
-			.subscribe(() => this.getOfficeList(skipCount, takeCount));
+		// dialog
+		// 	.open(NewOfficeComponent)
+		// 	.afterClosed()
+		// 	.subscribe(() => this.getOfficeList(skipCount, takeCount));
 	}
 
 	private _getOfficeList(): void {
-		this.companyApiService.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
-			this.totalCount = data.totalCount;
-			this.offices = data.body;
-		});
+		// this.companyApiService.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
+		// 	this.totalCount = data.totalCount;
+		// 	this.offices = data.body;
+		// });
 	}
 }

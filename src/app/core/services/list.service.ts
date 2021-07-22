@@ -2,12 +2,11 @@ import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { CompanyApiService, PositionApiService } from "@data/api/company-service/services";
 import { RoleApiService } from "@data/api/rights-service/services";
 import { ModalService } from "./modal.service";
-import { UserService } from '@app/services/user.service'
+import { UserService } from './user.service'
 import { NetService } from "./net.service";
-import { ProjectService } from '@app/services/project.service';
+import { ProjectService } from './project.service';
 
 import { Heading } from "src/app/modules/admin/components/list/heading-model";
 
@@ -16,7 +15,7 @@ import { NewOfficeComponent } from "src/app/modules/admin/components/new-office/
 import { NewRoleComponent } from "src/app/modules/admin/components/new-role/new-role.component";
 import { NewPositionComponent } from "src/app/modules/admin/components/new-position/new-position.component";
 import { NewEmployeeComponent } from "src/app/modules/admin/components/new-employee/new-employee.component";
-import { NewProjectComponent } from "src/app/modules/admin/components/new-project/new-project.component";
+import { Router } from "@angular/router";
 
 export enum ListType {
     OFFICES,
@@ -36,13 +35,12 @@ export class ListService {
     private headings: Heading[] = [];
 
     constructor(
-        private companyApiService: CompanyApiService,
         private roleApiService: RoleApiService,
-        private positionApiService: PositionApiService,
         private userApiService: UserService,
         private netService: NetService,
         private modalService: ModalService,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        private router: Router
     ) { }
 
     public getListType(instance: string): ListType {
@@ -161,11 +159,11 @@ export class ListService {
     private getData$(skipCount: number, takeCount: number, instance: ListType): Observable<{ list, totalCount }> {
         switch (instance) {
             case ListType.OFFICES: {
-                return this.companyApiService.findOffices({ skipCount, takeCount })
+                return this.netService.getOfficesList({ skipCount, takeCount })
                     .pipe(
                         map(res => (
                             {
-                                list: this.orderData(res.offices, ListType.OFFICES),
+                                list: this.orderData(res.body, ListType.OFFICES),
                                 totalCount: res.totalCount,
                             }))
                     )
@@ -181,14 +179,11 @@ export class ListService {
                     )
             }
             case ListType.POSITIONS: {
-                return this.positionApiService.findPositions({ skipCount, takeCount })
+                return this.netService.getPositionsList({ skipCount, takeCount })
                     .pipe(
                         map((res) => {
-                            let positions = []
-                            res.forEach(position => positions.push(position.info))
                             return {
-                                list: this.orderData(positions, ListType.POSITIONS),
-                                //@ts-ignore
+                                list: this.orderData(res.body, ListType.POSITIONS),
                                 totalCount: res.totalCount,
                             }
                         })
@@ -199,7 +194,7 @@ export class ListService {
                     .pipe(
                         map((res) => {
                             return {
-                                list: this.orderData(res.users.map(user => ({
+                                list: this.orderData(res.body.map(user => ({
                                     id: user.id,
                                     name: (user.firstName && user.lastName) ? user.firstName + ' ' + user.lastName : '',
                                     department: user.department?.name,
@@ -215,21 +210,21 @@ export class ListService {
                     )
             }
             case ListType.DEPARTMENTS: {
-                return this.netService.getDepartmentsList()
+                return this.netService.getDepartmentsList({ skipCount, takeCount })
                     .pipe(
                         map((res) => {
                             return {
-                                list: this.orderData(res.map(
+                                list: this.orderData(res.body.map(
                                     department => ({
                                         ...department,
                                         name: department.name,
                                         description: department.description,
                                         director: (department.director?.firstName && department.director?.lastName) ?
                                             department.director?.firstName + ' ' + department.director?.lastName : '',
-                                        users: department.users.length
+                                        users: department.countUsers
                                     })
                                 ), ListType.DEPARTMENTS),
-                                totalCount: res.length
+                                totalCount: res.totalCount
                             }
                         })
                     )
@@ -298,7 +293,7 @@ export class ListService {
         return this.orderedList;
     }
 
-    public openModal(instance: ListType): Observable<any> {
+    public onAddClick(instance: ListType) {
         switch (instance) {
             case ListType.OFFICES: {
                 return this.modalService.openModal(NewOfficeComponent).afterClosed();
@@ -316,7 +311,7 @@ export class ListService {
                 return this.modalService.openModal(NewDepartmentComponent).afterClosed();
             }
             case ListType.PROJECTS: {
-                return this.modalService.openModal(NewProjectComponent).afterClosed();
+                return of(this.router.navigate(['admin/new-project']));
             }
         }
     }
