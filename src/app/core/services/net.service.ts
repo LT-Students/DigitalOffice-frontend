@@ -45,8 +45,8 @@ export class NetService {
 		);
 	}
 
-	public getOfficesList(): Observable<FindResultResponseOfficeInfo> {
-		return this._companyApiService.findOffices({ skipCount: 0, takeCount: 50 });
+	public getOfficesList(params: { skipCount: number; takeCount: number; includeDeactivated?: boolean }): Observable<FindResultResponseOfficeInfo> {
+		return this._companyApiService.findOffices(params);
 	}
 
 	public getDepartment(params: {

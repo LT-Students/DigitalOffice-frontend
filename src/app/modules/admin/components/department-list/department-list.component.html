@@ -45,6 +45,7 @@
 				</tr>
 			</ng-container>
 		</table>
+        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 	</div>
 </div>
 
