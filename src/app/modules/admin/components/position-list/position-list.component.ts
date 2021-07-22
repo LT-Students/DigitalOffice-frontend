@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { NetService } from '@app/services/net.service';
 import { NewPositionComponent } from '../new-position/new-position.component';
+import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
 	selector: 'do-position-list',
