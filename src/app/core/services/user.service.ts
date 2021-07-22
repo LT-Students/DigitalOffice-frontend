@@ -50,8 +50,9 @@ export class UserService {
 	}
 
 	public isAdmin(): boolean {
-		const user: UserInfo = this.localStorageService.get('user');
-		return user ? user.isAdmin : false;
+		//TODO использовать getCurrentUser для получения юзера
+		const user: User = this.localStorageService.get('user');
+		return user ? user.user.isAdmin : false;
 	}
 
 	public getCurrentUser(): User | null {

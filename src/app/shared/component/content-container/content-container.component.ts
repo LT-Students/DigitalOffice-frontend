@@ -15,8 +15,8 @@ export class ContentContainerComponent implements OnInit {
 	constructor(private userService: UserService) {}
 
 	ngOnInit() {
+		//TODO нужно подумать, как возвращать экземпляр класса User, а не duck type
 		this.user = this.userService.getCurrentUser();
-		console.log(this.user.firstName);
 		// if (!this.user) {
 		// 	this.user = { firstName: 'сотрудник', lastName: 'сотрудник' };
 		// }
