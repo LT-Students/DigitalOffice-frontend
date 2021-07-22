@@ -1692,14 +1692,14 @@
           "Body": {
             "type": "object",
             "properties": {
-              "UserId": {
+              "userId": {
                 "type": "string",
                 "format": "uuid"
               },
-              "AccessToken": {
+              "accessToken": {
                 "type": "string"
               },
-              "RefreshToken": {
+              "refreshToken": {
                 "type": "string"
               },
               "accessTokenExpiresIn": {
