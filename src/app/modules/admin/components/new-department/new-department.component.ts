@@ -6,9 +6,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { switchMap } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { FindResultResponseUserInfo } from '@data/api/user-service/models/find-result-response-user-info';
 import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 
 @Component({
@@ -47,7 +47,7 @@ export class NewDepartmentComponent implements OnInit {
 				skipCount: 0,
 				takeCount: 50,
 			})
-			.pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
+			.pipe(switchMap((usersResponse: FindResultResponseUserInfo) => of(usersResponse.body)))
 			.subscribe((data: UserInfo[]) => (this.directors = data));
 	}
 

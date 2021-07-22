@@ -49,7 +49,7 @@ export class DepartmentCardComponent implements OnInit {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
 		this._userService.getUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
-			this.sortedUsersInfo = data.users.slice();
+			this.sortedUsersInfo = data.body.slice();
 		});
 	}
 
