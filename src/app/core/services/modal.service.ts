@@ -35,13 +35,10 @@ export interface UserSearchModalConfig {
 }
 
 export const enum ModalWidth {
-	Download = '720px',
-	Remove = '440px',
-	NewCard = '672px',
-	Cancel = '550px',
-	ClosingCard = '700px',
-	Thumbnail = '647px',
-	Photo = '509px'
+	XL = '720px',
+	S = '440px',
+	L = '672px',
+	M = '550px'
 }
 
 
@@ -51,7 +48,7 @@ export const enum ModalWidth {
 export class ModalService {
 	constructor(private matDialog: MatDialog) {}
 
-	public openModal<C, T, R>(component: ComponentType<C>, modalContentConfig?: T, result?: R, modalWidth?: ModalWidth): MatDialogRef<C, R> {
+	public openModal<C, T, R>(component: ComponentType<C>, modalWidth?: ModalWidth, modalContentConfig?: T, result?: R): MatDialogRef<C, R> {
 		return this.matDialog.open<C, T, R>(component, {
 			data: modalContentConfig,
 			width: modalWidth

@@ -1,8 +1,12 @@
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 
-import { ModalService, UserSearchModalConfig } from '@app/services/modal.service';
+import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { Team, TeamMember } from '../new-project/team-cards';
-import { DeleteDirectionComponent, ModalApprovalConfig, ModalResult } from '../new-project/modals/delete-direction/delete-direction.component';
+import {
+	DeleteDirectionComponent,
+	ModalApprovalConfig,
+	ModalResult,
+} from '../new-project/modals/delete-direction/delete-direction.component';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 
@@ -42,7 +46,7 @@ export class TeamCardComponent implements OnInit, AfterViewInit {
 	public onEditTeam(event: MouseEvent) {
 		this._handleClickEvent(event);
 		const configData: UserSearchModalConfig = { team: this.teamCard, mode: WorkFlowMode.EDIT };
-		this._modalService.openModal(UserSearchComponent, configData);
+		this._modalService.openModal(UserSearchComponent, ModalWidth.M , configData);
 	}
 
 	public onDeleteTeam(event: MouseEvent) {
@@ -59,7 +63,7 @@ export class TeamCardComponent implements OnInit, AfterViewInit {
 			},
 		};
 
-		const dialogRef = this._modalService.openModal(DeleteDirectionComponent, configData, ModalResult);
+		const dialogRef = this._modalService.openModal(DeleteDirectionComponent, ModalWidth.M , configData, ModalResult);
 	}
 
 	private _sortLeads(): TeamMember[] {
