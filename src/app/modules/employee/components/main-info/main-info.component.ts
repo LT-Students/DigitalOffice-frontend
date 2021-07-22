@@ -15,7 +15,6 @@ import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { ErrorResponse, OperationResultResponseUserResponse, UserGender } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
 import { UserGet } from '@app/models/user-get.model';
@@ -73,15 +72,15 @@ export class MainInfoComponent implements OnInit {
 		// this._getUser();
 		// this._initEditForm();
 
-		this._netService.getDepartmentsList().subscribe((departments: DepartmentInfo[]) => {
+		this._netService.getDepartmentsList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: departments }) => {
 			this.selectOptions.departments = departments;
 		});
 
-		this._netService.getPositionsList().subscribe((positions: PositionInfo[]) => {
+		this._netService.getPositionsList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: positions }) => {
 			this.selectOptions.positions = positions;
 		});
 
-		this._netService.getOfficesList().subscribe(({ offices }: FindOfficesResponse) => {
+		this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: offices }) => {
 			this.selectOptions.offices = offices;
 		});
 

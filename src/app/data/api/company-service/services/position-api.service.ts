@@ -11,8 +11,9 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreatePositionRequest } from '../models/create-position-request';
 import { EditPositionRequest } from '../models/edit-position-request';
+import { FindResultResponsePositionInfo } from '../models/find-result-response-position-info';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { PositionResponse } from '../models/position-response';
+import { OperationResultResponsePositionInfo } from '../models/operation-result-response-position-info';
 
 @Injectable({
   providedIn: 'root',
@@ -44,7 +45,7 @@ export class PositionApiService extends BaseService {
      * Position global unique identifier.
      */
     positionId: string;
-  }): Observable<StrictHttpResponse<PositionResponse>> {
+  }): Observable<StrictHttpResponse<OperationResultResponsePositionInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, PositionApiService.GetPositionPath, 'get');
     if (params) {
@@ -57,7 +58,7 @@ export class PositionApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<PositionResponse>;
+        return r as StrictHttpResponse<OperationResultResponsePositionInfo>;
       })
     );
   }
@@ -76,10 +77,10 @@ export class PositionApiService extends BaseService {
      * Position global unique identifier.
      */
     positionId: string;
-  }): Observable<PositionResponse> {
+  }): Observable<OperationResultResponsePositionInfo> {
 
     return this.getPosition$Response(params).pipe(
-      map((r: StrictHttpResponse<PositionResponse>) => r.body as PositionResponse)
+      map((r: StrictHttpResponse<OperationResultResponsePositionInfo>) => r.body as OperationResultResponsePositionInfo)
     );
   }
 
@@ -96,11 +97,29 @@ export class PositionApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findPositions$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<PositionResponse>>> {
+  findPositions$Response(params: {
+
+    /**
+     * Number of positions to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of positions to take.
+     */
+    takeCount: number;
+
+    /**
+     * If it is true, response will be have deactivated records.
+     */
+    includeDeactivated?: boolean;
+  }): Observable<StrictHttpResponse<FindResultResponsePositionInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, PositionApiService.FindPositionsPath, 'get');
     if (params) {
+      rb.query('skipCount', params.skipCount, {});
+      rb.query('takeCount', params.takeCount, {});
+      rb.query('includeDeactivated', params.includeDeactivated, {});
     }
 
     return this.http.request(rb.build({
@@ -109,7 +128,7 @@ export class PositionApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<PositionResponse>>;
+        return r as StrictHttpResponse<FindResultResponsePositionInfo>;
       })
     );
   }
@@ -122,11 +141,26 @@ export class PositionApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findPositions(params?: {
-  }): Observable<Array<PositionResponse>> {
+  findPositions(params: {
+
+    /**
+     * Number of positions to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of positions to take.
+     */
+    takeCount: number;
+
+    /**
+     * If it is true, response will be have deactivated records.
+     */
+    includeDeactivated?: boolean;
+  }): Observable<FindResultResponsePositionInfo> {
 
     return this.findPositions$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<PositionResponse>>) => r.body as Array<PositionResponse>)
+      map((r: StrictHttpResponse<FindResultResponsePositionInfo>) => r.body as FindResultResponsePositionInfo)
     );
   }
 

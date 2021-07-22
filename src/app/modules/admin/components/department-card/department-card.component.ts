@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '@app/services/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
-import { ShortDepartmentInfo } from '@data/api/company-service/models/short-department-info';
+import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 
 @Component({
@@ -15,7 +15,7 @@ import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 	styleUrls: ['./department-card.component.scss'],
 })
 export class DepartmentCardComponent implements OnInit {
-	public departmentInfo: ShortDepartmentInfo;
+	public departmentInfo: DepartmentInfo;
 	public sortedUsersInfo: UserInfo[];
 	private _departmentId: string;
 

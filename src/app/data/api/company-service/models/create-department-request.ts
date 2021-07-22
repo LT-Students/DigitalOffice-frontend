@@ -1,10 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-
-/**
- * Specific department data.
- */
-export interface BaseDepartmentInfo {
+export interface CreateDepartmentRequest {
 
   /**
    * Department description.
@@ -17,13 +13,9 @@ export interface BaseDepartmentInfo {
   directorUserId?: null | string;
 
   /**
-   * Department id.
-   */
-  id?: string;
-
-  /**
    * Department name.
    */
   name: string;
+  users?: Array<string>;
 }
 

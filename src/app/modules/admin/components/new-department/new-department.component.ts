@@ -55,11 +55,9 @@ export class NewDepartmentComponent implements OnInit {
 		this.departmentApiService
 			.addDepartment({
 				body: {
-					info: {
-						name: this.departmentForm.get('name').value,
-						description: this.departmentForm.get('description').value,
-						directorUserId: this.departmentForm.get('directorId').value,
-					},
+					name: this.departmentForm.get('name').value,
+					description: this.departmentForm.get('description').value,
+					directorUserId: this.departmentForm.get('directorId').value,
 					users: [],
 				},
 			})
