@@ -17,10 +17,17 @@ import { NewCompanyComponent } from './components/new-company/new-company.compon
 import { UploadComponent } from './components/upload/upload.component';
 import { ProgressComponent } from './components/upload/progress/progress.component';
 import { NewDepartmentComponent } from './components/new-department/new-department.component';
-import { NewSpecializationComponent } from './components/new-specialization/new-specialization.component';
+import { NewPositionComponent } from './components/new-position/new-position.component';
 import { DeleteDirectionComponent } from './components/new-project/modals/delete-direction/delete-direction.component';
 import { AdminRoutingModule } from './admin-routing.module';
+import { NewRoleComponent } from './components/new-role/new-role.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { NewOfficeComponent } from './components/new-office/new-office.component';
+import { DepartmentListComponent } from './components/department-list/department-list.component';
+import { DepartmentCardComponent } from './components/department-card/department-card.component';
+import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
+import { OfficeListComponent } from './components/office-list/office-list.component';
+import { PositionListComponent } from './components/position-list/position-list.component'
 
 @NgModule({
 	declarations: [
@@ -36,22 +43,18 @@ import { ManageUsersComponent } from './components/manage-users/manage-users.com
 		DndDirective,
 		ProgressComponent,
 		NewDepartmentComponent,
-		NewSpecializationComponent,
+		NewPositionComponent,
 		DeleteDirectionComponent,
+		NewRoleComponent,
 		ManageUsersComponent,
+		NewOfficeComponent,
+		DepartmentListComponent,
+		DepartmentCardComponent,
+		ManageRolesComponent,
+		OfficeListComponent,
+		PositionListComponent
 	],
-	imports: [
-		CommonModule,
-		RouterModule,
-		FormsModule,
-		ReactiveFormsModule,
-		MaterialModule,
-		SharedModule,
-		AdminRoutingModule
-	],
-	exports: [
-		ProjectCardComponent,
-		DndDirective
-	],
+	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
+	exports: [ProjectCardComponent, DndDirective],
 })
 export class AdminModule {}

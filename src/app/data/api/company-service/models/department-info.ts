@@ -6,12 +6,13 @@ import { UserInfo } from './user-info';
  * Specific department data.
  */
 export interface DepartmentInfo {
+  countUsers?: number;
 
   /**
    * Department description.
    */
-  description?: string;
-  director?: UserInfo;
+  description?: null | string;
+  director?: null | UserInfo;
 
   /**
    * Department id.
@@ -22,10 +23,5 @@ export interface DepartmentInfo {
    * Department name.
    */
   name?: string;
-
-  /**
-   * Workers of this department.
-   */
-  users?: Array<UserInfo>;
 }
 

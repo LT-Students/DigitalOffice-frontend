@@ -9,7 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { AddUsersToProjectReques } from '../models/add-users-to-project-reques';
+import { AddUsersToProjectRequest } from '../models/add-users-to-project-request';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +37,7 @@ export class UserApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addUsersToProject$Response(params: {
-    body: AddUsersToProjectReques
+    body: AddUsersToProjectRequest
   }): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.AddUsersToProjectPath, 'post');
@@ -66,7 +66,7 @@ export class UserApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   addUsersToProject(params: {
-    body: AddUsersToProjectReques
+    body: AddUsersToProjectRequest
   }): Observable<void> {
 
     return this.addUsersToProject$Response(params).pipe(

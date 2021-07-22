@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Team } from '../../modules/admin/components/new-project/team-cards';
-import { WorkFlowMode } from '../../modules/employee/employee-page.component';
 import { ComponentType } from '@angular/cdk/overlay';
 import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
+import { Team } from '../../modules/admin/components/new-project/team-cards';
+import { WorkFlowMode } from '../../modules/employee/employee-page.component';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 
 export enum ModalType {
 	CREATE,
@@ -16,13 +17,20 @@ export enum AdminDashboardModalType {
 	NEW_COMPANY,
 	NEW_EMPLOYEE,
 	NEW_DEPARTMENT,
-	NEW_SPECIALIZATION,
+	NEW_POSITION,
+    NEW_ROLE,
 	NEW_PROJECT,
-	MANAGE_USERS
+	MANAGE_USERS,
+	MANAGE_ROLES,
+	NEW_OFFICE,
+	DEPARTMENT_LIST,
+	OFFICE_LIST,
+	POSITION_LIST
 }
 
 export interface UserSearchModalConfig {
 	team?: Team;
+	members?: UserInfo[];
 	mode: WorkFlowMode;
 }
 

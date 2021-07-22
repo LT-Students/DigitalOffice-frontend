@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, Subscription } from 'rxjs';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
-import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { switchMap } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { FindResultResponseUserInfo } from '@data/api/user-service/models/find-result-response-user-info';
+import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
 
 @Component({
 	selector: 'do-new-department',
@@ -20,11 +20,7 @@ export class NewDepartmentComponent implements OnInit {
 	public directors: UserInfo[] = [];
 	private getDirectorsSubscription: Subscription;
 
-	public departmentForm = new FormGroup({
-		name: new FormControl(null, [Validators.required]),
-		description: new FormControl(null, [Validators.required]),
-		directorId: new FormControl(null, [Validators.required]),
-	});
+	public departmentForm: FormGroup;
 
 	constructor(
 		public userApiService: UserApiService,
@@ -38,9 +34,9 @@ export class NewDepartmentComponent implements OnInit {
 		this.getDirectors();
 
 		this.departmentForm = this.formBuilder.group({
-			name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-			description: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(1000)]],
-			directorId: ['', [Validators.required, Validators.minLength(1)]],
+			name: ['', [Validators.required]],
+			description: [null],
+			directorId: [null],
 		});
 	}
 
@@ -51,7 +47,7 @@ export class NewDepartmentComponent implements OnInit {
 				skipCount: 0,
 				takeCount: 50,
 			})
-			.pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
+			.pipe(switchMap((usersResponse: FindResultResponseUserInfo) => of(usersResponse.body)))
 			.subscribe((data: UserInfo[]) => (this.directors = data));
 	}
 
@@ -59,11 +55,10 @@ export class NewDepartmentComponent implements OnInit {
 		this.departmentApiService
 			.addDepartment({
 				body: {
-					info: {
-						name: this.departmentForm.controls['name'].value,
-						description: this.departmentForm.controls['description'].value,
-						directorUserId: this.departmentForm.controls['directorId'].value,
-					},
+					name: this.departmentForm.get('name').value,
+					description: this.departmentForm.get('description').value,
+					directorUserId: this.departmentForm.get('directorId').value,
+					users: [],
 				},
 			})
 			.subscribe(
@@ -71,9 +66,14 @@ export class NewDepartmentComponent implements OnInit {
 					this.snackBar.open('New department added successfully', 'done', {
 						duration: 3000,
 					});
+					this.dialogRef.close();
 				},
 				(error: HttpErrorResponse) => {
-					this.snackBar.open(error.error.Message, 'accept');
+					let errorMessage = error.error.errors;
+					if (error.status === 409) {
+						errorMessage = 'Департамент с таким названием уже существует';
+					}
+					this.snackBar.open(errorMessage, 'accept');
 					throw error;
 				}
 			);

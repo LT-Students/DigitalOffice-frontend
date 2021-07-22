@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '@app/services/user.service';
-import { UserInfo } from '@data/api/user-service/models';
 import { AuthService } from '@app/services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '@app/models/user.model';
 
 @Component({
 	selector: 'do-content-container',
@@ -11,15 +11,15 @@ import { Router } from '@angular/router';
 	styleUrls: ['./content-container.component.scss'],
 })
 export class ContentContainerComponent implements OnInit {
-	user: UserInfo;
+	user: User;
 
-	constructor(private userService: UserService, private authService: AuthService, private _router: Router) {}
+	constructor(private _userService: UserService, private _authService: AuthService, private _router: Router) {}
 
 	ngOnInit() {
-		this.user = this.userService.getCurrentUser();
-		if (!this.user) {
-			this.user = { firstName: 'сотрудник', lastName: 'сотрудник' };
-		}
+		const currentUser: User = this._userService.getCurrentUser();
+		this.user = (currentUser) ? currentUser : new User({
+			body: { user: { firstName: 'сотрудник' } }
+		} );
 	}
 
 	public onLogoClick() {
@@ -27,6 +27,6 @@ export class ContentContainerComponent implements OnInit {
 	}
 
 	onLogoutClick() {
-		this.authService.logout();
+		this._authService.logout();
 	}
 }

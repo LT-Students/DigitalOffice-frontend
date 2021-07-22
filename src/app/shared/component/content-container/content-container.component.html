@@ -1,4 +1,3 @@
-
 <nav mat-tab-nav-bar>
     <h2 class='logo' (click)='onLogoClick()'>Digital Office</h2>
     <a mat-tab-link routerLink="/user/attendance">Учет заполнения</a>
@@ -22,9 +21,9 @@
       <img src="../../../../assets/svg/notification-light.svg" alt="notification" class="header__notification__light" *ngIf="hasNotification" />
     </div>-->
 </mat-toolbar>
-<!--<do-header [userName]="user.firstName" class="header__container"></do-header>-->
+<do-header [userName]="user.firstName" [userId]="user.id" [avatar]="user.user.avatar" class="header__container"></do-header>
 <div class="content-container">
-  <div class="wrapper">
-    <router-outlet></router-outlet>
-  </div>
+	<div class="wrapper">
+		<router-outlet></router-outlet>
+	</div>
 </div>

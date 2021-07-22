@@ -1,16 +1,14 @@
 import { EducationModel } from '@app/models/education.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user.service';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { Project } from '@data/models/project';
-import { EducationType, UserInfo } from '@data/api/user-service/models';
+import { EducationType, OperationResultResponseUserResponse, UserInfo } from '@data/api/user-service/models';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project.service';
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { User } from '@app/models/user.model';
 import { ArchiveComponent } from './components/modals/archive/archive.component';
 import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
@@ -66,7 +64,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		private router: Router,
 		private snackBar: MatSnackBar
 	) {
-		const user: UserInfo = this._userService.getCurrentUser();
+		const user: User = this._userService.getCurrentUser();
 		this.pageId = this.route.snapshot.paramMap.get('id');
 		if (!this.pageId) {
 			this.router.navigate([`employee/${user.id}`]);
@@ -78,7 +76,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		const user: UserInfo = this._userService.getCurrentUser();
+		const user: User = this._userService.getCurrentUser();
 
 		this.isOwner = user.id === this.pageId;
 
@@ -88,27 +86,27 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		//
 		// });
 		/* TODO: BehaviorSubject with userResponse as initial value */
-		this._userService
-			.getMockUser(this.pageId)
-			.pipe(takeUntil(this._unsubscribe$))
-			.subscribe((userResponse: UserResponse) => {
-				this.user = new User(userResponse);
-				this.paths = [
-					{ title: 'Сотрудники', url: 'user/attendance' },
-					{
-						title: this.user.department ? `${this.user.department.name}` : 'Тестовый департамент',
-						url: this.user.department ? `departments/${this.user.department.id}` : 'department/id',
-					},
-					{ title: `${this.user.firstName} ${this.user.lastName}` },
-				];
-			});
+		// this._userService
+		// 	.getUser({ userId: this.pageId })
+		// 	.pipe(takeUntil(this._unsubscribe$))
+		// 	.subscribe((userResponse: OperationResultResponseUserResponse) => {
+		// 		this.user = new User(userResponse);
+		// 		this.paths = [
+		// 			{ title: 'Сотрудники', url: 'user/attendance' },
+		// 			{
+		// 				title: this.user.department ? `${this.user.department.name}` : 'Тестовый департамент',
+		// 				url: this.user.department ? `departments/${this.user.department.id}` : 'department/id',
+		// 			},
+		// 			{ title: `${this.user.firstName} ${this.user.lastName}` },
+		// 		];
+		// 	});
 
-		this._projectService
-			.getUserProjectsInfo(this.user.projects)
-			.pipe(takeUntil(this._unsubscribe$))
-			.subscribe((projects: ProjectInfo[]) => {
-				console.log(projects);
-			});
+		// this._projectService
+		// 	.getUserProjectsInfo(this.user.projects)
+		// 	.pipe(takeUntil(this._unsubscribe$))
+		// 	.subscribe((projects: ProjectInfo[]) => {
+		// 		console.log(projects);
+		// 	});
 	}
 
 	ngOnDestroy() {

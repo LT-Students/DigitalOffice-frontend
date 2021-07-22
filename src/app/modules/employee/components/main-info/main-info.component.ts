@@ -1,46 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IUser } from '@data/models/user';
-import { Time } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
-import { employee } from '../../mock';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { promptGlobalAnalytics } from '@angular/cli/models/analytics';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
-import { DepartmentService } from '@app/services/department.service';
+import { map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
-import { ProjectService } from '@app/services/project.service';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { CommunicationType } from '@data/api/user-service/models';
+import { ErrorResponse, OperationResultResponseUserResponse, UserGender } from '@data/api/user-service/models';
+import { NetService } from '@app/services/net.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
+import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
+import { UserGet } from '@app/models/user-get.model';
 import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
-
-interface ExtendedUser extends IUser {
-	about?: string;
-	photoUrl: string;
-	position: string;
-	department: string;
-	location: string;
-	office: string;
-	workingRate: number;
-	workingHours: { startAt: Time; endAt: Time };
-	workingSince?: Date;
-	birthDate: Date;
-	email: string;
-	phone: string;
-	telegram: string;
-	vacationDaysLeft: number;
-	vacationSince?: Date;
-	vacationUntil?: Date;
-	sickSince?: Date;
-}
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -50,67 +28,80 @@ interface ExtendedUser extends IUser {
 export class MainInfoComponent implements OnInit {
 	public pageId: string;
 	public employeeInfoForm: FormGroup;
-	public employee: ExtendedUser;
 	public selectOptions;
 	public isEditing: boolean;
-	public previewPhoto: string;
 	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
 	public user: User;
+	public genders: IUserGender[];
 
 	constructor(
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
 		private _userService: UserService,
-		private _departmentService: DepartmentService,
+		private _netService: NetService,
 		private dialog: MatDialog,
-		private _projectService: ProjectService
+		private _snackBar: MatSnackBar,
+		private _roleService: RoleApiService
 	) {
-		this.employee = employee;
-
 		this.selectOptions = {
+			roles: [],
 			positions: [],
 			departments: [],
-			office: ['м. Чернышевская', 'м. Площадь Восстания'],
+			offices: [],
 			statuses: UserStatusModel.getAllStatuses(),
 			workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
 		};
+		this.genders = UserGenderModel.getAllGenders();
 		this.isEditing = false;
-		this.previewPhoto = null;
 		this.user = null;
 		this.pageId = this.route.snapshot.paramMap.get('id');
 		this._initEditForm();
 	}
 	ngOnInit(): void {
-		this._userService
-			.getMockUser(this.pageId)
-			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
-			.subscribe((user: User) => (this.user = user));
-		this._initEditForm();
+		this.route.params
+			.pipe(
+				map((params) => params.id),
+				map((pageId) => {
+					this.pageId = pageId;
+					this._getUser();
+					this._initEditForm();
+				})
+			)
+			.subscribe();
+		// this._getUser();
+		// this._initEditForm();
 
-		this._departmentService.getDepartments().subscribe((departments: DepartmentInfo[]) => {
+		this._netService.getDepartmentsList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: departments }) => {
 			this.selectOptions.departments = departments;
 		});
 
-		this._projectService.getProjectPositions().subscribe((positions: PositionInfo[]) => {
+		this._netService.getPositionsList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: positions }) => {
 			this.selectOptions.positions = positions;
 		});
-		// this.previewPhoto = this.user.avatar.content;
+
+		this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: offices }) => {
+			this.selectOptions.offices = offices;
+		});
+
+		this._roleService.findRoles({ skipCount: 0, takeCount: 50 }).subscribe(({ roles }) => {
+			this.selectOptions.roles = roles;
+		});
 	}
 
 	public get communications(): FormArray {
 		return this.employeeInfoForm.get('communications') as FormArray;
 	}
 
-	get workingHours() {
-		const getTime = (timeObj: Time) => {
-			const minutes = timeObj.minutes < 10 ? timeObj.minutes + '0' : timeObj.minutes;
-			return `${timeObj.hours}:${minutes}`;
-		};
-		return Object.values(this.employee.workingHours)
-			.map((timeObj: Time) => getTime(timeObj))
-			.join('-');
-	}
+	// get workingHours() {
+	// 	const getTime = (timeObj: Time) => {
+	// 		const minutes = timeObj.minutes < 10 ? timeObj.minutes + '0' : timeObj.minutes;
+	// 		return `${timeObj.hours}:${minutes}`;
+	// 	};
+	// 	return Object.values(this.employee.workingHours)
+	// 		.map((timeObj: Time) => getTime(timeObj))
+	// 		.join('-');
+	// }
 
 	isOwner() {
 		// return this.user.id === this.pageId;
@@ -127,39 +118,46 @@ export class MainInfoComponent implements OnInit {
 		this.isEditing = !this.isEditing;
 	}
 
-	onFileChange(event) {
-		if (event.target.files.length > 0) {
-			const reader = new FileReader();
-
-			reader.readAsDataURL(event.target.files[0]);
-			reader.onload = (evt) => {
-				this.employeeInfoForm.patchValue({
-					photo: evt.target.result,
-				});
-				this.previewPhoto = evt.target.result as string;
-			};
-		}
+	updateEmployeeInfo() {
+		this._getUser();
 	}
 
-	updateEmployeeInfo() {
-		console.log(this.employeeInfoForm.value);
-		/*TODO send APi request and rerender page*/
-		this.user.avatar.content = this.employeeInfoForm.value.photo;
-		this.user.user.about = this.employeeInfoForm.value.about;
-		this.user.communications = this.employeeInfoForm.value.communications;
-		this.user.position = { ...this.employeeInfoForm.value.position, receivedAt: new Date().toISOString() };
-		this.user.department = this.employeeInfoForm.value.department;
-		this.user.firstName = this.employeeInfoForm.value.firstName;
-		this.user.lastName = this.employeeInfoForm.value.lastName;
-		this.user.middleName = this.employeeInfoForm.value.middleName;
-		this.user.user.rate = +this.employeeInfoForm.value.rate;
-		this.user.user.status = this.employeeInfoForm.value.status;
-		this.user.user.startWorkingAt = this.employeeInfoForm.value.workingSince.toISOString();
-		// this.employee = { ...this.employee, ...this.employeeInfoForm.value };
+	private _getUser(): void {
+		const params: UserGet = {
+			userId: this.pageId,
+			includedepartment: true,
+			includeposition: true,
+			includeoffice: true,
+			includecommunications: true,
+			includerole: true,
+			includeimages: true,
+		};
+
+		this._userService.getUser(params).subscribe((user: User) => {
+			this.user = user;
+			console.log(user);
+		});
+	}
+
+	private _patchEditUser(): void {
+		const editRequest = Object.keys(this.employeeInfoForm.controls)
+			.filter((key) => this.employeeInfoForm.get(key).dirty)
+			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key).value }));
+		this._userService.editUser(this.user.id, editRequest).subscribe(
+			(result) => {
+				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
+				this.updateEmployeeInfo();
+				// this._userService.getUserSetCredentials(res)
+			},
+			(error: ErrorResponse) => {
+				console.log(error);
+				this._snackBar.open(error.message, 'Close', { duration: 5000 });
+			}
+		);
 	}
 
 	onSubmit() {
-		this.updateEmployeeInfo();
+		this._patchEditUser();
 		this.toggleEditMode();
 	}
 
@@ -170,24 +168,31 @@ export class MainInfoComponent implements OnInit {
 
 	fillForm() {
 		const middleName = this.user.middleName ? this.user.middleName : '';
-		const photo = this.user.avatar && this.user.avatar.content ? `${this.user.avatar.content}` : '';
-		const status = this.user.status ? this.user.status.statusType : '';
+		const status = this.user.statusEmoji ? this.user.statusEmoji.statusType : '';
 		const about = this.user.user.about ? this.user.user.about : '';
-		const position = this.user.position ? this.user.position : '';
-		const department = this.user.department ? this.user.department : '';
+		const position = this.user.user.position ? this.user.user.position.id : '';
+		const department = this.user.user.department ? this.user.user.department.id : '';
+		const office = this.user.user.office ? this.user.user.office.id : '';
+		const role = this.user.user.role ? this.user.user.role.id : '';
 		const rate = this.user.user.rate ? this.user.user.rate : '';
+		const city = this.user.user.city ? this.user.user.city : '';
 
 		this.employeeInfoForm.patchValue({
 			firstName: this.user.firstName,
 			lastName: this.user.lastName,
 			middleName: middleName,
-			photo: photo,
+			photo: this.user.avatarImage,
 			status: status,
 			about: about,
 			position: position,
 			department: department,
+			office: office,
+			role: role,
 			rate: rate,
-			workingSince: this.user.startWorkingDate,
+			city: city,
+			gender: this.user.user.gender,
+			dateOfBirth: this.user.dateOfBirth,
+			startWorkingAt: this.user.startWorkingDate,
 			communications: this._enrichCommunications(),
 		});
 	}
@@ -196,6 +201,10 @@ export class MainInfoComponent implements OnInit {
 		const currentValue = this.employeeInfoForm.get('rate').value;
 		const rate = +currentValue + step;
 		this.employeeInfoForm.patchValue({ rate: rate });
+
+		if (this.employeeInfoForm.get('rate').pristine) {
+			this.employeeInfoForm.get('rate').markAsDirty();
+		}
 	}
 
 	compareSelectValues(option: any, value: any) {
@@ -208,9 +217,9 @@ export class MainInfoComponent implements OnInit {
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({
-					photoUrl: result,
+					photo: result,
 				});
-				this.previewPhoto = result;
+				this.employeeInfoForm.get('photo').markAsDirty();
 			}
 		});
 	}
@@ -224,13 +233,18 @@ export class MainInfoComponent implements OnInit {
 			status: [null],
 			about: [''],
 			position: ['', Validators.required],
-			department: ['', Validators.required],
+			department: [''],
+			office: ['', Validators.required],
+			role: [''],
 			rate: ['', Validators.required],
-			workingSince: [null],
-			communications: this.fb.array([
-				this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
-				this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
-			]),
+			city: [''],
+			startWorkingAt: [null],
+			dateOfBirth: [null],
+			gender: [UserGender],
+			// communications: this.fb.array([
+			// 	this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
+			// 	this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
+			// ]),
 		});
 	}
 

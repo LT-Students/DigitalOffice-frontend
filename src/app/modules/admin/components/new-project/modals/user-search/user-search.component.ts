@@ -1,10 +1,14 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Team, teamCards, TeamMember } from '../../team-cards';
-import { WorkFlowMode } from '../../../../../employee/employee-page.component';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UserService } from '@app/services/user.service';
 import { UserSearchModalConfig } from '@app/services/modal.service';
+import { UserRoleType } from '@data/api/project-service/models/user-role-type';
+import { PositionInfo } from '@data/api/company-service/models/position-info';
+import { NetService } from '@app/services/net.service';
+import { PageEvent } from '@angular/material/paginator';
+import { Team, teamCards } from '../../team-cards';
+import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 
 @Component({
 	selector: 'do-new-members-board',
@@ -14,24 +18,31 @@ import { UserSearchModalConfig } from '@app/services/modal.service';
 export class UserSearchComponent implements OnInit, OnDestroy {
 	@Input() mode: WorkFlowMode;
 	public members: UserInfo[];
-	public memberss: TeamMember[];
-	public membersAll: TeamMember[];
+	public membersAll: UserInfo[];
 	public visibleMembers: UserInfo[];
-	public filteredUsers: UserInfo[];
 	public checkedMembers: UserInfo[];
 	public selectedSpecialization;
 	public selectedLevel;
 	public searchName: string;
-	public specializations: string[] = ['Front-End Developer', 'Backend-End Developer', 'Product Manager', 'UI/UX Designer', 'QA Tester'];
-	public levels: string[] = ['Junior', 'Middle', 'Senior'];
+	public roles: UserRoleType[] = [UserRoleType.ProjectAdmin];
+	public positions: PositionInfo[];
 	public WorkFlowMode = WorkFlowMode;
 
-	private getMembersSubscription: Subscription;
+	public totalCount: number;
+	public pageSize: number;
+	public pageIndex: number;
 
-	constructor(@Inject(MAT_DIALOG_DATA) public data: UserSearchModalConfig) {
-		this.checkedMembers = [];
+	// private getMembersSubscription: Subscription;
+
+	constructor(
+		@Inject(MAT_DIALOG_DATA) public data: UserSearchModalConfig,
+		private _userService: UserService,
+		private _netService: NetService,
+		private _dialogRef: MatDialogRef<UserSearchComponent>
+	) {
+		this.checkedMembers = [...data.members];
 		this.searchName = null;
-		this.memberss = null;
+		this.members = data.members;
 		// TODO: Не показывать, пока не будет применён фильтр
 		switch (data.mode) {
 			case WorkFlowMode.VIEW: {
@@ -39,7 +50,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 				break;
 			}
 			case WorkFlowMode.EDIT: {
-				this.memberss = data.team.members;
+				this.members = data.team.members;
 				this._initSearchMode();
 				break;
 			}
@@ -47,17 +58,37 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 				break;
 			}
 		}
+
+		this.totalCount = 0;
+		this.pageSize = 10;
+		this.pageIndex = 0;
 		// teamCards.forEach((team: Team) => {
 		//   this.membersAll.push(...team.members)
 		// });
 	}
 
 	public ngOnInit(): void {
-		this.getMembers();
+		this._getMembers();
+		this._getPositions();
 	}
 
-	public getMembers(): void {
-		console.log('getMembers');
+	private _getMembers(): void {
+		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe(
+			(data) => {
+				this.membersAll = data.body;
+				this.totalCount = data.totalCount;
+			},
+			(error) => console.log(error)
+		);
+	}
+
+	private _getPositions(): void {
+		this._netService.getPositionsList({ skipCount: 0, takeCount: 100 }).subscribe(
+			(data) => {
+				this.positions = data.body;
+			},
+			(error) => console.log(error)
+		);
 	}
 
 	public onSelect() {
@@ -80,38 +111,44 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		return this.visibleMembers;
 	}
 
+	public onSave(): void {
+		console.log(this.checkedMembers);
+		this._dialogRef.close(this.checkedMembers);
+	}
+
+	public onPageChange(event: PageEvent): void {
+		this.pageSize = event.pageSize;
+		this.pageIndex = event.pageIndex;
+		this._getMembers();
+	}
+
 	public onSearchClick(value: string): void {
 		this.searchName = value;
-		this.getMembers();
+		this._getMembers();
 	}
 
 	public ngOnDestroy(): void {
 		// this.getMembersSubscription.unsubscribe();
 	}
 
-	public assignLead(member: TeamMember): void {
-		const index: number = this.memberss.findIndex((teamMember: TeamMember) => teamMember === member);
-		this.memberss[index].lead = this.memberss[index].lead ? !this.memberss[index].lead : true;
-	}
+	// public assignLead(member: UserInfo): void {
+	// 	const index: number = this.members.findIndex((teamMember: UserInfo) => teamMember === member);
+	// 	this.members[index].lead = this.members[index].lead ? !this.members[index].lead : true;
+	// }
 
-	public onCheckMember($event, user): void {
-		if ($event) {
+	public onCheckMember($event, user: UserInfo): void {
+		if ($event.checked) {
 			this.checkedMembers.push(user);
 		} else {
-			let uncheckedUserIndex;
-			this.checkedMembers.map((x, index) => {
-				if (x.id === user.id) {
-					uncheckedUserIndex = index;
-				}
-			});
+			const uncheckedUserIndex = this.checkedMembers.findIndex((u, index) => u.id === user.id);
 			this.checkedMembers.splice(uncheckedUserIndex, 1);
 		}
 	}
 
-	public isMember(user: TeamMember): boolean {
+	public isMember(user: UserInfo): boolean {
 		/* TODO: add id to compare with id*/
-		if (this.memberss && this.memberss.length) {
-			return this.memberss.some((member: TeamMember) => user.id === member.id);
+		if (this.checkedMembers && this.checkedMembers.length) {
+			return this.checkedMembers.some((member: UserInfo) => user.id === member.id);
 		} else {
 			return false;
 		}
@@ -122,7 +159,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 
 		this.membersAll = teamCards
 			.map((team: Team) => team.members)
-			.reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
+			.reduce((prev: UserInfo[], currentValue: UserInfo[]) => prev.concat(currentValue), []);
 		console.log('initSearchMode');
 	}
 }

@@ -24,6 +24,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
 	imports: [
@@ -52,6 +54,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 		MatSortModule,
 		MatToolbarModule,
 		OverlayModule,
+		MatStepperModule,
+		MatPaginatorModule
 	],
 	exports: [
 		MatButtonModule,
@@ -78,6 +82,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 		MatSortModule,
 		MatToolbarModule,
 		OverlayModule,
+		MatStepperModule,
+		MatPaginatorModule
 	],
 	providers: [{ provide: MatDialogRef, useValue: {} }],
 })

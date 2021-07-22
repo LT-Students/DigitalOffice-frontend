@@ -3,13 +3,28 @@
 export interface AuthenticationResponse {
 
   /**
-   * User JWT.
+   * User access JWT.
    */
-  token?: string;
+  accessToken?: string;
+
+  /**
+   * User refresh JWT.
+   */
+  refreshToken?: string;
 
   /**
    * User global unique identifier.
    */
   userId?: string;
+
+  /**
+   * AccessToken life time in minutes
+   */
+  accessTokenExpiresIn?: number;
+
+  /**
+   * RefreshToken life time in minutes
+   */
+  refreshTokenExpiresIn?: number;
 }
 

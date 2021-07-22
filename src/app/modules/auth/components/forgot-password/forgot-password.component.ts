@@ -31,6 +31,6 @@ export class ForgotPasswordComponent implements OnInit {
 	}
 
 	public isEmailInputValid(): boolean {
-		return !(this.forgotPasswordForm.get('email').touched && this.forgotPasswordForm.get('email').invalid);
+		return !(this.forgotPasswordForm.get('email').dirty && this.forgotPasswordForm.get('email').invalid);
 	}
 }

@@ -45,7 +45,7 @@
           </label>
           <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
             <mat-select id="positionId" placeholder="Выберите должность" formControlName="positionId" required>
-              <mat-option *ngFor="let position of positionList" [value]="position.id">
+              <mat-option *ngFor="let position of positionList.body" [value]="position.id">
                 {{ position?.name }}
               </mat-option>
             </mat-select>
@@ -57,7 +57,7 @@
           </label>
           <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
             <mat-select id="departmentId" placeholder="Выберите департамент" formControlName="departmentId">
-              <mat-option *ngFor="let department of departmentList" [value]="department.id">
+              <mat-option *ngFor="let department of departmentList.body" [value]="department.id">
                 {{ department?.name }}
               </mat-option>
             </mat-select>
@@ -107,15 +107,31 @@
             [isEdit]='true'
           ></do-datepicker>
         </div>
-        <div class="new-employee__form-element new-employee__form-element_span_2">
+        <div class="new-employee__form-element">
           <label class="new-employee__label" doText color="gray1" for="office">
             Офис
             <sup class="new-employee__required" doText color="negative_accent">*</sup>
           </label>
-          <mat-form-field class="new-employee__form-field" appearance="fill">
-            <input id='office' matInput placeholder='Введите адрес офиса' formControlName='office' required />
-          </mat-form-field>
+            <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
+                <mat-select id="office" placeholder="Выберите офис" formControlName="officeId" required>
+                    <mat-option *ngFor="let office of offices" [value]="office.id">
+                        {{ office.city }}, {{ office.address }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
+          <div class="new-employee__form-element">
+              <label class="new-employee__label" doText color="gray1">
+                  Роль
+              </label>
+              <mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
+                  <mat-select id="roleId" placeholder="Выберите роль" formControlName="roleId">
+                      <mat-option *ngFor="let role of roles" [value]="role.id">
+                          {{ role?.name }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </div>
       </div>
     </div>
     <div class="section new-employee__auth">
@@ -137,31 +153,6 @@
           <mat-form-field class='new-employee__form-field' appearance='fill'>
             <input id='email' matInput placeholder='Введите E-mail' formControlName='email' required />
           </mat-form-field>
-        </div>
-        <div class='new-employee__form-element'>
-          <label class='new-employee__label' doText color='gray1' for='email'>
-            Пароль
-            <sup class='new-employee__required' doText color='negative_accent'>*</sup>
-            <mat-icon
-                class='new-employee__hint'
-                aria-label='Hint'
-                matTooltipClass='tooltip'
-                matTooltip='На эту почту пользователю придет ссылка для регистрации'
-                [matTooltipPosition]="'above'"
-            >help_outline
-            </mat-icon>
-          </label>
-          <mat-form-field class='new-employee__form-field' appearance='fill'>
-            <input id='password' matInput placeholder='Введите или сгенерируйте пароль' formControlName='password'
-                   type='password' required />
-          </mat-form-field>
-        </div>
-        <div class='new-employee__form-element' style='align-self: flex-end'>
-          <button
-              class='bg-accent_color_bright text-light_1 new-employee__button'
-              mat-flat-button
-              type="button"
-              (click)='generatePassword()'>Сгенерировать</button>
         </div>
       </div>
     </div>

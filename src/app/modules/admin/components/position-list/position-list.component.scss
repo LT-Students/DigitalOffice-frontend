@@ -1,0 +1,57 @@
+.table {
+	&__header {
+		margin-bottom: 20px;
+
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__content {
+		width: 100%;
+
+		border-collapse: collapse;
+	}
+
+	&__heading {
+		font-weight: 100;
+	}
+
+	&__filters {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__input {
+		width: 50%;
+	}
+
+	&__row {
+		height: 76px;
+
+		border-bottom: 1px solid #f1f1ef;
+
+		//&:hover {
+		//	cursor: pointer;
+		//
+		//	background-color: #f1f1ef;
+		//}
+	}
+}
+
+.navigation {
+	margin-bottom: 50px;
+
+	&__link {
+		display: inline-block;
+
+		height: 24px;
+
+		vertical-align: top;
+
+		color: inherit;
+	}
+
+	&__link:hover {
+		text-decoration: underline;
+	}
+}

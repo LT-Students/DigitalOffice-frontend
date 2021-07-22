@@ -55,7 +55,7 @@
 		bottom: 42px;
 	}
 
-	&__photo {
+	&__avatar {
 		position: relative;
 
 		margin-bottom: 12px;
@@ -65,8 +65,9 @@
 		width: 180px;
 		height: 180px;
 
-		border-radius: 50%;
 		align-self: center;
+
+		border-radius: 50%;
 	}
 
 	&__upload-button {

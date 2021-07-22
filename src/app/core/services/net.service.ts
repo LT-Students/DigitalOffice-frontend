@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
 import { Observable, of, throwError } from 'rxjs';
-import { PositionResponse } from '@data/api/company-service/models/position-response';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { DepartmentApiService } from '@data/api/company-service/services/department-api.service';
-import { DepartmentsResponse } from '@data/api/company-service/models/departments-response';
-import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
+import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
+import { OperationResultResponseDepartmentInfo } from '@data/api/company-service/models/operation-result-response-department-info';
+import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
+import { FindResultResponseOfficeInfo } from '@data/api/company-service/models/find-result-response-office-info';
+import { FindResultResponsePositionInfo } from '@data/api/company-service/models/find-result-response-position-info';
 
 @Injectable()
 export class NetService {
 	constructor(
 		private _positionApiService: PositionApiService,
 		private _departmentApiService: DepartmentApiService,
-		private _credentialsApiService: CredentialsApiService
+		private _credentialsApiService: CredentialsApiService,
+		private _companyApiService: CompanyApiService
 	) {}
 
 	private _mockPositions: PositionInfo[] = [
@@ -22,21 +25,36 @@ export class NetService {
 		{ id: 'id1', name: 'Boss Pug' },
 	];
 
-	public getPositionsList(): Observable<PositionInfo[]> {
-		return this._positionApiService.getPositionsList().pipe(
-			switchMap((res: PositionResponse[]) => {
-				return res && res.length ? of(res.map((position) => position.info)) : of(this._mockPositions);
-			})
-		);
+	public getPositionsList(params: {
+		skipCount: number;
+		takeCount: number;
+		includeDeactivated?: boolean;
+	}): Observable<FindResultResponsePositionInfo> {
+		return this._positionApiService.findPositions(params);
 	}
 
-	public getDepartmentsList(): Observable<DepartmentInfo[]> {
-		return this._departmentApiService.get_1().pipe(
-			switchMap((res: DepartmentsResponse) => of(res.departments)),
+	public getDepartmentsList(params: {
+		skipCount: number;
+		takeCount: number;
+		includeDeactivated?: boolean;
+	}): Observable<FindResultResponseDepartmentInfo> {
+		return this._departmentApiService.findDepartments(params).pipe(
 			catchError((error) => {
 				return throwError(error);
 			})
 		);
+	}
+
+	public getOfficesList(params: { skipCount: number; takeCount: number; includeDeactivated?: boolean }): Observable<FindResultResponseOfficeInfo> {
+		return this._companyApiService.findOffices(params);
+	}
+
+	public getDepartment(params: {
+		departmentid: string;
+		includeusers?: boolean;
+		includeprojects?: boolean;
+	}): Observable<OperationResultResponseDepartmentInfo> {
+		return this._departmentApiService.getDepartment(params);
 	}
 
 	public generatePassword(): Observable<string> {

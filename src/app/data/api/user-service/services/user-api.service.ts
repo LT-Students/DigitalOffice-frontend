@@ -10,10 +10,10 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { CreateUserRequest } from '../models/create-user-request';
+import { EditUserRequest } from '../models/edit-user-request';
+import { FindResultResponseUserInfo } from '../models/find-result-response-user-info';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { PatchOperation } from '../models/patch-operation';
-import { UserResponse } from '../models/user-response';
-import { UsersResponse } from '../models/users-response';
+import { OperationResultResponseUserResponse } from '../models/operation-result-response-user-response';
 
 @Injectable({
   providedIn: 'root',
@@ -82,6 +82,16 @@ export class UserApiService extends BaseService {
     includeposition?: boolean;
 
     /**
+     * Include user office info in answer.
+     */
+    includeoffice?: boolean;
+
+    /**
+     * Include user role info in answer.
+     */
+    includerole?: boolean;
+
+    /**
      * Include user skills info in answer.
      */
     includeskills?: boolean;
@@ -95,7 +105,12 @@ export class UserApiService extends BaseService {
      * Include images content in answer.
      */
     includeimages?: boolean;
-  }): Observable<StrictHttpResponse<UserResponse>> {
+
+    /**
+     * Include educations info in answer.
+     */
+    includeeducations?: boolean;
+  }): Observable<StrictHttpResponse<OperationResultResponseUserResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.GetUserPath, 'get');
     if (params) {
@@ -107,9 +122,12 @@ export class UserApiService extends BaseService {
       rb.query('includeachievements', params.includeachievements, {});
       rb.query('includedepartment', params.includedepartment, {});
       rb.query('includeposition', params.includeposition, {});
+      rb.query('includeoffice', params.includeoffice, {});
+      rb.query('includerole', params.includerole, {});
       rb.query('includeskills', params.includeskills, {});
       rb.query('includeprojects', params.includeprojects, {});
       rb.query('includeimages', params.includeimages, {});
+      rb.query('includeeducations', params.includeeducations, {});
     }
 
     return this.http.request(rb.build({
@@ -118,7 +136,7 @@ export class UserApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<UserResponse>;
+        return r as StrictHttpResponse<OperationResultResponseUserResponse>;
       })
     );
   }
@@ -174,6 +192,16 @@ export class UserApiService extends BaseService {
     includeposition?: boolean;
 
     /**
+     * Include user office info in answer.
+     */
+    includeoffice?: boolean;
+
+    /**
+     * Include user role info in answer.
+     */
+    includerole?: boolean;
+
+    /**
      * Include user skills info in answer.
      */
     includeskills?: boolean;
@@ -187,10 +215,15 @@ export class UserApiService extends BaseService {
      * Include images content in answer.
      */
     includeimages?: boolean;
-  }): Observable<UserResponse> {
+
+    /**
+     * Include educations info in answer.
+     */
+    includeeducations?: boolean;
+  }): Observable<OperationResultResponseUserResponse> {
 
     return this.getUser$Response(params).pipe(
-      map((r: StrictHttpResponse<UserResponse>) => r.body as UserResponse)
+      map((r: StrictHttpResponse<OperationResultResponseUserResponse>) => r.body as OperationResultResponseUserResponse)
     );
   }
 
@@ -210,18 +243,24 @@ export class UserApiService extends BaseService {
   findUsers$Response(params: {
 
     /**
-     * Number of pages to skip.
+     * Specific department of users.
+     */
+    departmentid?: string;
+
+    /**
+     * Number of entries to skip.
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of users to take.
      */
     takeCount: number;
-  }): Observable<StrictHttpResponse<UsersResponse>> {
+  }): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
     if (params) {
+      rb.query('departmentid', params.departmentid, {});
       rb.query('skipCount', params.skipCount, {});
       rb.query('takeCount', params.takeCount, {});
     }
@@ -232,7 +271,7 @@ export class UserApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<UsersResponse>;
+        return r as StrictHttpResponse<FindResultResponseUserInfo>;
       })
     );
   }
@@ -248,18 +287,23 @@ export class UserApiService extends BaseService {
   findUsers(params: {
 
     /**
-     * Number of pages to skip.
+     * Specific department of users.
+     */
+    departmentid?: string;
+
+    /**
+     * Number of entries to skip.
      */
     skipCount: number;
 
     /**
-     * Number of users on one page.
+     * Number of users to take.
      */
     takeCount: number;
-  }): Observable<UsersResponse> {
+  }): Observable<FindResultResponseUserInfo> {
 
     return this.findUsers$Response(params).pipe(
-      map((r: StrictHttpResponse<UsersResponse>) => r.body as UsersResponse)
+      map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)
     );
   }
 
@@ -332,7 +376,7 @@ export class UserApiService extends BaseService {
      * Specific user id
      */
     userId: string;
-    body?: Array<PatchOperation>
+    body?: EditUserRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserPath, 'patch');
@@ -366,7 +410,7 @@ export class UserApiService extends BaseService {
      * Specific user id
      */
     userId: string;
-    body?: Array<PatchOperation>
+    body?: EditUserRequest
   }): Observable<OperationResultResponse> {
 
     return this.editUser$Response(params).pipe(

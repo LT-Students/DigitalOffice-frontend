@@ -1,0 +1,16 @@
+.form__container {
+	padding: 20px;
+
+	background: #fff;
+}
+
+.new-office {
+	&__input {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__input-container {
+		margin-bottom: 20px;
+	}
+}
