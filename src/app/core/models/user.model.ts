@@ -23,16 +23,16 @@ export class User implements OperationResultResponseUserResponse {
 	user: UserInfo;
 
 	constructor(data: OperationResultResponseUserResponse) {
-		this.achievements = this._setProperty(data?.body.Achievements);
-		// this.avatar = this._setProperty(data.avatar);
-		this.certificates = this._setProperty(data?.body.Certificates);
-		this.communications = this._setProperty(data?.body.Communications);
-		// this.department = this._setProperty(data.department);
+		this.achievements = this._setProperty(data?.body.achievements);
+		this.certificates = this._setProperty(data?.body.certificates);
+		this.communications = this._setProperty(data?.body.communications);
 		this.errors = this._setProperty(data?.errors);
+		this.projects = this._setProperty(data?.body.projects);
+		this.skills = this._setProperty(data?.body.skills);
+		this.user = this._setProperty(data?.body.user);
+		// this.avatar = this._setProperty(data.avatar);
+		// this.department = this._setProperty(data.department);
 		// this.position = this._setProperty(data.position);
-		this.projects = this._setProperty(data?.body.Projects);
-		this.skills = this._setProperty(data?.body.Skills);
-		this.user = this._setProperty(data?.body.User);
 	}
 
 	public get id(): string {

@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from '@app/services/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
+import { User } from '@app/models/user.model';
 
 @Component({
 	selector: 'do-login',
@@ -46,8 +47,8 @@ export class LoginComponent implements OnInit {
 					throw error;
 				})
 			)
-			.subscribe((user: OperationResultResponseUserResponse) => {
-				this._router.navigate([user.body.User.isAdmin ? '/admin/dashboard' : '/user/attendance']);
+			.subscribe((user: User) => {
+				this._router.navigate([user.user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
 			});
 	}
 

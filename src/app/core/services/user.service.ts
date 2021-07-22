@@ -17,20 +17,21 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 import { Moment } from 'moment';
 import { UserGet } from '@app/models/user-get.model';
+import { User } from '@app/models/user.model';
 
 @Injectable()
 export class UserService {
-	public selectedUser: BehaviorSubject<OperationResultResponseUserResponse>;
+	public selectedUser: BehaviorSubject<User>;
 
 	constructor(private userApiService: UserApiService, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
-		this.selectedUser = new BehaviorSubject<OperationResultResponseUserResponse>(null);
+		this.selectedUser = new BehaviorSubject<User>(null);
 	}
 
-	public getUser(params: UserGet): Observable<OperationResultResponseUserResponse> {
-		return this.userApiService.getUser(params);
+	public getUser(params: UserGet): Observable<User> {
+		return this.userApiService.getUser(params).pipe(switchMap((userResponse: OperationResultResponseUserResponse) => of(new User(userResponse))));
 	}
 
-	public getUserSetCredentials(userId: string): Observable<OperationResultResponseUserResponse> {
+	public getUserSetCredentials(userId: string): Observable<User> {
 		const params: UserGet = {
 			userId: userId,
 			includedepartment: true,
@@ -53,8 +54,8 @@ export class UserService {
 		return user ? user.isAdmin : false;
 	}
 
-	public getCurrentUser(): UserInfo | null {
-		const user: UserInfo = this.localStorageService.get('user');
+	public getCurrentUser(): User | null {
+		const user: User = this.localStorageService.get('user');
 		return user ? user : null;
 	}
 
@@ -76,8 +77,8 @@ export class UserService {
 		return this.userApiService.editUser({ userId, body: [disableRequest] });
 	}
 
-	private _setUser(user: OperationResultResponseUserResponse): void {
-		this.localStorageService.set('user', user.body);
+	private _setUser(user: User): void {
+		this.localStorageService.set('user', user);
 		this.selectedUser.next(user);
 	}
 

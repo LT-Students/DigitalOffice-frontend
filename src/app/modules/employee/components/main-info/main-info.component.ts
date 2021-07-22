@@ -60,14 +60,16 @@ export class MainInfoComponent implements OnInit {
 		this._initEditForm();
 	}
 	ngOnInit(): void {
-		this.route.params.pipe(
-			map((params) => params.id),
-			map((pageId) => {
-				this.pageId = pageId;
-				this._getUser();
-				this._initEditForm();
-			})
-		).subscribe();
+		this.route.params
+			.pipe(
+				map((params) => params.id),
+				map((pageId) => {
+					this.pageId = pageId;
+					this._getUser();
+					this._initEditForm();
+				})
+			)
+			.subscribe();
 		// this._getUser();
 		// this._initEditForm();
 
@@ -132,13 +134,10 @@ export class MainInfoComponent implements OnInit {
 			includeimages: true,
 		};
 
-		this._userService
-			.getUser(params)
-			.pipe(switchMap((userResponse: OperationResultResponseUserResponse) => of(new User(userResponse))))
-			.subscribe((user: User) => {
-				this.user = user;
-				console.log(user);
-			});
+		this._userService.getUser(params).subscribe((user: User) => {
+			this.user = user;
+			console.log(user);
+		});
 	}
 
 	private _patchEditUser(): void {
