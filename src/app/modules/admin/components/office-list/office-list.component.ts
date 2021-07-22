@@ -41,7 +41,7 @@ export class OfficeListComponent implements OnInit {
 	private _getOfficeList(): void {
 		this.companyApiService.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
 			this.totalCount = data.totalCount;
-			this.offices = data.offices;
+			this.offices = data.body;
 		});
 	}
 }
