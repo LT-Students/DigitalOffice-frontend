@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, finalize, switchMap } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 import { UserService } from '@app/services/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
-import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { UserResponse } from '@data/api/user-service/models/user-response';
+import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 
 @Component({
 	selector: 'do-login',
@@ -47,8 +46,8 @@ export class LoginComponent implements OnInit {
 					throw error;
 				})
 			)
-			.subscribe((user: UserResponse) => {
-				this._router.navigate([user.user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
+			.subscribe((user: OperationResultResponseUserResponse) => {
+				this._router.navigate([user.body.User.isAdmin ? '/admin/dashboard' : '/user/attendance']);
 			});
 	}
 

@@ -1,22 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IUser } from '@data/models/user';
-import { Time } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { promptGlobalAnalytics } from '@angular/cli/models/analytics';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { CommunicationType, ErrorResponse, UserGender } from '@data/api/user-service/models';
+import { ErrorResponse, OperationResultResponseUserResponse, UserGender } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
@@ -138,7 +134,7 @@ export class MainInfoComponent implements OnInit {
 
 		this._userService
 			.getUser(params)
-			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
+			.pipe(switchMap((userResponse: OperationResultResponseUserResponse) => of(new User(userResponse))))
 			.subscribe((user: User) => {
 				this.user = user;
 				console.log(user);
@@ -174,7 +170,7 @@ export class MainInfoComponent implements OnInit {
 
 	fillForm() {
 		const middleName = this.user.middleName ? this.user.middleName : '';
-		const status = this.user.status ? this.user.status.statusType : '';
+		const status = this.user.statusEmoji ? this.user.statusEmoji.statusType : '';
 		const about = this.user.user.about ? this.user.user.about : '';
 		const position = this.user.user.position ? this.user.user.position.id : '';
 		const department = this.user.user.department ? this.user.user.department.id : '';

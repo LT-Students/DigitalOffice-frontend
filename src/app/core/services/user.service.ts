@@ -5,30 +5,32 @@ import { ActivatedRoute } from '@angular/router';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
-import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { OperationResultStatusType, PatchUserDocument } from '@data/api/user-service/models';
+import {
+	FindResultResponseUserInfo,
+	OperationResultResponseUserResponse,
+	OperationResultStatusType,
+	PatchUserDocument,
+} from '@data/api/user-service/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Moment } from 'moment';
 import { UserGet } from '@app/models/user-get.model';
-import { userResponse } from '../../modules/employee/mock';
 
 @Injectable()
 export class UserService {
-	public selectedUser: BehaviorSubject<UserResponse>;
+	public selectedUser: BehaviorSubject<OperationResultResponseUserResponse>;
 
 	constructor(private userApiService: UserApiService, private route: ActivatedRoute, private localStorageService: LocalStorageService) {
-		this.selectedUser = new BehaviorSubject<UserResponse>(null);
+		this.selectedUser = new BehaviorSubject<OperationResultResponseUserResponse>(null);
 	}
 
-	public getUser(params: UserGet): Observable<UserResponse> {
+	public getUser(params: UserGet): Observable<OperationResultResponseUserResponse> {
 		return this.userApiService.getUser(params);
 	}
 
-	public getUserSetCredentials(userId: string): Observable<UserResponse> {
+	public getUserSetCredentials(userId: string): Observable<OperationResultResponseUserResponse> {
 		const params: UserGet = {
 			userId: userId,
 			includedepartment: true,
@@ -42,20 +44,8 @@ export class UserService {
 		return this.getUser(params).pipe(tap(this._setUser.bind(this)));
 	}
 
-	public getUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<UsersResponse> {
-		return (
-			this.userApiService
-				/* TODO: Подумать, как получать конкретные данные о каждом юзере
-				 *   при получении данных о всех юзера
-				 * */
-				.findUsers({ skipCount: skipPages, takeCount: pageSize, departmentid: departmentId })
-			// .pipe(switchMap((usersResponse: UsersResponse) => of(usersResponse.users)))
-		);
-	}
-
-	public getMockUser(userId: string): Observable<UserResponse> {
-		const userData: UserResponse = userResponse.find((user: UserResponse) => user.user.id === userId);
-		return of(userData).pipe(tap((value: UserResponse) => console.log(value)));
+	public getUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<FindResultResponseUserInfo> {
+		return this.userApiService.findUsers({ skipCount: skipPages, takeCount: pageSize, departmentid: departmentId });
 	}
 
 	public isAdmin(): boolean {
@@ -86,8 +76,8 @@ export class UserService {
 		return this.userApiService.editUser({ userId, body: [disableRequest] });
 	}
 
-	private _setUser(user: UserResponse): void {
-		this.localStorageService.set('user', user.user);
+	private _setUser(user: OperationResultResponseUserResponse): void {
+		this.localStorageService.set('user', user.body);
 		this.selectedUser.next(user);
 	}
 

@@ -9,9 +9,8 @@ import { AuthApiService } from '@data/api/auth-service/services/auth-api.service
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
 import { UserService } from '@app/services/user.service';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { HttpErrorResponse } from '@angular/common/http';
-import { CredentialsResponse } from '@data/api/user-service/models/credentials-response';
+import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -26,7 +25,7 @@ export class AuthService {
 		private _router: Router
 	) {}
 
-	public login(authenticationRequest: AuthenticationRequest): Observable<UserResponse> {
+	public login(authenticationRequest: AuthenticationRequest): Observable<OperationResultResponseUserResponse> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
 			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
 			switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId))
@@ -75,7 +74,7 @@ export class AuthService {
 		);
 	}
 
-	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse | CredentialsResponse): void {
+	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse): void {
 		this.localStorageService.set('access_token', authenticationInfo.accessToken);
 		this.localStorageService.set('refresh_token', authenticationInfo.refreshToken);
 	}

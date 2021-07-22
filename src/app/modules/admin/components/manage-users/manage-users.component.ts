@@ -1,12 +1,8 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { UsersResponse } from '@data/api/user-service/models/users-response';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
-import { forkJoin, Subject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { EducationType } from '@data/api/user-service/models/education-type';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -110,8 +106,8 @@ export class ManageUsersComponent implements OnInit {
 	private _getPageUsers(): void {
 		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
 			this.totalCount = data.totalCount;
-			this.userInfo = data.users.slice();
-			this.sortedUserInfo = data.users.slice();
+			this.userInfo = data.body.slice();
+			this.sortedUserInfo = data.body.slice();
 		});
 	}
 }
