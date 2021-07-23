@@ -6,7 +6,6 @@
         <p *ngIf="!isPeriodEmpty; else recommendedTimeElement" class="chart__time-spent">
           {{ spentTime.hours | number: '2.0'  }}:{{ this.spentTime.minutes | number: '2.0' }}
         </p>
-
         <ng-template #recommendedTimeElement>
           <p class="chart__time-spent chart__time-spent_initial">
             {{ recommendedTime.hours | number: '2.0' }}:{{ recommendedTime.minutes | number: '2.0' }}
@@ -24,7 +23,6 @@
         </ng-template>
       </div>
     </div>
-
     <div class="chart__tags">
       <h2 class="chart__tags-heading">Проекты</h2>
       <div *ngFor="let project of projects; index as i">
