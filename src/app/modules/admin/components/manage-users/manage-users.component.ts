@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { EducationType } from '@data/api/user-service/models/education-type';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { NewEmployeeComponent } from '../new-employee/new-employee.component';
+import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-manage-users',

@@ -18,7 +18,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
 import { UserGet } from '@app/models/user-get.model';
-import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
+import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',

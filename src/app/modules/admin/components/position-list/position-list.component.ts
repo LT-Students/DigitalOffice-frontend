@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { NetService } from '@app/services/net.service';
-import { NewPositionComponent } from '../new-position/new-position.component';
+import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 
 @Component({
 	selector: 'do-position-list',

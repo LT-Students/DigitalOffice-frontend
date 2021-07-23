@@ -5,7 +5,7 @@ import { DepartmentInfo } from '@data/api/company-service/models/department-info
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
-import { NewDepartmentComponent } from '../new-department/new-department.component';
+import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { RouteType } from '../../../../app-routing.module';
 
 @Component({

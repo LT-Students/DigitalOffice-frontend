@@ -4,7 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
-import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
+import { UserSearchComponent } from '../../components/new-project/modals/user-search/user-search.component';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 
 @Component({

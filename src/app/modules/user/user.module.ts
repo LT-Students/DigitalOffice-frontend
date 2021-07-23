@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../shared/material.module';
 import { AdminModule } from '../admin/admin.module';
 import { SharedModule } from '../../shared/shared.module';
-import { TagsBlockComponent } from './components/tags-block/tags-block.component';
 import { DateDescComponent } from './components/date-desc/date-desc.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { DoughnutChartComponent } from './components/chart/doughnut-chart.component';
@@ -22,7 +21,6 @@ import { UserRoutingModule } from './user-routing.module';
 
 @NgModule({
 	declarations: [
-		TagsBlockComponent,
 		DateDescComponent,
 		AttendanceComponent,
 		DoughnutChartComponent,
