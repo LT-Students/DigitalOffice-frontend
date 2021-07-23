@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
-import { NewOfficeComponent } from '../new-office/new-office.component';
+import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
 
 @Component({
 	selector: 'do-office-list',

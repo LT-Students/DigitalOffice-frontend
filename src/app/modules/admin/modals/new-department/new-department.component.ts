@@ -9,7 +9,7 @@ import { UserApiService } from '@data/api/user-service/services/user-api.service
 import { switchMap } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { FindResultResponseUserInfo } from '@data/api/user-service/models/find-result-response-user-info';
-import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
+import { UserSearchComponent } from '../../components/new-project/modals/user-search/user-search.component';
 
 @Component({
 	selector: 'do-new-department',

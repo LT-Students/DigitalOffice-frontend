@@ -9,12 +9,12 @@ import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType } from '@app/services/modal.service';
-import { NewCompanyComponent } from '../new-company/new-company.component';
-import { NewDepartmentComponent } from '../new-department/new-department.component';
-import { NewPositionComponent } from '../new-position/new-position.component';
-import { NewEmployeeComponent } from '../new-employee/new-employee.component';
-import { NewRoleComponent } from '../new-role/new-role.component';
-import { NewOfficeComponent } from '../new-office/new-office.component';
+import { NewCompanyComponent } from '../../modals/new-company/new-company.component';
+import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
+import { NewPositionComponent } from '../../modals/new-position/new-position.component';
+import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
+import { NewRoleComponent } from '../../modals/new-role/new-role.component';
+import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
 
 @Component({
 	selector: 'do-dashboard',

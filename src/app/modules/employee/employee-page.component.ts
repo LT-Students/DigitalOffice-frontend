@@ -10,8 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project.service';
 import { User } from '@app/models/user.model';
-import { ArchiveComponent } from './components/modals/archive/archive.component';
-import { AdminRequestComponent } from './components/modals/admin-request/admin-request.component';
+import { ArchiveComponent } from './modals/archive/archive.component';
+import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
 import { activeProject, closedProject } from './mock';
 
 // eslint-disable-next-line no-shadow
