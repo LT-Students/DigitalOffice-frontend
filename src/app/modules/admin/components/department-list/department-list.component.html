@@ -41,10 +41,11 @@
 							{{ departmentInfo?.director?.firstName }} {{ departmentInfo?.director?.lastName }}
 						</ng-container>
 					</td>
-					<td>{{ departmentInfo.users.length }}</td>
+					<td>{{ departmentInfo.countUsers }}</td>
 				</tr>
 			</ng-container>
 		</table>
+        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 	</div>
 </div>
 

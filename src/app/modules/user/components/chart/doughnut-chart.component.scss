@@ -2,133 +2,123 @@
 @import 'base/fonts';
 
 .chart {
-  padding-top: 48px;
-  padding-bottom: 40px;
+	padding-top: 48px;
+	padding-bottom: 40px;
 
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: flex-start;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: flex-start;
 
-  width: 100%;
+	width: 100%;
 
-  background-color: #fff;
+	background-color: #fff;
 
-  &__doughnut {
-    position: relative;
+	&__doughnut {
+		position: relative;
 
-    width: 184px;
-    height: 184px;
-  }
+		width: 184px;
+		height: 184px;
+	}
 
-  &__time-info {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+	&__time-info {
+		position: absolute;
+		top: 50%;
+		left: 50%;
 
-    margin-top: 5px;
+		margin-top: 5px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
 
-    font-size: 16px;
-    text-align: center;
+		font-size: 16px;
+		text-align: center;
 
-    transform: translate(-50%, -50%);
-  }
+		transform: translate(-50%, -50%);
+	}
 
-  &__time-spent {
-    color: $dark_1;
+	&__time-spent {
+		color: $dark_1;
 
-    &_initial {
-      color: $gray;
-    }
+		&_initial {
+			color: $gray;
+		}
 
-    &::after {
-      content: 'ч';
+		&::after {
+			content: 'ч';
 
-      font-family: $regular_font;
-      font-size: 16px;
-      font-weight: normal;
-      line-height: 24px;
+			font-family: $regular_font;
+			font-size: 16px;
+			font-weight: normal;
+			line-height: 24px;
 
-      color: $gray;
-    }
-  }
+			color: $gray;
+		}
+	}
 
-  &__time-status {
-    padding: 0 6px;
+	&__time-status {
+		padding: 0 6px;
 
-    width: max-content;
+		width: max-content;
 
-    font-family: $regular_font;
+		font-family: $regular_font;
 
-    font-size: 16px;
+		font-size: 16px;
 
-    text-align: center;
+		text-align: center;
 
-    color: #fff;
+		color: #fff;
 
-    border-radius: 5px;
+		border-radius: 5px;
 
-    &_style {
-      &_positive {
-        background-color: #21d373;
+		&_style {
+			&_positive {
+				background-color: #21d373;
 
-        &::before {
-          content: '+';
-        }
-      }
+				&::before {
+					content: '+';
+				}
+			}
 
-      &_negative {
-        background-color: #eb5757;
+			&_negative {
+				background-color: #eb5757;
 
-        &::before {
-          content: '-';
-        }
-      }
+				&::before {
+					content: '-';
+				}
+			}
 
-      &_zero {
-        background-color: $gray;
-      }
+			&_zero {
+				background-color: $gray;
+			}
 
-      &_initial {
-        font-size: 14px;
-        text-transform: lowercase;
+			&_initial {
+				text-transform: lowercase;
+			}
+		}
+	}
 
-        color: $gray;
-        background-color: #fff;
-      }
-    }
-  }
+	&__tags {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
 
-  &__tags {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
+		min-height: 183px;
 
-    min-height: 183px;
+		&-heading {
+			margin-top: 10px;
+			margin-bottom: 25px;
+		}
+	}
 
-    &-heading {
-      margin-top: 10px;
-      margin-bottom: 25px;
+	&__tag-marker {
+		display: inline-block;
 
-      color: $dark_1;
-    }
-  }
+		width: 15px;
+		height: 15px;
 
-  &__tag {
-    color: $dark_2;
-  }
-
-  &__tag-marker {
-    display: inline-block;
-
-    width: 15px;
-    height: 15px;
-
-    border-radius: 50%;
-  }
+		border-radius: 50%;
+	}
 }

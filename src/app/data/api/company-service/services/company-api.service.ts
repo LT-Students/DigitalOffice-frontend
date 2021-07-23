@@ -11,7 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreateCompanyRequest } from '../models/create-company-request';
 import { EditCompanyRequest } from '../models/edit-company-request';
-import { FindOfficesResponse } from '../models/find-offices-response';
+import { FindResultResponseOfficeInfo } from '../models/find-result-response-office-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseCompanyInfo } from '../models/operation-result-response-company-info';
 
@@ -227,12 +227,12 @@ export class CompanyApiService extends BaseService {
   findOffices$Response(params: {
 
     /**
-     * Number of pages to skip.
+     * Number of offices to skip.
      */
     skipCount: number;
 
     /**
-     * Number of offices on one page.
+     * Number of offices to take.
      */
     takeCount: number;
 
@@ -240,7 +240,7 @@ export class CompanyApiService extends BaseService {
      * If it is true, response will be have deactivated records.
      */
     includeDeactivated?: boolean;
-  }): Observable<StrictHttpResponse<FindOfficesResponse>> {
+  }): Observable<StrictHttpResponse<FindResultResponseOfficeInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.FindOfficesPath, 'get');
     if (params) {
@@ -255,7 +255,7 @@ export class CompanyApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FindOfficesResponse>;
+        return r as StrictHttpResponse<FindResultResponseOfficeInfo>;
       })
     );
   }
@@ -269,12 +269,12 @@ export class CompanyApiService extends BaseService {
   findOffices(params: {
 
     /**
-     * Number of pages to skip.
+     * Number of offices to skip.
      */
     skipCount: number;
 
     /**
-     * Number of offices on one page.
+     * Number of offices to take.
      */
     takeCount: number;
 
@@ -282,10 +282,10 @@ export class CompanyApiService extends BaseService {
      * If it is true, response will be have deactivated records.
      */
     includeDeactivated?: boolean;
-  }): Observable<FindOfficesResponse> {
+  }): Observable<FindResultResponseOfficeInfo> {
 
     return this.findOffices$Response(params).pipe(
-      map((r: StrictHttpResponse<FindOfficesResponse>) => r.body as FindOfficesResponse)
+      map((r: StrictHttpResponse<FindResultResponseOfficeInfo>) => r.body as FindResultResponseOfficeInfo)
     );
   }
 

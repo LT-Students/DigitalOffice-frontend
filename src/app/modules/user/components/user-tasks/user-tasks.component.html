@@ -1,8 +1,9 @@
-<div class="wrapper">
-  <div class="tasks">
-    <span class="tasks__header h2">
+<mat-card class="wrapper">
+    <h3>
       {{ tasksCount }} записи за
-      <span *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)">
+      <span doText color='accent_color_bright'>{{ getPeriod() }}</span>
+    <!--  TODO: вынести в отдельный метод -->
+      <!--<span *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)">
         {{ startDate | date: 'd MMMM' }}
       </span>
       <span
@@ -18,42 +19,18 @@
         *ngIf="endDate && !this.dateService.isSameMonth(startDate, endDate)"
       >
         {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
-      </span>
-    </span>
-    <div class="tasks__search">
-      <span class="regular_text">Сортировка</span>
-      <div class="buttons">
-        <do-button
-          class="button-shape"
-          (click)="sortByProject()"
-          [title]="'По проектам'"
-          className="{{
-            isOrderedByProject
-              ? 'button bg-accent_color_bright font-light_1 font-regular_font'
-              : 'button bg-light_2 font-gray font-regular_font'
-          }}"
-        >
-        </do-button>
-        <do-button
-          class="button-shape"
-          (click)="sortByHours()"
-          [title]="'По часам'"
-          className="{{
-            isOrderedByHours
-              ? 'button bg-accent_color_bright font-light_1 font-regular_font'
-              : 'button bg-light_2 font-gray font-regular_font'
-          }}"
-        >
-        </do-button>
-      </div>
-      <div class="tasks__search__text">
-        <do-search (searchInput)="onSearch($event)" [placeholder]="'Поиск по тексту комментария'"></do-search>
-      </div>
-    </div>
-    <div>
+      </span>-->
+    </h3>
+      <h4>Внесено <span doText color='accent_color_bright'>total_hours</span></h4>
+        <mat-form-field appearance="outline">
+          <mat-label>Поиск по ключевым словам</mat-label>
+          <input matInput type="text" [(ngModel)]='searchText'>
+          <span matPrefix><mat-icon aria-hidden="false" aria-label="search">search</mat-icon></span>
+          <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="searchText=''">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
       <ng-container *ngFor="let project of projects | taskFilter: searchText">
         <do-project [project]="project"></do-project>
       </ng-container>
-    </div>
-  </div>
-</div>
+</mat-card>

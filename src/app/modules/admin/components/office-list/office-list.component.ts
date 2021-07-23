@@ -4,7 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
-import { NewOfficeComponent } from '../new-office/new-office.component';
+import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
 
 @Component({
 	selector: 'do-office-list',
@@ -41,7 +41,7 @@ export class OfficeListComponent implements OnInit {
 	private _getOfficeList(): void {
 		this.companyApiService.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
 			this.totalCount = data.totalCount;
-			this.offices = data.offices;
+			this.offices = data.body;
 		});
 	}
 }

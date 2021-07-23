@@ -9,9 +9,9 @@
 					<h3 class="employee-info__name" doText color="dark_2">
 						{{ user.getFioFull() }}&nbsp;<span
 							matTooltipClass="tooltip"
-							[matTooltip]="user.firstName + ' ' + (user.status?.statusInRussian | lowercase)"
+							[matTooltip]="user.firstName + ' ' + (user.statusEmoji?.statusInRussian | lowercase)"
 							[matTooltipPosition]="'above'"
-							>{{ user.status?.emojiIcon }}</span
+							>{{ user.statusEmoji?.emojiIcon }}</span
 						>
 					</h3>
 					<p *ngIf="user?.user?.about" doText color="gray" class="employee-info__about">“{{ user?.user?.about }}”</p>
@@ -281,9 +281,9 @@
 					<h3 class="employee-info__name" doText color="dark_2">
 						{{ user.getFioFull() }}&nbsp;<span
 							matTooltipClass="tooltip"
-							[matTooltip]="user?.firstName + ' ' + (user?.status?.statusInRussian | lowercase)"
+							[matTooltip]="user?.firstName + ' ' + (user?.statusEmoji?.statusInRussian | lowercase)"
 							[matTooltipPosition]="'above'"
-							>{{ user?.status?.emojiIcon }}</span
+							>{{ user?.statusEmoji?.emojiIcon }}</span
 						>
 					</h3>
 				</ng-container>

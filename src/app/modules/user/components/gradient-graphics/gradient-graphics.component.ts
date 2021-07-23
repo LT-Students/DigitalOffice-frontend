@@ -94,4 +94,8 @@ export class GradientGraphicsComponent implements OnInit, OnDestroy {
 		this.onDestroy$.next(null);
 		this.onDestroy$.complete();
 	}
+
+	public getPeriod(): string {
+		return 'за выбранный период';
+	}
 }

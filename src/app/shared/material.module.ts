@@ -22,6 +22,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
@@ -50,8 +52,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 		MatExpansionModule,
 		MatTableModule,
 		MatSortModule,
+		MatToolbarModule,
+		OverlayModule,
 		MatStepperModule,
-		MatPaginatorModule,
+		MatPaginatorModule
 	],
 	exports: [
 		MatButtonModule,
@@ -76,8 +80,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 		MatExpansionModule,
 		MatTableModule,
 		MatSortModule,
+		MatToolbarModule,
+		OverlayModule,
 		MatStepperModule,
-		MatPaginatorModule,
+		MatPaginatorModule
 	],
 	providers: [{ provide: MatDialogRef, useValue: {} }],
 })
