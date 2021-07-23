@@ -12,14 +12,15 @@ import { User } from '@app/models/user.model';
 })
 export class ContentContainerComponent implements OnInit {
 	user: User;
+	public navIsOpened: boolean = false;
 
-	constructor(private _userService: UserService, private _authService: AuthService, private _router: Router) {}
+	constructor(private _userService: UserService, private _authService: AuthService, private _router: Router) { }
 
 	ngOnInit() {
 		const currentUser: User = this._userService.getCurrentUser();
 		this.user = (currentUser) ? currentUser : new User({
 			body: { user: { firstName: 'сотрудник' } }
-		} );
+		});
 	}
 
 	public onLogoClick() {
@@ -28,5 +29,13 @@ export class ContentContainerComponent implements OnInit {
 
 	onLogoutClick() {
 		this._authService.logout();
+	}
+
+	onBurgerClick(event) {
+		this.navIsOpened = true;
+	}
+
+	onCloseNavClick() {
+		this.navIsOpened = false;
 	}
 }

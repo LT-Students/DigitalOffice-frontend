@@ -6,6 +6,29 @@
 	padding: 0 16px;
 
 	background-color: $light_1;
+
+	&__burger {
+		position: relative;
+
+		padding: 0 24px;
+
+		display: inline-flex;
+		overflow: hidden;
+		justify-content: center;
+		align-items: center;
+
+		box-sizing: border-box;
+		height: 48px;
+
+		text-align: center;
+		vertical-align: top;
+		white-space: nowrap;
+		text-decoration: none;
+
+		cursor: pointer;
+
+		opacity: 0.6;
+	}
 }
 
 .theme-switch {

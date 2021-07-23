@@ -1,6 +1,26 @@
-<do-header [userName]="user.user.firstName" [userId]="user.user.id" [avatar]="user.user.avatar" class="header__container"></do-header>
-<div class="content-container">
-	<div class="wrapper">
-		<router-outlet></router-outlet>
-	</div>
-</div>
+<mat-sidenav-container class='sidenav' [hasBackdrop]="false">
+	<mat-sidenav class='sidenav__nav' [opened]="navIsOpened">
+		<h1 doText class='sidenav__title'>Digital Office</h1>
+		<span mat-flat-button doText color='gray1' class='sidenav__close-button' (click)="onCloseNavClick()">
+			<mat-icon>
+				close
+			</mat-icon>
+		</span>
+		<mat-action-list class='sidenav__group'>
+			<a doText color='gray1' mat-list-item routerLink='/user/projects-table'>Проекты</a>
+			<a doText color='gray1' mat-list-item routerLink='/admin/manage-users'>Сотрудники</a>
+			<a doText color='gray1' mat-list-item routerLink='/departments'>Департаменты</a>
+			<a doText color='gray1' mat-list-item>Компании</a>
+		</mat-action-list>
+	</mat-sidenav>
+
+	<mat-sidenav-content class='sidenav__main'>
+		<do-header (burgerClick)="onBurgerClick($event)" [userName]="user.user.firstName" [userId]="user.user.id"
+			[avatar]="user.user.avatar" class="header__container"></do-header>
+		<div class="content-container">
+			<div class="wrapper">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</mat-sidenav-content>
+</mat-sidenav-container>

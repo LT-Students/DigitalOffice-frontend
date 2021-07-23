@@ -24,3 +24,43 @@
 .avatar {
 	display: flex;
 }
+
+.sidenav {
+	&__nav {
+		width: 280px;
+	}
+
+	&__title {
+		position: absolute;
+		top: 28px;
+		left: 39px;
+
+		font-size: 18px;
+		line-height: 150%;
+	}
+
+	&__close-button {
+		position: absolute;
+		top: 32px;
+		left: 240px;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	&__group {
+		position: absolute;
+		top: 116px;
+		left: 37px;
+
+		list-style-type: none;
+	}
+
+	&__elem {
+		margin-bottom: 24px;
+
+		font-size: 16px;
+		line-height: 24px;
+	}
+}

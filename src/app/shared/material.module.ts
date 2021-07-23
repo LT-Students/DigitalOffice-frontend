@@ -26,6 +26,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSidenavModule } from '@angular/material/sidenav'
 
 @NgModule({
 	imports: [
@@ -55,7 +56,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 		MatToolbarModule,
 		OverlayModule,
 		MatStepperModule,
-		MatPaginatorModule
+		MatPaginatorModule,
+		MatSidenavModule
 	],
 	exports: [
 		MatButtonModule,
@@ -83,8 +85,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 		MatToolbarModule,
 		OverlayModule,
 		MatStepperModule,
-		MatPaginatorModule
+		MatPaginatorModule,
+		MatSidenavModule
 	],
 	providers: [{ provide: MatDialogRef, useValue: {} }],
 })
-export class MaterialModule {}
+export class MaterialModule { }

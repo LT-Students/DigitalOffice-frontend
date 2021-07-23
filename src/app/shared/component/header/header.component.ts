@@ -1,4 +1,4 @@
-import { Input, Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 
@@ -8,16 +8,21 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+	@Output() public burgerClick = new EventEmitter();
 	@Input() userName: string;
 	@Input() userId: string;
 	@Input() avatar: ImageInfo;
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
 
-	constructor(private authService: AuthService) {}
+	constructor(private authService: AuthService) { }
 
-	ngOnInit() {}
+	ngOnInit() { }
 
 	onLogoutClick() {
 		this.authService.logout();
+	}
+
+	onBurgerClick(event) {
+		this.burgerClick.emit(event);
 	}
 }
