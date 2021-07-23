@@ -8,8 +8,18 @@ import { Project } from '@data/models/project';
 })
 export class ProjectComponent implements OnInit {
 	@Input() project: Project;
+	isEdited = false;
+	hours = 0;
+	minutes = 0;
+	public cardOpenState: boolean;
 
-	constructor() {}
+	constructor() {
+		this.cardOpenState = false;
+	}
 
 	ngOnInit() {}
+
+	toggleInput() {
+		this.isEdited = !this.isEdited;
+	}
 }

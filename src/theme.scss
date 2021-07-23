@@ -2,16 +2,15 @@
 
 /* ======== Angular material custom themes ======== */
 
-$theme-primary: mat-palette($mat-grey, 100);
-$theme-accent: mat-palette($mat-orange, 700);
+$theme-primary: mat-palette($mat-orange, 400);
+$theme-accent: mat-palette($mat-deep-orange, 400);
 $theme-warn: mat-palette($mat-red);
 $app-theme: mat-light-theme($theme-primary, $theme-accent, $mat-red);
-
-$custom-typography: mat-typography-config(
-    $font-family: 'Gotham Pro,"GillSansWGL", sans-serif',
-    $input: mat-typography-level(16px, 1.5, 400, '"GillSansWGL", sans-serif'),
-    $button: mat-typography-level(16px, 24px, 400, '"GillSansWGL", sans-serif'),
-);
+//
+//$custom-typography: mat-typography-config(
+//    $input: mat-typography-level(16px, 1.5, 400),
+//    $button: mat-typography-level(16px, 24px, 400),
+//);
 
 @include angular-material-theme($app-theme);
-@include mat-core($custom-typography);
+@include mat-core();

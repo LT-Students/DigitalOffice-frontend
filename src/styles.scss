@@ -3,82 +3,67 @@
 @import 'layouts/card';
 @import 'layouts/forms';
 @import 'do/underlined';
-@import 'material/input';
-@import 'material/mat-mini-fab';
-@import 'material/mat-tabs';
-@import 'material/mat-chip';
-@import 'material/selects';
-@import 'material/mat-error';
-@import 'material/datepicker';
-@import 'material/button';
-@import 'material/checkbox';
-@import 'material/menu';
-@import 'material/radio';
-@import 'material/tooltip';
-@import 'material/mat-form-field';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import '~@angular/cdk/overlay-prebuilt.css';
 
 *,
 *::before,
 *::after {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 
-  box-sizing: border-box;
+	box-sizing: border-box;
+
+	font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 div,
 p {
-  margin: 0;
-  padding: 0;
+	margin: 0;
+	padding: 0;
 }
 
 a,
 a:visited,
 a:hover {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-}
-
-::placeholder {
-  @extend .regular_text;
-  opacity: 0.8;
+	margin: 0;
+	padding: 0;
 }
 
 button:focus {
-  outline: none;
+	outline: none;
 }
 
 textarea {
-  resize: none !important;
+	resize: none !important;
 }
 
 .nav-link {
-  margin-bottom: 24px;
+	margin-bottom: 24px;
 
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 
-  text-decoration: none;
+	text-decoration: none;
 
-  cursor: pointer;
+	cursor: pointer;
 
-  color: $dark_4;
+	color: $dark_4;
 
-  svg {
-    margin-right: 13px;
+	svg {
+		margin-right: 13px;
 
-    width: 5px;
-    height: 10px;
-    stroke: $dark_2;
-    fill: none;
-  }
+		width: 5px;
+		height: 10px;
+		stroke: $dark_2;
+		fill: none;
+	}
 
-  &:hover {
-    opacity: 0.5;
-  }
+	&:hover {
+		opacity: 0.5;
+	}
 }
