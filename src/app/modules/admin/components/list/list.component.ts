@@ -64,10 +64,10 @@ export class ListComponent implements OnInit {
   public ngOnInit(): void {
     this.listType = this.listService.getListType(this.path);
 
-    const { title, addButtonText } = this.listService.getInterfaceText(this.listType)
-    this.title = title;
-    this.addButtonText = addButtonText;
-    this.headings = this.listService.getHeadings(this.listType)
+    // const { title, addButtonText } = this.listService.getInterfaceText(this.listType)
+    // this.title = title;
+    // this.addButtonText = addButtonText;
+    // this.headings = this.listService.getHeadings(this.listType)
     this._getData();
   }
 
@@ -114,6 +114,10 @@ export class ListComponent implements OnInit {
         console.log(data.list)
         this.list = data.list;
         this.totalCount = data.totalCount;
+        this.title = data.title;
+        this.addButtonText = data.addButtonText;
+        this.headings = data.headings
+
       })
   }
 }

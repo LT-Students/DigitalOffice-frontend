@@ -55,7 +55,108 @@ export class ListService {
         }
     }
 
-    public getHeadings(instance: ListType): Heading[] {
+    // public getHeadings(instance: ListType): Heading[] {
+    //     switch (instance) {
+    //         case ListType.OFFICES: {
+    //             this.headings = [
+    //                 { headingProperty: 'city', headingName: 'Город', type: 'default' },
+    //                 { headingProperty: 'address', headingName: 'Адрес', type: 'default' },
+    //                 { headingProperty: 'name', headingName: 'Название', type: 'default' }
+    //             ];
+    //             return this.headings;
+    //         }
+    //         case ListType.MANAGE_ROLES: {
+    //             this.headings = [
+    //                 { headingProperty: 'name', headingName: 'Название', type: 'default' },
+    //                 { headingProperty: 'description', headingName: 'Описание', type: 'default' }
+    //             ];
+    //             return this.headings;
+    //         }
+    //         case ListType.POSITIONS: {
+    //             this.headings = [
+    //                 { headingProperty: 'name', headingName: 'Название', type: 'default' },
+    //                 { headingProperty: 'description', headingName: 'Описание', type: 'default' }
+    //             ];
+    //             return this.headings;
+    //         }
+    //         case ListType.MANAGE_USERS: {
+    //             this.headings = [
+    //                 { headingProperty: 'name', headingName: 'Имя', type: 'user' },
+    //                 { headingProperty: 'department', headingName: 'Департамент', type: 'default' },
+    //                 { headingProperty: 'role', headingName: 'Роль', type: 'default' },
+    //                 { headingProperty: 'rate', headingName: 'Ставка', type: 'default' },
+    //                 { headingProperty: 'status', headingName: 'Статус', type: 'status' }
+    //             ];
+    //             return this.headings;
+    //         }
+    //         case ListType.DEPARTMENTS: {
+    //             this.headings = [
+    //                 { headingProperty: 'name', headingName: 'Наименование', type: 'default' },
+    //                 { headingProperty: 'description', headingName: 'Описание', type: 'default' },
+    //                 { headingProperty: 'director', headingName: 'Директор', type: 'default' },
+    //                 { headingProperty: 'users', headingName: 'Количество сотрудников', type: 'default' }
+    //             ];
+    //             return this.headings;
+    //         }
+    //         case ListType.PROJECTS: {
+    //             this.headings = [
+    //                 { headingProperty: 'name', headingName: 'Наименование', type: 'default' },
+    //                 { headingProperty: 'description', headingName: 'Описание', type: 'default' },
+    //                 { headingProperty: 'department', headingName: 'Департамент', type: 'default' }
+    //             ]
+    //         }
+    //         default: return this.headings;
+    //     }
+    // }
+
+    // public getInterfaceText(instance: ListType): { title, addButtonText } {
+    //     switch (instance) {
+    //         case ListType.OFFICES: {
+    //             return {
+    //                 title: 'Офисы',
+    //                 addButtonText: '+ Добавить офис'
+    //             };
+    //         }
+    //         case ListType.MANAGE_ROLES: {
+    //             return {
+    //                 title: 'Роли',
+    //                 addButtonText: '+ Добавить роль'
+    //             };
+    //         }
+    //         case ListType.POSITIONS: {
+    //             return {
+    //                 title: 'Должности',
+    //                 addButtonText: '+ Добавить должность'
+    //             };
+    //         }
+    //         case ListType.MANAGE_USERS: {
+    //             return {
+    //                 title: 'Сотрудники',
+    //                 addButtonText: '+ Добавить сотрудника'
+    //             };
+    //         }
+    //         case ListType.DEPARTMENTS: {
+    //             return {
+    //                 title: 'Список департаментов',
+    //                 addButtonText: '+ Добавить департамент'
+    //             }
+    //         }
+    //         case ListType.PROJECTS: {
+    //             return {
+    //                 title: 'Доска проектов',
+    //                 addButtonText: '+ Создать проект'
+    //             };
+    //         }
+    //         default: {
+    //             return {
+    //                 title: '',
+    //                 addButtonText: ''
+    //             };
+    //         }
+    //     }
+    // }
+
+    private getData$(skipCount: number, takeCount: number, instance: ListType): Observable<{ list, totalCount, title, addButtonText, headings }> {
         switch (instance) {
             case ListType.OFFICES: {
                 this.headings = [
@@ -63,21 +164,52 @@ export class ListService {
                     { headingProperty: 'address', headingName: 'Адрес', type: 'default' },
                     { headingProperty: 'name', headingName: 'Название', type: 'default' }
                 ];
-                return this.headings;
+                return this.netService.getOfficesList({ skipCount, takeCount })
+                    .pipe(
+                        map(res => (
+                            {
+                                list: this.orderData(res.body, ListType.OFFICES),
+                                totalCount: res.totalCount,
+                                title: 'Офисы',
+                                addButtonText: '+ Добавить офисы',
+                                headings: this.headings
+                            }))
+                    )
             }
             case ListType.MANAGE_ROLES: {
                 this.headings = [
                     { headingProperty: 'name', headingName: 'Название', type: 'default' },
                     { headingProperty: 'description', headingName: 'Описание', type: 'default' }
                 ];
-                return this.headings;
+                return this.roleApiService.findRoles({ skipCount, takeCount })
+                    .pipe(
+                        map((res) => (
+                            {
+                                list: this.orderData(res.roles, ListType.MANAGE_ROLES),
+                                totalCount: res.totalCount,
+                                title: 'Роли',
+                                addButtonText: '+ Добавить роль',
+                                headings: this.headings
+                            }))
+                    )
             }
             case ListType.POSITIONS: {
                 this.headings = [
                     { headingProperty: 'name', headingName: 'Название', type: 'default' },
                     { headingProperty: 'description', headingName: 'Описание', type: 'default' }
                 ];
-                return this.headings;
+                return this.netService.getPositionsList({ skipCount, takeCount })
+                    .pipe(
+                        map((res) => {
+                            return {
+                                list: this.orderData(res.body, ListType.POSITIONS),
+                                totalCount: res.totalCount,
+                                title: 'Должности',
+                                addButtonText: '+ Добавить должность',
+                                headings: this.headings
+                            }
+                        })
+                    )
             }
             case ListType.MANAGE_USERS: {
                 this.headings = [
@@ -87,109 +219,6 @@ export class ListService {
                     { headingProperty: 'rate', headingName: 'Ставка', type: 'default' },
                     { headingProperty: 'status', headingName: 'Статус', type: 'status' }
                 ];
-                return this.headings;
-            }
-            case ListType.DEPARTMENTS: {
-                this.headings = [
-                    { headingProperty: 'name', headingName: 'Наименование', type: 'default' },
-                    { headingProperty: 'description', headingName: 'Описание', type: 'default' },
-                    { headingProperty: 'director', headingName: 'Директор', type: 'default' },
-                    { headingProperty: 'users', headingName: 'Количество сотрудников', type: 'default' }
-                ];
-                return this.headings;
-            }
-            case ListType.PROJECTS: {
-                this.headings = [
-                    { headingProperty: 'name', headingName: 'Наименование', type: 'default' },
-                    { headingProperty: 'description', headingName: 'Описание', type: 'default' },
-                    { headingProperty: 'department', headingName: 'Департамент', type: 'default' }
-                ]
-            }
-            default: return this.headings;
-        }
-    }
-
-    public getInterfaceText(instance: ListType): { title, addButtonText } {
-        switch (instance) {
-            case ListType.OFFICES: {
-                return {
-                    title: 'Офисы',
-                    addButtonText: '+ Добавить офис'
-                };
-            }
-            case ListType.MANAGE_ROLES: {
-                return {
-                    title: 'Роли',
-                    addButtonText: '+ Добавить роль'
-                };
-            }
-            case ListType.POSITIONS: {
-                return {
-                    title: 'Должности',
-                    addButtonText: '+ Добавить должность'
-                };
-            }
-            case ListType.MANAGE_USERS: {
-                return {
-                    title: 'Сотрудники',
-                    addButtonText: '+ Добавить сотрудника'
-                };
-            }
-            case ListType.DEPARTMENTS: {
-                return {
-                    title: 'Список департаментов',
-                    addButtonText: '+ Добавить департамент'
-                }
-            }
-            case ListType.PROJECTS: {
-                return {
-                    title: 'Доска проектов',
-                    addButtonText: '+ Создать проект'
-                };
-            }
-            default: {
-                return {
-                    title: '',
-                    addButtonText: ''
-                };
-            }
-        }
-    }
-
-    private getData$(skipCount: number, takeCount: number, instance: ListType): Observable<{ list, totalCount }> {
-        switch (instance) {
-            case ListType.OFFICES: {
-                return this.netService.getOfficesList({ skipCount, takeCount })
-                    .pipe(
-                        map(res => (
-                            {
-                                list: this.orderData(res.body, ListType.OFFICES),
-                                totalCount: res.totalCount,
-                            }))
-                    )
-            }
-            case ListType.MANAGE_ROLES: {
-                return this.roleApiService.findRoles({ skipCount, takeCount })
-                    .pipe(
-                        map((res) => (
-                            {
-                                list: this.orderData(res.roles, ListType.MANAGE_ROLES),
-                                totalCount: res.totalCount,
-                            }))
-                    )
-            }
-            case ListType.POSITIONS: {
-                return this.netService.getPositionsList({ skipCount, takeCount })
-                    .pipe(
-                        map((res) => {
-                            return {
-                                list: this.orderData(res.body, ListType.POSITIONS),
-                                totalCount: res.totalCount,
-                            }
-                        })
-                    )
-            }
-            case ListType.MANAGE_USERS: {
                 return this.userApiService.getUsers(skipCount, takeCount)
                     .pipe(
                         map((res) => {
@@ -204,12 +233,21 @@ export class ListService {
                                     shortInfo: user.position?.name,
                                     avatar: user.avatar
                                 })), ListType.MANAGE_USERS),
-                                totalCount: res.totalCount
+                                totalCount: res.totalCount,
+                                title: 'Сотрудники',
+                                addButtonText: '+ Добавить сотрудника',
+                                headings: this.headings
                             }
                         })
                     )
             }
             case ListType.DEPARTMENTS: {
+                this.headings = [
+                    { headingProperty: 'name', headingName: 'Наименование', type: 'default' },
+                    { headingProperty: 'description', headingName: 'Описание', type: 'default' },
+                    { headingProperty: 'director', headingName: 'Директор', type: 'default' },
+                    { headingProperty: 'users', headingName: 'Количество сотрудников', type: 'default' }
+                ];
                 return this.netService.getDepartmentsList({ skipCount, takeCount })
                     .pipe(
                         map((res) => {
@@ -224,18 +262,29 @@ export class ListService {
                                         users: department.countUsers
                                     })
                                 ), ListType.DEPARTMENTS),
-                                totalCount: res.totalCount
+                                totalCount: res.totalCount,
+                                title: 'Список департаментов',
+                                addButtonText: '+ Добавить департамент',
+                                headings: this.headings
                             }
                         })
                     )
             }
             case ListType.PROJECTS: {
+                this.headings = [
+                    { headingProperty: 'name', headingName: 'Наименование', type: 'default' },
+                    { headingProperty: 'description', headingName: 'Описание', type: 'default' },
+                    { headingProperty: 'department', headingName: 'Департамент', type: 'default' }
+                ]
                 return this.projectService.getProjectList(skipCount, takeCount)
                     .pipe(
                         map(res => {
                             return {
                                 list: this.orderData(res.body.map(proj => ({ ...proj, department: proj.department?.name })), ListType.PROJECTS),
-                                totalCount: res.totalCount
+                                totalCount: res.totalCount,
+                                title: 'Доска проектов',
+                                addButtonText: '+ Создать проект',
+                                headings: this.headings
                             }
                         })
                     )
@@ -244,11 +293,14 @@ export class ListService {
                 {
                     list: [],
                     totalCount: 0,
+                    title: '',
+                    addButtonText: '',
+                    headings: []
                 })
         }
     }
 
-    public getData(skipCount: number, takeCount: number, instance: ListType): Observable<{ list, totalCount }> {
+    public getData(skipCount: number, takeCount: number, instance: ListType): Observable<{ list, totalCount, title, addButtonText, headings }> {
         return this.getData$(skipCount, takeCount, instance)
     }
 
@@ -267,7 +319,6 @@ export class ListService {
 
     private orderData(data, type: ListType) {
         // Вообще это удобная переменная, которая в данный момент используется для юзеров, но так-то можно и для любого другого типа списков.
-        console.log('DATA: ', data)
         let additionalProperties = {};
         let tempData: any[];
         this.orderedList = [];
