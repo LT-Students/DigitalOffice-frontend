@@ -13,7 +13,6 @@ import { AddHoursComponent } from './components/add-hours/add-hours.component';
 import { GradientGraphicsComponent } from './components/gradient-graphics/gradient-graphics.component';
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 import { ProjectComponent } from './components/project/project.component';
-import { TaskComponent } from './components/project/task/task.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TaskFilterPipe } from './pipes/task-filter.pipe';
@@ -28,7 +27,6 @@ import { UserRoutingModule } from './user-routing.module';
 		GradientGraphicsComponent,
 		UserTasksComponent,
 		ProjectComponent,
-		TaskComponent,
 		ProjectsTableComponent,
 		ProjectPageComponent,
 		TaskFilterPipe,
@@ -44,5 +42,8 @@ import { UserRoutingModule } from './user-routing.module';
 		UserRoutingModule,
 	],
 	providers: [],
+	exports: [
+		AttendanceComponent,
+	],
 })
 export class UserModule {}

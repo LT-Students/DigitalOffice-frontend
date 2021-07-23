@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { UserService } from '@app/services/user.service';
-import { UserInfo } from '@data/api/user-service/models';
+import { AuthService } from '@app/services/auth.service';
+import { Router } from '@angular/router';
 import { User } from '@app/models/user.model';
 
 @Component({
@@ -12,13 +13,20 @@ import { User } from '@app/models/user.model';
 export class ContentContainerComponent implements OnInit {
 	user: User;
 
-	constructor(private userService: UserService) {}
+	constructor(private _userService: UserService, private _authService: AuthService, private _router: Router) {}
 
 	ngOnInit() {
-		//TODO нужно подумать, как возвращать экземпляр класса User, а не duck type
-		this.user = this.userService.getCurrentUser();
-		// if (!this.user) {
-		// 	this.user = { firstName: 'сотрудник', lastName: 'сотрудник' };
-		// }
+		const currentUser: User = this._userService.getCurrentUser();
+		this.user = (currentUser) ? currentUser : new User({
+			body: { user: { firstName: 'сотрудник' } }
+		} );
+	}
+
+	public onLogoClick() {
+		this._router.navigate(['/user/attendance']);
+	}
+
+	onLogoutClick() {
+		this._authService.logout();
 	}
 }
