@@ -1,6 +1,4 @@
-import { EducationModel, StudyType } from '@app/models/education.model';
 import { UserStatusModel } from '@app/models/user-status.model';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { DepartmentInfo, PositionInfo, UserStatus } from '@data/api/user-service/models';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 

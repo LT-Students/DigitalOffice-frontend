@@ -6,8 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '@app/services/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
-import { ShortDepartmentInfo } from '@data/api/company-service/models/short-department-info';
-import { NewEmployeeComponent } from '../new-employee/new-employee.component';
+import { DepartmentInfo } from '@data/api/company-service/models/department-info';
+import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-department-card',
@@ -15,7 +15,7 @@ import { NewEmployeeComponent } from '../new-employee/new-employee.component';
 	styleUrls: ['./department-card.component.scss'],
 })
 export class DepartmentCardComponent implements OnInit {
-	public departmentInfo: ShortDepartmentInfo;
+	public departmentInfo: DepartmentInfo;
 	public sortedUsersInfo: UserInfo[];
 	private _departmentId: string;
 
@@ -37,11 +37,11 @@ export class DepartmentCardComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this._netService.getDepartment(this._departmentId).subscribe(({ body }) => {
+		this._netService.getDepartment({ departmentid: this._departmentId, includeusers: true }).subscribe(({ body }) => {
 			this.departmentInfo = body.department;
 			this.totalCount = body.users.length;
 			this.sortedUsersInfo = body.users.slice();
-			console.log(body)
+			console.log(body);
 		});
 	}
 
@@ -49,7 +49,7 @@ export class DepartmentCardComponent implements OnInit {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
 		this._userService.getUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
-			this.sortedUsersInfo = data.users.slice();
+			this.sortedUsersInfo = data.body.slice();
 		});
 	}
 
@@ -67,7 +67,6 @@ export class DepartmentCardComponent implements OnInit {
 		// 	this.sortedUsersInfo = data;
 		// 	return;
 		// }
-
 		// this.sortedUsersInfo = data.sort((a: UserInfo, b: UserInfo) => {
 		// 	const isAsc = sort.direction === 'asc';
 		// 	switch (sort.active) {

@@ -1,4 +1,64 @@
-<div class="add-hours card bg-white">
+<mat-card class='add-hours card_grid'>
+  <div class="add-hours__header">
+    <h2 doText underlined underlinedSize='sm'>Внести часы</h2>
+  </div>
+  <form
+      [formGroup]="addHoursForm"
+      (ngSubmit)="onSubmit()"
+      autocomplete="off"
+      class="add-hours__form"
+  >
+    <div formGroupName="time" class="add-hours__period">
+      <div>
+        <mat-form-field appearance="fill">
+          <input matInput formControlName="hours" type="text" maxlength="3" />
+          <mat-icon matSuffix aria-label='time'>schedule</mat-icon>
+          <mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <input matInput formControlName="minutes" type="text" maxlength="2" />
+        </mat-form-field>
+      </div>
+      <mat-form-field appearance="fill">
+        <mat-label>Куда</mat-label>
+        <mat-select>
+          <mat-option  *ngFor="let category of categories" [value]="category">
+            {{ category.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="fill">
+      <mat-label>{{ chosenCategory.name }}</mat-label>
+      <mat-select id="project" formControlName="project" [value]="options[0]">
+        <mat-option *ngFor="let option of options" [value]="option.id">
+          {{ option.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <ng-container *ngIf="chosenCategory.name === 'Проект'">
+      <mat-form-field appearance="fill">
+        <mat-label>Задача</mat-label>
+        <input id="task" type="text" matInput formControlName="task"/>
+      </mat-form-field>
+    </ng-container>
+    <mat-form-field appearance="fill">
+      <mat-label>Описание</mat-label>
+      <textarea id="description" matInput formControlName="description"></textarea>
+    </mat-form-field>
+    <ng-container *ngIf="chosenCategory.name === 'Больничный'">
+      <button mat-raised-button>
+        Загрузить документ
+        <mat-icon svgIcon="attach-file" aria-hidden="false" aria-label="Attach file"></mat-icon>
+      </button>
+      <input hidden id="upload-file" type="file" />
+    </ng-container>
+    <button mat-flat-button color='primary' [disabled]="addHoursForm.invalid">Добавить</button>
+  </form>
+</mat-card>
+
+<!--<div class="add-hours card bg-white">
   <div class="add-hours__header">
     <span class="add-hours__title h2">Внести часы</span>
     <div class="add-hours__choice">
@@ -143,4 +203,4 @@
       Добавить
     </button>
   </form>
-</div>
+</div>-->

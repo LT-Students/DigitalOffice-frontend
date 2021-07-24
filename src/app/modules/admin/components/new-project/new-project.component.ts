@@ -40,7 +40,7 @@ export class NewProjectComponent implements OnInit {
 		private _netService: NetService,
 		private _snackBar: MatSnackBar,
 		private _location: Location,
-		private _router: Router,
+		private _router: Router
 	) {
 		this.statuses = [
 			new ProjectStatus(ProjectStatusType.Active),
@@ -71,9 +71,9 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	private _getDepartments(): void {
-		this._netService.getDepartmentsList().subscribe(
-			(data: DepartmentInfo[]) => {
-				this.departments = data;
+		this._netService.getDepartmentsList({ skipCount: 0, takeCount: 100 }).subscribe(
+			(data) => {
+				this.departments = data.body;
 			},
 			(error) => console.log(error)
 		);

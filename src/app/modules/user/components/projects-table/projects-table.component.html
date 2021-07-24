@@ -1,32 +1,5 @@
 <h1 class='heading' doText>Доска проектов</h1>
 <div class="card card_standard">
-	<!--  <mat-form-field class="mat-form-field_default-select" appearance="none">-->
-	<!--    <mat-select-->
-	<!--      class="select"-->
-	<!--      placeholder="Все"-->
-	<!--      (selectionChange)="onSelect($event)"-->
-	<!--    >-->
-	<!--      <mat-option value="">Все</mat-option>-->
-	<!--      <mat-option *ngFor="let group of groups" [value]="group.groupName">-->
-	<!--        {{ group.groupName }}-->
-	<!--      </mat-option>-->
-	<!--    </mat-select>-->
-	<!--  </mat-form-field>-->
-	<!--  <ng-container *ngFor="let group of groups">-->
-	<!--    <div-->
-	<!--      *ngIf="visiblyGroup === '' || group.groupName === visiblyGroup"-->
-	<!--      class="projects-table__projects-group"-->
-	<!--    >-->
-	<!--      <h2 class="group-name h3">{{ group.groupName }}</h2>-->
-	<!--      <div class="group-container">-->
-	<!--        <do-project-card-->
-	<!--          showStatisticsBtn="true"-->
-	<!--          *ngFor="let project of group.groupData"-->
-	<!--          [project]="project"-->
-	<!--        ></do-project-card>-->
-	<!--      </div>-->
-	<!--    </div>-->
-	<!--  </ng-container>-->
     <div class="table__header">
         <button mat-flat-button color="primary" (click)="onAddProjectClick()">+ Создать проект</button>
     </div>
@@ -38,12 +11,8 @@
 			<!-- <th mat-sort-header="amount">Количество участников</th> -->
 		</tr>
 		<tr class="table__row" *ngFor="let project of projectList" (click)="onProjectClick(project.id)">
-			<td>
-				{{ project.name }}
-			</td>
-			<td>
-				{{ project.description ? project.description : '—' }}
-			</td>
+			<td>{{ project.name }}</td>
+			<td>{{ project.description ? project.description : '—' }}</td>
 			<td>{{ project.department.name ? project.department.name : '—' }}</td>
 			<!-- <td>{{ project?.users?.length }}</td> -->
 		</tr>

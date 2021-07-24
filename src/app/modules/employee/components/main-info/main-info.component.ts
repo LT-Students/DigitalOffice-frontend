@@ -1,28 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IUser } from '@data/models/user';
-import { Time } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { UserStatusModel } from '@app/models/user-status.model';
 import { DateType } from '@app/models/date.model';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { promptGlobalAnalytics } from '@angular/cli/models/analytics';
-import { UserResponse } from '@data/api/user-service/models/user-response';
 import { UserService } from '@app/services/user.service';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { CommunicationType, ErrorResponse, UserGender } from '@data/api/user-service/models';
+import { ErrorResponse, OperationResultResponseUserResponse, UserGender } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FindOfficesResponse } from '@data/api/company-service/models/find-offices-response';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
-import { UploadPhotoComponent } from '../modals/upload-photo/upload-photo.component';
+import { UserGet } from '@app/models/user-get.model';
+import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -63,26 +59,28 @@ export class MainInfoComponent implements OnInit {
 		this._initEditForm();
 	}
 	ngOnInit(): void {
-		this.route.params.pipe(
-			map((params) => params.id),
-			map((pageId) => {
-				this.pageId = pageId;
-				this._getUser();
-				this._initEditForm();
-			})
-		).subscribe();
+		this.route.params
+			.pipe(
+				map((params) => params.id),
+				map((pageId) => {
+					this.pageId = pageId;
+					this._getUser();
+					this._initEditForm();
+				})
+			)
+			.subscribe();
 		// this._getUser();
 		// this._initEditForm();
 
-		this._netService.getDepartmentsList().subscribe((departments: DepartmentInfo[]) => {
+		this._netService.getDepartmentsList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: departments }) => {
 			this.selectOptions.departments = departments;
 		});
 
-		this._netService.getPositionsList().subscribe((positions: PositionInfo[]) => {
+		this._netService.getPositionsList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: positions }) => {
 			this.selectOptions.positions = positions;
 		});
 
-		this._netService.getOfficesList().subscribe(({ offices }: FindOfficesResponse) => {
+		this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).subscribe(({ body: offices }) => {
 			this.selectOptions.offices = offices;
 		});
 
@@ -125,13 +123,20 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _getUser(): void {
-		this._userService
-			.getUser(this.pageId, true)
-			.pipe(switchMap((userResponse: UserResponse) => of(new User(userResponse))))
-			.subscribe((user: User) => {
-				this.user = user;
-				console.log(user);
-			});
+		const params: UserGet = {
+			userId: this.pageId,
+			includedepartment: true,
+			includeposition: true,
+			includeoffice: true,
+			includecommunications: true,
+			includerole: true,
+			includeimages: true,
+		};
+
+		this._userService.getUser(params).subscribe((user: User) => {
+			this.user = user;
+			console.log(user);
+		});
 	}
 
 	private _patchEditUser(): void {
@@ -163,7 +168,7 @@ export class MainInfoComponent implements OnInit {
 
 	fillForm() {
 		const middleName = this.user.middleName ? this.user.middleName : '';
-		const status = this.user.status ? this.user.status.statusType : '';
+		const status = this.user.statusEmoji ? this.user.statusEmoji.statusType : '';
 		const about = this.user.user.about ? this.user.user.about : '';
 		const position = this.user.user.position ? this.user.user.position.id : '';
 		const department = this.user.user.department ? this.user.user.department.id : '';

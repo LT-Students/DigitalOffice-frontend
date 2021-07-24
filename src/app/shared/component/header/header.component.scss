@@ -3,132 +3,9 @@
 @import '../../../../stylesheets/base/fonts';
 
 .header {
-	padding-right: 45px;
-	padding-left: 36px;
-
-	display: flex;
-	justify-content: space-between;
-
-	height: 56px;
+	padding: 0 16px;
 
 	background-color: $light_1;
-
-	&__search {
-		display: flex;
-		align-items: center;
-
-		width: 53%;
-		height: 100%;
-
-		background-color: $light_1;
-		border-radius: 5px;
-
-		.mat-form-field_default-select {
-			width: 130px;
-		}
-
-		do-search {
-			width: 100%;
-		}
-
-		.select {
-			margin: 0;
-
-			width: 130px;
-			height: 32px;
-
-			background-color: $accent_color;
-
-			::ng-deep .mat-select-placeholder {
-				@extend .small_text;
-			}
-
-			::ng-deep .mat-select-arrow {
-				margin-right: 6px;
-			}
-
-			::ng-deep .mat-select-value {
-				padding: 0 0 0 8px;
-
-				line-height: 30px;
-			}
-		}
-	}
-
-	&__privacy {
-		display: flex;
-		align-items: center;
-
-		* {
-			margin-right: 5px;
-
-			&:last-child {
-				margin-right: 0;
-			}
-		}
-
-		&__greeting {
-			display: flex;
-			align-items: center;
-
-			img {
-				width: 36px;
-				height: 36px;
-
-				border-radius: 50%;
-			}
-
-			p {
-				padding: 0 15px 0 19px;
-
-				color: $dark_2;
-
-				span {
-					color: $dark_2;
-				}
-			}
-		}
-
-		&__notification {
-			margin-top: 5px;
-
-			cursor: pointer;
-
-			&__bell {
-				width: 18px;
-				height: 23px;
-			}
-
-			&__light {
-				width: 8px;
-				height: 8px;
-			}
-		}
-	}
-
-	.header-navigation {
-		display: flex;
-		align-items: center;
-		flex-wrap: nowrap;
-
-		&__logo {
-			margin-right: 40px;
-
-			cursor: pointer;
-		}
-
-		&__links {
-			line-height: 25px;
-
-			a {
-				margin-right: 45px;
-
-				&:last-of-type {
-					margin-right: 0;
-				}
-			}
-		}
-	}
 }
 
 .theme-switch {
@@ -178,4 +55,21 @@
 			transition: all 250ms ease-in;
 		}
 	}
+}
+
+.spacer {
+	flex: 1 1 auto;
+}
+
+.avatar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	width: 150px;
+}
+
+.logo {
+	font-size: 1rem;
+	font-weight: bold;
 }
