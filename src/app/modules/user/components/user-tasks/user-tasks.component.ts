@@ -55,14 +55,11 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 		this.onDestroy$.complete();
 	}
 
-	sortByProject(): void {
-		this.isOrderedByProject = !this.isOrderedByProject;
-	}
-	sortByHours(): void {
-		this.isOrderedByHours = !this.isOrderedByHours;
-	}
-
 	onSearch(text: string) {
 		this.searchText = text;
+	}
+
+	public getPeriod(): string {
+		return 'выбранный период';
 	}
 }

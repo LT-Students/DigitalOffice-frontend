@@ -82,6 +82,10 @@ export class DateDescComponent implements OnInit, OnDestroy {
 		}
 	}
 
+	public getPeriod(): string {
+		return `выбранный период: ${this.startDate.toDateString()} - ${this.endDate.toDateString()}`;
+	}
+
 	ngOnDestroy(): void {
 		this.onDestroy$.next(null);
 		this.onDestroy$.complete();

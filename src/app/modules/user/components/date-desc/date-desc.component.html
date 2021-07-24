@@ -1,85 +1,51 @@
-<div class="desc">
-  <p class="desc__title h3">Доска учета времени</p>
+<mat-card class="desc">
   <div class="desc__content">
     <div class="desc__calender">
-      <div class="content__period h1">
-        <span
-          *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)"
-        >
+        <h1>{{ getPeriod() }}</h1>
+        <!--<span *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)">
           {{ startDate | date: 'd MMMM' }}
         </span>
         <span
-          *ngIf="
-            endDate &&
-            this.dateService.isSameMonth(startDate, endDate) &&
-            !this.dateService.isSameDay(startDate, endDate)
-          "
-        >
+          *ngIf="endDate
+           && this.dateService.isSameMonth(startDate, endDate)
+          && !this.dateService.isSameDay(startDate, endDate)">
           {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
         </span>
-        <span
-          *ngIf="endDate && !this.dateService.isSameMonth(startDate, endDate)"
-        >
+        <span *ngIf="endDate && !this.dateService.isSameMonth(startDate, endDate)">
           {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
-        </span>
-      </div>
-      <div class="content__week regular_text">
-        <div
-          (click)="selectDay(dayOfWeek)"
-          *ngFor="let dayOfWeek of daysOfWeek"
-          class="content__week__day"
-        >
-          <p class="content__week__day-single">
-            {{ dayOfWeek.date | date: 'EEEEEE' }}
-          </p>
-          <p [ngClass]="{ content__week__day_orange: dayOfWeek.isSelected }">
+        </span>-->
+      <mat-chip-list class="content__week" aria-label="Fish selection">
+        <div class="content__week__day"  *ngFor="let dayOfWeek of daysOfWeek">
+          <p class="content__week__day-single">{{ dayOfWeek.date | date: 'EEEEEE' }}</p>
+          <mat-chip (click)="selectDay(dayOfWeek)" [selected]='dayOfWeek.isSelected'>
             {{ dayOfWeek.date | date: 'dd' }}
-          </p>
+          </mat-chip>
         </div>
-      </div>
+      </mat-chip-list>
 
-      <div class="datepicker">
-        <mat-form-field
-          appearance="fill"
-          class="datepicker__form mat-form-field-datepicker-override"
-        >
-          <mat-date-range-input
-            [dateFilter]="disableWeekends"
-            [rangePicker]="picker"
-          >
+      <div>
+        <mat-form-field appearance="none">
+          <mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
             <input
               (dateChange)="onDateInput($event.value, true)"
               [value]="startDate"
               matStartDate
-              placeholder="Start date"
             />
             <input
               (dateChange)="onDateInput($event.value, false)"
               [value]="endDate"
               matEndDate
-              placeholder="End date"
             />
           </mat-date-range-input>
-          <mat-datepicker-toggle
-            [for]="picker"
-            matSuffix
-          ></mat-datepicker-toggle>
-          <mat-date-range-picker
-            #picker
-            (closed)="onClose()"
-          ></mat-date-range-picker>
+          <mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
         </mat-form-field>
-        <button (click)="picker.open()" class="datepicker__btn" mat-flat-button>
-          <span class="regular_text text_dark_1 datepicker__btn-text">
-            Выбрать другую дату
-          </span>
-          <img class="datepicker__btn-icon" src="assets/svg/arrow-right.svg" />
+        <button mat-flat-button (click)="picker.open()" color='primary'>
+          Выбрать другую дату<mat-icon>chevron_right</mat-icon>
         </button>
+
+        <button mat-flat-button>Сегодня</button>
       </div>
     </div>
-
-    <div class="desc__photo">
-      <img alt="girl" src="assets/svg/girl.svg" />
-    </div>
+    <div class="desc__photo"><img alt="girl" src="assets/svg/girl.svg" /></div>
   </div>
-</div>
+</mat-card>

@@ -75,7 +75,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	private _getMembers(): void {
 		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe(
 			(data) => {
-				this.membersAll = data.users;
+				this.membersAll = data.body;
 				this.totalCount = data.totalCount;
 			},
 			(error) => console.log(error)
@@ -83,9 +83,9 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	private _getPositions(): void {
-		this._netService.getPositionsList().subscribe(
+		this._netService.getPositionsList({ skipCount: 0, takeCount: 100 }).subscribe(
 			(data) => {
-				this.positions = data;
+				this.positions = data.body;
 			},
 			(error) => console.log(error)
 		);

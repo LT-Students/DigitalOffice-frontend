@@ -11,9 +11,9 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreateUserRequest } from '../models/create-user-request';
 import { EditUserRequest } from '../models/edit-user-request';
+import { FindResultResponseUserInfo } from '../models/find-result-response-user-info';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { UserResponse } from '../models/user-response';
-import { UsersResponse } from '../models/users-response';
+import { OperationResultResponseUserResponse } from '../models/operation-result-response-user-response';
 
 @Injectable({
   providedIn: 'root',
@@ -110,7 +110,7 @@ export class UserApiService extends BaseService {
      * Include educations info in answer.
      */
     includeeducations?: boolean;
-  }): Observable<StrictHttpResponse<UserResponse>> {
+  }): Observable<StrictHttpResponse<OperationResultResponseUserResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.GetUserPath, 'get');
     if (params) {
@@ -136,7 +136,7 @@ export class UserApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<UserResponse>;
+        return r as StrictHttpResponse<OperationResultResponseUserResponse>;
       })
     );
   }
@@ -220,10 +220,10 @@ export class UserApiService extends BaseService {
      * Include educations info in answer.
      */
     includeeducations?: boolean;
-  }): Observable<UserResponse> {
+  }): Observable<OperationResultResponseUserResponse> {
 
     return this.getUser$Response(params).pipe(
-      map((r: StrictHttpResponse<UserResponse>) => r.body as UserResponse)
+      map((r: StrictHttpResponse<OperationResultResponseUserResponse>) => r.body as OperationResultResponseUserResponse)
     );
   }
 
@@ -256,7 +256,7 @@ export class UserApiService extends BaseService {
      * Number of users to take.
      */
     takeCount: number;
-  }): Observable<StrictHttpResponse<UsersResponse>> {
+  }): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
     if (params) {
@@ -271,7 +271,7 @@ export class UserApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<UsersResponse>;
+        return r as StrictHttpResponse<FindResultResponseUserInfo>;
       })
     );
   }
@@ -300,10 +300,10 @@ export class UserApiService extends BaseService {
      * Number of users to take.
      */
     takeCount: number;
-  }): Observable<UsersResponse> {
+  }): Observable<FindResultResponseUserInfo> {
 
     return this.findUsers$Response(params).pipe(
-      map((r: StrictHttpResponse<UsersResponse>) => r.body as UsersResponse)
+      map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)
     );
   }
 
