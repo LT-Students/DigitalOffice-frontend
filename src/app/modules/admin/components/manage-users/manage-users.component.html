@@ -60,10 +60,10 @@
 				<td class="table__cell">{{ userInfo?.rate }}</td>
 				<td class="table__cell">
 					<ng-container *ngIf="userInfo?.isActive; else archived">
-						<p>Активен</p>
+						<p class="table__active text_color_white small_text">Активен</p>
 					</ng-container>
 					<ng-template #archived>
-						<p class="table__archived" doText color="light_1">В архиве</p>
+						<p class="table__archived text_color_gray1 small_text" >В архиве</p>
 					</ng-template>
 				</td>
 				<td class="table__delete-button">

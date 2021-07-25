@@ -41,9 +41,24 @@
 		}
 	}
 
+	&__active {
+		width: 67px;
+		height: 24px;
+
+		text-align: center;
+
+		background-color: #00e676;
+		border-radius: 10px;
+	}
+
 	&__archived {
-		background-color: #eb5757;
-		border-radius: 5%;
+		width: 67px;
+		height: 24px;
+
+		text-align: center;
+
+		background-color: #f5f5f5;
+		border-radius: 10px;
 	}
 
 	&__image {
