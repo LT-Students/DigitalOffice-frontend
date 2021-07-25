@@ -18,14 +18,14 @@ export enum AdminDashboardModalType {
 	NEW_EMPLOYEE,
 	NEW_DEPARTMENT,
 	NEW_POSITION,
-    NEW_ROLE,
+	NEW_ROLE,
 	NEW_PROJECT,
 	MANAGE_USERS,
 	MANAGE_ROLES,
 	NEW_OFFICE,
 	DEPARTMENT_LIST,
 	OFFICE_LIST,
-	POSITION_LIST
+	POSITION_LIST,
 }
 
 export interface UserSearchModalConfig {
@@ -36,11 +36,10 @@ export interface UserSearchModalConfig {
 
 export const enum ModalWidth {
 	XL = '720px',
-	S = '440px',
 	L = '672px',
-	M = '550px'
+	M = '550px',
+	S = '440px',
 }
-
 
 @Injectable({
 	providedIn: 'root',
@@ -51,7 +50,7 @@ export class ModalService {
 	public openModal<C, T, R>(component: ComponentType<C>, modalWidth?: ModalWidth, modalContentConfig?: T, result?: R): MatDialogRef<C, R> {
 		return this.matDialog.open<C, T, R>(component, {
 			data: modalContentConfig,
-			width: modalWidth
+			width: modalWidth,
 		});
 	}
 }

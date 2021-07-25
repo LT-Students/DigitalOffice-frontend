@@ -81,7 +81,7 @@ export class NewProjectComponent implements OnInit {
 
 	public addMember(): void {
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
-		const dialogRef = this._modalService.openModal(UserSearchComponent, ModalWidth.L ,modalData);
+		const dialogRef = this._modalService.openModal(UserSearchComponent, ModalWidth.L, modalData);
 		dialogRef.afterClosed().subscribe((result: UserInfo[]) => {
 			this.membersAll = result.length ? [...result] : [];
 		});
