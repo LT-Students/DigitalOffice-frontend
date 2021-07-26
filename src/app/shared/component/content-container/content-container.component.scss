@@ -28,21 +28,24 @@
 .sidenav {
 	&__nav {
 		width: 280px;
+		height: 1047px;
+	}
+
+	&__header {
+		margin: 28px 24px 0 39px;
+
+		display: flex;
+		justify-content: space-between;
 	}
 
 	&__title {
-		position: absolute;
-		top: 28px;
-		left: 39px;
-
 		font-size: 18px;
 		line-height: 150%;
 	}
 
 	&__close-button {
-		position: absolute;
-		top: 32px;
-		left: 240px;
+		display: flex;
+		align-items: center;
 
 		&:hover {
 			cursor: pointer;
@@ -50,17 +53,17 @@
 	}
 
 	&__group {
-		position: absolute;
-		top: 116px;
-		left: 37px;
+		margin: 39px 82px 0 21px;
+		padding: 0;
 
-		list-style-type: none;
+		display: flex;
+		flex-direction: column;
 	}
 
-	&__elem {
-		margin-bottom: 24px;
+	&__icon {
+		margin-right: 16px;
 
-		font-size: 16px;
-		line-height: 24px;
+		display: flex;
+		align-items: center;
 	}
 }

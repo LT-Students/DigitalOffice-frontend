@@ -8,13 +8,15 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-	@Output() public burgerClick = new EventEmitter();
 	@Input() userName: string;
 	@Input() userId: string;
 	@Input() avatar: ImageInfo;
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
+	@Output() public menuClick: EventEmitter<MouseEvent>;
 
-	constructor(private authService: AuthService) { }
+	constructor(private authService: AuthService) {
+		this.menuClick = new EventEmitter();
+	}
 
 	ngOnInit() { }
 
@@ -22,7 +24,7 @@ export class HeaderComponent implements OnInit {
 		this.authService.logout();
 	}
 
-	onBurgerClick(event) {
-		this.burgerClick.emit(event);
+	onMenuClick(event: MouseEvent) {
+		this.menuClick.emit(event);
 	}
 }

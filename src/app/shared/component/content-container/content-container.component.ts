@@ -12,9 +12,11 @@ import { User } from '@app/models/user.model';
 })
 export class ContentContainerComponent implements OnInit {
 	user: User;
-	public navIsOpened: boolean = false;
+	public navOpened: boolean;
 
-	constructor(private _userService: UserService, private _authService: AuthService, private _router: Router) { }
+	constructor(private _userService: UserService, private _authService: AuthService, private _router: Router) {
+		this.navOpened = false;
+	}
 
 	ngOnInit() {
 		const currentUser: User = this._userService.getCurrentUser();
@@ -31,11 +33,19 @@ export class ContentContainerComponent implements OnInit {
 		this._authService.logout();
 	}
 
-	onBurgerClick(event) {
-		this.navIsOpened = true;
+	onMenuClick(event: MouseEvent) {
+		event.stopPropagation()
+		this.navOpened = true;
 	}
 
-	onCloseNavClick() {
-		this.navIsOpened = false;
+	closeNav() {
+		this.navOpened = false;
+	}
+
+	onClick(event: PointerEvent) {
+		const target = event.target as Element;
+		if (this.navOpened === true && target.closest('.sidenav__nav') === null) {
+			this.closeNav()
+		}
 	}
 }
