@@ -1,11 +1,12 @@
 import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl } from '@angular/forms';
-import { MatFormFieldControl } from '@angular/material';
+import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
+import { Time } from '@angular/common';
 
-interface Time {
-	hours: number;
-	minutes: number;
+enum TimeType {
+	HOURS,
+	MINUTES,
 }
 
 @Component({
@@ -15,8 +16,24 @@ interface Time {
 	providers: [{ provide: MatFormFieldControl, useExisting: TimeInputComponent }],
 })
 export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldControl<Time>, ControlValueAccessor {
+	static nextId = 0;
+
+	public time: FormGroup;
+	public TimeType = TimeType;
+
+	public shouldLabelFloat = true;
+	public stateChanges = new Subject<void>();
+	public focused = false;
+	public controlType = 'time-input';
+	public disabled = false;
+	public placeholder: string;
+	public required: boolean;
+
+	@HostBinding()
+	public id = `time-input-${TimeInputComponent.nextId++}`;
+
 	constructor(fb: FormBuilder, @Optional() @Self() public ngControl: NgControl) {
-		this.parts = fb.group({
+		this.time = fb.group({
 			hours: '',
 			minutes: '',
 		});
@@ -25,49 +42,39 @@ export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldContro
 		}
 	}
 
+	ngOnInit() {
+		this.time.valueChanges.subscribe((value) => this.onChange(value));
+	}
+
+	ngOnDestroy() {
+		this.stateChanges.complete();
+	}
+
 	get empty() {
-		const { hours, minutes } = this.parts.value;
+		const { hours, minutes } = this.time.value;
 		return !hours && !minutes;
 	}
 
 	@Input()
 	get value(): Time | null {
-		console.log(this.parts);
-		if (this.parts.valid) {
-			return this.parts.value;
+		console.log(this.time);
+		if (this.time.valid) {
+			return this.time.value;
 		}
 		return null;
 	}
 	set value(time: Time | null) {
 		const { hours, minutes } = time || { hours: '', minutes: '' };
-		this.parts.setValue({ hours, minutes });
+		this.time.setValue({ hours, minutes });
 		this.stateChanges.next();
 	}
 
 	get errorState(): boolean {
-		return this.parts.invalid && this.parts.dirty;
+		return this.time.invalid && this.time.dirty;
 	}
-
-	static nextId = 0;
-
-	shouldLabelFloat = true;
-	public parts: FormGroup;
-	stateChanges = new Subject<void>();
-	focused = false;
-	controlType = 'time-input';
-	disabled = false;
-	placeholder: string;
-	required: boolean;
-
-	@HostBinding()
-	id = `time-input-${TimeInputComponent.nextId++}`;
 
 	onChange = (_: any) => {};
 	onTouched = () => {};
-
-	ngOnInit() {
-		this.parts.valueChanges.subscribe((value) => this.onChange(value));
-	}
 
 	onContainerClick(event: MouseEvent): void {}
 
@@ -85,19 +92,42 @@ export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldContro
 		this.onTouched = fn;
 	}
 
-	autoFocusNext(event, input: HTMLElement): void {
+	public autoFocusNext(event, input: HTMLElement): void {
 		if (event.target.value.toString().length === 2) {
 			input.focus();
 		}
 	}
 
-	autoFocusPrev(event, input: HTMLElement): void {
+	public autoFocusPrev(event, input: HTMLElement): void {
 		if (event.target.value.toString().length === 0) {
 			input.focus();
 		}
 	}
 
-	ngOnDestroy() {
-		this.stateChanges.complete();
+	public checkTimeConstraints(time: number, timeType: TimeType): void {
+		switch (timeType) {
+			case TimeType.HOURS:
+				this._checkHoursConstraints(time);
+				break;
+			case TimeType.MINUTES:
+				this._checkMinutesConstraints(time);
+				break;
+			default:
+				break;
+		}
+	}
+
+	private _checkHoursConstraints(hours: number): void {
+		if (hours < 0) {
+			this.time.patchValue({ hours: 0 });
+		}
+	}
+
+	private _checkMinutesConstraints(minutes: number): void {
+		if (minutes < 0) {
+			this.time.patchValue({ minutes: 0 });
+		} else if (minutes > 59) {
+			this.time.patchValue({ minutes: 59 });
+		}
 	}
 }

@@ -8,26 +8,33 @@
       autocomplete="off"
       class="add-hours__form"
   >
-    <div formGroupName="time" class="add-hours__period">
+<!--    <div formGroupName="time" class="add-hours__period">-->
+<!--      <div>-->
+<!--        <mat-form-field appearance="fill">-->
+<!--          <input matInput formControlName="hours" type="text" maxlength="3" />-->
+<!--          <mat-icon matSuffix aria-label='time'>schedule</mat-icon>-->
+<!--          <mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>-->
+<!--        </mat-form-field>-->
+<!--        <mat-form-field appearance="fill">-->
+<!--          <input matInput formControlName="minutes" type="text" maxlength="2" />-->
+<!--        </mat-form-field>-->
+<!--      </div>-->
+<!--      <mat-form-field appearance="fill">-->
+<!--        <mat-label>Куда</mat-label>-->
+<!--        <mat-select>-->
+<!--          <mat-option  *ngFor="let category of categories" [value]="category">-->
+<!--            {{ category.name }}-->
+<!--          </mat-option>-->
+<!--        </mat-select>-->
+<!--      </mat-form-field>-->
+<!--    </div>-->
       <div>
-        <mat-form-field appearance="fill">
-          <input matInput formControlName="hours" type="text" maxlength="3" />
-          <mat-icon matSuffix aria-label='time'>schedule</mat-icon>
-          <mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <input matInput formControlName="minutes" type="text" maxlength="2" />
-        </mat-form-field>
+          <mat-form-field appearance='fill'>
+              <do-time-input formControlName='time'></do-time-input>
+              <mat-icon matSuffix aria-label='time'>schedule</mat-icon>
+          </mat-form-field>
+          <button mat-button type='button' (click)='doTime()'>Часы</button>
       </div>
-      <mat-form-field appearance="fill">
-        <mat-label>Куда</mat-label>
-        <mat-select>
-          <mat-option  *ngFor="let category of categories" [value]="category">
-            {{ category.name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
 
     <mat-form-field appearance="fill">
       <mat-label>{{ chosenCategory.name }}</mat-label>

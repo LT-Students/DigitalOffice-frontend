@@ -42,6 +42,7 @@ import { TimeInputComponent } from './component/time-input/time-input.component'
 		MaterialModule,
 		DatepickerComponent,
 		StepperComponent,
+		TimeInputComponent,
 	],
 })
 export class SharedModule {}

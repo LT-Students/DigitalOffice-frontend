@@ -11,8 +11,8 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project } from '@data/models/project';
 import { Task } from '@data/models/task';
-import { timeValidator } from './add-hours.validators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { timeValidator } from './add-hours.validators';
 
 @Component({
 	selector: 'do-add-hours',
@@ -50,20 +50,24 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.addHoursForm = this.fb.group({
-			time: this.fb.group({
-				hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
-				minutes: ['', [Validators.required, Validators.max(59)]],
-			}),
+			// time: this.fb.group({
+			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
+			// 	minutes: ['', [Validators.required, Validators.max(59)]],
+			// }),
+			time: {
+				hours: '',
+				minutes: '',
+			},
 			project: ['', Validators.required],
 			task: ['', Validators.required],
 			description: [''],
 		});
 
-		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
-			this.setTimePeriod = timePeriod;
-			this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
-			this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
-		});
+		// this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
+		// 	this.setTimePeriod = timePeriod;
+		// 	this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
+		// 	this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
+		// });
 
 		this.projects = this.projectStore.projects;
 
@@ -152,5 +156,10 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this.onDestroy$.next(null);
 		this.onDestroy$.complete();
+	}
+
+	public doTime() {
+		const time = this.addHoursForm.get('time');
+		console.log(time.value, time.invalid);
 	}
 }
