@@ -7,31 +7,27 @@
 				<span doText color="negative_accent"><sup>*</sup>Обязательные поля</span>
 			</div>
 			<div class="new-employee__inputs">
-				<div class="new-employee__form-element">
-					<mat-form-field class="new-employee__form-field" appearance="fill">
-						<mat-label>Имя</mat-label>
-						<input id="firstName" matInput placeholder="Введите имя" formControlName="firstName" required />
-					</mat-form-field>
-				</div>
-				<div class="new-employee__form-element">
-					<mat-form-field class="new-employee__form-field" appearance="fill">
-						<mat-label>Фамилия</mat-label>
-						<input id="lastName" matInput placeholder="Введите фамилию" formControlName="lastName" required />
-					</mat-form-field>
-				</div>
-				<div class="new-employee__form-element">
-					<mat-form-field class="new-employee__form-field" appearance="fill">
-						<mat-label>Отчество</mat-label>
-						<input id="middleName" matInput placeholder="Введите отчество" formControlName="middleName" />
-					</mat-form-field>
-				</div>
+				<mat-form-field appearance="fill">
+					<mat-label>Имя</mat-label>
+					<input id="firstName" matInput placeholder="Введите имя" formControlName="firstName" required />
+					<mat-error>Имя обязательно!</mat-error>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Фамилия</mat-label>
+					<input id="lastName" matInput placeholder="Введите фамилию" formControlName="lastName" required />
+					<mat-error>Фамилия обязательна!</mat-error>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Отчество</mat-label>
+					<input id="middleName" matInput placeholder="Введите отчество" formControlName="middleName" />
+				</mat-form-field>
 			</div>
 		</div>
 		<div class="section new-employee__working-info">
 			<h3 doText color="dark_1" class="new-employee__heading">Рабочая информация</h3>
 			<div class="new-employee__inputs">
-				<div class="new-employee__form-element" *ngIf="position$ | async as positionList">
-					<mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
+				<ng-container *ngIf="position$ | async as positionList">
+					<mat-form-field appearance="fill">
 						<mat-label>Должность</mat-label>
 						<mat-select id="positionId" placeholder="Выберите должность" formControlName="positionId" required>
 							<mat-option *ngFor="let position of positionList.body" [value]="position.id">
@@ -39,9 +35,9 @@
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
-				</div>
-				<div class="new-employee__form-element" *ngIf="department$ | async as departmentList">
-					<mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
+				</ng-container>
+				<ng-container *ngIf="department$ | async as departmentList">
+					<mat-form-field appearance="fill">
 						<mat-label>Департамент</mat-label>
 						<mat-select id="departmentId" placeholder="Выберите департамент" formControlName="departmentId">
 							<mat-option *ngFor="let department of departmentList.body" [value]="department.id">
@@ -49,77 +45,67 @@
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
-				</div>
-				<div class="new-employee__form-element">
-					<mat-form-field class="new-employee__form-field" appearance="fill">
-						<mat-label>Ставка</mat-label>
-						<!--TODO: Вынести в отдельный компонент https://trello.com/c/JhikCtPI-->
-						<button
-							class="new-employee__rate-button"
-							mat-icon-button
-							matPrefix
-							type="button"
-							(click)="changeWorkingRate(-0.25)"
-							[disabled]="rate.value === '0.25'"
-						>
-							-
-						</button>
-						<input #rate id="rate" class="new-employee__rate" matInput formControlName="rate" readonly />
-						<button
-							class="new-employee__rate-button"
-							mat-icon-button
-							matSuffix
-							type="button"
-							(click)="changeWorkingRate(0.25)"
-							[disabled]="rate.value === '1'"
-						>
-							+
-						</button>
-					</mat-form-field>
-				</div>
-				<div class="new-employee__form-element">
-					<do-datepicker controlName="startWorkingAt" label="Начало работы" format="full" [isEdit]="true"></do-datepicker>
-				</div>
-				<div class="new-employee__form-element">
-					<mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
-						<mat-label>Офис</mat-label>
-						<mat-select id="office" placeholder="Выберите офис" formControlName="officeId" required>
-							<mat-option *ngFor="let office of offices" [value]="office.id"> {{ office.city }}, {{ office.address }} </mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-				<div class="new-employee__form-element">
-					<mat-form-field class="mat-form-field_default-select new-employee__form-field" appearance="fill">
-						<mat-label>Роль</mat-label>
-						<mat-select id="roleId" placeholder="Выберите роль" formControlName="roleId">
-							<mat-option *ngFor="let role of roles" [value]="role.id">
-								{{ role?.name }}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
+				</ng-container>
+				<mat-form-field appearance="fill">
+					<mat-label>Ставка</mat-label>
+					<!--TODO: Вынести в отдельный компонент https://trello.com/c/JhikCtPI-->
+					<button
+						class="new-employee__rate-button"
+						mat-icon-button
+						matPrefix
+						type="button"
+						(click)="changeWorkingRate(-0.25)"
+						[disabled]="rate.value === '0.25'"
+					>
+						-
+					</button>
+					<input #rate id="rate" class="new-employee__rate" matInput formControlName="rate" readonly />
+					<button
+						class="new-employee__rate-button"
+						mat-icon-button
+						matSuffix
+						type="button"
+						(click)="changeWorkingRate(0.25)"
+						[disabled]="rate.value === '1'"
+					>
+						+
+					</button>
+				</mat-form-field>
+				<do-datepicker controlName="startWorkingAt" label="Начало работы" format="full" [isEdit]="true"></do-datepicker>
+				<mat-form-field appearance="fill">
+					<mat-label>Офис</mat-label>
+					<mat-select id="office" placeholder="Выберите офис" formControlName="officeId" required>
+						<mat-option *ngFor="let office of offices" [value]="office.id"> {{ office.city }}, {{ office.address }} </mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Роль</mat-label>
+					<mat-select id="roleId" placeholder="Выберите роль" formControlName="roleId">
+						<mat-option *ngFor="let role of roles" [value]="role.id">
+							{{ role?.name }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
 			</div>
 		</div>
 		<div class="section new-employee__auth">
 			<h3 doText color="dark_1" class="new-employee__heading">Аутентификация</h3>
 			<div class="new-employee__inputs">
-				<div class="new-employee__form-element new-employee__form-element_span_2">
-					<mat-form-field class="new-employee__form-field" appearance="fill">
-						<mat-label
-							>E-mail
-							<mat-icon
-								class="new-employee__hint"
-								aria-label="Hint"
-								matTooltipClass="tooltip"
-								matTooltip="На эту почту пользователю придет ссылка для регистрации"
-								[matTooltipPosition]="'above'"
-								>help_outline
-							</mat-icon></mat-label
-						>
-						<input id="email" matInput placeholder="Введите E-mail" formControlName="email" required />
-                        <mat-error>error</mat-error>
-					</mat-form-field>
-				</div>
+				<mat-form-field class="new-employee__form-element_span_2" appearance="fill">
+					<mat-label
+						>E-mail
+						<mat-icon
+							class="new-employee__hint"
+							aria-label="Hint"
+							matTooltipClass="tooltip"
+							matTooltip="На эту почту пользователю придет ссылка для регистрации"
+							[matTooltipPosition]="'above'"
+							>help_outline
+						</mat-icon></mat-label
+					>
+					<input id="email" matInput placeholder="Введите E-mail" formControlName="email" required />
+					<mat-error>error</mat-error>
+				</mat-form-field>
 			</div>
 		</div>
 		<div class="new-employee__actions">
