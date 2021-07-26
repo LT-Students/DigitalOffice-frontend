@@ -1,4 +1,3 @@
-import { ComponentType } from '@angular/cdk/overlay';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,21 +5,19 @@ import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatus } from '@app/models/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { ProjectService } from '@app/services/project.service';
-import { ModalService, ModalType, UserSearchModalConfig } from '@app/services/modal.service';
+import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProjectRequest } from '@data/api/project-service/models/project-request';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
 import { UserRoleType } from '@data/api/project-service/models/user-role-type';
-import { ErrorResponse } from '@data/api/project-service/models/error-response';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
-import { DeleteDirectionComponent, ModalApprovalConfig } from './modals/delete-direction/delete-direction.component';
-import { Team, teamCards, TeamMember } from './team-cards';
+import { Team, TeamMember } from './team-cards';
 
 @Component({
 	selector: 'do-new-project',
@@ -84,7 +81,7 @@ export class NewProjectComponent implements OnInit {
 
 	public addMember(): void {
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
-		const dialogRef = this._modalService.openModal(UserSearchComponent, modalData);
+		const dialogRef = this._modalService.openModal(UserSearchComponent, ModalWidth.L, modalData);
 		dialogRef.afterClosed().subscribe((result: UserInfo[]) => {
 			this.membersAll = result.length ? [...result] : [];
 		});
@@ -118,7 +115,7 @@ export class NewProjectComponent implements OnInit {
 			team: { name: 'all', members: this._getAllMembers() },
 			mode: WorkFlowMode.VIEW,
 		};
-		this._modalService.openModal(UserSearchComponent, configData);
+		this._modalService.openModal(UserSearchComponent, ModalWidth.L, configData);
 	}
 
 	public saveDraft(): void {
