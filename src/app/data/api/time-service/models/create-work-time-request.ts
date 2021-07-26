@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface WorkTimeRequest {
+export interface CreateWorkTimeRequest {
 
   /**
    * Description for alloted time.
@@ -11,6 +11,7 @@ export interface WorkTimeRequest {
    * Task finish deadline.
    */
   endTime: string;
+  minutes: number;
 
   /**
    * The specify project's Id.
@@ -25,11 +26,11 @@ export interface WorkTimeRequest {
   /**
    * Short description of the task
    */
-  title: string;
+  title?: string;
 
   /**
-   * Users working on the current project.
+   * User working on the current project.
    */
-  workerUserId: string;
+  userId: string;
 }
 
