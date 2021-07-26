@@ -49,13 +49,11 @@
 
 		text-align: center;
 
+		background-color: #00e676;
+
 		border-radius: 10px;
 
-		&__active {
-			background-color: #00e676;
-		}
-
-		&__archived {
+		&_archived {
 			background-color: #f5f5f5;
 		}
 	}
