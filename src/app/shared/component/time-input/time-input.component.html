@@ -1,0 +1,24 @@
+<div class="time-input mat-h1" [formGroup]="parts">
+    <input
+        #hours
+        matInput
+        class="time-input__input time-input__input_align_right"
+        formControlName="hours"
+        type="text"
+        maxlength="2"
+        placeholder="02"
+        (keyup)="autoFocusNext($event, minutes)"
+    >
+    <span class="time-input__colon">:</span>
+    <input
+        #minutes
+        matInput
+        class="time-input__input"
+        formControlName="minutes"
+        type="text"
+        maxlength="2"
+        placeholder="00"
+        (keyup.backspace)="autoFocusPrev($event, hours)"
+    >
+    <span>ч</span>
+</div>

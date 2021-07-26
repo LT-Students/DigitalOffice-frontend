@@ -14,6 +14,7 @@ import { HeaderComponent } from './component/header/header.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
+import { TimeInputComponent } from './component/time-input/time-input.component';
 
 @NgModule({
 	declarations: [
@@ -27,6 +28,7 @@ import { StepperComponent } from './component/stepper/stepper.component';
 		DatepickerComponent,
 		StepperComponent,
 		TextDirective,
+		TimeInputComponent,
 	],
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule],
 	exports: [
