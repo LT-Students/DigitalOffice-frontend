@@ -104,18 +104,6 @@
 			<h3 doText color="dark_1" class="new-employee__heading">Аутентификация</h3>
 			<div class="new-employee__inputs">
 				<div class="new-employee__form-element new-employee__form-element_span_2">
-					<!--					<label class="new-employee__label" doText color="gray1" for="email">-->
-					<!--						E-mail-->
-					<!--						<sup class="new-employee__required" doText color="negative_accent">*</sup>-->
-					<!--						<mat-icon-->
-					<!--							class="new-employee__hint"-->
-					<!--							aria-label="Hint"-->
-					<!--							matTooltipClass="tooltip"-->
-					<!--							matTooltip="На эту почту пользователю придет ссылка для регистрации"-->
-					<!--							[matTooltipPosition]="'above'"-->
-					<!--							>help_outline-->
-					<!--						</mat-icon>-->
-					<!--					</label>-->
 					<mat-form-field class="new-employee__form-field" appearance="fill">
 						<mat-label
 							>E-mail
@@ -129,6 +117,7 @@
 							</mat-icon></mat-label
 						>
 						<input id="email" matInput placeholder="Введите E-mail" formControlName="email" required />
+                        <mat-error>error</mat-error>
 					</mat-form-field>
 				</div>
 			</div>
