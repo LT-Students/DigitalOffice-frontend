@@ -1,5 +1,5 @@
 import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormGroup, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, Validators } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { Time } from '@angular/common';
@@ -34,8 +34,8 @@ export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldContro
 
 	constructor(fb: FormBuilder, @Optional() @Self() public ngControl: NgControl) {
 		this.time = fb.group({
-			hours: '',
-			minutes: '',
+			hours: ['', [Validators.pattern('^[0-9]*$')]],
+			minutes: ['', [Validators.min(0), Validators.max(59), Validators.pattern('^[0-9]*$')]],
 		});
 		if (this.ngControl != null) {
 			this.ngControl.valueAccessor = this;
