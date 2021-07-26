@@ -78,10 +78,10 @@
 					</td>
 					<td>
 						<ng-container *ngIf="userInfo?.isActive; else archived">
-							<p class="table__active text_color_white small_text">Активен</p>
+							<p class="table__status table__status__active text_color_white small_text">Активен</p>
 						</ng-container>
 						<ng-template #archived>
-							<p class="table__archived text_color_gray1 small_text">В архиве</p>
+							<p class="table__status table__status__archived text_color_gray1 small_text">В архиве</p>
 						</ng-template>
 					</td>
 				</tr>

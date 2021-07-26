@@ -41,24 +41,21 @@
 		}
 	}
 
-	&__active {
+	&__status {
 		width: 67px;
 		height: 24px;
 
 		text-align: center;
 
-		background-color: #00e676;
 		border-radius: 10px;
-	}
 
-	&__archived {
-		width: 67px;
-		height: 24px;
+		&__active {
+			background-color: #00e676;
+		}
 
-		text-align: center;
-
-		background-color: #f5f5f5;
-		border-radius: 10px;
+		&__archived {
+			background-color: #f5f5f5;
+		}
 	}
 
 	&__image {
