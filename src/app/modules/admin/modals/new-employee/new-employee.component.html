@@ -10,12 +10,12 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Имя</mat-label>
 					<input id="firstName" matInput placeholder="Введите имя" formControlName="firstName" required />
-					<mat-error>Имя обязательно!</mat-error>
+					<mat-error *ngIf="userForm.get('firstName').hasError('required')">Имя обязательно!</mat-error>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Фамилия</mat-label>
 					<input id="lastName" matInput placeholder="Введите фамилию" formControlName="lastName" required />
-					<mat-error>Фамилия обязательна!</mat-error>
+					<mat-error *ngIf="userForm.get('lastName').hasError('required')">Фамилия обязательна!</mat-error>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Отчество</mat-label>
@@ -104,7 +104,8 @@
 						</mat-icon></mat-label
 					>
 					<input id="email" matInput placeholder="Введите E-mail" formControlName="email" required />
-					<mat-error>error</mat-error>
+					<mat-error *ngIf="userForm.get('email').hasError('required')">Электронная почта обязательна!</mat-error>
+					<mat-error *ngIf="userForm.get('email').hasError('email')">Неправильный формат почты!</mat-error>
 				</mat-form-field>
 			</div>
 		</div>
