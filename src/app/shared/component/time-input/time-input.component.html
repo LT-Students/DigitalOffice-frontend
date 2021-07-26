@@ -1,23 +1,23 @@
 <div class="time-input" [formGroup]="time">
-    <input
-        #hours
-        matInput
-        class="time-input__input time-input__input_align_right"
-        formControlName="hours"
-        type="number"
-        placeholder="02"
-        (ngModelChange)='checkTimeConstraints($event, TimeType.HOURS)'
-        (keyup)="autoFocusNext($event, minutes)"
-    >
-    <span class="time-input__colon">:</span>
-    <input
-        #minutes
-        matInput
-        class="time-input__input"
-        formControlName="minutes"
-        type="number"
-        placeholder="00"
-        (ngModelChange)='checkTimeConstraints($event, TimeType.MINUTES)'
-        (keyup.backspace)="autoFocusPrev($event, hours)"
-    >
+	<input
+		#hours
+		matInput
+		class="time-input__input time-input__input_align_right"
+		formControlName="hours"
+		type="number"
+		placeholder="02"
+		(ngModelChange)="checkTimeConstraints($event, TimeType.HOURS)"
+		(keyup)="autoFocusNext($event, minutes)"
+	/>
+	<span [ngClass]="time.pristine ? 'time-input__colon' : ''">:</span>
+	<input
+		#minutes
+		matInput
+		class="time-input__input"
+		formControlName="minutes"
+		type="number"
+		placeholder="00"
+		(ngModelChange)="checkTimeConstraints($event, TimeType.MINUTES)"
+		(keyup.backspace)="autoFocusPrev($event, hours)"
+	/>
 </div>
