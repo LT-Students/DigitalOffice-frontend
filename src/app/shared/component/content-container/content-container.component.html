@@ -1,12 +1,12 @@
 <mat-sidenav-container class='sidenav' [hasBackdrop]="false" (click)='onClick($event)'>
-	<mat-sidenav [autoFocus]='false' [opened]='navOpened' class='sidenav__nav'>
+	<mat-sidenav #menu [autoFocus]='false' [opened]='navOpened' class='sidenav__nav'>
 		<div class='sidenav__header'>
 			<h1 doText class='sidenav__title'>Цифровой офис</h1>
-			<span doText color='gray1' class='sidenav__close-button' (click)="closeNav()">
+			<button mat-icon-button doText color='gray1' class='sidenav__close-button' (click)="closeNav()">
 				<mat-icon>
 					close
 				</mat-icon>
-			</span>
+			</button>
 		</div>
 		<mat-action-list class='sidenav__group'>
 			<a (click)="closeNav()" doText color='gray1' mat-list-item routerLink='/user/projects-table'>
