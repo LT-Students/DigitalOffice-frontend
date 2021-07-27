@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { UserStatusModel } from '@app/models/user-status.model';
-import { DateType } from '@app/models/date.model';
+import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
@@ -17,7 +17,7 @@ import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
-import { getUserRequest } from '@app/models/user-get.model';
+import { getUserRequest } from '@app/types/get-user-request.interface';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
