@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
-import { Team } from '../../modules/admin/components/new-project/team-cards';
-import { WorkFlowMode } from '../../modules/employee/employee-page.component';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { WorkFlowMode } from '../../modules/employee/employee-page.component';
+import { Team } from '../../modules/admin/components/new-project/team-cards';
 
 export enum ModalType {
 	CREATE,
@@ -18,14 +18,14 @@ export enum AdminDashboardModalType {
 	NEW_EMPLOYEE,
 	NEW_DEPARTMENT,
 	NEW_POSITION,
-    NEW_ROLE,
+	NEW_ROLE,
 	NEW_PROJECT,
 	MANAGE_USERS,
 	MANAGE_ROLES,
 	NEW_OFFICE,
 	DEPARTMENT_LIST,
 	OFFICE_LIST,
-	POSITION_LIST
+	POSITION_LIST,
 }
 
 export interface UserSearchModalConfig {
@@ -34,16 +34,23 @@ export interface UserSearchModalConfig {
 	mode: WorkFlowMode;
 }
 
+export const enum ModalWidth {
+	XL = '720px',
+	L = '672px',
+	M = '550px',
+	S = '440px',
+}
+
 @Injectable({
 	providedIn: 'root',
 })
 export class ModalService {
 	constructor(private matDialog: MatDialog) {}
 
-	public openModal<C, T, R>(component: ComponentType<C>, modalContentConfig?: T, result?: R): MatDialogRef<C, R> {
+	public openModal<C, T, R>(component: ComponentType<C>, modalWidth?: ModalWidth, modalContentConfig?: T, result?: R): MatDialogRef<C, R> {
 		return this.matDialog.open<C, T, R>(component, {
 			data: modalContentConfig,
-			width: '720px',
+			width: modalWidth,
 		});
 	}
 }
