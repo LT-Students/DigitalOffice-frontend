@@ -7,26 +7,39 @@ import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { ProjectInfo } from '@data/api/user-service/models/project-info';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { IUserStatus, UserStatusModel } from '@app/models/user-status.model';
-import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
+import { IUserGender, PersonalInfoManager, UserGenderModel } from '@app/models/user-gender.model';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
+import { EducationInfo } from '@data/api/user-service/models/education-info';
 
-export class User implements OperationResultResponseUserResponse {
-	achievements: Array<UserAchievementInfo>;
-	avatar: ImageInfo;
-	certificates: Array<CertificateInfo>;
-	communications: Array<CommunicationInfo>;
+export class IUser {
+	user: UserInfo;
+	achievements?: UserAchievementInfo[];
+	avatar?: ImageInfo;
+	certificates: CertificateInfo[];
+	educations?: EducationInfo[];
+	communications?: CommunicationInfo[];
 	department: DepartmentInfo;
-	errors: Array<string>;
 	position: PositionInfo;
-	projects: Array<ProjectInfo>;
-	skills: Array<string>;
+	projects?: ProjectInfo[];
+	skills: string[];
+}
+
+export class User extends PersonalInfoManager implements IUser {
+	achievements: UserAchievementInfo[];
+	avatar: ImageInfo;
+	certificates: CertificateInfo[];
+	communications: CommunicationInfo[];
+	department: DepartmentInfo;
+	position: PositionInfo;
+	projects: ProjectInfo[];
+	skills: string[];
 	user: UserInfo;
 
 	constructor(data: OperationResultResponseUserResponse) {
+		super(data?.body.user);
 		this.achievements = this._setProperty(data?.body.achievements);
 		this.certificates = this._setProperty(data?.body.certificates);
 		this.communications = this._setProperty(data?.body.communications);
-		this.errors = this._setProperty(data?.errors);
 		this.projects = this._setProperty(data?.body.projects);
 		this.skills = this._setProperty(data?.body.skills);
 		this.user = this._setProperty(data?.body.user);
@@ -43,36 +56,8 @@ export class User implements OperationResultResponseUserResponse {
 		return new Date(this.user.startWorkingAt);
 	}
 
-	public get dateOfBirth(): Date {
-		return new Date(this.user.dateOfBirth);
-	}
-
 	public get isAdmin(): boolean {
 		return this.user?.isAdmin;
-	}
-
-	public get firstName(): string {
-		return this.user?.firstName;
-	}
-
-	public set firstName(firstName: string) {
-		this.user.firstName = firstName;
-	}
-
-	public get lastName(): string {
-		return this.user?.lastName;
-	}
-
-	public set lastName(lastName: string) {
-		this.user.lastName = lastName;
-	}
-
-	public get middleName(): string {
-		return this.user.middleName;
-	}
-
-	public set middleName(middleName: string) {
-		this.user.middleName = middleName;
 	}
 
 	public get statusEmoji(): IUserStatus {
@@ -85,10 +70,6 @@ export class User implements OperationResultResponseUserResponse {
 
 	public get gender(): IUserGender {
 		return UserGenderModel.getGenderInfoByGenderType(this.user.gender);
-	}
-
-	public getFioFull() {
-		return [this.lastName, this.firstName, this.middleName].filter(Boolean).join(' ');
 	}
 
 	private _setProperty<T>(property: T) {

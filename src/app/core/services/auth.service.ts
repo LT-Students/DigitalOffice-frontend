@@ -13,6 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 import { LocalStorageService } from './local-storage.service';
 import { OperationResultResponseCredentialsResponse } from '@data/api/user-service/models/operation-result-response-credentials-response';
+import { User } from '@app/models/user.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -26,7 +27,7 @@ export class AuthService {
 		private _router: Router
 	) {}
 
-	public login(authenticationRequest: AuthenticationRequest): Observable<OperationResultResponseUserResponse> {
+	public login(authenticationRequest: AuthenticationRequest): Observable<User> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
 			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
 			switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId))

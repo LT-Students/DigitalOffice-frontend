@@ -17,7 +17,7 @@ import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
-import { UserGet } from '@app/models/user-get.model';
+import { getUserRequest } from '@app/models/user-get.model';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -123,7 +123,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _getUser(): void {
-		const params: UserGet = {
+		const params: getUserRequest = {
 			userId: this.pageId,
 			includedepartment: true,
 			includeposition: true,
@@ -140,7 +140,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _patchEditUser(): void {
-		const editRequest = Object.keys(this.employeeInfoForm.controls)
+		const editRequest: {path: string, value: any }[] = Object.keys(this.employeeInfoForm.controls)
 			.filter((key) => this.employeeInfoForm.get(key).dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key).value }));
 		this._userService.editUser(this.user.id, editRequest).subscribe(
