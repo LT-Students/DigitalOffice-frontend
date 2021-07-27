@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { UserService } from '@app/services/user.service';
 import { AuthService } from '@app/services/auth.service';
@@ -13,6 +13,7 @@ import { User } from '@app/models/user.model';
 export class ContentContainerComponent implements OnInit {
 	user: User;
 	public navOpened: boolean;
+	@ViewChild('menu', { read: ElementRef }) menu: ElementRef;
 
 	constructor(private _userService: UserService, private _authService: AuthService, private _router: Router) {
 		this.navOpened = false;
@@ -34,7 +35,7 @@ export class ContentContainerComponent implements OnInit {
 	}
 
 	onMenuClick(event: MouseEvent) {
-		event.stopPropagation()
+		event.stopPropagation();
 		this.navOpened = true;
 	}
 
@@ -42,10 +43,11 @@ export class ContentContainerComponent implements OnInit {
 		this.navOpened = false;
 	}
 
-	onClick(event: PointerEvent) {
+	onClick(event: MouseEvent) {
 		const target = event.target as Element;
-		if (this.navOpened === true && target.closest('.sidenav__nav') === null) {
-			this.closeNav()
+
+		if (!this.menu.nativeElement.contains(target)) {
+			this.navOpened = false;
 		}
 	}
 }

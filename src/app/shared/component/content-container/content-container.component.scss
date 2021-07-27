@@ -36,20 +36,20 @@
 
 		display: flex;
 		justify-content: space-between;
+		align-items: baseline;
 	}
 
 	&__title {
+		display: flex;
+		align-items: center;
+
 		font-size: 18px;
 		line-height: 150%;
 	}
 
 	&__close-button {
 		display: flex;
-		align-items: center;
-
-		&:hover {
-			cursor: pointer;
-		}
+		justify-content: center;
 	}
 
 	&__group {

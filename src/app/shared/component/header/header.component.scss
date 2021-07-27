@@ -6,6 +6,11 @@
 	padding: 0 16px;
 
 	background-color: $light_1;
+
+	&__menu-button {
+		display: flex;
+		align-items: center;
+	}
 }
 
 .theme-switch {
