@@ -8,6 +8,7 @@
 			[formControl]="control"
 			[matDatepicker]="picker"
 			[placeholder]="placeholder"
+            [ngStyle]="{ display: 'none' }"
 		/>
 		<div doText style="padding: 0 15px;">{{ control.value | date: dateFormat }}</div>
 		<mat-datepicker-toggle matSuffix [for]="picker">
