@@ -9,16 +9,16 @@
 			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
 		</mat-form-field>
 
-		<a doText color="accent_color" (click)="picker.open()"
+		<a doText color="accent_color_bright" (click)="picker.open()"
 			>{{ startDate | date: 'd MMMM' }} - {{ endDate | date: 'd MMMM' }} <mat-icon>expand_more</mat-icon></a
 		>
 	</h3>
 	<form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
-		<div formGroupName="time" class="add-hours__row">
+		<div class="add-hours__row">
 			<mat-form-field class="add-hours__time" appearance="fill">
-				<input matInput formControlName="hours" type="text" maxlength="3" />
+				<input matInput formControlName="time" type="text" maxlength="3" />
 				<mat-icon matSuffix aria-label="time">schedule</mat-icon>
-				<mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>
+<!--				<mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>-->
 			</mat-form-field>
 			<mat-form-field appearance="fill">
 				<mat-label>Куда</mat-label>
@@ -33,8 +33,8 @@
 		<div class="add-hours__row" *ngIf="chosenCategory.name === 'Проект'">
 			<mat-form-field appearance="fill">
 				<mat-label>{{ chosenCategory.name }}</mat-label>
-				<mat-select id="project" formControlName="project" [value]="options[0]">
-					<mat-option *ngFor="let option of options" [value]="option.id">
+				<mat-select id="project" formControlName="project" [value]="chosenCategory.options[0]">
+					<mat-option *ngFor="let option of chosenCategory.options" [value]="option.id">
 						{{ option.name }}
 					</mat-option>
 				</mat-select>

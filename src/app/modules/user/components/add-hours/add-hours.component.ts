@@ -11,6 +11,7 @@ import { Task } from '@data/models/task';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { DayOfWeek } from '@data/models/day-of-week';
 import { DateService } from '@app/services/date.service';
+import { DateFilterFn } from '@angular/material/datepicker';
 import { timeValidator } from './add-hours.validators';
 
 @Component({
@@ -61,24 +62,21 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.addHoursForm = this.fb.group({
-			time: this.fb.group({
-				hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
-				minutes: ['', [Validators.required, Validators.max(59)]],
-			}),
+			time: [24, [Validators.required]],
+			// time: this.fb.group({
+			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
+			// 	minutes: ['', [Validators.required, Validators.max(59)]],
+			// }),
 			project: ['', Validators.required],
 			tag: ['', Validators.required],
 			description: [''],
 		});
 
-		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
-			this.setTimePeriod = timePeriod;
-			this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
-			this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
-		});
-	}
-
-	get options() {
-		return this.chosenCategory.options;
+		// this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
+		// 	this.setTimePeriod = timePeriod;
+		// 	this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
+		// 	this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
+		// });
 	}
 
 	private getHours(): number {
@@ -88,12 +86,12 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	public onSubmit(): void {
 		const projectId = this.addHoursForm.get('project').value;
-		console.log(this.addHoursForm);
+		console.log(this.addHoursForm.value);
 		const task: Partial<Task> = {
-			title: this.addHoursForm.get('task').value,
+			title: this.addHoursForm.get('tag').value,
 			description: this.addHoursForm.get('description').value,
 			createdAt: new Date(),
-			minutes: Number(this.addHoursForm.get('time.minutes').value) + Number(this.addHoursForm.get('time.hours').value) * 60,
+			minutes: Number(this.addHoursForm.get('time').value),
 		};
 		this.projectStore.addTaskToProject(task, projectId);
 		this.addHoursForm.reset();
@@ -114,7 +112,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 		return 'Введите корретный период времени';
 	}
 
-	public disableWeekends = (d: Date | null): boolean => {
+	public disableWeekends: DateFilterFn<unknown> = (d: Date | null): boolean => {
 		const day = (d || new Date()).getDay();
 		return day !== 0 && day !== 6;
 	};
@@ -130,7 +128,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	public onDateInput(date: Date | null, isStartDate: boolean) {
+	public onDateInput(date: Date | null, isStartDate: boolean): void {
 		if (date) {
 			if (isStartDate) {
 				this.attendanceService.onDatePeriodChange({
@@ -139,11 +137,13 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 				});
 				this.daysOfWeek = this.dateService.getWeek(date);
 				this.tempStartDate = date;
+				this.startDate = date;
 			} else {
 				this.attendanceService.onDatePeriodChange({
 					startDate: this.tempStartDate,
 					endDate: date,
 				});
+				this.endDate = date;
 			}
 		}
 	}
