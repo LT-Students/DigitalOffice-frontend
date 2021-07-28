@@ -23,7 +23,14 @@
 		width: 15%;
 	}
 
-	&__header {
-		margin-bottom: 22px;
+	&__heading {
+		margin-bottom: 25px;
+	}
+
+	&__date-picker {
+		visibility: hidden;
+
+		width: 1px;
+		height: 1px;
 	}
 }

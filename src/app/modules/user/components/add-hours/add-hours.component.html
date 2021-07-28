@@ -1,16 +1,18 @@
 <mat-card class="add-hours card_grid">
-	<div class="add-hours__header">
-		<h3 doText underlined underlinedSize="sm">
-			Внести часы за <a doText color="accent_color" (click)="picker.open()">8 - 14 марта <mat-icon>expand_more</mat-icon></a>
-		</h3>
-		<mat-form-field appearance="none">
+	<h3 class="add-hours__heading" doText underlined underlinedSize="sm">
+		Внести часы за
+		<mat-form-field class="add-hours__date-picker" appearance="none">
 			<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
-				<input (dateChange)="onDateInput($event.value, true)" [value]="startDate" matStartDate />
-				<input (dateChange)="onDateInput($event.value, false)" [value]="endDate" matEndDate />
+				<input matStartDate (dateChange)="onDateInput($event.value, true)" [value]="startDate" />
+				<input matEndDate (dateChange)="onDateInput($event.value, false)" [value]="endDate" />
 			</mat-date-range-input>
 			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
 		</mat-form-field>
-	</div>
+
+		<a doText color="accent_color" (click)="picker.open()"
+			>{{ startDate | date: 'd MMMM' }} - {{ endDate | date: 'd MMMM' }} <mat-icon>expand_more</mat-icon></a
+		>
+	</h3>
 	<form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 		<div formGroupName="time" class="add-hours__row">
 			<mat-form-field class="add-hours__time" appearance="fill">
