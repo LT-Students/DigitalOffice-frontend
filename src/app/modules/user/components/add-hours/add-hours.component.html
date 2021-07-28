@@ -1,23 +1,15 @@
 <mat-card class="add-hours card_grid">
 	<div class="add-hours__header">
 		<h3 doText underlined underlinedSize="sm">
-			Внести часы за <a doText color="accent_color" (click)='picker.open()'>8 - 14 марта <mat-icon>expand_more</mat-icon></a>
+			Внести часы за <a doText color="accent_color" (click)="picker.open()">8 - 14 марта <mat-icon>expand_more</mat-icon></a>
 		</h3>
-        <mat-form-field appearance="none">
-            <mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
-                <input
-                    (dateChange)="onDateInput($event.value, true)"
-                    [value]="startDate"
-                    matStartDate
-                />
-                <input
-                    (dateChange)="onDateInput($event.value, false)"
-                    [value]="endDate"
-                    matEndDate
-                />
-            </mat-date-range-input>
-            <mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
-        </mat-form-field>
+		<mat-form-field appearance="none">
+			<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
+				<input (dateChange)="onDateInput($event.value, true)" [value]="startDate" matStartDate />
+				<input (dateChange)="onDateInput($event.value, false)" [value]="endDate" matEndDate />
+			</mat-date-range-input>
+			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
+		</mat-form-field>
 	</div>
 	<form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 		<div formGroupName="time" class="add-hours__row">
@@ -28,7 +20,7 @@
 			</mat-form-field>
 			<mat-form-field appearance="fill">
 				<mat-label>Куда</mat-label>
-				<mat-select>
+				<mat-select [(value)]="chosenCategory">
 					<mat-option *ngFor="let category of categories" [value]="category">
 						{{ category.name }}
 					</mat-option>
@@ -47,9 +39,9 @@
 			</mat-form-field>
 			<mat-form-field appearance="fill">
 				<mat-label>Тег</mat-label>
-				<mat-select id="tag" formControlName="tag" [value]="options[0]">
-					<mat-option *ngFor="let option of options" [value]="option.id">
-						{{ option.name }}
+				<mat-select id="tag" formControlName="tag">
+					<mat-option *ngFor="let tag of tags" [value]="tag">
+						{{ tag }}
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
