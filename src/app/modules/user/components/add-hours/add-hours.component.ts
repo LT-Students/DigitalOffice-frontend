@@ -4,15 +4,14 @@ import { Time } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
-
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project } from '@data/models/project';
 import { Task } from '@data/models/task';
-import { timeValidator } from './add-hours.validators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { DayOfWeek } from '@data/models/day-of-week';
+import { DateService } from '@app/services/date.service';
+import { timeValidator } from './add-hours.validators';
 
 @Component({
 	selector: 'do-add-hours',
@@ -27,25 +26,23 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	public addHoursForm: FormGroup;
 	public setTimePeriod: Time;
 
+	public startDate: Date | null;
+	public endDate: Date | null;
+	public daysOfWeek: DayOfWeek[];
+	private tempStartDate: Date;
+
 	public categories;
 	public chosenCategory;
-
-	public listOfIcons = [
-		{ name: 'more', url: 'assets/svg/more.svg' },
-		{ name: 'hint', url: 'assets/svg/hint.svg' },
-		{ name: 'attach-file', url: 'assets/svg/attach-file.svg' },
-	];
 
 	constructor(
 		private fb: FormBuilder,
 		private attendanceService: AttendanceService,
 		private projectStore: ProjectStore,
-		iconRegistry: MatIconRegistry,
-		sanitizer: DomSanitizer
+		private dateService: DateService
 	) {
-		this.listOfIcons.forEach((icon) => {
-			iconRegistry.addSvgIcon(icon.name, sanitizer.bypassSecurityTrustResourceUrl(icon.url));
-		});
+		this.startDate = this.attendanceService.datePeriod.startDate;
+		this.endDate = this.attendanceService.datePeriod.endDate;
+		this.daysOfWeek = this.dateService.getWeek(this.endDate);
 	}
 
 	ngOnInit() {
@@ -147,6 +144,40 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			return 'Введите корректные минуты';
 		}
 		return 'Введите корретный период времени';
+	}
+
+	public disableWeekends = (d: Date | null): boolean => {
+		const day = (d || new Date()).getDay();
+		return day !== 0 && day !== 6;
+	};
+
+	public onClose(): void {
+		const datePeriod = this.attendanceService.datePeriod;
+		if (!datePeriod.endDate) {
+			const oneDayPeriod = {
+				startDate: datePeriod.startDate,
+				endDate: datePeriod.startDate,
+			};
+			this.attendanceService.onDatePeriodChange(oneDayPeriod);
+		}
+	}
+
+	public onDateInput(date: Date | null, isStartDate: boolean) {
+		if (date) {
+			if (isStartDate) {
+				this.attendanceService.onDatePeriodChange({
+					startDate: date,
+					endDate: null,
+				});
+				this.daysOfWeek = this.dateService.getWeek(date);
+				this.tempStartDate = date;
+			} else {
+				this.attendanceService.onDatePeriodChange({
+					startDate: this.tempStartDate,
+					endDate: date,
+				});
+			}
+		}
 	}
 
 	ngOnDestroy() {
