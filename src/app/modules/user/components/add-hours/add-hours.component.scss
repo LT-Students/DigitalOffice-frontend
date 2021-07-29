@@ -28,6 +28,14 @@
 	}
 
 	&__date-picker {
+		display: inline-flex;
+
+		align-items: center;
+
+		cursor: pointer;
+	}
+
+	&__hidden-picker {
 		visibility: hidden;
 
 		width: 1px;
