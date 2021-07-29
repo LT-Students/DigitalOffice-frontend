@@ -104,7 +104,7 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	private _getPageUsers(): void {
-		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
+		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
 			this.totalCount = data.totalCount;
 			this.userInfo = data.body.slice();
 			this.sortedUserInfo = data.body.slice();

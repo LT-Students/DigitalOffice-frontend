@@ -48,7 +48,7 @@ export class DepartmentCardComponent implements OnInit {
 	onPageChange(event: PageEvent): void {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
-		this._userService.getUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
+		this._userService.findUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
 			this.sortedUsersInfo = data.body.slice();
 		});
 	}

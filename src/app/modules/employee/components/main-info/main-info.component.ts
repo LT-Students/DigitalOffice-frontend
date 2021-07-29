@@ -17,7 +17,7 @@ import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
-import { getUserRequest } from '@app/types/get-user-request.interface';
+import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -123,7 +123,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _getUser(): void {
-		const params: getUserRequest = {
+		const params: IGetUserRequest = {
 			userId: this.pageId,
 			includedepartment: true,
 			includeposition: true,
