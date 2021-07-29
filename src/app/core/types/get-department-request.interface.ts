@@ -1,4 +1,4 @@
-export interface IGetDepartmentRequest{
+export interface IGetDepartmentRequest {
 	/**
 	 * Department global unique identifier.
 	 */
