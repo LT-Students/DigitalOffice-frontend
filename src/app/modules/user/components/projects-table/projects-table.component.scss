@@ -14,22 +14,6 @@
 		height: 32px;
 
 		background-color: $light_1;
-
-		::ng-deep .mat-select-placeholder {
-			color: $gray;
-		}
-
-		::ng-deep .mat-select-arrow {
-			margin-right: 6px;
-
-			opacity: 0.3;
-		}
-
-		::ng-deep .mat-select-value {
-			padding: 0 0 0 8px;
-
-			color: $gray;
-		}
 	}
 }
 

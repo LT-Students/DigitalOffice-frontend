@@ -1,4 +1,4 @@
-import { Input, Component, OnInit } from '@angular/core';
+import { Input, Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '@app/services/auth.service';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 
@@ -12,12 +12,19 @@ export class HeaderComponent implements OnInit {
 	@Input() userId: string;
 	@Input() avatar: ImageInfo;
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
+	@Output() public menuClick: EventEmitter<MouseEvent>;
 
-	constructor(private authService: AuthService) {}
+	constructor(private authService: AuthService) {
+		this.menuClick = new EventEmitter();
+	}
 
-	ngOnInit() {}
+	ngOnInit() { }
 
 	onLogoutClick() {
 		this.authService.logout();
+	}
+
+	onMenuClick(event: MouseEvent) {
+		this.menuClick.emit(event);
 	}
 }
