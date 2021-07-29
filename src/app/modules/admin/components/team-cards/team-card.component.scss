@@ -22,13 +22,13 @@
 		}
 	}
 
-	::ng-deep .mat-expansion-panel-content {
+	.mat-expansion-panel-content {
 		overflow: auto;
 
 		max-height: 333px;
 	}
 
-	::ng-deep .mat-content {
+	.mat-content {
 		overflow: visible;
 	}
 

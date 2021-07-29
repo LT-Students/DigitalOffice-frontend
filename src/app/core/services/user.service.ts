@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
-import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
@@ -16,8 +15,8 @@ import {
 } from '@data/api/user-service/models';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Moment } from 'moment';
-import { UserGet } from '@app/models/user-get.model';
-import { User } from '@app/models/user.model';
+import { getUserRequest } from '@app/types/get-user-request.interface';
+import { User } from '@app/models/user/user.model';
 
 @Injectable()
 export class UserService {
@@ -27,12 +26,12 @@ export class UserService {
 		this.selectedUser = new BehaviorSubject<User>(null);
 	}
 
-	public getUser(params: UserGet): Observable<User> {
+	public getUser(params: getUserRequest): Observable<User> {
 		return this.userApiService.getUser(params).pipe(switchMap((userResponse: OperationResultResponseUserResponse) => of(new User(userResponse))));
 	}
 
 	public getUserSetCredentials(userId: string): Observable<User> {
-		const params: UserGet = {
+		const params: getUserRequest = {
 			userId: userId,
 			includedepartment: true,
 			includeposition: true,
@@ -83,9 +82,9 @@ export class UserService {
 		this.selectedUser.next(user);
 	}
 
-	public editUser(userId: string, changes: any): Observable<OperationResultResponse> {
+	public editUser(userId: string, changes: {path: string, value: any }[]): Observable<OperationResultResponse> {
 		const editRequest: Array<PatchUserDocument> = [];
-		changes.forEach((item) => {
+		changes.forEach((item: {path: string, value: any }) => {
 			switch (item.path) {
 				case 'firstName':
 					editRequest.push({

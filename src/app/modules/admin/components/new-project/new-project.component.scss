@@ -55,6 +55,7 @@
 
 	&__name,
 	&__department,
+	&__customer,
 	&__description,
 	&__addition,
 	&__date {
@@ -96,9 +97,9 @@ textarea#additionInfo {
 	height: 150px;
 }
 
-::ng-deep.mat-tab-link,
-::ng-deep.mat-tab-label,
-::ng-deep.mat-tab-label-active {
+.mat-tab-link,
+.mat-tab-label,
+.mat-tab-label-active {
 	padding: 0 40px !important;
 
 	min-width: 0 !important;

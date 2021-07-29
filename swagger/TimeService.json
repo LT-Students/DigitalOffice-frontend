@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.5",
+    "version": "1.1.7",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/leavetime/addLeaveTime": {
+    "/leavetime/add": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -27,7 +27,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/LeaveTimeRequest"
+                "$ref": "#/components/schemas/CreateLeaveTimeRequest"
               }
             }
           },
@@ -40,23 +40,148 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "LeaveTime id",
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request. * Invalid data."
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. If is not admin and add not his leave time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. * There is not time with this id."
+            "description": "Not Found. * There is not time with this id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/worktime/addWorkTime": {
+    "/leavetime/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "userid",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "starttime",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
+          },
+          "required": false
+        },
+        {
+          "name": "endtime",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
+          },
+          "required": false
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "LeaveTime"
+        ],
+        "operationId": "findLeaveTimes",
+        "description": "Find leave times by filter.",
+        "responses": {
+          "200": {
+            "description": "Successfully find leave times.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseLeaveTimeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. If is not admin and find not his leave time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. * There is not time with this id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/worktime/add": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -72,7 +197,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WorkTimeRequest"
+                "$ref": "#/components/schemas/CreateWorkTimeRequest"
               }
             }
           },
@@ -85,34 +210,178 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "WorkTime id",
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request. * Invalid data."
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. If is not admin and add not his work time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. * There is not time with this id."
+            "description": "Not Found. * There is not time with this id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/worktime/editWorkTime": {
+    "/worktime/find": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "userid",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "projectid",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "starttime",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
+          },
+          "required": false
+        },
+        {
+          "name": "endtime",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
+          },
+          "required": false
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
         }
       ],
-      "post": {
+      "get": {
+        "tags": [
+          "WorkTime"
+        ],
+        "operationId": "findWorkTimes",
+        "description": "Find work times by filter.",
+        "responses": {
+          "200": {
+            "description": "Successfully find work times.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkTimeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. If is not admin and find not his work time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found. * There is not time with this id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/worktime/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "workTimeId",
+          "in": "query",
+          "description": "Work time global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
         "tags": [
           "WorkTime"
         ],
         "operationId": "editWorkTime",
-        "description": "Edit the worktime by Id.",
+        "description": "Editing specific work time by Id.\n*  __User has edit only himself if his is not admin. \n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -121,18 +390,48 @@
               }
             }
           },
-          "description": "Needed for edit worktime.",
           "required": true
         },
         "responses": {
           "200": {
-            "description": "Successfull. * The time is edited."
+            "description": "Project respose.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Bad request. * Invalid data."
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. If is not admin or not his WorkTime.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found. * There is not time with this id."
+            "description": "Not Found. * There is not time with this id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -140,29 +439,32 @@
   },
   "components": {
     "schemas": {
-      "LeaveTimeRequest": {
+      "CreateLeaveTimeRequest": {
         "type": "object",
         "required": [
-          "WorkerUserId",
+          "UserId",
           "StartLeave",
-          "EndLeave",
+          "EndTime",
           "LeaveType"
         ],
         "properties": {
-          "WorkerUserId": {
-            "description": "Users working on the current project.",
+          "UserId": {
+            "description": "User working on the current project.",
             "type": "string",
-            "format": "UUID",
+            "format": "uuid",
             "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
           },
-          "StartLeave": {
+          "Minutes": {
+            "type": "integer"
+          },
+          "StartTime": {
             "description": "Start time leave from task.",
             "type": "string",
             "format": "date-time",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2020-07-18T08:23"
           },
-          "EndLeave": {
+          "EndTime": {
             "description": "End time leave from task.",
             "type": "string",
             "format": "date-time",
@@ -171,8 +473,14 @@
           },
           "LeaveType": {
             "description": "The reason for which lost time.",
-            "type": "integer",
-            "example": 1
+            "type": "string",
+            "enum": [
+              "Vacation",
+              "SickLeave",
+              "Training",
+              "Idle"
+            ],
+            "example": "Vacation"
           },
           "Comment": {
             "description": "Description for alloted time.",
@@ -181,26 +489,112 @@
         }
       },
       "EditWorkTimeRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/ProjectId",
+            "value": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Title",
+            "value": {
+              "type": "string",
+              "description": "new title"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Description",
+            "value": {
+              "type": "string",
+              "description": "new description"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/StartTime",
+            "value": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "YYYY-MM-DDTHH:mm",
+              "example": "2020-07-18T08:23",
+              "description": "new start time"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/EndTime",
+            "value": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "YYYY-MM-DDTHH:mm",
+              "example": "2020-07-18T08:23",
+              "description": "new end time"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchWorkTimeDocument"
+        }
+      },
+      "PatchWorkTimeDocument": {
         "type": "object",
         "required": [
-          "Id",
-          "WorkerUserId",
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "add",
+              "replace",
+              "delete"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Minutes",
+              "/ProjectId",
+              "/Title",
+              "/Description",
+              "/StartTime",
+              "/EndTime"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "CreateWorkTimeRequest": {
+        "type": "object",
+        "required": [
+          "UserId",
+          "Minutes",
           "StartTime",
           "EndTime",
           "ProjectId"
         ],
         "properties": {
-          "Id": {
-            "description": "WorkTime id",
+          "UserId": {
+            "description": "User working on the current project.",
             "type": "string",
-            "format": "UUID",
-            "example": "06d525f7-27d2-4549-be07-ed63d96d287f"
-          },
-          "WorkerUserId": {
-            "description": "Users working on the current project.",
-            "type": "string",
-            "format": "UUID",
+            "format": "uuid",
             "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
+          },
+          "Minutes": {
+            "type": "integer"
           },
           "StartTime": {
             "description": "Start date task execution.",
@@ -232,21 +626,30 @@
           }
         }
       },
-      "WorkTimeRequest": {
+      "WorkTimeInfo": {
         "type": "object",
-        "required": [
-          "WorkerUserId",
-          "StartTime",
-          "EndTime",
-          "ProjectId",
-          "Title"
-        ],
         "properties": {
-          "WorkerUserId": {
-            "description": "Users working on the current project.",
+          "Id": {
+            "description": "The work time Id.",
             "type": "string",
-            "format": "UUID",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Project": {
+            "$ref": "#/components/schemas/ProjectInfo"
+          },
+          "UserId": {
+            "type": "string",
+            "format": "uuid",
             "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
+          },
+          "CreatedBy": {
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Minutes": {
+            "type": "integer"
           },
           "StartTime": {
             "description": "Start date task execution.",
@@ -262,21 +665,222 @@
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-06-18T08:23"
           },
+          "CreatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
+          },
           "Title": {
             "description": "Short description of the task",
             "type": "string"
-          },
-          "ProjectId": {
-            "description": "The specify project's Id.",
-            "type": "string",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
           "Description": {
             "description": "Description for alloted time.",
             "type": "string"
           }
         }
+      },
+      "LeaveTimeInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "The leave time Id.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "UserId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
+          },
+          "CreatedBy": {
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Minutes": {
+            "type": "integer"
+          },
+          "StartTime": {
+            "description": "Start date task execution.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
+          },
+          "EndTime": {
+            "description": "Task finish deadline.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
+          },
+          "CreatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
+          },
+          "LeaveType": {
+            "description": "The reason for which lost time.",
+            "type": "string",
+            "enum": [
+              "Vacation",
+              "SickLeave",
+              "Training",
+              "Idle"
+            ],
+            "example": "Vacation"
+          },
+          "Comment": {
+            "description": "Description for alloted time.",
+            "type": "string"
+          }
+        }
+      },
+      "ProjectInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Name": {
+            "description": "Project name.",
+            "type": "string",
+            "example": "Digital Office",
+            "nullable": false
+          },
+          "ShortName": {
+            "description": "Project short name.",
+            "type": "string",
+            "example": "DO",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/ProjectStatusType",
+            "nullable": false
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "ShortDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ProjectStatusType": {
+        "type": "string",
+        "description": "Project status.\nMay be empty, default value: 'Active'.\n,Enum numbers description\n* 0 - Active,\n* 1 - Failed,\n* 2 - Abandoned,\n* 3 - Rejected,\n* 4 - Closed,\n* 5 - Suspend",
+        "enum": [
+          "Active",
+          "Closed",
+          "Suspend"
+        ],
+        "nullable": false,
+        "example": "Suspend"
+      },
+      "FindResultResponseWorkTimeInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter work times."
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkTimeInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseLeaveTimeInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter leave times."
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LeaveTimeInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-06-18T08:23"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
       }
     },
     "parameters": {

@@ -17,15 +17,15 @@
 			</div>
 			<div class="section__content section__content_general">
 				<div class="project-info__name">
-					<label class="project-info__label" for="name">Название проекта<sup doText color="negative_accent">*</sup></label>
-					<mat-form-field>
-						<input matInput type="text" id="name" formControlName="name" />
+					<mat-form-field appearance="fill">
+						<mat-label>Название проекта</mat-label>
+						<input matInput type="text" id="name" formControlName="name" placeholder="Введите название проекта" required />
 					</mat-form-field>
 				</div>
 				<div class="project-info__department">
-					<label class="project-info__label" for="department">Департамент<sup doText color="negative_accent">*</sup></label>
-					<mat-form-field class="mat-form-field_default-select" appearance="none">
-						<mat-select id="department" formControlName="departmentId">
+					<mat-form-field appearance="fill">
+						<mat-label>Департамент</mat-label>
+						<mat-select id="department" formControlName="departmentId" placeholder="Выберите департамент" required>
 							<mat-option *ngFor="let department of departments" [value]="department.id">
 								{{ department.name }}
 							</mat-option>
@@ -33,9 +33,9 @@
 					</mat-form-field>
 				</div>
 				<div class="project-info__customer">
-					<label class="project-info__label" for="customer">Заказчик</label>
-					<mat-form-field>
-						<input matInput type="text" id="customer" />
+					<mat-form-field appearance="fill">
+						<mat-label>Заказчик</mat-label>
+						<input matInput type="text" id="customer" placeholder="Введите данные заказчика" />
 					</mat-form-field>
 				</div>
 				<!--<div class='project-info__date'>
@@ -47,8 +47,8 @@
           ></do-datepicker>
         </div>-->
 				<div class="project-info__status">
-					<label class="project-info__label" for="status">Статус</label>
-					<mat-form-field class="mat-form-field_default-select" appearance="none">
+					<mat-form-field appearance="fill">
+						<mat-label>Статус</mat-label>
 						<mat-select id="status" formControlName="status">
 							<mat-option *ngFor="let status of statuses" [value]="status.type">
 								{{ status.name | titlecase }}
@@ -57,14 +57,9 @@
 					</mat-form-field>
 				</div>
 				<div class="project-info__description">
-					<label class="project-info__label" for="description">Описание</label>
-					<mat-form-field appearance="none">
-						<textarea
-							matInput
-							id="description"
-							formControlName="description"
-							placeholder="Краткое описание сути проекта на его публичной карточке"
-						></textarea>
+					<mat-form-field appearance="fill">
+						<mat-label>Описание</mat-label>
+						<textarea matInput id="description" formControlName="description" placeholder="Кратко дайте описание проекту"></textarea>
 					</mat-form-field>
 				</div>
 			</div>

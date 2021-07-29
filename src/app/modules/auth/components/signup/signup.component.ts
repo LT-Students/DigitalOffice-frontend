@@ -6,8 +6,9 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
 import { UserService } from '@app/services/user.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
+import { User } from '@app/models/user/user.model';
 
 @Component({
 	selector: 'do-signup',
@@ -66,15 +67,12 @@ export class SignupComponent implements OnInit {
 						},
 					});
 					this.isWaiting = false;
-					return throwError(error);
+					return of(null);
 				})
-			).subscribe(
-				(user: OperationResultResponseUserResponse) => {
-					const nextUrl: string = (user.body.user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+			).subscribe((user: User) => {
+					const nextUrl: string = (user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+					console.log(user.getFioFull());
 					this._router.navigate([nextUrl]);
-				},
-				(error: string) => {
-					console.log('Getting user info failed.', error);
 				}
 			);
 	}
