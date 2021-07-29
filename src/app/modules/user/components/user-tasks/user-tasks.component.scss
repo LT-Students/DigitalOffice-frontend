@@ -1,0 +1,18 @@
+.wrapper {
+	&__header {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__records {
+		margin-bottom: 28px;
+	}
+
+	&__introduced {
+		margin-bottom: 24px;
+	}
+}
+
+.mat-card {
+	min-width: 850px;
+}

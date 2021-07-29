@@ -1,10 +1,21 @@
-<mat-expansion-panel (opened)="cardOpenState = true" (closed)="cardOpenState = false">
-  <mat-expansion-panel-header>
-    <mat-panel-title>{{ project.name }}; total tasks: {{ project.tasks?.length }}</mat-panel-title>
-    <mat-panel-description>total hours</mat-panel-description>
+<mat-expansion-panel (opened)="cardOpenState = true" (closed)="cardOpenState = false" class='panel'>
+  <mat-expansion-panel-header class='panel__header'>
+    <mat-panel-title>
+      <div>
+        <p class='panel_bold'>{{project.name}}</p>
+        <p doText color='gray1'>{{project.tasks?.length}}
+          <span *ngIf="project.tasks?.length === 1"> запись</span>
+          <span *ngIf="project.tasks?.length > 1 && project.tasks?.length < 5"> записи</span>
+          <span *ngIf="project.tasks?.length > 5"> записей</span>
+        </p>
+      </div>
+    </mat-panel-title>
+    <mat-panel-description doText color='accent_color_bright'>80:00</mat-panel-description>
   </mat-expansion-panel-header>
 
-  <ng-template matExpansionPanelContent>Здесь будет описание задачи</ng-template>
+  <ng-template matExpansionPanelContent>
+    <div *ngFor="let task of project.tasks">
+      <do-task [task]='task'></do-task>
+    </div>
+  </ng-template>
 </mat-expansion-panel>
-
-

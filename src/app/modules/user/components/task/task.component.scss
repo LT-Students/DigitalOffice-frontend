@@ -1,0 +1,64 @@
+.task {
+	margin-bottom: 10px;
+
+	display: flex;
+	justify-content: space-between;
+
+	font-size: 16px;
+	line-height: 32px;
+
+	border-bottom: 1px solid #f5f5f5;
+
+	&__title {
+		margin: 0 40px 0 0;
+
+		min-width: 168px;
+
+		font-weight: 700;
+		flex-basis: 14%;
+	}
+
+	&__time {
+		margin: 0 40px;
+
+		font-weight: 700;
+		flex-basis: 5%;
+	}
+
+	&__period {
+		margin: 0 40px;
+		flex-basis: 10%;
+	}
+
+	&__description {
+		margin: 0 40px;
+		flex-basis: 38%;
+	}
+
+	&__description-full {
+		height: fit-content;
+	}
+
+	&__description-partial {
+		overflow: hidden;
+
+		height: 65px;
+
+		text-overflow: ellipsis;
+	}
+
+	&__description-more-button {
+		padding: 0;
+
+		width: fit-content;
+
+		font-size: 16px;
+		line-height: 32px;
+	}
+}
+
+::ng-deep .mat-expansion-panel-body {
+	//Без ::ng-deep не работает...
+	margin-top: 16px;
+	padding-right: 7px;
+}

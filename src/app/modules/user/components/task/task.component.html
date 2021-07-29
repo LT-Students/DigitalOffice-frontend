@@ -1,0 +1,38 @@
+<div class='task'>
+    <div doText class='task__title'>
+        <p>{{task.title}}</p>
+    </div>
+    <div doText class='task__time'>{{task.minutes + ':' + '00'}}</div>
+    <div doText class='task__period'>26.06 - 27.07</div>
+    <div doText class='task__description'>
+        <p #description>
+            {{task.description}}</p>
+        <div *ngIf='descriptionIsHuge'>
+            <button *ngIf="!descriptionOpened" mat-menu-item class='task__description-more-button'
+                (click)="onShowDescriptionClick()">
+                <span doText color='gray1'>Показать полностью</span>
+                <mat-icon doText color='gray1'>keyboard_arrow_down</mat-icon>
+            </button>
+            <button *ngIf="descriptionOpened" doText color='gray1' mat-menu-item class='task__description-more-button'
+                (click)="onShowDescriptionClick()">
+                <span doText color='gray1'>Свернуть</span>
+                <mat-icon doText color='gray1'>keyboard_arrow_up</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div doText color='gray1' class='task__more-button'>
+        <button mat-icon-button [matMenuTriggerFor]='menu'>
+            <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #menu='matMenu'>
+            <button mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Редактировать</span>
+            </button>
+            <button mat-menu-item>
+                <mat-icon>delete</mat-icon>
+                <span>Удалить</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>

@@ -1,9 +1,25 @@
 @import 'base/variables';
 
 .project-wrap {
-  margin-top: 48px;
+	margin-top: 48px;
 
-  div {
-    margin-top: 16px;
-  }
+	div {
+		margin-top: 16px;
+	}
+}
+
+.panel {
+	margin-bottom: 12px;
+
+	border-radius: 8px;
+
+	&__header {
+		height: 74px;
+
+		background: #fff4ed;
+	}
+
+	&_bold {
+		font-weight: 700;
+	}
 }

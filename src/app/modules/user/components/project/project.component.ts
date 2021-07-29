@@ -17,7 +17,7 @@ export class ProjectComponent implements OnInit {
 		this.cardOpenState = false;
 	}
 
-	ngOnInit() {}
+	ngOnInit() { }
 
 	toggleInput() {
 		this.isEdited = !this.isEdited;
