@@ -9,10 +9,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
-import { Project } from '@data/models/project';
-import { Task } from '@data/models/task';
-import { timeValidator } from './add-hours.validators';
+import { Project, } from '@app/models/project/project.model';
+import { ITask, Task } from '@app/models/task.model';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { timeValidator } from './add-hours.validators';
 
 @Component({
 	selector: 'do-add-hours',
@@ -43,6 +43,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 		iconRegistry: MatIconRegistry,
 		sanitizer: DomSanitizer
 	) {
+		this.projects = [];
 		this.listOfIcons.forEach((icon) => {
 			iconRegistry.addSvgIcon(icon.name, sanitizer.bypassSecurityTrustResourceUrl(icon.url));
 		});
@@ -64,8 +65,6 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
 			this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
 		});
-
-		this.projects = this.projectStore.projects;
 
 		this.categories = [
 			{ name: 'Проект', options: this.projects },
@@ -124,7 +123,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	public onSubmit(): void {
 		const projectId = this.addHoursForm.get('project').value;
 		console.log(this.addHoursForm);
-		const task: Partial<Task> = {
+		const task: Partial<ITask> = {
 			title: this.addHoursForm.get('task').value,
 			description: this.addHoursForm.get('description').value,
 			createdAt: new Date(),

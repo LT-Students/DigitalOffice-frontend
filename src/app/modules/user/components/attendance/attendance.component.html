@@ -2,8 +2,12 @@
 <do-datedesc></do-datedesc>
 <div class="grid">
   <do-add-hours></do-add-hours>
-  <do-doughnut-chart></do-doughnut-chart>
+  <do-doughnut-chart [projectList]='projects$ | async'></do-doughnut-chart>
   <do-gradient-graphics [dailyHoursData]="dailyHoursData" [timePeriodSelected]="timePeriodSelected">
   </do-gradient-graphics>
 </div>
-<do-user-tasks class="tasks" [timePeriodSelected]="timePeriodSelected"></do-user-tasks>
+<do-user-tasks
+    class='tasks'
+    [timePeriodSelected]='timePeriodSelected'
+    [projects]='projects$ | async'
+></do-user-tasks>
