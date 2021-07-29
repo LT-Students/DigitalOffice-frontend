@@ -1,25 +1,24 @@
 <ng-container *ngIf="isEdit; else textBlock">
-  <label class="datepicker__label" doText color="gray1" [for]="controlName">
-    {{ label }}
-    <sup *ngIf='required' class="datepicker__required" doText color="negative_accent">*</sup></label>
-  <mat-form-field class="mat-form-field__form-control datepicker__form-field" appearance="fill">
-    <input matInput
-           [id]='controlName'
-           [required]='required'
-           [formControl]='control'
-           [matDatepicker]='picker'
-           [placeholder]='placeholder'
-           [ngStyle]="{'display': 'none'}"
-    />
-    <div doText style='padding: 0 15px;'>{{ control.value | date: dateFormat }}</div>
-    <mat-datepicker-toggle matSuffix [for]="picker">
-      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-    </mat-datepicker-toggle>
-    <mat-datepicker (yearSelected)="onYearSelected($event)" [startView]='startView' #picker></mat-datepicker>
-  </mat-form-field>
+	<mat-form-field class="mat-form-field__form-control datepicker__form-field" appearance="fill">
+		<mat-label>{{ label }}</mat-label>
+		<input
+			matInput
+			[id]="controlName"
+			[required]="required"
+			[formControl]="control"
+			[matDatepicker]="picker"
+			[placeholder]="placeholder"
+            [ngStyle]="{ display: 'none' }"
+		/>
+		<div doText style="padding: 0 15px;">{{ control.value | date: dateFormat }}</div>
+		<mat-datepicker-toggle matSuffix [for]="picker">
+			<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+		</mat-datepicker-toggle>
+		<mat-datepicker (yearSelected)="onYearSelected($event)" [startView]="startView" #picker></mat-datepicker>
+	</mat-form-field>
 </ng-container>
 
 <ng-template #textBlock>
-  <h3 class="small_text text-gray">{{ label }}</h3>
-  <div doText>{{ control.value | date: dateFormat }}</div>
+	<h3 class="small_text text-gray">{{ label }}</h3>
+	<div doText>{{ control.value | date: dateFormat }}</div>
 </ng-template>
