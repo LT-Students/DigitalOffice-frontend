@@ -44,4 +44,8 @@ export class Project implements ProjectInfo {
 	}
 
 	/* methods */
+	// TODO: for type checking ONLY
+	public getTasks(): any[] {
+		return [];
+	}
 }

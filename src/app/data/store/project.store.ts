@@ -75,7 +75,7 @@ export class ProjectStore {
     },
   ];
 
-  private readonly _projects = new BehaviorSubject<ProjectModel[]>(
+  private readonly _projects = new BehaviorSubject<any[]>(
     this.projectsData
   );
 

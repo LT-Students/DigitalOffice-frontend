@@ -20,6 +20,9 @@ export interface CertificateInfoExtended extends CertificateInfo {
 	isEditing?: boolean;
 }
 
+/**
+ * @deprecated don't use
+ */
 export class EducationModel {
 	public isEditing: boolean;
 

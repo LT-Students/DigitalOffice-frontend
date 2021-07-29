@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ElementRef, ViewChild } from '@angular/core';
 import { Time } from '@angular/common';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Chart } from 'chart.js';
-import { AttendanceService } from '../../../../core/services/attendance.service';
-import { ProjectStore } from '../../../../data/store/project.store';
-import { ProjectModel } from '@app/models/project/project.model';
+import { AttendanceService } from '@app/services/attendance.service';
+import { ProjectStore } from '@data/store/project.store';
+import { Project, ProjectModel } from '@app/models/project/project.model';
 
 @Component({
 	selector: 'do-doughnut-chart',
@@ -15,6 +15,8 @@ import { ProjectModel } from '@app/models/project/project.model';
 	styleUrls: ['./doughnut-chart.component.scss'],
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
+	/* TODO: inject data from parent component in this list */
+	@Input() projectList: Project[];
 	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -28,12 +30,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {}
 
 	ngOnInit() {
-		this.ctx = this.canvas.nativeElement.getContext('2d');
-
-		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
-			this.recommendedTime = time;
-		});
-
 		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
 			this.projects = projects;
 			if (this.chart) {
@@ -41,7 +37,18 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			}
 		});
 
+		this.ctx = this.canvas.nativeElement.getContext('2d');
+
+		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
+			this.recommendedTime = time;
+		});
+
 		this.buildChart();
+	}
+
+	ngOnDestroy() {
+		this.onDestroy$.next(null);
+		this.onDestroy$.complete();
 	}
 
 	get spentTime() {
@@ -116,10 +123,5 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
 	public abs(x: number): number {
 		return Math.abs(x);
-	}
-
-	ngOnDestroy() {
-		this.onDestroy$.next(null);
-		this.onDestroy$.complete();
 	}
 }

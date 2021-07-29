@@ -30,7 +30,7 @@
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
-      <ng-container *ngFor="let project of projects | taskFilter: searchText">
+      <ng-container *ngFor="let project of projects">
         <do-project [project]="project"></do-project>
       </ng-container>
 </mat-card>
