@@ -1,7 +1,7 @@
 import { EducationModel } from '@app/models/education.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user.service';
-import { Project } from '@data/models/project';
+import { ProjectModel } from '@app/models/project/project.model';
 import { EducationType, OperationResultResponseUserResponse, UserInfo } from '@data/api/user-service/models';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project.service';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
 import { ArchiveComponent } from './modals/archive/archive.component';
 import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
 import { activeProject, closedProject } from './mock';
@@ -27,7 +27,7 @@ export interface Modes {
 	certificates: WorkFlowMode;
 }
 
-export interface UserProject extends Project {
+export interface UserProject extends ProjectModel {
 	role: string;
 	startedAt: Date;
 	endedAt?: Date;

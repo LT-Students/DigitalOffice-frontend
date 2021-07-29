@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Project } from '@data/models/project';
+import { ProjectModel } from '@app/models/project/project.model';
 
 @Component({
 	selector: 'do-project',
@@ -7,7 +7,7 @@ import { Project } from '@data/models/project';
 	styleUrls: ['./project.component.scss'],
 })
 export class ProjectComponent implements OnInit {
-	@Input() project: Project;
+	@Input() project: ProjectModel;
 	isEdited = false;
 	hours = 0;
 	minutes = 0;

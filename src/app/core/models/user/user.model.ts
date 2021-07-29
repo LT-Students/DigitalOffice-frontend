@@ -6,10 +6,11 @@ import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { ProjectInfo } from '@data/api/user-service/models/project-info';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { IUserStatus, UserStatusModel } from '@app/models/user-status.model';
-import { IUserGender, PersonalInfoManager, UserGenderModel } from '@app/models/user-gender.model';
+import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
+import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 import { EducationInfo } from '@data/api/user-service/models/education-info';
+import { setProperty } from '@app/utils/utils';
 
 export class IUser {
 	user: UserInfo;
@@ -37,12 +38,12 @@ export class User extends PersonalInfoManager implements IUser {
 
 	constructor(data: OperationResultResponseUserResponse) {
 		super(data?.body.user);
-		this.achievements = this._setProperty(data?.body.achievements);
-		this.certificates = this._setProperty(data?.body.certificates);
-		this.communications = this._setProperty(data?.body.communications);
-		this.projects = this._setProperty(data?.body.projects);
-		this.skills = this._setProperty(data?.body.skills);
-		this.user = this._setProperty(data?.body.user);
+		this.achievements = setProperty(data?.body.achievements);
+		this.certificates = setProperty(data?.body.certificates);
+		this.communications = setProperty(data?.body.communications);
+		this.projects = setProperty(data?.body.projects);
+		this.skills = setProperty(data?.body.skills);
+		this.user = setProperty(data?.body.user);
 		// this.avatar = this._setProperty(data.avatar);
 		// this.department = this._setProperty(data.department);
 		// this.position = this._setProperty(data.position);
@@ -69,10 +70,6 @@ export class User extends PersonalInfoManager implements IUser {
 	}
 
 	public get gender(): IUserGender {
-		return UserGenderModel.getGenderInfoByGenderType(this.user.gender);
-	}
-
-	private _setProperty<T>(property: T) {
-		return property ? property : null;
+		return PersonalInfoManager.getGenderInfoByType(this.user.gender);
 	}
 }

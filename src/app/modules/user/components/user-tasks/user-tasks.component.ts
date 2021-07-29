@@ -6,7 +6,7 @@ import { DatePeriod } from '@data/models/date-period';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { DateService } from '@app/services/date.service';
-import { Project } from '@data/models/project';
+import { ProjectModel } from '@app/models/project/project.model';
 
 @Component({
 	selector: 'do-user-tasks',
@@ -18,7 +18,7 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-	public projects: Project[];
+	public projects: ProjectModel[];
 
 	isOrderedByProject = false;
 	isOrderedByHours = false;

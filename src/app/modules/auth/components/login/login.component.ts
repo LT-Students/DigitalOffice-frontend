@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from '@app/services/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
 import { of } from 'rxjs';
 
 @Component({

@@ -9,10 +9,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
-import { Project } from '@data/models/project';
-import { Task } from '@data/models/task';
-import { timeValidator } from './add-hours.validators';
+import { ProjectModel } from '@app/models/project/project.model';
+import { ITask, Task } from '@app/models/task.model';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { timeValidator } from './add-hours.validators';
 
 @Component({
 	selector: 'do-add-hours',
@@ -23,7 +23,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	@Input() user: UserInfo;
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-	public projects: Project[];
+	public projects: ProjectModel[];
 	public addHoursForm: FormGroup;
 	public setTimePeriod: Time;
 
@@ -124,7 +124,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	public onSubmit(): void {
 		const projectId = this.addHoursForm.get('project').value;
 		console.log(this.addHoursForm);
-		const task: Partial<Task> = {
+		const task: Partial<ITask> = {
 			title: this.addHoursForm.get('task').value,
 			description: this.addHoursForm.get('description').value,
 			createdAt: new Date(),

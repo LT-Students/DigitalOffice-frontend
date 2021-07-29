@@ -8,7 +8,7 @@ import { UserService } from '@app/services/user.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
 import { of, throwError } from 'rxjs';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
 
 @Component({
 	selector: 'do-signup',

@@ -16,7 +16,7 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 import { Moment } from 'moment';
 import { getUserRequest } from '@app/types/get-user-request.interface';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
 
 @Injectable()
 export class UserService {

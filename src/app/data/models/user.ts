@@ -1,5 +1,7 @@
-import { IUserStatus } from '@app/models/user-status.model';
-
+import { IUserStatus } from '@app/models/user/user-status.model';
+/**
+ * @deprecated The interface should not be used
+ */
 export interface IUser {
   id?: string;
   firstName?: string;

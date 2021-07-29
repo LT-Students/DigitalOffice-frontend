@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
-import { Project } from '../../../../data/models/project';
+import { ProjectModel } from '@app/models/project/project.model';
 
 @Component({
 	selector: 'do-attendance',
@@ -10,7 +10,7 @@ import { Project } from '../../../../data/models/project';
 	styleUrls: ['./attendance.component.scss'],
 })
 export class AttendanceComponent implements OnInit {
-	public project: Project;
+	public project: ProjectModel;
 
 	public timePeriodSelected: DatePeriod = {
 		startDate: new Date(),

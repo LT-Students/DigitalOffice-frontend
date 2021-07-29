@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { UserStatusModel } from '@app/models/user-status.model';
+import { UserStatusModel } from '@app/models/user/user-status.model';
 import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
 import { UserService } from '@app/services/user.service';
 import { map, switchMap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { ErrorResponse, OperationResultResponseUserResponse, UserGender } from '
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
-import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
+import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { getUserRequest } from '@app/types/get-user-request.interface';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
@@ -52,7 +52,7 @@ export class MainInfoComponent implements OnInit {
 			statuses: UserStatusModel.getAllStatuses(),
 			workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
 		};
-		this.genders = UserGenderModel.getAllGenders();
+		this.genders = PersonalInfoManager.getGenderList();
 		this.isEditing = false;
 		this.user = null;
 		this.pageId = this.route.snapshot.paramMap.get('id');

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
-import { Task } from '@data/models/task';
-import { Project } from '@data/models/project';
+import { Task } from '@app/models/task.model';
+import { ProjectModel } from '@app/models/project/project.model';
 import { WorkTimeApiService } from '@data/api/time-service/services';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectStore {
-  private projectsData: Project[] = [
+  private projectsData: ProjectModel[] = [
     {
       id: '1',
       name: 'Ромашка',
@@ -75,7 +75,7 @@ export class ProjectStore {
     },
   ];
 
-  private readonly _projects = new BehaviorSubject<Project[]>(
+  private readonly _projects = new BehaviorSubject<ProjectModel[]>(
     this.projectsData
   );
 
@@ -88,7 +88,7 @@ export class ProjectStore {
     // this.loadInitialData();
   }
 
-  get projects(): Project[] {
+  get projects(): ProjectModel[] {
     return this._projects.getValue();
   }
 

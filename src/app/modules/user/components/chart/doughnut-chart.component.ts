@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Chart } from 'chart.js';
 import { AttendanceService } from '../../../../core/services/attendance.service';
 import { ProjectStore } from '../../../../data/store/project.store';
-import { Project } from '../../../../data/models/project';
+import { ProjectModel } from '@app/models/project/project.model';
 
 @Component({
 	selector: 'do-doughnut-chart',
@@ -22,7 +22,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private chart: Chart;
 
 	public COLORS = ['#7C799B', '#C7C6D8', '#FFB2B2', '#FFB78C', '#EB5757', '#BC7BFA', '#FFBE97', '#BDBDBD'];
-	public projects: Project[];
+	public projects: ProjectModel[];
 	public recommendedTime: Time;
 
 	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {}

@@ -5,7 +5,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
 import { WorkFlowMode } from '../../employee-page.component';
 import { EducationType } from '@data/api/user-service/models/education-type';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
