@@ -24,3 +24,46 @@
 .avatar {
 	display: flex;
 }
+
+.sidenav {
+	&__nav {
+		width: 280px;
+		height: 1047px;
+	}
+
+	&__header {
+		margin: 28px 24px 0 39px;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+	}
+
+	&__title {
+		display: flex;
+		align-items: center;
+
+		font-size: 18px;
+		line-height: 150%;
+	}
+
+	&__close-button {
+		display: flex;
+		justify-content: center;
+	}
+
+	&__group {
+		margin: 39px 82px 0 21px;
+		padding: 0;
+
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__icon {
+		margin-right: 16px;
+
+		display: flex;
+		align-items: center;
+	}
+}

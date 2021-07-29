@@ -10,10 +10,9 @@ import { CredentialsApiService } from '@data/api/user-service/services/credentia
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
 import { UserService } from '@app/services/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
-import { LocalStorageService } from './local-storage.service';
 import { OperationResultResponseCredentialsResponse } from '@data/api/user-service/models/operation-result-response-credentials-response';
 import { User } from '@app/models/user/user.model';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
 	providedIn: 'root',

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface LeaveTimeRequest {
+export interface CreateLeaveTimeRequest {
 
   /**
    * Description for alloted time.
@@ -10,21 +10,22 @@ export interface LeaveTimeRequest {
   /**
    * End time leave from task.
    */
-  endLeave: string;
+  endTime: string;
 
   /**
    * The reason for which lost time.
    */
-  leaveType: number;
+  leaveType: 'Vacation' | 'SickLeave' | 'Training' | 'Idle';
+  minutes?: number;
 
   /**
    * Start time leave from task.
    */
-  startLeave: string;
+  startTime?: string;
 
   /**
-   * Users working on the current project.
+   * User working on the current project.
    */
-  workerUserId: string;
+  userId: string;
 }
 
