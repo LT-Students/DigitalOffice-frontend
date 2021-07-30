@@ -724,21 +724,24 @@
             "example": "2021-06-18T08:23"
           },
           "LeaveType": {
-            "description": "The reason for which lost time.",
-            "type": "string",
-            "enum": [
-              "Vacation",
-              "SickLeave",
-              "Training",
-              "Idle"
-            ],
-            "example": "Vacation"
+            "$ref": "#/components/schemas/LeaveType"
           },
           "Comment": {
             "description": "Description for alloted time.",
             "type": "string"
           }
         }
+      },
+      "LeaveType": {
+        "description": "The reason for which lost time.",
+        "type": "string",
+        "enum": [
+          "Vacation",
+          "SickLeave",
+          "Training",
+          "Idle"
+        ],
+        "example": "Vacation"
       },
       "ProjectInfo": {
         "type": "object",
@@ -877,7 +880,8 @@
         "enum": [
           "FullSuccess",
           "PartialSuccess",
-          "Failed"
+          "Failed",
+          "Conflict"
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"

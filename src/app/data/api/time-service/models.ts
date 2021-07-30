@@ -4,6 +4,7 @@ export { PatchWorkTimeDocument } from './models/patch-work-time-document';
 export { CreateWorkTimeRequest } from './models/create-work-time-request';
 export { WorkTimeInfo } from './models/work-time-info';
 export { LeaveTimeInfo } from './models/leave-time-info';
+export { LeaveType } from './models/leave-type';
 export { ProjectInfo } from './models/project-info';
 export { ProjectStatusType } from './models/project-status-type';
 export { FindResultResponseWorkTimeInfo } from './models/find-result-response-work-time-info';
