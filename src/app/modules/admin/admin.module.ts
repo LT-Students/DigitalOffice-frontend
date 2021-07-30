@@ -38,7 +38,6 @@ import { PositionListComponent } from './components/position-list/position-list.
 		NewCompanyComponent,
 		TeamCardComponent,
 		UploadComponent,
-		DndDirective,
 		ProgressComponent,
 		NewDepartmentComponent,
 		NewPositionComponent,
@@ -53,8 +52,6 @@ import { PositionListComponent } from './components/position-list/position-list.
 		PositionListComponent
 	],
 	imports: [
-		CommonModule,
-		RouterModule,
 		FormsModule,
 		ReactiveFormsModule,
 		MaterialModule,

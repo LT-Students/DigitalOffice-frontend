@@ -13,7 +13,7 @@ import { CreateCommunicationRequest } from '../models/create-communication-reque
 import { EditCommunicationRequest } from '../models/edit-communication-request';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
-import { IRemoveCommunicationRequest } from '@app/services/api/user/communication.service';
+import { IRemoveCommunicationRequest } from '@app/services/user/communication.service';
 
 @Injectable({
   providedIn: 'root',

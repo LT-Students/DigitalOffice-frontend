@@ -12,7 +12,7 @@ import {
 	ProjectResponse,
 } from '@data/api/project-service/models';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { departments, positions, projects } from '../../../../modules/employee/mock';
+import { departments, positions, projects } from '../../../modules/employee/mock';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { UUID } from '@app/types/uuid.type';
 

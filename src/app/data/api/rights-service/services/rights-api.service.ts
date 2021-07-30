@@ -11,7 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { OperationResultResponse } from '../models/operation-result-response';
 import { RightResponse } from '../models/right-response';
-import { IAddRightsForUserRequest, IRemoveRightsFromUserRequest } from '@app/services/api/rights/rights.service';
+import { IAddRightsForUserRequest, IRemoveRightsFromUserRequest } from '@app/services/rights/rights.service';
 
 @Injectable({
   providedIn: 'root',

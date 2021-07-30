@@ -7,7 +7,7 @@ import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { UserService } from '@app/services/api/user/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';

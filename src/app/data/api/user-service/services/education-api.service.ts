@@ -12,7 +12,7 @@ import { map, filter } from 'rxjs/operators';
 import { CreateEducationRequest } from '../models/create-education-request';
 import { EditEducationRequest } from '../models/edit-education-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { IEditEducationRequest, IRemoveEducationRequest } from '@app/services/api/user/education.service';
+import { IEditEducationRequest, IRemoveEducationRequest } from '@app/services/user/education.service';
 
 @Injectable({
   providedIn: 'root',

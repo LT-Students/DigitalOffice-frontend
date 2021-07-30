@@ -13,7 +13,7 @@ import { CreateWorkTimeRequest } from '../models/create-work-time-request';
 import { EditWorkTimeRequest } from '../models/edit-work-time-request';
 import { FindResultResponseWorkTimeInfo } from '../models/find-result-response-work-time-info';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { IEditWorkTimeRequest, IFindWorkTimesRequest } from '@app/services/api/time/time.service';
+import { IEditWorkTimeRequest, IFindWorkTimesRequest } from '@app/services/time/time.service';
 
 @Injectable({
   providedIn: 'root',

@@ -12,7 +12,7 @@ import { EditCompanyRequest } from '@data/api/company-service/models/edit-compan
 @Injectable({
 	providedIn: 'root',
 })
-export class DepartmentService {
+export class CompanyService {
 	constructor(private _companyService: CompanyApiService) {}
 
 	public createCompany(body: CreateCompanyRequest): Observable<OperationResultResponse> {

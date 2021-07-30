@@ -14,7 +14,7 @@ import { EditTaskRequest } from '../models/edit-task-request';
 import { FindResponseTaskInfo } from '../models/find-response-task-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseTaskResponse } from '../models/operation-result-response-task-response';
-import { IEditTaskRequest, IFindTasksRequest, IGetTaskRequest } from '@app/services/api/project/task.service';
+import { IEditTaskRequest, IFindTasksRequest, IGetTaskRequest } from '@app/services/project/task.service';
 
 @Injectable({
   providedIn: 'root',

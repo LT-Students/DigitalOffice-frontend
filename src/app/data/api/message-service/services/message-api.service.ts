@@ -11,7 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { EditEmailTemplateRequest } from '../models/edit-email-template-request';
 import { EmailTemplateRequest } from '../models/email-template-request';
-import { IRemoveEmailTemplateRequest } from '@app/services/api/message/message.service';
+import { IRemoveEmailTemplateRequest } from '@app/services/message/message.service';
 
 @Injectable({
   providedIn: 'root',

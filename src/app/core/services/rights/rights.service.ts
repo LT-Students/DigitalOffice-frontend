@@ -30,7 +30,7 @@ export interface IGetRoleRequest {
 @Injectable({
 	providedIn: 'root'
 })
-export class TimeService {
+export class RightsService {
 	constructor(
 		private _rightsService: RightsApiService,
 		private _roleService: RoleApiService,
