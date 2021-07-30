@@ -2,7 +2,7 @@
 	<h3 class="add-hours__heading" doText underlined underlinedSize="sm">
 		Внести часы за
 		<mat-form-field class="add-hours__hidden-picker" appearance="none">
-			<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
+			<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker" [max]="getLastDayOfMonth()">
 				<!--                TODO разобраться с ошибкой-->
 				<input matStartDate (dateChange)="onDateInput($event.value, true)" [value]="startDate" />
 				<input matEndDate (dateChange)="onDateInput($event.value, false)" [value]="endDate" />
@@ -11,7 +11,7 @@
 		</mat-form-field>
 
 		<a class="add-hours__date-picker" doText color="accent_color_bright" (click)="picker.open()"
-			>{{ startDate | date: 'd MMMM' }} - {{ endDate | date: 'd MMMM' }} <mat-icon>expand_more</mat-icon></a
+			>{{ startDate | date: 'd' }} - {{ endDate | date: 'd MMMM' }} <mat-icon>expand_more</mat-icon></a
 		>
 	</h3>
 	<form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
@@ -25,13 +25,13 @@
 				<mat-label>Куда</mat-label>
 				<mat-select formControlName="addTo">
 					<mat-optgroup label="Проекты">
-						<mat-option *ngFor="let project of projects" (onSelectionChange)="setTypeOfSelect($event)" [value]="project.id">
+						<mat-option *ngFor="let project of projects" (onSelectionChange)="setTypeOfForm($event)" [value]="project.id">
 							{{ project.name }}
 						</mat-option>
 					</mat-optgroup>
 					<mat-optgroup label="Отсутствия">
-						<mat-option *ngFor="let absence of absences" (onSelectionChange)="setTypeOfSelect($event)" [value]="absence.type">
-							{{ absence.name }}
+						<mat-option *ngFor="let absence of absences" (onSelectionChange)="setTypeOfForm($event)" [value]="absence.leaveType">
+							{{ absence.leaveInRussian }}
 						</mat-option>
 					</mat-optgroup>
 				</mat-select>
