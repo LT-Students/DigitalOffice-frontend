@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';
-import { User } from '@app/models/user.model';
-import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 import { ProjectService } from '@app/services/project.service';
 import { Observable, of } from 'rxjs';
 import { Project } from '@app/models/project/project.model';
 import { map } from 'rxjs/operators';
 import { FindResponseProjectInfo } from '@data/api/project-service/models/find-response-project-info';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { User } from '@app/models/user/user.model';
+import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 
 @Component({
 	selector: 'do-attendance',

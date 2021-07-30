@@ -6,11 +6,9 @@ import { Observable, ReplaySubject } from 'rxjs';
 
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
-import { Task } from '@data/models/task';
 import { DayOfWeek } from '@data/models/day-of-week';
 import { DateService } from '@app/services/date.service';
 import { DateFilterFn } from '@angular/material/datepicker';
-import { User } from '@app/models/user.model';
 import { ProjectInfo } from '@data/api/user-service/models/project-info';
 import { WorkTimeApiService } from '@data/api/time-service/services/work-time-api.service';
 import { LeaveTimeApiService } from '@data/api/time-service/services/leave-time-api.service';
@@ -20,9 +18,9 @@ import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work
 import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
+import { Task } from '@app/models/task.model';
+import { User } from '@app/models/user/user.model';
 import { timeValidator } from './add-hours.validators';
-
-export type FormType = 'project' | 'absence';
 
 @Component({
 	selector: 'do-add-hours',
@@ -69,7 +67,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
 			// 	minutes: ['', [Validators.required, Validators.max(59)]],
 			// }),
-			type: ['project', Validators.required],
+			isProject: [true, Validators.required],
 			addTo: ['', Validators.required],
 			task: ['', Validators.required],
 			description: [''],
@@ -87,17 +85,21 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	public setTypeOfForm(event: MatOptionSelectionChange): void {
 		if (event.isUserInput) {
-			const typeControl = this.addHoursForm.get('type');
+			const isProjectControl = this.addHoursForm.get('isProject');
 			const taskControl = this.addHoursForm.get('task');
 			if (event.source.group.label === 'Проекты') {
-				typeControl.setValue('project');
+				isProjectControl.setValue(true);
 				taskControl.setValidators([Validators.required]);
 			} else {
-				typeControl.setValue('absence');
+				isProjectControl.setValue(false);
 				taskControl.clearValidators();
 			}
 			taskControl.updateValueAndValidity();
 		}
+	}
+
+	public isProjectForm() {
+		return this.addHoursForm.get('isProject').value as boolean;
 	}
 
 	public getLastDayOfMonth(): Date | null {
@@ -115,22 +117,10 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	}
 
 	public onSubmit(): void {
-		const projectId = this.addHoursForm.get('project').value;
 		console.log(this.addHoursForm.value);
-		const task: Partial<Task> = {
-			title: this.addHoursForm.get('tag').value,
-			description: this.addHoursForm.get('description').value,
-			createdAt: new Date(),
-			minutes: Number(this.addHoursForm.get('time').value),
-		};
-		this.projectStore.addTaskToProject(task, projectId);
-		this.addHoursForm.reset();
-		const datePeriod = this.attendanceService.datePeriod;
-		this.attendanceService.onDatePeriodChange(datePeriod);
-
 		let timeService: Observable<OperationResultResponse>;
 
-		if ((this.addHoursForm.get('type').value as FormType) === 'project') {
+		if (this.addHoursForm.get('isProject').value as boolean) {
 			const addWorkTime: CreateWorkTimeRequest = {
 				userId: this.user.id,
 				startTime: this.startDate.toISOString(),
@@ -162,6 +152,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 				throw error;
 			}
 		);
+		this.addHoursForm.reset();
 	}
 
 	public getTimePeriodErrorMessage(): String {
