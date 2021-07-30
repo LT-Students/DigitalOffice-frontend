@@ -3,14 +3,14 @@
 		Внести часы за
 		<mat-form-field class="add-hours__hidden-picker" appearance="none">
 			<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
-<!--                TODO разобраться с ошибкой-->
+				<!--                TODO разобраться с ошибкой-->
 				<input matStartDate (dateChange)="onDateInput($event.value, true)" [value]="startDate" />
 				<input matEndDate (dateChange)="onDateInput($event.value, false)" [value]="endDate" />
 			</mat-date-range-input>
 			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
 		</mat-form-field>
 
-		<a class='add-hours__date-picker' doText color="accent_color_bright" (click)="picker.open()"
+		<a class="add-hours__date-picker" doText color="accent_color_bright" (click)="picker.open()"
 			>{{ startDate | date: 'd MMMM' }} - {{ endDate | date: 'd MMMM' }} <mat-icon>expand_more</mat-icon></a
 		>
 	</h3>
@@ -23,26 +23,26 @@
 			</mat-form-field>
 			<mat-form-field appearance="fill">
 				<mat-label>Куда</mat-label>
-				<mat-select [(value)]="chosenCategory">
+				<mat-select formControlName="addTo">
 					<mat-optgroup label="Проекты">
-						<mat-option *ngFor="let category of categories" [value]="category">
-							{{ category.name }}
+						<mat-option *ngFor="let project of projects" (onSelectionChange)="setTypeOfSelect($event)" [value]="project.id">
+							{{ project.name }}
 						</mat-option>
 					</mat-optgroup>
 					<mat-optgroup label="Отсутствия">
-						<mat-option>Отпуск</mat-option>
-						<mat-option>Отгул</mat-option>
-						<mat-option>Больничный</mat-option>
-						<mat-option></mat-option>
+						<mat-option *ngFor="let absence of absences" (onSelectionChange)="setTypeOfSelect($event)" [value]="absence.type">
+							{{ absence.name }}
+						</mat-option>
 					</mat-optgroup>
 				</mat-select>
 			</mat-form-field>
 		</div>
 
-		<div class="add-hours__row" *ngIf="chosenCategory.name === 'Проект'">
+		<div class="add-hours__row" *ngIf="addHoursForm.get('type').value === 'project'">
 			<mat-form-field appearance="fill">
 				<mat-label>Задача</mat-label>
-				<input matInput id="task" formControlName="task" placeholder="Опишите задачу" />
+				<input #task matInput id="task" formControlName="task" placeholder="Кратко опишите задачу" maxlength="50" />
+				<mat-hint align="end">{{ task.value?.length || 0 }}/50</mat-hint>
 			</mat-form-field>
 		</div>
 		<mat-form-field appearance="fill">

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';
+import { User } from '@app/models/user.model';
+import { Project } from '@data/models/project';
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
-import { Project } from '../../../../data/models/project';
 
 @Component({
 	selector: 'do-attendance',
@@ -11,6 +12,7 @@ import { Project } from '../../../../data/models/project';
 })
 export class AttendanceComponent implements OnInit {
 	public project: Project;
+	public user: User;
 
 	public timePeriodSelected: DatePeriod = {
 		startDate: new Date(),
@@ -25,7 +27,11 @@ export class AttendanceComponent implements OnInit {
 		{ day: '27', month: 'june', hours: 0, minutes: 0 },
 	];
 
-	constructor() {}
+	constructor() {
+		this.user = null;
+	}
 
-	ngOnInit() {}
+	ngOnInit() {
+
+	}
 }
