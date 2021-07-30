@@ -7,7 +7,7 @@ import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
@@ -17,7 +17,7 @@ import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
-import { getUserRequest } from '@app/types/get-user-request.interface';
+import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -123,7 +123,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _getUser(): void {
-		const params: getUserRequest = {
+		const params: IGetUserRequest = {
 			userId: this.pageId,
 			includedepartment: true,
 			includeposition: true,

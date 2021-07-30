@@ -13,6 +13,7 @@ import { CreateWorkTimeRequest } from '../models/create-work-time-request';
 import { EditWorkTimeRequest } from '../models/edit-work-time-request';
 import { FindResultResponseWorkTimeInfo } from '../models/find-result-response-work-time-info';
 import { OperationResultResponse } from '../models/operation-result-response';
+import { IEditWorkTimeRequest, IFindWorkTimesRequest } from '@app/services/time/time.service';
 
 @Injectable({
   providedIn: 'root',
@@ -134,14 +135,7 @@ export class WorkTimeApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findWorkTimes(params?: {
-    userid?: string;
-    projectid?: string;
-    starttime?: string;
-    endtime?: string;
-    takeCount?: number;
-    skipCount?: number;
-  }): Observable<FindResultResponseWorkTimeInfo> {
+  findWorkTimes(params?: IFindWorkTimesRequest): Observable<FindResultResponseWorkTimeInfo> {
 
     return this.findWorkTimes$Response(params).pipe(
       map((r: StrictHttpResponse<FindResultResponseWorkTimeInfo>) => r.body as FindResultResponseWorkTimeInfo)
@@ -197,14 +191,7 @@ export class WorkTimeApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editWorkTime(params: {
-
-    /**
-     * Work time global unique identifier.
-     */
-    workTimeId: string;
-    body: EditWorkTimeRequest
-  }): Observable<OperationResultResponse> {
+  editWorkTime(params: IEditWorkTimeRequest): Observable<OperationResultResponse> {
 
     return this.editWorkTime$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

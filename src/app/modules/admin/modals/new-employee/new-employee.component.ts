@@ -17,7 +17,7 @@ import {
 	UserGender,
 	UserStatus,
 } from '@data/api/user-service/models';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';

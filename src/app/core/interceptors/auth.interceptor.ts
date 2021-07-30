@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 
 import { Router } from '@angular/router';
 import { catchError, filter, switchMap, take, tap } from 'rxjs/operators';
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from '@app/services/auth/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
 
 @Injectable({

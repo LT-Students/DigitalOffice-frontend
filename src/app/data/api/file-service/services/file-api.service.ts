@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { File } from '../models/file';
+import { IGetFileRequest } from '@app/types/get-file-request.interface';
+import { IDisableFileRequest } from '@app/types/disable-file-request.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -125,13 +127,7 @@ export class FileApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getFileById(params: {
-
-    /**
-     * File global unique identifier.
-     */
-    fileId: string;
-  }): Observable<Array<File>> {
+  getFileById(params: IGetFileRequest): Observable<Array<File>> {
 
     return this.getFileById$Response(params).pipe(
       map((r: StrictHttpResponse<Array<File>>) => r.body as Array<File>)
@@ -153,13 +149,7 @@ export class FileApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  disableFileById$Response(params: {
-
-    /**
-     * File global unique identifier.
-     */
-    fileId: string;
-  }): Observable<StrictHttpResponse<void>> {
+  disableFileById$Response(params: IDisableFileRequest): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, FileApiService.DisableFileByIdPath, 'get');
     if (params) {
@@ -187,13 +177,7 @@ export class FileApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  disableFileById(params: {
-
-    /**
-     * File global unique identifier.
-     */
-    fileId: string;
-  }): Observable<void> {
+  disableFileById(params: IDisableFileRequest): Observable<void> {
 
     return this.disableFileById$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)

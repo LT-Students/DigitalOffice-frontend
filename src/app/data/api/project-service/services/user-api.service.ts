@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { AddUsersToProjectRequest } from '../models/add-users-to-project-request';
+import { IRemoveUsersFromProjectRequest } from '@app/services/project/project.service';
 
 @Injectable({
   providedIn: 'root',
@@ -123,14 +124,7 @@ export class UserApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  removeUsersFromProject(params: {
-
-    /**
-     * Project global unique identifier.
-     */
-    projectId: string;
-    userIds: any;
-  }): Observable<void> {
+  removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<void> {
 
     return this.removeUsersFromProject$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
