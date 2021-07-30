@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { IUser } from '@data/models/user';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -53,7 +52,6 @@ export const DATE_FORMAT = {
 	],
 })
 export class NewEmployeeComponent implements OnInit, OnDestroy {
-	public user: IUser;
 	public message: string;
 	public imagePath;
 	public imgURL: any;

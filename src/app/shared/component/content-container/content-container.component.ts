@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '@app/services/user.service';
 import { AuthService } from '@app/services/auth.service';
 import { Router } from '@angular/router';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
 
 @Component({
 	selector: 'do-content-container',
