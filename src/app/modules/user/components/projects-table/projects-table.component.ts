@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '@app/services/project.service';
+import { ProjectService } from '@app/services/api/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';

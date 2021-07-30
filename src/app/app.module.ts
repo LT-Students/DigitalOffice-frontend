@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/api/user/user.service';
 import { AuthService } from '@app/services/auth.service';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { AuthGuard } from '@app/guards/auth.guard';

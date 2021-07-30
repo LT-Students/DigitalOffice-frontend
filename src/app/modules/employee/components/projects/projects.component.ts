@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
-import { ProjectService } from '@app/services/project.service';
+import { ProjectService } from '@app/services/api/project/project.service';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 
 interface Group {

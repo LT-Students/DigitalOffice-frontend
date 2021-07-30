@@ -12,7 +12,7 @@ import { map, filter } from 'rxjs/operators';
 import { CreateTaskPropertyRequest } from '../models/create-task-property-request';
 import { FindResponseTaskProperty } from '../models/find-response-task-property';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { IFindTaskPropertiesRequest } from '@app/services/task.service';
+import { IFindTaskPropertiesRequest } from '@app/services/api/project/task.service';
 
 @Injectable({
   providedIn: 'root',

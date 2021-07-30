@@ -15,7 +15,7 @@ import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseProjectInfo } from '../models/operation-result-response-project-info';
 import { ProjectRequest } from '../models/project-request';
 import { ProjectResponse } from '../models/project-response';
-import { IEditProjectRequest, IGetProjectRequest } from '@app/services/project.service';
+import { IEditProjectRequest, IGetProjectRequest } from '@app/services/api/project/project.service';
 
 @Injectable({
   providedIn: 'root',

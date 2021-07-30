@@ -12,7 +12,7 @@ import { map, filter } from 'rxjs/operators';
 import { CreateCertificateRequest } from '../models/create-certificate-request';
 import { EditCertificateRequest } from '../models/edit-certificate-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { IEditCertificateRequest } from '@app/services/certificate.service';
+import { IEditCertificateRequest } from '@app/services/api/user/certificate.service';
 
 @Injectable({
   providedIn: 'root',

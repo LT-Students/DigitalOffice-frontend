@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { AddUsersToProjectRequest } from '../models/add-users-to-project-request';
-import { IRemoveUsersFromProjectRequest } from '@app/services/project.service';
+import { IRemoveUsersFromProjectRequest } from '@app/services/api/project/project.service';
 
 @Injectable({
   providedIn: 'root',

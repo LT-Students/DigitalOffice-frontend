@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/api/user/user.service';
 import { Subject } from 'rxjs';
 import { EducationType } from '@data/api/user-service/models/education-type';
 import { MatDialog } from '@angular/material/dialog';
