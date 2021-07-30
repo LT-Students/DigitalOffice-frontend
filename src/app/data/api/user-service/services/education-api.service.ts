@@ -12,6 +12,7 @@ import { map, filter } from 'rxjs/operators';
 import { CreateEducationRequest } from '../models/create-education-request';
 import { EditEducationRequest } from '../models/edit-education-request';
 import { OperationResultResponse } from '../models/operation-result-response';
+import { IEditEducationRequest, IRemoveEducationRequest } from '@app/services/education.service';
 
 @Injectable({
   providedIn: 'root',
@@ -121,14 +122,7 @@ export class EducationApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editEducation(params: {
-
-    /**
-     * Specific education id
-     */
-    educationId: string;
-    body?: EditEducationRequest
-  }): Observable<OperationResultResponse> {
+  editEducation(params: IEditEducationRequest): Observable<OperationResultResponse> {
 
     return this.editEducation$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
@@ -180,13 +174,7 @@ export class EducationApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  removeEducation(params: {
-
-    /**
-     * Education global unique identifier.
-     */
-    educationId: string;
-  }): Observable<OperationResultResponse> {
+  removeEducation(params: IRemoveEducationRequest): Observable<OperationResultResponse> {
 
     return this.removeEducation$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

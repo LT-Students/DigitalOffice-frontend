@@ -33,7 +33,7 @@ export class AttendanceComponent implements OnInit {
 	constructor(private _projectService: ProjectService) {}
 
 	ngOnInit() {
-		this.projects$ = this._projectService.getProjectList().pipe(
+		this.projects$ = this._projectService.findProjects().pipe(
 			map((data: FindResponseProjectInfo) => data.body),
 			map((data: ProjectInfo[]) => {
 				return data.map((projectInfo: ProjectInfo) => new Project(projectInfo));

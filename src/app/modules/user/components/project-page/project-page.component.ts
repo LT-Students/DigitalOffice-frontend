@@ -124,7 +124,7 @@ export class ProjectPageComponent implements OnInit {
 	// valuesFromDescription = Object.values(this.projectPage.details);
 	ngOnInit(): void {
 		this.projectId = this._route.snapshot.params.id;
-		this._projectService.getProjectInfo({ projectId: this.projectId, includeusers: true }).subscribe((result) => {
+		this._projectService.getProject({ projectId: this.projectId, includeusers: true }).subscribe((result) => {
 			this.projectInfo = result.project;
 			this.projectUsers = result.users;
 			this.projectCreatedAt = new Date(this.projectInfo.createdAt);

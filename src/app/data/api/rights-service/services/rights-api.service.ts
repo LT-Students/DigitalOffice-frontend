@@ -11,6 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { OperationResultResponse } from '../models/operation-result-response';
 import { RightResponse } from '../models/right-response';
+import { IAddRightsForUserRequest, IRemoveRightsFromUserRequest } from '@app/services/rights.service';
 
 @Injectable({
   providedIn: 'root',
@@ -74,18 +75,7 @@ export class RightsApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  addRightsForUser(params: {
-
-    /**
-     * User global unique identifier.
-     */
-    userId: string;
-
-    /**
-     * Right identifiers.
-     */
-    rightIds: Array<number>;
-  }): Observable<OperationResultResponse> {
+  addRightsForUser(params: IAddRightsForUserRequest): Observable<OperationResultResponse> {
 
     return this.addRightsForUser$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
@@ -190,18 +180,7 @@ export class RightsApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  removeRightsFromUser(params: {
-
-    /**
-     * User global unique identifier.
-     */
-    userId: string;
-
-    /**
-     * Right identifiers.
-     */
-    rightIds: Array<number>;
-  }): Observable<void> {
+  removeRightsFromUser(params: IRemoveRightsFromUserRequest): Observable<void> {
 
     return this.removeRightsFromUser$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)

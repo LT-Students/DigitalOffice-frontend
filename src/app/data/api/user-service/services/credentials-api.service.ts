@@ -136,7 +136,7 @@ export class CredentialsApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   changePassword$Response(params?: {
-    body?: Array<ChangePasswordRequest>
+    body?: ChangePasswordRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, CredentialsApiService.ChangePasswordPath, 'post');
@@ -164,7 +164,7 @@ export class CredentialsApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   changePassword(params?: {
-    body?: Array<ChangePasswordRequest>
+    body?: ChangePasswordRequest
   }): Observable<OperationResultResponse> {
 
     return this.changePassword$Response(params).pipe(

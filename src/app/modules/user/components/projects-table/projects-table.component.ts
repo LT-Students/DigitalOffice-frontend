@@ -186,7 +186,7 @@ export class ProjectsTableComponent implements OnInit {
 	}
 
 	private _getProjectList(): void {
-		this._projectService.getProjectList(this.pageIndex * this.pageSize, this.pageSize).subscribe((result) => {
+		this._projectService.findProjects(this.pageIndex * this.pageSize, this.pageSize).subscribe((result) => {
 			this.totalCount = result.totalCount;
 			this.projectList = result.body;
 		});
