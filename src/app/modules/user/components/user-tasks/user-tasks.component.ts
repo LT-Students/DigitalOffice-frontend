@@ -7,6 +7,9 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { DateService } from '@app/services/date.service';
 import { Project, ProjectModel } from '@app/models/project/project.model';
+import { LeaveTimeApiService, WorkTimeApiService } from '@data/api/time-service/services';
+import { LocalStorageService } from '@app/services/local-storage.service';
+import { WorkTimeInfo } from '@data/api/time-service/models';
 
 @Component({
 	selector: 'do-user-tasks',
@@ -14,7 +17,8 @@ import { Project, ProjectModel } from '@app/models/project/project.model';
 	styleUrls: ['./user-tasks.component.scss'],
 })
 export class UserTasksComponent implements OnInit, OnDestroy {
-	@Input() projects: Project[];
+	// @Input() projects: Project[];
+	@Input() projects;
 	@Input() timePeriodSelected: DatePeriod;
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -32,9 +36,14 @@ export class UserTasksComponent implements OnInit, OnDestroy {
 	public startDate: Date | null;
 	public endDate: Date | null;
 
-	constructor(public attendanceService: AttendanceService, private projectStore: ProjectStore, public dateService: DateService) {}
+	constructor(
+		public attendanceService: AttendanceService,
+		private projectStore: ProjectStore,
+		public dateService: DateService,
+	) { }
 
 	ngOnInit() {
+		console.log("ПРОЖЕКТЫ В USER-TASKS: ", this.projects)
 		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
 			this.projectList = projects;
 			this.tasksCount = (this.projectList && this.projectList.length)

@@ -1,13 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Project } from '@app/models/project/project.model';
+import { Component, Input } from '@angular/core';
 
 @Component({
 	selector: 'do-project',
 	templateUrl: './project.component.html',
 	styleUrls: ['./project.component.scss'],
 })
-export class ProjectComponent implements OnInit {
-	@Input() project: Project;
+export class ProjectComponent {
+	@Input() public project;
 	isEdited = false;
 	hours = 0;
 	minutes = 0;
@@ -16,8 +15,6 @@ export class ProjectComponent implements OnInit {
 	constructor() {
 		this.cardOpenState = false;
 	}
-
-	ngOnInit() { }
 
 	toggleInput() {
 		this.isEdited = !this.isEdited;

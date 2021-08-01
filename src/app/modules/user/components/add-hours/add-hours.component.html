@@ -2,12 +2,7 @@
   <div class="add-hours__header">
     <h2 doText underlined underlinedSize='sm'>Внести часы</h2>
   </div>
-  <form
-      [formGroup]="addHoursForm"
-      (ngSubmit)="onSubmit()"
-      autocomplete="off"
-      class="add-hours__form"
-  >
+  <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
     <div formGroupName="time" class="add-hours__period">
       <div>
         <mat-form-field appearance="fill">
@@ -22,7 +17,7 @@
       <mat-form-field appearance="fill">
         <mat-label>Куда</mat-label>
         <mat-select>
-          <mat-option  *ngFor="let category of categories" [value]="category">
+          <mat-option *ngFor="let category of categories" [value]="category">
             {{ category.name }}
           </mat-option>
         </mat-select>
@@ -40,7 +35,7 @@
     <ng-container *ngIf="chosenCategory.name === 'Проект'">
       <mat-form-field appearance="fill">
         <mat-label>Задача</mat-label>
-        <input id="task" type="text" matInput formControlName="task"/>
+        <input id="task" type="text" matInput formControlName="task" />
       </mat-form-field>
     </ng-container>
     <mat-form-field appearance="fill">

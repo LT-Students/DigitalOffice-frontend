@@ -18,6 +18,7 @@ import { ProjectsTableComponent } from './components/projects-table/projects-tab
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TaskFilterPipe } from './pipes/task-filter.pipe';
 import { UserRoutingModule } from './user-routing.module';
+import { DeleteTaskComponent } from './modals/delete-task/delete-task.component';
 
 @NgModule({
 	declarations: [
@@ -31,6 +32,7 @@ import { UserRoutingModule } from './user-routing.module';
 		TaskComponent,
 		ProjectsTableComponent,
 		ProjectPageComponent,
+		DeleteTaskComponent,
 		TaskFilterPipe,
 	],
 	imports: [

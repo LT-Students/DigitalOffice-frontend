@@ -1,3 +1,7 @@
+.wrapper {
+	border-bottom: 1px solid #f5f5f5;
+}
+
 .task {
 	margin-bottom: 10px;
 
@@ -6,8 +10,6 @@
 
 	font-size: 16px;
 	line-height: 32px;
-
-	border-bottom: 1px solid #f5f5f5;
 
 	&__title {
 		margin: 0 40px 0 0;
@@ -18,7 +20,7 @@
 		flex-basis: 14%;
 	}
 
-	&__time {
+	&__minutes {
 		margin: 0 40px;
 
 		font-weight: 700;
@@ -35,16 +37,17 @@
 		flex-basis: 38%;
 	}
 
-	&__description-full {
-		height: fit-content;
-	}
-
 	&__description-partial {
 		overflow: hidden;
 
 		height: 65px;
 
+		white-space: normal;
 		text-overflow: ellipsis;
+	}
+
+	&__description-full {
+		height: fit-content;
 	}
 
 	&__description-more-button {
@@ -55,6 +58,16 @@
 		font-size: 16px;
 		line-height: 32px;
 	}
+
+	&__form-field {
+		display: block;
+	}
+}
+
+.textarea {
+	overflow: hidden;
+
+	height: fit-content;
 }
 
 ::ng-deep .mat-expansion-panel-body {
