@@ -3,6 +3,7 @@ import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, Validators } f
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { Time } from '@angular/common';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 enum TimeType {
 	HOURS,
@@ -28,6 +29,8 @@ export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldContro
 	public disabled = false;
 	public placeholder: string;
 	public required: boolean;
+
+	@Input() matAutocomplete: MatAutocomplete;
 
 	@HostBinding()
 	public id = `time-input-${TimeInputComponent.nextId++}`;
