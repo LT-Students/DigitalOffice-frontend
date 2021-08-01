@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
@@ -49,6 +49,13 @@ export class LoginComponent implements OnInit {
 			.subscribe((user: User) => {
 				this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
 			});
+
+		this.loginForm.valueChanges.pipe(tap(() => {
+			if (this.loginForm) {
+				this.loginError = null;
+			}
+		})
+		).subscribe();
 	}
 
 	public get email() {
