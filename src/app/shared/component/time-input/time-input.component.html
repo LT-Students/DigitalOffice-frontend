@@ -2,13 +2,14 @@
 	<input
 		#hours
 		matInput
-		class="time-input__input time-input__input_align_right"
+		class="time-input__input"
 		formControlName="hours"
 		type="text"
 		maxlength="3"
 		placeholder="02"
 		(ngModelChange)="checkTimeConstraints($event, TimeType.HOURS)"
 		(keyup)="autoFocusNext($event, minutes)"
+        [matAutocomplete]='matAutocomplete'
 	/>
 	<span [ngClass]="time.pristine ? 'time-input__colon' : ''">:</span>
 	<input
