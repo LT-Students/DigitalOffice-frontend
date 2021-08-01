@@ -29,7 +29,6 @@ import { timeValidator } from './add-hours.validators';
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
 	@Input() user: User;
-	public yo: Time;
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 	public projects: ProjectInfo[];
@@ -68,19 +67,19 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			// 	minutes: ['', [Validators.required, Validators.max(59)]],
 			// }),
 			isProject: [true, Validators.required],
-			addTo: ['', Validators.required],
+			activity: ['', Validators.required],
 			task: ['', Validators.required],
 			description: [''],
 		});
 
+		this.projects = this.user.projects;
 		console.log(this.user);
-		// this.projects = this.user.projects;
 
-		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
-			this.setTimePeriod = timePeriod;
-			this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
-			this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
-		});
+		// this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
+		// 	this.setTimePeriod = timePeriod;
+		// 	this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
+		// 	this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
+		// });
 	}
 
 	public setTypeOfForm(event: MatOptionSelectionChange): void {
@@ -122,22 +121,23 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 		if (this.addHoursForm.get('isProject').value as boolean) {
 			const addWorkTime: CreateWorkTimeRequest = {
-				userId: this.user.id,
+				//TODO fix user service
+				userId: this.user.user.id,
 				startTime: this.startDate.toISOString(),
 				endTime: this.endDate.toISOString(),
 				minutes: this.addHoursForm.get('time').value,
-				projectId: this.addHoursForm.get('addTo').value,
+				projectId: this.addHoursForm.get('activity').value,
 				title: this.addHoursForm.get('task').value,
 				description: this.addHoursForm.get('description').value,
 			};
 			timeService = this.workTimeService.addWorkTime({ body: addWorkTime });
 		} else {
 			const addLeaveTime: CreateLeaveTimeRequest = {
-				userId: this.user.id,
+				userId: this.user.user.id,
 				startTime: this.startDate.toISOString(),
 				endTime: this.endDate.toISOString(),
 				minutes: this.addHoursForm.get('time').value,
-				leaveType: this.addHoursForm.get('addTo').value,
+				leaveType: this.addHoursForm.get('activity').value,
 				comment: this.addHoursForm.get('description').value,
 			};
 			timeService = this.leaveTimeService.addLeaveTime({ body: addLeaveTime });
@@ -148,7 +148,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 				this.snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
 			},
 			(error) => {
-				this.snackbar.open(error.errors.message, 'Закрыть', { duration: 5000 });
+				this.snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
 				throw error;
 			}
 		);

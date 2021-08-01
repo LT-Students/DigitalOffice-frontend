@@ -33,6 +33,7 @@ export class UserService {
 	public getUserSetCredentials(userId: string): Observable<User> {
 		const params: getUserRequest = {
 			userId: userId,
+			includeprojects: true,
 			includedepartment: true,
 			includeposition: true,
 			includeoffice: true,

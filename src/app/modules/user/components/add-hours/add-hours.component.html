@@ -23,7 +23,7 @@
 			</mat-form-field>
 			<mat-form-field appearance="fill">
 				<mat-label>Куда</mat-label>
-				<mat-select formControlName="addTo">
+				<mat-select formControlName="activity">
 					<mat-optgroup label="Проекты">
 						<mat-option *ngFor="let project of projects" (onSelectionChange)="setTypeOfForm($event)" [value]="project.id">
 							{{ project.name }}
@@ -41,7 +41,7 @@
 		<div class="add-hours__row" *ngIf="isProjectForm()">
 			<mat-form-field appearance="fill">
 				<mat-label>Задача</mat-label>
-				<input #task matInput id="task" formControlName="task" placeholder="Кратко опишите задачу" maxlength="50" />
+				<input #task matInput id="task" formControlName="task" placeholder="Кратко опишите задачу" maxlength="50" required />
 				<mat-hint align="end">{{ task.value?.length || 0 }}/50</mat-hint>
 			</mat-form-field>
 		</div>

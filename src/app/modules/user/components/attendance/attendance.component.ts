@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 import { FindResponseProjectInfo } from '@data/api/project-service/models/find-response-project-info';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { User } from '@app/models/user/user.model';
+import { UserService } from '@app/services/user.service';
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 
 @Component({
@@ -33,7 +34,7 @@ export class AttendanceComponent implements OnInit {
 		{ day: '27', month: 'june', hours: 0, minutes: 0 },
 	];
 
-	constructor(private _projectService: ProjectService) {
+	constructor(private _projectService: ProjectService, private _userService: UserService) {
 		this.user = null;
 	}
 
@@ -44,5 +45,7 @@ export class AttendanceComponent implements OnInit {
 				return data.map((projectInfo: ProjectInfo) => new Project(projectInfo));
 			})
 		);
+
+		this.user = this._userService.getCurrentUser();
 	}
 }
