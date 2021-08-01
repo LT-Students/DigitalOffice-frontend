@@ -15,6 +15,9 @@ import { EditPositionRequest } from '../models/edit-position-request';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponsePositionInfo } from '../models/operation-result-response-position-info';
 import { FindResultResponsePositionInfo } from '@data/api/company-service/models/find-result-response-position-info';
+import { IGetPositionRequest } from '@app/types/get-position-request.interface';
+import { IFindRequestEx } from '@app/types/find-request.interface';
+import { IEditPositionRequest } from '@app/types/edit-position-request.interface';
 
 @Injectable({
 	providedIn: 'root',
@@ -37,12 +40,7 @@ export class PositionApiService extends BaseService {
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	getPosition$Response(params: {
-		/**
-		 * Position global unique identifier.
-		 */
-		positionId: string;
-	}): Observable<StrictHttpResponse<OperationResultResponsePositionInfo>> {
+	getPosition$Response(params: IGetPositionRequest): Observable<StrictHttpResponse<OperationResultResponsePositionInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, PositionApiService.GetPositionPath, 'get');
 		if (params) {
 			rb.query('positionId', params.positionId, {});
@@ -71,12 +69,7 @@ export class PositionApiService extends BaseService {
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	getPosition(params: {
-		/**
-		 * Position global unique identifier.
-		 */
-		positionId: string;
-	}): Observable<OperationResultResponsePositionInfo> {
+	getPosition(params: IGetPositionRequest): Observable<OperationResultResponsePositionInfo> {
 		return this.getPosition$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponsePositionInfo>) => r.body as OperationResultResponsePositionInfo)
 		);
@@ -95,22 +88,7 @@ export class PositionApiService extends BaseService {
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	findPositions$Response(params: {
-		/**
-		 * Number of positions to skip.
-		 */
-		skipCount: number;
-
-		/**
-		 * Number of positions to take.
-		 */
-		takeCount: number;
-
-		/**
-		 * If it is true, response will be have deactivated records.
-		 */
-		includeDeactivated?: boolean;
-	}): Observable<StrictHttpResponse<FindResultResponsePositionInfo>> {
+	findPositions$Response(params: IFindRequestEx): Observable<StrictHttpResponse<FindResultResponsePositionInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, PositionApiService.FindPositionsPath, 'get');
 		if (params) {
 			rb.query('skipCount', params.skipCount, {});
@@ -141,22 +119,7 @@ export class PositionApiService extends BaseService {
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	findPositions(params: {
-		/**
-		 * Number of positions to skip.
-		 */
-		skipCount: number;
-
-		/**
-		 * Number of positions to take.
-		 */
-		takeCount: number;
-
-		/**
-		 * If it is true, response will be have deactivated records.
-		 */
-		includeDeactivated?: boolean;
-	}): Observable<FindResultResponsePositionInfo> {
+	findPositions(params: IFindRequestEx): Observable<FindResultResponsePositionInfo> {
 		return this.findPositions$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponsePositionInfo>) => r.body as FindResultResponsePositionInfo)
 		);
@@ -221,13 +184,7 @@ export class PositionApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editPosition$Response(params: {
-		/**
-		 * Specific position id
-		 */
-		positionId: string;
-		body?: EditPositionRequest;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+	editPosition$Response(params: IEditPositionRequest): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, PositionApiService.EditPositionPath, 'patch');
 		if (params) {
 			rb.query('positionId', params.positionId, {});
@@ -257,13 +214,7 @@ export class PositionApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editPosition(params: {
-		/**
-		 * Specific position id
-		 */
-		positionId: string;
-		body?: EditPositionRequest;
-	}): Observable<OperationResultResponse> {
+	editPosition(params: IEditPositionRequest): Observable<OperationResultResponse> {
 		return this.editPosition$Response(params).pipe(map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse));
 	}
 }

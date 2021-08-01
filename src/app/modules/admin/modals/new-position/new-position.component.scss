@@ -5,12 +5,10 @@
 }
 
 .new-position {
-	&__input {
-		display: flex;
-		flex-direction: column;
-	}
-
 	&__input-container {
 		margin-bottom: 20px;
+
+		display: flex;
+		flex-direction: column;
 	}
 }

@@ -32,12 +32,8 @@ import { UserRoutingModule } from './user-routing.module';
 		TaskFilterPipe,
 	],
 	imports: [
-		CommonModule,
 		SharedModule,
 		NgbDatepickerModule,
-		MaterialModule,
-		ReactiveFormsModule,
-		FormsModule,
 		AdminModule,
 		UserRoutingModule,
 	],

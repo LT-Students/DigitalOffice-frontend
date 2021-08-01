@@ -1,4 +1,9 @@
 <nav class='header' mat-tab-nav-bar>
+    <div doText color='gray1' class='header__menu-button'>
+        <button mat-icon-button (click)="onMenuClick($event)">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
     <a mat-tab-link class='logo' [routerLink]="['user',userId]">Digital Office</a>
     <a mat-tab-link routerLink='/user/attendance'>Учет заполнения</a>
     <a mat-tab-link routerLink='/user/projects-table'>Доска проектов</a>

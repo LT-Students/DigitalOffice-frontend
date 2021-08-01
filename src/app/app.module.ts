@@ -9,8 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
-import { UserService } from '@app/services/user.service';
-import { AuthService } from '@app/services/auth.service';
+import { UserService } from '@app/services/user/user.service';
+import { AuthService } from '@app/services/auth/auth.service';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AttendanceService } from '@app/services/attendance.service';
@@ -26,33 +26,28 @@ import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { InstallerModule } from './modules/installer/installer.module';
+import { CoreModule } from '@app/core.module';
 
 registerLocaleData(localeRu);
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule,
-    RouterModule,
     AppRoutingModule,
-    HttpClientModule,
+    CoreModule,
     AuthModule,
-    SharedModule,
     UserModule,
     AdminModule,
     EmployeeModule,
     NgbModule,
-    BrowserAnimationsModule,
     MaterialModule,
-	  InstallerModule,
+    InstallerModule,
   ],
   providers: [
     AuthService,
     AuthGuard,
-    UserService,
     LocalStorageService,
     AttendanceService,
-    NetService,
     ProjectStore,
     {
       provide: HTTP_INTERCEPTORS,

@@ -12,6 +12,7 @@ import { map, filter } from 'rxjs/operators';
 import { CreateTaskPropertyRequest } from '../models/create-task-property-request';
 import { FindResponseTaskProperty } from '../models/find-response-task-property';
 import { OperationResultResponse } from '../models/operation-result-response';
+import { IFindTaskPropertiesRequest } from '@app/services/project/task.service';
 
 @Injectable({
   providedIn: 'root',
@@ -145,33 +146,7 @@ export class TaskPropertyApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findTaskProperties(params: {
-
-    /**
-     * The part of find query that the task property name should contain.
-     */
-    name?: string;
-
-    /**
-     * The part of find query that the task property author Id should contain.
-     */
-    authorid?: string;
-
-    /**
-     * The part of find query that the task property projectid should contain.
-     */
-    projectid?: string;
-
-    /**
-     * Number of entries to skip.
-     */
-    skipCount: number;
-
-    /**
-     * Number of task properties to take.
-     */
-    takeCount: number;
-  }): Observable<FindResponseTaskProperty> {
+  findTaskProperties(params: IFindTaskPropertiesRequest): Observable<FindResponseTaskProperty> {
 
     return this.findTaskProperties$Response(params).pipe(
       map((r: StrictHttpResponse<FindResponseTaskProperty>) => r.body as FindResponseTaskProperty)

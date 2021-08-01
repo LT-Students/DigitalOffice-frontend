@@ -14,6 +14,7 @@ import { HeaderComponent } from './component/header/header.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
+import { DndDirective } from '@app/directives/dnd.directive';
 
 @NgModule({
 	declarations: [
@@ -27,9 +28,21 @@ import { StepperComponent } from './component/stepper/stepper.component';
 		DatepickerComponent,
 		StepperComponent,
 		TextDirective,
+		DndDirective,
 	],
-	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule],
+	imports: [
+		CommonModule,
+		RouterModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule
+	],
 	exports: [
+		CommonModule,
+		RouterModule,
+		MaterialModule,
+		ReactiveFormsModule,
+		FormsModule,
 		InputComponent,
 		ButtonComponent,
 		SelectComponent,
@@ -37,7 +50,7 @@ import { StepperComponent } from './component/stepper/stepper.component';
 		SearchComponent,
 		HeaderComponent,
 		TextDirective,
-		MaterialModule,
+		DndDirective,
 		DatepickerComponent,
 		StepperComponent,
 	],
