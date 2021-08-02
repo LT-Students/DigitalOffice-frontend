@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { Subject } from 'rxjs';
 import { EducationType } from '@data/api/user-service/models/education-type';
 import { MatDialog } from '@angular/material/dialog';
@@ -104,7 +104,7 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	private _getPageUsers(): void {
-		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
+		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
 			this.totalCount = data.totalCount;
 			this.userInfo = data.body.slice();
 			this.sortedUserInfo = data.body.slice();

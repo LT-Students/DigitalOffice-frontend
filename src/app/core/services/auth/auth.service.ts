@@ -8,11 +8,11 @@ import { AuthenticationResponse } from '@data/api/auth-service/models/authentica
 import { AuthApiService } from '@data/api/auth-service/services/auth-api.service';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OperationResultResponseCredentialsResponse } from '@data/api/user-service/models/operation-result-response-credentials-response';
 import { User } from '@app/models/user/user.model';
-import { LocalStorageService } from './local-storage.service';
+import { LocalStorageService } from '../local-storage.service';
 
 @Injectable({
 	providedIn: 'root',

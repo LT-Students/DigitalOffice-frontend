@@ -1,12 +1,12 @@
 import { EducationModel } from '@app/models/education.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { EducationType, OperationResultResponseUserResponse, UserInfo } from '@data/api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
-import { ProjectService } from '@app/services/project.service';
+import { ProjectService } from '@app/services/project/project.service';
 import { User } from '@app/models/user/user.model';
 import { ArchiveComponent } from './modals/archive/archive.component';
 import { AdminRequestComponent } from './modals/admin-request/admin-request.component';

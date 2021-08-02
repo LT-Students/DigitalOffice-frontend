@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from '@app/services/auth/auth.service';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
 import { of, throwError } from 'rxjs';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';

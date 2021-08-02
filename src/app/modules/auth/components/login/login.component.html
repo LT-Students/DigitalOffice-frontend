@@ -6,12 +6,12 @@
 >
   <h1 doText color='dark_1' class="form__title">Digital Office</h1>
   <div class="form__error">
-    <small *ngIf="email.dirty && email.invalid"
-      >Неправильно введен email адрес :(
-    </small>
-    <small *ngIf="password.dirty && password.invalid"
-      >Пароль обязателен :(
-    </small>
+<!--    <small *ngIf="email.dirty && email.invalid"-->
+<!--      >Неправильно введен email адрес :(-->
+<!--    </small>-->
+<!--    <small *ngIf="password.dirty && password.invalid"-->
+<!--      >Пароль обязателен :(-->
+<!--    </small>-->
     <small *ngIf="loginError">Неверный логин или пароль :(</small>
   </div>
   <input
@@ -34,6 +34,7 @@
       *ngIf="!isLoading; else spinner"
       type="submit"
       id="btn-enter"
+      [disabled]='loginForm.invalid'
     >Войти</button>
     <ng-template #spinner>
       <svg class="spinner" viewBox="0 0 50 50">

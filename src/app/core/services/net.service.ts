@@ -10,6 +10,7 @@ import { OperationResultResponseDepartmentInfo } from '@data/api/company-service
 import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
 import { FindResultResponseOfficeInfo } from '@data/api/company-service/models/find-result-response-office-info';
 import { FindResultResponsePositionInfo } from '@data/api/company-service/models/find-result-response-position-info';
+import { IFindRequestEx } from '@app/types/find-request.interface';
 
 @Injectable()
 export class NetService {
@@ -45,7 +46,7 @@ export class NetService {
 		);
 	}
 
-	public getOfficesList(params: { skipCount: number; takeCount: number; includeDeactivated?: boolean }): Observable<FindResultResponseOfficeInfo> {
+	public getOfficesList(params: IFindRequestEx): Observable<FindResultResponseOfficeInfo> {
 		return this._companyApiService.findOffices(params);
 	}
 

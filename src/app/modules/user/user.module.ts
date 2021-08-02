@@ -36,12 +36,8 @@ import { DeleteTaskComponent } from './modals/delete-task/delete-task.component'
 		TaskFilterPipe,
 	],
 	imports: [
-		CommonModule,
 		SharedModule,
 		NgbDatepickerModule,
-		MaterialModule,
-		ReactiveFormsModule,
-		FormsModule,
 		AdminModule,
 		UserRoutingModule,
 	],

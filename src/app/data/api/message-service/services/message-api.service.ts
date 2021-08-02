@@ -11,6 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { EditEmailTemplateRequest } from '../models/edit-email-template-request';
 import { EmailTemplateRequest } from '../models/email-template-request';
+import { IRemoveEmailTemplateRequest } from '@app/services/message/message.service';
 
 @Injectable({
   providedIn: 'root',
@@ -120,13 +121,7 @@ export class MessageApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  removeEmailTemplate(params: {
-
-    /**
-     * Email template global unique identifier.
-     */
-    emailTemplateId: string;
-  }): Observable<void> {
+  removeEmailTemplate(params: IRemoveEmailTemplateRequest): Observable<void> {
 
     return this.removeEmailTemplate$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
