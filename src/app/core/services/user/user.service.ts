@@ -24,18 +24,14 @@ import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 export class UserService {
 	public selectedUser: BehaviorSubject<User>;
 
-	constructor(
-		private _userApiService: UserApiService,
-		private route: ActivatedRoute,
-		private localStorageService: LocalStorageService
-	) {
+	constructor(private _userApiService: UserApiService, private localStorageService: LocalStorageService) {
 		this.selectedUser = new BehaviorSubject<User>(null);
 	}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
-		return this._userApiService.getUser(params).pipe(
-			switchMap((userResponse: OperationResultResponseUserResponse) => of(new User(userResponse)))
-		);
+		return this._userApiService
+			.getUser(params)
+			.pipe(switchMap((userResponse: OperationResultResponseUserResponse) => of(new User(userResponse))));
 	}
 
 	public findUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<FindResultResponseUserInfo> {
@@ -51,10 +47,10 @@ export class UserService {
 		);
 	}
 
-	public editUser(userId: string, changes: {path: string, value: any }[]): Observable<OperationResultResponse> {
+	public editUser(userId: string, changes: { path: string; value: any }[]): Observable<OperationResultResponse> {
 		const body: PatchUserDocument[] = [];
 		/* TODO: сделать функцию, которая маппит название контрола в path */
-		changes.forEach((item: {path: string, value: any }) => {
+		changes.forEach((item: { path: string; value: any }) => {
 			switch (item.path) {
 				case 'firstName':
 					body.push({
@@ -170,8 +166,8 @@ export class UserService {
 
 		const params: IEditUserRequest = {
 			userId,
-			body
-		}
+			body,
+		};
 
 		return this._userApiService.editUser(params);
 	}
@@ -197,18 +193,16 @@ export class UserService {
 	}
 
 	public isAdmin(): boolean {
-		//TODO использовать getCurrentUser для получения юзера
-		const user: User = this.localStorageService.get('user');
-		return user ? user.user.isAdmin : false;
+		const user: User = this.selectedUser.value;
+		return user ? user.isAdmin : false;
 	}
 
 	public getCurrentUser(): User | null {
-		const user: User = this.localStorageService.get('user');
+		const user: User = this.selectedUser.value;
 		return user ? user : null;
 	}
 
 	private _setUser(user: User): void {
-		this.localStorageService.set('user', user);
 		this.selectedUser.next(user);
 	}
 }
