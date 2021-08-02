@@ -19,7 +19,7 @@ export class CompanyService {
 		return this._companyService.createCompany({ body });
 	}
 
-	public getCompany(params: IGetCompanyRequest): Observable<OperationResultResponseCompanyInfo> {
+	public getCompany(params?: IGetCompanyRequest): Observable<OperationResultResponseCompanyInfo> {
 		return this._companyService.getCompany(params);
 	}
 
