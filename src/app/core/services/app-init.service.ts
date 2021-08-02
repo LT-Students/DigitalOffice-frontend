@@ -4,7 +4,6 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { Router } from '@angular/router';
 import { AuthService } from '@app/services/auth/auth.service';
 
 @Injectable({
@@ -15,7 +14,6 @@ export class AppInitService {
 		private _userService: UserService,
 		private _localStorage: LocalStorageService,
 		private _authService: AuthService,
-		private _router: Router
 	) {}
 
 	public getCurrentUser(): Promise<any> {
