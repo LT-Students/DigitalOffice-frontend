@@ -27,7 +27,14 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	public ngOnInit(): void {}
+	public ngOnInit(): void {
+		this.loginForm.valueChanges.pipe(tap(() => {
+				if (this.loginForm) {
+					this.loginError = null;
+				}
+			})
+		).subscribe();
+	}
 
 	public login(): void {
 		this.isLoading = true;
@@ -49,13 +56,6 @@ export class LoginComponent implements OnInit {
 			.subscribe((user: User) => {
 				this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
 			});
-
-		this.loginForm.valueChanges.pipe(tap(() => {
-			if (this.loginForm) {
-				this.loginError = null;
-			}
-		})
-		).subscribe();
 	}
 
 	public get email() {
