@@ -17,6 +17,7 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 
 import { NetService } from '@app/services/net.service';
+import { CoreModule } from '@app/core.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
@@ -26,7 +27,6 @@ import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { InstallerModule } from './modules/installer/installer.module';
-import { CoreModule } from '@app/core.module';
 
 registerLocaleData(localeRu);
 
