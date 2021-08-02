@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
@@ -27,7 +27,14 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	public ngOnInit(): void {}
+	public ngOnInit(): void {
+		this.loginForm.valueChanges.pipe(tap(() => {
+				if (this.loginForm) {
+					this.loginError = null;
+				}
+			})
+		).subscribe();
+	}
 
 	public login(): void {
 		this.isLoading = true;
@@ -57,5 +64,6 @@ export class LoginComponent implements OnInit {
 
 	public get password() {
 		return this.loginForm.get('password');
+
 	}
 }
