@@ -61,7 +61,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.addHoursForm = this.fb.group({
-			time: [24, [Validators.required, timeValidator(() => this._countMaxHours() * 60)]],
+			time: [24, [Validators.required, timeValidator(() => this._countMaxHours())]],
 			// time: this.fb.group({
 			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
 			// 	minutes: ['', [Validators.required, Validators.max(59)]],
@@ -112,7 +112,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	private _countMaxHours(): number {
 		const currentDatePeriod = this.attendanceService.datePeriod;
-		return Number(this.attendanceService.getRecommendedTime(currentDatePeriod, 24).hours);
+		return Number(this.attendanceService.getRecommendedTime(currentDatePeriod, 24).hours) * 60;
 	}
 
 	public onSubmit(): void {
