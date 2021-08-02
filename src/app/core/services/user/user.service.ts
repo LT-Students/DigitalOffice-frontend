@@ -197,18 +197,17 @@ export class UserService {
 	}
 
 	public isAdmin(): boolean {
-		//TODO использовать getCurrentUser для получения юзера
-		const user: User = this.localStorageService.get('user');
-		return user ? user.user.isAdmin : false;
+		const user: User = this.selectedUser.value;
+		return user ? user.isAdmin : false;
 	}
 
 	public getCurrentUser(): User | null {
-		const user: User = this.localStorageService.get('user');
+		const user: User = this.selectedUser.value;
 		return user ? user : null;
 	}
 
 	private _setUser(user: User): void {
-		this.localStorageService.set('user', user);
+		this.localStorageService.set('userId', user.id);
 		this.selectedUser.next(user);
 	}
 }
