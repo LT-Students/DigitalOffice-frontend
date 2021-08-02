@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
+import { DndDirective } from '@app/directives/dnd.directive';
 import { MaterialModule } from './material.module';
 
 import { ButtonComponent } from './component/button/button.component';
@@ -14,6 +15,7 @@ import { HeaderComponent } from './component/header/header.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
+import { HoursPipe } from './pipes/hours/hours.pipe';
 
 @NgModule({
 	declarations: [
@@ -27,9 +29,22 @@ import { StepperComponent } from './component/stepper/stepper.component';
 		DatepickerComponent,
 		StepperComponent,
 		TextDirective,
+		DndDirective,
+		HoursPipe,
 	],
-	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule],
+	imports: [
+		CommonModule,
+		RouterModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule
+	],
 	exports: [
+		CommonModule,
+		RouterModule,
+		MaterialModule,
+		ReactiveFormsModule,
+		FormsModule,
 		InputComponent,
 		ButtonComponent,
 		SelectComponent,
@@ -37,9 +52,10 @@ import { StepperComponent } from './component/stepper/stepper.component';
 		SearchComponent,
 		HeaderComponent,
 		TextDirective,
-		MaterialModule,
+		DndDirective,
 		DatepickerComponent,
 		StepperComponent,
+		HoursPipe,
 	],
 })
 export class SharedModule {}

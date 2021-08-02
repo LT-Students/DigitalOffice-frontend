@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';
-import { ProjectService } from '@app/services/project.service';
+import { ProjectService } from '@app/services/project/project.service';
 import { Observable, of } from 'rxjs';
 import { Project } from '@app/models/project/project.model';
 import { map } from 'rxjs/operators';
@@ -39,7 +39,7 @@ export class AttendanceComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.projects$ = this._projectService.getProjectList().pipe(
+		this.projects$ = this._projectService.findProjects().pipe(
 			map((data: FindResponseProjectInfo) => data.body),
 			map((data: ProjectInfo[]) => {
 				return data.map((projectInfo: ProjectInfo) => new Project(projectInfo));
