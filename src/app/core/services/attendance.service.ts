@@ -9,7 +9,7 @@ import { DateService } from './date.service';
 	providedIn: 'root',
 })
 export class AttendanceService {
-	private readonly _datePeriod = new BehaviorSubject<DatePeriod>(this.dateService.getDefaultDatePeriod(6));
+	private readonly _datePeriod = new BehaviorSubject<DatePeriod>(this.dateService.getDefaultDatePeriod());
 
 	readonly datePeriod$ = this._datePeriod.asObservable();
 

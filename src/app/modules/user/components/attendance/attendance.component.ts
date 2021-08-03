@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 import { FindResponseProjectInfo } from '@data/api/project-service/models/find-response-project-info';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { User } from '@app/models/user/user.model';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 
 @Component({

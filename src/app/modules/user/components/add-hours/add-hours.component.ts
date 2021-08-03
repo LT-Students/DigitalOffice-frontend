@@ -6,7 +6,6 @@ import { Observable, ReplaySubject } from 'rxjs';
 
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
-import { DayOfWeek } from '@data/models/day-of-week';
 import { DateService } from '@app/services/date.service';
 import { DateFilterFn } from '@angular/material/datepicker';
 import { ProjectInfo } from '@data/api/user-service/models/project-info';
@@ -18,8 +17,6 @@ import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work
 import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
-import { Task } from '@app/models/task.model';
-import { User } from '@app/models/user/user.model';
 import { timeValidator } from './add-hours.validators';
 
 @Component({
@@ -28,17 +25,18 @@ import { timeValidator } from './add-hours.validators';
 	styleUrls: ['./add-hours.component.scss'],
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
-	@Input() user: User;
+	@Input() userId: string;
+	@Input() projects: ProjectInfo[];
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-	public projects: ProjectInfo[];
 	public absences: ILeaveType[];
 	public addHoursForm: FormGroup;
 	public setTimePeriod: Time;
 
+	public isProjectForm: boolean;
+
 	public startDate: Date | null;
 	public endDate: Date | null;
-	public daysOfWeek: DayOfWeek[];
 	private tempStartDate: Date;
 
 	constructor(
@@ -52,9 +50,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	) {
 		this.startDate = this.attendanceService.datePeriod.startDate;
 		this.endDate = this.attendanceService.datePeriod.endDate;
-		this.daysOfWeek = this.dateService.getWeek(this.endDate);
 
-		this.projects = this.projectStore.projects;
+		this.isProjectForm = true;
 
 		this.absences = LeaveTimeModel.getAllLeaveTypes();
 	}
@@ -66,14 +63,10 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
 			// 	minutes: ['', [Validators.required, Validators.max(59)]],
 			// }),
-			isProject: [true, Validators.required],
 			activity: ['', Validators.required],
 			task: ['', Validators.required],
 			description: [''],
 		});
-
-		this.projects = this.user.projects;
-		console.log(this.user);
 
 		// this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
 		// 	this.setTimePeriod = timePeriod;
@@ -84,21 +77,16 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	public setTypeOfForm(event: MatOptionSelectionChange): void {
 		if (event.isUserInput) {
-			const isProjectControl = this.addHoursForm.get('isProject');
 			const taskControl = this.addHoursForm.get('task');
 			if (event.source.group.label === 'Проекты') {
-				isProjectControl.setValue(true);
+				this.isProjectForm = true;
 				taskControl.setValidators([Validators.required]);
 			} else {
-				isProjectControl.setValue(false);
+				this.isProjectForm = false;
 				taskControl.clearValidators();
 			}
 			taskControl.updateValueAndValidity();
 		}
-	}
-
-	public isProjectForm() {
-		return this.addHoursForm.get('isProject').value as boolean;
 	}
 
 	public getLastDayOfMonth(): Date | null {
@@ -119,10 +107,9 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 		console.log(this.addHoursForm.value);
 		let timeService: Observable<OperationResultResponse>;
 
-		if (this.addHoursForm.get('isProject').value as boolean) {
+		if (this.isProjectForm) {
 			const addWorkTime: CreateWorkTimeRequest = {
-				//TODO fix user service
-				userId: this.user.user.id,
+				userId: this.userId,
 				startTime: this.startDate.toISOString(),
 				endTime: this.endDate.toISOString(),
 				minutes: this.addHoursForm.get('time').value,
@@ -133,7 +120,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			timeService = this.workTimeService.addWorkTime({ body: addWorkTime });
 		} else {
 			const addLeaveTime: CreateLeaveTimeRequest = {
-				userId: this.user.user.id,
+				userId: this.userId,
 				startTime: this.startDate.toISOString(),
 				endTime: this.endDate.toISOString(),
 				minutes: this.addHoursForm.get('time').value,
@@ -153,6 +140,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			}
 		);
 		this.addHoursForm.reset();
+		this.isProjectForm = true;
 	}
 
 	public getTimePeriodErrorMessage(): String {
@@ -191,7 +179,6 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 					startDate: date,
 					endDate: null,
 				});
-				this.daysOfWeek = this.dateService.getWeek(date);
 				this.tempStartDate = date;
 				this.startDate = date;
 			} else {

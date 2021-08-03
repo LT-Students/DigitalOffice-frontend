@@ -38,7 +38,7 @@
 			</mat-form-field>
 		</div>
 
-		<div class="add-hours__row" *ngIf="isProjectForm()">
+		<div class="add-hours__row" *ngIf="isProjectForm">
 			<mat-form-field appearance="fill">
 				<mat-label>Задача</mat-label>
 				<input #task matInput id="task" formControlName="task" placeholder="Кратко опишите задачу" maxlength="50" required />

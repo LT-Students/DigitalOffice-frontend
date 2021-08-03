@@ -30,10 +30,14 @@ export class DateService {
 		}
 	}
 
-	getDefaultDatePeriod(daysFromToday: number): DatePeriod {
-		const today = new Date();
-		const inWeek = this.addDays(today, daysFromToday);
-		return { startDate: today, endDate: inWeek };
+	getDefaultDatePeriod(): DatePeriod {
+		const today: Date = new Date();
+		const startDate: Date = new Date(today.getFullYear(), today.getMonth(), 1);
+		const endDate: Date = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+		// const today = new Date();
+		// const inWeek = this.addDays(today, daysFromToday);
+		return { startDate, endDate };
 	}
 
 	getWeek(dateSelected: Date): DayOfWeek[] {
