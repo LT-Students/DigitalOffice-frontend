@@ -8,7 +8,6 @@ import { DndDirective } from '@app/directives/dnd.directive';
 import { SharedModule } from '../../shared/shared.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
-import { ProjectCardComponent } from './components/project-card/project-card.component';
 import { NewEmployeeComponent } from './modals/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { UserSearchComponent } from './components/new-project/modals/user-search/user-search.component';
@@ -33,14 +32,12 @@ import { PositionListComponent } from './components/position-list/position-list.
 	declarations: [
 		DashboardComponent,
 		AdminComponent,
-		ProjectCardComponent,
 		NewEmployeeComponent,
 		NewProjectComponent,
 		UserSearchComponent,
 		NewCompanyComponent,
 		TeamCardComponent,
 		UploadComponent,
-		DndDirective,
 		ProgressComponent,
 		NewDepartmentComponent,
 		NewPositionComponent,
@@ -54,7 +51,13 @@ import { PositionListComponent } from './components/position-list/position-list.
 		OfficeListComponent,
 		PositionListComponent
 	],
-	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
-	exports: [ProjectCardComponent, DndDirective],
+	imports: [
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule,
+		SharedModule,
+		AdminRoutingModule
+	],
+	exports: [DndDirective],
 })
 export class AdminModule {}

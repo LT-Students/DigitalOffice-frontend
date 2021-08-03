@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from '@app/services/auth/auth.service';
 
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
+import { of } from 'rxjs';
 
 @Component({
 	selector: 'do-login',
@@ -26,7 +27,14 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	public ngOnInit(): void {}
+	public ngOnInit(): void {
+		this.loginForm.valueChanges.pipe(tap(() => {
+				if (this.loginForm) {
+					this.loginError = null;
+				}
+			})
+		).subscribe();
+	}
 
 	public login(): void {
 		this.isLoading = true;
@@ -36,19 +44,17 @@ export class LoginComponent implements OnInit {
 			password: this.loginForm.get('password').value,
 		};
 
-		this._authService
-			.login(authenticationRequest)
-			.pipe(
+		this._authService.login(authenticationRequest).pipe(
 				finalize(() => (this.isLoading = false)),
 				catchError((error) => {
 					this.loginError = error.message;
 					this.isLoading = false;
 					console.log('Getting user info failed.', error.message);
-					throw error;
+					return of(null);
 				})
 			)
 			.subscribe((user: User) => {
-				this._router.navigate([user.user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
+				this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
 			});
 	}
 
@@ -58,5 +64,6 @@ export class LoginComponent implements OnInit {
 
 	public get password() {
 		return this.loginForm.get('password');
+
 	}
 }

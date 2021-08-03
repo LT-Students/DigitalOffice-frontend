@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
+import { DndDirective } from '@app/directives/dnd.directive';
 import { MaterialModule } from './material.module';
 
 import { ButtonComponent } from './component/button/button.component';
@@ -15,6 +16,7 @@ import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
 import { TimeInputComponent } from './component/time-input/time-input.component';
+import { HoursPipe } from './pipes/hours/hours.pipe';
 
 @NgModule({
 	declarations: [
@@ -28,10 +30,23 @@ import { TimeInputComponent } from './component/time-input/time-input.component'
 		DatepickerComponent,
 		StepperComponent,
 		TextDirective,
+		DndDirective,
+		HoursPipe,
 		TimeInputComponent,
 	],
-	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule],
+	imports: [
+		CommonModule,
+		RouterModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule
+	],
 	exports: [
+		CommonModule,
+		RouterModule,
+		MaterialModule,
+		ReactiveFormsModule,
+		FormsModule,
 		InputComponent,
 		ButtonComponent,
 		SelectComponent,
@@ -39,9 +54,10 @@ import { TimeInputComponent } from './component/time-input/time-input.component'
 		SearchComponent,
 		HeaderComponent,
 		TextDirective,
-		MaterialModule,
+		DndDirective,
 		DatepickerComponent,
 		StepperComponent,
+		HoursPipe,
 		TimeInputComponent,
 	],
 })

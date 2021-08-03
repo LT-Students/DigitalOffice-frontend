@@ -85,12 +85,7 @@
         <do-search magnifierLocation="left" placeholder="поиск"></do-search>
       </div>
       <div class="action">
-        <button
-          mat-flat-button
-          color="primary"
-          *ngIf="sectionModes.certificates !== workFlowMode.ADD"
-          (click)='onCertificateAddClicked()'
-        >
+        <button mat-flat-button color="primary" *ngIf="sectionModes.certificates !== workFlowMode.ADD" (click)='onCertificateAddClicked()'>
           + Добавить сертификат
         </button>
       </div>
@@ -113,8 +108,8 @@
             </div>
             <!--2 column-->
             <div class="col">
-              <p doText color='gray1'>{{ course.educationInstitution }}</p>
-              <p doText color='dark_2'>{{ course.specialization }}</p>
+              <p doText color='gray1'>{{ course.institutionName }}</p>
+              <p doText color='dark_2'>{{ course.specializationName }}</p>
             </div>
             <div class="col">
               <div class="row__button">
@@ -149,25 +144,15 @@
 <!-- edit form -->
 <ng-template #editFormTemplate>
   <form class="row__edit-form edit-form" [formGroup]="editForm" (ngSubmit)="onSubmit()">
-    <mat-form-field class="mat-form-field__form-control edit-form__institution" appearance="fill" floatLabel="always">
+    <mat-form-field class="edit-form__institution" appearance="fill" floatLabel="always">
       <mat-label>Учебное заведение</mat-label>
-      <input
-        matInput
-        placeholder="Введите название заведения"
-        formControlName="schoolName"
-        [value]="selectedEducationItem?.educationInstitution"
-      />
+      <input matInput formControlName="schoolName"/>
     </mat-form-field>
-    <mat-form-field
-      class="mat-form-field__form-control edit-form__specialization" appearance="fill" floatLabel="always">
+    <mat-form-field class="edit-form__specialization" appearance="fill" floatLabel="always">
       <mat-label>Специализация</mat-label>
-      <input matInput
-        formControlName="name"
-        placeholder="Введите название специализации"
-        [value]="selectedEducationItem?.specialization"
-      />
+      <input matInput formControlName="name"/>
     </mat-form-field>
-    <mat-form-field class='mat-form-field_default-select' appearance='fill'>
+    <mat-form-field appearance='fill'>
       <mat-label>Формат обучения</mat-label>
       <mat-select class='select' placeholder='Показать все' formControlName='educationType'>
         <mat-option *ngFor='let studyType of studyTypes' [value]='studyType'>{{ studyType }}</mat-option>
@@ -187,8 +172,8 @@
       [isEdit]="true"
       label="Год окончания"
       required="true"></do-datepicker>
-    <button mat-flat-button *ngIf='sectionModes.certificates !== workFlowMode.VIEW'>
-      <img src='../../../../../assets/svg/pin.svg' alt="ping" />&nbsp;Загрузить сертификат
+    <button mat-flat-button *ngIf='sectionModes.certificates !== workFlowMode.VIEW' (click)='onCertificateImageAddClicked()'>
+      <mat-icon>attach_file</mat-icon>&nbsp;Загрузить сертификат
     </button>
     <div class="edit-form__action">
       <button mat-flat-button color="warn" type="button" (click)="onReset()">Отменить</button>

@@ -3,7 +3,7 @@ import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
@@ -48,7 +48,7 @@ export class DepartmentCardComponent implements OnInit {
 	onPageChange(event: PageEvent): void {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
-		this._userService.getUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
+		this._userService.findUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
 			this.sortedUsersInfo = data.body.slice();
 		});
 	}
