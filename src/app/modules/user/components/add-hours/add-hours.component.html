@@ -1,23 +1,24 @@
 <mat-card class="add-hours card_grid">
 	<h3 class="add-hours__heading" doText underlined underlinedSize="sm">
-		Внести часы за
+		<span>Внести часы за&nbsp;</span>
 		<mat-form-field class="add-hours__hidden-picker" appearance="none">
 			<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker" [max]="getLastDayOfMonth()">
 				<!--                TODO разобраться с ошибкой-->
-				<input matStartDate (dateChange)="onDateInput($event.value, true)" [value]="startDate" />
-				<input matEndDate (dateChange)="onDateInput($event.value, false)" [value]="endDate" />
+				<input matStartDate (dateChange)="onStartDateChange($event.value)" [value]="startDate" />
+				<input matEndDate (dateChange)="onEndDateChange($event.value)" [value]="endDate" />
 			</mat-date-range-input>
 			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
 		</mat-form-field>
 
 		<a class="add-hours__date-picker" doText color="accent_color_bright" (click)="picker.open()"
-			>{{ startDate | date: 'd' }} - {{ endDate | date: 'd MMMM' }} <mat-icon>expand_more</mat-icon></a
+			><span *ngIf="startDate?.getTime() !== endDate?.getTime()">{{ startDate | date: 'd' }} -&nbsp;</span>{{ endDate | date: 'd MMMM' }}
+			<mat-icon>expand_more</mat-icon></a
 		>
 	</h3>
 	<form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 		<div class="add-hours__row">
 			<mat-form-field class="add-hours__time" appearance="fill">
-				<input matInput formControlName="time" type="text" maxlength="3" />
+				<input matInput formControlName="time" type="text" maxlength="3" placeholder="08:00" />
 				<mat-icon matSuffix aria-label="time">schedule</mat-icon>
 				<!--				<mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>-->
 			</mat-form-field>
@@ -25,12 +26,12 @@
 				<mat-label>Куда</mat-label>
 				<mat-select formControlName="activity">
 					<mat-optgroup label="Проекты">
-						<mat-option *ngFor="let project of projects" (onSelectionChange)="setTypeOfForm($event)" [value]="project.id">
+						<mat-option *ngFor="let project of projects" (onSelectionChange)="setFormType($event)" [value]="project.id">
 							{{ project.name }}
 						</mat-option>
 					</mat-optgroup>
 					<mat-optgroup label="Отсутствия">
-						<mat-option *ngFor="let absence of absences" (onSelectionChange)="setTypeOfForm($event)" [value]="absence.leaveType">
+						<mat-option *ngFor="let absence of absences" (onSelectionChange)="setFormType($event)" [value]="absence.leaveType">
 							{{ absence.leaveInRussian }}
 						</mat-option>
 					</mat-optgroup>

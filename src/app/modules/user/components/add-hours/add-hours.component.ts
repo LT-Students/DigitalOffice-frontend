@@ -1,22 +1,19 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Time } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { AttendanceService } from '@app/services/attendance.service';
-import { ProjectStore } from '@data/store/project.store';
 import { DateService } from '@app/services/date.service';
 import { DateFilterFn } from '@angular/material/datepicker';
 import { ProjectInfo } from '@data/api/user-service/models/project-info';
-import { WorkTimeApiService } from '@data/api/time-service/services/work-time-api.service';
-import { LeaveTimeApiService } from '@data/api/time-service/services/leave-time-api.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { ILeaveType, LeaveTimeModel } from '@app/models/leave-time.model';
 import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work-time-request';
 import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
+import { TimeService } from '@app/services/time/time.service';
 import { timeValidator } from './add-hours.validators';
 
 @Component({
@@ -31,34 +28,23 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	public absences: ILeaveType[];
 	public addHoursForm: FormGroup;
-	public setTimePeriod: Time;
 
 	public isProjectForm: boolean;
 
-	public startDate: Date | null;
-	public endDate: Date | null;
-	private tempStartDate: Date;
-
 	constructor(
-		private fb: FormBuilder,
-		private attendanceService: AttendanceService,
-		private projectStore: ProjectStore,
-		private dateService: DateService,
-		private workTimeService: WorkTimeApiService,
-		private leaveTimeService: LeaveTimeApiService,
-		private snackbar: MatSnackBar
+		private _fb: FormBuilder,
+		private _attendanceService: AttendanceService,
+		private _dateService: DateService,
+		private _timeService: TimeService,
+		private _snackbar: MatSnackBar
 	) {
-		this.startDate = this.attendanceService.datePeriod.startDate;
-		this.endDate = this.attendanceService.datePeriod.endDate;
-
 		this.isProjectForm = true;
-
 		this.absences = LeaveTimeModel.getAllLeaveTypes();
 	}
 
 	ngOnInit() {
-		this.addHoursForm = this.fb.group({
-			time: [24, [Validators.required, timeValidator(() => this._countMaxHours())]],
+		this.addHoursForm = this._fb.group({
+			time: [ 24, [Validators.required, timeValidator(() => this._countMaxHours())]],
 			// time: this.fb.group({
 			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
 			// 	minutes: ['', [Validators.required, Validators.max(59)]],
@@ -75,17 +61,35 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 		// });
 	}
 
-	public setTypeOfForm(event: MatOptionSelectionChange): void {
+	get startDate(): Date {
+		return this._attendanceService.datePeriod.startDate;
+	}
+
+	get endDate(): Date {
+		return this._attendanceService.datePeriod.endDate;
+	}
+
+	public setFormType(event: MatOptionSelectionChange): void {
 		if (event.isUserInput) {
 			const taskControl = this.addHoursForm.get('task');
 			if (event.source.group.label === 'Проекты') {
-				this.isProjectForm = true;
 				taskControl.setValidators([Validators.required]);
 			} else {
-				this.isProjectForm = false;
 				taskControl.clearValidators();
 			}
+			this._toggleFormType();
 			taskControl.updateValueAndValidity();
+		}
+	}
+
+	private _toggleFormType() {
+		const timeControl = this.addHoursForm.get('time');
+		if (this.isProjectForm) {
+			this.isProjectForm = false;
+			timeControl.disable();
+		} else {
+			this.isProjectForm = true;
+			timeControl.enable();
 		}
 	}
 
@@ -99,8 +103,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	}
 
 	private _countMaxHours(): number {
-		const currentDatePeriod = this.attendanceService.datePeriod;
-		return Number(this.attendanceService.getRecommendedTime(currentDatePeriod, 24).hours) * 60;
+		const currentDatePeriod = this._attendanceService.datePeriod;
+		return Number(this._attendanceService.getRecommendedTime(currentDatePeriod, 24).hours) * 60;
 	}
 
 	public onSubmit(): void {
@@ -117,7 +121,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 				title: this.addHoursForm.get('task').value,
 				description: this.addHoursForm.get('description').value,
 			};
-			timeService = this.workTimeService.addWorkTime({ body: addWorkTime });
+			timeService = this._timeService.addWorkTime(addWorkTime);
 		} else {
 			const addLeaveTime: CreateLeaveTimeRequest = {
 				userId: this.userId,
@@ -127,20 +131,20 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 				leaveType: this.addHoursForm.get('activity').value,
 				comment: this.addHoursForm.get('description').value,
 			};
-			timeService = this.leaveTimeService.addLeaveTime({ body: addLeaveTime });
+			timeService = this._timeService.addLeaveTime(addLeaveTime);
 		}
 
 		timeService.subscribe(
 			(result) => {
-				this.snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
+				this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
 			},
 			(error) => {
-				this.snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
+				this._snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
 				throw error;
 			}
 		);
 		this.addHoursForm.reset();
-		this.isProjectForm = true;
+		this._toggleFormType();
 	}
 
 	public getTimePeriodErrorMessage(): String {
@@ -162,32 +166,31 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	};
 
 	public onClose(): void {
-		const datePeriod = this.attendanceService.datePeriod;
+		const datePeriod = this._attendanceService.datePeriod;
 		if (!datePeriod.endDate) {
 			const oneDayPeriod = {
 				startDate: datePeriod.startDate,
 				endDate: datePeriod.startDate,
 			};
-			this.attendanceService.onDatePeriodChange(oneDayPeriod);
+			this._attendanceService.onDatePeriodChange(oneDayPeriod);
 		}
 	}
 
-	public onDateInput(date: Date | null, isStartDate: boolean): void {
+	public onStartDateChange(date: Date | null): void {
 		if (date) {
-			if (isStartDate) {
-				this.attendanceService.onDatePeriodChange({
-					startDate: date,
-					endDate: null,
-				});
-				this.tempStartDate = date;
-				this.startDate = date;
-			} else {
-				this.attendanceService.onDatePeriodChange({
-					startDate: this.tempStartDate,
-					endDate: date,
-				});
-				this.endDate = date;
-			}
+			this._attendanceService.onDatePeriodChange({
+				startDate: date,
+				endDate: null,
+			});
+		}
+	}
+
+	public onEndDateChange(date: Date | null): void {
+		if (date) {
+			this._attendanceService.onDatePeriodChange({
+				startDate: this.startDate,
+				endDate: date,
+			});
 		}
 	}
 
