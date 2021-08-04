@@ -5,6 +5,7 @@
 @import 'do/underlined';
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 @import '~@angular/cdk/overlay-prebuilt.css';
+@import 'layouts/table';
 
 *,
 *::before,
@@ -67,3 +68,6 @@ textarea {
 		opacity: 0.5;
 	}
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

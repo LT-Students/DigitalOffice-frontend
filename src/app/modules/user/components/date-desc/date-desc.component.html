@@ -1,51 +1,51 @@
 <mat-card class="desc">
-  <div class="desc__content">
-    <div class="desc__calender">
-        <h1>{{ getPeriod() }}</h1>
-        <!--<span *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)">
-          {{ startDate | date: 'd MMMM' }}
-        </span>
-        <span
-          *ngIf="endDate
-           && this.dateService.isSameMonth(startDate, endDate)
-          && !this.dateService.isSameDay(startDate, endDate)">
-          {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
-        </span>
-        <span *ngIf="endDate && !this.dateService.isSameMonth(startDate, endDate)">
-          {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
-        </span>-->
-      <mat-chip-list class="content__week" aria-label="Fish selection">
-        <div class="content__week__day"  *ngFor="let dayOfWeek of daysOfWeek">
-          <p class="content__week__day-single">{{ dayOfWeek.date | date: 'EEEEEE' }}</p>
-          <mat-chip (click)="selectDay(dayOfWeek)" [selected]='dayOfWeek.isSelected'>
-            {{ dayOfWeek.date | date: 'dd' }}
-          </mat-chip>
+    <div class="desc__content">
+        <div class="desc__calender">
+            <h1>{{ getPeriod() }}</h1>
+            <!--<span *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)">
+              {{ startDate | date: 'd MMMM' }}
+            </span>
+            <span
+              *ngIf="endDate
+               && this.dateService.isSameMonth(startDate, endDate)
+              && !this.dateService.isSameDay(startDate, endDate)">
+              {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
+            </span>
+            <span *ngIf="endDate && !this.dateService.isSameMonth(startDate, endDate)">
+              {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
+            </span>-->
+            <mat-chip-list class="content__week" aria-label="Fish selection">
+                <div class="content__week__day"  *ngFor="let dayOfWeek of daysOfWeek">
+                    <p class="content__week__day-single">{{ dayOfWeek.date | date: 'EEEEEE' }}</p>
+                    <mat-chip (click)="selectDay(dayOfWeek)" [selected]='dayOfWeek.isSelected'>
+                        {{ dayOfWeek.date | date: 'dd' }}
+                    </mat-chip>
+                </div>
+            </mat-chip-list>
+
+            <div>
+                <mat-form-field appearance="none">
+                    <mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
+                        <input
+                            (dateChange)="onDateInput($event.value, true)"
+                            [value]="startDate"
+                            matStartDate
+                        />
+                        <input
+                            (dateChange)="onDateInput($event.value, false)"
+                            [value]="endDate"
+                            matEndDate
+                        />
+                    </mat-date-range-input>
+                    <mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
+                </mat-form-field>
+                <button mat-flat-button (click)="picker.open()" color='primary'>
+                    Выбрать другую дату<mat-icon>chevron_right</mat-icon>
+                </button>
+
+                <button mat-flat-button>Сегодня</button>
+            </div>
         </div>
-      </mat-chip-list>
-
-      <div>
-        <mat-form-field appearance="none">
-          <mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
-            <input
-              (dateChange)="onDateInput($event.value, true)"
-              [value]="startDate"
-              matStartDate
-            />
-            <input
-              (dateChange)="onDateInput($event.value, false)"
-              [value]="endDate"
-              matEndDate
-            />
-          </mat-date-range-input>
-          <mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
-        </mat-form-field>
-        <button mat-flat-button (click)="picker.open()" color='primary'>
-          Выбрать другую дату<mat-icon>chevron_right</mat-icon>
-        </button>
-
-        <button mat-flat-button>Сегодня</button>
-      </div>
+        <div class="desc__photo"><img alt="girl" src="assets/svg/girl.svg" /></div>
     </div>
-    <div class="desc__photo"><img alt="girl" src="assets/svg/girl.svg" /></div>
-  </div>
 </mat-card>

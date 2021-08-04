@@ -2,83 +2,83 @@
 @import 'base/fonts';
 
 .chart {
-	padding-top: 48px;
-	padding-bottom: 40px;
-
+	padding: 0px 48px 32px 48px;
 	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
+	flex-direction: column;
+	justify-content: space-around;
 	align-items: flex-start;
-
 	width: 100%;
-
 	background-color: #fff;
-
-	&__doughnut {
-		position: relative;
-
-		width: 184px;
-		height: 184px;
+	position: relative;
+	&__tags__projects {
+		display: flex;
+		justify-content: space-between;
+		width: 80%;
+		align-items: flex-end;
+		font-family: "GillSansWGL", $regular_font;
+		span {
+			font-family: "Montserrat", $regular_font;
+			font-size: 16px;
+			font-weight: 700;
+			line-height: 24px;
+			text-align: left;
+		}
 	}
 
 	&__time-info {
 		position: absolute;
-		top: 50%;
+		top: 55%;
 		left: 50%;
-
 		margin-top: 5px;
-
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		justify-content: flex-start;
 		align-items: center;
-
 		font-size: 16px;
 		text-align: center;
-
 		transform: translate(-50%, -50%);
+
 	}
-
-	&__time-spent {
+	&__time-spent  {
 		color: $dark_1;
-
+		font-family: "Montserrat", $regular_font;
+		font-size: 22px;
+		font-weight: 700;
+		line-height: 33px;
 		&_initial {
 			color: $gray;
 		}
 
 		&::after {
-			content: 'ч';
-
-			font-family: $regular_font;
+			content: '/';
+			padding: 0 2px;
+			font-family: "Montserrat", $regular_font;
 			font-size: 16px;
 			font-weight: normal;
 			line-height: 24px;
-
-			color: $gray;
+			color: $dark_5;
 		}
 	}
-
 	&__time-status {
-		padding: 0 6px;
+		padding: 0;
 
 		width: max-content;
 
-		font-family: $regular_font;
+		font-family: "Montserrat", $regular_font;
 
 		font-size: 16px;
 
 		text-align: center;
 
-		color: #fff;
+		color: $dark_5;
 
 		border-radius: 5px;
 
 		&_style {
 			&_positive {
-				background-color: #21d373;
 
 				&::before {
-					content: '+';
+					content: '';
 				}
 			}
 
@@ -100,17 +100,76 @@
 		}
 	}
 
-	&__tags {
+	&__wrapper {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		padding-bottom: 30px;
+		&__doughnut {
+			width: 184px;
+			height: 184px;
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+
+
+		}
+
+
+	}
+
+	&__left-arrow {
+		position: absolute;
+		top: 50%;
+		left: 32px;
+		transform: rotate(90deg);
+		background-color: #F5F5F5;
+	}
+	&__right-arrow {
+		position: absolute;
+		top: 50%;
+		right: 32px;
+		transform: rotate(270deg);
+		background-color: #F5F5F5;
+	}
+
+	&__content {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 
-		min-height: 183px;
-
-		&-heading {
-			margin-top: 10px;
-			margin-bottom: 25px;
+		&__projects {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
 		}
+		&-heading {
+			display: flex;
+			align-items: baseline;
+			justify-content: center;
+			margin-bottom: 25px;
+			.orange-icon {
+				color: #FF8A65;
+			}
+			&-hiding {
+				visibility: hidden;
+				width: 0;
+				height: 0;
+			}
+		}
+		h2 {
+			font-family: Montserrat;
+			font-size: 22px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 33px;
+			letter-spacing: 0em;
+			text-align: left;
+			span {
+				color: #FF8A65;
+			}
+		}
+
 	}
 
 	&__tag-marker {
@@ -121,4 +180,5 @@
 
 		border-radius: 50%;
 	}
+
 }
