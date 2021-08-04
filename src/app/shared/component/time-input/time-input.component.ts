@@ -1,8 +1,9 @@
-import { Component, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
+import { Component, ElementRef, HostBinding, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, NgControl, Validators } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { FocusMonitor } from '@angular/cdk/a11y';
 
 @Component({
 	selector: 'do-time-input',
@@ -20,31 +21,40 @@ export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldContro
 	public focused = false;
 	public controlType = 'time-input';
 	public placeholder: string;
-	public required: boolean;
 
 	private _disabled = false;
+	private _required = false;
 
 	@HostBinding()
 	public id = `time-input-${TimeInputComponent.nextId++}`;
 
-	constructor(fb: FormBuilder, @Optional() @Self() public ngControl: NgControl) {
+	constructor(
+		fb: FormBuilder,
+		@Optional() @Self() public ngControl: NgControl,
+		private _focusMonitor: FocusMonitor,
+		private _elementRef: ElementRef<HTMLElement>
+	) {
 		this.timeForm = fb.group({
-			hours: ['', [Validators.pattern('^[0-9]*$')]],
-			minutes: ['', [Validators.min(0), Validators.max(59), Validators.pattern('^[0-9]*$')]],
+			hours: ['', [Validators.required, Validators.min(0), Validators.pattern('^[0-9]*$')]],
+			minutes: ['', [Validators.required, Validators.min(0), Validators.max(59), Validators.pattern('^[0-9]*$')]],
 		});
 		if (this.ngControl != null) {
 			this.ngControl.valueAccessor = this;
 		}
-
-		this.required = true;
+		_focusMonitor.monitor(_elementRef.nativeElement, true).subscribe((origin) => {
+			this.focused = !!origin;
+			this.stateChanges.next();
+		});
 	}
 
 	ngOnInit() {
 		this.timeForm.valueChanges.subscribe(() => this.onChange(this.value));
+		console.log(this.ngControl.control.validator);
 	}
 
 	ngOnDestroy() {
 		this.stateChanges.complete();
+		this._focusMonitor.stopMonitoring(this._elementRef.nativeElement);
 	}
 
 	get empty(): boolean {
@@ -54,7 +64,6 @@ export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldContro
 
 	@Input()
 	get value(): number | null {
-		console.log(this.timeForm);
 		if (this.timeForm.valid) {
 			const { hours, minutes } = this.timeForm.value;
 			return +hours * 60 + +minutes;
@@ -62,9 +71,20 @@ export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldContro
 		return null;
 	}
 	set value(timeInMinutes: number | null) {
-		const hours = Math.floor(timeInMinutes / 60).toString().padStart(2, '0');
+		const hours = Math.floor(timeInMinutes / 60)
+			.toString()
+			.padStart(2, '0');
 		const minutes = (timeInMinutes % 60).toString().padStart(2, '0');
 		this.timeForm.setValue({ hours, minutes });
+		this.stateChanges.next();
+	}
+
+	@Input()
+	get required() {
+		return this._required;
+	}
+	set required(req) {
+		this._required = coerceBooleanProperty(req);
 		this.stateChanges.next();
 	}
 
@@ -103,6 +123,10 @@ export class TimeInputComponent implements OnInit, OnDestroy, MatFormFieldContro
 
 	registerOnTouched(fn: any): void {
 		this.onTouched = fn;
+	}
+
+	setDisabledState(isDisabled: boolean): void {
+		this.disabled = isDisabled;
 	}
 
 	public autoFocusNext(event, input: HTMLElement): void {
