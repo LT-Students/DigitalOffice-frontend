@@ -44,21 +44,11 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.addHoursForm = this._fb.group({
-			time: [ this._countMaxHours(), [Validators.required, timeValidator(() => this._countMaxHours())]],
-			// time: this.fb.group({
-			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
-			// 	minutes: ['', [Validators.required, Validators.max(59)]],
-			// }),
+			time: [this._countMaxHours(), [Validators.required, Validators.min(1), timeValidator(() => this._countMaxHours())]],
 			activity: ['', Validators.required],
 			task: ['', Validators.required],
 			description: [''],
 		});
-
-		// this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
-		// 	this.setTimePeriod = timePeriod;
-		// 	this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
-		// 	this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
-		// });
 	}
 
 	get startDate(): Date {
@@ -69,17 +59,17 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 		return this._attendanceService.datePeriod.endDate;
 	}
 
-	public setFormType(event: MatOptionSelectionChange): void {
+	public toggleFormType(event: MatOptionSelectionChange): void {
 		if (event.isUserInput) {
 			const taskControl = this.addHoursForm.get('task');
 			const timeControl = this.addHoursForm.get('time');
 			if (event.source.group.label === 'Проекты') {
 				this.isProjectForm = true;
-				timeControl.disable();
+				timeControl.enable();
 				taskControl.setValidators([Validators.required]);
 			} else {
 				this.isProjectForm = false;
-				timeControl.enable();
+				timeControl.disable();
 				taskControl.clearValidators();
 			}
 			taskControl.updateValueAndValidity();
@@ -120,7 +110,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 				userId: this.userId,
 				startTime: this.startDate.toISOString(),
 				endTime: this.endDate.toISOString(),
-				minutes: this.addHoursForm.get('time').value,
+				minutes: this._countMaxHours(),
 				leaveType: this.addHoursForm.get('activity').value,
 				comment: this.addHoursForm.get('description').value,
 			};
@@ -168,6 +158,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			};
 			this._attendanceService.onDatePeriodChange(oneDayPeriod);
 		}
+		this.addHoursForm.get('time').patchValue(this._countMaxHours());
 	}
 
 	public onStartDateChange(date: Date | null): void {

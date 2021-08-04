@@ -27,12 +27,12 @@
 				<mat-label>Куда</mat-label>
 				<mat-select formControlName="activity">
 					<mat-optgroup label="Проекты">
-						<mat-option *ngFor="let project of projects" (onSelectionChange)="setFormType($event)" [value]="project.id">
+						<mat-option *ngFor="let project of projects" (onSelectionChange)="toggleFormType($event)" [value]="project.id">
 							{{ project.name }}
 						</mat-option>
 					</mat-optgroup>
 					<mat-optgroup label="Отсутствия">
-						<mat-option *ngFor="let absence of absences" (onSelectionChange)="setFormType($event)" [value]="absence.leaveType">
+						<mat-option *ngFor="let absence of absences" (onSelectionChange)="toggleFormType($event)" [value]="absence.leaveType">
 							{{ absence.leaveInRussian }}
 						</mat-option>
 					</mat-optgroup>
