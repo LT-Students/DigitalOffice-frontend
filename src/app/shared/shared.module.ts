@@ -15,6 +15,7 @@ import { HeaderComponent } from './component/header/header.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
+import { TimeInputComponent } from './component/time-input/time-input.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { HoursPipe } from './pipes/hours/hours.pipe';
 		TextDirective,
 		DndDirective,
 		HoursPipe,
+		TimeInputComponent,
 	],
 	imports: [
 		CommonModule,
@@ -56,6 +58,7 @@ import { HoursPipe } from './pipes/hours/hours.pipe';
 		DatepickerComponent,
 		StepperComponent,
 		HoursPipe,
+		TimeInputComponent,
 	],
 })
 export class SharedModule {}

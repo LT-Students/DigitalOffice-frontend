@@ -1,0 +1,25 @@
+<div class="time-input" [formGroup]="timeForm">
+	<input
+		#hours
+		matInput
+		class="time-input__input"
+		formControlName="hours"
+		type="text"
+		maxlength="3"
+		placeholder="08"
+		(ngModelChange)="checkHoursConstraints($event)"
+		(keyup)="autoFocusNext($event, minutes)"
+	/>
+	<span>:</span>
+	<input
+		#minutes
+		matInput
+		class="time-input__input"
+		formControlName="minutes"
+		type="text"
+		maxlength="2"
+		placeholder="00"
+		(ngModelChange)="checkMinutesConstraints($event)"
+		(keyup.backspace)="autoFocusPrev($event, hours)"
+	/>
+</div>
