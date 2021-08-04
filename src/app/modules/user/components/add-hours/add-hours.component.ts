@@ -44,7 +44,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.addHoursForm = this._fb.group({
-			time: [ 24, [Validators.required, timeValidator(() => this._countMaxHours())]],
+			time: [ this._countMaxHours(), [Validators.required, timeValidator(() => this._countMaxHours())]],
 			// time: this.fb.group({
 			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
 			// 	minutes: ['', [Validators.required, Validators.max(59)]],
@@ -72,24 +72,17 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 	public setFormType(event: MatOptionSelectionChange): void {
 		if (event.isUserInput) {
 			const taskControl = this.addHoursForm.get('task');
+			const timeControl = this.addHoursForm.get('time');
 			if (event.source.group.label === 'Проекты') {
+				this.isProjectForm = true;
+				timeControl.disable();
 				taskControl.setValidators([Validators.required]);
 			} else {
+				this.isProjectForm = false;
+				timeControl.enable();
 				taskControl.clearValidators();
 			}
-			this._toggleFormType();
 			taskControl.updateValueAndValidity();
-		}
-	}
-
-	private _toggleFormType() {
-		const timeControl = this.addHoursForm.get('time');
-		if (this.isProjectForm) {
-			this.isProjectForm = false;
-			timeControl.disable();
-		} else {
-			this.isProjectForm = true;
-			timeControl.enable();
 		}
 	}
 
@@ -144,7 +137,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			}
 		);
 		this.addHoursForm.reset();
-		this._toggleFormType();
+		this.isProjectForm = true;
+		this.addHoursForm.get('time').enable();
 	}
 
 	public getTimePeriodErrorMessage(): String {

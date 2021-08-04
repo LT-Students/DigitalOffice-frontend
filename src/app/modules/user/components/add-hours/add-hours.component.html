@@ -18,7 +18,8 @@
 	<form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 		<div class="add-hours__row">
 			<mat-form-field class="add-hours__time" appearance="fill">
-				<input matInput formControlName="time" type="text" maxlength="3" placeholder="08:00" />
+<!--				<input matInput formControlName="time" type="text" maxlength="3" placeholder="08:00" />-->
+                <do-time-input formControlName="time"></do-time-input>
 				<mat-icon matSuffix aria-label="time">schedule</mat-icon>
 				<!--				<mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>-->
 			</mat-form-field>
