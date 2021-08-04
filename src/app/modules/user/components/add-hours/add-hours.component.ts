@@ -55,10 +55,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			// 	hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
 			// 	minutes: ['', [Validators.required, Validators.max(59)]],
 			// }),
-			time: {
-				hours: '',
-				minutes: '',
-			},
+			time: [2400],
 			project: ['', Validators.required],
 			task: ['', Validators.required],
 			description: [''],
@@ -159,6 +156,6 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 
 	public doTime() {
 		const time = this.addHoursForm.get('time');
-		console.log(time.value, time.invalid);
+		console.log(this.addHoursForm.value, time.invalid);
 	}
 }

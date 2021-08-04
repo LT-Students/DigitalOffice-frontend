@@ -30,13 +30,8 @@
 <!--    </div>-->
       <div>
           <mat-form-field appearance='fill'>
-              <do-time-input [matAutocomplete]='auto' formControlName='time'></do-time-input>
+              <do-time-input formControlName='time'></do-time-input>
               <mat-icon matSuffix aria-label='time'>schedule</mat-icon>
-              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of ['2:00', '4:00', '6:00']" [value]="option">
-                      {{option}}
-                  </mat-option>
-              </mat-autocomplete>
           </mat-form-field>
           <button mat-button type='button' (click)='doTime()'>Часы</button>
       </div>

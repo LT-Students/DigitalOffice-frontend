@@ -1,4 +1,4 @@
-<div class="time-input" [formGroup]="time">
+<div class="time-input" [formGroup]="timeForm">
 	<input
 		#hours
 		matInput
@@ -6,12 +6,11 @@
 		formControlName="hours"
 		type="text"
 		maxlength="3"
-		placeholder="02"
-		(ngModelChange)="checkTimeConstraints($event, TimeType.HOURS)"
+		placeholder="08"
+		(ngModelChange)="checkHoursConstraints($event)"
 		(keyup)="autoFocusNext($event, minutes)"
-        [matAutocomplete]='matAutocomplete'
 	/>
-	<span [ngClass]="time.pristine ? 'time-input__colon' : ''">:</span>
+	<span>:</span>
 	<input
 		#minutes
 		matInput
@@ -20,7 +19,7 @@
 		type="text"
 		maxlength="2"
 		placeholder="00"
-		(ngModelChange)="checkTimeConstraints($event, TimeType.MINUTES)"
+		(ngModelChange)="checkMinutesConstraints($event)"
 		(keyup.backspace)="autoFocusPrev($event, hours)"
 	/>
 </div>

@@ -1,10 +1,7 @@
 <h2 >Доска учета времени</h2>
-<do-datedesc></do-datedesc>
 <div class="grid">
   <do-add-hours></do-add-hours>
   <do-doughnut-chart [projectList]='projects$ | async'></do-doughnut-chart>
-  <do-gradient-graphics [dailyHoursData]="dailyHoursData" [timePeriodSelected]="timePeriodSelected">
-  </do-gradient-graphics>
 </div>
 <do-user-tasks
     class='tasks'
