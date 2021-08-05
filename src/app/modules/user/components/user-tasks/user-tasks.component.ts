@@ -1,78 +1,172 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Input } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';
-import { AttendanceService } from '@app/services/attendance.service';
-import { ProjectStore } from '@data/store/project.store';
-import { DateService } from '@app/services/date.service';
-import { Project, ProjectModel } from '@app/models/project/project.model';
-import { LeaveTimeApiService, WorkTimeApiService } from '@data/api/time-service/services';
-import { LocalStorageService } from '@app/services/local-storage.service';
-import { WorkTimeInfo } from '@data/api/time-service/models';
+import { ProjectStatusType } from '@data/api/time-service/models';
+import { LeaveTimeInfo, WorkTimeInfo } from '@data/api/time-service/models';
+import { TimeService } from '@app/services/time/time.service';
+import { UserService } from '@app/services/user/user.service';
+
+export interface Task {
+	createdAt?: string;
+	createdBy?: string;
+	description?: string;
+	endTime?: string;
+	id?: string;
+	minutes?: number;
+	startTime?: string;
+	title?: string;
+	userId?: string;
+}
+
+export interface Project {
+	description?: null | string;
+	id?: string;
+	name?: string;
+	shortDescription?: null | string;
+	shortName?: null | string;
+	status?: ProjectStatusType;
+	tasks?: Task[]
+}
 
 @Component({
 	selector: 'do-user-tasks',
 	templateUrl: './user-tasks.component.html',
 	styleUrls: ['./user-tasks.component.scss'],
 })
-export class UserTasksComponent implements OnInit, OnDestroy {
-	// @Input() projects: Project[];
-	@Input() projects;
-	@Input() timePeriodSelected: DatePeriod;
+export class UserTasksComponent implements OnInit {
+	@Input() projects: Project[];
+	@Input() leaves: LeaveTimeInfo[];
+	@ViewChild('dp') datepicker;
 
-	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-	public projectList: ProjectModel[];
-	// TODO: replace projectsList with projects
-
-	public isOrderedByProject = false;
-	public isOrderedByHours = false;
-	public startPeriod: Date;
-	public endPeriod: Date;
-	public tasksCount;
-	public searchText = '';
-
-	public startDate: Date | null;
-	public endDate: Date | null;
+	public tasksCount: number;
+	public plural: { [k: string]: string };
+	public selectedPeriod;
+	public selectedYear: number;
+	public selectedMonth: number;
 
 	constructor(
-		public attendanceService: AttendanceService,
-		private projectStore: ProjectStore,
-		public dateService: DateService,
-	) { }
-
-	ngOnInit() {
-		console.log("ПРОЖЕКТЫ В USER-TASKS: ", this.projects)
-		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
-			this.projectList = projects;
-			this.tasksCount = (this.projectList && this.projectList.length)
-				? this.projectList.map((p) => p.tasks).reduce((all, tasks) => all.concat(tasks)).length
-				: 0;
-		});
-
-		this.attendanceService.datePeriod$.pipe(takeUntil(this.onDestroy$)).subscribe((datePeriod) => {
-			this.startDate = datePeriod.startDate;
-			this.endDate = datePeriod.endDate;
-		});
-
-		const now = new Date();
-		this.startPeriod = new Date();
-		this.startPeriod.setDate(now.getDate() - 3);
-		this.endPeriod = new Date();
-		this.endPeriod.setDate(now.getDate() + 3);
+		private _timeService: TimeService,
+		private _userService: UserService
+	) {
+		this.projects = [];
+		this.leaves = [];
+		this.tasksCount = 0;
+		// ПОтом надо под тип какой-то подставить и задать изначальные значения в виде текущей даты
+		this.selectedPeriod = this._getPeriod(new Date());
+		this.plural = {
+			one: '# запись',
+			few: '# записи',
+			other: '# записей'
+		}
 	}
 
-	ngOnDestroy() {
-		this.onDestroy$.next(null);
-		this.onDestroy$.complete();
+	public ngOnInit(): void {
+		console.log("ПЕРИОД ПРИ ИНИЦИАЛИЗАЦИИ: ", this.selectedPeriod.startTime, this.selectedPeriod.endTime)
+		this._getTasks();
 	}
 
-	onSearch(text: string) {
-		this.searchText = text;
+	private _getPeriod(date: Date) {
+		console.log('CURRENT DATE: ', date)
+		console.log('CURRENT MONTH: ', date.getMonth())
+		const startTime = new Date(date.getFullYear(), date.getMonth(), 1);
+		const endTime = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+		console.log("COMMON DATE: ", startTime)
+
+		return {
+			startTime,
+			endTime
+		}
 	}
 
-	public getPeriod(): string {
-		return 'выбранный период';
+	private _groupProjects(tasks: WorkTimeInfo[]): void {
+		let projects = {};
+		tasks.forEach(task => {
+			if (!projects[task.project.name]) {
+				projects[task.project.name] = {}
+				projects[task.project.name] = {
+					...task.project,
+					tasks: [{
+						id: task.id,
+						createdAt: task.createdAt,
+						createdBy: task.createdBy,
+						description: task.description,
+						startTime: task.startTime,
+						endTime: task.endTime,
+						minutes: task.minutes,
+						title: task.title,
+						userId: task.userId
+					}]
+				}
+			}
+			else
+				projects[task.project.name].tasks.push({
+					id: task.id,
+					createdAt: task.createdAt,
+					createdBy: task.createdBy,
+					description: task.description,
+					startTime: task.startTime,
+					endTime: task.endTime,
+					minutes: task.minutes,
+					title: task.title,
+					userId: task.userId
+				});
+		})
+		for (let project in projects) {
+			this.projects.push(projects[project]);
+		}
+	}
+
+	private _getTasks(): void {
+		this.tasksCount = 0;
+		this.projects = [];
+		this.leaves = [];
+		console.log("ПЕРИОД ПРИ ЗАПРОСЕ ТАСОК: ", this.selectedPeriod.startTime, this.selectedPeriod.endTime)
+		const userId = this._userService.getCurrentUser().id;
+		console.log(userId)
+		this._timeService.findLeaveTimes({
+			userid: userId,
+			skipCount: 0,
+			takeCount: 10,
+			starttime: this.selectedPeriod.startTime.toISOString(),
+			endtime: this.selectedPeriod.endTime.toISOString()
+		}).subscribe(res => {
+			this.leaves = res.body;
+			console.log(this.leaves)
+			this.tasksCount += res.body.length;
+		})
+		this._timeService.findWorkTimes
+			({
+				userid: userId,
+				skipCount: 0,
+				takeCount: 10,
+				starttime: this.selectedPeriod.startTime.toISOString(),
+				endtime: this.selectedPeriod.endTime.toISOString()
+			}).subscribe(res => {
+				this._groupProjects(res.body);
+				console.log(this.projects)
+				this.tasksCount += res.body.length;
+			})
+	}
+
+	public openDatepicker() {
+		this.datepicker.open();
+	}
+
+	public chosenYearHandler(event: Date) {
+		this.selectedYear = event.getFullYear();
+	}
+
+	public chosenMonthHandler(event: Date, datepicker) {
+		this.selectedMonth = event.getMonth();
+
+		this.selectedPeriod = this._getPeriod(new Date(this.selectedYear, this.selectedMonth, 1))
+		console.log("НАЧАЛО: ", this.selectedPeriod.startTime)
+		console.log("КОНЕЦ: ", this.selectedPeriod.endTime)
+
+		datepicker.close();
+
+		this._getTasks();
 	}
 }

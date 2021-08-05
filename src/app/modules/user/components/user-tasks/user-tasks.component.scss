@@ -1,18 +1,19 @@
-.wrapper {
-	&__header {
-		display: flex;
-		justify-content: space-between;
-	}
+.mat-card {
+	min-width: 850px;
+}
 
-	&__records {
-		margin-bottom: 28px;
-	}
+.date-input {
+	visibility: hidden;
 
-	&__introduced {
-		margin-bottom: 24px;
+	width: 0;
+}
+
+.period-span {
+	&:hover {
+		cursor: pointer;
 	}
 }
 
-.mat-card {
-	min-width: 850px;
+.records-count {
+	padding: 0 0 24px 0s;
 }

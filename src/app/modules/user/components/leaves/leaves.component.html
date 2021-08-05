@@ -1,0 +1,17 @@
+<mat-expansion-panel class='panel'>
+    <mat-expansion-panel-header class='panel__header'>
+        <mat-panel-title>
+            <div>
+                <p class='panel_bold'>Отсутствия</p>
+                <p doText color='gray1'>{{leaves.length | i18nPlural: plural}}</p>
+            </div>
+        </mat-panel-title>
+        <mat-panel-description doText color='accent_color_bright'>{{totalMinutes | hours}}</mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <ng-template matExpansionPanelContent>
+        <div *ngFor="let leave of leaves">
+            <do-leave [leave]="leave" [canEdit]="canEdit"></do-leave>
+        </div>
+    </ng-template>
+</mat-expansion-panel>

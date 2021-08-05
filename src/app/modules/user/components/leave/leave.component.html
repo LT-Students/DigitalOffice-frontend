@@ -1,31 +1,30 @@
-<div class="wrapper">
+<div class='wrapper'>
     <div class='task'>
         <ng-container *ngIf="!editMode; else editForm">
             <div doText class='task__title'>
-                <p>{{task.title}}</p>
+                <p>{{leave.leaveType}}</p>
             </div>
             <div doText class='task__minutes'>
-                {{task.minutes | hours}}
+                {{leave.minutes | hours}}
             </div>
-            <ng-container *ngIf="false; else period">
-            </ng-container>
+            <ng-container *ngIf="false; else period"></ng-container>
             <ng-template #period>
                 <div *ngIf="startTime.day === endTime.day && startTime.month === endTime.month" doText
                     class='task__period'>
-                    {{task.startTime | date: 'd MMMM'}}
+                    {{leave.startTime | date: 'd MMMM'}}
                 </div>
                 <div *ngIf="startTime.day !== endTime.day && startTime.month === endTime.month" doText
                     class='task__period'>
-                    {{task.startTime | date: 'd'}} - {{task.endTime | date: 'd MMMM'}}
+                    {{leave.startTime | date: 'd'}} - {{leave.endTime | date: 'd MMMM'}}
                 </div>
                 <div *ngIf="startTime.day !== endTime.day && startTime.month !== endTime.month" doText
                     class='task__period'>
-                    {{task.startTime | date: 'd MMMM'}} - {{task.endTime | date: 'd MMMM'}}
+                    {{leave.startTime | date: 'd MMMM'}} - {{leave.endTime | date: 'd MMMM'}}
                 </div>
             </ng-template>
             <div doText class='task__description'>
                 <p #description [ngClass]="{'task__description-full': descriptionOpened}">
-                    {{task.description}}
+                    {{leave.comment}}
                 </p>
                 <div *ngIf='descriptionIsHuge'>
                     <button *ngIf="!descriptionOpened" mat-menu-item class='task__description-more-button'
@@ -56,34 +55,41 @@
                 </mat-menu>
             </div>
         </ng-container>
-
         <ng-template #editForm>
             <div>
-                <form autocomplete="off" [formGroup]="taskInfoForm" (ngSubmit)="onSubmit()">
+                <form autocomplete="off" [formGroup]="leaveInfoForm" (ngSubmit)="onSubmit()">
                     <div class='task'>
-                        <mat-form-field appearance="fill" class='task__title'>
-                            <mat-label>Задача</mat-label>
-                            <textarea matInput id="title" formControlName="title" required></textarea>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill" class='task__time'>
-                            <mat-label>Часы</mat-label>
-                            <input matInput id="minutes" formControlName="minutes" required>
-                        </mat-form-field>
+                        <div doText class='task__title'>
+                            <p color='gray'>Тип отсутствия</p>
+                            <p>{{leave.leaveType}}</p>
+                        </div>
+                        <ng-container
+                            *ngIf="leave.leaveType === 'Training' || leave.leaveType === 'Vacation'; else minutes">
+                            <mat-form-field appearance="fill" class='task__time'>
+                                <mat-label>Часы</mat-label>
+                                <input matInput id="minutes" formControlName="minutes" required>
+                            </mat-form-field>
+                        </ng-container>
+                        <ng-template #minutes>
+                            <div doText class='task__minutes'>
+                                {{leave.minutes | hours}}
+                            </div>
+                        </ng-template>
                         <div doText class='task__period'>
                             <label for='period'>Дата</label>
                             <ng-container *ngIf="false; else period"></ng-container>
                             <ng-template #period>
                                 <div *ngIf="startTime.day === endTime.day && startTime.month === endTime.month" doText
                                     class='task__period'>
-                                    {{task.startTime | date: 'd MMMM'}}
+                                    {{leave.startTime | date: 'd MMMM'}}
                                 </div>
                                 <div *ngIf="startTime.day !== endTime.day && startTime.month === endTime.month" doText
                                     class='task__period'>
-                                    {{task.startTime | date: 'd'}} - {{task.endTime | date: 'd MMMM'}}
+                                    {{leave.startTime | date: 'd'}} - {{leave.endTime | date: 'd MMMM'}}
                                 </div>
                                 <div *ngIf="startTime.day !== endTime.day && startTime.month !== endTime.month" doText
                                     class='task__period'>
-                                    {{task.startTime | date: 'd MMMM'}} - {{task.endTime | date: 'd MMMM'}}
+                                    {{leave.startTime | date: 'd MMMM'}} - {{leave.endTime | date: 'd MMMM'}}
                                 </div>
                             </ng-template>
                         </div>

@@ -13,7 +13,9 @@ import { AddHoursComponent } from './components/add-hours/add-hours.component';
 import { GradientGraphicsComponent } from './components/gradient-graphics/gradient-graphics.component';
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 import { ProjectComponent } from './components/project/project.component';
+import { LeavesComponent } from './components/leaves/leaves.component';
 import { TaskComponent } from './components/task/task.component';
+import { LeaveComponent } from './components/leave/leave.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TaskFilterPipe } from './pipes/task-filter.pipe';
@@ -34,6 +36,8 @@ import { DeleteTaskComponent } from './modals/delete-task/delete-task.component'
 		ProjectPageComponent,
 		DeleteTaskComponent,
 		TaskFilterPipe,
+		LeavesComponent,
+		LeaveComponent,
 	],
 	imports: [
 		SharedModule,
