@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { Title } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
@@ -70,6 +70,7 @@ function initializeCompany(appInitService: AppInitService) {
 			multi: true,
 		},
 		{ provide: LOCALE_ID, useValue: 'ru-RU' },
+		Title,
 	],
 	bootstrap: [AppComponent],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
