@@ -9,6 +9,7 @@ import { CreateCredentialsRequest } from '@data/api/user-service/models/create-c
 import { of, throwError } from 'rxjs';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 import { User } from '@app/models/user/user.model';
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-signup',
@@ -16,6 +17,7 @@ import { User } from '@app/models/user/user.model';
 	styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
+	public portalName: string;
 	public userId: string;
 	public loginForm: FormGroup;
 	public isWaiting = false;
@@ -30,10 +32,12 @@ export class SignupComponent implements OnInit {
 	constructor(
 		private _authService: AuthService,
 		private _userService: UserService,
+		private _companyService: CompanyService,
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private _fb: FormBuilder
 	) {
+		this.portalName = this._companyService.getPortalName();
 		this.userId = null;
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],

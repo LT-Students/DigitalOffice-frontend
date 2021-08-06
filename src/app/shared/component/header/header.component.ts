@@ -11,6 +11,7 @@ export class HeaderComponent implements OnInit {
 	@Input() userName: string;
 	@Input() userId: string;
 	@Input() avatar: ImageInfo;
+	@Input() portalName: string;
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
 	@Output() public menuClick: EventEmitter<MouseEvent>;
 

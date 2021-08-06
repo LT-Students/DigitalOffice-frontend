@@ -31,10 +31,16 @@ import { InstallerModule } from './modules/installer/installer.module';
 
 registerLocaleData(localeRu);
 
-export function initializeUser(appInitService: AppInitService) {
+function initializeUser(appInitService: AppInitService) {
 	return (): Promise<any> => {
 		return appInitService.getCurrentUser();
 	};
+}
+
+function initializeCompany(appInitService: AppInitService) {
+	return (): Promise<any> => {
+		return appInitService.getCompany();
+	}
 }
 
 @NgModule({
@@ -49,6 +55,12 @@ export function initializeUser(appInitService: AppInitService) {
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthInterceptor,
+			multi: true,
+		},
+		{
+			provide: APP_INITIALIZER,
+			useFactory: initializeCompany,
+			deps: [AppInitService],
 			multi: true,
 		},
 		{
