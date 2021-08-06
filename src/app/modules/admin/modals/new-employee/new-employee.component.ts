@@ -153,7 +153,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			middleName: ['', [Validators.maxLength(32)]],
 			positionId: ['', [Validators.required]],
 			startWorkingAt: [null],
-			isAdmin: false,
+			isAdmin: [false],
 			rate: ['1', [Validators.required]],
 			departmentId: [null],
 			officeId: ['', [Validators.required]],
