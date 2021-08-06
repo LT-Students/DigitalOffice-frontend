@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'do-wizard',
@@ -13,7 +14,9 @@ export class WizardComponent implements OnInit {
 	adminForm: FormGroup;
 	smtpForm: FormGroup;
 
-	constructor(private _formBuilder: FormBuilder, private companyApiService: CompanyApiService, private router: Router) {}
+	constructor(private _formBuilder: FormBuilder, private companyApiService: CompanyApiService, private router: Router, private titleService: Title) {
+		this.titleService.setTitle('Installer');
+	}
 
 	ngOnInit() {
 		this.companyForm = this._formBuilder.group({
