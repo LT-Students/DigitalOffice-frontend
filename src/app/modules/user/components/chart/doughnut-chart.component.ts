@@ -1,4 +1,4 @@
-import { Component,ViewChild, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnDestroy, OnInit, Input } from '@angular/core';
 import { Time } from '@angular/common';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { Chart } from 'chart.js';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project, ProjectModel } from '@app/models/project/project.model';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
 	selector: 'do-doughnut-chart',
