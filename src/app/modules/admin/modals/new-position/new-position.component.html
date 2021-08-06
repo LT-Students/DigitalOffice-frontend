@@ -3,18 +3,14 @@
 	<div class="form__container">
 		<form autocomplete="off" class="data-form" [formGroup]="positionForm" (ngSubmit)="createPosition()">
 			<div class="new-position__input-container">
-				<div class="new-position__input">
-					<label class="h5 h5_dark_1" for="name">Название должности<sup doText color="negative_accent">*</sup></label>
-					<mat-form-field>
-						<input matInput type="text" id="name" formControlName="name" />
-					</mat-form-field>
-				</div>
-				<div class="new-position__input">
-					<label class="h5 h5_dark_1" for="description">Описание</label>
-					<mat-form-field>
-						<input matInput type="text" id="description" formControlName="description" />
-					</mat-form-field>
-				</div>
+				<mat-form-field appearance="fill">
+					<mat-label>Название должности</mat-label>
+					<input matInput type="text" id="name" formControlName="name" required />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Описание</mat-label>
+					<input matInput type="text" id="description" formControlName="description" />
+				</mat-form-field>
 			</div>
 			<button mat-flat-button color="primary" class="btn-create-department" type="submit" [disabled]="positionForm.invalid">
 				<span class="regular_text regular_text_light_1">Создать должность</span>

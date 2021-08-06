@@ -14,6 +14,7 @@ import { EditTaskRequest } from '../models/edit-task-request';
 import { FindResponseTaskInfo } from '../models/find-response-task-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseTaskResponse } from '../models/operation-result-response-task-response';
+import { IEditTaskRequest, IFindTasksRequest, IGetTaskRequest } from '@app/services/project/task.service';
 
 @Injectable({
   providedIn: 'root',
@@ -75,14 +76,7 @@ export class TaskApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editTask(params: {
-
-    /**
-     * Task global unique identifier.
-     */
-    Id: string;
-    body: EditTaskRequest
-  }): Observable<OperationResultResponse> {
+  editTask(params: IEditTaskRequest): Observable<OperationResultResponse> {
 
     return this.editTask$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
@@ -158,33 +152,7 @@ export class TaskApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findTasks(params: {
-
-    /**
-     * The part of find query that the task name should contain.
-     */
-    number?: number;
-
-    /**
-     * The part of find query that the task project Id should contain.
-     */
-    projectid?: string;
-
-    /**
-     * The part of find query that the user assigned task should contain.
-     */
-    assignedto?: string;
-
-    /**
-     * Number of entries to skip.
-     */
-    skipCount: number;
-
-    /**
-     * Number of task to take.
-     */
-    takeCount: number;
-  }): Observable<FindResponseTaskInfo> {
+  findTasks(params: IFindTasksRequest): Observable<FindResponseTaskInfo> {
 
     return this.findTasks$Response(params).pipe(
       map((r: StrictHttpResponse<FindResponseTaskInfo>) => r.body as FindResponseTaskInfo)
@@ -284,13 +252,7 @@ export class TaskApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getTask(params: {
-
-    /**
-     * Task global unique identifier.
-     */
-    Id: string;
-  }): Observable<OperationResultResponseTaskResponse> {
+  getTask(params: IGetTaskRequest): Observable<OperationResultResponseTaskResponse> {
 
     return this.getTask$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponseTaskResponse>) => r.body as OperationResultResponseTaskResponse)

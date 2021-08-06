@@ -9,39 +9,15 @@
 		display: grid;
 		grid-template-columns: 300px 300px;
 		column-gap: 20px;
-		row-gap: 6px;
+		row-gap: 8px;
 	}
 
 	&__heading {
 		margin-bottom: 12px;
 	}
 
-	&__form-element {
-		margin-bottom: 8px;
-	}
-
 	&__form-element_span_2 {
 		grid-column: span 2;
-	}
-
-	&__form-field {
-		margin: -1em 0;
-
-		width: 100%;
-	}
-
-	&__label {
-		margin-bottom: 4px;
-
-		display: block;
-	}
-
-	&__required {
-		margin-left: 2px;
-
-		vertical-align: middle;
-
-		color: $negative_accent;
 	}
 
 	&__button {
@@ -70,13 +46,8 @@
 		font-size: 16px;
 
 		vertical-align: -20%;
-	}
 
-	&__generate {
-		padding: 0;
-		align-self: center;
-
-		height: 24px;
+		pointer-events: auto;
 	}
 
 	&__rate {

@@ -29,7 +29,10 @@ import { AdminModule } from '../admin/admin.module';
 		ProjectsComponent,
 		UploadPhotoComponent,
 	],
-	imports: [CommonModule, SharedModule, MaterialModule, ReactiveFormsModule, FormsModule, RouterModule, AdminModule],
+	imports: [
+		SharedModule,
+		AdminModule
+	],
 	providers: [],
 })
 export class EmployeeModule {}

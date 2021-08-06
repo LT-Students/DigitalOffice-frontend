@@ -2,6 +2,8 @@
 import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
 import { EducationType } from '@data/api/user-service/models/education-type';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
+import { FormEducation } from '@data/api/user-service/models/form-education';
+import { EducationInfo } from '@data/api/user-service/models/education-info';
 
 export enum StudyType {
 	/* заочно */
@@ -18,6 +20,9 @@ export interface CertificateInfoExtended extends CertificateInfo {
 	isEditing?: boolean;
 }
 
+/**
+ * @deprecated don't use
+ */
 export class EducationModel {
 	public isEditing: boolean;
 
@@ -85,5 +90,77 @@ export class EducationModel {
 
 	public getEducationalPeriod(): string {
 		return this._startYear ? `${this._startYear.getFullYear()}-${this.endYear.getFullYear()}` : this.endYear.getFullYear().toString();
+	}
+}
+
+export interface IBaseEducation {
+	id: string;
+	receivedAt: string;
+	institutionName: string;
+	specializationName: string;
+	studyType: EducationType | FormEducation;
+}
+
+export abstract class BaseEducation implements IBaseEducation {
+	public id: string;
+	public receivedAt: string;
+	public institutionName: string;
+	public specializationName: string;
+	public studyType: EducationType | FormEducation;
+
+	constructor(data: IBaseEducation) {
+		// TODO: refactor with Object.entries
+		this.id = (data.id) ? data.id : null;
+		this.receivedAt = (this.receivedAt) ? this.receivedAt : null;
+		this.institutionName = (data.institutionName) ? data.institutionName : null;
+		this.specializationName = (data.specializationName) ? data.specializationName : null;
+	}
+
+	abstract getEducationalPeriod(): string;
+}
+
+export class Certificate extends BaseEducation implements CertificateInfo {
+	public image: ImageInfo;
+
+	constructor(data: CertificateInfo) {
+		super({
+			id: data.id,
+			receivedAt: data.receivedAt,
+			institutionName: data.schoolName,
+			specializationName: data.name,
+			studyType: data.educationType
+		});
+		this.image = data.image;
+		this.studyType = data.educationType;
+	}
+
+	public getEducationalPeriod(): string {
+		return new Date(this.receivedAt).getFullYear().toString();
+	}
+
+	public getImageInBase64(): string {
+		return this.image.content;
+	}
+}
+
+export class UniversityInfo extends BaseEducation implements EducationInfo {
+	public admissionAt: string;
+
+	constructor(data: EducationInfo) {
+		super({
+			id: data.id,
+			receivedAt: data.issueAt,
+			institutionName: data.universityName,
+			specializationName: data.qualificationName,
+			studyType: data.formEducation
+		});
+		this.admissionAt = data.admissionAt;
+	}
+
+	public getEducationalPeriod(): string {
+		const startYear = new Date(this.admissionAt).getFullYear();
+		const endYear = new Date(this.admissionAt).getFullYear();
+
+		return `${startYear}-${endYear}`;
 	}
 }

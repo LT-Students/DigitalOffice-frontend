@@ -13,6 +13,7 @@ import { CreateRoleRequest } from '../models/create-role-request';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { RoleResponse } from '../models/role-response';
 import { RolesResponse } from '../models/roles-response';
+import { IFindRequest } from '@app/types/find-request.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -76,18 +77,7 @@ export class RoleApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findRoles(params: {
-
-    /**
-     * Number of entries to skip
-     */
-    skipCount: number;
-
-    /**
-     * Number of roles on one page.
-     */
-    takeCount: number;
-  }): Observable<RolesResponse> {
+  findRoles(params: IFindRequest): Observable<RolesResponse> {
 
     return this.findRoles$Response(params).pipe(
       map((r: StrictHttpResponse<RolesResponse>) => r.body as RolesResponse)

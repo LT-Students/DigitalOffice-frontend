@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProjectService } from '@app/services/project.service';
+import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { ProjectUserInfo } from '@data/api/project-service/models/project-user-info';
 
@@ -124,7 +124,7 @@ export class ProjectPageComponent implements OnInit {
 	// valuesFromDescription = Object.values(this.projectPage.details);
 	ngOnInit(): void {
 		this.projectId = this._route.snapshot.params.id;
-		this._projectService.getProjectInfo({ projectId: this.projectId, includeusers: true }).subscribe((result) => {
+		this._projectService.getProject({ projectId: this.projectId, includeusers: true }).subscribe((result) => {
 			this.projectInfo = result.project;
 			this.projectUsers = result.users;
 			this.projectCreatedAt = new Date(this.projectInfo.createdAt);

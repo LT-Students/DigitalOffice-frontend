@@ -146,7 +146,7 @@
 				>О себе <span>{{ employeeInfoForm.get('about').value.length }}/150</span></span
 			></label
 		>
-		<mat-form-field class="employee-info__form-field" appearance="none">
+		<mat-form-field class="employee-info__form-field" appearance="fill">
 			<textarea
 				id="about"
 				formControlName="about"
@@ -162,7 +162,7 @@
 </ng-template>
 
 <ng-template #stepper [formGroup]="employeeInfoForm">
-	<mat-form-field class="employee-info__form-field mat-form-field__stepper" appearance="fill">
+	<mat-form-field class="employee-info__form-field employee-info__stepper" appearance="fill">
 		<mat-label doText color="gray" regularTextSize="small">Ставка</mat-label>
 		<button
 			class="employee-info__stepper-button h2"
@@ -174,7 +174,7 @@
 		>
 			-
 		</button>
-		<input #rate id="rate" formControlName="rate" matInput class="bg-light_2 employee-info__input" type="number" readonly required />
+		<input #rate id="rate" formControlName="rate" matInput class="bg-light_2 employee-info__input" readonly required />
 		<button
 			class="employee-info__stepper-button h2"
 			mat-icon-button
@@ -277,7 +277,7 @@
 					>
 				</div>
 				<ng-container *ngIf="!user.isAdmin; else nameEdit"
-					>]
+					>
 					<h3 class="employee-info__name" doText color="dark_2">
 						{{ user.getFioFull() }}&nbsp;<span
 							matTooltipClass="tooltip"

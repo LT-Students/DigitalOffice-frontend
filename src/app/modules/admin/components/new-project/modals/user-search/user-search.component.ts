@@ -1,7 +1,7 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { UserSearchModalConfig } from '@app/services/modal.service';
 import { UserRoleType } from '@data/api/project-service/models/user-role-type';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
@@ -73,7 +73,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	private _getMembers(): void {
-		this._userService.getUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe(
+		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe(
 			(data) => {
 				this.membersAll = data.body;
 				this.totalCount = data.totalCount;

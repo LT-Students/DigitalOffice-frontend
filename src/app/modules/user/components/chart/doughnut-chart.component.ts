@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component,ViewChild, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Time } from '@angular/common';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -6,11 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Chart } from 'chart.js';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
-
-import { MatDatepicker } from '@angular/material/datepicker';
-
-import { D } from '@angular/cdk/keycodes';
-import { Project } from '@data/models/project';
+import { Project, ProjectModel } from '@app/models/project/project.model';
 
 @Component({
 	selector: 'do-doughnut-chart',
@@ -18,6 +14,8 @@ import { Project } from '@data/models/project';
 	styleUrls: ['./doughnut-chart.component.scss'],
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
+	/* TODO: inject data from parent component in this list */
+	@Input() projectList: Project[];
 	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -25,7 +23,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private chart: Chart;
 
 	public COLORS = ['#7C799B', '#C7C6D8', '#FFB2B2', '#FFB78C', '#EB5757', '#BC7BFA', '#FFBE97', '#BDBDBD'];
-	public projects: Project[];
+	public projects: ProjectModel[];
 	public recommendedTime: Time;
 
 	public datePeriod: any; //данные из date range picker
@@ -58,16 +56,17 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			this.recommendedTime = time;
 		});
 
-		//отслеживаем date rage picker (по примеру функции выше)
-		this.attendanceService.datePeriod$.pipe(takeUntil(this.onDestroy$)).subscribe((date) => {
-			this.datePeriod = date;
-		});
-
 		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
 			this.projects = projects;
 			if (this.chart) {
 				this.updateChart();
 			}
+		});
+
+		this.ctx = this.canvas.nativeElement.getContext('2d');
+
+		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
+			this.recommendedTime = time;
 		});
 
 		this.buildChart();

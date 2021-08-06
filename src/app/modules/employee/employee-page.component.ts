@@ -1,15 +1,13 @@
 import { EducationModel } from '@app/models/education.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UserService } from '@app/services/user.service';
-import { Project } from '@data/models/project';
+import { UserService } from '@app/services/user/user.service';
 import { EducationType, OperationResultResponseUserResponse, UserInfo } from '@data/api/user-service/models';
-import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
-import { ProjectService } from '@app/services/project.service';
-import { User } from '@app/models/user.model';
+import { ProjectService } from '@app/services/project/project.service';
+import { User } from '@app/models/user/user.model';
 import { ArchiveComponent } from './modals/archive/archive.component';
 import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
 import { activeProject, closedProject } from './mock';
@@ -27,12 +25,6 @@ export interface Modes {
 	certificates: WorkFlowMode;
 }
 
-export interface UserProject extends Project {
-	role: string;
-	startedAt: Date;
-	endedAt?: Date;
-}
-
 export interface Path {
 	title: string;
 	url?: string;
@@ -47,7 +39,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	public institutes: EducationModel[];
 	public courses: EducationModel[];
 	public studyTypes: EducationType[];
-	public userProjects: UserProject[];
 	public paths: Path[];
 	public pageId: string;
 	public isOwner: boolean;
@@ -112,18 +103,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this._unsubscribe$.next();
 		this._unsubscribe$.complete();
-	}
-
-	private _getUserProjects(): UserProject[] {
-		return [
-			activeProject,
-			{
-				...activeProject,
-				description:
-					'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-			},
-			...Array(5).fill(closedProject),
-		];
 	}
 
 	onOpenDialog(): void {
