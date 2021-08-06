@@ -29,7 +29,8 @@
 				<ng-container *ngIf="position$ | async as positionList">
 					<mat-form-field appearance="fill">
 						<mat-label>Должность</mat-label>
-						<mat-select id="positionId" placeholder="Выберите должность" formControlName="positionId" required>
+						<mat-select id="positionId" placeholder="Выберите должность" formControlName="positionId"
+							required>
 							<mat-option *ngFor="let position of positionList.body" [value]="position.id">
 								{{ position?.name }}
 							</mat-option>
@@ -49,33 +50,23 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Ставка</mat-label>
 					<!--TODO: Вынести в отдельный компонент https://trello.com/c/JhikCtPI-->
-					<button
-						class="new-employee__rate-button"
-						mat-icon-button
-						matPrefix
-						type="button"
-						(click)="changeWorkingRate(-0.25)"
-						[disabled]="rate.value === '0.25'"
-					>
+					<button class="new-employee__rate-button" mat-icon-button matPrefix type="button"
+						(click)="changeWorkingRate(-0.25)" [disabled]="rate.value === '0.25'">
 						-
 					</button>
 					<input #rate id="rate" class="new-employee__rate" matInput formControlName="rate" readonly />
-					<button
-						class="new-employee__rate-button"
-						mat-icon-button
-						matSuffix
-						type="button"
-						(click)="changeWorkingRate(0.25)"
-						[disabled]="rate.value === '1'"
-					>
+					<button class="new-employee__rate-button" mat-icon-button matSuffix type="button"
+						(click)="changeWorkingRate(0.25)" [disabled]="rate.value === '1'">
 						+
 					</button>
 				</mat-form-field>
-				<do-datepicker controlName="startWorkingAt" label="Начало работы" format="full" [isEdit]="true"></do-datepicker>
+				<do-datepicker controlName="startWorkingAt" label="Начало работы" format="full" [isEdit]="true">
+				</do-datepicker>
 				<mat-form-field appearance="fill">
 					<mat-label>Офис</mat-label>
 					<mat-select id="office" placeholder="Выберите офис" formControlName="officeId" required>
-						<mat-option *ngFor="let office of offices" [value]="office.id"> {{ office.city }}, {{ office.address }} </mat-option>
+						<mat-option *ngFor="let office of offices" [value]="office.id"> {{ office.city }}, {{
+							office.address }} </mat-option>
 					</mat-select>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
@@ -86,45 +77,35 @@
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
+				<div>
+					<mat-checkbox color='accent' formControlName="isAdmin">Дать права администратора</mat-checkbox>
+				</div>
 			</div>
 		</div>
 		<div class="section new-employee__auth">
 			<h3 doText color="dark_1" class="new-employee__heading">Аутентификация</h3>
 			<div class="new-employee__inputs">
 				<mat-form-field class="new-employee__form-element_span_2" appearance="fill">
-					<mat-label
-						>E-mail
-						<mat-icon
-							class="new-employee__hint"
-							aria-label="Hint"
-							matTooltipClass="tooltip"
+					<mat-label>E-mail
+						<mat-icon class="new-employee__hint" aria-label="Hint" matTooltipClass="tooltip"
 							matTooltip="На эту почту пользователю придет ссылка для регистрации"
-							[matTooltipPosition]="'above'"
-							>help_outline
-						</mat-icon></mat-label
-					>
+							[matTooltipPosition]="'above'">help_outline
+						</mat-icon>
+					</mat-label>
 					<input id="email" matInput placeholder="Введите E-mail" formControlName="email" required />
-					<mat-error *ngIf="userForm.get('email').hasError('required')">Электронная почта обязательна!</mat-error>
+					<mat-error *ngIf="userForm.get('email').hasError('required')">Электронная почта обязательна!
+					</mat-error>
 					<mat-error *ngIf="userForm.get('email').hasError('email')">Неправильный формат почты!</mat-error>
 				</mat-form-field>
 			</div>
 		</div>
 		<div class="new-employee__actions">
-			<button
-				class="text-gray new-employee__reset new-employee__button"
-				mat-flat-button
-				mat-dialog-close
-				type="button"
-				(click)="onCancelClick()"
-			>
+			<button class="text-gray new-employee__reset new-employee__button" mat-flat-button mat-dialog-close
+				type="button" (click)="onCancelClick()">
 				Отмена
 			</button>
-			<button
-				class="bg-accent_color_bright text-light_1 new-employee__submit new-employee__button"
-				type="submit"
-				mat-flat-button
-				[disabled]="userForm.invalid"
-			>
+			<button class="bg-accent_color_bright text-light_1 new-employee__submit new-employee__button" type="submit"
+				mat-flat-button [disabled]="userForm.invalid">
 				Сохранить
 			</button>
 		</div>
