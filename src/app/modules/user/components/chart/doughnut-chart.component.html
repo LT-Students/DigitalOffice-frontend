@@ -6,7 +6,8 @@
 
                    <h2>Часы за
                        <mat-form-field appearance="fill" class='chart__content-heading-hiding'>
-                           <input matInput [matDatepicker]="picker"/>
+                           <input matInput [matDatepicker]="picker"
+                                  [formControl]="startDate"/>
 
                            <mat-datepicker
                                #picker startView="year"
@@ -17,7 +18,7 @@
                        </mat-form-field>
                        <a (click) = "picker.open()">
                        <span doText underlined underlinedSize='sm'>
-                           {{month}} {{year}}
+                           {{ startDate | date: 'LLLL YYYY' | titlecase }}
                        </span>
                        </a>
                    </h2>
@@ -30,7 +31,7 @@
         </div>
 
         <div class='chart__wrapper'>
-            <button (click)=changeMonth(-1) class='chart__left-arrow' mat-mini-fab [class.mat-elevation-z0]='true'>
+            <button (click)=changeMonthWithArrow(-1) class='chart__left-arrow' mat-mini-fab [class.mat-elevation-z0]='true'>
                 <mat-icon>expand_more</mat-icon>
             </button>
 
@@ -56,7 +57,7 @@
 
             </div>
 
-            <button (click)=changeMonth(1) class='chart__right-arrow' mat-mini-fab [class.mat-elevation-z0]='true'>
+            <button (click)=changeMonthWithArrow(1) class='chart__right-arrow' mat-mini-fab [class.mat-elevation-z0]='true'>
                 <mat-icon>expand_more</mat-icon>
             </button>
         </div>

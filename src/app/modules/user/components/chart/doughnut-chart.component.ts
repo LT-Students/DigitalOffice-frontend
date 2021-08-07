@@ -8,6 +8,8 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project, ProjectModel } from '@app/models/project/project.model';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { Data } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'do-doughnut-chart',
@@ -28,25 +30,9 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	public recommendedTime: Time;
 
 	public datePeriod: any; //данные из date range picker
-	//для перевода данных на русский
-	public readonly rusMonth = {
-		0: 'Январь',
-		1: 'Февраль',
-		2: 'Март',
-		3: 'Апрель',
-		4: 'Май',
-		5: 'Июнь',
-		6: 'Июль',
-		7: 'Август',
-		8: 'Сентябрь',
-		9: 'Октябрь',
-		10: 'Ноябрь',
-		11: 'Декабрь',
-	};
-	public currentMonth: number; //выбранный текущий месяц
-	public currentYear: number | string; //выбранный текущий год
+
 	public firstRender = true; //при первоначальном открытии чтобы не было ошибки
-	public startDate = new Date();
+	public startDate: Date = new FormControl(new Date()).value;
 
 	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {}
 
@@ -146,40 +132,16 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	public abs(x: number): number {
 		return Math.abs(x);
 	}
-	//когда еще не выбран месяц при запуске - месяц идет с текущей даты
-	get month(): string {
-		// приходит в формате "Jul" и преобр-ся к рус через объект rusMonth
-		// если не выбран берет дату текущую
-		if (this.firstRender) {
-			this.currentMonth = this.startDate.getMonth();
-			return this.rusMonth[this.currentMonth];
-		}
-		// если выбран месяц из datepicker, то currentMonth приходит из chosenMonthHandler
-		return this.rusMonth[this.currentMonth];
-	}
 
-	get year(): number | string {
-		if (this.firstRender) {
-			this.currentYear = this.startDate.getFullYear();
-			return this.currentYear;
-		}
-		// если выбран месяц из datepicker, то currentMonth приходит из chosenMonthHandler
-		return this.currentYear;
-	}
-
-	//когда выбран месяц - firstRender становится false, в currentMonth попадает событие даты, которую выбрали
-	chosenMonthHandler(chosenMonth: Date, datepicker: MatDatepicker<any>) {
+	// //когда выбран месяц - firstRender становится false, в currentMonth попадает событие даты, которую выбрали
+	chosenMonthHandler(chosenDate: Date, datepicker: MatDatepicker<any>) {
 		this.firstRender = false;
+		this.startDate = chosenDate;
 		datepicker.close();
-		this.currentMonth = chosenMonth.getMonth();
-		this.currentYear = chosenMonth.getFullYear();
-		console.log(this.currentMonth);
 	}
-
-	public changeMonth(num: number) {
-		this.currentMonth = this.startDate.getMonth(); //пришло событие текущей даты, getMonth вытащили месяц
+	public changeMonthWithArrow(changeDate: number) {
 		console.log(this.startDate);
-		return this.startDate.setMonth(this.currentMonth + num); //уст-ка значения+-1 (параметр в шаблоне)
+		const x = this.startDate.setMonth(this.startDate.getMonth() + changeDate);
 	}
 
 	ngOnDestroy() {
