@@ -2,30 +2,20 @@
 @import 'base/fonts';
 
 .chart {
-	position: relative;
-
 	padding: 0 48px 32px 48px;
 
 	display: flex;
 	flex-direction: column;
-	justify-content: space-around;
-	align-items: flex-start;
 
-	width: 100%;
-
-	background-color: #fff;
-
-	&__tags__projects {
+	&__tags {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-end;
 
-		width: 80%;
+		width: 90%;
+		flex-wrap: wrap;
 
-		font-family: $regular_font, serif;
-
-		span {
-			font-family: $regular_font, serif;
+		&-bold {
 			font-size: 16px;
 			font-weight: 700;
 			line-height: 24px;
@@ -35,7 +25,7 @@
 
 	&__time-info {
 		position: absolute;
-		top: 55%;
+		top: 52%;
 		left: 50%;
 
 		margin-top: 5px;
@@ -52,7 +42,6 @@
 	}
 
 	&__time-spent {
-		font-family: $regular_font, serif;
 		font-size: 22px;
 		font-weight: 700;
 		line-height: 33px;
@@ -62,19 +51,6 @@
 		&_initial {
 			color: $gray;
 		}
-
-		&::after {
-			content: '/';
-
-			padding: 0 2px;
-
-			font-family: $regular_font, serif;
-			font-size: 16px;
-			font-weight: normal;
-			line-height: 24px;
-
-			color: $dark_5;
-		}
 	}
 
 	&__time-status {
@@ -82,121 +58,67 @@
 
 		width: max-content;
 
-		font-family: $regular_font, serif;
-
 		font-size: 16px;
-
 		text-align: center;
 
 		color: $dark_5;
-
 		border-radius: 5px;
-
-		&_style {
-			&_positive {
-				&::before {
-					content: '';
-				}
-			}
-
-			&_negative {
-				background-color: #eb5757;
-
-				&::before {
-					content: '-';
-				}
-			}
-
-			&_zero {
-				background-color: $gray;
-			}
-
-			&_initial {
-				text-transform: lowercase;
-			}
-		}
 	}
 
-	&__wrapper {
+	&__diagram-wrapper {
 		padding-bottom: 30px;
 
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
+		align-items: center;
 
 		width: 100%;
+	}
 
-		&__doughnut {
-			display: flex;
-			justify-content: space-between;
-			align-items: baseline;
+	&__doughnut {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
 
-			width: 184px;
-			height: 184px;
-		}
+		width: 184px;
+		height: 184px;
 	}
 
 	&__left-arrow {
-		position: absolute;
-		top: 50%;
+		top: 47%;
 		left: 32px;
 
 		background-color: #f5f5f5;
-
-		transform: rotate(90deg);
 	}
 
 	&__right-arrow {
-		position: absolute;
-		top: 50%;
+		top: 47%;
 		right: 32px;
 
 		background-color: #f5f5f5;
-
-		transform: rotate(270deg);
 	}
 
-	&__content {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
+	.orange-icon {
+		color: #ff8a65;
+	}
 
-		&__projects {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-		}
+	&__hiding {
+		visibility: hidden;
 
-		&-heading {
-			margin-bottom: 25px;
+		width: 0;
+		height: 0;
+	}
 
-			display: flex;
-			justify-content: center;
-			align-items: baseline;
+	&__title {
+		font-size: 22px;
+		font-weight: 700;
+		font-style: normal;
+		line-height: 33px;
+		text-align: left;
+		letter-spacing: 0;
 
-			.orange-icon {
-				color: #ff8a65;
-			}
-
-			&-hiding {
-				visibility: hidden;
-
-				width: 0;
-				height: 0;
-			}
-		}
-
-		h2 {
-			font-family: $regular_font;
-			font-size: 22px;
-			font-weight: 700;
-			font-style: normal;
-			line-height: 33px;
-			text-align: left;
-			letter-spacing: 0;
-
-			span {
-				color: #ff8a65;
-			}
+		&-orange {
+			color: #ff8a65;
 		}
 	}
 

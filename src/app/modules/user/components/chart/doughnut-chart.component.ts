@@ -10,6 +10,7 @@ import { Project, ProjectModel } from '@app/models/project/project.model';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { Data } from '@angular/router';
 import { FormControl } from '@angular/forms';
+import * as moment from 'moment';
 
 @Component({
 	selector: 'do-doughnut-chart',
@@ -19,7 +20,7 @@ import { FormControl } from '@angular/forms';
 export class DoughnutChartComponent implements OnInit, OnDestroy {
 	/* TODO: inject data from parent component in this list */
 	@Input() projectList: Project[];
-	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
+	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>; //получили канву
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 	private ctx: CanvasRenderingContext2D;
@@ -29,15 +30,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	public projects: ProjectModel[];
 	public recommendedTime: Time;
 
-	public datePeriod: any; //данные из date range picker
-
-	public firstRender = true; //при первоначальном открытии чтобы не было ошибки
-	public startDate: Date = new FormControl(new Date()).value;
+	public startDate: Date = new Date();
 
 	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {}
 
 	ngOnInit() {
-		this.ctx = this.canvas.nativeElement.getContext('2d');
+		this.ctx = this.canvas.nativeElement.getContext('2d'); //приводит к созданию объекта
 
 		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
 			this.recommendedTime = time;
@@ -129,19 +127,19 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	public abs(x: number): number {
-		return Math.abs(x);
-	}
-
-	// //когда выбран месяц - firstRender становится false, в currentMonth попадает событие даты, которую выбрали
-	chosenMonthHandler(chosenDate: Date, datepicker: MatDatepicker<any>) {
-		this.firstRender = false;
+	chosenMonthHandler(chosenDate: Date) {
 		this.startDate = chosenDate;
-		datepicker.close();
 	}
-	public changeMonthWithArrow(changeDate: number) {
-		console.log(this.startDate);
-		const x = this.startDate.setMonth(this.startDate.getMonth() + changeDate);
+	public changeMonth(changeDate: number) {
+		const currentMonth = this.startDate.getMonth();
+		const nextMonth = currentMonth + changeDate;
+		this.startDate = new Date(this.startDate.setMonth(nextMonth));
+	}
+	public minusMonth() {
+		return this.changeMonth(-1);
+	}
+	public plusMonth() {
+		return this.changeMonth(1);
 	}
 
 	ngOnDestroy() {
