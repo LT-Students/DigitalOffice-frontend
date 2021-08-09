@@ -48,10 +48,15 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Пароль</mat-label>
 					<input matInput formControlName="password" placeholder="Придумайте пароль" required />
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 				</mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Пароль</mat-label>
-                    <input matInput formControlName="password" type='password' placeholder="Повторите пароль" required />
+                    <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher" [type]="hide ? 'password' : 'text'" placeholder="Повторите пароль" required />
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error *ngIf="adminForm.hasError('notSame')">
+                        Пароль не совпадает
+                    </mat-error>
                 </mat-form-field>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
@@ -79,10 +84,15 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Пароль</mat-label>
 					<input matInput formControlName="password" placeholder="Придумайте пароль" required />
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 				</mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Пароль</mat-label>
-                    <input matInput formControlName="password" type='password' placeholder="Повторите пароль" required />
+                    <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher" [type]="hide ? 'password' : 'text'" placeholder="Повторите пароль" required />
+                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error *ngIf="smtpForm.hasError('notSame')">
+                        Пароль не совпадает
+                    </mat-error>
                 </mat-form-field>
 				<mat-checkbox formControlName="enableSsl" required>Включить SSL</mat-checkbox>
 				<div>

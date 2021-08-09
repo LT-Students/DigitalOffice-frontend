@@ -1,8 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { ErrorStateMatcher } from '@angular/material/core';
+import validate = WebAssembly.validate;
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+		const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
+		const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
+
+		return (invalidCtrl || invalidParent);
+	}
+}
 
 @Component({
 	selector: 'do-wizard',
@@ -13,6 +24,10 @@ export class WizardComponent implements OnInit {
 	companyForm: FormGroup;
 	adminForm: FormGroup;
 	smtpForm: FormGroup;
+
+	matcher = new MyErrorStateMatcher();
+
+	hide = true;
 
 	constructor(private _formBuilder: FormBuilder, private companyApiService: CompanyApiService, private router: Router, private titleService: Title) {
 		this.titleService.setTitle('Installer');
@@ -31,14 +46,23 @@ export class WizardComponent implements OnInit {
 			email: ['', Validators.required],
 			login: ['', Validators.required],
 			password: ['', Validators.required],
-		});
+			confirmPassword: ['']
+		}, { validator: this.checkPasswords });
 		this.smtpForm = this._formBuilder.group({
 			host: ['', Validators.required],
 			port: ['', Validators.required],
 			enableSsl: ['', Validators.required],
 			email: ['', Validators.required],
 			password: ['', Validators.required],
-		});
+			confirmPassword: ['']
+		}, { validator: this.checkPasswords });
+	}
+
+	checkPasswords (group: FormGroup) {
+		let pass =  group.controls.password.value;
+		let confirmPass = group.controls.confirmPassword.value;
+
+		return pass === confirmPass ? null : { notSame: true }
 	}
 
 	submitForm() {
