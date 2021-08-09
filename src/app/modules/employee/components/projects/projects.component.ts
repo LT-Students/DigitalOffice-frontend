@@ -40,7 +40,6 @@ export class ProjectsComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		// TODO: add full project data fetching after initalizing
 		this._projectService.getMockUserProjectsInfo().subscribe((projects: ProjectInfo[]) => {
 			this._filterProject(projects);
 		});

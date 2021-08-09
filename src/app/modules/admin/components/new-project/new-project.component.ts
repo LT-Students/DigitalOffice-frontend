@@ -27,7 +27,6 @@ import { Team, TeamMember } from './team-cards';
 export class NewProjectComponent implements OnInit {
 	public projectForm: FormGroup;
 	public teams: Team[];
-	// TODO: REPLACE WITH API
 	public departments: DepartmentInfo[];
 	public statuses: ProjectStatus[];
 	public membersAll: UserInfo[];
