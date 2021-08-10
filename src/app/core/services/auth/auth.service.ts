@@ -47,7 +47,6 @@ export class AuthService {
 	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<OperationResultResponseCredentialsResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
 			tap((response) => {
-				//@ts-ignore TODO remove when API is fixed
 				this._setCredentialsToLocalStorage(response.body);
 			}),
 			catchError((error: HttpErrorResponse) => {

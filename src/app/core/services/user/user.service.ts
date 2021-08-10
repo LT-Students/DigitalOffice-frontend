@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
 
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
-import { LocalStorageService } from '@app/services/local-storage.service';
 import {
 	FindResultResponseUserInfo,
 	OperationResultResponseUserResponse,
@@ -24,7 +22,7 @@ import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 export class UserService {
 	public selectedUser: BehaviorSubject<User>;
 
-	constructor(private _userApiService: UserApiService, private localStorageService: LocalStorageService) {
+	constructor(private _userApiService: UserApiService) {
 		this.selectedUser = new BehaviorSubject<User>(null);
 	}
 

@@ -191,7 +191,7 @@ export class MainInfoComponent implements OnInit {
 			rate: rate,
 			city: city,
 			gender: this.user.user.gender,
-			dateOfBirth: this.user.dateOfBirth,
+			dateOfBirth: this.user.dateOfBirth(),
 			startWorkingAt: this.user.startWorkingDate,
 			communications: this._enrichCommunications(),
 		});
