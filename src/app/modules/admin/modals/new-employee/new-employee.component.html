@@ -17,7 +17,7 @@
 					<mat-label>Фамилия</mat-label>
 					<input id="lastName" matInput placeholder="Введите фамилию" formControlName="lastName" required />
 					<mat-error *ngIf="userForm.get('lastName').hasError('required')">Фамилия обязательна!</mat-error>
-					<mat-error *ngIf="userForm.get('lastName').hasError('whitespace')">Имя не может состоять только из пробелов!</mat-error>
+					<mat-error *ngIf="userForm.get('lastName').hasError('whitespace')">Фамилия не может состоять только из пробелов!</mat-error>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Отчество</mat-label>
