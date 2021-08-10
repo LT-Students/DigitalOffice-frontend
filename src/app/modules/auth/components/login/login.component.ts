@@ -6,7 +6,6 @@ import { AuthService } from '@app/services/auth/auth.service';
 
 import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 import { User } from '@app/models/user/user.model';
 import { of } from 'rxjs';
 import { CompanyService } from '@app/services/company/company.service';
@@ -52,7 +51,7 @@ export class LoginComponent implements OnInit {
 		this.isLoading = true;
 
 		const authenticationRequest: AuthenticationRequest = {
-			loginData: this.loginForm.get('email').value,
+			loginData: this.loginForm.get('email').value.trim(),
 			password: this.loginForm.get('password').value,
 		};
 
