@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '@app/services/auth.service';
+import { AuthService } from '@app/services/auth/auth.service';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
+import { User } from '@app/models/user/user.model';
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-signup',
@@ -15,6 +17,7 @@ import { OperationResultResponseUserResponse } from '@data/api/user-service/mode
 	styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent implements OnInit {
+	public portalName: string;
 	public userId: string;
 	public loginForm: FormGroup;
 	public isWaiting = false;
@@ -29,10 +32,12 @@ export class SignupComponent implements OnInit {
 	constructor(
 		private _authService: AuthService,
 		private _userService: UserService,
+		private _companyService: CompanyService,
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private _fb: FormBuilder
 	) {
+		this.portalName = this._companyService.getPortalName();
 		this.userId = null;
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
@@ -66,15 +71,12 @@ export class SignupComponent implements OnInit {
 						},
 					});
 					this.isWaiting = false;
-					return throwError(error);
+					return of(null);
 				})
-			).subscribe(
-				(user: OperationResultResponseUserResponse) => {
-					const nextUrl: string = (user.body.user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+			).subscribe((user: User) => {
+					const nextUrl: string = (user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+					console.log(user.getFioFull());
 					this._router.navigate([nextUrl]);
-				},
-				(error: string) => {
-					console.log('Getting user info failed.', error);
 				}
 			);
 	}

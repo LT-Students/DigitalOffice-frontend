@@ -3,22 +3,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { MatDialogRef } from '@angular/material/dialog';
-import { IUser } from '@data/models/user';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
-import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
 import {
 	CommunicationType,
 	CreateCommunicationRequest,
-	DepartmentInfo,
 	OperationResultResponse,
-	PositionInfo,
 	UserGender,
 	UserStatus,
 } from '@data/api/user-service/models';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -28,6 +24,7 @@ import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
 import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
 import { FindResultResponsePositionInfo } from '@data/api/company-service/models/find-result-response-position-info';
+import { DoValidators } from '@app/validators/do-validators';
 
 export const DATE_FORMAT = {
 	parse: {
@@ -53,7 +50,6 @@ export const DATE_FORMAT = {
 	],
 })
 export class NewEmployeeComponent implements OnInit, OnDestroy {
-	public user: IUser;
 	public message: string;
 	public imagePath;
 	public imgURL: any;
@@ -150,15 +146,16 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 
 	private _initForm(): void {
 		this.userForm = this.formBuilder.group({
-			lastName: ['', [Validators.required, Validators.maxLength(32)]],
-			firstName: ['', [Validators.required, Validators.maxLength(32)]],
-			middleName: ['', [Validators.maxLength(32)]],
+			lastName: ['', [Validators.required, DoValidators.noWhitespaces]],
+			firstName: ['', [Validators.required, DoValidators.noWhitespaces]],
+			middleName: ['', [DoValidators.noWhitespaces]],
 			positionId: ['', [Validators.required]],
 			startWorkingAt: [null],
+			isAdmin: [false],
 			rate: ['1', [Validators.required]],
 			departmentId: [null],
 			officeId: ['', [Validators.required]],
-			email: ['', [Validators.required, Validators.email]],
+			email: ['', [Validators.required, DoValidators.email]],
 			roleId: [null],
 		});
 	}
@@ -178,7 +175,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			positionId: this.userForm.get('positionId').value as string,
 			departmentId: this.userForm.get('departmentId').value as string,
 			rate: this.userForm.get('rate').value as number,
-			isAdmin: false,
+			isAdmin: this.userForm.get('isAdmin').value as boolean,
 			communications: communications,
 			startWorkingAt: this.userForm.get('startWorkingAt').value as string,
 			status: UserStatus.WorkFromHome,

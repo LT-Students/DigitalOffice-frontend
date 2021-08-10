@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
-import { ProjectService } from '@app/services/project.service';
+import { ProjectService } from '@app/services/project/project.service';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 
 interface Group {
@@ -40,7 +40,6 @@ export class ProjectsComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		// TODO: add full project data fetching after initalizing
 		this._projectService.getMockUserProjectsInfo().subscribe((projects: ProjectInfo[]) => {
 			this._filterProject(projects);
 		});

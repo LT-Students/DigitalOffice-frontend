@@ -5,9 +5,7 @@ import { Time } from '@angular/common';
 import { DatePeriod } from '@data/models/date-period';
 import { DateService } from './date.service';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class AttendanceService {
 	private readonly _datePeriod = new BehaviorSubject<DatePeriod>(this.dateService.getDefaultDatePeriod(6));
 

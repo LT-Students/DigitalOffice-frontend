@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '@app/services/project.service';
+import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
@@ -186,7 +186,7 @@ export class ProjectsTableComponent implements OnInit {
 	}
 
 	private _getProjectList(): void {
-		this._projectService.getProjectList(this.pageIndex * this.pageSize, this.pageSize).subscribe((result) => {
+		this._projectService.findProjects(this.pageIndex * this.pageSize, this.pageSize).subscribe((result) => {
 			this.totalCount = result.totalCount;
 			this.projectList = result.body;
 		});

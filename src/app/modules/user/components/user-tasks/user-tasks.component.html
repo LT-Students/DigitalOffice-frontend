@@ -2,35 +2,17 @@
     <h3>
       {{ tasksCount }} записи за
       <span doText color='accent_color_bright'>{{ getPeriod() }}</span>
-    <!--  TODO: вынести в отдельный метод -->
-      <!--<span *ngIf="!endDate || this.dateService.isSameDay(startDate, endDate)">
-        {{ startDate | date: 'd MMMM' }}
-      </span>
-      <span
-        *ngIf="
-          endDate &&
-          this.dateService.isSameMonth(startDate, endDate) &&
-          !this.dateService.isSameDay(startDate, endDate)
-        "
-      >
-        {{ startDate | date: 'd' }} – {{ endDate | date: 'd MMMM' }}
-      </span>
-      <span
-        *ngIf="endDate && !this.dateService.isSameMonth(startDate, endDate)"
-      >
-        {{ startDate | date: 'd MMMM' }} – {{ endDate | date: 'd MMMM' }}
-      </span>-->
     </h3>
       <h4>Внесено <span doText color='accent_color_bright'>total_hours</span></h4>
-        <mat-form-field appearance="outline">
+        <!--<mat-form-field appearance="outline">
           <mat-label>Поиск по ключевым словам</mat-label>
           <input matInput type="text" [(ngModel)]='searchText'>
           <span matPrefix><mat-icon aria-hidden="false" aria-label="search">search</mat-icon></span>
           <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="searchText=''">
             <mat-icon>close</mat-icon>
           </button>
-        </mat-form-field>
-      <ng-container *ngFor="let project of projects | taskFilter: searchText">
+        </mat-form-field>-->
+      <ng-container *ngFor="let project of projects">
         <do-project [project]="project"></do-project>
       </ng-container>
 </mat-card>

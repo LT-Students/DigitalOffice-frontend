@@ -1,34 +1,29 @@
-<div class="new-department">
-	<span class="title h1 h1_dark_2">Новый департамент</span>
+<mat-dialog-content class="new-department">
+	<h3 mat-dialog-title>Новый департамент</h3>
 	<div class="form__container">
 		<form autocomplete="off" class="data-form" [formGroup]="departmentForm" (ngSubmit)="postDepartment()">
 			<div class="new-department__input-container">
-				<div class="new-department__input">
-					<label class="h5 h5_dark_1" for="name">Название<sup doText color="negative_accent">*</sup></label>
-					<mat-form-field>
-						<input matInput type="text" id="name" formControlName="name" />
-					</mat-form-field>
-				</div>
-				<div class="new-department__input">
-					<label class="h5 h5_dark_1" for="description">Описание</label>
-					<mat-form-field>
-						<input matInput type="text" id="description" formControlName="description" />
-					</mat-form-field>
-				</div>
-				<div class="new-department__input">
-					<label class="h5 h5_dark_1" for="description">Директор</label>
-					<mat-form-field class="mat-form-field_default-select" appearance="none">
-						<mat-select id="director" formControlName="directorId">
-							<mat-option *ngFor="let director of directors" [value]="director.id">
-								{{ director.lastName + ' ' + director.firstName }}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
+				<mat-form-field appearance="fill">
+					<mat-label>Название</mat-label>
+					<input matInput type="text" id="name" formControlName="name" required />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Описание</mat-label>
+					<input matInput type="text" id="description" formControlName="description" />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Директор</mat-label>
+					<mat-select id="director" formControlName="directorId">
+						<mat-option *ngFor="let director of directors" [value]="director.id">
+							{{ director.lastName + ' ' + director.firstName }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
 			</div>
-			<button mat-flat-button color="primary" class="btn-create-department" type="submit" [disabled]="departmentForm.invalid">
-				<span class="regular_text regular_text_light_1">Добавить департамент</span>
-			</button>
+			<mat-dialog-actions align='center'>
+				<button class="text-gray" mat-flat-button mat-dialog-close type="button">Отмена</button>
+				<button mat-flat-button color="primary" type="submit" [disabled]="departmentForm.invalid">Добавить департамент</button>
+			</mat-dialog-actions>
 		</form>
 	</div>
-</div>
+</mat-dialog-content>

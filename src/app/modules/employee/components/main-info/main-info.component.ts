@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { UserStatusModel } from '@app/models/user-status.model';
-import { DateType } from '@app/models/date.model';
+import { UserStatusModel } from '@app/models/user/user-status.model';
+import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
-import { User } from '@app/models/user.model';
+import { User } from '@app/models/user/user.model';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { UserService } from '@app/services/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
@@ -16,8 +16,8 @@ import { ErrorResponse, OperationResultResponseUserResponse, UserGender } from '
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
-import { IUserGender, UserGenderModel } from '@app/models/user-gender.model';
-import { UserGet } from '@app/models/user-get.model';
+import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
+import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -52,7 +52,7 @@ export class MainInfoComponent implements OnInit {
 			statuses: UserStatusModel.getAllStatuses(),
 			workingHours: ['8:00', '9:00', '10:00', '16:00', '17:00', '19:00'],
 		};
-		this.genders = UserGenderModel.getAllGenders();
+		this.genders = PersonalInfoManager.getGenderList();
 		this.isEditing = false;
 		this.user = null;
 		this.pageId = this.route.snapshot.paramMap.get('id');
@@ -123,7 +123,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _getUser(): void {
-		const params: UserGet = {
+		const params: IGetUserRequest = {
 			userId: this.pageId,
 			includedepartment: true,
 			includeposition: true,
@@ -140,7 +140,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _patchEditUser(): void {
-		const editRequest = Object.keys(this.employeeInfoForm.controls)
+		const editRequest: {path: string, value: any }[] = Object.keys(this.employeeInfoForm.controls)
 			.filter((key) => this.employeeInfoForm.get(key).dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key).value }));
 		this._userService.editUser(this.user.id, editRequest).subscribe(
@@ -191,7 +191,7 @@ export class MainInfoComponent implements OnInit {
 			rate: rate,
 			city: city,
 			gender: this.user.user.gender,
-			dateOfBirth: this.user.dateOfBirth,
+			dateOfBirth: this.user.dateOfBirth(),
 			startWorkingAt: this.user.startWorkingDate,
 			communications: this._enrichCommunications(),
 		});

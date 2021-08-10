@@ -1,20 +1,16 @@
 <mat-dialog-content class="new-role">
-	<h2 doText>Новая роль</h2>
+	<h3 mat-dialog-title>Новая роль</h3>
 	<div class="new-role__form">
 		<form autocomplete="off" [formGroup]="roleForm" (ngSubmit)="createRole()">
 			<div class="new-role__input-container">
-				<div class="new-role__input">
-					<label doText color="dark_1" for="name">Название<sup doText color="negative_accent">*</sup></label>
-					<mat-form-field>
-						<input matInput type="text" id="name" formControlName="name" />
-					</mat-form-field>
-				</div>
-				<div class="new-role__input">
-					<label doText color="dark_1" for="description">Описание</label>
-					<mat-form-field>
-						<input matInput type="text" id="description" formControlName="description" />
-					</mat-form-field>
-				</div>
+				<mat-form-field>
+					<mat-label>Название</mat-label>
+					<input matInput type="text" id="name" formControlName="name" required />
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Описание</mat-label>
+					<input matInput type="text" id="description" formControlName="description" />
+				</mat-form-field>
 				<div class="new-role__input">
 					<p doText color="dark_1">Выберите права</p>
 					<p *ngFor="let right of rights">
@@ -22,9 +18,10 @@
 					</p>
 				</div>
 			</div>
-			<button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid">
-				<span doText color="light_1">Добавить роль</span>
-			</button>
+			<mat-dialog-actions align="center">
+				<button class="text-gray" mat-flat-button mat-dialog-close type="button">Отмена</button>
+				<button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid">Добавить роль</button>
+			</mat-dialog-actions>
 		</form>
 	</div>
 </mat-dialog-content>

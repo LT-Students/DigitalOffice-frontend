@@ -1,5 +1,5 @@
-import { Input, Component, OnInit } from '@angular/core';
-import { AuthService } from '@app/services/auth.service';
+import { Input, Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { AuthService } from '@app/services/auth/auth.service';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 
 @Component({
@@ -11,13 +11,21 @@ export class HeaderComponent implements OnInit {
 	@Input() userName: string;
 	@Input() userId: string;
 	@Input() avatar: ImageInfo;
+	@Input() portalName: string;
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
+	@Output() public menuClick: EventEmitter<MouseEvent>;
 
-	constructor(private authService: AuthService) {}
+	constructor(private authService: AuthService) {
+		this.menuClick = new EventEmitter();
+	}
 
-	ngOnInit() {}
+	ngOnInit() { }
 
 	onLogoutClick() {
 		this.authService.logout();
+	}
+
+	onMenuClick(event: MouseEvent) {
+		this.menuClick.emit(event);
 	}
 }

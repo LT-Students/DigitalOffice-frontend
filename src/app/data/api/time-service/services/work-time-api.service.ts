@@ -9,8 +9,11 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { CreateWorkTimeRequest } from '../models/create-work-time-request';
 import { EditWorkTimeRequest } from '../models/edit-work-time-request';
-import { WorkTimeRequest } from '../models/work-time-request';
+import { FindResultResponseWorkTimeInfo } from '../models/find-result-response-work-time-info';
+import { OperationResultResponse } from '../models/operation-result-response';
+import { IEditWorkTimeRequest, IFindWorkTimesRequest } from '@app/services/time/time.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +29,7 @@ export class WorkTimeApiService extends BaseService {
   /**
    * Path part for operation addWorkTime
    */
-  static readonly AddWorkTimePath = '/worktime/addWorkTime';
+  static readonly AddWorkTimePath = '/worktime/add';
 
   /**
    * Sets the worktime for the user.
@@ -41,8 +44,8 @@ export class WorkTimeApiService extends BaseService {
     /**
      * Needed for set worktime.
      */
-    body: WorkTimeRequest
-  }): Observable<StrictHttpResponse<string>> {
+    body: CreateWorkTimeRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.AddWorkTimePath, 'post');
     if (params) {
@@ -55,7 +58,7 @@ export class WorkTimeApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -73,21 +76,80 @@ export class WorkTimeApiService extends BaseService {
     /**
      * Needed for set worktime.
      */
-    body: WorkTimeRequest
-  }): Observable<string> {
+    body: CreateWorkTimeRequest
+  }): Observable<OperationResultResponse> {
 
     return this.addWorkTime$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
+
+  /**
+   * Path part for operation findWorkTimes
+   */
+  static readonly FindWorkTimesPath = '/worktime/find';
+
+  /**
+   * Find work times by filter.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findWorkTimes()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findWorkTimes$Response(params?: {
+    userid?: string;
+    projectid?: string;
+    starttime?: string;
+    endtime?: string;
+    takeCount?: number;
+    skipCount?: number;
+  }): Observable<StrictHttpResponse<FindResultResponseWorkTimeInfo>> {
+
+    const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.FindWorkTimesPath, 'get');
+    if (params) {
+      rb.query('userid', params.userid, {});
+      rb.query('projectid', params.projectid, {});
+      rb.query('starttime', params.starttime, {});
+      rb.query('endtime', params.endtime, {});
+      rb.query('takeCount', params.takeCount, {});
+      rb.query('skipCount', params.skipCount, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<FindResultResponseWorkTimeInfo>;
+      })
+    );
+  }
+
+  /**
+   * Find work times by filter.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `findWorkTimes$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findWorkTimes(params?: IFindWorkTimesRequest): Observable<FindResultResponseWorkTimeInfo> {
+
+    return this.findWorkTimes$Response(params).pipe(
+      map((r: StrictHttpResponse<FindResultResponseWorkTimeInfo>) => r.body as FindResultResponseWorkTimeInfo)
     );
   }
 
   /**
    * Path part for operation editWorkTime
    */
-  static readonly EditWorkTimePath = '/worktime/editWorkTime';
+  static readonly EditWorkTimePath = '/worktime/edit';
 
   /**
-   * Edit the worktime by Id.
+   * Editing specific work time by Id.
+   * *  __User has edit only himself if his is not admin.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `editWorkTime()` instead.
@@ -97,45 +159,42 @@ export class WorkTimeApiService extends BaseService {
   editWorkTime$Response(params: {
 
     /**
-     * Needed for edit worktime.
+     * Work time global unique identifier.
      */
+    workTimeId: string;
     body: EditWorkTimeRequest
-  }): Observable<StrictHttpResponse<void>> {
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.EditWorkTimePath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.EditWorkTimePath, 'patch');
     if (params) {
+      rb.query('workTimeId', params.workTimeId, {});
       rb.body(params.body, 'application/json');
     }
 
     return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
+      responseType: 'json',
+      accept: 'application/json'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
 
   /**
-   * Edit the worktime by Id.
+   * Editing specific work time by Id.
+   * *  __User has edit only himself if his is not admin.
    *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `editWorkTime$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editWorkTime(params: {
-
-    /**
-     * Needed for edit worktime.
-     */
-    body: EditWorkTimeRequest
-  }): Observable<void> {
+  editWorkTime(params: IEditWorkTimeRequest): Observable<OperationResultResponse> {
 
     return this.editWorkTime$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 
