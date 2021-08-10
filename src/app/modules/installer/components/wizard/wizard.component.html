@@ -51,7 +51,7 @@
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 				</mat-form-field>
                 <mat-form-field appearance="fill">
-                    <mat-label>Пароль</mat-label>
+                    <mat-label>Повторите пароль</mat-label>
                     <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher" [type]="hide ? 'password' : 'text'" placeholder="Повторите пароль" required />
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     <mat-error *ngIf="adminForm.hasError('notSame')">
@@ -87,7 +87,7 @@
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 				</mat-form-field>
                 <mat-form-field appearance="fill">
-                    <mat-label>Пароль</mat-label>
+                    <mat-label>Повторите пароль</mat-label>
                     <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher" [type]="hide ? 'password' : 'text'" placeholder="Повторите пароль" required />
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                     <mat-error *ngIf="smtpForm.hasError('notSame')">

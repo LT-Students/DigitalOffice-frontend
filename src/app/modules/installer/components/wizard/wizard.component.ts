@@ -4,7 +4,6 @@ import { CompanyApiService } from '@data/api/company-service/services/company-ap
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { ErrorStateMatcher } from '@angular/material/core';
-import validate = WebAssembly.validate;
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -46,7 +45,7 @@ export class WizardComponent implements OnInit {
 			email: ['', Validators.required],
 			login: ['', Validators.required],
 			password: ['', Validators.required],
-			confirmPassword: ['']
+			confirmPassword: ['', Validators.required]
 		}, { validator: this.checkPasswords });
 		this.smtpForm = this._formBuilder.group({
 			host: ['', Validators.required],
@@ -54,13 +53,13 @@ export class WizardComponent implements OnInit {
 			enableSsl: ['', Validators.required],
 			email: ['', Validators.required],
 			password: ['', Validators.required],
-			confirmPassword: ['']
+			confirmPassword: ['', Validators.required]
 		}, { validator: this.checkPasswords });
 	}
 
 	checkPasswords (group: FormGroup) {
-		let pass =  group.controls.password.value;
-		let confirmPass = group.controls.confirmPassword.value;
+		let pass = group.get('password').value;
+		let confirmPass = group.get('confirmPassword').value;
 
 		return pass === confirmPass ? null : { notSame: true }
 	}
