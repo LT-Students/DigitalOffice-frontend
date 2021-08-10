@@ -146,9 +146,9 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 
 	private _initForm(): void {
 		this.userForm = this.formBuilder.group({
-			lastName: ['', [Validators.required, Validators.maxLength(32)]],
-			firstName: ['', [Validators.required, Validators.maxLength(32)]],
-			middleName: ['', [Validators.maxLength(32)]],
+			lastName: ['', [Validators.required, DoValidators.noWhitespaces]],
+			firstName: ['', [Validators.required, DoValidators.noWhitespaces]],
+			middleName: ['', [DoValidators.noWhitespaces]],
 			positionId: ['', [Validators.required]],
 			startWorkingAt: [null],
 			isAdmin: [false],
