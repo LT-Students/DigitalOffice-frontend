@@ -13,4 +13,12 @@ export class DoValidators {
 		}
 		return EMAIL_REGEXP.test(control.value) ? null : { email: true };
 	}
+
+	static noWhitespaces(control: FormControl): ValidationErrors | null {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		const isValid = control.value.trim().length !== 0;
+		return isValid ? null : { whitespace: true };
+	}
 }
