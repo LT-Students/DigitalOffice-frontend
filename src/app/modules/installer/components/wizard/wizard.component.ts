@@ -6,11 +6,9 @@ import { Title } from '@angular/platform-browser';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
+	constructor(private customControl: FormControl,private errors: any) { }
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-		const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
-		const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
-
-		return (invalidCtrl || invalidParent);
+		return this.customControl && this.customControl.touched && (this.customControl.invalid || this.errors);
 	}
 }
 
@@ -24,7 +22,7 @@ export class WizardComponent implements OnInit {
 	adminForm: FormGroup;
 	smtpForm: FormGroup;
 
-	matcher = new MyErrorStateMatcher();
+	matcher = new MyErrorStateMatcher ();
 
 	hide = true;
 

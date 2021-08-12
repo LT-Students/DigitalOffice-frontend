@@ -45,12 +45,12 @@
 					<mat-label>Логин</mat-label>
 					<input matInput formControlName="login" placeholder="Введите логин" required />
 				</mat-form-field>
-				<mat-form-field appearance="fill">
+				<mat-form-field class="wizard__input-width" appearance="fill">
 					<mat-label>Пароль</mat-label>
 					<input matInput formControlName="password" placeholder="Придумайте пароль" required />
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 				</mat-form-field>
-                <mat-form-field appearance="fill">
+                <mat-form-field class="wizard__input-width" appearance="fill">
                     <mat-label>Повторите пароль</mat-label>
                     <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher" [type]="hide ? 'password' : 'text'" placeholder="Повторите пароль" required />
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -81,12 +81,12 @@
 					<mat-label>E-mail</mat-label>
 					<input matInput formControlName="email" placeholder="example@mail.com" required />
 				</mat-form-field>
-				<mat-form-field appearance="fill">
+				<mat-form-field class="wizard__input-width" appearance="fill">
 					<mat-label>Пароль</mat-label>
 					<input matInput formControlName="password" placeholder="Придумайте пароль" required />
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
 				</mat-form-field>
-                <mat-form-field appearance="fill">
+                <mat-form-field class="wizard__input-width" appearance="fill">
                     <mat-label>Повторите пароль</mat-label>
                     <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher" [type]="hide ? 'password' : 'text'" placeholder="Повторите пароль" required />
                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
