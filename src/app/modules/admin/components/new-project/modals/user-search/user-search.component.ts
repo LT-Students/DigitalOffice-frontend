@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';

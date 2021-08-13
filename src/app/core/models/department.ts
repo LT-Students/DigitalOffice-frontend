@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { UserInfo } from '@data/api/company-service/models/user-info';
 import { setProperty } from '@app/utils/utils';

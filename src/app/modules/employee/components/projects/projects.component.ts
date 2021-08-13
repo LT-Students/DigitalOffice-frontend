@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
@@ -61,7 +62,7 @@ export class ProjectsComponent implements OnInit {
 		group.expanded = !group.expanded;
 	}
 
-	public onMoreClicked(projectId: string) {
+	public onMoreClicked(projectId: string | undefined) {
 		this.router.navigate(['/project', projectId]);
 	}
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';

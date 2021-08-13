@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';

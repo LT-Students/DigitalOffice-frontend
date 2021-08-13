@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 
@@ -15,7 +16,7 @@ export class SelectComponent implements OnInit {
 	@Input() options: string[];
 	@Input() textSize: 'regular' | 'small';
 
-	control: FormControl | undefined;
+	control: FormControl;
 
 	constructor(private formGroupDir: FormGroupDirective) {
 		this.textSize = 'regular';

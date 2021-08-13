@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
 import { ProjectRequest } from '@data/api/project-service/models/project-request';

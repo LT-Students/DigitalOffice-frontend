@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';

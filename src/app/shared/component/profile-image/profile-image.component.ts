@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 
@@ -7,7 +8,7 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 	styleUrls: ['./profile-image.component.scss'],
 })
 export class ProfileImageComponent implements OnInit, OnChanges {
-	@Input() image: ImageInfo;
+	@Input() image: ImageInfo | undefined;
 	@Input() size: 'l' | 'm' | 's';
 	public src: string;
 	public width: number;

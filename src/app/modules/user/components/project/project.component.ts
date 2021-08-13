@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit, Input } from '@angular/core';
 import { Project } from '@app/models/project/project.model';
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';

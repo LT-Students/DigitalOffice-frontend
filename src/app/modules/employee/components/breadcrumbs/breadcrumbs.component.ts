@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Path } from '../../employee-page.component';

@@ -1,5 +1,7 @@
+//@ts-nocheck
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroupDirective, FormControl } from '@angular/forms';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
 	selector: 'do-input',
@@ -7,17 +9,26 @@ import { FormGroupDirective, FormControl } from '@angular/forms';
 	styleUrls: ['./input.component.scss'],
 })
 export class InputComponent implements OnInit {
+	private _required: boolean;
+
 	@Input() label = '';
-	@Input() required = false;
+	@Input()
+	get required() {
+		return this._required;
+	}
+	set required(value: boolean | string) {
+		this._required = coerceBooleanProperty(value);
+	}
 	@Input() type = 'text';
 	@Input() placeholder = '';
 	@Input() controlName = '';
 	@Input() isEdit = false;
 	@Input() textSize: 'regular' | 'small';
 
-	control: FormControl | undefined;
+	control: FormControl;
 
 	constructor(private formGroupDir: FormGroupDirective) {
+		this._required = false;
 		this.textSize = 'regular';
 	}
 

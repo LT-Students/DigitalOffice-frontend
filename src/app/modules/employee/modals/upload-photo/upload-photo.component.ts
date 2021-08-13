@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 import { AddImageRequest } from '@data/api/user-service/models/add-image-request';
 

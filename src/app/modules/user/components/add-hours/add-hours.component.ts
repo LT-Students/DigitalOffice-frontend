@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Time } from '@angular/common';

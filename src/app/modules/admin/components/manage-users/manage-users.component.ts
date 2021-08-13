@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UserInfo } from '@data/api/user-service/models/user-info';

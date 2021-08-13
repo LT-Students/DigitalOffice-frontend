@@ -1,3 +1,4 @@
+//@ts-nocheck
 export interface IGetDepartmentRequest {
 	/**
 	 * Department global unique identifier.

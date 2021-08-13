@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 
 @Component({
@@ -19,7 +20,8 @@ export class SearchComponent implements OnInit {
 		this.searchClick.emit(value);
 	}
 
-	onSearchInput(text: string) {
+	onSearchInput(event: Event) {
+		const text = event.target.value;
 		this.searchInput.emit(text);
 	}
 }

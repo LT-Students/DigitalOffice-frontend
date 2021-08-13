@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ElementRef, ViewChild } from '@angular/core';
 import { Time } from '@angular/common';
@@ -16,7 +17,7 @@ import { Project, ProjectModel } from '@app/models/project/project.model';
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
 	/* TODO: inject data from parent component in this list */
-	@Input() projectList: Project[];
+	@Input() projectList: Project[] | null;
 	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);

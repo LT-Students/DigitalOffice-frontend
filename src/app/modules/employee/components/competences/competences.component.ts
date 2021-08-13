@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Certificate, UniversityInfo } from '@app/models/education.model';
 import { FormControl, FormGroup } from '@angular/forms';

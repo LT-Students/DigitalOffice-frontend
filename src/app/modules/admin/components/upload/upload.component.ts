@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -18,7 +19,8 @@ export class UploadComponent implements OnInit {
 	/**
 	 * handle file from browsing
 	 */
-	fileBrowseHandler(files) {
+	fileBrowseHandler(event: Event) {
+		const files = event.target.files;
 		this.prepareFilesList(files);
 	}
 

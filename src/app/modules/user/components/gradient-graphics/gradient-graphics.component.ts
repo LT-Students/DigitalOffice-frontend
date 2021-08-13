@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';

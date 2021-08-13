@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Input, Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '@app/services/auth/auth.service';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
@@ -8,9 +9,9 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 	styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-	@Input() userName: string;
-	@Input() userId: string;
-	@Input() avatar: ImageInfo;
+	@Input() userName: string | undefined;
+	@Input() userId: string | undefined;
+	@Input() avatar: ImageInfo | undefined;
 	@Input() portalName: string;
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
 	@Output() public menuClick: EventEmitter<MouseEvent>;

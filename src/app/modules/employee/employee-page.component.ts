@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { EducationModel } from '@app/models/education.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';

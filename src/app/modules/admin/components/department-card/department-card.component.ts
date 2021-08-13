@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
@@ -57,7 +58,7 @@ export class DepartmentCardComponent implements OnInit {
 		this._dialog.open(NewEmployeeComponent);
 	}
 
-	onUserClick(userId: string) {
+	onUserClick(userId: string | undefined) {
 		this._router.navigate([`/user/${userId}`]);
 	}
 

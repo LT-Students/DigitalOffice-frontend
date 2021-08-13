@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { UserAchievementInfo } from '@data/api/user-service/models/user-achievement-info';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 import { CertificateInfo } from '@data/api/user-service/models/certificate-info';

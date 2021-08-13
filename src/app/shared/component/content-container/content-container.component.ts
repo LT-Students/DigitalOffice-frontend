@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { UserService } from '@app/services/user/user.service';

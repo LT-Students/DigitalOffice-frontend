@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ImageApiService } from '@data/api/file-service/services/image-api.service';

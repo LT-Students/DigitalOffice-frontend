@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { ReplaySubject } from 'rxjs';
@@ -64,7 +65,8 @@ export class DateDescComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	public onDateInput(date: Date | null, isStartDate: boolean) {
+	public onDateInput(event: Event, isStartDate: boolean) {
+		const date = event.value;
 		if (date) {
 			if (isStartDate) {
 				this.attendanceService.onDatePeriodChange({

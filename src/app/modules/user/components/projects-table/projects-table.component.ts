@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
@@ -177,7 +178,7 @@ export class ProjectsTableComponent implements OnInit {
 		this._getProjectList();
 	}
 
-	public onProjectClick(projectId: string): void {
+	public onProjectClick(projectId: string | undefined): void {
 		this._router.navigate([`${RouteType.PROJECT}/${projectId}`]);
 	}
 

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
@@ -14,7 +15,7 @@ import { Project, ProjectModel } from '@app/models/project/project.model';
 	styleUrls: ['./user-tasks.component.scss'],
 })
 export class UserTasksComponent implements OnInit, OnDestroy {
-	@Input() projects: Project[];
+	@Input() projects: Project[] | null;
 	@Input() timePeriodSelected: DatePeriod;
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);

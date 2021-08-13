@@ -56,7 +56,7 @@
 				<th mat-sort-header="rate">Ставка</th>
 				<th mat-sort-header="status">Статус</th>
 			</tr>
-			<tr class="table__row" *ngFor="let userInfo of projectUsers" routerLink="/user/{{ userInfo.id }}">
+			<tr class="table__row" *ngFor="let userInfo of $any(projectUsers)" routerLink="/user/{{ userInfo.id }}">
 				<td><do-profile-image [image]='userInfo?.avatar'></do-profile-image></td>
 				<td>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
 				<td>{{ userInfo?.department.name ? userInfo.department.name : '—' }}</td>

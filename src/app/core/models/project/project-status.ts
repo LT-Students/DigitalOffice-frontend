@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 
 export enum ProjectStatusTypeRu {

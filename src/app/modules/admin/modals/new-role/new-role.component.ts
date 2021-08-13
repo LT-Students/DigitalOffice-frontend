@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
@@ -6,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
 import { UserSearchComponent } from '../../components/new-project/modals/user-search/user-search.component';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
+import { RightResponse } from '@data/api/rights-service/models/right-response';
 
 @Component({
 	selector: 'do-new-role',
@@ -13,7 +15,7 @@ import { RoleApiService } from '@data/api/rights-service/services/role-api.servi
 	styleUrls: ['./new-role.component.scss'],
 })
 export class NewRoleComponent implements OnInit {
-	public rights = [];
+	public rights: RightResponse[] = [];
 
 	public roleForm: FormGroup;
 
