@@ -1,65 +1,59 @@
 <mat-card class="card_grid">
 	<div class="chart">
-		<h2 doText underlined underlinedSize="sm" class="chart__title">
+		<h2 class="chart__title">
 			Часы за
-			<mat-form-field appearance="fill" class="chart__hiding">
+			<mat-form-field appearance="fill" class="chart__hidden">
 				<input matInput [matDatepicker]="picker" [(ngModel)]="startDate" />
 
-				<mat-datepicker #picker startView="year" [startAt]="startDate" (monthSelected)="chosenMonthHandler($event); picker.close()">
+				<mat-datepicker #picker startView="year" [startAt]="startDate" (monthSelected)="chosenMonthHandler($event, picker)">
 					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 				</mat-datepicker>
 			</mat-form-field>
 			<a (click)="picker.open()">
-				<span class="chart__title-orange">
+				<span class="chart__title-orange" doText underlined underlinedSize="sm" color="accent_color_bright">
 					{{ startDate | date: 'LLLL YYYY' | titlecase }}
+					<mat-icon class="orange-icon">keyboard_arrow_down</mat-icon>
 				</span>
 			</a>
-			<mat-icon class="orange-icon" matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
 		</h2>
 
 		<div class="chart__diagram-wrapper">
-			<button (click)="minusMonth()" class="chart__left-arrow" mat-mini-fab [class.mat-elevation-z0]="true">
+			<button (click)="onPreviousMonthClicked()" class="bg-light_3" mat-mini-fab [class.mat-elevation-z0]="true">
 				<mat-icon>chevron_left</mat-icon>
 			</button>
 
 			<div class="chart__doughnut">
-				<canvas #canvas height="184" width="184" class="chart__canvas"></canvas>
-
-				<div class="chart__time-info">
-					<p *ngIf="!isPeriodEmpty; else recommendedTimeElement" class="chart__time-spent">
-						{{ spentTime.hours | number: '2.0' }}:{{ this.spentTime.minutes | number: '2.0' }}
-					</p>
-					<ng-template #recommendedTimeElement>
-						<p class="chart__time-spent chart__time-spent_initial">
-							{{ recommendedTime.hours | number: '2.0' }}:{{ recommendedTime.minutes | number: '2.0' }}
+				<div class="chart__time-container">
+					<canvas #canvas class="chart__canvas"></canvas>
+					<div class="chart__time-info h3">
+						<p *ngIf="!isPeriodEmpty; else recommendedTimeElement" class="chart__time-spent">
+							{{ spentTime.hours | number: '2.0' }}:{{ this.spentTime.minutes | number: '2.0' }}
 						</p>
-					</ng-template>
+						<ng-template #recommendedTimeElement>
+							<p class="chart__time-spent chart__time-spent_initial">
+								{{ recommendedTime.hours | number: '2.0' }}:{{ recommendedTime.minutes | number: '2.0' }}
+							</p>
+							<p class="chart__time-status chart__time-status_style_initial">Запланировано</p>
+						</ng-template>
 
-					<p
-						*ngIf="!isPeriodEmpty; else plannedTimeDescription"
-						class="chart__time-status chart__time-status_style_{{ remainingTimeStatus }}"
-					>
-						/{{ remainingTime.hours | number: '2.0' }}
-					</p>
-					<!--                        {{ abs(remainingTime.hours) | number: '2.0' }}:{{ abs(remainingTime.minutes) | number: '2.0' }}-->
-
-					<ng-template #plannedTimeDescription>
-						<p class="chart__time-status chart__time-status_style_initial">Запланировано</p>
-					</ng-template>
+						<p *ngIf="!isPeriodEmpty" class="chart__time-status chart__time-status_style_{{ remainingTimeStatus }}">
+							/{{ remainingTime.hours | number: '2.0' }}
+						</p>
+						<!--                        {{ abs(remainingTime.hours) | number: '2.0' }}:{{ abs(remainingTime.minutes) | number: '2.0' }}-->
+					</div>
 				</div>
 			</div>
-
-			<button (click)="plusMonth()" class="chart__right-arrow" mat-mini-fab [class.mat-elevation-z0]="true">
+			<button (click)="onNextMonthClicked()" class="bg-light_3" mat-mini-fab [class.mat-elevation-z0]="true">
 				<mat-icon>chevron_right</mat-icon>
 			</button>
 		</div>
 
-		<div class="chart__tags">
-			<span class="chart__tags-bold">Проекты:</span>
-			<div *ngFor="let project of projects; index as i">
-				<span [style.background-color]="COLORS[i]" class="chart__tag-marker"></span>
-				{{ project.name }}
-			</div>
-		</div>
+		<!--		<div class="chart__tags">-->
+		<!--			<span class="chart__tags-bold">Проекты:</span>-->
+		<!--			<div *ngFor="let project of projectsLabels; index as i">-->
+		<!--				<span [style.background-color]="COLORS[i]" class="chart__tag-marker"></span>-->
+		<!--				{{ project }}-->
+		<!--			</div>-->
+		<!--		</div>-->
 	</div>
 </mat-card>

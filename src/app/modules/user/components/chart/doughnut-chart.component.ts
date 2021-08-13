@@ -20,7 +20,7 @@ import * as moment from 'moment';
 export class DoughnutChartComponent implements OnInit, OnDestroy {
 	/* TODO: inject data from parent component in this list */
 	@Input() projectList: Project[];
-	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>; //получили канву
+	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 	private ctx: CanvasRenderingContext2D;
@@ -28,6 +28,8 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
 	public COLORS = ['#7C799B', '#C7C6D8', '#FFB2B2', '#FFB78C', '#EB5757', '#BC7BFA', '#FFBE97', '#BDBDBD'];
 	public projects: ProjectModel[];
+	public projectsLabels: string[];
+
 	public recommendedTime: Time;
 
 	public startDate: Date = new Date();
@@ -107,19 +109,34 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	}
 
 	private buildChart() {
+		this.projectsLabels = this.projects.map(({ name }) => name);
+
 		this.chart = new Chart(this.ctx, {
 			type: 'doughnut',
 			data: {
+				labels: this.projectsLabels,
+
 				datasets: [
 					{
 						data: this.isPeriodEmpty ? [1] : this.data,
 						backgroundColor: this.isPeriodEmpty ? '#F1F1EF' : this.COLORS,
 						borderWidth: 0,
+						radius: 500,
 					},
 				],
 			},
 			options: {
 				cutoutPercentage: 70,
+				legend: {
+					position: 'bottom',
+					labels: {
+						usePointStyle: true,
+						pointStyle: 'circle',
+						title: {
+							position: 'start',
+						},
+					},
+				},
 				tooltips: {
 					enabled: false,
 				},
@@ -127,19 +144,20 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	chosenMonthHandler(chosenDate: Date) {
+	public chosenMonthHandler(chosenDate: Date, picker: MatDatepicker<any>): void {
 		this.startDate = chosenDate;
+		picker.close();
 	}
 	public changeMonth(changeDate: number) {
 		const currentMonth = this.startDate.getMonth();
 		const nextMonth = currentMonth + changeDate;
 		this.startDate = new Date(this.startDate.setMonth(nextMonth));
 	}
-	public minusMonth() {
-		return this.changeMonth(-1);
+	public onPreviousMonthClicked(): void {
+		this.changeMonth(-1);
 	}
-	public plusMonth() {
-		return this.changeMonth(1);
+	public onNextMonthClicked(): void {
+		this.changeMonth(1);
 	}
 
 	ngOnDestroy() {

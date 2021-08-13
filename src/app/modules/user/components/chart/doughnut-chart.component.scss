@@ -2,10 +2,22 @@
 @import 'base/fonts';
 
 .chart {
-	padding: 0 48px 32px 48px;
+	padding: 0 50px 32px;
 
 	display: flex;
 	flex-direction: column;
+
+	&__time-container {
+		position: relative;
+
+		width: 444px;
+		height: 185px;
+	}
+
+	&__link {
+		display: flex;
+		align-items: center;
+	}
 
 	&__tags {
 		display: flex;
@@ -13,40 +25,18 @@
 		align-items: flex-end;
 
 		width: 90%;
-		flex-wrap: wrap;
-
-		&-bold {
-			font-size: 16px;
-			font-weight: 700;
-			line-height: 24px;
-			text-align: left;
-		}
 	}
 
 	&__time-info {
 		position: absolute;
-		top: 52%;
-		left: 50%;
+		top: 40%;
+		left: 41%;
 
 		margin-top: 5px;
-
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-
-		font-size: 16px;
-		text-align: center;
-
-		transform: translate(-50%, -50%);
 	}
 
 	&__time-spent {
-		font-size: 22px;
-		font-weight: 700;
-		line-height: 33px;
-
-		color: $dark_1;
+		display: inline;
 
 		&_initial {
 			color: $gray;
@@ -54,15 +44,9 @@
 	}
 
 	&__time-status {
-		padding: 0;
-
-		width: max-content;
+		display: inline;
 
 		font-size: 16px;
-		text-align: center;
-
-		color: $dark_5;
-		border-radius: 5px;
 	}
 
 	&__diagram-wrapper {
@@ -75,34 +59,7 @@
 		width: 100%;
 	}
 
-	&__doughnut {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-
-		width: 184px;
-		height: 184px;
-	}
-
-	&__left-arrow {
-		top: 47%;
-		left: 32px;
-
-		background-color: #f5f5f5;
-	}
-
-	&__right-arrow {
-		top: 47%;
-		right: 32px;
-
-		background-color: #f5f5f5;
-	}
-
-	.orange-icon {
-		color: #ff8a65;
-	}
-
-	&__hiding {
+	&__hidden {
 		visibility: hidden;
 
 		width: 0;
@@ -116,10 +73,6 @@
 		line-height: 33px;
 		text-align: left;
 		letter-spacing: 0;
-
-		&-orange {
-			color: #ff8a65;
-		}
 	}
 
 	&__tag-marker {
@@ -129,5 +82,9 @@
 		height: 15px;
 
 		border-radius: 50%;
+	}
+
+	.mat-icon {
+		vertical-align: middle;
 	}
 }
