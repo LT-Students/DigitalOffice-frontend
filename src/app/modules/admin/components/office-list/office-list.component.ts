@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 
@@ -11,6 +11,7 @@ import { NewOfficeComponent } from '../../modals/new-office/new-office.component
 	selector: 'do-office-list',
 	templateUrl: './office-list.component.html',
 	styleUrls: ['./office-list.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfficeListComponent implements OnInit {
 	public offices: OfficeInfo[];

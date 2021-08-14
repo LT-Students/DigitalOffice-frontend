@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroupDirective, FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
@@ -7,6 +7,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 	selector: 'do-input',
 	templateUrl: './input.component.html',
 	styleUrls: ['./input.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputComponent implements OnInit {
 	private _required: boolean;

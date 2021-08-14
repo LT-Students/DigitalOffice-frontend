@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -21,6 +21,7 @@ import { NewOfficeComponent } from '../../modals/new-office/new-office.component
 	selector: 'do-dashboard',
 	templateUrl: './dashboard.component.html',
 	styleUrls: ['./dashboard.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
 	public today: Date;

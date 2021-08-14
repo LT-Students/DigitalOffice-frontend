@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
@@ -16,6 +16,7 @@ import { CompanyService } from '@app/services/company/company.service';
 	selector: 'do-signup',
 	templateUrl: './signup.component.html',
 	styleUrls: ['./signup.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent implements OnInit {
 	public portalName: string;

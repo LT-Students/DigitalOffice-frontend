@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -20,6 +20,7 @@ export const DATE_FORMAT = {
 	selector: 'do-datepicker',
 	templateUrl: './datepicker.component.html',
 	styleUrls: ['./datepicker.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
 		{
 			provide: DateAdapter,

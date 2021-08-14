@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { UserService } from '@app/services/user/user.service';
@@ -9,6 +9,7 @@ import { CompanyService } from '@app/services/company/company.service';
 	selector: 'do-forgot-password',
 	templateUrl: './forgot-password.component.html',
 	styleUrls: ['./forgot-password.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForgotPasswordComponent implements OnInit {
 	public portalName: string;

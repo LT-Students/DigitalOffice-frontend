@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Input, Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Input, Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '@app/services/auth/auth.service';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 
@@ -7,6 +7,7 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 	selector: 'do-header',
 	templateUrl: './header.component.html',
 	styleUrls: ['./header.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
 	@Input() userName: string | undefined;

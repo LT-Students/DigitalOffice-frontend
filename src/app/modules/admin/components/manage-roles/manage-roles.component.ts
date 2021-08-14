@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { RoleInfo } from '@data/api/rights-service/models';
@@ -11,6 +11,7 @@ import { NewRoleComponent } from '../../modals/new-role/new-role.component';
 	selector: 'do-manage-roles',
 	templateUrl: './manage-roles.component.html',
 	styleUrls: ['./manage-roles.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageRolesComponent implements OnInit {
 	public roles: RoleInfo[];

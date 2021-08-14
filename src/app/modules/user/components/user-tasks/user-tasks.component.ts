@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
@@ -13,6 +13,7 @@ import { Project, ProjectModel } from '@app/models/project/project.model';
 	selector: 'do-user-tasks',
 	templateUrl: './user-tasks.component.html',
 	styleUrls: ['./user-tasks.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserTasksComponent implements OnInit, OnDestroy {
 	@Input() projects: Project[] | null;

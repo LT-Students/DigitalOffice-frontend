@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { Team, TeamMember } from '../new-project/team-cards';
@@ -11,6 +11,7 @@ import { UserSearchComponent } from '../new-project/modals/user-search/user-sear
 	selector: 'do-team-card',
 	templateUrl: './team-card.component.html',
 	styleUrls: ['./team-card.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamCardComponent implements OnInit, AfterViewInit {
 	@Input() public users: Team[];

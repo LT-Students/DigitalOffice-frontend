@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
@@ -13,6 +13,7 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	selector: 'do-manage-users',
 	templateUrl: './manage-users.component.html',
 	styleUrls: ['./manage-users.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageUsersComponent implements OnInit {
 	@ViewChild(MatSort) sort: MatSort;

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { UserService } from '@app/services/user/user.service';
 import { AuthService } from '@app/services/auth/auth.service';
@@ -11,6 +11,7 @@ import { CompanyService } from '@app/services/company/company.service';
 	selector: 'do-content-container',
 	templateUrl: './content-container.component.html',
 	styleUrls: ['./content-container.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentContainerComponent implements OnInit {
 	@ViewChild('menu', { read: ElementRef }) menu: ElementRef;

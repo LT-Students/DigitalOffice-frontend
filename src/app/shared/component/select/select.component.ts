@@ -1,11 +1,12 @@
 //@ts-nocheck
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 
 @Component({
 	selector: 'do-select',
 	templateUrl: './select.component.html',
 	styleUrls: ['./select.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent implements OnInit {
 	@Input() label = '';

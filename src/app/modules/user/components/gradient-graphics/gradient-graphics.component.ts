@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
@@ -18,6 +18,7 @@ export interface IDailyHoursData {
 	selector: 'do-gradient-graphics',
 	templateUrl: './gradient-graphics.component.html',
 	styleUrls: ['./gradient-graphics.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GradientGraphicsComponent implements OnInit, OnDestroy {
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { RouteType } from '../../../../app-routing.module';
 	selector: 'do-projects-table',
 	templateUrl: './projects-table.component.html',
 	styleUrls: ['./projects-table.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsTableComponent implements OnInit {
 	public projectList: ProjectInfo[];

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -13,6 +13,7 @@ import { RightResponse } from '@data/api/rights-service/models/right-response';
 	selector: 'do-new-role',
 	templateUrl: './new-role.component.html',
 	styleUrls: ['./new-role.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewRoleComponent implements OnInit {
 	public rights: RightResponse[] = [];

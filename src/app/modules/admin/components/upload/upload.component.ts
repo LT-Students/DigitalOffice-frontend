@@ -1,10 +1,11 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
 	selector: 'do-upload',
 	templateUrl: './upload.component.html',
 	styleUrls: ['./upload.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadComponent implements OnInit {
 	files: any[] = [];

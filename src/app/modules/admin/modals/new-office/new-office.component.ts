@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OfficeApiService } from '@data/api/company-service/services/office-api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,6 +10,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 	selector: 'do-new-office',
 	templateUrl: './new-office.component.html',
 	styleUrls: ['./new-office.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewOfficeComponent implements OnInit {
 	public officeForm: FormGroup;

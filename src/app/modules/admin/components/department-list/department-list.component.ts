@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
@@ -13,6 +13,7 @@ import { RouteType } from '../../../../app-routing.module';
 	selector: 'do-department-list',
 	templateUrl: './department-list.component.html',
 	styleUrls: ['./department-list.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepartmentListComponent implements OnInit {
 	public departmentsInfo: DepartmentInfo[];

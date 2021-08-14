@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
@@ -9,6 +9,7 @@ import { ProjectUserInfo } from '@data/api/project-service/models/project-user-i
 	selector: 'do-project-page',
 	templateUrl: './project-page.component.html',
 	styleUrls: ['./project-page.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectPageComponent implements OnInit {
 	public projectId: string;

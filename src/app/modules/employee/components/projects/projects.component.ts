@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { ProjectService } from '@app/services/project/project.service';
@@ -15,6 +15,7 @@ interface Group {
 	selector: 'do-employee-page-projects',
 	templateUrl: './projects.component.html',
 	styleUrls: ['./projects.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent implements OnInit {
 	@Input() projects: ProjectInfo[];

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { DateService } from '@app/services/date.service';
 	selector: 'do-datedesc',
 	templateUrl: './date-desc.component.html',
 	styleUrls: ['./date-desc.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateDescComponent implements OnInit, OnDestroy {
 	private tempStartDate: Date;

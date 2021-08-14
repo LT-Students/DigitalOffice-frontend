@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -12,6 +12,7 @@ import { WorkFlowMode } from '../../../employee-page.component';
 	selector: 'do-skills',
 	templateUrl: './skills.component.html',
 	styleUrls: ['./skills.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkillsComponent implements OnInit {
 	@Input() public skills: string[];

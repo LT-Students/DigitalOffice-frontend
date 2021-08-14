@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Certificate, UniversityInfo } from '@app/models/education.model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -35,6 +35,7 @@ export interface Modes {
 	selector: 'do-employee-page-competences',
 	templateUrl: 'competences.component.html',
 	styleUrls: ['competences.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
 		{
 			provide: DateAdapter,

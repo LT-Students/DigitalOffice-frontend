@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Path } from '../../employee-page.component';
 
@@ -7,6 +7,7 @@ import { Path } from '../../employee-page.component';
 	selector: 'do-breadcrumbs',
 	templateUrl: './breadcrumbs.component.html',
 	styleUrls: ['./breadcrumbs.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbsComponent implements OnInit {
 	@Input() paths: Path[];

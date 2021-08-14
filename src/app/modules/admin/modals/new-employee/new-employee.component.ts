@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -41,6 +41,7 @@ export const DATE_FORMAT = {
 	selector: 'do-new-employee',
 	templateUrl: './new-employee.component.html',
 	styleUrls: ['./new-employee.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
 		{
 			provide: DateAdapter,
