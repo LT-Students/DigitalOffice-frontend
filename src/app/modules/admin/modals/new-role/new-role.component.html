@@ -14,7 +14,7 @@
 				<div class="new-role__input">
 					<p doText color="dark_1">Выберите права</p>
 					<p *ngFor="let right of rights">
-						<mat-checkbox [value]="right.id" (change)="onCheckboxChange($event)">{{ right.name }}</mat-checkbox>
+						<mat-checkbox [value]="$any(right?.id)" (change)="onCheckboxChange($event)">{{ right?.name }}</mat-checkbox>
 					</p>
 				</div>
 			</div>

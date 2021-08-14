@@ -1,10 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Project } from '@app/models/project/project.model';
 
 @Component({
 	selector: 'do-project',
 	templateUrl: './project.component.html',
 	styleUrls: ['./project.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectComponent implements OnInit {
 	@Input() project: Project;

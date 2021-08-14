@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { UserGender } from '@data/api/user-service/models/user-gender';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 

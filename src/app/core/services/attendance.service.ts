@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Time } from '@angular/common';

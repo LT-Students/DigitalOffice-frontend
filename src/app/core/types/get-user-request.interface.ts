@@ -1,3 +1,4 @@
+//@ts-nocheck
 export interface IGetUserRequest {
 	/**
 	 * User global unique identifier.

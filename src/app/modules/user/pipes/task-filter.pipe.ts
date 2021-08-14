@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Pipe, PipeTransform } from '@angular/core';
 import { Project } from '@app/models/project/project.model';
 

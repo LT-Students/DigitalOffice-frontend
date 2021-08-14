@@ -1,3 +1,4 @@
+//@ts-nocheck
 // eslint-disable-next-line no-shadow
 import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
 import { EducationType } from '@data/api/user-service/models/education-type';

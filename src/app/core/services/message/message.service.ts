@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NewsRequest } from '@data/api/news-service/models/news-request';

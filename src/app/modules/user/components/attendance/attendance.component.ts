@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';
 import { ProjectService } from '@app/services/project/project.service';
@@ -14,6 +15,7 @@ import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.componen
 	selector: 'do-attendance',
 	templateUrl: './attendance.component.html',
 	styleUrls: ['./attendance.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [AttendanceService]
 })
 export class AttendanceComponent implements OnInit {

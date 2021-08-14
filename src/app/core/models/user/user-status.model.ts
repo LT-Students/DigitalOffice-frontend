@@ -1,3 +1,4 @@
+//@ts-nocheck
 // eslint-disable-next-line no-shadow
 
 import { UserStatus } from '@data/api/user-service/models/user-status';

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -9,6 +10,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 	selector: 'do-new-position',
 	templateUrl: './new-position.component.html',
 	styleUrls: ['./new-position.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewPositionComponent implements OnInit {
 	public positionForm: FormGroup;
