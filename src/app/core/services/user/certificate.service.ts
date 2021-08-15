@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CertificateApiService } from '@data/api/user-service/services/certificate-api.service';

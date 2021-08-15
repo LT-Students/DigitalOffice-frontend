@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { WorkTimeApiService } from '@data/api/time-service/services/work-time-api.service';
 import { LeaveTimeApiService } from '@data/api/time-service/services/leave-time-api.service';

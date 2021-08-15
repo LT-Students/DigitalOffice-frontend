@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,21 +7,30 @@ import { AuthService } from '@app/services/auth/auth.service';
 
 import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 import { User } from '@app/models/user/user.model';
 import { of } from 'rxjs';
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
+	public portalName: string;
 	public loginForm: FormGroup;
 	public loginError: string;
 	public isLoading = false;
 
-	constructor(private _authService: AuthService, private _userService: UserService, private _router: Router, private formBuilder: FormBuilder) {
+	constructor(
+		private _authService: AuthService,
+		private _userService: UserService,
+		private _companyService: CompanyService,
+		private _router: Router,
+		private formBuilder: FormBuilder
+	) {
+		this.portalName = _companyService.getPortalName();
 		this.loginForm = this.formBuilder.group({
 			email: ['', Validators.required],
 			password: ['', Validators.required],
@@ -28,23 +38,28 @@ export class LoginComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this.loginForm.valueChanges.pipe(tap(() => {
-				if (this.loginForm) {
-					this.loginError = null;
-				}
-			})
-		).subscribe();
+		this.loginForm.valueChanges
+			.pipe(
+				tap(() => {
+					if (this.loginForm) {
+						this.loginError = null;
+					}
+				})
+			)
+			.subscribe();
 	}
 
 	public login(): void {
 		this.isLoading = true;
 
 		const authenticationRequest: AuthenticationRequest = {
-			loginData: this.loginForm.get('email').value,
+			loginData: this.loginForm.get('email').value.trim(),
 			password: this.loginForm.get('password').value,
 		};
 
-		this._authService.login(authenticationRequest).pipe(
+		this._authService
+			.login(authenticationRequest)
+			.pipe(
 				finalize(() => (this.isLoading = false)),
 				catchError((error) => {
 					this.loginError = error.message;
@@ -64,6 +79,5 @@ export class LoginComponent implements OnInit {
 
 	public get password() {
 		return this.loginForm.get('password');
-
 	}
 }

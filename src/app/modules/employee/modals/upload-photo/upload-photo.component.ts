@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AddImageRequest } from '@data/api/user-service/models/add-image-request';
 
 @Component({
 	selector: 'do-upload-photo',
 	templateUrl: './upload-photo.component.html',
 	styleUrls: ['./upload-photo.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadPhotoComponent implements OnInit {
 	public isPhotoUploaded: boolean;

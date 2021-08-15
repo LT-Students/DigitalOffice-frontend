@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { DatePeriod } from '@data/models/date-period';
 import { DayOfWeek } from '@data/models/day-of-week';

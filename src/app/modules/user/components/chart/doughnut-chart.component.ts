@@ -1,5 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ElementRef, ViewChild } from '@angular/core';
+//@ts-nocheck
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Time } from '@angular/common';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,10 +14,11 @@ import { Project, ProjectModel } from '@app/models/project/project.model';
 	selector: 'do-doughnut-chart',
 	templateUrl: './doughnut-chart.component.html',
 	styleUrls: ['./doughnut-chart.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
 	/* TODO: inject data from parent component in this list */
-	@Input() projectList: Project[];
+	@Input() projectList: Project[] | null;
 	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);

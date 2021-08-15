@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';

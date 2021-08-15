@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Contributor } from '@data/models/contributor';
 import { Company } from '@app/models/company';
 import { ITask } from '@app/models/task.model';

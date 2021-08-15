@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,6 +25,7 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 	selector: 'do-employee-page-main-info',
 	templateUrl: './main-info.component.html',
 	styleUrls: ['./main-info.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainInfoComponent implements OnInit {
 	public pageId: string;
@@ -191,7 +193,7 @@ export class MainInfoComponent implements OnInit {
 			rate: rate,
 			city: city,
 			gender: this.user.user.gender,
-			dateOfBirth: this.user.dateOfBirth,
+			dateOfBirth: this.user.dateOfBirth(),
 			startWorkingAt: this.user.startWorkingDate,
 			communications: this._enrichCommunications(),
 		});
