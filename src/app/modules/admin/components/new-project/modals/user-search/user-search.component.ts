@@ -1,4 +1,5 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, Inject, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '@app/services/user/user.service';
@@ -14,6 +15,7 @@ import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 	selector: 'do-new-members-board',
 	templateUrl: './user-search.component.html',
 	styleUrls: ['./user-search.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSearchComponent implements OnInit, OnDestroy {
 	@Input() mode: WorkFlowMode;

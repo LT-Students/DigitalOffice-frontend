@@ -1,4 +1,5 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Time } from '@angular/common';
 import { takeUntil } from 'rxjs/operators';
@@ -18,6 +19,7 @@ import { timeValidator } from './add-hours.validators';
 	selector: 'do-add-hours',
 	templateUrl: './add-hours.component.html',
 	styleUrls: ['./add-hours.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
 	@Input() user: UserInfo;

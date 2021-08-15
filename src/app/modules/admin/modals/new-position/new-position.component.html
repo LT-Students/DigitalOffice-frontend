@@ -1,5 +1,5 @@
 <div class="new-position">
-	<span class="title h1 h1_dark_2">Создание должности</span>
+	<h3 mat-dialog-title>Создание должности</h3>
 	<div class="form__container">
 		<form autocomplete="off" class="data-form" [formGroup]="positionForm" (ngSubmit)="createPosition()">
 			<div class="new-position__input-container">
@@ -12,9 +12,10 @@
 					<input matInput type="text" id="description" formControlName="description" />
 				</mat-form-field>
 			</div>
-			<button mat-flat-button color="primary" class="btn-create-department" type="submit" [disabled]="positionForm.invalid">
-				<span class="regular_text regular_text_light_1">Создать должность</span>
-			</button>
+			<mat-dialog-actions align="center">
+				<button class="text-gray" mat-flat-button mat-dialog-close type="button">Отмена</button>
+				<button mat-flat-button color="primary" type="submit" [disabled]="positionForm.invalid">Создать должность</button>
+			</mat-dialog-actions>
 		</form>
 	</div>
 </div>

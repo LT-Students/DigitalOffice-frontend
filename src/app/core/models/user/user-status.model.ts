@@ -1,5 +1,5 @@
+//@ts-nocheck
 // eslint-disable-next-line no-shadow
-// TODO: use enum from API
 
 import { UserStatus } from '@data/api/user-service/models/user-status';
 

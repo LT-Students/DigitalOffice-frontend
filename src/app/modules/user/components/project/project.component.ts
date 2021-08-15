@@ -1,10 +1,12 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Project } from '../user-tasks/user-tasks.component';
+//@ts-nocheck
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Project } from '@app/models/project/project.model';
 
 @Component({
 	selector: 'do-project',
 	templateUrl: './project.component.html',
 	styleUrls: ['./project.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectComponent implements OnChanges {
 	@Input() public project: Project;

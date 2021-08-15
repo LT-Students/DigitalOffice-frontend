@@ -3,12 +3,12 @@
 		<div class="members-board__title" mat-dialog-title>
 			<h3 doText color="dark_1" [ngSwitch]="data.mode">
 				<ng-container *ngSwitchCase="WorkFlowMode.ADD">Добавить участника</ng-container>
-				<ng-container *ngSwitchCase="WorkFlowMode.EDIT">Редактирование направления<br />"{{ data.team.name }}"</ng-container>
+				<ng-container *ngSwitchCase="WorkFlowMode.EDIT">Редактирование направления<br />"{{ data?.team?.name }}"</ng-container>
 				<ng-container *ngSwitchCase="WorkFlowMode.VIEW">Просмотр команды</ng-container>
 			</h3>
 			<button mat-icon-button class="members-board__close-button" mat-dialog-close><mat-icon>close</mat-icon></button>
 		</div>
-		<mat-form-field class="select members-form__select-spec" appearance="none" *ngIf="data.mode === WorkFlowMode.ADD">
+		<mat-form-field class="select members-form__select-spec" appearance="standard" *ngIf="data.mode === WorkFlowMode.ADD">
 			<mat-select
 				class="regular_text text_color_dark-1"
 				placeholder="Выберите направление"
@@ -26,7 +26,7 @@
 					<do-search placeholder="Введите фамилию и имя сотрудника" (searchClick)="onSearchClick($event)"></do-search>
 				</div>
 				<div class="position">
-					<mat-form-field class="select members-form__select-lvl" appearance="none">
+					<mat-form-field class="select members-form__select-lvl" appearance="standard">
 						<mat-select class="regular_text text_color_dark-1" placeholder="Выберите должность">
 							<mat-option class="regular_text text_color_dark-1" *ngFor="let position of positions" [value]="position.id">
 								{{ position.name }}
@@ -42,7 +42,7 @@
 				<div class="user-row__checkbox" *ngIf="data.mode !== WorkFlowMode.VIEW">
 					<mat-checkbox
 						class="new-member__checkbox"
-						[value]="member.id"
+						[value]="$any(member?.id)"
 						[checked]="isMember(member)"
 						(change)="onCheckMember($event, member)"
 					></mat-checkbox>

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Component, OnInit } from '@angular/core';
 
 @Component({

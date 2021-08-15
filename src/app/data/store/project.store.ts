@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
@@ -92,7 +93,6 @@ export class ProjectStore {
     return this._projects.getValue();
   }
 
-  // TODO убрать Partial
   addTaskToProject(task: Partial<Task>, projectId: string): void {
     const elIndex = this.projects.findIndex(
       (project) => project.id === projectId

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
 	selector: 'do-upload',
 	templateUrl: './upload.component.html',
 	styleUrls: ['./upload.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UploadComponent implements OnInit {
 	files: any[] = [];
@@ -18,7 +20,8 @@ export class UploadComponent implements OnInit {
 	/**
 	 * handle file from browsing
 	 */
-	fileBrowseHandler(files) {
+	fileBrowseHandler(event: Event) {
+		const files = event.target.files;
 		this.prepareFilesList(files);
 	}
 

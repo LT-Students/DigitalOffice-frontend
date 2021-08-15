@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -15,6 +16,7 @@ import { UserSearchComponent } from '../../components/new-project/modals/user-se
 	selector: 'do-new-department',
 	templateUrl: './new-department.component.html',
 	styleUrls: ['./new-department.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewDepartmentComponent implements OnInit {
 	public directors: UserInfo[] = [];

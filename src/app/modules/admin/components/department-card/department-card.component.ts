@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +14,7 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	selector: 'do-department-card',
 	templateUrl: './department-card.component.html',
 	styleUrls: ['./department-card.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepartmentCardComponent implements OnInit {
 	public departmentInfo: DepartmentInfo;
@@ -57,7 +59,7 @@ export class DepartmentCardComponent implements OnInit {
 		this._dialog.open(NewEmployeeComponent);
 	}
 
-	onUserClick(userId: string) {
+	onUserClick(userId: string | undefined) {
 		this._router.navigate([`/user/${userId}`]);
 	}
 

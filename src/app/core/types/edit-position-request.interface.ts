@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { EditPositionRequest } from '@data/api/company-service/models/edit-position-request';
 
 export interface IEditPositionRequest {
