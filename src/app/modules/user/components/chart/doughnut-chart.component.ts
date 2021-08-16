@@ -1,4 +1,5 @@
 //@ts-nocheck
+
 import { Component, ViewChild, ElementRef, OnDestroy, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Time } from '@angular/common';
 import { ReplaySubject } from 'rxjs';
@@ -9,15 +10,12 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project, ProjectModel } from '@app/models/project/project.model';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { Data } from '@angular/router';
-import { FormControl } from '@angular/forms';
-import * as moment from 'moment';
 
 @Component({
 	selector: 'do-doughnut-chart',
 	templateUrl: './doughnut-chart.component.html',
 	styleUrls: ['./doughnut-chart.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
 	/* TODO: inject data from parent component in this list */
@@ -30,7 +28,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
 	public COLORS = ['#7C799B', '#C7C6D8', '#FFB2B2', '#FFB78C', '#EB5757', '#BC7BFA', '#FFBE97', '#BDBDBD'];
 	public projects: ProjectModel[];
-	public projectsLabels: string[];
 
 	public recommendedTime: Time;
 
@@ -39,7 +36,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {}
 
 	ngOnInit() {
-		this.ctx = this.canvas.nativeElement.getContext('2d'); //приводит к созданию объекта
+		this.ctx = this.canvas.nativeElement.getContext('2d');
 
 		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
 			this.recommendedTime = time;
@@ -111,12 +108,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	}
 
 	private buildChart() {
-		this.projectsLabels = this.projects.map(({ name }) => name);
+		const projectsLabels = this.projects.map(({ name }) => name);
 
 		this.chart = new Chart(this.ctx, {
 			type: 'doughnut',
 			data: {
-				labels: this.projectsLabels,
+				labels: projectsLabels,
 
 				datasets: [
 					{
@@ -131,6 +128,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 				cutoutPercentage: 70,
 				legend: {
 					position: 'bottom',
+					onClick: false,
 					labels: {
 						usePointStyle: true,
 						pointStyle: 'circle',
@@ -150,7 +148,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		this.startDate = chosenDate;
 		picker.close();
 	}
-	public changeMonth(changeDate: number) {
+	public changeMonth(changeDate: number): void {
 		const currentMonth = this.startDate.getMonth();
 		const nextMonth = currentMonth + changeDate;
 		this.startDate = new Date(this.startDate.setMonth(nextMonth));

@@ -1,11 +1,15 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-.chart {
+.card {
 	padding: 0 50px 32px;
 
 	display: flex;
 	flex-direction: column;
+
+	&__title-orange {
+		color: $accent_color_bright;
+	}
 
 	&__time-container {
 		position: relative;
@@ -14,38 +18,16 @@
 		height: 185px;
 	}
 
-	&__link {
-		display: flex;
-		align-items: center;
-	}
-
-	&__tags {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-end;
-
-		width: 90%;
-	}
-
 	&__time-info {
 		position: absolute;
+
 		top: 40%;
-		left: 41%;
+		left: 40%;
 
 		margin-top: 5px;
 	}
 
-	&__time-spent {
-		display: inline;
-
-		&_initial {
-			color: $gray;
-		}
-	}
-
 	&__time-status {
-		display: inline;
-
 		font-size: 16px;
 	}
 
@@ -64,15 +46,6 @@
 
 		width: 0;
 		height: 0;
-	}
-
-	&__title {
-		font-size: 22px;
-		font-weight: 700;
-		font-style: normal;
-		line-height: 33px;
-		text-align: left;
-		letter-spacing: 0;
 	}
 
 	&__tag-marker {
