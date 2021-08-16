@@ -49,12 +49,12 @@
 				</td>
 				<td class="table__cell">
 					<ng-container *ngIf="userInfo?.department?.name; else empty">
-						{{ userInfo.department.name }}
+						{{ userInfo?.department?.name }}
 					</ng-container>
 				</td>
 				<td class="table__cell">
 					<ng-container *ngIf="userInfo?.role?.name; else empty">
-						{{ userInfo.role.name }}
+						{{ userInfo?.role?.name }}
 					</ng-container>
 				</td>
 				<td class="table__cell">{{ userInfo?.rate }}</td>

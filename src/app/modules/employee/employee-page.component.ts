@@ -1,5 +1,6 @@
+//@ts-nocheck
 import { EducationModel } from '@app/models/education.model';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
 import { EducationType, OperationResultResponseUserResponse, UserInfo } from '@data/api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,6 +35,7 @@ export interface Path {
 	selector: 'do-employee-page',
 	templateUrl: './employee-page.component.html',
 	styleUrls: ['./employee-page.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
 	public institutes: EducationModel[];
@@ -60,7 +62,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		if (!this.pageId) {
 			this.router.navigate([`employee/${user.id}`]);
 		}
-		// TODO: Replace with enum values
 		this.studyTypes = [EducationType.Offline, EducationType.Online];
 		this.user = null;
 		this._unsubscribe$ = new Subject<void>();
@@ -76,7 +77,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		//   this.user = new User(userResponse);
 		//
 		// });
-		/* TODO: BehaviorSubject with userResponse as initial value */
 		// this._userService
 		// 	.getUser({ userId: this.pageId })
 		// 	.pipe(takeUntil(this._unsubscribe$))

@@ -1,9 +1,9 @@
 <form class='form' [formGroup]='loginForm' (ngSubmit)='signUp()' autocomplete='off'>
     <h1 doText color='dark_1' class='form__title'>{{ portalName }}</h1>
     <div class="form__description"><p doText color='gray1'>Придумайте логин и введите пароль из письма</p></div>
-    <div class='form__error' *ngIf='loginForm.hasError("busy") || (login.touched && password.touched && loginForm.invalid)'>
-        <small *ngIf='login.dirty && login.invalid'>Логин обязателен :(</small>
-        <small *ngIf='password.dirty && password.invalid'>Пароль обязателен :(</small>
+    <div class='form__error' *ngIf='loginForm.hasError("busy") || (login?.touched && password?.touched && loginForm.invalid)'>
+        <small *ngIf='login?.dirty && login?.invalid'>Логин обязателен :(</small>
+        <small *ngIf='password?.dirty && password?.invalid'>Пароль обязателен :(</small>
         <small *ngIf='loginForm.hasError("busy")'>{{ loginForm.getError("busy").error }}</small>
     </div>
     <input

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, Router, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivate, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';

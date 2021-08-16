@@ -1,13 +1,15 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 
 @Component({
 	selector: 'do-profile-image',
 	templateUrl: './profile-image.component.html',
 	styleUrls: ['./profile-image.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileImageComponent implements OnInit, OnChanges {
-	@Input() image: ImageInfo;
+	@Input() image: ImageInfo | undefined;
 	@Input() size: 'l' | 'm' | 's';
 	public src: string;
 	public width: number;

@@ -1,3 +1,4 @@
+//@ts-nocheck
 export interface IFindRequest {
 	/**
 	 * Number to skip.

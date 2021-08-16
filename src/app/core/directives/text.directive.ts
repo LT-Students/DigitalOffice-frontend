@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
@@ -42,7 +43,7 @@ export class TextDirective implements OnInit {
 	get underlined() {
 		return this._underlined;
 	}
-	set underlined(value: boolean) {
+	set underlined(value: boolean | string) {
 		this._underlined = coerceBooleanProperty(value);
 	}
 

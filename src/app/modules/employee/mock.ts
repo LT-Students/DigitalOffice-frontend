@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { DepartmentInfo, PositionInfo, UserStatus } from '@data/api/user-service/models';
 import { UserStatusModel } from '@app/models/user/user-status.model';
 

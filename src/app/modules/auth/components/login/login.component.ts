@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,7 +7,6 @@ import { AuthService } from '@app/services/auth/auth.service';
 
 import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
 import { User } from '@app/models/user/user.model';
 import { of } from 'rxjs';
 import { CompanyService } from '@app/services/company/company.service';
@@ -15,6 +15,7 @@ import { CompanyService } from '@app/services/company/company.service';
 	selector: 'do-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
 	public portalName: string;
@@ -52,7 +53,7 @@ export class LoginComponent implements OnInit {
 		this.isLoading = true;
 
 		const authenticationRequest: AuthenticationRequest = {
-			loginData: this.loginForm.get('email').value,
+			loginData: this.loginForm.get('email').value.trim(),
 			password: this.loginForm.get('password').value,
 		};
 

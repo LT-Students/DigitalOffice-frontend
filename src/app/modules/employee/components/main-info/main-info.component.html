@@ -22,7 +22,7 @@
 						<div class="employee-info__first-column">
 							<div *ngIf="user?.user?.position">
 								<p doText regularTextSize="small" color="gray">Должность</p>
-								<p doText>{{ user.user.position.name }}</p>
+								<p doText>{{ user?.user?.position?.name }}</p>
 							</div>
 							<div *ngIf="user?.user?.department">
 								<p doText regularTextSize="small" color="gray">Департамент</p>
@@ -50,11 +50,11 @@
 								<p doText regularTextSize="small" color="gray">Роль</p>
 								<p doText>{{ user.user.role?.name }}</p>
 							</div>
-							<div *ngIf="user?.user.startWorkingAt">
+							<div *ngIf="user?.user?.startWorkingAt">
 								<p doText regularTextSize="small" color="gray">В компании с</p>
 								<p doText>{{ user.startWorkingDate | date: dateType.FULL }}</p>
 							</div>
-							<div *ngIf="user?.user.dateOfBirth">
+							<div *ngIf="user?.user?.dateOfBirth">
 								<p doText regularTextSize="small" color="gray">Дата рождения</p>
 								<p doText>{{ user?.user?.dateOfBirth | date: dateType.FULL }}</p>
 							</div>
@@ -143,7 +143,7 @@
 	<ng-container *ngIf="user.isAdmin">
 		<label class="small_text text-gray employee-info__label employee-info__label_for_textarea" for="about">
 			<span
-				>О себе <span>{{ employeeInfoForm.get('about').value.length }}/150</span></span
+				>О себе <span>{{ employeeInfoForm.get('about')?.value.length }}/150</span></span
 			></label
 		>
 		<mat-form-field class="employee-info__form-field" appearance="fill">
@@ -257,7 +257,7 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<ng-container *ngIf="isEditing && employeeInfoForm.get('status').value === userStatus.Vacation">
+	<ng-container *ngIf="isEditing && employeeInfoForm.get('status')?.value === userStatus.Vacation">
 		<label class="small_text text-gray">Замещает: </label>
 		<span class="small_text text-gray employee-info__substitute">Назначить замещающего</span>
 	</ng-container>
@@ -268,7 +268,7 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__avatar">
-					<do-profile-image [image]="employeeInfoForm.get('photo').value" size="l"></do-profile-image>
+					<do-profile-image [image]="employeeInfoForm.get('photo')?.value" size="l"></do-profile-image>
 					<label class="text_white employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />

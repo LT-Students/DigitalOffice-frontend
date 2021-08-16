@@ -1,5 +1,5 @@
-<div class="new-office">
-	<h1 doText color="dark_2">Новый офис</h1>
+<mat-dialog-content class="new-office">
+	<h3 mat-dialog-title>Новый офис</h3>
 	<div class="form__container">
 		<form autocomplete="off" class="data-form" [formGroup]="officeForm" (ngSubmit)="createOffice()">
 			<div class="new-office__input-container">
@@ -16,9 +16,10 @@
 					<input matInput type="text" id="name" formControlName="name" />
 				</mat-form-field>
 			</div>
-			<button mat-flat-button color="primary" class="btn-create-department" type="submit" [disabled]="officeForm.invalid">
-				<span class="regular_text regular_text_light_1">Добавить офис</span>
-			</button>
+			<mat-dialog-actions align="center">
+				<button class="text-gray" mat-flat-button mat-dialog-close type="button">Отмена</button>
+				<button mat-flat-button color="primary" type="submit" [disabled]="officeForm.invalid">Добавить офис</button>
+			</mat-dialog-actions>
 		</form>
 	</div>
-</div>
+</mat-dialog-content>

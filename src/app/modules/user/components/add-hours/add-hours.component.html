@@ -13,7 +13,7 @@
         <mat-form-field appearance="fill">
           <input matInput formControlName="hours" type="text" maxlength="3" />
           <mat-icon matSuffix aria-label='time'>schedule</mat-icon>
-          <mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>
+          <mat-error *ngIf="addHoursForm.get('time')?.invalid">{{ getTimePeriodErrorMessage() }}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill">
           <input matInput formControlName="minutes" type="text" maxlength="2" />

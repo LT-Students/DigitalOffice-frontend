@@ -23,25 +23,25 @@
                 </div>
             </mat-chip-list>
 
-            <div>
-                <mat-form-field appearance="none">
-                    <mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
-                        <input
-                            (dateChange)="onDateInput($event.value, true)"
-                            [value]="startDate"
-                            matStartDate
-                        />
-                        <input
-                            (dateChange)="onDateInput($event.value, false)"
-                            [value]="endDate"
-                            matEndDate
-                        />
-                    </mat-date-range-input>
-                    <mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
-                </mat-form-field>
-                <button mat-flat-button (click)="picker.open()" color='primary'>
-                    Выбрать другую дату<mat-icon>chevron_right</mat-icon>
-                </button>
+      <div>
+        <mat-form-field appearance="standard">
+          <mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
+            <input
+              (dateChange)="onDateInput($event, true)"
+              [value]="startDate"
+              matStartDate
+            />
+            <input
+              (dateChange)="onDateInput($event, false)"
+              [value]="endDate"
+              matEndDate
+            />
+          </mat-date-range-input>
+          <mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
+        </mat-form-field>
+        <button mat-flat-button (click)="picker.open()" color='primary'>
+          Выбрать другую дату<mat-icon>chevron_right</mat-icon>
+        </button>
 
                 <button mat-flat-button>Сегодня</button>
             </div>
