@@ -6,6 +6,9 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { LeaveTimeApiService } from './services/leave-time-api.service';
 import { WorkTimeApiService } from './services/work-time-api.service';
+import { WorkTimeMonthLimitApiService } from './services/work-time-month-limit-api.service';
+import { WorkTimeDayJobApiService } from './services/work-time-day-job-api.service';
+import { WorkTimeDayJobIdApiService } from './services/work-time-day-job-id-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,6 +20,9 @@ import { WorkTimeApiService } from './services/work-time-api.service';
   providers: [
     LeaveTimeApiService,
     WorkTimeApiService,
+    WorkTimeMonthLimitApiService,
+    WorkTimeDayJobApiService,
+    WorkTimeDayJobIdApiService,
     ApiConfiguration
   ],
 })
