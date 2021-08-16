@@ -1,93 +1,90 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { AttendanceService } from '@app/services/attendance.service';
 import { DateService } from '@app/services/date.service';
 import { DateFilterFn } from '@angular/material/datepicker';
 import { ProjectInfo } from '@data/api/user-service/models/project-info';
-import { MatOptionSelectionChange } from '@angular/material/core';
 import { ILeaveType, LeaveTimeModel } from '@app/models/leave-time.model';
 import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work-time-request';
 import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { TimeService } from '@app/services/time/time.service';
+import { UserService } from '@app/services/user/user.service';
 import { timeValidator } from './add-hours.validators';
 
 @Component({
 	selector: 'do-add-hours',
 	templateUrl: './add-hours.component.html',
 	styleUrls: ['./add-hours.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddHoursComponent implements OnInit, OnDestroy {
-	@Input() userId: string;
-	@Input() projects: ProjectInfo[];
-	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
-
+	public projects: ProjectInfo[] | undefined;
 	public absences: ILeaveType[];
 	public addHoursForm: FormGroup;
-
 	public isProjectForm: boolean;
+	public monthOptions: Date[];
+	public isBeginningOfMonth: boolean;
+
+	private readonly userId: string | undefined;
+	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
 
 	constructor(
 		private _fb: FormBuilder,
 		private _attendanceService: AttendanceService,
 		private _dateService: DateService,
 		private _timeService: TimeService,
+		private _userService: UserService,
 		private _snackbar: MatSnackBar
 	) {
 		this.isProjectForm = true;
 		this.absences = LeaveTimeModel.getAllLeaveTypes();
-	}
-
-	ngOnInit() {
 		this.addHoursForm = this._fb.group({
-			time: [this._countMaxHours(), [Validators.required, Validators.min(1), timeValidator(() => this._countMaxHours())]],
+			time: ['', [Validators.required, Validators.min(1), timeValidator(() => this._countMaxHours())]],
+			date: [new Date(), Validators.required],
 			activity: ['', Validators.required],
-			task: ['', Validators.required],
-			description: [''],
+			comment: [''],
 		});
+		const currentUser = _userService.getCurrentUser();
+		this.projects = currentUser?.projects;
+		this.userId = currentUser?.id;
+		this.monthOptions = this._getMonthOptions();
+		this.isBeginningOfMonth = this._canAddTimeToPreviousMonth();
 	}
 
-	get startDate(): Date {
+	ngOnInit() {}
+
+	get startDate(): Date | null | undefined {
 		return this._attendanceService.datePeriod.startDate;
 	}
 
-	get endDate(): Date {
+	get endDate(): Date | null | undefined {
 		return this._attendanceService.datePeriod.endDate;
 	}
 
-	public toggleFormType(event: MatOptionSelectionChange): void {
-		if (event.isUserInput) {
-			const taskControl = this.addHoursForm.get('task');
-			const timeControl = this.addHoursForm.get('time');
-			if (event.source.group.label === 'Проекты') {
-				this.isProjectForm = true;
-				timeControl.enable();
-				taskControl.setValidators([Validators.required]);
-			} else {
-				this.isProjectForm = false;
-				timeControl.disable();
-				taskControl.clearValidators();
-			}
-			taskControl.updateValueAndValidity();
-		}
+	private _getMonthOptions(): Date[] {
+		const currentMonth = new Date();
+		return [currentMonth, new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1)];
+	}
+
+	private _canAddTimeToPreviousMonth(): boolean {
+		return new Date().getMonth() < 5;
+	}
+
+	public setMonthToAddTimeTo(date: Date): void {
+		this.addHoursForm.get('date')?.setValue(date);
 	}
 
 	public getLastDayOfMonth(): Date | null {
-		let lastDay: Date = null;
-		if (this.startDate) {
-			lastDay = new Date(2021, this.startDate.getMonth() + 1, 0);
-		}
-
-		return lastDay;
+		return this.startDate ? new Date(2021, this.startDate.getMonth() + 1, 0) : null;
 	}
 
 	private _countMaxHours(): number {
 		const currentDatePeriod = this._attendanceService.datePeriod;
-		return Number(this._attendanceService.getRecommendedTime(currentDatePeriod, 24).hours) * 60;
+		return Number(this._attendanceService.getRecommendedTime(currentDatePeriod, 24).hours);
 	}
 
 	public onSubmit(): void {
@@ -97,12 +94,12 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 		if (this.isProjectForm) {
 			const addWorkTime: CreateWorkTimeRequest = {
 				userId: this.userId,
-				startTime: this.startDate.toISOString(),
-				endTime: this.endDate.toISOString(),
-				minutes: this.addHoursForm.get('time').value,
-				projectId: this.addHoursForm.get('activity').value,
-				title: this.addHoursForm.get('task').value,
-				description: this.addHoursForm.get('description').value,
+				startTime: this.startDate?.toISOString(),
+				endTime: this.endDate?.toISOString(),
+				minutes: this.addHoursForm.get('time')?.value,
+				projectId: this.addHoursForm.get('activity')?.value,
+				title: this.addHoursForm.get('task')?.value,
+				description: this.addHoursForm.get('description')?.value,
 			};
 			timeService = this._timeService.addWorkTime(addWorkTime);
 		} else {
@@ -111,8 +108,8 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 				startTime: this.startDate.toISOString(),
 				endTime: this.endDate.toISOString(),
 				minutes: this._countMaxHours(),
-				leaveType: this.addHoursForm.get('activity').value,
-				comment: this.addHoursForm.get('description').value,
+				leaveType: this.addHoursForm.get('activity')?.value,
+				comment: this.addHoursForm.get('description')?.value,
 			};
 			timeService = this._timeService.addLeaveTime(addLeaveTime);
 		}
@@ -128,20 +125,20 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 		);
 		this.addHoursForm.reset();
 		this.isProjectForm = true;
-		this.addHoursForm.get('time').enable();
+		this.addHoursForm.get('time')?.enable();
 	}
 
-	public getTimePeriodErrorMessage(): String {
-		const hours = this.addHoursForm.get('time.hours');
-		const minutes = this.addHoursForm.get('time.minutes');
-
-		if (hours.hasError('periodExceedsMaxValue')) {
-			return 'Превышено максимальное время для выбранного периода';
-		}
-		if (minutes.hasError('max')) {
-			return 'Введите корректные минуты';
-		}
-		return 'Введите корретный период времени';
+	public getTimePeriodErrorMessage(): string {
+		// const hours = this.addHoursForm.get('time.hours');
+		// const minutes = this.addHoursForm.get('time.minutes');
+		//
+		// if (hours.hasError('periodExceedsMaxValue')) {
+		// 	return 'Превышено максимальное время для выбранного периода';
+		// }
+		// if (minutes.hasError('max')) {
+		// 	return 'Введите корректные минуты';
+		// }
+		// return 'Введите корретный период времени';
 	}
 
 	public disableWeekends: DateFilterFn<unknown> = (d: Date | null): boolean => {
@@ -158,7 +155,7 @@ export class AddHoursComponent implements OnInit, OnDestroy {
 			};
 			this._attendanceService.onDatePeriodChange(oneDayPeriod);
 		}
-		this.addHoursForm.get('time').patchValue(this._countMaxHours());
+		this.addHoursForm.get('time')?.patchValue(this._countMaxHours());
 	}
 
 	public onStartDateChange(date: Date | null): void {

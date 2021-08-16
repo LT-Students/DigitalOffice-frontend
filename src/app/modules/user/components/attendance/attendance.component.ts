@@ -2,7 +2,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';
-import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 import { ProjectService } from '@app/services/project/project.service';
 import { Observable, of } from 'rxjs';
 import { Project } from '@app/models/project/project.model';
@@ -11,14 +10,15 @@ import { FindResponseProjectInfo } from '@data/api/project-service/models/find-r
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
+import { AttendanceService } from '@app/services/attendance.service';
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 
 @Component({
 	selector: 'do-attendance',
 	templateUrl: './attendance.component.html',
 	styleUrls: ['./attendance.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [AttendanceService]
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [AttendanceService],
 })
 export class AttendanceComponent implements OnInit {
 	public user: User;

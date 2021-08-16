@@ -1,55 +1,76 @@
 <mat-card class="add-hours card_grid">
 	<h3 class="add-hours__heading" doText underlined underlinedSize="sm">
-		<span>Внести часы за&nbsp;</span>
-		<mat-form-field class="add-hours__hidden-picker" appearance="none">
-			<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker" [max]="getLastDayOfMonth()">
-				<!--                TODO разобраться с ошибкой-->
-				<input matStartDate (dateChange)="onStartDateChange($event.value)" [value]="startDate" />
-				<input matEndDate (dateChange)="onEndDateChange($event.value)" [value]="endDate" />
-			</mat-date-range-input>
-			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
-		</mat-form-field>
-
-		<a class="add-hours__date-picker" doText color="accent_color_bright" (click)="picker.open()"
-			><span *ngIf="startDate?.getTime() !== endDate?.getTime()">{{ startDate | date: 'd' }} -&nbsp;</span>{{ endDate | date: 'd MMMM' }}
-			<mat-icon>expand_more</mat-icon></a
-		>
+		Внести часы в
+		<a class="add-hours__menu text-accent_color_bright" [matMenuTriggerFor]="formTypeMenu"
+			>{{ isProjectForm ? 'проект' : 'отсутствие' }}
+			<mat-icon>expand_more</mat-icon>
+		</a>
+		<mat-menu #formTypeMenu="matMenu">
+			<button mat-menu-item (click)="isProjectForm = true">Проект</button>
+			<button mat-menu-item (click)="isProjectForm = false">Отсутствие</button>
+		</mat-menu>
 	</h3>
 	<form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
-		<div class="add-hours__row">
-			<mat-form-field class="add-hours__time" appearance="fill">
-<!--				<input matInput formControlName="time" type="text" maxlength="3" placeholder="08:00" />-->
-                <do-time-input formControlName="time"></do-time-input>
-				<mat-icon matSuffix aria-label="time">schedule</mat-icon>
-				<!--				<mat-error *ngIf="addHoursForm.get('time').invalid">{{ getTimePeriodErrorMessage() }}</mat-error>-->
-			</mat-form-field>
+		<div>
+			<ng-container *ngIf="isProjectForm; else absence">
+				<mat-form-field class="add-hours__time" appearance="fill">
+					<input matInput formControlName="time" type="text" maxlength="3" placeholder="0" />
+					<mat-error *ngIf="addHoursForm.get('time')?.invalid">{{ getTimePeriodErrorMessage() }}</mat-error>
+				</mat-form-field>
+				<span class="h3"
+					>ч за
+					<a *ngIf="!isBeginningOfMonth; else changeMonth">{{ addHoursForm.get('date').value | date: 'LLLL y' }}</a>
+					<ng-template #changeMonth
+						><a class="add-hours__menu" [matMenuTriggerFor]="monthMenu"
+							>{{ addHoursForm.get('date').value | date: 'LLLL y' }} <mat-icon>expand_more</mat-icon></a
+						></ng-template
+					>
+				</span>
+				<mat-menu #monthMenu="matMenu">
+					<button mat-menu-item *ngFor="let month of monthOptions" (click)="setMonthToAddTimeTo(month)">
+						{{ month | date: 'LLLL y' | titlecase }}
+					</button>
+				</mat-menu>
+			</ng-container>
+
+			<ng-template #absence>
+				<mat-form-field appearance="fill">
+					<mat-label>Выберите диапазон отсутствия</mat-label>
+					<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker" [max]="getLastDayOfMonth()" required>
+						<!--                TODO разобраться с ошибкой-->
+						<input matStartDate (dateChange)="onStartDateChange($event.value)" [value]="startDate" />
+						<input matEndDate (dateChange)="onEndDateChange($event.value)" [value]="endDate" />
+					</mat-date-range-input>
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
+				</mat-form-field>
+				<div class="add-hours__absence-time">
+					<p doText>Выбрано</p>
+					<h3 doText>{{ 182 }} ч</h3>
+				</div>
+			</ng-template>
+		</div>
+		<mat-form-field *ngIf="isProjectForm; else absenceSelection" appearance="fill">
+			<mat-label>Выберите проект</mat-label>
+			<mat-select formControlName="activity" required>
+				<mat-option *ngFor="let project of projects" [value]="project.id">
+					{{ project.name }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<ng-template #absenceSelection>
 			<mat-form-field appearance="fill">
-				<mat-label>Куда</mat-label>
-				<mat-select formControlName="activity">
-					<mat-optgroup label="Проекты">
-						<mat-option *ngFor="let project of projects" (onSelectionChange)="toggleFormType($event)" [value]="project.id">
-							{{ project.name }}
-						</mat-option>
-					</mat-optgroup>
-					<mat-optgroup label="Отсутствия">
-						<mat-option *ngFor="let absence of absences" (onSelectionChange)="toggleFormType($event)" [value]="absence.leaveType">
-							{{ absence.leaveInRussian }}
-						</mat-option>
-					</mat-optgroup>
+				<mat-label>Выберите тип отсутствия</mat-label>
+				<mat-select formControlName="activity" required>
+					<mat-option *ngFor="let absence of absences" [value]="absence.leaveType">
+						{{ absence.leaveInRussian }}
+					</mat-option>
 				</mat-select>
 			</mat-form-field>
-		</div>
-
-		<div class="add-hours__row" *ngIf="isProjectForm">
-			<mat-form-field appearance="fill">
-				<mat-label>Задача</mat-label>
-				<input #task matInput id="task" formControlName="task" placeholder="Кратко опишите задачу" maxlength="50" required />
-				<mat-hint align="end">{{ task.value?.length || 0 }}/50</mat-hint>
-			</mat-form-field>
-		</div>
+		</ng-template>
 		<mat-form-field appearance="fill">
 			<mat-label>Комментарий</mat-label>
-			<textarea id="description" matInput formControlName="description" placeholder="Оставьте комментарий по выполненной задаче"></textarea>
+			<textarea matInput formControlName="description" placeholder="Оставьте комментарий для менеджера"></textarea>
 		</mat-form-field>
 		<button mat-flat-button color="primary" [disabled]="addHoursForm.invalid">Добавить часы</button>
 	</form>
