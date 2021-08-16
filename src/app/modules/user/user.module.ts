@@ -13,7 +13,7 @@ import { DoughnutChartComponent } from './components/chart/doughnut-chart.compon
 import { AddHoursComponent } from './components/add-hours/add-hours.component';
 import { GradientGraphicsComponent } from './components/gradient-graphics/gradient-graphics.component';
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
-import { ProjectComponent } from './components/project/project.component';
+import { ProjectsComponent } from './components/projects/projects.component';
 import { LeavesComponent } from './components/leaves/leaves.component';
 import { TaskComponent } from './components/task/task.component';
 import { LeaveComponent } from './components/leave/leave.component';
@@ -22,6 +22,8 @@ import { ProjectPageComponent } from './components/project-page/project-page.com
 import { TaskFilterPipe } from './pipes/task-filter.pipe';
 import { UserRoutingModule } from './user-routing.module';
 import { DeleteTaskComponent } from './modals/delete-task/delete-task.component';
+import { EditProjectComponent } from './modals/edit-project/edit-project.component';
+import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
 
 @NgModule({
 	declarations: [
@@ -31,7 +33,7 @@ import { DeleteTaskComponent } from './modals/delete-task/delete-task.component'
 		AddHoursComponent,
 		GradientGraphicsComponent,
 		UserTasksComponent,
-		ProjectComponent,
+		ProjectsComponent,
 		TaskComponent,
 		ProjectsTableComponent,
 		ProjectPageComponent,
@@ -39,6 +41,8 @@ import { DeleteTaskComponent } from './modals/delete-task/delete-task.component'
 		TaskFilterPipe,
 		LeavesComponent,
 		LeaveComponent,
+		EditProjectComponent,
+		EditLeaveComponent
 	],
 	imports: [
 		SharedModule,

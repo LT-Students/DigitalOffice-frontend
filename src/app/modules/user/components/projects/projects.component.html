@@ -1,0 +1,70 @@
+<!-- <mat-expansion-panel class='panel'>
+  <mat-expansion-panel-header class='panel__header'>
+    <mat-panel-title>
+      <div>
+        <p class='panel_bold'>{{project.name}}</p>
+        <p doText color='gray1'>{{project.tasks?.length | i18nPlural: plural}}</p>
+      </div>
+    </mat-panel-title>
+    <mat-panel-description doText color='accent_color_bright'>{{totalMinutes | hours}}</mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <ng-template matExpansionPanelContent>
+    <div *ngFor="let task of project.tasks">
+      <do-task [task]="task" [canEdit]="canEdit"></do-task>
+    </div>
+  </ng-template>
+</mat-expansion-panel> -->
+<h4 class='header'>Таблица проектов</h4>
+<div class='wrapper'>
+  <table class='task-table'>
+    <thead doText color='gray1'>
+      <th class='cell cell_size-m'>
+        <p class='cell__text'>Название проекта</p>
+      </th>
+      <th class='cell cell_size-sm'>
+        <p class='cell__text'>Внесенные часы</p>
+      </th>
+      <th class='cell cell_size-sm'>
+        <p class='cell__text'>Дата внесения</p>
+      </th>
+      <th class='cell cell_size-l'>
+        <p class='cell__text'>Комментарий</p>
+      </th>
+      <th class='cell cell_size-t'>
+        <p class='cell__text'></p>
+      </th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of projects">
+        <td class='cell cell_size-m'>
+          <p class='cell__text cell_wrappable'>{{project.name}}</p>
+        </td>
+        <td class='cell cell_size-sm'>
+          <p class='cell__text cell_wrappable'>{{project.userHours? project.userHours : 0}} ч</p>
+        </td>
+        <td class='cell cell_size-sm'>
+          <p class='cell__text cell_wrappable'>{{getDate(project.year, project.month) | date: 'd MMMM'}}</p>
+        </td>
+        <td class='cell cell_size-l'>
+          <p class='cell__text cell_wrappable'>{{project.description}}</p>
+        </td>
+        <td class='cell cell_size-t cell_icon'>
+          <button mat-icon-button [matMenuTriggerFor]='menu'>
+            <mat-icon doText color='gray1'>more_horiz</mat-icon>
+          </button>
+          <mat-menu #menu='matMenu'>
+            <button mat-menu-item class='menu-item' (click)="openEditModal(project)">
+              <mat-icon>edit</mat-icon>
+              <span>Редактировать</span>
+            </button>
+            <button mat-menu-item class='menu-item' (click)="openDeleteModal(project)">
+              <mat-icon>delete</mat-icon>
+              <span>Удалить</span>
+            </button>
+          </mat-menu>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

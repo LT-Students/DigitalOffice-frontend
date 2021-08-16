@@ -1,15 +1,17 @@
 <div class='wrapper'>
-    <h3 doText class='wrapper__title'>Удаление записи</h3>
-    <div doText class='wrapper__message'>
-        <p doText>Вы действительно хотите удалить запись от <span color='gray1'>такой-то
-                даты</span>?
+    <h3 class='wrapper__title'>Удаление записи</h3>
+    <div class='wrapper__message'>
+        <p *ngIf="task.taskType === 'project'">Вы действительно хотите удалить часы из проекта {{task.name}} за
+            {{task.date
+            | date: 'LLLL YYYY'}}? Отменить это действие будет невозможно.
         </p>
-        <p>
-            Отменить это действие будет невозможно.
+        <p *ngIf="task.taskType === 'leave'">Вы действительно хотите удалить часы из отсутствия "{{task.name}}" за
+            {{task.date
+            | date: 'LLLL YYYY'}}? Отменить это действие будет невозможно.
         </p>
     </div>
-    <div class='wrapper__controls'>
-        <button mat-flat-button (click)="onCancel()">Отменить</button>
-        <button mat-flat-button class='wrapper__confirm-button' (click)="onSubmit()">Да, удалить</button>
+    <div class='controls'>
+        <button mat-flat-button (click)="onCancel()" class='button button_gray-text'>Отменить</button>
+        <button mat-flat-button class='button wrapper_submit-button' (click)="onSubmit()">Да, удалить</button>
     </div>
 </div>

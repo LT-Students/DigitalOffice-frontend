@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
-import { MatDialogRef } from "@angular/material/dialog";
+import { Component, Inject } from "@angular/core";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 @Component({
     selector: 'do-delete-task',
@@ -7,7 +7,10 @@ import { MatDialogRef } from "@angular/material/dialog";
     styleUrls: ['delete-task.component.scss']
 })
 export class DeleteTaskComponent {
-    constructor(private dialogRef: MatDialogRef<DeleteTaskComponent>) { }
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public task: { taskType: 'leave' | 'project', date: string, name: Date },
+        private dialogRef: MatDialogRef<DeleteTaskComponent>
+    ) { }
 
     public onCancel() {
         this.dialogRef.close({ deleted: false });

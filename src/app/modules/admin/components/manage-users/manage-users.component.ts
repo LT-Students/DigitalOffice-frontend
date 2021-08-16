@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
@@ -13,7 +13,7 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	selector: 'do-manage-users',
 	templateUrl: './manage-users.component.html',
 	styleUrls: ['./manage-users.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageUsersComponent implements OnInit {
 	@ViewChild(MatSort) sort: MatSort;
@@ -28,7 +28,7 @@ export class ManageUsersComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 
-	constructor(private _userService: UserService, private _dialog: MatDialog) {
+	constructor(private _userService: UserService, private _dialog: MatDialog, private cdr: ChangeDetectorRef) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
 		this.userInfo = null;
@@ -110,6 +110,8 @@ export class ManageUsersComponent implements OnInit {
 			this.totalCount = data.totalCount;
 			this.userInfo = data.body.slice();
 			this.sortedUserInfo = data.body.slice();
+			console.log(data.body);
+			this.cdr.detectChanges();
 		});
 	}
 }

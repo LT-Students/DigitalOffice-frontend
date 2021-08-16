@@ -1,0 +1,54 @@
+.wrapper {
+	font-size: 16px;
+
+	&__range {
+		margin: 16px 0 0;
+
+		display: flex;
+	}
+
+	&__range-picker {
+		margin-right: 33px;
+	}
+
+	&__hours {
+		padding: 0 0 20px;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	&__description {
+		width: 100%;
+	}
+
+	&__description-field {
+		height: 148px;
+	}
+}
+
+.big-text {
+	font-size: 22px;
+	line-height: 33px;
+}
+
+.controls {
+	display: flex;
+	justify-content: space-around;
+
+	&__button {
+		padding: 6px 72px;
+
+		font-size: 16px;
+		line-height: 24px;
+	}
+
+	&__submit-button {
+		color: #fff;
+	}
+
+	&__cancel-button {
+		color: #9d9d9d;
+	}
+}

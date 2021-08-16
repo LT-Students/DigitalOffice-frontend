@@ -1,4 +1,6 @@
 .mat-card {
+	padding: 21px 48px;
+
 	min-width: 850px;
 }
 
@@ -8,12 +10,27 @@
 	width: 0;
 }
 
-.period-span {
-	&:hover {
-		cursor: pointer;
-	}
-}
-
 .records-count {
 	padding: 0 0 24px 0s;
+}
+
+.tasks {
+	margin-top: 40px;
+}
+
+.wrapper {
+	&__title {
+		margin-top: 31px;
+		margin-bottom: 30px;
+	}
+
+	&__icon {
+		vertical-align: middle;
+	}
+
+	&__period {
+		&:hover {
+			cursor: pointer;
+		}
+	}
 }

@@ -1,23 +1,25 @@
 <mat-card>
-  <h3>
-    Записи за
-    <mat-form-field class='date-input'>
-      <input matInput [matDatepicker]="dp">
-      <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
-        (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
-      </mat-datepicker>
-    </mat-form-field>
-    <span doText color='accent_color_bright' class="period-span" (click)="openDatepicker()">
-      {{selectedPeriod.startTime | date: "LLLL YYYY"}}
-    </span>
-  </h3>
-  <h4 class="records-count">Внесено <span doText color='accent_color_bright'>{{ tasksCount | i18nPlural: plural
-      }}</span></h4>
-  <ng-container *ngFor="let project of projects">
-    <do-project [project]="project" [selectedPeriod]="selectedPeriod"></do-project>
-  </ng-container>
-  <ng-container *ngIf="leaves.length > 0">
-    <do-leaves [leaves]="leaves" [selectedPeriod]="selectedPeriod">
-    </do-leaves>
-  </ng-container>
+  <div class='wrapper'>
+    <h3 doText underlined underlinedSize='sm' class='wrapper__title'>
+      <span>Записи за
+        <!-- <mat-form-field class='date-input'>
+        <input matInput [matDatepicker]="dp">
+        <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+          (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+        </mat-datepicker>
+      </mat-form-field> -->
+      </span>
+      <span doText color='accent_color_bright' class="wrapper__period">
+        {{selectedPeriod.startTime | date: "LLLL YYYY"}}
+        <mat-icon class='wrapper__icon'>keyboard_arrow_down</mat-icon>
+      </span>
+    </h3>
+    <p>{{tasksCount}}</p>
+    <div class='tasks' *ngIf="projects.length">
+      <do-projects [projects]="projects"></do-projects>
+    </div>
+    <div class='tasks' *ngIf="leaves.length">
+      <do-leaves [leaves]="leaves"></do-leaves>
+    </div>
+  </div>
 </mat-card>

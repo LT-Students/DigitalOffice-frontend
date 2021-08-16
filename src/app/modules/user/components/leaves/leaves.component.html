@@ -1,4 +1,4 @@
-<mat-expansion-panel class='panel'>
+<!-- <mat-expansion-panel class='panel'>
     <mat-expansion-panel-header class='panel__header'>
         <mat-panel-title>
             <div>
@@ -14,4 +14,56 @@
             <do-leave [leave]="leave" [canEdit]="canEdit"></do-leave>
         </div>
     </ng-template>
-</mat-expansion-panel>
+</mat-expansion-panel> -->
+
+<h4 class='header'>Таблица отсутствий</h4>
+<table class='task-table'>
+    <thead doText color='gray1'>
+        <th class='cell cell_size-m'>
+            <p class='cell__text'>Отсутствие</p>
+        </th>
+        <th class='cell cell_size-m'>
+            <p class='cell__text'>Внесенные часы</p>
+        </th>
+        <th class='cell cell_size-m'>
+            <p class='cell__text'>Дата отсутствия</p>
+        </th>
+        <th class='cell cell_size-l'>
+            <p class='cell__text'>Комментарий</p>
+        </th>
+        <th class='cell cell_size-m'>
+            <p class='cell__text'></p>
+        </th>
+    </thead>
+    <tbody>
+        <tr *ngFor="let leave of leaves">
+            <td class='cell cell_size-m'>
+                <p class='cell__text'>{{getRusType(leave.leaveType!)}}</p>
+            </td>
+            <td class='cell cell_size-m'>
+                <p class='cell__text'>{{leave.minutes! / 60}} ч</p>
+            </td>
+            <td class='cell cell_size-m'>
+                <p class='cell__text'>{{leave.startTime | date: 'd'}} - {{leave.endTime | date: 'd MMMM'}}</p>
+            </td>
+            <td class='cell cell_size-l'>
+                <p class='cell__text'>{{leave.comment}}</p>
+            </td>
+            <td class='cell cell_size-sm'>
+                <button mat-icon-button [matMenuTriggerFor]='menu'>
+                    <mat-icon doText color='gray1'>more_horiz</mat-icon>
+                </button>
+                <mat-menu #menu='matMenu'>
+                    <button mat-menu-item class='menu-item' (click)="openEditModal(leave)">
+                        <mat-icon>edit</mat-icon>
+                        <span>Редактировать</span>
+                    </button>
+                    <button mat-menu-item class='menu-item' (click)="openDeleteModal(leave)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Удалить</span>
+                    </button>
+                </mat-menu>
+            </td>
+        </tr>
+    </tbody>
+</table>
