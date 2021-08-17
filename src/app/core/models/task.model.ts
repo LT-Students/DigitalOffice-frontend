@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { TaskInfo } from '@data/api/project-service/models/task-info';
 import { UserTaskInfo } from '@data/api/project-service/models/user-task-info';
 import { ProjectTaskInfo } from '@data/api/project-service/models/project-task-info';

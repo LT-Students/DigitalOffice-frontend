@@ -24,15 +24,15 @@
       </mat-chip-list>
 
       <div>
-        <mat-form-field appearance="none">
+        <mat-form-field appearance="standard">
           <mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="picker">
             <input
-              (dateChange)="onDateInput($event.value, true)"
+              (dateChange)="onDateInput($event, true)"
               [value]="startDate"
               matStartDate
             />
             <input
-              (dateChange)="onDateInput($event.value, false)"
+              (dateChange)="onDateInput($event, false)"
               [value]="endDate"
               matEndDate
             />

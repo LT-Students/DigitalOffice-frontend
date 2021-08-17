@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 
@@ -10,6 +11,7 @@ import { NewPositionComponent } from '../../modals/new-position/new-position.com
 	selector: 'do-position-list',
 	templateUrl: './position-list.component.html',
 	styleUrls: ['./position-list.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PositionListComponent implements OnInit {
 	public positions: PositionInfo[];

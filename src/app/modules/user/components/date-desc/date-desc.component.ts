@@ -1,4 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -11,6 +12,7 @@ import { DateService } from '@app/services/date.service';
 	selector: 'do-datedesc',
 	templateUrl: './date-desc.component.html',
 	styleUrls: ['./date-desc.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateDescComponent implements OnInit, OnDestroy {
 	private tempStartDate: Date;
@@ -64,7 +66,8 @@ export class DateDescComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	public onDateInput(date: Date | null, isStartDate: boolean) {
+	public onDateInput(event: Event, isStartDate: boolean) {
+		const date = event.value;
 		if (date) {
 			if (isStartDate) {
 				this.attendanceService.onDatePeriodChange({

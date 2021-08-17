@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
 import { LocalStorageService } from '@app/services/local-storage.service';

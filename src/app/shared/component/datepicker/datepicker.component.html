@@ -10,7 +10,7 @@
 			[placeholder]="placeholder"
             [ngStyle]="{ display: 'none' }"
 		/>
-		<div doText style="padding: 0 15px;">{{ control.value | date: dateFormat }}</div>
+		<div doText style="padding: 0 15px;">{{ control?.value | date: dateFormat }}</div>
 		<mat-datepicker-toggle matSuffix [for]="picker">
 			<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 		</mat-datepicker-toggle>
@@ -20,5 +20,5 @@
 
 <ng-template #textBlock>
 	<h3 class="small_text text-gray">{{ label }}</h3>
-	<div doText>{{ control.value | date: dateFormat }}</div>
+	<div doText>{{ control?.value | date: dateFormat }}</div>
 </ng-template>

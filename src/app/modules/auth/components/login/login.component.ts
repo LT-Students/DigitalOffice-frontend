@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,6 +15,7 @@ import { CompanyService } from '@app/services/company/company.service';
 	selector: 'do-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
 	public portalName: string;

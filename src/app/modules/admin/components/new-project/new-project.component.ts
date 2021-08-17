@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
@@ -23,6 +24,7 @@ import { Team, TeamMember } from './team-cards';
 	selector: 'do-new-project',
 	templateUrl: './new-project.component.html',
 	styleUrls: ['./new-project.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewProjectComponent implements OnInit {
 	public projectForm: FormGroup;

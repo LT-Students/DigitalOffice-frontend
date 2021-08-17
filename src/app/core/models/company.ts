@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { setProperty } from '@app/utils/utils';
 import { ImageInfo } from '@data/api/company-service/models/image-info';
 import { SmtpInfo } from '@data/api/company-service/models/smtp-info';

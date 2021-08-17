@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Title } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
