@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface PatchWorkTimeDocument {
+export interface PatchWorkTimeDayJobDocument {
 
   /**
    * The operation to be performed.
@@ -10,7 +10,7 @@ export interface PatchWorkTimeDocument {
   /**
    * A JSON-Pointer.
    */
-  path: '/UserHours' | '/ManagerHours' | '/Description';
+  path: '/WorkTimeId' | '/Day' | '/Name' | '/Description' | '/Minutes' | '/IsActive';
 
   /**
    * The value to be used within the operations.
