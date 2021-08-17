@@ -19,6 +19,8 @@ import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { InstallerModule } from './modules/installer/installer.module';
+import { PasswordComponent } from './shared/component/password/password.component';
+import { FormsModule } from '@angular/forms';
 
 registerLocaleData(localeRu);
 
@@ -35,8 +37,8 @@ function initializeCompany(appInitService: AppInitService) {
 }
 
 @NgModule({
-	declarations: [AppComponent],
-	imports: [AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule],
+	declarations: [ AppComponent, PasswordComponent ],
+	imports: [ AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule, FormsModule ],
 	providers: [
 		Title,
 		{
@@ -47,18 +49,21 @@ function initializeCompany(appInitService: AppInitService) {
 		{
 			provide: APP_INITIALIZER,
 			useFactory: initializeCompany,
-			deps: [AppInitService],
+			deps: [ AppInitService ],
 			multi: true,
 		},
 		{
 			provide: APP_INITIALIZER,
 			useFactory: initializeUser,
-			deps: [AppInitService],
+			deps: [ AppInitService ],
 			multi: true,
 		},
 		{ provide: LOCALE_ID, useValue: 'ru-RU' },
 	],
-	bootstrap: [AppComponent],
-	schemas: [CUSTOM_ELEMENTS_SCHEMA],
+	bootstrap: [ AppComponent ],
+	schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+	exports: [
+		PasswordComponent,
+	],
 })
 export class AppModule {}

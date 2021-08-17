@@ -47,16 +47,19 @@
 				</mat-form-field>
 				<mat-form-field class="wizard__input-width" appearance="fill">
 					<mat-label>Пароль</mat-label>
-					<input matInput formControlName="password" [type]="hide ? 'password' : 'text'" placeholder="Придумайте пароль" required />
-                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <do-password formControlName="password" placeholder="Придумайте пароль"></do-password>
+<!--					<input matInput formControlName="password" [type]="hide ? 'password' : 'text'" placeholder="Придумайте пароль" required />-->
+<!--                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>-->
 				</mat-form-field>
                 <mat-form-field class="wizard__input-width" appearance="fill">
                     <mat-label>Повторите пароль</mat-label>
-                    <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher" [type]="hidePassword ? 'password' : 'text'" placeholder="Повторите пароль" required />
-                    <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    <mat-error *ngIf="adminForm.hasError('notSame')">
-                        Пароль не совпадает
-                    </mat-error>
+                    <do-password placeholder="Повторите пароль" formControlName="confirmPassword" [errors]="myForm.errors?.errorMatch?myForm.errors:null" >
+                    </do-password>
+<!--                    <input matInput formControlName="confirmPassword" [errors]="myForm.errors?.errorMatch?myForm.errors:null" [type]="hidePassword ? 'password' : 'text'" placeholder="Повторите пароль" required />-->
+<!--                    <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>-->
+<!--                    <mat-error *ngIf="adminForm.hasError('notSame')">-->
+<!--                        Пароль не совпадает-->
+<!--                    </mat-error>-->
                 </mat-form-field>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
@@ -83,16 +86,19 @@
 				</mat-form-field>
 				<mat-form-field class="wizard__input-width" appearance="fill">
 					<mat-label>Пароль</mat-label>
-					<input matInput formControlName="password" [type]="hide ? 'password' : 'text'" placeholder="Придумайте пароль" required  />
-                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <do-password formControlName="password" placeholder="Придумайте пароль"></do-password>
+<!--					<input matInput formControlName="password" [type]="hide ? 'password' : 'text'" placeholder="Придумайте пароль" required  />-->
+<!--                    <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>-->
 				</mat-form-field>
                 <mat-form-field class="wizard__input-width" appearance="fill">
                     <mat-label>Повторите пароль</mat-label>
-                    <input matInput formControlName="confirmPassword" [errorStateMatcher]="matcher" [type]="hide ? 'password' : 'text'" placeholder="Повторите пароль" required />
-                    <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    <mat-error *ngIf="smtpForm.hasError('notSame')">
-                        Пароль не совпадает
-                    </mat-error>
+                    <do-password placeholder="Повторите пароль" formControlName="confirmPassword" [errors]="myForm.errors?.errorMatch?myForm.errors:null" ></do-password>
+<!--                    </app-custom-input>-->
+<!--                    <input matInput formControlName="confirmPassword" [errors]="myForm.errors?.errorMatch?myForm.errors:null" [type]="hide ? 'password' : 'text'" placeholder="Повторите пароль" required />-->
+<!--                    <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>-->
+<!--                    <mat-error *ngIf="smtpForm.hasError('notSame')">-->
+<!--                        Пароль не совпадает-->
+<!--                    </mat-error>-->
                 </mat-form-field>
 				<mat-checkbox formControlName="enableSsl" required>Включить SSL</mat-checkbox>
 				<div>

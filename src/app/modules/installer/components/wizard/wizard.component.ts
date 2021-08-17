@@ -1,9 +1,13 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+
+// export interface Food {
+// 	value: string;
+// 	viewValue: string;
+// }
 
 @Component({
 	selector: 'do-wizard',
@@ -33,6 +37,7 @@ export class WizardComponent implements OnInit {
 			email: ['', Validators.required],
 			login: ['', Validators.required],
 			password: ['', Validators.required],
+			confirmPassword: ['', Validators.required],
 		});
 		this.smtpForm = this._formBuilder.group({
 			host: ['', Validators.required],
@@ -40,7 +45,23 @@ export class WizardComponent implements OnInit {
 			enableSsl: ['', Validators.required],
 			email: ['', Validators.required],
 			password: ['', Validators.required],
+			confirmPassword: ['', Validators.required],
 		});
+		this.matchControls('password', 'confirmPassword')
+	}
+
+	matchControls(field1, field2) {
+		return (group: FormGroup) => {
+			const control1 = group.get(field1);
+			const control2 = group.get(field2);
+			return control1 &&
+			control2 &&
+			control1.value &&
+			control2.value &&
+			control1.value !== control2.value
+				? { errorMatch: 'Пароль не совпадает' }
+				: null;
+		};
 	}
 
 	submitForm() {
