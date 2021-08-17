@@ -31,14 +31,14 @@ class PasswordFieldErrorMatcher implements ErrorStateMatcher {
 })
 export class PasswordComponent implements OnInit, AfterViewInit, ControlValueAccessor {
 
-	control: FormControl
-	onChange: any = () => { };
-	onTouched: any = () => { };
-
 	value: any;
 	@Input() disabled: boolean;
 	@Input() placeholder = '';
 	@Input() errors: any = null;
+
+	control: FormControl
+	onChange: any = () => { };
+	onTouched: any = () => { };
 
 	errorMatcher() {
 		return new PasswordFieldErrorMatcher(this.control, this.errors)
