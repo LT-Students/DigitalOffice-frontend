@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { DatePeriod } from '@data/models/date-period';
 import { DayOfWeek } from '@data/models/day-of-week';
@@ -9,8 +8,8 @@ import { DayOfWeek } from '@data/models/day-of-week';
 export class DateService {
 	constructor() {}
 
-	isSameDay(fromDate: Date, toDate: Date): boolean {
-		return fromDate.getTime() === toDate.getTime();
+	isSameDay(fromDate: Date | null, toDate: Date | null): boolean {
+		return fromDate?.getTime() === toDate?.getTime();
 	}
 
 	isSameMonth(fromDate: Date, toDate: Date): boolean {
@@ -32,9 +31,9 @@ export class DateService {
 	}
 
 	getDefaultDatePeriod(): DatePeriod {
-		const today: Date = new Date();
-		const startDate: Date = new Date(today.getFullYear(), today.getMonth(), 1);
-		const endDate: Date = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+		// const today: Date = new Date();
+		const startDate: Date = new Date();
+		const endDate: Date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7);
 
 		// const today = new Date();
 		// const inWeek = this.addDays(today, daysFromToday);

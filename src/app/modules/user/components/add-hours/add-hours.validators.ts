@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
 export function timeValidator(countMaxPossibleHours: () => number): ValidatorFn {
