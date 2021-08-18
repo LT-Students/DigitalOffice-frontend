@@ -1,7 +1,4 @@
-//@ts-nocheck
-
 import { Component, ViewChild, ElementRef, OnDestroy, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Time } from '@angular/common';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -10,6 +7,7 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project, ProjectModel } from '@app/models/project/project.model';
 import { MatDatepicker } from '@angular/material/datepicker';
+import { Time } from '@angular/common';
 
 @Component({
 	selector: 'do-doughnut-chart',
@@ -19,28 +17,26 @@ import { MatDatepicker } from '@angular/material/datepicker';
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
 	/* TODO: inject data from parent component in this list */
-	@Input() projectList: Project[] | null;
-	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
+	@Input() projectList: Project[] | undefined;
+	@ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement> | undefined;
 
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
-	private ctx: CanvasRenderingContext2D;
-	private chart: Chart;
+	private ctx: CanvasRenderingContext2D | null | undefined;
+	private chart: Chart<'doughnut'> | undefined;
 
 	public COLORS = ['#7C799B', '#C7C6D8', '#FFB2B2', '#FFB78C', '#EB5757', '#BC7BFA', '#FFBE97', '#BDBDBD'];
 	public projects: ProjectModel[];
 
-	public recommendedTime: Time;
+	public recommendedTime: Time | undefined;
 
 	public startDate: Date = new Date();
 
-	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {}
+	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {
+		this.projects = [];
+	}
 
-	ngOnInit() {
-		this.ctx = this.canvas.nativeElement.getContext('2d');
-
-		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
-			this.recommendedTime = time;
-		});
+	public ngOnInit() {
+		this.ctx = this.canvas?.nativeElement.getContext('2d');
 
 		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
 			this.projects = projects;
@@ -49,7 +45,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			}
 		});
 
-		this.ctx = this.canvas.nativeElement.getContext('2d');
+		this.ctx = this.canvas?.nativeElement.getContext('2d');
 
 		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
 			this.recommendedTime = time;
@@ -58,14 +54,14 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		this.buildChart();
 	}
 
-	get spentTime() {
+	public get spentTime(): Time {
 		return {
 			hours: Math.floor(this.spentMinutes / 60),
 			minutes: this.spentMinutes % 60,
 		};
 	}
 
-	get remainingTime() {
+	public get remainingTime(): Time {
 		const minutes = this.remainingMinutes % 60;
 		const hours = this.remainingMinutes ? Math.floor(this.remainingMinutes / 60) : Math.ceil(this.remainingMinutes / 60);
 		return {
@@ -74,17 +70,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		};
 	}
 
-	get remainingTimeStatus(): string {
-		if (this.remainingMinutes > 0) {
-			return 'positive';
-		} else if (this.remainingMinutes < 0) {
-			return 'negative';
-		} else {
-			return 'zero';
-		}
-	}
-
-	get isPeriodEmpty() {
+	public get isPeriodEmpty(): boolean {
 		return !this.data.some((minutes: number) => minutes > 0);
 	}
 
@@ -114,31 +100,44 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			type: 'doughnut',
 			data: {
 				labels: projectsLabels,
-
 				datasets: [
 					{
 						data: this.isPeriodEmpty ? [1] : this.data,
 						backgroundColor: this.isPeriodEmpty ? '#F1F1EF' : this.COLORS,
 						borderWidth: 0,
-						radius: 500,
 					},
 				],
 			},
 			options: {
-				cutoutPercentage: 70,
-				legend: {
-					position: 'bottom',
-					onClick: false,
-					labels: {
-						usePointStyle: true,
-						pointStyle: 'circle',
-						title: {
-							position: 'start',
+				// cutout: 70,
+				aspectRatio: 1,
+				plugins: {
+					legend: {
+						position: 'bottom',
+						onClick: undefined,
+						labels: {
+							usePointStyle: true,
+							pointStyle: 'circle',
 						},
 					},
-				},
-				tooltips: {
-					enabled: false,
+					tooltip: {
+						backgroundColor: 'rgba(38, 50, 56, 1)',
+						displayColors: false,
+						xAlign: 'right',
+						yAlign: 'bottom',
+
+						// callbacks: {
+						// 	title: (tooltip: any) => {
+						// 		console.log(tooltip.dataset);
+						// 	},
+						// 	label: (tooltip: any) => {
+						// 		console.log(tooltip.label);
+						// 	},
+						// 	footer: (tooltip: any) => {
+						// 		console.log(tooltip.footer);
+						// 	},
+						// },
+					},
 				},
 			},
 		});
@@ -148,6 +147,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		this.startDate = chosenDate;
 		picker.close();
 	}
+
 	public changeMonth(changeDate: number): void {
 		const currentMonth = this.startDate.getMonth();
 		const nextMonth = currentMonth + changeDate;
@@ -160,7 +160,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		this.changeMonth(1);
 	}
 
-	ngOnDestroy() {
+	public ngOnDestroy() {
 		this.onDestroy$.next(null);
 		this.onDestroy$.complete();
 	}

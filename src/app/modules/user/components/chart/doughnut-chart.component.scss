@@ -1,17 +1,13 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-.card {
+.chart {
 	padding: 0 50px 32px;
 
 	display: flex;
 	flex-direction: column;
 
-	&__title-orange {
-		color: $accent_color_bright;
-	}
-
-	&__time-container {
+	&__doughnut {
 		position: relative;
 
 		width: 444px;
@@ -21,14 +17,15 @@
 	&__time-info {
 		position: absolute;
 
-		top: 40%;
-		left: 40%;
+		top: 50%;
 
-		margin-top: 5px;
-	}
+		width: 100%;
 
-	&__time-status {
-		font-size: 16px;
+		text-align: center;
+
+		pointer-events: none;
+
+		transform: translateY(-50%);
 	}
 
 	&__diagram-wrapper {
@@ -48,16 +45,10 @@
 		height: 0;
 	}
 
-	&__tag-marker {
-		display: inline-block;
+	&__month-picker {
+		display: inline-flex;
+		align-items: center;
 
-		width: 15px;
-		height: 15px;
-
-		border-radius: 50%;
-	}
-
-	.mat-icon {
-		vertical-align: middle;
+		cursor: pointer;
 	}
 }
