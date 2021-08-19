@@ -14,7 +14,7 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	selector: 'do-department-card',
 	templateUrl: './department-card.component.html',
 	styleUrls: ['./department-card.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepartmentCardComponent implements OnInit {
 	public departmentInfo: DepartmentInfo;
@@ -24,6 +24,13 @@ export class DepartmentCardComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
+
+	public peopleCountMap: { [k: string]: string } = {
+		zero: '# человек',
+		one: '# человек',
+		few: '# человека',
+		other: '# человек',
+	};
 
 	constructor(
 		private _netService: NetService,
