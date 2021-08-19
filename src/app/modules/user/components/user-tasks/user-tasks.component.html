@@ -2,24 +2,23 @@
   <div class='wrapper'>
     <h3 doText underlined underlinedSize='sm' class='wrapper__title'>
       <span>Записи за
-        <!-- <mat-form-field class='date-input'>
-        <input matInput [matDatepicker]="dp">
-        <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
-          (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
-        </mat-datepicker>
-      </mat-form-field> -->
+        <mat-form-field class='date-input'>
+          <input matInput [matDatepicker]="dp">
+          <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+          </mat-datepicker>
+        </mat-form-field>
       </span>
-      <span doText color='accent_color_bright' class="wrapper__period">
+      <span doText color='accent_color_bright' class="wrapper__period" (click)="openMonthpicker()">
         {{selectedPeriod.startTime | date: "LLLL YYYY"}}
         <mat-icon class='wrapper__icon'>keyboard_arrow_down</mat-icon>
       </span>
     </h3>
-    <p>{{tasksCount}}</p>
-    <div class='tasks' *ngIf="projects.length">
-      <do-projects [projects]="projects"></do-projects>
+    <div class='tasks'>
+      <do-projects [projects]="projects$ | async"></do-projects>
     </div>
-    <div class='tasks' *ngIf="leaves.length">
-      <do-leaves [leaves]="leaves"></do-leaves>
+    <div class='tasks'>
+      <do-leaves [leaves]="leaves$ | async"></do-leaves>
     </div>
   </div>
 </mat-card>

@@ -1,12 +1,12 @@
 <div class='wrapper'>
-    <h3 class='wrapper__title text'>Редактирование часов за проект <p doText color='accent_color_bright'>
+    <h3 class='wrapper__title big-text'>Редактирование часов за проект <p doText color='accent_color_bright'>
             {{project.name}}</p>
     </h3>
     <form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
         <div class='form__hours-wrapper'>
             <mat-form-field appearance="fill" class='form__hours'>
                 <mat-label>Часы</mat-label>
-                <input matInput formControlName="hours" class='big-text' />
+                <input matInput formControlName="userHours" class='big-text' />
             </mat-form-field>
             <span doText color='gray1' class='big-text wrapper__date'>
                 ч<span doText color='dark_1' class='wrapper__period'>за {{projectDate |date: 'LLLL

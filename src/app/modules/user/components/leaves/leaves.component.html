@@ -1,53 +1,63 @@
-<!-- <mat-expansion-panel class='panel'>
-    <mat-expansion-panel-header class='panel__header'>
-        <mat-panel-title>
-            <div>
-                <p class='panel_bold'>Отсутствия</p>
-                <p doText color='gray1'>{{leaves.length | i18nPlural: plural}}</p>
-            </div>
-        </mat-panel-title>
-        <mat-panel-description doText color='accent_color_bright'>{{totalMinutes | hours}}</mat-panel-description>
-    </mat-expansion-panel-header>
-
-    <ng-template matExpansionPanelContent>
-        <div *ngFor="let leave of leaves">
-            <do-leave [leave]="leave" [canEdit]="canEdit"></do-leave>
-        </div>
-    </ng-template>
-</mat-expansion-panel> -->
-
 <h4 class='header'>Таблица отсутствий</h4>
 <table class='task-table'>
     <thead doText color='gray1'>
         <th class='cell cell_size-m'>
-            <p class='cell__text'>Отсутствие</p>
+            <div class='cell__content'>
+                <p class='cell__text'>Отсутствие</p>
+            </div>
         </th>
         <th class='cell cell_size-m'>
-            <p class='cell__text'>Внесенные часы</p>
+            <div class='cell__content'>
+                <p class='cell__text'>Внесенные часы</p>
+            </div>
         </th>
         <th class='cell cell_size-m'>
-            <p class='cell__text'>Дата отсутствия</p>
+            <div class='cell__content'>
+                <p class='cell__text'>Дата отсутствия</p>
+            </div>
         </th>
         <th class='cell cell_size-l'>
-            <p class='cell__text'>Комментарий</p>
+            <div class='cell__content'>
+                <p class='cell__text'>Комментарий</p>
+            </div>
         </th>
         <th class='cell cell_size-m'>
-            <p class='cell__text'></p>
+            <div class='cell__content'>
+                <p class='cell__text'></p>
+            </div>
         </th>
     </thead>
     <tbody>
         <tr *ngFor="let leave of leaves">
             <td class='cell cell_size-m'>
-                <p class='cell__text'>{{getRusType(leave.leaveType!)}}</p>
+                <div class='cell__content'>
+                    <p class='cell__text'>{{getRusType(leave.leaveType!)}}</p>
+                </div>
             </td>
             <td class='cell cell_size-m'>
-                <p class='cell__text'>{{leave.minutes! / 60}} ч</p>
+                <div class='cell__content'>
+                    <p class='cell__text'>{{leave.minutes! / 60}} ч</p>
+                </div>
             </td>
             <td class='cell cell_size-m'>
-                <p class='cell__text'>{{leave.startTime | date: 'd'}} - {{leave.endTime | date: 'd MMMM'}}</p>
+                <div class='cell__content'>
+                    <p class='cell__text'>{{leave.startTime | date: 'd'}} - {{leave.endTime | date: 'd MMMM'}}</p>
+                </div>
             </td>
             <td class='cell cell_size-l'>
-                <p class='cell__text'>{{leave.comment}}</p>
+                <div class='cell__content'>
+                    <p class='cell__text cell__comment' #comment>{{leave.comment}}</p>
+                    <button *ngIf="commentCollapsed && buttonShowed" mat-flat-button class='cell__button'
+                        (click)="expandComment()">
+                        <span doText color='gray1'>Раскрыть полностью</span>
+                        <mat-icon doText color='gray1'>keyboard_arrow_down</mat-icon>
+                    </button>
+                    <button *ngIf="!commentCollapsed && buttonShowed" mat-flat-button class='cell__button'
+                        (click)="collapseComment()">
+                        <span doText color='gray1'>Свернуть</span>
+                        <mat-icon doText color='gray1'>keyboard_arrow_up</mat-icon>
+                    </button>
+                </div>
             </td>
             <td class='cell cell_size-sm'>
                 <button mat-icon-button [matMenuTriggerFor]='menu'>

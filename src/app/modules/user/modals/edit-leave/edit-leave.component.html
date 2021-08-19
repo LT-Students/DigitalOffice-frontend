@@ -1,7 +1,7 @@
 <div class='wrapper'>
     <h3 class='big-text'>Редактирование часов <span doText color='accent_color_bright'>за
             {{leave.type}}</span></h3>
-    <form [formGroup]="editForm">
+    <form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
         <div class='wrapper__range'>
             <mat-form-field class='wrapper__range-picker' appearance="fill">
                 <mat-label>Выберите диапазон отсутствия</mat-label>
