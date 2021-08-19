@@ -8,6 +8,7 @@
 				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 			</mat-datepicker>
 		</mat-form-field>
+
 		<a (click)="picker.open()" class="chart__month-picker text-accent_color_bright">
 			{{ startDate | date: 'LLLL YYYY' }}
 			<mat-icon>keyboard_arrow_down</mat-icon>
@@ -19,7 +20,7 @@
 			<mat-icon>chevron_left</mat-icon>
 		</button>
 		<div class="chart__doughnut">
-			<canvas #canvas></canvas>
+			<canvas #canvas width='444' height='222'></canvas>
 			<h3 doText class="chart__time-info">
 				<span>{{ spentTime.hours }}</span>
 				<small>&nbsp;/&nbsp;{{ remainingTime.hours }}</small>

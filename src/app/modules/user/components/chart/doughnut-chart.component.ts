@@ -2,12 +2,14 @@ import { Component, ViewChild, ElementRef, OnDestroy, OnInit, Input, ChangeDetec
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Chart } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 import { AttendanceService } from '@app/services/attendance.service';
 import { ProjectStore } from '@data/store/project.store';
 import { Project, ProjectModel } from '@app/models/project/project.model';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { Time } from '@angular/common';
+
+Chart.register(...registerables);
 
 @Component({
 	selector: 'do-doughnut-chart',
@@ -24,12 +26,14 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private ctx: CanvasRenderingContext2D | null | undefined;
 	private chart: Chart<'doughnut'> | undefined;
 
-	public COLORS = ['#7C799B', '#C7C6D8', '#FFB2B2', '#FFB78C', '#EB5757', '#BC7BFA', '#FFBE97', '#BDBDBD'];
+	public COLORS = ['#FFB2B2', '#C7C6D8', '#D2ECFF', '#FFBE97', '#FFD89E', '#9ABCDB', '#ABF5C0', '#FEECAA', '#FFCDCD'];
 	public projects: ProjectModel[];
 
 	public recommendedTime: Time | undefined;
 
 	public startDate: Date = new Date();
+
+	public MONTH_NORM = 160;
 
 	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {
 		this.projects = [];
@@ -38,13 +42,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	public ngOnInit() {
 		this.ctx = this.canvas?.nativeElement.getContext('2d');
 
-		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
-			this.projects = projects;
-			if (this.chart) {
-				this.updateChart();
-			}
-		});
-
 		this.ctx = this.canvas?.nativeElement.getContext('2d');
 
 		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
@@ -52,6 +49,13 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		});
 
 		this.buildChart();
+
+		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
+			this.projects = projects;
+			if (this.chart) {
+				this.updateChart();
+			}
+		});
 	}
 
 	public get spentTime(): Time {
@@ -75,7 +79,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	}
 
 	private get data(): number[] {
-		return this.projects.map((project) => project.tasks.reduce((sum, task) => sum + task.minutes, 0));
+		return this.projects.map((project) => project.tasks.reduce((sum, task) => sum + task.minutes / 60, 0));
 	}
 
 	private get spentMinutes() {
@@ -99,18 +103,18 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		this.chart = new Chart(this.ctx, {
 			type: 'doughnut',
 			data: {
-				labels: projectsLabels,
+				labels: [projectsLabels[0]],
 				datasets: [
 					{
-						data: this.isPeriodEmpty ? [1] : this.data,
-						backgroundColor: this.isPeriodEmpty ? '#F1F1EF' : this.COLORS,
+						data: [this.MONTH_NORM],
+						backgroundColor: this.COLORS,
 						borderWidth: 0,
 					},
 				],
 			},
 			options: {
-				// cutout: 70,
-				aspectRatio: 1,
+				cutout: 65,
+				responsive: false,
 				plugins: {
 					legend: {
 						position: 'bottom',
@@ -128,7 +132,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
 						// callbacks: {
 						// 	title: (tooltip: any) => {
-						// 		console.log(tooltip.dataset);
+						// 		console.log(tooltip);
 						// 	},
 						// 	label: (tooltip: any) => {
 						// 		console.log(tooltip.label);
