@@ -11,6 +11,7 @@ import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
 
 import { CoreModule } from '@app/core.module';
 import { AppInitService } from '@app/services/app-init.service';
+import { FormsModule } from '@angular/forms';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminModule } from './modules/admin/admin.module';
@@ -20,7 +21,7 @@ import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { InstallerModule } from './modules/installer/installer.module';
 import { PasswordComponent } from './shared/component/password/password.component';
-import { FormsModule } from '@angular/forms';
+import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeRu);
 
@@ -37,7 +38,7 @@ function initializeCompany(appInitService: AppInitService) {
 }
 
 @NgModule({
-	declarations: [ AppComponent, PasswordComponent ],
+	declarations: [ AppComponent ],
 	imports: [ AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule, FormsModule ],
 	providers: [
 		Title,
@@ -62,8 +63,8 @@ function initializeCompany(appInitService: AppInitService) {
 	],
 	bootstrap: [ AppComponent ],
 	schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-	exports: [
-		PasswordComponent,
-	],
+	// exports: [
+	// 	SharedModule,
+	// ],
 })
 export class AppModule {}

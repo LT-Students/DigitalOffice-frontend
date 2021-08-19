@@ -17,6 +17,7 @@ import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
+import { PasswordComponent } from './component/password/password.component';
 
 @NgModule({
 	declarations: [
@@ -32,6 +33,7 @@ import { HoursPipe } from './pipes/hours/hours.pipe';
 		TextDirective,
 		DndDirective,
 		HoursPipe,
+		PasswordComponent,
 	],
 	imports: [
 		CommonModule,
@@ -57,6 +59,7 @@ import { HoursPipe } from './pipes/hours/hours.pipe';
 		DatepickerComponent,
 		StepperComponent,
 		HoursPipe,
+		PasswordComponent,
 	],
 })
 export class SharedModule {}
