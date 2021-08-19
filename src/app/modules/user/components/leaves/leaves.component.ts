@@ -24,9 +24,9 @@ export class LeavesComponent implements AfterViewChecked, OnChanges {
     @Input() leaves: LeaveTimeInfo[] | undefined | null;
     @ViewChild("comment") comment: ElementRef | undefined;
 
-    public buttonShowed: boolean;
-    public commentCollapsed: boolean;
-    public commentCollapsedFirstTime: boolean;
+    public buttonShowed: boolean | undefined;
+    public commentCollapsed: boolean | undefined;
+    public commentCheckedFirstTime: boolean | undefined;
     public canEdit: boolean;
 
     constructor(
@@ -35,43 +35,34 @@ export class LeavesComponent implements AfterViewChecked, OnChanges {
     ) {
         this.leaves = [];
         this.canEdit = false;
-        this.commentCollapsed = false;
-        this.commentCollapsedFirstTime = true;
-        this.buttonShowed = false;
-        this._initComment();
     }
 
     public ngOnChanges() {
-        console.log('АЛОУ')
+        this._initComment();
     }
 
     public ngAfterViewChecked() {
-        console.log("AFTER VIEW CHECKED")
-        console.log('AVC [OFFSET HEIGHT]: ', this.comment?.nativeElement.offsetHeight)
-        console.log('AVC BUTTON SHOWED: ', this.buttonShowed)
-        if (this.commentCollapsedFirstTime)
-            this._initComment();
         this.checkComment();
     }
 
     private _initComment() {
-        console.log('ИНИТ')
         this.comment?.nativeElement.classList.remove('cell__text_collapsed')
         this.commentCollapsed = false;
-        this.commentCollapsedFirstTime = true;
+        this.commentCheckedFirstTime = true;
         this.buttonShowed = false;
+
+        // Если не вызвать, то не произойдёт ререндера и значение высоты элемента останется старым.
+        this._cdr.detectChanges();
     }
 
     public checkComment() {
-        console.log('[OFFSET HEIGHT]: ', this.comment?.nativeElement.offsetHeight)
-        console.log('BUTTON SHOWED: ', this.buttonShowed)
-        if (this.commentCollapsedFirstTime && this.comment?.nativeElement.offsetHeight > 50) {
-            console.log('ДА')
-            this.collapseComment()
-            this.commentCollapsedFirstTime = false;
+        if (this.commentCheckedFirstTime && this.comment?.nativeElement.offsetHeight > 50) {
+            this.collapseComment();
+            this.commentCheckedFirstTime = false;
             this.buttonShowed = true;
         }
 
+        // Опять же, если не вызвать, высота элемента останется прежней.
         this._cdr.detectChanges();
     }
 
@@ -104,8 +95,6 @@ export class LeavesComponent implements AfterViewChecked, OnChanges {
                 leave.endTime = result.data.endTime;
 
                 this._initComment();
-                // Без рендера не получить новую высоту элемента комментария
-                this._cdr.detectChanges();
                 this.checkComment();
             }
         })
