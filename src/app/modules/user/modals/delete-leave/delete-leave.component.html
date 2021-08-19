@@ -1,0 +1,12 @@
+<div class='wrapper'>
+    <h3 class='wrapper__title'>Удаление записи</h3>
+    <div class='wrapper__message'>
+        <p>Вы действительно хотите удалить часы из отсутствия "{{leave.name}}" за
+            {{leave.date | date: 'LLLL YYYY'}}? Отменить это действие будет невозможно.
+        </p>
+    </div>
+    <div class='controls'>
+        <button mat-flat-button (click)="onCancel()" class='button button_gray-text'>Отменить</button>
+        <button mat-flat-button class='button wrapper_submit-button' (click)="onSubmit()">Да, удалить</button>
+    </div>
+</div>

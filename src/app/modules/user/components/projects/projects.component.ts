@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { DeleteTaskComponent } from '../../modals/delete-task/delete-task.component';
+import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
 import { mappedProject } from '../user-tasks/user-tasks.component';
 
 @Component({
@@ -27,11 +27,15 @@ export class ProjectsComponent {
 		return new Date(year, month, 0)
 	}
 
-	public openDeleteModal(project: mappedProject) {
-		this._modalService.openModal(DeleteTaskComponent, ModalWidth.M, {
-			taskType: 'project',
+	public openEditModal(project: mappedProject) {
+		this._modalService.openModal(EditProjectComponent, ModalWidth.L, {
+			id: project.id,
 			name: project.name,
-			date: new Date(project.year, project.month - 1)
+			userHours: project.userHours,
+			managerHours: project.managerHours,
+			description: project.description,
+			month: project.month,
+			year: project.year
 		})
 	}
 }

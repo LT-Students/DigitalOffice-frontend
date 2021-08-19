@@ -15,15 +15,14 @@ import { GradientGraphicsComponent } from './components/gradient-graphics/gradie
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { LeavesComponent } from './components/leaves/leaves.component';
-import { TaskComponent } from './components/task/task.component';
-import { LeaveComponent } from './components/leave/leave.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TaskFilterPipe } from './pipes/task-filter.pipe';
 import { UserRoutingModule } from './user-routing.module';
-import { DeleteTaskComponent } from './modals/delete-task/delete-task.component';
+import { DeleteLeaveComponent } from './modals/delete-leave/delete-leave.component';
 import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
 	declarations: [
@@ -34,15 +33,14 @@ import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
 		GradientGraphicsComponent,
 		UserTasksComponent,
 		ProjectsComponent,
-		TaskComponent,
 		ProjectsTableComponent,
 		ProjectPageComponent,
-		DeleteTaskComponent,
+		DeleteLeaveComponent,
 		TaskFilterPipe,
 		LeavesComponent,
-		LeaveComponent,
 		EditProjectComponent,
-		EditLeaveComponent
+		EditLeaveComponent,
+		CommentComponent
 	],
 	imports: [
 		SharedModule,

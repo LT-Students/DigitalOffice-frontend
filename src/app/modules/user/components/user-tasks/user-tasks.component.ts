@@ -62,6 +62,7 @@ export class UserTasksComponent implements OnInit {
 
 	private _getTasks(): void {
 		const userId = this._userService.getCurrentUser()?.id;
+		console.log(userId)
 		const params = {
 			userid: userId,
 			skipCount: 0,
