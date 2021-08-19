@@ -20,8 +20,6 @@ import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { InstallerModule } from './modules/installer/installer.module';
-import { PasswordComponent } from './shared/component/password/password.component';
-import { SharedModule } from './shared/shared.module';
 
 registerLocaleData(localeRu);
 
@@ -63,8 +61,5 @@ function initializeCompany(appInitService: AppInitService) {
 	],
 	bootstrap: [ AppComponent ],
 	schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-	// exports: [
-	// 	SharedModule,
-	// ],
 })
 export class AppModule {}

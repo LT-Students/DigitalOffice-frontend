@@ -10,7 +10,7 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class PasswordFieldErrorMatcher implements ErrorStateMatcher {
-	constructor(private customControl: FormControl, private errors: any) { }
+	constructor(private customControl: FormControl | undefined, private errors: any) { }
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 		return this.customControl && this.customControl.touched && (this.customControl.invalid || this.errors);
 	}
@@ -32,25 +32,30 @@ class PasswordFieldErrorMatcher implements ErrorStateMatcher {
 export class PasswordComponent implements OnInit, AfterViewInit, ControlValueAccessor {
 
 	value: any;
-	@Input() disabled: boolean;
+	@Input() disabled: boolean | undefined;
 	@Input() placeholder = '';
 	@Input() errors: any = null;
+	hide = true;
 
-	control: FormControl
+
+	control: FormControl | undefined;
 	onChange: any = () => { };
 	onTouched: any = () => { };
+
+	constructor (public injector: Injector) { }
 
 	errorMatcher() {
 		return new PasswordFieldErrorMatcher(this.control, this.errors)
 	}
 
-  constructor(public injector: Injector) { }
+  //constructor(public injector: Injector) { }
+
 
   ngOnInit(): void {
   }
 
 	ngAfterViewInit(): void {
-		const ngControl: NgControl = this.injector.get(NgControl, null);
+		const ngControl: NgControl = this.injector.get(NgControl, undefined);
 		if (ngControl) {
 			setTimeout(() => {
 				this.control = ngControl.control as FormControl;
