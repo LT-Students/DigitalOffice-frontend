@@ -16,16 +16,13 @@ import { Title } from '@angular/platform-browser';
 changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WizardComponent implements OnInit {
-	companyForm: FormGroup | undefined;
-	adminForm: FormGroup | undefined;
-	smtpForm: FormGroup | undefined;
+	companyForm: FormGroup;
+	adminForm: FormGroup;
+	smtpForm: FormGroup;
 	public myForm: null;
 
 	constructor(private _formBuilder: FormBuilder, private companyApiService: CompanyApiService, private router: Router, private titleService: Title) {
 		this.titleService.setTitle('Installer');
-	}
-
-	ngOnInit() {
 		this.companyForm = this._formBuilder.group({
 			companyName: ['', Validators.required],
 			portalName: ['', Validators.required],
@@ -39,7 +36,9 @@ export class WizardComponent implements OnInit {
 			login: ['', Validators.required],
 			password: ['', Validators.required],
 			confirmPassword: ['', Validators.required],
-		});
+		},
+			{ validators: this.matchControls('password', 'confirmPassword') }
+		);
 		this.smtpForm = this._formBuilder.group({
 			host: ['', Validators.required],
 			port: ['', Validators.required],
@@ -47,8 +46,13 @@ export class WizardComponent implements OnInit {
 			email: ['', Validators.required],
 			password: ['', Validators.required],
 			confirmPassword: ['', Validators.required],
-		});
-		this.matchControls('password', 'confirmPassword')
+		},
+			{ validators: this.matchControls('password', 'confirmPassword') }
+		);
+
+	}
+
+	ngOnInit() {
 	}
 
 	matchControls(field1: string | (string | number)[], field2: string | (string | number)[]) {
