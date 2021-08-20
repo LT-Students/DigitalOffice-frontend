@@ -3,47 +3,75 @@
 }
 
 .task-table {
+	width: 100%;
+
+	table-layout: fixed;
 	border-collapse: collapse;
 
 	font-size: 16px;
 	text-align: left;
-	//width: 100%;
+}
+
+.row {
+	border-bottom: 1px solid #f5f5f5;
+
+	&__name {
+		width: 20%;
+	}
+
+	&__hours {
+		width: 15%;
+	}
+
+	&__period {
+		width: 15%;
+	}
+
+	&__comment {
+		width: 45%;
+	}
+
+	&__icon {
+		width: 5%;
+	}
 }
 
 .cell {
 	font-weight: normal;
 	vertical-align: top;
 
-	border-bottom: 1px solid #f5f5f5;
-
-	&_size-t {
-		width: 5%;
+	&__icon {
+		text-align: right;
 	}
 
-	&_size-sm {
-		width: 15%;
-	}
-
-	&_size-m {
-		width: 20%;
-	}
-
-	&_size-l {
-		width: 30%;
+	&__content {
+		margin: 13px 35px 7px 0;
 	}
 
 	&__text {
-		margin: 13px 35px 13px 0;
+		min-width: 75px;
 
 		line-height: 24px;
+
+		&_collapsed {
+			overflow: hidden;
+
+			height: 50px;
+		}
 	}
 
-	&_wrappable {
+	&__comment {
+		margin-bottom: 0;
+
 		word-break: break-all;
 	}
 
-	&_icon {
-		text-align: right;
+	&__button {
+		padding: 0;
+
+		font-size: 16px;
+		font-weight: normal;
+		line-height: 24px;
 	}
 }
 

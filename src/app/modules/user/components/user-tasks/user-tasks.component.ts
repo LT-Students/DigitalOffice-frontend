@@ -1,19 +1,34 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-
-import { ProjectStatusType } from '@data/api/time-service/models';
-import { LeaveTimeInfo } from '@data/api/time-service/models';
-import { TimeService } from '@app/services/time/time.service';
-import { UserService } from '@app/services/user/user.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatDatepicker } from '@angular/material/datepicker';
 
-export interface mappedProject {
+import { OperationResultStatusType, ProjectStatusType } from '@data/api/time-service/models';
+import { LeaveTimeInfo } from '@data/api/time-service/models';
+import { TimeService } from '@app/services/time/time.service';
+import { UserService } from '@app/services/user/user.service';
+
+interface IParams {
+	userid?: string;
+	skipCount?: number;
+	takeCount?: number;
+	starttime?: string;
+	endtime?: string;
+	month?: number;
+	year?: number;
+}
+
+export interface IDialogResponse {
+	status?: OperationResultStatusType;
+	data?: any;
+}
+
+export interface IMappedProject {
 	description: string;
 	id: string;
 	name: string;
-	status: ProjectStatusType;
-	userId: string;
+	status?: ProjectStatusType;
+	userId?: string;
 	managerHours: number;
 	userHours: number;
 	month: number;
@@ -27,11 +42,14 @@ export interface mappedProject {
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserTasksComponent implements OnInit {
-	public projects$: Observable<mappedProject[] | undefined> | null;
+	public projects$: Observable<IMappedProject[] | undefined> | null;
 	public leaves$: Observable<LeaveTimeInfo[] | undefined> | null;
 	@ViewChild('dp') monthpicker: MatDatepicker<Date> | undefined;
 
-	public selectedPeriod;
+	public selectedPeriod: {
+		startTime: Date,
+		endTime: Date
+	};
 	public selectedYear: number;
 	public selectedMonth: number;
 
@@ -62,18 +80,24 @@ export class UserTasksComponent implements OnInit {
 
 	private _getTasks(): void {
 		const userId = this._userService.getCurrentUser()?.id;
-		console.log(userId)
-		const params = {
+
+		const findWorkTimesParams: IParams = {
+			userid: userId,
+			skipCount: 0,
+			takeCount: 10,
+			month: this.selectedMonth,
+			year: this.selectedYear
+		}
+
+		const findLeaveTimesParams: IParams = {
 			userid: userId,
 			skipCount: 0,
 			takeCount: 10,
 			starttime: this.selectedPeriod.startTime.toISOString(),
 			endtime: this.selectedPeriod.endTime.toISOString(),
-			month: this.selectedMonth,
-			year: this.selectedYear
 		}
 
-		this.projects$ = this._timeService.findWorkTimes(params)
+		this.projects$ = this._timeService.findWorkTimes(findWorkTimesParams)
 			.pipe(map(res => res.body?.map(workTime => ({
 				description: workTime.description,
 				id: workTime.id,
@@ -84,9 +108,9 @@ export class UserTasksComponent implements OnInit {
 				userHours: workTime?.userHours,
 				month: workTime?.month,
 				year: workTime?.year
-			}) as mappedProject)))
+			}) as IMappedProject)))
 
-		this.leaves$ = this._timeService.findLeaveTimes(params)
+		this.leaves$ = this._timeService.findLeaveTimes(findLeaveTimesParams)
 			.pipe(map(res => res.body))
 	}
 
@@ -98,7 +122,7 @@ export class UserTasksComponent implements OnInit {
 		this.selectedYear = event.getFullYear();
 	}
 
-	public chosenMonthHandler(event: Date, datepicker: any) {
+	public chosenMonthHandler(event: Date, datepicker: MatDatepicker<Date>) {
 		this.selectedMonth = event.getMonth();
 		this.selectedPeriod = this._getPeriod(new Date(this.selectedYear, this.selectedMonth));
 		datepicker.close();

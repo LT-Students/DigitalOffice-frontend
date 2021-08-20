@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { OperationResultStatusType } from '@data/api/time-service/models/operation-result-status-type';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
-import { mappedProject } from '../user-tasks/user-tasks.component';
+import { IMappedProject } from '../user-tasks/user-tasks.component';
+import { IDialogResponse } from '../user-tasks/user-tasks.component';
 
 @Component({
 	selector: 'do-projects',
@@ -10,7 +12,7 @@ import { mappedProject } from '../user-tasks/user-tasks.component';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectsComponent {
-	@Input() public projects: mappedProject[] | undefined | null;
+	@Input() public projects: IMappedProject[] | undefined | null;
 
 	//public canEdit: boolean;
 	public selectedDate: Date;
@@ -24,11 +26,11 @@ export class ProjectsComponent {
 	}
 
 	public getDate(year: number, month: number) {
-		return new Date(year, month, 0)
+		return new Date(year, month)
 	}
 
-	public openEditModal(project: mappedProject) {
-		this._modalService.openModal(EditProjectComponent, ModalWidth.L, {
+	public openEditModal(project: IMappedProject) {
+		let modalContentConfig = {
 			id: project.id,
 			name: project.name,
 			userHours: project.userHours,
@@ -36,6 +38,14 @@ export class ProjectsComponent {
 			description: project.description,
 			month: project.month,
 			year: project.year
+		}
+		let result: IDialogResponse = {}
+
+		this._modalService.openModal(EditProjectComponent, ModalWidth.L, modalContentConfig, result).afterClosed().subscribe((res) => {
+			console.log(res)
+			if (res?.status === OperationResultStatusType.FullSuccess) {
+				console.log('САС')
+			}
 		})
 	}
 }

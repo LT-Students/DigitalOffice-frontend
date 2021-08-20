@@ -1,7 +1,9 @@
 import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+
 import { TimeService } from "@app/services/time/time.service";
-import { EditLeaveTimeRequest, EditWorkTimeRequest, OperationResultResponse } from "@data/api/time-service/models";
+import { EditLeaveTimeRequest, EditWorkTimeRequest, OperationResultResponse, OperationResultStatusType } from "@data/api/time-service/models";
+import { IDialogResponse } from "../../components/user-tasks/user-tasks.component";
 
 @Component({
     selector: 'do-delete-leave',
@@ -11,15 +13,12 @@ import { EditLeaveTimeRequest, EditWorkTimeRequest, OperationResultResponse } fr
 export class DeleteLeaveComponent {
     constructor(
         @Inject(MAT_DIALOG_DATA) public leave: { date: Date, name: string, id: string },
-        private _dialogRef: MatDialogRef<DeleteLeaveComponent>,
+        private _dialogRef: MatDialogRef<DeleteLeaveComponent, IDialogResponse>,
         private _timeService: TimeService
     ) { }
 
-    public onCancel() {
-        this._dialogRef.close({
-            status: '',
-            data: {}
-        });
+    public onClose(params?: IDialogResponse) {
+        this._dialogRef.close(params);
     }
 
     public onSubmit() {
@@ -35,7 +34,7 @@ export class DeleteLeaveComponent {
             leaveTimeId: this.leave.id,
             body
         }).subscribe((res: OperationResultResponse) => {
-            this._dialogRef.close({
+            this.onClose({
                 status: res.status,
                 data: {
                     id: this.leave.id

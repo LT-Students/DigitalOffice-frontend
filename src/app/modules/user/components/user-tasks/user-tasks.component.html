@@ -1,17 +1,17 @@
 <mat-card>
-  <div class='wrapper'>
-    <h3 doText underlined underlinedSize='sm' class='wrapper__title'>
+  <div class='activities'>
+    <h3 doText underlined underlinedSize='sm' class='activities__title'>
       <span>Записи за
         <mat-form-field class='date-input'>
           <input matInput [matDatepicker]="dp">
           <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
-            (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+            (monthSelected)="chosenMonthHandler($event, dp)">
           </mat-datepicker>
         </mat-form-field>
       </span>
-      <span doText color='accent_color_bright' class="wrapper__period" (click)="openMonthpicker()">
+      <span doText color='accent_color_bright' class="activities__period" (click)="openMonthpicker()">
         {{selectedPeriod.startTime | date: "LLLL YYYY"}}
-        <mat-icon class='wrapper__icon'>keyboard_arrow_down</mat-icon>
+        <mat-icon class='activities__icon'>keyboard_arrow_down</mat-icon>
       </span>
     </h3>
     <div class='tasks'>

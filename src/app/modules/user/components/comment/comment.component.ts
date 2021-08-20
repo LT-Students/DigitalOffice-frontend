@@ -11,13 +11,17 @@ export class CommentComponent implements OnChanges, AfterViewChecked {
     @ViewChild('comment') public comment: ElementRef | undefined
     @Input() public text: string | undefined;
 
-    public buttonShowed: boolean | undefined;
-    public commentCollapsed: boolean | undefined;
-    public commentCheckedFirstTime: boolean | undefined;
+    public buttonShowed: boolean;
+    public commentCollapsed: boolean;
+    public commentCheckedFirstTime: boolean;
 
     constructor(
         private _cdr: ChangeDetectorRef
-    ) { }
+    ) {
+        this.buttonShowed = false;
+        this.commentCollapsed = false;
+        this.commentCheckedFirstTime = true;
+    }
 
     public ngOnChanges() {
         this._initComment();
@@ -41,7 +45,7 @@ export class CommentComponent implements OnChanges, AfterViewChecked {
             this.buttonShowed = true;
         }
 
-        // Опять же, если не вызывать, высота элемента останется прежней.
+        // Если не вызывать, высота элемента останется прежней.
         this._cdr.detectChanges();
     }
 

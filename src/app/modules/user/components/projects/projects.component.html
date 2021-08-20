@@ -2,37 +2,53 @@
 <div class='wrapper'>
   <table class='task-table'>
     <thead doText color='gray1'>
-      <th class='cell cell_size-m'>
-        <p class='cell__text'>Название проекта</p>
-      </th>
-      <th class='cell cell_size-sm'>
-        <p class='cell__text'>Внесенные часы</p>
-      </th>
-      <th class='cell cell_size-sm'>
-        <p class='cell__text'>Дата внесения</p>
-      </th>
-      <th class='cell cell_size-l'>
-        <p class='cell__text'>Комментарий</p>
-      </th>
-      <th class='cell cell_size-t'>
-        <p class='cell__text'></p>
-      </th>
+      <tr class='row'>
+        <th class='cell row__name'>
+          <div class='cell__content'>
+            <p class='cell__text'>Название проекта</p>
+          </div>
+        </th>
+        <th class='cell row__hours'>
+          <div class='cell__content'>
+            <p class='cell__text'>Внесенные часы</p>
+          </div>
+        </th>
+        <th class='cell row__period'>
+          <div class='cell__content'>
+            <p class='cell__text'>Дата внесения</p>
+          </div>
+        </th>
+        <th class='cell row__comment'>
+          <div class='cell__content'>
+            <p class='cell__text'>Комментарий</p>
+          </div>
+        </th>
+        <th class='cell row__icon'>
+          <div class='cell__content'>
+            <p class='cell__text'></p>
+          </div>
+        </th>
+      </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let project of projects">
-        <td class='cell cell_size-m'>
-          <p class='cell__text cell_wrappable'>{{project.name}}</p>
+      <tr *ngFor="let project of projects" class='row'>
+        <td class='cell'>
+          <div class='cell__content'>
+            <p class='cell__text cell_wrappable'>{{project.name}}</p>
+          </div>
         </td>
-        <td class='cell cell_size-sm'>
-          <p class='cell__text cell_wrappable'>{{project.userHours? project.userHours : 0}} ч</p>
+        <td class='cell'>
+          <div class='cell__content'>
+            <p class='cell__text cell_wrappable'>{{project.userHours? project.userHours : 0}} ч</p>
+          </div>
         </td>
-        <td class='cell cell_size-sm'>
-          <p class='cell__text cell_wrappable'>{{getDate(project.year, project.month) | date: 'd MMMM'}}</p>
+        <td class='cell'>
+          <div class='cell__content'>
+            <p class='cell__text cell_wrappable'>{{getDate(project.year, project.month) | date: 'd MMMM'}}</p>
+          </div>
         </td>
-        <td class='cell cell_size-l'>
-          <p class='cell__text cell_wrappable'>{{project.description}}</p>
-        </td>
-        <td class='cell cell_size-t cell_icon'>
+        <do-comment [text]="project.description"></do-comment>
+        <td class='cell cell_icon'>
           <button mat-icon-button (click)="openEditModal(project)">
             <mat-icon doText color='gray1'>edit</mat-icon>
           </button>

@@ -1,6 +1,6 @@
 <div class='wrapper'>
     <h3 class='big-text'>Редактирование часов <span doText color='accent_color_bright'>за
-            {{leave.type}}</span></h3>
+            {{leave.leaveType}}</span></h3>
     <form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
         <div class='wrapper__range'>
             <mat-form-field class='wrapper__range-picker' appearance="fill">
@@ -14,7 +14,8 @@
             </mat-form-field>
             <div class='wrapper__hours'>
                 <p doText color='gray1'>Выбрано</p>
-                <strong class='big-text' doText color='gray1'><span doText color='dark_1'>{{leave.hours}}</span> ч
+                <strong class='big-text' doText color='gray1'><span doText color='dark_1'>{{leave.minutes! / 60}}</span>
+                    ч
                 </strong>
             </div>
         </div>
@@ -27,7 +28,7 @@
         </div>
         <div class='controls'>
             <button mat-flat-button class='controls controls__button controls__cancel-button' type="button"
-                (click)="onCancelClick()">Отмена</button>
+                (click)="onClose()">Отмена</button>
             <button mat-flat-button color='accent' class='controls controls__button controls__submit-button'
                 type="submit">Сохранить</button>
         </div>

@@ -8,17 +8,14 @@
 	visibility: hidden;
 
 	width: 0;
-}
-
-.records-count {
-	padding: 0 0 24px 0s;
+	height: 0;
 }
 
 .tasks {
 	margin-top: 40px;
 }
 
-.wrapper {
+.activities {
 	&__title {
 		margin-top: 31px;
 		margin-bottom: 30px;
@@ -29,8 +26,6 @@
 	}
 
 	&__period {
-		&:hover {
-			cursor: pointer;
-		}
+		cursor: pointer;
 	}
 }
