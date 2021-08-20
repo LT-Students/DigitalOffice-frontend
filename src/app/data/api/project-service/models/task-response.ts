@@ -8,14 +8,14 @@ export interface TaskResponse {
   assignedUser?: null | ProjectUserInfo;
 
   /**
-   * Task creator.
-   */
-  author?: ProjectUserInfo;
-
-  /**
    * Data and time created task.
    */
-  createdAt?: any;
+  createdAtUtc?: any;
+
+  /**
+   * Task creator.
+   */
+  createdBy?: ProjectUserInfo;
   description?: null | string;
   id?: string;
   name?: string;

@@ -14,9 +14,6 @@ import { EditDepartmentRequest } from '../models/edit-department-request';
 import { FindResultResponseDepartmentInfo } from '../models/find-result-response-department-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseDepartmentInfo } from '../models/operation-result-response-department-info';
-import { IGetDepartmentRequest } from '@app/types/get-department-request.interface';
-import { IFindRequestEx } from '@app/types/find-request.interface';
-import { IEditDepartmentRequest } from '@app/types/edit-department-request.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -94,7 +91,23 @@ export class DepartmentApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getDepartment$Response(params: IGetDepartmentRequest): Observable<StrictHttpResponse<OperationResultResponseDepartmentInfo>> {
+  getDepartment$Response(params: {
+
+    /**
+     * Department global unique identifier.
+     */
+    departmentid: string;
+
+    /**
+     * Response would include department users.
+     */
+    includeusers?: boolean;
+
+    /**
+     * Response would include department projects.
+     */
+    includeprojects?: boolean;
+  }): Observable<StrictHttpResponse<OperationResultResponseDepartmentInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetDepartmentPath, 'get');
     if (params) {
@@ -122,7 +135,23 @@ export class DepartmentApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getDepartment(params: IGetDepartmentRequest): Observable<OperationResultResponseDepartmentInfo> {
+  getDepartment(params: {
+
+    /**
+     * Department global unique identifier.
+     */
+    departmentid: string;
+
+    /**
+     * Response would include department users.
+     */
+    includeusers?: boolean;
+
+    /**
+     * Response would include department projects.
+     */
+    includeprojects?: boolean;
+  }): Observable<OperationResultResponseDepartmentInfo> {
 
     return this.getDepartment$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponseDepartmentInfo>) => r.body as OperationResultResponseDepartmentInfo)
@@ -186,7 +215,23 @@ export class DepartmentApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findDepartments(params: IFindRequestEx): Observable<FindResultResponseDepartmentInfo> {
+  findDepartments(params: {
+
+    /**
+     * Number of deparments to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of departments to take.
+     */
+    takeCount: number;
+
+    /**
+     * If it is true, response will be have deactivated records.
+     */
+    includeDeactivated?: boolean;
+  }): Observable<FindResultResponseDepartmentInfo> {
 
     return this.findDepartments$Response(params).pipe(
       map((r: StrictHttpResponse<FindResultResponseDepartmentInfo>) => r.body as FindResultResponseDepartmentInfo)
@@ -204,7 +249,14 @@ export class DepartmentApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editDepartment$Response(params: IEditDepartmentRequest): Observable<StrictHttpResponse<OperationResultResponse>> {
+  editDepartment$Response(params: {
+
+    /**
+     * Specific position id
+     */
+    departmentId: string;
+    body?: EditDepartmentRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.EditDepartmentPath, 'patch');
     if (params) {
@@ -229,7 +281,14 @@ export class DepartmentApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editDepartment(params: IEditDepartmentRequest): Observable<OperationResultResponse> {
+  editDepartment(params: {
+
+    /**
+     * Specific position id
+     */
+    departmentId: string;
+    body?: EditDepartmentRequest
+  }): Observable<OperationResultResponse> {
 
     return this.editDepartment$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

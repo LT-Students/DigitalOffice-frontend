@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -21,10 +20,10 @@ import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 
 @Injectable()
 export class UserService {
-	public selectedUser: BehaviorSubject<User>;
+	public selectedUser: BehaviorSubject<User | null>;
 
 	constructor(private _userApiService: UserApiService) {
-		this.selectedUser = new BehaviorSubject<User>(null);
+		this.selectedUser = new BehaviorSubject<User | null>(null);
 	}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
@@ -192,13 +191,12 @@ export class UserService {
 	}
 
 	public isAdmin(): boolean {
-		const user: User = this.selectedUser.value;
+		const user: User | null = this.selectedUser.value;
 		return user ? user.isAdmin : false;
 	}
 
 	public getCurrentUser(): User | null {
-		const user: User = this.selectedUser.value;
-		return user ? user : null;
+		return this.selectedUser.value;
 	}
 
 	private _setUser(user: User): void {
