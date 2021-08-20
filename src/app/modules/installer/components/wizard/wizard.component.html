@@ -1,4 +1,4 @@
-<mat-horizontal-stepper #stepper class="wizard">
+<mat-horizontal-stepper #stepper class="wizard" linear>
 	<mat-step [stepControl]="companyForm" editable>
 		<form [formGroup]="companyForm">
 			<ng-template matStepLabel>Введите данные о компании</ng-template>
@@ -16,7 +16,7 @@
 					<input matInput formControlName="siteUrl" placeholder="Введите доменное имя" required />
 				</mat-form-field>
 				<div class="wizard__buttons">
-					<button mat-button matStepperNext>Далее</button>
+					<button mat-button matStepperNext [disabled]='companyForm.invalid'>Далее</button>
 				</div>
 			</div>
 		</form>
@@ -41,7 +41,7 @@
 					<mat-label>E-mail</mat-label>
 					<input matInput formControlName="email" placeholder="example@mail.com" required />
 				</mat-form-field>
-				<mat-form-field appearance="fill">
+				<mat-form-field class="input-width" appearance="fill">
 					<mat-label>Логин</mat-label>
 					<input matInput formControlName="login" placeholder="Введите логин" required />
 				</mat-form-field>
@@ -50,7 +50,7 @@
                     </do-password>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
-					<button mat-button matStepperNext>Далее</button>
+					<button mat-button matStepperNext [disabled]='adminForm.invalid'>Далее</button>
 				</div>
 			</div>
 		</form>
@@ -76,7 +76,7 @@
 				<mat-checkbox formControlName="enableSsl" required>Включить SSL</mat-checkbox>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
-					<button mat-button type="submit" (click)='submitForm()'>Завершить</button>
+					<button mat-button type="submit" [disabled]='smtpForm.invalid' (click)='submitForm()'>Завершить</button>
 				</div>
 			</div>
 		</form>
