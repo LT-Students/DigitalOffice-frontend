@@ -1,13 +1,13 @@
 <td class='cell cell_size-l'>
     <div class='cell__content'>
-        <p class='cell__text cell__comment' #comment>{{text}}</p>
+        <p class='cell__text cell__comment regular_text' #comment>{{text}}</p>
         <button *ngIf="commentCollapsed && buttonShowed" mat-flat-button class='cell__button' (click)="expandComment()">
-            <span doText color='gray1'>Раскрыть полностью</span>
+            <span doText color='gray1' class='regular_text'>Раскрыть полностью</span>
             <mat-icon doText color='gray1'>keyboard_arrow_down</mat-icon>
         </button>
-        <button *ngIf="!commentCollapsed && buttonShowed" mat-flat-button class='cell__button'
+        <button *ngIf="!commentCollapsed && buttonShowed" mat-flat-button class='cell__button regular'
             (click)="collapseComment()">
-            <span doText color='gray1'>Свернуть</span>
+            <span doText color='gray1' class='regular_text'>Свернуть</span>
             <mat-icon doText color='gray1'>keyboard_arrow_up</mat-icon>
         </button>
     </div>

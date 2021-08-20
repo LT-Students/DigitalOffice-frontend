@@ -1,42 +1,22 @@
-.wrapper {
+@import '../../../../../stylesheets/base/variables';
+
+.modal {
 	text-align: center;
 
 	&__title {
-		//text-align: center;
-		margin: 0 0 21px;
-
-		font-size: 22px;
-		line-height: 33px;
+		margin: 14px 0 21px;
 	}
 
 	&__message {
 		margin-bottom: 60px;
-
-		line-height: 24px;
-		// font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-		//text-align: center;
-		// font-size: 16px;
-	}
-
-	&_submit-button {
-		// font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-		color: #fff;
-		background-color: #424242;
 	}
 }
 
 .controls {
 	display: flex;
 	justify-content: space-around;
-}
 
-.button {
-	padding: 6px 55px;
-
-	font-size: 16px;
-	line-height: 24px;
-
-	&_gray-text {
-		color: #9d9d9d;
+	&__button {
+		padding: 6px 55px;
 	}
 }

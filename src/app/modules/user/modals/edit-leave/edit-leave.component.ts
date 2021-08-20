@@ -62,6 +62,7 @@ export class EditLeaveComponent {
     }
 
     private _initEditForm(): FormGroup {
+        console.log(this.leave)
         return this._fb.group({
             startTime: [new Date(this.leave.startTime!), [Validators.required]],
             endTime: [new Date(this.leave.endTime!), [Validators.required]],

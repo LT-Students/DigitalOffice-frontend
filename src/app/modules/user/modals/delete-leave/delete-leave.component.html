@@ -1,12 +1,15 @@
-<div class='wrapper'>
-    <h3 class='wrapper__title'>Удаление записи</h3>
-    <div class='wrapper__message'>
-        <p>Вы действительно хотите удалить часы из отсутствия "{{leave.name}}" за
+<div class='modal'>
+    <h3 class='modal__title h3'>Удаление записи</h3>
+    <div class='modal__message'>
+        <p class='regular_text'>Вы действительно хотите удалить часы из отсутствия "{{leave.name}}" за
             {{leave.date | date: 'LLLL YYYY'}}? Отменить это действие будет невозможно.
         </p>
     </div>
     <div class='controls'>
-        <button mat-flat-button (click)="onClose()" class='button button_gray-text'>Отменить</button>
-        <button mat-flat-button class='button wrapper_submit-button' (click)="onSubmit()">Да, удалить</button>
+        <button mat-flat-button (click)="onClose()" class='controls__button'><span
+                class="regular_text text-gray1">Отменить</span></button>
+        <button mat-flat-button class='controls__button bg-dark_1' (click)="onSubmit()"><span
+                class='regular_text text-light_1'>Да,
+                удалить</span></button>
     </div>
 </div>

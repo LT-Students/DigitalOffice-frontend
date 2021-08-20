@@ -1,14 +1,9 @@
-.header {
-	font-size: 18px;
-}
-
 .task-table {
 	width: 100%;
 
 	table-layout: fixed;
 	border-collapse: collapse;
 
-	font-size: 16px;
 	text-align: left;
 }
 
@@ -51,30 +46,10 @@
 	&__text {
 		min-width: 75px;
 
-		line-height: 24px;
-
 		&_collapsed {
 			overflow: hidden;
 
 			height: 50px;
 		}
 	}
-
-	&__comment {
-		margin-bottom: 0;
-
-		word-break: break-all;
-	}
-
-	&__button {
-		padding: 0;
-
-		font-size: 16px;
-		font-weight: normal;
-		line-height: 24px;
-	}
-}
-
-.menu-item {
-	font-size: 16px;
 }

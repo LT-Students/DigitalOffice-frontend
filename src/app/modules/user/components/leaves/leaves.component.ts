@@ -43,7 +43,7 @@ export class LeavesComponent {
             id: leave.id,
             startTime: leave.startTime,
             endTime: leave.endTime,
-            type: this.getRusType(leave.leaveType!).toLowerCase(),
+            leaveType: leave.leaveType,
             comment: leave.comment,
             minutes: leave.minutes
         }
@@ -67,7 +67,7 @@ export class LeavesComponent {
     public openDeleteModal(leave: LeaveTimeInfo): void {
         let modalContentConfig = {
             taskType: 'leave',
-            name: this.getRusType(leave.leaveType!).toLowerCase(),
+            name: leave.leaveType,
             date: new Date(leave.startTime!),
             id: leave.id
         }

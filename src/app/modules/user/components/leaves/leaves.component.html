@@ -1,30 +1,30 @@
-<h4 class='header'>Таблица отсутствий</h4>
+<h4 class='h4'>Таблица отсутствий</h4>
 <table class='task-table'>
     <thead doText color='gray1'>
         <tr class='row'>
             <th class='cell row__name'>
                 <div class='cell__content'>
-                    <p class='cell__text'>Отсутствие</p>
+                    <p class='cell__text regular_text'>Отсутствие</p>
                 </div>
             </th>
             <th class='cell row__hours'>
                 <div class='cell__content'>
-                    <p class='cell__text'>Внесенные часы</p>
+                    <p class='cell__text regular_text'>Внесенные часы</p>
                 </div>
             </th>
             <th class='cell row__period'>
                 <div class='cell__content'>
-                    <p class='cell__text'>Дата отсутствия</p>
+                    <p class='cell__text regular_text'>Дата отсутствия</p>
                 </div>
             </th>
             <th class='cell row__description'>
                 <div class='cell__content'>
-                    <p class='cell__text'>Комментарий</p>
+                    <p class='cell__text regular_text'>Комментарий</p>
                 </div>
             </th>
             <th class='cell row__icon'>
                 <div class='cell__content'>
-                    <p class='cell__text'></p>
+                    <p class='cell__text regular_text'></p>
                 </div>
             </th>
         </tr>
@@ -33,17 +33,18 @@
         <tr *ngFor="let leave of leaves" class='row'>
             <td class='cell'>
                 <div class='cell__content'>
-                    <p class='cell__text'>{{getRusType(leave.leaveType!)}}</p>
+                    <p class='cell__text regular_text'>{{getRusType(leave.leaveType!)}}</p>
                 </div>
             </td>
             <td class='cell'>
                 <div class='cell__content'>
-                    <p class='cell__text'>{{leave.minutes! / 60}} ч</p>
+                    <p class='cell__text regular_text'>{{leave.minutes! / 60}} ч</p>
                 </div>
             </td>
             <td class='cell'>
                 <div class='cell__content'>
-                    <p class='cell__text'>{{leave.startTime | date: 'd'}} - {{leave.endTime | date: 'd MMMM'}}</p>
+                    <p class='cell__text regular_text'>{{leave.startTime | date: 'd'}} - {{leave.endTime | date: 'd
+                        MMMM'}}</p>
                 </div>
             </td>
             <do-comment [text]="leave.comment"></do-comment>
@@ -52,13 +53,13 @@
                     <mat-icon doText color='gray1'>more_horiz</mat-icon>
                 </button>
                 <mat-menu #menu='matMenu'>
-                    <button mat-menu-item class='menu-item' (click)="openEditModal(leave)">
+                    <button mat-menu-item (click)="openEditModal(leave)">
                         <mat-icon>edit</mat-icon>
-                        <span>Редактировать</span>
+                        <span doText color='gray1' class='regular_text'>Редактировать</span>
                     </button>
-                    <button mat-menu-item class='menu-item' (click)="openDeleteModal(leave)">
+                    <button mat-menu-item (click)="openDeleteModal(leave)">
                         <mat-icon>delete</mat-icon>
-                        <span>Удалить</span>
+                        <span doText color='gray1' class='regular_text'>Удалить</span>
                     </button>
                 </mat-menu>
             </td>

@@ -1,9 +1,9 @@
-<div class='wrapper'>
-    <h3 class='big-text'>Редактирование часов <span doText color='accent_color_bright'>за
+<div class='modal'>
+    <h3 doText class='h3'>Редактирование часов <span class='text-accent_color_bright'>за
             {{leave.leaveType}}</span></h3>
     <form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
-        <div class='wrapper__range'>
-            <mat-form-field class='wrapper__range-picker' appearance="fill">
+        <div class='modal__range'>
+            <mat-form-field class='modal__range-picker' appearance="fill">
                 <mat-label>Выберите диапазон отсутствия</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
                     <input matStartDate placeholder="Начало" formControlName="startTime">
@@ -12,25 +12,25 @@
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
             </mat-form-field>
-            <div class='wrapper__hours'>
+            <div class='modal__hours'>
                 <p doText color='gray1'>Выбрано</p>
-                <strong class='big-text' doText color='gray1'><span doText color='dark_1'>{{leave.minutes! / 60}}</span>
-                    ч
-                </strong>
+                <h3 doText color='gray1' class='modal__selected-hours h3'><span class='text-dark_1'>{{leave.minutes! /
+                        60}}</span> ч
+                </h3>
             </div>
         </div>
-        <div class='wrapper__description'>
-            <mat-form-field appearance="fill" class='wrapper__description'>
+        <div>
+            <mat-form-field appearance="fill" class='modal__description'>
                 <mat-label>Комментарий</mat-label>
-                <textarea matInput controlName="description" class='wrapper__description-field'
+                <textarea matInput controlName="description" class='modal__description-field'
                     formControlName="description"></textarea>
             </mat-form-field>
         </div>
         <div class='controls'>
-            <button mat-flat-button class='controls controls__button controls__cancel-button' type="button"
-                (click)="onClose()">Отмена</button>
-            <button mat-flat-button color='accent' class='controls controls__button controls__submit-button'
-                type="submit">Сохранить</button>
+            <button mat-flat-button class='controls__button' type="button" (click)="onClose()"><span
+                    class='regular_text text-gray1'>Отмена</span></button>
+            <button mat-flat-button color='accent' class='controls__button' type="submit"><span
+                    class='regular_text text-light_1'>Сохранить</span></button>
         </div>
     </form>
 </div>
