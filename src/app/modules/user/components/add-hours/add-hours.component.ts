@@ -29,7 +29,7 @@ export class AddHoursComponent implements OnInit {
 	public addHoursForm: FormGroup;
 	public isProjectForm: boolean;
 	public currentDate: Date;
-	public monthOptions: Date[] | null;
+	public monthOptions: [Date, Date] | null;
 	public isBeginningOfMonth: boolean;
 	public recommendedTime: number;
 
@@ -59,7 +59,7 @@ export class AddHoursComponent implements OnInit {
 			comment: [''],
 		});
 
-		this.workTimes$ = this._getWorkTimes(3);
+		this.workTimes$ = this._getWorkTimes(this.currentDate.getMonth());
 	}
 
 	ngOnInit() {}
@@ -71,7 +71,7 @@ export class AddHoursComponent implements OnInit {
 		);
 	}
 
-	private _getMonthOptions(): Date[] {
+	private _getMonthOptions(): [Date, Date] {
 		return [this.currentDate, new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1)];
 	}
 
@@ -93,7 +93,7 @@ export class AddHoursComponent implements OnInit {
 		});
 	}
 
-	public toggleFormType(isProjectForm: boolean) {
+	public toggleFormType(isProjectForm: boolean): void {
 		const timeControl = this.addHoursForm.get('time');
 		if (isProjectForm) {
 			timeControl?.setValidators([Validators.required, Validators.min(1), timeValidator(() => this._countMaxHours())]);
