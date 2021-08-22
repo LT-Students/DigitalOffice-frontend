@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { UserService } from '@app/services/user/user.service';
@@ -11,10 +10,10 @@ import { CompanyService } from '@app/services/company/company.service';
 	selector: 'do-content-container',
 	templateUrl: './content-container.component.html',
 	styleUrls: ['./content-container.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentContainerComponent implements OnInit {
-	@ViewChild('menu', { read: ElementRef }) menu: ElementRef;
+	@ViewChild('menu', { read: ElementRef }) menu: ElementRef | undefined;
 
 	public user: User;
 	public navOpened: boolean;
@@ -28,16 +27,15 @@ export class ContentContainerComponent implements OnInit {
 	) {
 		this.navOpened = false;
 		this.portalName = this._companyService.getPortalName();
+
+		this.user =
+			this._userService.currentUser$ ??
+			new User({
+				body: { user: { firstName: 'сотрудник' } },
+			});
 	}
 
-	ngOnInit() {
-		const currentUser: User = this._userService.getCurrentUser();
-		this.user = currentUser
-			? currentUser
-			: new User({
-					body: { user: { firstName: 'сотрудник' } },
-			  });
-	}
+	ngOnInit() {}
 
 	public onLogoClick() {
 		this._router.navigate(['/user/attendance']);
@@ -59,7 +57,7 @@ export class ContentContainerComponent implements OnInit {
 	onClick(event: MouseEvent) {
 		const target = event.target as Element;
 
-		if (!this.menu.nativeElement.contains(target)) {
+		if (!this.menu?.nativeElement.contains(target)) {
 			this.navOpened = false;
 		}
 	}

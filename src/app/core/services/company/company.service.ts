@@ -47,7 +47,7 @@ export class CompanyService {
 		return this._company.value;
 	}
 
-	//TODO create separate service with global variables like portal name?
+	//TODO create separate service for current company?
 	public getPortalName(): string {
 		return this._company.value && this._company.value.portalName ? this._company.value.portalName : '404. Это портал.';
 	}

@@ -50,14 +50,14 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	private _unsubscribe$: Subject<void>;
 
 	constructor(
+		public dialog: MatDialog,
 		private _userService: UserService,
 		private _projectService: ProjectService,
-		public dialog: MatDialog,
 		private route: ActivatedRoute,
 		private router: Router,
 		private snackBar: MatSnackBar
 	) {
-		const user: User = this._userService.getCurrentUser();
+		const user: User = this._userService.currentUser$;
 		this.pageId = this.route.snapshot.paramMap.get('id');
 		if (!this.pageId) {
 			this.router.navigate([`employee/${user.id}`]);
@@ -68,8 +68,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		const user: User = this._userService.getCurrentUser();
-
 		this.isOwner = user.id === this.pageId;
 
 		// this._userService.getUser(this.pageId).pipe(takeUntil(this._unsubscribe$))
