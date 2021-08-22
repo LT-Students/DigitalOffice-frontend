@@ -42,11 +42,8 @@ export class PositionListComponent implements OnInit {
 
 	private _getPositions(): void {
 		this._netService.getPositionsList({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe((data) => {
-			this.positions = [];
-			data?.body?.forEach((positionResponse) => {
-				this.positions.push(positionResponse);
-				this.totalCount = data?.totalCount ?? 0;
-			});
+			this.positions = data?.body ?? [];
+			this.totalCount = data?.totalCount ?? 0;
 		});
 	}
 }
