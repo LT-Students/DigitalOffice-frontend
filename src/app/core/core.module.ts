@@ -22,6 +22,7 @@ import { CredentialsService } from '@app/services/user/credentials.service';
 import { EducationService } from '@app/services/user/education.service';
 import { AuthService } from '@app/services/auth/auth.service';
 import { NetService } from '@app/services/net.service';
+import { EmployeePageService } from '@app/services/employee-page.service';
 
 @NgModule({
 	declarations: [],
@@ -50,7 +51,8 @@ import { NetService } from '@app/services/net.service';
 		CredentialsService,
 		EducationService,
 		UserService,
-		NetService
+		NetService,
+		EmployeePageService
 	],
 	exports: [],
 })

@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
-import { EmployeeModule } from '../../modules/employee/employee.module';
 
 @Injectable({
-	providedIn: EmployeeModule,
+	providedIn: 'root',
 })
 export class EmployeePageService {
 	private _selectedUser: BehaviorSubject<User>;

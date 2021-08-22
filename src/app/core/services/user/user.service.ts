@@ -20,10 +20,12 @@ import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 
 @Injectable()
 export class UserService {
-	public selectedUser: BehaviorSubject<User | null>;
+	private _currentUser: BehaviorSubject<User | null>;
+	public readonly currentUser$: Observable<User | null>;
 
 	constructor(private _userApiService: UserApiService) {
-		this.selectedUser = new BehaviorSubject<User | null>(null);
+		this._currentUser = new BehaviorSubject<User | null>(null);
+		this.currentUser$ = this._currentUser.asObservable();
 	}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
@@ -191,15 +193,11 @@ export class UserService {
 	}
 
 	public isAdmin(): boolean {
-		const user: User | null = this.selectedUser.value;
+		const user: User | null = this._currentUser.value;
 		return user ? user.isAdmin : false;
 	}
 
-	public getCurrentUser(): User | null {
-		return this.selectedUser.value;
-	}
-
 	private _setUser(user: User): void {
-		this.selectedUser.next(user);
+		this._currentUser.next(user);
 	}
 }

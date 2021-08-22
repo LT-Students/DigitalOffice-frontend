@@ -69,33 +69,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.isOwner = user.id === this.pageId;
-
-		// this._userService.getUser(this.pageId).pipe(takeUntil(this._unsubscribe$))
-		// .subscribe((userResponse: UserResponse) => {
-		//   this.user = new User(userResponse);
-		//
-		// });
-		// this._userService
-		// 	.getUser({ userId: this.pageId })
-		// 	.pipe(takeUntil(this._unsubscribe$))
-		// 	.subscribe((userResponse: OperationResultResponseUserResponse) => {
-		// 		this.user = new User(userResponse);
-		// 		this.paths = [
-		// 			{ title: 'Сотрудники', url: 'user/attendance' },
-		// 			{
-		// 				title: this.user.department ? `${this.user.department.name}` : 'Тестовый департамент',
-		// 				url: this.user.department ? `departments/${this.user.department.id}` : 'department/id',
-		// 			},
-		// 			{ title: `${this.user.firstName} ${this.user.lastName}` },
-		// 		];
-		// 	});
-
-		// this._projectService
-		// 	.getUserProjectsInfo(this.user.projects)
-		// 	.pipe(takeUntil(this._unsubscribe$))
-		// 	.subscribe((projects: ProjectInfo[]) => {
-		// 		console.log(projects);
-		// 	});
 	}
 
 	ngOnDestroy() {
