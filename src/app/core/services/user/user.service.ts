@@ -191,6 +191,7 @@ export class UserService {
 			includecommunications: true,
 			includerole: true,
 			includeimages: true,
+			includeprojects: true,
 		};
 
 		return this.getUser(params).pipe(tap(this._setUser.bind(this)));
