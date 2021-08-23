@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,13 +13,12 @@ import { UserGender } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
-import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { RightsService } from '@app/services/rights/rights.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
@@ -27,10 +26,10 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 @Component({
 	selector: 'do-employee-page-main-info',
 	templateUrl: './main-info.component.html',
-	styleUrls: ['./main-info.component.scss'],
+	styleUrls: [ './main-info.component.scss' ],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainInfoComponent implements OnInit {
+export class MainInfoComponent implements OnInit, OnDestroy {
 	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
 	public employeeInfoForm: FormGroup;
@@ -38,7 +37,8 @@ export class MainInfoComponent implements OnInit {
 	public genders: IUserGender[];
 	public statuses: IUserStatus[];
 
-	public user$: Observable<User>;
+	public user: User | null | undefined;
+	public userSubscription: Subscription | undefined;
 	public roles$: Observable<RoleInfo[] | undefined>;
 	public offices$: Observable<OfficeInfo[] | undefined>;
 	public departments$: Observable<DepartmentInfo[] | undefined>;
@@ -53,50 +53,44 @@ export class MainInfoComponent implements OnInit {
 		private _dialog: MatDialog,
 		private _snackBar: MatSnackBar,
 		private _roleService: RightsService,
-		private _cdr: ChangeDetectorRef
+		private _cdr: ChangeDetectorRef,
 	) {
 		this.genders = PersonalInfoManager.getGenderList();
 		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
-		this.employeeInfoForm = this._initEditForm()
-
-		this.user$ = _employeeService.selectedUser;
+		this.employeeInfoForm = this._initEditForm();
 		this.departments$ = this._netService
-			.getDepartmentsList({
-				skipCount: 0,
-				takeCount: 100,
-			})
-			.pipe(map((res) => res.body));
+		.getDepartmentsList({
+			skipCount: 0,
+			takeCount: 100,
+		})
+		.pipe(map((res) => res.body));
+
 		this.positions$ = this._netService
-			.getPositionsList({
-				skipCount: 0,
-				takeCount: 100,
-			})
-			.pipe(map((res) => res.body));
+		.getPositionsList({
+			skipCount: 0,
+			takeCount: 100,
+		})
+		.pipe(map((res) => res.body));
+
 		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).pipe(map((res) => res.body));
 		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 50 }).pipe(map((res) => res.roles));
 	}
 
-	public get user(): User | undefined {
-		return this.userSubject.value;
+	public ngOnInit(): void {
+		this.userSubscription = this._employeeService.selectedUser.subscribe((user) => {
+			this.user = user;
+			console.log('main-info', user);
+			this._cdr.detectChanges()
+		});
+	}
+
+	public ngOnDestroy(): void {
+		this.userSubscription?.unsubscribe();
 	}
 
 	public get communications(): FormArray {
 		return this.employeeInfoForm.get('communications') as FormArray;
-	}
-
-	public ngOnInit(): void {
-		this._route.params
-			.pipe(
-				map((params) => {
-					this._getUser(params.id);
-					this.employeeInfoForm = this._initEditForm();
-					this._cdr.detectChanges();
-				})
-			)
-			.subscribe();
-		// this._getUser();
-		// this._initEditForm();
 	}
 
 	public isOwner() {
@@ -134,11 +128,6 @@ export class MainInfoComponent implements OnInit {
 		}
 	}
 
-	public compareSelectValues(option: any, value: any) {
-		console.log(option, value);
-		return option.id === value.id;
-	}
-
 	public onOpenDialog() {
 		const dialogRef = this._dialog.open(UploadPhotoComponent, {});
 		dialogRef.afterClosed().subscribe((result) => {
@@ -151,39 +140,20 @@ export class MainInfoComponent implements OnInit {
 		});
 	}
 
-	private _updateEmployeeInfo() {
-		this._getUser();
-	}
-
-	private _getUser(pageId: string): void {
-		const params: IGetUserRequest = {
-			userId: pageId,
-			includedepartment: true,
-			includeposition: true,
-			includeoffice: true,
-			includecommunications: true,
-			includerole: true,
-			includeimages: true,
-		};
-
-		this._userService.getUser(params).subscribe(this.userSubject);
-	}
-
 	private _patchEditUser(): void {
 		const editRequest: { path: string; value: any }[] = Object.keys(this.employeeInfoForm.controls)
-			.filter((key) => this.employeeInfoForm.get(key)?.dirty)
-			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
-		this._userService.editUser(this.user.id, editRequest).subscribe(
-			() => {
+		.filter((key) => this.employeeInfoForm.get(key)?.dirty)
+		.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
+
+		this._employeeService.editEmployee(editRequest).subscribe({
+			next: () => {
 				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
-				this._updateEmployeeInfo();
-				// this._userService.getUserSetCredentials(res)
 			},
-			(error: HttpErrorResponse) => {
+			error: (error: HttpErrorResponse) => {
 				console.log(error);
 				this._snackBar.open(error.message, 'Close', { duration: 5000 });
-			}
-		);
+			},
+		});
 	}
 
 	private _fillForm(): void {
@@ -201,7 +171,7 @@ export class MainInfoComponent implements OnInit {
 				role: this.user.role?.id,
 				rate: this.user.rate,
 				city: this.user.city,
-				gender: this.user.gender,
+				gender: this.user.gender?.genderType,
 				dateOfBirth: this.user.dateOfBirth,
 				startWorkingAt: this.user.startWorkingAt,
 				communications: this._enrichCommunications(),
@@ -211,21 +181,21 @@ export class MainInfoComponent implements OnInit {
 
 	private _initEditForm(): FormGroup {
 		return this._fb.group({
-			firstName: ['', Validators.required],
-			lastName: ['', Validators.required],
-			middleName: [''],
-			photo: [''],
-			status: [null],
-			about: [''],
-			position: ['', Validators.required],
-			department: [''],
-			office: ['', Validators.required],
-			role: [''],
-			rate: ['', Validators.required],
-			city: [''],
-			startWorkingAt: [null],
-			dateOfBirth: [null],
-			gender: [UserGender],
+			firstName: [ '', Validators.required ],
+			lastName: [ '', Validators.required ],
+			middleName: [ '' ],
+			photo: [ '' ],
+			status: [ null ],
+			about: [ '' ],
+			position: [ '', Validators.required ],
+			department: [ '' ],
+			office: [ '', Validators.required ],
+			role: [ '' ],
+			rate: [ '', Validators.required ],
+			city: [ '' ],
+			startWorkingAt: [ null ],
+			dateOfBirth: [ null ],
+			gender: [ UserGender ],
 			// communications: this.fb.array([
 			// 	this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
 			// 	this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
@@ -236,10 +206,10 @@ export class MainInfoComponent implements OnInit {
 	private _initCommunications(): void {
 		if (this.user && this.user.communications) {
 			this.user.communications
-				.map((communication: CommunicationInfo) => {
-					return this._fb.group({ type: '', value: '' });
-				})
-				.forEach((group: FormGroup) => this.communications.push(group));
+			.map((communication: CommunicationInfo) => {
+				return this._fb.group({ type: '', value: '' });
+			})
+			.forEach((group: FormGroup) => this.communications.push(group));
 		}
 	}
 

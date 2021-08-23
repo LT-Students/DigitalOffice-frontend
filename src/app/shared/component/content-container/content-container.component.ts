@@ -15,7 +15,6 @@ import { CompanyService } from '@app/services/company/company.service';
 export class ContentContainerComponent implements OnInit {
 	@ViewChild('menu', { read: ElementRef }) menu: ElementRef | undefined;
 
-	public user: User;
 	public navOpened: boolean;
 	public portalName: string;
 
@@ -27,12 +26,6 @@ export class ContentContainerComponent implements OnInit {
 	) {
 		this.navOpened = false;
 		this.portalName = this._companyService.getPortalName();
-
-		this.user =
-			this._userService.currentUser$ ??
-			new User({
-				body: { user: { firstName: 'сотрудник' } },
-			});
 	}
 
 	ngOnInit() {}

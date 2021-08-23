@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroupDirective, FormControl } from '@angular/forms';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -31,6 +30,7 @@ export class InputComponent implements OnInit {
 	constructor(private formGroupDir: FormGroupDirective) {
 		this._required = false;
 		this.textSize = 'regular';
+		this.control = new FormControl();
 	}
 
 	ngOnInit() {

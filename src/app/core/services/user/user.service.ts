@@ -28,6 +28,10 @@ export class UserService {
 		this.currentUser$ = this._currentUser.asObservable();
 	}
 
+	public getCurrentUserValue(): User | null {
+		return this._currentUser.value;
+	}
+
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
 			.getUser(params)

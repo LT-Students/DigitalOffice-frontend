@@ -15,12 +15,12 @@ export class HeaderComponent implements OnInit {
 	@Output() public menuClick: EventEmitter<MouseEvent>;
 
 	public portalName: string;
-	public currentUser: User | null;
+	public currentUser: User | null | undefined;
 
 	constructor(private _authService: AuthService, private _userService: UserService, private _companyService: CompanyService) {
 		this.menuClick = new EventEmitter();
 		this.portalName = _companyService.getPortalName();
-		this.currentUser = _userService.currentUser$;
+		_userService.currentUser$.subscribe((user) => this.currentUser = user);
 	}
 
 	ngOnInit() {}

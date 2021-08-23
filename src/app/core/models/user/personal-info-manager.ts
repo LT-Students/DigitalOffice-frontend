@@ -21,7 +21,7 @@ export class PersonalInfoManager {
 
 	constructor(private _user: UserInfo | undefined) {}
 
-	public static getGenderInfoByType(genderType: UserGender | undefined): IUserGender | undefined {
+	public static getGenderInfoByType(genderType: UserGender): IUserGender | undefined {
 		return this._genders.find((gender: IUserGender) => gender.genderType === genderType);
 	}
 
@@ -63,16 +63,16 @@ export class PersonalInfoManager {
 		return [this.lastName, this.firstName, this.middleName].filter(Boolean).join(' ');
 	}
 
-	public get dateOfBirth(): Date {
-		return new Date(this._user?.dateOfBirth ?? 0);
+	public get dateOfBirth(): Date | undefined {
+		return this._user?.dateOfBirth ? new Date(this._user.dateOfBirth) : undefined;
 	}
 
 	public get id(): string | undefined {
 		return this._user?.id;
 	}
 
-	public get startWorkingAt(): Date {
-		return new Date(this._user?.startWorkingAt ?? 0);
+	public get startWorkingAt(): Date | undefined {
+		return this._user?.startWorkingAt ? new Date(this._user.startWorkingAt) : undefined;
 	}
 
 	public get isAdmin(): boolean {
@@ -88,7 +88,7 @@ export class PersonalInfoManager {
 	}
 
 	public get gender(): IUserGender | undefined {
-		return PersonalInfoManager.getGenderInfoByType(this._user?.gender);
+		return PersonalInfoManager.getGenderInfoByType(this._user?.gender ?? UserGender.NotSelected);
 	}
 
 	public get role(): RoleInfo | null | undefined {
