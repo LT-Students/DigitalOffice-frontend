@@ -1,4 +1,3 @@
-//@ts-nocheck
 // eslint-disable-next-line no-shadow
 
 import { UserStatus } from '@data/api/user-service/models/user-status';
@@ -17,7 +16,7 @@ export class UserStatusModel {
 		{ emojiIcon: '🏠', statusType: UserStatus.WorkFromHome, statusInRussian: 'работает дома' },
 	];
 
-	public static getUserStatusInfoByType(statusType: UserStatus): IUserStatus {
+	public static getUserStatusInfoByType(statusType: UserStatus | undefined): IUserStatus | undefined {
 		return this._statuses.find((status: IUserStatus) => status.statusType === statusType);
 	}
 

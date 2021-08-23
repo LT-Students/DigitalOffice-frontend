@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
@@ -14,16 +13,21 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	selector: 'do-department-card',
 	templateUrl: './department-card.component.html',
 	styleUrls: ['./department-card.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepartmentCardComponent implements OnInit {
-	public departmentInfo: DepartmentInfo;
+	public departmentInfo: DepartmentInfo | undefined;
 	public sortedUsersInfo: UserInfo[];
 	private _departmentId: string;
 
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
+
+	public peopleCountMap: { [k: string]: string } = {
+		few: '# человека',
+		other: '# человек',
+	};
 
 	constructor(
 		private _netService: NetService,
@@ -36,13 +40,14 @@ export class DepartmentCardComponent implements OnInit {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.sortedUsersInfo = [];
 	}
 
 	ngOnInit(): void {
 		this._netService.getDepartment({ departmentid: this._departmentId, includeusers: true }).subscribe(({ body }) => {
-			this.departmentInfo = body.department;
-			this.totalCount = body.users.length;
-			this.sortedUsersInfo = body.users.slice();
+			this.departmentInfo = body?.department;
+			this.totalCount = body?.users?.length ?? 0;
+			this.sortedUsersInfo = body?.users?.slice() ?? [];
 			console.log(body);
 		});
 	}
@@ -51,7 +56,7 @@ export class DepartmentCardComponent implements OnInit {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
 		this._userService.findUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
-			this.sortedUsersInfo = data.body.slice();
+			this.sortedUsersInfo = data?.body?.slice() ?? [];
 		});
 	}
 

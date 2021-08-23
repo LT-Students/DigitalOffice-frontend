@@ -1,8 +1,12 @@
 export { PatchDocument } from './models/patch-document';
 export { DepartmentInfo } from './models/department-info';
+export { PositionInfo } from './models/position-info';
 export { TaskProperty } from './models/task-property';
 export { TaskInfo } from './models/task-info';
 export { TaskPropertyInfo } from './models/task-property-info';
+export { UserStatus } from './models/user-status';
+export { ImageType } from './models/image-type';
+export { ImageInfo } from './models/image-info';
 export { ProjectUserInfo } from './models/project-user-info';
 export { ProjectFileInfo } from './models/project-file-info';
 export { ProjectInfo } from './models/project-info';

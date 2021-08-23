@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.1",
+    "version": "1.2.1.1",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -21,7 +21,8 @@
           "in": "query",
           "description": "Find project with this departments id.",
           "schema": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "required": false
         },
@@ -549,6 +550,16 @@
           "required": false
         },
         {
+          "name": "status",
+          "in": "query",
+          "description": "Find tack with this status.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
           "name": "skipCount",
           "in": "query",
           "description": "Number of entries to skip.",
@@ -624,7 +635,7 @@
             }
           },
           "400": {
-            "description": "Bad request.\n",
+            "description": "Bad request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -634,7 +645,7 @@
             }
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* Not enough rights\n",
+            "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
@@ -662,7 +673,7 @@
         "operationId": "getTask",
         "responses": {
           "200": {
-            "description":  "Created TaskResponse will be in response Body property.",
+            "description":  "Get TaskResponse will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -749,6 +760,20 @@
           }
         }
       },
+      "PositionInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": false
+          },
+          "Name": {
+            "type": "string",
+            "nullable": false
+          }
+        }
+      },
       "TaskProperty": {
         "type": "object",
         "required": [
@@ -803,7 +828,8 @@
           "Description": {
             "description": "The task's description.",
             "type": "string",
-            "example": "My description"
+            "example": "My description",
+            "nullable": true
           },
           "Number": {
             "type": "integer",
@@ -812,19 +838,21 @@
           },
           "PlannedMinutes": {
             "type": "integer",
-            "description": "Planed time at completed task."
+            "description": "Planed time at completed task.",
+            "nullable": true
           },
-          "CreatedAt": {
+          "CreatedAtUtc": {
             "description": "Data and time created task.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
           },
-          "Author": {
+          "CreatedBy": {
             "description": "Task creator.",
             "$ref": "#/components/schemas/UserTaskInfo"
           },
           "AssignedTo": {
-            "$ref": "#/components/schemas/UserTaskInfo"
+            "$ref": "#/components/schemas/UserTaskInfo",
+            "nullable": true
           },
           "Project": {
             "$ref": "#/components/schemas/ProjectTaskInfo"
@@ -861,7 +889,7 @@
             "example": "20d03a19-872e-45bc-b1ed-a01d6fac3c0f",
             "nullable": true
           },
-          "AuthorId": {
+          "CreatedBy": {
             "description": "Unique author Id task property identifier.",
             "type": "string",
             "format": "uuid",
@@ -879,7 +907,7 @@
             "example": "My description",
             "nullable": true
           },
-          "CreatedAt": {
+          "CreatedAtUtc": {
             "description": "Data and time created task property.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
@@ -893,10 +921,68 @@
           }
         }
       },
+      "UserStatus": {
+        "type": "string",
+        "description": "Mode for user status.",
+        "enum": [
+          "Vacation",
+          "Sick",
+          "WorkFromOffice",
+          "WorkFromHome"
+        ],
+        "example": "Sick",
+        "default": "WorkFromOffice"
+      },
+      "ImageType": {
+        "type": "string",
+        "description": "Type of image.",
+        "enum": [
+          "Full",
+          "Thumb"
+        ],
+        "example": "Full",
+        "default": "Full"
+      },
+      "ImageInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "Type": {
+            "$ref": "#/components/schemas/ImageType"
+          },
+          "Content": {
+            "type": "string",
+            "nullable": false,
+            "description": "Image file content in base64 encoded string."
+          },
+          "Extension": {
+            "type": "string",
+            "nullable": false
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
       "ProjectUserInfo": {
         "type": "object",
         "properties": {
           "Id": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "ImageId": {
             "description": "Unique project identifier.",
             "type": "string",
             "format": "uuid",
@@ -910,19 +996,26 @@
           "MiddleName": {
             "description": "The user middle name.",
             "type": "string",
-            "example": "Sergeevith"
+            "example": "Sergeevith",
+            "nullable": true
           },
           "LastName": {
             "description": "The user last name.",
             "type": "string",
             "example": "Svetlov"
           },
-          "AddedOn": {
+          "Status": {
+            "$ref": "#/components/schemas/UserStatus"
+          },
+          "AvatarImage": {
+            "$ref": "#/components/schemas/ImageInfo"
+          },
+          "CreatedAtUtc": {
             "description": "Data and time added user to project.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
           },
-          "RemovedOn": {
+          "ModifiedAtUtc": {
             "description": "Data and time removed user from project.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2020-12-10 04:13",
@@ -933,8 +1026,18 @@
             "type": "boolean",
             "example": true
           },
+          "ProjectCount": {
+            "description": "Count of project, which user included.",
+            "type": "integer"
+          },
           "Role": {
             "$ref": "#/components/schemas/UserRoleType"
+          },
+          "Position": {
+            "$ref": "#/components/schemas/PositionInfo"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/DepartmentInfo"
           }
         }
       },
@@ -964,7 +1067,7 @@
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
-          "AuthorId": {
+          "CreatedBy": {
             "description": "Unique project creater identifier.",
             "type": "string",
             "format": "uuid",
@@ -998,7 +1101,7 @@
             "type": "string",
             "nullable": true
           },
-          "CreatedAt": {
+          "CreatedAtUtc": {
             "description": "Data and time created project.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
@@ -1302,7 +1405,7 @@
             "type": "integer",
             "nullable": true
           },
-          "CreatedAt": {
+          "CreatedAtUtc": {
             "description": "Data and time created task.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
@@ -1310,7 +1413,7 @@
           "Project": {
             "$ref": "#/components/schemas/ProjectInfo"
           },
-          "Author": {
+          "CreatedBy": {
             "description": "Task creator.",
             "$ref": "#/components/schemas/ProjectUserInfo"
           },
@@ -1486,11 +1589,8 @@
           },
           "ParentId": {
             "type": "string",
-            "format": "uuid"
-          },
-          "AuthorId": {
-            "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
           }
         }
       },
@@ -1667,7 +1767,54 @@
         "type": "object",
         "properties": {
           "Body": {
-            "$ref": "#/components/schemas/ProjectInfo"
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "Unique project identifier.",
+                "type": "string",
+                "format": "uuid",
+                "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+              },
+              "authorId": {
+                "description": "Unique project creater identifier.",
+                "type": "string",
+                "format": "uuid",
+                "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+              },
+              "status": {
+                "$ref": "#/components/schemas/ProjectStatusType",
+                "nullable": false
+              },
+              "name": {
+                "description": "Project name.",
+                "type": "string",
+                "example": "Digital Office",
+                "nullable": false
+              },
+              "shortName": {
+                "description": "Project short name.",
+                "type": "string",
+                "example": "DO",
+                "nullable": true
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "shortDescription": {
+                "type": "string",
+                "nullable": true
+              },
+              "department": {
+                "$ref": "#/components/schemas/DepartmentInfo",
+                "nullable": true
+              },
+              "CreatedAtUtc": {
+                "description": "Data and time created project.",
+                "pattern": "YYYY-MM-DDTHH:mm",
+                "example": "2021-12-10 03:13"
+              }
+            }
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1679,7 +1826,6 @@
             }
           }
         }
-
       },
       "OperationResultResponseTaskResponse": {
         "description": "Response object for action operations.",
@@ -1698,7 +1844,6 @@
             }
           }
         }
-
       },
       "OperationResultStatusType": {
         "type": "string",
@@ -1706,7 +1851,8 @@
         "enum": [
           "FullSuccess",
           "PartialSuccess",
-          "Failed"
+          "Failed",
+          "Conflict"
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"
@@ -1714,7 +1860,7 @@
     },
     "parameters": {
       "taskId": {
-        "name": "Id",
+        "name": "taskId",
         "in": "query",
         "description": "Task global unique identifier.",
         "schema": {

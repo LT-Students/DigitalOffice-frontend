@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -10,8 +9,8 @@ import { NewPositionComponent } from '../../modals/new-position/new-position.com
 @Component({
 	selector: 'do-position-list',
 	templateUrl: './position-list.component.html',
-	styleUrls: ['./position-list.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	styleUrls: [ './position-list.component.scss' ],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PositionListComponent implements OnInit {
 	public positions: PositionInfo[];
@@ -43,10 +42,8 @@ export class PositionListComponent implements OnInit {
 
 	private _getPositions(): void {
 		this._netService.getPositionsList({ skipCount: this.pageIndex, takeCount: this.pageSize }).subscribe((data) => {
-			data.body.forEach((positionResponse) => {
-				this.positions.push(positionResponse);
-			});
-			this.totalCount = data.totalCount;
+			this.positions = data?.body ?? [];
+			this.totalCount = data?.totalCount ?? 0;
 		});
 	}
 }

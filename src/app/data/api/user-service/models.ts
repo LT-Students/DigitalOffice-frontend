@@ -6,6 +6,7 @@ export { EditUserRequest } from './models/edit-user-request';
 export { PatchUserDocument } from './models/patch-user-document';
 export { OperationResultResponseCredentialsResponse } from './models/operation-result-response-credentials-response';
 export { UserInfo } from './models/user-info';
+export { ImageType } from './models/image-type';
 export { ImageInfo } from './models/image-info';
 export { DepartmentInfo } from './models/department-info';
 export { PositionInfo } from './models/position-info';

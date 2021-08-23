@@ -15,7 +15,7 @@ import { WorkFlowMode } from '../../../employee-page.component';
 changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkillsComponent implements OnInit {
-	@Input() public skills: string[];
+	@Input() public skills: string[] | null | undefined;
 	@Input() public mode: WorkFlowMode;
 
 	public visible: boolean;

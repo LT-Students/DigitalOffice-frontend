@@ -1,157 +1,172 @@
-//@ts-nocheck
-import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Time } from '@angular/common';
-import { takeUntil } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs';
-
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 
 import { AttendanceService } from '@app/services/attendance.service';
-import { ProjectStore } from '@data/store/project.store';
-import { Project, } from '@app/models/project/project.model';
-import { ITask, Task } from '@app/models/task.model';
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { DateService } from '@app/services/date.service';
+import { DateFilterFn } from '@angular/material/datepicker';
+import { ILeaveType, LeaveTimeModel } from '@app/models/leave-time.model';
+import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
+import { IEditWorkTimeRequest, TimeService } from '@app/services/time/time.service';
+import { UserService } from '@app/services/user/user.service';
+import { filter, switchMap } from 'rxjs/operators';
+import { WorkTimeInfo } from '@data/api/time-service/models';
+import { DatePeriod } from '@data/models/date-period';
 import { timeValidator } from './add-hours.validators';
 
 @Component({
 	selector: 'do-add-hours',
 	templateUrl: './add-hours.component.html',
 	styleUrls: ['./add-hours.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [AttendanceService],
 })
-export class AddHoursComponent implements OnInit, OnDestroy {
-	@Input() user: UserInfo;
-	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
-
-	public projects: Project[];
+export class AddHoursComponent implements OnInit {
+	public workTimes$: Observable<WorkTimeInfo[]>;
+	public absences: ILeaveType[];
 	public addHoursForm: FormGroup;
-	public setTimePeriod: Time;
+	public isProjectForm: boolean;
+	public currentDate: Date;
+	public monthOptions: [Date, Date] | null;
+	public isBeginningOfMonth: boolean;
+	public recommendedTime: number;
 
-	public categories;
-	public chosenCategory;
-
-	public listOfIcons = [
-		{ name: 'more', url: 'assets/svg/more.svg' },
-		{ name: 'hint', url: 'assets/svg/hint.svg' },
-		{ name: 'attach-file', url: 'assets/svg/attach-file.svg' },
-	];
+	private readonly userId: string | undefined;
 
 	constructor(
-		private fb: FormBuilder,
-		private attendanceService: AttendanceService,
-		private projectStore: ProjectStore,
-		iconRegistry: MatIconRegistry,
-		sanitizer: DomSanitizer
+		private _fb: FormBuilder,
+		private _attendanceService: AttendanceService,
+		private _dateService: DateService,
+		private _timeService: TimeService,
+		private _userService: UserService,
+		private _snackbar: MatSnackBar
 	) {
-		this.projects = [];
-		this.listOfIcons.forEach((icon) => {
-			iconRegistry.addSvgIcon(icon.name, sanitizer.bypassSecurityTrustResourceUrl(icon.url));
+		this.currentDate = new Date();
+		this.recommendedTime = _attendanceService.getRecommendedTime(_attendanceService.datePeriod, 8, true);
+		this.isProjectForm = true;
+		this.absences = LeaveTimeModel.getAllLeaveTypes();
+		this.userId = _userService.getCurrentUser()?.id;
+		this.isBeginningOfMonth = this._canAddTimeToPreviousMonth();
+		this.monthOptions = this.isBeginningOfMonth ? this._getMonthOptions() : null;
+
+		this.addHoursForm = this._fb.group({
+			time: ['', [Validators.required, Validators.min(1), timeValidator(() => this._countMaxHours())]],
+			startDate: [new Date(), [Validators.required]],
+			endDate: [new Date(), [Validators.required]],
+			activity: ['', Validators.required],
+			comment: [''],
+		});
+
+		this.workTimes$ = this._getWorkTimes(this.currentDate.getMonth());
+	}
+
+	ngOnInit() {}
+
+	private _getWorkTimes(month?: number): Observable<WorkTimeInfo[]> {
+		return this._timeService.findWorkTimes({ skipCount: 0, takeCount: 10, userid: this.userId, month }).pipe(
+			filter((response) => response.body != null),
+			switchMap((response) => of(response.body as WorkTimeInfo[]))
+		);
+	}
+
+	private _getMonthOptions(): [Date, Date] {
+		return [this.currentDate, new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1)];
+	}
+
+	private _canAddTimeToPreviousMonth(): boolean {
+		return new Date().getDate() < 5;
+	}
+
+	public setMonthToAddTimeTo(date: Date): void {
+		if (!this._dateService.isSameMonth(this.currentDate, date)) {
+			this.currentDate = date;
+			this.workTimes$ = this._getWorkTimes(date.getMonth() + 1);
+		}
+	}
+
+	public patchWorkTimeInfoIntoForm(workTime: WorkTimeInfo): void {
+		this.addHoursForm.patchValue({
+			time: workTime.userHours,
+			comment: workTime.description,
 		});
 	}
 
-	ngOnInit() {
-		this.addHoursForm = this.fb.group({
-			time: this.fb.group({
-				hours: ['', [Validators.required, timeValidator(() => this.getHours())]],
-				minutes: ['', [Validators.required, Validators.max(59)]],
-			}),
-			project: ['', Validators.required],
-			task: ['', Validators.required],
-			description: [''],
-		});
-
-		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((timePeriod) => {
-			this.setTimePeriod = timePeriod;
-			this.addHoursForm.get('time.hours').setValue(this.attendanceService.normalizeTime(timePeriod.hours));
-			this.addHoursForm.get('time.minutes').setValue(this.attendanceService.normalizeTime(timePeriod.minutes));
-		});
-
-		this.categories = [
-			{ name: 'Проект', options: this.projects },
-			{
-				name: 'Командировка',
-				options: [
-					{ id: 0, name: 'За счёт компании' },
-					{ id: 1, name: 'За счёт компании-партнёра' },
-				],
-			},
-			{
-				name: 'Обучение',
-				options: [
-					{ id: 0, name: 'За свой счёт' },
-					{ id: 1, name: 'За счёт компании' },
-				],
-			},
-			{
-				name: 'Больничный',
-				options: [
-					{ id: 0, name: 'Обычный' },
-					{ id: 1, name: 'Дети/родственники' },
-					{ id: 2, name: 'По беременности и родам' },
-				],
-			},
-			{
-				name: 'Отпуск',
-				options: [
-					{ id: 0, name: 'Ежегодный' },
-					{ id: 1, name: 'За свой счёт' },
-					{ id: 2, name: 'Декретный' },
-				],
-			},
-			{
-				name: 'Отгул',
-				options: [
-					{ id: 0, name: 'Суд' },
-					{ id: 1, name: 'ДТП' },
-					{ id: 2, name: 'Форс-мажор' },
-					{ id: 3, name: 'Похороны' },
-				],
-			},
-		];
-		this.chosenCategory = this.categories[0];
+	public toggleFormType(isProjectForm: boolean): void {
+		const timeControl = this.addHoursForm.get('time');
+		if (isProjectForm) {
+			timeControl?.setValidators([Validators.required, Validators.min(1), timeValidator(() => this._countMaxHours())]);
+		} else {
+			timeControl?.clearValidators();
+		}
+		timeControl?.updateValueAndValidity();
+		this.isProjectForm = isProjectForm;
+		const { startDate, endDate } = this._dateService.getDefaultDatePeriod();
+		this.addHoursForm.reset({ startDate, endDate });
 	}
 
-	get options() {
-		return this.chosenCategory.options;
-	}
-
-	private getHours(): number {
-		const currentDatePeriod = this.attendanceService.datePeriod;
-		return Number(this.attendanceService.getRecommendedTime(currentDatePeriod, 24).hours);
+	private _countMaxHours(): number {
+		const currentDatePeriod: DatePeriod = {
+			startDate: new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1),
+			endDate: new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0),
+		};
+		return Number(this._attendanceService.getRecommendedTime(currentDatePeriod, 24));
 	}
 
 	public onSubmit(): void {
-		const projectId = this.addHoursForm.get('project').value;
-		console.log(this.addHoursForm);
-		const task: Partial<ITask> = {
-			title: this.addHoursForm.get('task').value,
-			description: this.addHoursForm.get('description').value,
-			createdAt: new Date(),
-			minutes: Number(this.addHoursForm.get('time.minutes').value) + Number(this.addHoursForm.get('time.hours').value) * 60,
+		console.log(this.addHoursForm.value);
+		let timeService: Observable<OperationResultResponse>;
+
+		if (this.isProjectForm) {
+			const addWorkTime: IEditWorkTimeRequest = {
+				workTimeId: this.addHoursForm.get('activity')?.value,
+				body: [
+					{ op: 'replace', path: '/UserHours', value: this.addHoursForm.get('time')?.value },
+					{ op: 'replace', path: '/Description', value: this.addHoursForm.get('comment')?.value },
+				],
+			};
+			timeService = this._timeService.editWorkTime(addWorkTime);
+		} else {
+			const addLeaveTime: CreateLeaveTimeRequest = {
+				userId: this.userId as string,
+				startTime: this.addHoursForm.get('startDate')?.value.toISOString(),
+				endTime: this.addHoursForm.get('endDate')?.value.toISOString(),
+				leaveType: this.addHoursForm.get('activity')?.value,
+				comment: this.addHoursForm.get('comment')?.value,
+			};
+			timeService = this._timeService.addLeaveTime(addLeaveTime);
+		}
+
+		timeService.subscribe(
+			() => {
+				this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
+				this.addHoursForm.reset();
+				this.isProjectForm = true;
+			},
+			(error) => {
+				this._snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
+				throw error;
+			}
+		);
+	}
+
+	public disableWeekends: DateFilterFn<Date> = (d: Date | null): boolean => {
+		const day = (d || new Date()).getDay();
+		return day !== 0 && day !== 6;
+	};
+
+	public onClose(): void {
+		const startDateValue = this.addHoursForm.get('startDate')?.value;
+		const endDateControl = this.addHoursForm.get('endDate');
+		if (!endDateControl?.value || this._dateService.isSameDay(startDateValue, endDateControl.value)) {
+			endDateControl?.setValue(new Date(startDateValue.getTime() + 1));
+		}
+
+		const datePeriod: DatePeriod = {
+			startDate: startDateValue,
+			endDate: endDateControl?.value,
 		};
-		this.projectStore.addTaskToProject(task, projectId);
-		this.addHoursForm.reset();
-		const datePeriod = this.attendanceService.datePeriod;
-		this.attendanceService.onDatePeriodChange(datePeriod);
-	}
-
-	public getTimePeriodErrorMessage(): String {
-		const hours = this.addHoursForm.get('time.hours');
-		const minutes = this.addHoursForm.get('time.minutes');
-
-		if (hours.hasError('periodExceedsMaxValue')) {
-			return 'Превышено максимальное время для выбранного периода';
-		}
-		if (minutes.hasError('max')) {
-			return 'Введите корректные минуты';
-		}
-		return 'Введите корретный период времени';
-	}
-
-	ngOnDestroy() {
-		this.onDestroy$.next(null);
-		this.onDestroy$.complete();
+		this.recommendedTime = this._attendanceService.getRecommendedTime(datePeriod, 8, true);
 	}
 }

@@ -14,7 +14,6 @@ import { EditTaskRequest } from '../models/edit-task-request';
 import { FindResponseTaskInfo } from '../models/find-response-task-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseTaskResponse } from '../models/operation-result-response-task-response';
-import { IEditTaskRequest, IFindTasksRequest, IGetTaskRequest } from '@app/services/project/task.service';
 
 @Injectable({
   providedIn: 'root',
@@ -46,13 +45,13 @@ export class TaskApiService extends BaseService {
     /**
      * Task global unique identifier.
      */
-    Id: string;
+    taskId: string;
     body: EditTaskRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, TaskApiService.EditTaskPath, 'patch');
     if (params) {
-      rb.query('Id', params.Id, {});
+      rb.query('taskId', params.taskId, {});
       rb.body(params.body, 'application/json');
     }
 
@@ -76,7 +75,14 @@ export class TaskApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editTask(params: IEditTaskRequest): Observable<OperationResultResponse> {
+  editTask(params: {
+
+    /**
+     * Task global unique identifier.
+     */
+    taskId: string;
+    body: EditTaskRequest
+  }): Observable<OperationResultResponse> {
 
     return this.editTask$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
@@ -114,6 +120,11 @@ export class TaskApiService extends BaseService {
     assignedto?: string;
 
     /**
+     * Find tack with this status.
+     */
+    status?: string;
+
+    /**
      * Number of entries to skip.
      */
     skipCount: number;
@@ -129,6 +140,7 @@ export class TaskApiService extends BaseService {
       rb.query('number', params.number, {});
       rb.query('projectid', params.projectid, {});
       rb.query('assignedto', params.assignedto, {});
+      rb.query('status', params.status, {});
       rb.query('skipCount', params.skipCount, {});
       rb.query('takeCount', params.takeCount, {});
     }
@@ -152,7 +164,38 @@ export class TaskApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findTasks(params: IFindTasksRequest): Observable<FindResponseTaskInfo> {
+  findTasks(params: {
+
+    /**
+     * The part of find query that the task name should contain.
+     */
+    number?: number;
+
+    /**
+     * The part of find query that the task project Id should contain.
+     */
+    projectid?: string;
+
+    /**
+     * The part of find query that the user assigned task should contain.
+     */
+    assignedto?: string;
+
+    /**
+     * Find tack with this status.
+     */
+    status?: string;
+
+    /**
+     * Number of entries to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of task to take.
+     */
+    takeCount: number;
+  }): Observable<FindResponseTaskInfo> {
 
     return this.findTasks$Response(params).pipe(
       map((r: StrictHttpResponse<FindResponseTaskInfo>) => r.body as FindResponseTaskInfo)
@@ -227,12 +270,12 @@ export class TaskApiService extends BaseService {
     /**
      * Task global unique identifier.
      */
-    Id: string;
+    taskId: string;
   }): Observable<StrictHttpResponse<OperationResultResponseTaskResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, TaskApiService.GetTaskPath, 'get');
     if (params) {
-      rb.query('Id', params.Id, {});
+      rb.query('taskId', params.taskId, {});
     }
 
     return this.http.request(rb.build({
@@ -252,7 +295,13 @@ export class TaskApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getTask(params: IGetTaskRequest): Observable<OperationResultResponseTaskResponse> {
+  getTask(params: {
+
+    /**
+     * Task global unique identifier.
+     */
+    taskId: string;
+  }): Observable<OperationResultResponseTaskResponse> {
 
     return this.getTask$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponseTaskResponse>) => r.body as OperationResultResponseTaskResponse)
