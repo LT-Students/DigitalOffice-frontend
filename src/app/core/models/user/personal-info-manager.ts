@@ -59,7 +59,7 @@ export class PersonalInfoManager {
 		}
 	}
 
-	public get getFioFull(): string {
+	public get getFullName(): string {
 		return [this.lastName, this.firstName, this.middleName].filter(Boolean).join(' ');
 	}
 

@@ -7,7 +7,7 @@
                         <do-profile-image [image]='user?.avatarImage' size='l'></do-profile-image>
                     </div>
                     <h3 class='employee-info__name' doText color='dark_2'>
-                        {{ user.getFioFull }}&nbsp;<span
+                        {{ user.getFullName }}&nbsp;<span
                         matTooltipClass='tooltip'
                         [matTooltip]="user.firstName + ' ' + (user.statusEmoji?.statusInRussian | lowercase)"
                         [matTooltipPosition]="'above'"
@@ -177,7 +177,7 @@
                 </div>
                 <ng-container *ngIf='!user?.isAdmin; else nameEdit'>
                     <h3 class='employee-info__name' doText color='dark_2'>
-                        {{ user?.getFioFull }}&nbsp;<span
+                        {{ user?.getFullName }}&nbsp;<span
                         matTooltipClass='tooltip'
                         [matTooltip]="user?.firstName + ' ' + (user?.statusEmoji?.statusInRussian | lowercase)"
                         [matTooltipPosition]="'above'"

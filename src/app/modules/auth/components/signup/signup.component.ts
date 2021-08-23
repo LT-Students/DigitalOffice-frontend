@@ -77,7 +77,7 @@ export class SignupComponent implements OnInit {
 				})
 			).subscribe((user: User) => {
 					const nextUrl: string = (user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
-					console.log(user.getFioFull());
+					console.log(user.getFullName);
 					this._router.navigate([nextUrl]);
 				}
 			);

@@ -41,7 +41,7 @@ export class DatepickerComponent implements OnInit {
 	set required(value: boolean | string) {
 		this._required = coerceBooleanProperty(value);
 	}
-	@Input() controlName = '';
+	@Input() controlName: string;
 	@Input()
 	get isEdit() {
 		return this._isEdit;
@@ -49,7 +49,7 @@ export class DatepickerComponent implements OnInit {
 	set isEdit(value: boolean | undefined) {
 		this._isEdit = coerceBooleanProperty(value);
 	}
-	@Input() format: 'year' | 'full' = 'full';
+	@Input() format: 'year' | 'full';
 
 	@Output() dateSelected: EventEmitter<Date>;
 
@@ -63,6 +63,8 @@ export class DatepickerComponent implements OnInit {
 	constructor(private formGroupDir: FormGroupDirective) {
 		this._required = false;
 		this._isEdit = false;
+		this.controlName = '';
+		this.format = 'full';
 		this.startView = 'month';
 		this.placeholder = 'ДД месяц ГГГГ';
 		this.dateFormat = 'dd MMMM y';
