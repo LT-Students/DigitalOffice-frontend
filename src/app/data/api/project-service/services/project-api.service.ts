@@ -15,7 +15,6 @@ import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseProjectInfo } from '../models/operation-result-response-project-info';
 import { ProjectRequest } from '../models/project-request';
 import { ProjectResponse } from '../models/project-response';
-import { IEditProjectRequest, IGetProjectRequest } from '@app/services/project/project.service';
 
 @Injectable({
   providedIn: 'root',
@@ -151,7 +150,16 @@ export class ProjectApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getProject(params: IGetProjectRequest): Observable<ProjectResponse> {
+  getProject(params: {
+
+    /**
+     * Project global unique identifier.
+     */
+    projectId: string;
+    includeusers?: boolean;
+    shownotactiveusers?: boolean;
+    includefiles?: boolean;
+  }): Observable<ProjectResponse> {
 
     return this.getProject$Response(params).pipe(
       map((r: StrictHttpResponse<ProjectResponse>) => r.body as ProjectResponse)
@@ -259,7 +267,14 @@ export class ProjectApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editProject(params: IEditProjectRequest): Observable<OperationResultResponse> {
+  editProject(params: {
+
+    /**
+     * Project global unique identifier.
+     */
+    projectId: string;
+    body: EditProjectRequest
+  }): Observable<OperationResultResponse> {
 
     return this.editProject$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

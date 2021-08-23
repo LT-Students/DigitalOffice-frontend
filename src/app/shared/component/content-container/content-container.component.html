@@ -35,14 +35,7 @@
 	</mat-sidenav>
 
 	<mat-sidenav-content>
-		<do-header
-			(menuClick)="onMenuClick($event)"
-			[userName]="user?.user?.firstName"
-			[userId]="user?.user?.id"
-			[avatar]="user?.user?.avatar"
-			[portalName]="portalName"
-			class="header__container"
-		></do-header>
+		<do-header (menuClick)="onMenuClick($event)" class="header__container"></do-header>
 		<div class="content-container">
 			<div class="wrapper">
 				<router-outlet></router-outlet>

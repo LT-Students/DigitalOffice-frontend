@@ -517,7 +517,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseCredentialsResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -564,10 +564,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "items": {
-                  "$ref": "#/components/schemas/ChangePasswordRequest"
-                }
+                "$ref": "#/components/schemas/ChangePasswordRequest"
               }
             }
           }
@@ -1294,31 +1291,36 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/CommunicationInfo"
-                }
+                },
+                "nullable": true
               },
               "certificates": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/CertificateInfo"
-                }
+                },
+                "nullable": true
               },
               "achievements": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/UserAchievementInfo"
-                }
+                },
+                "nullable": true
               },
               "projects": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ProjectInfo"
-                }
+                },
+                "nullable": true
               },
               "educations": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/EducationInfo"
-                }
+                },
+                "nullable": true
               }
             }
           },
@@ -1763,10 +1765,6 @@
           "IsActive": {
             "type": "boolean"
           },
-          "About": {
-            "type": "string",
-            "nullable": true
-          },
           "StartWorkingAt": {
             "type": "string",
             "format": "date",
@@ -1775,22 +1773,41 @@
           "Rate": {
             "type": "number"
           },
+          "About": {
+            "type": "string",
+            "nullable": true
+          },
           "Department": {
-            "$ref": "#/components/schemas/DepartmentInfo"
+            "$ref": "#/components/schemas/DepartmentInfo",
+            "nullable": true
           },
           "Position": {
-            "$ref": "#/components/schemas/PositionInfo"
+            "$ref": "#/components/schemas/PositionInfo",
+            "nullable": true
           },
           "Avatar": {
-            "$ref": "#/components/schemas/ImageInfo"
+            "$ref": "#/components/schemas/ImageInfo",
+            "nullable": true
           },
           "Role": {
-            "$ref": "#/components/schemas/RoleInfo"
+            "$ref": "#/components/schemas/RoleInfo",
+            "nullable": true
           },
           "Office": {
-            "$ref": "#/components/schemas/OfficeInfo"
+            "$ref": "#/components/schemas/OfficeInfo",
+            "nullable": true
           }
         }
+      },
+      "ImageType": {
+        "type": "string",
+        "description": "Type of image.",
+        "enum": [
+          "Full",
+          "Thumb"
+        ],
+        "example": "Full",
+        "default": "Full"
       },
       "ImageInfo": {
         "type": "object",
@@ -1804,6 +1821,9 @@
             "format": "uuid",
             "nullable": true
           },
+          "Type": {
+            "$ref": "#/components/schemas/ImageType"
+          },
           "Content": {
             "type": "string",
             "nullable": false,
@@ -1812,6 +1832,10 @@
           "Extension": {
             "type": "string",
             "nullable": false
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -1891,6 +1915,10 @@
       "CommunicationInfo": {
         "type": "object",
         "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "Type": {
             "$ref": "#/components/schemas/CommunicationType"
           },
@@ -2008,7 +2036,8 @@
         "type": "object",
         "properties": {
           "Body": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -2071,7 +2100,8 @@
         "enum": [
           "FullSuccess",
           "PartialSuccess",
-          "Failed"
+          "Failed",
+          "Conflict"
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"

@@ -9,7 +9,7 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileImageComponent implements OnInit, OnChanges {
-	@Input() image: ImageInfo | undefined;
+	@Input() image: ImageInfo | null | undefined;
 	@Input() size: 'l' | 'm' | 's';
 	public src: string;
 	public width: number;

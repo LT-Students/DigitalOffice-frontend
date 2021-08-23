@@ -1041,10 +1041,12 @@
           "Project": {
             "$ref": "#/components/schemas/ProjectInfo"
           },
-          "UserId": {
-            "type": "string",
-            "format": "uuid",
-            "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
+          "User": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "Day": {
+            "type": "integer",
+            "nullable": true
           },
           "Month": {
             "type": "integer"
@@ -1063,6 +1065,15 @@
           "Description": {
             "description": "Description for alloted time.",
             "type": "string"
+          },
+          "LimitInfo": {
+            "$ref": "#/components/schemas/WorkTimeMonthLimitInfo"
+          },
+          "ModifiedAtUtc": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
           },
           "Jobs": {
             "type": "array",
@@ -1222,6 +1233,39 @@
           },
           "ShortDescription": {
             "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "description": "User data.",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "FirstName": {
+            "type": "string",
+            "example": "Spartak",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string",
+            "example": "Ryabtsev",
+            "nullable": true
+          },
+          "MiddleName": {
+            "type": "string",
+            "example": "Alexandrovich",
+            "nullable": true
+          },
+          "Rate": {
+            "type": "number",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean",
             "nullable": true
           }
         }

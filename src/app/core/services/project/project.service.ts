@@ -1,10 +1,8 @@
-//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
 import { ProjectRequest } from '@data/api/project-service/models/project-request';
-import { forkJoin, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
-import { switchMap } from 'rxjs/operators';
 import {
 	AddUsersToProjectRequest,
 	EditProjectRequest,
@@ -13,9 +11,9 @@ import {
 	ProjectResponse,
 } from '@data/api/project-service/models';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { departments, positions, projects } from '../../../modules/employee/mock';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { UUID } from '@app/types/uuid.type';
+import { positions, projects } from '../../../modules/employee/mock';
 
 export interface IGetProjectRequest {
 
@@ -79,15 +77,15 @@ export class ProjectService {
 	}
 
 	/*TODO: переделать, когда бэк сделает корректную схему для findProjects */
-	public getUserProjectsInfo(projects: ProjectInfo[]): Observable<ProjectInfo[]> {
-		return forkJoin(
-			projects.map((project: ProjectInfo) => {
-				return this._projectService
-					.getProject({ projectId: project.id })
-					.pipe(switchMap((projectExpanded: ProjectResponse) => of(projectExpanded.project)));
-			})
-		);
-	}
+	// public getUserProjectsInfo(projects: ProjectInfo[]): Observable<ProjectInfo[]> {
+	// 	return forkJoin(
+	// 		projects.map((project: ProjectInfo) => {
+	// 			return this._projectService
+	// 				.getProject({ projectId: project.id })
+	// 				.pipe(switchMap((projectExpanded: ProjectResponse) => of(projectExpanded.project)));
+	// 		})
+	// 	);
+	// }
 
 	public getMockUserProjectsInfo(): Observable<ProjectInfo[]> {
 		return of(projects);
