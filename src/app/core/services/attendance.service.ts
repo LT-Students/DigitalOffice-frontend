@@ -5,10 +5,11 @@ import { Time } from '@angular/common';
 
 import { DatePeriod } from '@data/models/date-period';
 import { DateService } from './date.service';
+import { TimeService } from '@app/services/time/time.service';
 
 @Injectable()
 export class AttendanceService {
-	private readonly _datePeriod = new BehaviorSubject<DatePeriod>(this.dateService.getDefaultDatePeriod(6));
+	private readonly _datePeriod = new BehaviorSubject<DatePeriod>(this._dateService.getDefaultDatePeriod(6));
 
 	readonly datePeriod$ = this._datePeriod.asObservable();
 
@@ -16,14 +17,18 @@ export class AttendanceService {
 
 	readonly recommendedTime$ = this._recommendedTime.asObservable();
 
+	private readonly _activities = new BehaviorSubject<Time>(this.getRecommendedTime(this.datePeriod));
+
+	readonly activities$ = this._activities.asObservable();
+
 	get datePeriod(): DatePeriod {
 		return this._datePeriod.getValue();
 	}
 
-	constructor(private dateService: DateService) {}
+	constructor(private _dateService: DateService, private _timeService: TimeService) {}
 
 	public onDatePeriodChange(datePeriod: DatePeriod): void {
-		const normalizedDatePeriod = this.dateService.normalizeDatePeriod(datePeriod);
+		const normalizedDatePeriod = this._dateService.normalizeDatePeriod(datePeriod);
 		this._datePeriod.next(normalizedDatePeriod);
 		if (normalizedDatePeriod.endDate) {
 			this._recommendedTime.next(this.getRecommendedTime(normalizedDatePeriod));
@@ -38,7 +43,7 @@ export class AttendanceService {
 	public getRecommendedTime(datePeriod: DatePeriod, hoursPerDay: number = 8, rate: number = 1): Time {
 		const daysArray: Date[] = [];
 
-		if (datePeriod.endDate && this.dateService.isSameDay(datePeriod.startDate, datePeriod.endDate)) {
+		if (datePeriod.endDate && this._dateService.isSameDay(datePeriod.startDate, datePeriod.endDate)) {
 			return { hours: hoursPerDay * rate, minutes: 0 };
 		} else {
 			const startDate = new Date(datePeriod.startDate);

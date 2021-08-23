@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnDestroy, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -14,7 +14,7 @@ Chart.register(...registerables);
 @Component({
 	selector: 'do-doughnut-chart',
 	templateUrl: './doughnut-chart.component.html',
-	styleUrls: ['./doughnut-chart.component.scss'],
+	styleUrls: [ './doughnut-chart.component.scss' ],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
@@ -26,7 +26,8 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private ctx: CanvasRenderingContext2D | null | undefined;
 	private chart: Chart<'doughnut'> | undefined;
 
-	public COLORS = ['#FFB2B2', '#C7C6D8', '#D2ECFF', '#FFBE97', '#FFD89E', '#9ABCDB', '#ABF5C0', '#FEECAA', '#FFCDCD'];
+	public readonly COLORS = [ '#FFB2B2', '#C7C6D8', '#D2ECFF', '#FFBE97', '#FFD89E', '#9ABCDB', '#ABF5C0', '#FEECAA', '#FFCDCD' ];
+	public readonly EMPTY_COLOR = '#F5F5F5';
 	public projects: ProjectModel[];
 
 	public recommendedTime: Time | undefined;
@@ -34,14 +35,14 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	public startDate: Date = new Date();
 
 	public MONTH_NORM = 160;
+	public userHours: number;
 
 	constructor(private attendanceService: AttendanceService, private projectStore: ProjectStore) {
 		this.projects = [];
+		this.userHours = 0;
 	}
 
 	public ngOnInit() {
-		this.ctx = this.canvas?.nativeElement.getContext('2d');
-
 		this.ctx = this.canvas?.nativeElement.getContext('2d');
 
 		this.attendanceService.recommendedTime$.pipe(takeUntil(this.onDestroy$)).subscribe((time) => {
@@ -52,62 +53,35 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
 		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
 			this.projects = projects;
+			this.userHours = this.projects.reduce((acc, project) => acc + project.tasks[0].minutes, 0);
 			if (this.chart) {
 				this.updateChart();
 			}
 		});
 	}
 
-	public get spentTime(): Time {
-		return {
-			hours: Math.floor(this.spentMinutes / 60),
-			minutes: this.spentMinutes % 60,
-		};
-	}
-
-	public get remainingTime(): Time {
-		const minutes = this.remainingMinutes % 60;
-		const hours = this.remainingMinutes ? Math.floor(this.remainingMinutes / 60) : Math.ceil(this.remainingMinutes / 60);
-		return {
-			hours,
-			minutes,
-		};
-	}
-
-	public get isPeriodEmpty(): boolean {
-		return !this.data.some((minutes: number) => minutes > 0);
-	}
-
 	private get data(): number[] {
-		return this.projects.map((project) => project.tasks.reduce((sum, task) => sum + task.minutes / 60, 0));
-	}
-
-	private get spentMinutes() {
-		return this.data.reduce((sum, projectMinutes) => sum + projectMinutes, 0);
-	}
-
-	private get remainingMinutes() {
-		const recommendedMinutes = this.recommendedTime.hours * 60 + this.recommendedTime.minutes;
-		return recommendedMinutes - this.spentMinutes;
+		return this.projects.map((project) => project.tasks.reduce((sum, task) => sum + Math.floor(task.minutes / 60), 0));
 	}
 
 	private updateChart(): void {
-		this.chart.data.datasets[0].data = this.data;
-		this.chart.data.datasets[0].backgroundColor = this.COLORS;
+		const timeLeft = this.data.reduce((acc, activity) => acc - activity, this.MONTH_NORM);
+		const colors = [ ...this.COLORS.splice(0, this.data.length), this.EMPTY_COLOR ];
+
+		this.chart.data.labels = this.projects.map(({ name }) => name);
+		this.chart.data.datasets[0].data = [ ...this.data, timeLeft ];
+		this.chart.data.datasets[0].backgroundColor = colors;
 		this.chart.update();
 	}
 
 	private buildChart() {
-		const projectsLabels = this.projects.map(({ name }) => name);
-
 		this.chart = new Chart(this.ctx, {
 			type: 'doughnut',
 			data: {
-				labels: [projectsLabels[0]],
 				datasets: [
 					{
-						data: [this.MONTH_NORM],
-						backgroundColor: this.COLORS,
+						data: [ this.MONTH_NORM ],
+						backgroundColor: [ this.EMPTY_COLOR ],
 						borderWidth: 0,
 					},
 				],
@@ -118,7 +92,8 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 				plugins: {
 					legend: {
 						position: 'bottom',
-						onClick: undefined,
+						onClick: () => {
+						},
 						labels: {
 							usePointStyle: true,
 							pointStyle: 'circle',
@@ -130,17 +105,10 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 						xAlign: 'right',
 						yAlign: 'bottom',
 
-						// callbacks: {
-						// 	title: (tooltip: any) => {
-						// 		console.log(tooltip);
-						// 	},
-						// 	label: (tooltip: any) => {
-						// 		console.log(tooltip.label);
-						// 	},
-						// 	footer: (tooltip: any) => {
-						// 		console.log(tooltip.footer);
-						// 	},
-						// },
+						callbacks: {
+							title: (tooltip: any) => tooltip[0].label,
+							label: (tooltip) => `Количество часов: ${ tooltip.formattedValue }`,
+						},
 					},
 				},
 			},
@@ -157,9 +125,11 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		const nextMonth = currentMonth + changeDate;
 		this.startDate = new Date(this.startDate.setMonth(nextMonth));
 	}
+
 	public onPreviousMonthClicked(): void {
 		this.changeMonth(-1);
 	}
+
 	public onNextMonthClicked(): void {
 		this.changeMonth(1);
 	}

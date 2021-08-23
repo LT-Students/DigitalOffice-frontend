@@ -22,8 +22,8 @@
 		<div class="chart__doughnut">
 			<canvas #canvas width='444' height='222'></canvas>
 			<h3 doText class="chart__time-info">
-				<span>{{ spentTime.hours }}</span>
-				<small>&nbsp;/&nbsp;{{ remainingTime.hours }}</small>
+				<span>{{ userHours }}</span>
+				<small>&nbsp;/&nbsp;{{ MONTH_NORM }}</small>
 			</h3>
 		</div>
 		<button (click)="onNextMonthClicked()" class="bg-light_3" mat-mini-fab [class.mat-elevation-z0]="true">
