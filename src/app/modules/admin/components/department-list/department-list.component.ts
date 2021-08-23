@@ -13,7 +13,7 @@ import { RouteType } from '../../../../app-routing.module';
 	selector: 'do-department-list',
 	templateUrl: './department-list.component.html',
 	styleUrls: ['./department-list.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepartmentListComponent implements OnInit {
 	public departmentsInfo: DepartmentInfo[];
@@ -41,7 +41,7 @@ export class DepartmentListComponent implements OnInit {
 	}
 
 	public onDepartmentClick(departmentId) {
-		this.router.navigate([ `${ RouteType.DEPARTMENTS }/${ departmentId }` ]);
+		this.router.navigate([`${RouteType.DEPARTMENTS}/${departmentId}`]);
 	}
 
 	public onPageChange(event: PageEvent): void {
