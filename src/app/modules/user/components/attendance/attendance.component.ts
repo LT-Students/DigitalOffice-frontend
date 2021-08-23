@@ -1,13 +1,14 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { DatePeriod } from '@data/models/date-period';
 import { ProjectService } from '@app/services/project/project.service';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Project } from '@app/models/project/project.model';
 import { map } from 'rxjs/operators';
 import { FindResponseProjectInfo } from '@data/api/project-service/models/find-response-project-info';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { User } from '@app/models/user/user.model';
+import { UserService } from '@app/services/user/user.service';
 import { AttendanceService } from '@app/services/attendance.service';
 import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.component';
 
@@ -15,10 +16,12 @@ import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.componen
 	selector: 'do-attendance',
 	templateUrl: './attendance.component.html',
 	styleUrls: ['./attendance.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [AttendanceService]
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [ AttendanceService ],
 })
 export class AttendanceComponent implements OnInit {
+	public user: User | null;
+
 	public timePeriodSelected: DatePeriod = {
 		startDate: new Date(),
 	};
@@ -34,14 +37,18 @@ export class AttendanceComponent implements OnInit {
 		{ day: '27', month: 'june', hours: 0, minutes: 0 },
 	];
 
-	constructor(private _projectService: ProjectService) {}
-
-	ngOnInit() {
+	constructor(private _projectService: ProjectService, private _userService: UserService) {
+		this.user = null;
 		this.projects$ = this._projectService.findProjects().pipe(
-			map((data: FindResponseProjectInfo) => data.body),
+			map((data: FindResponseProjectInfo) => data.body as ProjectInfo[]),
 			map((data: ProjectInfo[]) => {
 				return data.map((projectInfo: ProjectInfo) => new Project(projectInfo));
 			})
 		);
+	}
+
+	ngOnInit() {
+
+		this.user = this._userService.getCurrentUser();
 	}
 }

@@ -3,22 +3,22 @@
 import { ProjectTaskInfo } from './project-task-info';
 import { UserTaskInfo } from './user-task-info';
 export interface TaskInfo {
-  assignedTo?: UserTaskInfo;
-
-  /**
-   * Task creator.
-   */
-  author?: UserTaskInfo;
+  assignedTo?: null | UserTaskInfo;
 
   /**
    * Data and time created task.
    */
-  createdAt?: any;
+  createdAtUtc?: any;
+
+  /**
+   * Task creator.
+   */
+  createdBy?: UserTaskInfo;
 
   /**
    * The task's description.
    */
-  description?: string;
+  description?: null | string;
 
   /**
    * Unique task identifier.
@@ -38,7 +38,7 @@ export interface TaskInfo {
   /**
    * Planed time at completed task.
    */
-  plannedMinutes?: number;
+  plannedMinutes?: null | number;
 
   /**
    * The task's priority name.

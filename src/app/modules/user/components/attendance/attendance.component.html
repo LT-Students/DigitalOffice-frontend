@@ -1,13 +1,6 @@
-<h2 >Доска учета времени</h2>
-<do-datedesc></do-datedesc>
+<h2>Доска учета времени</h2>
 <div class="grid">
-  <do-add-hours></do-add-hours>
-  <do-doughnut-chart [projectList]='projects$ | async'></do-doughnut-chart>
-  <do-gradient-graphics [dailyHoursData]="dailyHoursData" [timePeriodSelected]="timePeriodSelected">
-  </do-gradient-graphics>
+	<do-add-hours></do-add-hours>
+	<do-doughnut-chart [projectList]="projects$ | async"></do-doughnut-chart>
 </div>
-<do-user-tasks
-    class='tasks'
-    [timePeriodSelected]='timePeriodSelected'
-    [projects]='projects$ | async'
-></do-user-tasks>
+<do-user-tasks class="tasks" [timePeriodSelected]="timePeriodSelected" [projects]="projects$ | async"></do-user-tasks>

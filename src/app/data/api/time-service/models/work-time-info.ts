@@ -1,9 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import { ProjectInfo } from './project-info';
+import { UserInfo } from './user-info';
+import { WorkTimeJobInfoInfo } from './work-time-job-info-info';
+import { WorkTimeMonthLimitInfo } from './work-time-month-limit-info';
 export interface WorkTimeInfo {
-  createdAt?: string;
-  createdBy?: string;
+  day?: null | number;
 
   /**
    * Description for alloted time.
@@ -11,26 +13,17 @@ export interface WorkTimeInfo {
   description?: string;
 
   /**
-   * Task finish deadline.
-   */
-  endTime?: string;
-
-  /**
    * The work time Id.
    */
   id?: string;
-  minutes?: number;
+  jobs?: null | Array<WorkTimeJobInfoInfo>;
+  limitInfo?: WorkTimeMonthLimitInfo;
+  managerHours?: null | number;
+  modifiedAtUtc?: string;
+  month?: number;
   project?: ProjectInfo;
-
-  /**
-   * Start date task execution.
-   */
-  startTime?: string;
-
-  /**
-   * Short description of the task
-   */
-  title?: string;
-  userId?: string;
+  user?: UserInfo;
+  userHours?: null | number;
+  year?: number;
 }
 

@@ -1,10 +1,9 @@
-//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
 import { CommunicationApiService } from '@data/api/user-service/services/communication-api.service';
 import { CreateCommunicationRequest } from '@data/api/user-service/models/create-communication-request';
 import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
+import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 
 export interface IRemoveCommunicationRequest {
 	/**

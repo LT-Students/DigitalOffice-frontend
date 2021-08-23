@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Time } from '@angular/common';
@@ -9,11 +8,11 @@ import { TimeService } from '@app/services/time/time.service';
 
 @Injectable()
 export class AttendanceService {
-	private readonly _datePeriod = new BehaviorSubject<DatePeriod>(this._dateService.getDefaultDatePeriod(6));
+	private readonly _datePeriod = new BehaviorSubject<DatePeriod>(this._dateService.getDefaultDatePeriod());
 
 	readonly datePeriod$ = this._datePeriod.asObservable();
 
-	private readonly _recommendedTime = new BehaviorSubject<Time>(this.getRecommendedTime(this.datePeriod));
+	private readonly _recommendedTime = new BehaviorSubject<number>(this.getRecommendedTime(this.datePeriod));
 
 	readonly recommendedTime$ = this._recommendedTime.asObservable();
 
@@ -40,22 +39,25 @@ export class AttendanceService {
 		return timeString.length === 1 ? '0' + timeString : timeString;
 	}
 
-	public getRecommendedTime(datePeriod: DatePeriod, hoursPerDay: number = 8, rate: number = 1): Time {
+	public getRecommendedTime(datePeriod: DatePeriod, hoursPerDay: number = 8, skipHolidays = false, rate: number = 1): number {
 		const daysArray: Date[] = [];
 
 		if (datePeriod.endDate && this._dateService.isSameDay(datePeriod.startDate, datePeriod.endDate)) {
-			return { hours: hoursPerDay * rate, minutes: 0 };
+			return hoursPerDay * rate;
 		} else {
-			const startDate = new Date(datePeriod.startDate);
-			const endDate = new Date(datePeriod.endDate);
+			const startDate = new Date(datePeriod.startDate as Date);
+			const endDate = new Date(datePeriod.endDate as Date);
 
 			while (startDate.getDate() !== endDate.getDate()) {
 				daysArray.push(new Date(startDate));
 				startDate.setDate(startDate.getDate() + 1);
 			}
-			const hours = (daysArray.filter((day: Date) => day.getDay() !== 6 && day.getDay() !== 0).length + 1) * hoursPerDay * rate;
 
-			return { hours: hours, minutes: 0 };
+			if (skipHolidays) {
+				return (daysArray.filter((day: Date) => day.getDay() !== 6 && day.getDay() !== 0).length + 1) * hoursPerDay * rate;
+			} else {
+				return (daysArray.length + 1) * hoursPerDay * rate;
+			}
 		}
 	}
 }

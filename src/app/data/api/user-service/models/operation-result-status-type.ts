@@ -7,5 +7,6 @@
 export enum OperationResultStatusType {
   FullSuccess = 'FullSuccess',
   PartialSuccess = 'PartialSuccess',
-  Failed = 'Failed'
+  Failed = 'Failed',
+  Conflict = 'Conflict'
 }
