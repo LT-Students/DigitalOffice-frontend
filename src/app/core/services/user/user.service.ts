@@ -28,7 +28,7 @@ export class UserService {
 		this.currentUser$ = this._currentUser.asObservable();
 	}
 
-	public getCurrentUserValue(): User | null {
+	public getCurrentUser(): User | null {
 		return this._currentUser.value;
 	}
 
