@@ -22,7 +22,7 @@
 		<div class="chart__doughnut">
 			<canvas #canvas width='444' height='222'></canvas>
 			<h3 doText class="chart__time-info">
-				<span>{{ userHours }}</span>
+				<span>{{ userHours | async }}</span>
 				<small>&nbsp;/&nbsp;{{ MONTH_NORM }}</small>
 			</h3>
 		</div>

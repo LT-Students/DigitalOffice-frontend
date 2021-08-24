@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { Chart, registerables } from 'chart.js';
@@ -33,11 +33,11 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	public startDate: Date = new Date();
 
 	public MONTH_NORM = 160;
-	public userHours: number;
+	public userHours: BehaviorSubject<number>;
 
 	constructor(private _attendanceService: AttendanceService, private _userService: UserService, private projectStore: ProjectStore) {
 		this.projects = [];
-		this.userHours = 0;
+		this.userHours = new BehaviorSubject<number>(0);
 	}
 
 	public ngOnInit() {
@@ -46,31 +46,48 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			.pipe(
 				takeUntil(this.onDestroy$),
 				tap((user) => (this._userId = user?.id)),
-				switchMap((user) => this._attendanceService.getActivities(this._userId))
+				switchMap(() => this._attendanceService.getActivities(this._userId))
 			)
 			.subscribe({
 				next: (response) => {
 					this._activities = response;
 					console.log(this._activities);
+					this.userHours.next(this._countUserHours());
+					if (this.chart) {
+						this.updateChart();
+					}
 				},
 			});
 
-		this.buildChart();
+		this.chart = this.buildChart();
 
 		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
 			this.projects = projects;
-			this.userHours = this.projects.reduce((acc, project) => acc + project.tasks[0].minutes, 0);
 			if (this.chart) {
 				this.updateChart();
 			}
 		});
 	}
 
+	private _countUserHours(): number {
+		const projectHours = this._activities?.projects?.reduce((acc, project) => acc + (project.userHours ?? 0), 0) ?? 0;
+		const leavesHours =
+			this._activities?.leaves?.reduce(
+				(acc, leave) =>
+					acc +
+					this._attendanceService.getRecommendedTime({
+						startDate: new Date(leave.startTime),
+						endDate: new Date(leave.endTime),
+					}),
+				0
+			) ?? 0;
+
+		return projectHours + leavesHours;
+	}
+
 	private get data(): number[] {
 		return this.projects.map((project) => project.tasks.reduce((sum, task) => sum + Math.floor(task.minutes / 60), 0));
 	}
-
-	private _getUserId(): void {}
 
 	private updateChart(): void {
 		const timeLeft = this.data.reduce((acc, activity) => acc - activity, this.MONTH_NORM);
@@ -82,8 +99,8 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		this.chart.update();
 	}
 
-	private buildChart() {
-		this.chart = new Chart(this.ctx, {
+	private buildChart(): Chart<'doughnut'> {
+		return new Chart(this.ctx, {
 			type: 'doughnut',
 			data: {
 				datasets: [

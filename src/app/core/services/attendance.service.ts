@@ -21,12 +21,6 @@ export class AttendanceService {
 	private readonly _recommendedTime = new BehaviorSubject<number>(this.getRecommendedTime(this._dateService.getDefaultDatePeriod()));
 	public readonly recommendedTime$ = this._recommendedTime.asObservable();
 
-	// private readonly _projects = new BehaviorSubject<number>(4);
-	// public readonly projects$ = this._projects.asObservable();
-	//
-	// private readonly _leaves = new BehaviorSubject(4);
-	// public readonly leaves$ = this._leaves.asObservable();
-
 	private readonly _activities = new BehaviorSubject<Activities>({});
 	public readonly activities = this._activities.asObservable();
 
@@ -45,7 +39,7 @@ export class AttendanceService {
 			userid: userId,
 			skipCount: 0,
 			takeCount: 10,
-			month: month,
+			month: month + 1,
 			year: year,
 		};
 		const leaveTimesParams: IFindLeaveTimesRequest = {
