@@ -1,8 +1,10 @@
-@import '../../../../../stylesheets/base/variables';
-
 .modal {
 	&__title {
 		margin-bottom: 11px;
+	}
+
+	&__error {
+		margin: 10px 0;
 	}
 
 	&__period {
@@ -26,9 +28,6 @@
 	}
 
 	&__description {
-		// Какой-то левый стиль задаёт маргины, временное решение (в edit-leave такого нет, там всё нормально с маргинами)
-		margin: 0;
-
 		width: 100%;
 	}
 

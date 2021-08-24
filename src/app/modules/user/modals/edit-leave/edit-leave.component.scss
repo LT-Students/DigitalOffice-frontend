@@ -1,10 +1,12 @@
-@import '../../../../../stylesheets/base/variables';
-
 .modal {
 	&__range {
 		margin: 16px 0 0;
 
 		display: flex;
+	}
+
+	&__error {
+		margin: 10px 0;
 	}
 
 	&__range-picker {

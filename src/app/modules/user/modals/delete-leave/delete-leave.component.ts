@@ -2,8 +2,10 @@ import { Component, Inject } from "@angular/core";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { TimeService } from "@app/services/time/time.service";
-import { EditLeaveTimeRequest, EditWorkTimeRequest, OperationResultResponse, OperationResultStatusType } from "@data/api/time-service/models";
+import { EditLeaveTimeRequest, EditWorkTimeRequest, LeaveType, OperationResultResponse, OperationResultStatusType } from "@data/api/time-service/models";
+import { IModalContentConfig } from "../../components/leaves/leaves.component";
 import { IDialogResponse } from "../../components/user-tasks/user-tasks.component";
+import { LeaveTimeModel } from "@app/models/leave-time.model";
 
 @Component({
     selector: 'do-delete-leave',
@@ -12,10 +14,14 @@ import { IDialogResponse } from "../../components/user-tasks/user-tasks.componen
 })
 export class DeleteLeaveComponent {
     constructor(
-        @Inject(MAT_DIALOG_DATA) public leave: { date: Date, name: string, id: string },
+        @Inject(MAT_DIALOG_DATA) public leave: IModalContentConfig,
         private _dialogRef: MatDialogRef<DeleteLeaveComponent, IDialogResponse>,
         private _timeService: TimeService
     ) { }
+
+    public getRusType(leaveType: LeaveType) {
+        return LeaveTimeModel.getLeaveInfoByLeaveType(leaveType)?.leaveInRussian;
+    }
 
     public onClose(params?: IDialogResponse) {
         this._dialogRef.close(params);
@@ -31,7 +37,7 @@ export class DeleteLeaveComponent {
         ]
 
         this._timeService.editLeaveTime({
-            leaveTimeId: this.leave.id,
+            leaveTimeId: this.leave.id!,
             body
         }).subscribe((res: OperationResultResponse) => {
             this.onClose({

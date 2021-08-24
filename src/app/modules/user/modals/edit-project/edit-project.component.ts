@@ -6,6 +6,7 @@ import { IMappedProject } from "../../components/user-tasks/user-tasks.component
 import { TimeService } from '@app/services/time/time.service';
 import { IDialogResponse } from "../../components/user-tasks/user-tasks.component";
 import { OperationResultResponse } from "@data/api/time-service/models/operation-result-response";
+import { OperationResultStatusType } from "@data/api/time-service/models";
 
 @Component({
     selector: 'do-edit-project',
@@ -28,8 +29,8 @@ export class EditProjectComponent {
 
     private _initFormGroup(): FormGroup {
         return this._fb.group({
-            userHours: [this.project.userHours as Number, [Validators.required]],
-            managerHours: [this.project.managerHours as Number, [Validators.required]],
+            userHours: [this.project.userHours, [Validators.required]],
+            managerHours: [this.project.managerHours, [Validators.required]],
             description: [this.project.description]
         })
     }
@@ -55,14 +56,16 @@ export class EditProjectComponent {
                 }
             ]
         }).subscribe((res: OperationResultResponse) => {
-            this.onClose({
-                status: res.status,
-                data: {
-                    description: this.editForm.get('description')?.value,
-                    userHours: this.editForm.get('userHours')?.value,
-                    managerHours: this.editForm.get('managerHours')?.value
-                }
-            })
+            if (res.status === OperationResultStatusType.FullSuccess) {
+                this.onClose({
+                    status: res.status,
+                    data: {
+                        description: this.editForm.get('description')?.value,
+                        userHours: this.editForm.get('userHours')?.value,
+                        managerHours: this.editForm.get('managerHours')?.value
+                    }
+                })
+            }
         })
     }
 

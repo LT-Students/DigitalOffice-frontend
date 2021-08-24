@@ -1,17 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, ViewChild } from "@angular/core";
 
 import { ModalService, ModalWidth } from "@app/services/modal.service";
-import { LeaveTimeInfo, OperationResultStatusType } from "@data/api/time-service/models";
+import { LeaveTimeInfo, LeaveType, OperationResultStatusType } from "@data/api/time-service/models";
 import { DeleteLeaveComponent } from "../../modals/delete-leave/delete-leave.component";
 import { EditLeaveComponent } from "../../modals/edit-leave/edit-leave.component";
 import { IDialogResponse } from "../user-tasks/user-tasks.component";
+import { LeaveTimeModel } from "@app/models/leave-time.model";
 
-// Заменить на модель, которую создал Рома
-enum rusTypes {
-    'Idle' = 'Отгул',
-    'Vacation' = 'Отпуск',
-    'Training' = 'Обучение',
-    'SickLeave' = 'Больничный'
+export interface IModalContentConfig {
+    id?: string;
+    startTime?: string;
+    endTime?: string;
+    leaveType?: LeaveType;
+    comment?: string;
+    hours?: number;
+    date?: Date;
 }
 
 @Component({
@@ -20,40 +23,48 @@ enum rusTypes {
     styleUrls: ['./leaves.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LeavesComponent {
+export class LeavesComponent implements OnChanges {
     @Input() leaves: LeaveTimeInfo[] | undefined | null;
+    @Input() canEdit: boolean;
     @ViewChild("comment") comment: ElementRef | undefined;
-
-    public canEdit: boolean;
 
     constructor(
         private _modalService: ModalService,
         private _cdr: ChangeDetectorRef
     ) {
         this.leaves = [];
-        this.canEdit = false;
+        this.canEdit = true;
     }
 
-    public getRusType(type: keyof typeof rusTypes): string {
-        return rusTypes[type];
+    public ngOnChanges() {
+        console.log(this.leaves)
+    }
+
+    public getRusType(leaveType: LeaveType) {
+        return LeaveTimeModel.getLeaveInfoByLeaveType(leaveType)?.leaveInRussian;
+    }
+
+    getPeriodInHours(startTime: string, endTime: string): number {
+        const startDate = new Date(startTime)
+        const endDate = new Date(endTime)
+
+        return (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 + 24;
     }
 
     public openEditModal(leave: LeaveTimeInfo): void {
-        let modalContentConfig = {
+        let modalContentConfig: IModalContentConfig = {
             id: leave.id,
             startTime: leave.startTime,
             endTime: leave.endTime,
             leaveType: leave.leaveType,
             comment: leave.comment,
-            minutes: leave.minutes
+            hours: this.getPeriodInHours(leave.startTime!, leave.endTime!)
         }
-        // Выглядит плохо, но я не нашёл, как по-другому можно передать result: R в openModal, на интерфейс он жаловался, поэтому пока так
-        let response: IDialogResponse = {};
 
         this._modalService
-            .openModal(EditLeaveComponent, ModalWidth.L, modalContentConfig, response)
+            .openModal<EditLeaveComponent, IModalContentConfig, IDialogResponse>(EditLeaveComponent, ModalWidth.L, modalContentConfig)
             .afterClosed()
-            .subscribe((result) => {
+            .subscribe(result => {
                 if (result?.status === OperationResultStatusType.FullSuccess) {
                     leave.comment = result.data.comment;
                     leave.startTime = result.data.startTime;
@@ -65,18 +76,16 @@ export class LeavesComponent {
     }
 
     public openDeleteModal(leave: LeaveTimeInfo): void {
-        let modalContentConfig = {
-            taskType: 'leave',
-            name: leave.leaveType,
+        let modalContentConfig: IModalContentConfig = {
+            leaveType: leave.leaveType,
             date: new Date(leave.startTime!),
             id: leave.id
         }
-        let response: IDialogResponse = {};
 
         this._modalService
-            .openModal(DeleteLeaveComponent, ModalWidth.M, modalContentConfig, response)
+            .openModal<DeleteLeaveComponent, IModalContentConfig, IDialogResponse>(DeleteLeaveComponent, ModalWidth.M, modalContentConfig)
             .afterClosed()
-            .subscribe((result) => {
+            .subscribe(result => {
                 if (result?.status === OperationResultStatusType.FullSuccess) {
                     const deletedIndex = this.leaves?.findIndex(leave => leave.id === result.data.id);
                     if (deletedIndex !== -1) {

@@ -43,12 +43,12 @@
       </td>
       <td class='cell'>
         <div class='cell__content'>
-          <p class='cell__text regular_text'>{{getDate(project.year, project.month) | date: 'd MMMM'}}</p>
+          <p class='cell__text regular_text'>{{getDate(project.year, project.month - 1) | date: 'd MMMM'}}</p>
         </div>
       </td>
       <do-comment [text]="project.description"></do-comment>
       <td class='cell cell_icon'>
-        <button mat-icon-button (click)="openEditModal(project)">
+        <button *ngIf="canEdit" mat-icon-button (click)="openEditModal(project)">
           <mat-icon doText color='gray1'>edit</mat-icon>
         </button>
       </td>

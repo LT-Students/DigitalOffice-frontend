@@ -10,15 +10,15 @@
         </mat-form-field>
       </span>
       <span doText color='accent_color_bright' class="activities__period" (click)="openMonthpicker()">
-        {{selectedPeriod.startTime | date: "LLLL YYYY"}}
+        {{selectedPeriod.startDate | date: "LLLL YYYY"}}
         <mat-icon class='activities__icon'>keyboard_arrow_down</mat-icon>
       </span>
     </h3>
     <div class='tasks'>
-      <do-projects [projects]="projects$ | async"></do-projects>
+      <do-projects [projects]="projects$ | async" [canEdit]="canEdit"></do-projects>
     </div>
     <div class='tasks'>
-      <do-leaves [leaves]="leaves$ | async"></do-leaves>
+      <do-leaves [leaves]="leaves$ | async" [canEdit]="canEdit"></do-leaves>
     </div>
   </div>
 </mat-card>

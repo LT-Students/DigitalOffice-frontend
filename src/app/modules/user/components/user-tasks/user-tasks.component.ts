@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -7,6 +7,7 @@ import { OperationResultStatusType, ProjectStatusType } from '@data/api/time-ser
 import { LeaveTimeInfo } from '@data/api/time-service/models';
 import { TimeService } from '@app/services/time/time.service';
 import { UserService } from '@app/services/user/user.service';
+import { DatePeriod } from '@data/models/date-period'
 
 interface IParams {
 	userid?: string;
@@ -46,12 +47,10 @@ export class UserTasksComponent implements OnInit {
 	public leaves$: Observable<LeaveTimeInfo[] | undefined> | null;
 	@ViewChild('dp') monthpicker: MatDatepicker<Date> | undefined;
 
-	public selectedPeriod: {
-		startTime: Date,
-		endTime: Date
-	};
+	public selectedPeriod: DatePeriod;
 	public selectedYear: number;
 	public selectedMonth: number;
+	public canEdit: boolean;
 
 	constructor(
 		private _timeService: TimeService,
@@ -61,32 +60,48 @@ export class UserTasksComponent implements OnInit {
 		this.leaves$ = null;
 
 		this.selectedPeriod = this._getPeriod(new Date());
-		this.selectedMonth = this.selectedPeriod.startTime.getMonth();
-		this.selectedYear = this.selectedPeriod.startTime.getFullYear();
+		this.selectedMonth = this.selectedPeriod.startDate?.getMonth()!;
+		this.selectedYear = this.selectedPeriod?.startDate?.getFullYear()!;
+		this.canEdit = true;
 	}
 
 	public ngOnInit(): void {
 		this._getTasks();
 	}
 
-	private _getPeriod(date: Date) {
-		const startTime = new Date(date.getFullYear(), date.getMonth(), 1);
-		const endTime = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+	private _getEditPermission(): boolean {
+		const currentDate = new Date();
+		const currentMonth = currentDate.getMonth();
+		const currentYear = currentDate.getFullYear();
+
+		if (currentYear === this.selectedYear &&
+			(currentMonth === this.selectedMonth || currentDate.getDate() <= 5 && currentMonth === this.selectedMonth + 1)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private _getPeriod(date: Date): DatePeriod {
+		const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+		const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 		return {
-			startTime,
-			endTime
+			startDate,
+			endDate
 		}
 	}
 
 	private _getTasks(): void {
 		const userId = this._userService.getCurrentUser()?.id;
-		console.log(userId)
+
+		console.log(this.selectedPeriod.startDate)
+		console.log(this.selectedPeriod.endDate)
 
 		const findWorkTimesParams: IParams = {
 			userid: userId,
 			skipCount: 0,
 			takeCount: 10,
-			month: this.selectedMonth,
+			month: this.selectedMonth + 1,
 			year: this.selectedYear
 		}
 
@@ -94,8 +109,8 @@ export class UserTasksComponent implements OnInit {
 			userid: userId,
 			skipCount: 0,
 			takeCount: 10,
-			starttime: this.selectedPeriod.startTime.toISOString(),
-			endtime: this.selectedPeriod.endTime.toISOString(),
+			starttime: this.selectedPeriod.startDate?.toISOString(),
+			endtime: this.selectedPeriod.endDate?.toISOString(),
 		}
 
 		this.projects$ = this._timeService.findWorkTimes(findWorkTimesParams)
@@ -104,7 +119,7 @@ export class UserTasksComponent implements OnInit {
 				id: workTime.id,
 				name: workTime.project?.name,
 				status: workTime.project?.status,
-				userId: workTime?.userId,
+				userId: workTime?.user?.id,
 				managerHours: workTime?.managerHours,
 				userHours: workTime?.userHours,
 				month: workTime?.month,
@@ -113,6 +128,8 @@ export class UserTasksComponent implements OnInit {
 
 		this.leaves$ = this._timeService.findLeaveTimes(findLeaveTimesParams)
 			.pipe(map(res => res.body))
+
+		this.canEdit = this._getEditPermission();
 	}
 
 	public openMonthpicker() {

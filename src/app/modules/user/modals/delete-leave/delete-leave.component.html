@@ -1,7 +1,8 @@
 <div class='modal'>
     <h3 class='modal__title h3'>Удаление записи</h3>
     <div class='modal__message'>
-        <p class='regular_text'>Вы действительно хотите удалить часы из отсутствия "{{leave.name}}" за
+        <p class='regular_text'>Вы действительно хотите удалить часы из отсутствия
+            "{{getRusType(leave.leaveType!)?.toLowerCase()}}" за
             {{leave.date | date: 'LLLL YYYY'}}? Отменить это действие будет невозможно.
         </p>
     </div>

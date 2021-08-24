@@ -3,6 +3,8 @@
             {{project.name}}</p>
     </h3>
     <form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
+        <mat-error *ngIf="editForm.controls['userHours'].errors?.required" class='text-negative_accent modal__error'>
+            Заполните количество часов</mat-error>
         <div class='modal__hours-wrapper'>
             <mat-form-field appearance="fill" class='modal__hours'>
                 <mat-label>Часы</mat-label>
@@ -13,10 +15,13 @@
                     YYYY'}}</span>
             </span>
         </div>
-        <mat-form-field appearance="fill" class="modal__description">
-            <mat-label>Комментарий</mat-label>
-            <textarea matInput formControlName="description" class="modal__description-field text-dark_1"></textarea>
-        </mat-form-field>
+        <div>
+            <mat-form-field appearance="fill" class="modal__description">
+                <mat-label>Комментарий</mat-label>
+                <textarea matInput formControlName="description"
+                    class="modal__description-field text-dark_1"></textarea>
+            </mat-form-field>
+        </div>
         <div class='controls'>
             <button mat-flat-button type="button" class='controls__button' (click)="onClose()"><span
                     class='regular_text text-gray1'>Отмена</span></button>
