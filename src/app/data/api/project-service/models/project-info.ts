@@ -5,14 +5,14 @@ import { ProjectStatusType } from './project-status-type';
 export interface ProjectInfo {
 
   /**
-   * Data and time created project.
-   */
-  createdAtUtc?: any;
-
-  /**
    * Unique project creater identifier.
    */
-  createdBy?: string;
+  authorId?: string;
+
+  /**
+   * Data and time created project.
+   */
+  createdAt?: any;
   department?: null | DepartmentInfo;
   description?: null | string;
 
