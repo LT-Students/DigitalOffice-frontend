@@ -1,42 +1,68 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Time } from '@angular/common';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
 import { DatePeriod } from '@data/models/date-period';
+import { IFindLeaveTimesRequest, IFindWorkTimesRequest, TimeService } from '@app/services/time/time.service';
+import { map, tap } from 'rxjs/operators';
+import { LeaveTimeInfo } from '@data/api/time-service/models/leave-time-info';
+import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
+import { UserService } from '@app/services/user/user.service';
 import { DateService } from './date.service';
-import { TimeService } from '@app/services/time/time.service';
 
-@Injectable()
+export interface Activities {
+	projects?: WorkTimeInfo[];
+	leaves?: LeaveTimeInfo[];
+}
+
+@Injectable({
+	providedIn: 'root',
+})
 export class AttendanceService {
-	private readonly _datePeriod = new BehaviorSubject<DatePeriod>(this._dateService.getDefaultDatePeriod());
+	private readonly _recommendedTime = new BehaviorSubject<number>(this.getRecommendedTime(this._dateService.getDefaultDatePeriod()));
+	public readonly recommendedTime$ = this._recommendedTime.asObservable();
 
-	readonly datePeriod$ = this._datePeriod.asObservable();
+	// private readonly _projects = new BehaviorSubject<number>(4);
+	// public readonly projects$ = this._projects.asObservable();
+	//
+	// private readonly _leaves = new BehaviorSubject(4);
+	// public readonly leaves$ = this._leaves.asObservable();
 
-	private readonly _recommendedTime = new BehaviorSubject<number>(this.getRecommendedTime(this.datePeriod));
+	private readonly _activities = new BehaviorSubject<Activities>({});
+	public readonly activities = this._activities.asObservable();
 
-	readonly recommendedTime$ = this._recommendedTime.asObservable();
+	private _currentDate: Date;
 
-	private readonly _activities = new BehaviorSubject<Time>(this.getRecommendedTime(this.datePeriod));
-
-	readonly activities$ = this._activities.asObservable();
-
-	get datePeriod(): DatePeriod {
-		return this._datePeriod.getValue();
+	constructor(private _dateService: DateService, private _timeService: TimeService, private _userService: UserService) {
+		this._currentDate = new Date();
 	}
 
-	constructor(private _dateService: DateService, private _timeService: TimeService) {}
-
-	public onDatePeriodChange(datePeriod: DatePeriod): void {
-		const normalizedDatePeriod = this._dateService.normalizeDatePeriod(datePeriod);
-		this._datePeriod.next(normalizedDatePeriod);
-		if (normalizedDatePeriod.endDate) {
-			this._recommendedTime.next(this.getRecommendedTime(normalizedDatePeriod));
-		}
+	public getActivities(
+		userId: string | undefined,
+		month = this._currentDate.getMonth(),
+		year = this._currentDate.getFullYear(),
+	): Observable<Activities> {
+		const workTimesParams: IFindWorkTimesRequest = {
+			userid: userId,
+			skipCount: 0,
+			takeCount: 10,
+			month: month,
+			year: year,
+		};
+		const leaveTimesParams: IFindLeaveTimesRequest = {
+			userid: userId,
+			skipCount: 0,
+			takeCount: 10,
+			starttime: new Date(year, month, 1).toISOString(),
+			endtime: new Date(year, month + 1, 0).toISOString(),
+		};
+		return forkJoin({
+			projects: this._timeService.findWorkTimes(workTimesParams).pipe(map((projects) => projects.body)),
+			leaves: this._timeService.findLeaveTimes(leaveTimesParams).pipe(map((leaves) => leaves.body)),
+		}).pipe(tap((activities) => this._setActivities(activities)));
 	}
 
-	normalizeTime(time: any): string {
-		const timeString = time.toString();
-		return timeString.length === 1 ? '0' + timeString : timeString;
+	private _setActivities(activities: Activities): void {
+		this._activities.next(activities);
 	}
 
 	public getRecommendedTime(datePeriod: DatePeriod, hoursPerDay: number = 8, skipHolidays = false, rate: number = 1): number {
