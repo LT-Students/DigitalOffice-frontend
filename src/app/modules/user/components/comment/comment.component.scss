@@ -1,11 +1,7 @@
-.cell {
+.comment {
 	vertical-align: top;
 
 	&__content {
-		margin: 13px 35px 7px 0;
-	}
-
-	&__text {
 		min-width: 75px;
 
 		&_collapsed {
@@ -15,7 +11,7 @@
 		}
 	}
 
-	&__comment {
+	&__text {
 		margin-bottom: 0;
 
 		word-break: break-all;

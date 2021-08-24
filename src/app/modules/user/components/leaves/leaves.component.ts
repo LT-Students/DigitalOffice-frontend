@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, ViewChild, ViewEncapsulation } from "@angular/core";
 
 import { ModalService, ModalWidth } from "@app/services/modal.service";
 import { LeaveTimeInfo, LeaveType, OperationResultStatusType } from "@data/api/time-service/models";
@@ -6,6 +6,7 @@ import { DeleteLeaveComponent } from "../../modals/delete-leave/delete-leave.com
 import { EditLeaveComponent } from "../../modals/edit-leave/edit-leave.component";
 import { IDialogResponse } from "../user-tasks/user-tasks.component";
 import { LeaveTimeModel } from "@app/models/leave-time.model";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 export interface IModalContentConfig {
     id?: string;
@@ -21,7 +22,7 @@ export interface IModalContentConfig {
     selector: 'do-leaves',
     templateUrl: './leaves.component.html',
     styleUrls: ['./leaves.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeavesComponent implements OnChanges {
     @Input() leaves: LeaveTimeInfo[] | undefined | null;
@@ -30,7 +31,8 @@ export class LeavesComponent implements OnChanges {
 
     constructor(
         private _modalService: ModalService,
-        private _cdr: ChangeDetectorRef
+        private _cdr: ChangeDetectorRef,
+        private _snackBar: MatSnackBar
     ) {
         this.leaves = [];
         this.canEdit = true;
@@ -71,6 +73,7 @@ export class LeavesComponent implements OnChanges {
                     leave.endTime = result.data.endTime;
 
                     this._cdr.detectChanges();
+                    this._snackBar.open('Leave successfully edited', 'Close', { duration: 3000 });
                 }
             })
     }

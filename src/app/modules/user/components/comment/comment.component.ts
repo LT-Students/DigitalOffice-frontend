@@ -1,5 +1,4 @@
-import { Input } from "@angular/core";
-import { Component, ElementRef, Output, ViewChild, EventEmitter, OnChanges, AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef } from "@angular/core";
+import { Component, ElementRef, ViewChild, OnChanges, AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Input } from "@angular/core";
 
 @Component({
     selector: 'do-comment',
@@ -32,7 +31,7 @@ export class CommentComponent implements OnChanges, AfterViewChecked {
     }
 
     private _initComment() {
-        this.comment?.nativeElement.classList.remove('cell__text_collapsed')
+        this.comment?.nativeElement.classList.remove('comment__content_collapsed')
         this.commentCollapsed = false;
         this.commentCheckedFirstTime = true;
         this.buttonShowed = false;
@@ -51,11 +50,11 @@ export class CommentComponent implements OnChanges, AfterViewChecked {
 
     public collapseComment() {
         this.commentCollapsed = true;
-        this.comment?.nativeElement.classList.add('cell__text_collapsed')
+        this.comment?.nativeElement.classList.add('comment__content_collapsed')
     }
 
     public expandComment() {
         this.commentCollapsed = false;
-        this.comment?.nativeElement.classList.remove("cell__text_collapsed")
+        this.comment?.nativeElement.classList.remove('comment__content_collapsed')
     }
 }

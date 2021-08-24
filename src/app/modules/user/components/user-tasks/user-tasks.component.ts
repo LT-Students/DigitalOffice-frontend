@@ -5,19 +5,9 @@ import { MatDatepicker } from '@angular/material/datepicker';
 
 import { OperationResultStatusType, ProjectStatusType } from '@data/api/time-service/models';
 import { LeaveTimeInfo } from '@data/api/time-service/models';
-import { TimeService } from '@app/services/time/time.service';
+import { IFindLeaveTimesRequest, IFindWorkTimesRequest, TimeService } from '@app/services/time/time.service';
 import { UserService } from '@app/services/user/user.service';
 import { DatePeriod } from '@data/models/date-period'
-
-interface IParams {
-	userid?: string;
-	skipCount?: number;
-	takeCount?: number;
-	starttime?: string;
-	endtime?: string;
-	month?: number;
-	year?: number;
-}
 
 export interface IDialogResponse {
 	status?: OperationResultStatusType;
@@ -43,8 +33,8 @@ export interface IMappedProject {
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserTasksComponent implements OnInit {
-	public projects$: Observable<IMappedProject[] | undefined> | null;
-	public leaves$: Observable<LeaveTimeInfo[] | undefined> | null;
+	public projects$: Observable<IMappedProject[] | undefined>;
+	public leaves$: Observable<LeaveTimeInfo[] | undefined>;
 	@ViewChild('dp') monthpicker: MatDatepicker<Date> | undefined;
 
 	public selectedPeriod: DatePeriod;
@@ -56,8 +46,8 @@ export class UserTasksComponent implements OnInit {
 		private _timeService: TimeService,
 		private _userService: UserService,
 	) {
-		this.projects$ = null;
-		this.leaves$ = null;
+		this.projects$ = new Observable<IMappedProject[] | undefined>();
+		this.leaves$ = new Observable<LeaveTimeInfo[] | undefined>();
 
 		this.selectedPeriod = this._getPeriod(new Date());
 		this.selectedMonth = this.selectedPeriod.startDate?.getMonth()!;
@@ -97,7 +87,7 @@ export class UserTasksComponent implements OnInit {
 		console.log(this.selectedPeriod.startDate)
 		console.log(this.selectedPeriod.endDate)
 
-		const findWorkTimesParams: IParams = {
+		const findWorkTimesParams: IFindWorkTimesRequest = {
 			userid: userId,
 			skipCount: 0,
 			takeCount: 10,
@@ -105,7 +95,7 @@ export class UserTasksComponent implements OnInit {
 			year: this.selectedYear
 		}
 
-		const findLeaveTimesParams: IParams = {
+		const findLeaveTimesParams: IFindLeaveTimesRequest = {
 			userid: userId,
 			skipCount: 0,
 			takeCount: 10,
@@ -147,53 +137,3 @@ export class UserTasksComponent implements OnInit {
 		this._getTasks();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-// Старый код, пусть будет, вдруг понадобится
-
-// private _groupProjects(tasks: WorkTimeInfo[]): void {
-	// 	let projects = {};
-	// 	tasks.forEach(task => {
-	// 		if (!projects[task.project.name]) {
-	// 			projects[task.project.name] = {}
-	// 			projects[task.project.name] = {
-	// 				...task.project,
-	// 				tasks: [{
-	// 					id: task.id,
-	// 					createdAt: task.createdAt,
-	// 					createdBy: task.createdBy,
-	// 					description: task.description,
-	// 					startTime: task.startTime,
-	// 					endTime: task.endTime,
-	// 					minutes: task.minutes,
-	// 					title: task.title,
-	// 					userId: task.userId
-	// 				}]
-	// 			}
-	// 		}
-	// 		else
-	// 			projects[task.project.name].tasks.push({
-	// 				id: task.id,
-	// 				createdAt: task.createdAt,
-	// 				createdBy: task.createdBy,
-	// 				description: task.description,
-	// 				startTime: task.startTime,
-	// 				endTime: task.endTime,
-	// 				minutes: task.minutes,
-	// 				title: task.title,
-	// 				userId: task.userId
-	// 			});
-	// 	})
-	// 	for (let project in projects) {
-	// 		this.projects.push(projects[project]);
-	// 	}
-	// }
