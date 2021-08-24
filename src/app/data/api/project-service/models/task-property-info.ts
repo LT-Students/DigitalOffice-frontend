@@ -4,14 +4,14 @@ import { PropertyType } from './property-type';
 export interface TaskPropertyInfo {
 
   /**
-   * Data and time created task property.
-   */
-  createdAtUtc?: any;
-
-  /**
    * Unique author Id task property identifier.
    */
-  createdBy?: null | string;
+  authorId?: null | string;
+
+  /**
+   * Data and time created task property.
+   */
+  createdAt?: any;
 
   /**
    * The task property description.
