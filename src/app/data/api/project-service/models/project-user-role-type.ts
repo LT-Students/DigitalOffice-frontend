@@ -7,6 +7,7 @@
  * ,Enum numbers description
  * * 1 - Admin
  */
-export enum UserRoleType {
-  ProjectAdmin = 'ProjectAdmin'
+export enum ProjectUserRoleType {
+  Manager = 'Manager',
+  Employee = 'Employee'
 }
