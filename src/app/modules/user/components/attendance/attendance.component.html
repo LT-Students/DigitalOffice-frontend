@@ -1,6 +1,6 @@
 <h2>Доска учета времени</h2>
 <div class="grid">
 	<do-add-hours></do-add-hours>
-	<do-doughnut-chart [projectList]="projects$ | async"></do-doughnut-chart>
+	<do-doughnut-chart></do-doughnut-chart>
 </div>
 <do-user-tasks class="tasks" [timePeriodSelected]="timePeriodSelected" [projects]="projects$ | async"></do-user-tasks>

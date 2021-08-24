@@ -81,7 +81,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		this.userSubscription = this._employeeService.selectedUser.subscribe((user) => {
 			this.user = user;
 			console.log('main-info', user);
-			this._cdr.detectChanges()
+			this._cdr.markForCheck();
 		});
 	}
 

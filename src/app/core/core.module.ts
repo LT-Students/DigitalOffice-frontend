@@ -50,7 +50,6 @@ import { EmployeePageService } from '@app/services/employee-page.service';
 		CommunicationService,
 		CredentialsService,
 		EducationService,
-		UserService,
 		NetService,
 		EmployeePageService
 	],

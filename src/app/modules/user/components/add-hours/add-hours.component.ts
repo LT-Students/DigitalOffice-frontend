@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { IEditWorkTimeRequest, TimeService } from '@app/services/time/time.service';
 import { UserService } from '@app/services/user/user.service';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { WorkTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
 import { timeValidator } from './add-hours.validators';
@@ -33,7 +33,7 @@ export class AddHoursComponent implements OnInit {
 	public isBeginningOfMonth: boolean;
 	public recommendedTime: number;
 
-	private readonly userId: string | undefined;
+	private _userId: string | undefined;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -44,10 +44,9 @@ export class AddHoursComponent implements OnInit {
 		private _snackbar: MatSnackBar
 	) {
 		this.currentDate = new Date();
-		this.recommendedTime = _attendanceService.getRecommendedTime(_attendanceService.datePeriod, 8, true);
+		this.recommendedTime = _attendanceService.getRecommendedTime(_dateService.getDefaultDatePeriod(), 8, true);
 		this.isProjectForm = true;
 		this.absences = LeaveTimeModel.getAllLeaveTypes();
-		this.userId = _userService.getCurrentUser()?.id;
 		this.isBeginningOfMonth = this._canAddTimeToPreviousMonth();
 		this.monthOptions = this.isBeginningOfMonth ? this._getMonthOptions() : null;
 
@@ -59,13 +58,16 @@ export class AddHoursComponent implements OnInit {
 			comment: [''],
 		});
 
-		this.workTimes$ = this._getWorkTimes(this.currentDate.getMonth());
+		this.workTimes$ = this._userService.currentUser$.pipe(
+			tap((user) => (this._userId = user?.id)),
+			switchMap(() => this._getWorkTimes(this.currentDate.getMonth()))
+		);
 	}
 
 	ngOnInit() {}
 
 	private _getWorkTimes(month?: number): Observable<WorkTimeInfo[]> {
-		return this._timeService.findWorkTimes({ skipCount: 0, takeCount: 10, userid: this.userId, month }).pipe(
+		return this._timeService.findWorkTimes({ skipCount: 0, takeCount: 10, userid: this._userId, month }).pipe(
 			filter((response) => response.body != null),
 			switchMap((response) => of(response.body as WorkTimeInfo[]))
 		);
@@ -129,7 +131,7 @@ export class AddHoursComponent implements OnInit {
 			timeService = this._timeService.editWorkTime(addWorkTime);
 		} else {
 			const addLeaveTime: CreateLeaveTimeRequest = {
-				userId: this.userId as string,
+				userId: this._userId as string,
 				startTime: this.addHoursForm.get('startDate')?.value.toISOString(),
 				endTime: this.addHoursForm.get('endDate')?.value.toISOString(),
 				leaveType: this.addHoursForm.get('activity')?.value,

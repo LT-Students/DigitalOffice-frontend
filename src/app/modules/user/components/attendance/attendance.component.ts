@@ -20,8 +20,6 @@ import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.componen
 	providers: [ AttendanceService ],
 })
 export class AttendanceComponent implements OnInit {
-	public user: User | null;
-
 	public timePeriodSelected: DatePeriod = {
 		startDate: new Date(),
 	};
@@ -38,7 +36,6 @@ export class AttendanceComponent implements OnInit {
 	];
 
 	constructor(private _projectService: ProjectService, private _userService: UserService) {
-		this.user = null;
 		this.projects$ = this._projectService.findProjects().pipe(
 			map((data: FindResponseProjectInfo) => data.body as ProjectInfo[]),
 			map((data: ProjectInfo[]) => {
@@ -47,8 +44,5 @@ export class AttendanceComponent implements OnInit {
 		);
 	}
 
-	ngOnInit() {
-
-		this.user = this._userService.getCurrentUser();
-	}
+	ngOnInit() {}
 }
