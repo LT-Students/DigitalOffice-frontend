@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.1.1",
+    "version": "1.2.1",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -841,12 +841,12 @@
             "description": "Planed time at completed task.",
             "nullable": true
           },
-          "CreatedAtUtc": {
+          "CreatedAt": {
             "description": "Data and time created task.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
           },
-          "CreatedBy": {
+          "Author": {
             "description": "Task creator.",
             "$ref": "#/components/schemas/UserTaskInfo"
           },
@@ -869,7 +869,7 @@
             "example": "20d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
           "Role": {
-            "$ref": "#/components/schemas/UserRoleType"
+            "$ref": "#/components/schemas/ProjectUserRoleType"
           }
         }
       },
@@ -889,7 +889,7 @@
             "example": "20d03a19-872e-45bc-b1ed-a01d6fac3c0f",
             "nullable": true
           },
-          "CreatedBy": {
+          "AuthorId": {
             "description": "Unique author Id task property identifier.",
             "type": "string",
             "format": "uuid",
@@ -907,7 +907,7 @@
             "example": "My description",
             "nullable": true
           },
-          "CreatedAtUtc": {
+          "CreatedAt": {
             "description": "Data and time created task property.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
@@ -1010,12 +1010,12 @@
           "AvatarImage": {
             "$ref": "#/components/schemas/ImageInfo"
           },
-          "CreatedAtUtc": {
+          "AddedOn": {
             "description": "Data and time added user to project.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
           },
-          "ModifiedAtUtc": {
+          "RemovedOn": {
             "description": "Data and time removed user from project.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2020-12-10 04:13",
@@ -1031,7 +1031,7 @@
             "type": "integer"
           },
           "Role": {
-            "$ref": "#/components/schemas/UserRoleType"
+            "$ref": "#/components/schemas/ProjectUserRoleType"
           },
           "Position": {
             "$ref": "#/components/schemas/PositionInfo"
@@ -1067,7 +1067,7 @@
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
-          "CreatedBy": {
+          "AuthorId": {
             "description": "Unique project creater identifier.",
             "type": "string",
             "format": "uuid",
@@ -1101,7 +1101,7 @@
             "type": "string",
             "nullable": true
           },
-          "CreatedAtUtc": {
+          "CreatedAt": {
             "description": "Data and time created project.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
@@ -1166,19 +1166,21 @@
           }
         }
       },
-      "UserRoleType": {
+      "ProjectUserRoleType": {
         "type": "string",
         "description": "User role\n\n,Enum numbers description\n* 1 - Admin\n",
         "enum": [
-          "ProjectAdmin"
+          "Manager",
+          "Employee"
         ],
-        "example": "ProjectAdmin"
+        "example": "Manager"
       },
       "ProjectRequest": {
         "type": "object",
         "required": [
           "Name",
-          "DepartmentId"
+          "Status",
+          "Users"
         ],
         "properties": {
           "Name": {
@@ -1354,7 +1356,7 @@
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
           "Role": {
-            "$ref": "#/components/schemas/UserRoleType"
+            "$ref": "#/components/schemas/ProjectUserRoleType"
           }
         }
       },
@@ -1405,7 +1407,7 @@
             "type": "integer",
             "nullable": true
           },
-          "CreatedAtUtc": {
+          "CreatedAt": {
             "description": "Data and time created task.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
@@ -1413,7 +1415,7 @@
           "Project": {
             "$ref": "#/components/schemas/ProjectInfo"
           },
-          "CreatedBy": {
+          "Author": {
             "description": "Task creator.",
             "$ref": "#/components/schemas/ProjectUserInfo"
           },
@@ -1767,54 +1769,7 @@
         "type": "object",
         "properties": {
           "Body": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Unique project identifier.",
-                "type": "string",
-                "format": "uuid",
-                "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-              },
-              "authorId": {
-                "description": "Unique project creater identifier.",
-                "type": "string",
-                "format": "uuid",
-                "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-              },
-              "status": {
-                "$ref": "#/components/schemas/ProjectStatusType",
-                "nullable": false
-              },
-              "name": {
-                "description": "Project name.",
-                "type": "string",
-                "example": "Digital Office",
-                "nullable": false
-              },
-              "shortName": {
-                "description": "Project short name.",
-                "type": "string",
-                "example": "DO",
-                "nullable": true
-              },
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "shortDescription": {
-                "type": "string",
-                "nullable": true
-              },
-              "department": {
-                "$ref": "#/components/schemas/DepartmentInfo",
-                "nullable": true
-              },
-              "CreatedAtUtc": {
-                "description": "Data and time created project.",
-                "pattern": "YYYY-MM-DDTHH:mm",
-                "example": "2021-12-10 03:13"
-              }
-            }
+            "$ref": "#/components/schemas/ProjectInfo"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
