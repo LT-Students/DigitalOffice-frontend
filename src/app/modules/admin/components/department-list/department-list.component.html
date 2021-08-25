@@ -7,7 +7,7 @@
 	<div doText class="table">
 		<div class="table__header">
 			<h3 doText underlined underlinedSize="sm">Список департаментов</h3>
-			<button mat-flat-button color="primary" (click)="onAddEmployeeClick()">+ Добавить департамент</button>
+			<button mat-flat-button color="orange" (click)="onAddEmployeeClick()">+ Добавить департамент</button>
 		</div>
 		<!--		<div class="table__filters">-->
 		<!--			<mat-form-field class="mat-form-field__form-control edit-form__institution" appearance="fill" floatLabel="always">-->
@@ -27,7 +27,7 @@
 				<th mat-sort-header="amount">Количество сотрудников</th>
 			</tr>
 			<ng-container *ngFor="let departmentInfo of sortedDepartmentsInfo">
-				<tr class="table__row" (click)="onDepartmentClick(departmentInfo.id)">
+                <tr class="table__row" (click)="onDepartmentClick(departmentInfo.id)">
 					<td>
 						<ng-container *ngIf="departmentInfo?.name; else empty">{{ departmentInfo.name }}</ng-container>
 					</td>

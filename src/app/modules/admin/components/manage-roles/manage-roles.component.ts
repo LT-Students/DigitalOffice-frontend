@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -24,6 +23,7 @@ export class ManageRolesComponent implements OnInit {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.roles = [];
 	}
 
 	public ngOnInit(): void {
@@ -42,8 +42,8 @@ export class ManageRolesComponent implements OnInit {
 
 	private _getRoleList(): void {
 		this.roleApiService.findRoles({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
-			this.totalCount = res.totalCount;
-			this.roles = res.roles;
+			this.totalCount = res?.totalCount ?? 0;
+			this.roles = res?.roles ?? [];
 		});
 	}
 }

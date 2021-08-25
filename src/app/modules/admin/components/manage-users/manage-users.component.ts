@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UserInfo } from '@data/api/user-service/models/user-info';
@@ -16,7 +15,7 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageUsersComponent implements OnInit {
-	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild(MatSort) sort: MatSort | undefined;
 
 	public displayedColumns: string[];
 	public userInfo: UserInfo[];
@@ -31,8 +30,8 @@ export class ManageUsersComponent implements OnInit {
 	constructor(private _userService: UserService, private _dialog: MatDialog) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
-		this.userInfo = null;
-		this.sortedUserInfo = null;
+		this.userInfo = [];
+		this.sortedUserInfo = [];
 		this.studyTypes = [EducationType.Offline, EducationType.Online];
 
 		this.totalCount = 0;
@@ -66,7 +65,7 @@ export class ManageUsersComponent implements OnInit {
 		evt.stopPropagation();
 		console.log(evt)
 		if (user.isActive) {
-			this._userService.disableUser(user.id).subscribe(() => {
+			this._userService.disableUser(user?.id ?? '').subscribe(() => {
 				this._getPageUsers();
 			});
 		}
@@ -98,7 +97,7 @@ export class ManageUsersComponent implements OnInit {
 		});
 	}
 
-	private _compare(a: number | string, b: number | string, isAsc: boolean) {
+	private _compare(a: number | string | undefined, b: number | string | undefined, isAsc: boolean) {
 		if (typeof a === 'undefined' || typeof b === 'undefined') {
 			return 0;
 		}
@@ -107,9 +106,9 @@ export class ManageUsersComponent implements OnInit {
 
 	private _getPageUsers(): void {
 		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
-			this.totalCount = data.totalCount;
-			this.userInfo = data.body.slice();
-			this.sortedUserInfo = data.body.slice();
+			this.totalCount = data?.totalCount ?? 0;
+			this.userInfo = data?.body?.slice() ?? [];
+			this.sortedUserInfo = data?.body?.slice() ?? [];
 		});
 	}
 }

@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
@@ -22,14 +21,16 @@ export class DepartmentListComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
+	public id: string;
 
 	constructor(private netService: NetService, private dialog: MatDialog, private router: Router) {
-		this.departmentsInfo = null;
-		this.sortedDepartmentsInfo = null;
+		this.departmentsInfo = [];
+		this.sortedDepartmentsInfo = [];
 
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.id = '';
 	}
 
 	ngOnInit(): void {
@@ -40,8 +41,10 @@ export class DepartmentListComponent implements OnInit {
 		this.dialog.open(NewDepartmentComponent);
 	}
 
-	public onDepartmentClick(departmentId) {
-		this.router.navigate([`${RouteType.DEPARTMENTS}/${departmentId}`]);
+	public onDepartmentClick(departmentId: string | undefined) {
+		if (departmentId !== undefined) {
+			this.router.navigate([ `${ RouteType.DEPARTMENTS }/${ departmentId }` ]);
+		}
 	}
 
 	public onPageChange(event: PageEvent): void {
@@ -52,9 +55,9 @@ export class DepartmentListComponent implements OnInit {
 
 	private _getDepartments(): void {
 		this.netService.getDepartmentsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
-			this.totalCount = res.totalCount;
-			this.departmentsInfo = res.body;
-			this.sortedDepartmentsInfo = res.body;
+			this.totalCount = res?.totalCount ?? 0;
+			this.departmentsInfo = res?.body ?? [];
+			this.sortedDepartmentsInfo = res?.body ?? [];
 		});
 	}
 
@@ -82,8 +85,8 @@ export class DepartmentListComponent implements OnInit {
 		});
 	}
 
-	private _compare(a: number | string, b: number | string, isAsc: boolean) {
-		if (typeof a === 'undefined' || typeof b === 'undefined') {
+	private _compare(a: number | string | undefined | null, b: number | string | undefined | null, isAsc: boolean) {
+		if (a == null || b == null) {
 			return 0;
 		}
 		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
