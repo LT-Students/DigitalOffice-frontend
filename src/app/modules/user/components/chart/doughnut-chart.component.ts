@@ -1,11 +1,9 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, ReplaySubject } from 'rxjs';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 import { Chart, registerables } from 'chart.js';
 import { Activities, AttendanceService } from '@app/services/attendance.service';
-import { ProjectStore } from '@data/store/project.store';
-import { ProjectModel } from '@app/models/project/project.model';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { UserService } from '@app/services/user/user.service';
 
@@ -29,12 +27,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private _activities: Activities | undefined;
 	private _userId: string | undefined;
 
-	public startDate: Date = new Date();
+	public currentDate: Date = new Date();
 
 	public MONTH_NORM = 160;
 	public userHours: BehaviorSubject<number>;
 
-	constructor(private _attendanceService: AttendanceService, private _userService: UserService, private projectStore: ProjectStore) {
+	constructor(private _attendanceService: AttendanceService, private _userService: UserService) {
 		this.userHours = new BehaviorSubject<number>(0);
 	}
 
@@ -47,9 +45,9 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 				switchMap(() => this._attendanceService.activities$)
 			)
 			.subscribe({
-				next: (response) => {
-					this._activities = response;
-					console.log('chart', this._activities);
+				next: (activities) => {
+					const dateKey = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth());
+					this._activities = activities.get(dateKey.getTime());
 					this.userHours.next(this._countUserHours());
 					if (this.chart) {
 						this.updateChart();
@@ -98,7 +96,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		const colors = [...this.COLORS.slice(0, projectsHours.length + (leavesHours ? 1 : 0)), this.EMPTY_COLOR];
 
 		this.chart.data.labels = labels;
-		this.chart.data.datasets[0].data = [...projectsHours!, leavesHours, (timeLeft < 0 ? 0 : timeLeft)];
+		this.chart.data.datasets[0].data = [...projectsHours!, leavesHours, timeLeft < 0 ? 0 : timeLeft];
 		this.chart.data.datasets[0].backgroundColor = colors;
 		this.chart.update();
 	}
@@ -143,14 +141,16 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	}
 
 	public chosenMonthHandler(chosenDate: Date, picker: MatDatepicker<any>): void {
-		this.startDate = chosenDate;
+		this.currentDate = chosenDate;
 		picker.close();
+		this._attendanceService.getActivities(this._userId, this.currentDate.getMonth(), this.currentDate.getFullYear()).pipe(take(1)).subscribe();
 	}
 
 	public changeMonth(changeDate: number): void {
-		const currentMonth = this.startDate.getMonth();
+		const currentMonth = this.currentDate.getMonth();
 		const nextMonth = currentMonth + changeDate;
-		this.startDate = new Date(this.startDate.setMonth(nextMonth));
+		this.currentDate = new Date(this.currentDate.setMonth(nextMonth));
+		this._attendanceService.getActivities(this._userId, this.currentDate.getMonth(), this.currentDate.getFullYear()).pipe(take(1)).subscribe();
 	}
 
 	public onPreviousMonthClicked(): void {

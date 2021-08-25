@@ -21,7 +21,7 @@ export class AttendanceService {
 	private readonly _recommendedTime = new BehaviorSubject<number>(this.getRecommendedTime(this._dateService.getDefaultDatePeriod()));
 	public readonly recommendedTime$ = this._recommendedTime.asObservable();
 
-	private readonly _activities = new BehaviorSubject<Activities>({});
+	private readonly _activities = new BehaviorSubject<Map<number, Activities>>(new Map());
 	public readonly activities$ = this._activities.asObservable();
 
 	private _currentDate: Date;
@@ -49,14 +49,18 @@ export class AttendanceService {
 			starttime: new Date(year, month, 1).toISOString(),
 			endtime: new Date(year, month + 1, 0).toISOString(),
 		};
+
+		const dateKey = new Date(year, month).getTime();
+
 		return forkJoin({
 			projects: this._timeService.findWorkTimes(workTimesParams).pipe(map((projects) => projects.body)),
 			leaves: this._timeService.findLeaveTimes(leaveTimesParams).pipe(map((leaves) => leaves.body)),
-		}).pipe(tap((activities) => this._setActivities(activities)));
+		}).pipe(tap((activities) => this._setActivities(activities, dateKey)));
 	}
 
-	private _setActivities(activities: Activities): void {
-		this._activities.next(activities);
+	private _setActivities(activities: Activities, dateKey: number): void {
+		const newActivities = this._activities.value.set(dateKey, activities)
+		this._activities.next(newActivities);
 	}
 
 	public getRecommendedTime(datePeriod: DatePeriod, hoursPerDay: number = 8, skipHolidays = false, rate: number = 1): number {

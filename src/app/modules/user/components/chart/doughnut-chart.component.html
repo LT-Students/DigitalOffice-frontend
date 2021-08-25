@@ -2,15 +2,15 @@
 	<h3 doText underlined underlinedSize="sm">
 		<span>Часы за&nbsp;</span>
 		<mat-form-field appearance="fill" class="chart__hidden">
-			<input matInput [matDatepicker]="picker" [(ngModel)]="startDate" />
+			<input matInput [matDatepicker]="picker" [(ngModel)]="currentDate" />
 
-			<mat-datepicker #picker startView="year" [startAt]="startDate" (monthSelected)="chosenMonthHandler($event, picker)">
+			<mat-datepicker #picker startView="year" [startAt]="currentDate" (monthSelected)="chosenMonthHandler($event, picker)">
 				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 			</mat-datepicker>
 		</mat-form-field>
 
 		<a (click)="picker.open()" class="chart__month-picker text-accent_color_bright">
-			{{ startDate | date: 'LLLL YYYY' }}
+			{{ currentDate | date: 'LLLL YYYY' }}
 			<mat-icon>keyboard_arrow_down</mat-icon>
 		</a>
 	</h3>

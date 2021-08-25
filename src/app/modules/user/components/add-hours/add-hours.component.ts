@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { IEditWorkTimeRequest, TimeService } from '@app/services/time/time.service';
 import { UserService } from '@app/services/user/user.service';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { WorkTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
 import { timeValidator } from './add-hours.validators';
@@ -60,7 +60,10 @@ export class AddHoursComponent implements OnInit {
 		this.workTimes$ = this._userService.currentUser$.pipe(
 			tap((user) => (this._userId = user?.id)),
 			switchMap(() => this._attendanceService.activities$),
-			map((activities) => activities.projects)
+			map((activities) => {
+				const dateKey = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth()).getTime();
+				return activities.get(dateKey)?.projects;
+			})
 		);
 	}
 
@@ -68,6 +71,7 @@ export class AddHoursComponent implements OnInit {
 
 	private _getWorkTimes(month: number): void {
 		this._attendanceService.getActivities(this._userId, month).pipe(
+			take(1),
 			map((activities) => activities.projects),
 			switchMap((projects) => of(projects))
 		);
@@ -140,19 +144,24 @@ export class AddHoursComponent implements OnInit {
 			timeService = this._timeService.addLeaveTime(addLeaveTime);
 		}
 
-		timeService.subscribe(
-			() => {
-				this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
-				const { startDate, endDate } = this._dateService.getDefaultDatePeriod();
-				this.addHoursForm.reset({ startDate, endDate });
-				this.addHoursForm.markAsPristine();
-				this.isProjectForm = true;
-			},
-			(error) => {
-				this._snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
-				throw error;
-			}
-		);
+		timeService
+			.pipe(
+				take(1),
+				switchMap(() => this._attendanceService.getActivities(this._userId, this.currentDate.getMonth(), this.currentDate.getFullYear()))
+			)
+			.subscribe(
+				() => {
+					this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
+					const { startDate, endDate } = this._dateService.getDefaultDatePeriod();
+					this.addHoursForm.reset({ startDate, endDate });
+					this.addHoursForm.markAsPristine();
+					this.isProjectForm = true;
+				},
+				(error) => {
+					this._snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
+					throw error;
+				}
+			);
 	}
 
 	public disableWeekends: DateFilterFn<Date> = (d: Date | null): boolean => {

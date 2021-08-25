@@ -26,7 +26,7 @@ export class UserTasksComponent implements OnInit {
 	public projects: WorkTimeInfo[] | undefined;
 	public leaves: LeaveTimeInfo[] | undefined;
 
-	private _activitiesObserver: Observer<Activities>;
+	private _activitiesObserver: Observer<Map<number, Activities>>;
 
 	public selectedPeriod: DatePeriod;
 	public selectedYear: number;
@@ -45,10 +45,11 @@ export class UserTasksComponent implements OnInit {
 
 		this._activitiesObserver = {
 			next: (activities) => {
-				this.projects = activities.projects;
-				this.leaves = activities.leaves;
+				const dateKey = new Date(this.selectedYear, this.selectedMonth).getTime();
+				this.projects = activities.get(dateKey)?.projects;
+				this.leaves = activities.get(dateKey)?.leaves;
 				this._cdr.markForCheck();
-console.log('user tasks', activities)
+				console.log('user tasks', activities);
 				this.canEdit = this._getEditPermission();
 			},
 			error: (err) => {},
@@ -85,8 +86,10 @@ console.log('user tasks', activities)
 		};
 	}
 
-	private _getTasks(userId: string | undefined): Observable<Activities> {
-		return this._attendanceService.getActivities(userId, this.selectedMonth, this.selectedYear);
+	private _getTasks(userId: string | undefined): Observable<Map<number, Activities>> {
+		return this._attendanceService
+			.getActivities(userId, this.selectedMonth, this.selectedYear)
+			.pipe(switchMap(() => this._attendanceService.activities$));
 	}
 
 	public openMonthpicker() {
