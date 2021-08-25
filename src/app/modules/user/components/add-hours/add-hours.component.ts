@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { IEditWorkTimeRequest, TimeService } from '@app/services/time/time.service';
 import { UserService } from '@app/services/user/user.service';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { WorkTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
 import { timeValidator } from './add-hours.validators';
@@ -21,7 +21,6 @@ import { timeValidator } from './add-hours.validators';
 	templateUrl: './add-hours.component.html',
 	styleUrls: ['./add-hours.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [AttendanceService],
 })
 export class AddHoursComponent implements OnInit {
 	public workTimes$: Observable<WorkTimeInfo[] | undefined>;
@@ -60,14 +59,15 @@ export class AddHoursComponent implements OnInit {
 
 		this.workTimes$ = this._userService.currentUser$.pipe(
 			tap((user) => (this._userId = user?.id)),
-			switchMap(() => this._getWorkTimes(this.currentDate.getMonth()))
+			switchMap(() => this._attendanceService.activities$),
+			map((activities) => activities.projects)
 		);
 	}
 
 	ngOnInit() {}
 
-	private _getWorkTimes(month: number): Observable<WorkTimeInfo[] | undefined> {
-		return this._attendanceService.getActivities(this._userId, month).pipe(
+	private _getWorkTimes(month: number): void {
+		this._attendanceService.getActivities(this._userId, month).pipe(
 			map((activities) => activities.projects),
 			switchMap((projects) => of(projects))
 		);
@@ -84,7 +84,7 @@ export class AddHoursComponent implements OnInit {
 	public setMonthToAddTimeTo(date: Date): void {
 		if (!this._dateService.isSameMonth(this.currentDate, date)) {
 			this.currentDate = date;
-			this.workTimes$ = this._getWorkTimes(date.getMonth() + 1);
+			this._getWorkTimes(date.getMonth());
 		}
 	}
 
@@ -143,7 +143,8 @@ export class AddHoursComponent implements OnInit {
 		timeService.subscribe(
 			() => {
 				this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
-				this.addHoursForm.reset();
+				const { startDate, endDate } = this._dateService.getDefaultDatePeriod();
+				this.addHoursForm.reset({ startDate, endDate });
 				this.addHoursForm.markAsPristine();
 				this.isProjectForm = true;
 			},

@@ -52,7 +52,7 @@
     <mat-form-field *ngIf="isProjectForm; else absenceSelection" appearance="fill">
       <mat-label>Выберите проект</mat-label>
       <mat-select formControlName="activity" required>
-        <mat-option *ngFor="let workTime of workTimes$ | async" [value]="workTime.id"
+        <mat-option *ngFor="let workTime of (workTimes$ | async)" [value]="workTime.id"
           (onSelectionChange)="patchWorkTimeInfoIntoForm(workTime)">
           {{ workTime.project?.name }}
         </mat-option>

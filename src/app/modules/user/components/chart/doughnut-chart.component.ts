@@ -44,12 +44,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			.pipe(
 				takeUntil(this.onDestroy$),
 				tap((user) => (this._userId = user?.id)),
-				switchMap(() => this._attendanceService.getActivities(this._userId))
+				switchMap(() => this._attendanceService.activities$)
 			)
 			.subscribe({
 				next: (response) => {
 					this._activities = response;
-					console.log(this._activities);
+					console.log('chart', this._activities);
 					this.userHours.next(this._countUserHours());
 					if (this.chart) {
 						this.updateChart();
@@ -98,7 +98,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		const colors = [...this.COLORS.slice(0, projectsHours.length + (leavesHours ? 1 : 0)), this.EMPTY_COLOR];
 
 		this.chart.data.labels = labels;
-		this.chart.data.datasets[0].data = [...projectsHours!, leavesHours, timeLeft];
+		this.chart.data.datasets[0].data = [...projectsHours!, leavesHours, (timeLeft < 0 ? 0 : timeLeft)];
 		this.chart.data.datasets[0].backgroundColor = colors;
 		this.chart.update();
 	}

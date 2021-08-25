@@ -15,6 +15,12 @@
 		height: 185px;
 	}
 
+	&__canvas {
+		position: relative;
+
+		z-index: 10;
+	}
+
 	&__time-info {
 		position: absolute;
 
