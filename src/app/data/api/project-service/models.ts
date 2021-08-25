@@ -14,7 +14,7 @@ export { ProjectStatusType } from './models/project-status-type';
 export { PropertyType } from './models/property-type';
 export { ProjectTaskInfo } from './models/project-task-info';
 export { UserTaskInfo } from './models/user-task-info';
-export { UserRoleType } from './models/user-role-type';
+export { ProjectUserRoleType } from './models/project-user-role-type';
 export { ProjectRequest } from './models/project-request';
 export { AddUsersToProjectRequest } from './models/add-users-to-project-request';
 export { EditProjectRequest } from './models/edit-project-request';

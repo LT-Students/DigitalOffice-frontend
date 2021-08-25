@@ -17,7 +17,7 @@ import { IDailyHoursData } from '../gradient-graphics/gradient-graphics.componen
 	templateUrl: './attendance.component.html',
 	styleUrls: ['./attendance.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [ AttendanceService ],
+	providers: [AttendanceService],
 })
 export class AttendanceComponent implements OnInit {
 	public user: User | null;

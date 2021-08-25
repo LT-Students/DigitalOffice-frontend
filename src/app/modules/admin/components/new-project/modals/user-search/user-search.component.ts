@@ -1,13 +1,13 @@
-//@ts-nocheck
-import { Component, Inject, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '@app/services/user/user.service';
 import { UserSearchModalConfig } from '@app/services/modal.service';
-import { UserRoleType } from '@data/api/project-service/models/user-role-type';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { NetService } from '@app/services/net.service';
 import { PageEvent } from '@angular/material/paginator';
+import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Team, teamCards } from '../../team-cards';
 import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 
@@ -18,15 +18,15 @@ import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSearchComponent implements OnInit, OnDestroy {
-	@Input() mode: WorkFlowMode;
-	public members: UserInfo[];
-	public membersAll: UserInfo[];
+	@Input() mode: WorkFlowMode | undefined;
+	public members: UserInfo[] | undefined;
+	public membersAll: UserInfo[] | null;
 	public visibleMembers: UserInfo[];
 	public checkedMembers: UserInfo[];
-	public selectedSpecialization;
-	public selectedLevel;
+	public selectedSpecialization: any;
+	public selectedLevel: any;
 	public searchName: string;
-	public roles: UserRoleType[] = [UserRoleType.ProjectAdmin];
+	public roles: ProjectUserRoleType[] = [ProjectUserRoleType.Manager];
 	public positions: PositionInfo[];
 	public WorkFlowMode = WorkFlowMode;
 
@@ -42,9 +42,12 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		private _netService: NetService,
 		private _dialogRef: MatDialogRef<UserSearchComponent>
 	) {
-		this.checkedMembers = [...data.members];
-		this.searchName = null;
+		this.checkedMembers = [...data.members as UserInfo[]];
+		this.searchName = '';
 		this.members = data.members;
+		this.membersAll = [];
+		this.visibleMembers = [];
+		this.positions = [];
 		// TODO: Не показывать, пока не будет применён фильтр
 		switch (data.mode) {
 			case WorkFlowMode.VIEW: {
@@ -52,7 +55,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 				break;
 			}
 			case WorkFlowMode.EDIT: {
-				this.members = data.team.members;
+				this.members = data.team?.members;
 				this._initSearchMode();
 				break;
 			}
@@ -77,8 +80,8 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	private _getMembers(): void {
 		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe(
 			(data) => {
-				this.membersAll = data.body;
-				this.totalCount = data.totalCount;
+				this.membersAll = data.body ?? [];
+				this.totalCount = data.totalCount ?? 0;
 			},
 			(error) => console.log(error)
 		);
@@ -87,14 +90,14 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	private _getPositions(): void {
 		this._netService.getPositionsList({ skipCount: 0, takeCount: 100 }).subscribe(
 			(data) => {
-				this.positions = data.body;
+				this.positions = data.body ?? [];
 			},
 			(error) => console.log(error)
 		);
 	}
 
 	public onSelect() {
-		this.visibleMembers = this.members;
+		this.visibleMembers = this.members ?? [];
 		if (this.selectedSpecialization) {
 			this.visibleMembers = this.visibleMembers.filter(
 				(user: UserInfo) => true
@@ -138,7 +141,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	// 	this.members[index].lead = this.members[index].lead ? !this.members[index].lead : true;
 	// }
 
-	public onCheckMember($event, user: UserInfo): void {
+	public onCheckMember($event: MatCheckboxChange, user: UserInfo): void {
 		if ($event.checked) {
 			this.checkedMembers.push(user);
 		} else {

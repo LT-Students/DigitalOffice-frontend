@@ -1,71 +1,139 @@
-//@ts-nocheck
-import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { MatDatepicker } from '@angular/material/datepicker';
 
-import { DatePeriod } from '@data/models/date-period';
-import { AttendanceService } from '@app/services/attendance.service';
-import { ProjectStore } from '@data/store/project.store';
-import { DateService } from '@app/services/date.service';
-import { Project, ProjectModel } from '@app/models/project/project.model';
+import { OperationResultStatusType, ProjectStatusType } from '@data/api/time-service/models';
+import { LeaveTimeInfo } from '@data/api/time-service/models';
+import { IFindLeaveTimesRequest, IFindWorkTimesRequest, TimeService } from '@app/services/time/time.service';
+import { UserService } from '@app/services/user/user.service';
+import { DatePeriod } from '@data/models/date-period'
+
+export interface IDialogResponse {
+	status?: OperationResultStatusType;
+	data?: any;
+}
+
+export interface IMappedProject {
+	description: string;
+	id: string;
+	name: string;
+	status?: ProjectStatusType;
+	userId?: string;
+	managerHours: number;
+	userHours: number;
+	month: number;
+	year: number;
+}
 
 @Component({
 	selector: 'do-user-tasks',
 	templateUrl: './user-tasks.component.html',
 	styleUrls: ['./user-tasks.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserTasksComponent implements OnInit, OnDestroy {
-	@Input() projects: Project[] | null;
-	@Input() timePeriodSelected: DatePeriod;
+export class UserTasksComponent implements OnInit {
+	public projects$: Observable<IMappedProject[] | undefined>;
+	public leaves$: Observable<LeaveTimeInfo[] | undefined>;
+	@ViewChild('dp') monthpicker: MatDatepicker<Date> | undefined;
 
-	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
+	public selectedPeriod: DatePeriod;
+	public selectedYear: number;
+	public selectedMonth: number;
+	public canEdit: boolean;
 
-	public projectList: ProjectModel[];
-	// TODO: replace projectsList with projects
+	constructor(
+		private _timeService: TimeService,
+		private _userService: UserService,
+	) {
+		this.projects$ = new Observable<IMappedProject[] | undefined>();
+		this.leaves$ = new Observable<LeaveTimeInfo[] | undefined>();
 
-	public isOrderedByProject = false;
-	public isOrderedByHours = false;
-	public startPeriod: Date;
-	public endPeriod: Date;
-	public tasksCount;
-	public searchText = '';
-
-	public startDate: Date | null;
-	public endDate: Date | null;
-
-	constructor(public attendanceService: AttendanceService, private projectStore: ProjectStore, public dateService: DateService) {}
-
-	ngOnInit() {
-		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
-			this.projectList = projects;
-			this.tasksCount = (this.projectList && this.projectList.length)
-				? this.projectList.map((p) => p.tasks).reduce((all, tasks) => all.concat(tasks)).length
-				: 0;
-		});
-
-		this.attendanceService.datePeriod$.pipe(takeUntil(this.onDestroy$)).subscribe((datePeriod) => {
-			this.startDate = datePeriod.startDate;
-			this.endDate = datePeriod.endDate;
-		});
-
-		const now = new Date();
-		this.startPeriod = new Date();
-		this.startPeriod.setDate(now.getDate() - 3);
-		this.endPeriod = new Date();
-		this.endPeriod.setDate(now.getDate() + 3);
+		this.selectedPeriod = this._getPeriod(new Date());
+		this.selectedMonth = this.selectedPeriod.startDate?.getMonth()!;
+		this.selectedYear = this.selectedPeriod?.startDate?.getFullYear()!;
+		this.canEdit = true;
 	}
 
-	ngOnDestroy() {
-		this.onDestroy$.next(null);
-		this.onDestroy$.complete();
+	public ngOnInit(): void {
+		this._getTasks();
 	}
 
-	onSearch(text: string) {
-		this.searchText = text;
+	private _getEditPermission(): boolean {
+		const currentDate = new Date();
+		const currentMonth = currentDate.getMonth();
+		const currentYear = currentDate.getFullYear();
+
+		if (currentYear === this.selectedYear &&
+			(currentMonth === this.selectedMonth || currentDate.getDate() <= 5 && currentMonth === this.selectedMonth + 1)) {
+			return true;
+		}
+
+		return false;
 	}
 
-	public getPeriod(): string {
-		return 'выбранный период';
+	private _getPeriod(date: Date): DatePeriod {
+		const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+		const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+		return {
+			startDate,
+			endDate
+		}
+	}
+
+	private _getTasks(): void {
+		const userId = this._userService.getCurrentUser()?.id;
+
+		console.log(this.selectedPeriod.startDate)
+		console.log(this.selectedPeriod.endDate)
+
+		const findWorkTimesParams: IFindWorkTimesRequest = {
+			userid: userId,
+			skipCount: 0,
+			takeCount: 10,
+			month: this.selectedMonth + 1,
+			year: this.selectedYear
+		}
+
+		const findLeaveTimesParams: IFindLeaveTimesRequest = {
+			userid: userId,
+			skipCount: 0,
+			takeCount: 10,
+			starttime: this.selectedPeriod.startDate?.toISOString(),
+			endtime: this.selectedPeriod.endDate?.toISOString(),
+		}
+
+		this.projects$ = this._timeService.findWorkTimes(findWorkTimesParams)
+			.pipe(map(res => res.body?.map(workTime => ({
+				description: workTime.description,
+				id: workTime.id,
+				name: workTime.project?.name,
+				status: workTime.project?.status,
+				userId: workTime?.user?.id,
+				managerHours: workTime?.managerHours,
+				userHours: workTime?.userHours,
+				month: workTime?.month,
+				year: workTime?.year
+			}) as IMappedProject)))
+
+		this.leaves$ = this._timeService.findLeaveTimes(findLeaveTimesParams)
+			.pipe(map(res => res.body))
+
+		this.canEdit = this._getEditPermission();
+	}
+
+	public openMonthpicker() {
+		this.monthpicker?.open();
+	}
+
+	public chosenYearHandler(event: Date) {
+		this.selectedYear = event.getFullYear();
+	}
+
+	public chosenMonthHandler(event: Date, datepicker: MatDatepicker<Date>) {
+		this.selectedMonth = event.getMonth();
+		this.selectedPeriod = this._getPeriod(new Date(this.selectedYear, this.selectedMonth));
+		datepicker.close();
+		this._getTasks();
 	}
 }

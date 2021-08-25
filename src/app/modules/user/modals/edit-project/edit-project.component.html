@@ -1,0 +1,32 @@
+<div class='modal'>
+    <h3 class='modal__title h3'>Редактирование часов за проект <p doText color='accent_color_bright'>
+            {{project.name}}</p>
+    </h3>
+    <form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
+        <mat-error *ngIf="editForm.controls['userHours'].errors?.required" class='text-negative_accent modal__error'>
+            Заполните количество часов</mat-error>
+        <div class='modal__hours-wrapper'>
+            <mat-form-field appearance="fill" class='modal__hours'>
+                <mat-label>Часы</mat-label>
+                <input matInput formControlName="userHours" />
+            </mat-form-field>
+            <span doText color='gray1' class='modal__date'>
+                ч<span doText color='dark_1' class='modal__period'>за {{projectDate |date: 'LLLL
+                    YYYY'}}</span>
+            </span>
+        </div>
+        <div>
+            <mat-form-field appearance="fill" class="modal__description">
+                <mat-label>Комментарий</mat-label>
+                <textarea matInput formControlName="description"
+                    class="modal__description-field text-dark_1"></textarea>
+            </mat-form-field>
+        </div>
+        <div class='controls'>
+            <button mat-flat-button type="button" class='controls__button' (click)="onClose()"><span
+                    class='regular_text text-gray1'>Отмена</span></button>
+            <button mat-flat-button color='accent' type="submit" class='controls__button'><span
+                    class='regular_text text-light_1'>Сохранить</span></button>
+        </div>
+    </form>
+</div>
