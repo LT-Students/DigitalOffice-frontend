@@ -1,5 +1,4 @@
-//@ts-nocheck
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
@@ -13,14 +12,14 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	selector: 'do-manage-users',
 	templateUrl: './manage-users.component.html',
 	styleUrls: ['./manage-users.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageUsersComponent implements OnInit {
-	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild(MatSort) sort: MatSort | undefined;
 
 	public displayedColumns: string[];
-	public userInfo: UserInfo[];
-	public sortedUserInfo: UserInfo[];
+	public userInfo: UserInfo[] | undefined;
+	public sortedUserInfo: UserInfo[] | undefined;
 	public studyTypes: EducationType[];
 	private _unsubscribe$: Subject<void>;
 
@@ -28,11 +27,9 @@ export class ManageUsersComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 
-	constructor(private _userService: UserService, private _dialog: MatDialog) {
+	constructor(private _userService: UserService, private _dialog: MatDialog, private cdr: ChangeDetectorRef) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
-		this.userInfo = null;
-		this.sortedUserInfo = null;
 		this.studyTypes = [EducationType.Offline, EducationType.Online];
 
 		this.totalCount = 0;
@@ -66,32 +63,32 @@ export class ManageUsersComponent implements OnInit {
 		evt.stopPropagation();
 		console.log(evt)
 		if (user.isActive) {
-			this._userService.disableUser(user.id).subscribe(() => {
+			this._userService.disableUser(user.id!).subscribe(() => {
 				this._getPageUsers();
 			});
 		}
 	}
 
 	public sortData(sort: Sort): void {
-		const data = this.userInfo.slice();
+		const data = this.userInfo?.slice();
 		if (!sort.active || sort.direction === '') {
 			this.sortedUserInfo = data;
 			return;
 		}
 
-		this.sortedUserInfo = data.sort((a: UserInfo, b: UserInfo) => {
+		this.sortedUserInfo = data?.sort((a: UserInfo, b: UserInfo) => {
 			const isAsc = sort.direction === 'asc';
 			switch (sort.active) {
 				case 'name':
-					return this._compare(a.firstName, b.firstName, isAsc);
+					return this._compare(a.firstName!, b.firstName!, isAsc);
 				case 'department':
-					return this._compare(a.department?.name, b.department?.name, isAsc);
+					return this._compare(a.department?.name!, b.department?.name!, isAsc);
 				case 'role':
-					return this._compare(a.position?.name, b.position?.name, isAsc);
+					return this._compare(a.position?.name!, b.position?.name!, isAsc);
 				case 'rate':
-					return this._compare(a.rate, b.rate, isAsc);
+					return this._compare(a.rate!, b.rate!, isAsc);
 				case 'status':
-					return this._compare(a.status, b.status, isAsc);
+					return this._compare(a.status!, b.status!, isAsc);
 				default:
 					return 0;
 			}
@@ -107,9 +104,11 @@ export class ManageUsersComponent implements OnInit {
 
 	private _getPageUsers(): void {
 		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
-			this.totalCount = data.totalCount;
-			this.userInfo = data.body.slice();
-			this.sortedUserInfo = data.body.slice();
+			this.totalCount = data.totalCount ?? 0;
+			this.userInfo = data.body?.slice();
+			this.sortedUserInfo = data.body?.slice();
+			console.log(data.body);
+			this.cdr.detectChanges();
 		});
 	}
 }

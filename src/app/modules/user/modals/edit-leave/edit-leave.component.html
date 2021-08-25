@@ -1,0 +1,40 @@
+<div class='modal'>
+    <h3 doText class='h3'>Редактирование часов <span class='text-accent_color_bright'>за
+            {{getRusType(leave.leaveType!)?.toLowerCase()}}</span></h3>
+    <form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
+        <mat-error *ngIf="editForm.controls['endTime'].errors?.required" class='text-negative_accent modal__error'>
+            Заполните
+            конечную дату</mat-error>
+        <div class='modal__range'>
+            <mat-form-field class='modal__range-picker' appearance="fill">
+                <mat-label>Выберите диапазон отсутствия</mat-label>
+                <mat-date-range-input [rangePicker]="picker" [dateFilter]="filterDate">
+                    <input matStartDate placeholder="Начало" formControlName="startTime" readonly>
+                    <input matEndDate placeholder=" Конец" formControlName="endTime" readonly
+                        (dateChange)="DateSelected()">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]=" picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+            <div class='modal__hours'>
+                <p doText color='gray1'>Выбрано</p>
+                <h3 doText color='gray1' class='modal__selected-hours h3'><span class='text-dark_1'
+                        #hours>{{periodInHours}}</span> ч
+                </h3>
+            </div>
+        </div>
+        <div>
+            <mat-form-field appearance="fill" class='modal__description'>
+                <mat-label>Комментарий</mat-label>
+                <textarea matInput controlName="description" class='modal__description-field'
+                    formControlName="description"></textarea>
+            </mat-form-field>
+        </div>
+        <div class='controls'>
+            <button mat-flat-button class='controls__button' type="button" (click)="onClose()"><span
+                    class='regular_text text-gray1'>Отмена</span></button>
+            <button mat-flat-button color='accent' class='controls__button' type="submit"><span
+                    class='regular_text text-light_1'>Сохранить</span></button>
+        </div>
+    </form>
+</div>

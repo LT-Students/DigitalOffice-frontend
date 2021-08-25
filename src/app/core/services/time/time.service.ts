@@ -63,7 +63,7 @@ export class TimeService {
 		private _workTimeDayJobApiService: WorkTimeDayJobApiService,
 		private _workTimeDayJobIdApiService: WorkTimeDayJobIdApiService,
 		private _workTimeMonthLimitApiService: WorkTimeMonthLimitApiService
-	) {}
+	) { }
 
 	public findWorkTimes(params: IFindWorkTimesRequest): Observable<FindResultResponseWorkTimeInfo> {
 		return this._workTimeService.findWorkTimes(params);

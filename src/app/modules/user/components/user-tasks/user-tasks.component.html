@@ -1,18 +1,24 @@
-<mat-card class="wrapper">
-    <h3>
-      {{ tasksCount }} записи за
-      <span doText color='accent_color_bright'>{{ getPeriod() }}</span>
+<mat-card>
+  <div class='activities'>
+    <h3 doText underlined underlinedSize='sm' class='h3'>
+      <span>Записи за
+        <mat-form-field class='date-input'>
+          <input matInput [matDatepicker]="dp">
+          <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, dp)">
+          </mat-datepicker>
+        </mat-form-field>
+      </span>
+      <span doText color='accent_color_bright' class="activities__period" (click)="openMonthpicker()">
+        {{selectedPeriod.startDate | date: "LLLL YYYY"}}
+        <mat-icon class='activities__icon'>keyboard_arrow_down</mat-icon>
+      </span>
     </h3>
-      <h4>Внесено <span doText color='accent_color_bright'>total_hours</span></h4>
-        <!--<mat-form-field appearance="outline">
-          <mat-label>Поиск по ключевым словам</mat-label>
-          <input matInput type="text" [(ngModel)]='searchText'>
-          <span matPrefix><mat-icon aria-hidden="false" aria-label="search">search</mat-icon></span>
-          <button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear" (click)="searchText=''">
-            <mat-icon>close</mat-icon>
-          </button>
-        </mat-form-field>-->
-      <ng-container *ngFor="let project of projects">
-        <do-project [project]="project"></do-project>
-      </ng-container>
+    <div class='tasks'>
+      <do-projects [projects]="projects$ | async" [canEdit]="canEdit"></do-projects>
+    </div>
+    <div class='tasks'>
+      <do-leaves [leaves]="leaves$ | async" [canEdit]="canEdit"></do-leaves>
+    </div>
+  </div>
 </mat-card>
