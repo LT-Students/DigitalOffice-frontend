@@ -26,7 +26,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
 	public readonly COLORS = ['#FFB2B2', '#C7C6D8', '#D2ECFF', '#FFBE97', '#FFD89E', '#9ABCDB', '#ABF5C0', '#FEECAA', '#FFCDCD'];
 	public readonly EMPTY_COLOR = '#F5F5F5';
-	public projects: ProjectModel[];
 	private _activities: Activities | undefined;
 	private _userId: string | undefined;
 
@@ -36,7 +35,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	public userHours: BehaviorSubject<number>;
 
 	constructor(private _attendanceService: AttendanceService, private _userService: UserService, private projectStore: ProjectStore) {
-		this.projects = [];
 		this.userHours = new BehaviorSubject<number>(0);
 	}
 
@@ -60,13 +58,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			});
 
 		this.chart = this.buildChart();
-
-		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
-			this.projects = projects;
-			if (this.chart) {
-				this.updateChart();
-			}
-		});
 	}
 
 	private _countUserHours(): number {
@@ -85,16 +76,29 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		return projectHours + leavesHours;
 	}
 
-	private get data(): number[] {
-		return this.projects.map((project) => project.tasks.reduce((sum, task) => sum + Math.floor(task.minutes / 60), 0));
+	private _getLabels(): Array<string | undefined> | undefined {
+		const projectLabels = this._activities?.projects?.map((project) => project.project?.name).filter(Boolean);
+		return this._activities?.leaves?.length && this._activities.leaves.length > 0 ? projectLabels?.concat('Отсутствия') : projectLabels;
 	}
 
 	private updateChart(): void {
-		const timeLeft = this.data.reduce((acc, activity) => acc - activity, this.MONTH_NORM);
-		const colors = [...this.COLORS.splice(0, this.data.length), this.EMPTY_COLOR];
+		const labels = this._getLabels();
+		const projectsHours = this._activities?.projects?.map((project) => project.userHours);
+		const leavesHours = this._activities?.leaves?.reduce(
+			(acc, leave) =>
+				acc +
+				this._attendanceService.getRecommendedTime({
+					startDate: new Date(leave.startTime),
+					endDate: new Date(leave.endTime),
+				}),
+			0
+		);
+		const timeLeft = projectsHours.reduce((acc, activity) => acc - activity, this.MONTH_NORM) - leavesHours;
 
-		this.chart.data.labels = this.projects.map(({ name }) => name);
-		this.chart.data.datasets[0].data = [...this.data, timeLeft];
+		const colors = [...this.COLORS.slice(0, projectsHours.length + (leavesHours ? 1 : 0)), this.EMPTY_COLOR];
+
+		this.chart.data.labels = labels;
+		this.chart.data.datasets[0].data = [...projectsHours!, leavesHours, timeLeft];
 		this.chart.data.datasets[0].backgroundColor = colors;
 		this.chart.update();
 	}
@@ -127,7 +131,6 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 						backgroundColor: 'rgba(38, 50, 56, 1)',
 						displayColors: false,
 						xAlign: 'right',
-						// yAlign: 'bottom',
 
 						callbacks: {
 							title: (tooltip: any) => tooltip[0].label,

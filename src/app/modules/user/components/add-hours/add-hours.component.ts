@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { IEditWorkTimeRequest, TimeService } from '@app/services/time/time.service';
 import { UserService } from '@app/services/user/user.service';
-import { filter, switchMap, tap } from 'rxjs/operators';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { WorkTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
 import { timeValidator } from './add-hours.validators';
@@ -24,7 +24,7 @@ import { timeValidator } from './add-hours.validators';
 	providers: [AttendanceService],
 })
 export class AddHoursComponent implements OnInit {
-	public workTimes$: Observable<WorkTimeInfo[]>;
+	public workTimes$: Observable<WorkTimeInfo[] | undefined>;
 	public absences: ILeaveType[];
 	public addHoursForm: FormGroup;
 	public isProjectForm: boolean;
@@ -66,10 +66,10 @@ export class AddHoursComponent implements OnInit {
 
 	ngOnInit() {}
 
-	private _getWorkTimes(month?: number): Observable<WorkTimeInfo[]> {
-		return this._timeService.findWorkTimes({ skipCount: 0, takeCount: 10, userid: this._userId, month }).pipe(
-			filter((response) => response.body != null),
-			switchMap((response) => of(response.body as WorkTimeInfo[]))
+	private _getWorkTimes(month: number): Observable<WorkTimeInfo[] | undefined> {
+		return this._attendanceService.getActivities(this._userId, month).pipe(
+			map((activities) => activities.projects),
+			switchMap((projects) => of(projects))
 		);
 	}
 
@@ -144,6 +144,7 @@ export class AddHoursComponent implements OnInit {
 			() => {
 				this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
 				this.addHoursForm.reset();
+				this.addHoursForm.markAsPristine();
 				this.isProjectForm = true;
 			},
 			(error) => {

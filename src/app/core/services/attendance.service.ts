@@ -22,7 +22,7 @@ export class AttendanceService {
 	public readonly recommendedTime$ = this._recommendedTime.asObservable();
 
 	private readonly _activities = new BehaviorSubject<Activities>({});
-	public readonly activities = this._activities.asObservable();
+	public readonly activities$ = this._activities.asObservable();
 
 	private _currentDate: Date;
 
