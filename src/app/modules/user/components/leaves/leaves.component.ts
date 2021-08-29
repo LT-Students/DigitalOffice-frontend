@@ -50,7 +50,7 @@ export class LeavesComponent implements OnChanges {
         const startDate = new Date(startTime)
         const endDate = new Date(endTime)
 
-        return (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 + 24;
+        return ((endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24) * 8 + 8;
     }
 
     public openEditModal(leave: LeaveTimeInfo): void {

@@ -1,13 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 import { UserService } from '@app/services/user/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
+import { ModalService } from '@app/services/modal.service';
+import { OperationResultResponse, OperationResultStatusType } from '@data/api/company-service/models';
 
 @Component({
 	selector: 'do-department-card',
@@ -33,8 +34,9 @@ export class DepartmentCardComponent implements OnInit {
 		private _netService: NetService,
 		private _userService: UserService,
 		private _router: Router,
-		private _dialog: MatDialog,
-		private _route: ActivatedRoute
+		private _modalService: ModalService,
+		private _route: ActivatedRoute,
+		private _cdr: ChangeDetectorRef
 	) {
 		this._departmentId = this._route.snapshot.params.id;
 		this.totalCount = 0;
@@ -44,24 +46,41 @@ export class DepartmentCardComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
+		this._getDepartment();
+	}
+
+	private _getDepartment(): void {
 		this._netService.getDepartment({ departmentid: this._departmentId, includeusers: true }).subscribe(({ body }) => {
 			this.departmentInfo = body?.department;
 			this.totalCount = body?.users?.length ?? 0;
-			this.sortedUsersInfo = body?.users?.slice() ?? [];
-			console.log(body);
+			//this.sortedUsersInfo = body?.users?.slice() ?? [];
+			this._getUsers();
+			this._cdr.detectChanges();
 		});
 	}
 
-	onPageChange(event: PageEvent): void {
+	public onPageChange(event: PageEvent): void {
 		this.pageSize = event.pageSize;
 		this.pageIndex = event.pageIndex;
-		this._userService.findUsers(this.pageIndex, this.pageSize, this._departmentId).subscribe((data) => {
+		this._getUsers();
+	}
+
+	private _getUsers(): void {
+		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize, this._departmentId).subscribe((data) => {
 			this.sortedUsersInfo = data?.body?.slice() ?? [];
+			this.totalCount = this.sortedUsersInfo.length;
+			this._cdr.markForCheck();
 		});
 	}
 
 	onAddEmployeeClick() {
-		this._dialog.open(NewEmployeeComponent);
+		this._modalService
+			.openModal<NewEmployeeComponent, null, any>(NewEmployeeComponent)
+			.afterClosed()
+			.subscribe(result => {
+				if (result?.status === 'FullSuccess')
+					this._getUsers();
+			});
 	}
 
 	onUserClick(userId: string | undefined) {

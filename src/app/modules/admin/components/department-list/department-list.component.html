@@ -1,6 +1,8 @@
 <div class="navigation" doText color="gray">
 	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span doText color="gray"><mat-icon>chevron_right</mat-icon></span>
+	<span doText color="gray">
+		<mat-icon>chevron_right</mat-icon>
+	</span>
 	<a class="navigation__link">Список департаментов</a>
 </div>
 <div class="card card_standard">
@@ -26,15 +28,15 @@
 				<th mat-sort-header="director">Директор</th>
 				<th mat-sort-header="amount">Количество сотрудников</th>
 			</tr>
-			<ng-container *ngFor="let departmentInfo of sortedDepartmentsInfo">
+			<ng-container *ngFor="let departmentInfo of departmentsInfo">
 				<tr class="table__row" (click)="onDepartmentClick(departmentInfo.id)">
 					<td>
 						<ng-container *ngIf="departmentInfo?.name; else empty">{{ departmentInfo.name }}</ng-container>
 					</td>
 					<td>
 						<ng-container *ngIf="departmentInfo?.description; else empty">
-							<div class="table__description">{{ departmentInfo.description }}</div></ng-container
-						>
+							<div class="table__description">{{ departmentInfo.description }}</div>
+						</ng-container>
 					</td>
 					<td>
 						<ng-container *ngIf="departmentInfo?.director; else empty">
@@ -45,7 +47,8 @@
 				</tr>
 			</ng-container>
 		</table>
-		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
+			(page)="onPageChange($event)"></mat-paginator>
 	</div>
 </div>
 

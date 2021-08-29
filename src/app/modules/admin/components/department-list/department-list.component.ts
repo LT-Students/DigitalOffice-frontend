@@ -1,13 +1,14 @@
-//@ts-nocheck
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { RouteType } from '../../../../app-routing.module';
+import { ModalService } from '@app/services/modal.service';
+// import { Observable } from 'rxjs';
+// import { map, tap } from 'rxjs/operators';
 
 @Component({
 	selector: 'do-department-list',
@@ -17,15 +18,22 @@ import { RouteType } from '../../../../app-routing.module';
 })
 export class DepartmentListComponent implements OnInit {
 	public departmentsInfo: DepartmentInfo[];
+	//public departmentsInfo$: Observable<DepartmentInfo[]>
 	public sortedDepartmentsInfo: DepartmentInfo[];
 
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
 
-	constructor(private netService: NetService, private dialog: MatDialog, private router: Router) {
-		this.departmentsInfo = null;
-		this.sortedDepartmentsInfo = null;
+	constructor(
+		private netService: NetService,
+		private _modalService: ModalService,
+		private router: Router,
+		private _cdr: ChangeDetectorRef
+	) {
+		this.departmentsInfo = [];
+		this.sortedDepartmentsInfo = [];
+		//this.departmentsInfo$ = new Observable();
 
 		this.totalCount = 0;
 		this.pageSize = 10;
@@ -37,11 +45,19 @@ export class DepartmentListComponent implements OnInit {
 	}
 
 	public onAddEmployeeClick() {
-		this.dialog.open(NewDepartmentComponent);
+		this._modalService
+			.openModal<NewDepartmentComponent, undefined, any>(NewDepartmentComponent)
+			.afterClosed()
+			.subscribe(result => {
+				console.log("RESULT: ", result)
+				// Fix, then backend chnage to enum type
+				if (result?.status === 'FullSuccess')
+					this._getDepartments();
+			});
 	}
 
-	public onDepartmentClick(departmentId) {
-		this.router.navigate([`${RouteType.DEPARTMENTS}/${departmentId}`]);
+	public onDepartmentClick(departmentId: string | undefined) {
+		this.router.navigate([`${RouteType.DEPARTMENTS}/${departmentId ?? ''}`]);
 	}
 
 	public onPageChange(event: PageEvent): void {
@@ -52,10 +68,17 @@ export class DepartmentListComponent implements OnInit {
 
 	private _getDepartments(): void {
 		this.netService.getDepartmentsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
-			this.totalCount = res.totalCount;
-			this.departmentsInfo = res.body;
-			this.sortedDepartmentsInfo = res.body;
+			this.totalCount = res.totalCount ?? 0;
+			this.departmentsInfo = res.body ?? [];
+			this.sortedDepartmentsInfo = res.body ?? [];
+			this._cdr.markForCheck();
 		});
+
+		// this.departmentsInfo$ = this.netService.getDepartmentsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+		// 	.pipe(
+		// 		tap((result) => { this.totalCount = result.totalCount ?? 0; }),
+		// 		map((result) => { return result.body ?? []; })
+		// 	)
 	}
 
 	public sortData(sort: Sort): void {
@@ -69,13 +92,13 @@ export class DepartmentListComponent implements OnInit {
 			const isAsc = sort.direction === 'asc';
 			switch (sort.active) {
 				case 'name':
-					return this._compare(a.name, b.name, isAsc);
+					return this._compare(a.name ?? '', b.name ?? '', isAsc);
 				case 'description':
-					return this._compare(a.description, b.description, isAsc);
+					return this._compare(a.description ?? '', b.description ?? '', isAsc);
 				case 'director':
-					return this._compare(a.director?.firstName, b.director?.firstName, isAsc);
+					return this._compare(a.director?.firstName ?? '', b.director?.firstName ?? '', isAsc);
 				case 'amount':
-					return this._compare(a.countUsers, b.countUsers, isAsc);
+					return this._compare(a.countUsers ?? 0, b.countUsers ?? 0, isAsc);
 				default:
 					return 0;
 			}

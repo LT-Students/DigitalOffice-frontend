@@ -1,6 +1,8 @@
 <div class="navigation" doText color="gray">
 	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span doText color="gray"><mat-icon>chevron_right</mat-icon></span>
+	<span doText color="gray">
+		<mat-icon>chevron_right</mat-icon>
+	</span>
 	<a class="navigation__link">Управление сотрудниками</a>
 </div>
 <div class="card card_standard">
@@ -63,17 +65,18 @@
 						<p class="table__status text_color_white small_text">Активен</p>
 					</ng-container>
 					<ng-template #archived>
-						<p class="table__status table__status_archived text_color_gray1 small_text" >В архиве</p>
+						<p class="table__status table__status_archived text_color_gray1 small_text">В архиве</p>
 					</ng-template>
 				</td>
-				<td class="table__delete-button">
+				<td class="table__cell table__delete-button">
 					<button mat-mini-fab color="primary" (click)="archiveUser(userInfo, $event)">
 						<img src="../../../../../assets/svg/delete.svg" alt="Archive employee" />
 					</button>
 				</td>
 			</tr>
 		</table>
-		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
+			(page)="onPageChange($event)"></mat-paginator>
 	</div>
 </div>
 
