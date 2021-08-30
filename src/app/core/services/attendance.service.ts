@@ -35,8 +35,7 @@ export class AttendanceService {
 	private readonly _monthNorm: BehaviorSubject<number>;
 	public readonly monthNorm$: Observable<number>;
 
-	private readonly _holidays: BehaviorSubject<string>;
-	public readonly holidays$: Observable<string>;
+	private readonly _holidays: BehaviorSubject<boolean[]>;
 
 	private readonly _canEdit: BehaviorSubject<boolean>;
 	public readonly canEdit$: Observable<boolean>;
@@ -56,8 +55,7 @@ export class AttendanceService {
 		this._monthNorm = new BehaviorSubject<number>(160);
 		this.monthNorm$ = this._monthNorm.asObservable();
 
-		this._holidays = new BehaviorSubject<string>('');
-		this.holidays$ = this._holidays.asObservable();
+		this._holidays = new BehaviorSubject<boolean[]>([]);
 	}
 
 	public getActivities(): Observable<Activities> {
@@ -115,7 +113,7 @@ export class AttendanceService {
 	private _setMonthNormAndHolidays(monthNorm: number | undefined, holidays: string | undefined): void {
 		if (monthNorm && holidays) {
 			this._monthNorm.next(monthNorm);
-			this._holidays.next(holidays);
+			this._holidays.next(holidays.split('').map(Number).map(Boolean));
 		}
 	}
 
@@ -144,8 +142,8 @@ export class AttendanceService {
 	}
 
 	public disableWeekends: DateFilterFn<Date> = (d: Date | null): boolean => {
-		const day = (d || new Date()).getDay();
-		return day !== 0 && day !== 6;
+		const day = (d || new Date()).getDate();
+		return this._holidays.value.every((isHoliday, date) => isHoliday ? day !== date + 1 : true);
 	};
 
 	public countMaxHours(): number {
