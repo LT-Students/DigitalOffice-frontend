@@ -23,6 +23,7 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 			.pipe(
 				takeUntil(this.onDestroy$),
 				tap((user) => this._attendanceService.setUserId(user?.id)),
+				switchMap(() => this._attendanceService.getMonthNormAndHolidays()),
 				switchMap(() => this._attendanceService.getActivities()),
 				switchMap(() => this._attendanceService.selectedDate$)
 			)

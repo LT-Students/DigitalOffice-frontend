@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, ReplaySubject } from 'rxjs';
 
 import { DatePeriod } from '@data/models/date-period';
-import { IEditWorkTimeRequest, IFindLeaveTimesRequest, IFindWorkTimesRequest, TimeService } from '@app/services/time/time.service';
+import {
+	IEditWorkTimeRequest,
+	IFindLeaveTimesRequest,
+	IFindWorkTimeMonthLimitRequest,
+	IFindWorkTimesRequest,
+	TimeService,
+} from '@app/services/time/time.service';
 import { map, tap } from 'rxjs/operators';
 import { LeaveTimeInfo } from '@data/api/time-service/models/leave-time-info';
 import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
@@ -29,6 +35,9 @@ export class AttendanceService {
 	private readonly _monthNorm: BehaviorSubject<number>;
 	public readonly monthNorm$: Observable<number>;
 
+	private readonly _holidays: BehaviorSubject<string>;
+	public readonly holidays$: Observable<string>;
+
 	private readonly _canEdit: BehaviorSubject<boolean>;
 	public readonly canEdit$: Observable<boolean>;
 
@@ -46,6 +55,9 @@ export class AttendanceService {
 
 		this._monthNorm = new BehaviorSubject<number>(160);
 		this.monthNorm$ = this._monthNorm.asObservable();
+
+		this._holidays = new BehaviorSubject<string>('');
+		this.holidays$ = this._holidays.asObservable();
 	}
 
 	public getActivities(): Observable<Activities> {
@@ -83,6 +95,28 @@ export class AttendanceService {
 			userId: this._userId ?? '',
 		};
 		return this._timeService.addLeaveTime(paramsWithId);
+	}
+
+	public getMonthNormAndHolidays(): Observable<any> {
+		const month = this._selectedDate.value.getMonth();
+		const year = this._selectedDate.value.getFullYear();
+		const params: IFindWorkTimeMonthLimitRequest = {
+			month: month + 1,
+			year: year,
+			skipCount: 0,
+			takeCount: 1
+		}
+		return this._timeService.findWorkTimeMonthLimit(params).pipe(
+			map(response => response.body?.[0]),
+			tap(limit => this._setMonthNormAndHolidays(limit?.normHours, limit?.holidays))
+		);
+	}
+
+	private _setMonthNormAndHolidays(monthNorm: number | undefined, holidays: string | undefined): void {
+		if (monthNorm && holidays) {
+			this._monthNorm.next(monthNorm);
+			this._holidays.next(holidays);
+		}
 	}
 
 	private _setActivities(activities: Activities): void {
