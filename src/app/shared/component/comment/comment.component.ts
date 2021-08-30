@@ -8,7 +8,7 @@ import { Component, ElementRef, ViewChild, OnChanges, AfterViewChecked, ChangeDe
 })
 export class CommentComponent implements OnChanges, AfterViewChecked {
     @ViewChild('comment') public comment: ElementRef | undefined
-    @Input() public text: string | undefined;
+    @Input() public text: string | undefined | null;
 
     public buttonShowed: boolean;
     public commentCollapsed: boolean;

@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
+import { Subject } from 'rxjs';
+import { PageEvent } from '@angular/material/paginator';
+
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
-import { Subject } from 'rxjs';
+import { OperationResultResponse, OperationResultStatusType } from '@data/api/user-service/models';
 import { EducationType } from '@data/api/user-service/models/education-type';
-import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
+import { ModalService } from '@app/services/modal.service';
 
 @Component({
 	selector: 'do-manage-users',
@@ -27,7 +29,10 @@ export class ManageUsersComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 
-	constructor(private _userService: UserService, private _dialog: MatDialog, private cdr: ChangeDetectorRef) {
+	constructor(
+		private _userService: UserService,
+		private _modalService: ModalService,
+		private _cdr: ChangeDetectorRef) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
 		this.userInfo = [];
@@ -58,7 +63,15 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	public onAddEmployeeClick() {
-		this._dialog.open(NewEmployeeComponent);
+		this._modalService
+			.openModal<NewEmployeeComponent, null, OperationResultResponse>(NewEmployeeComponent)
+			.afterClosed()
+			.subscribe((result) => {
+				console.log("СТАТУС МЕНЕДЖ ЮЗЕРС: ", result?.status)
+				if (result?.status === OperationResultStatusType.FullSuccess) {
+					this._getPageUsers();
+				}
+			});
 	}
 
 	public archiveUser(user: UserInfo, evt: Event): void {
@@ -110,7 +123,7 @@ export class ManageUsersComponent implements OnInit {
 			this.userInfo = data?.body?.slice() ?? [];
 			this.sortedUserInfo = data?.body?.slice() ?? [];
 			console.log(data.body);
-			this.cdr.detectChanges();
+			this._cdr.markForCheck();
 		});
 	}
 }

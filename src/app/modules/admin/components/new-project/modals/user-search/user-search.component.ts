@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '@app/services/user/user.service';
@@ -15,7 +15,7 @@ import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 	selector: 'do-new-members-board',
 	templateUrl: './user-search.component.html',
 	styleUrls: ['./user-search.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSearchComponent implements OnInit, OnDestroy {
 	@Input() mode: WorkFlowMode | undefined;
@@ -40,7 +40,8 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		@Inject(MAT_DIALOG_DATA) public data: UserSearchModalConfig,
 		private _userService: UserService,
 		private _netService: NetService,
-		private _dialogRef: MatDialogRef<UserSearchComponent>
+		private _dialogRef: MatDialogRef<UserSearchComponent>,
+		private _cdr: ChangeDetectorRef
 	) {
 		this.checkedMembers = [...data.members as UserInfo[]];
 		this.searchName = '';
@@ -82,6 +83,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 			(data) => {
 				this.membersAll = data.body ?? [];
 				this.totalCount = data.totalCount ?? 0;
+				this._cdr.markForCheck();
 			},
 			(error) => console.log(error)
 		);
@@ -108,10 +110,10 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 
 		if (this.selectedLevel) {
 			/* В эту ветку не попадем, т.к. не задано начальное значение
-        TODO: refactor when api will be ready
-      this.visibleMembers = this.visibleMembers.filter(
-        (user) => user.level === this.selectedLevel
-      );*/
+		TODO: refactor when api will be ready
+	  this.visibleMembers = this.visibleMembers.filter(
+		(user) => user.level === this.selectedLevel
+	  );*/
 		}
 		return this.visibleMembers;
 	}

@@ -53,6 +53,7 @@ export class LeavesComponent {
 		return this._attendanceService.getRecommendedTime(datePeriod, 8, true);
 	}
 
+
 	public openEditModal(leave: LeaveTimeInfo): void {
 		let modalContentConfig: IModalContentConfig = {
 			id: leave.id,

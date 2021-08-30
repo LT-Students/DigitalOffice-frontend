@@ -19,7 +19,6 @@ import { UserRoutingModule } from './user-routing.module';
 import { DeleteLeaveComponent } from './modals/delete-leave/delete-leave.component';
 import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
-import { CommentComponent } from './components/comment/comment.component';
 import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/doughnut-chart.component';
 
 @NgModule({
@@ -38,10 +37,14 @@ import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/
 		LeavesComponent,
 		EditProjectComponent,
 		EditLeaveComponent,
-		CommentComponent,
-		DoughnutChartComponent,
+		DoughnutChartComponent
 	],
-	imports: [SharedModule, NgbDatepickerModule, AdminModule, UserRoutingModule, FormsModule],
+	imports: [
+		SharedModule,
+		NgbDatepickerModule,
+		AdminModule,
+		UserRoutingModule,
+	],
 	providers: [],
 	exports: [AttendanceComponent],
 })

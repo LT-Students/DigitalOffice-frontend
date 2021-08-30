@@ -1,16 +1,17 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 
-import { OfficeInfo } from '@data/api/company-service/models/office-info';
-import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
+import { ModalService } from '@app/services/modal.service';
+import { OfficeInfo } from '@data/api/company-service/models';
+import { CompanyService } from '@app/services/company/company.service';
 import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
+
 
 @Component({
 	selector: 'do-office-list',
 	templateUrl: './office-list.component.html',
 	styleUrls: ['./office-list.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfficeListComponent implements OnInit {
 	public offices: OfficeInfo[];
@@ -19,7 +20,12 @@ export class OfficeListComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 
-	constructor(private dialog: MatDialog, private companyApiService: CompanyApiService) {
+	constructor(
+		private _modalService: ModalService,
+		private _companyService: CompanyService,
+		private _cdr: ChangeDetectorRef
+	) {
+		this.offices = [];
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
@@ -37,13 +43,23 @@ export class OfficeListComponent implements OnInit {
 	}
 
 	public onAddOfficeClick(): void {
-		this.dialog.open(NewOfficeComponent);
+		this._modalService
+			.openModal<NewOfficeComponent, null, any>(NewOfficeComponent)
+			.afterClosed()
+			.subscribe(result => {
+				// Fix, then backend change to enum
+				if (result?.status === 'FullSuccess')
+					this._getOfficeList();
+			});
 	}
 
 	private _getOfficeList(): void {
-		this.companyApiService.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
-			this.totalCount = data?.totalCount ?? 0;
-			this.offices = data?.body ?? [];
-		});
+		this._companyService
+			.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+			.subscribe((data) => {
+				this.totalCount = data.totalCount ?? 0;
+				this.offices = data.body ?? [];
+				this._cdr.markForCheck();
+			});
 	}
 }
