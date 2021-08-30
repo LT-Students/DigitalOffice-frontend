@@ -14,8 +14,6 @@ import { EditCompanyRequest } from '../models/edit-company-request';
 import { FindResultResponseOfficeInfo } from '../models/find-result-response-office-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseCompanyInfo } from '../models/operation-result-response-company-info';
-import { IGetCompanyRequest } from '@app/types/get-company-request.interface';
-import { IFindRequestEx } from '@app/types/find-request.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -89,7 +87,28 @@ export class CompanyApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompany$Response(params?: IGetCompanyRequest): Observable<StrictHttpResponse<OperationResultResponseCompanyInfo>> {
+  getCompany$Response(params?: {
+
+    /**
+     * Include departments info in answer.
+     */
+    includedepartments?: boolean;
+
+    /**
+     * Include positions info in answer.
+     */
+    includepositions?: boolean;
+
+    /**
+     * Include offices info in answer.
+     */
+    includeoffices?: boolean;
+
+    /**
+     * Include smtp credentials in answer.
+     */
+    includesmtpcredentials?: boolean;
+  }): Observable<StrictHttpResponse<OperationResultResponseCompanyInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.GetCompanyPath, 'get');
     if (params) {
@@ -116,7 +135,28 @@ export class CompanyApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompany(params?: IGetCompanyRequest): Observable<OperationResultResponseCompanyInfo> {
+  getCompany(params?: {
+
+    /**
+     * Include departments info in answer.
+     */
+    includedepartments?: boolean;
+
+    /**
+     * Include positions info in answer.
+     */
+    includepositions?: boolean;
+
+    /**
+     * Include offices info in answer.
+     */
+    includeoffices?: boolean;
+
+    /**
+     * Include smtp credentials in answer.
+     */
+    includesmtpcredentials?: boolean;
+  }): Observable<OperationResultResponseCompanyInfo> {
 
     return this.getCompany$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponseCompanyInfo>) => r.body as OperationResultResponseCompanyInfo)
@@ -226,7 +266,23 @@ export class CompanyApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findOffices(params: IFindRequestEx): Observable<FindResultResponseOfficeInfo> {
+  findOffices(params: {
+
+    /**
+     * Number of offices to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of offices to take.
+     */
+    takeCount: number;
+
+    /**
+     * If it is true, response will be have deactivated records.
+     */
+    includeDeactivated?: boolean;
+  }): Observable<FindResultResponseOfficeInfo> {
 
     return this.findOffices$Response(params).pipe(
       map((r: StrictHttpResponse<FindResultResponseOfficeInfo>) => r.body as FindResultResponseOfficeInfo)

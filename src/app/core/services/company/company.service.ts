@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { IFindRequestEx } from '@app/types/find-request.interface';
 import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
-import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { CreateCompanyRequest } from '@data/api/company-service/models/create-company-request';
 import { IGetCompanyRequest } from '@app/types/get-company-request.interface';
@@ -10,15 +9,16 @@ import { OperationResultResponseCompanyInfo } from '@data/api/company-service/mo
 import { EditCompanyRequest } from '@data/api/company-service/models/edit-company-request';
 import { Company, CompanyInfo } from '@app/models/company';
 import { tap } from 'rxjs/operators';
+import { FindResultResponseOfficeInfo } from '@data/api/company-service/models/find-result-response-office-info';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class CompanyService {
-	private _company: BehaviorSubject<Company>;
+	private _company: BehaviorSubject<Company | null>;
 
 	constructor(private _companyService: CompanyApiService) {
-		this._company = new BehaviorSubject<Company>(null);
+		this._company = new BehaviorSubject<Company | null>(null);
 	}
 
 	public createCompany(body: CreateCompanyRequest): Observable<OperationResultResponse> {
@@ -26,12 +26,16 @@ export class CompanyService {
 	}
 
 	public getCompany(params?: IGetCompanyRequest): Observable<OperationResultResponseCompanyInfo> {
-		return this._companyService
-			.getCompany(params)
-			.pipe(tap((response: OperationResultResponseCompanyInfo) => this._setCompany(response.body)));
+		return this._companyService.getCompany(params).pipe(
+			tap((response: OperationResultResponseCompanyInfo) => {
+				if (response.body) {
+					this._setCompany(response.body);
+				}
+			})
+		);
 	}
 
-	public findOffices(params: IFindRequestEx): Observable<FindResultResponseDepartmentInfo> {
+	public findOffices(params: IFindRequestEx): Observable<FindResultResponseOfficeInfo> {
 		return this._companyService.findOffices(params);
 	}
 
@@ -39,13 +43,13 @@ export class CompanyService {
 		return this._companyService.editCompany({ body });
 	}
 
-	public getCurrentCompany(): Company {
+	public getCurrentCompany(): Company | null {
 		return this._company.value;
 	}
 
-	//TODO create separate service with global variables like portal name?
+	//TODO create separate service for current company?
 	public getPortalName(): string {
-		return this._company.value.portalName;
+		return this._company.value && this._company.value.portalName ? this._company.value.portalName : '404. Это портал.';
 	}
 
 	private _setCompany(companyInfo: CompanyInfo): void {

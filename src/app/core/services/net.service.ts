@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
 import { Observable, of, throwError } from 'rxjs';

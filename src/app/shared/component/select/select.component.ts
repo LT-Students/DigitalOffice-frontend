@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 
 @Component({
 	selector: 'do-select',
 	templateUrl: './select.component.html',
 	styleUrls: ['./select.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectComponent implements OnInit {
 	@Input() label = '';
@@ -15,7 +17,7 @@ export class SelectComponent implements OnInit {
 	@Input() options: string[];
 	@Input() textSize: 'regular' | 'small';
 
-	control: FormControl | undefined;
+	control: FormControl;
 
 	constructor(private formGroupDir: FormGroupDirective) {
 		this.textSize = 'regular';

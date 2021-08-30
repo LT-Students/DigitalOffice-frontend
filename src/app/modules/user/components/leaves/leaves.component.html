@@ -1,0 +1,62 @@
+<h4 class='h4'>Таблица отсутствий</h4>
+<table class='table'>
+    <colgroup>
+        <col class='column column_width_m'>
+        <col class='column column_width_sm'>
+        <col class='column column_width_sm'>
+        <col class='column column_width_l'>
+        <col class='column column_width_t'>
+    </colgroup>
+    <thead doText color='gray1'>
+        <tr class='row'>
+            <th class='cell'>
+                <p class='regular_text'>Отсутствие</p>
+            </th>
+            <th class='cell'>
+                <p class='regular_text'>Внесенные часы</p>
+            </th>
+            <th class='cell'>
+                <p class='regular_text'>Дата отсутствия</p>
+            </th>
+            <th class='cell'>
+                <p class='regular_text'>Комментарий</p>
+            </th>
+            <th class='cell'>
+                <p class='regular_text'></p>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let leave of leaves" class='row'>
+            <td class='cell'>
+                <p class='regular_text'>
+                    {{getRusType(leave.leaveType!)}}</p>
+            </td>
+            <td class='cell'>
+                <p class='regular_text'>{{getPeriodInHours(leave?.startTime!, leave?.endTime!)}} ч</p>
+            </td>
+            <td class='cell'>
+                <p class='regular_text'>{{leave.startTime | date: 'd MMMM'}} - {{leave.endTime | date: 'd
+                    MMMM'}}</p>
+            </td>
+            <td class='cell'>
+                <do-comment [text]="leave.comment"></do-comment>
+            </td>
+            <td class='cell cell__icon'>
+                <button *ngIf="canEdit$ | async" mat-icon-button [matMenuTriggerFor]='menu'>
+                    <mat-icon doText color='gray1'>more_horiz</mat-icon>
+                </button>
+                <mat-menu #menu='matMenu'>
+                    <button mat-menu-item (click)="openEditModal(leave)">
+                        <mat-icon>edit</mat-icon>
+                        <span doText color='gray1' class='regular_text'>Редактировать</span>
+                    </button>
+                    <button mat-menu-item (click)="openDeleteModal(leave)">
+                        <mat-icon>delete</mat-icon>
+                        <span doText color='gray1' class='regular_text'>Удалить</span>
+                    </button>
+                </mat-menu>
+            </td>
+        </tr>
+    </tbody>
+</table>

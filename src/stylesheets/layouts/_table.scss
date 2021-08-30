@@ -1,0 +1,74 @@
+// Styles for table
+.table {
+	width: 100%;
+
+	table-layout: fixed;
+	border-collapse: collapse;
+
+	text-align: left;
+}
+
+.row {
+	border-bottom: 1px solid #f5f5f5;
+
+	&_activable {
+		&:hover {
+			cursor: pointer;
+
+			.cell {
+				background-color: #f1f1ef;
+			}
+		}
+	}
+}
+
+.cell {
+	padding: 13px 35px 13px 0;
+
+	vertical-align: top;
+
+	&_vertical-middle {
+		vertical-align: middle;
+	}
+
+	&__content {
+		&_breakable {
+			word-break: break-all;
+		}
+
+		&_ellipsissed {
+			overflow: hidden;
+
+			text-overflow: ellipsis;
+		}
+	}
+}
+
+.column {
+	&_width_t {
+		width: 5%;
+	}
+
+	&_width_little {
+		width: 10%;
+	}
+
+	&_width_sm {
+		width: 15%;
+	}
+
+	&_width_m {
+		width: 20%;
+	}
+
+	&_width_l {
+		width: 45%;
+	}
+}
+
+.heading {
+	// Для выравнивания заголовка mat-sort-header по левой стороне
+	&__content {
+		text-align: left;
+	}
+}

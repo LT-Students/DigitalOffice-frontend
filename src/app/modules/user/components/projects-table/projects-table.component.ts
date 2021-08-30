@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '@app/services/project/project.service';
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
+
+import { ProjectService } from '@app/services/project/project.service';
+import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { RouteType } from '../../../../app-routing.module';
 
 @Component({
 	selector: 'do-projects-table',
 	templateUrl: './projects-table.component.html',
 	styleUrls: ['./projects-table.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsTableComponent implements OnInit {
 	public projectList: ProjectInfo[];
@@ -17,159 +19,21 @@ export class ProjectsTableComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 
-	constructor(private _projectService: ProjectService, private _router: Router) {
+	constructor(
+		private _projectService: ProjectService,
+		private _router: Router,
+		private _cdr: ChangeDetectorRef
+	) {
+		this.projectList = [];
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.projectList = [];
 	}
 
-	// activeProjects: Project[] = [];
-	// suspendedProjects: Project[] = [];
-	// closedProjects: Project[] = [];
-	// visiblyGroup = '';
-	//
-	// public groups = [
-	// 	{ groupName: 'В работе', groupData: this.activeProjects },
-	// 	{ groupName: 'Приостановлены', groupData: this.suspendedProjects },
-	// 	{ groupName: 'Завершены', groupData: this.closedProjects },
-	// ];
-
-	ngOnInit() {
-		// const active: Project = {
-		// 	id: '1',
-		// 	name: 'Меркурий – лечу на орбиту',
-		// 	shortName: 'shortName',
-		// 	departmentId: '1',
-		// 	isActive: true,
-		// 	consumer: {
-		// 		name: 'Роскосмос',
-		// 		description: '',
-		// 	},
-		// 	description:
-		// 		'Внедряем ПО на железки Роскосмоса для полета к орбите Меркурия. Человечество надеется на нас! Внедряем ПО на железки Роскосмоса для полета к орбите Меркурия. Человечество надеется на нас!',
-		// 	contributors: [
-		// 		{
-		// 			user: {
-		// 				firstName: 'Вася',
-		// 				lastName: 'Пчелкин',
-		// 				photo: './assets/images/girl.png',
-		// 			},
-		// 			totalTime: {
-		// 				hours: 280,
-		// 				minutes: 40,
-		// 			},
-		// 		},
-		// 		{
-		// 			user: {
-		// 				firstName: 'Вася',
-		// 				lastName: 'Пчелкин',
-		// 				photo: './assets/images/girl.png',
-		// 			},
-		// 			totalTime: {
-		// 				hours: 280,
-		// 				minutes: 40,
-		// 			},
-		// 		},
-		// 		{
-		// 			user: {
-		// 				firstName: 'Вася',
-		// 				lastName: 'Пчелкин',
-		// 				photo: './assets/images/girl.png',
-		// 			},
-		// 			totalTime: {
-		// 				hours: 280,
-		// 				minutes: 40,
-		// 			},
-		// 		},
-		// 		{
-		// 			user: {
-		// 				firstName: 'Вася',
-		// 				lastName: 'Пчелкин',
-		// 				photo: './assets/images/girl.png',
-		// 			},
-		// 			totalTime: {
-		// 				hours: 280,
-		// 				minutes: 40,
-		// 			},
-		// 		},
-		// 		{
-		// 			user: {
-		// 				firstName: 'Вася',
-		// 				lastName: 'Пчелкин',
-		// 				photo: './assets/images/girl.png',
-		// 			},
-		// 			totalTime: {
-		// 				hours: 280,
-		// 				minutes: 40,
-		// 			},
-		// 		},
-		// 	],
-		// };
-		//
-		// const suspended = {
-		// 	id: '1',
-		// 	name: 'Герои Меча и Магии XXV',
-		// 	shortName: 'shortName',
-		// 	departmentId: '1',
-		// 	isActive: false,
-		// 	consumer: {
-		// 		name: 'Российский Фонд Кино',
-		// 		description: '',
-		// 	},
-		// 	description: 'Тут были единороги и 50 новых видов драконов, но проект приостановлен до возобновления финансирования',
-		// 	contributors: [
-		// 		{
-		// 			user: {
-		// 				firstName: 'Вася',
-		// 				lastName: 'Пчелкин',
-		// 				photo: './assets/images/girl.png',
-		// 			},
-		// 			totalTime: {
-		// 				hours: 123,
-		// 				minutes: 40,
-		// 			},
-		// 		},
-		// 	],
-		// 	historyDetails: 'Приостановлен 10.06.2019',
-		// };
-		//
-		// const closed: Project = {
-		// 	id: '1',
-		// 	name: 'Ребрендинг “Мир Света”',
-		// 	shortName: 'shortName',
-		// 	departmentId: '1',
-		// 	isActive: false,
-		// 	consumer: {
-		// 		name: 'ИП Горин Д.А.',
-		// 		description: '',
-		// 	},
-		// 	description: 'Делаем так, чтобы всем захотелось срочно поменять все светильники в доме!!',
-		// 	contributors: [
-		// 		{
-		// 			user: {
-		// 				firstName: 'Вася',
-		// 				lastName: 'Пчелкин',
-		// 				photo: './assets/images/girl.png',
-		// 			},
-		// 			totalTime: {
-		// 				hours: 123,
-		// 				minutes: 40,
-		// 			},
-		// 		},
-		// 	],
-		// 	historyDetails: 'Завершен 02.03.2020',
-		// };
-		//
-		// this.activeProjects.push(active, active, active, active);
-		// this.suspendedProjects.push(suspended);
-		// this.closedProjects.push(closed);
-
+	public ngOnInit(): void {
 		this._getProjectList();
 	}
-
-	// onSelect(selectChange) {
-	// 	this.visiblyGroup = selectChange.value;
-	// }
 
 	public onPageChange(event: PageEvent): void {
 		this.pageSize = event.pageSize;
@@ -177,7 +41,7 @@ export class ProjectsTableComponent implements OnInit {
 		this._getProjectList();
 	}
 
-	public onProjectClick(projectId: string): void {
+	public onProjectClick(projectId: string | undefined): void {
 		this._router.navigate([`${RouteType.PROJECT}/${projectId}`]);
 	}
 
@@ -187,8 +51,9 @@ export class ProjectsTableComponent implements OnInit {
 
 	private _getProjectList(): void {
 		this._projectService.findProjects(this.pageIndex * this.pageSize, this.pageSize).subscribe((result) => {
-			this.totalCount = result.totalCount;
-			this.projectList = result.body;
+			this.totalCount = result.totalCount ?? 0;
+			this.projectList = result.body ?? [];
+			this._cdr.detectChanges();
 		});
 	}
 }

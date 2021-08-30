@@ -1,44 +1,12 @@
-.table {
-	&__header {
-		margin-bottom: 20px;
+.header {
+	margin-bottom: 20px;
 
-		display: flex;
-		justify-content: space-between;
-	}
-
-	&__content {
-		width: 100%;
-
-		border-collapse: collapse;
-	}
-
-	&__filters {
-		display: flex;
-		justify-content: space-between;
-	}
-
-	&__row {
-		height: 76px;
-
-		border-bottom: 1px solid #f1f1ef;
-
-		&:hover {
-			cursor: pointer;
-
-			background-color: #f1f1ef;
-		}
-	}
-
-	&__description {
-		display: -webkit-box;
-		overflow: hidden;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-	}
+	display: flex;
+	justify-content: space-between;
 }
 
 .navigation {
-	margin-bottom: 40px;
+	margin-bottom: 50px;
 
 	&__link {
 		display: inline-block;

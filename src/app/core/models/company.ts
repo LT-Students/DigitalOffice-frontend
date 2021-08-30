@@ -6,31 +6,33 @@ import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
 
 export interface CompanyInfo {
-	id?: string;
-	portalName?: string;
-	companyName?: string;
-	description?: string;
-	tagline?: string;
-	siteUrl?: string;
-	logo?: ImageInfo;
-	smtpInfo?: SmtpInfo;
-	departments?: DepartmentInfo[];
-	positions?: PositionInfo[];
-	offices?: OfficeInfo[];
+	id?: string | null;
+	portalName?: string | null;
+	companyName?: string | null;
+	description?: string | null;
+	tagline?: string | null;
+	siteUrl?: string | null;
+	logo?: ImageInfo | null;
+	smtpInfo?: SmtpInfo | null;
+	departments?: DepartmentInfo[] | null;
+	positions?: PositionInfo[] | null;
+	offices?: OfficeInfo[] | null;
+	IsDepartmentModuleEnabled?: boolean | null;
 }
 
 export class Company implements CompanyInfo {
-	public id: string;
-	public portalName: string;
-	public companyName: string;
-	public description: string;
-	public tagline: string;
-	public siteUrl: string;
-	public logo: ImageInfo;
-	public smtpInfo: SmtpInfo;
-	public departments: DepartmentInfo[];
-	public positions: PositionInfo[];
-	public offices: OfficeInfo[];
+	public id: string | null | undefined;
+	public portalName: string | null | undefined;
+	public companyName: string | null | undefined;
+	public description: string | null | undefined;
+	public tagline: string | null | undefined;
+	public siteUrl: string | null | undefined;
+	public logo: ImageInfo | null | undefined;
+	public smtpInfo: SmtpInfo | null | undefined;
+	public departments: DepartmentInfo[] | null | undefined;
+	public positions: PositionInfo[] | null | undefined;
+	public offices: OfficeInfo[] | null | undefined;
+	public IsDepartmentModuleEnabled: boolean | null | undefined;
 
 	constructor(data: CompanyInfo) {
 		this.id = setProperty(data.id);
@@ -44,6 +46,7 @@ export class Company implements CompanyInfo {
 		this.departments = setProperty(data.departments);
 		this.positions = setProperty(data.positions);
 		this.offices = setProperty(data.offices);
+		this.IsDepartmentModuleEnabled = setProperty(data.IsDepartmentModuleEnabled);
 	}
 
 	/* methods */

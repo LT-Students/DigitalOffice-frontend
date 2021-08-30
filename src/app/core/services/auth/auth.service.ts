@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';

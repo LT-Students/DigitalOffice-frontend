@@ -1,10 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+//@ts-nocheck
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroupDirective } from '@angular/forms';
 
 @Component({
 	selector: 'do-stepper',
 	templateUrl: './stepper.component.html',
 	styleUrls: ['./stepper.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepperComponent implements OnInit {
 	@Input() label = '';
@@ -13,7 +15,7 @@ export class StepperComponent implements OnInit {
 	@Input() controlName = '';
 	@Input() isEdit = true;
 
-	control: FormControl | undefined;
+	control: FormControl;
 
 	constructor(private formGroupDir: FormGroupDirective) {}
 
