@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
@@ -23,6 +22,7 @@ export class ProjectsTableComponent implements OnInit {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.projectList = [];
 	}
 
 	// activeProjects: Project[] = [];
@@ -189,9 +189,8 @@ export class ProjectsTableComponent implements OnInit {
 
 	private _getProjectList(): void {
 		this._projectService.findProjects(this.pageIndex * this.pageSize, this.pageSize).subscribe((result) => {
-			console.log(result.body)
-			this.totalCount = result.totalCount;
-			this.projectList = result.body;
+			this.totalCount = result?.totalCount ?? 0;
+			this.projectList = result?.body ?? [];
 		});
 	}
 }
