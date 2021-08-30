@@ -30,11 +30,11 @@
 		<tr *ngFor="let leave of leaves" class="row">
 			<td class="cell">
 				<p class="regular_text">
-					{{ getRusType(leave.leaveType) }}
+					{{ getRusType(leave.leaveType!) }}
 				</p>
 			</td>
 			<td class="cell">
-				<p class="regular_text">{{ getPeriodInHours(leave?.startTime, leave?.endTime) }} ч</p>
+				<p class="regular_text">{{ getPeriodInHours(leave?.startTime!, leave?.endTime!) }} ч</p>
 			</td>
 			<td class="cell">
 				<div>
