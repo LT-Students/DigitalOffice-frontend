@@ -6,6 +6,10 @@
 	<a class="navigation__link">Список департаментов</a>
 </div>
 <div class="card card_standard">
+	<div class="header">
+		<h3 doText underlined underlinedSize="sm">Сотрудники</h3>
+		<button mat-flat-button color="orange" (click)="onAddDepartmentClick()">+ Добавить сотрудника</button>
+	</div>
 	<table class='table' matSort (matSortChange)="sortData($event)">
 		<colgroup>
 			<col class='column column_width_m'>

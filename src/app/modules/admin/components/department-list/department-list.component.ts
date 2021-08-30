@@ -27,7 +27,7 @@ export class DepartmentListComponent implements OnInit {
 	public id: string;
 
 
-constructor(
+	constructor(
 		private netService: NetService,
 		private _modalService: ModalService,
 		private router: Router,
@@ -47,7 +47,7 @@ constructor(
 		this._getDepartments();
 	}
 
-	public onAddEmployeeClick() {
+	public onAddDepartmentClick() {
 		this._modalService
 			.openModal<NewDepartmentComponent, undefined, any>(NewDepartmentComponent)
 			.afterClosed()
