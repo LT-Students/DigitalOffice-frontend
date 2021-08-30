@@ -2,18 +2,18 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType } from '@data/api/time-service/models/operation-result-status-type';
+import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
-import { IMappedProject } from '../user-tasks/user-tasks.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
 
 export interface IModalContentConfig {
-	id: string;
-	name: string;
-	userHours: number;
-	managerHours: number;
-	description: string;
-	month: number;
-	year: number;
+	id?: string;
+	name?: string;
+	userHours?: number;
+	managerHours?: number;
+	description?: string;
+	month?: number;
+	year?: number;
 }
 
 @Component({
@@ -23,7 +23,7 @@ export interface IModalContentConfig {
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectsComponent {
-	@Input() public projects: IMappedProject[] | undefined | null;
+	@Input() public projects: WorkTimeInfo[] | undefined | null;
 	@Input() public canEdit: boolean;
 	public selectedDate: Date;
 
@@ -41,10 +41,10 @@ export class ProjectsComponent {
 		return new Date(year, month + 1, 0)
 	}
 
-	public openEditModal(project: IMappedProject) {
+	public openEditModal(project: WorkTimeInfo) {
 		let modalContentConfig: IModalContentConfig = {
 			id: project.id,
-			name: project.name,
+			name: project.project?.name,
 			userHours: project.userHours ?? 0,
 			managerHours: project.managerHours ?? 0,
 			description: project.description,

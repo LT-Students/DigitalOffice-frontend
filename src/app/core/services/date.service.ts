@@ -8,21 +8,21 @@ import { DayOfWeek } from '@data/models/day-of-week';
 export class DateService {
 	constructor() {}
 
-	isSameDay(fromDate: Date | null, toDate: Date | null): boolean {
+	public isSameDay(fromDate: Date | null, toDate: Date | null): boolean {
 		return fromDate?.getTime() === toDate?.getTime();
 	}
 
-	isSameMonth(fromDate: Date, toDate: Date): boolean {
+	public isSameMonth(fromDate: Date, toDate: Date): boolean {
 		return fromDate.getMonth() === toDate.getMonth();
 	}
 
-	addDays(date: Date, days: number): Date {
+	public addDays(date: Date, days: number): Date {
 		const result = new Date(date);
 		result.setDate(date.getDate() + days);
 		return result;
 	}
 
-	normalizeDatePeriod(datePeriod: DatePeriod): DatePeriod {
+	public normalizeDatePeriod(datePeriod: DatePeriod): DatePeriod {
 		if (datePeriod.startDate && datePeriod.endDate) {
 			return datePeriod;
 		} else {
@@ -30,7 +30,7 @@ export class DateService {
 		}
 	}
 
-	getDefaultDatePeriod(): DatePeriod {
+	public getDefaultDatePeriod(): DatePeriod {
 		// const today: Date = new Date();
 		const startDate: Date = new Date();
 		const endDate: Date = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7);
@@ -40,7 +40,7 @@ export class DateService {
 		return { startDate, endDate };
 	}
 
-	getWeek(dateSelected: Date): DayOfWeek[] {
+	public getWeek(dateSelected: Date): DayOfWeek[] {
 		const daysOfWeek: DayOfWeek[] = [];
 
 		for (let i = -3; i <= 3; i++) {
@@ -54,7 +54,7 @@ export class DateService {
 		return daysOfWeek;
 	}
 
-	getWorkdays(dateSelected: Date): Date[] {
+	public getWorkdays(dateSelected: Date): Date[] {
 		const daysOfWeek: Date[] = [];
 		const selectedDayOfWeek = dateSelected.getDay();
 		const nearestMonday = this.addDays(dateSelected, -selectedDayOfWeek + 1);
