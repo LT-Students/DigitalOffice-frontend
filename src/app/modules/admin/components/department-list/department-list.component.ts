@@ -92,20 +92,20 @@ export class DepartmentListComponent implements OnInit {
 			const isAsc = sort.direction === 'asc';
 			switch (sort.active) {
 				case 'name':
-					return this._compare(a.name ?? '', b.name ?? '', isAsc);
+					return this._compare(a.name, b.name, isAsc);
 				case 'description':
-					return this._compare(a.description ?? '', b.description ?? '', isAsc);
+					return this._compare(a.description!, b.description!, isAsc);
 				case 'director':
-					return this._compare(a.director?.firstName ?? '', b.director?.firstName ?? '', isAsc);
+					return this._compare(a.director?.firstName, b.director?.firstName, isAsc);
 				case 'amount':
-					return this._compare(a.countUsers ?? 0, b.countUsers ?? 0, isAsc);
+					return this._compare(a.countUsers, b.countUsers, isAsc);
 				default:
 					return 0;
 			}
 		});
 	}
 
-	private _compare(a: number | string, b: number | string, isAsc: boolean) {
+	private _compare(a: number | string | undefined, b: number | string | undefined, isAsc: boolean) {
 		if (typeof a === 'undefined' || typeof b === 'undefined') {
 			return 0;
 		}

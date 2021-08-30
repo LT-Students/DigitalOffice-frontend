@@ -53,9 +53,7 @@ export class ManageRolesComponent implements OnInit {
 	}
 
 	private _getRoleList(): void {
-		console.log('АУФ')
 		this._rightsService.findRoles({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
-			console.log('После этих слов, весь detectionStrategy дрожал')
 			this.totalCount = res.totalCount ?? 0;
 			this.roles = res.roles ?? [];
 			this._cdr.markForCheck();
