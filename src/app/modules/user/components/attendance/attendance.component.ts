@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
 import { AttendanceService } from '@app/services/attendance.service';
-import { switchMap } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { ReplaySubject, Subscription } from 'rxjs';
 
 @Component({
 	selector: 'do-attendance',
@@ -11,17 +11,32 @@ import { Subscription } from 'rxjs';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttendanceComponent implements OnInit, OnDestroy {
-	private attendanceSubscription: Subscription;
+	private onDestroy$: ReplaySubject<void>;
 
 	constructor(private _attendanceService: AttendanceService, private _userService: UserService) {
-		this.attendanceSubscription = this._userService.currentUser$
-			.pipe(switchMap((user) => this._attendanceService.getActivities(user?.id)))
+		this.onDestroy$ = new ReplaySubject<void>(1);
+	}
+
+	ngOnInit() {
+		//TODO think how to use only one observable for this logic
+		this._userService.currentUser$
+			.pipe(
+				takeUntil(this.onDestroy$),
+				tap((user) => this._attendanceService.setUserId(user?.id)),
+				switchMap(() => this._attendanceService.getActivities()),
+				switchMap(() => this._attendanceService.selectedDate$)
+			)
+			.subscribe();
+		this._attendanceService.selectedDate$
+			.pipe(
+				takeUntil(this.onDestroy$),
+				switchMap(() => this._attendanceService.getActivities())
+			)
 			.subscribe();
 	}
 
-	ngOnInit() {}
-
 	public ngOnDestroy() {
-		this.attendanceSubscription.unsubscribe();
+		this.onDestroy$.next();
+		this.onDestroy$.complete();
 	}
 }

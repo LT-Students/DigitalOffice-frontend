@@ -1,23 +1,24 @@
 <mat-card class="card_grid activities">
-<!--    TODO пофиксить тэг, почему-то не применятся h3 стиль-->
-	<h2 doText underlined underlinedSize="sm">
+	<h3 doText underlined underlinedSize="sm">
 		<span
 			>Записи за
 			<mat-form-field class="date-input">
 				<input matInput [matDatepicker]="dp" />
-				<mat-datepicker #dp startView="year" (yearSelected)="chosenYearHandler($event)" (monthSelected)="chosenMonthHandler($event, dp)">
+				<mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event, dp)">
 				</mat-datepicker>
 			</mat-form-field>
 		</span>
-		<span class="activities__period text-accent_color_bright" (click)="openMonthpicker()">
-			{{ selectedPeriod.startDate | date: 'LLLL YYYY' }}
+		<span class="activities__period text-accent_color_bright" (click)="dp.open()">
+			{{ selectedDate$ | async | date: 'LLLL YYYY' }}
 			<mat-icon class="activities__icon">keyboard_arrow_down</mat-icon>
 		</span>
-	</h2>
-	<div class="tasks">
-		<do-projects [projects]="projects" [canEdit]="canEdit"></do-projects>
-	</div>
-	<div class="tasks">
-		<do-leaves [leaves]="leaves" [canEdit]="canEdit"></do-leaves>
-	</div>
+	</h3>
+    <ng-container *ngIf='activities$ | async as activities'>
+        <div class='tasks'>
+            <do-projects [projects]='activities.projects'></do-projects>
+        </div>
+        <div class='tasks'>
+            <do-leaves [leaves]='activities.leaves'></do-leaves>
+        </div>
+    </ng-container>
 </mat-card>

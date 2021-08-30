@@ -4,7 +4,6 @@ import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType } from '@data/api/time-service/models/operation-result-status-type';
 import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
-import { IMappedProject } from '../user-tasks/user-tasks.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
 
 export interface IModalContentConfig {
@@ -62,7 +61,7 @@ export class ProjectsComponent {
 					project.managerHours = res.data.managerHours;
 					project.userHours = res.data.userHours;
 
-					this._cdr.markForCheck();
+					this._cdr.detectChanges();
 					this._snackBar.open('Project successfully edited', 'Close', { duration: 3000 });
 				}
 			})
