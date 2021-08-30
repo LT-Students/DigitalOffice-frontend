@@ -126,7 +126,7 @@ export class DoughnutChartComponent implements OnInit {
 
 						callbacks: {
 							title: (tooltip: any) => tooltip[0].label,
-							label: (tooltip) => `Количество часов: ${tooltip.formattedValue}`,
+							label: (tooltip: any) => `Количество часов: ${tooltip.formattedValue}`,
 						},
 					},
 				},

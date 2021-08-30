@@ -43,7 +43,7 @@
                 <do-comment [text]="leave.comment"></do-comment>
             </td>
             <td class='cell cell__icon'>
-                <button *ngIf="canEdit" mat-icon-button [matMenuTriggerFor]='menu'>
+                <button *ngIf="canEdit$ | async" mat-icon-button [matMenuTriggerFor]='menu'>
                     <mat-icon doText color='gray1'>more_horiz</mat-icon>
                 </button>
                 <mat-menu #menu='matMenu'>
