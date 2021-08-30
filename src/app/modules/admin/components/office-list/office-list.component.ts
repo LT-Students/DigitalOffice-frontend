@@ -29,6 +29,7 @@ export class OfficeListComponent implements OnInit {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.offices = [];
 	}
 
 	public ngOnInit(): void {

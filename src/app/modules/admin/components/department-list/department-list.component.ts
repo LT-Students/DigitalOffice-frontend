@@ -24,8 +24,10 @@ export class DepartmentListComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
+	public id: string;
 
-	constructor(
+
+constructor(
 		private netService: NetService,
 		private _modalService: ModalService,
 		private router: Router,
@@ -38,6 +40,7 @@ export class DepartmentListComponent implements OnInit {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.id = '';
 	}
 
 	ngOnInit(): void {

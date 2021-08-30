@@ -18,7 +18,9 @@ import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class UserService {
 	private _currentUser: BehaviorSubject<User | null>;
 	public readonly currentUser$: Observable<User | null>;
@@ -26,10 +28,6 @@ export class UserService {
 	constructor(private _userApiService: UserApiService) {
 		this._currentUser = new BehaviorSubject<User | null>(null);
 		this.currentUser$ = this._currentUser.asObservable();
-	}
-
-	public getCurrentUser(): User | null {
-		return this._currentUser.value;
 	}
 
 	public getUser(params: IGetUserRequest): Observable<User> {

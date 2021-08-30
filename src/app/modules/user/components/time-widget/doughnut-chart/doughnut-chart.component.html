@@ -1,0 +1,11 @@
+<canvas #canvas width="444" height="185"></canvas>
+<h3 doText class="time-info">
+	<span>{{ userHours }}</span>
+	<small>&nbsp;/&nbsp;{{ monthNorm }}</small>
+</h3>
+<div class="legend">
+	<div class="legend__item" *ngFor="let label of labels; index as i">
+		<div class="legend__item-marker" [style.background-color]="COLORS[i]"></div>
+		<span>{{ label }}</span>
+	</div>
+</div>

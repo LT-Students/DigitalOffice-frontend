@@ -28,6 +28,7 @@ export class ProjectsTableComponent implements OnInit {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.projectList = [];
 	}
 
 	public ngOnInit(): void {

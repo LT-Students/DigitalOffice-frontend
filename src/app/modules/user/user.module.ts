@@ -1,15 +1,12 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
-import { MaterialModule } from '../../shared/material.module';
 import { AdminModule } from '../admin/admin.module';
 import { SharedModule } from '../../shared/shared.module';
 import { DateDescComponent } from './components/date-desc/date-desc.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
-import { DoughnutChartComponent } from './components/chart/doughnut-chart.component';
+import { TimeWidgetComponent } from './components/time-widget/time-widget.component';
 import { AddHoursComponent } from './components/add-hours/add-hours.component';
 import { GradientGraphicsComponent } from './components/gradient-graphics/gradient-graphics.component';
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
@@ -27,7 +24,7 @@ import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
 	declarations: [
 		DateDescComponent,
 		AttendanceComponent,
-		DoughnutChartComponent,
+		TimeWidgetComponent,
 		AddHoursComponent,
 		GradientGraphicsComponent,
 		UserTasksComponent,
@@ -47,8 +44,6 @@ import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
 		UserRoutingModule,
 	],
 	providers: [],
-	exports: [
-		AttendanceComponent,
-	],
+	exports: [AttendanceComponent],
 })
 export class UserModule { }
