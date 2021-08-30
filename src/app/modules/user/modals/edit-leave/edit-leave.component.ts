@@ -29,7 +29,7 @@ export class EditLeaveComponent {
 		private _timeService: TimeService,
 		private _attendanceService: AttendanceService
 	) {
-		this.disableWeekends = _attendanceService.disableWeekends;
+		this.disableWeekends = this._attendanceService.disableWeekends;
 		this.startTimeSelected = false;
 		this.editForm = this._initEditForm();
 		this.periodInHours = 0;

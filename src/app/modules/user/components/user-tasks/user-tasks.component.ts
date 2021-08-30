@@ -23,8 +23,8 @@ export class UserTasksComponent {
 	public activities$: Observable<Activities>;
 
 	constructor(private _attendanceService: AttendanceService) {
-		this.selectedDate$ = _attendanceService.selectedDate$;
-		this.activities$ = _attendanceService.activities$;
+		this.selectedDate$ = this._attendanceService.selectedDate$;
+		this.activities$ = this._attendanceService.activities$;
 	}
 
 	public chosenMonthHandler(date: Date, datepicker: MatDatepicker<any>) {

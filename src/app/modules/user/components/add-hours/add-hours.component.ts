@@ -42,7 +42,7 @@ export class AddHoursComponent implements OnDestroy {
 		this.isProjectForm = true;
 		this.monthOptions = [];
 		this.absences = LeaveTimeModel.getAllLeaveTypes();
-		this.disableWeekends = _attendanceService.disableWeekends;
+		this.disableWeekends = this._attendanceService.disableWeekends;
 
 		this.addHoursForm = this._fb.group({
 			time: [null, [Validators.required, Validators.min(1), timeValidator(() => this._attendanceService.countMaxHours())]],
@@ -53,13 +53,13 @@ export class AddHoursComponent implements OnDestroy {
 		});
 
 		this.recommendedTime = new BehaviorSubject<number>(0);
-		this.workTimes$ = _attendanceService.activities$.pipe(map((activities) => activities.projects));
-		this.selectedDate$ = _attendanceService.selectedDate$.pipe(
+		this.workTimes$ = this._attendanceService.activities$.pipe(map((activities) => activities.projects));
+		this.selectedDate$ = this._attendanceService.selectedDate$.pipe(
 			tap((date) => {
 				this.monthOptions = this._setMonthOptions(date);
 			})
 		);
-		this._canEditSubscription = _attendanceService.canEdit$.subscribe({
+		this._canEditSubscription = this._attendanceService.canEdit$.subscribe({
 			next: (canEdit) => {
 				if (canEdit) {
 					this.addHoursForm.enable();

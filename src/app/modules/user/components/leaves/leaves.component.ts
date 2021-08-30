@@ -40,7 +40,7 @@ export class LeavesComponent {
 		private _attendanceService: AttendanceService
 	) {
 		this.leaves = [];
-		this.canEdit$ = _attendanceService.canEdit$;
+		this.canEdit$ = this._attendanceService.canEdit$;
 	}
 
 	public getRusType(leaveType: LeaveType) {

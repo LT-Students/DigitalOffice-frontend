@@ -14,7 +14,7 @@ export class TimeWidgetComponent {
 	public selectedDate$: Observable<Date>;
 
 	constructor(private _attendanceService: AttendanceService) {
-		this.selectedDate$ = _attendanceService.selectedDate$;
+		this.selectedDate$ = this._attendanceService.selectedDate$;
 	}
 
 	private _changeMonth(date: Date): void {
