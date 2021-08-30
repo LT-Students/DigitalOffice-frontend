@@ -1,32 +1,42 @@
 <div class='navigation' doText color='gray'>
     <a class='navigation__link' routerLink='/admin/dashboard'>Администрирование </a>
-    <span doText color='gray'><mat-icon>chevron_right</mat-icon></span>
+    <span doText color='gray'>
+        <mat-icon>chevron_right</mat-icon>
+    </span>
     <a class='navigation__link'>Управление должностями</a>
 </div>
 <div class='card card_standard'>
-    <div class='table'>
-        <div class='table__header'>
-            <h3 doText underlined underlinedSize='sm'>Должности</h3>
-            <button mat-button color='accent' (click)='onAddPositionClick()'>+ Добавить должность</button>
-        </div>
-        <!-- <div class='table__filters'>
-            <div>
-            <span doText color='gray'><mat-icon>search</mat-icon></span>
-            <mat-form-field appearance='fill' floatLabel='always'>
-                <input class='table__input' matInput placeholder='Поиск по названию'>
-            </mat-form-field>
-        </div>
-        </div> -->
-        <table class='table__content' matSort>
-            <tr doText color="gray" regularTextSize='regular'>
-                <th mat-sort-header='name' class='table__heading'>Название</th>
-                <th mat-sort-header='description' class='table__heading'>Описание</th>
-            </tr>
-            <tr *ngFor="let position of positions" class='table__row'>
-                <td doText>{{position.name ? position.name : '—'}}</td>
-                <td doText color='gray'>{{position.description ? position.description : '—'}}</td>
-            </tr>
-        </table>
-        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+    <div class='header'>
+        <h3 doText underlined underlinedSize='sm'>Должности</h3>
+        <button mat-button color='accent' (click)='onAddPositionClick()'>+ Добавить должность</button>
     </div>
+    <table class='table' matSort>
+        <colgroup>
+            <col class='column column_width_m'>
+            <col class='column column_width_l'>
+        </colgroup>
+        <thead doText color='gray'>
+            <tr class='row'>
+                <th mat-sort-header='name' class='cell'>
+                    <p class='regular_text'>Название</p>
+                </th>
+                <th mat-sort-header='description' class='cell'>
+                    <p class='regular_text'>Описание</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let position of positions" class='row'>
+                <td class='cell' doText>
+                    <p class='regular_text cell__content cell__content_ellipsissed'>{{position.name ? position.name :
+                        '—'}}</p>
+                </td>
+                <td class='cell' doText color='gray'>
+                    <do-comment [text]="position.description"></do-comment>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
+        (page)="onPageChange($event)"></mat-paginator>
 </div>

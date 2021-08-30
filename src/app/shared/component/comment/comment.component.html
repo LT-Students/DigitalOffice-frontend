@@ -1,5 +1,5 @@
 <div class='comment__content'>
-    <p class='comment__text regular_text' #comment>{{text}}</p>
+    <p class='comment__text regular_text' #comment>{{text? text : '-'}}</p>
     <ng-container *ngIf="buttonShowed">
         <button *ngIf="commentCollapsed; else collapseButton" mat-flat-button class='comment__button'
             (click)="expandComment()">

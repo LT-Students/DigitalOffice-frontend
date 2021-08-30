@@ -58,8 +58,10 @@
 		}
 	}
 
-	&__image {
-		border-radius: 50%;
+	&__column {
+		&_width_little {
+			width: 60px;
+		}
 	}
 }
 

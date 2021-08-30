@@ -1,46 +1,11 @@
+.header {
+	margin-bottom: 20px;
+
+	display: flex;
+	justify-content: space-between;
+}
+
 .table {
-	&__header {
-		margin-bottom: 20px;
-
-		display: flex;
-		justify-content: space-between;
-	}
-
-	&__content {
-		width: 100%;
-
-		border-collapse: collapse;
-	}
-
-	&__filters {
-		display: flex;
-		justify-content: space-between;
-	}
-
-	&__row {
-		position: relative;
-
-		height: 76px;
-
-		border-bottom: 1px solid #f1f1ef;
-
-		&:hover {
-			cursor: pointer;
-
-			.table__cell {
-				background-color: #f1f1ef;
-			}
-
-			.table__delete-button {
-				visibility: visible;
-			}
-		}
-
-		&:focus {
-			outline: none;
-		}
-	}
-
 	&__status {
 		width: 67px;
 		height: 24px;
@@ -56,14 +21,10 @@
 		}
 	}
 
-	&__image {
-		border-radius: 50%;
-	}
-
 	&__delete-button {
-		position: relative;
-		//right: -10px;
 		visibility: hidden;
+
+		text-align: right;
 	}
 }
 
@@ -82,5 +43,19 @@
 
 	&__link:hover {
 		text-decoration: underline;
+	}
+}
+
+.row {
+	&:hover {
+		.table__delete-button {
+			visibility: visible;
+		}
+	}
+}
+
+.column {
+	&_width_little {
+		width: 60px;
 	}
 }

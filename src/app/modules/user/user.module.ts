@@ -22,7 +22,6 @@ import { UserRoutingModule } from './user-routing.module';
 import { DeleteLeaveComponent } from './modals/delete-leave/delete-leave.component';
 import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
-import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
 	declarations: [
@@ -39,8 +38,7 @@ import { CommentComponent } from './components/comment/comment.component';
 		TaskFilterPipe,
 		LeavesComponent,
 		EditProjectComponent,
-		EditLeaveComponent,
-		CommentComponent
+		EditLeaveComponent
 	],
 	imports: [
 		SharedModule,

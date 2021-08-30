@@ -1,5 +1,5 @@
 <h4 class='h4'>Таблица отсутствий</h4>
-<table class='task-table'>
+<table class='table'>
     <colgroup>
         <col class='column column_width_m'>
         <col class='column column_width_sm'>
@@ -36,10 +36,8 @@
                 <p class='regular_text'>{{getPeriodInHours(leave?.startTime!, leave?.endTime!)}} ч</p>
             </td>
             <td class='cell'>
-                <div>
-                    <p class='regular_text'>{{leave.startTime | date: 'd MMMM'}} - {{leave.endTime | date: 'd
-                        MMMM'}}</p>
-                </div>
+                <p class='regular_text'>{{leave.startTime | date: 'd MMMM'}} - {{leave.endTime | date: 'd
+                    MMMM'}}</p>
             </td>
             <td class='cell'>
                 <do-comment [text]="leave.comment"></do-comment>
