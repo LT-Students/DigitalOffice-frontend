@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
@@ -24,6 +23,7 @@ export class OfficeListComponent implements OnInit {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.offices = [];
 	}
 
 	public ngOnInit(): void {
@@ -42,8 +42,8 @@ export class OfficeListComponent implements OnInit {
 
 	private _getOfficeList(): void {
 		this.companyApiService.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
-			this.totalCount = data.totalCount;
-			this.offices = data.body;
+			this.totalCount = data?.totalCount ?? 0;
+			this.offices = data?.body ?? [];
 		});
 	}
 }

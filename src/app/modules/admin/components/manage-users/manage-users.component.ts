@@ -30,6 +30,8 @@ export class ManageUsersComponent implements OnInit {
 	constructor(private _userService: UserService, private _dialog: MatDialog, private cdr: ChangeDetectorRef) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
+		this.userInfo = [];
+		this.sortedUserInfo = [];
 		this.studyTypes = [EducationType.Offline, EducationType.Online];
 
 		this.totalCount = 0;
@@ -63,7 +65,7 @@ export class ManageUsersComponent implements OnInit {
 		evt.stopPropagation();
 		console.log(evt)
 		if (user.isActive) {
-			this._userService.disableUser(user.id!).subscribe(() => {
+			this._userService.disableUser(user?.id ?? '').subscribe(() => {
 				this._getPageUsers();
 			});
 		}
@@ -80,22 +82,22 @@ export class ManageUsersComponent implements OnInit {
 			const isAsc = sort.direction === 'asc';
 			switch (sort.active) {
 				case 'name':
-					return this._compare(a.firstName!, b.firstName!, isAsc);
+					return this._compare(a.firstName, b.firstName, isAsc);
 				case 'department':
-					return this._compare(a.department?.name!, b.department?.name!, isAsc);
+					return this._compare(a.department?.name, b.department?.name, isAsc);
 				case 'role':
-					return this._compare(a.position?.name!, b.position?.name!, isAsc);
+					return this._compare(a.position?.name, b.position?.name, isAsc);
 				case 'rate':
-					return this._compare(a.rate!, b.rate!, isAsc);
+					return this._compare(a.rate, b.rate, isAsc);
 				case 'status':
-					return this._compare(a.status!, b.status!, isAsc);
+					return this._compare(a.status, b.status, isAsc);
 				default:
 					return 0;
 			}
 		});
 	}
 
-	private _compare(a: number | string, b: number | string, isAsc: boolean) {
+	private _compare(a: number | string | undefined, b: number | string | undefined, isAsc: boolean) {
 		if (typeof a === 'undefined' || typeof b === 'undefined') {
 			return 0;
 		}
@@ -104,9 +106,9 @@ export class ManageUsersComponent implements OnInit {
 
 	private _getPageUsers(): void {
 		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
-			this.totalCount = data.totalCount ?? 0;
-			this.userInfo = data.body?.slice();
-			this.sortedUserInfo = data.body?.slice();
+			this.totalCount = data?.totalCount ?? 0;
+			this.userInfo = data?.body?.slice() ?? [];
+			this.sortedUserInfo = data?.body?.slice() ?? [];
 			console.log(data.body);
 			this.cdr.detectChanges();
 		});
