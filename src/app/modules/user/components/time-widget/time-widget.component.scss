@@ -15,26 +15,6 @@
 		height: 185px;
 	}
 
-	&__canvas {
-		position: relative;
-
-		z-index: 10;
-	}
-
-	&__time-info {
-		position: absolute;
-
-		top: 50%;
-
-		width: 100%;
-
-		text-align: center;
-
-		pointer-events: none;
-
-		transform: translateY(-50%);
-	}
-
 	&__diagram-wrapper {
 		padding-bottom: 30px;
 
