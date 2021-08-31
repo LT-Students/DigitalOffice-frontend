@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FormControl, ValidationErrors } from '@angular/forms';
 
 function isEmptyInputValue(value: any): boolean {

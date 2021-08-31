@@ -17,8 +17,9 @@ import { EditWorkTimeMonthLimitRequest } from '@data/api/time-service/models/edi
 export interface IFindWorkTimesRequest {
 	userid?: string;
 	projectid?: string;
-	starttime?: string;
-	endtime?: string;
+	month?: number;
+	year?: number;
+	includedayjobs?: boolean;
 	takeCount?: number;
 	skipCount?: number;
 }
@@ -37,6 +38,7 @@ export interface IFindLeaveTimesRequest {
 	userid?: string;
 	starttime?: string;
 	endtime?: string;
+	includedeactivated?: boolean;
 	takeCount?: number;
 	skipCount?: number;
 }
@@ -61,7 +63,7 @@ export class TimeService {
 		private _workTimeDayJobApiService: WorkTimeDayJobApiService,
 		private _workTimeDayJobIdApiService: WorkTimeDayJobIdApiService,
 		private _workTimeMonthLimitApiService: WorkTimeMonthLimitApiService
-	) {}
+	) { }
 
 	public findWorkTimes(params: IFindWorkTimesRequest): Observable<FindResultResponseWorkTimeInfo> {
 		return this._workTimeService.findWorkTimes(params);

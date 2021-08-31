@@ -12,7 +12,6 @@ import { map, filter } from 'rxjs/operators';
 import { CreateCertificateRequest } from '../models/create-certificate-request';
 import { EditCertificateRequest } from '../models/edit-certificate-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { IEditCertificateRequest } from '@app/services/user/certificate.service';
 
 @Injectable({
   providedIn: 'root',
@@ -122,7 +121,14 @@ export class CertificateApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editCertificate(params: IEditCertificateRequest): Observable<OperationResultResponse> {
+  editCertificate(params: {
+
+    /**
+     * Specific certificate id
+     */
+    certificateId: string;
+    body?: EditCertificateRequest
+  }): Observable<OperationResultResponse> {
 
     return this.editCertificate$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

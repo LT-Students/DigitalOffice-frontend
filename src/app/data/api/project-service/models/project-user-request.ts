@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-import { UserRoleType } from './user-role-type';
+import { ProjectUserRoleType } from './project-user-role-type';
 export interface ProjectUserRequest {
-  role: UserRoleType;
+  role: ProjectUserRoleType;
 
   /**
    * Unique user identifier.

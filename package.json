@@ -1,6 +1,6 @@
 {
   "name": "digital-office-frontend",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -39,7 +39,7 @@
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "bootstrap": "^4.5.2",
     "canvasjs": "^1.8.3",
-    "chart.js": "^2.9.3",
+    "chart.js": "^3.5.1",
     "moment": "^2.27.0",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.3",
@@ -76,7 +76,7 @@
     "ng-openapi-gen": "^0.16.0",
     "prettier": "^2.1.2",
     "protractor": "~7.0.0",
-    "stylelint": "^13.7.2",
+    "stylelint": "^13.13.1",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
     "ts-node": "~9.0.0",

@@ -1,12 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
-import { UserRoleType } from './user-role-type';
+import { DepartmentInfo } from './department-info';
+import { ImageInfo } from './image-info';
+import { PositionInfo } from './position-info';
+import { ProjectUserRoleType } from './project-user-role-type';
+import { UserStatus } from './user-status';
 export interface ProjectUserInfo {
 
   /**
    * Data and time added user to project.
    */
   addedOn?: any;
+  avatarImage?: ImageInfo;
+  department?: DepartmentInfo;
 
   /**
    * The user first name
@@ -17,6 +23,11 @@ export interface ProjectUserInfo {
    * Unique project identifier.
    */
   id?: string;
+
+  /**
+   * Unique project identifier.
+   */
+  imageId?: string;
 
   /**
    * User state.
@@ -31,12 +42,19 @@ export interface ProjectUserInfo {
   /**
    * The user middle name.
    */
-  middleName?: string;
+  middleName?: null | string;
+  position?: PositionInfo;
+
+  /**
+   * Count of project, which user included.
+   */
+  projectCount?: number;
 
   /**
    * Data and time removed user from project.
    */
   removedOn?: null | any;
-  role?: UserRoleType;
+  role?: ProjectUserRoleType;
+  status?: UserStatus;
 }
 

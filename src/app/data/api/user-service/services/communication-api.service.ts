@@ -12,8 +12,6 @@ import { map, filter } from 'rxjs/operators';
 import { CreateCommunicationRequest } from '../models/create-communication-request';
 import { EditCommunicationRequest } from '../models/edit-communication-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
-import { IRemoveCommunicationRequest } from '@app/services/user/communication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -123,7 +121,14 @@ export class CommunicationApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editCommunication(params: IEditCommunicationRequest): Observable<OperationResultResponse> {
+  editCommunication(params: {
+
+    /**
+     * Specific communication id
+     */
+    communicationId: string;
+    body?: EditCommunicationRequest
+  }): Observable<OperationResultResponse> {
 
     return this.editCommunication$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
@@ -143,7 +148,13 @@ export class CommunicationApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  removeCommunication$Response(params: IRemoveCommunicationRequest): Observable<StrictHttpResponse<OperationResultResponse>> {
+  removeCommunication$Response(params: {
+
+    /**
+     * Specific communication id
+     */
+    communicationId: string;
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, CommunicationApiService.RemoveCommunicationPath, 'delete');
     if (params) {
@@ -169,7 +180,13 @@ export class CommunicationApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  removeCommunication(params: IRemoveCommunicationRequest): Observable<OperationResultResponse> {
+  removeCommunication(params: {
+
+    /**
+     * Specific communication id
+     */
+    communicationId: string;
+  }): Observable<OperationResultResponse> {
 
     return this.removeCommunication$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

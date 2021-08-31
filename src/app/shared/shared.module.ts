@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -17,7 +16,11 @@ import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
+<<<<<<< HEAD
 import { PasswordComponent } from './component/password/password.component';
+=======
+import { CommentComponent } from './component/comment/comment.component';
+>>>>>>> develop
 
 @NgModule({
 	declarations: [
@@ -33,7 +36,11 @@ import { PasswordComponent } from './component/password/password.component';
 		TextDirective,
 		DndDirective,
 		HoursPipe,
+<<<<<<< HEAD
 		PasswordComponent,
+=======
+		CommentComponent
+>>>>>>> develop
 	],
 	imports: [
 		CommonModule,
@@ -59,7 +66,11 @@ import { PasswordComponent } from './component/password/password.component';
 		DatepickerComponent,
 		StepperComponent,
 		HoursPipe,
+<<<<<<< HEAD
 		PasswordComponent,
+=======
+		CommentComponent
+>>>>>>> develop
 	],
 })
-export class SharedModule {}
+export class SharedModule { }

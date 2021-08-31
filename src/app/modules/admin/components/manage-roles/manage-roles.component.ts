@@ -1,17 +1,16 @@
-//@ts-nocheck
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 
-import { RoleInfo } from '@data/api/rights-service/models';
-import { RoleApiService } from '@data/api/rights-service/services';
+import { OperationResultStatusType, RoleInfo, OperationResultResponse } from '@data/api/rights-service/models';
+import { RightsService } from '@app/services/rights/rights.service';
 import { PageEvent } from '@angular/material/paginator';
 import { NewRoleComponent } from '../../modals/new-role/new-role.component';
+import { ModalService } from '@app/services/modal.service';
 
 @Component({
 	selector: 'do-manage-roles',
 	templateUrl: './manage-roles.component.html',
 	styleUrls: ['./manage-roles.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageRolesComponent implements OnInit {
 	public roles: RoleInfo[];
@@ -20,10 +19,15 @@ export class ManageRolesComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 
-	constructor(private dialog: MatDialog, private roleApiService: RoleApiService) {
+	constructor(
+		private _modalService: ModalService,
+		private _rightsService: RightsService,
+		private _cdr: ChangeDetectorRef
+	) {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.roles = [];
 	}
 
 	public ngOnInit(): void {
@@ -37,13 +41,22 @@ export class ManageRolesComponent implements OnInit {
 	}
 
 	public onAddRoleClick(): void {
-		this.dialog.open(NewRoleComponent);
+		this._modalService
+			.openModal<NewRoleComponent, null, any>(NewRoleComponent)
+			.afterClosed()
+			.subscribe(result => {
+				console.log('RES: ', result?.status)
+				if (result?.status === 0) {
+					this._getRoleList();
+				}
+			});
 	}
 
 	private _getRoleList(): void {
-		this.roleApiService.findRoles({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
-			this.totalCount = res.totalCount;
-			this.roles = res.roles;
+		this._rightsService.findRoles({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
+			this.totalCount = res.totalCount ?? 0;
+			this.roles = res.roles ?? [];
+			this._cdr.markForCheck();
 		});
 	}
 }
