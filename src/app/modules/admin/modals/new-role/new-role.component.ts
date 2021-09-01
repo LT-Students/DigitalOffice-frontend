@@ -55,8 +55,8 @@ export class NewRoleComponent implements OnInit {
 	public createRole(): void {
 		this._rightsService
 			.createRole({
-				name: this.roleForm?.get('name')?.value,
-				description: this.roleForm?.get('description')?.value,
+				name: this.roleForm?.get('name')?.value.trim(),
+				description: this.roleForm?.get('description')?.value.trim(),
 				rights: this.roleForm?.get('rights')?.value,
 			})
 			.subscribe(
