@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewRoleComponent implements OnInit {
-	public rights: Observable<RightResponse[]>;
+	public rights$: Observable<RightResponse[]>;
 	public roleForm: FormGroup;
 
 	constructor(
@@ -27,7 +27,7 @@ export class NewRoleComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _snackBar: MatSnackBar
 	) {
-		this.rights = this._rightsService.findRights();
+		this.rights$ = this._rightsService.findRights();
 		this.roleForm = this._fb.group({
 			name: ['', [Validators.required]],
 			description: [''],

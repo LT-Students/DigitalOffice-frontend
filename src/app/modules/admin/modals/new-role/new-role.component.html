@@ -17,7 +17,7 @@
 							>*</sup
 						>
 					</p>
-					<p *ngFor="let right of rights | async">
+					<p *ngFor="let right of rights$ | async">
 						<mat-checkbox [value]="$any(right?.id)" (change)="onCheckboxChange($event)">{{ right?.name }}</mat-checkbox>
 					</p>
 				</div>
