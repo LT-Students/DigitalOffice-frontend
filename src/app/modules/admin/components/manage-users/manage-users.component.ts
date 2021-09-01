@@ -45,14 +45,6 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		// this._userService.getUsers().pipe(
-		// 	switchMap((res: UserInfo[]) => {
-		// 		return forkJoin(res.map((userInfo: UserInfo) => this._userService.getUser(userInfo.id)));
-		// 	})
-		// ).subscribe((data: UserResponse[]) => {
-		// 	this.userInfo = data.slice();
-		// 	this.sortedUserInfo = data.slice();
-		// });
 		this._getPageUsers();
 	}
 
@@ -74,11 +66,15 @@ export class ManageUsersComponent implements OnInit {
 			});
 	}
 
-	public archiveUser(user: UserInfo, evt: Event): void {
+	public toggleUserStatus(user: UserInfo, evt: Event): void {
 		evt.stopPropagation();
 		console.log(evt)
 		if (user.isActive) {
 			this._userService.disableUser(user?.id ?? '').subscribe(() => {
+				this._getPageUsers();
+			});
+		} else {
+			this._userService.activateUser(user?.id ?? '').subscribe(() => {
 				this._getPageUsers();
 			});
 		}

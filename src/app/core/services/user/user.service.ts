@@ -19,7 +19,7 @@ import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class UserService {
 	private _currentUser: BehaviorSubject<User | null>;
@@ -175,9 +175,33 @@ export class UserService {
 	}
 
 	public disableUser(userId: string): Observable<OperationResultResponse> {
-		const params: IDisableUserRequest = { userId };
+		const params: IEditUserRequest = {
+			userId: userId,
+			body: [
+				{
+					op: 'replace',
+					path: '/IsActive',
+					value: false,
+				},
+			],
+		};
 
-		return this._userApiService.disableUser(params);
+		return this._userApiService.editUser(params);
+	}
+
+	public activateUser(userId: string): Observable<OperationResultResponse> {
+		const params: IEditUserRequest = {
+			userId: userId,
+			body: [
+				{
+					op: 'replace',
+					path: '/IsActive',
+					value: true,
+				},
+			],
+		};
+
+		return this._userApiService.editUser(params);
 	}
 
 	public getUserSetCredentials(userId: string): Observable<User> {
