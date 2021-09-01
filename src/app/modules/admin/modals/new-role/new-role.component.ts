@@ -8,6 +8,8 @@ import { OperationResultResponse } from '@data/api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
 import { RightResponse } from '@data/api/rights-service/models/right-response';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { DoValidators } from '@app/validators/do-validators';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'do-new-role',
@@ -16,8 +18,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewRoleComponent implements OnInit {
-	public rights: RightResponse[] = [];
-
+	public rights: Observable<RightResponse[]>;
 	public roleForm: FormGroup;
 
 	constructor(
@@ -26,18 +27,17 @@ export class NewRoleComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _snackBar: MatSnackBar
 	) {
+		this.rights = this._rightsService.findRights();
 		this.roleForm = this._fb.group({
 			name: ['', [Validators.required]],
 			description: [''],
-			rights: this._fb.array([]),
+			rights: this._fb.array([], DoValidators.atLeastOneChecked),
 		});
 	}
 
-	ngOnInit(): void {
-		this.getRights();
-	}
+	public ngOnInit(): void {}
 
-	onCheckboxChange(e: MatCheckboxChange): void {
+	public onCheckboxChange(e: MatCheckboxChange): void {
 		const rights: FormArray = this.roleForm?.get('rights') as FormArray;
 
 		if (e.checked) {
@@ -52,11 +52,7 @@ export class NewRoleComponent implements OnInit {
 		}
 	}
 
-	getRights(): void {
-		this._rightsService.findRights().subscribe((rights) => (this.rights = rights));
-	}
-
-	createRole(): void {
+	public createRole(): void {
 		this._rightsService
 			.createRole({
 				name: this.roleForm?.get('name')?.value,
@@ -71,7 +67,11 @@ export class NewRoleComponent implements OnInit {
 					this._dialogRef.close(result);
 				},
 				(error: HttpErrorResponse) => {
-					this._snackBar.open(error.error.Message, 'accept');
+					let errorMessage = error.error.errors;
+					if (error.status === 409) {
+						errorMessage = 'Роль с таким названием уже существует';
+					}
+					this._snackBar.open(errorMessage, 'accept');
 					throw error;
 				}
 			);
