@@ -30,9 +30,9 @@ export class NewOfficeComponent {
 	createOffice(): void {
 		this._officeService
 			.createOffice({
-				city: this.officeForm.get('city')?.value.trim(),
-				address: this.officeForm.get('address')?.value.trim(),
-				name: this.officeForm.get('name')?.value.trim(),
+				city: this.officeForm.get('city')?.value?.trim(),
+				address: this.officeForm.get('address')?.value?.trim(),
+				name: this.officeForm.get('name')?.value?.trim(),
 			})
 			.subscribe(
 				(result) => {

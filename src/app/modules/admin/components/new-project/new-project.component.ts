@@ -93,9 +93,9 @@ export class NewProjectComponent implements OnInit {
 	public createProject(): void {
 		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({ role: ProjectUserRoleType.Manager, userId: user.id ?? '' }));
 		const projectRequest: ProjectRequest = {
-			name: this.projectForm.get('name')?.value.trim(),
+			name: this.projectForm.get('name')?.value?.trim(),
 			departmentId: this.projectForm.get('departmentId')?.value,
-			description: this.projectForm.get('description')?.value.trim(),
+			description: this.projectForm.get('description')?.value?.trim(),
 			status: this.projectForm.get('status')?.value,
 			users: projectUsers,
 		};
