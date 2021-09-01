@@ -7,8 +7,8 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
 import { OperationResultResponse, OperationResultStatusType } from '@data/api/user-service/models';
 import { EducationType } from '@data/api/user-service/models/education-type';
-import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { ModalService } from '@app/services/modal.service';
+import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-manage-users',
@@ -67,7 +67,7 @@ export class ManageUsersComponent implements OnInit {
 			.openModal<NewEmployeeComponent, null, OperationResultResponse>(NewEmployeeComponent)
 			.afterClosed()
 			.subscribe((result) => {
-				console.log("СТАТУС МЕНЕДЖ ЮЗЕРС: ", result?.status)
+				console.log('СТАТУС МЕНЕДЖ ЮЗЕРС: ', result?.status)
 				if (result?.status === OperationResultStatusType.FullSuccess) {
 					this._getPageUsers();
 				}

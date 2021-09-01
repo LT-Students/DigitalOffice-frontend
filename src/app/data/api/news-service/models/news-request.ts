@@ -8,19 +8,19 @@ export interface NewsRequest {
   authorId: string;
 
   /**
-   * The news' author name.
-   */
-  authorName: string;
-
-  /**
    * The news' content.
    */
   content: string;
 
   /**
-   * Id of the news. Required when it's wanted to be edited.
+   * Id of department the news sender.
    */
-  id: string;
+  departmentId?: string;
+
+  /**
+   * The news' author name.
+   */
+  pseudonym?: string;
 
   /**
    * Id of the news sender.
