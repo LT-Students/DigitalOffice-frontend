@@ -39,8 +39,8 @@ export class NewDepartmentComponent implements OnInit {
 	public postDepartment(): void {
 		this._departmentService
 			.addDepartment({
-				name: this.departmentForm.get('name')?.value.trim(),
-				description: this.departmentForm.get('description')?.value.trim(),
+				name: this.departmentForm.get('name')?.value?.trim(),
+				description: this.departmentForm.get('description')?.value?.trim(),
 				directorUserId: this.departmentForm.get('directorId')?.value,
 				users: [],
 			})
