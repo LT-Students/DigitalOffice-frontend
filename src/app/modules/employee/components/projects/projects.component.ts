@@ -1,9 +1,9 @@
-//@ts-nocheck
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
-import { ProjectService } from '@app/services/project/project.service';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { EmployeePageService } from '@app/services/employee-page.service';
+import { map } from 'rxjs/operators';
+import { ProjectInfo } from '@data/api/user-service/models/project-info';
 
 interface Group {
 	name: string;
@@ -15,19 +15,17 @@ interface Group {
 	selector: 'do-employee-page-projects',
 	templateUrl: './projects.component.html',
 	styleUrls: ['./projects.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent implements OnInit {
-	@Input() projects: ProjectInfo[];
-
 	public activeProjects: ProjectInfo[];
 	public closedProjects: ProjectInfo[];
-	public pluralForm;
+	public pluralForm: any;
 	public groups: Group[];
 
-	constructor(private router: Router, private _projectService: ProjectService) {
-		this.activeProjects = null;
-		this.closedProjects = null;
+	constructor(private router: Router, private _employeeService: EmployeePageService) {
+		this.activeProjects = [];
+		this.closedProjects = [];
 		this.pluralForm = {
 			activeProjectsTitle: {
 				one: '# проект',
@@ -41,10 +39,14 @@ export class ProjectsComponent implements OnInit {
 		};
 	}
 
-	ngOnInit(): void {
-		this._projectService.getMockUserProjectsInfo().subscribe((projects: ProjectInfo[]) => {
-			this._filterProject(projects);
-		});
+	public ngOnInit(): void {
+		this._employeeService.selectedUser$.pipe(
+			map((user) => user?.projects)
+		).subscribe({
+			next: (projects) => {
+				this._filterProject(projects);
+			}
+		})
 		this.groups = [
 			{
 				name: 'В работе',
@@ -67,14 +69,16 @@ export class ProjectsComponent implements OnInit {
 		this.router.navigate(['/project', projectId]);
 	}
 
-	private _filterProject(rawProjects: ProjectInfo[]) {
-		this.activeProjects = rawProjects.filter((project: ProjectInfo) => {
-			const projectStatus = project.status as ProjectStatusType;
-			return projectStatus === ProjectStatusType.Active;
-		});
-		this.closedProjects = rawProjects.filter((project: ProjectInfo) => {
-			const projectStatus = project.status as ProjectStatusType;
-			return projectStatus === ProjectStatusType.Closed;
-		});
+	private _filterProject(projects: ProjectInfo[] | null | undefined) {
+		if (projects != null) {
+			this.activeProjects = projects.filter((project: ProjectInfo) => {
+				const projectStatus = project.status as ProjectStatusType;
+				return projectStatus === ProjectStatusType.Active;
+			});
+			this.closedProjects = projects.filter((project: ProjectInfo) => {
+				const projectStatus = project.status as ProjectStatusType;
+				return projectStatus === ProjectStatusType.Closed;
+			});
+		}
 	}
 }
