@@ -16,7 +16,7 @@ RUN grep -rl "http://ltdo.xyz:9806" . | xargs sed -i 's#http://ltdo.xyz:9806#htt
 RUN grep -rl "http://ltdo.xyz:9802" . | xargs sed -i 's#http://ltdo.xyz:9802#https://user.ltdo.xyz#g'
 RUN grep -rl "http://ltdo.xyz:9816" . | xargs sed -i 's#http://ltdo.xyz:9816#https://company.ltdo.xyz#g'
 
-RUN npm run build -- --prod --aot --outputHashing=all
+RUN npm run build --prod --aot --outputHashing=all
 
 FROM nginx:alpine
 COPY --from=builder /app/dist/DigitalOffice-frontend /usr/share/nginx/html
