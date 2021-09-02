@@ -177,9 +177,9 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		];
 
 		const params: CreateUserRequest = {
-			firstName: this.userForm.get('firstName')?.value as string,
-			lastName: this.userForm.get('lastName')?.value as string,
-			middleName: this.userForm.get('middleName')?.value as string,
+			firstName: this.userForm.get('firstName')?.value?.trim(),
+			lastName: this.userForm.get('lastName')?.value?.trim(),
+			middleName: this.userForm.get('middleName')?.value?.trim(),
 			positionId: this.userForm.get('positionId')?.value as string,
 			departmentId: this.userForm.get('departmentId')?.value as string,
 			rate: this.userForm.get('rate')?.value as number,

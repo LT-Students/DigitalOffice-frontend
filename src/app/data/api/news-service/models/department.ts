@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface User {
-  fullName?: null | string;
+export interface Department {
   id?: string;
+  name?: null | string;
 }
 
