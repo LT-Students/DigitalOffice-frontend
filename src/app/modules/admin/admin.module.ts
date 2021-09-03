@@ -27,7 +27,8 @@ import { DepartmentListComponent } from './components/department-list/department
 import { DepartmentCardComponent } from './components/department-card/department-card.component';
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 import { OfficeListComponent } from './components/office-list/office-list.component';
-import { PositionListComponent } from './components/position-list/position-list.component'
+import { PositionListComponent } from './components/position-list/position-list.component';
+import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 
 @NgModule({
 	declarations: [
@@ -50,7 +51,8 @@ import { PositionListComponent } from './components/position-list/position-list.
 		DepartmentCardComponent,
 		ManageRolesComponent,
 		OfficeListComponent,
-		PositionListComponent
+		PositionListComponent,
+		DirectorsTimelistComponent,
 	],
 	imports: [
 		FormsModule,
@@ -61,4 +63,4 @@ import { PositionListComponent } from './components/position-list/position-list.
 	],
 	exports: [DndDirective],
 })
-export class AdminModule {}
+export class AdminModule { }

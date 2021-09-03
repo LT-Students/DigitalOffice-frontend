@@ -1,0 +1,188 @@
+<div class='card card_standard'>
+    <div class='card__header header'>
+        <h3 doText underlined underlinedSize='sm' class='h3 header__title'>Таймлист для ДД за
+            <span doText color='accent_color'> [месяц] [год] <mat-icon class='header__icon'>keyboard_arrow_down
+                </mat-icon>
+            </span>
+        </h3>
+        <button mat-flat-button color='orange'>
+            <span class='regular_text'>
+                <img src='../../../../../assets/svg/download.svg' alt='download' class='header__icon'> Выгрузить часы
+            </span>
+        </button>
+    </div>
+    <mat-form-field appearance="fill" class='card__search-input'>
+        <mat-label>Поиск по фамилии и имени</mat-label>
+        <input matInput type="search" />
+        <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+    <div class='timelist'>
+        <h3 class='h3'>Найдено [количество] сотрудников</h3>
+        <table class='table timelist__table'>
+            <colgroup>
+                <col class='column column_width_m'>
+                <col class='column column_width_m'>
+                <col class='column column_width_m'>
+                <col class='column column_width_m'>
+            </colgroup>
+            <thead doText color='gray1'>
+                <tr>
+                    <th class='regular_text'>Имя</th>
+                    <th class='regular_text'>Часы/Норма</th>
+                    <th class='regular_text'>Проекты</th>
+                    <th class='regular_text'>Доступные дни отпуска</th>
+                </tr>
+            </thead>
+        </table>
+        <mat-expansion-panel *ngFor='let item of [1,2,3,4,5]' class='timelist__panel panel'>
+            <mat-expansion-panel-header class='bg-light_3' collapsedHeight='48px' expandedHeight='48px'>
+                <table class='table'>
+                    <colgroup>
+                        <col class='column column_width_m'>
+                        <col class='column column_width_m'>
+                        <col class='column column_width_m'>
+                        <col class='column column_width_m'>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class='regular_text'>Екатерина Овалькина</th>
+                            <th class='regular_text'>176/176</th>
+                            <th class='regular_text'>2</th>
+                            <th class='regular_text'>28</th>
+                        </tr>
+                    </thead>
+                </table>
+            </mat-expansion-panel-header>
+            <ng-template matExpansionPanelContent>
+                <div class='panel__table'>
+                    <h4 class='h4'>Детализация по проектам</h4>
+                    <table class='table'>
+                        <colgroup>
+                            <col class='column column_width_m'>
+                            <col class='column column_width_m'>
+                            <col class='column column_width_35'>
+                            <col class='column column_width_t'>
+                        </colgroup>
+                        <thead doText color='gray1'>
+                            <tr>
+                                <th class='regular_text'>
+                                    Название проекта
+                                </th>
+                                <th class='regular_text'>
+                                    Внесённые часы
+                                </th>
+                                <th class='regular_text'>
+                                    Комментарий сотрудника
+                                </th>
+                                <th class='regular_text'></th>
+                            </tr>
+                        </thead>
+                        <tbody [formGroup]="hoursGroup">
+                            <ng-container *ngFor="let project of projects">
+                                <tr [ngClass]="{row: !project.editMode}">
+                                    <td class='cell'>{{project.data.name}}</td>
+                                    <td class='cell cell_flexible'>
+                                        <ng-container *ngIf="!project.editMode; else input">
+                                            <ng-container *ngIf="!project.data.managerHours; else managerHours">
+                                                <span>{{project.data.userHours}}</span>
+                                            </ng-container>
+                                            <ng-template #managerHours>
+                                                <span>{{project.data.managerHours}}&nbsp;&nbsp;</span>
+                                                <span doText color='gray1' class='small_text'>Изменено&nbsp;
+                                                </span>
+                                                <img src='../../../../../assets/svg/ant-design_info-circle-outlined.svg'
+                                                    alt='info-cicle' />
+                                            </ng-template>
+                                        </ng-container>
+                                        <ng-template #input>
+                                            <mat-form-field appearance="fill">
+                                                <input matInput [formControlName]="'hours_'+project.data.id"
+                                                    ngDefaultControl class='text_bold'>
+                                            </mat-form-field>
+                                        </ng-template>
+                                    </td>
+                                    <td class='cell'>
+                                        <do-comment [text]="project.data.comment"></do-comment>
+                                    </td>
+                                    <td class='cell cell__icon'>
+                                        <button mat-icon-button (click)="toggleEditMode(true, project.data.id)">
+                                            <img src='../../../../../assets/svg/edit.svg' alt='edit' />
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="project.editMode" class='row'>
+                                    <td colspan='4'>
+                                        <div class='controls'>
+                                            <button mat-flat-button (click)="toggleEditMode(false, project.data.id)"
+                                                class='button controls__button'>
+                                                <span class='regular_text text-gray1'>Отменить</span>
+                                            </button>
+                                            <button mat-flat-button color='accent' class='button controls__button'
+                                                (click)="onSubmit(project)">
+                                                <span class='regular_text text-light_1'>Сохранить</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="expansion-panel__table-wrapper">
+                    <h4 class='h4'>Детализация по отсутствиям</h4>
+                    <table class='table'>
+                        <colgroup>
+                            <col class='column column_width_m'>
+                            <col class='column column_width_m'>
+                            <col class='column column_width_35'>
+                            <col class='column column_width_t'>
+                        </colgroup>
+                        <thead doText color='gray1'>
+                            <tr>
+                                <th class='cell regular_text'>
+                                    Тип отсутствия
+                                </th>
+                                <th class='cell regular_text'>
+                                    Дата отсутствия
+                                </th>
+                                <th class='cell regular_text'>
+                                    Комментарий сотрудника
+                                </th>
+                                <th class='cell regular_text'></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let leave of leaves">
+                                <tr class='row'>
+                                    <td class='cell cell_flexible'>
+                                        <ng-container [ngSwitch]="leave.leaveType">
+                                            <img *ngSwitchCase="'SickLeave'"
+                                                src="../../../../../assets//svg/leave-type/sick-leave.svg"
+                                                alt="sick-leave">
+                                            <img *ngSwitchCase="'Vacation'"
+                                                src="../../../../../assets//svg/leave-type/vacation.svg" alt="vacation">
+                                            <img *ngSwitchCase="'Idle'"
+                                                src="../../../../../assets//svg/leave-type/idle.svg" alt="idle">
+                                            <img *ngSwitchCase="'Training'"
+                                                src="../../../../../assets//svg/leave-type/training.svg" alt="training">
+                                        </ng-container>&nbsp;&nbsp;
+                                        <!-- Используй перевод от Ромы -->
+                                        <span>{{getRusLeaveType(leave.leaveType)}}</span>
+                                    </td>
+                                    <td class='cell'>
+                                        {{leave.period}}
+                                    </td>
+                                    <td class='cell'>
+                                        <do-comment [text]="leave.comment"></do-comment>
+                                    </td>
+                                    <td class='cell'>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </ng-template>
+        </mat-expansion-panel>
+    </div>
+</div>

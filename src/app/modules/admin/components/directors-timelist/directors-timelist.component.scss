@@ -1,0 +1,75 @@
+@import '../../../../../stylesheets/base/fonts';
+@import '../../../../../stylesheets/material/expansion-panel';
+
+.card {
+	&__header {
+		margin-bottom: 32px;
+	}
+
+	&__search-input {
+		width: 344px;
+	}
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&__title {
+		margin: 0;
+	}
+
+	&__icon {
+		vertical-align: middle;
+	}
+}
+
+.timelist {
+	&__table {
+		margin-bottom: 6px;
+		padding: 0 33px 0 24px;
+
+		border-collapse: separate;
+	}
+
+	&__panel {
+		margin-bottom: 10px;
+	}
+}
+
+.panel {
+	border-radius: 8px;
+	box-shadow: none;
+
+	&__table {
+		margin-top: 16px;
+	}
+}
+
+.cell {
+	&__icon {
+		padding: 7px 0;
+
+		text-align: right;
+	}
+
+	&_flexible {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.controls {
+	display: flex;
+	justify-content: center;
+
+	&__button {
+		margin: 12px 19px 16px;
+	}
+}
+
+.button {
+	width: 180px;
+	height: 36px;
+}
