@@ -16,7 +16,7 @@ export class PersonalInfoManager {
 	private static _genders: IUserGender[] = [
 		{ genderType: UserGender.Male, genderInRussian: 'Мужской' },
 		{ genderType: UserGender.Female, genderInRussian: 'Женский' },
-		{ genderType: UserGender.NotSelected, genderInRussian: 'Не определен' },
+		{ genderType: UserGender.NotSelected, genderInRussian: 'Не выбран' },
 	];
 
 	constructor(private _user: UserInfo | undefined) {}
