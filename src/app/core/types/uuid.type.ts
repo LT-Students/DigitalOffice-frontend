@@ -1,4 +1,3 @@
-//@ts-nocheck
 /**
  * Universally unique identifier
  *

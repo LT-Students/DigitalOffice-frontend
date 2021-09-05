@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 
 export enum ProjectStatusTypeRu {
@@ -8,12 +7,12 @@ export enum ProjectStatusTypeRu {
 }
 
 export interface IProjectStatus {
-	name: ProjectStatusTypeRu;
+	name: ProjectStatusTypeRu | null;
 	type: ProjectStatusType;
 }
 
 export class ProjectStatus implements IProjectStatus {
-	name: ProjectStatusTypeRu;
+	name: ProjectStatusTypeRu | null;
 	type: ProjectStatusType;
 
 	constructor(type: ProjectStatusType) {
