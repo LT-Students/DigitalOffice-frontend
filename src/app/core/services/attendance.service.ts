@@ -103,11 +103,11 @@ export class AttendanceService {
 			month: month + 1,
 			year: year,
 			skipCount: 0,
-			takeCount: 1
-		}
+			takeCount: 1,
+		};
 		return this._timeService.findWorkTimeMonthLimit(params).pipe(
-			map(response => response.body?.[0]),
-			tap(limit => this._setMonthNormAndHolidays(limit?.normHours, limit?.holidays))
+			map((response) => response.body?.[0]),
+			tap((limit) => this._setMonthNormAndHolidays(limit?.normHours, limit?.holidays))
 		);
 	}
 
@@ -144,8 +144,16 @@ export class AttendanceService {
 
 	public disableWeekends: DateFilterFn<Date> = (d: Date | null): boolean => {
 		const day = (d || new Date()).getDate();
-		return this._holidays.value.every((isHoliday, date) => isHoliday ? day !== date + 1 : true);
+		return this._holidays.value.every((isHoliday, date) => (isHoliday ? day !== date + 1 : true));
 	};
+
+	public getCalendarMinMax(): [Date, Date] {
+		const currentDate = new Date();
+		const minDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - (this._canEdit.value ? 1 : 0));
+		const maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0);
+
+		return [minDate, maxDate];
+	}
 
 	public countMaxHours(): number {
 		const currentDatePeriod: DatePeriod = {

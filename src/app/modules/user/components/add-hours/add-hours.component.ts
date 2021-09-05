@@ -41,9 +41,7 @@ export class AddHoursComponent implements OnDestroy {
 		private _dateService: DateService,
 		private _snackbar: MatSnackBar
 	) {
-		const currentDate = new Date();
-		this.minDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1);
-		this.maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0);
+		[ this.minDate, this.maxDate ] = this._attendanceService.getCalendarMinMax();
 
 		this.isProjectForm = true;
 		this.monthOptions = [];

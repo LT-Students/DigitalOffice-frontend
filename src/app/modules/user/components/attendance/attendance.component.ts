@@ -18,20 +18,13 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		//TODO think how to use only one observable for this logic
 		this._userService.currentUser$
 			.pipe(
 				takeUntil(this.onDestroy$),
 				tap((user) => this._attendanceService.setUserId(user?.id)),
+				switchMap(() => this._attendanceService.selectedDate$),
 				switchMap(() => this._attendanceService.getMonthNormAndHolidays()),
 				switchMap(() => this._attendanceService.getActivities()),
-				switchMap(() => this._attendanceService.selectedDate$)
-			)
-			.subscribe();
-		this._attendanceService.selectedDate$
-			.pipe(
-				takeUntil(this.onDestroy$),
-				switchMap(() => this._attendanceService.getActivities())
 			)
 			.subscribe();
 	}
