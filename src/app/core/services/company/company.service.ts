@@ -43,8 +43,8 @@ export class CompanyService {
 		return this._companyService.editCompany({ body });
 	}
 
-	public getCurrentCompany(): Company | null {
-		return this._company.value;
+	public isCompanyExists(): boolean {
+		return !!this._company.value;
 	}
 
 	//TODO create separate service for current company?

@@ -19,7 +19,7 @@ import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class UserService {
 	private _currentUser: BehaviorSubject<User | null>;
@@ -180,7 +180,7 @@ export class UserService {
 		return this._userApiService.disableUser(params);
 	}
 
-	public getUserSetCredentials(userId: string): Observable<User> {
+	public getUserSetCredentials(userId: string | undefined): Observable<User> {
 		const params: IGetUserRequest = {
 			userId: userId,
 			includedepartment: true,
@@ -192,7 +192,10 @@ export class UserService {
 			includeprojects: true,
 		};
 
-		return this.getUser(params).pipe(tap(this._setUser.bind(this)));
+		return this.getUser(params).pipe(
+			tap(this._setUser.bind(this)),
+			catchError((error: HttpErrorResponse) => throwError(error))
+		);
 	}
 
 	public isAdmin(): boolean {
