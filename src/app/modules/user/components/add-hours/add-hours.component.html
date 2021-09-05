@@ -38,7 +38,7 @@
 			<ng-template #absence>
 				<mat-form-field appearance="fill">
 					<mat-label>Выберите диапазон отсутствия</mat-label>
-					<mat-date-range-input [dateFilter]="disableWeekends" [rangePicker]="$any(picker)" required>
+					<mat-date-range-input [min]="minDate" [max]="maxDate" [dateFilter]="disableWeekends" [rangePicker]="$any(picker)" required>
 						<input matStartDate formControlName="startDate" />
 						<input matEndDate formControlName="endDate" />
 					</mat-date-range-input>

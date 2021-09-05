@@ -32,6 +32,8 @@ export class AddHoursComponent implements OnDestroy {
 	public monthOptions: Date[];
 	public disableWeekends: DateFilterFn<Date>;
 	private _canEditSubscription: Subscription;
+	public minDate: Date;
+	public maxDate: Date;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -39,6 +41,8 @@ export class AddHoursComponent implements OnDestroy {
 		private _dateService: DateService,
 		private _snackbar: MatSnackBar
 	) {
+		[ this.minDate, this.maxDate ] = this._attendanceService.getCalendarMinMax();
+
 		this.isProjectForm = true;
 		this.monthOptions = [];
 		this.absences = LeaveTimeModel.getAllLeaveTypes();
