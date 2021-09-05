@@ -22,7 +22,7 @@ import { timeValidator } from './add-hours.validators';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddHoursComponent implements OnDestroy {
-	public workTimes$: Observable<WorkTimeInfo[] | undefined>;
+	public workTimes$: Observable<Array<WorkTimeInfo | undefined> | undefined>;
 	public selectedDate$: Observable<Date>;
 	public recommendedTime: BehaviorSubject<number>;
 
@@ -90,8 +90,8 @@ export class AddHoursComponent implements OnDestroy {
 		return [];
 	}
 
-	public patchWorkTimeInfoIntoForm(workTime: WorkTimeInfo, event: MatOptionSelectionChange): void {
-		if (event.isUserInput) {
+	public patchWorkTimeInfoIntoForm(workTime: WorkTimeInfo | undefined, event: MatOptionSelectionChange): void {
+		if (event.isUserInput && workTime) {
 			this.addHoursForm.patchValue({
 				time: workTime.userHours,
 				comment: workTime.description,

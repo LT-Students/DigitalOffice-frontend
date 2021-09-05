@@ -28,7 +28,7 @@ export interface IModalContentConfig {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeavesComponent {
-	@Input() leaves: LeaveTimeInfo[] | undefined | null;
+	@Input() leaves: Array<LeaveTimeInfo | undefined> | undefined | null;
 	@ViewChild('comment') comment: ElementRef | undefined;
 
 	public canEdit$: Observable<boolean>;
@@ -43,8 +43,8 @@ export class LeavesComponent {
 		this.canEdit$ = this._attendanceService.canEdit$;
 	}
 
-	public getRusType(leaveType: LeaveType) {
-		return LeaveTimeModel.getLeaveInfoByLeaveType(leaveType)?.leaveInRussian;
+	public getRusType(leaveType: LeaveType | undefined) {
+		return leaveType ? LeaveTimeModel.getLeaveInfoByLeaveType(leaveType)?.leaveInRussian : undefined;
 	}
 
 	public getPeriodInHours(startTime: string, endTime: string): number {
@@ -53,21 +53,22 @@ export class LeavesComponent {
 		return this._attendanceService.getRecommendedTime(datePeriod, 8, true);
 	}
 
-	public openEditModal(leave: LeaveTimeInfo): void {
+
+	public openEditModal(leave: LeaveTimeInfo | undefined): void {
 		let modalContentConfig: IModalContentConfig = {
-			id: leave.id,
-			startTime: leave.startTime,
-			endTime: leave.endTime,
-			leaveType: leave.leaveType,
-			comment: leave.comment,
-			hours: this.getPeriodInHours(leave.startTime as string, leave.endTime as string),
+			id: leave?.id,
+			startTime: leave?.startTime,
+			endTime: leave?.endTime,
+			leaveType: leave?.leaveType,
+			comment: leave?.comment,
+			hours: this.getPeriodInHours(leave?.startTime as string, leave?.endTime as string),
 		};
 
 		this._modalService
 			.openModal<EditLeaveComponent, IModalContentConfig, IDialogResponse>(EditLeaveComponent, ModalWidth.L, modalContentConfig)
 			.afterClosed()
 			.subscribe((result) => {
-				if (result?.status === OperationResultStatusType.FullSuccess) {
+				if (leave && result?.status === OperationResultStatusType.FullSuccess) {
 					leave.comment = result.data.comment;
 					leave.startTime = result.data.startTime;
 					leave.endTime = result.data.endTime;
@@ -78,11 +79,11 @@ export class LeavesComponent {
 			});
 	}
 
-	public openDeleteModal(leave: LeaveTimeInfo): void {
+	public openDeleteModal(leave: LeaveTimeInfo | undefined): void {
 		let modalContentConfig: IModalContentConfig = {
-			leaveType: leave.leaveType,
-			date: new Date(leave.startTime as string),
-			id: leave.id,
+			leaveType: leave?.leaveType,
+			date: new Date(leave?.startTime as string),
+			id: leave?.id,
 		};
 
 		this._modalService

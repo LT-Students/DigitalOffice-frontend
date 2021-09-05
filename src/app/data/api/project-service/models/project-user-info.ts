@@ -6,12 +6,12 @@ import { PositionInfo } from './position-info';
 import { ProjectUserRoleType } from './project-user-role-type';
 import { UserStatus } from './user-status';
 export interface ProjectUserInfo {
+  avatarImage?: ImageInfo;
 
   /**
    * Data and time added user to project.
    */
-  addedOn?: any;
-  avatarImage?: ImageInfo;
+  createdAtUtc?: any;
   department?: DepartmentInfo;
 
   /**
@@ -43,17 +43,17 @@ export interface ProjectUserInfo {
    * The user middle name.
    */
   middleName?: null | string;
+
+  /**
+   * Data and time removed user from project.
+   */
+  modifiedAtUtc?: null | any;
   position?: PositionInfo;
 
   /**
    * Count of project, which user included.
    */
   projectCount?: number;
-
-  /**
-   * Data and time removed user from project.
-   */
-  removedOn?: null | any;
   role?: ProjectUserRoleType;
   status?: UserStatus;
 }
