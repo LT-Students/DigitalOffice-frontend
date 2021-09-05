@@ -78,4 +78,28 @@
 			background-color: #f5f5f5;
 		}
 	}
+
+	&__header-wrapper {
+		margin-bottom: 16px;
+
+		padding: 40px 41px;
+
+		background-color: $light_1;
+	}
+}
+
+.orange {
+	margin-right: 12px;
+	margin-bottom: 15px;
+	fill: $accent_color_bright;
+}
+
+.grey {
+	margin-right: 12px;
+	margin-bottom: 15px;
+	fill: $gray1;
+}
+
+.mat-tab-list {
+	background-color: #fff;
 }

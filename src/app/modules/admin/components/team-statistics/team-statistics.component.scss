@@ -1,0 +1,55 @@
+@import 'base/variables';
+@import 'base/fonts';
+
+table {
+	position: relative;
+
+	margin-top: 24px;
+
+	width: 100%;
+
+	border-collapse: collapse;
+
+	span {
+		color: $gray1;
+	}
+
+	&__month-picker {
+		display: inline-flex;
+		align-items: center;
+
+		cursor: pointer;
+	}
+
+	td.first-child {
+		display: flex;
+		align-items: center;
+
+		height: inherit;
+
+		p {
+			margin-left: 10px;
+		}
+	}
+
+	tr {
+		margin-top: 66px;
+
+		box-sizing: border-box;
+
+		height: 76px;
+
+		text-align: left;
+
+		vertical-align: center;
+
+		border-bottom: 1px solid #f1f1ef;
+	}
+}
+
+.datapicker {
+	&__hidden {
+		width: 0;
+		height: 0;
+	}
+}

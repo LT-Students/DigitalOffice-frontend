@@ -37,6 +37,7 @@
     "@angular/platform-browser-dynamic": "~11.0.0",
     "@angular/router": "~11.0.0",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
+    "@types/chart.js": "^2.9.34",
     "bootstrap": "^4.5.2",
     "canvasjs": "^1.8.3",
     "chart.js": "^3.5.1",

@@ -27,6 +27,7 @@ export enum AdminDashboardModalType {
 	DEPARTMENT_LIST,
 	OFFICE_LIST,
 	POSITION_LIST,
+	TEAM_STATISTICS,
 }
 
 export interface UserSearchModalConfig {

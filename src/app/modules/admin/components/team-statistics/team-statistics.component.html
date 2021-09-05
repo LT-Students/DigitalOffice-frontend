@@ -1,0 +1,49 @@
+<div class="card card_standard" style="margin-top: 20px;" >
+    <div class="table regular_text">
+        <div class="table__header h3">
+            <h3 doText underlined underlinedSize="sm">Статистика за
+
+                <mat-form-field class="datapicker__hidden">
+                    <input matInput [matDatepicker]="picker"/>
+                    <mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event); picker.close()"></mat-datepicker>
+                </mat-form-field>
+
+                <a (click)="picker.open()" class="table__month-picker text-accent_color_bright">
+                {{startDate | date: 'LLLL YYYY' | titlecase }}
+                    <mat-icon>keyboard_arrow_down</mat-icon>
+                </a>
+            </h3>
+        </div>
+        <table doText class="table__content" >
+                <tr>
+                    <th class="table__row h4 text-gray1" *ngFor="let header of displayedColumns">
+                        {{ header }}
+                    </th>
+                </tr>
+                <tr class="table__row" *ngFor="let user of DATA">
+                    <td class="table__cell first-child">
+                        <img src='assets/images/smallPhoto/Ellipse91.png'><img>
+                        <p>{{ user?.name }} {{ user?.lastName }}<br><span>{{user?.position}}</span></p>
+                    </td>
+                    <td class="table__cell">
+                        <p>{{ user?.hoursProject }}/<span>{{ user?.norm }}</span></p>
+                    </td>
+                    <td class="table__cell">
+                    <div *ngIf='user.absence; else defis'>
+                        <p>{{ user?.absence }}</p>
+                    </div>
+                    <ng-template #defis>
+                        <p class='text-gray1'>{{ "-" }}</p>
+                    </ng-template>
+                    </td>
+
+                    <td class="table__cell">
+                        <p>{{ user?.numberProjects }}</p>
+                    </td>
+                    <td>
+                        <img src='assets/images/Vector.png'><img>
+                    </td>
+                </tr>
+        </table>
+    </div>
+</div>

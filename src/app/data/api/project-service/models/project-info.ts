@@ -12,7 +12,7 @@ export interface ProjectInfo {
   /**
    * Data and time created project.
    */
-  createdAt?: any;
+  createdAtUtc?: any;
   department?: null | DepartmentInfo;
   description?: null | string;
 
