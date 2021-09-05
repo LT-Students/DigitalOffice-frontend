@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
@@ -48,7 +47,9 @@ export class AuthService {
 	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<OperationResultResponseCredentialsResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
 			tap((response) => {
-				this._setCredentialsToLocalStorage(response.body);
+				if (response.body) {
+					this._setCredentialsToLocalStorage(response.body);
+				}
 			}),
 			catchError((error: HttpErrorResponse) => {
 				switch (error.status) {

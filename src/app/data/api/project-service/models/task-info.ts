@@ -6,14 +6,14 @@ export interface TaskInfo {
   assignedTo?: null | UserTaskInfo;
 
   /**
-   * Task creator.
-   */
-  author?: UserTaskInfo;
-
-  /**
    * Data and time created task.
    */
-  createdAt?: any;
+  createdAtUtc?: any;
+
+  /**
+   * Task creator.
+   */
+  createdBy?: UserTaskInfo;
 
   /**
    * The task's description.

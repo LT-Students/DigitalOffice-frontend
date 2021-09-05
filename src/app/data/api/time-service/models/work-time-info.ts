@@ -1,9 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { ProjectInfo } from './project-info';
-import { UserInfo } from './user-info';
 import { WorkTimeJobInfoInfo } from './work-time-job-info-info';
-import { WorkTimeMonthLimitInfo } from './work-time-month-limit-info';
 export interface WorkTimeInfo {
   day?: null | number;
 
@@ -17,12 +15,10 @@ export interface WorkTimeInfo {
    */
   id?: string;
   jobs?: null | Array<WorkTimeJobInfoInfo>;
-  limitInfo?: WorkTimeMonthLimitInfo;
   managerHours?: null | number;
-  modifiedAtUtc?: string;
+  modifiedAtUtc?: null | string;
   month?: number;
   project?: ProjectInfo;
-  user?: UserInfo;
   userHours?: null | number;
   year?: number;
 }

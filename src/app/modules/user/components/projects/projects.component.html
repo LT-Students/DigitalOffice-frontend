@@ -32,14 +32,13 @@
 				<p class="regular_text">{{ project?.project?.name }}</p>
 			</td>
 			<td class="cell">
-				<p class="regular_text">{{ project.userHours ? project.userHours : 0 }} ч</p>
+				<p class="regular_text">{{ project?.userHours ? project?.userHours : 0 }} ч</p>
 			</td>
 			<td class="cell">
-				<p *ngIf="project.modifiedAtUtc; else empty" class="regular_text">{{ project.modifiedAtUtc | date: 'd
-					MMMM' }}</p>
+				<p *ngIf="project?.modifiedAtUtc; else empty" class="regular_text">{{ project?.modifiedAtUtc | date: 'd MMMM' }}</p>
 			</td>
 			<td class="cell">
-				<do-comment *ngIf="project.description; else empty" [text]="project.description"></do-comment>
+				<do-comment *ngIf="project?.description; else empty" [text]="project?.description"></do-comment>
 			</td>
 			<td class="cell cell__icon">
 				<button *ngIf="canEdit" mat-icon-button (click)="openEditModal(project)">

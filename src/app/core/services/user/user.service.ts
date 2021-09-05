@@ -16,10 +16,9 @@ import { Moment } from 'moment';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
-import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class UserService {
 	private _currentUser: BehaviorSubject<User | null>;
@@ -175,12 +174,36 @@ export class UserService {
 	}
 
 	public disableUser(userId: string): Observable<OperationResultResponse> {
-		const params: IDisableUserRequest = { userId };
+		const params: IEditUserRequest = {
+			userId: userId,
+			body: [
+				{
+					op: 'replace',
+					path: '/IsActive',
+					value: false,
+				},
+			],
+		};
 
-		return this._userApiService.disableUser(params);
+		return this._userApiService.editUser(params);
 	}
 
-	public getUserSetCredentials(userId: string): Observable<User> {
+	public activateUser(userId: string): Observable<OperationResultResponse> {
+		const params: IEditUserRequest = {
+			userId: userId,
+			body: [
+				{
+					op: 'replace',
+					path: '/IsActive',
+					value: true,
+				},
+			],
+		};
+
+		return this._userApiService.editUser(params);
+	}
+
+	public getUserSetCredentials(userId: string | undefined): Observable<User> {
 		const params: IGetUserRequest = {
 			userId: userId,
 			includedepartment: true,

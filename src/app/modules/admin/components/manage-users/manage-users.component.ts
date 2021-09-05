@@ -7,8 +7,8 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
 import { OperationResultResponse, OperationResultStatusType } from '@data/api/user-service/models';
 import { EducationType } from '@data/api/user-service/models/education-type';
-import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { ModalService } from '@app/services/modal.service';
+import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-manage-users',
@@ -45,14 +45,6 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		// this._userService.getUsers().pipe(
-		// 	switchMap((res: UserInfo[]) => {
-		// 		return forkJoin(res.map((userInfo: UserInfo) => this._userService.getUser(userInfo.id)));
-		// 	})
-		// ).subscribe((data: UserResponse[]) => {
-		// 	this.userInfo = data.slice();
-		// 	this.sortedUserInfo = data.slice();
-		// });
 		this._getPageUsers();
 	}
 
@@ -67,18 +59,22 @@ export class ManageUsersComponent implements OnInit {
 			.openModal<NewEmployeeComponent, null, OperationResultResponse>(NewEmployeeComponent)
 			.afterClosed()
 			.subscribe((result) => {
-				console.log("СТАТУС МЕНЕДЖ ЮЗЕРС: ", result?.status)
+				console.log('СТАТУС МЕНЕДЖ ЮЗЕРС: ', result?.status)
 				if (result?.status === OperationResultStatusType.FullSuccess) {
 					this._getPageUsers();
 				}
 			});
 	}
 
-	public archiveUser(user: UserInfo, evt: Event): void {
+	public toggleUserStatus(user: UserInfo, evt: Event): void {
 		evt.stopPropagation();
 		console.log(evt)
 		if (user.isActive) {
 			this._userService.disableUser(user?.id ?? '').subscribe(() => {
+				this._getPageUsers();
+			});
+		} else {
+			this._userService.activateUser(user?.id ?? '').subscribe(() => {
 				this._getPageUsers();
 			});
 		}
