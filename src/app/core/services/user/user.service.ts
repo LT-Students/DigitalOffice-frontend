@@ -215,7 +215,10 @@ export class UserService {
 			includeprojects: true,
 		};
 
-		return this.getUser(params).pipe(tap(this._setUser.bind(this)));
+		return this.getUser(params).pipe(
+			tap(this._setUser.bind(this)),
+			catchError((error: HttpErrorResponse) => throwError(error))
+		);
 	}
 
 	public isAdmin(): boolean {
