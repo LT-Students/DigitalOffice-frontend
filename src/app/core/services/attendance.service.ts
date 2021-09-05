@@ -9,11 +9,12 @@ import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { UserService } from '@app/services/user/user.service';
 import { DateFilterFn } from '@angular/material/datepicker';
 import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
+import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { DateService } from './date.service';
 
 export interface Activities {
-	projects?: WorkTimeInfo[];
-	leaves?: LeaveTimeInfo[];
+	projects?: Array<WorkTimeInfo | undefined>;
+	leaves?: Array<LeaveTimeInfo | undefined>;
 }
 
 @Injectable({
@@ -68,16 +69,16 @@ export class AttendanceService {
 		};
 
 		return forkJoin({
-			projects: this._timeService.findWorkTimes(workTimesParams).pipe(map((projects) => projects.body)),
-			leaves: this._timeService.findLeaveTimes(leaveTimesParams).pipe(map((leaves) => leaves.body)),
+			projects: this._timeService.findWorkTimes(workTimesParams).pipe(map((projects) => projects.body?.map((project) => project.workTime))),
+			leaves: this._timeService.findLeaveTimes(leaveTimesParams).pipe(map((leaves) => leaves.body?.map((leave) => leave.leaveTime))),
 		}).pipe(tap((activities) => this._setActivities(activities)));
 	}
 
-	public editWorkTime(params: IEditWorkTimeRequest): Observable<any> {
+	public editWorkTime(params: IEditWorkTimeRequest): Observable<OperationResultResponse> {
 		return this._timeService.editWorkTime(params);
 	}
 
-	public addLeaveTime(params: Omit<CreateLeaveTimeRequest, 'userId'>): Observable<any> {
+	public addLeaveTime(params: Omit<CreateLeaveTimeRequest, 'userId'>): Observable<OperationResultResponse> {
 		const paramsWithId: CreateLeaveTimeRequest = {
 			...params,
 			userId: this._userId ?? '',

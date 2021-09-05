@@ -11,7 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { EditWorkTimeMonthLimitRequest } from '../models/edit-work-time-month-limit-request';
 import { EditWorkTimeRequest } from '../models/edit-work-time-request';
-import { FindResultResponseWorkTimeInfo } from '../models/find-result-response-work-time-info';
+import { FindResultResponseWorkTimeResponse } from '../models/find-result-response-work-time-response';
 import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
@@ -46,7 +46,7 @@ export class WorkTimeApiService extends BaseService {
     includedayjobs?: boolean;
     takeCount?: number;
     skipCount?: number;
-  }): Observable<StrictHttpResponse<FindResultResponseWorkTimeInfo>> {
+  }): Observable<StrictHttpResponse<FindResultResponseWorkTimeResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.FindWorkTimesPath, 'get');
     if (params) {
@@ -65,7 +65,7 @@ export class WorkTimeApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FindResultResponseWorkTimeInfo>;
+        return r as StrictHttpResponse<FindResultResponseWorkTimeResponse>;
       })
     );
   }
@@ -86,10 +86,10 @@ export class WorkTimeApiService extends BaseService {
     includedayjobs?: boolean;
     takeCount?: number;
     skipCount?: number;
-  }): Observable<FindResultResponseWorkTimeInfo> {
+  }): Observable<FindResultResponseWorkTimeResponse> {
 
     return this.findWorkTimes$Response(params).pipe(
-      map((r: StrictHttpResponse<FindResultResponseWorkTimeInfo>) => r.body as FindResultResponseWorkTimeInfo)
+      map((r: StrictHttpResponse<FindResultResponseWorkTimeResponse>) => r.body as FindResultResponseWorkTimeResponse)
     );
   }
 

@@ -1,4 +1,3 @@
-//@ts-nocheck
 export interface IDisableUserRequest {
 	/**
 	 * User global unique identifier.

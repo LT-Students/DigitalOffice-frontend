@@ -11,7 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreateLeaveTimeRequest } from '../models/create-leave-time-request';
 import { EditLeaveTimeRequest } from '../models/edit-leave-time-request';
-import { FindResultResponseLeaveTimeInfo } from '../models/find-result-response-leave-time-info';
+import { FindResultResponseLeaveTimeResponse } from '../models/find-result-response-leave-time-response';
 import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
@@ -103,7 +103,7 @@ export class LeaveTimeApiService extends BaseService {
     includedeactivated?: boolean;
     takeCount?: number;
     skipCount?: number;
-  }): Observable<StrictHttpResponse<FindResultResponseLeaveTimeInfo>> {
+  }): Observable<StrictHttpResponse<FindResultResponseLeaveTimeResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, LeaveTimeApiService.FindLeaveTimesPath, 'get');
     if (params) {
@@ -121,7 +121,7 @@ export class LeaveTimeApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FindResultResponseLeaveTimeInfo>;
+        return r as StrictHttpResponse<FindResultResponseLeaveTimeResponse>;
       })
     );
   }
@@ -141,10 +141,10 @@ export class LeaveTimeApiService extends BaseService {
     includedeactivated?: boolean;
     takeCount?: number;
     skipCount?: number;
-  }): Observable<FindResultResponseLeaveTimeInfo> {
+  }): Observable<FindResultResponseLeaveTimeResponse> {
 
     return this.findLeaveTimes$Response(params).pipe(
-      map((r: StrictHttpResponse<FindResultResponseLeaveTimeInfo>) => r.body as FindResultResponseLeaveTimeInfo)
+      map((r: StrictHttpResponse<FindResultResponseLeaveTimeResponse>) => r.body as FindResultResponseLeaveTimeResponse)
     );
   }
 

@@ -56,10 +56,10 @@
 			<mat-select formControlName="activity" required>
 				<mat-option
 					*ngFor="let workTime of workTimes$ | async"
-					[value]="workTime.id"
+					[value]="workTime?.id"
 					(onSelectionChange)="patchWorkTimeInfoIntoForm(workTime, $event)"
 				>
-					{{ workTime.project?.name }}
+					{{ workTime?.project?.name }}
 				</mat-option>
 			</mat-select>
 		</mat-form-field>
