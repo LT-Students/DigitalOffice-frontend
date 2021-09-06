@@ -1,4 +1,4 @@
-<div class='card card_standard'>
+<mat-card>
     <div class='card__header header'>
         <h3 doText underlined underlinedSize='sm' class='h3 header__title'>Таймлист для ДД за
             <span doText color='accent_color'> [месяц] [год] <mat-icon class='header__icon'>keyboard_arrow_down
@@ -80,7 +80,7 @@
                         <tbody [formGroup]="hoursGroup">
                             <ng-container *ngFor="let project of projects">
                                 <tr [ngClass]="{row: !project.editMode}">
-                                    <td class='cell'>{{project.data.name}}</td>
+                                    <td class='cell'>{{project.data.project?.name}}</td>
                                     <td class='cell cell_flexible'>
                                         <ng-container *ngIf="!project.editMode; else input">
                                             <ng-container *ngIf="!project.data.managerHours; else managerHours">
@@ -102,7 +102,7 @@
                                         </ng-template>
                                     </td>
                                     <td class='cell'>
-                                        <do-comment [text]="project.data.comment"></do-comment>
+                                        <do-comment [text]="project.data.description"></do-comment>
                                     </td>
                                     <td class='cell cell__icon'>
                                         <button mat-icon-button (click)="toggleEditMode(true, project.data.id)">
@@ -155,22 +155,12 @@
                             <ng-container *ngFor="let leave of leaves">
                                 <tr class='row'>
                                     <td class='cell cell_flexible'>
-                                        <ng-container [ngSwitch]="leave.leaveType">
-                                            <img *ngSwitchCase="'SickLeave'"
-                                                src="../../../../../assets//svg/leave-type/sick-leave.svg"
-                                                alt="sick-leave">
-                                            <img *ngSwitchCase="'Vacation'"
-                                                src="../../../../../assets//svg/leave-type/vacation.svg" alt="vacation">
-                                            <img *ngSwitchCase="'Idle'"
-                                                src="../../../../../assets//svg/leave-type/idle.svg" alt="idle">
-                                            <img *ngSwitchCase="'Training'"
-                                                src="../../../../../assets//svg/leave-type/training.svg" alt="training">
-                                        </ng-container>&nbsp;&nbsp;
-                                        <!-- Используй перевод от Ромы -->
-                                        <span>{{getRusLeaveType(leave.leaveType)}}</span>
+                                        <span>{{leave.leaveInfo?.emojiIcon}}
+                                            {{leave.leaveInfo?.leaveInRussian}}</span>
                                     </td>
                                     <td class='cell'>
-                                        {{leave.period}}
+                                        <span>{{leave.startTime | date: 'd/M/y'}}-{{leave.endTime | date: 'd/M/y'}}
+                                            ({{leave.periodInHours}} ч)</span>
                                     </td>
                                     <td class='cell'>
                                         <do-comment [text]="leave.comment"></do-comment>
@@ -185,4 +175,4 @@
             </ng-template>
         </mat-expansion-panel>
     </div>
-</div>
+</mat-card>
