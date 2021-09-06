@@ -1,70 +1,60 @@
-import { Component, OnInit, ChangeDetectionStrategy, forwardRef, Injector, Input, AfterViewInit } from '@angular/core';
+import {
+	Component,
+	ChangeDetectionStrategy,
+	Input,
+	Self, Optional,
+} from '@angular/core';
 import {
 	ControlValueAccessor,
 	FormControl,
 	FormGroupDirective,
-	NG_VALUE_ACCESSOR,
 	NgControl,
-	NgForm,
+	NgForm, Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class PasswordFieldErrorMatcher implements ErrorStateMatcher {
-	constructor(private customControl: FormControl | undefined, private errors: any) { }
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-		return this.customControl && this.customControl.touched && (this.customControl.invalid || this.errors);
+		const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
+		const invalidParent = !!(form?.invalid && form?.dirty);
+
+		return invalidCtrl || invalidParent;
 	}
 }
 
 @Component({
-  selector: 'do-password',
-  templateUrl: './password.component.html',
-  styleUrls: ['./password.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [
-		{
-			provide: NG_VALUE_ACCESSOR,
-			multi: true,
-			useExisting: forwardRef(() => PasswordComponent),
-		}
-	]
+	selector: 'do-password',
+	templateUrl: './password.component.html',
+	styleUrls: ['./password.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PasswordComponent implements OnInit, AfterViewInit, ControlValueAccessor {
+export class PasswordComponent implements ControlValueAccessor {
 
-	value: any;
 	@Input() disabled: boolean | undefined;
 	@Input() placeholder = '';
 	@Input() errors: any = null;
 	hide = true;
 
+	public value: any;
 
-	control: FormControl | undefined;
-	onChange: any = () => { };
-	onTouched: any = () => { };
+	public repeatPasswordErrorMatcher = new PasswordFieldErrorMatcher();
+	control = new FormControl(null, [ Validators.required ]);
+	onChange: any = () => {
+	};
+	onTouched: any = () => {
+	};
 
-	constructor (public injector: Injector) { }
-
-	errorMatcher() {
-		return new PasswordFieldErrorMatcher(this.control, this.errors)
-	}
-
-  //constructor(public injector: Injector) { }
-
-
-  ngOnInit(): void {
-  }
-
-	ngAfterViewInit(): void {
-		const ngControl: NgControl = this.injector.get(NgControl, undefined);
-		if (ngControl) {
-			setTimeout(() => {
-				this.control = ngControl.control as FormControl;
-			})
+	constructor(@Optional() @Self() public ngControl: NgControl) {
+		if (this.ngControl) {
+			this.ngControl.valueAccessor = this;
 		}
+		this.control.valueChanges.subscribe((value) => {
+			this.setValue(value);
+		})
 	}
 
 	writeValue(value: any): void {
-		this.value = value
+		this.control.setValue(value);
 	}
 
 	registerOnChange(fn: () => void): void {
@@ -79,4 +69,7 @@ export class PasswordComponent implements OnInit, AfterViewInit, ControlValueAcc
 		this.disabled = isDisabled;
 	}
 
+	setValue(value: string) {
+		this.onChange(value);
+	}
 }

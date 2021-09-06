@@ -29,8 +29,8 @@ export class NewPositionComponent {
 	createPosition(): void {
 		this._positionService
 			.addPosition({
-				name: this.positionForm.controls['name'].value,
-				description: this.positionForm.controls['description'].value,
+				name: this.positionForm.controls['name'].value?.trim(),
+				description: this.positionForm.controls['description'].value?.trim(),
 			})
 			.subscribe(
 				(result) => {

@@ -4,11 +4,6 @@ import { CompanyApiService } from '@data/api/company-service/services/company-ap
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-// export interface Food {
-// 	value: string;
-// 	viewValue: string;
-// }
-
 @Component({
 	selector: 'do-wizard',
 	templateUrl: './wizard.component.html',
@@ -16,10 +11,9 @@ import { Title } from '@angular/platform-browser';
 changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WizardComponent implements OnInit {
-	companyForm: FormGroup;
-	adminForm: FormGroup;
-	smtpForm: FormGroup;
-	public myForm: null;
+	public companyForm: FormGroup;
+	public adminForm: FormGroup;
+	public smtpForm: FormGroup;
 
 	constructor(private _formBuilder: FormBuilder, private companyApiService: CompanyApiService, private router: Router, private titleService: Title) {
 		this.titleService.setTitle('Installer');
@@ -73,23 +67,23 @@ export class WizardComponent implements OnInit {
 		this.companyApiService
 			.createCompany({
 				body: {
-					companyName: this.companyForm?.get('companyName')?.value,
-					portalName: this.companyForm?.get('portalName')?.value,
-					siteUrl: this.companyForm?.get('siteUrl')?.value,
+					companyName: this.companyForm.get('companyName')?.value,
+					portalName: this.companyForm.get('portalName')?.value,
+					siteUrl: this.companyForm.get('siteUrl')?.value,
 					adminInfo: {
-						firstName: this.adminForm?.get('firstName')?.value,
-						lastName: this.adminForm?.get('lastName')?.value,
-						middleName: this.adminForm?.get('middleName')?.value,
-						email: this.adminForm?.get('email')?.value,
-						login: this.adminForm?.get('login')?.value,
-						password: this.adminForm?.get('password')?.value,
+						firstName: this.adminForm.get('firstName')?.value,
+						lastName: this.adminForm.get('lastName')?.value,
+						middleName: this.adminForm.get('middleName')?.value,
+						email: this.adminForm.get('email')?.value,
+						login: this.adminForm.get('login')?.value,
+						password: this.adminForm.get('password')?.value,
 					},
 					smtpInfo: {
-						host: this.smtpForm?.get('host')?.value,
-						port: this.smtpForm?.get('port')?.value,
-						email: this.smtpForm?.get('email')?.value,
-						password: this.smtpForm?.get('password')?.value,
-						enableSsl: this.smtpForm?.get('enableSsl')?.value,
+						host: this.smtpForm.get('host')?.value,
+						port: this.smtpForm.get('port')?.value,
+						email: this.smtpForm.get('email')?.value,
+						password: this.smtpForm.get('password')?.value,
+						enableSsl: this.smtpForm.get('enableSsl')?.value,
 					},
 				},
 			})

@@ -37,7 +37,7 @@ export class ProjectPageComponent implements OnInit {
 			.subscribe((result: any) => {
 				this.projectInfo = result.body.project ?? {};
 				this.projectUsers = result.body.users ?? [];
-				this.projectCreatedAt = new Date(this.projectInfo?.createdAt);
+				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
 				this.projectDuration = this._countProjectDuration();
 				this._cdr.markForCheck();
 			});

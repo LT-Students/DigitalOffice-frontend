@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.7",
+    "version": "1.1.7.0",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -152,7 +152,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseLeaveTimeInfo"
+                  "$ref": "#/components/schemas/FindResultResponseLeaveTimeResponse"
                 }
               }
             }
@@ -342,7 +342,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseWorkTimeInfo"
+                  "$ref": "#/components/schemas/FindResultResponseWorkTimeResponse"
                 }
               }
             }
@@ -761,6 +761,182 @@
           }
         }
       }
+    },
+    "/import/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "projectId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "month",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "year",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Import"
+        ],
+        "operationId": "getImport",
+        "description": "Import stat.",
+        "responses": {
+          "200": {
+            "description": "Successfully get imported stat.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseByteArray"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stat/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "projectId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "month",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "year",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "stat"
+        ],
+        "operationId": "findStat",
+        "description": "Find stat by filter.",
+        "responses": {
+          "200": {
+            "description": "Successfully find stat.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseStatInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1041,9 +1217,6 @@
           "Project": {
             "$ref": "#/components/schemas/ProjectInfo"
           },
-          "User": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
           "Day": {
             "type": "integer",
             "nullable": true
@@ -1066,14 +1239,13 @@
             "description": "Description for alloted time.",
             "type": "string"
           },
-          "LimitInfo": {
-            "$ref": "#/components/schemas/WorkTimeMonthLimitInfo"
-          },
           "ModifiedAtUtc": {
             "type": "string",
             "format": "date-time",
             "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2020-07-18T08:23"
+            "example": "2020-07-18T08:23",
+            "nullable": true
+
           },
           "Jobs": {
             "type": "array",
@@ -1098,6 +1270,9 @@
             "type": "string",
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Day": {
+            "type": "integer"
           },
           "Name": {
             "type": "string"
@@ -1145,11 +1320,6 @@
             "type": "string",
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-          },
-          "UserId": {
-            "type": "string",
-            "format": "uuid",
-            "example": "05d525f7-27d2-4549-be07-ed63d96d287f"
           },
           "CreatedBy": {
             "type": "string",
@@ -1270,6 +1440,54 @@
           }
         }
       },
+      "StatInfo": {
+        "type": "object",
+        "properties": {
+          "User": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "LeaveTimes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LeaveTimeInfo"
+            }
+          },
+          "WorkTimes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkTimeInfo"
+            }
+          },
+          "LimitInfo": {
+            "$ref": "#/components/schemas/WorkTimeMonthLimitInfo"
+          }
+        }
+      },
+      "WorkTimeResponse": {
+        "type": "object",
+        "properties": {
+          "WorkTime": {
+            "$ref": "#/components/schemas/WorkTimeInfo"
+          },
+          "User": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "LimitInfo": {
+            "$ref": "#/components/schemas/WorkTimeMonthLimitInfo"
+          }
+        }
+      },
+      "LeaveTimeResponse": {
+        "type": "object",
+        "properties": {
+          "LeaveTime": {
+            "$ref": "#/components/schemas/LeaveTimeInfo"
+          },
+          "User": {
+            "$ref": "#/components/schemas/UserInfo"
+          }
+        }
+      },
       "ProjectStatusType": {
         "type": "string",
         "description": "Project status.\nMay be empty, default value: 'Active'.\n,Enum numbers description\n* 0 - Active,\n* 1 - Failed,\n* 2 - Abandoned,\n* 3 - Rejected,\n* 4 - Closed,\n* 5 - Suspend",
@@ -1281,7 +1499,7 @@
         "nullable": false,
         "example": "Suspend"
       },
-      "FindResultResponseWorkTimeInfo": {
+      "FindResultResponseWorkTimeResponse": {
         "type": "object",
         "properties": {
           "Status": {
@@ -1294,7 +1512,7 @@
           "Body": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WorkTimeInfo"
+              "$ref": "#/components/schemas/WorkTimeResponse"
             }
           },
           "Errors": {
@@ -1329,7 +1547,7 @@
           }
         }
       },
-      "FindResultResponseLeaveTimeInfo": {
+      "FindResultResponseLeaveTimeResponse": {
         "type": "object",
         "properties": {
           "Status": {
@@ -1342,7 +1560,31 @@
           "Body": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/LeaveTimeInfo"
+              "$ref": "#/components/schemas/LeaveTimeResponse"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseStatInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter leave times."
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatInfo"
             }
           },
           "Errors": {
@@ -1401,6 +1643,25 @@
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"
+      },
+      "OperationResultResponseByteArray": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "string",
+            "format": "byte"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
     "parameters": {

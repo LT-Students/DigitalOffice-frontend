@@ -57,7 +57,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		this._unsubscribe$ = new Subject<void>();
 	}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		// this.isOwner = user.id === this.pageId;
 		this._route.params
 		.pipe(
@@ -67,7 +67,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		.subscribe();
 	}
 
-	ngOnDestroy() {
+	public ngOnDestroy(): void {
 		this._unsubscribe$.next();
 		this._unsubscribe$.complete();
 	}
@@ -80,10 +80,10 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	// 		this.showMessage(result);
 	// 	});
 	// }
-
-	showMessage(message: string): void {
-		if (message) {
-			this._snackBar.open(message, 'accept', { duration: 3000 });
-		}
-	}
+	//
+	// showMessage(message: string): void {
+	// 	if (message) {
+	// 		this._snackBar.open(message, 'accept', { duration: 3000 });
+	// 	}
+	// }
 }

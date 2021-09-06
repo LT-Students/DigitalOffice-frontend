@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
 import { IFindRequestEx } from '@app/types/find-request.interface';
-import { IEditDepartmentRequest } from '@app/types/edit-department-request.interface';
 import { PositionApiService } from '@data/api/company-service/services/position-api.service';
 import { IGetPositionRequest } from '@app/types/get-position-request.interface';
 import { OperationResultResponsePositionInfo } from '@data/api/company-service/models/operation-result-response-position-info';

@@ -78,7 +78,8 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-		this.userSubscription = this._employeeService.selectedUser.subscribe((user) => {
+		this._route.params.subscribe((param) => this.isEditing = false);
+		this.userSubscription = this._employeeService.selectedUser$.subscribe((user) => {
 			this.user = user;
 			console.log('main-info', user);
 			this._cdr.markForCheck();

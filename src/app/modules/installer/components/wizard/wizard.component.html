@@ -41,12 +41,12 @@
 					<mat-label>E-mail</mat-label>
 					<input matInput formControlName="email" placeholder="example@mail.com" required />
 				</mat-form-field>
-				<mat-form-field class="input-width" appearance="fill">
+				<mat-form-field appearance="fill">
 					<mat-label>Логин</mat-label>
 					<input matInput formControlName="login" placeholder="Введите логин" required />
 				</mat-form-field>
-                    <do-password formControlName="password" placeholder="Придумайте пароль"></do-password>
-                    <do-password placeholder="Повторите пароль" formControlName="confirmPassword" [errors]="adminForm.errors?.errorMatch ? adminForm.errors : null" >
+                    <do-password class="wizard__form__width" formControlName="password" placeholder="Придумайте пароль"></do-password>
+                    <do-password class="wizard__form__width" placeholder="Повторите пароль" formControlName="confirmPassword" [errors]="adminForm.errors?.errorMatch ? adminForm.errors : null" >
                     </do-password>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
@@ -71,8 +71,8 @@
 					<mat-label>E-mail</mat-label>
 					<input matInput formControlName="email" placeholder="example@mail.com" required />
 				</mat-form-field>
-                    <do-password formControlName="password" placeholder="Придумайте пароль"></do-password>
-                    <do-password placeholder="Повторите пароль" formControlName="confirmPassword" [errors]="smtpForm.errors?.errorMatch ? smtpForm.errors : null" ></do-password>
+                    <do-password class="wizard__form__width" formControlName="password" placeholder="Придумайте пароль"></do-password>
+                    <do-password class="wizard__form__width" placeholder="Повторите пароль" formControlName="confirmPassword" [errors]="smtpForm.errors?.errorMatch ? smtpForm.errors : null" ></do-password>
 				<mat-checkbox formControlName="enableSsl" required>Включить SSL</mat-checkbox>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
