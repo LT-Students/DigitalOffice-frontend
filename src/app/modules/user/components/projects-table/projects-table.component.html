@@ -1,4 +1,4 @@
-<div class="card card_standard">
+<mat-card class="card card_standard">
 	<div class="header">
 		<h3 doText underlined underlinedSize="sm">Доска проектов</h3>
 		<button mat-flat-button color="orange" (click)="onAddProjectClick()">+ Создать проект</button>
@@ -42,4 +42,4 @@
 	</table>
 	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
 		(page)="onPageChange($event)"></mat-paginator>
-</div>
+</mat-card>

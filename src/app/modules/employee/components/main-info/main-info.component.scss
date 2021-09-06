@@ -4,7 +4,7 @@
 	&__wrapper {
 		display: grid;
 
-		width: 100%;
+		min-width: 600px;
 
 		grid-template-columns: 25% 41% 31% 3%;
 	}

@@ -13,8 +13,9 @@ export class InstallerGuard implements CanActivate, CanLoad {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		const company = this._companyService.getCurrentCompany();
-		if (company) {
+		const companyExists = this._companyService.isCompanyExists();
+
+		if (companyExists) {
 			return true;
 		}
 		this._router.navigate(['installer']);
