@@ -10,11 +10,11 @@ import { switchMap, tap } from 'rxjs/operators';
 })
 export class EmployeePageService {
 	private _selectedUser: BehaviorSubject<User | null>;
-	public readonly selectedUser: Observable<User | null>;
+	public readonly selectedUser$: Observable<User | null>;
 
 	constructor(private _userService: UserService) {
 		this._selectedUser = new BehaviorSubject<User | null>(null);
-		this.selectedUser = this._selectedUser.asObservable();
+		this.selectedUser$ = this._selectedUser.asObservable();
 	}
 
 	//TODO if user opens his page take value from UserService
@@ -27,6 +27,7 @@ export class EmployeePageService {
 			includecommunications: true,
 			includerole: true,
 			includeimages: true,
+			includeprojects: true,
 		};
 
 		return this._userService.getUser(params).pipe(tap((user) => this._selectedUser.next(user)));

@@ -1,8 +1,5 @@
 .card {
-	min-width: 840px;
-
-	background-color: #fff;
-	border-radius: 5px;
+	overflow-x: scroll;
 
 	&_standard {
 		padding: 52px 48px;

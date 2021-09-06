@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.3",
+    "version": "1.2.5",
     "title": "NewsService",
     "description": "NewsService, is intended to work with the news - create them, update info and etc."
   },
@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/news/createNews": {
+    "/news/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -34,60 +34,153 @@
           "required": true
         },
         "responses": {
-          "204": {
-            "description": "New news Id.",
+          "200": {
+            "description": "New news Id, Satus and Errors",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request.\n"
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/news/editNews": {
+    "/news/edit": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "newsId",
+          "in": "query",
+          "description": "Specific news id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
         }
       ],
-      "post": {
+      "patch": {
         "tags": [
           "News"
         ],
         "operationId": "editNews",
         "description": "Updates news fields.",
         "requestBody": {
-          "description": "The news data to edit.",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewsRequest"
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PatchOperation"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update news operation success (boolean) status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
               }
             }
           },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "No content."
-          },
           "400": {
-            "description": "Bad request.\n* Error in the field.\n"
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Not Found.\n* News with this id was not found.\n"
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/news/findnews": {
+    "/news/getNewsById": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/newsId"
+        },
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "getNewsById",
+        "responses": {
+          "200": {
+            "description": "Successfully returned news information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewsResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+          },
+          "404": {
+            "description": "Not Found.\n* News with this id not found.\n"
+          }
+        }
+      }
+    },
+    "/news/find": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -143,13 +236,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NewsResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NewsResponse"
+                  }
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request.\n* Error in the field.\n"
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -160,19 +263,12 @@
       "NewsRequest": {
         "type": "object",
         "required": [
-          "Id",
-          "AuthorName",
           "AuthorId",
           "SenderId",
           "Subject",
           "Content"
         ],
         "properties": {
-          "Id": {
-            "description": "Id of the news. Required when it's wanted to be edited.",
-            "type": "string",
-            "format": "uuid"
-          },
           "Content": {
             "description": "The news' content.",
             "type": "string"
@@ -181,7 +277,7 @@
             "description": "The news' subject.",
             "type": "string"
           },
-          "AuthorName": {
+          "Pseudonym": {
             "description": "The news' author name.",
             "type": "string"
           },
@@ -194,6 +290,41 @@
             "description": "Id of the news sender.",
             "type": "string",
             "format": "uuid"
+          },
+          "DepartmentId": {
+            "description": "Id of department the news sender.",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "PatchOperation": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Content",
+              "/Subject",
+              "/IsActive"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
           }
         }
       },
@@ -219,6 +350,13 @@
           "CreatedAt": {
             "type": "string",
             "format": "date-time"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/Department",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
           }
         }
       },
@@ -229,13 +367,83 @@
             "type": "string",
             "format": "uuid"
           },
-          "FIO": {
+          "FullName": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "Department": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
             "type": "string"
           }
         }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed",
+          "Conflict"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
       }
     },
     "parameters": {
+      "newsId": {
+        "name": "newsId",
+        "in": "query",
+        "description": "News global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
       "securityToken": {
         "name": "token",
         "in": "header",

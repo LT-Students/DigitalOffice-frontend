@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
@@ -36,7 +35,7 @@ type color_style =
 export class TextDirective implements OnInit {
 	private _underlined: boolean;
 
-	@Input() color: color_style;
+	@Input() color: color_style | undefined;
 	@Input() regularTextSize: 'regular' | 'small';
 	@Input() underlinedSize: 'sm' | 'l';
 	@Input()
@@ -48,6 +47,7 @@ export class TextDirective implements OnInit {
 	}
 
 	constructor(private el: ElementRef, private renderer: Renderer2) {
+		this._underlined = false;
 		this.underlinedSize = 'l';
 		this.regularTextSize = 'regular';
 	}
@@ -68,7 +68,7 @@ export class TextDirective implements OnInit {
 			case 'H1':
 			// case 'H2':
 			case 'H3': {
-			// case 'H4': {
+				// case 'H4': {
 				this._setHeaderAttributes(tagName.toLowerCase());
 				break;
 			}
