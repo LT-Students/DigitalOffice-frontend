@@ -7,8 +7,8 @@ import {
 	AddUsersToProjectRequest,
 	EditProjectRequest,
 	FindResponseProjectInfo,
-	OperationResultResponseProjectInfo,
-	ProjectResponse,
+	OperationResultResponse,
+	OperationResultResponseProjectResponse,
 } from '@data/api/project-service/models';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
@@ -49,22 +49,22 @@ export class ProjectService {
 	constructor(
 		private _projectService: ProjectApiService,
 		private _userService: UserApiService
-	) {}
+	) { }
 
 	public findProjects(skipPages = 0, pageSize = 10): Observable<FindResponseProjectInfo> {
 		return this._projectService.findProjects({ skipCount: skipPages, takeCount: pageSize });
 		// .pipe(switchMap((projects: FindResponseProjectInfo) => of(projects.body)));
 	}
 
-	public getProject(params: IGetProjectRequest): Observable<ProjectResponse> {
+	public getProject(params: IGetProjectRequest): Observable<OperationResultResponseProjectResponse> {
 		return this._projectService.getProject(params);
 	}
 
-	public createProject(body: ProjectRequest): Observable<OperationResultResponseProjectInfo> {
+	public createProject(body: ProjectRequest): Observable<OperationResultResponse> {
 		return this._projectService.createProject({ body });
 	}
 
-	public editProject(params: IEditProjectRequest): Observable<OperationResultResponseProjectInfo> {
+	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse> {
 		return this._projectService.editProject(params);
 	}
 

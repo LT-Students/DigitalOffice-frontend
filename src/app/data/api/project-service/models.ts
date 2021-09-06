@@ -20,7 +20,6 @@ export { AddUsersToProjectRequest } from './models/add-users-to-project-request'
 export { EditProjectRequest } from './models/edit-project-request';
 export { ProjectPatchDocument } from './models/project-patch-document';
 export { ProjectUserRequest } from './models/project-user-request';
-export { ProjectResponse } from './models/project-response';
 export { TaskResponse } from './models/task-response';
 export { FindResponseProjectInfo } from './models/find-response-project-info';
 export { FindResponseTaskInfo } from './models/find-response-task-info';
@@ -30,6 +29,6 @@ export { CreateTaskRequest } from './models/create-task-request';
 export { EditTaskRequest } from './models/edit-task-request';
 export { ErrorResponse } from './models/error-response';
 export { OperationResultResponse } from './models/operation-result-response';
-export { OperationResultResponseProjectInfo } from './models/operation-result-response-project-info';
+export { OperationResultResponseProjectResponse } from './models/operation-result-response-project-response';
 export { OperationResultResponseTaskResponse } from './models/operation-result-response-task-response';
 export { OperationResultStatusType } from './models/operation-result-status-type';

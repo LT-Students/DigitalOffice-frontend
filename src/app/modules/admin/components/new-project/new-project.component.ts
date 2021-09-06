@@ -102,7 +102,7 @@ export class NewProjectComponent implements OnInit {
 		this._projectService.createProject(projectRequest).subscribe(
 			(result) => {
 				this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
-				this._router.navigate([`${RouteType.PROJECT}/${result.body?.id}`]);
+				//this._router.navigate([`${RouteType.PROJECT}/${result.body?.id}`]);
 			},
 			(error) => {
 				let errorMessage = error.error.errors;
