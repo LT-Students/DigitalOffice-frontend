@@ -23,7 +23,7 @@ export interface IModalContentConfig {
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectsComponent {
-	@Input() public projects: WorkTimeInfo[] | undefined | null;
+	@Input() public projects: Array<WorkTimeInfo | undefined> | undefined | null;
 	@Input() public canEdit: boolean;
 	public selectedDate: Date;
 
@@ -41,22 +41,22 @@ export class ProjectsComponent {
 		return new Date(year, month + 1, 0)
 	}
 
-	public openEditModal(project: WorkTimeInfo) {
+	public openEditModal(project: WorkTimeInfo | undefined) {
 		let modalContentConfig: IModalContentConfig = {
-			id: project.id,
-			name: project.project?.name,
-			userHours: project.userHours ?? 0,
-			managerHours: project.managerHours ?? 0,
-			description: project.description,
-			month: project.month,
-			year: project.year
+			id: project?.id,
+			name: project?.project?.name,
+			userHours: project?.userHours ?? 0,
+			managerHours: project?.managerHours ?? 0,
+			description: project?.description,
+			month: project?.month,
+			year: project?.year
 		}
 
 		this._modalService
 			.openModal<EditProjectComponent, IModalContentConfig, IDialogResponse>(EditProjectComponent, ModalWidth.L, modalContentConfig)
 			.afterClosed()
 			.subscribe((res) => {
-				if (res?.status === OperationResultStatusType.FullSuccess) {
+				if (project && res?.status === OperationResultStatusType.FullSuccess) {
 					project.description = res.data.description;
 					project.managerHours = res.data.managerHours;
 					project.userHours = res.data.userHours;

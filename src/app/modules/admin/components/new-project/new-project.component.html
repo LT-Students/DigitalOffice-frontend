@@ -6,7 +6,7 @@
     <a class="navigation__link">Новый проект</a>
 </div>
 <h1 doText color="dark_2">Новый проект</h1>
-<div class="card regular_text">
+<mat-card class="card regular_text">
 	<form class="project-info" [formGroup]="projectForm" (ngSubmit)="createProject()" autocomplete="off">
 		<div class="project-info__section">
 			<div class="section__title">
@@ -117,4 +117,4 @@
 			<button mat-flat-button color="primary" [disabled]="projectForm.invalid" type="submit">Создать проект</button>
 		</div>
 	</form>
-</div>
+</mat-card>
