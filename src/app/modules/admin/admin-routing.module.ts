@@ -9,7 +9,6 @@ import { ManageUsersComponent } from './components/manage-users/manage-users.com
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component';
-import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
 
 
 const adminRoutes: Routes = [
@@ -20,7 +19,6 @@ const adminRoutes: Routes = [
 	{ path: 'manage-roles', component: ManageRolesComponent },
 	{ path: 'offices', component: OfficeListComponent },
 	{ path: 'positions', component: PositionListComponent },
-	{ path: 'team-statistics', component: TeamStatisticsComponent },
 	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
 ];
 

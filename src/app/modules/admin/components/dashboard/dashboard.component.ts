@@ -62,9 +62,7 @@ export class DashboardComponent implements OnInit {
 						? fromPromise(this._router.navigate(['admin/offices']))
 						: value === this.modalType.POSITION_LIST
 						? fromPromise(this._router.navigate(['admin/positions']))
-						: of(false)
-						? fromPromise(this._router.navigate(['admin/team-statistics']))
-						: value === this.modalType.TEAM_STATISTICS;
+						: of(false);
 				})
 			)
 			.subscribe((result: boolean | any | OperationResultResponse) => {

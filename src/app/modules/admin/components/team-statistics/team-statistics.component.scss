@@ -14,14 +14,7 @@ table {
 		color: $gray1;
 	}
 
-	&__month-picker {
-		display: inline-flex;
-		align-items: center;
-
-		cursor: pointer;
-	}
-
-	td.first-child {
+	td.first-column {
 		display: flex;
 		align-items: center;
 
@@ -52,4 +45,8 @@ table {
 		width: 0;
 		height: 0;
 	}
+}
+
+mat-icon {
+	vertical-align: middle;
 }

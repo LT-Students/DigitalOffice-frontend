@@ -12,10 +12,6 @@ import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { ProjectUserInfo } from '@data/api/project-service/models/project-user-info';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { TeamStatisticsComponent } from '../../../admin/components/team-statistics/team-statistics.component';
-import { Project } from '@app/models/project/project.model';
-import { ProjectResponse } from '@data/api/project-service/models/project-response';
-import { NextObserver } from 'rxjs';
 
 @Component({
 	selector: 'do-project-page',
@@ -31,6 +27,17 @@ export class ProjectPageComponent implements OnInit {
 	public projectDuration: number;
 	public svgActiveTabColorSt: string;
 	public svgActiveTabColorP: string;
+
+	public dayCountMap: { [k: string]: string } = {
+		one: '# день',
+		few: '# дня',
+		other: '# дней',
+	};
+	public participantCountMap: { [k: string]: string } = {
+		one: '# участник',
+		few: '# участника',
+		other: '# участников',
+	};
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -50,14 +57,11 @@ export class ProjectPageComponent implements OnInit {
 		this._projectService
 			.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
 			//Fix, then backend fix it
-			.subscribe((result: any ) => {
-				this.projectInfo = result.body.project ?? {};
-				this.projectUsers = result.body.users ?? [];
-				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
-				console.log(this.projectInfo?.createdAtUtc);
-				console.log(new Date());
-				console.log(this.projectInfo);
+			.subscribe((result: any) => {
+				this.projectInfo = result?.body?.project ?? {};
+				this.projectUsers = result?.body?.users ?? [];
 				console.log(result);
+				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
 				this.projectDuration = this._countProjectDuration();
 				this._cdr.markForCheck();
 			});

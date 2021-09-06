@@ -1,4 +1,4 @@
-<div class="card card_standard" style="margin-top: 20px;" >
+<div class="card">
     <div class="table regular_text">
         <div class="table__header h3">
             <h3 doText underlined underlinedSize="sm">Статистика за
@@ -8,7 +8,7 @@
                     <mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event); picker.close()"></mat-datepicker>
                 </mat-form-field>
 
-                <a (click)="picker.open()" class="table__month-picker text-accent_color_bright">
+                <a (click)="picker.open()" class="text-accent_color_bright">
                 {{startDate | date: 'LLLL YYYY' | titlecase }}
                     <mat-icon>keyboard_arrow_down</mat-icon>
                 </a>
@@ -21,8 +21,8 @@
                     </th>
                 </tr>
                 <tr class="table__row" *ngFor="let user of DATA">
-                    <td class="table__cell first-child">
-                        <img src='assets/images/smallPhoto/Ellipse91.png'><img>
+                    <td class="table__cell first-column">
+                        <img src='assets/images/smallPhoto/Ellipse91.png'>
                         <p>{{ user?.name }} {{ user?.lastName }}<br><span>{{user?.position}}</span></p>
                     </td>
                     <td class="table__cell">
