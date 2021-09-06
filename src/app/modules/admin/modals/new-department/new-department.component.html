@@ -1,7 +1,7 @@
-<mat-dialog-content class="new-department">
+<form autocomplete="off" class="data-form" [formGroup]="departmentForm" (ngSubmit)="postDepartment()">
 	<h3 mat-dialog-title>Новый департамент</h3>
-	<div class="form__container">
-		<form autocomplete="off" class="data-form" [formGroup]="departmentForm" (ngSubmit)="postDepartment()">
+	<mat-dialog-content class="new-department">
+		<div class="form__container">
 			<div class="new-department__input-container">
 				<mat-form-field appearance="fill">
 					<mat-label>Название</mat-label>
@@ -14,16 +14,16 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Директор</mat-label>
 					<mat-select id="director" formControlName="directorId">
-						<mat-option *ngFor="let director of directors" [value]="director.id">
+						<mat-option *ngFor="let director of directors$ | async" [value]="director.id">
 							{{ director.lastName + ' ' + director.firstName }}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
-			<mat-dialog-actions align='center'>
-				<button class="text-gray" mat-flat-button mat-dialog-close type="button">Отмена</button>
-				<button mat-flat-button color="primary" type="submit" [disabled]="departmentForm.invalid">Добавить департамент</button>
-			</mat-dialog-actions>
-		</form>
-	</div>
-</mat-dialog-content>
+		</div>
+	</mat-dialog-content>
+	<mat-dialog-actions align="center">
+		<button class="text-gray" mat-flat-button mat-dialog-close type="button">Отмена</button>
+		<button mat-flat-button color="primary" type="submit" [disabled]="departmentForm.invalid">Добавить департамент</button>
+	</mat-dialog-actions>
+</form>

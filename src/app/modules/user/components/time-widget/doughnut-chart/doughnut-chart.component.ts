@@ -53,16 +53,16 @@ export class DoughnutChartComponent implements OnInit {
 	}
 
 	private _countUserHours(): number {
-		const projectHours: number = this.activities?.projects?.reduce((acc, project) => acc + (project.userHours ?? 0), 0) ?? 0;
+		const projectHours: number = this.activities?.projects?.reduce((acc, project) => acc + (project?.userHours ?? 0), 0) ?? 0;
 		const leavesHours: number =
 			this.activities?.leaves
-				?.filter((leave) => leave.startTime && leave.startTime)
+				?.filter((leave) => leave?.startTime && leave.startTime)
 				.reduce(
 					(acc, leave) =>
 						acc +
 						this._timeDurationService.getDuration({
-							startDate: new Date(leave.startTime as string),
-							endDate: new Date(leave.endTime as string),
+							startDate: new Date(leave?.startTime as string),
+							endDate: new Date(leave?.endTime as string),
 						}),
 					0
 				) ?? 0;
@@ -71,21 +71,21 @@ export class DoughnutChartComponent implements OnInit {
 	}
 
 	private _getLabels(): Array<string | undefined> {
-		const projectLabels = this.activities?.projects?.map((project) => project.project?.name).filter(Boolean) ?? [];
+		const projectLabels = this.activities?.projects?.map((project) => project?.project?.name).filter(Boolean) ?? [];
 		return this.activities?.leaves?.length && this.activities.leaves.length > 0 ? projectLabels?.concat('Отсутствия') : projectLabels;
 	}
 
 	private _updateChart(): void {
-		const projectsHours = this.activities?.projects?.filter((project) => project.userHours).map((project) => project.userHours as number) ?? [];
+		const projectsHours = this.activities?.projects?.filter((project) => project?.userHours).map((project) => project?.userHours as number) ?? [];
 		const leavesHours =
 			this.activities?.leaves
-				?.filter((leave) => leave.startTime && leave.startTime)
+				?.filter((leave) => leave?.startTime && leave.endTime)
 				.reduce(
 					(acc, leave) =>
 						acc +
 						this._timeDurationService.getDuration({
-							startDate: new Date(leave.startTime as string),
-							endDate: new Date(leave.endTime as string),
+							startDate: new Date(leave?.startTime as string),
+							endDate: new Date(leave?.endTime as string),
 						}),
 					0
 				) ?? 0;

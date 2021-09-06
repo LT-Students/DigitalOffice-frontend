@@ -27,6 +27,5 @@ export interface LeaveTimeInfo {
    * Start date task execution.
    */
   startTime?: string;
-  userId?: string;
 }
 

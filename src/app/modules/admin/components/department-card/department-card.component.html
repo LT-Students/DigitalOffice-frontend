@@ -10,7 +10,7 @@
 	<a class="navigation__link">{{ departmentInfo?.name }}</a>
 </div>
 <h1 doText class="title">{{ departmentInfo?.name }}</h1>
-<div class="card card_standard department">
+<mat-card class="card card_standard department">
 	<div class="department__info">
 		<h3 doText underlined underlinedSize="sm">Общая информация</h3>
 		<div class="department__label">
@@ -77,7 +77,7 @@
 		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
 			(page)="onPageChange($event)"></mat-paginator>
 	</div>
-</div>
+</mat-card>
 
 <ng-template #empty>
 	<p>—</p>

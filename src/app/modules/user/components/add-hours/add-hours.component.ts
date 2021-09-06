@@ -23,7 +23,7 @@ import { TimeDurationService } from '@app/services/time-duration.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddHoursComponent implements OnDestroy {
-	public workTimes$: Observable<WorkTimeInfo[] | undefined>;
+	public workTimes$: Observable<Array<WorkTimeInfo | undefined> | undefined>;
 	public selectedDate$: Observable<Date>;
 	public recommendedTime: BehaviorSubject<number>;
 
@@ -33,6 +33,8 @@ export class AddHoursComponent implements OnDestroy {
 	public monthOptions: Date[];
 	public disableWeekends: DateFilterFn<Date>;
 	private _canEditSubscription: Subscription;
+	public minDate: Date;
+	public maxDate: Date;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -41,6 +43,8 @@ export class AddHoursComponent implements OnDestroy {
 		private _snackbar: MatSnackBar,
 		private _timeDurationService: TimeDurationService
 	) {
+		[ this.minDate, this.maxDate ] = this._attendanceService.getCalendarMinMax();
+
 		this.isProjectForm = true;
 		this.monthOptions = [];
 		this.absences = LeaveTimeModel.getAllLeaveTypes();
@@ -86,8 +90,8 @@ export class AddHoursComponent implements OnDestroy {
 		return [];
 	}
 
-	public patchWorkTimeInfoIntoForm(workTime: WorkTimeInfo, event: MatOptionSelectionChange): void {
-		if (event.isUserInput) {
+	public patchWorkTimeInfoIntoForm(workTime: WorkTimeInfo | undefined, event: MatOptionSelectionChange): void {
+		if (event.isUserInput && workTime) {
 			this.addHoursForm.patchValue({
 				time: workTime.userHours,
 				comment: workTime.description,

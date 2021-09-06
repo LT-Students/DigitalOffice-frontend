@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, OnChanges, AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Input } from "@angular/core";
+import { Component, ElementRef, ViewChild, OnChanges, AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Input } from '@angular/core';
 
 @Component({
     selector: 'do-comment',
