@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.1.1",
+    "version": "1.2.1.2",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -111,7 +111,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ProjectResponse"
+                  "$ref": "#/components/schemas/OperationResultResponseProjectResponse"
                 }
               }
             }
@@ -163,11 +163,11 @@
         },
         "responses": {
           "200": {
-            "description": "Base info new project.\n  * OK\n",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseProjectInfo"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -625,7 +625,7 @@
         },
         "responses": {
           "200": {
-            "description":  "Created task Id (uuid) will be in response Body property.",
+            "description": "Created task Id (uuid) will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -673,7 +673,7 @@
         "operationId": "getTask",
         "responses": {
           "200": {
-            "description":  "Get TaskResponse will be in response Body property.",
+            "description": "Get TaskResponse will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -982,12 +982,6 @@
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
-          "ImageId": {
-            "description": "Unique project identifier.",
-            "type": "string",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-          },
           "FirstName": {
             "description": "The user first name",
             "type": "string",
@@ -1006,6 +1000,9 @@
           },
           "Status": {
             "$ref": "#/components/schemas/UserStatus"
+          },
+          "Rate": {
+            "type": "number"
           },
           "AvatarImage": {
             "$ref": "#/components/schemas/ImageInfo"
@@ -1340,7 +1337,6 @@
             "description": "The value to be used within the operations."
           }
         }
-
       },
       "ProjectUserRequest": {
         "type": "object",
@@ -1764,57 +1760,27 @@
           }
         }
       },
-      "OperationResultResponseProjectInfo": {
+      "OperationResultResponseProjectResponse": {
         "description": "Response object for action operations.",
         "type": "object",
         "properties": {
           "Body": {
             "type": "object",
             "properties": {
-              "id": {
-                "description": "Unique project identifier.",
-                "type": "string",
-                "format": "uuid",
-                "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+              "project": {
+                "$ref": "#/components/schemas/ProjectInfo"
               },
-              "authorId": {
-                "description": "Unique project creater identifier.",
-                "type": "string",
-                "format": "uuid",
-                "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+              "users": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProjectUserInfo"
+                }
               },
-              "status": {
-                "$ref": "#/components/schemas/ProjectStatusType",
-                "nullable": false
-              },
-              "name": {
-                "description": "Project name.",
-                "type": "string",
-                "example": "Digital Office",
-                "nullable": false
-              },
-              "shortName": {
-                "description": "Project short name.",
-                "type": "string",
-                "example": "DO",
-                "nullable": true
-              },
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "shortDescription": {
-                "type": "string",
-                "nullable": true
-              },
-              "department": {
-                "$ref": "#/components/schemas/DepartmentInfo",
-                "nullable": true
-              },
-              "CreatedAtUtc": {
-                "description": "Data and time created project.",
-                "pattern": "YYYY-MM-DDTHH:mm",
-                "example": "2021-12-10 03:13"
+              "files": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProjectFileInfo"
+                }
               }
             }
           },
