@@ -56,11 +56,9 @@ export class ProjectPageComponent implements OnInit {
 		this.projectId = this._route.snapshot.params.id;
 		this._projectService
 			.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
-			//Fix, then backend fix it
-			.subscribe((result: any) => {
-				this.projectInfo = result?.body?.project ?? {};
-				this.projectUsers = result?.body?.users ?? [];
-				console.log(result);
+			.subscribe((result) => {
+				this.projectInfo = result.body?.project ?? {};
+				this.projectUsers = result.body?.users ?? [];
 				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
 				this.projectDuration = this._countProjectDuration();
 				this._cdr.markForCheck();

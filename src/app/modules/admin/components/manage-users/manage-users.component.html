@@ -5,7 +5,7 @@
 	</span>
 	<a class="navigation__link">Управление сотрудниками</a>
 </div>
-<div class="card card_standard">
+<mat-card class="card card_standard">
 	<div class="header">
 		<h3 doText underlined underlinedSize="sm">Сотрудники</h3>
 		<button mat-flat-button color="orange" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
@@ -73,8 +73,8 @@
 					</ng-template>
 				</td>
 				<td class="cell table__delete-button cell_vertical-middle">
-					<button mat-mini-fab color="primary" (click)="archiveUser(userInfo, $event)">
-						<img src="../../../../../assets/svg/delete.svg" alt="Archive employee" />
+					<button mat-mini-fab color="primary" (click)="toggleUserStatus(userInfo, $event)">
+                        <mat-icon>{{userInfo.isActive ? 'delete' : 'unarchive' }}</mat-icon>
 					</button>
 				</td>
 			</tr>
@@ -82,7 +82,7 @@
 	</table>
 	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
 		(page)="onPageChange($event)"></mat-paginator>
-</div>
+</mat-card>
 
 <ng-template #empty>
 	<p>—</p>

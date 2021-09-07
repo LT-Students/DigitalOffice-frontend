@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface WorkTimeJobInfoInfo {
+  day?: number;
   description?: string;
 
   /**

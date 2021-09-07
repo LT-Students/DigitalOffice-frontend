@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-import { LeaveTimeInfo } from './leave-time-info';
 import { OperationResultStatusType } from './operation-result-status-type';
-export interface FindResultResponseLeaveTimeInfo {
-  body?: Array<LeaveTimeInfo>;
+import { WorkTimeResponse } from './work-time-response';
+export interface FindResultResponseWorkTimeResponse {
+  body?: Array<WorkTimeResponse>;
   errors?: Array<string>;
   status?: OperationResultStatusType;
 
   /**
-   * Total number of finded by filter leave times.
+   * Total number of finded by filter work times.
    */
   totalCount?: number;
 }

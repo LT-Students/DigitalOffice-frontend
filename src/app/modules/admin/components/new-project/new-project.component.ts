@@ -92,11 +92,17 @@ export class NewProjectComponent implements OnInit {
 
 	public createProject(): void {
 		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({ role: ProjectUserRoleType.Manager, userId: user.id ?? '' }));
-		const projectRequest: ProjectRequest = { ...this.projectForm.value, users: projectUsers };
+		const projectRequest: ProjectRequest = {
+			name: this.projectForm.get('name')?.value?.trim(),
+			departmentId: this.projectForm.get('departmentId')?.value,
+			description: this.projectForm.get('description')?.value?.trim(),
+			status: this.projectForm.get('status')?.value,
+			users: projectUsers,
+		};
 		this._projectService.createProject(projectRequest).subscribe(
 			(result) => {
 				this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
-				this._router.navigate([`${RouteType.PROJECT}/${result.body?.id}`]);
+				this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
 			},
 			(error) => {
 				let errorMessage = error.error.errors;
