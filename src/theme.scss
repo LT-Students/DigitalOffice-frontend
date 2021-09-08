@@ -1,16 +1,16 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 /* ======== Angular material custom themes ======== */
 
-$theme-primary: mat-palette($mat-orange, 400);
-$theme-accent: mat-palette($mat-deep-orange, 400);
-$theme-warn: mat-palette($mat-red);
-$app-theme: mat-light-theme($theme-primary, $theme-accent, $mat-red);
+$theme-primary: mat.define-palette(mat.$orange-palette, 400);
+$theme-accent: mat.define-palette(mat.$deep-orange-palette, 400);
+$theme-warn: mat.define-palette(mat.$red-palette);
+$app-theme: mat.define-light-theme($theme-primary, $theme-accent, mat.$red-palette);
 //
 //$custom-typography: mat-typography-config(
 //    $input: mat-typography-level(16px, 1.5, 400),
 //    $button: mat-typography-level(16px, 24px, 400),
 //);
 
-@include angular-material-theme($app-theme);
-@include mat-core();
+@include mat.all-component-themes($app-theme);
+@include mat.core();
