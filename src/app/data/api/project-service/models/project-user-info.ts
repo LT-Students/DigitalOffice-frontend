@@ -25,11 +25,6 @@ export interface ProjectUserInfo {
   id?: string;
 
   /**
-   * Unique project identifier.
-   */
-  imageId?: string;
-
-  /**
    * User state.
    */
   isActive?: boolean;
@@ -54,6 +49,7 @@ export interface ProjectUserInfo {
    * Count of project, which user included.
    */
   projectCount?: number;
+  rate?: number;
   role?: ProjectUserRoleType;
   status?: UserStatus;
 }
