@@ -14,7 +14,7 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class PasswordFieldErrorMatcher implements ErrorStateMatcher {
-	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+	public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 		const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
 		const invalidParent = !!(form?.invalid && form?.dirty);
 
@@ -35,8 +35,6 @@ export class PasswordComponent implements ControlValueAccessor {
 	@Input() errors: any = null;
 	hide = true;
 
-	public value: any;
-
 	public repeatPasswordErrorMatcher = new PasswordFieldErrorMatcher();
 	control = new FormControl(null, [ Validators.required ]);
 	onChange: any = () => {
@@ -53,23 +51,23 @@ export class PasswordComponent implements ControlValueAccessor {
 		})
 	}
 
-	writeValue(value: any): void {
+	public writeValue(value: any): void {
 		this.control.setValue(value);
 	}
 
-	registerOnChange(fn: () => void): void {
+	public registerOnChange(fn: () => void): void {
 		this.onChange = fn;
 	}
 
-	registerOnTouched(fn: () => void): void {
+	public registerOnTouched(fn: () => void): void {
 		this.onTouched = fn;
 	}
 
-	setDisabledState?(isDisabled: boolean): void {
+	public setDisabledState?(isDisabled: boolean): void {
 		this.disabled = isDisabled;
 	}
 
-	setValue(value: string) {
+	public setValue(value: string) {
 		this.onChange(value);
 	}
 }

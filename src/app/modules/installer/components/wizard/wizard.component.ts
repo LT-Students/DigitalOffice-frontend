@@ -49,7 +49,7 @@ export class WizardComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	matchControls(field1: string | (string | number)[], field2: string | (string | number)[]) {
+	public matchControls(field1: string | (string | number)[], field2: string | (string | number)[]) {
 		return (group: FormGroup) => {
 			const control1 = group.get(field1);
 			const control2 = group.get(field2);
@@ -63,7 +63,7 @@ export class WizardComponent implements OnInit {
 		};
 	}
 
-	submitForm() {
+	public submitForm(): void {
 		this.companyApiService
 			.createCompany({
 				body: {
