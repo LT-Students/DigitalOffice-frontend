@@ -1,4 +1,4 @@
-@import '../base/variables';
+@use 'base/variables';
 
 .form {
 	display: flex;
@@ -13,7 +13,7 @@
 		width: 288px;
 		height: 24px;
 
-		color: $dark_3;
+		color: variables.$dark_3;
 
 		background-color: transparent;
 		border-style: none;
@@ -38,9 +38,9 @@
 
 		height: 24px;
 
-		font-family: $regular_font;
+		font-family: variables.$regular_font;
 
-		color: $negative_accent;
+		color: variables.$negative_accent;
 
 		&.forgot {
 			margin-bottom: 0;
@@ -55,7 +55,7 @@
 
 		width: 284px;
 
-		color: $light_3;
+		color: variables.$light_3;
 	}
 
 	&__title {
@@ -109,7 +109,7 @@
 				box-shadow: 0 0 7px rgba($color: #fff, $alpha: 0.4);
 
 				animation: dash 1.5s ease-in-out infinite;
-				stroke: $preza_dc;
+				stroke: variables.$preza_dc;
 				stroke-linecap: round;
 			}
 		}

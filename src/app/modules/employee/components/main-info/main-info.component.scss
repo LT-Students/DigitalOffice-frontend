@@ -1,4 +1,4 @@
-@import '../../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .employee-info {
 	&__wrapper {
@@ -127,7 +127,7 @@
 	}
 
 	&__stepper-button {
-		font-family: $header_font;
+		font-family: variables.$header_font;
 
 		&:disabled {
 			padding: 0;
@@ -139,7 +139,7 @@
 	}
 
 	&__input {
-		font-family: $regular_font !important;
+		font-family: variables.$regular_font !important;
 	}
 
 	&__about {
@@ -166,7 +166,7 @@
 
 		height: 320px;
 
-		border-left: 1px solid $light_3;
+		border-left: 1px solid variables.$light_3;
 	}
 
 	&__hint {
@@ -185,7 +185,7 @@
 
 		vertical-align: top;
 
-		color: $negative_accent;
+		color: variables.$negative_accent;
 	}
 
 	&__required-block {

@@ -1,13 +1,13 @@
-@import 'variables';
+@use 'variables';
 
 %header_font_basic {
-	font-family: $header_font;
+	font-family: variables.$header_font;
 	font-weight: bold;
 	font-style: normal;
 }
 
 %regular_font_basic {
-	font-family: $regular_font;
+	font-family: variables.$regular_font;
 	font-weight: normal;
 	font-style: normal;
 }
@@ -80,19 +80,19 @@
 	}
 
 	&_dark-1 {
-		color: $dark_1;
+		color: variables.$dark_1;
 	}
 
 	&_light-1 {
-		color: $light_1;
+		color: variables.$light_1;
 	}
 
 	&_gray {
-		color: $gray;
+		color: variables.$gray;
 	}
 
 	&_gray1 {
-		color: $gray1;
+		color: variables.$gray1;
 	}
 }
 

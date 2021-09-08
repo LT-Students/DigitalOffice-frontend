@@ -1,29 +1,29 @@
-@import '../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .input {
-  &__label {
-    display: block;
+	&__label {
+		display: block;
 
-    text-align: start;
-  }
+		text-align: start;
+	}
 
-  &__required {
-    margin-left: 1px;
+	&__required {
+		margin-left: 1px;
 
-    vertical-align: top;
+		vertical-align: top;
 
-    color: $negative_accent;
-  }
+		color: variables.$negative_accent;
+	}
 
-  &__form-field {
-    display: block;
-  }
+	&__form-field {
+		display: block;
+	}
 
-  &__input {
-    font-family: $regular_font !important;
-  }
+	&__input {
+		font-family: variables.$regular_font !important;
+	}
 }
 
 .small_text {
-  margin: 14px 0 3px 0;
+	margin: 14px 0 3px 0;
 }

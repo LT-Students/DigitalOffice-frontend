@@ -1,11 +1,11 @@
-@import '../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .content-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
-	background: $light_2;
+	background: variables.$light_2;
 
 	.wrapper {
 		z-index: 1;

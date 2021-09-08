@@ -1,5 +1,5 @@
-@import 'base/fonts';
-@import '../user-row';
+@use 'base/variables';
+@use '../user-row';
 
 .team-card {
 	margin-bottom: 12px;
@@ -14,11 +14,11 @@
 	.mat-expansion-panel-header {
 		height: 74px;
 
-		background-color: $light_2;
+		background-color: variables.$light_2;
 
 		&.mat-expanded,
 		&:hover {
-			background-color: $accent_color_light;
+			background-color: variables.$accent_color_light;
 		}
 	}
 
@@ -65,13 +65,13 @@
 			justify-content: center;
 			align-items: center;
 
-			@include image-container(32px);
+			@include user-row.image-container(32px);
 
 			&_empty {
 				margin-left: 0;
 
-				color: $gray1;
-				background-color: map-get($colors, 'light_4');
+				color: variables.$gray1;
+				background-color: map-get(variables.$colors, 'light_4');
 
 				.counter {
 					white-space: nowrap;

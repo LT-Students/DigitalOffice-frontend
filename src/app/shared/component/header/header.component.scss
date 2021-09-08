@@ -1,11 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
-@import '../../../../stylesheets/base/variables';
-@import '../../../../stylesheets/base/fonts';
+@use 'base/variables';
 
 .header {
 	padding: 0 16px;
 
-	background-color: $light_1;
+	background-color: variables.$light_1;
 
 	&__menu-button {
 		display: flex;
@@ -26,13 +24,13 @@
 
 	&__checkbox:hover ~ &__container,
 	&__checkbox:checked:hover ~ &__container {
-		background-color: $accent_positive;
-		border-color: $light_3;
+		background-color: variables.$accent_positive;
+		border-color: variables.$light_3;
 	}
 
 	&__checkbox:checked ~ &__container {
-		background-color: $accent_positive_dark;
-		border-color: $light_3;
+		background-color: variables.$accent_positive_dark;
+		border-color: variables.$light_3;
 
 		img {
 			margin-left: 28px;
@@ -45,7 +43,7 @@
 		width: 52px;
 		height: 23px;
 
-		border: 1px solid $accent_positive;
+		border: 1px solid variables.$accent_positive;
 		border-radius: 22px;
 
 		transition: 250ms;

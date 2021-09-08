@@ -1,103 +1,102 @@
-@import 'base/fonts';
-@import 'base/variables';
+@use 'base/variables';
 
 .mat-form-field.mat-form-field-type-mat-date-range-input.mat-form-field-datepicker-override {
-    visibility: hidden;
+	visibility: hidden;
 
-    width: 0;
-    height: 0;
+	width: 0;
+	height: 0;
 
-    .mat-form-field-wrapper {
-        height: 0;
+	.mat-form-field-wrapper {
+		height: 0;
 
-        .mat-form-field-flex {
-            .mat-form-field-infix {
-                display: none;
-            }
+		.mat-form-field-flex {
+			.mat-form-field-infix {
+				display: none;
+			}
 
-            .mat-form-field-suffix {
-                display: none;
-            }
-        }
-    }
+			.mat-form-field-suffix {
+				display: none;
+			}
+		}
+	}
 }
 
 .mat-form-field.datepicker__form-field,
 .mat-form-field.mat-form-field-appearance-legacy.datepicker__form-field {
-    .mat-form-field-wrapper {
-        padding: 1em 0;
+	.mat-form-field-wrapper {
+		padding: 1em 0;
 
-        .mat-form-field-infix {
-            display: inline;
+		.mat-form-field-infix {
+			display: inline;
 
-            width: unset;
-        }
-    }
+			width: unset;
+		}
+	}
 }
 
 .mat-form-field-appearance-fill .mat-form-field-wrapper .mat-form-field-flex {
-    padding: 0;
+	padding: 0;
 
-    align-items: center;
+	align-items: center;
 
-    height: 40px;
+	height: 40px;
 
-    background-color: $light_2;
+	background-color: variables.$light_2;
 
-    border-radius: 5px;
+	border-radius: 5px;
 }
 
 .mat-datepicker-popup {
-    .mat-datepicker-content {
-        position: relative;
-        top: -16px;
+	.mat-datepicker-content {
+		position: relative;
+		top: -16px;
 
-        .mat-calendar {
-            font-family: $regular_font;
+		.mat-calendar {
+			font-family: variables.$regular_font;
 
-            color: $dark_2;
+			color: variables.$dark_2;
 
-            .mat-calendar-header {
-                .mat-calendar-controls {
-                    .mat-calendar-period-button {
-                        .mat-button-wrapper {
-                            font-family: $regular_font;
-                        }
-                    }
-                }
-            }
+			.mat-calendar-header {
+				.mat-calendar-controls {
+					.mat-calendar-period-button {
+						.mat-button-wrapper {
+							font-family: variables.$regular_font;
+						}
+					}
+				}
+			}
 
-            .mat-calendar-content {
-                .mat-calendar-table {
-                    .mat-calendar-table-header {
-                        color: $gray;
-                    }
+			.mat-calendar-content {
+				.mat-calendar-table {
+					.mat-calendar-table-header {
+						color: variables.$gray;
+					}
 
-                    .mat-calendar-body {
-                        .mat-calendar-body-in-preview {
-                            color: $accent_color_bright;
-                        }
+					.mat-calendar-body {
+						.mat-calendar-body-in-preview {
+							color: variables.$accent_color_bright;
+						}
 
-                        .mat-calendar-body-in-range {
-                            border-color: $accent_color;
-                        }
+						.mat-calendar-body-in-range {
+							border-color: variables.$accent_color;
+						}
 
-                        .mat-calendar-body-selected {
-                            color: $light_1;
-                            background-color: $accent_color_bright;
-                        }
+						.mat-calendar-body-selected {
+							color: variables.$light_1;
+							background-color: variables.$accent_color_bright;
+						}
 
-                        .mat-calendar-body-in-range::before {
-                            border-top: $accent_color_bright 1px dashed;
-                            border-bottom: $accent_color_bright 1px dashed;
-                        }
-                    }
-                }
-            }
-        }
-    }
+						.mat-calendar-body-in-range::before {
+							border-top: variables.$accent_color_bright 1px dashed;
+							border-bottom: variables.$accent_color_bright 1px dashed;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 .cdk-overlay-connected-position-bounding-box {
-    position: relative;
+	position: relative;
 }
