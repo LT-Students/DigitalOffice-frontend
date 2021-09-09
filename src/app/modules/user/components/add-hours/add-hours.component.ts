@@ -43,7 +43,7 @@ export class AddHoursComponent implements OnDestroy {
 		private _snackbar: MatSnackBar,
 		private _timeDurationService: TimeDurationService
 	) {
-		[ this.minDate, this.maxDate ] = this._attendanceService.getCalendarMinMax();
+		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 
 		this.isProjectForm = true;
 		this.monthOptions = [];
@@ -51,7 +51,7 @@ export class AddHoursComponent implements OnDestroy {
 		this.disableWeekends = this._attendanceService.disableWeekends;
 
 		this.addHoursForm = this._fb.group({
-			time: [null, [Validators.required, Validators.min(1), timeValidator(() => this._attendanceService.countMaxHours())]],
+			time: [null, [Validators.required, Validators.min(1), timeValidator(() => { console.log(this.addHoursForm); return this._attendanceService.countMaxHours() })]],
 			startDate: [new Date(), [Validators.required]],
 			endDate: [new Date(), [Validators.required]],
 			activity: [null, Validators.required],
@@ -78,6 +78,7 @@ export class AddHoursComponent implements OnDestroy {
 
 	public changeDate(date: Date): void {
 		this._attendanceService.setNewDate(date);
+
 	}
 
 	private _setMonthOptions(selectedDate: Date): Date[] {
@@ -107,15 +108,19 @@ export class AddHoursComponent implements OnDestroy {
 		this.addHoursForm.get('time')?.setValidators(validators);
 		this.addHoursForm.get('time')?.updateValueAndValidity();
 		this.addHoursForm.reset();
+
+		console.log("TOGGLE FORM: ", this.addHoursForm)
 	}
 
 	public onSubmit(): void {
 		const sendRequest = this.isProjectForm ? this._editWorkTime() : this._addLeaveTime();
+		console.log("IN SUBMIT: ", this.addHoursForm)
 
 		sendRequest.pipe(switchMap(() => this._attendanceService.getActivities())).subscribe(
 			() => {
 				this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
 				this.addHoursForm.reset();
+				console.log('AFTER RESET: ', this.addHoursForm)
 				this.isProjectForm = true;
 			},
 			(error) => {

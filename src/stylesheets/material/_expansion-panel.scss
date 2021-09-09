@@ -1,7 +1,7 @@
 @import '../base/variables';
 
-.mat-expansion-panel-header.mat-expanded,
-.mat-expansion-panel-header.mat-expanded:hover,
-.mat-expansion-panel-header.mat-expanded:focus {
+.mat-expansion-panel .mat-expansion-panel-header.mat-expanded,
+.mat-expansion-panel .mat-expansion-panel-header.mat-expanded:hover,
+.mat-expansion-panel .mat-expansion-panel-header.mat-expanded:focus {
 	background-color: $accent_color_light;
 }

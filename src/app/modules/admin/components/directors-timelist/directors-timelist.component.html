@@ -1,8 +1,16 @@
-<mat-card>
+<mat-card class='card'>
     <div class='card__header header'>
-        <h3 doText underlined underlinedSize='sm' class='h3 header__title'>Таймлист для ДД за
-            <span doText color='accent_color'> [месяц] [год] <mat-icon class='header__icon'>keyboard_arrow_down
-                </mat-icon>
+        <h3 doText underlined underlinedSize='sm'>Таймлист для ДД за
+            <span doText color='accent_color'>
+                <mat-form-field class="date-input">
+                    <input matInput [matDatepicker]="dp" />
+                    <mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event); dp.close()">
+                    </mat-datepicker>
+                </mat-form-field>
+            </span>
+            <span class="header__period text-accent_color_bright" (click)="dp.open()">
+                {{selectedPeriod.startDate | date: 'LLLL YYYY'}}
+                <mat-icon class="header__icon">keyboard_arrow_down</mat-icon>
             </span>
         </h3>
         <button mat-flat-button color='orange'>
@@ -17,7 +25,7 @@
         <mat-icon matPrefix>search</mat-icon>
     </mat-form-field>
     <div class='timelist'>
-        <h3 class='h3'>Найдено [количество] сотрудников</h3>
+        <h3 class='h3'>Найдено {{(statInfo$ | async)?.length}} сотрудников</h3>
         <table class='table timelist__table'>
             <colgroup>
                 <col class='column column_width_m'>
@@ -34,7 +42,7 @@
                 </tr>
             </thead>
         </table>
-        <mat-expansion-panel *ngFor='let item of [1,2,3,4,5]' class='timelist__panel panel'>
+        <mat-expansion-panel *ngFor='let stat of statInfo$ | async' class='timelist__panel panel'>
             <mat-expansion-panel-header class='bg-light_3' collapsedHeight='48px' expandedHeight='48px'>
                 <table class='table'>
                     <colgroup>
@@ -45,15 +53,17 @@
                     </colgroup>
                     <thead>
                         <tr>
-                            <th class='regular_text'>Екатерина Овалькина</th>
-                            <th class='regular_text'>176/176</th>
-                            <th class='regular_text'>2</th>
-                            <th class='regular_text'>28</th>
+                            <th class='regular_text'>{{stat.user?.firstName}} {{stat.user?.lastName}}</th>
+                            <th class='regular_text'>{{stat.totalHours}}/{{stat.limitInfo?.normHours?
+                                stat.limitInfo?.normHours : 0}}</th>
+                            <th class='regular_text'>{{stat.workTimes?.length}}</th>
+                            <th class='regular_text'>???</th>
                         </tr>
                     </thead>
                 </table>
             </mat-expansion-panel-header>
             <ng-template matExpansionPanelContent>
+                <!-- <ng-container *ngIf="stat.workTimes?.length"> -->
                 <div class='panel__table'>
                     <h4 class='h4'>Детализация по проектам</h4>
                     <table class='table'>
@@ -78,16 +88,17 @@
                             </tr>
                         </thead>
                         <tbody [formGroup]="hoursGroup">
-                            <ng-container *ngFor="let project of projects">
-                                <tr [ngClass]="{row: !project.editMode}">
-                                    <td class='cell'>{{project.data.project?.name}}</td>
+                            <ng-container *ngFor="let workTime of stat.workTimes">
+                                <tr [ngClass]="{row: !workTime?.editMode}">
+                                    <td class='cell'>{{workTime?.project?.name}}</td>
                                     <td class='cell cell_flexible'>
-                                        <ng-container *ngIf="!project.editMode; else input">
-                                            <ng-container *ngIf="!project.data.managerHours; else managerHours">
-                                                <span>{{project.data.userHours}}</span>
+                                        <ng-container *ngIf="!workTime?.editMode; else input">
+                                            <ng-container *ngIf="!workTime?.managerHours; else managerHours">
+                                                <span>{{workTime?.userHours? workTime?.userHours : 0}}</span>
                                             </ng-container>
                                             <ng-template #managerHours>
-                                                <span>{{project.data.managerHours}}&nbsp;&nbsp;</span>
+                                                <span>{{workTime?.managerHours? workTime?.managerHours :
+                                                    0}}&nbsp;&nbsp;</span>
                                                 <span doText color='gray1' class='small_text'>Изменено&nbsp;
                                                 </span>
                                                 <img src='../../../../../assets/svg/ant-design_info-circle-outlined.svg'
@@ -96,29 +107,29 @@
                                         </ng-container>
                                         <ng-template #input>
                                             <mat-form-field appearance="fill">
-                                                <input matInput [formControlName]="'hours_'+project.data.id"
+                                                <input matInput [formControlName]="'hours_'+workTime?.id"
                                                     ngDefaultControl class='text_bold'>
                                             </mat-form-field>
                                         </ng-template>
                                     </td>
                                     <td class='cell'>
-                                        <do-comment [text]="project.data.description"></do-comment>
+                                        <do-comment [text]="workTime?.description"></do-comment>
                                     </td>
                                     <td class='cell cell__icon'>
-                                        <button mat-icon-button (click)="toggleEditMode(true, project.data.id)">
+                                        <button mat-icon-button (click)="toggleEditMode(true, workTime?.id)">
                                             <img src='../../../../../assets/svg/edit.svg' alt='edit' />
                                         </button>
                                     </td>
                                 </tr>
-                                <tr *ngIf="project.editMode" class='row'>
+                                <tr *ngIf="workTime?.editMode" class='row'>
                                     <td colspan='4'>
                                         <div class='controls'>
-                                            <button mat-flat-button (click)="toggleEditMode(false, project.data.id)"
+                                            <button mat-flat-button (click)="toggleEditMode(false, workTime?.id)"
                                                 class='button controls__button'>
                                                 <span class='regular_text text-gray1'>Отменить</span>
                                             </button>
                                             <button mat-flat-button color='accent' class='button controls__button'
-                                                (click)="onSubmit(project)">
+                                                (click)="onSubmit(workTime?.id, stat)">
                                                 <span class='regular_text text-light_1'>Сохранить</span>
                                             </button>
                                         </div>
@@ -128,6 +139,7 @@
                         </tbody>
                     </table>
                 </div>
+                <!-- </ng-container> -->
                 <div class="panel__table">
                     <h4 class='h4'>Детализация по отсутствиям</h4>
                     <table class='table'>
@@ -152,14 +164,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <ng-container *ngFor="let leave of leaves">
+                            <ng-container *ngFor="let leave of stat.leaveTimes">
                                 <tr class='row'>
                                     <td class='cell cell_flexible'>
-                                        <span>{{leave.leaveInfo?.emojiIcon}}
-                                            {{leave.leaveInfo?.leaveInRussian}}</span>
+                                        <span>{{leave.emojiIcon}}
+                                            {{leave.leaveInRussian}}</span>
                                     </td>
                                     <td class='cell'>
-                                        <span>{{leave.startTime | date: 'd/M/y'}}-{{leave.endTime | date: 'd/M/y'}}
+                                        <span>{{leave.startTime | date: 'd/M/y'}} - {{leave.endTime | date: 'd/M/y'}}
                                             ({{leave.periodInHours}} ч)</span>
                                     </td>
                                     <td class='cell'>
@@ -174,5 +186,8 @@
                 </div>
             </ng-template>
         </mat-expansion-panel>
+        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[20]"
+            (page)="onPageChange($event)">
+        </mat-paginator>
     </div>
 </mat-card>
