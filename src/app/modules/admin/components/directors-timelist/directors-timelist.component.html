@@ -13,7 +13,7 @@
                 <mat-icon class="header__icon">keyboard_arrow_down</mat-icon>
             </span>
         </h3>
-        <button mat-flat-button color='orange'>
+        <button mat-flat-button color='orange' (click)="onDownload()">
             <span class='regular_text'>
                 <img src='../../../../../assets/svg/download.svg' alt='download' class='header__icon'> Выгрузить часы
             </span>
@@ -24,8 +24,8 @@
         <input matInput type="search" />
         <mat-icon matPrefix>search</mat-icon>
     </mat-form-field>
-    <div class='timelist'>
-        <h3 class='h3'>Найдено {{(statInfo$ | async)?.length}} сотрудников</h3>
+    <div class='timelist' *ngIf="statInfo$ | async as statInfo">
+        <h3 class='h3'>Найдено {{totalCount}} сотрудников</h3>
         <table class='table timelist__table'>
             <colgroup>
                 <col class='column column_width_m'>
@@ -42,7 +42,7 @@
                 </tr>
             </thead>
         </table>
-        <mat-expansion-panel *ngFor='let stat of statInfo$ | async' class='timelist__panel panel'>
+        <mat-expansion-panel *ngFor='let stat of statInfo' class='timelist__panel panel'>
             <mat-expansion-panel-header class='bg-light_3' collapsedHeight='48px' expandedHeight='48px'>
                 <table class='table'>
                     <colgroup>
@@ -93,12 +93,11 @@
                                     <td class='cell'>{{workTime?.project?.name}}</td>
                                     <td class='cell cell_flexible'>
                                         <ng-container *ngIf="!workTime?.editMode; else input">
-                                            <ng-container *ngIf="!workTime?.managerHours; else managerHours">
+                                            <ng-container *ngIf="workTime?.managerHours === null; else managerHours">
                                                 <span>{{workTime?.userHours? workTime?.userHours : 0}}</span>
                                             </ng-container>
                                             <ng-template #managerHours>
-                                                <span>{{workTime?.managerHours? workTime?.managerHours :
-                                                    0}}&nbsp;&nbsp;</span>
+                                                <span>{{workTime?.managerHours}}&nbsp;&nbsp;</span>
                                                 <span doText color='gray1' class='small_text'>Изменено&nbsp;
                                                 </span>
                                                 <img src='../../../../../assets/svg/ant-design_info-circle-outlined.svg'
@@ -107,6 +106,18 @@
                                         </ng-container>
                                         <ng-template #input>
                                             <mat-form-field appearance="fill">
+                                                <mat-error
+                                                    *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.min">
+                                                    Минимальное значение должно быть не меньше нуля
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.number">
+                                                    Введите число
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.max">
+                                                    Превышено максимальное значение
+                                                </mat-error>
                                                 <input matInput [formControlName]="'hours_'+workTime?.id"
                                                     ngDefaultControl class='text_bold'>
                                             </mat-form-field>
@@ -116,7 +127,7 @@
                                         <do-comment [text]="workTime?.description"></do-comment>
                                     </td>
                                     <td class='cell cell__icon'>
-                                        <button mat-icon-button (click)="toggleEditMode(true, workTime?.id)">
+                                        <button mat-icon-button (click)="toggleEditMode(true, workTime)">
                                             <img src='../../../../../assets/svg/edit.svg' alt='edit' />
                                         </button>
                                     </td>
@@ -124,12 +135,12 @@
                                 <tr *ngIf="workTime?.editMode" class='row'>
                                     <td colspan='4'>
                                         <div class='controls'>
-                                            <button mat-flat-button (click)="toggleEditMode(false, workTime?.id)"
+                                            <button mat-flat-button (click)="toggleEditMode(false, workTime)"
                                                 class='button controls__button'>
                                                 <span class='regular_text text-gray1'>Отменить</span>
                                             </button>
                                             <button mat-flat-button color='accent' class='button controls__button'
-                                                (click)="onSubmit(workTime?.id, stat)">
+                                                (click)="onSubmit(workTime, stat)">
                                                 <span class='regular_text text-light_1'>Сохранить</span>
                                             </button>
                                         </div>
@@ -186,7 +197,7 @@
                 </div>
             </ng-template>
         </mat-expansion-panel>
-        <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[20]"
+        <mat-paginator [length]="totalCount" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="[20]"
             (page)="onPageChange($event)">
         </mat-paginator>
     </div>

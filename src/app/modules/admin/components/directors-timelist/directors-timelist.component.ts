@@ -1,16 +1,17 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { TimeDurationService } from '@app/services/time-duration.service';
-import { IEditWorkTimeRequest, IFindStatRequest, TimeService } from '@app/services/time/time.service';
+import { IEditWorkTimeRequest, IFindStatRequest, IGetImport, TimeService } from '@app/services/time/time.service';
 import { FindResultResponseStatInfo, LeaveTimeInfo, OperationResultResponse, OperationResultStatusType, StatInfo, UserInfo, WorkTimeInfo, WorkTimeMonthLimitInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
 import { UserService } from '@app/services/user/user.service'
 import { LeaveTimeModel } from '@app/models/leave-time.model';
 import { User } from '@app/models/user/user.model';
+import { DoValidators } from '@app/validators/do-validators';
 
 interface EditableWorkTime extends WorkTimeInfo {
   editMode: boolean;
@@ -42,8 +43,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
   private _currentUser: User | null;
 
-  private readonly _statInfo: BehaviorSubject<MappedStatInfo[]>
-  public readonly statInfo$: Observable<MappedStatInfo[]>;
+  public statInfo$: Observable<MappedStatInfo[] | undefined>;
 
   public selectedPeriod: DatePeriod;
 
@@ -60,10 +60,9 @@ export class DirectorsTimelistComponent implements OnInit {
     private _userService: UserService
   ) {
     this._currentUser = null;
-    this._statInfo = new BehaviorSubject<MappedStatInfo[]>([])
-    this.statInfo$ = this._statInfo.asObservable();
+    this.statInfo$ = new Observable();
     this.selectedPeriod = this._setDatePeriod(new Date());
-    this.hoursGroup = this._formBuilder.group({})
+    this.hoursGroup = this._formBuilder.group({});
     this.pageSize = 20;
     this.pageIndex = 0;
     this.totalCount = 0;
@@ -76,58 +75,68 @@ export class DirectorsTimelistComponent implements OnInit {
     })
   }
 
-  public toggleEditMode(editMode: boolean, workTimeId: string | undefined): void {
-    console.log(workTimeId)
-    let workTime = this._searchWorkTimeById(workTimeId);
-    console.log(workTime)
-    if (!workTime) return
-    else {
-      workTime.editMode = editMode;
-      console.log(workTime)
-      if (editMode)
-        this.hoursGroup.addControl(`hours_${workTime.id}`, this._formBuilder.control(workTime.managerHours ?? 0));
-      else
-        this.hoursGroup.removeControl(`hours_${workTime.id}`);
+  public toggleEditMode(editMode: boolean, workTime: EditableWorkTime): void {
+    workTime.editMode = editMode;
+    if (editMode) {
+      const year: number = this.selectedPeriod.startDate?.getFullYear()!
+      const month: number = this.selectedPeriod.startDate?.getMonth()!
+
+      const validators = [
+        Validators.min(0),
+        Validators.max(this._timeDurationService.countMaxMonthDuration(year, month)),
+        DoValidators.number
+      ]
+
+      this.hoursGroup.addControl(`hours_${workTime.id}`, this._formBuilder.control(workTime.managerHours ?? 0, validators));
     }
+    else
+      this.hoursGroup.removeControl(`hours_${workTime.id}`);
   }
 
-  public onSubmit(workTimeId: string | undefined, statInfo: MappedStatInfo): void {
-    let workTime = this._searchWorkTimeById(workTimeId);
-    console.log(workTime)
+  public onSubmit(workTime: EditableWorkTime, statInfo: MappedStatInfo): void {
+    if (this.hoursGroup.invalid) return;
 
-    if (!workTime) return;
-    else {
-      const params: IEditWorkTimeRequest = {
-        workTimeId: workTime.id ?? '',
-        body: [
-          {
-            op: 'replace',
-            path: '/ManagerHours',
-            value: this.hoursGroup.get(`hours_${workTime.id}`)?.value ?? 0
-          }
-        ]
-      }
-
-      this._timeService.editWorkTime(params).subscribe((result: OperationResultResponse) => {
-        if (result.status === OperationResultStatusType.FullSuccess) {
-          if (workTime !== null) {
-            console.log(workTime)
-            workTime.managerHours = this.hoursGroup.get(`hours_${workTime?.id}`)?.value ?? 0;
-
-            statInfo.totalHours = this._getTotalHours(statInfo.workTimes!)
-            console.log(statInfo.totalHours)
-
-            this.toggleEditMode(false, workTime.id)
-            this._cdr.markForCheck();
-          }
+    const params: IEditWorkTimeRequest = {
+      workTimeId: workTime.id ?? '',
+      body: [
+        {
+          op: 'replace',
+          path: '/ManagerHours',
+          value: Number(this.hoursGroup.get(`hours_${workTime.id}`)?.value ?? 0)
         }
-      })
+      ]
     }
+
+    this._timeService.editWorkTime(params).subscribe((result: OperationResultResponse) => {
+      if (result.status === OperationResultStatusType.FullSuccess) {
+        workTime.managerHours = Number(this.hoursGroup.get(`hours_${workTime?.id}`)?.value ?? 0);
+        statInfo.totalHours = this._getTotalHours(statInfo.workTimes ?? [])
+        this.toggleEditMode(false, workTime)
+
+        this._cdr.markForCheck();
+      }
+    })
   }
 
+  public onDownload() {
+    const queryParams: IGetImport = {
+      departmentId: this._currentUser?.department?.id,
+      month: Number(this.selectedPeriod.startDate?.getMonth()) + 1,
+      year: Number(this.selectedPeriod.startDate?.getFullYear())
+    }
+
+    this._timeService.getImport(queryParams).subscribe((result) => {
+      const mediaType = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,";
+      const downloadLink = document.createElement('a');
+      downloadLink.href = mediaType + result.body;
+      downloadLink.download = 'Статистика';
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      downloadLink.remove();
+    })
+  }
 
   public chosenMonthHandler(date: Date): void {
-    console.log(date)
     this.selectedPeriod = this._setDatePeriod(date);
     this._getStat()
   }
@@ -135,31 +144,17 @@ export class DirectorsTimelistComponent implements OnInit {
   public onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-  }
-
-  private _searchWorkTimeById(workTimeId: string | undefined): EditableWorkTime | null {
-    for (let statInfo of this._statInfo.value) {
-      for (let workTime of statInfo.workTimes ?? []) {
-        if (workTime?.id === workTimeId)
-          return workTime as EditableWorkTime;
-      }
-    }
-
-    return null;
+    this._getStat();
   }
 
   private _getStat(): void {
     let params: IFindStatRequest = this._getQueryParams();
-    console.log(params)
-    this._timeService.findStat(params).pipe(
+    this.statInfo$ = this._timeService.findStat(params).pipe(
       map((result: FindResultResponseStatInfo) => {
-        console.log('Исходные данные: ', result)
-        const mappedStatInfo = result.body?.map((statInfo: StatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
-        this._statInfo.next(mappedStatInfo)
+        this.totalCount = result.totalCount ?? 0;
+        return result.body?.map((statInfo: StatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
       })
-    ).subscribe((result) => {
-      // this._cdr.markForCheck();
-    })
+    )
   }
 
   private _mapStatInfo(statInfo: StatInfo) {
@@ -180,7 +175,6 @@ export class DirectorsTimelistComponent implements OnInit {
   }
 
   private _getTotalHours(workTimes: WorkTimeInfo[]): number {
-    console.log(workTimes.map(workTime => workTime.managerHours ? workTime.managerHours : workTime.userHours ? workTime.userHours : 0));
     return workTimes
       .map(workTime => workTime.managerHours ? workTime.managerHours : workTime.userHours ? workTime.userHours : 0)
       .reduce((hours1, hours2) => Number(hours1) + Number(hours2), 0);
