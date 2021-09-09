@@ -30,10 +30,10 @@ class PasswordFieldErrorMatcher implements ErrorStateMatcher {
 })
 export class PasswordComponent implements ControlValueAccessor {
 
-	@Input() disabled: boolean | undefined;
-	@Input() placeholder = '';
-	@Input() errors: any = null;
-	hide = true;
+	@Input() public disabled: boolean;
+	@Input() public placeholder: string;
+	@Input() public errors: string;
+	public hide: boolean;
 
 	public repeatPasswordErrorMatcher = new PasswordFieldErrorMatcher();
 	control = new FormControl(null, [ Validators.required ]);
@@ -48,7 +48,11 @@ export class PasswordComponent implements ControlValueAccessor {
 		}
 		this.control.valueChanges.subscribe((value) => {
 			this.setValue(value);
-		})
+		});
+		this.disabled = true;
+		this.placeholder = '';
+		this.errors = '';
+		this.hide = true;
 	}
 
 	public writeValue(value: any): void {

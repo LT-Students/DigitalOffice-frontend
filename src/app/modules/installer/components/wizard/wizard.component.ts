@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 	selector: 'do-wizard',
 	templateUrl: './wizard.component.html',
 	styleUrls: ['./wizard.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WizardComponent implements OnInit {
 	public companyForm: FormGroup;
@@ -49,8 +49,8 @@ export class WizardComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	public matchControls(field1: string | (string | number)[], field2: string | (string | number)[]) {
-		return (group: FormGroup) => {
+	public matchControls(field1: string | (string | number)[], field2: string | (string | number)[]): ValidationErrors | null  {
+		return (group: FormGroup): { errorMatch: string } | null => {
 			const control1 = group.get(field1);
 			const control2 = group.get(field2);
 			return control1 &&
