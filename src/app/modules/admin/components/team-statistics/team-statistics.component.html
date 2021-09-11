@@ -1,34 +1,39 @@
-<div class="card">
-    <div class="table regular_text">
-        <div class="table__header h3">
+<mat-card class="card">
+        <div class="datepicker h3">
             <h3 doText underlined underlinedSize="sm">Статистика за
 
-                <mat-form-field class="datapicker__hidden">
+                <mat-form-field class="datepicker-hidden">
                     <input matInput [matDatepicker]="picker"/>
                     <mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event); picker.close()"></mat-datepicker>
                 </mat-form-field>
 
                 <a (click)="picker.open()" class="text-accent_color_bright">
-                {{startDate | date: 'LLLL YYYY' | titlecase }}
-                    <mat-icon>keyboard_arrow_down</mat-icon>
+                {{selectedDate | date: 'LLLL YYYY' | titlecase }}
+                    <mat-icon class='datepicker__arrow'>keyboard_arrow_down</mat-icon>
                 </a>
             </h3>
         </div>
-        <table doText class="table__content" >
-                <tr>
-                    <th class="table__row h4 text-gray1" *ngFor="let header of displayedColumns">
+        <table doText class="table__content regular_text" >
+            <thead>
+                <tr class='table__row'>
+                    <th class="h4 text-gray1" *ngFor="let header of displayedColumns">
                         {{ header }}
                     </th>
                 </tr>
-                <tr class="table__row" *ngFor="let user of DATA">
-                    <td class="table__cell first-column">
-                        <img src='assets/images/smallPhoto/Ellipse91.png'>
-                        <p>{{ user?.name }} {{ user?.lastName }}<br><span>{{user?.position}}</span></p>
+            </thead>
+            <tbody>
+                <tr class='table__row' *ngFor="let user of DATA">
+                    <td class="table__column-first">
+                        <img class="table__photo" src='assets/images/smallPhoto/Ellipse91.png'>
+                        <div class='first-column__description'>
+                            <p>{{ user?.name }} {{ user?.lastName }}</p>
+                            <p doText color="gray1">{{user?.position}}</p>
+                        </div>
                     </td>
-                    <td class="table__cell">
-                        <p>{{ user?.hoursProject }}/<span>{{ user?.norm }}</span></p>
+                    <td>
+                        <p>{{ user?.projectHours }}/{{ user?.norm }}</p>
                     </td>
-                    <td class="table__cell">
+                    <td>
                     <div *ngIf='user.absence; else defis'>
                         <p>{{ user?.absence }}</p>
                     </div>
@@ -37,13 +42,14 @@
                     </ng-template>
                     </td>
 
-                    <td class="table__cell">
-                        <p>{{ user?.numberProjects }}</p>
+                    <td>
+                        <p>{{ user?.projectsCount }}</p>
                     </td>
                     <td>
-                        <img src='assets/images/Vector.png'><img>
+                        <img src='assets/svg/edit.svg'><img>
                     </td>
                 </tr>
+            </tbody>
         </table>
-    </div>
-</div>
+
+</mat-card>

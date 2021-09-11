@@ -25,19 +25,9 @@ export class ProjectPageComponent implements OnInit {
 	public projectUsers: Array<ProjectUserInfo>;
 	public projectCreatedAt: Date;
 	public projectDuration: number;
-	public svgActiveTabColorSt: string;
-	public svgActiveTabColorP: string;
+	public dayCountMap: { [k: string]: string };
+	public participantCountMap: { [k: string]: string };
 
-	public dayCountMap: { [k: string]: string } = {
-		one: '# день',
-		few: '# дня',
-		other: '# дней',
-	};
-	public participantCountMap: { [k: string]: string } = {
-		one: '# участник',
-		few: '# участника',
-		other: '# участников',
-	};
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -48,8 +38,18 @@ export class ProjectPageComponent implements OnInit {
 		this.projectUsers = [];
 		this.projectCreatedAt = new Date();
 		this.projectDuration = 0;
-		this.svgActiveTabColorSt = 'grey';
-		this.svgActiveTabColorP = 'orange';
+
+		this.dayCountMap = {
+			one: '# день',
+			few: '# дня',
+			other: '# дней',
+		};
+
+		this.participantCountMap = {
+			one: '# участник',
+			few: '# участника',
+			other: '# участников',
+		};
 	}
 
 	ngOnInit(): void {
@@ -69,16 +69,5 @@ export class ProjectPageComponent implements OnInit {
 		const currentTime = new Date();
 		const dayLength = 24 * 60 * 60 * 1000;
 		return Math.round((currentTime.getTime() - this.projectCreatedAt.getTime()) / dayLength);
-	}
-
-	public tabChanged (event: MatTabChangeEvent): void {
-		if(event.index === 1)
-		{
-			this.svgActiveTabColorSt = 'orange'
-			this.svgActiveTabColorP = 'grey'
-		} else {
-			this.svgActiveTabColorSt = 'grey'
-			this.svgActiveTabColorP = 'orange'
-		}
 	}
 }

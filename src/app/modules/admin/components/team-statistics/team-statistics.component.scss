@@ -1,31 +1,18 @@
 @import 'base/variables';
 @import 'base/fonts';
 
-table {
-	position: relative;
+.table {
+	&__content {
+		position: relative;
 
-	margin-top: 24px;
+		margin-top: 24px;
 
-	width: 100%;
+		width: 100%;
 
-	border-collapse: collapse;
-
-	span {
-		color: $gray1;
+		border-collapse: collapse;
 	}
 
-	td.first-column {
-		display: flex;
-		align-items: center;
-
-		height: inherit;
-
-		p {
-			margin-left: 10px;
-		}
-	}
-
-	tr {
+	&__row {
 		margin-top: 66px;
 
 		box-sizing: border-box;
@@ -38,15 +25,31 @@ table {
 
 		border-bottom: 1px solid #f1f1ef;
 	}
-}
 
-.datapicker {
-	&__hidden {
-		width: 0;
-		height: 0;
+	&__column-first {
+		display: flex;
+		align-items: center;
+
+		height: inherit;
+
+		//p {
+		//margin-left: 10px;
+		//}
+	}
+
+	&__photo {
+		margin-right: 20px;
+		margin-left: 20px;
 	}
 }
 
-mat-icon {
-	vertical-align: middle;
+.datepicker {
+	&-hidden {
+		width: 0;
+		height: 0;
+	}
+
+	&__arrow {
+		vertical-align: middle;
+	}
 }

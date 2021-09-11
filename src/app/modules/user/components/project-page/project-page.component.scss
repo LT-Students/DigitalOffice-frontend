@@ -50,10 +50,25 @@
 }
 
 .table-wrapper {
+	padding: 25px;
+
 	&__header {
 		margin-bottom: 20px;
 
 		display: flex;
+	}
+
+	&__icon {
+		margin-right: 8px;
+		margin-bottom: 24px;
+	}
+
+	&__label-orange {
+		fill: $accent_color_bright;
+	}
+
+	&__label-grey {
+		fill: $gray1;
 	}
 }
 
@@ -73,29 +88,11 @@
 		background-color: #00e676;
 
 		border-radius: 10px;
-
-		&_archived {
-			background-color: #f5f5f5;
-		}
 	}
 
 	&__header-wrapper {
 		margin-bottom: 16px;
 
 		padding: 40px 41px;
-
-		background-color: $light_1;
 	}
-}
-
-.orange {
-	margin-right: 12px;
-	margin-bottom: 15px;
-	fill: $accent_color_bright;
-}
-
-.grey {
-	margin-right: 12px;
-	margin-bottom: 15px;
-	fill: $gray1;
 }
