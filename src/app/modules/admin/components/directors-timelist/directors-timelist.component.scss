@@ -1,27 +1,17 @@
-.card {
-	&__header {
-		margin-bottom: 32px;
-	}
-
-	&__search-input {
-		width: 344px;
-	}
-}
-
-.date-input {
-	visibility: hidden;
-
-	width: 0;
-	height: 0;
-}
+@import '../../../../../stylesheets/base/variables';
 
 .header {
+	padding: 36px 32px 0;
+
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
-	&__title {
-		margin: 0;
+	&__period-input {
+		visibility: hidden;
+
+		width: 0;
+		height: 0;
 	}
 
 	&__period {
@@ -34,6 +24,14 @@
 }
 
 .timelist {
+	padding: 0 32px;
+
+	&__search-form {
+		margin: 32px 0 0;
+
+		width: 344px;
+	}
+
 	&__table {
 		margin-bottom: 6px;
 		padding: 0 33px 0 24px;

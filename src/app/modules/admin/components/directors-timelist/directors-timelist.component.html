@@ -1,8 +1,8 @@
 <mat-card class='card'>
-    <div class='card__header header'>
+    <div class='header'>
         <h3 doText underlined underlinedSize='sm'>Таймлист для ДД за
             <span doText color='accent_color'>
-                <mat-form-field class="date-input">
+                <mat-form-field class="header__period-input">
                     <input matInput [matDatepicker]="dp" />
                     <mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event); dp.close()">
                     </mat-datepicker>
@@ -19,12 +19,12 @@
             </span>
         </button>
     </div>
-    <mat-form-field appearance="fill" class='card__search-input'>
-        <mat-label>Поиск по фамилии и имени</mat-label>
-        <input matInput type="search" />
-        <mat-icon matPrefix>search</mat-icon>
-    </mat-form-field>
     <div class='timelist' *ngIf="statInfo$ | async as statInfo">
+        <mat-form-field appearance="fill" class='timelist__search-form'>
+            <mat-label>Поиск по фамилии и имени</mat-label>
+            <input matInput type="search" />
+            <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
         <h3 class='h3'>Найдено {{totalCount}} сотрудников</h3>
         <table class='table timelist__table'>
             <colgroup>
@@ -140,8 +140,12 @@
                                                 <span class='regular_text text-gray1'>Отменить</span>
                                             </button>
                                             <button mat-flat-button color='accent' class='button controls__button'
-                                                (click)="onSubmit(workTime, stat)">
+                                                (click)="onSubmit('submit', workTime, stat)">
                                                 <span class='regular_text text-light_1'>Сохранить</span>
+                                            </button>
+                                            <button mat-flat-button class='button controls__button bg-dark_1'
+                                                (click)="onSubmit('reset', workTime, stat)">
+                                                <span class='text-light_1'>Сбросить</span>
                                             </button>
                                         </div>
                                     </td>

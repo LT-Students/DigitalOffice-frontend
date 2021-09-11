@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { TimeDurationService } from '@app/services/time-duration.service';
@@ -81,7 +81,7 @@ export class DirectorsTimelistComponent implements OnInit {
       const year: number = this.selectedPeriod.startDate?.getFullYear()!
       const month: number = this.selectedPeriod.startDate?.getMonth()!
 
-      const validators = [
+      const validators: ValidatorFn[] = [
         Validators.min(0),
         Validators.max(this._timeDurationService.countMaxMonthDuration(year, month)),
         DoValidators.number
@@ -93,8 +93,8 @@ export class DirectorsTimelistComponent implements OnInit {
       this.hoursGroup.removeControl(`hours_${workTime.id}`);
   }
 
-  public onSubmit(workTime: EditableWorkTime, statInfo: MappedStatInfo): void {
-    if (this.hoursGroup.invalid) return;
+  public onSubmit(type: 'reset' | 'submit', workTime: EditableWorkTime, statInfo: MappedStatInfo): void {
+    if (this.hoursGroup.invalid && type === 'submit') return;
 
     const params: IEditWorkTimeRequest = {
       workTimeId: workTime.id ?? '',
@@ -102,14 +102,14 @@ export class DirectorsTimelistComponent implements OnInit {
         {
           op: 'replace',
           path: '/ManagerHours',
-          value: Number(this.hoursGroup.get(`hours_${workTime.id}`)?.value ?? 0)
+          value: type === 'submit' ? Number(this.hoursGroup.get(`hours_${workTime.id}`)?.value ?? 0) : undefined
         }
       ]
     }
 
     this._timeService.editWorkTime(params).subscribe((result: OperationResultResponse) => {
       if (result.status === OperationResultStatusType.FullSuccess) {
-        workTime.managerHours = Number(this.hoursGroup.get(`hours_${workTime?.id}`)?.value ?? 0);
+        workTime.managerHours = type === 'submit' ? Number(this.hoursGroup.get(`hours_${workTime?.id}`)?.value ?? 0) : null;
         statInfo.totalHours = this._getTotalHours(statInfo.workTimes ?? [])
         this.toggleEditMode(false, workTime)
 
@@ -148,16 +148,24 @@ export class DirectorsTimelistComponent implements OnInit {
   }
 
   private _getStat(): void {
-    let params: IFindStatRequest = this._getQueryParams();
+    let params: IFindStatRequest = {
+      month: this.selectedPeriod.startDate?.getMonth()! + 1,
+      year: this.selectedPeriod.startDate?.getFullYear(),
+      takeCount: this.pageSize,
+      skipCount: this.pageSize * this.pageIndex,
+      departmentId: this._currentUser?.department?.id
+    }
+
     this.statInfo$ = this._timeService.findStat(params).pipe(
       map((result: FindResultResponseStatInfo) => {
+        console.log(result)
         this.totalCount = result.totalCount ?? 0;
         return result.body?.map((statInfo: StatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
       })
     )
   }
 
-  private _mapStatInfo(statInfo: StatInfo) {
+  private _mapStatInfo(statInfo: StatInfo): MappedStatInfo {
     return {
       ...statInfo,
       totalHours: this._getTotalHours(statInfo.workTimes ?? []),
@@ -178,16 +186,6 @@ export class DirectorsTimelistComponent implements OnInit {
     return workTimes
       .map(workTime => workTime.managerHours ? workTime.managerHours : workTime.userHours ? workTime.userHours : 0)
       .reduce((hours1, hours2) => Number(hours1) + Number(hours2), 0);
-  }
-
-  private _getQueryParams(): IFindStatRequest {
-    return {
-      month: this.selectedPeriod.startDate?.getMonth()! + 1,
-      year: this.selectedPeriod.startDate?.getFullYear(),
-      takeCount: this.pageSize,
-      skipCount: this.pageSize * this.pageIndex,
-      departmentId: this._currentUser?.department?.id
-    }
   }
 
   private _setDatePeriod(startDate: Date): DatePeriod {

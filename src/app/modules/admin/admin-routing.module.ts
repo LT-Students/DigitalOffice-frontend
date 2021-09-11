@@ -20,8 +20,8 @@ const adminRoutes: Routes = [
 	{ path: 'manage-roles', component: ManageRolesComponent },
 	{ path: 'offices', component: OfficeListComponent },
 	{ path: 'positions', component: PositionListComponent },
-	{ path: 'directors-timelist', component: DirectorsTimelistComponent },
 	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
+	{ path: `${RouteType.DEPARTMENTS}/:id/timelist`, component: DirectorsTimelistComponent }
 ];
 
 @NgModule({

@@ -162,8 +162,6 @@ export class AttendanceService {
 	}
 
 	public countMaxHours(): number {
-		let maxHours = this._timeDurationService.countMaxMonthDuration(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth())
-		console.log(maxHours)
-		return maxHours
+		return this._timeDurationService.countMaxMonthDuration(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth())
 	}
 }
