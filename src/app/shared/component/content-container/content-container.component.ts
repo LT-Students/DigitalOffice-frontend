@@ -18,7 +18,7 @@ export class ContentContainerComponent implements OnInit {
 
 	public navOpened: boolean;
 	public portalName: string;
-	public departmentId: string | undefined;
+	private _departmentId: string | undefined;
 
 	constructor(
 		private _userService: UserService,
@@ -32,15 +32,15 @@ export class ContentContainerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this._userService.currentUser$.subscribe(result => {
-			this.departmentId = result?.department?.id;
+		this._userService.currentUser$.subscribe(user => {
+			this._departmentId = user?.department?.id;
 		})
 	}
 
 	public onStatClick(): void {
-		if (this.departmentId) {
+		if (this._departmentId) {
 			this.closeNav();
-			this._router.navigate([`/admin/departments/${this.departmentId}/timelist`])
+			this._router.navigate([`/admin/departments/${this._departmentId}/timelist`])
 		}
 		else this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 })
 	}

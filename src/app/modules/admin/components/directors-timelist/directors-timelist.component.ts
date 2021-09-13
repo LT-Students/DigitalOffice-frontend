@@ -2,25 +2,22 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit } from '@
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 import { TimeDurationService } from '@app/services/time-duration.service';
 import { IEditWorkTimeRequest, IFindStatRequest, IGetImport, TimeService } from '@app/services/time/time.service';
 import { FindResultResponseStatInfo, LeaveTimeInfo, OperationResultResponse, OperationResultStatusType, StatInfo, UserInfo, WorkTimeInfo, WorkTimeMonthLimitInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
 import { UserService } from '@app/services/user/user.service'
-import { LeaveTimeModel } from '@app/models/leave-time.model';
-import { User } from '@app/models/user/user.model';
+import { ILeaveType, LeaveTimeModel } from '@app/models/leave-time.model';
 import { DoValidators } from '@app/validators/do-validators';
 
 interface EditableWorkTime extends WorkTimeInfo {
   editMode: boolean;
 }
 
-// Название, наверное, не самое удачное
-interface IconedLeaveTimeInfo extends LeaveTimeInfo {
-  emojiIcon: string;
-  leaveInRussian: string;
+interface IconedLeaveTimeInfo extends LeaveTimeInfo, ILeaveType {
   periodInHours: number;
 }
 
@@ -41,7 +38,7 @@ interface MappedStatInfo {
 export class DirectorsTimelistComponent implements OnInit {
   public hoursGroup: FormGroup;
 
-  private _currentUser: User | null;
+  private _departmentId: string | undefined;
 
   public statInfo$: Observable<MappedStatInfo[] | undefined>;
 
@@ -57,9 +54,9 @@ export class DirectorsTimelistComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _timeDurationService: TimeDurationService,
     private _timeService: TimeService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _route: ActivatedRoute
   ) {
-    this._currentUser = null;
     this.statInfo$ = new Observable();
     this.selectedPeriod = this._setDatePeriod(new Date());
     this.hoursGroup = this._formBuilder.group({});
@@ -69,9 +66,9 @@ export class DirectorsTimelistComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._userService.currentUser$.subscribe(result => {
-      this._currentUser = result;
-      this._getStat();
+    console.log("Route: ", this._route);
+    this._route.params.pipe(tap(p => this._departmentId = p.id)).subscribe(() => {
+      this.statInfo$ = this._getStat();
     })
   }
 
@@ -89,8 +86,9 @@ export class DirectorsTimelistComponent implements OnInit {
 
       this.hoursGroup.addControl(`hours_${workTime.id}`, this._formBuilder.control(workTime.managerHours ?? 0, validators));
     }
-    else
+    else {
       this.hoursGroup.removeControl(`hours_${workTime.id}`);
+    }
   }
 
   public onSubmit(type: 'reset' | 'submit', workTime: EditableWorkTime, statInfo: MappedStatInfo): void {
@@ -118,9 +116,9 @@ export class DirectorsTimelistComponent implements OnInit {
     })
   }
 
-  public onDownload() {
+  public onDownload(): void {
     const queryParams: IGetImport = {
-      departmentId: this._currentUser?.department?.id,
+      departmentId: this._departmentId,
       month: Number(this.selectedPeriod.startDate?.getMonth()) + 1,
       year: Number(this.selectedPeriod.startDate?.getFullYear())
     }
@@ -144,24 +142,21 @@ export class DirectorsTimelistComponent implements OnInit {
   public onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this._getStat();
+    this.statInfo$ = this._getStat();
   }
 
-  private _getStat(): void {
+  private _getStat(): Observable<MappedStatInfo[]> {
     let params: IFindStatRequest = {
       month: this.selectedPeriod.startDate?.getMonth()! + 1,
       year: this.selectedPeriod.startDate?.getFullYear(),
       takeCount: this.pageSize,
       skipCount: this.pageSize * this.pageIndex,
-      departmentId: this._currentUser?.department?.id
+      departmentId: this._departmentId
     }
 
-    this.statInfo$ = this._timeService.findStat(params).pipe(
-      map((result: FindResultResponseStatInfo) => {
-        console.log(result)
-        this.totalCount = result.totalCount ?? 0;
-        return result.body?.map((statInfo: StatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
-      })
+    return this._timeService.findStat(params).pipe(
+      tap((result: FindResultResponseStatInfo) => { this.totalCount = result.totalCount ?? 0 }),
+      map((result: FindResultResponseStatInfo) => result.body?.map((statInfo: StatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[])
     )
   }
 

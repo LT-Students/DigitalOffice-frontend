@@ -44,6 +44,12 @@
 	}
 }
 
+.loader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .panel {
 	border-radius: 8px;
 	box-shadow: none;

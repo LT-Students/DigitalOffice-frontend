@@ -162,6 +162,6 @@ export class AttendanceService {
 	}
 
 	public countMaxHours(): number {
-		return this._timeDurationService.countMaxMonthDuration(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth())
+		return this._timeDurationService.countMaxMonthDuration(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth());
 	}
 }

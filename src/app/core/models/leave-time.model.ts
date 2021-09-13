@@ -1,7 +1,7 @@
 import { LeaveType } from '@data/api/time-service/models/leave-type';
 
 export interface ILeaveType {
-	leaveType: LeaveType;
+	leaveType?: LeaveType;
 	leaveInRussian: string;
 	emojiIcon: string;
 }
