@@ -1,31 +1,31 @@
 <mat-sidenav-container class="sidenav" [hasBackdrop]="false" (click)="onClick($event)">
 	<mat-sidenav #menu [autoFocus]="false" [opened]="navOpened" class="sidenav__nav">
 		<div class="sidenav__header">
-			<h1 doText class="sidenav__title">{{ portalName }}</h1>
-			<button mat-icon-button doText color="gray1" class="sidenav__close-button" (click)="closeNav()">
+			<h1 class="sidenav__title">{{ portalName }}</h1>
+			<button mat-icon-button class="sidenav__close-button" (click)="closeNav()">
 				<mat-icon> close </mat-icon>
 			</button>
 		</div>
 		<mat-action-list class="sidenav__group">
-			<a (click)="closeNav()" doText color="gray1" mat-list-item routerLink="/user/projects-table">
+			<a (click)="closeNav()" mat-list-item routerLink="/user/projects-table">
 				<span class="sidenav__icon">
 					<mat-icon>desktop_mac</mat-icon>
 				</span>
 				<span> Проекты </span>
 			</a>
-			<a (click)="closeNav()" doText color="gray1" mat-list-item routerLink="/admin/manage-users">
+			<a (click)="closeNav()" mat-list-item routerLink="/admin/manage-users">
 				<span class="sidenav__icon">
 					<mat-icon>group</mat-icon>
 				</span>
 				<span> Сотрудники </span>
 			</a>
-			<a (click)="closeNav()" doText color="gray1" mat-list-item routerLink="/departments">
+			<a (click)="closeNav()" mat-list-item routerLink="/departments">
 				<span class="sidenav__icon">
 					<mat-icon>groups</mat-icon>
 				</span>
 				<span> Департаменты </span>
 			</a>
-			<a (click)="closeNav()" doText color="gray1" mat-list-item>
+			<a (click)="closeNav()" mat-list-item>
 				<span class="sidenav__icon">
 					<mat-icon>business</mat-icon>
 				</span>

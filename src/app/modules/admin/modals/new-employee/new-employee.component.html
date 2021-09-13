@@ -3,8 +3,8 @@
 		<h2 doText underlined underlinedSize="sm" color="dark_1">Новая карточка сотрудника</h2>
 		<div class="section new-employee__personal-info">
 			<div class="new-employee__heading new-employee__label_flex">
-				<h3 doText color="dark_1">Личные данные</h3>
-				<span doText color="negative_accent"><sup>*</sup>Обязательные поля</span>
+				<h3>Личные данные</h3>
+				<span class="text-negative_accent"><sup>*</sup>Обязательные поля</span>
 			</div>
 			<div class="new-employee__inputs">
 				<mat-form-field appearance="fill">
@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<div class="section new-employee__working-info">
-			<h3 doText color="dark_1" class="new-employee__heading">Рабочая информация</h3>
+			<h3 class="new-employee__heading">Рабочая информация</h3>
 			<div class="new-employee__inputs">
 				<ng-container *ngIf="position$ | async as positionList">
 					<mat-form-field appearance="fill">
@@ -85,7 +85,7 @@
 			</div>
 		</div>
 		<div class="section new-employee__auth">
-			<h3 doText color="dark_1" class="new-employee__heading">Аутентификация</h3>
+			<h3 class="new-employee__heading">Аутентификация</h3>
 			<div class="new-employee__inputs">
 				<mat-form-field class="new-employee__form-element_span_2" appearance="fill">
 					<mat-label>E-mail

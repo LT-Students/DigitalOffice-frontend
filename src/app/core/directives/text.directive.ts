@@ -85,7 +85,7 @@ export class TextDirective implements OnInit {
 	}
 
 	private _setHeaderAttributes(className: string): void {
-		this.renderer.addClass(this.el.nativeElement, className);
+		// this.renderer.addClass(this.el.nativeElement, className);
 	}
 
 	private _setRegularTextAttributes(): void {

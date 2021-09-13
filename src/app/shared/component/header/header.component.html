@@ -1,5 +1,5 @@
 <nav class='header' mat-tab-nav-bar>
-    <div doText color='gray1' class='header__menu-button'>
+    <div class='header__menu-button'>
         <button mat-icon-button (click)="onMenuClick($event)">
             <mat-icon>menu</mat-icon>
         </button>
@@ -12,7 +12,7 @@
     <span class='spacer'></span>
     <div class='avatar' [matMenuTriggerFor]='menu'>
         <do-profile-image [image]='currentUser?.avatarImage' size='s'></do-profile-image>
-        <p>Привет, <span class='text_bold'>{{ currentUser?.firstName }}</span></p>
+        <p>Привет, <strong>{{ currentUser?.firstName }}</strong></p>
     </div>
     <mat-menu #menu='matMenu' xPosition='before'>
         <button mat-menu-item [routerLink]="['user', currentUser?.id]">Карточка сотрудника</button>

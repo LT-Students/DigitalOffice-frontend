@@ -1,12 +1,12 @@
 <mat-card class="chart" *ngIf="selectedDate$ | async as selectedDate">
 	<h3 doText underlined underlinedSize="sm">
-		<span>Часы за&nbsp;</span>
+		Часы за&nbsp;
 		<mat-form-field appearance="fill" class="chart__hidden">
 			<input matInput [matDatepicker]="picker" />
 			<mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event, picker)"></mat-datepicker>
 		</mat-form-field>
 
-		<a (click)="picker.open()" class="chart__month-picker text-accent_color_bright">
+		<a (click)="picker.open()" class="mat-h3 chart__month-picker text-accent_color_bright">
 			{{ selectedDate | date: 'LLLL YYYY' }}
 			<mat-icon>keyboard_arrow_down</mat-icon>
 		</a>

@@ -138,10 +138,6 @@
 		}
 	}
 
-	&__input {
-		font-family: variables.$regular_font !important;
-	}
-
 	&__about {
 		line-height: 21px;
 	}
@@ -192,9 +188,5 @@
 		position: absolute;
 
 		right: 0;
-	}
-
-	.small_text {
-		margin: 14px 0 3px 0;
 	}
 }

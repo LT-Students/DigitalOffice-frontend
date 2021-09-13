@@ -1,16 +1,96 @@
 @use '~@angular/material' as mat;
 
+/* ======== Angular material custom palette ======== */
+
+$do-palette: (
+	50: #00e676,
+	100: #cdf4df,
+	200: #bc7bfa,
+	300: #ef5350,
+	400: #ff8a65,
+	500: #fff4ed,
+	600: #424242,
+	700: #263238,
+	800: #9e9e9e,
+	900: #cecece,
+	A100: #eee,
+	A200: #f5f5f5,
+	A400: #fafafa,
+	A700: rgba(27, 21, 17, 0.8),
+	contrast: (
+		50: #fafafa,
+		100: #263238,
+		200: #cecece,
+		300: #fff4ed,
+		400: #fafafa,
+		500: #ff8a65,
+		600: #fafafa,
+		700: #f5f5f5,
+		800: #9e9e9e,
+		900: #ef5350,
+		A100: #00e676,
+		A200: #cdf4df,
+		A400: #bc7bfa,
+		A700: rgba(27, 21, 17, 0.8),
+	),
+);
+
 /* ======== Angular material custom themes ======== */
 
-$theme-primary: mat.define-palette(mat.$orange-palette, 400);
-$theme-accent: mat.define-palette(mat.$deep-orange-palette, 400);
-$theme-warn: mat.define-palette(mat.$red-palette);
-$app-theme: mat.define-light-theme($theme-primary, $theme-accent, mat.$red-palette);
-//
-//$custom-typography: mat-typography-config(
-//    $input: mat-typography-level(16px, 1.5, 400),
-//    $button: mat-typography-level(16px, 24px, 400),
-//);
+$theme-primary: mat.define-palette($do-palette, 200);
+$theme-accent: mat.define-palette($do-palette, 50);
+$theme-warn: mat.define-palette(mat.$red-palette, 900);
+$app-theme: mat.define-light-theme(
+	(
+		color: (
+			primary: $theme-primary,
+			accent: $theme-accent,
+			warn: $theme-warn,
+		),
+	)
+);
+
+$custom-typography: mat.define-typography-config(
+	$font-family: 'Roboto, "Helvetica Neue", sans-serif',
+	$headline: mat.define-typography-level(35px, 40px, 700, 'Montserrat'),
+	$title: mat.define-typography-level(28px, 32px, 700, 'Montserrat'),
+	$subheading-2: mat.define-typography-level(22px, 33px, 700, 'Montserrat'),
+	$subheading-1: mat.define-typography-level(18px, 27px, 700, 'Montserrat'),
+	$body-1: mat.define-typography-level(16px, 24px, 400),
+	$body-2: mat.define-typography-level(16px, 24px, 700),
+	$caption: mat.define-typography-level(14px, 24px, 400),
+	$input: mat.define-typography-level(16px, 1, 400),
+	$button: mat.define-typography-level(16px, 24px, 400),
+);
 
 @include mat.all-component-themes($app-theme);
-@include mat.core();
+@include mat.button-theme(
+	mat.define-light-theme(
+		(
+			color: (
+				primary: mat.define-palette($do-palette, 400),
+				accent: mat.define-palette($do-palette, 500),
+				warn: mat.define-palette($do-palette, 600),
+			),
+		)
+	)
+);
+@include mat.core($custom-typography);
+
+.mat-typography {
+	h1 {
+		margin: 0 0 36px;
+	}
+
+	h2 {
+		margin: 0 0 32px;
+	}
+
+	h3 {
+		margin: 0 0 24px;
+	}
+
+	h4 {
+		margin: 0 0 12px;
+	}
+}

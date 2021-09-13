@@ -1,23 +1,23 @@
 <mat-card class="card card_standard">
 	<div class="card__header">
 		<div>
-			<h1 class="h1 text-dark_2">{{ projectInfo?.name }}</h1>
+			<h1 class="text-dark_2">{{ projectInfo?.name }}</h1>
 			<div class="card__splitter"></div>
-			<p class="regular_text text-gray">{{ projectInfo?.department?.name }}</p>
+			<p class="text-gray">{{ projectInfo?.department?.name }}</p>
 		</div>
 	</div>
 	<div class="card__content">
 		<div>
 			<div class="description">
-				<h2 class="h4 text-dark_1 description__title">Детали проекта</h2>
+				<h2 class="text-dark_1 description__title">Детали проекта</h2>
 				<div class="description__body">
-					<div doText color="gray" class='description__column'>
+					<div class="description__column">
 						<p>Статус</p>
 						<p>Запуск проекта</p>
 						<p>Проект длится</p>
 						<p>Команда</p>
 					</div>
-					<div doText color="dark_1" class='description__column'>
+					<div class="description__column">
 						<p>{{ projectInfo?.status }}</p>
 						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
 						<p>{{ projectDuration }} дней</p>
@@ -27,55 +27,52 @@
 			</div>
 		</div>
 		<div>
-			<h4 doText color="dark_1">Описание</h4>
-			<p doText>{{ projectInfo?.description ? projectInfo?.description : '—' }}</p>
+			<h4>Описание</h4>
+			<p>{{ projectInfo?.description ? projectInfo?.description : '—' }}</p>
 		</div>
 	</div>
 	<div class="table-wrapper">
 		<div class="table-wrapper__header">
 			<h3 doText underlined underlinedSize="sm">Команда</h3>
 		</div>
-		<table doText class="table" matSort>
+		<table class="table" matSort>
 			<colgroup>
-				<col class='column column_width-little'>
+				<col class="column column_width-little" />
 			</colgroup>
-			<thead doText color='gray1'>
-				<tr class='row'>
-					<th class='cell'></th>
-					<th class='cell' mat-sort-header="name">
-						<p class='regular_text'>Имя</p>
+			<thead>
+				<tr class="row">
+					<th class="cell"></th>
+					<th class="cell" mat-sort-header="name">
+						<p>Имя</p>
 					</th>
-					<th class='cell' mat-sort-header="department">
-						<p class='regular_text'>Департамент</p>
+					<th class="cell" mat-sort-header="department">
+						<p>Департамент</p>
 					</th>
-					<th class='cell' mat-sort-header="role">
-						<p class='regular_text'>Роль</p>
+					<th class="cell" mat-sort-header="role">
+						<p>Роль</p>
 					</th>
-					<th class='cell' mat-sort-header="rate">
-						<p class='regular_text'>Ставка</p>
+					<th class="cell" mat-sort-header="rate">
+						<p>Ставка</p>
 					</th>
-					<th class='cell' mat-sort-header="status">
-						<p class='regular_text'>Статус</p>
+					<th class="cell" mat-sort-header="status">
+						<p>Статус</p>
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="row row_activable" *ngFor="let userInfo of $any(projectUsers)"
-					routerLink="/user/{{ userInfo.id }}">
-					<td class='cell'>
-						<do-profile-image [image]='userInfo?.avatar'></do-profile-image>
+				<tr class="row row_activable" *ngFor="let userInfo of $any(projectUsers)" routerLink="/user/{{ userInfo.id }}">
+					<td class="cell">
+						<do-profile-image [image]="userInfo?.avatar"></do-profile-image>
 					</td>
-					<td class='cell cell_vertical-middle'>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
-					<td class='cell cell_vertical-middle'>{{ userInfo?.department?.name ? userInfo.department.name : '—'
-						}}</td>
-					<td class='cell cell_vertical-middle'>{{ userInfo?.position?.name ? userInfo.position.name : '—' }}
-					</td>
-					<td class='cell cell_vertical-middle'>{{ userInfo?.rate ? userInfo?.rate : '—' }}</td>
-					<td class='cell cell_vertical-middle'>
-						<p *ngIf='userInfo?.isActive;' class='table__status text_color_white small_text regular_text'>
-							Активен</p>
-						<p class='table__status table__status_archived text_color_gray1 small_text regular_text' doText
-							color='light_1' *ngIf='!userInfo?.isActive;'>В архиве</p>
+					<td class="cell cell_vertical-middle">{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
+					<td class="cell cell_vertical-middle">{{ userInfo?.department?.name ? userInfo.department.name : '—' }}</td>
+					<td class="cell cell_vertical-middle">{{ userInfo?.position?.name ? userInfo.position.name : '—' }}</td>
+					<td class="cell cell_vertical-middle">{{ userInfo?.rate ? userInfo?.rate : '—' }}</td>
+					<td class="cell cell_vertical-middle">
+						<p *ngIf="userInfo?.isActive" class="table__status text_color_white">Активен</p>
+						<p class="table__status table__status_archived text-gray1" *ngIf="!userInfo?.isActive">
+							В архиве
+						</p>
 					</td>
 				</tr>
 			</tbody>

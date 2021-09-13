@@ -1,45 +1,40 @@
 <ng-container *ngIf="isEdit; else textBlock">
-  <label class="small_text text-gray stepper__label" [for]="controlName"
-    >{{ label }}<sup *ngIf="required" class="stepper__required">*</sup></label
-  >
-  <mat-form-field
-    class="stepper__form-field"
-    appearance="fill"
-  >
-    <button
-      class="stepper__button h2"
-      mat-icon-button
-      matPrefix
-      type="button"
-      (click)="changeWorkingRate(rate, -0.25)"
-      [disabled]="rate.value === '0.25'"
-    >
-      -
-    </button>
-    <input
-      #rate
-      matInput
-      class="bg-light_2 stepper__input"
-      readonly
-      [formControl]="control"
-      [id]="controlName"
-      [name]="controlName"
-      [type]="type"
-    />
-    <button
-      class="stepper__button h2"
-      mat-icon-button
-      matSuffix
-      type="button"
-      (click)="changeWorkingRate(rate, 0.25)"
-      [disabled]="rate.value === '1'"
-    >
-      +
-    </button>
-  </mat-form-field>
+	<label class="text-gray stepper__label" [for]="controlName">{{ label }}<sup *ngIf="required" class="stepper__required">*</sup></label>
+	<mat-form-field class="stepper__form-field" appearance="fill">
+		<button
+			class="stepper__button"
+			mat-icon-button
+			matPrefix
+			type="button"
+			(click)="changeWorkingRate(rate, -0.25)"
+			[disabled]="rate.value === '0.25'"
+		>
+			-
+		</button>
+		<input
+			#rate
+			matInput
+			class="bg-light_2 stepper__input"
+			readonly
+			[formControl]="control"
+			[id]="controlName"
+			[name]="controlName"
+			[type]="type"
+		/>
+		<button
+			class="stepper__button"
+			mat-icon-button
+			matSuffix
+			type="button"
+			(click)="changeWorkingRate(rate, 0.25)"
+			[disabled]="rate.value === '1'"
+		>
+			+
+		</button>
+	</mat-form-field>
 </ng-container>
 
 <ng-template #textBlock>
-  <h3 class="small_text text-gray">{{ label }}</h3>
-  <div>{{ control?.value }}</div>
+	<h3 class="text-gray">{{ label }}</h3>
+	<div>{{ control?.value }}</div>
 </ng-template>

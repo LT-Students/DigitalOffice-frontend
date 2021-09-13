@@ -1,10 +1,10 @@
 <mat-card class="add-hours card_grid">
 	<h3 class="add-hours__heading" doText underlined underlinedSize="sm">
 		Внести часы в
-		<a class="add-hours__menu text-accent_color_bright" [matMenuTriggerFor]="formTypeMenu"
+		<span class="mat-h3 add-hours__menu text-accent_color_bright" [matMenuTriggerFor]="formTypeMenu"
 			>{{ isProjectForm ? 'проект' : 'отсутствие' }}
 			<mat-icon>expand_more</mat-icon>
-		</a>
+		</span>
 		<mat-menu #formTypeMenu="matMenu">
 			<button mat-menu-item (click)="toggleFormType(true)">Проект</button>
 			<button mat-menu-item (click)="toggleFormType(false)">Отсутствие</button>
@@ -19,11 +19,11 @@
 					<mat-error *ngIf="addHoursForm.controls['time'].errors?.min">Минимальное значение должно быть больше 0 </mat-error>
 					<mat-error *ngIf="addHoursForm.controls['time'].errors?.periodExceedsMaxValue">Превышено максимальное значение </mat-error>
 				</mat-form-field>
-				<span class="h3" *ngIf="selectedDate$ | async as selectedDate"
+				<span class="mat-h3" *ngIf="selectedDate$ | async as selectedDate"
 					>ч за
-					<a *ngIf="monthOptions.length === 0; else selectMonth">{{ selectedDate | date: 'LLLL y' }}</a>
+					<a class='mat-h3' *ngIf="monthOptions.length === 0; else selectMonth">{{ selectedDate | date: 'LLLL y' }}</a>
 					<ng-template #selectMonth
-						><a class="add-hours__menu" [matMenuTriggerFor]="monthMenu"
+						><a class="mat-h3 add-hours__menu" [matMenuTriggerFor]="monthMenu"
 							>{{ selectedDate | date: 'LLLL y' }} <mat-icon>expand_more</mat-icon></a
 						></ng-template
 					>
@@ -46,8 +46,8 @@
 					<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
 				</mat-form-field>
 				<div class="add-hours__absence-time">
-					<p doText>Выбрано</p>
-					<h3 doText>{{ recommendedTime | async }} ч</h3>
+					<p>Выбрано</p>
+					<h3>{{ recommendedTime | async }} ч</h3>
 				</div>
 			</ng-template>
 		</div>

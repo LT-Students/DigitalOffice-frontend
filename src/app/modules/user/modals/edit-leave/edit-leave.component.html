@@ -1,5 +1,5 @@
 <div class="modal">
-	<h3 doText class="h3">
+	<h3>
 		Редактирование часов <span class="text-accent_color_bright">за {{ getRusType(leave.leaveType!)?.toLowerCase() }}</span>
 	</h3>
 	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
@@ -17,8 +17,8 @@
 				<mat-date-range-picker #picker></mat-date-range-picker>
 			</mat-form-field>
 			<div class="modal__hours">
-				<p doText color="gray1">Выбрано</p>
-				<h3 doText color="gray1" class="modal__selected-hours h3">
+				<p>Выбрано</p>
+				<h3 class="modal__selected-hours">
 					<span class="text-dark_1">{{ periodInHours }}</span> ч
 				</h3>
 			</div>
@@ -31,10 +31,10 @@
 		</div>
 		<div class="controls">
 			<button mat-flat-button class="controls__button" type="button" (click)="onClose()">
-				<span class="regular_text text-gray1">Отмена</span>
+				<span class="text-gray1">Отмена</span>
 			</button>
 			<button mat-flat-button color="accent" class="controls__button" type="submit">
-				<span class="regular_text text-light_1">Сохранить</span>
+				<span class="text-light_1">Сохранить</span>
 			</button>
 		</div>
 	</form>

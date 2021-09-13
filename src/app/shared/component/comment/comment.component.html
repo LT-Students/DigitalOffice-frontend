@@ -1,16 +1,15 @@
-<div class='comment__content'>
-    <p class='comment__text regular_text' #comment>{{text? text : '-'}}</p>
-    <ng-container *ngIf="buttonShowed">
-        <button *ngIf="commentCollapsed; else collapseButton" mat-flat-button class='comment__button'
-            (click)="expandComment()">
-            <span doText color='gray1' class='regular_text'>Раскрыть полностью</span>
-            <mat-icon doText color='gray1'>keyboard_arrow_down</mat-icon>
-        </button>
-        <ng-template #collapseButton>
-            <button mat-flat-button class='comment__button' (click)="collapseComment()">
-                <span doText color='gray1' class='regular_text'>Свернуть</span>
-                <mat-icon doText color='gray1'>keyboard_arrow_up</mat-icon>
-            </button>
-        </ng-template>
-    </ng-container>
+<div class="comment__content">
+	<p class="comment__text" #comment>{{ text ? text : '-' }}</p>
+	<ng-container *ngIf="buttonShowed">
+		<button *ngIf="commentCollapsed; else collapseButton" mat-flat-button class="comment__button" (click)="expandComment()">
+			<span>Раскрыть полностью</span>
+			<mat-icon>keyboard_arrow_down</mat-icon>
+		</button>
+		<ng-template #collapseButton>
+			<button mat-flat-button class="comment__button" (click)="collapseComment()">
+				<span>Свернуть</span>
+				<mat-icon>keyboard_arrow_up</mat-icon>
+			</button>
+		</ng-template>
+	</ng-container>
 </div>

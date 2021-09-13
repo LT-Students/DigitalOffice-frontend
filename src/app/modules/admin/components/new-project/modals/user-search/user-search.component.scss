@@ -32,11 +32,6 @@ $select-height: 36px;
 		padding: 0 0 0 0.5em;
 
 		line-height: $select-height;
-
-		.mat-select-placeholder {
-			@extend .regular_text;
-			@extend .text_color_dark-1;
-		}
 	}
 
 	.mat-select-arrow {
