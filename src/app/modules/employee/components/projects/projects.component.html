@@ -1,10 +1,10 @@
 <div class="projects-table">
-	<h3 class="projects-table__card-title" doText underlined underlinedSize="sm">Проекты</h3>
+	<h3 class="projects-table__card-title" doUnderline underlinedSize="sm">Проекты</h3>
 	<ng-container *ngFor="let section of projects$ | async">
 		<section *ngIf="section.projects.length > 0" class="projects-table__section">
 			<h3 class="projects-table__group-title">
 				{{ section.name }}
-				<span class="text-accent_color_bright">{{ section.projects.length | i18nPlural: section.plural }}</span>
+				<span class="mat-h3 text-accent_color_bright">{{ section.projects.length | i18nPlural: section.plural }}</span>
 			</h3>
 			<div class="projects-table__container">
 				<div *ngFor="let project of section.projects" class="projects-table__project bg-light_2">

@@ -1,6 +1,6 @@
 <div class="modal">
 	<h3>
-		Редактирование часов <span class="text-accent_color_bright">за {{ getRusType(leave.leaveType!)?.toLowerCase() }}</span>
+		Редактирование часов <span class="mat-h3 text-accent_color_bright">за {{ getRusType(leave.leaveType!)?.toLowerCase() }}</span>
 	</h3>
 	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
 		<mat-error *ngIf="editForm.controls['endTime'].errors?.required" class="text-negative_accent modal__error">
@@ -19,7 +19,7 @@
 			<div class="modal__hours">
 				<p>Выбрано</p>
 				<h3 class="modal__selected-hours">
-					<span class="text-dark_1">{{ periodInHours }}</span> ч
+					{{ periodInHours }}&nbsp;<span class='mat-h3 text-gray1'>ч</span>
 				</h3>
 			</div>
 		</div>

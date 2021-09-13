@@ -12,7 +12,7 @@
 <h1 class="title">{{ departmentInfo?.name }}</h1>
 <mat-card class="card card_standard department">
 	<div class="department__info">
-		<h3 doText underlined underlinedSize="sm">Общая информация</h3>
+		<h3 doUnderline underlinedSize="sm">Общая информация</h3>
 		<div class="department__label">
 			<p>Директор</p>
 			<ng-container *ngIf="departmentInfo?.director; else empty">
@@ -28,8 +28,8 @@
 	</div>
 	<div class="department__table table">
 		<div class="table__header">
-			<h3 doText underlined underlinedSize="sm">
-				Сотрудники <span class="text-accent_color_bright">{{ totalCount | i18nPlural: peopleCountMap }}</span>
+			<h3 doUnderline underlinedSize="sm">
+				Сотрудники <span class="mat-h3 text-accent_color_bright">{{ totalCount | i18nPlural: peopleCountMap }}</span>
 			</h3>
 			<button mat-flat-button color="orange" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 		</div>

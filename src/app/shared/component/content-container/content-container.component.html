@@ -1,5 +1,5 @@
-<mat-sidenav-container class="sidenav" [hasBackdrop]="false" (click)="onClick($event)">
-	<mat-sidenav #menu [autoFocus]="false" [opened]="navOpened" class="sidenav__nav">
+<mat-sidenav-container class="sidenav" (click)="onClick($event)">
+	<mat-sidenav #menu [autoFocus]="false" fixedInViewport [opened]="navOpened" class="sidenav__nav">
 		<div class="sidenav__header">
 			<h1 class="sidenav__title">{{ portalName }}</h1>
 			<button mat-icon-button class="sidenav__close-button" (click)="closeNav()">
