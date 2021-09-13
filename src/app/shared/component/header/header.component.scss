@@ -72,16 +72,8 @@
 
 	cursor: pointer;
 
-	&__img {
-		padding: 4px 25px 4px 4px;
-	}
-}
-
-.greeting {
-	padding: 0 20px;
-
-	&__greet {
-		padding-right: 5px;
+	&__greeting {
+		padding: 0 25px;
 	}
 }
 

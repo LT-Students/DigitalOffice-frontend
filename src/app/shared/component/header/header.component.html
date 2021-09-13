@@ -12,10 +12,7 @@
     <span class='spacer'></span>
     <div class='avatar' [matMenuTriggerFor]='menu'>
         <do-profile-image [image]='avatar' size='s'></do-profile-image>
-        <p class='greeting'>
-            <span class='greeting__greet'>Привет,</span>
-            <span class='text_bold'>{{ userName }}</span>
-        </p>
+        <p class='avatar__greeting'>Привет, <strong>{{ userName }}</strong></p>
     </div>
     <mat-menu #menu='matMenu' xPosition='before'>
         <button mat-menu-item [routerLink]="['user', userId]">Карточка сотрудника</button>
