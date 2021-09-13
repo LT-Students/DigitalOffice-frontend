@@ -34,8 +34,14 @@
                         <p>{{ user?.projectHours }}/{{ user?.norm }}</p>
                     </td>
                     <td>
+                    <div *ngIf='user.absence; else empty'>
                         <p>{{ user?.absence }}</p>
+                    </div>
+                    <ng-template #empty>
+                        <p class='text-gray1'>{{ "-" }}</p>
+                    </ng-template>
                     </td>
+
                     <td>
                         <p>{{ user?.projectsCount }}</p>
                     </td>
