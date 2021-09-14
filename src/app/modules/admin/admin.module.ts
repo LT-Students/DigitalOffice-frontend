@@ -29,6 +29,7 @@ import { ManageRolesComponent } from './components/manage-roles/manage-roles.com
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
+import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component'
 
 @NgModule({
 	declarations: [
@@ -53,14 +54,9 @@ import { DirectorsTimelistComponent } from './components/directors-timelist/dire
 		OfficeListComponent,
 		PositionListComponent,
 		DirectorsTimelistComponent,
+		TeamStatisticsComponent,
 	],
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MaterialModule,
-		SharedModule,
-		AdminRoutingModule
-	],
-	exports: [DndDirective],
+	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
+	exports: [DndDirective, TeamStatisticsComponent],
 })
 export class AdminModule { }
