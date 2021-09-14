@@ -1,0 +1,87 @@
+@import '../../../../../stylesheets/base/variables';
+
+.header {
+	padding: 36px 32px 0;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&__period-input {
+		visibility: hidden;
+
+		width: 0;
+		height: 0;
+	}
+
+	&__period {
+		cursor: pointer;
+	}
+
+	&__icon {
+		vertical-align: middle;
+	}
+}
+
+.timelist {
+	padding: 0 32px;
+
+	&__search-form {
+		margin: 32px 0 0;
+
+		width: 344px;
+	}
+
+	&__table {
+		margin-bottom: 6px;
+		padding: 0 33px 0 24px;
+
+		border-collapse: separate;
+	}
+
+	&__panel {
+		margin-bottom: 10px;
+	}
+}
+
+.loader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.panel {
+	border-radius: 8px;
+	box-shadow: none;
+
+	&__table {
+		margin-top: 16px;
+	}
+}
+
+.cell {
+	&__icon {
+		padding: 7px 0;
+
+		text-align: right;
+	}
+
+	&_flexible {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.controls {
+	display: flex;
+	justify-content: center;
+
+	&__button {
+		margin: 12px 19px 16px;
+	}
+}
+
+.button {
+	width: 180px;
+	height: 36px;
+}

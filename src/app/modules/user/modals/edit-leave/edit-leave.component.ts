@@ -9,6 +9,7 @@ import { DateFilterFn } from '@angular/material/datepicker';
 import { switchMap } from 'rxjs/operators';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 import { IModalContentConfig } from '../../components/leaves/leaves.component';
+import { TimeDurationService } from '@app/services/time-duration.service';
 
 @Component({
 	selector: 'do-edit-leave',
@@ -27,7 +28,8 @@ export class EditLeaveComponent {
 		private _fb: FormBuilder,
 		private _dialogRef: MatDialogRef<EditLeaveComponent, IDialogResponse>,
 		private _timeService: TimeService,
-		private _attendanceService: AttendanceService
+		private _attendanceService: AttendanceService,
+		private _timeDurationService: TimeDurationService
 	) {
 		this.disableWeekends = this._attendanceService.disableWeekends;
 		this.startTimeSelected = false;
@@ -55,7 +57,7 @@ export class EditLeaveComponent {
 	}
 
 	private _setPeriodInHours(startTime: Date, endTime: Date): void {
-		this.periodInHours = this._attendanceService.getRecommendedTime(
+		this.periodInHours = this._timeDurationService.getDuration(
 			{
 				startDate: startTime,
 				endDate: endTime,

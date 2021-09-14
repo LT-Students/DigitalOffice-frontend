@@ -50,10 +50,25 @@
 }
 
 .table-wrapper {
+	padding: 25px;
+
 	&__header {
 		margin-bottom: 20px;
 
 		display: flex;
+	}
+
+	&__icon {
+		margin-right: 8px;
+		margin-bottom: 24px;
+	}
+
+	&__label-orange {
+		fill: $accent_color_bright;
+	}
+
+	&__label-grey {
+		fill: $gray1;
 	}
 }
 
@@ -73,9 +88,5 @@
 		background-color: #00e676;
 
 		border-radius: 10px;
-
-		&_archived {
-			background-color: #f5f5f5;
-		}
 	}
 }
