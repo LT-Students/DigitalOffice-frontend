@@ -28,6 +28,7 @@ import { DepartmentCardComponent } from './components/department-card/department
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component';
+import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component'
 
 @NgModule({
@@ -52,9 +53,10 @@ import { TeamStatisticsComponent } from './components/team-statistics/team-stati
 		ManageRolesComponent,
 		OfficeListComponent,
 		PositionListComponent,
+		DirectorsTimelistComponent,
 		TeamStatisticsComponent,
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
 	exports: [DndDirective, TeamStatisticsComponent],
 })
-export class AdminModule {}
+export class AdminModule { }
