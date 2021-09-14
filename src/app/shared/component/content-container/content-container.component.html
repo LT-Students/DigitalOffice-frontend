@@ -7,6 +7,15 @@
 			</button>
 		</div>
 		<mat-action-list class="sidenav__group">
+			<a (click)="closeNav()" mat-list-item routerLink='/user/attendance'>
+				<span> Учет времени </span>
+			</a>
+			<a (click)="closeNav()" mat-list-item routerLink="/admin/dashboard">
+				<span> Администрирование </span>
+			</a>
+			<a (click)="onStatClick()" mat-list-item>
+				<span> Таймлист </span>
+			</a>
 			<a (click)="closeNav()" doText color="gray1" mat-list-item routerLink="/user/projects-table">
 				<span class="sidenav__icon">
 					<mat-icon>desktop_mac</mat-icon>

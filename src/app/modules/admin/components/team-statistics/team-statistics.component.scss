@@ -1,0 +1,55 @@
+@import 'base/variables';
+@import 'base/fonts';
+
+.table {
+	&__content {
+		position: relative;
+
+		margin-top: 24px;
+
+		width: 100%;
+
+		border-collapse: collapse;
+	}
+
+	&__row {
+		margin-top: 66px;
+
+		box-sizing: border-box;
+
+		height: 76px;
+
+		text-align: left;
+
+		vertical-align: center;
+
+		border-bottom: 1px solid #f1f1ef;
+	}
+
+	&__column-first {
+		display: flex;
+		align-items: center;
+
+		height: inherit;
+
+		//p {
+		//margin-left: 10px;
+		//}
+	}
+
+	&__photo {
+		margin-right: 20px;
+		margin-left: 20px;
+	}
+}
+
+.datepicker {
+	&-hidden {
+		width: 0;
+		height: 0;
+	}
+
+	&__arrow {
+		vertical-align: middle;
+	}
+}

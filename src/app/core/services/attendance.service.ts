@@ -17,6 +17,7 @@ import { DateFilterFn } from '@angular/material/datepicker';
 import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { DateService } from './date.service';
+import { TimeDurationService } from './time-duration.service';
 
 export interface Activities {
 	projects?: Array<WorkTimeInfo | undefined>;
@@ -43,7 +44,12 @@ export class AttendanceService {
 
 	private _userId: string | undefined;
 
-	constructor(private _dateService: DateService, private _timeService: TimeService, private _userService: UserService) {
+	constructor(
+		private _dateService: DateService,
+		private _timeService: TimeService,
+		private _userService: UserService,
+		private _timeDurationService: TimeDurationService
+	) {
 		this._selectedDate = new BehaviorSubject<Date>(new Date());
 		this.selectedDate$ = this._selectedDate.asObservable();
 
@@ -156,32 +162,6 @@ export class AttendanceService {
 	}
 
 	public countMaxHours(): number {
-		const currentDatePeriod: DatePeriod = {
-			startDate: new Date(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth(), 1),
-			endDate: new Date(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth() + 1, 0),
-		};
-		return Number(this.getRecommendedTime(currentDatePeriod, 24));
-	}
-
-	public getRecommendedTime(datePeriod: DatePeriod, hoursPerDay: number = 8, skipHolidays = false, rate: number = 1): number {
-		const daysArray: Date[] = [];
-
-		if (datePeriod.endDate && this._dateService.isSameDay(datePeriod.startDate, datePeriod.endDate)) {
-			return hoursPerDay * rate;
-		} else {
-			const startDate = new Date(datePeriod.startDate as Date);
-			const endDate = new Date(datePeriod.endDate as Date);
-
-			while (startDate.getDate() !== endDate.getDate()) {
-				daysArray.push(new Date(startDate));
-				startDate.setDate(startDate.getDate() + 1);
-			}
-
-			if (skipHolidays) {
-				return (daysArray.filter((day: Date) => day.getDay() !== 6 && day.getDay() !== 0).length + 1) * hoursPerDay * rate;
-			} else {
-				return (daysArray.length + 1) * hoursPerDay * rate;
-			}
-		}
+		return this._timeDurationService.countMaxMonthDuration(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth());
 	}
 }
