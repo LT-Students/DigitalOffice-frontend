@@ -136,7 +136,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
   public chosenMonthHandler(date: Date): void {
     this.selectedPeriod = this._setDatePeriod(date);
-    this._getStat()
+    this.statInfo$ = this._getStat()
   }
 
   public onPageChange(event: PageEvent): void {

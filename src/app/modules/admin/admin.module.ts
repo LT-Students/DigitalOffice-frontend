@@ -30,6 +30,7 @@ import { OfficeListComponent } from './components/office-list/office-list.compon
 import { PositionListComponent } from './components/position-list/position-list.component';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component'
+import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 
 @NgModule({
 	declarations: [
@@ -55,6 +56,7 @@ import { TeamStatisticsComponent } from './components/team-statistics/team-stati
 		PositionListComponent,
 		DirectorsTimelistComponent,
 		TeamStatisticsComponent,
+		LeaveLabelPipe
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
 	exports: [DndDirective, TeamStatisticsComponent],
