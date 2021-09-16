@@ -7,7 +7,10 @@ import { LeaveType } from '@data/api/time-service/models';
 })
 export class LeaveLabelPipe implements PipeTransform {
     transform(leaveType: LeaveType | undefined, emoji: boolean = true, label: boolean = true): string {
-        const leaveModel: ILeaveType | undefined = LeaveTimeModel.getLeaveInfoByLeaveType(leaveType!);
-        return `${emoji ? leaveModel?.emojiIcon : ''} ${label ? leaveModel?.leaveInRussian : ''}`;
+        if (!leaveType) return ''
+        else {
+            const leaveModel: ILeaveType | undefined = LeaveTimeModel.getLeaveInfoByLeaveType(leaveType);
+            return `${emoji ? leaveModel?.emojiIcon : ''} ${label ? leaveModel?.leaveInRussian : ''}`;
+        }
     }
 }

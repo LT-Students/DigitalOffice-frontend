@@ -183,8 +183,7 @@
                                 <ng-container *ngFor="let leave of stat.leaveTimes">
                                     <tr class='row'>
                                         <td class='cell cell_flexible'>
-                                            <span>{{leave.emojiIcon}}
-                                                {{leave.leaveInRussian}}</span>
+                                            <span>{{leave.leaveType | leaveLabel}}</span>
                                         </td>
                                         <td class='cell'>
                                             <span>{{leave.startTime | date: 'd/M/y'}} - {{leave.endTime | date:

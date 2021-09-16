@@ -8,13 +8,13 @@ import { DatePeriod } from '@data/models/date-period';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export interface EmployeeInformation {
+export interface EmployeeStats {
 	id?: string;
 	workTimeId?: string;
 	editMode?: boolean;
-	firstName?: string | null;
-	lastName?: string | null;
-	middleName?: string | null;
+	firstName?: string;
+	lastName?: string;
+	middleName?: string;
 	position?: string;
 	projectHours?: number | null;
 	managerHours?: number | null;
@@ -35,7 +35,7 @@ export class TeamStatisticsComponent implements OnInit {
 	public hoursGroup: FormGroup;
 
 	public selectedPeriod: DatePeriod;
-	public employees$: Observable<EmployeeInformation[]>;
+	public employees$: Observable<EmployeeStats[]> | undefined;
 
 	public pageSize: number;
 	public pageIndex: number;
@@ -48,7 +48,6 @@ export class TeamStatisticsComponent implements OnInit {
 		private _cdr: ChangeDetectorRef
 	) {
 		this.hoursGroup = this._formBuilder.group({});
-		this.employees$ = new Observable();
 		this.projectId = '';
 		this.selectedPeriod = this._setDatePeriod(new Date());
 		this.pageIndex = 0;
@@ -65,7 +64,7 @@ export class TeamStatisticsComponent implements OnInit {
 		this.employees$ = this._getEmployees()
 	}
 
-	public toggleEditMode(editMode: boolean, employee: EmployeeInformation): void {
+	public toggleEditMode(editMode: boolean, employee: EmployeeStats): void {
 		employee.editMode = editMode;
 
 		if (editMode) {
@@ -85,7 +84,7 @@ export class TeamStatisticsComponent implements OnInit {
 		}
 	}
 
-	public onSubmit(type: 'submit' | 'reset', employee: EmployeeInformation): void {
+	public onSubmit(type: 'submit' | 'reset', employee: EmployeeStats): void {
 		if (this.hoursGroup.invalid && type === 'submit') return;
 
 		const params: IEditWorkTimeRequest = {
@@ -109,7 +108,7 @@ export class TeamStatisticsComponent implements OnInit {
 		})
 	}
 
-	private _getEmployees(): Observable<EmployeeInformation[]> {
+	private _getEmployees(): Observable<EmployeeStats[]> {
 		const params: IFindStatRequest = {
 			projectId: this.projectId,
 			month: Number(this.selectedPeriod.startDate?.getMonth()) + 1,
@@ -126,14 +125,14 @@ export class TeamStatisticsComponent implements OnInit {
 				}))
 	}
 
-	private _mapStatInfo(statInfo: StatInfo): EmployeeInformation {
-		const employeeInfo: EmployeeInformation = {
+	private _mapStatInfo(statInfo: StatInfo): EmployeeStats {
+		const employeeInfo: EmployeeStats = {
 			workTimeId: statInfo.workTimes?.[0] ? statInfo.workTimes?.[0].id : undefined,
 			id: statInfo.user?.id,
 			editMode: false,
-			firstName: statInfo.user?.firstName,
-			lastName: statInfo.user?.lastName,
-			middleName: statInfo.user?.middleName,
+			firstName: statInfo.user?.firstName ?? '',
+			lastName: statInfo.user?.lastName ?? '',
+			middleName: statInfo.user?.middleName ?? '',
 			projectHours: statInfo.workTimes?.[0] ? statInfo.workTimes[0].userHours : 0,
 			managerHours: statInfo.workTimes?.[0] ? statInfo.workTimes[0].managerHours : 0,
 			leaves: statInfo.leaveTimes ?? [],

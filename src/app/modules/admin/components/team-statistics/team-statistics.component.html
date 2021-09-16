@@ -34,7 +34,7 @@
                 <ng-container *ngFor="let employee of employees">
                     <tr [ngClass]="{row: !employee.editMode}">
                         <td class="cell avatar">
-                            <img class="avatar__photo" src='assets/images/smallPhoto/Ellipse91.png'>
+                            <do-profile-image class="avatar__photo"></do-profile-image>
                             <div>
                                 <div>{{ employee?.firstName }} {{ employee?.lastName }}</div>
                                 <div doText color="gray1">{{ employee?.position }}</div>
@@ -44,14 +44,17 @@
                             <div class='cell__hours'>
                                 <ng-container *ngIf="!employee?.editMode; else input">
                                     <ng-container *ngIf="!employee?.managerHours; else managerHours">
-                                        <strong>{{ employee?.projectHours }}/<span class='text-gray1'>{{
-                                                employee?.normHours? employee?.normHours : 0
+                                        <strong>{{ employee?.projectHours ? employee.projectHours : 0}}/<span
+                                                class='text-gray1'>{{
+                                                employee?.normHours ? employee?.normHours : 0
                                                 }}</span></strong>
                                     </ng-container>
                                     <ng-template #managerHours>
                                         <strong>
-                                            {{ employee?.managerHours }}/<span class='text-gray1'>{{employee?.normHours?
-                                                employee?.normHours : 0}}</span>
+                                            {{ employee?.managerHours }}/
+                                            <span class='text-gray1'>
+                                                {{employee?.normHours ?employee?.normHours : 0}}
+                                            </span>
                                         </strong>
                                         <span class='text-gray1'>
                                             &nbsp;Изменено&nbsp;
@@ -75,12 +78,12 @@
                                             </mat-error>
                                             <input matInput [formControlName]="'hours_'+employee?.id" ngDefaultControl
                                                 class='text_bold'>
-                                        </mat-form-field>/{{ employee?.normHours? employee?.normHours : 0 }}
+                                        </mat-form-field>/{{ employee?.normHours ? employee?.normHours : 0 }}
                                     </div>
                                 </ng-template>
                             </div>
                         </td>
-                        <td [ngClass]="{'cell': true, 'cell__leaves': employee.leaves?.length! > 1}">
+                        <td class='cell' [ngClass]="{'cell__leaves': employee.leaves?.length! > 1}">
                             <ng-container *ngIf="employee.leaves?.length; else empty">
                                 <div *ngFor='let leave of employee.leaves' class='cell__leave-label'>
                                     {{ leave.leaveType | leaveLabel }}&nbsp;

@@ -1,7 +1,4 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { DndDirective } from '@app/directives/dnd.directive';
@@ -30,7 +27,7 @@ import { OfficeListComponent } from './components/office-list/office-list.compon
 import { PositionListComponent } from './components/position-list/position-list.component';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component'
-import { LeaveLabelPipe } from './pipes/leave-label.pipe';
+import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
 
 @NgModule({
 	declarations: [
