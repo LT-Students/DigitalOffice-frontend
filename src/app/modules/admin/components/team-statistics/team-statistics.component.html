@@ -1,55 +1,134 @@
 <mat-card class="card">
-        <div class="datepicker h3">
-            <h3 doText underlined underlinedSize="sm">Статистика за
-
-                <mat-form-field class="datepicker-hidden">
-                    <input matInput [matDatepicker]="picker"/>
-                    <mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event); picker.close()"></mat-datepicker>
-                </mat-form-field>
-
-                <a (click)="picker.open()" class="text-accent_color_bright">
-                {{selectedDate | date: 'LLLL YYYY' | titlecase }}
-                    <mat-icon class='datepicker__arrow'>keyboard_arrow_down</mat-icon>
-                </a>
-            </h3>
-        </div>
-        <table doText class="table__content regular_text" >
-            <thead>
-                <tr class='table__row'>
-                    <th class="h4 text-gray1" *ngFor="let header of displayedColumns">
-                        {{ header }}
-                    </th>
+    <div class="header h3">
+        <h3 doText underlined underlinedSize="sm">Статистика за
+            <mat-form-field class="header__period-input">
+                <input matInput [matDatepicker]="picker" />
+                <mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event); picker.close()">
+                </mat-datepicker>
+            </mat-form-field>
+            <span (click)="picker.open()" class="text-accent_color_bright header__period">
+                {{selectedPeriod.startDate | date: 'LLLL YYYY' | titlecase }}
+                <mat-icon class='header__icon'>keyboard_arrow_down</mat-icon>
+            </span>
+        </h3>
+    </div>
+    <ng-container *ngIf="employees$ | async as employees; else loader">
+        <table class="table">
+            <colgroup>
+                <col class="column column_width_m">
+                <col class="column column_width_sm">
+                <col class="column column_width_sm">
+                <col class="column column_width_sm">
+                <col class="column column_width_t">
+            </colgroup>
+            <thead class='text-gray1'>
+                <tr>
+                    <th class="regular_text">Имя</th>
+                    <th class="regular_text">Часы за проект/Норма</th>
+                    <th class="regular_text">Отсутствия</th>
+                    <th class="regular_text">Кол-во проектов</th>
+                    <th class="regular_text"></th>
                 </tr>
             </thead>
-            <tbody>
-                <tr class='table__row' *ngFor="let user of DATA">
-                    <td class="table__column-first">
-                        <img class="table__photo" src='assets/images/smallPhoto/Ellipse91.png'>
-                        <div class='first-column__description'>
-                            <p>{{ user?.name }} {{ user?.lastName }}</p>
-                            <p doText color="gray1">{{user?.position}}</p>
-                        </div>
-                    </td>
-                    <td>
-                        <p>{{ user?.projectHours }}/{{ user?.norm }}</p>
-                    </td>
-                    <td>
-                    <div *ngIf='user.absence; else empty'>
-                        <p>{{ user?.absence }}</p>
-                    </div>
-                    <ng-template #empty>
-                        <p class='text-gray1'>{{ "-" }}</p>
-                    </ng-template>
-                    </td>
-
-                    <td>
-                        <p>{{ user?.projectsCount }}</p>
-                    </td>
-                    <td>
-                        <img src='assets/svg/edit.svg'><img>
-                    </td>
-                </tr>
+            <tbody [formGroup]="hoursGroup">
+                <ng-container *ngFor="let employee of employees">
+                    <tr [ngClass]="{row: !employee.editMode}">
+                        <td class="cell avatar">
+                            <do-profile-image class="avatar__photo"></do-profile-image>
+                            <div>
+                                <div>{{ employee?.firstName }} {{ employee?.lastName }}</div>
+                                <div doText color="gray1">{{ employee?.position }}</div>
+                            </div>
+                        </td>
+                        <td class='cell'>
+                            <div class='cell__hours'>
+                                <ng-container *ngIf="!employee?.editMode; else input">
+                                    <ng-container *ngIf="!employee?.managerHours; else managerHours">
+                                        <strong>{{ employee?.projectHours ? employee.projectHours : 0}}/<span
+                                                class='text-gray1'>{{
+                                                employee?.normHours ? employee?.normHours : 0
+                                                }}</span></strong>
+                                    </ng-container>
+                                    <ng-template #managerHours>
+                                        <strong>
+                                            {{ employee?.managerHours }}/
+                                            <span class='text-gray1'>
+                                                {{employee?.normHours ?employee?.normHours : 0}}
+                                            </span>
+                                        </strong>
+                                        <span class='text-gray1'>
+                                            &nbsp;Изменено&nbsp;
+                                        </span>
+                                        <img src="../../../../../assets/svg/ant-design_info-circle-outlined.svg"
+                                            alt="info-circle">
+                                    </ng-template>
+                                </ng-container>
+                                <ng-template #input>
+                                    <div>
+                                        <mat-form-field appearance="fill">
+                                            <mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.min">
+                                                Минимальное значение должно быть не меньше нуля
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.number">
+                                                Введите число
+                                            </mat-error>
+                                            <mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.max">
+                                                Превышено максимальное значение
+                                            </mat-error>
+                                            <input matInput [formControlName]="'hours_'+employee?.id" ngDefaultControl
+                                                class='text_bold'>
+                                        </mat-form-field>/{{ employee?.normHours ? employee?.normHours : 0 }}
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </td>
+                        <td class='cell' [ngClass]="{'cell__leaves': employee.leaves?.length! > 1}">
+                            <ng-container *ngIf="employee.leaves?.length; else empty">
+                                <div *ngFor='let leave of employee.leaves' class='cell__leave-label'>
+                                    {{ leave.leaveType | leaveLabel }}&nbsp;
+                                    <img src='../../../../../assets/svg/ant-design_info-circle-outlined.svg'
+                                        alt='info-circle'>
+                                </div>
+                            </ng-container>
+                            <ng-template #empty>
+                                <span class='text-gray1'>{{ "-" }}</span>
+                            </ng-template>
+                        </td>
+                        <td class='cell'>
+                            <p>{{ employee?.projectsCount }}</p>
+                        </td>
+                        <td class='cell cell__icon'>
+                            <button mat-icon-button (click)="toggleEditMode(true, employee)">
+                                <img src='assets/svg/edit.svg' alt='edit' />
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="employee.editMode" class='row'>
+                        <td colspan="5">
+                            <div class='controls'>
+                                <button mat-flat-button (click)="toggleEditMode(false, employee)"
+                                    class='controls__button'>
+                                    <span class='regular_text text-gray1'>Отменить</span>
+                                </button>
+                                <button mat-flat-button color='accent' class='controls__button'
+                                    (click)="onSubmit('submit', employee)">
+                                    <span class='regular_text text-light_1'>Сохранить</span>
+                                </button>
+                                <button mat-flat-button class='controls__button bg-dark_1'
+                                    (click)="onSubmit('reset', employee)">
+                                    <span class='text-light_1'>Сбросить</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
-
+    </ng-container>
+    <ng-template #loader>
+        <div class='loader'>
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-template>
 </mat-card>
