@@ -5,6 +5,8 @@
 @use 'do/underlined';
 @use '~@angular/cdk/overlay-prebuilt';
 
+@import './stylesheets/material/expansion-panel';
+
 *,
 *::before,
 *::after {

@@ -1,9 +1,17 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	ViewChild,
+	ViewEncapsulation,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { ProjectUserInfo } from '@data/api/project-service/models/project-user-info';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
 	selector: 'do-project-page',
@@ -17,6 +25,9 @@ export class ProjectPageComponent implements OnInit {
 	public projectUsers: Array<ProjectUserInfo>;
 	public projectCreatedAt: Date;
 	public projectDuration: number;
+	public dayCountMap: { [k: string]: string };
+	public participantCountMap: { [k: string]: string };
+
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -27,6 +38,18 @@ export class ProjectPageComponent implements OnInit {
 		this.projectUsers = [];
 		this.projectCreatedAt = new Date();
 		this.projectDuration = 0;
+
+		this.dayCountMap = {
+			one: '# день',
+			few: '# дня',
+			other: '# дней',
+		};
+
+		this.participantCountMap = {
+			one: '# участник',
+			few: '# участника',
+			other: '# участников',
+		};
 	}
 
 	ngOnInit(): void {
@@ -45,7 +68,6 @@ export class ProjectPageComponent implements OnInit {
 	private _countProjectDuration(): number {
 		const currentTime = new Date();
 		const dayLength = 24 * 60 * 60 * 1000;
-
-		return Math.round(Math.abs((currentTime.getTime() - this.projectCreatedAt.getTime()) / dayLength));
+		return Math.round((currentTime.getTime() - this.projectCreatedAt.getTime()) / dayLength);
 	}
 }

@@ -27,6 +27,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
@@ -59,6 +60,7 @@ import { MatDividerModule } from '@angular/material/divider';
 		MatStepperModule,
 		MatPaginatorModule,
 		MatSidenavModule,
+		MatProgressSpinnerModule,
 		MatDividerModule,
 	],
 	exports: [
@@ -89,6 +91,7 @@ import { MatDividerModule } from '@angular/material/divider';
 		MatStepperModule,
 		MatPaginatorModule,
 		MatSidenavModule,
+		MatProgressSpinnerModule,
 		MatDividerModule,
 	],
 	providers: [{ provide: MatDialogRef, useValue: {} }],

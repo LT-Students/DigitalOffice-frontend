@@ -1,0 +1,85 @@
+@import 'base/variables';
+@import 'base/fonts';
+
+.header {
+	padding: 0 0 32px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	&__period-input {
+		visibility: hidden;
+
+		width: 0;
+		height: 0;
+	}
+
+	&__period {
+		cursor: pointer;
+	}
+
+	&__icon {
+		vertical-align: middle;
+	}
+}
+
+.cell {
+	padding: 30px 0 14px;
+
+	&__icon {
+		padding: 18px 0;
+
+		text-align: right;
+	}
+
+	&__hours {
+		display: flex;
+		align-items: center;
+	}
+
+	&__leaves {
+		padding-top: 16px;
+	}
+
+	&__leave-label {
+		margin-bottom: 8px;
+
+		display: flex;
+		align-items: center;
+	}
+}
+
+.avatar {
+	padding-top: 14px;
+
+	display: flex;
+	align-items: center;
+
+	&__photo {
+		margin-right: 20px;
+	}
+}
+
+.controls {
+	padding: 0 0 16px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&__button {
+		margin: 0 19px;
+
+		width: 180px;
+		height: 36px;
+	}
+}
+
+.loader {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 200px;
+}

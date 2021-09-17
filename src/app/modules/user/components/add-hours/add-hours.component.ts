@@ -14,6 +14,7 @@ import { OperationResultResponse, WorkTimeInfo } from '@data/api/time-service/mo
 import { DatePeriod } from '@data/models/date-period';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { timeValidator } from './add-hours.validators';
+import { TimeDurationService } from '@app/services/time-duration.service';
 
 @Component({
 	selector: 'do-add-hours',
@@ -39,9 +40,10 @@ export class AddHoursComponent implements OnDestroy {
 		private _fb: FormBuilder,
 		private _attendanceService: AttendanceService,
 		private _dateService: DateService,
-		private _snackbar: MatSnackBar
+		private _snackbar: MatSnackBar,
+		private _timeDurationService: TimeDurationService
 	) {
-		[ this.minDate, this.maxDate ] = this._attendanceService.getCalendarMinMax();
+		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 
 		this.isProjectForm = true;
 		this.monthOptions = [];
@@ -76,6 +78,7 @@ export class AddHoursComponent implements OnDestroy {
 
 	public changeDate(date: Date): void {
 		this._attendanceService.setNewDate(date);
+
 	}
 
 	private _setMonthOptions(selectedDate: Date): Date[] {
@@ -157,7 +160,7 @@ export class AddHoursComponent implements OnDestroy {
 			startDate: startDateValue,
 			endDate: endDateControl?.value,
 		};
-		this.recommendedTime.next(this._attendanceService.getRecommendedTime(datePeriod, 8, true));
+		this.recommendedTime.next(this._timeDurationService.getDuration(datePeriod, 8, true));
 	}
 
 	public ngOnDestroy(): void {

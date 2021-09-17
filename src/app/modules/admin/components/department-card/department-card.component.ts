@@ -6,9 +6,9 @@ import { UserService } from '@app/services/user/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
-import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { ModalService } from '@app/services/modal.service';
 import { OperationResultResponse, OperationResultStatusType } from '@data/api/company-service/models';
+import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-department-card',
