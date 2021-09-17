@@ -1,15 +1,15 @@
 <mat-card class="card card_standard">
 	<div class="card__header">
 		<div>
-			<h1 class="text-dark_2">{{ projectInfo?.name }}</h1>
+			<h1>{{ projectInfo?.name }}</h1>
 			<div class="card__splitter"></div>
-			<p class="text-gray">{{ projectInfo?.department?.name }}</p>
+			<p>{{ projectInfo?.department?.name }}</p>
 		</div>
 	</div>
 	<div class="card__content">
 		<div>
 			<div class="description">
-				<h2 class="text-dark_1 description__title">Детали проекта</h2>
+				<h2 class="description__title">Детали проекта</h2>
 				<div class="description__body">
 					<div class="description__column">
 						<p>Статус</p>
@@ -70,7 +70,7 @@
 					<td class="cell cell_vertical-middle">{{ userInfo?.rate ? userInfo?.rate : '—' }}</td>
 					<td class="cell cell_vertical-middle">
 						<p *ngIf="userInfo?.isActive" class="table__status text_color_white">Активен</p>
-						<p class="table__status table__status_archived text-gray1" *ngIf="!userInfo?.isActive">
+						<p class="table__status table__status_archived" *ngIf="!userInfo?.isActive">
 							В архиве
 						</p>
 					</td>

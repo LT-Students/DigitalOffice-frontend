@@ -52,19 +52,7 @@
 		top: -16px;
 
 		.mat-calendar {
-			font-family: variables.$regular_font;
-
 			color: variables.$dark_2;
-
-			.mat-calendar-header {
-				.mat-calendar-controls {
-					.mat-calendar-period-button {
-						.mat-button-wrapper {
-							font-family: variables.$regular_font;
-						}
-					}
-				}
-			}
 
 			.mat-calendar-content {
 				.mat-calendar-table {

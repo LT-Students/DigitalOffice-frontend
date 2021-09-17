@@ -62,7 +62,7 @@
 					</div>
 				</div>
 				<div class="employee-info__additional">
-					<div class="additional__line bg-light_3"></div>
+					<mat-divider class="additional__line" vertical></mat-divider>
 					<div class="form__column">
 						<h4>Контакты</h4>
 						<div class="employee-info__columns">
@@ -165,7 +165,7 @@
 			<div class="employee-info__main">
 				<div class="employee-info__avatar">
 					<do-profile-image [image]="employeeInfoForm.get('photo')?.value" size="l"></do-profile-image>
-					<label class="text-light_1 employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
+					<label class="mat-body-1 employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
 						</mat-icon>
@@ -244,7 +244,7 @@
 				</div>
 			</div>
 			<div class="employee-info__additional">
-				<div class="additional__line bg-light_3"></div>
+                <mat-divider class="additional__line" vertical></mat-divider>
 				<div class="form__column">
 					<h4>Контакты</h4>
 					<div class="employee-info__columns">
@@ -258,18 +258,12 @@
 				</div>
 			</div>
 			<div class="employee-info__form-buttons">
-				<button type="button" class="text-gray" mat-flat-button (click)="onReset()">Отменить</button>
-				<button
-					[disabled]="employeeInfoForm.invalid"
-					type="submit"
-                    color='primary'
-					class="employee-info__submit"
-					mat-flat-button
-				>
+				<button type="button" mat-button (click)="onReset()">Отменить</button>
+				<button [disabled]="employeeInfoForm.invalid" type="submit" color="primary" class="employee-info__submit" mat-flat-button>
 					Сохранить
 				</button>
 				<div class="employee-info__required-block">
-					<span class="text-negative_accent"> <sup>*</sup>&nbsp;Обязательное поле</span>
+					<span class="warn"> <sup>*</sup>&nbsp;Обязательное поле</span>
 				</div>
 			</div>
 		</div>

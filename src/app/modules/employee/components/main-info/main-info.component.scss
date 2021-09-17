@@ -127,8 +127,6 @@
 	}
 
 	&__stepper-button {
-		font-family: variables.$header_font;
-
 		&:disabled {
 			padding: 0;
 
@@ -174,14 +172,6 @@
 		font-size: 16px;
 
 		vertical-align: -20%;
-	}
-
-	&__required {
-		margin-left: 1px;
-
-		vertical-align: top;
-
-		color: variables.$negative_accent;
 	}
 
 	&__required-block {

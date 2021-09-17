@@ -6,20 +6,20 @@
 			<mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event, picker)"></mat-datepicker>
 		</mat-form-field>
 
-		<a (click)="picker.open()" class="mat-h3 chart__month-picker text-accent_color_bright">
+		<span (click)="picker.open()" class="mat-h3 chart__month-picker primary">
 			{{ selectedDate | date: 'LLLL YYYY' }}
 			<mat-icon>keyboard_arrow_down</mat-icon>
-		</a>
+		</span>
 	</h3>
 
 	<div class="chart__diagram-wrapper">
-		<button (click)="onPreviousMonthClicked(selectedDate)" class="bg-light_3" mat-mini-fab [class.mat-elevation-z0]="true">
+		<button (click)="onPreviousMonthClicked(selectedDate)" class="fab-button" mat-mini-fab [class.mat-elevation-z0]="true">
 			<mat-icon>chevron_left</mat-icon>
 		</button>
 		<div class="chart__doughnut">
 			<do-doughnut-chart></do-doughnut-chart>
 		</div>
-		<button (click)="onNextMonthClicked(selectedDate)" class="bg-light_3" mat-mini-fab [class.mat-elevation-z0]="true">
+		<button (click)="onNextMonthClicked(selectedDate)" class="fab-button" mat-mini-fab [class.mat-elevation-z0]="true">
 			<mat-icon>chevron_right</mat-icon>
 		</button>
 	</div>

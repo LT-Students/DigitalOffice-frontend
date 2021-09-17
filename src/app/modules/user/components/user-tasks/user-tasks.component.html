@@ -5,7 +5,7 @@
 			<input matInput [matDatepicker]="dp" />
 			<mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event, dp)"> </mat-datepicker>
 		</mat-form-field>
-		<span class="mat-h3 activities__period text-accent_color_bright" (click)="dp.open()">
+		<span class="mat-h3 activities__period primary" (click)="dp.open()">
 			{{ selectedDate$ | async | date: 'LLLL YYYY' }}
 			<mat-icon class="activities__icon">keyboard_arrow_down</mat-icon>
 		</span>

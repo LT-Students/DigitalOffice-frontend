@@ -1,8 +1,8 @@
 <mat-dialog-content class="archive">
 	<h3>Добавить эту карточку в архив?</h3>
 	<mat-dialog-actions align="center">
-		<button mat-flat-button mat-dialog-close type="button" class="archive__button">Отменить</button>
-		<button mat-flat-button [mat-dialog-close]="'Карточка успешно добавлена в архив'" type="submit" class="archive__button bg-dark_1">
+		<button mat-button mat-dialog-close type="button" class="archive__button">Отменить</button>
+		<button mat-flat-button color="warn" [mat-dialog-close]="'Карточка успешно добавлена в архив'" type="submit" class="archive__button">
 			Добавить
 		</button>
 	</mat-dialog-actions>

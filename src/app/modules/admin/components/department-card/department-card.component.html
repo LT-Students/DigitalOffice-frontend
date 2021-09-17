@@ -29,7 +29,7 @@
 	<div class="department__table table">
 		<div class="table__header">
 			<h3 doUnderline underlinedSize="sm">
-				Сотрудники <span class="mat-h3 text-accent_color_bright">{{ totalCount | i18nPlural: peopleCountMap }}</span>
+				Сотрудники <span class="mat-h3 primary">{{ totalCount | i18nPlural: peopleCountMap }}</span>
 			</h3>
 			<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 		</div>
@@ -65,10 +65,10 @@
 					</td>
 					<td>
 						<ng-container *ngIf="userInfo?.isActive; else archived">
-							<p class="table__status text-light_1">Активен</p>
+							<p class="user-status">Активен</p>
 						</ng-container>
 						<ng-template #archived>
-							<p class="table__status table__status_archived text-gray1">В архиве</p>
+							<p class="user-status user-status_archived">В архиве</p>
 						</ng-template>
 					</td>
 				</tr>

@@ -6,26 +6,7 @@
 	align-items: center;
 
 	&__input-field {
-		margin-bottom: 33px;
-
-		padding: 5px 0 0 5px;
-
 		width: 288px;
-		height: 24px;
-
-		color: variables.$dark_3;
-
-		background-color: transparent;
-		border-style: none;
-		border-bottom: 1px solid #f1f1ef;
-		opacity: 0.8;
-
-		&:focus {
-			//background-color: transparent;
-			//border-style: none;
-			//border-bottom: 1px solid #fff;
-			outline: none;
-		}
 	}
 
 	&__error {
@@ -37,10 +18,6 @@
 		align-items: center;
 
 		height: 24px;
-
-		font-family: variables.$regular_font;
-
-		color: variables.$negative_accent;
 
 		&.forgot {
 			margin-bottom: 0;
@@ -54,8 +31,6 @@
 		align-items: center;
 
 		width: 284px;
-
-		color: variables.$light_3;
 	}
 
 	&__title {
@@ -109,7 +84,7 @@
 				box-shadow: 0 0 7px rgba($color: #fff, $alpha: 0.4);
 
 				animation: dash 1.5s ease-in-out infinite;
-				stroke: variables.$preza_dc;
+				stroke: variables.$accent_color;
 				stroke-linecap: round;
 			}
 		}

@@ -11,15 +11,9 @@
 		margin-left: 1px;
 
 		vertical-align: top;
-
-		color: variables.$negative_accent;
 	}
 
 	&__form-field {
 		display: block;
-	}
-
-	&__input {
-		font-family: variables.$regular_font !important;
 	}
 }

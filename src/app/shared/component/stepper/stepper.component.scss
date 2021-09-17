@@ -8,8 +8,6 @@
 	}
 
 	&__button {
-		font-family: variables.$header_font;
-
 		&:disabled {
 			padding: 0;
 
@@ -23,17 +21,11 @@
 		margin-left: 1px;
 
 		vertical-align: top;
-
-		color: variables.$negative_accent;
 	}
 
 	&__form-field {
 		display: block;
 
 		text-align: center;
-	}
-
-	&__input {
-		font-family: variables.$regular_font !important;
 	}
 }
