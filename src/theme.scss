@@ -49,7 +49,7 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-grey, 500),
+				primary: mat.define-palette($do-grey),
 				accent: mat.define-palette($do-orange, 50),
 			),
 		)
@@ -59,7 +59,7 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-grey, 500),
+				primary: mat.define-palette($do-grey),
 				accent: mat.define-palette($do-orange, 50),
 			),
 		)
