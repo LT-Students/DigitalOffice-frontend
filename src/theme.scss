@@ -1,54 +1,8 @@
 @use '~@angular/material' as mat;
-
-/* ======== Angular material custom palette ======== */
-
-$do-palette: (
-	50: #00e676,
-	100: #cdf4df,
-	200: #bc7bfa,
-	300: #ef5350,
-	400: #ff8a65,
-	500: #fff4ed,
-	600: #424242,
-	700: #263238,
-	800: #9e9e9e,
-	900: #cecece,
-	A100: #eee,
-	A200: #f5f5f5,
-	A400: #fafafa,
-	A700: rgba(27, 21, 17, 0.8),
-	contrast: (
-		50: #fafafa,
-		100: #263238,
-		200: #cecece,
-		300: #fff4ed,
-		400: #fafafa,
-		500: #ff8a65,
-		600: #fafafa,
-		700: #f5f5f5,
-		800: #424242,
-		900: #ef5350,
-		A100: #00e676,
-		A200: #cdf4df,
-		A400: #bc7bfa,
-		A700: rgba(27, 21, 17, 0.8),
-	),
-);
+@use 'base/palettes' as *;
+@use 'material/fab-button' as fab;
 
 /* ======== Angular material custom themes ======== */
-
-$theme-primary: mat.define-palette($do-palette, 200);
-$theme-accent: mat.define-palette($do-palette, 50);
-$theme-warn: mat.define-palette(mat.$red-palette, 900);
-$app-theme: mat.define-light-theme(
-	(
-		color: (
-			primary: $theme-primary,
-			accent: $theme-accent,
-			warn: $theme-warn,
-		),
-	)
-);
 
 $custom-typography: mat.define-typography-config(
 	$font-family: 'Roboto, "Helvetica Neue", sans-serif',
@@ -63,13 +17,30 @@ $custom-typography: mat.define-typography-config(
 	$button: mat.define-typography-level(16px, 24px, 400),
 );
 
+@function create-theme($primary, $accent, $warn: mat.$red-palette) {
+	@return (
+		primary: $primary,
+		accent: $accent,
+		warn: $warn,
+		is-dark: false,
+		foreground: $light-theme-foreground-palette,
+		background: $light-theme-background-palette
+	);
+}
+
+$theme-primary: mat.define-palette($do-orange);
+$theme-accent: mat.define-palette($do-orange, 50);
+$theme-warn: mat.define-palette(mat.$red-palette, 400);
+$app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
+
+@include mat.all-component-themes($app-theme);
 @include mat.button-theme(
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-palette, 400, 400, 400),
-				accent: mat.define-palette($do-palette, 500),
-				warn: mat.define-palette($do-palette, 600),
+				primary: mat.define-palette($do-orange),
+				accent: mat.define-palette($do-orange, 50),
+				warn: mat.define-palette($do-grey, 800),
 			),
 		)
 	)
@@ -78,8 +49,8 @@ $custom-typography: mat.define-typography-config(
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-palette, 800, 800, 800, 600),
-				accent: mat.define-palette($do-palette, 500),
+				primary: mat.define-palette($do-grey, 500),
+				accent: mat.define-palette($do-orange, 50),
 			),
 		)
 	)
@@ -88,8 +59,8 @@ $custom-typography: mat.define-typography-config(
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-palette, 800, 800, 800, 600),
-				accent: mat.define-palette($do-palette, 500),
+				primary: mat.define-palette($do-grey, 500),
+				accent: mat.define-palette($do-orange, 50),
 			),
 		)
 	)
@@ -98,8 +69,8 @@ $custom-typography: mat.define-typography-config(
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-palette, 400, 400, 400),
-				accent: mat.define-palette($do-palette, 500),
+				primary: mat.define-palette($do-orange),
+				accent: mat.define-palette($do-orange, 50),
 			),
 		)
 	)
@@ -108,8 +79,8 @@ $custom-typography: mat.define-typography-config(
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-palette, 400, 400, 400),
-				accent: mat.define-palette($do-palette, 500),
+				primary: mat.define-palette($do-orange),
+				accent: mat.define-palette($do-orange, 50),
 			),
 		)
 	)
@@ -118,28 +89,75 @@ $custom-typography: mat.define-typography-config(
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-palette, 400),
-				accent: mat.define-palette($do-palette, 400),
+				primary: mat.define-palette($do-orange),
+				accent: mat.define-palette($do-orange),
 			),
 		)
 	)
 );
 @include mat.core($custom-typography);
 
-.mat-typography {
+.do-light {
+	.mat-h1,
 	h1 {
 		margin: 0 0 36px;
 	}
 
+	.mat-h1,
 	h2 {
 		margin: 0 0 32px;
 	}
 
+	.mat-h1,
 	h3 {
 		margin: 0 0 24px;
 	}
 
+	.mat-h1,
 	h4 {
 		margin: 0 0 12px;
 	}
+
+	span.mat-h3 {
+		margin: 0;
+	}
+
+	.mat-h1,
+	h1,
+	.mat-h2,
+	h2,
+	.mat-h3,
+	h3,
+	.mat-h4,
+	h4 {
+		color: mat.get-color-from-palette($do-grey, 900);
+	}
+
+	.mat-caption,
+	.mat-body-1 {
+		color: #9d9d9d;
+	}
+
+	.mat-card {
+		@include mat.elevation(0);
+	}
+
+	.primary {
+		color: mat.get-color-from-palette($do-orange, 500);
+	}
+
+	.warn {
+		color: mat.get-color-from-palette(mat.$red-palette, 400);
+	}
+
+	@include fab.theme(
+		mat.define-light-theme(
+			(
+				color: (
+					primary: mat.define-palette($do-grey, 100),
+					accent: mat.define-palette($do-grey, 50),
+				),
+			)
+		)
+	);
 }

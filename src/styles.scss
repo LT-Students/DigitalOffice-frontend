@@ -1,8 +1,6 @@
 @use 'base/variables';
-@use 'base/fonts';
 @use 'layouts/card';
 @use 'layouts/forms';
-@use 'layouts/buttons';
 @use 'layouts/table';
 @use 'do/underlined';
 @use '~@angular/cdk/overlay-prebuilt';
