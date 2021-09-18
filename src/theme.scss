@@ -1,6 +1,7 @@
 @use '~@angular/material' as mat;
 @use 'base/palettes' as *;
 @use 'material/fab-button' as fab;
+@use 'material/expansion-panel' as expansion;
 
 /* ======== Angular material custom themes ======== */
 
@@ -17,15 +18,14 @@ $custom-typography: mat.define-typography-config(
 	$button: mat.define-typography-level(16px, 24px, 400),
 );
 
-@function create-theme($primary, $accent, $warn: mat.$red-palette) {
-	@return (
-		primary: $primary,
-		accent: $accent,
-		warn: $warn,
-		is-dark: false,
-		foreground: $light-theme-foreground-palette,
-		background: $light-theme-background-palette
-	);
+@function create-theme(
+	$primary,
+	$accent,
+	$warn: mat.$red-palette,
+	$foreground: $light-theme-foreground-palette,
+	$background: $light-theme-background-palette
+) {
+	@return (primary: $primary, accent: $accent, warn: $warn, is-dark: false, foreground: $foreground, background: $background);
 }
 
 $theme-primary: mat.define-palette($do-orange);
@@ -138,6 +138,10 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 		color: #9d9d9d;
 	}
 
+	th {
+		@extend .mat-body-1;
+	}
+
 	.mat-card {
 		@include mat.elevation(0);
 	}
@@ -155,7 +159,17 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 			(
 				color: (
 					primary: mat.define-palette($do-grey, 100),
-					accent: mat.define-palette($do-grey, 50),
+					accent: mat.define-palette($do-orange, 500),
+				),
+			)
+		)
+	);
+	@include expansion.theme(
+		mat.define-light-theme(
+			(
+				color: (
+					primary: mat.define-palette($do-grey, 100),
+					accent: mat.define-palette($do-orange, 50),
 				),
 			)
 		)
