@@ -63,11 +63,11 @@
 	}
 
 	&__label-orange {
-		fill: $accent_color_bright;
+		fill: variables.$accent_color_bright;
 	}
 
 	&__label-grey {
-		fill: $gray1;
+		fill: variables.$gray1;
 	}
 }
 

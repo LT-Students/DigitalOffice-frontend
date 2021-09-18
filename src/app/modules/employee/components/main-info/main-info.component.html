@@ -1,4 +1,4 @@
-<div class="employee-info text_dark_1">
+<div class="employee-info">
 	<ng-container *ngIf="user">
 		<ng-container *ngIf="!canEdit() || !isEditing; else editForm">
 			<div class="employee-info__wrapper">
@@ -14,7 +14,7 @@
 							>{{ user.statusEmoji?.emojiIcon }}</span
 						>
 					</h3>
-					<q *ngIf="user?.about" class="employee-info__about">{{ user?.about }}</q>
+					<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
 				</div>
 				<div class="employee-info__general">
 					<h4>Общие сведения</h4>
