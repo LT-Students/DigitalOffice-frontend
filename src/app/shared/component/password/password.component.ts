@@ -37,10 +37,8 @@ export class PasswordComponent implements ControlValueAccessor {
 
 	public repeatPasswordErrorMatcher = new PasswordFieldErrorMatcher();
 	control = new FormControl(null, [ Validators.required ]);
-	onChange: any = () => {
-	};
-	onTouched: any = () => {
-	};
+	public onChange: (value: string) => void;
+	public onTouched: () => void;
 
 	constructor(@Optional() @Self() public ngControl: NgControl) {
 		if (this.ngControl) {
@@ -53,6 +51,8 @@ export class PasswordComponent implements ControlValueAccessor {
 		this.placeholder = '';
 		this.errors = '';
 		this.hide = true;
+		this.onChange = () => {};
+		this.onTouched = () => {};
 	}
 
 	public writeValue(value: any): void {
