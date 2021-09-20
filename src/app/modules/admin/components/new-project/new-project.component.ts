@@ -30,6 +30,7 @@ export class NewProjectComponent implements OnInit {
 	public departments: DepartmentInfo[];
 	public statuses: ProjectStatus[];
 	public membersAll: UserInfo[];
+	public pluralTeamCount: { [k: string]: string };
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -41,6 +42,10 @@ export class NewProjectComponent implements OnInit {
 		private _router: Router,
 		private _cdr: ChangeDetectorRef
 	) {
+		this.pluralTeamCount = {
+			few: '# человека',
+			other: '# человек',
+		};
 		this.statuses = [
 			new ProjectStatus(ProjectStatusType.Active),
 			new ProjectStatus(ProjectStatusType.Closed),
@@ -82,7 +87,11 @@ export class NewProjectComponent implements OnInit {
 	public addMember(): void {
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
 		this._modalService
-			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(UserSearchComponent, ModalWidth.L, modalData)
+			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(
+				UserSearchComponent,
+				ModalWidth.L,
+				modalData
+			)
 			.afterClosed()
 			.subscribe((result: UserInfo[] | undefined) => {
 				this.membersAll = result?.length ? [...result] : [];
@@ -91,7 +100,10 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public createProject(): void {
-		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({ role: ProjectUserRoleType.Manager, userId: user.id ?? '' }));
+		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({
+			role: ProjectUserRoleType.Manager,
+			userId: user.id ?? '',
+		}));
 		const projectRequest: ProjectRequest = {
 			name: this.projectForm.get('name')?.value?.trim(),
 			departmentId: this.projectForm.get('departmentId')?.value,
@@ -141,7 +153,9 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	private _getAllMembers(): TeamMember[] {
-		return this.teams.map((team: Team) => team.members).reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
+		return this.teams
+			.map((team: Team) => team.members)
+			.reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
 	}
 
 	private _sortLeads(team: Team): void {

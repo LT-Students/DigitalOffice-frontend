@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +26,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
 	imports: [
@@ -58,7 +59,9 @@ import { MatSidenavModule } from '@angular/material/sidenav'
 		OverlayModule,
 		MatStepperModule,
 		MatPaginatorModule,
-		MatSidenavModule
+		MatSidenavModule,
+		MatProgressSpinnerModule,
+		MatDividerModule,
 	],
 	exports: [
 		MatButtonModule,
@@ -87,8 +90,10 @@ import { MatSidenavModule } from '@angular/material/sidenav'
 		OverlayModule,
 		MatStepperModule,
 		MatPaginatorModule,
-		MatSidenavModule
+		MatSidenavModule,
+		MatProgressSpinnerModule,
+		MatDividerModule,
 	],
 	providers: [{ provide: MatDialogRef, useValue: {} }],
 })
-export class MaterialModule { }
+export class MaterialModule {}

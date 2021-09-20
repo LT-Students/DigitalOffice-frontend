@@ -1,50 +1,47 @@
-<div class='navigation' doText color='gray'>
-    <a class='navigation__link' routerLink='/admin/dashboard'>Администрирование </a>
-    <span doText color='gray'>
-        <mat-icon>chevron_right</mat-icon>
-    </span>
-    <a class='navigation__link'>Управление офисами</a>
+<div class="navigation">
+	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование </a>
+	<span>
+		<mat-icon>chevron_right</mat-icon>
+	</span>
+	<a class="navigation__link">Управление офисами</a>
 </div>
-<mat-card class='card card_standard'>
-    <div class='header'>
-        <h3 doText underlined underlinedSize='sm'>Офисы</h3>
-        <button mat-button color='orange' (click)='onAddOfficeClick()'>+ Добавить офис</button>
-    </div>
-    <table class='table' matSort>
-        <colgroup>
-            <col class='column column_width_m'>
-            <col class='column column_width_l'>
-            <col class='column column_width_m'>
-        </colgroup>
-        <thead>
-            <tr doText color="gray" class='row'>
-                <th mat-sort-header='city' class='cell'>
-                    <p class='regular_text'>Город</p>
-                </th>
-                <th mat-sort-header='address' class='cell'>
-                    <p class='regular_text'>Адрес</p>
-                </th>
-                <th mat-sort-header='name' class='cell'>
-                    <p class='regular_text'>Название</p>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let office of offices" class='row'>
-                <td doText class='cell'>
-                    <p class='regular_text cell__content cell__content_ellipsissed'>{{office.city ? office.city: '-'}}
-                    </p>
-                </td>
-                <td doText class='cell'>
-                    <do-comment [text]="office.address"></do-comment>
-                </td>
-                <td doText class='cell'>
-                    <p class='regular_text cell__content cell__content_ellipsissed'>{{office.name ? office.name : '—'}}
-                    </p>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
-        (page)="onPageChange($event)"></mat-paginator>
+<mat-card class="card card_standard">
+	<div class="header">
+		<h3 doUnderline underlinedSize="sm">Офисы</h3>
+		<button mat-flat-button color="accent" (click)="onAddOfficeClick()">+ Добавить офис</button>
+	</div>
+	<table class="table" matSort>
+		<colgroup>
+			<col class="column column_width_m" />
+			<col class="column column_width_l" />
+			<col class="column column_width_m" />
+		</colgroup>
+		<thead>
+			<tr class="row">
+				<th mat-sort-header="city" class="cell">
+					<p>Город</p>
+				</th>
+				<th mat-sort-header="address" class="cell">
+					<p>Адрес</p>
+				</th>
+				<th mat-sort-header="name" class="cell">
+					<p>Название</p>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let office of offices" class="row">
+				<td class="cell">
+					<p class="cell__content cell__content_ellipsissed">{{ office.city ? office.city : '-' }}</p>
+				</td>
+				<td class="cell">
+					<do-comment [text]="office.address"></do-comment>
+				</td>
+				<td class="cell">
+					<p class="cell__content cell__content_ellipsissed">{{ office.name ? office.name : '—' }}</p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 </mat-card>

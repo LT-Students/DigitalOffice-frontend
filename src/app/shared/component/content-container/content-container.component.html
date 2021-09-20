@@ -1,37 +1,32 @@
-<mat-sidenav-container class="sidenav" [hasBackdrop]="false" (click)="onClick($event)">
-	<mat-sidenav #menu [autoFocus]="false" [opened]="navOpened" class="sidenav__nav">
-		<div class="sidenav__header">
-			<h1 doText class="sidenav__title">{{ portalName }}</h1>
-			<button mat-icon-button doText color="gray1" class="sidenav__close-button" (click)="closeNav()">
-				<mat-icon> close </mat-icon>
-			</button>
-		</div>
-		<mat-action-list class="sidenav__group">
-			<a (click)="closeNav()" doText color="gray1" mat-list-item routerLink="/user/projects-table">
-				<span class="sidenav__icon">
-					<mat-icon>desktop_mac</mat-icon>
-				</span>
-				<span> Проекты </span>
+<mat-sidenav-container class="sidenav" (click)="onClick($event)">
+	<mat-sidenav #menu [autoFocus]="false" fixedInViewport [opened]="navOpened" class="sidenav__nav">
+		<h4 matSubheader>
+			<button mat-icon-button (click)="closeNav()">
+				<mat-icon>menu</mat-icon></button
+			>{{ portalName }}
+		</h4>
+		<mat-nav-list dense class="sidenav__group">
+			<a (click)="closeNav()" mat-list-item routerLink="/user/attendance">
+				<mat-icon matListIcon>watch_later</mat-icon>
+				<span class="mat-body">Учет времени</span>
 			</a>
-			<a (click)="closeNav()" doText color="gray1" mat-list-item routerLink="/admin/manage-users">
-				<span class="sidenav__icon">
-					<mat-icon>group</mat-icon>
-				</span>
-				<span> Сотрудники </span>
+			<a (click)="onStatClick()" mat-list-item>
+				<mat-icon matListIcon>analytics</mat-icon>
+				<span class="mat-body">Таймлист</span>
 			</a>
-			<a (click)="closeNav()" doText color="gray1" mat-list-item routerLink="/departments">
-				<span class="sidenav__icon">
-					<mat-icon>groups</mat-icon>
-				</span>
-				<span> Департаменты </span>
+			<a (click)="closeNav()" mat-list-item routerLink="/user/projects-table">
+				<mat-icon matListIcon>desktop_mac</mat-icon>
+				<span class="mat-body">Проекты</span>
 			</a>
-			<a (click)="closeNav()" doText color="gray1" mat-list-item>
-				<span class="sidenav__icon">
-					<mat-icon>business</mat-icon>
-				</span>
-				<span> Компании </span>
+			<a (click)="closeNav()" mat-list-item routerLink="/admin/manage-users">
+				<mat-icon matListIcon>group</mat-icon>
+				<span class="mat-body">Сотрудники</span>
 			</a>
-		</mat-action-list>
+			<a (click)="closeNav()" mat-list-item routerLink="/departments">
+				<mat-icon matListIcon>groups</mat-icon>
+				<span class="mat-body">Департаменты</span>
+			</a>
+		</mat-nav-list>
 	</mat-sidenav>
 
 	<mat-sidenav-content>

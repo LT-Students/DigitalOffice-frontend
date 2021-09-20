@@ -1,41 +1,40 @@
-<div class="navigation" doText color="gray">
+<div class="navigation">
 	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span doText color="gray">
+	<span>
 		<mat-icon>chevron_right</mat-icon>
 	</span>
 	<a class="navigation__link">Управление ролями</a>
 </div>
-<mat-card class='card card_standard'>
-	<div class='header'>
-		<h3 doText underlined underlinedSize='sm'>Роли</h3>
-		<button mat-button color='orange' (click)='onAddRoleClick()'>+ Добавить роль</button>
+<mat-card class="card card_standard">
+	<div class="header">
+		<h3 doUnderline underlinedSize="sm">Роли</h3>
+		<button mat-flat-button color="accent" (click)="onAddRoleClick()">+ Создать роль</button>
 	</div>
-	<table class='table' matSort>
+	<table class="table" matSort>
 		<colgroup>
-			<col class='column column_width_m'>
-			<col class='column column_width_l'>
+			<col class="column column_width_m" />
+			<col class="column column_width_l" />
 		</colgroup>
-		<thead doText color='gray'>
-			<tr class='row'>
-				<th mat-sort-header='name' class='cell'>
-					<p class='regular_text'>Название</p>
+		<thead>
+			<tr class="row">
+				<th mat-sort-header="name" class="cell">
+					<p>Название</p>
 				</th>
-				<th mat-sort-header='description' class='cell'>
-					<p class='regular_text'>Описание</p>
+				<th mat-sort-header="description" class="cell">
+					<p>Описание</p>
 				</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let role of roles" class='row'>
-				<td class='cell' doText>
-					<p class='regular_text cell__content cell__content_ellipsissed'>{{role.name? role.name : '—'}}</p>
+			<tr *ngFor="let role of roles" class="row">
+				<td class="cell">
+					<p class="cell__content cell__content_ellipsissed">{{ role.name ? role.name : '—' }}</p>
 				</td>
-				<td class='cell' doText color='gray'>
+				<td class="cell">
 					<do-comment [text]="role.description"></do-comment>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
-		(page)="onPageChange($event)"></mat-paginator>
+	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 </mat-card>

@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Pipe, PipeTransform } from '@angular/core';
 import { Project } from '@app/models/project/project.model';
 
@@ -9,9 +8,9 @@ export class TaskFilterPipe implements PipeTransform {
 	transform<T>(list: Project[], filterText: string): any {
 		return list
 			? list.map((item) => ({
-					...item,
-					tasks: item.getTasks().filter((task) => task?.description.includes(filterText)),
-			  }))
+				...item,
+				tasks: item.getTasks().filter((task) => task?.description.includes(filterText)),
+			}))
 			: [];
 	}
 }

@@ -1,45 +1,19 @@
-<form class='form' [formGroup]='loginForm' (ngSubmit)='signUp()' autocomplete='off'>
-    <h1 doText color='dark_1' class='form__title'>{{ portalName }}</h1>
-    <div class="form__description"><p doText color='gray1'>Придумайте логин и введите пароль из письма</p></div>
-    <div class='form__error' *ngIf='loginForm.hasError("busy") || (login?.touched && password?.touched && loginForm.invalid)'>
-        <small *ngIf='login?.dirty && login?.invalid'>Логин обязателен :(</small>
-        <small *ngIf='password?.dirty && password?.invalid'>Пароль обязателен :(</small>
-        <small *ngIf='loginForm.hasError("busy")'>{{ loginForm.getError("busy").error }}</small>
-    </div>
-    <input
-        class='form__input-field regular_text'
-        name='login'
-        type='text'
-        placeholder='Логин'
-        formControlName='login'
-    />
-    <input
-        class='form__input-field regular_text'
-        name='password'
-        type='password'
-        placeholder='Пароль'
-        formControlName='password'
-    />
-    <div class='form__submit'>
-        <button
-            class='regular_text'
-            *ngIf='!isWaiting; else spinner'
-            type='submit'
-            [disabled]='loginForm.invalid'
-            id='btn-enter'>
-            Войти
-        </button>
-        <ng-template #spinner>
-            <svg class='spinner' viewBox='0 0 50 50'>
-                <circle
-                    class='path'
-                    cx='25'
-                    cy='25'
-                    r='20'
-                    fill='none'
-                    stroke-width='5'
-                ></circle>
-            </svg>
-        </ng-template>
-    </div>
+<form class="form" [formGroup]="loginForm" (ngSubmit)="signUp()" autocomplete="off">
+	<h1 class="form__title">{{ portalName }}</h1>
+	<div class="form__description"><p>Придумайте логин и введите пароль из письма</p></div>
+	<div class="form__error" *ngIf="loginForm.hasError('busy') || (login?.touched && password?.touched && loginForm.invalid)">
+		<small *ngIf="login?.dirty && login?.invalid">Логин обязателен :(</small>
+		<small *ngIf="password?.dirty && password?.invalid">Пароль обязателен :(</small>
+		<small *ngIf="loginForm.hasError('busy')">{{ loginForm.getError('busy').error }}</small>
+	</div>
+	<input class="form__input-field" name="login" type="text" placeholder="Логин" formControlName="login" />
+	<input class="form__input-field" name="password" type="password" placeholder="Пароль" formControlName="password" />
+	<div class="form__submit">
+		<button *ngIf="!isWaiting; else spinner" type="submit" [disabled]="loginForm.invalid" id="btn-enter">Войти</button>
+		<ng-template #spinner>
+			<svg class="spinner" viewBox="0 0 50 50">
+				<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+			</svg>
+		</ng-template>
+	</div>
 </form>

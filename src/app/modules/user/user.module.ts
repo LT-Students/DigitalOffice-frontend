@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from '@angular/forms';
 
 import { AdminModule } from '../admin/admin.module';
 import { SharedModule } from '../../shared/shared.module';
-import { DateDescComponent } from './components/date-desc/date-desc.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { TimeWidgetComponent } from './components/time-widget/time-widget.component';
 import { AddHoursComponent } from './components/add-hours/add-hours.component';
@@ -23,7 +21,6 @@ import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/
 
 @NgModule({
 	declarations: [
-		DateDescComponent,
 		AttendanceComponent,
 		TimeWidgetComponent,
 		AddHoursComponent,

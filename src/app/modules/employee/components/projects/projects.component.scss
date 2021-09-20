@@ -1,3 +1,6 @@
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
+
 .projects-table {
 	&__card-title {
 		margin-bottom: -10px;
@@ -20,9 +23,11 @@
 	&__project {
 		padding: 32px 32px 20px;
 
-		flex: 0 1 256px;
+		background-color: mat.get-color-from-palette($do-grey, 100);
 
 		border-radius: 5px;
+
+		flex: 0 1 256px;
 	}
 
 	&__description {
