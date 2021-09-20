@@ -1,12 +1,10 @@
-@import 'base/variables';
-@import 'base/fonts';
-@import 'layouts/card';
-@import 'layouts/forms';
-@import 'layouts/buttons';
-@import 'layouts/table';
-@import 'do/underlined';
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import '~@angular/cdk/overlay-prebuilt.css';
+@use 'base/variables';
+@use 'layouts/card';
+@use 'layouts/forms';
+@use 'layouts/table';
+@use 'do/underlined';
+@use '~@angular/cdk/overlay-prebuilt';
+
 @import './stylesheets/material/expansion-panel';
 
 *,
@@ -55,14 +53,14 @@ textarea {
 
 	cursor: pointer;
 
-	color: $dark_4;
+	color: variables.$dark_4;
 
 	svg {
 		margin-right: 13px;
 
 		width: 5px;
 		height: 10px;
-		stroke: $dark_2;
+		stroke: variables.$dark_2;
 		fill: none;
 	}
 

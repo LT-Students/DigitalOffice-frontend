@@ -1,7 +1,4 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { DndDirective } from '@app/directives/dnd.directive';
@@ -13,7 +10,6 @@ import { NewEmployeeComponent } from './modals/new-employee/new-employee.compone
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { UserSearchComponent } from './components/new-project/modals/user-search/user-search.component';
 import { TeamCardComponent } from './components/team-cards/team-card.component';
-import { NewCompanyComponent } from './modals/new-company/new-company.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ProgressComponent } from './components/upload/progress/progress.component';
 import { NewDepartmentComponent } from './modals/new-department/new-department.component';
@@ -30,6 +26,7 @@ import { OfficeListComponent } from './components/office-list/office-list.compon
 import { PositionListComponent } from './components/position-list/position-list.component';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component'
+import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
 
 @NgModule({
 	declarations: [
@@ -38,7 +35,6 @@ import { TeamStatisticsComponent } from './components/team-statistics/team-stati
 		NewEmployeeComponent,
 		NewProjectComponent,
 		UserSearchComponent,
-		NewCompanyComponent,
 		TeamCardComponent,
 		UploadComponent,
 		ProgressComponent,
@@ -55,6 +51,7 @@ import { TeamStatisticsComponent } from './components/team-statistics/team-stati
 		PositionListComponent,
 		DirectorsTimelistComponent,
 		TeamStatisticsComponent,
+		LeaveLabelPipe
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
 	exports: [DndDirective, TeamStatisticsComponent],

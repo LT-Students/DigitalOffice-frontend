@@ -3,7 +3,7 @@
     class="select__form-field mat-form-field_default-select"
     appearance="fill"
   >
-    <mat-label doText color='gray' [regularTextSize]='textSize' *ngIf='label'>{{ label }}</mat-label>
+    <mat-label *ngIf='label'>{{ label }}</mat-label>
     <mat-select
       class="select__input"
       [formControl]="control"
@@ -24,6 +24,6 @@
 </ng-container>
 
 <ng-template #textBlock>
-  <p class="small_text text-gray">{{ label }}</p>
-  <p doText>{{ control?.value }}</p>
+  <p>{{ label }}</p>
+  <p>{{ control?.value }}</p>
 </ng-template>

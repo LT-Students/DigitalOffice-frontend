@@ -1,216 +1,207 @@
-<mat-card class='card'>
-    <div class='header'>
-        <h3 doText underlined underlinedSize='sm'>Таймлист для ДД за
-            <span doText color='accent_color'>
-                <mat-form-field class="header__period-input">
-                    <input matInput [matDatepicker]="dp" />
-                    <mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event); dp.close()">
-                    </mat-datepicker>
-                </mat-form-field>
-            </span>
-            <span class="header__period text-accent_color_bright" (click)="dp.open()">
-                {{selectedPeriod.startDate | date: 'LLLL YYYY'}}
-                <mat-icon class="header__icon">keyboard_arrow_down</mat-icon>
-            </span>
-        </h3>
-        <button mat-flat-button color='orange' (click)="onDownload()">
-            <span class='regular_text'>
-                <img src='../../../../../assets/svg/download.svg' alt='download' class='header__icon'> Выгрузить часы
-            </span>
-        </button>
-    </div>
-    <div class='timelist'>
-        <mat-form-field appearance="fill" class='timelist__search-form'>
-            <mat-label>Поиск по фамилии и имени</mat-label>
-            <input matInput type="search" />
-            <mat-icon matPrefix>search</mat-icon>
-        </mat-form-field>
-        <h3 class='h3'>Найдено {{totalCount}} сотрудников</h3>
-        <ng-container *ngIf="statInfo$ | async as statInfo; else loader">
-            <table class='table timelist__table'>
-                <colgroup>
-                    <col class='column column_width_m'>
-                    <col class='column column_width_m'>
-                    <col class='column column_width_m'>
-                    <col class='column column_width_m'>
-                </colgroup>
-                <thead doText color='gray1'>
-                    <tr>
-                        <th class='regular_text'>Имя</th>
-                        <th class='regular_text'>Часы/Норма</th>
-                        <th class='regular_text'>Проекты</th>
-                        <th class='regular_text'>Доступные дни отпуска</th>
-                    </tr>
-                </thead>
-            </table>
-            <mat-expansion-panel *ngFor='let stat of statInfo' class='timelist__panel panel'>
-                <mat-expansion-panel-header class='bg-light_3' collapsedHeight='48px' expandedHeight='48px'>
-                    <table class='table'>
-                        <colgroup>
-                            <col class='column column_width_m'>
-                            <col class='column column_width_m'>
-                            <col class='column column_width_m'>
-                            <col class='column column_width_m'>
-                        </colgroup>
-                        <thead>
-                            <tr>
-                                <th class='regular_text'>{{stat.user?.firstName}} {{stat.user?.lastName}}</th>
-                                <th class='regular_text'>{{stat.totalHours}}/{{stat.limitInfo?.normHours?
-                                    stat.limitInfo?.normHours : 0}}</th>
-                                <th class='regular_text'>{{stat.workTimes?.length}}</th>
-                                <th class='regular_text'>???</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </mat-expansion-panel-header>
-                <ng-template matExpansionPanelContent>
-                    <div class='panel__table'>
-                        <h4 class='h4'>Детализация по проектам</h4>
-                        <table class='table'>
-                            <colgroup>
-                                <col class='column column_width_m'>
-                                <col class='column column_width_m'>
-                                <col class='column column_width_35'>
-                                <col class='column column_width_t'>
-                            </colgroup>
-                            <thead doText color='gray1'>
-                                <tr>
-                                    <th class='regular_text'>
-                                        Название проекта
-                                    </th>
-                                    <th class='regular_text'>
-                                        Внесённые часы
-                                    </th>
-                                    <th class='regular_text'>
-                                        Комментарий сотрудника
-                                    </th>
-                                    <th class='regular_text'></th>
-                                </tr>
-                            </thead>
-                            <tbody [formGroup]="hoursGroup">
-                                <ng-container *ngFor="let workTime of stat.workTimes">
-                                    <tr [ngClass]="{row: !workTime?.editMode}">
-                                        <td class='cell'>{{workTime?.project?.name}}</td>
-                                        <td class='cell cell_flexible'>
-                                            <ng-container *ngIf="!workTime?.editMode; else input">
-                                                <ng-container
-                                                    *ngIf="workTime?.managerHours === null; else managerHours">
-                                                    <span>{{workTime?.userHours? workTime?.userHours : 0}}</span>
-                                                </ng-container>
-                                                <ng-template #managerHours>
-                                                    <span>{{workTime?.managerHours}}&nbsp;&nbsp;</span>
-                                                    <span doText color='gray1' class='small_text'>Изменено&nbsp;
-                                                    </span>
-                                                    <img src='../../../../../assets/svg/ant-design_info-circle-outlined.svg'
-                                                        alt='info-cicle' />
-                                                </ng-template>
-                                            </ng-container>
-                                            <ng-template #input>
-                                                <mat-form-field appearance="fill">
-                                                    <mat-error
-                                                        *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.min">
-                                                        Минимальное значение должно быть не меньше нуля
-                                                    </mat-error>
-                                                    <mat-error
-                                                        *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.number">
-                                                        Введите число
-                                                    </mat-error>
-                                                    <mat-error
-                                                        *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.max">
-                                                        Превышено максимальное значение
-                                                    </mat-error>
-                                                    <input matInput [formControlName]="'hours_'+workTime?.id"
-                                                        ngDefaultControl class='text_bold'>
-                                                </mat-form-field>
-                                            </ng-template>
-                                        </td>
-                                        <td class='cell'>
-                                            <do-comment [text]="workTime?.description"></do-comment>
-                                        </td>
-                                        <td class='cell cell__icon'>
-                                            <button mat-icon-button (click)="toggleEditMode(true, workTime)">
-                                                <img src='../../../../../assets/svg/edit.svg' alt='edit' />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr *ngIf="workTime?.editMode" class='row'>
-                                        <td colspan='4'>
-                                            <div class='controls'>
-                                                <button mat-flat-button (click)="toggleEditMode(false, workTime)"
-                                                    class='button controls__button'>
-                                                    <span class='regular_text text-gray1'>Отменить</span>
-                                                </button>
-                                                <button mat-flat-button color='accent' class='button controls__button'
-                                                    (click)="onSubmit('submit', workTime, stat)">
-                                                    <span class='regular_text text-light_1'>Сохранить</span>
-                                                </button>
-                                                <button mat-flat-button class='button controls__button bg-dark_1'
-                                                    (click)="onSubmit('reset', workTime, stat)">
-                                                    <span class='text-light_1'>Сбросить</span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </ng-container>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- </ng-container> -->
-                    <div class="panel__table">
-                        <h4 class='h4'>Детализация по отсутствиям</h4>
-                        <table class='table'>
-                            <colgroup>
-                                <col class='column column_width_m'>
-                                <col class='column column_width_m'>
-                                <col class='column column_width_35'>
-                                <col class='column column_width_t'>
-                            </colgroup>
-                            <thead doText color='gray1'>
-                                <tr>
-                                    <th class='regular_text'>
-                                        Тип отсутствия
-                                    </th>
-                                    <th class='regular_text'>
-                                        Дата отсутствия
-                                    </th>
-                                    <th class='regular_text'>
-                                        Комментарий сотрудника
-                                    </th>
-                                    <th class='regular_text'></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <ng-container *ngFor="let leave of stat.leaveTimes">
-                                    <tr class='row'>
-                                        <td class='cell cell_flexible'>
-                                            <span>{{leave.emojiIcon}}
-                                                {{leave.leaveInRussian}}</span>
-                                        </td>
-                                        <td class='cell'>
-                                            <span>{{leave.startTime | date: 'd/M/y'}} - {{leave.endTime | date:
-                                                'd/M/y'}}
-                                                ({{leave.periodInHours}} ч)</span>
-                                        </td>
-                                        <td class='cell'>
-                                            <do-comment [text]="leave.comment"></do-comment>
-                                        </td>
-                                        <td class='cell'>
-                                        </td>
-                                    </tr>
-                                </ng-container>
-                            </tbody>
-                        </table>
-                    </div>
-                </ng-template>
-            </mat-expansion-panel>
-        </ng-container>
-        <ng-template #loader>
-            <div class='loader'>
-                <mat-spinner></mat-spinner>
-            </div>
-        </ng-template>
-        <mat-paginator [length]="totalCount" [pageIndex]="pageIndex" [pageSize]="pageSize"
-            [pageSizeOptions]="[20, 35, 50]" (page)="onPageChange($event)">
-        </mat-paginator>
-    </div>
+<mat-card class="card">
+	<div class="header">
+		<h3 doUnderline underlinedSize="sm">
+			Таймлист для ДД за
+			<span>
+				<mat-form-field class="header__period-input">
+					<input matInput [matDatepicker]="dp" />
+					<mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event); dp.close()"> </mat-datepicker>
+				</mat-form-field>
+			</span>
+			<span class="header__period primary" (click)="dp.open()">
+				{{ selectedPeriod.startDate | date: 'LLLL YYYY' }}
+				<mat-icon class="header__icon">keyboard_arrow_down</mat-icon>
+			</span>
+		</h3>
+		<button mat-flat-button color="accent" (click)="onDownload()">
+			<span> <img src="../../../../../assets/svg/download.svg" alt="download" class="header__icon" /> Выгрузить часы </span>
+		</button>
+	</div>
+	<div class="timelist">
+		<mat-form-field appearance="fill" class="timelist__search-form">
+			<mat-label>Поиск по фамилии и имени</mat-label>
+			<input matInput type="search" />
+			<mat-icon matPrefix>search</mat-icon>
+		</mat-form-field>
+		<h3 class="h3">Найдено {{ totalCount }} сотрудников</h3>
+		<ng-container *ngIf="statInfo$ | async as statInfo; else loader">
+			<table class="table timelist__table">
+				<colgroup>
+					<col class="column column_width_m" />
+					<col class="column column_width_m" />
+					<col class="column column_width_m" />
+					<col class="column column_width_m" />
+				</colgroup>
+				<thead>
+					<tr>
+						<th>Имя</th>
+						<th>Часы/Норма</th>
+						<th>Проекты</th>
+						<th>Доступные дни отпуска</th>
+					</tr>
+				</thead>
+			</table>
+			<mat-expansion-panel *ngFor="let stat of statInfo" class="timelist__panel panel">
+				<mat-expansion-panel-header collapsedHeight="48px" expandedHeight="48px">
+					<table class="table">
+						<colgroup>
+							<col class="column column_width_m" />
+							<col class="column column_width_m" />
+							<col class="column column_width_m" />
+							<col class="column column_width_m" />
+						</colgroup>
+						<thead>
+							<tr>
+								<th>{{ stat.user?.firstName }} {{ stat.user?.lastName }}</th>
+								<th>{{ stat.totalHours }} /{{ stat.limitInfo?.normHours ? stat.limitInfo?.normHours : 0 }}</th>
+								<th>{{ stat.workTimes?.length }}</th>
+								<th>???</th>
+							</tr>
+						</thead>
+					</table>
+				</mat-expansion-panel-header>
+				<ng-template matExpansionPanelContent>
+					<div class="panel__table">
+						<h4 class="h4">Детализация по проектам</h4>
+						<table class="table">
+							<colgroup>
+								<col class="column column_width_m" />
+								<col class="column column_width_m" />
+								<col class="column column_width_35" />
+								<col class="column column_width_t" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>Название проекта</th>
+									<th>Внесённые часы</th>
+									<th>Комментарий сотрудника</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody [formGroup]="hoursGroup">
+								<ng-container *ngFor="let workTime of stat.workTimes">
+									<tr [ngClass]="{ row: !workTime?.editMode }">
+										<td class="cell">{{ workTime?.project?.name }}</td>
+										<td class="cell cell_flexible">
+											<ng-container *ngIf="!workTime?.editMode; else input">
+												<ng-container *ngIf="workTime?.managerHours === null; else managerHours">
+													<span>{{ workTime?.userHours ? workTime?.userHours : 0 }}</span>
+												</ng-container>
+												<ng-template #managerHours>
+													<span>{{ workTime?.managerHours }}&nbsp;&nbsp;</span>
+													<span>Изменено&nbsp; </span>
+													<img src="../../../../../assets/svg/ant-design_info-circle-outlined.svg" alt="info-cicle" />
+												</ng-template>
+											</ng-container>
+											<ng-template #input>
+												<mat-form-field appearance="fill">
+													<mat-error *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.min">
+														Минимальное значение должно быть не меньше нуля
+													</mat-error>
+													<mat-error *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.number">
+														Введите число
+													</mat-error>
+													<mat-error *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.max">
+														Превышено максимальное значение
+													</mat-error>
+													<input matInput [formControlName]="'hours_' + workTime?.id" ngDefaultControl class="text_bold" />
+												</mat-form-field>
+											</ng-template>
+										</td>
+										<td class="cell">
+											<do-comment [text]="workTime?.description"></do-comment>
+										</td>
+										<td class="cell cell__icon">
+											<button mat-icon-button (click)="toggleEditMode(true, workTime)">
+												<img src="../../../../../assets/svg/edit.svg" alt="edit" />
+											</button>
+										</td>
+									</tr>
+									<tr *ngIf="workTime?.editMode" class="row">
+										<td colspan="4">
+											<div class="controls">
+												<button mat-button (click)="toggleEditMode(false, workTime)" class="button controls__button">
+													Отменить
+												</button>
+												<button
+													mat-flat-button
+													color="primary"
+													class="button controls__button"
+													(click)="onSubmit('submit', workTime, stat)"
+												>
+													Сохранить
+												</button>
+												<button
+													mat-flat-button
+													color="warn"
+													class="button controls__button"
+													(click)="onSubmit('reset', workTime, stat)"
+												>
+													Сбросить
+												</button>
+											</div>
+										</td>
+									</tr>
+								</ng-container>
+							</tbody>
+						</table>
+					</div>
+					<!-- </ng-container> -->
+					<div class="panel__table">
+						<h4 class="h4">Детализация по отсутствиям</h4>
+						<table class="table">
+							<colgroup>
+								<col class="column column_width_m" />
+								<col class="column column_width_m" />
+								<col class="column column_width_35" />
+								<col class="column column_width_t" />
+							</colgroup>
+							<thead>
+								<tr>
+									<th>Тип отсутствия</th>
+									<th>Дата отсутствия</th>
+									<th>Комментарий сотрудника</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<ng-container *ngFor="let leave of stat.leaveTimes">
+									<tr class="row">
+										<td class="cell cell_flexible">
+											<span>{{ leave.leaveType | leaveLabel }}</span>
+										</td>
+										<td class="cell">
+											<span
+												>{{ leave.startTime | date: 'd/M/y' }} - {{ leave.endTime | date: 'd/M/y' }} ({{
+													leave.periodInHours
+												}}
+												ч)</span
+											>
+										</td>
+										<td class="cell">
+											<do-comment [text]="leave.comment"></do-comment>
+										</td>
+										<td class="cell"></td>
+									</tr>
+								</ng-container>
+							</tbody>
+						</table>
+					</div>
+				</ng-template>
+			</mat-expansion-panel>
+		</ng-container>
+		<ng-template #loader>
+			<div class="loader">
+				<mat-spinner></mat-spinner>
+			</div>
+		</ng-template>
+		<mat-paginator
+			[length]="totalCount"
+			[pageIndex]="pageIndex"
+			[pageSize]="pageSize"
+			[pageSizeOptions]="[20, 35, 50]"
+			(page)="onPageChange($event)"
+		>
+		</mat-paginator>
+	</div>
 </mat-card>

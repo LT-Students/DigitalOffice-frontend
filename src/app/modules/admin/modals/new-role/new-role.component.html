@@ -12,8 +12,8 @@
 					<input matInput type="text" id="description" formControlName="description" />
 				</mat-form-field>
 				<div class="new-role__input">
-					<p doText color="dark_1">
-						Выберите права<sup class="text-accent_color_bright" matTooltip="Выберите хотя бы одно право" matTooltipPosition="right"
+					<p>
+						Выберите права<sup class="primary" matTooltip="Выберите хотя бы одно право" matTooltipPosition="right"
 							>*</sup
 						>
 					</p>
@@ -25,7 +25,7 @@
 		</div>
 	</mat-dialog-content>
 	<mat-dialog-actions align="center">
-		<button class="text-gray" mat-flat-button mat-dialog-close type="button">Отмена</button>
-		<button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid">Добавить роль</button>
+		<button mat-button mat-dialog-close type="button">Отмена</button>
+		<button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid">Создать роль</button>
 	</mat-dialog-actions>
 </form>

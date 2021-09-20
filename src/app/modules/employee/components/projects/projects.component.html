@@ -1,26 +1,26 @@
 <div class="projects-table">
-	<h3 class="projects-table__card-title" doText color="dark_2" underlined underlinedSize="sm">Проекты</h3>
+	<h3 class="projects-table__card-title" doUnderline underlinedSize="sm">Проекты</h3>
 	<ng-container *ngFor="let section of projects$ | async">
 		<section *ngIf="section.projects.length > 0" class="projects-table__section">
-			<h3 doText color="dark_1" class="projects-table__group-title">
+			<h3 class="projects-table__group-title">
 				{{ section.name }}
-				<span class="text-accent_color_bright">{{ section.projects.length | i18nPlural: section.plural }}</span>
+				<span class="mat-h3 primary">{{ section.projects.length | i18nPlural: section.plural }}</span>
 			</h3>
 			<div class="projects-table__container">
-				<div *ngFor="let project of section.projects" class="projects-table__project bg-light_2">
-					<h4 doText color="dark_2">{{ project.name }}</h4>
-					<!--          <p doText color="gray1">project.consumer.name</p>-->
-					<p class="projects-table__description" doText color="dark_1">
+				<div *ngFor="let project of section.projects" class="projects-table__project">
+					<h4>{{ project.name }}</h4>
+					<!--          <p>project.consumer.name</p>-->
+					<p class="projects-table__description">
 						{{ project.description ? project.description : 'Описание отсутствует' }}
 					</p>
-					<!--          <p doText color="gray1">Направление</p>-->
-					<!--          <p doText color="dark_1">{{ project.shortName }}</p>-->
-					<!--<p doText color="gray1">В проекте</p>
-          <p doText color="dark_1">
+					<!--          <p>Направление</p>-->
+					<!--          <p>{{ project.shortName }}</p>-->
+					<!--<p>В проекте</p>
+          <p>
             С project.startedAt
             <span>по project.endedAt</span>
           </p>-->
-					<p class="projects-table__more-button" doText color="gray1" (click)="onMoreClicked(project?.id)">
+					<p class="projects-table__more-button" (click)="onMoreClicked(project?.id)">
 						Подробнее
 						<mat-icon>keyboard_arrow_right</mat-icon>
 					</p>

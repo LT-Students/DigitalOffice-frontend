@@ -7,7 +7,6 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { ModalService } from '@app/services/modal.service';
-import { OperationResultResponse, OperationResultStatusType } from '@data/api/company-service/models';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({

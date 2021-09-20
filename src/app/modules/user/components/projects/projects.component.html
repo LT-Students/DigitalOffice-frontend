@@ -1,4 +1,4 @@
-<h4 class="h4">Таблица проектов</h4>
+<h4>Таблица проектов</h4>
 <table class="table">
 	<colgroup>
 		<col class="column column_width_m" />
@@ -7,42 +7,42 @@
 		<col class="column column_width_l" />
 		<col class="column column_width_t" />
 	</colgroup>
-	<thead doText color="gray1">
+	<thead>
 		<tr class="row">
 			<th class="cell">
-				<p class="regular_text">Название проекта</p>
+				<p>Название проекта</p>
 			</th>
 			<th class="cell">
-				<p class="regular_text">Внесенные часы</p>
+				<p>Внесенные часы</p>
 			</th>
 			<th class="cell">
-				<p class="regular_text">Дата внесения</p>
+				<p>Дата внесения</p>
 			</th>
 			<th class="cell">
-				<p class="regular_text">Комментарий</p>
+				<p>Комментарий</p>
 			</th>
 			<th class="cell">
-				<p class="regular_text"></p>
+				<p></p>
 			</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr *ngFor="let project of projects" class="row">
 			<td class="cell">
-				<p class="regular_text">{{ project?.project?.name }}</p>
+				<p>{{ project?.project?.name }}</p>
 			</td>
 			<td class="cell">
-				<p class="regular_text">{{ project?.userHours ? project?.userHours : 0 }} ч</p>
+				<p>{{ project?.userHours ? project?.userHours : 0 }} ч</p>
 			</td>
 			<td class="cell">
-				<p *ngIf="project?.modifiedAtUtc; else empty" class="regular_text">{{ project?.modifiedAtUtc | date: 'd MMMM' }}</p>
+				<p *ngIf="project?.modifiedAtUtc; else empty">{{ project?.modifiedAtUtc | date: 'd MMMM' }}</p>
 			</td>
 			<td class="cell">
 				<do-comment *ngIf="project?.description; else empty" [text]="project?.description"></do-comment>
 			</td>
 			<td class="cell cell__icon">
 				<button *ngIf="canEdit" mat-icon-button (click)="openEditModal(project)">
-					<mat-icon doText color="gray1">edit</mat-icon>
+					<mat-icon>edit</mat-icon>
 				</button>
 			</td>
 		</tr>

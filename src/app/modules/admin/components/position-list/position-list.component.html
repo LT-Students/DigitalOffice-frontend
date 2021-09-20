@@ -1,42 +1,40 @@
-<div class='navigation' doText color='gray'>
-    <a class='navigation__link' routerLink='/admin/dashboard'>Администрирование </a>
-    <span doText color='gray'>
-        <mat-icon>chevron_right</mat-icon>
-    </span>
-    <a class='navigation__link'>Управление должностями</a>
+<div class="navigation">
+	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование </a>
+	<span>
+		<mat-icon>chevron_right</mat-icon>
+	</span>
+	<a class="navigation__link">Управление должностями</a>
 </div>
-<mat-card class='card card_standard'>
-    <div class='header'>
-        <h3 doText underlined underlinedSize='sm'>Должности</h3>
-        <button mat-button color='orange' (click)='onAddPositionClick()'>+ Добавить должность</button>
-    </div>
-    <table class='table' matSort>
-        <colgroup>
-            <col class='column column_width_m'>
-            <col class='column column_width_l'>
-        </colgroup>
-        <thead doText color='gray'>
-            <tr class='row'>
-                <th mat-sort-header='name' class='cell'>
-                    <p class='regular_text'>Название</p>
-                </th>
-                <th mat-sort-header='description' class='cell'>
-                    <p class='regular_text'>Описание</p>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let position of positions" class='row'>
-                <td class='cell' doText>
-                    <p class='regular_text cell__content cell__content_ellipsissed'>{{position.name ? position.name :
-                        '—'}}</p>
-                </td>
-                <td class='cell' doText color='gray'>
-                    <do-comment [text]="position.description"></do-comment>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
-        (page)="onPageChange($event)"></mat-paginator>
+<mat-card class="card card_standard">
+	<div class="header">
+		<h3 doUnderline underlinedSize="sm">Должности</h3>
+		<button mat-flat-button color="accent" (click)="onAddPositionClick()">+ Создать должность</button>
+	</div>
+	<table class="table" matSort>
+		<colgroup>
+			<col class="column column_width_m" />
+			<col class="column column_width_l" />
+		</colgroup>
+		<thead>
+			<tr class="row">
+				<th mat-sort-header="name" class="cell">
+					<p>Название</p>
+				</th>
+				<th mat-sort-header="description" class="cell">
+					<p>Описание</p>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let position of positions" class="row">
+				<td class="cell">
+					<p class="cell__content cell__content_ellipsissed">{{ position.name ? position.name : '—' }}</p>
+				</td>
+				<td class="cell">
+					<do-comment [text]="position.description"></do-comment>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 </mat-card>
