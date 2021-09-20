@@ -83,7 +83,7 @@
 				<div class="section__title_left">
 					<h3 doUnderline underlinedSize="sm">Команда</h3>
 					&nbsp;
-					<h3>{{ totalMembersCount() }} человек</h3>
+					<h3 class='primary'>{{ membersAll.length | i18nPlural: pluralTeamCount }}</h3>
 				</div>
 				<!--				<div class="section__title_right">-->
 				<!--					<button mat-flat-button color="primary" type="button" (click)="showProjectTeam()">Посмотреть всю команду</button>-->
