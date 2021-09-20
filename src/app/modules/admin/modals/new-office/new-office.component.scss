@@ -1,14 +1,4 @@
 .form__container {
-	padding: 20px;
-
-	background: #fff;
-}
-
-.new-office {
-	&__input-container {
-		margin-bottom: 20px;
-
-		display: flex;
-		flex-direction: column;
-	}
+	display: flex;
+	flex-direction: column;
 }

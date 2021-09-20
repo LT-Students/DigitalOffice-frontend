@@ -2,10 +2,9 @@
 /* eslint-disable */
 export interface CreateTaskRequest {
   assignedTo?: string;
-  authorId?: string;
   description?: string;
   name: string;
-  parentId?: string;
+  parentId?: null | string;
   plannedMinutes?: number;
   priorityId: string;
   projectId: string;

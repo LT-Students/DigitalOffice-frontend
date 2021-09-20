@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { MatDialogRef } from '@angular/material/dialog';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
+
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
 import {
 	CommunicationType,
@@ -18,7 +18,8 @@ import { UserService } from '@app/services/user/user.service';
 import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
+// import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
+import { RightsService } from '@app/services/rights/rights.service';
 import { RolesResponse } from '@data/api/rights-service/models/roles-response';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
@@ -40,6 +41,7 @@ export const DATE_FORMAT = {
 	selector: 'do-new-employee',
 	templateUrl: './new-employee.component.html',
 	styleUrls: ['./new-employee.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
 		{
 			provide: DateAdapter,
@@ -51,9 +53,9 @@ export const DATE_FORMAT = {
 })
 export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public message: string;
-	public imagePath;
-	public imgURL: any;
-	public userForm: FormGroup = null;
+	//public imagePath;
+	//public imgURL: any;
+	public userForm: FormGroup;
 	public position$: Observable<FindResultResponsePositionInfo>;
 	public department$: Observable<FindResultResponseDepartmentInfo>;
 	public roles: RoleInfo[];
@@ -62,13 +64,19 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	private _unsubscribe$: Subject<void>;
 
 	constructor(
-		private formBuilder: FormBuilder,
+		private _formBuilder: FormBuilder,
 		private _netService: NetService,
-		private userService: UserService,
+		private _userService: UserService,
 		private _matSnackBar: MatSnackBar,
-		private dialogRef: MatDialogRef<any>,
-		private roleApiService: RoleApiService
+		private _dialogRef: MatDialogRef<any>,
+		private _rightsService: RightsService
 	) {
+		this.message = '';
+		this.userForm = this._initForm();
+		this.position$ = new Observable(undefined);
+		this.department$ = new Observable(undefined);
+		this.roles = [];
+		this.offices = [];
 		this._unsubscribe$ = new Subject<void>();
 	}
 
@@ -80,7 +88,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		this._initForm();
 	}
 
-	public ngOnDestroy() {
+	public ngOnDestroy(): void {
 		this._unsubscribe$.next();
 		this._unsubscribe$.complete();
 	}
@@ -94,15 +102,15 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	public getRoles(): void {
-		this.roleApiService.findRoles({ skipCount: 0, takeCount: 50 }).subscribe(({ roles }: RolesResponse) => {
-			this.roles = roles;
+		this._rightsService.findRoles({ skipCount: 0, takeCount: 50 }).subscribe(({ roles }: RolesResponse) => {
+			this.roles = roles ?? [];
 		});
 	}
 
 	public getOffices(): void {
 		this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).subscribe(
 			({ body: offices }) => {
-				this.offices = offices;
+				this.offices = offices ?? [];
 			},
 			(error) => console.log(error)
 		);
@@ -111,7 +119,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 	public createEmployee(): void {
 		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
 
-		this.userService
+		this._userService
 			.createUser(params)
 			.pipe(takeUntil(this._unsubscribe$))
 			.subscribe(
@@ -121,10 +129,10 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 						this._matSnackBar.open(message, 'Закрыть');
 					}
 					this._matSnackBar.open('Пользователь успешно создан', 'Закрыть', { duration: 3000 });
-					this.dialogRef.close(result);
+					this._dialogRef.close(result);
 				},
 				(error: OperationResultResponse | HttpErrorResponse) => {
-					let message = error && 'errors' in error ? error.errors[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
+					let message = error && 'errors' in error ? error.errors?.[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
 					if (error.status === 409) {
 						message = 'Пользователь с такой электронной почтой уже существует';
 					}
@@ -136,16 +144,16 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 
 	public changeWorkingRate(step: number): void {
 		this.userForm.patchValue({
-			rate: +this.userForm.get('rate').value + step,
+			rate: +this.userForm.get('rate')?.value + step,
 		});
 	}
 
 	public onCancelClick() {
-		return this._matSnackBar._openedSnackBarRef.dismissWithAction();
+		return this._matSnackBar._openedSnackBarRef?.dismissWithAction();
 	}
 
-	private _initForm(): void {
-		this.userForm = this.formBuilder.group({
+	private _initForm(): FormGroup {
+		return this._formBuilder.group({
 			lastName: ['', [Validators.required, DoValidators.noWhitespaces]],
 			firstName: ['', [Validators.required, DoValidators.noWhitespaces]],
 			middleName: ['', [DoValidators.noWhitespaces]],
@@ -164,24 +172,24 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		const communications: CreateCommunicationRequest[] = [
 			{
 				type: CommunicationType.Email,
-				value: this.userForm.get('email').value as string,
+				value: this.userForm.get('email')?.value as string,
 			},
 		];
 
 		const params: CreateUserRequest = {
-			firstName: this.userForm.get('firstName').value as string,
-			lastName: this.userForm.get('lastName').value as string,
-			middleName: this.userForm.get('middleName').value as string,
-			positionId: this.userForm.get('positionId').value as string,
-			departmentId: this.userForm.get('departmentId').value as string,
-			rate: this.userForm.get('rate').value as number,
-			isAdmin: this.userForm.get('isAdmin').value as boolean,
+			firstName: this.userForm.get('firstName')?.value?.trim(),
+			lastName: this.userForm.get('lastName')?.value?.trim(),
+			middleName: this.userForm.get('middleName')?.value?.trim(),
+			positionId: this.userForm.get('positionId')?.value as string,
+			departmentId: this.userForm.get('departmentId')?.value as string,
+			rate: this.userForm.get('rate')?.value as number,
+			isAdmin: this.userForm.get('isAdmin')?.value as boolean,
 			communications: communications,
-			startWorkingAt: this.userForm.get('startWorkingAt').value as string,
+			startWorkingAt: this.userForm.get('startWorkingAt')?.value as string,
 			status: UserStatus.WorkFromHome,
 			gender: UserGender.NotSelected,
-			officeId: this.userForm.get('officeId').value,
-			roleId: this.userForm.get('roleId').value,
+			officeId: this.userForm.get('officeId')?.value,
+			roleId: this.userForm.get('roleId')?.value,
 		};
 
 		return params;

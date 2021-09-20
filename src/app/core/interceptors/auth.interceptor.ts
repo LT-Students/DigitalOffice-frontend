@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 
 import { Router } from '@angular/router';
-import { catchError, filter, switchMap, take, tap } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
 
@@ -11,15 +11,20 @@ import { LocalStorageService } from '../services/local-storage.service';
 	providedIn: 'root',
 })
 export class AuthInterceptor implements HttpInterceptor {
-	private _refreshingInProgress = false;
-	private _accessTokenSubject = new BehaviorSubject(null);
+	private _refreshingInProgress: boolean;
+	private _accessTokenSubject: BehaviorSubject<string | undefined>;
+	private _excludedUrls: string[];
 
-	constructor(private localStorageService: LocalStorageService, private authService: AuthService, private _router: Router) {}
+	constructor(private localStorageService: LocalStorageService, private authService: AuthService, private _router: Router) {
+		this._refreshingInProgress = false;
+		this._accessTokenSubject = new BehaviorSubject<string | undefined>(undefined);
+		this._excludedUrls = [ '/auth/refresh', '/company/get' ];
+	}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		const token = this.localStorageService.get('access_token');
 
-		if (req.url.indexOf('/auth/refresh') !== -1) {
+		if (!!this._excludedUrls.find((url) => req.url.indexOf(url) !== -1)) {
 			return next.handle(req);
 		}
 
@@ -36,7 +41,7 @@ export class AuthInterceptor implements HttpInterceptor {
 		return next.handle(request);
 	}
 
-	private _addAuthorizationHeader(req: HttpRequest<any>, token: string): HttpRequest<any> {
+	private _addAuthorizationHeader(req: HttpRequest<any>, token: string | undefined): HttpRequest<any> {
 		let headers: HttpHeaders = req.headers.set('Access-Control-Allow-Origin', '*');
 
 		if (token) {
@@ -46,7 +51,7 @@ export class AuthInterceptor implements HttpInterceptor {
 		return req.clone({ headers });
 	}
 
-	private _logoutAndRedirect(error): Observable<HttpEvent<any>> {
+	private _logoutAndRedirect(error: string): Observable<HttpEvent<any>> {
 		this.authService.logout();
 
 		return throwError(error);
@@ -55,7 +60,7 @@ export class AuthInterceptor implements HttpInterceptor {
 	private _refreshToken(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		if (!this._refreshingInProgress) {
 			this._refreshingInProgress = true;
-			this._accessTokenSubject.next(null);
+			this._accessTokenSubject.next(undefined);
 
 			return this.authService.refreshToken().pipe(
 				switchMap((result) => {
@@ -67,9 +72,8 @@ export class AuthInterceptor implements HttpInterceptor {
 			);
 		} else {
 			return this._accessTokenSubject.pipe(
-				filter((token) => token !== null),
 				take(1),
-				switchMap((token: string) => {
+				switchMap((token: string | undefined) => {
 					return next.handle(this._addAuthorizationHeader(req, token));
 				})
 			);

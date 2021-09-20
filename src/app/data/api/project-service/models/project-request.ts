@@ -7,7 +7,7 @@ export interface ProjectRequest {
   /**
    * Unique department identifier.
    */
-  departmentId: string;
+  departmentId?: string;
 
   /**
    * Project description.
@@ -28,7 +28,7 @@ export interface ProjectRequest {
    * Project short name.
    */
   shortName?: string;
-  status?: ProjectStatusType;
-  users?: Array<ProjectUserRequest>;
+  status: ProjectStatusType;
+  users: Array<ProjectUserRequest>;
 }
 

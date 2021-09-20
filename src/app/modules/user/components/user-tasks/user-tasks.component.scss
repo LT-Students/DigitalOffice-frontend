@@ -1,0 +1,31 @@
+.mat-card {
+	padding: 21px 48px;
+
+	min-width: 850px;
+}
+
+.date-input {
+	visibility: hidden;
+
+	width: 0;
+	height: 0;
+}
+
+.tasks {
+	margin-top: 40px;
+}
+
+.activities {
+	&__title {
+		margin-top: 31px;
+		margin-bottom: 30px;
+	}
+
+	&__icon {
+		vertical-align: middle;
+	}
+
+	&__period {
+		cursor: pointer;
+	}
+}

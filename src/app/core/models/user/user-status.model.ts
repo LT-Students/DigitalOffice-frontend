@@ -16,7 +16,7 @@ export class UserStatusModel {
 		{ emojiIcon: '🏠', statusType: UserStatus.WorkFromHome, statusInRussian: 'работает дома' },
 	];
 
-	public static getUserStatusInfoByType(statusType: UserStatus): IUserStatus {
+	public static getUserStatusInfoByType(statusType: UserStatus | undefined): IUserStatus | undefined {
 		return this._statuses.find((status: IUserStatus) => status.statusType === statusType);
 	}
 

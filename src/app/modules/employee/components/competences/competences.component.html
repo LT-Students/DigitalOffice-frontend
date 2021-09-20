@@ -3,7 +3,7 @@
   <div class="section">
     <div class="section__header">
       <div class="title">
-        <h2 underlinedSize='sm' doText underlined>Навыки</h2>
+        <h2 underlinedSize='sm' doUnderline>Навыки</h2>
         <do-search magnifierLocation="left" placeholder="поиск"></do-search>
       </div>
       <div class="action">
@@ -13,7 +13,7 @@
       </div>
     </div>
     <div class="section__content">
-      <do-skills [skills]='user.skills' [mode]='sectionModes.skills'></do-skills>
+      <do-skills [skills]='user?.skills' [mode]='sectionModes.skills'></do-skills>
     </div>
   </div>
   <!--  Образование  -->
@@ -81,7 +81,7 @@
   <div class="section">
     <div class="section__header">
       <div class="title">
-        <h2 underlinedSize='sm' doText underlined>Сертификаты</h2>
+        <h2 underlinedSize='sm' doUnderline>Сертификаты</h2>
         <do-search magnifierLocation="left" placeholder="поиск"></do-search>
       </div>
       <div class="action">
@@ -95,33 +95,34 @@
         <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>
       </div>
       <div *ngFor="let course of this.certificates" class="row">
-        <ng-container *ngIf="!course.isEditing; else editFormTemplate">
+<!--        было так <ng-container *ngIf="!course.isEditing; else editFormTemplate">-->
+        <ng-container *ngIf="!course; else editFormTemplate">
           <div class="row__main-info">
             <!--1 column-->
             <div class="col">
-              <p doText color='gray1'>
-                {{ course.studyType | titlecase }}
+              <p>
+<!--                {{ course?.studyType | titlecase }}-->
               </p>
-              <p doText color='dark_2'>
-                {{ course.getEducationalPeriod() }}
+              <p>
+<!--                {{ course?.getEducationalPeriod() }}-->
               </p>
             </div>
             <!--2 column-->
             <div class="col">
-              <p doText color='gray1'>{{ course.institutionName }}</p>
-              <p doText color='dark_2'>{{ course.specializationName }}</p>
+<!--              <p>{{ course?.institutionName }}</p>-->
+<!--              <p>{{ course?.specializationName }}</p>-->
             </div>
             <div class="col">
               <div class="row__button">
                 <button mat-flat-button>
-                  <span doText color='gray1'><mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат</span>
+                  <span><mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат</span>
                 </button>
               </div>
             </div>
           </div>
           <div class="row__button text-gray1">
             <!--    Trick, для работы dropdown. TODO: Сделать нормальную собственную реализацию      -->
-            <mat-form-field class="mat-form-field_none" appearance="none">
+            <mat-form-field class="mat-form-field_none" appearance='standard'>
               <mat-select class="none" #matSelect>
                 <mat-option (click)="onRowEditClicked(course)">
                   <img src='../../../../../assets/svg/edit.svg' alt="edit" />&nbsp;Редактировать
@@ -132,7 +133,7 @@
               </mat-select>
             </mat-form-field>
             <button mat-icon-button (click)="matSelect.open()">
-              <span doText color='gray1'><mat-icon>more_horiz</mat-icon></span>
+              <span><mat-icon>more_horiz</mat-icon></span>
             </button>
           </div>
         </ng-container>

@@ -1,0 +1,33 @@
+<div class="modal">
+	<h3>
+		Редактирование часов <span class="mat-h3 primary">за {{ getRusType(leave.leaveType!)?.toLowerCase() }}</span>
+	</h3>
+	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
+		<div class="modal__range">
+			<mat-form-field class="modal__range-picker" appearance="fill">
+				<mat-label>Выберите диапазон отсутствия</mat-label>
+				<mat-date-range-input [rangePicker]="$any(picker)" [dateFilter]="disableWeekends">
+					<input matStartDate placeholder="Начало" formControlName="startTime" readonly />
+					<input matEndDate placeholder=" Конец" formControlName="endTime" readonly (dateChange)="DateSelected()" />
+				</mat-date-range-input>
+				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-date-range-picker #picker></mat-date-range-picker>
+				<mat-error *ngIf="editForm.controls['endTime'].errors?.required">Заполните конечную дату</mat-error>
+			</mat-form-field>
+			<div class="modal__hours">
+				<p class="mat-body-1">Выбрано</p>
+				<h3 class="modal__selected-hours">{{ periodInHours }}&nbsp;<span class="mat-h3 text-gray1">ч</span></h3>
+			</div>
+		</div>
+		<div>
+			<mat-form-field appearance="fill" class="modal__description">
+				<mat-label>Комментарий</mat-label>
+				<textarea matInput class="modal__description-field" formControlName="description"></textarea>
+			</mat-form-field>
+		</div>
+		<div class="controls">
+			<button mat-button class="controls__button" type="button" (click)="onClose()">Отмена</button>
+			<button mat-flat-button color="primary" class="controls__button" type="submit">Сохранить</button>
+		</div>
+	</form>
+</div>

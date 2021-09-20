@@ -1,0 +1,182 @@
+@use 'sass:map';
+
+/* ======== Angular material custom palette ======== */
+
+$dark-primary-text: rgba(#000, 0.87);
+$dark-secondary-text: rgba(#000, 0.54);
+$dark-disabled-text: rgba(#000, 0.38);
+$dark-dividers: rgba(#000, 0.12);
+$dark-focused: rgba(#000, 0.12);
+$light-primary-text: #fff;
+$light-secondary-text: rgba(#fff, 0.7);
+$light-disabled-text: rgba(#fff, 0.5);
+$light-dividers: rgba(#fff, 0.12);
+$light-focused: rgba(#fff, 0.12);
+
+$do-orange: (
+	50: #fff4ed,
+	100: #ffdcd1,
+	200: #ffc5b2,
+	300: #ffad93,
+	400: #ff9c7c,
+	500: #ff8a65,
+	600: #ff825d,
+	700: #ff7753,
+	800: #ff6d49,
+	900: #ff5a37,
+	A100: #fff,
+	A200: #fff,
+	A400: #ffe6e1,
+	A700: #ffd0c8,
+	contrast: (
+		50: #ff8a65,
+		100: #000,
+		200: #000,
+		300: #000,
+		400: #000,
+		500: #fafafa,
+		600: #000,
+		700: #000,
+		800: #000,
+		900: #000,
+		A100: #000,
+		A200: #000,
+		A400: #000,
+		A700: #000,
+	),
+);
+
+$do-green: (
+	50: #cdf4df,
+	100: #b3f8d6,
+	200: #80f3bb,
+	300: #4dee9f,
+	400: #26ea8b,
+	500: #00e676,
+	600: #00e36e,
+	700: #00df63,
+	800: #00db59,
+	900: #00d546,
+	A100: #fcfffd,
+	A200: #c9ffd7,
+	A400: #96ffb2,
+	A700: #7dff9f,
+	contrast: (
+		50: #000,
+		100: #000,
+		200: #000,
+		300: #000,
+		400: #000,
+		500: #000,
+		600: #000,
+		700: #000,
+		800: #000,
+		900: #000,
+		A100: #000,
+		A200: #000,
+		A400: #000,
+		A700: #000,
+	),
+);
+
+$do-violet: (
+	50: #f7effe,
+	100: #ebd7fe,
+	200: #debdfd,
+	300: #d0a3fc,
+	400: #c68ffb,
+	500: #bc7bfa,
+	600: #b673f9,
+	700: #ad68f9,
+	800: #a55ef8,
+	900: #974bf6,
+	A100: #fff,
+	A200: #fff,
+	A400: #f2e9ff,
+	A700: #e4cfff,
+	contrast: (
+		50: #000,
+		100: #000,
+		200: #000,
+		300: #000,
+		400: #000,
+		500: #000,
+		600: #000,
+		700: #000,
+		800: #000,
+		900: #fff,
+		A100: #000,
+		A200: #000,
+		A400: #000,
+		A700: #000,
+	),
+);
+
+$do-grey: (
+	50: #fafafa,
+	100: #f5f5f5,
+	200: #eee,
+	300: #cecece,
+	400: #bdbdbd,
+	500: #9e9e9e,
+	600: #757575,
+	700: #616161,
+	800: #424242,
+	900: #263238,
+	A100: #fff,
+	A200: #eee,
+	A400: #bdbdbd,
+	A700: #616161,
+	contrast: (
+		50: $dark-primary-text,
+		100: $dark-primary-text,
+		200: $dark-primary-text,
+		300: $dark-primary-text,
+		400: $dark-primary-text,
+		500: $dark-primary-text,
+		600: $light-primary-text,
+		700: $light-primary-text,
+		800: $light-primary-text,
+		900: $light-primary-text,
+		A100: $dark-primary-text,
+		A200: $dark-primary-text,
+		A400: $dark-primary-text,
+		A700: $light-primary-text,
+	),
+);
+
+$light-theme-foreground-palette: (
+	base: black,
+	divider: $dark-dividers,
+	dividers: $dark-dividers,
+	disabled: $dark-disabled-text,
+	disabled-button: rgba(black, 0.26),
+	disabled-text: $dark-disabled-text,
+	elevation: black,
+	hint-text: $dark-disabled-text,
+	secondary-text: $dark-secondary-text,
+	icon: rgba(black, 0.54),
+	icons: rgba(black, 0.54),
+	text: map.get($do-grey, 800),
+	slider-min: rgba(black, 0.87),
+	slider-off: rgba(black, 0.26),
+	slider-off-active: rgba(black, 0.38),
+);
+
+$light-theme-background-palette: (
+	status-bar: map.get($do-grey, 300),
+	app-bar: map.get($do-grey, 100),
+	background: map.get($do-grey, 100),
+	hover: rgba(black, 0.04),
+	card: white,
+	dialog: white,
+	disabled-button: rgba(black, 0.12),
+	raised-button: white,
+	focused-button: $dark-focused,
+	selected-button: map.get($do-grey, 300),
+	selected-disabled-button: map.get($do-grey, 400),
+	disabled-button-toggle: map.get($do-grey, 200),
+	unselected-chip: map.get($do-grey, 300),
+	disabled-list-option: map.get($do-grey, 200),
+	tooltip: map.get($do-grey, 700),
+);

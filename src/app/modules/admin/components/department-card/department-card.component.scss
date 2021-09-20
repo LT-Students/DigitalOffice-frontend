@@ -1,3 +1,5 @@
+@use 'layouts/table';
+
 .title {
 	margin-bottom: 40px;
 }
@@ -43,23 +45,10 @@
 		}
 	}
 
-	&__status {
-		width: 67px;
-		height: 24px;
-
-		text-align: center;
-
-		background-color: #00e676;
-
-		border-radius: 10px;
-
-		&_archived {
-			background-color: #f5f5f5;
+	&__column {
+		&_width_little {
+			width: 60px;
 		}
-	}
-
-	&__image {
-		border-radius: 50%;
 	}
 }
 

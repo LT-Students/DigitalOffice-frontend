@@ -1,69 +1,34 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MatDatepicker } from '@angular/material/datepicker';
 
-import { DatePeriod } from '@data/models/date-period';
-import { AttendanceService } from '@app/services/attendance.service';
-import { ProjectStore } from '@data/store/project.store';
-import { DateService } from '@app/services/date.service';
-import { Project, ProjectModel } from '@app/models/project/project.model';
+import { OperationResultStatusType } from '@data/api/time-service/models';
+import { Activities, AttendanceService } from '@app/services/attendance.service';
+
+export interface IDialogResponse {
+	status?: OperationResultStatusType;
+	data?: any;
+}
 
 @Component({
 	selector: 'do-user-tasks',
 	templateUrl: './user-tasks.component.html',
 	styleUrls: ['./user-tasks.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserTasksComponent implements OnInit, OnDestroy {
-	@Input() projects: Project[];
-	@Input() timePeriodSelected: DatePeriod;
+export class UserTasksComponent {
+	@ViewChild('dp') monthpicker: MatDatepicker<Date> | undefined;
 
-	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
+	public selectedDate$: Observable<Date>;
+	public activities$: Observable<Activities>;
 
-	public projectList: ProjectModel[];
-	// TODO: replace projectsList with projects
-
-	public isOrderedByProject = false;
-	public isOrderedByHours = false;
-	public startPeriod: Date;
-	public endPeriod: Date;
-	public tasksCount;
-	public searchText = '';
-
-	public startDate: Date | null;
-	public endDate: Date | null;
-
-	constructor(public attendanceService: AttendanceService, private projectStore: ProjectStore, public dateService: DateService) {}
-
-	ngOnInit() {
-		this.projectStore.projects$.pipe(takeUntil(this.onDestroy$)).subscribe((projects) => {
-			this.projectList = projects;
-			this.tasksCount = (this.projectList && this.projectList.length)
-				? this.projectList.map((p) => p.tasks).reduce((all, tasks) => all.concat(tasks)).length
-				: 0;
-		});
-
-		this.attendanceService.datePeriod$.pipe(takeUntil(this.onDestroy$)).subscribe((datePeriod) => {
-			this.startDate = datePeriod.startDate;
-			this.endDate = datePeriod.endDate;
-		});
-
-		const now = new Date();
-		this.startPeriod = new Date();
-		this.startPeriod.setDate(now.getDate() - 3);
-		this.endPeriod = new Date();
-		this.endPeriod.setDate(now.getDate() + 3);
+	constructor(private _attendanceService: AttendanceService) {
+		this.selectedDate$ = this._attendanceService.selectedDate$;
+		this.activities$ = this._attendanceService.activities$;
 	}
 
-	ngOnDestroy() {
-		this.onDestroy$.next(null);
-		this.onDestroy$.complete();
-	}
-
-	onSearch(text: string) {
-		this.searchText = text;
-	}
-
-	public getPeriod(): string {
-		return 'выбранный период';
+	public chosenMonthHandler(date: Date, datepicker: MatDatepicker<any>) {
+		this._attendanceService.setNewDate(date);
+		datepicker.close();
 	}
 }

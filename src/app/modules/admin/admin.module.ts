@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { DndDirective } from '@app/directives/dnd.directive';
@@ -12,7 +10,6 @@ import { NewEmployeeComponent } from './modals/new-employee/new-employee.compone
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { UserSearchComponent } from './components/new-project/modals/user-search/user-search.component';
 import { TeamCardComponent } from './components/team-cards/team-card.component';
-import { NewCompanyComponent } from './modals/new-company/new-company.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ProgressComponent } from './components/upload/progress/progress.component';
 import { NewDepartmentComponent } from './modals/new-department/new-department.component';
@@ -26,7 +23,10 @@ import { DepartmentListComponent } from './components/department-list/department
 import { DepartmentCardComponent } from './components/department-card/department-card.component';
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 import { OfficeListComponent } from './components/office-list/office-list.component';
-import { PositionListComponent } from './components/position-list/position-list.component'
+import { PositionListComponent } from './components/position-list/position-list.component';
+import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
+import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component'
+import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
 
 @NgModule({
 	declarations: [
@@ -35,7 +35,6 @@ import { PositionListComponent } from './components/position-list/position-list.
 		NewEmployeeComponent,
 		NewProjectComponent,
 		UserSearchComponent,
-		NewCompanyComponent,
 		TeamCardComponent,
 		UploadComponent,
 		ProgressComponent,
@@ -49,15 +48,12 @@ import { PositionListComponent } from './components/position-list/position-list.
 		DepartmentCardComponent,
 		ManageRolesComponent,
 		OfficeListComponent,
-		PositionListComponent
+		PositionListComponent,
+		DirectorsTimelistComponent,
+		TeamStatisticsComponent,
+		LeaveLabelPipe
 	],
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MaterialModule,
-		SharedModule,
-		AdminRoutingModule
-	],
-	exports: [DndDirective],
+	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
+	exports: [DndDirective, TeamStatisticsComponent],
 })
-export class AdminModule {}
+export class AdminModule { }

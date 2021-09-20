@@ -1,0 +1,23 @@
+.comment {
+	vertical-align: top;
+
+	&__content {
+		min-width: 75px;
+
+		&_collapsed {
+			overflow: hidden;
+
+			height: 50px;
+		}
+	}
+
+	&__text {
+		margin-bottom: 0;
+
+		word-break: break-all;
+	}
+
+	&__button {
+		padding: 0;
+	}
+}

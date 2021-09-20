@@ -1,4 +1,4 @@
-@import '../../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .upload-photo {
 	&__dropzone {
@@ -14,7 +14,7 @@
 
 		text-align: center;
 
-		border: 1px dashed $accent_color;
+		border: 1px dashed variables.$accent_color;
 		border-radius: 10px;
 	}
 

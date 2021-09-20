@@ -21,7 +21,7 @@ export interface IAddRightsForUserRequest {
 	rightIds: number[];
 }
 
-export interface IRemoveRightsFromUserRequest extends IAddRightsForUserRequest {}
+export type IRemoveRightsFromUserRequest = IAddRightsForUserRequest
 
 export interface IGetRoleRequest {
 	roleId: string;

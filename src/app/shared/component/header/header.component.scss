@@ -1,64 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
-@import '../../../../stylesheets/base/variables';
-@import '../../../../stylesheets/base/fonts';
+@use 'base/variables';
 
 .header {
-	padding: 0 16px;
+	padding: 0 38px;
 
-	background-color: $light_1;
+	height: 56px;
+
+	background-color: variables.$light_1;
 
 	&__menu-button {
 		display: flex;
 		align-items: center;
-	}
-}
 
-.theme-switch {
-	&__checkbox {
-		position: absolute;
-		z-index: 2;
-
-		width: 52px;
-		height: 23px;
-
-		opacity: 0;
-	}
-
-	&__checkbox:hover ~ &__container,
-	&__checkbox:checked:hover ~ &__container {
-		background-color: $accent_positive;
-		border-color: $light_3;
-	}
-
-	&__checkbox:checked ~ &__container {
-		background-color: $accent_positive_dark;
-		border-color: $light_3;
-
-		img {
-			margin-left: 28px;
-
-			transform: rotate(0.45turn);
-		}
-	}
-
-	&__container {
-		width: 52px;
-		height: 23px;
-
-		border: 1px solid $accent_positive;
-		border-radius: 22px;
-
-		transition: 250ms;
-
-		img {
-			z-index: 1;
-
-			display: block;
-
-			height: 100%;
-
-			transition: all 250ms ease-in;
-		}
+		height: 48px;
 	}
 }
 

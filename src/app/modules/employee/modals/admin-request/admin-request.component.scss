@@ -1,4 +1,4 @@
-@import '../../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .admin-request {
 	&__form-field {
@@ -17,6 +17,6 @@
 	&__button {
 		width: 180px;
 
-		color: $gray1;
+		color: variables.$gray1;
 	}
 }

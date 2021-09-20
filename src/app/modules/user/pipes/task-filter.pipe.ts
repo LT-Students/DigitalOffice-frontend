@@ -8,9 +8,9 @@ export class TaskFilterPipe implements PipeTransform {
 	transform<T>(list: Project[], filterText: string): any {
 		return list
 			? list.map((item) => ({
-					...item,
-					tasks: item.getTasks().filter((task) => task?.description.includes(filterText)),
-			  }))
+				...item,
+				tasks: item.getTasks().filter((task) => task?.description.includes(filterText)),
+			}))
 			: [];
 	}
 }

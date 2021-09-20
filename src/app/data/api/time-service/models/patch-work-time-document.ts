@@ -5,12 +5,12 @@ export interface PatchWorkTimeDocument {
   /**
    * The operation to be performed.
    */
-  op: 'add' | 'replace' | 'delete';
+  op: 'replace';
 
   /**
    * A JSON-Pointer.
    */
-  path: '/Minutes' | '/ProjectId' | '/Title' | '/Description' | '/StartTime' | '/EndTime';
+  path: '/UserHours' | '/ManagerHours' | '/Description';
 
   /**
    * The value to be used within the operations.

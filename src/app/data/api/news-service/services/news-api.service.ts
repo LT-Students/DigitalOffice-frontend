@@ -11,6 +11,8 @@ import { map, filter } from 'rxjs/operators';
 
 import { NewsRequest } from '../models/news-request';
 import { NewsResponse } from '../models/news-response';
+import { OperationResultResponse } from '../models/operation-result-response';
+import { PatchOperation } from '../models/patch-operation';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +28,7 @@ export class NewsApiService extends BaseService {
   /**
    * Path part for operation createNews
    */
-  static readonly CreateNewsPath = '/news/createNews';
+  static readonly CreateNewsPath = '/news/create';
 
   /**
    * Adds news and returns its Id.
@@ -38,7 +40,7 @@ export class NewsApiService extends BaseService {
    */
   createNews$Response(params: {
     body: NewsRequest
-  }): Observable<StrictHttpResponse<string>> {
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, NewsApiService.CreateNewsPath, 'post');
     if (params) {
@@ -51,7 +53,7 @@ export class NewsApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -66,17 +68,17 @@ export class NewsApiService extends BaseService {
    */
   createNews(params: {
     body: NewsRequest
-  }): Observable<string> {
+  }): Observable<OperationResultResponse> {
 
     return this.createNews$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 
   /**
    * Path part for operation editNews
    */
-  static readonly EditNewsPath = '/news/editNews';
+  static readonly EditNewsPath = '/news/edit';
 
   /**
    * Updates news fields.
@@ -89,23 +91,25 @@ export class NewsApiService extends BaseService {
   editNews$Response(params: {
 
     /**
-     * The news data to edit.
+     * Specific news id
      */
-    body: NewsRequest
-  }): Observable<StrictHttpResponse<void>> {
+    newsId: string;
+    body?: Array<PatchOperation>
+  }): Observable<StrictHttpResponse<boolean>> {
 
-    const rb = new RequestBuilder(this.rootUrl, NewsApiService.EditNewsPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, NewsApiService.EditNewsPath, 'patch');
     if (params) {
+      rb.query('newsId', params.newsId, {});
       rb.body(params.body, 'application/json');
     }
 
     return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
+      responseType: 'json',
+      accept: 'application/json'
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+        return (r as HttpResponse<any>).clone({ body: String((r as HttpResponse<any>).body) === 'true' }) as StrictHttpResponse<boolean>;
       })
     );
   }
@@ -121,20 +125,75 @@ export class NewsApiService extends BaseService {
   editNews(params: {
 
     /**
-     * The news data to edit.
+     * Specific news id
      */
-    body: NewsRequest
-  }): Observable<void> {
+    newsId: string;
+    body?: Array<PatchOperation>
+  }): Observable<boolean> {
 
     return this.editNews$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
+      map((r: StrictHttpResponse<boolean>) => r.body as boolean)
+    );
+  }
+
+  /**
+   * Path part for operation getNewsById
+   */
+  static readonly GetNewsByIdPath = '/news/getNewsById';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getNewsById()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getNewsById$Response(params: {
+
+    /**
+     * News global unique identifier.
+     */
+    newsId: string;
+  }): Observable<StrictHttpResponse<NewsResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, NewsApiService.GetNewsByIdPath, 'get');
+    if (params) {
+      rb.query('newsId', params.newsId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<NewsResponse>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `getNewsById$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getNewsById(params: {
+
+    /**
+     * News global unique identifier.
+     */
+    newsId: string;
+  }): Observable<NewsResponse> {
+
+    return this.getNewsById$Response(params).pipe(
+      map((r: StrictHttpResponse<NewsResponse>) => r.body as NewsResponse)
     );
   }
 
   /**
    * Path part for operation findnews
    */
-  static readonly FindnewsPath = '/news/findnews';
+  static readonly FindnewsPath = '/news/find';
 
   /**
    * Returns all news information by filter.
@@ -165,7 +224,7 @@ export class NewsApiService extends BaseService {
      * Subject of news.
      */
     subject?: string;
-  }): Observable<StrictHttpResponse<NewsResponse>> {
+  }): Observable<StrictHttpResponse<Array<NewsResponse>>> {
 
     const rb = new RequestBuilder(this.rootUrl, NewsApiService.FindnewsPath, 'get');
     if (params) {
@@ -181,7 +240,7 @@ export class NewsApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<NewsResponse>;
+        return r as StrictHttpResponse<Array<NewsResponse>>;
       })
     );
   }
@@ -215,10 +274,10 @@ export class NewsApiService extends BaseService {
      * Subject of news.
      */
     subject?: string;
-  }): Observable<NewsResponse> {
+  }): Observable<Array<NewsResponse>> {
 
     return this.findnews$Response(params).pipe(
-      map((r: StrictHttpResponse<NewsResponse>) => r.body as NewsResponse)
+      map((r: StrictHttpResponse<Array<NewsResponse>>) => r.body as Array<NewsResponse>)
     );
   }
 
