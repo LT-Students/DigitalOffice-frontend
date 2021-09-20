@@ -25,7 +25,14 @@ $custom-typography: mat.define-typography-config(
 	$foreground: $light-theme-foreground-palette,
 	$background: $light-theme-background-palette
 ) {
-	@return (primary: $primary, accent: $accent, warn: $warn, is-dark: false, foreground: $foreground, background: $background);
+	@return (
+		primary: $primary,
+		accent: $accent,
+		warn: $warn,
+		is-dark: false,
+		foreground: $foreground,
+		background: $background
+	);
 }
 
 $theme-primary: mat.define-palette($do-orange);

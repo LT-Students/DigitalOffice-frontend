@@ -21,12 +21,13 @@
 
 .avatar {
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 
-	width: 150px;
-
 	cursor: pointer;
+
+	&__greeting {
+		padding: 0 25px;
+	}
 }
 
 .logo {
