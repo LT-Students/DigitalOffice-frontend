@@ -15,8 +15,8 @@ export class WizardComponent implements OnInit {
 	public adminForm: FormGroup;
 	public smtpForm: FormGroup;
 
-	constructor(private _formBuilder: FormBuilder, private _companyApiService: CompanyApiService, private router: Router, private titleService: Title) {
-		this.titleService.setTitle('Installer');
+	constructor(private _formBuilder: FormBuilder, private _companyApiService: CompanyApiService, private _router: Router, private _titleService: Title) {
+		this._titleService.setTitle('Installer');
 		this.companyForm = this._formBuilder.group({
 			companyName: ['', Validators.required],
 			portalName: ['', Validators.required],
@@ -89,7 +89,7 @@ export class WizardComponent implements OnInit {
 			})
 			.subscribe(
 				(result) => {
-					this.router.navigate(['/auth/login']);
+					this._router.navigate(['/auth/login']);
 				},
 				(error) => console.log(error)
 			);
