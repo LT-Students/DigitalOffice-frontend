@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -15,7 +15,7 @@ export class WizardComponent implements OnInit {
 	public adminForm: FormGroup;
 	public smtpForm: FormGroup;
 
-	constructor(private _formBuilder: FormBuilder, private companyApiService: CompanyApiService, private router: Router, private titleService: Title) {
+	constructor(private _formBuilder: FormBuilder, private _companyApiService: CompanyApiService, private router: Router, private titleService: Title) {
 		this.titleService.setTitle('Installer');
 		this.companyForm = this._formBuilder.group({
 			companyName: ['', Validators.required],
@@ -49,8 +49,8 @@ export class WizardComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	public matchControls(field1: string | (string | number)[], field2: string | (string | number)[]): ValidationErrors | null  {
-		return (group: FormGroup): { errorMatch: string } | null => {
+	public matchControls(field1: string | (string | number)[], field2: string | (string | number)[]): ValidatorFn | null  {
+		return (group: AbstractControl): ValidationErrors | null => {
 			const control1 = group.get(field1);
 			const control2 = group.get(field2);
 			return control1 &&
@@ -58,13 +58,13 @@ export class WizardComponent implements OnInit {
 			control1.value &&
 			control2.value &&
 			control1.value !== control2.value
-				? { errorMatch: 'Пароль не совпадает' }
+				? { matchingPasswords: 'Пароль не совпадает' }
 				: null;
 		};
 	}
 
 	public submitForm(): void {
-		this.companyApiService
+		this._companyApiService
 			.createCompany({
 				body: {
 					companyName: this.companyForm.get('companyName')?.value,
