@@ -5,7 +5,7 @@ export interface ProjectPatchDocument {
   /**
    * The operation to be performed
    */
-  op: 'replace' | 'add';
+  op: 'replace';
 
   /**
    * A JSON-Pointer.
