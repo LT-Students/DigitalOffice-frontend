@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { CompanyService } from '@app/services/company/company.service';
 
 @Injectable({
@@ -14,8 +13,9 @@ export class InstallerGuard implements CanActivate, CanLoad {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		const company = this._companyService.getCurrentCompany();
-		if (company) {
+		const companyExists = this._companyService.isCompanyExists();
+
+		if (companyExists) {
 			return true;
 		}
 		this._router.navigate(['installer']);

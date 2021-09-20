@@ -1,0 +1,20 @@
+.modal {
+	text-align: center;
+
+	&__title {
+		margin: 14px 0 21px;
+	}
+
+	&__message {
+		margin-bottom: 60px;
+	}
+}
+
+.controls {
+	display: flex;
+	justify-content: space-around;
+
+	&__button {
+		padding: 6px 55px;
+	}
+}

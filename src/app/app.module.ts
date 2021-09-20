@@ -21,15 +21,9 @@ import { InstallerModule } from './modules/installer/installer.module';
 
 registerLocaleData(localeRu);
 
-function initializeUser(appInitService: AppInitService) {
+function initializeCompanyAndUser(appInitService: AppInitService) {
 	return (): Promise<any> => {
-		return appInitService.getCurrentUser();
-	};
-}
-
-function initializeCompany(appInitService: AppInitService) {
-	return (): Promise<any> => {
-		return appInitService.getCompany();
+		return appInitService.getCompanyAndUser();
 	}
 }
 
@@ -45,13 +39,7 @@ function initializeCompany(appInitService: AppInitService) {
 		},
 		{
 			provide: APP_INITIALIZER,
-			useFactory: initializeCompany,
-			deps: [AppInitService],
-			multi: true,
-		},
-		{
-			provide: APP_INITIALIZER,
-			useFactory: initializeUser,
+			useFactory: initializeCompanyAndUser,
 			deps: [AppInitService],
 			multi: true,
 		},

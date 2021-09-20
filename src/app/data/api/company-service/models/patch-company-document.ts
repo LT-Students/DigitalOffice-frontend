@@ -10,7 +10,7 @@ export interface PatchCompanyDocument {
   /**
    * A JSON-Pointer.
    */
-  path: '/portalname' | '/companyname' | '/siteurl' | '/tagline' | '/description' | '/logo' | '/host' | '/port' | '/enablessl' | '/email' | '/password';
+  path: '/portalname' | '/companyname' | '/siteurl' | '/tagline' | '/description' | '/logo' | '/host' | '/port' | '/enablessl' | '/email' | '/password' | '/isdepartmentmoduleenabled';
 
   /**
    * The value to be used within the operations.

@@ -1,18 +1,20 @@
-<a class="nav-link regular_text" routerLink="/user/projects-table">
-	<img src="assets/svg/vector-arrow-back.svg" alt="back" />
-	К доске проектов
-</a>
-
-<h1 doText color="dark_2">Новый проект</h1>
-<div class="card regular_text">
+<div class="navigation">
+    <a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
+    <span>
+		<mat-icon>chevron_right</mat-icon>
+	</span>
+    <a class="navigation__link">Новый проект</a>
+</div>
+<h1>Новый проект</h1>
+<mat-card class="card">
 	<form class="project-info" [formGroup]="projectForm" (ngSubmit)="createProject()" autocomplete="off">
 		<div class="project-info__section">
 			<div class="section__title">
 				<div class="section__title_left">
-					<h3 doText color="dark_2" underlined underlinedSize="sm">Общая информация</h3>
+					<h3 doUnderline underlinedSize="sm">Общая информация</h3>
 				</div>
 				<div class="section__title_right">
-					<span class="project-info__title" doText color="negative_accent">* Обязательное поле</span>
+					<span class="project-info__title warn">* Обязательное поле</span>
 				</div>
 			</div>
 			<div class="section__content section__content_general">
@@ -68,7 +70,7 @@
 		<!--		<div class="project-info__section">-->
 		<!--			<div class="section__title">-->
 		<!--				<div class="section__title_left">-->
-		<!--					<h3 doText color="dark_2" underlined underlinedSize="sm">Участие</h3>-->
+		<!--					<h3 doText underlined underlinedSize="sm">Участие</h3>-->
 		<!--				</div>-->
 		<!--			</div>-->
 		<!--			<div class="section__content">-->
@@ -79,9 +81,9 @@
 		<div class="project-info__section">
 			<div class="section__title">
 				<div class="section__title_left">
-					<h3 doText color="dark_2" underlined underlinedSize="sm">Команда</h3>
+					<h3 doUnderline underlinedSize="sm">Команда</h3>
 					&nbsp;
-					<h3 doText color="accent_color_bright">{{ totalMembersCount() }} человек</h3>
+					<h3 class='primary'>{{ membersAll.length | i18nPlural: pluralTeamCount }}</h3>
 				</div>
 				<!--				<div class="section__title_right">-->
 				<!--					<button mat-flat-button color="primary" type="button" (click)="showProjectTeam()">Посмотреть всю команду</button>-->
@@ -95,18 +97,18 @@
 					</div>
 					<div class="user-row__general-info">
 						<div class="name">{{ member.firstName }} {{ member.lastName }}</div>
-						<div class="position" doText color="gray1">{{ member.position?.name }}</div>
+						<div class="position">{{ member.position?.name }}</div>
 					</div>
 					<div>{{ member.department?.name }}</div>
-					<!--					<div class="user-row__projects-count"><span doText color="gray1">1 проект</span></div>-->
+					<!--					<div class="user-row__projects-count"><span>1 проект</span></div>-->
 					<!--                    <div class="user-row__lead" *ngIf="data.mode">-->
 					<!--                        &lt;!&ndash; TODO: Сделать оотображение стилей кнопки для просмотра / редактирования&ndash;&gt;-->
-					<!--                        <span class="label_lead" [ngClass]="{ label_lead_l: !member.lead }" doText regularTextSize="small" (click)="assignLead(member)"-->
+					<!--                        <span class="label_lead" [ngClass]="{ label_lead_l: !member.lead }" (click)="assignLead(member)"-->
 					<!--                        >Лидер направления</span-->
 					<!--                        >-->
 					<!--                    </div>-->
 				</div>
-				<button mat-flat-button color="primary" type="button" (click)="onAddTeamClick()">Добавить сотрудников</button>
+				<button mat-flat-button color="accent" type="button" (click)="onAddTeamClick()">Добавить сотрудников</button>
 			</div>
 		</div>
 
@@ -115,4 +117,4 @@
 			<button mat-flat-button color="primary" [disabled]="projectForm.invalid" type="submit">Создать проект</button>
 		</div>
 	</form>
-</div>
+</mat-card>

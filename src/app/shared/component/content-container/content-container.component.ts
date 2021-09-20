@@ -1,27 +1,30 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { UserService } from '@app/services/user/user.service';
 import { AuthService } from '@app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { User } from '@app/models/user/user.model';
 import { CompanyService } from '@app/services/company/company.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'do-content-container',
 	templateUrl: './content-container.component.html',
 	styleUrls: ['./content-container.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContentContainerComponent implements OnInit {
-	@ViewChild('menu', { read: ElementRef }) menu: ElementRef;
+	@ViewChild('menu', { read: ElementRef }) menu: ElementRef | undefined;
 
-	public user: User;
 	public navOpened: boolean;
 	public portalName: string;
+	private _departmentId: string | undefined;
 
 	constructor(
 		private _userService: UserService,
 		private _authService: AuthService,
 		private _companyService: CompanyService,
+		private _snackBar: MatSnackBar,
 		private _router: Router
 	) {
 		this.navOpened = false;
@@ -29,35 +32,40 @@ export class ContentContainerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		const currentUser: User = this._userService.getCurrentUser();
-		this.user = currentUser
-			? currentUser
-			: new User({
-					body: { user: { firstName: 'сотрудник' } },
-			  });
+		this._userService.currentUser$.subscribe(user => {
+			this._departmentId = user?.department?.id;
+		})
 	}
 
-	public onLogoClick() {
+	public onStatClick(): void {
+		if (this._departmentId) {
+			this.closeNav();
+			this._router.navigate([`/admin/departments/${this._departmentId}/timelist`])
+		}
+		else this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 })
+	}
+
+	public onLogoClick(): void {
 		this._router.navigate(['/user/attendance']);
 	}
 
-	onLogoutClick() {
+	public onLogoutClick(): void {
 		this._authService.logout();
 	}
 
-	onMenuClick(event: MouseEvent) {
+	public onMenuClick(event: MouseEvent): void {
 		event.stopPropagation();
 		this.navOpened = true;
 	}
 
-	closeNav() {
+	public closeNav(): void {
 		this.navOpened = false;
 	}
 
-	onClick(event: MouseEvent) {
+	public onClick(event: MouseEvent): void {
 		const target = event.target as Element;
 
-		if (!this.menu.nativeElement.contains(target)) {
+		if (!this.menu?.nativeElement.contains(target)) {
 			this.navOpened = false;
 		}
 	}

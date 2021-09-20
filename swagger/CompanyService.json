@@ -1165,6 +1165,9 @@
           },
           "AdminInfo": {
             "$ref": "#/components/schemas/AdminInfo"
+          },
+          "IsDepartmentModuleEnabled": {
+            "type": "boolean"
           }
         }
       },
@@ -1209,6 +1212,9 @@
           },
           "SiteUrl": {
             "type": "string"
+          },
+          "IsDepartmentModuleEnabled": {
+            "type": "boolean"
           },
           "Logo": {
             "$ref": "#/components/schemas/ImageInfo"
@@ -1266,7 +1272,8 @@
         "type": "object",
         "properties": {
           "Body": {
-            "type": "object"
+            "type": "object",
+            "nullable": true
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1305,6 +1312,9 @@
               },
               "siteUrl": {
                 "type": "string"
+              },
+              "IsDepartmentModuleEnabled": {
+                "type": "boolean"
               },
               "logo": {
                 "$ref": "#/components/schemas/ImageInfo"
@@ -1420,6 +1430,16 @@
           }
         }
       },
+      "ImageType": {
+        "type": "string",
+        "description": "Type of image.",
+        "enum": [
+          "Full",
+          "Thumb"
+        ],
+        "example": "Full",
+        "default": "Full"
+      },
       "ImageInfo": {
         "type": "object",
         "properties": {
@@ -1431,6 +1451,9 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "Type": {
+            "$ref": "#/components/schemas/ImageType"
           },
           "Name": {
             "type": "string",
@@ -1546,7 +1569,8 @@
               "/port",
               "/enablessl",
               "/email",
-              "/password"
+              "/password",
+              "/isdepartmentmoduleenabled"
             ]
           },
           "value": {

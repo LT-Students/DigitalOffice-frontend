@@ -16,14 +16,17 @@ import { Moment } from 'moment';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
-import { IDisableUserRequest } from '@app/types/disable-user-request.interface';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class UserService {
-	public selectedUser: BehaviorSubject<User>;
+	private _currentUser: BehaviorSubject<User | null>;
+	public readonly currentUser$: Observable<User | null>;
 
 	constructor(private _userApiService: UserApiService) {
-		this.selectedUser = new BehaviorSubject<User>(null);
+		this._currentUser = new BehaviorSubject<User | null>(null);
+		this.currentUser$ = this._currentUser.asObservable();
 	}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
@@ -171,12 +174,36 @@ export class UserService {
 	}
 
 	public disableUser(userId: string): Observable<OperationResultResponse> {
-		const params: IDisableUserRequest = { userId };
+		const params: IEditUserRequest = {
+			userId: userId,
+			body: [
+				{
+					op: 'replace',
+					path: '/IsActive',
+					value: false,
+				},
+			],
+		};
 
-		return this._userApiService.disableUser(params);
+		return this._userApiService.editUser(params);
 	}
 
-	public getUserSetCredentials(userId: string): Observable<User> {
+	public activateUser(userId: string): Observable<OperationResultResponse> {
+		const params: IEditUserRequest = {
+			userId: userId,
+			body: [
+				{
+					op: 'replace',
+					path: '/IsActive',
+					value: true,
+				},
+			],
+		};
+
+		return this._userApiService.editUser(params);
+	}
+
+	public getUserSetCredentials(userId: string | undefined): Observable<User> {
 		const params: IGetUserRequest = {
 			userId: userId,
 			includedepartment: true,
@@ -185,22 +212,21 @@ export class UserService {
 			includecommunications: true,
 			includerole: true,
 			includeimages: true,
+			includeprojects: true,
 		};
 
-		return this.getUser(params).pipe(tap(this._setUser.bind(this)));
+		return this.getUser(params).pipe(
+			tap(this._setUser.bind(this)),
+			catchError((error: HttpErrorResponse) => throwError(error))
+		);
 	}
 
 	public isAdmin(): boolean {
-		const user: User = this.selectedUser.value;
+		const user: User | null = this._currentUser.value;
 		return user ? user.isAdmin : false;
 	}
 
-	public getCurrentUser(): User | null {
-		const user: User = this.selectedUser.value;
-		return user ? user : null;
-	}
-
 	private _setUser(user: User): void {
-		this.selectedUser.next(user);
+		this._currentUser.next(user);
 	}
 }

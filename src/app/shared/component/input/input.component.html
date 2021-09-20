@@ -1,6 +1,6 @@
 <ng-container *ngIf="isEdit; else textBlock">
-  <mat-form-field class="input__form-field mat-form-field__form-control" appearance="fill" floatLabel='always'>
-    <mat-label doText color='gray' [regularTextSize]='textSize' *ngIf='label'>{{ label }}</mat-label>
+  <mat-form-field class="input__form-field mat-form-field__form-control" appearance="fill">
+    <mat-label *ngIf='label'>{{ label }}</mat-label>
     <input
       matInput
       class="bg-light_2"
@@ -14,6 +14,6 @@
 </ng-container>
 
 <ng-template #textBlock>
-  <p doText regularTextSize='small' color='gray'>{{ label }}</p>
-  <div doText>{{ control.value }}</div>
+  <p>{{ label }}</p>
+  <div>{{ control?.value }}</div>
 </ng-template>

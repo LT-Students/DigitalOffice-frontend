@@ -1,4 +1,4 @@
-@import '../../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .section {
 	margin-top: 32px;
@@ -57,7 +57,7 @@
 	&__rate-button {
 		padding: 0 40px;
 
-		background-color: $light-2;
+		background-color: variables.$light-2;
 
 		&:disabled {
 			min-width: 0;

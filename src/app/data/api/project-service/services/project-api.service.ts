@@ -12,10 +12,8 @@ import { map, filter } from 'rxjs/operators';
 import { EditProjectRequest } from '../models/edit-project-request';
 import { FindResponseProjectInfo } from '../models/find-response-project-info';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { OperationResultResponseProjectInfo } from '../models/operation-result-response-project-info';
+import { OperationResultResponseProjectResponse } from '../models/operation-result-response-project-response';
 import { ProjectRequest } from '../models/project-request';
-import { ProjectResponse } from '../models/project-response';
-import { IEditProjectRequest, IGetProjectRequest } from '@app/services/project/project.service';
 
 @Injectable({
   providedIn: 'root',
@@ -124,7 +122,7 @@ export class ProjectApiService extends BaseService {
     includeusers?: boolean;
     shownotactiveusers?: boolean;
     includefiles?: boolean;
-  }): Observable<StrictHttpResponse<ProjectResponse>> {
+  }): Observable<StrictHttpResponse<OperationResultResponseProjectResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectPath, 'get');
     if (params) {
@@ -140,7 +138,7 @@ export class ProjectApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ProjectResponse>;
+        return r as StrictHttpResponse<OperationResultResponseProjectResponse>;
       })
     );
   }
@@ -151,10 +149,19 @@ export class ProjectApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getProject(params: IGetProjectRequest): Observable<ProjectResponse> {
+  getProject(params: {
+
+    /**
+     * Project global unique identifier.
+     */
+    projectId: string;
+    includeusers?: boolean;
+    shownotactiveusers?: boolean;
+    includefiles?: boolean;
+  }): Observable<OperationResultResponseProjectResponse> {
 
     return this.getProject$Response(params).pipe(
-      map((r: StrictHttpResponse<ProjectResponse>) => r.body as ProjectResponse)
+      map((r: StrictHttpResponse<OperationResultResponseProjectResponse>) => r.body as OperationResultResponseProjectResponse)
     );
   }
 
@@ -174,7 +181,7 @@ export class ProjectApiService extends BaseService {
    */
   createProject$Response(params: {
     body: ProjectRequest
-  }): Observable<StrictHttpResponse<OperationResultResponseProjectInfo>> {
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, ProjectApiService.CreateProjectPath, 'post');
     if (params) {
@@ -187,7 +194,7 @@ export class ProjectApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<OperationResultResponseProjectInfo>;
+        return r as StrictHttpResponse<OperationResultResponse>;
       })
     );
   }
@@ -203,10 +210,10 @@ export class ProjectApiService extends BaseService {
    */
   createProject(params: {
     body: ProjectRequest
-  }): Observable<OperationResultResponseProjectInfo> {
+  }): Observable<OperationResultResponse> {
 
     return this.createProject$Response(params).pipe(
-      map((r: StrictHttpResponse<OperationResultResponseProjectInfo>) => r.body as OperationResultResponseProjectInfo)
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
 
@@ -259,7 +266,14 @@ export class ProjectApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editProject(params: IEditProjectRequest): Observable<OperationResultResponse> {
+  editProject(params: {
+
+    /**
+     * Project global unique identifier.
+     */
+    projectId: string;
+    body: EditProjectRequest
+  }): Observable<OperationResultResponse> {
 
     return this.editProject$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

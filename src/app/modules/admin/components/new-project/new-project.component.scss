@@ -1,6 +1,5 @@
-@import 'base/variables';
-@import 'base/fonts';
-@import '../user-row';
+@use 'base/variables';
+@use '../user-row';
 
 .project-info {
 	margin-bottom: 45px;
@@ -71,7 +70,7 @@
 
 		font-size: 14px;
 
-		color: $dark_1;
+		color: variables.$dark_1;
 	}
 
 	&__actions {
@@ -91,6 +90,24 @@
 	height: 333px;
 
 	max-height: 333px;
+}
+
+.navigation {
+	margin-bottom: 40px;
+
+	&__link {
+		display: inline-block;
+
+		height: 24px;
+
+		vertical-align: top;
+
+		color: inherit;
+	}
+
+	&__link:hover {
+		text-decoration: underline;
+	}
 }
 
 textarea#additionInfo {

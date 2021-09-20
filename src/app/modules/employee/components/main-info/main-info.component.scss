@@ -1,10 +1,10 @@
-@import '../../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .employee-info {
 	&__wrapper {
 		display: grid;
 
-		width: 100%;
+		min-width: 600px;
 
 		grid-template-columns: 25% 41% 31% 3%;
 	}
@@ -127,8 +127,6 @@
 	}
 
 	&__stepper-button {
-		font-family: $header_font;
-
 		&:disabled {
 			padding: 0;
 
@@ -136,10 +134,6 @@
 
 			background-color: transparent;
 		}
-	}
-
-	&__input {
-		font-family: $regular_font !important;
 	}
 
 	&__about {
@@ -166,7 +160,7 @@
 
 		height: 320px;
 
-		border-left: 1px solid $light_3;
+		border-left: 1px solid variables.$light_3;
 	}
 
 	&__hint {
@@ -180,21 +174,9 @@
 		vertical-align: -20%;
 	}
 
-	&__required {
-		margin-left: 1px;
-
-		vertical-align: top;
-
-		color: $negative_accent;
-	}
-
 	&__required-block {
 		position: absolute;
 
 		right: 0;
-	}
-
-	.small_text {
-		margin: 14px 0 3px 0;
 	}
 }

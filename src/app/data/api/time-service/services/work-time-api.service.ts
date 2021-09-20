@@ -9,11 +9,10 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { CreateWorkTimeRequest } from '../models/create-work-time-request';
+import { EditWorkTimeMonthLimitRequest } from '../models/edit-work-time-month-limit-request';
 import { EditWorkTimeRequest } from '../models/edit-work-time-request';
-import { FindResultResponseWorkTimeInfo } from '../models/find-result-response-work-time-info';
+import { FindResultResponseWorkTimeResponse } from '../models/find-result-response-work-time-response';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { IEditWorkTimeRequest, IFindWorkTimesRequest } from '@app/services/time/time.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,64 +23,6 @@ export class WorkTimeApiService extends BaseService {
     http: HttpClient
   ) {
     super(config, http);
-  }
-
-  /**
-   * Path part for operation addWorkTime
-   */
-  static readonly AddWorkTimePath = '/worktime/add';
-
-  /**
-   * Sets the worktime for the user.
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `addWorkTime()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  addWorkTime$Response(params: {
-
-    /**
-     * Needed for set worktime.
-     */
-    body: CreateWorkTimeRequest
-  }): Observable<StrictHttpResponse<OperationResultResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.AddWorkTimePath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<OperationResultResponse>;
-      })
-    );
-  }
-
-  /**
-   * Sets the worktime for the user.
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `addWorkTime$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  addWorkTime(params: {
-
-    /**
-     * Needed for set worktime.
-     */
-    body: CreateWorkTimeRequest
-  }): Observable<OperationResultResponse> {
-
-    return this.addWorkTime$Response(params).pipe(
-      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-    );
   }
 
   /**
@@ -100,18 +41,20 @@ export class WorkTimeApiService extends BaseService {
   findWorkTimes$Response(params?: {
     userid?: string;
     projectid?: string;
-    starttime?: string;
-    endtime?: string;
+    month?: number;
+    year?: number;
+    includedayjobs?: boolean;
     takeCount?: number;
     skipCount?: number;
-  }): Observable<StrictHttpResponse<FindResultResponseWorkTimeInfo>> {
+  }): Observable<StrictHttpResponse<FindResultResponseWorkTimeResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.FindWorkTimesPath, 'get');
     if (params) {
       rb.query('userid', params.userid, {});
       rb.query('projectid', params.projectid, {});
-      rb.query('starttime', params.starttime, {});
-      rb.query('endtime', params.endtime, {});
+      rb.query('month', params.month, {});
+      rb.query('year', params.year, {});
+      rb.query('includedayjobs', params.includedayjobs, {});
       rb.query('takeCount', params.takeCount, {});
       rb.query('skipCount', params.skipCount, {});
     }
@@ -122,7 +65,7 @@ export class WorkTimeApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FindResultResponseWorkTimeInfo>;
+        return r as StrictHttpResponse<FindResultResponseWorkTimeResponse>;
       })
     );
   }
@@ -135,10 +78,18 @@ export class WorkTimeApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findWorkTimes(params?: IFindWorkTimesRequest): Observable<FindResultResponseWorkTimeInfo> {
+  findWorkTimes(params?: {
+    userid?: string;
+    projectid?: string;
+    month?: number;
+    year?: number;
+    includedayjobs?: boolean;
+    takeCount?: number;
+    skipCount?: number;
+  }): Observable<FindResultResponseWorkTimeResponse> {
 
     return this.findWorkTimes$Response(params).pipe(
-      map((r: StrictHttpResponse<FindResultResponseWorkTimeInfo>) => r.body as FindResultResponseWorkTimeInfo)
+      map((r: StrictHttpResponse<FindResultResponseWorkTimeResponse>) => r.body as FindResultResponseWorkTimeResponse)
     );
   }
 
@@ -191,9 +142,77 @@ export class WorkTimeApiService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  editWorkTime(params: IEditWorkTimeRequest): Observable<OperationResultResponse> {
+  editWorkTime(params: {
+
+    /**
+     * Work time global unique identifier.
+     */
+    workTimeId: string;
+    body: EditWorkTimeRequest
+  }): Observable<OperationResultResponse> {
 
     return this.editWorkTime$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
+
+  /**
+   * Path part for operation editWorkTimeMonthLimit
+   */
+  static readonly EditWorkTimeMonthLimitPath = '/worktimemonthlimit/edit';
+
+  /**
+   * Editing specific work time month limit by Id.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `editWorkTimeMonthLimit()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editWorkTimeMonthLimit$Response(params: {
+
+    /**
+     * Work time global unique identifier.
+     */
+    workTimeMonthLimitId: string;
+    body: EditWorkTimeMonthLimitRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, WorkTimeApiService.EditWorkTimeMonthLimitPath, 'patch');
+    if (params) {
+      rb.query('workTimeMonthLimitId', params.workTimeMonthLimitId, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
+
+  /**
+   * Editing specific work time month limit by Id.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `editWorkTimeMonthLimit$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editWorkTimeMonthLimit(params: {
+
+    /**
+     * Work time global unique identifier.
+     */
+    workTimeMonthLimitId: string;
+    body: EditWorkTimeMonthLimitRequest
+  }): Observable<OperationResultResponse> {
+
+    return this.editWorkTimeMonthLimit$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }

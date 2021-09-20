@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { LeaveType } from './leave-type';
 export interface LeaveTimeInfo {
 
   /**
@@ -18,17 +19,13 @@ export interface LeaveTimeInfo {
    * The leave time Id.
    */
   id?: string;
-
-  /**
-   * The reason for which lost time.
-   */
-  leaveType?: 'Vacation' | 'SickLeave' | 'Training' | 'Idle';
+  isActive?: boolean;
+  leaveType?: LeaveType;
   minutes?: number;
 
   /**
    * Start date task execution.
    */
   startTime?: string;
-  userId?: string;
 }
 

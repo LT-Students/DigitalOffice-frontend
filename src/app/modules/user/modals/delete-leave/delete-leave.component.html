@@ -1,0 +1,13 @@
+<div class="modal">
+	<h3 class="modal__title">Удаление записи</h3>
+	<div class="modal__message">
+		<p>
+			Вы действительно хотите удалить часы из отсутствия "{{ getRusType(leave.leaveType!)?.toLowerCase() }}" за
+			{{ leave.date | date: 'LLLL YYYY' }}? Отменить это действие будет невозможно.
+		</p>
+	</div>
+	<div class="controls">
+		<button mat-button (click)="onClose()" class="controls__button">Отменить</button>
+		<button mat-flat-button color="warn" class="controls__button" (click)="onSubmit()">Да, удалить</button>
+	</div>
+</div>

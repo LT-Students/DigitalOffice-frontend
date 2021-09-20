@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@data/api/rights-service/models/operation-result-response';

@@ -7,12 +7,12 @@ export enum ProjectStatusTypeRu {
 }
 
 export interface IProjectStatus {
-	name: ProjectStatusTypeRu;
+	name: ProjectStatusTypeRu | null;
 	type: ProjectStatusType;
 }
 
 export class ProjectStatus implements IProjectStatus {
-	name: ProjectStatusTypeRu;
+	name: ProjectStatusTypeRu | null;
 	type: ProjectStatusType;
 
 	constructor(type: ProjectStatusType) {

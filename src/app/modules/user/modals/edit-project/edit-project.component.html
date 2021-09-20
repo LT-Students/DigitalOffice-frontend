@@ -1,0 +1,28 @@
+<div class="modal">
+	<h3 class="modal__title">
+		Редактирование часов за проект
+		<span class="mat-h3">
+			{{ project.name }}
+		</span>
+	</h3>
+	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
+		<div class="modal__hours-wrapper">
+			<mat-form-field appearance="fill" class="modal__hours">
+				<mat-label>Часы</mat-label>
+				<input matInput formControlName="userHours" />
+				<mat-error *ngIf="editForm.controls['userHours'].errors?.required">Заполните количество часов</mat-error>
+			</mat-form-field>
+			<h3 class="modal__date">ч&nbsp;&nbsp;за {{ projectDate | date: 'LLLL YYYY' }}</h3>
+		</div>
+		<div>
+			<mat-form-field appearance="fill" class="modal__description">
+				<mat-label>Комментарий</mat-label>
+				<textarea matInput formControlName="description" class="modal__description-field"></textarea>
+			</mat-form-field>
+		</div>
+		<div class="controls">
+			<button mat-flat-button type="button" class="controls__button" (click)="onClose()">Отмена</button>
+			<button mat-flat-button color="primary" type="submit" class="controls__button">Сохранить</button>
+		</div>
+	</form>
+</div>

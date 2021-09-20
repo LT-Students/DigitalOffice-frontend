@@ -1,9 +1,11 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+//@ts-nocheck
+import { Component, Input, Output, OnInit, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
 	selector: 'do-search',
 	templateUrl: './search.component.html',
 	styleUrls: ['./search.component.scss'],
+changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnInit {
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
@@ -19,7 +21,8 @@ export class SearchComponent implements OnInit {
 		this.searchClick.emit(value);
 	}
 
-	onSearchInput(text: string) {
+	onSearchInput(event: Event) {
+		const text = event.target.value;
 		this.searchInput.emit(text);
 	}
 }
