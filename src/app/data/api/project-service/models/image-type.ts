@@ -4,7 +4,6 @@
 /**
  * Type of image.
  */
-export enum ImageType {
-  Full = 'Full',
-  Thumb = 'Thumb'
+export interface ImageType {
 }
+
