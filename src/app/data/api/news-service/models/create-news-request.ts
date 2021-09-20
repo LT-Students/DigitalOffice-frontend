@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface NewsRequest {
+export interface CreateNewsRequest {
 
   /**
    * Id of the news author.
@@ -8,7 +8,7 @@ export interface NewsRequest {
   authorId: string;
 
   /**
-   * The news' content.
+   * The news content.
    */
   content: string;
 
@@ -18,17 +18,17 @@ export interface NewsRequest {
   departmentId?: string;
 
   /**
-   * The news' author name.
+   * The news' preview.
+   */
+  preview: string;
+
+  /**
+   * The news author name.
    */
   pseudonym?: string;
 
   /**
-   * Id of the news sender.
-   */
-  senderId: string;
-
-  /**
-   * The news' subject.
+   * The news subject.
    */
   subject: string;
 }
