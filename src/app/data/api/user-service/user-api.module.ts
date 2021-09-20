@@ -9,6 +9,8 @@ import { CredentialsApiService } from './services/credentials-api.service';
 import { EducationApiService } from './services/education-api.service';
 import { CertificateApiService } from './services/certificate-api.service';
 import { CommunicationApiService } from './services/communication-api.service';
+import { AvatarApiService } from './services/avatar-api.service';
+import { SkillApiService } from './services/skill-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -23,6 +25,8 @@ import { CommunicationApiService } from './services/communication-api.service';
     EducationApiService,
     CertificateApiService,
     CommunicationApiService,
+    AvatarApiService,
+    SkillApiService,
     ApiConfiguration
   ],
 })

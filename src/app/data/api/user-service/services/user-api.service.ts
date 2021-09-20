@@ -243,11 +243,6 @@ export class UserApiService extends BaseService {
   findUsers$Response(params: {
 
     /**
-     * Specific department of users.
-     */
-    departmentid?: string;
-
-    /**
      * Number of entries to skip.
      */
     skipCount: number;
@@ -256,13 +251,30 @@ export class UserApiService extends BaseService {
      * Number of users to take.
      */
     takeCount: number;
+
+    /**
+     * Specific department of users.
+     */
+    departmentid?: string;
+    includedeactivated?: boolean;
+    includedepartment?: boolean;
+    includeposition?: boolean;
+    includeoffice?: boolean;
+    includerole?: boolean;
+    includeavatar?: boolean;
   }): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
     if (params) {
-      rb.query('departmentid', params.departmentid, {});
       rb.query('skipCount', params.skipCount, {});
       rb.query('takeCount', params.takeCount, {});
+      rb.query('departmentid', params.departmentid, {});
+      rb.query('includedeactivated', params.includedeactivated, {});
+      rb.query('includedepartment', params.includedepartment, {});
+      rb.query('includeposition', params.includeposition, {});
+      rb.query('includeoffice', params.includeoffice, {});
+      rb.query('includerole', params.includerole, {});
+      rb.query('includeavatar', params.includeavatar, {});
     }
 
     return this.http.request(rb.build({
@@ -287,11 +299,6 @@ export class UserApiService extends BaseService {
   findUsers(params: {
 
     /**
-     * Specific department of users.
-     */
-    departmentid?: string;
-
-    /**
      * Number of entries to skip.
      */
     skipCount: number;
@@ -300,6 +307,17 @@ export class UserApiService extends BaseService {
      * Number of users to take.
      */
     takeCount: number;
+
+    /**
+     * Specific department of users.
+     */
+    departmentid?: string;
+    includedeactivated?: boolean;
+    includedepartment?: boolean;
+    includeposition?: boolean;
+    includeoffice?: boolean;
+    includerole?: boolean;
+    includeavatar?: boolean;
   }): Observable<FindResultResponseUserInfo> {
 
     return this.findUsers$Response(params).pipe(
@@ -414,64 +432,6 @@ export class UserApiService extends BaseService {
   }): Observable<OperationResultResponse> {
 
     return this.editUser$Response(params).pipe(
-      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-    );
-  }
-
-  /**
-   * Path part for operation disableUser
-   */
-  static readonly DisableUserPath = '/users/disable';
-
-  /**
-   * Delete the specified user by id. The user must have right - Add/Edit/Remove users.
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `disableUser()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  disableUser$Response(params: {
-
-    /**
-     * User global unique identifier.
-     */
-    userId: string;
-  }): Observable<StrictHttpResponse<OperationResultResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, UserApiService.DisableUserPath, 'delete');
-    if (params) {
-      rb.query('userId', params.userId, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<OperationResultResponse>;
-      })
-    );
-  }
-
-  /**
-   * Delete the specified user by id. The user must have right - Add/Edit/Remove users.
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `disableUser$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  disableUser(params: {
-
-    /**
-     * User global unique identifier.
-     */
-    userId: string;
-  }): Observable<OperationResultResponse> {
-
-    return this.disableUser$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
     );
   }
