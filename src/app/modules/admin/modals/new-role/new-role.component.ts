@@ -31,7 +31,7 @@ export class NewRoleComponent implements OnInit {
 		this.roleForm = this._fb.group({
 			name: ['', [Validators.required]],
 			description: [''],
-			rights: this._fb.array([], DoValidators.atLeastOneChecked),
+			rights: this._fb.array([], [DoValidators.atLeastOneChecked]),
 		});
 	}
 

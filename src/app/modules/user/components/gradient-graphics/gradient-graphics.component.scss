@@ -1,4 +1,4 @@
-@import 'base/variables';
+@use 'base/variables';
 
 .header {
 	text-align: right;
@@ -10,7 +10,7 @@
 	display: flex;
 	justify-content: space-between;
 
-	border-bottom: solid 1px $gray;
+	border-bottom: solid 1px variables.$gray;
 
 	.graphic__column {
 		display: flex;

@@ -1,23 +1,23 @@
 <mat-card class="card card_standard">
 	<div class="card__header">
 		<div>
-			<h1 class="h1 text-dark_2">{{ projectInfo?.name }}</h1>
+			<h1>{{ projectInfo?.name }}</h1>
 			<div class="card__splitter"></div>
-			<p class="regular_text text-gray">{{ projectInfo?.department?.name }}</p>
+			<p>{{ projectInfo?.department?.name }}</p>
 		</div>
 	</div>
 	<div class="card__content">
 		<div>
 			<div class="description">
-				<h2 class="h4 text-dark_1 description__title">Детали проекта</h2>
+				<h2 class="description__title">Детали проекта</h2>
 				<div class="description__body">
-					<div doText color="gray" class='description__column'>
+					<div class="description__column">
 						<p>Статус</p>
 						<p>Запуск проекта</p>
 						<p>Проект длится</p>
 						<p>Команда</p>
 					</div>
-					<div doText color="dark_1" class='description__column'>
+					<div class="description__column">
 						<p>{{ projectInfo?.status }}</p>
 						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
 						<p>{{ projectDuration | i18nPlural: dayCountMap }}</p>
@@ -25,84 +25,84 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div>
-			<h4 doText color="dark_1">Описание</h4>
-			<p doText>{{ projectInfo?.description ? projectInfo?.description : '—' }}</p>
+			<div>
+				<h4>Описание</h4>
+				<p>{{ projectInfo?.description ? projectInfo?.description : '—' }}</p>
+			</div>
 		</div>
 	</div>
 	<div class="table-wrapper">
 		<mat-tab-group>
 			<mat-tab #team>
 				<ng-template mat-tab-label>
-					<mat-icon class='table-wrapper__icon'>
-						<svg [ngClass]='team.isActive ? "table-wrapper__label-orange" : "table-wrapper__label-grey"'
-							width="27" height="16" viewBox="0 0 30 16">
+					<mat-icon class="table-wrapper__icon">
+						<svg
+							[ngClass]="team.isActive ? 'table-wrapper__label-orange' : 'table-wrapper__label-grey'"
+							width="27"
+							height="16"
+							viewBox="0 0 30 16"
+						>
 							<path
-								d="M12.5 0C13.4669 0 14.3943 0.406896 15.078 1.13117C15.7617 1.85545 16.1458 2.83778 16.1458 3.86207C16.1458 4.88635 15.7617 5.86869 15.078 6.59296C14.3943 7.31724 13.4669 7.72414 12.5 7.72414C11.5331 7.72414 10.6057 7.31724 9.92201 6.59296C9.23828 5.86869 8.85417 4.88635 8.85417 3.86207C8.85417 2.83778 9.23828 1.85545 9.92201 1.13117C10.6057 0.406896 11.5331 0 12.5 0ZM5.20833 2.75862C5.79167 2.75862 6.33333 2.92414 6.80208 3.22207C6.64583 4.8 7.08333 6.3669 7.97917 7.59172C7.45833 8.65103 6.41667 9.37931 5.20833 9.37931C4.37953 9.37931 3.58468 9.03054 2.99862 8.40973C2.41257 7.78892 2.08333 6.94692 2.08333 6.06897C2.08333 5.19101 2.41257 4.34901 2.99862 3.7282C3.58468 3.10739 4.37953 2.75862 5.20833 2.75862ZM19.7917 2.75862C20.6205 2.75862 21.4153 3.10739 22.0014 3.7282C22.5874 4.34901 22.9167 5.19101 22.9167 6.06897C22.9167 6.94692 22.5874 7.78892 22.0014 8.40973C21.4153 9.03054 20.6205 9.37931 19.7917 9.37931C18.5833 9.37931 17.5417 8.65103 17.0208 7.59172C17.929 6.3497 18.3506 4.78477 18.1979 3.22207C18.6667 2.92414 19.2083 2.75862 19.7917 2.75862ZM5.72917 14.069C5.72917 11.7848 8.76042 9.93103 12.5 9.93103C16.2396 9.93103 19.2708 11.7848 19.2708 14.069V16H5.72917V14.069ZM0 16V14.3448C0 12.811 1.96875 11.52 4.63542 11.1448C4.02083 11.8952 3.64583 12.9324 3.64583 14.069V16H0ZM25 16H21.3542V14.069C21.3542 12.9324 20.9792 11.8952 20.3646 11.1448C23.0312 11.52 25 12.811 25 14.3448V16Z" />
+								d="M12.5 0C13.4669 0 14.3943 0.406896 15.078 1.13117C15.7617 1.85545 16.1458 2.83778 16.1458 3.86207C16.1458 4.88635 15.7617 5.86869 15.078 6.59296C14.3943 7.31724 13.4669 7.72414 12.5 7.72414C11.5331 7.72414 10.6057 7.31724 9.92201 6.59296C9.23828 5.86869 8.85417 4.88635 8.85417 3.86207C8.85417 2.83778 9.23828 1.85545 9.92201 1.13117C10.6057 0.406896 11.5331 0 12.5 0ZM5.20833 2.75862C5.79167 2.75862 6.33333 2.92414 6.80208 3.22207C6.64583 4.8 7.08333 6.3669 7.97917 7.59172C7.45833 8.65103 6.41667 9.37931 5.20833 9.37931C4.37953 9.37931 3.58468 9.03054 2.99862 8.40973C2.41257 7.78892 2.08333 6.94692 2.08333 6.06897C2.08333 5.19101 2.41257 4.34901 2.99862 3.7282C3.58468 3.10739 4.37953 2.75862 5.20833 2.75862ZM19.7917 2.75862C20.6205 2.75862 21.4153 3.10739 22.0014 3.7282C22.5874 4.34901 22.9167 5.19101 22.9167 6.06897C22.9167 6.94692 22.5874 7.78892 22.0014 8.40973C21.4153 9.03054 20.6205 9.37931 19.7917 9.37931C18.5833 9.37931 17.5417 8.65103 17.0208 7.59172C17.929 6.3497 18.3506 4.78477 18.1979 3.22207C18.6667 2.92414 19.2083 2.75862 19.7917 2.75862ZM5.72917 14.069C5.72917 11.7848 8.76042 9.93103 12.5 9.93103C16.2396 9.93103 19.2708 11.7848 19.2708 14.069V16H5.72917V14.069ZM0 16V14.3448C0 12.811 1.96875 11.52 4.63542 11.1448C4.02083 11.8952 3.64583 12.9324 3.64583 14.069V16H0ZM25 16H21.3542V14.069C21.3542 12.9324 20.9792 11.8952 20.3646 11.1448C23.0312 11.52 25 12.811 25 14.3448V16Z"
+							/>
 						</svg>
 					</mat-icon>
 					<p>Команда</p>
 				</ng-template>
-				<h3 doText underlined underlinedSize="sm">Команда</h3>
-				<table doText class="table" matSort>
+				<h3 doUnderline underlinedSize="sm">Команда</h3>
+				<table class="table" matSort>
 					<colgroup>
-						<col class='column column_width-little'>
+						<col class="column column_width-little" />
 					</colgroup>
-					<thead doText color='gray1'>
-						<tr class='row'>
-							<th class='cell'></th>
-							<th class='cell' mat-sort-header="name">
-								<p class='regular_text'>Имя</p>
+					<thead>
+						<tr class="row">
+							<th class="cell"></th>
+							<th class="cell" mat-sort-header="name">
+								<p>Имя</p>
 							</th>
-							<th class='cell' mat-sort-header="department">
-								<p class='regular_text'>Департамент</p>
+							<th class="cell" mat-sort-header="department">
+								<p>Департамент</p>
 							</th>
-							<th class='cell' mat-sort-header="role">
-								<p class='regular_text'>Роль</p>
+							<th class="cell" mat-sort-header="role">
+								<p>Роль</p>
 							</th>
-							<th class='cell' mat-sort-header="rate">
-								<p class='regular_text'>Ставка</p>
+							<th class="cell" mat-sort-header="rate">
+								<p>Ставка</p>
 							</th>
-							<th class='cell' mat-sort-header="status">
-								<p class='regular_text'>Статус</p>
+							<th class="cell" mat-sort-header="status">
+								<p>Статус</p>
 							</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="row row_activable" *ngFor="let userInfo of $any(projectUsers)"
-							routerLink="/user/{{ userInfo.id }}">
-							<td class='cell'>
-								<do-profile-image [image]='userInfo?.avatar'></do-profile-image>
+						<tr class="row row_activable" *ngFor="let userInfo of projectUsers" routerLink="/user/{{ userInfo.id }}">
+							<td class="cell">
+								<do-profile-image [image]="$any(userInfo?.avatarImage)"></do-profile-image>
 							</td>
-							<td class='cell cell_vertical-middle'>{{ userInfo?.firstName }} {{ userInfo?.lastName }}
-							</td>
-							<td class='cell cell_vertical-middle'>{{ userInfo?.department?.name ?
-								userInfo.department.name : '—'
-								}}</td>
-							<td class='cell cell_vertical-middle'>{{ userInfo?.position?.name ? userInfo.position.name :
-								'—' }}
-							</td>
-							<td class='cell cell_vertical-middle'>{{ userInfo?.rate ? userInfo?.rate : '—' }}</td>
-							<td class='cell cell_vertical-middle'>
-								<p *ngIf='userInfo?.isActive;'
-									class='table__status text_color_white small_text regular_text'>
-									Активен</p>
-								<p class='table__status table__status_archived text_color_gray1 small_text regular_text bg-light_1'
-									doText color='light_1' *ngIf='!userInfo?.isActive;'>В архиве</p>
+							<td class="cell cell_vertical-middle">{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
+							<td class="cell cell_vertical-middle">{{ userInfo?.department?.name ?? '—' }}</td>
+							<td class="cell cell_vertical-middle">{{ userInfo?.position?.name ?? '—' }}</td>
+							<td class="cell cell_vertical-middle">{{ userInfo?.rate ? userInfo?.rate : '—' }}</td>
+							<td class="cell cell_vertical-middle">
+								<p *ngIf="userInfo?.isActive" class="user-status">Активен</p>
+								<p class="user-status user-status_archived" *ngIf="!userInfo?.isActive">В архиве</p>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-
 			</mat-tab>
 			<mat-tab #statistics>
 				<ng-template mat-tab-label>
-					<mat-icon class='table-wrapper__icon'>
-						<svg [ngClass]='statistics.isActive ? "table-wrapper__label-orange" : "table-wrapper__label-grey"'
-							width="19" height="18" viewBox="0 0 19 18">
+					<mat-icon class="table-wrapper__icon">
+						<svg
+							[ngClass]="statistics.isActive ? 'table-wrapper__label-orange' : 'table-wrapper__label-grey'"
+							width="19"
+							height="18"
+							viewBox="0 0 19 18"
+						>
 							<path
-								d="M12.9661 13.6996L12.9661 13.6996L12.9691 13.6983L17.2811 11.8469L17.5264 11.7415L17.4052 11.5036L16.8774 10.4682L16.7711 10.2598L16.5561 10.3519L12.3257 12.1653L7.43028 11.0757C7.43005 11.0757 7.42982 11.0756 7.4296 11.0755C7.20845 11.0252 6.97787 11.0224 6.75546 11.0675C6.5328 11.1126 6.32307 11.2047 6.14299 11.3379L6.14296 11.3378L6.13938 11.3406L2.4948 14.1396V11.689L7.13672 8.12767L11.9975 9.20956C11.9976 9.20959 11.9977 9.20961 11.9978 9.20964C12.3209 9.28261 12.6614 9.25425 12.9661 9.12813L12.9661 9.12815L12.9691 9.12686L17.2811 7.27543L17.5263 7.17013L17.4052 6.93229L16.878 5.89686L16.7719 5.68833L16.5568 5.7805L12.3251 7.59389L7.42955 6.50425C7.42933 6.5042 7.4291 6.50415 7.42888 6.5041C7.20776 6.45381 6.97723 6.45112 6.75487 6.49617C6.53227 6.54127 6.32256 6.63329 6.14246 6.76636L6.14244 6.76633L6.13874 6.76917L2.4948 9.56816V7.11758L7.13672 3.55624L11.9975 4.63813C11.9976 4.63816 11.9977 4.63819 11.9979 4.63823C12.3209 4.71118 12.6614 4.68281 12.9661 4.5567L12.9661 4.55672L12.9689 4.55549L17.2809 2.70692L17.5263 2.60174L17.4053 2.36382L16.8787 1.32839L16.7727 1.11983L16.5575 1.21187L12.3258 3.02247L7.43028 1.93284C7.43005 1.93279 7.42982 1.93274 7.42959 1.93269C7.20845 1.8823 6.97787 1.87955 6.75546 1.92461C6.5328 1.96973 6.32306 2.06181 6.14299 2.19501L6.14296 2.19497L6.13938 2.19773L2.4948 4.99678V1V0.75H2.2448H1H0.75V1V15.8571C0.75 16.2338 0.913157 16.5902 1.19552 16.8494C1.47717 17.108 1.85492 17.25 2.2448 17.25H18.4272H18.6772V17V15.8571V15.6071H18.4272H3.34612L7.13671 12.6991L11.9975 13.781C11.9976 13.781 11.9977 13.781 11.9978 13.7811C12.3209 13.854 12.6614 13.8257 12.9661 13.6996Z" />
+								d="M12.9661 13.6996L12.9661 13.6996L12.9691 13.6983L17.2811 11.8469L17.5264 11.7415L17.4052 11.5036L16.8774 10.4682L16.7711 10.2598L16.5561 10.3519L12.3257 12.1653L7.43028 11.0757C7.43005 11.0757 7.42982 11.0756 7.4296 11.0755C7.20845 11.0252 6.97787 11.0224 6.75546 11.0675C6.5328 11.1126 6.32307 11.2047 6.14299 11.3379L6.14296 11.3378L6.13938 11.3406L2.4948 14.1396V11.689L7.13672 8.12767L11.9975 9.20956C11.9976 9.20959 11.9977 9.20961 11.9978 9.20964C12.3209 9.28261 12.6614 9.25425 12.9661 9.12813L12.9661 9.12815L12.9691 9.12686L17.2811 7.27543L17.5263 7.17013L17.4052 6.93229L16.878 5.89686L16.7719 5.68833L16.5568 5.7805L12.3251 7.59389L7.42955 6.50425C7.42933 6.5042 7.4291 6.50415 7.42888 6.5041C7.20776 6.45381 6.97723 6.45112 6.75487 6.49617C6.53227 6.54127 6.32256 6.63329 6.14246 6.76636L6.14244 6.76633L6.13874 6.76917L2.4948 9.56816V7.11758L7.13672 3.55624L11.9975 4.63813C11.9976 4.63816 11.9977 4.63819 11.9979 4.63823C12.3209 4.71118 12.6614 4.68281 12.9661 4.5567L12.9661 4.55672L12.9689 4.55549L17.2809 2.70692L17.5263 2.60174L17.4053 2.36382L16.8787 1.32839L16.7727 1.11983L16.5575 1.21187L12.3258 3.02247L7.43028 1.93284C7.43005 1.93279 7.42982 1.93274 7.42959 1.93269C7.20845 1.8823 6.97787 1.87955 6.75546 1.92461C6.5328 1.96973 6.32306 2.06181 6.14299 2.19501L6.14296 2.19497L6.13938 2.19773L2.4948 4.99678V1V0.75H2.2448H1H0.75V1V15.8571C0.75 16.2338 0.913157 16.5902 1.19552 16.8494C1.47717 17.108 1.85492 17.25 2.2448 17.25H18.4272H18.6772V17V15.8571V15.6071H18.4272H3.34612L7.13671 12.6991L11.9975 13.781C11.9976 13.781 11.9977 13.781 11.9978 13.7811C12.3209 13.854 12.6614 13.8257 12.9661 13.6996Z"
+							/>
 						</svg>
 					</mat-icon>
 					<p>Статистика команды</p>
@@ -110,6 +110,5 @@
 				<do-team-statistics [projectId]="projectId"></do-team-statistics>
 			</mat-tab>
 		</mat-tab-group>
-
 	</div>
 </mat-card>

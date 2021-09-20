@@ -10,7 +10,6 @@ import { NewEmployeeComponent } from './modals/new-employee/new-employee.compone
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { UserSearchComponent } from './components/new-project/modals/user-search/user-search.component';
 import { TeamCardComponent } from './components/team-cards/team-card.component';
-import { NewCompanyComponent } from './modals/new-company/new-company.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ProgressComponent } from './components/upload/progress/progress.component';
 import { NewDepartmentComponent } from './modals/new-department/new-department.component';
@@ -36,7 +35,6 @@ import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
 		NewEmployeeComponent,
 		NewProjectComponent,
 		UserSearchComponent,
-		NewCompanyComponent,
 		TeamCardComponent,
 		UploadComponent,
 		ProgressComponent,

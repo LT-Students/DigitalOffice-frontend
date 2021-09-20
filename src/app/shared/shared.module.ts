@@ -6,7 +6,6 @@ import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { MaterialModule } from './material.module';
 
-import { ButtonComponent } from './component/button/button.component';
 import { SelectComponent } from './component/select/select.component';
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
@@ -20,7 +19,6 @@ import { CommentComponent } from './component/comment/comment.component';
 
 @NgModule({
 	declarations: [
-		ButtonComponent,
 		SelectComponent,
 		ProfileImageComponent,
 		ContentContainerComponent,
@@ -48,7 +46,6 @@ import { CommentComponent } from './component/comment/comment.component';
 		ReactiveFormsModule,
 		FormsModule,
 		InputComponent,
-		ButtonComponent,
 		SelectComponent,
 		ProfileImageComponent,
 		SearchComponent,

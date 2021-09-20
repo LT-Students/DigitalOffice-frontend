@@ -3,7 +3,7 @@
     <mat-expansion-panel-header>
       <mat-panel-title class='team-card__general-info'>
         <div class='name'>{{ teamCard.name }}</div>
-        <div class='total-number' doText color="gray1"> {{ members.length }} человека</div>
+        <div class='total-number'> {{ members.length }} человека</div>
       </mat-panel-title>
       <mat-panel-description>
         <div class='team-card__button_edit' (click)="onEditTeam($event)">
@@ -14,7 +14,7 @@
             <!-- TODO: Replace when api ready -->
             <img class='member__image' [src]='member.profileImgSrc' width='32' height='32'
                  alt='profile image' />
-            <span class="label_lead label_lead_sm" *ngIf="member.lead" doText regularTextSize="small">Л</span>
+            <span class="label_lead label_lead_sm" *ngIf="member.lead">Л</span>
           </div>
           <div class='member member_empty' *ngIf='this.membersCountNotVisible'>
             <span class='counter'>+ {{ this.membersCountNotVisible }}</span>
@@ -31,17 +31,17 @@
         <!-- TODO: Fix wrapper tag for big images-->
         <div class="user-row__image">
           <img [src]='member.profileImgSrc' width='48' height='48' alt="user image">
-          <span class="label_lead label_lead_md" *ngIf="member.lead" doText regularTextSize="small">ЛИД</span>
+          <span class="label_lead label_lead_md" *ngIf="member.lead">ЛИД</span>
         </div>
         <div class="user-row__general-info">
           <div class='name'>{{ member.name }}</div>
-          <div class='position' doText color="gray1"> {{ member.level }}</div>
+          <div class='position'> {{ member.level }}</div>
         </div>
         <div class="user-row__department">
-            <span doText color="gray1">Департамент тестовый</span>
+            <span>Департамент тестовый</span>
         </div>
         <div class="user-row__projects-count">
-            <span doText color="gray1">1 проект</span>
+            <span>1 проект</span>
         </div>
       </div>
     </ng-template>

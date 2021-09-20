@@ -1,4 +1,4 @@
-@import '../../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .breadcrumbs {
 	display: flex;
@@ -12,7 +12,7 @@
 		}
 
 		&:last-child {
-			color: $dark_1;
+			color: variables.$dark_1;
 		}
 	}
 }
