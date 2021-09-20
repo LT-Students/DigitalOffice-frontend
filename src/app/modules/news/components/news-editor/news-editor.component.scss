@@ -1,0 +1,53 @@
+.articleEditor {
+	padding: 3em;
+
+	display: flex;
+
+	height: 100%;
+
+	font-family: 'Lato', sans-serif;
+
+	background: rgb(233, 233, 233);
+}
+
+#editorjs {
+	min-height: 700px;
+
+	background: #fff;
+}
+
+button {
+	padding: 15px 32px;
+
+	display: inline-block;
+
+	font-size: 16px;
+	text-align: center;
+	text-decoration: none;
+
+	color: #fff;
+	background-color: #4caf50; /* Green */
+	border: none;
+}
+
+//::ng-deep .ce-block__content,
+//::ng-deep .ce-toolbar__content {
+//	max-width: unset;
+//}
+.panelOne {
+	flex: 0 0 50%;
+}
+
+.articleDataContainer {
+	min-height: 700px;
+
+	word-wrap: break-word;
+
+	background: #fff;
+	overflow-wrap: break-word;
+}
+
+pre {
+	white-space: pre-wrap;
+	word-break: keep-all;
+}

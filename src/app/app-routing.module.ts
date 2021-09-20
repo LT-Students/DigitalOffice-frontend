@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -18,6 +17,7 @@ export const enum RouteType {
 	ADMIN = 'admin',
 	PROJECT = 'project',
 	DEPARTMENTS = 'departments',
+	NEWS = 'news',
 }
 
 const routes: Routes = [
@@ -43,6 +43,10 @@ const routes: Routes = [
 						path: RouteType.ADMIN,
 						loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule),
 						canActivate: [AdminGuard],
+					},
+					{
+						path: RouteType.NEWS,
+						loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
 					},
 					{
 						path: `${RouteType.USER}/:id`,
