@@ -1,6 +1,5 @@
-@import '../../../../../../../stylesheets/base/variables';
-@import '../../../../../../../stylesheets/base/fonts';
-@import '../../../user-row';
+@use 'base/variables';
+@use '../../../user-row';
 
 $select-height: 36px;
 
@@ -33,11 +32,6 @@ $select-height: 36px;
 		padding: 0 0 0 0.5em;
 
 		line-height: $select-height;
-
-		.mat-select-placeholder {
-			@extend .regular_text;
-			@extend .text_color_dark-1;
-		}
 	}
 
 	.mat-select-arrow {
@@ -84,7 +78,7 @@ $select-height: 36px;
 	}
 
 	do-search {
-		background-color: $light_2;
+		background-color: variables.$light_2;
 	}
 
 	.filters-section {
@@ -140,7 +134,7 @@ $select-height: 36px;
 		width: 36px;
 		height: 36px;
 
-		background-color: $gray;
+		background-color: variables.$gray;
 		border-radius: 50%;
 	}
 }

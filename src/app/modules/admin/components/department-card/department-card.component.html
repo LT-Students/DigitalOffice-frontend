@@ -1,41 +1,41 @@
-<div class="navigation" doText color="gray">
+<div class="navigation">
 	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span doText color="gray">
+	<span>
 		<mat-icon>chevron_right</mat-icon>
 	</span>
 	<a class="navigation__link" routerLink="/departments">Список департаментов</a>
-	<span doText color="gray">
+	<span>
 		<mat-icon>chevron_right</mat-icon>
 	</span>
 	<a class="navigation__link">{{ departmentInfo?.name }}</a>
 </div>
-<h1 doText class="title">{{ departmentInfo?.name }}</h1>
+<h1 class="title">{{ departmentInfo?.name }}</h1>
 <mat-card class="card card_standard department">
 	<div class="department__info">
-		<h3 doText underlined underlinedSize="sm">Общая информация</h3>
+		<h3 doUnderline underlinedSize="sm">Общая информация</h3>
 		<div class="department__label">
-			<p doText regularTextSize="small" color="gray1">Директор</p>
+			<p>Директор</p>
 			<ng-container *ngIf="departmentInfo?.director; else empty">
-				<p doText>{{ departmentInfo?.director?.firstName }} {{ departmentInfo?.director?.lastName }}</p>
+				<p>{{ departmentInfo?.director?.firstName }} {{ departmentInfo?.director?.lastName }}</p>
 			</ng-container>
 		</div>
 		<div class="department__label">
-			<p doText regularTextSize="small" color="gray1">Описание</p>
+			<p>Описание</p>
 			<ng-container *ngIf="departmentInfo?.description; else empty">
-				<p doText>{{ departmentInfo?.description }}</p>
+				<p>{{ departmentInfo?.description }}</p>
 			</ng-container>
 		</div>
 	</div>
 	<div class="department__table table">
 		<div class="table__header">
-			<h3 doText underlined underlinedSize="sm">
-				Сотрудники <span class="text-accent_color_bright">{{ totalCount | i18nPlural: peopleCountMap }}</span>
+			<h3 doUnderline underlinedSize="sm">
+				Сотрудники <span class="mat-h3 primary">{{ totalCount | i18nPlural: peopleCountMap }}</span>
 			</h3>
-			<button mat-flat-button color="orange" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
+			<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 		</div>
-		<table doText class="table__content" matSort (matSortChange)="sortData($event)">
+		<table class="table__content" matSort (matSortChange)="sortData($event)">
 			<colgroup>
-				<col class='table__column table__column_width_little'>
+				<col class="table__column table__column_width_little" />
 			</colgroup>
 			<tr>
 				<th></th>
@@ -65,17 +65,16 @@
 					</td>
 					<td>
 						<ng-container *ngIf="userInfo?.isActive; else archived">
-							<p class="table__status text_color_white small_text">Активен</p>
+							<p class="user-status">Активен</p>
 						</ng-container>
 						<ng-template #archived>
-							<p class="table__status table__status_archived text_color_gray1 small_text">В архиве</p>
+							<p class="user-status user-status_archived">В архиве</p>
 						</ng-template>
 					</td>
 				</tr>
 			</ng-container>
 		</table>
-		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
-			(page)="onPageChange($event)"></mat-paginator>
+		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 	</div>
 </mat-card>
 

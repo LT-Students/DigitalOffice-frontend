@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { Activities, AttendanceService } from '@app/services/attendance.service';
+import { TimeDurationService } from '@app/services/time-duration.service';
 
 Chart.register(...registerables);
 
@@ -24,7 +25,7 @@ export class DoughnutChartComponent implements OnInit {
 	public readonly COLORS = ['#FFB2B2', '#C7C6D8', '#D2ECFF', '#FFBE97', '#FFD89E', '#9ABCDB', '#ABF5C0', '#FEECAA', '#FFCDCD'];
 	private readonly EMPTY_COLOR = '#F5F5F5';
 
-	constructor(private _attendanceService: AttendanceService, private _cdr: ChangeDetectorRef) {
+	constructor(private _attendanceService: AttendanceService, private _cdr: ChangeDetectorRef, private _timeDurationService: TimeDurationService) {
 		this.monthNorm = 160;
 		this.userHours = 0;
 		this.labels = [];
@@ -59,7 +60,7 @@ export class DoughnutChartComponent implements OnInit {
 				.reduce(
 					(acc, leave) =>
 						acc +
-						this._attendanceService.getRecommendedTime({
+						this._timeDurationService.getDuration({
 							startDate: new Date(leave?.startTime as string),
 							endDate: new Date(leave?.endTime as string),
 						}),
@@ -82,7 +83,7 @@ export class DoughnutChartComponent implements OnInit {
 				.reduce(
 					(acc, leave) =>
 						acc +
-						this._attendanceService.getRecommendedTime({
+						this._timeDurationService.getDuration({
 							startDate: new Date(leave?.startTime as string),
 							endDate: new Date(leave?.endTime as string),
 						}),

@@ -1,3 +1,6 @@
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
+
 // Styles for table
 .table {
 	width: 100%;
@@ -61,6 +64,10 @@
 		width: 20%;
 	}
 
+	&_width_35 {
+		width: 35%;
+	}
+
 	&_width_l {
 		width: 45%;
 	}
@@ -70,5 +77,23 @@
 	// Для выравнивания заголовка mat-sort-header по левой стороне
 	&__content {
 		text-align: left;
+	}
+}
+
+.user-status {
+	width: 67px;
+	height: 24px;
+
+	text-align: center;
+
+	color: mat.get-color-from-palette($do-grey, 50);
+
+	background-color: mat.get-color-from-palette($do-green, 500);
+	border-radius: 10px;
+
+	&_archived {
+		color: mat.get-color-from-palette($do-grey, 500);
+
+		background-color: mat.get-color-from-palette($do-grey, 100);
 	}
 }

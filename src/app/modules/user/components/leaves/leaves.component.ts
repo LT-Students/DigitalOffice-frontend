@@ -10,6 +10,7 @@ import { DatePeriod } from '@data/models/date-period';
 import { DeleteLeaveComponent } from '../../modals/delete-leave/delete-leave.component';
 import { EditLeaveComponent } from '../../modals/edit-leave/edit-leave.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
+import { TimeDurationService } from '@app/services/time-duration.service';
 
 export interface IModalContentConfig {
 	id?: string;
@@ -37,7 +38,8 @@ export class LeavesComponent {
 		private _modalService: ModalService,
 		private _cdr: ChangeDetectorRef,
 		private _snackBar: MatSnackBar,
-		private _attendanceService: AttendanceService
+		private _attendanceService: AttendanceService,
+		private _timeDurationService: TimeDurationService
 	) {
 		this.leaves = [];
 		this.canEdit$ = this._attendanceService.canEdit$;
@@ -50,7 +52,7 @@ export class LeavesComponent {
 	public getPeriodInHours(startTime: string, endTime: string): number {
 		const datePeriod: DatePeriod = { startDate: new Date(startTime), endDate: new Date(endTime) };
 
-		return this._attendanceService.getRecommendedTime(datePeriod, 8, true);
+		return this._timeDurationService.getDuration(datePeriod, 8, true);
 	}
 
 

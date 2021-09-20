@@ -1,47 +1,27 @@
-<form
-  class="form"
-  [formGroup]="loginForm"
-  (ngSubmit)="login()"
-  autocomplete="off"
->
-  <h1 doText color='dark_1' class="form__title">{{ portalName }}</h1>
-  <div class="form__error">
-    <small *ngIf="loginError">Неверный логин или пароль :(</small>
-  </div>
-  <input
-    class="form__input-field regular_text"
-    name="email"
-    type="email"
-    placeholder="Корпоративный e-mail или логин"
-    formControlName="email"
-  />
-  <input
-    class="form__input-field regular_text"
-    name="password"
-    type="password"
-    placeholder="Пароль"
-    formControlName="password"
-  />
-  <div class="form__submit">
-    <button
-      class="regular_text"
-      *ngIf="!isLoading; else spinner"
-      type="submit"
-      id="btn-enter"
-      [disabled]='loginForm.invalid'
-    >Войти</button>
-    <ng-template #spinner>
-      <svg class="spinner" viewBox="0 0 50 50">
-        <circle
-          class="path"
-          cx="25"
-          cy="25"
-          r="20"
-          fill="none"
-          stroke-width="5"
-        ></circle>
-      </svg>
-    </ng-template>
-  </div>
-    <a doText color="gray" class="nav-link__forgot-password" routerLink="/auth/forgotpassword">О нет! Я забыл пароль</a>
+<form class="form" [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
+	<h1>{{ portalName }}</h1>
+	<span *ngIf="loginError" class="mat-caption warn"> Неверный логин или пароль :( </span>
+	<mat-form-field appearance="standard" class="form__input-field">
+		<input matInput type="email" placeholder="Корпоративный e-mail или логин" formControlName="email" />
+	</mat-form-field>
+	<mat-form-field appearance="standard" class="form__input-field">
+		<input matInput type="password" placeholder="Пароль" formControlName="password" />
+	</mat-form-field>
+	<div class="form__submit">
+		<button
+			*ngIf="(isLoading | async) === false; else spinner"
+			mat-flat-button
+			class="submit-button"
+			type="submit"
+			[disabled]="loginForm.invalid"
+		>
+			Войти
+		</button>
+		<ng-template #spinner>
+			<svg class="spinner" viewBox="0 0 50 50">
+				<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+			</svg>
+		</ng-template>
+	</div>
+	<a class="forgot-password" routerLink="/auth/forgotpassword">О нет! Я забыл пароль</a>
 </form>

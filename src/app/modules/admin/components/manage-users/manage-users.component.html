@@ -1,18 +1,18 @@
-<div class="navigation" doText color="gray">
+<div class="navigation">
 	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span doText color="gray">
+	<span>
 		<mat-icon>chevron_right</mat-icon>
 	</span>
 	<a class="navigation__link">Управление сотрудниками</a>
 </div>
 <mat-card class="card card_standard">
 	<div class="header">
-		<h3 doText underlined underlinedSize="sm">Сотрудники</h3>
-		<button mat-flat-button color="orange" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
+		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
+		<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 	</div>
-	<table doText class="table" matSort (matSortChange)="sortData($event)">
+	<table class="table" matSort (matSortChange)="sortData($event)">
 		<colgroup>
-			<col class='column column_width_little'>
+			<col class="column column_width_little" />
 			<!-- <col class='column column_width_sm'>
 			<col class='column column_width_sm'>
 			<col class='column column_width_m'>
@@ -20,25 +20,25 @@
 			<col class='column column_width_t'>
 			<col class='column column_width_t'> -->
 		</colgroup>
-		<thead doText color='gray1'>
-			<tr class='row'>
-				<th class='cell heading'></th>
-				<th class='cell heading' mat-sort-header="name">
-					<p class='regular_text heading__content'>Имя</p>
+		<thead>
+			<tr class="row">
+				<th class="cell heading"></th>
+				<th class="cell heading" mat-sort-header="name">
+					<p class="heading__content">Имя</p>
 				</th>
-				<th class='cell heading' mat-sort-header="department">
-					<p class='regular_text heading__content'>Департамент</p>
+				<th class="cell heading" mat-sort-header="department">
+					<p class="heading__content">Департамент</p>
 				</th>
-				<th class='cell heading' mat-sort-header="role">
-					<p class='regular_text heading__content'>Роль</p>
+				<th class="cell heading" mat-sort-header="role">
+					<p class="heading__content">Роль</p>
 				</th>
-				<th class='cell heading' mat-sort-header="rate">
-					<p class='regular_text heading__content'>Ставка</p>
+				<th class="cell heading" mat-sort-header="rate">
+					<p class="heading__content">Ставка</p>
 				</th>
-				<th class='cell heading' mat-sort-header="status">
-					<p class='regular_text heading__content'>Статус</p>
+				<th class="cell heading" mat-sort-header="status">
+					<p class="heading__content">Статус</p>
 				</th>
-				<th class='cell heading'></th>
+				<th class="cell heading"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -47,41 +47,39 @@
 					<do-profile-image [image]="userInfo?.avatar"></do-profile-image>
 				</td>
 				<td class="cell cell_vertical-middle">
-					<p class='regular_text'>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</p>
-					<p doText color='gray1'>{{ userInfo?.position?.name }}</p>
+					<p>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</p>
+					<p>{{ userInfo?.position?.name }}</p>
 				</td>
 				<td class="cell cell_vertical-middle">
 					<ng-container *ngIf="userInfo?.department?.name; else empty">
-						<p class='regular_text'>{{ userInfo?.department?.name }}</p>
+						<p>{{ userInfo?.department?.name }}</p>
 					</ng-container>
 				</td>
 				<td class="cell cell_vertical-middle">
 					<ng-container *ngIf="userInfo?.role?.name; else empty">
-						<p doText class='cell__content_breakable'>{{ userInfo?.role?.name }}</p>
+						<p class="cell__content_breakable">{{ userInfo?.role?.name }}</p>
 					</ng-container>
 				</td>
 				<td class="cell">
-					<p class="regular_text">{{ userInfo?.rate }}</p>
+					<p>{{ userInfo?.rate }}</p>
 				</td>
 				<td class="cell cell_vertical-middle">
 					<ng-container *ngIf="userInfo?.isActive; else archived">
-						<p class="table__status text_color_white small_text regular_text">Активен</p>
+						<p class="user-status">Активен</p>
 					</ng-container>
 					<ng-template #archived>
-						<p class="table__status table__status_archived text_color_gray1 small_text regular_text">В
-							архиве</p>
+						<p class="user-status user-status_archived">В архиве</p>
 					</ng-template>
 				</td>
 				<td class="cell table__delete-button cell_vertical-middle">
 					<button mat-mini-fab color="primary" (click)="toggleUserStatus(userInfo, $event)">
-                        <mat-icon>{{userInfo.isActive ? 'delete' : 'unarchive' }}</mat-icon>
+						<mat-icon>{{ userInfo.isActive ? 'delete' : 'unarchive' }}</mat-icon>
 					</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
-		(page)="onPageChange($event)"></mat-paginator>
+	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 </mat-card>
 
 <ng-template #empty>
