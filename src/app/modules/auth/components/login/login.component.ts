@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, tap } from 'rxjs/operators';
@@ -8,7 +7,7 @@ import { AuthService } from '@app/services/auth/auth.service';
 import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
@@ -21,7 +20,7 @@ export class LoginComponent implements OnInit {
 	public portalName: string;
 	public loginForm: FormGroup;
 	public loginError: string;
-	public isLoading = false;
+	public isLoading: BehaviorSubject<boolean>;
 
 	constructor(
 		private _authService: AuthService,
@@ -30,7 +29,9 @@ export class LoginComponent implements OnInit {
 		private _router: Router,
 		private formBuilder: FormBuilder
 	) {
+		this.isLoading = new BehaviorSubject<boolean>(false);
 		this.portalName = _companyService.getPortalName();
+		this.loginError = '';
 		this.loginForm = this.formBuilder.group({
 			email: ['', Validators.required],
 			password: ['', Validators.required],
@@ -42,7 +43,7 @@ export class LoginComponent implements OnInit {
 			.pipe(
 				tap(() => {
 					if (this.loginForm) {
-						this.loginError = null;
+						this.loginError = '';
 					}
 				})
 			)
@@ -50,26 +51,28 @@ export class LoginComponent implements OnInit {
 	}
 
 	public login(): void {
-		this.isLoading = true;
+		this.isLoading.next(true);
 
 		const authenticationRequest: AuthenticationRequest = {
-			loginData: this.loginForm.get('email').value.trim(),
-			password: this.loginForm.get('password').value,
+			loginData: this.loginForm.get('email')?.value.trim(),
+			password: this.loginForm.get('password')?.value,
 		};
 
 		this._authService
 			.login(authenticationRequest)
 			.pipe(
-				finalize(() => (this.isLoading = false)),
+				finalize(() => (this.isLoading.next(false))),
 				catchError((error) => {
 					this.loginError = error.message;
-					this.isLoading = false;
+					this.isLoading.next(false);
 					console.log('Getting user info failed.', error.message);
 					return of(null);
 				})
 			)
-			.subscribe((user: User) => {
-				this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
+			.subscribe((user: User | null) => {
+				if (user) {
+					this._router.navigate([ user.isAdmin ? '/admin/dashboard' : '/user/attendance' ]);
+				}
 			});
 	}
 

@@ -50,11 +50,11 @@ export class EditProjectComponent {
 						path: '/UserHours',
 						value: this.editForm.get('userHours')?.value,
 					},
-					{
-						op: 'replace',
-						path: '/ManagerHours',
-						value: this.editForm.get('managerHours')?.value,
-					},
+					// {
+					// 	op: 'replace',
+					// 	path: '/ManagerHours',
+					// 	value: this.editForm.get('managerHours')?.value,
+					// },
 				],
 			})
 			.pipe(switchMap(() => this._attendanceService.getActivities()))

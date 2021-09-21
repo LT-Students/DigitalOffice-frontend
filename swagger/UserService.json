@@ -200,16 +200,6 @@
           "$ref": "#/components/parameters/securityToken"
         },
         {
-          "name": "departmentid",
-          "in": "query",
-          "description": "Specific department of users.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": false
-        },
-        {
           "name": "skipCount",
           "in": "query",
           "description": "Number of entries to skip.",
@@ -226,6 +216,64 @@
             "type": "integer"
           },
           "required": true
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Specific department of users.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "includedeactivated",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includedepartment",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeposition",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeoffice",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includerole",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeavatar",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
         }
       ],
       "get": {
@@ -388,62 +436,6 @@
           },
           "403": {
             "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/disable": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "userId",
-          "in": "query",
-          "description": "User global unique identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "operationId": "disableUser",
-        "description": "Delete the specified user by id. The user must have right - Add/Edit/Remove users.",
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Disable user operation success (boolean) status will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -710,6 +702,16 @@
           },
           "403": {
             "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -1256,6 +1258,139 @@
           },
           "404": {
             "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "avatar"
+        ],
+        "operationId": "createAvatar",
+        "description": "The method attempts to add avatar to user. The user must have the rights to add images to other users - Add/Edit/Remove users.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommunicationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. User avatar was added.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict.\n* Position with this name already exists.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+
+        }
+      }
+    },
+    "/skill/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "skill"
+        ],
+        "operationId": "createSkill",
+        "description": "The method attempts to add skill. The sender must have the rights 'Add/Edit/Remove users' or must be an admin to create skill.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSkillRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. Skill was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. Sender has no rights and not an admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Skill with that name already exist",
             "content": {
               "application/json": {
                 "schema": {
@@ -1986,6 +2121,12 @@
           },
           "Status": {
             "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          },
+          "ShortDescription": {
+            "type": "string"
           }
         }
       },
@@ -2050,6 +2191,24 @@
           }
         }
       },
+      "OperationResultResponseImagesIds": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/ImagesIds"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "CommunicationType": {
         "type": "string",
         "description": "Communication type.",
@@ -2100,8 +2259,7 @@
         "enum": [
           "FullSuccess",
           "PartialSuccess",
-          "Failed",
-          "Conflict"
+          "Failed"
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"
@@ -2539,6 +2697,45 @@
           "value": {
             "type": "object",
             "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "AddAvatarRequest": {
+        "type": "object",
+        "required": [
+          "UserId",
+          "Images"
+        ],
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique user identifier.",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "Images": {
+            "$ref": "#/components/schemas/AddImageRequest"
+          }
+        }
+      },
+      "ImagesIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "CreateSkillRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Unique name of the skill.",
+            "type": "string",
+            "nullable": false,
+            "example": "Frontend"
           }
         }
       }

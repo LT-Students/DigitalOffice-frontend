@@ -3,11 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { ProjectService } from '@app/services/project/project.service';
+import { ICreateProjectRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProjectRequest } from '@data/api/project-service/models/project-request';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
 import { Location } from '@angular/common';
@@ -30,6 +29,7 @@ export class NewProjectComponent implements OnInit {
 	public departments: DepartmentInfo[];
 	public statuses: ProjectStatus[];
 	public membersAll: UserInfo[];
+	public pluralTeamCount: { [k: string]: string };
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -41,6 +41,10 @@ export class NewProjectComponent implements OnInit {
 		private _router: Router,
 		private _cdr: ChangeDetectorRef
 	) {
+		this.pluralTeamCount = {
+			few: '# человека',
+			other: '# человек',
+		};
 		this.statuses = [
 			new ProjectStatus(ProjectStatusType.Active),
 			new ProjectStatus(ProjectStatusType.Closed),
@@ -82,7 +86,11 @@ export class NewProjectComponent implements OnInit {
 	public addMember(): void {
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
 		this._modalService
-			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(UserSearchComponent, ModalWidth.L, modalData)
+			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(
+				UserSearchComponent,
+				ModalWidth.L,
+				modalData
+			)
 			.afterClosed()
 			.subscribe((result: UserInfo[] | undefined) => {
 				this.membersAll = result?.length ? [...result] : [];
@@ -91,13 +99,17 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public createProject(): void {
-		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({ role: ProjectUserRoleType.Manager, userId: user.id ?? '' }));
-		const projectRequest: ProjectRequest = {
+		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({
+			role: ProjectUserRoleType.Manager,
+			userId: user.id ?? '',
+		}));
+		const projectRequest: ICreateProjectRequest = {
 			name: this.projectForm.get('name')?.value?.trim(),
 			departmentId: this.projectForm.get('departmentId')?.value,
 			description: this.projectForm.get('description')?.value?.trim(),
 			status: this.projectForm.get('status')?.value,
 			users: projectUsers,
+			projectImages: [],
 		};
 		this._projectService.createProject(projectRequest).subscribe(
 			(result) => {
@@ -141,7 +153,9 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	private _getAllMembers(): TeamMember[] {
-		return this.teams.map((team: Team) => team.members).reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
+		return this.teams
+			.map((team: Team) => team.members)
+			.reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
 	}
 
 	private _sortLeads(team: Team): void {
