@@ -1,7 +1,13 @@
 @use 'base/variables';
 
 .header {
+	position: fixed;
+	z-index: 2;
+	top: 0;
+
 	padding: 0 38px;
+
+	width: 100%;
 
 	height: 56px;
 

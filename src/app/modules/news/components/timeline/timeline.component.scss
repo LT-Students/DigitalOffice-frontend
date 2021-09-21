@@ -1,0 +1,64 @@
+.header {
+	display: flex;
+	align-items: center;
+
+	&__button {
+		margin: 0 0 32px 20px;
+
+		width: 188px;
+		height: 36px;
+
+		text-align: center;
+	}
+}
+
+.news {
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	column-gap: 32px;
+	row-gap: 20px;
+}
+
+.timelines {
+	display: grid;
+	row-gap: 20px;
+
+	&__item {
+		cursor: pointer;
+	}
+}
+
+.tags {
+	position: sticky;
+	align-self: flex-start;
+
+	top: -24px;
+
+	&__image {
+		margin: 54px 26px 16px;
+	}
+
+	&__message {
+		margin: 0 0 32px;
+	}
+}
+
+.post {
+	// max-width: 250px;
+	padding: 24px 48px;
+
+	&__info {
+		display: flex;
+	}
+
+	&__tag {
+		display: flex;
+	}
+}
+
+.kekel {
+	max-width: 150px;
+	max-height: 150px;
+
+	border-radius: 50%;
+}

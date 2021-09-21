@@ -18,6 +18,7 @@ import { UserModule } from './modules/user/user.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { InstallerModule } from './modules/installer/installer.module';
+import { NewsModule } from './modules/news/news.module';
 
 registerLocaleData(localeRu);
 
@@ -29,7 +30,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule],
+	imports: [AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule, NewsModule],
 	providers: [
 		Title,
 		{
@@ -48,4 +49,4 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 	bootstrap: [AppComponent],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,0 +1,27 @@
+<div class="header">
+    <h1>Новости</h1>
+    <button mat-flat-button color='primary' class='header__button'><img src="../../../../../assets/svg/Plus Add.svg"
+            alt="plus">&nbsp;<span>Добавить новость</span></button>
+</div>
+<div class="news">
+    <div class="timelines" #timelines>
+        <mat-card *ngFor="let post of html" class='post'>
+            <div class='post__info'>
+                <div class='post__tag'>
+                    <img src="" alt="">
+                    <div>
+                        <p>Тегич</p>
+                        <p>19.04.2021</p>
+                    </div>
+                </div>
+                <button mat-icon-button><img src="../../../../../assets/svg/more-horiz.svg" alt="more"></button>
+            </div>
+            <div [innerHTML]="post">
+            </div>
+        </mat-card>
+    </div>
+    <mat-card class='tags'>
+        <img class='tags__image' src="../../../../../assets/svg/perekatipole 1.svg" alt="perekatipole">
+        <p class='tags__message'>Скоро здесь появится список тегов</p>
+    </mat-card>
+</div>

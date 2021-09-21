@@ -11,6 +11,7 @@ import { EmployeePageComponent } from './modules/employee/employee-page.componen
 import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
 import { DepartmentListComponent } from './modules/admin/components/department-list/department-list.component';
 import { DepartmentCardComponent } from './modules/admin/components/department-card/department-card.component';
+import { TimelineComponent } from './modules/news/components/timeline/timeline.component';
 
 export const enum RouteType {
 	AUTH = 'auth',
@@ -58,6 +59,7 @@ const routes: Routes = [
 					},
 					{ path: RouteType.DEPARTMENTS, component: DepartmentListComponent },
 					{ path: `${RouteType.DEPARTMENTS}/:id`, component: DepartmentCardComponent },
+					{ path: `timeline`, component: TimelineComponent } // пока заглушка, чтобы смотреть на результат вёрстки
 				],
 			},
 			{
@@ -76,4 +78,4 @@ const routes: Routes = [
 	imports: [RouterModule.forRoot(routes)],
 	exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
