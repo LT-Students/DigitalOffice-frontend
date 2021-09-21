@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import EditorJS from '@editorjs/editorjs';
 import { debounceTime, skip, takeUntil } from 'rxjs/operators';
 import { Observable, ReplaySubject } from 'rxjs';
-import { editorjsConfig } from './news-editor.config';
+import { NewsEditorConfig } from './news-editor.config';
 
 @Component({
 	selector: 'do-news-editor',
@@ -18,8 +18,8 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	editorObserver?: MutationObserver;
 	private _destroy$: ReplaySubject<void>;
 
-	constructor() {
-		this.editor = new EditorJS(editorjsConfig);
+	constructor(private _editorConfig: NewsEditorConfig) {
+		this.editor = new EditorJS(this._editorConfig.editorConfig);
 		this._destroy$ = new ReplaySubject<void>(1);
 	}
 
