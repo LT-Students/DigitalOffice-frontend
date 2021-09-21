@@ -3,11 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { ProjectService } from '@app/services/project/project.service';
+import { ICreateProjectRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProjectRequest } from '@data/api/project-service/models/project-request';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
 import { Location } from '@angular/common';
@@ -104,12 +103,13 @@ export class NewProjectComponent implements OnInit {
 			role: ProjectUserRoleType.Manager,
 			userId: user.id ?? '',
 		}));
-		const projectRequest: ProjectRequest = {
+		const projectRequest: ICreateProjectRequest = {
 			name: this.projectForm.get('name')?.value?.trim(),
 			departmentId: this.projectForm.get('departmentId')?.value,
 			description: this.projectForm.get('description')?.value?.trim(),
 			status: this.projectForm.get('status')?.value,
 			users: projectUsers,
+			projectImages: [],
 		};
 		this._projectService.createProject(projectRequest).subscribe(
 			(result) => {
