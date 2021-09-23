@@ -5,15 +5,15 @@
 			<div class="wizard__form">
 				<mat-form-field appearance="fill">
 					<mat-label>Название компании</mat-label>
-					<input matInput formControlName="companyName" placeholder="Введите название компании" required />
+					<input class="wizard__input" matInput formControlName="companyName" placeholder="Введите название компании" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Название портала</mat-label>
-					<input matInput formControlName="portalName" placeholder="Введите название портала" required />
+					<input class="wizard__input" matInput formControlName="portalName" placeholder="Введите название портала" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Доменное имя</mat-label>
-					<input matInput formControlName="siteUrl" placeholder="Введите доменное имя" required />
+					<input class="wizard__input" matInput formControlName="siteUrl" placeholder="Введите доменное имя" required />
 				</mat-form-field>
 				<div class="wizard__buttons">
 					<button mat-button matStepperNext [disabled]='companyForm.invalid'>Далее</button>
@@ -27,26 +27,26 @@
 			<div class="wizard__form">
 				<mat-form-field appearance="fill">
 					<mat-label>Имя</mat-label>
-					<input matInput formControlName="firstName" placeholder="Иван" required />
+					<input class="wizard__input" matInput formControlName="firstName" placeholder="Иван" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Фамилия</mat-label>
-					<input matInput formControlName="lastName" placeholder="Иванов" required />
+					<input class="wizard__input" matInput formControlName="lastName" placeholder="Иванов" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Отчество</mat-label>
-					<input matInput formControlName="middleName" placeholder="Иванович" />
+					<input class="wizard__input" matInput formControlName="middleName" placeholder="Иванович" />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>E-mail</mat-label>
-					<input matInput formControlName="email" placeholder="example@mail.com" required />
+					<input class="wizard__input" matInput formControlName="email" placeholder="example@mail.com" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Логин</mat-label>
-					<input matInput formControlName="login" placeholder="Введите логин" required />
+					<input class="wizard__input" matInput formControlName="login" placeholder="Введите логин" required />
 				</mat-form-field>
-                    <do-password class="wizard__form__width" formControlName="password" placeholder="Придумайте пароль"></do-password>
-                    <do-password class="wizard__form__width" placeholder="Повторите пароль" formControlName="confirmPassword">
+                    <do-password class="wizard__input" formControlName="password" placeholder="Придумайте пароль"></do-password>
+                    <do-password class="wizard__input" placeholder="Повторите пароль" formControlName="confirmPassword">
                     </do-password>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
@@ -61,18 +61,18 @@
 			<div class="wizard__form">
 				<mat-form-field appearance="fill">
 					<mat-label>Хост</mat-label>
-					<input matInput formControlName="host" placeholder="хост" required />
+					<input class="wizard__input" matInput formControlName="host" placeholder="хост" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Порт</mat-label>
-					<input matInput formControlName="port" placeholder="порт" required />
+					<input class="wizard__input" matInput formControlName="port" placeholder="порт" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>E-mail</mat-label>
-					<input matInput formControlName="email" placeholder="example@mail.com" required />
+					<input class="wizard__input" matInput formControlName="email" placeholder="example@mail.com" required />
 				</mat-form-field>
-                    <do-password class="wizard__form__width" formControlName="password" placeholder="Придумайте пароль"></do-password>
-                    <do-password class="wizard__form__width" placeholder="Повторите пароль" formControlName="confirmPassword"></do-password>
+                    <do-password class="wizard__input" formControlName="password" placeholder="Придумайте пароль"></do-password>
+                    <do-password class="wizard__input" placeholder="Повторите пароль" formControlName="confirmPassword"></do-password>
 				<mat-checkbox formControlName="enableSsl" required>Включить SSL</mat-checkbox>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>

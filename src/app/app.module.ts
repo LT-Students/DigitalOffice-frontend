@@ -29,8 +29,8 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 }
 
 @NgModule({
-	declarations: [ AppComponent ],
-	imports: [ AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule, FormsModule ],
+	declarations: [AppComponent],
+	imports: [AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule, FormsModule],
 	providers: [
 		Title,
 		{
@@ -46,7 +46,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 		},
 		{ provide: LOCALE_ID, useValue: 'ru-RU' },
 	],
-	bootstrap: [ AppComponent ],
-	schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+	bootstrap: [AppComponent],
+	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}

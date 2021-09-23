@@ -2,21 +2,20 @@ import {
 	Component,
 	ChangeDetectionStrategy,
 	Input,
-	Self, Optional, forwardRef,
+	Self, Optional,
 } from '@angular/core';
 import {
 	ControlValueAccessor,
-	FormControl, FormGroup,
-	FormGroupDirective, NG_VALIDATORS, NG_VALUE_ACCESSOR,
+	FormControl, FormGroupDirective,
 	NgControl,
-	NgForm, ValidatorFn, Validators,
+	NgForm, Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class PasswordFieldErrorMatcher implements ErrorStateMatcher {
 	public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
 		const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
-		const invalidParent = !!(form?.invalid && form?.dirty);
+		const invalidParent = !!(form?.invalid && form?.errors?.matchingPasswords);
 
 		return invalidCtrl || invalidParent;
 	}
@@ -53,7 +52,7 @@ export class PasswordComponent implements ControlValueAccessor {
 		this.onTouched = () => {};
 	}
 
-	public writeValue(value: any): void {
+	public writeValue(value: string): void {
 		this.control.setValue(value);
 	}
 
@@ -69,7 +68,7 @@ export class PasswordComponent implements ControlValueAccessor {
 		this.disabled = isDisabled;
 	}
 
-	public setValue(value: string) {
+	public setValue(value: string): void {
 		this.onChange(value);
 	}
 }
