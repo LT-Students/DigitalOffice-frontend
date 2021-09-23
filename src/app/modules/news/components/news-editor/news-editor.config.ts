@@ -2,6 +2,20 @@
 import Header from '@editorjs/header';
 // @ts-ignore
 import Image from '@editorjs/image';
+// @ts-ignore
+import Underline from '@editorjs/underline';
+// @ts-ignore
+import Marker from '@editorjs/marker';
+// @ts-ignore
+import NestedList from '@editorjs/nested-list';
+// @ts-ignore
+import Quote from '@editorjs/quote';
+// @ts-ignore
+import Delimiter from '@editorjs/delimiter';
+// @ts-ignore
+import Undo from 'editorjs-undo';
+// @ts-ignore
+import AlignmentBlockTune from 'editorjs-text-alignment-blocktune';
 import { Injectable } from '@angular/core';
 import { ImageNewsService } from '@app/services/image/image-news.service';
 import { EditorConfig } from '@editorjs/editorjs';
@@ -9,6 +23,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { OperationResultStatusType } from '@data/api/image-service/models/operation-result-status-type';
 import { CreateImageService } from '@app/services/create-image.service';
 import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
+import { Preview } from '../../editorjs-plugins/block-tunes/preview';
 
 @Injectable({
 	providedIn: 'root',
@@ -23,14 +38,44 @@ export class NewsEditorConfig {
 	public get editorConfig() {
 		return this._editorConfig;
 	}
-
+	//TODO rework so we can pass editor's instance to config
 	private _createConfig(): EditorConfig {
 		return {
 			holder: 'editorjs',
+			// onReady: () => {
+			// 	new Undo();
+			// },
 			tools: {
 				header: {
 					class: Header,
 					inlineToolbar: ['link', 'bold', 'italic'],
+				},
+				underline: { class: Underline, shortcut: 'CTRL+U' },
+				marker: { class: Marker, shortcut: 'CTRL+SHIFT+M' },
+				list: {
+					class: NestedList,
+					inlineToolbar: true,
+				},
+				delimiter: Delimiter,
+				previewTune: Preview,
+				alignmentTune: {
+					class: AlignmentBlockTune,
+					config: {
+						default: 'right',
+						blocks: {
+							header: 'center',
+							list: 'right',
+						},
+					},
+				},
+				quote: {
+					class: Quote,
+					inlineToolbar: true,
+					shortcut: 'CMD+SHIFT+O',
+					config: {
+						quotePlaceholder: 'Цитата',
+						captionPlaceholder: 'Автор',
+					},
 				},
 				image: {
 					class: Image,
@@ -75,6 +120,7 @@ export class NewsEditorConfig {
 					},
 				},
 			},
+			tunes: ['previewTune', 'alignmentTune'],
 		};
 	}
 }

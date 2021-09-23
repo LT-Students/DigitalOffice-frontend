@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import EditorJS from '@editorjs/editorjs';
 import { debounceTime, skip, takeUntil } from 'rxjs/operators';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -10,6 +10,7 @@ import { NewsEditorConfig } from './news-editor.config';
 	templateUrl: './news-editor.component.html',
 	styleUrls: ['./news-editor.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	encapsulation: ViewEncapsulation.None,
 })
 export class NewsEditorComponent implements OnInit, OnDestroy {
 	editorData: any;
