@@ -33,8 +33,8 @@ export class PasswordComponent implements ControlValueAccessor {
 	@Input() public placeholder: string;
 	public hide: boolean;
 
-	public repeatPasswordErrorMatcher = new PasswordFieldErrorMatcher();
-	control = new FormControl(null, [ Validators.required ]);
+	public repeatPasswordErrorMatcher: PasswordFieldErrorMatcher;
+	public control: FormControl;
 	public onChange: (value: string) => void;
 	public onTouched: () => void;
 
@@ -42,14 +42,16 @@ export class PasswordComponent implements ControlValueAccessor {
 		if (this.ngControl) {
 			this.ngControl.valueAccessor = this;
 		}
-		this.control.valueChanges.subscribe((value) => {
-			this.setValue(value);
-		});
 		this.disabled = true;
 		this.placeholder = '';
 		this.hide = true;
 		this.onChange = () => {};
 		this.onTouched = () => {};
+		this.control = new FormControl(null, [ Validators.required ]);
+		this.control.valueChanges.subscribe((value) => {
+			this.setValue(value);
+		});
+		this.repeatPasswordErrorMatcher = new PasswordFieldErrorMatcher();
 	}
 
 	public writeValue(value: string): void {
