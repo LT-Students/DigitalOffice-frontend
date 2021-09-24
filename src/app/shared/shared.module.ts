@@ -15,6 +15,7 @@ import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
+import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { CommentComponent } from './component/comment/comment.component';
 		TextDirective,
 		DndDirective,
 		HoursPipe,
+		PasswordComponent,
 		CommentComponent
 	],
 	imports: [
@@ -55,6 +57,7 @@ import { CommentComponent } from './component/comment/comment.component';
 		DatepickerComponent,
 		StepperComponent,
 		HoursPipe,
+		PasswordComponent,
 		CommentComponent
 	],
 })
