@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0.0",
+    "version": "1.0.0.1",
     "title": "ImageService",
     "description": "ImageService, is intended to work with the image."
   },
@@ -11,7 +11,7 @@
     }
   ],
   "paths": {
-    "/imagemessage/get": {
+    "/message/get": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -22,9 +22,9 @@
       ],
       "get": {
         "tags": [
-          "imagemessage"
+          "MessageImage"
         ],
-        "operationId": "getImageMessage",
+        "operationId": "getMessageImage",
         "description": "Returns image information of Message.",
         "responses": {
           "200": {
@@ -50,7 +50,7 @@
         }
       }
     },
-    "/imageproject/get": {
+    "/project/get": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -61,9 +61,9 @@
       ],
       "get": {
         "tags": [
-          "ImageProject"
+          "ProjectImage"
         ],
-        "operationId": "getImageProject",
+        "operationId": "getProjectImage",
         "description": "Returns image information of Project.",
         "responses": {
           "200": {
@@ -89,7 +89,7 @@
         }
       }
     },
-    "/imageuser/get": {
+    "/user/get": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -100,9 +100,9 @@
       ],
       "get": {
         "tags": [
-          "ImageUser"
+          "UserImage"
         ],
-        "operationId": "getImageUser",
+        "operationId": "getUserImage",
         "description": "Returns image information of User.",
         "responses": {
           "200": {
@@ -128,7 +128,7 @@
         }
       }
     },
-    "/imagenews/get": {
+    "/news/get": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -139,9 +139,9 @@
       ],
       "get": {
         "tags": [
-          "ImageNews"
+          "NewsImage"
         ],
-        "operationId": "getImageNews",
+        "operationId": "getNewsImage",
         "description": "Returns image information of News.",
         "responses": {
           "200": {
@@ -167,7 +167,7 @@
         }
       }
     },
-    "/imagenews/create": {
+    "/news/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -175,9 +175,9 @@
       ],
       "post": {
         "tags": [
-          "ImageNews"
+          "NewsImage"
         ],
-        "operationId": "createImageNews",
+        "operationId": "createNewsImage",
         "description": "Adds image and returns its Id.",
         "requestBody": {
           "content": {
@@ -222,6 +222,31 @@
           }
         }
       }
+    },
+    "/fileimage/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/imageId"
+        },
+        {
+          "name": "source",
+          "in": "query",
+          "description": "Image sourse.",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "User",
+              "Message",
+              "Project",
+              "News"
+            ]
+          },
+          "required": true
+        }
+      ]
     }
   },
   "components": {
@@ -260,11 +285,11 @@
           "Body": {
             "type": "object",
             "properties": {
-              "imageid": {
+              "imageId": {
                 "type": "string",
                 "format": "uuid"
               },
-              "previewid": {
+              "previewId": {
                 "type": "string",
                 "format": "uuid",
                 "nullable": true
