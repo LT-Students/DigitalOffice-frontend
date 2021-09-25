@@ -9,7 +9,6 @@ import { map } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { DepartmentService } from '@app/services/company/department.service';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
-import { departments } from '../../../employee/mock';
 
 @Component({
 	selector: 'do-new-department',
