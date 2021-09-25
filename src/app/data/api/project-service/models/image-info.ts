@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-import { ImageType } from './image-type';
 export interface ImageInfo {
 
   /**
@@ -11,6 +10,6 @@ export interface ImageInfo {
   id?: string;
   name?: null | string;
   parentId?: null | string;
-  type?: ImageType;
+  type?: null | string;
 }
 

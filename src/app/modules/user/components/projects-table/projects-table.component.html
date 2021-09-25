@@ -1,45 +1,42 @@
 <mat-card class="card card_standard">
 	<div class="header">
-		<h3 doText underlined underlinedSize="sm">Доска проектов</h3>
-		<button mat-flat-button color="orange" (click)="onAddProjectClick()">+ Создать проект</button>
+		<h3 doUnderline underlinedSize="sm">Доска проектов</h3>
+		<button mat-flat-button color="accent" routerLink='admin/new-project'>+ Создать проект</button>
 	</div>
-	<table doText class="table" matSort>
+	<table class="table" matSort>
 		<colgroup>
-			<col class='column column_width_m'>
-			<col class='column column_width_l'>
-			<col class='column column_width_m'>
+			<col class="column column_width_m" />
+			<col class="column column_width_l" />
+			<col class="column column_width_m" />
 		</colgroup>
-		<thead doText color='gray1'>
-			<tr class='row'>
-				<th class='cell heading' mat-sort-header="name">
-					<p class='regular_text heading__content'>Наименование</p>
+		<thead>
+			<tr class="row">
+				<th class="cell heading" mat-sort-header="name">
+					<p class="heading__content">Наименование</p>
 				</th>
-				<th class='cell heading' mat-sort-header="description">
-					<p class='regular_text heading__content'>Описание</p>
+				<th class="cell heading" mat-sort-header="description">
+					<p class="heading__content">Описание</p>
 				</th>
-				<th class='cell heading' mat-sort-header="director">
-					<p class='regular_text heading__content'>Департамент</p>
+				<th class="cell heading" mat-sort-header="director">
+					<p class="heading__content">Департамент</p>
 				</th>
 				<!-- <th mat-sort-header="amount">Количество участников</th> -->
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="row row_activable" *ngFor="let project of projectList" (click)="onProjectClick(project?.id)">
-				<td class='cell'>
-					<p class='regular-text cell__content cell__content_breakable'>{{ project.name }}</p>
+			<tr class="row row_activable" *ngFor="let project of projectList$ | async" (click)="onProjectClick(project?.id)">
+				<td class="cell">
+					<p class="cell__content cell__content_breakable">{{ project.name }}</p>
 				</td>
-				<td class='cell'>
-					<p class='regular-text cell__content cell__content_breakable'>{{ project.description ?
-						project.description : '—' }}</p>
+				<td class="cell">
+					<p class="cell__content cell__content_breakable">{{ project.description ? project.description : '—' }}</p>
 				</td>
-				<td class='cell'>
-					<p class='regular-text cell__content cell__content_breakable'>{{ project.department?.name ?
-						project.department?.name : '—' }}</p>
+				<td class="cell">
+					<p class="cell__content cell__content_breakable">{{ project.department?.name ? project.department?.name : '—' }}</p>
 				</td>
 				<!-- <td>{{ project?.users?.length }}</td> -->
 			</tr>
 		</tbody>
 	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]"
-		(page)="onPageChange($event)"></mat-paginator>
+	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 </mat-card>

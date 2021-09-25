@@ -1,24 +1,21 @@
 <mat-card class="card_grid activities">
-	<h3 doText underlined underlinedSize="sm">
-		<span
-			>Записи за
-			<mat-form-field class="date-input">
-				<input matInput [matDatepicker]="dp" />
-				<mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event, dp)">
-				</mat-datepicker>
-			</mat-form-field>
-		</span>
-		<span class="activities__period text-accent_color_bright" (click)="dp.open()">
+	<h3 doUnderline underlinedSize="sm">
+		Записи за
+		<mat-form-field class="date-input">
+			<input matInput [matDatepicker]="dp" />
+			<mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event, dp)"> </mat-datepicker>
+		</mat-form-field>
+		<span class="mat-h3 activities__period primary" (click)="dp.open()">
 			{{ selectedDate$ | async | date: 'LLLL YYYY' }}
 			<mat-icon class="activities__icon">keyboard_arrow_down</mat-icon>
 		</span>
 	</h3>
-    <ng-container *ngIf='activities$ | async as activities'>
-        <div class='tasks'>
-            <do-projects [projects]='activities.projects'></do-projects>
-        </div>
-        <div class='tasks'>
-            <do-leaves [leaves]='activities.leaves'></do-leaves>
-        </div>
-    </ng-container>
+	<ng-container *ngIf="activities$ | async as activities">
+		<div class="tasks">
+			<do-projects [projects]="activities.projects"></do-projects>
+		</div>
+		<div class="tasks">
+			<do-leaves [leaves]="activities.leaves"></do-leaves>
+		</div>
+	</ng-container>
 </mat-card>

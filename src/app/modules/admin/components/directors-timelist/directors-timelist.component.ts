@@ -10,14 +10,13 @@ import { IEditWorkTimeRequest, IFindStatRequest, IGetImport, TimeService } from 
 import { FindResultResponseStatInfo, LeaveTimeInfo, OperationResultResponse, OperationResultStatusType, StatInfo, UserInfo, WorkTimeInfo, WorkTimeMonthLimitInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
 import { UserService } from '@app/services/user/user.service'
-import { ILeaveType, LeaveTimeModel } from '@app/models/leave-time.model';
 import { DoValidators } from '@app/validators/do-validators';
 
 interface EditableWorkTime extends WorkTimeInfo {
   editMode: boolean;
 }
 
-interface IconedLeaveTimeInfo extends LeaveTimeInfo, ILeaveType {
+interface IconedLeaveTimeInfo extends LeaveTimeInfo {
   periodInHours: number;
 }
 
@@ -40,7 +39,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
   private _departmentId: string | undefined;
 
-  public statInfo$: Observable<MappedStatInfo[] | undefined>;
+  public statInfo$: Observable<MappedStatInfo[] | undefined> | undefined;
 
   public selectedPeriod: DatePeriod;
 
@@ -54,10 +53,8 @@ export class DirectorsTimelistComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private _timeDurationService: TimeDurationService,
     private _timeService: TimeService,
-    private _userService: UserService,
     private _route: ActivatedRoute
   ) {
-    this.statInfo$ = new Observable();
     this.selectedPeriod = this._setDatePeriod(new Date());
     this.hoursGroup = this._formBuilder.group({});
     this.pageSize = 20;
@@ -124,10 +121,11 @@ export class DirectorsTimelistComponent implements OnInit {
     }
 
     this._timeService.getImport(queryParams).subscribe((result) => {
+      const filename = `Statistic_${queryParams.year}_${queryParams.month}`
       const mediaType = "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,";
       const downloadLink = document.createElement('a');
       downloadLink.href = mediaType + result.body;
-      downloadLink.download = 'Статистика';
+      downloadLink.download = filename;
       document.body.appendChild(downloadLink);
       downloadLink.click();
       downloadLink.remove();
@@ -136,7 +134,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
   public chosenMonthHandler(date: Date): void {
     this.selectedPeriod = this._setDatePeriod(date);
-    this._getStat()
+    this.statInfo$ = this._getStat()
   }
 
   public onPageChange(event: PageEvent): void {
@@ -166,8 +164,6 @@ export class DirectorsTimelistComponent implements OnInit {
       totalHours: this._getTotalHours(statInfo.workTimes ?? []),
       leaveTimes: statInfo.leaveTimes?.map<IconedLeaveTimeInfo>(leaveTime => ({
         ...leaveTime,
-        emojiIcon: LeaveTimeModel.getLeaveInfoByLeaveType(leaveTime.leaveType!)?.emojiIcon ?? '',
-        leaveInRussian: LeaveTimeModel.getLeaveInfoByLeaveType(leaveTime.leaveType!)?.leaveInRussian ?? '',
         periodInHours: this._getPeriodInHours(leaveTime.startTime ?? '', leaveTime.endTime ?? '')
       })),
       workTimes: statInfo.workTimes?.map<EditableWorkTime>(workTime => ({

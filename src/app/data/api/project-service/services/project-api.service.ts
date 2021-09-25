@@ -9,11 +9,11 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { CreateProjectRequest } from '../models/create-project-request';
 import { EditProjectRequest } from '../models/edit-project-request';
 import { FindResponseProjectInfo } from '../models/find-response-project-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseProjectResponse } from '../models/operation-result-response-project-response';
-import { ProjectRequest } from '../models/project-request';
 
 @Injectable({
   providedIn: 'root',
@@ -122,6 +122,7 @@ export class ProjectApiService extends BaseService {
     includeusers?: boolean;
     shownotactiveusers?: boolean;
     includefiles?: boolean;
+    includeimages?: boolean;
   }): Observable<StrictHttpResponse<OperationResultResponseProjectResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectPath, 'get');
@@ -130,6 +131,7 @@ export class ProjectApiService extends BaseService {
       rb.query('includeusers', params.includeusers, {});
       rb.query('shownotactiveusers', params.shownotactiveusers, {});
       rb.query('includefiles', params.includefiles, {});
+      rb.query('includeimages', params.includeimages, {});
     }
 
     return this.http.request(rb.build({
@@ -158,6 +160,7 @@ export class ProjectApiService extends BaseService {
     includeusers?: boolean;
     shownotactiveusers?: boolean;
     includefiles?: boolean;
+    includeimages?: boolean;
   }): Observable<OperationResultResponseProjectResponse> {
 
     return this.getProject$Response(params).pipe(
@@ -180,7 +183,7 @@ export class ProjectApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   createProject$Response(params: {
-    body: ProjectRequest
+    body: CreateProjectRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, ProjectApiService.CreateProjectPath, 'post');
@@ -209,7 +212,7 @@ export class ProjectApiService extends BaseService {
    * This method sends `application/json` and handles request body of type `application/json`.
    */
   createProject(params: {
-    body: ProjectRequest
+    body: CreateProjectRequest
   }): Observable<OperationResultResponse> {
 
     return this.createProject$Response(params).pipe(

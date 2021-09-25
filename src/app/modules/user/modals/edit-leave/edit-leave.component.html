@@ -1,11 +1,8 @@
 <div class="modal">
-	<h3 doText class="h3">
-		Редактирование часов <span class="text-accent_color_bright">за {{ getRusType(leave.leaveType!)?.toLowerCase() }}</span>
+	<h3>
+		Редактирование часов <span class="mat-h3 primary">за {{ getRusType(leave.leaveType!)?.toLowerCase() }}</span>
 	</h3>
 	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
-		<mat-error *ngIf="editForm.controls['endTime'].errors?.required" class="text-negative_accent modal__error">
-			Заполните конечную дату</mat-error
-		>
 		<div class="modal__range">
 			<mat-form-field class="modal__range-picker" appearance="fill">
 				<mat-label>Выберите диапазон отсутствия</mat-label>
@@ -15,12 +12,11 @@
 				</mat-date-range-input>
 				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-date-range-picker #picker></mat-date-range-picker>
+				<mat-error *ngIf="editForm.controls['endTime'].errors?.required">Заполните конечную дату</mat-error>
 			</mat-form-field>
 			<div class="modal__hours">
-				<p doText color="gray1">Выбрано</p>
-				<h3 doText color="gray1" class="modal__selected-hours h3">
-					<span class="text-dark_1">{{ periodInHours }}</span> ч
-				</h3>
+				<p class="mat-body-1">Выбрано</p>
+				<h3 class="modal__selected-hours">{{ periodInHours }}&nbsp;<span class="mat-h3 text-gray1">ч</span></h3>
 			</div>
 		</div>
 		<div>
@@ -30,12 +26,8 @@
 			</mat-form-field>
 		</div>
 		<div class="controls">
-			<button mat-flat-button class="controls__button" type="button" (click)="onClose()">
-				<span class="regular_text text-gray1">Отмена</span>
-			</button>
-			<button mat-flat-button color="accent" class="controls__button" type="submit">
-				<span class="regular_text text-light_1">Сохранить</span>
-			</button>
+			<button mat-button class="controls__button" type="button" (click)="onClose()">Отмена</button>
+			<button mat-flat-button color="primary" class="controls__button" type="submit">Сохранить</button>
 		</div>
 	</form>
 </div>

@@ -6,7 +6,6 @@ import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { MaterialModule } from './material.module';
 
-import { ButtonComponent } from './component/button/button.component';
 import { SelectComponent } from './component/select/select.component';
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
@@ -16,11 +15,11 @@ import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
+import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
 
 @NgModule({
 	declarations: [
-		ButtonComponent,
 		SelectComponent,
 		ProfileImageComponent,
 		ContentContainerComponent,
@@ -32,6 +31,7 @@ import { CommentComponent } from './component/comment/comment.component';
 		TextDirective,
 		DndDirective,
 		HoursPipe,
+		PasswordComponent,
 		CommentComponent
 	],
 	imports: [
@@ -48,7 +48,6 @@ import { CommentComponent } from './component/comment/comment.component';
 		ReactiveFormsModule,
 		FormsModule,
 		InputComponent,
-		ButtonComponent,
 		SelectComponent,
 		ProfileImageComponent,
 		SearchComponent,
@@ -58,6 +57,7 @@ import { CommentComponent } from './component/comment/comment.component';
 		DatepickerComponent,
 		StepperComponent,
 		HoursPipe,
+		PasswordComponent,
 		CommentComponent
 	],
 })

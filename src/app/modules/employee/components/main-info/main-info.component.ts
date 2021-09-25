@@ -26,7 +26,7 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 @Component({
 	selector: 'do-employee-page-main-info',
 	templateUrl: './main-info.component.html',
-	styleUrls: [ './main-info.component.scss' ],
+	styleUrls: ['./main-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainInfoComponent implements OnInit, OnDestroy {
@@ -53,32 +53,32 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		private _dialog: MatDialog,
 		private _snackBar: MatSnackBar,
 		private _roleService: RightsService,
-		private _cdr: ChangeDetectorRef,
+		private _cdr: ChangeDetectorRef
 	) {
 		this.genders = PersonalInfoManager.getGenderList();
 		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
 		this.employeeInfoForm = this._initEditForm();
 		this.departments$ = this._netService
-		.getDepartmentsList({
-			skipCount: 0,
-			takeCount: 100,
-		})
-		.pipe(map((res) => res.body));
+			.getDepartmentsList({
+				skipCount: 0,
+				takeCount: 100,
+			})
+			.pipe(map((res) => res.body));
 
 		this.positions$ = this._netService
-		.getPositionsList({
-			skipCount: 0,
-			takeCount: 100,
-		})
-		.pipe(map((res) => res.body));
+			.getPositionsList({
+				skipCount: 0,
+				takeCount: 100,
+			})
+			.pipe(map((res) => res.body));
 
 		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).pipe(map((res) => res.body));
 		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 50 }).pipe(map((res) => res.roles));
 	}
 
 	public ngOnInit(): void {
-		this._route.params.subscribe((param) => this.isEditing = false);
+		this._route.params.subscribe((param) => (this.isEditing = false));
 		this.userSubscription = this._employeeService.selectedUser$.subscribe((user) => {
 			this.user = user;
 			console.log('main-info', user);
@@ -143,8 +143,8 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 
 	private _patchEditUser(): void {
 		const editRequest: { path: string; value: any }[] = Object.keys(this.employeeInfoForm.controls)
-		.filter((key) => this.employeeInfoForm.get(key)?.dirty)
-		.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
+			.filter((key) => this.employeeInfoForm.get(key)?.dirty)
+			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
 
 		this._employeeService.editEmployee(editRequest).subscribe({
 			next: () => {
@@ -182,21 +182,21 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 
 	private _initEditForm(): FormGroup {
 		return this._fb.group({
-			firstName: [ '', Validators.required ],
-			lastName: [ '', Validators.required ],
-			middleName: [ '' ],
-			photo: [ '' ],
-			status: [ null ],
-			about: [ '' ],
-			position: [ '', Validators.required ],
-			department: [ '' ],
-			office: [ '', Validators.required ],
-			role: [ '' ],
-			rate: [ '', Validators.required ],
-			city: [ '' ],
-			startWorkingAt: [ null ],
-			dateOfBirth: [ null ],
-			gender: [ UserGender ],
+			firstName: ['', Validators.required],
+			lastName: ['', Validators.required],
+			middleName: [''],
+			photo: [''],
+			status: [null],
+			about: [''],
+			position: ['', Validators.required],
+			department: [''],
+			office: ['', Validators.required],
+			role: [''],
+			rate: ['', Validators.required],
+			city: [''],
+			startWorkingAt: [null],
+			dateOfBirth: [null],
+			gender: [UserGender],
 			// communications: this.fb.array([
 			// 	this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
 			// 	this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
@@ -207,10 +207,10 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 	private _initCommunications(): void {
 		if (this.user && this.user.communications) {
 			this.user.communications
-			.map((communication: CommunicationInfo) => {
-				return this._fb.group({ type: '', value: '' });
-			})
-			.forEach((group: FormGroup) => this.communications.push(group));
+				.map((communication: CommunicationInfo) => {
+					return this._fb.group({ type: '', value: '' });
+				})
+				.forEach((group: FormGroup) => this.communications.push(group));
 		}
 	}
 

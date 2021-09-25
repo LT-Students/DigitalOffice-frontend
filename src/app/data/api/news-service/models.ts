@@ -1,8 +1,9 @@
-export { NewsRequest } from './models/news-request';
+export { CreateNewsRequest } from './models/create-news-request';
+export { EditNewsRequest } from './models/edit-news-request';
 export { PatchOperation } from './models/patch-operation';
-export { NewsResponse } from './models/news-response';
 export { User } from './models/user';
 export { Department } from './models/department';
-export { ErrorResponse } from './models/error-response';
+export { OperationResultResponseNewsResponse } from './models/operation-result-response-news-response';
+export { FindResultResponseNewsInfo } from './models/find-result-response-news-info';
 export { OperationResultResponse } from './models/operation-result-response';
 export { OperationResultStatusType } from './models/operation-result-status-type';
