@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,9 +6,19 @@ import { UserService } from '@app/services/user/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
-import { ModalService } from '@app/services/modal.service';
-import { OperationResultResponse, OperationResultStatusType } from '@data/api/company-service/models';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
+import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
+import { MatDialogConfig } from '@angular/material/dialog';
+import { OperationResultStatusType } from '@data/api/user-service/models';
+import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
+
+export interface EditModalContentConfig {
+	id?: string,
+	name?: string,
+	description?: string,
+	directorId?:  string,
+}
 
 @Component({
 	selector: 'do-department-card',
@@ -24,11 +34,8 @@ export class DepartmentCardComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
+	public peopleCountMap: { [k: string]: string };
 
-	public peopleCountMap: { [k: string]: string } = {
-		few: '# человека',
-		other: '# человек',
-	};
 
 	constructor(
 		private _netService: NetService,
@@ -43,6 +50,11 @@ export class DepartmentCardComponent implements OnInit {
 		this.pageSize = 10;
 		this.pageIndex = 0;
 		this.sortedUsersInfo = [];
+
+		this.peopleCountMap = {
+			few: '# человека',
+			other: '# человек',
+		};
 	}
 
 	ngOnInit(): void {
@@ -81,6 +93,23 @@ export class DepartmentCardComponent implements OnInit {
 				if (result?.status === 'FullSuccess')
 					this._getUsers();
 			});
+	}
+
+	onEditDepartamentClick(departmentInfo: DepartmentInfo | undefined): void {
+		let dialogConfig = new MatDialogConfig();
+		dialogConfig.data = {
+			id: departmentInfo?.id,
+			name: departmentInfo?.name,
+			description: departmentInfo?.description,
+			directorId:  departmentInfo?.director?.id,
+		};
+		this._modalService
+		.openModal<NewDepartmentComponent, EditModalContentConfig, IDialogResponse>(NewDepartmentComponent, ModalWidth.M, dialogConfig)
+		.afterClosed()
+		.subscribe(result => {
+			if (result?.status === OperationResultStatusType.FullSuccess)
+				this._getDepartment();
+		});
 	}
 
 	onUserClick(userId: string | undefined) {

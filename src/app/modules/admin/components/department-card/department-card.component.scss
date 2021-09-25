@@ -8,6 +8,13 @@
 		padding-bottom: 40px;
 
 		border-bottom: 1px solid #fafafa;
+
+		&__header {
+			margin-top: 52px;
+
+			display: flex;
+			justify-content: space-between;
+		}
 	}
 
 	&__label {

@@ -12,7 +12,15 @@
 <h1 doText class="title">{{ departmentInfo?.name }}</h1>
 <mat-card class="card card_standard department">
 	<div class="department__info">
-		<h3 doText underlined underlinedSize="sm">Общая информация</h3>
+        <div class='department__info__header'>
+            <h3 doText underlined underlinedSize="sm">Общая информация</h3>
+            <button mat-flat-button>
+                <div doText color="gray1" (click)="onEditDepartamentClick(departmentInfo)">
+                    <img src='assets/svg/edit.svg' alt=''>
+                    Редактировать
+                </div>
+            </button>
+        </div>
 		<div class="department__label">
 			<p doText regularTextSize="small" color="gray1">Директор</p>
 			<ng-container *ngIf="departmentInfo?.director; else empty">

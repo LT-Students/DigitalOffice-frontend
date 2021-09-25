@@ -1,29 +1,44 @@
-<form autocomplete="off" class="data-form" [formGroup]="departmentForm" (ngSubmit)="postDepartment()">
-	<h3 mat-dialog-title>Новый департамент</h3>
+<form class="data-form" [formGroup]="departmentForm" (ngSubmit)="chooseModal()">
+    <h3>{{!isEdit ? "Создание департамента" : "Редактирование департамента"}}</h3>
 	<mat-dialog-content class="new-department">
 		<div class="form__container">
 			<div class="new-department__input-container">
 				<mat-form-field appearance="fill">
-					<mat-label>Название</mat-label>
+					<mat-label>Название департамента</mat-label>
 					<input matInput type="text" id="name" formControlName="name" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
-					<mat-label>Описание</mat-label>
-					<input matInput type="text" id="description" formControlName="description" />
-				</mat-form-field>
-				<mat-form-field appearance="fill">
-					<mat-label>Директор</mat-label>
-					<mat-select id="director" formControlName="directorId">
+					<mat-label>Директор департамента</mat-label>
+					<mat-select
+                        id="directorId"
+                        formControlName="directorId"
+                        >
 						<mat-option *ngFor="let director of directors$ | async" [value]="director.id">
 							{{ director.lastName + ' ' + director.firstName }}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Описание</mat-label>
+                    <textarea
+                        #description
+                        matInput type="text"
+                        id="description"
+                        formControlName="description"
+                        class='bg-light_2 employee-info__input'
+                        placeholder='Напишите немного о новом департаменте'
+                        maxlength='1000'
+                    ></textarea>
+                    <mat-hint align='end'>{{ description.value.length }}/1000</mat-hint>
+                </mat-form-field>
 			</div>
 		</div>
 	</mat-dialog-content>
 	<mat-dialog-actions align="center">
 		<button class="text-gray" mat-flat-button mat-dialog-close type="button">Отмена</button>
-		<button mat-flat-button color="primary" type="submit" [disabled]="departmentForm.invalid">Добавить департамент</button>
+		<button *ngIf='!isEdit; else editDepartamentButton' mat-flat-button color="primary" type="submit" [disabled]="departmentForm.invalid">Создать департамент</button>
+        <ng-template #editDepartamentButton>
+            <button mat-flat-button color="primary" type="submit" [disabled]="departmentForm.pristine">Сохранить</button>
+        </ng-template>
 	</mat-dialog-actions>
 </form>

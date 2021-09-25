@@ -49,6 +49,7 @@ export class ModalService {
 	constructor(private matDialog: MatDialog) {}
 
 	public openModal<C, T, R>(component: ComponentType<C>, modalWidth?: ModalWidth, modalContentConfig?: T, result?: R): MatDialogRef<C, R> {
+
 		return this.matDialog.open<C, T, R>(component, {
 			data: modalContentConfig,
 			width: modalWidth,

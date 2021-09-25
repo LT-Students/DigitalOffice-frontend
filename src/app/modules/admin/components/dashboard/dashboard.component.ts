@@ -39,8 +39,8 @@ export class DashboardComponent implements OnInit {
 
 		openModalClick$
 			.pipe(
-				switchMap((value: AdminDashboardModalType) => {
-					return value === this.modalType.NEW_DEPARTMENT
+				switchMap((value: AdminDashboardModalType) => {//для открытия мод окна
+					return value === this.modalType.NEW_DEPARTMENT//для открытия мод окна
 						? this.modalService.openModal(NewDepartmentComponent, ModalWidth.M).afterClosed()
 						: value === this.modalType.NEW_POSITION
 						? this.modalService.openModal(NewPositionComponent, ModalWidth.M).afterClosed()
@@ -65,7 +65,7 @@ export class DashboardComponent implements OnInit {
 						: of(false);
 				})
 			)
-			.subscribe((result: boolean | any | OperationResultResponse) => {
+			.subscribe((result: boolean | any | OperationResultResponse) => {//для открытия мод окна
 				if (
 					result &&
 					result.status &&
