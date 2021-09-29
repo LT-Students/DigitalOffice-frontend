@@ -72,7 +72,7 @@ export class NewProjectComponent implements OnInit {
 			// additionInfo: [''],
 			// picker: [''],
 		});
-		this.paths = [{title: 'Администрирование', url: 'admin/dashboard'}, {title: 'Новый проект'}];
+		this.paths = [];
 	}
 
 	ngOnInit(): void {

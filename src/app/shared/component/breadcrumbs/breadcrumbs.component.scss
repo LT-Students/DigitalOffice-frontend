@@ -1,6 +1,8 @@
-@use '../../../../stylesheets/base/variables';
+@use 'base/variables';
 
 .breadcrumbs {
+	margin-bottom: 50px;
+
 	display: flex;
 	align-items: center;
 
@@ -8,6 +10,8 @@
 		cursor: pointer;
 
 		&:hover {
+			text-decoration: underline;
+
 			color: #707070;
 		}
 

@@ -6,6 +6,11 @@ import { PageEvent } from '@angular/material/paginator';
 import { NewRoleComponent } from '../../modals/new-role/new-role.component';
 import { ModalService } from '@app/services/modal.service';
 
+export interface Path {
+	title: string;
+	url?: string;
+}
+
 @Component({
 	selector: 'do-manage-roles',
 	templateUrl: './manage-roles.component.html',
@@ -18,6 +23,7 @@ export class ManageRolesComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
+	public paths: Path[];
 
 	constructor(
 		private _modalService: ModalService,
@@ -28,6 +34,7 @@ export class ManageRolesComponent implements OnInit {
 		this.pageSize = 10;
 		this.pageIndex = 0;
 		this.roles = [];
+		this.paths = [];
 	}
 
 	public ngOnInit(): void {

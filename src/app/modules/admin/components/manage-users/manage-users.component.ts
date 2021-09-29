@@ -10,6 +10,11 @@ import { EducationType } from '@data/api/user-service/models/education-type';
 import { ModalService } from '@app/services/modal.service';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
+export interface Path {
+	title: string;
+	url?: string;
+}
+
 @Component({
 	selector: 'do-manage-users',
 	templateUrl: './manage-users.component.html',
@@ -28,6 +33,7 @@ export class ManageUsersComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
+	public paths: Path[];
 
 	constructor(
 		private _userService: UserService,
@@ -42,6 +48,7 @@ export class ManageUsersComponent implements OnInit {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
+		this.paths = [];
 	}
 
 	public ngOnInit(): void {
