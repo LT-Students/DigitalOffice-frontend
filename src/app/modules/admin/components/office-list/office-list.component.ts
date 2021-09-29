@@ -6,11 +6,6 @@ import { OfficeInfo } from '@data/api/company-service/models';
 import { CompanyService } from '@app/services/company/company.service';
 import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
 
-export interface Path {
-	title: string;
-	url?: string;
-}
-
 @Component({
 	selector: 'do-office-list',
 	templateUrl: './office-list.component.html',
@@ -23,7 +18,6 @@ export class OfficeListComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
-	public paths: Path[];
 
 	constructor(
 		private _modalService: ModalService,
@@ -35,7 +29,6 @@ export class OfficeListComponent implements OnInit {
 		this.pageSize = 10;
 		this.pageIndex = 0;
 		this.offices = [];
-		this.paths = [];
 	}
 
 	public ngOnInit(): void {

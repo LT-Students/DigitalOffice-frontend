@@ -6,7 +6,7 @@ import { EmployeePageComponent } from './employee-page.component';
 import { CompetencesComponent } from './components/competences/competences.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
 import { ProjectsComponent } from './components/projects/projects.component';
-// import { BreadcrumbsComponent } from '../shared/component/breadcrumbs/breadcrumbs.component';
+
 import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
 import { ArchiveComponent } from './modals/archive/archive.component';
 import { SkillsComponent } from './components/competences/skills/skills.component';
@@ -17,7 +17,6 @@ import { UploadPhotoComponent } from './modals/upload-photo/upload-photo.compone
 		EmployeePageComponent,
 		CompetencesComponent,
 		MainInfoComponent,
-		// BreadcrumbsComponent,
 		AdminRequestComponent,
 		ArchiveComponent,
 		SkillsComponent,

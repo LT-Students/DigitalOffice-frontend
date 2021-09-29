@@ -17,11 +17,6 @@ import { RouteType } from '../../../../app-routing.module';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';
 
-export interface Path {
-	title: string;
-	url?: string;
-}
-
 @Component({
 	selector: 'do-new-project',
 	templateUrl: './new-project.component.html',
@@ -35,7 +30,6 @@ export class NewProjectComponent implements OnInit {
 	public statuses: ProjectStatus[];
 	public membersAll: UserInfo[];
 	public pluralTeamCount: { [k: string]: string };
-	public paths: Path[];
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -72,7 +66,6 @@ export class NewProjectComponent implements OnInit {
 			// additionInfo: [''],
 			// picker: [''],
 		});
-		this.paths = [];
 	}
 
 	ngOnInit(): void {

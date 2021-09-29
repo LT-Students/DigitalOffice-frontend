@@ -10,11 +10,6 @@ import { ModalService } from '@app/services/modal.service';
 // import { Observable } from 'rxjs';
 // import { map, tap } from 'rxjs/operators';
 
-export interface Path {
-	title: string;
-	url?: string;
-}
-
 @Component({
 	selector: 'do-department-list',
 	templateUrl: './department-list.component.html',
@@ -30,8 +25,6 @@ export class DepartmentListComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 	public id: string;
-	public paths: Path[];
-
 
 	constructor(
 		private netService: NetService,
@@ -47,7 +40,6 @@ export class DepartmentListComponent implements OnInit {
 		this.pageSize = 10;
 		this.pageIndex = 0;
 		this.id = '';
-		this.paths = [];
 	}
 
 	ngOnInit(): void {

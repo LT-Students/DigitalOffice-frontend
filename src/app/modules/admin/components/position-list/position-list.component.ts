@@ -6,11 +6,6 @@ import { NetService } from '@app/services/net.service';
 import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 import { ModalService } from '@app/services/modal.service';
 
-export interface Path {
-	title: string;
-	url?: string;
-}
-
 @Component({
 	selector: 'do-position-list',
 	templateUrl: './position-list.component.html',
@@ -23,7 +18,6 @@ export class PositionListComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
-	public paths: Path[];
 
 	constructor(
 		private _modalService: ModalService,
@@ -34,7 +28,6 @@ export class PositionListComponent implements OnInit {
 		this.pageSize = 10;
 		this.pageIndex = 0;
 		this.positions = [];
-		this.paths = [];
 	}
 
 	public ngOnInit(): void {
