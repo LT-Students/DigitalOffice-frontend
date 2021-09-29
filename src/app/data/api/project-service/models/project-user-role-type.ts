@@ -4,8 +4,7 @@
 /**
  * User role
  *
- * ,Enum numbers description
- * * 1 - Admin
+ * ,Enum numbers description.
  */
 export enum ProjectUserRoleType {
   Manager = 'Manager',

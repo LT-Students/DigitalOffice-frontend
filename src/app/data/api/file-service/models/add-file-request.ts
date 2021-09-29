@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface File {
+export interface AddFileRequest {
 
   /**
    * File content.
@@ -13,13 +13,8 @@ export interface File {
   extension: string;
 
   /**
-   * File global unique identifier.
-   */
-  id?: string;
-
-  /**
    * File name.
    */
-  name: string;
+  name?: string;
 }
 

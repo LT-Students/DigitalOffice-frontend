@@ -1,10 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
-import { Department } from './department';
+import { NewsInfo } from './news-info';
 import { OperationResultStatusType } from './operation-result-status-type';
-import { User } from './user';
 export interface FindResultResponseNewsInfo {
-  body?: { 'id'?: string, 'preview'?: string, 'subject'?: string, 'pseudonum'?: string, 'author'?: User, 'department'?: Department, 'isactive'?: boolean, 'createdatutc'?: string, 'createdby'?: string };
+  body?: Array<NewsInfo>;
   errors?: Array<string>;
   status?: OperationResultStatusType;
 

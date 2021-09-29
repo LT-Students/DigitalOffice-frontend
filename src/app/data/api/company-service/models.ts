@@ -1,3 +1,4 @@
+export { AddDepartmentUsersRequest } from './models/add-department-users-request';
 export { CreatePositionRequest } from './models/create-position-request';
 export { CreateDepartmentRequest } from './models/create-department-request';
 export { PositionInfo } from './models/position-info';

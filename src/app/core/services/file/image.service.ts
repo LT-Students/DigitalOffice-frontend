@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ImageApiService } from '@data/api/file-service/services/image-api.service';
-import { ImageRequest } from '@data/api/file-service/models/image-request';
+import { AddImageRequest } from '@data/api/file-service/models/add-image-request';
 
 @Injectable({
 	providedIn: 'root',
@@ -9,7 +9,7 @@ import { ImageRequest } from '@data/api/file-service/models/image-request';
 export class ImageService {
 	constructor(private _imageService: ImageApiService) {}
 
-	public addNewImage(body: ImageRequest): Observable<string> {
-		return this._imageService.addNewImage({ body });
+	public addNewImage(body: AddImageRequest): Observable<string> {
+		return this._imageService.addImage({ body });
 	}
 }
