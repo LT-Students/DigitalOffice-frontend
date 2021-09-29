@@ -1,0 +1,40 @@
+<div #news>
+    <div class="header">
+        <h1>Новости</h1>
+        <button mat-flat-button color='primary' class='header__button'>
+            <img src="../../../../../assets/svg/Plus Add.svg" alt="plus">&nbsp;
+            <span>Добавить новость</span>
+        </button>
+    </div>
+    <div class="news">
+        <div class="feed" #timelines>
+            <mat-card *ngFor="let post of html" (click)="openPost(post)" class="post">
+                <div class='post__info'>
+                    <div class='post__tag'>
+                        <!-- <img src="" alt=""> -->
+                        <!-- Затычка -->
+                        <div class='post__image'></div>
+                        <div>
+                            <div><b>Тегич</b></div>
+                            <div class='mat-body-1'>19.04.2021</div>
+                        </div>
+                    </div>
+                    <button mat-icon-button (click)="onMenuOpen($event)" [matMenuTriggerFor]="menu">
+                        <img src="../../../../../assets/svg/more-gray.svg" alt="more">
+                    </button>
+                    <mat-menu #menu>
+                        <button mat-menu-item>Редактировать</button>
+                        <button mat-menu-item>Удалить</button>
+                    </mat-menu>
+                </div>
+                <div [innerHTML]="post | safeHtml"></div>
+            </mat-card>
+        </div>
+        <div>
+            <mat-card class="tags" [ngClass]="{tags_fixed: fixedTags}">
+                <img class='tags__image' src="../../../../../assets/svg/perekatipole 1.svg" alt="perekatipole">
+                <p class='tags__message'>Скоро здесь появится список тегов</p>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class='post'>
+    <div class='post__info'>
+        <div class='post__tag'>
+            <div class='post__image'></div>
+            <div>
+                <div><b>Тегич</b></div>
+                <div class='mat-body-1'>19.04.2021</div>
+            </div>
+        </div>
+        <button mat-icon-button (click)="closeModal()">
+            <!-- <mat-icon>close</mat-icon> -->
+            <img src="../../../../../assets/svg/close-icon.svg" alt="close">
+        </button>
+    </div>
+    <div [innerHTML]="data | safeHtml"></div>
+</div>

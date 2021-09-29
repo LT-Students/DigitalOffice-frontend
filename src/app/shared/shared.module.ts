@@ -16,6 +16,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
 import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
 import { CommentComponent } from './component/comment/comment.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 @NgModule({
 	declarations: [
@@ -30,6 +31,7 @@ import { CommentComponent } from './component/comment/comment.component';
 		TextDirective,
 		DndDirective,
 		HoursPipe,
+		SafeHtmlPipe,
 		CommentComponent
 	],
 	imports: [
@@ -55,6 +57,7 @@ import { CommentComponent } from './component/comment/comment.component';
 		DatepickerComponent,
 		StepperComponent,
 		HoursPipe,
+		SafeHtmlPipe,
 		CommentComponent
 	],
 })

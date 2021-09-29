@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { TimelineComponent } from './components/timeline/timeline.component';
+import { NewsFeedComponent } from './components/news-feed/news-feed.component';
+import { PostComponent } from './components/post/post.component';
 
 @NgModule({
 	declarations: [
-		TimelineComponent
+		NewsFeedComponent,
+		PostComponent
 	],
 	imports: [SharedModule],
 })

@@ -1,0 +1,69 @@
+.header {
+	display: flex;
+	align-items: center;
+
+	&__button {
+		margin: 0 0 32px 20px;
+
+		text-align: center;
+	}
+}
+
+.news {
+	display: grid;
+	grid-template-columns: 1fr 286px;
+	column-gap: 32px;
+	row-gap: 20px;
+}
+
+.feed {
+	display: grid;
+	row-gap: 20px;
+}
+
+.post {
+	padding: 24px 16px;
+
+	cursor: pointer;
+
+	&__info {
+		margin-bottom: 22px;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	&__tag {
+		display: flex;
+		align-items: center;
+	}
+
+	&__image {
+		margin-right: 13px;
+
+		width: 44px;
+		height: 44px;
+
+		background-color: #00f;
+		// затычковые стили, когда будет картинка - уберу
+		border-radius: 50%;
+	}
+}
+
+.tags {
+	max-width: 286px;
+
+	&__image {
+		margin: 54px 26px 16px;
+	}
+
+	&__message {
+		margin: 0 0 32px;
+	}
+
+	&_fixed {
+		position: fixed;
+		top: 76px;
+	}
+}
