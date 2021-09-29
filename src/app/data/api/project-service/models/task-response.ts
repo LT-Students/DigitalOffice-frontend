@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ImageInfo } from './image-info';
 import { ProjectInfo } from './project-info';
 import { ProjectUserInfo } from './project-user-info';
 import { TaskInfo } from './task-info';
@@ -26,6 +27,7 @@ export interface TaskResponse {
   project?: ProjectInfo;
   status?: TaskPropertyInfo;
   subtasks?: null | Array<TaskInfo>;
+  taskImages?: null | Array<ImageInfo>;
   type?: TaskPropertyInfo;
 }
 

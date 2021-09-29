@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://rights.ltdo.xyz"
+      "url": "https://rights.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://rights.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {

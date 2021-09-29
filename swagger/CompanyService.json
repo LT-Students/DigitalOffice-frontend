@@ -1,13 +1,18 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.6.2",
+    "version": "1.6.2.1",
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments."
   },
   "servers": [
     {
-      "url": "https://company.ltdo.xyz"
+      "url": "https://company.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://company.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {
@@ -245,7 +250,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -255,7 +260,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -833,10 +838,88 @@
           }
         }
       }
+    },
+    "/users/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "operationId": "addDepartmentUsers",
+        "description": "Adds a new users to department.\n* __The user must have access to the right__ -- Add/Edit/Remove departments.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddDepartmentUsersRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AddDepartmentUsersRequest": {
+        "type": "object",
+        "description": "Specific department users data.",
+        "required": [
+          "DeprtmentId",
+          "UsersIds"
+        ],
+        "properties": {
+          "DeprtmentId": {
+            "description": "Specific department identifier.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
       "CreatePositionRequest": {
         "type": "object",
         "description": "Specific position data.",

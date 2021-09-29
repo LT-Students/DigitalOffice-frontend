@@ -1,13 +1,18 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.1.3",
+    "version": "1.2.1.4",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
   "servers": [
     {
-      "url": "https://project.ltdo.xyz"
+      "url": "https://project.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://project.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {
@@ -56,7 +61,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindResponseProjectInfo"
+                  "$ref": "#/components/schemas/FindResultResponseProjectInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseProjectInfo"
                 }
               }
             }
@@ -124,22 +139,12 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+          "400": {
+            "description": "Bad request.\n",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.\n* Project with this id not found.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -199,16 +204,6 @@
                 }
               }
             }
-          },
-          "409": {
-            "description": "Conflict.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -250,16 +245,24 @@
             }
           },
           "400": {
-            "description": "Bad request.\n* Error in the field.\n"
+            "description": "Bad request.\n* Error in the field.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
-          },
-          "404": {
-            "description": "Not Found. * Project with this id not found. \n"
-          },
-          "409": {
-            "description": "Conflict.\n"
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -336,7 +339,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
                 "$ref": "#/components/schemas/RemoveImageRequest"
               }
             }
@@ -773,7 +775,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -783,7 +785,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -821,7 +823,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponseTaskResponse"
                 }
               }
             }
@@ -890,7 +892,7 @@
             "description": "The department name.",
             "type": "string",
             "example": "Department",
-            "nullable": true
+            "nullable": false
           }
         }
       },
@@ -1090,16 +1092,6 @@
           }
         }
       },
-      "ImageType": {
-        "type": "object",
-        "description": "Type of image.",
-        "enum": [
-          "Project",
-          "Task"
-        ],
-        "example": "Project",
-        "default": "Project"
-      },
       "ImageInfo": {
         "type": "object",
         "properties": {
@@ -1118,8 +1110,8 @@
           },
           "Content": {
             "type": "string",
-            "nullable": false,
-            "description": "Image file content in base64 encoded string."
+            "description": "Image file content in base64 encoded string.",
+            "nullable": false
           },
           "Extension": {
             "type": "string",
@@ -1130,6 +1122,16 @@
             "nullable": true
           }
         }
+      },
+      "ImageType": {
+        "type": "string",
+        "description": "Type of the entity.\n",
+        "enum": [
+          "Project",
+          "Task"
+        ],
+        "nullable": false,
+        "example": "Project"
       },
       "ProjectUserInfo": {
         "type": "object",
@@ -1162,9 +1164,6 @@
           "Rate": {
             "type": "number"
           },
-          "AvatarImage": {
-            "$ref": "#/components/schemas/ImageInfo"
-          },
           "CreatedAtUtc": {
             "description": "Data and time added user to project.",
             "pattern": "YYYY-MM-DDTHH:mm",
@@ -1193,6 +1192,9 @@
           },
           "Department": {
             "$ref": "#/components/schemas/DepartmentInfo"
+          },
+          "AvatarImage": {
+            "$ref": "#/components/schemas/ImageInfo"
           }
         }
       },
@@ -1223,7 +1225,7 @@
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
           "CreatedBy": {
-            "description": "Unique project creater identifier.",
+            "description": "Unique project creator identifier.",
             "type": "string",
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
@@ -1240,20 +1242,22 @@
             "example": "DO",
             "nullable": true
           },
+          "Description": {
+            "description": "Project description.",
+            "type": "string",
+            "nullable": true
+          },
+          "ShortDescription": {
+            "description": "Project short description.",
+            "type": "string",
+            "nullable": true
+          },
           "Status": {
             "$ref": "#/components/schemas/ProjectStatusType",
             "nullable": false
           },
           "Department": {
             "$ref": "#/components/schemas/DepartmentInfo",
-            "nullable": true
-          },
-          "Description": {
-            "type": "string",
-            "nullable": true
-          },
-          "ShortDescription": {
-            "type": "string",
             "nullable": true
           },
           "CreatedAtUtc": {
@@ -1265,7 +1269,7 @@
       },
       "ProjectStatusType": {
         "type": "string",
-        "description": "Project status.\nMay be empty, default value: 'Active'.\n,Enum numbers description\n* 0 - Active,\n* 1 - Failed,\n* 2 - Abandoned,\n* 3 - Rejected,\n* 4 - Closed,\n* 5 - Suspend",
+        "description": "Project status.\nMay be empty, default value: 'Active'.",
         "enum": [
           "Active",
           "Closed",
@@ -1323,7 +1327,7 @@
       },
       "ProjectUserRoleType": {
         "type": "string",
-        "description": "User role\n\n,Enum numbers description\n* 1 - Admin\n",
+        "description": "User role\n\n,Enum numbers description.",
         "enum": [
           "Manager",
           "Employee"
@@ -1334,9 +1338,7 @@
         "type": "object",
         "required": [
           "Name",
-          "Status",
-          "Users",
-          "ProjectImages"
+          "Status"
         ],
         "properties": {
           "Name": {
@@ -1501,7 +1503,6 @@
             "description": "The value to be used within the operations."
           }
         }
-
       },
       "ProjectUserRequest": {
         "type": "object",
@@ -1603,10 +1604,17 @@
               "$ref": "#/components/schemas/TaskInfo"
             },
             "nullable": true
+          },
+          "TaskImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageInfo"
+            },
+            "nullable": true
           }
         }
       },
-      "FindResponseProjectInfo": {
+      "FindResultResponseProjectInfo": {
         "type": "object",
         "properties": {
           "TotalCount": {
@@ -1694,31 +1702,15 @@
           }
         }
       },
-      "RemoveImageRequest": {
-        "type": "object",
-        "required": [
-          "ImageId",
-          "ImageType"
-        ],
-        "properties": {
-          "ImageId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ImageType": {
-            "$ref": "#/components/schemas/ImageType"
-          }
-        }
-      },
       "CreateImageRequest": {
         "type": "object",
         "required": [
-          "ProjectOrTaskId",
+          "EntityId",
           "Images",
           "ImageType"
         ],
         "properties": {
-          "ProjectOrTaskId": {
+          "EntityId": {
             "type": "string",
             "format": "uuid"
           },
@@ -1730,6 +1722,30 @@
           },
           "ImageType": {
             "$ref": "#/components/schemas/ImageType"
+          }
+        }
+      },
+      "RemoveImageRequest": {
+        "type": "object",
+        "required": [
+          "EntityId",
+          "ImageType",
+          "ImagesIds"
+        ],
+        "properties": {
+          "EntityId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ImageType": {
+            "$ref": "#/components/schemas/ImageType"
+          },
+          "ImagesIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         }
       },
@@ -1757,7 +1773,8 @@
           "ProjectId",
           "TypeId",
           "StatusId",
-          "PriorityId"
+          "PriorityId",
+          "TaskImages"
         ],
         "properties": {
           "Name": {
@@ -1793,6 +1810,12 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "TaskImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageContent"
+            }
           }
         }
       },
@@ -1978,19 +2001,22 @@
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ProjectUserInfo"
-                }
+                },
+                "nullable": true
               },
               "files": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ProjectFileInfo"
-                }
+                },
+                "nullable": true
               },
               "images": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/ImageInfo"
-                }
+                },
+                "nullable": true
               }
             }
           },
@@ -2036,6 +2062,16 @@
       }
     },
     "parameters": {
+      "request": {
+        "name": "request",
+        "in": "query",
+        "description": "Entity id.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
       "taskId": {
         "name": "taskId",
         "in": "query",

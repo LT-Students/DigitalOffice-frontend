@@ -1,9 +1,11 @@
 export { CreateNewsRequest } from './models/create-news-request';
 export { EditNewsRequest } from './models/edit-news-request';
-export { PatchOperation } from './models/patch-operation';
+export { NewsPatchOperation } from './models/news-patch-operation';
 export { User } from './models/user';
+export { ImageData } from './models/image-data';
 export { Department } from './models/department';
 export { OperationResultResponseNewsResponse } from './models/operation-result-response-news-response';
 export { FindResultResponseNewsInfo } from './models/find-result-response-news-info';
+export { NewsInfo } from './models/news-info';
 export { OperationResultResponse } from './models/operation-result-response';
 export { OperationResultStatusType } from './models/operation-result-status-type';
