@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://image.ltdo.xyz"
+      "url": "https://image.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://image.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {
@@ -260,11 +265,11 @@
           "Body": {
             "type": "object",
             "properties": {
-              "imageid": {
+              "imageId": {
                 "type": "string",
                 "format": "uuid"
               },
-              "previewid": {
+              "previewId": {
                 "type": "string",
                 "format": "uuid",
                 "nullable": true

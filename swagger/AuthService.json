@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://auth.ltdo.xyz"
+      "url": "https://auth.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://auth.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {

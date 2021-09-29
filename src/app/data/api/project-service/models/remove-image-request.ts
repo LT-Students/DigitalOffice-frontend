@@ -2,7 +2,8 @@
 /* eslint-disable */
 import { ImageType } from './image-type';
 export interface RemoveImageRequest {
-  imageId: string;
+  entityId: string;
   imageType: ImageType;
+  imagesIds: Array<string>;
 }
 

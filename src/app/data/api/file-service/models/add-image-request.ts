@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface ImageRequest {
+export interface AddImageRequest {
 
   /**
    * Image content.
    */
-  content: string;
+  content?: string;
 
   /**
    * Image extension.
@@ -15,6 +15,6 @@ export interface ImageRequest {
   /**
    * Image name.
    */
-  name: string;
+  name?: string;
 }
 
