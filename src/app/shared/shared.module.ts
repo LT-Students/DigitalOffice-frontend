@@ -17,23 +17,25 @@ import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
+import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.component';
 
 @NgModule({
-	declarations: [
-		SelectComponent,
-		ProfileImageComponent,
-		ContentContainerComponent,
-		SearchComponent,
-		HeaderComponent,
-		InputComponent,
-		DatepickerComponent,
-		StepperComponent,
-		TextDirective,
-		DndDirective,
-		HoursPipe,
-		PasswordComponent,
-		CommentComponent
-	],
+  declarations: [
+    SelectComponent,
+    ProfileImageComponent,
+    ContentContainerComponent,
+    SearchComponent,
+    HeaderComponent,
+    InputComponent,
+    DatepickerComponent,
+    StepperComponent,
+    TextDirective,
+    DndDirective,
+    HoursPipe,
+    PasswordComponent,
+    CommentComponent,
+    BreadcrumbsComponent,
+  ],
 	imports: [
 		CommonModule,
 		RouterModule,
@@ -41,24 +43,25 @@ import { CommentComponent } from './component/comment/comment.component';
 		ReactiveFormsModule,
 		MaterialModule
 	],
-	exports: [
-		CommonModule,
-		RouterModule,
-		MaterialModule,
-		ReactiveFormsModule,
-		FormsModule,
-		InputComponent,
-		SelectComponent,
-		ProfileImageComponent,
-		SearchComponent,
-		HeaderComponent,
-		TextDirective,
-		DndDirective,
-		DatepickerComponent,
-		StepperComponent,
-		HoursPipe,
-		PasswordComponent,
-		CommentComponent
-	],
+  exports: [
+    CommonModule,
+    RouterModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule,
+    InputComponent,
+    SelectComponent,
+    ProfileImageComponent,
+    SearchComponent,
+    HeaderComponent,
+    TextDirective,
+    DndDirective,
+    DatepickerComponent,
+    StepperComponent,
+    HoursPipe,
+    PasswordComponent,
+    CommentComponent,
+    BreadcrumbsComponent,
+  ],
 })
 export class SharedModule { }
