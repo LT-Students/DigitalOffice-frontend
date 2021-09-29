@@ -1,13 +1,18 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.5.1",
+    "version": "1.2.5.2",
     "title": "NewsService",
     "description": "NewsService, is intended to work with the news - create them, update info and etc."
   },
   "servers": [
     {
-      "url": "https://news.ltdo.xyz"
+      "url": "https://news.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://news.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {
@@ -125,16 +130,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -164,8 +159,8 @@
               }
             }
           },
-          "404": {
-            "description": "Not Found.",
+          "400": {
+            "description": "Bad request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -321,46 +316,49 @@
             }
           },
           {
-            "op": "subject",
-            "path": "/Content",
-            "value": {
-              "format": "string"
-            }
-          },
-          {
-            "op": "pseudonum",
-            "path": "/Content",
+            "op": "replace",
+            "path": "/Subject",
             "value": {
               "format": "string"
             }
           },
           {
             "op": "replace",
-            "path": "/Author",
+            "path": "/Pseudonym",
             "value": {
-              "$ref": "#/components/schemas/User"
+              "format": "string"
             }
           },
           {
             "op": "replace",
-            "path": "/Department",
+            "path": "/AuthorId",
             "value": {
-              "$ref": "#/components/schemas/Department"
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/DepartmentId",
+            "value": {
+              "format": "string",
+              "type": "uuid"
             }
           },
           {
             "op": "replace",
             "path": "/IsActive",
             "value": {
-              "format": "string"
+              "format": "string",
+              "example": false
             }
           }
         ],
         "items": {
-          "$ref": "#/components/schemas/PatchOperation"
+          "$ref": "#/components/schemas/NewsPatchOperation"
         }
       },
-      "PatchOperation": {
+      "NewsPatchOperation": {
         "type": "object",
         "required": [
           "op",
@@ -382,9 +380,9 @@
               "/Preview",
               "/Content",
               "/Subject",
-              "/Pseudonum",
-              "/Description",
-              "/Description",
+              "/Pseudonym",
+              "/AuthorId",
+              "/DepartmentId",
               "/IsActive"
             ]
           },
@@ -404,6 +402,43 @@
           "FullName": {
             "type": "string",
             "nullable": true
+          },
+          "MiddleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Avatar": {
+            "$ref": "#/components/schemas/ImageData"
+          }
+        }
+      },
+      "ImageData": {
+        "type": "object",
+        "properties": {
+          "ImageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
           }
         }
       },
@@ -450,10 +485,14 @@
               "isactive": {
                 "type": "boolean"
               },
-              "CreatedAtUtc": {
+              "createdAtUtc": {
                 "type": "string",
                 "format": "date",
                 "nullable": true
+              },
+              "createdBy": {
+                "type": "string",
+                "format": "uuid"
               }
             }
           },
@@ -479,39 +518,9 @@
             "description": "Total number of finded by filter news."
           },
           "Body": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "preview": {
-                "type": "string"
-              },
-              "subject": {
-                "type": "string"
-              },
-              "pseudonum": {
-                "type": "string"
-              },
-              "author": {
-                "$ref": "#/components/schemas/User"
-              },
-              "department": {
-                "$ref": "#/components/schemas/Department",
-                "nullable": true
-              },
-              "isactive": {
-                "type": "boolean"
-              },
-              "createdatutc": {
-                "type": "string",
-                "format": "date"
-              },
-              "createdby": {
-                "type": "string",
-                "format": "uuid"
-              }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NewsInfo"
             }
           },
           "Errors": {
@@ -519,6 +528,35 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "NewsInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Preview": {
+            "type": "string"
+          },
+          "Subject": {
+            "type": "string"
+          },
+          "Author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/Department",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "CreatedAtUtc": {
+            "type": "string",
+            "format": "date"
           }
         }
       },

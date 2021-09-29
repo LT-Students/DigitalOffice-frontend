@@ -2,9 +2,9 @@
 /* eslint-disable */
 
 /**
- * Type of the entity.
+ * Type of image.
  */
 export enum ImageType {
-  Project = 'Project',
-  Task = 'Task'
+  Full = 'Full',
+  Thumb = 'Thumb'
 }

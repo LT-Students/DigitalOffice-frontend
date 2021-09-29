@@ -11,7 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreateProjectRequest } from '../models/create-project-request';
 import { EditProjectRequest } from '../models/edit-project-request';
-import { FindResponseProjectInfo } from '../models/find-response-project-info';
+import { FindResultResponseProjectInfo } from '../models/find-result-response-project-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseProjectResponse } from '../models/operation-result-response-project-response';
 
@@ -53,7 +53,7 @@ export class ProjectApiService extends BaseService {
      * Number of projects to take.
      */
     takeCount: number;
-  }): Observable<StrictHttpResponse<FindResponseProjectInfo>> {
+  }): Observable<StrictHttpResponse<FindResultResponseProjectInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindProjectsPath, 'get');
     if (params) {
@@ -68,7 +68,7 @@ export class ProjectApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FindResponseProjectInfo>;
+        return r as StrictHttpResponse<FindResultResponseProjectInfo>;
       })
     );
   }
@@ -95,10 +95,10 @@ export class ProjectApiService extends BaseService {
      * Number of projects to take.
      */
     takeCount: number;
-  }): Observable<FindResponseProjectInfo> {
+  }): Observable<FindResultResponseProjectInfo> {
 
     return this.findProjects$Response(params).pipe(
-      map((r: StrictHttpResponse<FindResponseProjectInfo>) => r.body as FindResponseProjectInfo)
+      map((r: StrictHttpResponse<FindResultResponseProjectInfo>) => r.body as FindResultResponseProjectInfo)
     );
   }
 
