@@ -1,8 +1,6 @@
 // @ts-ignore
 import Header from '@editorjs/header';
 // @ts-ignore
-import Image from '@editorjs/image';
-// @ts-ignore
 import Underline from '@editorjs/underline';
 // @ts-ignore
 import Marker from '@editorjs/marker';
@@ -12,43 +10,59 @@ import NestedList from '@editorjs/nested-list';
 import Quote from '@editorjs/quote';
 // @ts-ignore
 import Delimiter from '@editorjs/delimiter';
-// @ts-ignore
-import Undo from 'editorjs-undo';
-// @ts-ignore
-import AlignmentBlockTune from 'editorjs-text-alignment-blocktune';
 import { Injectable } from '@angular/core';
 import { ImageNewsService } from '@app/services/image/image-news.service';
-import { EditorConfig } from '@editorjs/editorjs';
+import EditorJS, { EditorConfig, OutputData } from '@editorjs/editorjs';
 import { map, switchMap } from 'rxjs/operators';
 import { OperationResultStatusType } from '@data/api/image-service/models/operation-result-status-type';
 import { CreateImageService } from '@app/services/create-image.service';
 import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
+import { LocalStorageService } from '@app/services/local-storage.service';
+//@ts-ignore
+import Image from '../../editorjs-plugins/blocks/image/bundle.js';
 import { Preview } from '../../editorjs-plugins/block-tunes/preview';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class NewsEditorConfig {
-	private readonly _editorConfig: EditorConfig;
+	// private readonly _editorConfig: EditorConfig;
 
-	constructor(private _imageNewsService: ImageNewsService, private _createImageService: CreateImageService) {
-		this._editorConfig = this._createConfig();
+	constructor(
+		private _imageNewsService: ImageNewsService,
+		private _createImageService: CreateImageService,
+		private _lsService: LocalStorageService
+	) {
+		// this._editorConfig = this._createConfig();
 	}
 
-	public get editorConfig() {
-		return this._editorConfig;
-	}
+	// public get editorConfig() {
+	// 	return this._editorConfig;
+	// }
 	//TODO rework so we can pass editor's instance to config
-	private _createConfig(): EditorConfig {
+	// also pass default data for editing
+	public createConfig(initialData?: OutputData): EditorConfig {
 		return {
 			holder: 'editorjs',
 			// onReady: () => {
-			// 	new Undo();
+			// 	const undo = new Undo({ editor: editorRef });
+			// 	undo.initialize(initialData);
 			// },
+			data: initialData,
 			tools: {
+				paragraph: {
+					tunes: ['previewTune'],
+					config: {
+						placeholder: 'Нажмите Tab для выбора инструмента',
+					},
+				},
 				header: {
 					class: Header,
 					inlineToolbar: ['link', 'bold', 'italic'],
+					config: {
+						levels: [2, 3, 4],
+						defaultLevel: 2,
+					},
 				},
 				underline: { class: Underline, shortcut: 'CTRL+U' },
 				marker: { class: Marker, shortcut: 'CTRL+SHIFT+M' },
@@ -58,16 +72,6 @@ export class NewsEditorConfig {
 				},
 				delimiter: Delimiter,
 				previewTune: Preview,
-				alignmentTune: {
-					class: AlignmentBlockTune,
-					config: {
-						default: 'right',
-						blocks: {
-							header: 'center',
-							list: 'right',
-						},
-					},
-				},
 				quote: {
 					class: Quote,
 					inlineToolbar: true,
@@ -79,7 +83,11 @@ export class NewsEditorConfig {
 				},
 				image: {
 					class: Image,
+					tunes: ['previewTune'],
 					config: {
+						additionalRequestHeaders: {
+							token: this._lsService.get('access_token'),
+						},
 						uploader: {
 							uploadByFile: (file: File) => {
 								return this._createImageService
@@ -88,22 +96,16 @@ export class NewsEditorConfig {
 										switchMap((ciRequest: CreateImageRequest) =>
 											this._imageNewsService.createImageNews(ciRequest)
 										),
-										switchMap((response) =>
-											//@ts-ignore
-											this._imageNewsService.getImageNews(response.body.imageId)
-										),
 										map((response) => {
 											console.log(response);
 											if (response.status === OperationResultStatusType.FullSuccess) {
-												const extension = response.body?.extension?.slice(1);
-												//@ts-ignore
-												const imageUrl = `data:image/${extension};base64,${response.body?.content}`;
+												const imageUrl = `https://image.ltdo.xyz/fileimage/get?imageid=${response.body?.imageId}&source=News`;
 												return {
 													success: 1,
 													file: {
 														url: imageUrl,
-														urlId:
-															'https://image.ltdo.xyz/imagenews/get?imageId=45fed53f-dccf-49b5-b2b3-b366741391e2',
+														imageId: response.body?.imageId,
+														previewId: response.body?.previewId,
 													},
 												};
 											} else {
@@ -120,7 +122,6 @@ export class NewsEditorConfig {
 					},
 				},
 			},
-			tunes: ['previewTune', 'alignmentTune'],
 		};
 	}
 }
