@@ -23,6 +23,17 @@ import { EducationService } from '@app/services/user/education.service';
 import { AuthService } from '@app/services/auth/auth.service';
 import { NetService } from '@app/services/net.service';
 import { EmployeePageService } from '@app/services/employee-page.service';
+import { UserApiModule } from '@data/api/user-service/user-api.module';
+import { AuthenticationApiModule } from '@data/api/auth-service/authentication-api.module';
+import { CompanyApiModule } from '@data/api/company-service/company-api.module';
+import { FileApiModule } from '@data/api/file-service/file-api.module';
+import { ImageApiModule } from '@data/api/image-service/image-api.module';
+import { MessageApiModule } from '@data/api/message-service/message-api.module';
+import { NewsApiModule } from '@data/api/news-service/news-api.module';
+import { ProjectApiModule } from '@data/api/project-service/project-api.module';
+import { RightsApiModule } from '@data/api/rights-service/rights-api.module';
+import { TimeApiModule } from '@data/api/time-service/time-api.module';
+import { environment } from '../../environments/environment';
 
 @NgModule({
 	declarations: [],
@@ -30,7 +41,17 @@ import { EmployeePageService } from '@app/services/employee-page.service';
 		BrowserModule,
 		BrowserAnimationsModule,
 		RouterModule,
-		HttpClientModule
+		HttpClientModule,
+		AuthenticationApiModule.forRoot({ rootUrl: `https://user.${environment.apiUrl}` }),
+		CompanyApiModule.forRoot({ rootUrl: `https://company.${environment.apiUrl}` }),
+		FileApiModule.forRoot({ rootUrl: `https://file.${environment.apiUrl}` }),
+		ImageApiModule.forRoot({ rootUrl: `https://image.${environment.apiUrl}` }),
+		MessageApiModule.forRoot({ rootUrl: `https://message.${environment.apiUrl}` }),
+		NewsApiModule.forRoot({ rootUrl: `https://news.${environment.apiUrl}` }),
+		ProjectApiModule.forRoot({ rootUrl: `https://project.${environment.apiUrl}` }),
+		RightsApiModule.forRoot({ rootUrl: `https://rights.${environment.apiUrl}` }),
+		TimeApiModule.forRoot({ rootUrl: `https://time.${environment.apiUrl}` }),
+		UserApiModule.forRoot({ rootUrl: `https://user.${environment.apiUrl}` }),
 	],
 	providers: [
 		AuthService,
@@ -51,7 +72,7 @@ import { EmployeePageService } from '@app/services/employee-page.service';
 		CredentialsService,
 		EducationService,
 		NetService,
-		EmployeePageService
+		EmployeePageService,
 	],
 	exports: [],
 })
