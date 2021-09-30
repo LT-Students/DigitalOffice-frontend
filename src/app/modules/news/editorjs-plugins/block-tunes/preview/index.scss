@@ -1,4 +1,15 @@
-.preview {
+.ce-block__indicators {
 	position: absolute;
-	right: 0;
+	top: 0;
+	right: 200px;
+}
+
+.ce-block-indicator {
+	visibility: hidden;
+
+	cursor: pointer;
+
+	&_active {
+		visibility: visible;
+	}
 }
