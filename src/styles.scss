@@ -4,8 +4,8 @@
 @use 'layouts/table';
 @use 'do/underlined';
 @use '~@angular/cdk/overlay-prebuilt';
-
-@import './stylesheets/material/expansion-panel';
+@use './stylesheets/material/expansion-panel';
+@use './stylesheets/material/mat-button';
 
 *,
 *::before,

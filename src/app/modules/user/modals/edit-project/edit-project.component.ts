@@ -15,6 +15,7 @@ import { IDialogResponse } from '../../components/user-tasks/user-tasks.componen
 export class EditProjectComponent {
 	public editForm: FormGroup;
 	public projectDate: Date;
+	public loading: boolean;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public project: any,
@@ -25,6 +26,7 @@ export class EditProjectComponent {
 	) {
 		this.editForm = this._initFormGroup();
 		this.projectDate = new Date(this.project.year, this.project.month - 1);
+		this.loading = false;
 	}
 
 	private _initFormGroup(): FormGroup {
@@ -36,6 +38,7 @@ export class EditProjectComponent {
 	}
 
 	public onSubmitClick(): void {
+		this.loading = true;
 		this._timeService
 			.editWorkTime({
 				workTimeId: this.project.id,
@@ -58,7 +61,7 @@ export class EditProjectComponent {
 				],
 			})
 			.pipe(switchMap(() => this._attendanceService.getActivities()))
-			.subscribe(() => this.onClose());
+			.subscribe(() => { this.loading = false; this.onClose() });
 	}
 
 	public onClose(params?: IDialogResponse): void {

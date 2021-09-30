@@ -16,6 +16,7 @@ import { DatepickerComponent } from './component/datepicker/datepicker.component
 import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
 import { CommentComponent } from './component/comment/comment.component';
+import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
 
 @NgModule({
 	declarations: [
@@ -29,6 +30,7 @@ import { CommentComponent } from './component/comment/comment.component';
 		StepperComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
 		HoursPipe,
 		CommentComponent
 	],
@@ -52,6 +54,7 @@ import { CommentComponent } from './component/comment/comment.component';
 		HeaderComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
 		DatepickerComponent,
 		StepperComponent,
 		HoursPipe,

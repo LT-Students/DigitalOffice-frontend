@@ -36,6 +36,8 @@ export class AddHoursComponent implements OnDestroy {
 	public minDate: Date;
 	public maxDate: Date;
 
+	public loading: boolean;
+
 	constructor(
 		private _fb: FormBuilder,
 		private _attendanceService: AttendanceService,
@@ -43,6 +45,8 @@ export class AddHoursComponent implements OnDestroy {
 		private _snackbar: MatSnackBar,
 		private _timeDurationService: TimeDurationService
 	) {
+		this.loading = false;
+
 		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 
 		this.isProjectForm = true;
@@ -112,12 +116,14 @@ export class AddHoursComponent implements OnDestroy {
 
 	public onSubmit(): void {
 		const sendRequest = this.isProjectForm ? this._editWorkTime() : this._addLeaveTime();
+		this.loading = true;
 
 		sendRequest.pipe(switchMap(() => this._attendanceService.getActivities())).subscribe(
 			() => {
 				this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
 				this.addHoursForm.reset();
 				this.isProjectForm = true;
+				this.loading = false;
 			},
 			(error) => {
 				this._snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
