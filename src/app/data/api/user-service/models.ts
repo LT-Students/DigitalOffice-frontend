@@ -37,3 +37,4 @@ export { PatchCertificateDocument } from './models/patch-certificate-document';
 export { CreateCommunicationRequest } from './models/create-communication-request';
 export { EditCommunicationRequest } from './models/edit-communication-request';
 export { PatchCommunicationDocument } from './models/patch-communication-document';
+export { CreateSkillRequest } from './models/create-skill-request';

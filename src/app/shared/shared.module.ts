@@ -15,6 +15,7 @@ import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
+import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
@@ -32,6 +33,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 		DndDirective,
 		HoursPipe,
 		SafeHtmlPipe,
+		PasswordComponent,
 		CommentComponent
 	],
 	imports: [
@@ -58,6 +60,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 		StepperComponent,
 		HoursPipe,
 		SafeHtmlPipe,
+		PasswordComponent,
 		CommentComponent
 	],
 })

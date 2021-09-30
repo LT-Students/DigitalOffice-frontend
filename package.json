@@ -14,6 +14,7 @@
     "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
     "generate.company": "ng-openapi-gen -c swagger/config/company.json",
     "generate.file": "ng-openapi-gen -c swagger/config/file.json",
+    "generate.image": "ng-openapi-gen -c swagger/config/image.json",
     "generate.message": "ng-openapi-gen -c swagger/config/message.json",
     "generate.news": "ng-openapi-gen -c swagger/config/news.json",
     "generate.project": "ng-openapi-gen -c swagger/config/project.json",

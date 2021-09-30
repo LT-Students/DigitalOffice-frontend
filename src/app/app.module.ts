@@ -10,6 +10,7 @@ import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
 
 import { CoreModule } from '@app/core.module';
 import { AppInitService } from '@app/services/app-init.service';
+import { FormsModule } from '@angular/forms';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminModule } from './modules/admin/admin.module';
@@ -30,7 +31,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule, NewsModule],
+	imports: [AppRoutingModule, CoreModule, AuthModule, UserModule, AdminModule, EmployeeModule, NgbModule, MaterialModule, InstallerModule, FormsModule, NewsModule],
 	providers: [
 		Title,
 		{

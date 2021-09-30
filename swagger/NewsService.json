@@ -1,13 +1,18 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.5",
+    "version": "1.2.5.2",
     "title": "NewsService",
     "description": "NewsService, is intended to work with the news - create them, update info and etc."
   },
   "servers": [
     {
-      "url": "https://news.ltdo.xyz"
+      "url": "https://news.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://news.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {
@@ -27,14 +32,14 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewsRequest"
+                "$ref": "#/components/schemas/CreateNewsRequest"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "New news Id, Satus and Errors",
             "content": {
               "application/json": {
@@ -49,7 +54,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -59,7 +64,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -73,14 +78,7 @@
           "$ref": "#/components/parameters/securityToken"
         },
         {
-          "name": "newsId",
-          "in": "query",
-          "description": "Specific news id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
+          "$ref": "#/components/parameters/newsId"
         }
       ],
       "patch": {
@@ -88,7 +86,7 @@
           "News"
         ],
         "operationId": "editNews",
-        "description": "Updates news fields.",
+        "description": "Edit the specified news by id.\n* The user must have to be owner or has right.\n",
         "requestBody": {
           "content": {
             "application/json": {
@@ -96,7 +94,7 @@
                 "minItems": 1,
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/PatchOperation"
+                  "$ref": "#/components/schemas/EditNewsRequest"
                 }
               }
             }
@@ -104,11 +102,11 @@
         },
         "responses": {
           "200": {
-            "description": "Update news operation success (boolean) status.",
+            "description": "Ok.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "boolean"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -118,7 +116,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -128,17 +126,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -146,36 +134,40 @@
         }
       }
     },
-    "/news/getNewsById": {
+    "/news/get": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/newsId"
+          "$ref": "#/components/parameters/securityToken"
         },
         {
-          "$ref": "#/components/parameters/securityToken"
+          "$ref": "#/components/parameters/newsId"
         }
       ],
       "get": {
         "tags": [
           "News"
         ],
-        "operationId": "getNewsById",
+        "operationId": "getNews",
         "responses": {
           "200": {
             "description": "Successfully returned news information.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NewsResponse"
+                  "$ref": "#/components/schemas/OperationResultResponseNewsResponse"
                 }
               }
             }
           },
-          "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
-          },
-          "404": {
-            "description": "Not Found.\n* News with this id not found.\n"
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -184,6 +176,24 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of users to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
         },
         {
           "name": "authorId",
@@ -206,20 +216,10 @@
           "required": false
         },
         {
-          "name": "Pseudonym",
+          "name": "includeDeactivated",
           "in": "query",
-          "description": "Pseudonym of news author.",
           "schema": {
-            "type": "string"
-          },
-          "required": false
-        },
-        {
-          "name": "subject",
-          "in": "query",
-          "description": "Subject of news.",
-          "schema": {
-            "type": "string"
+            "type": "boolean"
           },
           "required": false
         }
@@ -228,7 +228,7 @@
         "tags": [
           "News"
         ],
-        "operationId": "findnews",
+        "operationId": "findNews",
         "description": "Returns all news information by filter.",
         "responses": {
           "200": {
@@ -238,7 +238,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/NewsResponse"
+                    "$ref": "#/components/schemas/FindResultResponseNewsInfo"
                   }
                 }
               }
@@ -249,7 +249,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -260,34 +260,33 @@
   },
   "components": {
     "schemas": {
-      "NewsRequest": {
+      "CreateNewsRequest": {
         "type": "object",
         "required": [
-          "AuthorId",
-          "SenderId",
+          "Preview",
+          "Content",
           "Subject",
-          "Content"
+          "AuthorId"
         ],
         "properties": {
+          "Preview": {
+            "description": "The news' preview.",
+            "type": "string"
+          },
           "Content": {
-            "description": "The news' content.",
+            "description": "The news content.",
             "type": "string"
           },
           "Subject": {
-            "description": "The news' subject.",
+            "description": "The news subject.",
             "type": "string"
           },
           "Pseudonym": {
-            "description": "The news' author name.",
+            "description": "The news author name.",
             "type": "string"
           },
           "AuthorId": {
             "description": "Id of the news author.",
-            "type": "string",
-            "format": "uuid"
-          },
-          "SenderId": {
-            "description": "Id of the news sender.",
             "type": "string",
             "format": "uuid"
           },
@@ -298,7 +297,68 @@
           }
         }
       },
-      "PatchOperation": {
+      "EditNewsRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Preview",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Content",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Subject",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Pseudonym",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/AuthorId",
+            "value": {
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/DepartmentId",
+            "value": {
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/IsActive",
+            "value": {
+              "format": "string",
+              "example": false
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/NewsPatchOperation"
+        }
+      },
+      "NewsPatchOperation": {
         "type": "object",
         "required": [
           "op",
@@ -317,46 +377,18 @@
             "type": "string",
             "description": "A JSON-Pointer.",
             "enum": [
+              "/Preview",
               "/Content",
               "/Subject",
+              "/Pseudonym",
+              "/AuthorId",
+              "/DepartmentId",
               "/IsActive"
             ]
           },
           "value": {
             "type": "object",
             "description": "The value to be used within the operations."
-          }
-        }
-      },
-      "NewsResponse": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Content": {
-            "type": "string"
-          },
-          "Subject": {
-            "type": "string"
-          },
-          "Author": {
-            "$ref": "#/components/schemas/User"
-          },
-          "Sender": {
-            "$ref": "#/components/schemas/User"
-          },
-          "CreatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "Department": {
-            "$ref": "#/components/schemas/Department",
-            "nullable": true
-          },
-          "IsActive": {
-            "type": "boolean"
           }
         }
       },
@@ -370,6 +402,43 @@
           "FullName": {
             "type": "string",
             "nullable": true
+          },
+          "MiddleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Avatar": {
+            "$ref": "#/components/schemas/ImageData"
+          }
+        }
+      },
+      "ImageData": {
+        "type": "object",
+        "properties": {
+          "ImageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
           }
         }
       },
@@ -386,19 +455,108 @@
           }
         }
       },
-      "ErrorResponse": {
-        "description": "Error information",
+      "OperationResultResponseNewsResponse": {
+        "description": "Response object for action operations.",
         "type": "object",
         "properties": {
-          "UtcTime": {
+          "Body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "preview": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              },
+              "subject": {
+                "type": "string"
+              },
+              "author": {
+                "$ref": "#/components/schemas/User"
+              },
+              "department": {
+                "$ref": "#/components/schemas/Department",
+                "nullable": true
+              },
+              "isactive": {
+                "type": "boolean"
+              },
+              "createdAtUtc": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "createdBy": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseNewsInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter news."
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NewsInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "NewsInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Preview": {
             "type": "string"
           },
-          "Header": {
+          "Subject": {
             "type": "string"
           },
-          "Message": {
-            "description": "A human readable message providing more details about the error.",
-            "type": "string"
+          "Author": {
+            "$ref": "#/components/schemas/User"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/Department",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "CreatedAtUtc": {
+            "type": "string",
+            "format": "date"
           }
         }
       },
@@ -426,8 +584,7 @@
         "enum": [
           "FullSuccess",
           "PartialSuccess",
-          "Failed",
-          "Conflict"
+          "Failed"
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"

@@ -1,8 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ImageContent } from './image-content';
 import { ProjectStatusType } from './project-status-type';
 import { ProjectUserRequest } from './project-user-request';
-export interface ProjectRequest {
+export interface CreateProjectRequest {
 
   /**
    * Unique department identifier.
@@ -18,6 +19,7 @@ export interface ProjectRequest {
    * Project name.
    */
   name: string;
+  projectImages?: Array<ImageContent>;
 
   /**
    * Project short description.
@@ -29,6 +31,6 @@ export interface ProjectRequest {
    */
   shortName?: string;
   status: ProjectStatusType;
-  users: Array<ProjectUserRequest>;
+  users?: Array<ProjectUserRequest>;
 }
 

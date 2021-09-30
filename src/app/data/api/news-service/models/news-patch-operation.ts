@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface PatchOperation {
+export interface NewsPatchOperation {
 
   /**
    * The operation to be performed.
@@ -10,7 +10,7 @@ export interface PatchOperation {
   /**
    * A JSON-Pointer.
    */
-  path: '/Content' | '/Subject' | '/IsActive';
+  path: '/Preview' | '/Content' | '/Subject' | '/Pseudonym' | '/AuthorId' | '/DepartmentId' | '/IsActive';
 
   /**
    * The value to be used within the operations.

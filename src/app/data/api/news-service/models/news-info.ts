@@ -2,14 +2,13 @@
 /* eslint-disable */
 import { Department } from './department';
 import { User } from './user';
-export interface NewsResponse {
+export interface NewsInfo {
   author?: User;
-  content?: string;
-  createdAt?: string;
+  createdAtUtc?: string;
   department?: null | Department;
   id?: string;
   isActive?: boolean;
-  sender?: User;
+  preview?: string;
   subject?: string;
 }
 
