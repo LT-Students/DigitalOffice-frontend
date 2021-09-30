@@ -1,4 +1,6 @@
 @use 'base/variables';
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
 
 .breadcrumbs {
 	margin-bottom: 50px;
@@ -10,11 +12,7 @@
 		cursor: pointer;
 
 		&:hover {
-			color: #707070;
-		}
-
-		&:last-child {
-			color: variables.$dark_1;
+			color: mat.get-color-from-palette($do-grey, 600);
 		}
 	}
 }

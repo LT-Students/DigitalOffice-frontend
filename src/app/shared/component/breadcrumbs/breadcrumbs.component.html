@@ -1,6 +1,6 @@
 <div class="breadcrumbs">
     <ng-container *ngFor="let path of paths; last as isLast">
-        <span (click)='onRouteClicked(path)' class='breadcrumbs__item'>{{path.title}}</span>
+        <span (click)='onRouteClicked(path)' class='mat-body breadcrumbs__item'>{{path.title}}</span>
         <mat-icon *ngIf="!isLast">keyboard_arrow_right</mat-icon>
     </ng-container>
 </div>
