@@ -9,6 +9,11 @@ import { map } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { DepartmentService } from '@app/services/company/department.service';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
+import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
+import { PatchDepartmentDocument } from '@data/api/company-service/models/patch-department-document';
+import { EditDepartmentRequest } from '@data/api/company-service/models/edit-department-request';
+import { EditDepartmentPath } from '@app/services/company/department.service';
+import { EditModalContentConfig } from '../../components/department-card/department-card.component';
 
 @Component({
 	selector: 'do-new-department',
@@ -21,7 +26,7 @@ export class NewDepartmentComponent implements OnInit {
 	public departmentForm: FormGroup;
 	public isEdit: boolean | undefined;
 	private dataToEdit: any;
-	public departmentInfo: DepartmentInfo | undefined;
+	public isFormChanged: boolean;
 
 	constructor(
 		public _userService: UserService,
@@ -29,22 +34,21 @@ export class NewDepartmentComponent implements OnInit {
 		private _dialogRef: MatDialogRef<NewDepartmentComponent>,
 		private _formBuilder: FormBuilder,
 		private _snackBar: MatSnackBar,
-		private dialogRef: MatDialogRef<NewDepartmentComponent>,
-		@Inject(MAT_DIALOG_DATA) data: MatDialogConfig
+		@Inject(MAT_DIALOG_DATA) data: EditModalContentConfig
 	) {
 		this.dataToEdit = data;
-
+		this.isFormChanged = false;
 		this.departmentForm = this._formBuilder.group({
 			name: ['', [Validators.required]],
 			description: [null],
-			directorId: [null],
+			directorid: [null],
 		});
 		if (this.dataToEdit) {
 			this.isEdit = true;
 			this.departmentForm = this._formBuilder.group({
-				name: [this.dataToEdit.data.name, [Validators.required]],
-				directorId: this.dataToEdit.data.directorId,
-				description: this.dataToEdit.data.description,
+				name: [this.dataToEdit.name, [Validators.required]],
+				directorid: this.dataToEdit.directorid,
+				description: this.dataToEdit.description,
 			});
 		}
 
@@ -54,14 +58,27 @@ export class NewDepartmentComponent implements OnInit {
 		// .pipe(map((response) => response.body));
 	}
 
-	public ngOnInit(): void {}
+	public ngOnInit(): void {
+		this.departmentForm.valueChanges.subscribe(x => {
+			if (this.dataToEdit.name !== x.name
+				|| this.dataToEdit.description !== x.description
+				|| this.dataToEdit.directorid !== x.directorid) {
+			this.isFormChanged = true;
+			console.log(this.isFormChanged)
+			} else {
+			this.isFormChanged = false;
+			}
+		})
+	}
+
+
 
 	public createDepartment(): void {
 		this._departmentService
 			.addDepartment({
 				name: this.departmentForm.get('name')?.value?.trim(),
 				description: this.departmentForm.get('description')?.value?.trim(),
-				directorUserId: this.departmentForm.get('directorId')?.value,
+				directorUserId: this.departmentForm.get('directorid')?.value,
 				users: [],
 			})
 			.subscribe(
@@ -82,31 +99,34 @@ export class NewDepartmentComponent implements OnInit {
 			);
 	}
 
+
+
 	public editDepartment(): void {
-			const editBody = Object.keys(this.departmentForm.controls).reduce((acc: any, key) => {
-				if(this.departmentForm.controls[key].value !== this.dataToEdit.data[key]) {
-					const objToSend = {
-					op: 'replace', path: `/${key}`, value: this.departmentForm.controls[key].value
+			const editBody = Object.keys(this.departmentForm.controls).reduce((acc: Array<PatchDepartmentDocument>, key) => {
+				if(this.departmentForm.controls[key].value !== this.dataToEdit[key]) {
+					const patchDepartmentDocument: PatchDepartmentDocument = {
+					op: 'replace', path: `/${key}` as EditDepartmentPath, value: this.departmentForm.controls[key].value
 					}
-					acc.push(objToSend);
+					acc.push(patchDepartmentDocument);
 				}
-				return acc
+				return acc;
 			} , []);
 
 			this._departmentService
 			.editDepartment({
-				departmentId: this.dataToEdit.data.id as string,
+				departmentId: this.dataToEdit.id as string,
 				body: editBody
 			})
-			.subscribe((result: any) => {
+			.subscribe((result: OperationResultResponse) => {
 				this._snackBar.open('Департамент успешно изменен', 'done', {
 					duration: 3000,
 				});
-				this._dialogRef.close(this.departmentForm.value);
+				this._dialogRef.close(result);
+				console.log('данные после изменения', this.departmentForm.value)
 			});
 	}
 
-	public chooseModal() {
+	public onSubmitDepartmentForm() {
 		if (this.isEdit) {
 			this.editDepartment();
 		} else {

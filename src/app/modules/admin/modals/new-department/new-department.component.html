@@ -1,5 +1,5 @@
-<form class="data-form" [formGroup]="departmentForm" (ngSubmit)="chooseModal()">
-    <h3>{{!isEdit ? "Создание департамента" : "Редактирование департамента"}}</h3>
+<form class="data-form" [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartmentForm()">
+    <h3 mat-dialog-title>{{!isEdit ? "Создание департамента" : "Редактирование департамента"}}</h3>
 	<mat-dialog-content class="new-department">
 		<div class="form__container">
 			<div class="new-department__input-container">
@@ -9,7 +9,7 @@
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Директор</mat-label>
-					<mat-select id="director" formControlName="directorId">
+					<mat-select id="director" formControlName="directorid">
 						<mat-option *ngFor="let director of directors$ | async" [value]="director.id">
 							{{ director.lastName + ' ' + director.firstName }}
 						</mat-option>
@@ -35,7 +35,7 @@
 		<button mat-button mat-dialog-close type="button">Отмена</button>
 		<button *ngIf='!isEdit; else editDepartamentButton' mat-flat-button color="primary" type="submit" [disabled]="departmentForm.invalid">Создать департамент</button>
         <ng-template #editDepartamentButton>
-            <button mat-flat-button color="primary" type="submit" [disabled]="departmentForm.pristine">Сохранить</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="!isFormChanged">Сохранить</button>
         </ng-template>
 	</mat-dialog-actions>
 </form>

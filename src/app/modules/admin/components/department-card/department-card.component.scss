@@ -5,18 +5,14 @@
 }
 
 .department {
+	&__header {
+		display: flex;
+		justify-content: space-between;
+	}
+
 	&__info {
 		margin-bottom: 40px;
 		padding-bottom: 40px;
-
-		border-bottom: 1px solid #fafafa;
-
-		&__header {
-			margin-top: 52px;
-
-			display: flex;
-			justify-content: space-between;
-		}
 	}
 
 	&__label {
@@ -24,10 +20,20 @@
 
 		width: 50%;
 	}
+
+	&__button-edit {
+		display: flex;
+		align-items: center;
+
+		&__img {
+			margin-right: 2px;
+		}
+	}
 }
 
 .table {
 	&__header {
+		margin-top: 20px;
 		margin-bottom: 20px;
 
 		display: flex;

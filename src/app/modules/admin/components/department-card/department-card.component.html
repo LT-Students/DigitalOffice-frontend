@@ -9,14 +9,14 @@
 	</span>
 	<a class="navigation__link">{{ departmentInfo?.name }}</a>
 </div>
-<h1 class="title">{{ departmentInfo?.name }}</h1>
+<h1>{{ departmentInfo?.name }}</h1>
 <mat-card class="card card_standard department">
 	<div class="department__info">
-        <div class='department__info__header'>
+        <div class='department__header'>
             <h3 doUnderline underlinedSize="sm">Общая информация</h3>
-            <button mat-flat-button>
-                <div doText color="gray1" (click)="onEditDepartamentClick(departmentInfo)">
-                    <img src='assets/svg/edit.svg' alt=''>
+            <button mat-flat-button (click)="onEditDepartamentClick()">
+                <div class='department__button-edit'>
+                    <img class='department__button-edit__img' src='assets/svg/edit.svg' alt='edit'>
                     Редактировать
                 </div>
             </button>
@@ -34,6 +34,7 @@
 			</ng-container>
 		</div>
 	</div>
+    <mat-divider [inset]="true"></mat-divider>
 	<div class="department__table table">
 		<div class="table__header">
 			<h3 doUnderline underlinedSize="sm">

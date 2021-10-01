@@ -16,8 +16,8 @@ import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.
 export interface EditModalContentConfig {
 	id?: string,
 	name?: string,
-	description?: string,
-	directorId?:  string,
+	description?: string  | undefined | null,
+	directorid?:  string,
 }
 
 @Component({
@@ -95,16 +95,15 @@ export class DepartmentCardComponent implements OnInit {
 			});
 	}
 
-	onEditDepartamentClick(departmentInfo: DepartmentInfo | undefined): void {
-		let dialogConfig = new MatDialogConfig();
-		dialogConfig.data = {
-			id: departmentInfo?.id,
-			name: departmentInfo?.name,
-			description: departmentInfo?.description,
-			directorId:  departmentInfo?.director?.id,
+	public onEditDepartamentClick(): void {
+		const data: EditModalContentConfig = {
+			id: this.departmentInfo?.id,
+			name: this.departmentInfo?.name,
+			description: this.departmentInfo?.description,
+			directorid:  this.departmentInfo?.director?.id,
 		};
 		this._modalService
-		.openModal<NewDepartmentComponent, EditModalContentConfig, IDialogResponse>(NewDepartmentComponent, ModalWidth.M, dialogConfig)
+		.openModal<NewDepartmentComponent, EditModalContentConfig, IDialogResponse>(NewDepartmentComponent, ModalWidth.M, data)
 		.afterClosed()
 		.subscribe(result => {
 			if (result?.status === OperationResultStatusType.FullSuccess)
