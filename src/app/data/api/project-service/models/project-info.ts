@@ -10,10 +10,14 @@ export interface ProjectInfo {
   createdAtUtc?: any;
 
   /**
-   * Unique project creater identifier.
+   * Unique project creator identifier.
    */
   createdBy?: string;
   department?: null | DepartmentInfo;
+
+  /**
+   * Project description.
+   */
   description?: null | string;
 
   /**
@@ -25,6 +29,10 @@ export interface ProjectInfo {
    * Project name.
    */
   name?: string;
+
+  /**
+   * Project short description.
+   */
   shortDescription?: null | string;
 
   /**

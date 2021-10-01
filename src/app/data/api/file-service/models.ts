@@ -1,2 +1,9 @@
-export { File } from './models/file';
-export { ImageRequest } from './models/image-request';
+export { AddFileRequest } from './models/add-file-request';
+export { FileInfo } from './models/file-info';
+export { AddImageRequest } from './models/add-image-request';
+export { ImageInfo } from './models/image-info';
+export { ImageType } from './models/image-type';
+export { OperationResultStatusType } from './models/operation-result-status-type';
+export { OperationResultResponseImageInfo } from './models/operation-result-response-image-info';
+export { OperationResultResponseListImageInfo } from './models/operation-result-response-list-image-info';
+export { ErrorResponse } from './models/error-response';

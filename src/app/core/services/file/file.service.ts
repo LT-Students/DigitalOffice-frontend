@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FileApiService } from '@data/api/file-service/services/file-api.service';
-import { File } from '@data/api/file-service/models/file';
-import { IGetFileRequest } from '@app/types/get-file-request.interface';
 import { IDisableFileRequest } from '@app/types/disable-file-request.interface';
+import { FileInfo } from '@data/api/file-service/models/file-info';
+import { AddFileRequest } from '@data/api/file-service/models/add-file-request';
 
 @Injectable({
 	providedIn: 'root',
@@ -11,15 +11,15 @@ import { IDisableFileRequest } from '@app/types/disable-file-request.interface';
 export class FileService {
 	constructor(private _fileService: FileApiService) {}
 
-	public addNewFile(body: File): Observable<string> {
-		return this._fileService.addNewFile({ body });
+	public addNewFile(body: AddFileRequest): Observable<string> {
+		return this._fileService.addFile({ body });
 	}
 
-	public getFile(params: IGetFileRequest): Observable<File[]> {
-		return this._fileService.getFileById(params);
+	public getFile(fileId: string): Observable<FileInfo[]> {
+		return this._fileService.getFile({ fileId });
 	}
 
 	public disableFile(params: IDisableFileRequest): Observable<void> {
-		return this._fileService.disableFileById(params);
+		return this._fileService.disableFile(params);
 	}
 }

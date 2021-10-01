@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import {
 	AddUsersToProjectRequest,
 	EditProjectRequest,
-	FindResponseProjectInfo,
+	FindResultResponseProjectInfo,
 	ImageContent,
 	OperationResultResponse,
 	OperationResultResponseProjectResponse,
@@ -48,7 +48,11 @@ export interface ICreateProjectRequest {
 export class ProjectService {
 	constructor(private _projectService: ProjectApiService, private _userService: UserApiService) {}
 
-	public findProjects(skipPages = 0, pageSize = 10, departmentId = undefined): Observable<FindResponseProjectInfo> {
+	public findProjects(
+		skipPages = 0,
+		pageSize = 10,
+		departmentId = undefined
+	): Observable<FindResultResponseProjectInfo> {
 		return this._projectService.findProjects({
 			skipCount: skipPages,
 			takeCount: pageSize,

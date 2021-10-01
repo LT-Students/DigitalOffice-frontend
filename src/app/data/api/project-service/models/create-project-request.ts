@@ -19,7 +19,7 @@ export interface CreateProjectRequest {
    * Project name.
    */
   name: string;
-  projectImages: Array<ImageContent>;
+  projectImages?: Array<ImageContent>;
 
   /**
    * Project short description.
@@ -31,6 +31,6 @@ export interface CreateProjectRequest {
    */
   shortName?: string;
   status: ProjectStatusType;
-  users: Array<ProjectUserRequest>;
+  users?: Array<ProjectUserRequest>;
 }
 
