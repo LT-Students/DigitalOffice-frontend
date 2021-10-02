@@ -24,11 +24,6 @@ export interface Modes {
 	certificates: WorkFlowMode;
 }
 
-export interface Path {
-	title: string;
-	url?: string;
-}
-
 @Component({
 	selector: 'do-employee-page',
 	templateUrl: './employee-page.component.html',

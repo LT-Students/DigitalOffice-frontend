@@ -17,6 +17,7 @@ import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
+import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.component';
 
 @NgModule({
 	declarations: [
@@ -32,15 +33,10 @@ import { CommentComponent } from './component/comment/comment.component';
 		DndDirective,
 		HoursPipe,
 		PasswordComponent,
-		CommentComponent
+		CommentComponent,
+		BreadcrumbsComponent,
 	],
-	imports: [
-		CommonModule,
-		RouterModule,
-		FormsModule,
-		ReactiveFormsModule,
-		MaterialModule
-	],
+	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule],
 	exports: [
 		CommonModule,
 		RouterModule,
@@ -58,7 +54,8 @@ import { CommentComponent } from './component/comment/comment.component';
 		StepperComponent,
 		HoursPipe,
 		PasswordComponent,
-		CommentComponent
+		CommentComponent,
+		BreadcrumbsComponent,
 	],
 })
-export class SharedModule { }
+export class SharedModule {}

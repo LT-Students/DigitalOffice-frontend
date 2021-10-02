@@ -26,7 +26,6 @@ export class DepartmentListComponent implements OnInit {
 	public pageIndex: number;
 	public id: string;
 
-
 	constructor(
 		private netService: NetService,
 		private _modalService: ModalService,

@@ -92,24 +92,6 @@
 	max-height: 333px;
 }
 
-.navigation {
-	margin-bottom: 40px;
-
-	&__link {
-		display: inline-block;
-
-		height: 24px;
-
-		vertical-align: top;
-
-		color: inherit;
-	}
-
-	&__link:hover {
-		text-decoration: underline;
-	}
-}
-
 textarea#additionInfo {
 	height: 150px;
 }

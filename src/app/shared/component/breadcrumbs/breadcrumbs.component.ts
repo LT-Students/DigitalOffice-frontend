@@ -1,7 +1,10 @@
-//@ts-nocheck
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Path } from '../../employee-page.component';
+
+export interface Path {
+	title: string;
+	url?: string;
+}
 
 @Component({
 	selector: 'do-breadcrumbs',
@@ -10,15 +13,17 @@ import { Path } from '../../employee-page.component';
 changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BreadcrumbsComponent implements OnInit {
-	@Input() paths: Path[];
+	@Input() public paths: Path[];
 
-	constructor(private router: Router) {}
+	constructor(private _router: Router) {
+		this.paths = [];
+	}
 
 	ngOnInit(): void {}
 
 	onRouteClicked(route: Path) {
 		if (route.url) {
-			this.router.navigate([route.url]);
+			this._router.navigate([route.url]);
 		}
 	}
 }

@@ -1,0 +1,21 @@
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
+
+.breadcrumbs {
+	margin-bottom: 50px;
+
+	display: flex;
+	align-items: center;
+
+	&__item {
+		cursor: pointer;
+
+		&:hover {
+			color: mat.get-color-from-palette($do-grey, 600);
+		}
+
+		&:last-child {
+			color: mat.get-color-from-palette($do-grey, 800);
+		}
+	}
+}
