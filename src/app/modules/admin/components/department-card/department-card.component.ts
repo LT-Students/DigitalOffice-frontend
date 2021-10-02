@@ -7,15 +7,18 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { MatDialogConfig } from '@angular/material/dialog';
+import { ValidationErrors, Validators } from '@angular/forms';
+import { OperationResultStatusType } from '@data/api/user-service/models';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
-import { MatDialogConfig } from '@angular/material/dialog';
-import { OperationResultStatusType } from '@data/api/user-service/models';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
 
+
 export interface EditModalContentConfig {
+	[key: string]: string | undefined | null | ValidationErrors,
 	id?: string,
-	name?: string,
+	name: string | ValidationErrors | null,
 	description?: string  | undefined | null,
 	directorid?:  string,
 }
@@ -67,7 +70,7 @@ export class DepartmentCardComponent implements OnInit {
 			this.totalCount = body?.users?.length ?? 0;
 			//this.sortedUsersInfo = body?.users?.slice() ?? [];
 			this._getUsers();
-			this._cdr.detectChanges();
+			this._cdr.markForCheck();//здесь поменяла detectChanges() на markForCheck
 		});
 	}
 
@@ -98,7 +101,7 @@ export class DepartmentCardComponent implements OnInit {
 	public onEditDepartamentClick(): void {
 		const data: EditModalContentConfig = {
 			id: this.departmentInfo?.id,
-			name: this.departmentInfo?.name,
+			name: this.departmentInfo?.name as string,
 			description: this.departmentInfo?.description,
 			directorid:  this.departmentInfo?.director?.id,
 		};

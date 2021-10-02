@@ -15,6 +15,7 @@ import { EditDepartmentRequest } from '@data/api/company-service/models/edit-dep
 import { EditDepartmentPath } from '@app/services/company/department.service';
 import { EditModalContentConfig } from '../../components/department-card/department-card.component';
 
+
 @Component({
 	selector: 'do-new-department',
 	templateUrl: './new-department.component.html',
@@ -25,7 +26,7 @@ export class NewDepartmentComponent implements OnInit {
 	public directors$: Observable<UserInfo[] | undefined>;
 	public departmentForm: FormGroup;
 	public isEdit: boolean | undefined;
-	private dataToEdit: any;
+	private readonly departamentInfo: EditModalContentConfig;
 	public isFormChanged: boolean;
 
 	constructor(
@@ -36,22 +37,35 @@ export class NewDepartmentComponent implements OnInit {
 		private _snackBar: MatSnackBar,
 		@Inject(MAT_DIALOG_DATA) data: EditModalContentConfig
 	) {
-		this.dataToEdit = data;
+		this.departamentInfo = data;
 		this.isFormChanged = false;
 		this.departmentForm = this._formBuilder.group({
 			name: ['', [Validators.required]],
-			description: [null],
-			directorid: [null],
+			description: [''],
+			directorid: [''],
 		});
-		if (this.dataToEdit) {
+		if (this.departamentInfo) {
 			this.isEdit = true;
-			this.departmentForm = this._formBuilder.group({
-				name: [this.dataToEdit.name, [Validators.required]],
-				directorid: this.dataToEdit.directorid,
-				description: this.dataToEdit.description,
-			});
-		}
+			const controlsConfig: EditModalContentConfig = { name: '' };
 
+			Object.keys(this.departamentInfo).forEach((key) => {
+				if (key === 'name') {
+					controlsConfig.name = [this.departamentInfo.name, [Validators.required]];
+					return;
+				}
+				if (this.departamentInfo[key] === null ) {
+					controlsConfig[key] = ''
+				}
+				if (this.departamentInfo[key] === undefined ) {
+					controlsConfig[key] = null
+				}
+				if (this.departamentInfo[key]) {
+					controlsConfig[key] = this.departamentInfo[key]
+				}
+			})
+
+			this.departmentForm = this._formBuilder.group(controlsConfig);
+		}
 
 		this.directors$ = this._userService.findUsers(0, 500).pipe(map((response) => response.body));
 		// this.currentDirector = this._userService.findUsers(0, 50, data.data.id)
@@ -60,18 +74,15 @@ export class NewDepartmentComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this.departmentForm.valueChanges.subscribe(x => {
-			if (this.dataToEdit.name !== x.name
-				|| this.dataToEdit.description !== x.description
-				|| this.dataToEdit.directorid !== x.directorid) {
+			if (this.departamentInfo.name !== x.name
+				|| this.departamentInfo.description !== x.description
+				|| this.departamentInfo.directorid !== x.directorid) {
 			this.isFormChanged = true;
-			console.log(this.isFormChanged)
 			} else {
 			this.isFormChanged = false;
 			}
 		})
 	}
-
-
 
 	public createDepartment(): void {
 		this._departmentService
@@ -103,7 +114,8 @@ export class NewDepartmentComponent implements OnInit {
 
 	public editDepartment(): void {
 			const editBody = Object.keys(this.departmentForm.controls).reduce((acc: Array<PatchDepartmentDocument>, key) => {
-				if(this.departmentForm.controls[key].value !== this.dataToEdit[key]) {
+				if(this.departmentForm.controls[key].value !== this.departamentInfo[key]
+					&& this.departmentForm.controls[key].value !== null ) {
 					const patchDepartmentDocument: PatchDepartmentDocument = {
 					op: 'replace', path: `/${key}` as EditDepartmentPath, value: this.departmentForm.controls[key].value
 					}
@@ -114,7 +126,7 @@ export class NewDepartmentComponent implements OnInit {
 
 			this._departmentService
 			.editDepartment({
-				departmentId: this.dataToEdit.id as string,
+				departmentId: this.departamentInfo.id as string,
 				body: editBody
 			})
 			.subscribe((result: OperationResultResponse) => {
@@ -122,7 +134,6 @@ export class NewDepartmentComponent implements OnInit {
 					duration: 3000,
 				});
 				this._dialogRef.close(result);
-				console.log('данные после изменения', this.departmentForm.value)
 			});
 	}
 
