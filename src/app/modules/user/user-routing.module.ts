@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -14,8 +13,7 @@ const userRoutes: Routes = [
 ];
 
 @NgModule({
-	imports: [ RouterModule.forChild(userRoutes) ],
-	exports: [ RouterModule ],
+	imports: [RouterModule.forChild(userRoutes)],
+	exports: [RouterModule],
 })
-export class UserRoutingModule {
-}
+export class UserRoutingModule {}

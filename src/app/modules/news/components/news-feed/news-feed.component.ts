@@ -33,7 +33,6 @@ export class NewsFeedComponent implements OnInit {
 		this.fixedTags = false;
 		this._newsCount = 0;
 		this._totalCount = 0;
-		// this.articlePreviews$ = new Observable(undefined);
 		this.articlePreviews = [];
 	}
 

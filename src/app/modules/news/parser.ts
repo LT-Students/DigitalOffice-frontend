@@ -1,47 +1,9 @@
-// console.log('ВАША КАРТИНКА: ', image)
-// let imgClasses = "img";
-// let wrapperClasses = "";
-// let blockContentClasses = block.data.stretched ? "" : "ce-block__content";
-
-// if (block.data.stretched) {
-// 	imgClasses += " img-fullwidth";
-// }
-// if (block.data.withBorder) {
-// 	wrapperClasses += " img-with-border";
-// }
-// if (block.data.withBackground) {
-// 	wrapperClasses += " img-with-background";
-// 	imgClasses += " img-background-width";
-// }
-
-// let src = `data:image/${image.body?.extension?.slice(1)};base64,${image.body?.content}`
-// console.log('SRC: ', src)
-
-// if (block.data.caption) {
-// 	return of(`<div class='ce-block'>
-// 		<div class='${blockContentClasses}'>
-// 			<figure>
-// 				<div class='${wrapperClasses}'>
-// 					<img class='${imgClasses}' src=${src} alt="${image.body?.name}">	
-// 				<div>
-// 				<figcaption class='img__caption'>${block.data.caption}</figcaption>
-// 			</figure>
-// 		</div>
-// 	</div>`);
-// } else {
-// 	return of(`<div class='ce-block'>
-// 		<div class='${blockContentClasses}'>
-// 			<div class='${wrapperClasses}'>
-// 				<img class='${imgClasses}' src=${src} alt=${image.body?.name} />
-// 			</div>
-// 		</div>
-// 	</div>`);
-// }
-
 import { Injectable } from "@angular/core";
 import { ImageNewsService } from "@app/services/image/image-news.service";
-import { forkJoin, from, Observable, of } from "rxjs";
+import { forkJoin, Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
+
+import { IOutputBlockData } from '../../core/models/editorjs/output-data.interface'
 
 interface ItemList {
 	content: string,
@@ -67,56 +29,6 @@ export interface Block {
 	}
 }
 
-interface Transforms {
-	delimiter?: () => string,
-	header?: (data: Block) => string,
-	paragraph?: (data: Block) => string,
-	list?: (data: Block) => string,
-	image?: (data: Block) => string,
-	quote?: (data: Block) => string
-}
-
-const transforms: Transforms = {
-	// В данном парсере картинка будет вытягиваться с сервера, а в url будет присваиваться base64(?)
-	image: ({ data }) => {
-		let imgClasses = "img";
-		let wrapperClasses = "";
-		let blockContentClasses = data.stretched ? "" : "ce-block__content";
-
-		if (data.stretched) {
-			imgClasses += " img-fullwidth";
-		}
-		if (data.withBorder) {
-			wrapperClasses += " img-with-border";
-		}
-		if (data.withBackground) {
-			wrapperClasses += " img-with-background";
-			imgClasses += " img-background-width";
-		}
-
-		if (data.caption) {
-			return `<div class='ce-block'>
-				<div class='${blockContentClasses}'>
-					<figure>
-						<div class='${wrapperClasses}'>
-							<img class='${imgClasses}' src="${data.file && (data.file.url ?? data.url)}" alt="${data.caption}">	
-						<div>
-						<figcaption class='img__caption'>${data.caption}</figcaption>
-					</figure>
-				</div>
-			</div>`;
-		} else {
-			return `<div class='ce-block'>
-				<div class='${blockContentClasses}'>
-					<div class='${wrapperClasses}'>
-						<img class='${imgClasses}' src="${data.file && (data.file.url ?? data.url)}" alt="Image" />
-					</div>
-				</div>
-			</div>`;
-		}
-	}
-}
-
 @Injectable({
 	providedIn: 'root'
 })
@@ -127,12 +39,9 @@ export class EditorJSParser {
 
 	}
 
-	public parseBlock(block: any): Observable<string> {
-		// const type = block.type as keyof typeof transforms;
-		// return transforms[type] ? transforms[type]!(block) : '';
+	public parseBlock(block: IOutputBlockData): Observable<string> {
 		switch (block.type) {
 			case 'image': {
-				console.log('Ща достанем картинку по id: ', block.data.file.imageId)
 				return this._imageNewsService
 					.getImageNews(block.data.file.imageId)
 					.pipe(
@@ -247,9 +156,8 @@ export class EditorJSParser {
 
 	public parse(blocks: Array<Block>): Observable<string[]> {
 		if (blocks.length === 0) return of([])
-		// from([...blocks.map(block => this.parseBlock(block))])
 		return forkJoin(
-			[...blocks.map(block => this.parseBlock(block))]
+			blocks.map(block => this.parseBlock(block))
 		)
 	}
 }

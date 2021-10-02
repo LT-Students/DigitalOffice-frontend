@@ -14,7 +14,7 @@ import { OperationResultResponseImageResponse } from '../models/operation-result
 @Injectable({
   providedIn: 'root',
 })
-export class ImageUserApiService extends BaseService {
+export class ProjectImageApiService extends BaseService {
   constructor(
     config: ApiConfiguration,
     http: HttpClient
@@ -23,19 +23,19 @@ export class ImageUserApiService extends BaseService {
   }
 
   /**
-   * Path part for operation getImageUser
+   * Path part for operation getProjectImage
    */
-  static readonly GetImageUserPath = '/imageuser/get';
+  static readonly GetProjectImagePath = '/project/get';
 
   /**
-   * Returns image information of User.
+   * Returns image information of Project.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getImageUser()` instead.
+   * To access only the response body, use `getProjectImage()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getImageUser$Response(params: {
+  getProjectImage$Response(params: {
 
     /**
      * Image global unique identifier.
@@ -43,7 +43,7 @@ export class ImageUserApiService extends BaseService {
     imageId: string;
   }): Observable<StrictHttpResponse<OperationResultResponseImageResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ImageUserApiService.GetImageUserPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, ProjectImageApiService.GetProjectImagePath, 'get');
     if (params) {
       rb.query('imageId', params.imageId, {});
     }
@@ -60,14 +60,14 @@ export class ImageUserApiService extends BaseService {
   }
 
   /**
-   * Returns image information of User.
+   * Returns image information of Project.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getImageUser$Response()` instead.
+   * To access the full response (for headers, for example), `getProjectImage$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getImageUser(params: {
+  getProjectImage(params: {
 
     /**
      * Image global unique identifier.
@@ -75,7 +75,7 @@ export class ImageUserApiService extends BaseService {
     imageId: string;
   }): Observable<OperationResultResponseImageResponse> {
 
-    return this.getImageUser$Response(params).pipe(
+    return this.getProjectImage$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponseImageResponse>) => r.body as OperationResultResponseImageResponse)
     );
   }
