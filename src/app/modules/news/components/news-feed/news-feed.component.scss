@@ -22,12 +22,12 @@
 }
 
 .post {
-	padding: 24px 16px;
+	padding: 24px 48px 0;
 
 	cursor: pointer;
 
 	&__info {
-		margin-bottom: 22px;
+		margin-bottom: 20px;
 
 		display: flex;
 		justify-content: space-between;
@@ -48,6 +48,12 @@
 		background-color: #00f;
 		// затычковые стили, когда будет картинка - уберу
 		border-radius: 50%;
+	}
+
+	&__content {
+		max-width: 938px;
+
+		word-break: break-all;
 	}
 }
 

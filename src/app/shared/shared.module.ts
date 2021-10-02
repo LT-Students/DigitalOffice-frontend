@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { MaterialModule } from './material.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { SelectComponent } from './component/select/select.component';
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -18,6 +19,7 @@ import { HoursPipe } from './pipes/hours/hours.pipe';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+
 
 @NgModule({
 	declarations: [
@@ -41,12 +43,14 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 		RouterModule,
 		FormsModule,
 		ReactiveFormsModule,
-		MaterialModule
+		MaterialModule,
+		InfiniteScrollModule
 	],
 	exports: [
 		CommonModule,
 		RouterModule,
 		MaterialModule,
+		InfiniteScrollModule,
 		ReactiveFormsModule,
 		FormsModule,
 		InputComponent,

@@ -1,4 +1,4 @@
-<div #news>
+<div infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50" (scrolled)="getData()">
     <div class="header">
         <h1>Новости</h1>
         <button mat-flat-button color='primary' class='header__button'>
@@ -7,8 +7,8 @@
         </button>
     </div>
     <div class="news">
-        <div class="feed" #timelines>
-            <mat-card *ngFor="let post of html" (click)="openPost(post)" class="post">
+        <div class="feed" *ngIf="articlePreviews.length > 0">
+            <mat-card *ngFor="let post of articlePreviews" (click)="openPost(post.id)" class="post">
                 <div class='post__info'>
                     <div class='post__tag'>
                         <!-- <img src="" alt=""> -->
@@ -16,7 +16,7 @@
                         <div class='post__image'></div>
                         <div>
                             <div><b>Тегич</b></div>
-                            <div class='mat-body-1'>19.04.2021</div>
+                            <div class='mat-body-1'>{{post.createdAtUtc | date:"dd.MM.YYYY"}}</div>
                         </div>
                     </div>
                     <button mat-icon-button (click)="onMenuOpen($event)" [matMenuTriggerFor]="menu">
@@ -27,7 +27,10 @@
                         <button mat-menu-item>Удалить</button>
                     </mat-menu>
                 </div>
-                <div [innerHTML]="post | safeHtml"></div>
+                <div class='post__content'>
+                    <h4>{{post.subject}}</h4>
+                    <div [innerHTML]="post.preview | safeHtml"></div>
+                </div>
             </mat-card>
         </div>
         <div>

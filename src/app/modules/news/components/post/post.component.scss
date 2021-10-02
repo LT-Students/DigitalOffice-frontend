@@ -1,8 +1,24 @@
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
+
+.modal {
+	position: relative;
+
+	&__close-button {
+		position: absolute;
+		top: 65px;
+		right: 21px;
+	}
+}
+
 .post {
-	padding: 24px 16px;
+	margin: 0 auto;
+	padding-top: 60px;
+
+	max-width: 938px;
 
 	&__info {
-		margin-bottom: 22px;
+		margin-bottom: 55px;
 
 		display: flex;
 		justify-content: space-between;
@@ -23,5 +39,27 @@
 		background-color: #00f;
 		// затычковые стили, когда будет картинка - уберу
 		border-radius: 50%;
+	}
+
+	&__content {
+		word-break: break-all;
+	}
+
+	&__loader {
+		margin: 0 auto;
+	}
+
+	&__menu-trigger {
+		padding: 10px 16px;
+
+		display: flex;
+		justify-content: space-between;
+
+		width: 200px;
+
+		cursor: pointer;
+
+		background-color: mat.get-color-from-palette($do-grey, 100);
+		border-radius: 5px;
 	}
 }

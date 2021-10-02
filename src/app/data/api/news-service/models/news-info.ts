@@ -9,6 +9,8 @@ export interface NewsInfo {
   id?: string;
   isActive?: boolean;
   preview?: string;
+  pseudonym?: string;
+  sender?: User;
   subject?: string;
 }
 
