@@ -1,0 +1,43 @@
+<div infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50" (scrolled)="getData()">
+    <div class="header">
+        <h1>Новости</h1>
+        <button mat-flat-button color='primary' class='header__button'>
+            <img src="../../../../../assets/svg/Plus Add.svg" alt="plus">&nbsp;
+            <span>Добавить новость</span>
+        </button>
+    </div>
+    <div class="news">
+        <div class="feed" *ngIf="articlePreviews.length > 0">
+            <mat-card *ngFor="let post of articlePreviews" (click)="openPost(post.id)" class="post">
+                <div class='post__info'>
+                    <div class='post__tag'>
+                        <!-- <img src="" alt=""> -->
+                        <!-- Затычка -->
+                        <div class='post__image'></div>
+                        <div>
+                            <div><b>Тегич</b></div>
+                            <div class='mat-body-1'>{{post.createdAtUtc | date:"dd.MM.YYYY"}}</div>
+                        </div>
+                    </div>
+                    <button mat-icon-button (click)="onMenuOpen($event)" [matMenuTriggerFor]="menu">
+                        <img src="../../../../../assets/svg/more-gray.svg" alt="more">
+                    </button>
+                    <mat-menu #menu>
+                        <button mat-menu-item>Редактировать</button>
+                        <button mat-menu-item>Удалить</button>
+                    </mat-menu>
+                </div>
+                <div class='post__content'>
+                    <h4>{{post.subject}}</h4>
+                    <div [innerHTML]="post.preview | safeHtml"></div>
+                </div>
+            </mat-card>
+        </div>
+        <div>
+            <mat-card class="tags" [ngClass]="{tags_fixed: fixedTags}">
+                <img class='tags__image' src="../../../../../assets/svg/perekatipole 1.svg" alt="perekatipole">
+                <p class='tags__message'>Скоро здесь появится список тегов</p>
+            </mat-card>
+        </div>
+    </div>
+</div>

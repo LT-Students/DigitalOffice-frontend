@@ -6,6 +6,7 @@ import { OperationResultResponse } from '@data/api/news-service/models/operation
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
 import { FindResultResponseNewsInfo } from '@data/api/news-service/models/find-result-response-news-info';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { OperationResultResponseNewsResponse } from '@data/api/news-service/models/operation-result-response-news-response';
 
 export interface IFindNewsRequest {
 	skipCount: number;
@@ -27,7 +28,11 @@ export class NewsService {
 		return this._newsService.editNews({ newsId, body });
 	}
 
-	public findNews(params: IFindNewsRequest): Observable<Array<FindResultResponseNewsInfo>> {
+	public findNews(params: IFindNewsRequest): Observable<FindResultResponseNewsInfo> {
 		return this._newsService.findNews(params);
+	}
+
+	public getNews(newsId: string): Observable<OperationResultResponseNewsResponse> {
+		return this._newsService.getNews({ newsId })
 	}
 }
