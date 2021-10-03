@@ -3,31 +3,30 @@
         <img src="../../../../../assets/svg/close-icon.svg" alt="close">
     </button>
     <div class='post'>
-        <div class='post__info'>
-            <div class='post__tag'>
-                <div class='post__image'></div>
-                <div>
-                    <div><b>Тегич</b></div>
-                    <div class='mat-body-1'>19.04.2021</div>
+        <div *ngIf="(article$ | async) as article; else loader">
+            <div class='post__info'>
+                <div class='post__tag'>
+                    <div class='post__image'></div>
+                    <div>
+                        <div><b>Тегич</b></div>
+                        <div class='mat-body-1'>{{article.createdAtUtc | date: "dd.MM.YYYY"}}</div>
+                    </div>
                 </div>
+                <div [matMenuTriggerFor]="menu" class="post__menu-trigger">
+                    <div>Действия</div>
+                    <div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down"></div>
+                </div>
+                <mat-menu #menu class="post__menu">
+                    <button mat-menu-item>Редактировать</button>
+                    <button mat-menu-item (click)="onNewsDelete(article.id)">Удалить</button>
+                </mat-menu>
             </div>
-            <!-- TODO: добавить кнопку редактирования (Настя добавит в дизайн) -->
-            <div [matMenuTriggerFor]="menu" class="post__menu-trigger">
-                <div>Действия</div>
-                <div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down"></div>
-            </div>
-            <mat-menu #menu class="post__menu">
-                <button mat-menu-item>Редактировать</button>
-                <button mat-menu-item>Удалить</button>
-            </mat-menu>
-        </div>
-        <div class='post__content'>
-            <div *ngIf="(article$ | async) as article; else loader">
+            <div class='post__content'>
                 <div [innerHTML]="article.content | safeHtml"></div>
             </div>
-            <ng-template #loader>
-                <mat-spinner class='post__loader'></mat-spinner>
-            </ng-template>
         </div>
+        <ng-template #loader>
+            <mat-spinner class='post__loader'></mat-spinner>
+        </ng-template>
     </div>
 </div>

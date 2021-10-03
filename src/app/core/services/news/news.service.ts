@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { NewsApiService } from '@data/api/news-service/services/news-api.service';
 import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
 import { OperationResultResponse } from '@data/api/news-service/models/operation-result-response';
@@ -7,6 +7,8 @@ import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request
 import { FindResultResponseNewsInfo } from '@data/api/news-service/models/find-result-response-news-info';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OperationResultResponseNewsResponse } from '@data/api/news-service/models/operation-result-response-news-response';
+import { catchError, tap } from 'rxjs/operators';
+import { NewsPatchOperation } from '@data/api/news-service/models';
 
 export interface IFindNewsRequest {
 	skipCount: number;
@@ -24,8 +26,22 @@ export class NewsService {
 		return this._newsService.createNews({ body });
 	}
 
+	public disableNews(newsId?: string): Observable<OperationResultResponse> {
+		const disableRequest: NewsPatchOperation = { op: 'replace', path: '/IsActive', value: false };
+		//@ts-ignore
+		return this._newsService.editNews({ newsId, body: [disableRequest] })
+			.pipe(
+				tap(() => this._snackBar.open('Новость успешно удалена!', 'x', { duration: 3000 })),
+				catchError(err => {
+					console.log
+					this._snackBar.open('Что-то пошло не так :(', 'x', { duration: 3000 });
+					return throwError(err);
+				})
+			);
+	}
+
 	public editNews(newsId: string, body: Array<EditNewsRequest>): Observable<OperationResultResponse> {
-		return this._newsService.editNews({ newsId, body });
+		return this._newsService.editNews({ newsId, body })
 	}
 
 	public findNews(params: IFindNewsRequest): Observable<FindResultResponseNewsInfo> {

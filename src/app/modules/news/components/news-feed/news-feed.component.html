@@ -24,11 +24,15 @@
                     </button>
                     <mat-menu #menu>
                         <button mat-menu-item>Редактировать</button>
-                        <button mat-menu-item>Удалить</button>
+                        <button mat-menu-item (click)="onNewsDelete(post.id)">Удалить</button>
                     </mat-menu>
                 </div>
                 <div class='post__content'>
-                    <h4>{{post.subject}}</h4>
+                    <div class='ce-block'>
+                        <div class="ce-block__content">
+                            <h4>{{post.subject}}</h4>
+                        </div>
+                    </div>
                     <div [innerHTML]="post.preview | safeHtml"></div>
                 </div>
             </mat-card>
