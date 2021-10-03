@@ -6,6 +6,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
 import { EditorJSParser } from '../../parser';
+import { OperationResultStatusType } from '@data/api/news-service/models';
 
 @Component({
 	selector: 'do-post',
@@ -22,7 +23,7 @@ export class PostComponent implements OnInit {
 		private _editorJSParser: EditorJSParser,
 		private _newsService: NewsService
 	) {
-		this.article$ = new Observable(undefined)
+		this.article$ = new Observable(undefined);
 	}
 
 	public ngOnInit(): void {
@@ -32,16 +33,24 @@ export class PostComponent implements OnInit {
 				map(article => article.body),
 				mergeMap(article => {
 					let blocks = JSON.parse(article?.content ?? '[]');
-					console.log("all blocks: ", blocks)
 					let notHiddenBlocks = blocks.filter((block: any) => (block?.tunes && block.tunes?.previewTune) ? !block.tunes.previewTune.hidden : true);
-					console.log("not hidden blocks: ", notHiddenBlocks)
 					return this._editorJSParser.parse(notHiddenBlocks)
-						.pipe(map(block => ({ ...article, content: block.join("") }) as any));
+						.pipe(map(block => ({ ...article, content: block.join("") }) as Article));
 				})
 			)
 	}
 
-	public closeModal(): void {
-		this._dialogRef.close();
+	public onNewsDelete(newsId: string | undefined): void {
+		this._newsService.disableNews(newsId ?? '').subscribe(
+			result => {
+				if (result.status === OperationResultStatusType.FullSuccess) {
+					this.closeModal({ newsId });
+				}
+			}
+		)
+	}
+
+	public closeModal(dialogResult?: { newsId: string | undefined }): void {
+		this._dialogRef.close(dialogResult);
 	}
 }

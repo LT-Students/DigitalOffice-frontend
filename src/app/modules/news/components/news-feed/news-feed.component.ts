@@ -8,6 +8,7 @@ import { PostComponent } from '../post/post.component';
 import { EditorJSParser } from '../../parser';
 import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
 import { ArticlePreview } from '@app/models/news.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -28,16 +29,17 @@ export class NewsFeedComponent implements OnInit {
 		private _matDialog: MatDialog,
 		private _newsService: NewsService,
 		private _cdr: ChangeDetectorRef,
-		private _editorJSParser: EditorJSParser
+		private _editorJSParser: EditorJSParser,
+		private _snackBar: MatSnackBar
 	) {
 		this.fixedTags = false;
 		this._newsCount = 0;
 		this._totalCount = 0;
-		// this.articlePreviews$ = new Observable(undefined);
 		this.articlePreviews = [];
 	}
 
-	@HostListener("window: scroll", []) onWindowScroll() {
+	@HostListener("window: scroll", [])
+	public onWindowScroll(): void {
 		if (this._document.documentElement.scrollTop >= 100) {
 			this.fixedTags = true;
 		} else {
@@ -45,15 +47,14 @@ export class NewsFeedComponent implements OnInit {
 		}
 	}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		this._getArticlePreviews();
 	}
 
 	public getData(): void {
 		if (this._newsCount < this._totalCount) {
-			this._getArticlePreviews()
+			this._getArticlePreviews();
 		}
-		else console.log(`Нету больше данных: ${this._newsCount} из ${this._totalCount}`)
 	}
 
 	private _getArticlePreviews(): void {
@@ -66,19 +67,15 @@ export class NewsFeedComponent implements OnInit {
 			.findNews(params)
 			.pipe(
 				tap(articlePreviews => {
-					console.log(articlePreviews)
 					this._totalCount = articlePreviews.totalCount ?? 0;
 					this._newsCount += articlePreviews.body?.length ?? 0;
 					return articlePreviews
 				}),
 				switchMap(articlePreviews => from(articlePreviews.body ?? [])),
 				concatMap(articlePreview => {
-					console.log('Текущий превью: ', articlePreview.preview)
-					console.log(articlePreview.preview ? true : false)
 					return this._editorJSParser
 						.parse(JSON.parse(articlePreview.preview ?? '[]'))
 						.pipe(
-							tap(block => console.log('Новый блок: ', block)),
 							map(block => ({ ...articlePreview, preview: block.join("") }) as ArticlePreview)
 						)
 				}
@@ -86,13 +83,22 @@ export class NewsFeedComponent implements OnInit {
 				toArray(),
 			).subscribe(articlePreviews => {
 				this.articlePreviews = [...this.articlePreviews, ...articlePreviews];
-				console.log(this.articlePreviews)
 				this._cdr.markForCheck();
 			});
 	}
 
-	public onMenuOpen(event: any) {
+	public onMenuOpen(event: any): void {
 		event.stopPropagation();
+	}
+
+	public onNewsDelete(newsId: string | undefined): void {
+		this._newsService.disableNews(newsId ?? "").subscribe(
+			result => {
+				if (result.status === 'FullSuccess') {
+					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== newsId);
+				}
+			}
+		)
 	}
 
 	public openPost(postId: string | undefined): void {
@@ -107,5 +113,11 @@ export class NewsFeedComponent implements OnInit {
 					autoFocus: false,
 					panelClass: 'dialog-border-radius-none'
 				})
+			.afterClosed()
+			.subscribe(response => {
+				if (response) {
+					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== response.newsId);
+				}
+			})
 	}
 }

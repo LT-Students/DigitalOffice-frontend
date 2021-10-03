@@ -4,17 +4,13 @@
 	max-width: 100%;
 
 	&__caption {
+		margin-top: 15px;
+
 		text-align: center;
-	}
 
-	&-fullwidth {
-		width: 100%;
-	}
-
-	&-background-width {
-		margin: 0 auto;
-
-		max-width: 60%;
+		&-with-border {
+			margin-bottom: 15px;
+		}
 	}
 
 	&-centered {
@@ -23,14 +19,11 @@
 		max-width: 60%;
 	}
 
-	&-with-background {
-		padding: 15px;
+	&-fullwidth {
+		padding: 0;
 
-		background-color: #eee;
-	}
-
-	&-with-border {
-		border: 1px solid #e8e8eb;
+		width: 100%;
+		max-width: 100%;
 	}
 }
 
@@ -41,6 +34,16 @@
 .ce-block {
 	&__content {
 		margin: 0 0 24px;
+
+		&-with-background {
+			padding: 15px;
+
+			background-color: #eee;
+		}
+
+		&-with-border {
+			border: 1px solid #e8e8eb;
+		}
 	}
 }
 
@@ -87,4 +90,8 @@
 		border-radius: 0;
 		box-shadow: none;
 	}
+}
+
+.mat-menu-panel.post__menu {
+	min-width: 200px;
 }
