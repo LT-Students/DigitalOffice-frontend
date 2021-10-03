@@ -91,11 +91,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "minItems": 1,
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EditNewsRequest"
-                }
+                "$ref": "#/components/schemas/EditNewsRequest"
               }
             }
           }

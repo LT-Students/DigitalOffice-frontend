@@ -26,9 +26,8 @@ export class NewsService {
 		return this._newsService.createNews({ body });
 	}
 
-	public disableNews(newsId?: string): Observable<OperationResultResponse> {
+	public disableNews(newsId: string): Observable<OperationResultResponse> {
 		const disableRequest: NewsPatchOperation = { op: 'replace', path: '/IsActive', value: false };
-		//@ts-ignore
 		return this._newsService.editNews({ newsId, body: [disableRequest] })
 			.pipe(
 				tap(() => this._snackBar.open('Новость успешно удалена!', 'x', { duration: 3000 })),
@@ -40,7 +39,7 @@ export class NewsService {
 			);
 	}
 
-	public editNews(newsId: string, body: Array<EditNewsRequest>): Observable<OperationResultResponse> {
+	public editNews(newsId: string, body: EditNewsRequest): Observable<OperationResultResponse> {
 		return this._newsService.editNews({ newsId, body })
 	}
 

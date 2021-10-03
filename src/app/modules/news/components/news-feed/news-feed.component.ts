@@ -8,7 +8,6 @@ import { PostComponent } from '../post/post.component';
 import { EditorJSParser } from '../../parser';
 import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
 import { ArticlePreview } from '@app/models/news.model';
-import { EditNewsRequest } from '@data/api/news-service/models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 
@@ -93,7 +92,7 @@ export class NewsFeedComponent implements OnInit {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		this._newsService.disableNews(newsId).subscribe(
+		this._newsService.disableNews(newsId ?? "").subscribe(
 			result => {
 				if (result.status === 'FullSuccess') {
 					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== newsId);

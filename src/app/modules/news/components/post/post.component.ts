@@ -6,7 +6,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
 import { EditorJSParser } from '../../parser';
-import { EditNewsRequest, OperationResultStatusType } from '@data/api/news-service/models';
+import { OperationResultStatusType } from '@data/api/news-service/models';
 
 @Component({
 	selector: 'do-post',
@@ -41,7 +41,7 @@ export class PostComponent implements OnInit {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		this._newsService.disableNews(newsId).subscribe(
+		this._newsService.disableNews(newsId ?? '').subscribe(
 			result => {
 				if (result.status === OperationResultStatusType.FullSuccess) {
 					this.closeModal({ newsId });

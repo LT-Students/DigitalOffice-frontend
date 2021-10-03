@@ -96,7 +96,7 @@ export class NewsApiService extends BaseService {
      * News global unique identifier.
      */
     newsId: string;
-    body?: Array<EditNewsRequest>
+    body?: EditNewsRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, NewsApiService.EditNewsPath, 'patch');
@@ -131,7 +131,7 @@ export class NewsApiService extends BaseService {
      * News global unique identifier.
      */
     newsId: string;
-    body?: Array<EditNewsRequest>
+    body?: EditNewsRequest
   }): Observable<OperationResultResponse> {
 
     return this.editNews$Response(params).pipe(
