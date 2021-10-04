@@ -1,7 +1,7 @@
 <div infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50" (scrolled)="getData()">
     <div class="header">
         <h1>Новости</h1>
-        <button mat-flat-button color='primary' class='header__button'>
+        <button mat-flat-button color='primary' class='header__button' (click)='openEditor()'>
             <img src="../../../../../assets/svg/Plus Add.svg" alt="plus">&nbsp;
             <span>Добавить новость</span>
         </button>
@@ -23,7 +23,7 @@
                         <img src="../../../../../assets/svg/more-gray.svg" alt="more">
                     </button>
                     <mat-menu #menu>
-                        <button mat-menu-item>Редактировать</button>
+                        <button mat-menu-item (click)='openEditor(post.id)'>Редактировать</button>
                         <button mat-menu-item (click)="onNewsDelete(post.id)">Удалить</button>
                     </mat-menu>
                 </div>

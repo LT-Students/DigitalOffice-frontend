@@ -9,6 +9,7 @@ import {
 	ConfirmDialogComponent,
 	ConfirmDialogModel,
 } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { PostComponent } from '../../modules/news/components/post/post.component';
 
 export enum ModalType {
 	CREATE,
@@ -49,7 +50,7 @@ export const enum ModalWidth {
 	providedIn: 'root',
 })
 export class ModalService {
-	constructor(private matDialog: MatDialog) {}
+	constructor(private _matDialog: MatDialog) {}
 
 	public openModal<C, T, R>(
 		component: ComponentType<C>,
@@ -57,7 +58,7 @@ export class ModalService {
 		modalContentConfig?: T,
 		result?: R
 	): MatDialogRef<C, R> {
-		return this.matDialog.open<C, T, R>(component, {
+		return this._matDialog.open<C, T, R>(component, {
 			data: modalContentConfig,
 			width: modalWidth,
 			role: 'alertdialog',
@@ -65,6 +66,18 @@ export class ModalService {
 	}
 
 	public confirm(confirmData: ConfirmDialogModel): MatDialogRef<ConfirmDialogComponent, ConfirmDialogModel> {
-		return this.matDialog.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.M });
+		return this._matDialog.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.M });
+	}
+
+	public fullScreen<C, T, R = any>(component: ComponentType<C>, data?: T): MatDialogRef<C, R> {
+		return this._matDialog.open(component, {
+			maxHeight: `100vh`,
+			maxWidth: '100vw',
+			height: `100%`,
+			width: '100%',
+			data: data,
+			autoFocus: false,
+			panelClass: 'dialog-border-radius-none',
+		});
 	}
 }

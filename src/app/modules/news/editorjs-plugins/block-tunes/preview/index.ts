@@ -2,7 +2,7 @@ import { API } from '@editorjs/editorjs';
 import { BlockTuneData } from '@editorjs/editorjs/types/block-tunes/block-tune-data';
 
 interface Indicator {
-	name: string;
+	name: 'preview' | 'hidden';
 	title: string;
 	icon: {
 		active: string;
@@ -10,12 +10,17 @@ interface Indicator {
 	};
 }
 
+interface PreviewHiddenTune extends BlockTuneData {
+	preview: boolean;
+	hidden: boolean;
+}
+
 export class Preview {
 	public static isTune = true;
-	private static _previewCount = 0;
+	public static _previewCount = 0;
 	private static MAX_PREVIEW = 2;
 
-	private _data: BlockTuneData;
+	private _data: PreviewHiddenTune;
 	private readonly _api: API;
 	private readonly _indicators: Indicator[];
 	private readonly _indicatorsBlock: HTMLElement;
@@ -23,6 +28,10 @@ export class Preview {
 	constructor({ api, data }: { api: API; data: BlockTuneData }) {
 		this._api = api;
 		this._data = data || { preview: false, hidden: false };
+
+		if (this._data.preview) {
+			Preview._previewCount++;
+		}
 
 		this._indicators = [
 			{
@@ -64,7 +73,7 @@ export class Preview {
 	public render(): HTMLElement {
 		const wrapper = document.createElement('div');
 
-		this._indicators.forEach(({ name, title, icon }: any) => {
+		this._indicators.forEach(({ name, title, icon }: Indicator) => {
 			const button = document.createElement('button');
 			button.classList.add(this._api.styles.settingsButton);
 			button.innerHTML = this._data[name] ? icon.active : icon.inactive;
@@ -74,26 +83,29 @@ export class Preview {
 			wrapper.appendChild(button);
 
 			this._api.listeners.on(button, 'click', () => {
-				if (name === 'preview' && Preview._previewCount < Preview.MAX_PREVIEW) {
+				if (name === 'hidden' || (name === 'preview' && Preview._previewCount < Preview.MAX_PREVIEW)) {
 					Preview._previewCount = this._data[name] ? Preview._previewCount - 1 : Preview._previewCount + 1;
 
-					this._data = { ...this._data, [name]: !this._data[name] };
-					button.classList.toggle(this._api.styles.settingsButtonActive);
-					button.innerHTML = this._data[name] ? icon.active : icon.inactive;
-					this._toggleState();
+					this._tuneClicked(button, name, icon);
 				}
-				console.log(Preview._previewCount, Preview.MAX_PREVIEW);
 			});
 		});
 
 		return wrapper;
 	}
 
+	private _tuneClicked(button: HTMLButtonElement, name: Indicator['name'], icon: Indicator['icon']) {
+		this._data = { ...this._data, [name]: !this._data[name] };
+		button.classList.toggle(this._api.styles.settingsButtonActive);
+		button.innerHTML = this._data[name] ? icon.active : icon.inactive;
+		this._toggleIndicatorsState();
+	}
+
 	public wrap(pluginsContent: HTMLElement): HTMLElement {
 		const wrapper = document.createElement('div');
 		wrapper.style.position = 'relative';
 
-		this._indicators.forEach(({ name, icon }: any) => {
+		this._indicators.forEach(({ name, icon }: Indicator) => {
 			const button = document.createElement('span');
 			button.classList.add('ce-block-indicator');
 			button.dataset.name = name;
@@ -104,26 +116,26 @@ export class Preview {
 					[name]: false,
 				};
 				Preview._previewCount--;
-				this._toggleState();
+				this._toggleIndicatorsState();
 			});
 
 			this._indicatorsBlock?.appendChild(button);
 		});
 
-		this._toggleState();
+		this._toggleIndicatorsState();
 
 		wrapper.append(pluginsContent, this._indicatorsBlock);
 
 		return wrapper;
 	}
 
-	private _toggleState(): void {
+	private _toggleIndicatorsState(): void {
 		Array.from(this._indicatorsBlock?.children).forEach((el) => {
 			el.classList.toggle('ce-block-indicator_active', this._data[(el as HTMLElement).dataset.name as string]);
 		});
 	}
 
-	public save(): BlockTuneData {
+	public save(): PreviewHiddenTune {
 		return this._data;
 	}
 }

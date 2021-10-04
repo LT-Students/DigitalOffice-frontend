@@ -1,21 +1,21 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy, HostListener, Inject, ChangeDetectorRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { from } from 'rxjs';
 import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
 
-import { PostComponent } from '../post/post.component';
-import { EditorJSParser } from '../../parser';
 import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
 import { ArticlePreview } from '@app/models/news.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { ModalService } from '@app/services/modal.service';
+import { EditorJSParser } from '../../parser';
+import { PostComponent } from '../post/post.component';
+import { NewsEditorComponent } from '../news-editor/news-editor.component';
 
 @Component({
 	selector: 'do-news-feed',
 	templateUrl: './news-feed.component.html',
 	styleUrls: ['./news-feed.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsFeedComponent implements OnInit {
 	public articlePreviews: ArticlePreview[];
@@ -26,7 +26,7 @@ export class NewsFeedComponent implements OnInit {
 
 	constructor(
 		@Inject(DOCUMENT) private _document: Document,
-		private _matDialog: MatDialog,
+		private _modalService: ModalService,
 		private _newsService: NewsService,
 		private _cdr: ChangeDetectorRef,
 		private _editorJSParser: EditorJSParser,
@@ -38,7 +38,7 @@ export class NewsFeedComponent implements OnInit {
 		this.articlePreviews = [];
 	}
 
-	@HostListener("window: scroll", [])
+	@HostListener('window: scroll', [])
 	public onWindowScroll(): void {
 		if (this._document.documentElement.scrollTop >= 100) {
 			this.fixedTags = true;
@@ -60,28 +60,26 @@ export class NewsFeedComponent implements OnInit {
 	private _getArticlePreviews(): void {
 		let params: IFindNewsRequest = {
 			skipCount: this._newsCount,
-			takeCount: 10
+			takeCount: 10,
 		};
 
 		this._newsService
 			.findNews(params)
 			.pipe(
-				tap(articlePreviews => {
+				tap((articlePreviews) => {
 					this._totalCount = articlePreviews.totalCount ?? 0;
 					this._newsCount += articlePreviews.body?.length ?? 0;
-					return articlePreviews
+					return articlePreviews;
 				}),
-				switchMap(articlePreviews => from(articlePreviews.body ?? [])),
-				concatMap(articlePreview => {
+				switchMap((articlePreviews) => from(articlePreviews.body ?? [])),
+				concatMap((articlePreview) => {
 					return this._editorJSParser
 						.parse(JSON.parse(articlePreview.preview ?? '[]'))
-						.pipe(
-							map(block => ({ ...articlePreview, preview: block.join("") }) as ArticlePreview)
-						)
-				}
-				),
-				toArray(),
-			).subscribe(articlePreviews => {
+						.pipe(map((block) => ({ ...articlePreview, preview: block.join('') } as ArticlePreview)));
+				}),
+				toArray()
+			)
+			.subscribe((articlePreviews) => {
 				this.articlePreviews = [...this.articlePreviews, ...articlePreviews];
 				this._cdr.markForCheck();
 			});
@@ -92,32 +90,38 @@ export class NewsFeedComponent implements OnInit {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		this._newsService.disableNews(newsId ?? "").subscribe(
-			result => {
-				if (result.status === 'FullSuccess') {
-					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== newsId);
-				}
+		this._newsService.disableNews(newsId ?? '').subscribe((result) => {
+			if (result.status === 'FullSuccess') {
+				this.articlePreviews = this.articlePreviews.filter((articlePreview) => articlePreview.id !== newsId);
 			}
-		)
+		});
 	}
 
 	public openPost(postId: string | undefined): void {
-		this._matDialog
-			.open(PostComponent,
-				{
-					maxHeight: `100vh`,
-					maxWidth: '100vw',
-					height: `100%`,
-					width: '100%',
-					data: postId,
-					autoFocus: false,
-					panelClass: 'dialog-border-radius-none'
-				})
+		this._modalService
+			.fullScreen(PostComponent, postId)
 			.afterClosed()
-			.subscribe(response => {
-				if (response) {
-					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== response.newsId);
+			.subscribe((newsId: string | undefined) => {
+				if (newsId) {
+					this.articlePreviews = this.articlePreviews.filter(
+						(articlePreview) => articlePreview.id !== newsId
+					);
 				}
-			})
+			});
+	}
+
+	public openEditor(newsId?: string): void {
+		this._modalService
+			.fullScreen(NewsEditorComponent, newsId)
+			.afterClosed()
+			.subscribe({
+				next: (isNewsCreated) => {
+					if (isNewsCreated) {
+						this.articlePreviews = [];
+						this._newsCount = 0;
+						this._getArticlePreviews();
+					}
+				},
+			});
 	}
 }
