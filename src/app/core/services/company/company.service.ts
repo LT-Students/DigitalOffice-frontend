@@ -60,12 +60,6 @@ export class CompanyService {
 			: 'Company Name';
 	}
 
-	public getCompanyName(): string {
-		return this._company.value && this._company.value?.companyName
-			? this._company.value?.companyName
-			: 'Company Name';
-	}
-
 	private _setCompany(companyInfo: CompanyInfo): void {
 		const company = new Company(companyInfo);
 		this._company.next(company);
