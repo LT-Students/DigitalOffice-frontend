@@ -17,6 +17,8 @@ export class TimeWidgetComponent {
 		this.selectedDate$ = this._attendanceService.selectedDate$;
 	}
 
+
+
 	private _changeMonth(date: Date): void {
 		this._attendanceService.setNewDate(date);
 	}
