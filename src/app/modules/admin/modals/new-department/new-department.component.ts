@@ -13,7 +13,7 @@ import { OperationResultResponse } from '@data/api/company-service/models/operat
 import { PatchDepartmentDocument } from '@data/api/company-service/models/patch-department-document';
 import { EditDepartmentRequest } from '@data/api/company-service/models/edit-department-request';
 import { EditDepartmentPath } from '@app/services/company/department.service';
-import { EditModalContentConfig } from '../../components/department-card/department-card.component';
+import { EditModalContent } from '../../components/department-card/department-card.component';
 
 
 @Component({
@@ -25,8 +25,8 @@ import { EditModalContentConfig } from '../../components/department-card/departm
 export class NewDepartmentComponent implements OnInit {
 	public directors$: Observable<UserInfo[] | undefined>;
 	public departmentForm: FormGroup;
-	public isEdit: boolean | undefined;
-	private readonly departamentInfo: EditModalContentConfig;
+	public _isEdit: boolean | undefined;
+	private readonly _departamentInfo: EditModalContent;
 	public isFormChanged: boolean;
 
 	constructor(
@@ -35,52 +35,26 @@ export class NewDepartmentComponent implements OnInit {
 		private _dialogRef: MatDialogRef<NewDepartmentComponent>,
 		private _formBuilder: FormBuilder,
 		private _snackBar: MatSnackBar,
-		@Inject(MAT_DIALOG_DATA) data: EditModalContentConfig
+		@Inject(MAT_DIALOG_DATA) data: EditModalContent
 	) {
-		this.departamentInfo = data;
+		this._departamentInfo = data;
 		this.isFormChanged = false;
 		this.departmentForm = this._formBuilder.group({
-			name: ['', [Validators.required]],
-			description: [''],
-			directorid: [''],
-		});
-		if (this.departamentInfo) {
-			this.isEdit = true;
-			const controlsConfig: EditModalContentConfig = { name: '' };
-
-			Object.keys(this.departamentInfo).forEach((key) => {
-				if (key === 'name') {
-					controlsConfig.name = [this.departamentInfo.name, [Validators.required]];
-					return;
-				}
-				if (this.departamentInfo[key] === null ) {
-					controlsConfig[key] = ''
-				}
-				if (this.departamentInfo[key] === undefined ) {
-					controlsConfig[key] = null
-				}
-				if (this.departamentInfo[key]) {
-					controlsConfig[key] = this.departamentInfo[key]
-				}
-			})
-
-			this.departmentForm = this._formBuilder.group(controlsConfig);
-		}
+			name: this._departamentInfo ? [ this._departamentInfo.name, Validators.required ] : [ '', [ Validators.required ] ],
+			description: this._departamentInfo ? this._departamentInfo.description : [ '' ],
+			directorid: this._departamentInfo ? this._departamentInfo.directorid : [ '' ],
+		})
+		if (this._departamentInfo) {
+		this._isEdit = true}
 
 		this.directors$ = this._userService.findUsers(0, 500).pipe(map((response) => response.body));
-		// this.currentDirector = this._userService.findUsers(0, 50, data.data.id)
-		// .pipe(map((response) => response.body));
 	}
 
 	public ngOnInit(): void {
 		this.departmentForm.valueChanges.subscribe(x => {
-			if (this.departamentInfo.name !== x.name
-				|| this.departamentInfo.description !== x.description
-				|| this.departamentInfo.directorid !== x.directorid) {
-			this.isFormChanged = true;
-			} else {
-			this.isFormChanged = false;
-			}
+				this.isFormChanged = this._departamentInfo.name !== x.name
+				|| this._departamentInfo.description !== x.description
+				|| this._departamentInfo.directorid !== x.directorid
 		})
 	}
 
@@ -114,8 +88,7 @@ export class NewDepartmentComponent implements OnInit {
 
 	public editDepartment(): void {
 			const editBody = Object.keys(this.departmentForm.controls).reduce((acc: Array<PatchDepartmentDocument>, key) => {
-				if(this.departmentForm.controls[key].value !== this.departamentInfo[key]
-					&& this.departmentForm.controls[key].value !== null ) {
+				if(this.departmentForm.controls[key].value !== this._departamentInfo[key as keyof EditModalContent]) {
 					const patchDepartmentDocument: PatchDepartmentDocument = {
 					op: 'replace', path: `/${key}` as EditDepartmentPath, value: this.departmentForm.controls[key].value
 					}
@@ -126,7 +99,7 @@ export class NewDepartmentComponent implements OnInit {
 
 			this._departmentService
 			.editDepartment({
-				departmentId: this.departamentInfo.id as string,
+				departmentId: this._departamentInfo.id as string,
 				body: editBody
 			})
 			.subscribe((result: OperationResultResponse) => {
@@ -138,7 +111,7 @@ export class NewDepartmentComponent implements OnInit {
 	}
 
 	public onSubmitDepartmentForm() {
-		if (this.isEdit) {
+		if (this._isEdit) {
 			this.editDepartment();
 		} else {
 			this.createDepartment();
