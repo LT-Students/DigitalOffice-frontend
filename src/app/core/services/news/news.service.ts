@@ -32,7 +32,6 @@ export class NewsService {
 			.pipe(
 				tap(() => this._snackBar.open('Новость успешно удалена!', 'x', { duration: 3000 })),
 				catchError(err => {
-					console.log
 					this._snackBar.open('Что-то пошло не так :(', 'x', { duration: 3000 });
 					return throwError(err);
 				})
@@ -40,7 +39,7 @@ export class NewsService {
 	}
 
 	public editNews(newsId: string, body: EditNewsRequest): Observable<OperationResultResponse> {
-		return this._newsService.editNews({ newsId, body })
+		return this._newsService.editNews({ newsId, body });
 	}
 
 	public findNews(params: IFindNewsRequest): Observable<FindResultResponseNewsInfo> {
@@ -48,6 +47,6 @@ export class NewsService {
 	}
 
 	public getNews(newsId: string): Observable<OperationResultResponseNewsResponse> {
-		return this._newsService.getNews({ newsId })
+		return this._newsService.getNews({ newsId });
 	}
 }

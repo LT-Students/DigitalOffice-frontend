@@ -1,12 +1,14 @@
 import { Component, ChangeDetectionStrategy, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, tap } from 'rxjs/operators';
 
 import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
 import { EditorJSParser } from '../../parser';
 import { OperationResultStatusType } from '@data/api/news-service/models';
+import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-post',
@@ -16,14 +18,17 @@ import { OperationResultStatusType } from '@data/api/news-service/models';
 })
 export class PostComponent implements OnInit {
 	public article$: Observable<Article | undefined>;
+	public companyName: string;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public postId: string,
 		private _dialogRef: MatDialogRef<PostComponent>,
 		private _editorJSParser: EditorJSParser,
-		private _newsService: NewsService
+		private _newsService: NewsService,
+		private _companyService: CompanyService
 	) {
-		this.article$ = new Observable(undefined);
+		this.article$ = new Observable();
+		this.companyName = this._companyService.getCompanyName();
 	}
 
 	public ngOnInit(): void {
@@ -32,25 +37,25 @@ export class PostComponent implements OnInit {
 			.pipe(
 				map(article => article.body),
 				mergeMap(article => {
-					let blocks = JSON.parse(article?.content ?? '[]');
-					let notHiddenBlocks = blocks.filter((block: any) => (block?.tunes && block.tunes?.previewTune) ? !block.tunes.previewTune.hidden : true);
+					const blocks = JSON.parse(article?.content ?? '[]') as IOutputBlockData[];
+					const notHiddenBlocks = blocks.filter((block) => (block?.tunes && block.tunes?.previewTune) ? !block.tunes.previewTune.hidden : true);
 					return this._editorJSParser.parse(notHiddenBlocks)
 						.pipe(map(block => ({ ...article, content: block.join("") }) as Article));
 				})
 			)
 	}
 
-	public onNewsDelete(newsId: string | undefined): void {
-		this._newsService.disableNews(newsId ?? '').subscribe(
+	public onNewsDelete(): void {
+		this._newsService.disableNews(this.postId).subscribe(
 			result => {
 				if (result.status === OperationResultStatusType.FullSuccess) {
-					this.closeModal({ newsId });
+					this.closeModal(this.postId);
 				}
 			}
 		)
 	}
 
-	public closeModal(dialogResult?: { newsId: string | undefined }): void {
-		this._dialogRef.close(dialogResult);
+	public closeModal(postId?: string): void {
+		this._dialogRef.close(postId);
 	}
 }

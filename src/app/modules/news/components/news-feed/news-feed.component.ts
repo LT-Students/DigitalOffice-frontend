@@ -8,8 +8,7 @@ import { PostComponent } from '../post/post.component';
 import { EditorJSParser } from '../../parser';
 import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
 import { ArticlePreview } from '@app/models/news.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-news-feed',
@@ -24,27 +23,26 @@ export class NewsFeedComponent implements OnInit {
 	private _newsCount: number;
 	private _totalCount: number;
 
+	public companyName: string;
+
 	constructor(
 		@Inject(DOCUMENT) private _document: Document,
 		private _matDialog: MatDialog,
 		private _newsService: NewsService,
+		private _companyService: CompanyService,
 		private _cdr: ChangeDetectorRef,
-		private _editorJSParser: EditorJSParser,
-		private _snackBar: MatSnackBar
+		private _editorJSParser: EditorJSParser
 	) {
 		this.fixedTags = false;
 		this._newsCount = 0;
 		this._totalCount = 0;
 		this.articlePreviews = [];
+		this.companyName = this._companyService.getCompanyName();
 	}
 
 	@HostListener("window: scroll", [])
 	public onWindowScroll(): void {
-		if (this._document.documentElement.scrollTop >= 100) {
-			this.fixedTags = true;
-		} else {
-			this.fixedTags = false;
-		}
+		this.fixedTags = this._document.documentElement.scrollTop >= 100;
 	}
 
 	public ngOnInit(): void {
@@ -58,7 +56,7 @@ export class NewsFeedComponent implements OnInit {
 	}
 
 	private _getArticlePreviews(): void {
-		let params: IFindNewsRequest = {
+		const params: IFindNewsRequest = {
 			skipCount: this._newsCount,
 			takeCount: 10
 		};
@@ -87,7 +85,7 @@ export class NewsFeedComponent implements OnInit {
 			});
 	}
 
-	public onMenuOpen(event: any): void {
+	public onMenuOpen(event: MouseEvent): void {
 		event.stopPropagation();
 	}
 
@@ -114,9 +112,9 @@ export class NewsFeedComponent implements OnInit {
 					panelClass: 'dialog-border-radius-none'
 				})
 			.afterClosed()
-			.subscribe(response => {
-				if (response) {
-					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== response.newsId);
+			.subscribe(newsId => {
+				if (newsId) {
+					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== newsId);
 				}
 			})
 	}
