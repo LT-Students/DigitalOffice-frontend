@@ -7,6 +7,7 @@ import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
 import { OperationResultStatusType } from '@data/api/news-service/models';
 import { ModalService } from '@app/services/modal.service';
+import { NewsFeedService } from '@app/services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
 import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
@@ -17,7 +18,7 @@ import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/con
 	styleUrls: ['./post.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PostComponent implements OnInit {
+export class PostComponent {
 	public article$: Observable<Article | undefined>;
 
 	constructor(
@@ -25,13 +26,10 @@ export class PostComponent implements OnInit {
 		private _dialogRef: MatDialogRef<PostComponent>,
 		private _editorJSParser: EditorJSParser,
 		private _newsService: NewsService,
+		private _newsFeedService: NewsFeedService,
 		private _modalService: ModalService,
 		private _cdr: ChangeDetectorRef
 	) {
-		this.article$ = new Observable(undefined);
-	}
-
-	public ngOnInit(): void {
 		this.article$ = this._getNews();
 	}
 
@@ -76,7 +74,7 @@ export class PostComponent implements OnInit {
 			.pipe(
 				switchMap((isDeleted) => {
 					if (isDeleted) {
-						return this._newsService.disableNews(newsId ?? '');
+						return this._newsFeedService.deleteNews(newsId ?? '');
 					}
 					return EMPTY;
 				})

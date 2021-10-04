@@ -7,8 +7,8 @@
         </button>
     </div>
     <div class="news">
-        <div class="feed" *ngIf="articlePreviews.length > 0">
-            <mat-card *ngFor="let post of articlePreviews" (click)="openPost(post.id)" class="post">
+        <div class="feed" *ngIf="(newsFeed$ | async) as news">
+            <mat-card *ngFor="let post of news" (click)="openPost(post.id)" class="post">
                 <div class='post__info'>
                     <div class='post__tag'>
                         <!-- <img src="" alt=""> -->
