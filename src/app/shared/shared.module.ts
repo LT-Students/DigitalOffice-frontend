@@ -18,6 +18,7 @@ import { StepperComponent } from './component/stepper/stepper.component';
 import { HoursPipe } from './pipes/hours/hours.pipe';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
+import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.component';
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
@@ -37,6 +38,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
+		BreadcrumbsComponent,
 		ConfirmDialogComponent,
 	],
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, InfiniteScrollModule],
@@ -61,6 +63,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 		PasswordComponent,
 		CommentComponent,
 		ConfirmDialogComponent,
+		BreadcrumbsComponent,
 	],
 })
 export class SharedModule {}

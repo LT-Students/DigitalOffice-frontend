@@ -1,10 +1,4 @@
-<div class="navigation">
-    <a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-    <span>
-		<mat-icon>chevron_right</mat-icon>
-	</span>
-    <a class="navigation__link">Новый проект</a>
-</div>
+<do-breadcrumbs [paths]="[{title: 'Администрирование', url: 'admin/dashboard'}, {title: 'Новый проект'}]"></do-breadcrumbs>
 <h1>Новый проект</h1>
 <mat-card class="card">
 	<form class="project-info" [formGroup]="projectForm" (ngSubmit)="createProject()" autocomplete="off">

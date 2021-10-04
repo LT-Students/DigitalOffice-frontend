@@ -6,7 +6,6 @@ import { OfficeInfo } from '@data/api/company-service/models';
 import { CompanyService } from '@app/services/company/company.service';
 import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
 
-
 @Component({
 	selector: 'do-office-list',
 	templateUrl: './office-list.component.html',
