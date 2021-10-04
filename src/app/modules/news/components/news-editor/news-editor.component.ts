@@ -31,7 +31,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		private _elementRef: ElementRef
 	) {
 		this.editorData = new BehaviorSubject<OutputBlockData[]>([]);
-		const initialData: OutputData = JSON.parse(sessionStorage.getItem('news_draft') ?? '');
+		const initialData: OutputData = JSON.parse(sessionStorage.getItem('news_draft') ?? '{}');
 		this._editor = new EditorJS(this._editorConfig.createConfig(initialData));
 		this._destroy$ = new ReplaySubject<void>(1);
 		this.articleHeading = new FormControl('', [Validators.required, DoValidators.noWhitespaces]);

@@ -1,0 +1,37 @@
+<div class='modal'>
+    <button mat-icon-button (click)="closeModal()" class='modal__close-button'>
+        <mat-icon>close</mat-icon>
+    </button>
+    <div class='post'>
+        <div *ngIf="(article$ | async) as article; else loader">
+            <div class='post__info'>
+                <div class='post__tag'>
+                    <do-profile-image class='post__image'></do-profile-image>
+                    <div>
+                        <div><b>{{companyName}}</b></div>
+                        <div class='mat-body-1'>{{article.createdAtUtc | date: "dd.MM.YYYY"}}</div>
+                    </div>
+                </div>
+                <div [matMenuTriggerFor]="menu" class="post__menu-trigger">
+                    <div>Действия</div>
+                    <div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down"></div>
+                </div>
+                <mat-menu #menu class="post__menu">
+                    <button mat-menu-item>Редактировать</button>
+                    <button mat-menu-item (click)="onNewsDelete()">Удалить</button>
+                </mat-menu>
+            </div>
+            <div class='post__content'>
+                <div class='ce-block'>
+                    <div class='ce-block__content'>
+                        <h2>{{article.subject}}</h2>
+                    </div>
+                </div>
+                <div [innerHTML]="article.content | safeHtml"></div>
+            </div>
+        </div>
+        <ng-template #loader>
+            <mat-spinner class='post__loader'></mat-spinner>
+        </ng-template>
+    </div>
+</div>

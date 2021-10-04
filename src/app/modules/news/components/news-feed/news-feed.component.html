@@ -1,0 +1,45 @@
+<div infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50" (scrolled)="getData()">
+    <div class="header">
+        <h1>Новости</h1>
+        <button mat-flat-button color='primary' class='header__button'>
+            <mat-icon>add</mat-icon>&nbsp;
+            <span>Добавить новость</span>
+        </button>
+    </div>
+    <div class="news">
+        <div>
+            <mat-card *ngFor="let post of articlePreviews" (click)="openPost(post.id)" class="post news__post">
+                <div class='post__info'>
+                    <div class='post__tag'>
+                        <do-profile-image class='post__image'></do-profile-image>
+                        <div>
+                            <div><b>{{companyName}}</b></div>
+                            <div class='mat-body-1'>{{post.createdAtUtc | date:"dd.MM.YYYY"}}</div>
+                        </div>
+                    </div>
+                    <button class='post__more' mat-icon-button (click)="onMenuOpen($event)" [matMenuTriggerFor]="menu">
+                        <mat-icon>more_horiz</mat-icon>
+                    </button>
+                    <mat-menu #menu>
+                        <button mat-menu-item>Редактировать</button>
+                        <button mat-menu-item (click)="onNewsDelete(post.id)">Удалить</button>
+                    </mat-menu>
+                </div>
+                <div class='post__content'>
+                    <div class='ce-block'>
+                        <div class="ce-block__content">
+                            <h4>{{post.subject}}</h4>
+                        </div>
+                    </div>
+                    <div [innerHTML]="post.preview | safeHtml"></div>
+                </div>
+            </mat-card>
+        </div>
+        <div>
+            <mat-card class="tags" [ngClass]="{tags_fixed: fixedTags}">
+                <img class='tags__image' src="../../../../../assets/svg/tumbleweed.svg" alt="tumbleweed">
+                <p class='tags__message'>Скоро здесь появится список тегов</p>
+            </mat-card>
+        </div>
+    </div>
+</div>

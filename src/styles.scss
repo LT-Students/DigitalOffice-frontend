@@ -4,6 +4,7 @@
 @use 'layouts/table';
 @use 'do/underlined';
 @use '~@angular/cdk/overlay-prebuilt';
+@use './stylesheets/news-feed/news-feed';
 
 @import './stylesheets/material/expansion-panel';
 
