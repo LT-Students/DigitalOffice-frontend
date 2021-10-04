@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EMPTY, Observable } from 'rxjs';
-import { map, mergeMap, switchMap } from 'rxjs/operators';
+import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
@@ -11,6 +11,8 @@ import { NewsFeedService } from '@app/services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
 import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-post',
@@ -20,6 +22,7 @@ import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/con
 })
 export class PostComponent {
 	public article$: Observable<Article | undefined>;
+	public companyName: string;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public postId: string,
@@ -28,9 +31,11 @@ export class PostComponent {
 		private _newsService: NewsService,
 		private _newsFeedService: NewsFeedService,
 		private _modalService: ModalService,
-		private _cdr: ChangeDetectorRef
+		private _cdr: ChangeDetectorRef,
+		private _companyService: CompanyService
 	) {
 		this.article$ = this._getNews();
+		this.companyName = this._companyService.getCompanyName();
 	}
 
 	private _getNews(): Observable<Article | undefined> {

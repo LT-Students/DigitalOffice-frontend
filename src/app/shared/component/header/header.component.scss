@@ -1,5 +1,7 @@
 @use 'base/variables';
 
+$header-height: 56px;
+
 .header {
 	position: fixed;
 	z-index: 2;
@@ -9,7 +11,7 @@
 
 	width: 100%;
 
-	height: var(--header-height);
+	height: $header-height;
 
 	background-color: variables.$light_1;
 

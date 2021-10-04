@@ -20,9 +20,9 @@ export class EditorJSParser {
 					.getImageNews(block.data.file.imageId)
 					.pipe(
 						map(image => {
-							let imgClasses: string[] = ["ce-img"];
-							let figCaptionClasses: string[] = ["ce-img__caption"]
-							let contentClasses: string[] = ["ce-block__content"];
+							const imgClasses: string[] = ["ce-img"];
+							const figCaptionClasses: string[] = ["ce-img__caption"]
+							const contentClasses: string[] = ["ce-block__content"];
 
 							if (block.data.stretched) {
 								imgClasses.push("ce-img-fullwidth");
@@ -34,11 +34,9 @@ export class EditorJSParser {
 							if (block.data.withBackground) {
 								contentClasses.push("ce-block__content-with-background");
 								imgClasses.push("ce-img-centered");
-								if (block.data.withBackground)
-									figCaptionClasses = figCaptionClasses.filter(className => className !== "ce-img__caption-with-border");
 							}
 
-							let src = `data:image/${image.body?.extension?.slice(1)};base64,${image.body?.content}`
+							const src = `data:image/${image.body?.extension?.slice(1)};base64,${image.body?.content}`
 
 							if (block.data.caption) {
 								return `<div class='ce-block'>
@@ -70,8 +68,12 @@ export class EditorJSParser {
 				let caption: string = "";
 				let style: string = "";
 
-				if (block.data.caption) caption = `<figcaption>-${block.data.caption}</figcaption>`
-				if (block.data.aligment) style = `text-align: ${block.data.aligment}`
+				if (block.data.caption) {
+					caption = `<figcaption>-${block.data.caption}</figcaption>`;
+				}
+				if (block.data.aligment) {
+					style = `text-align: ${block.data.aligment}`;
+				}
 
 				return of(`<div class='ce-block'>
 				<div class='ce-block__content'>
@@ -91,11 +93,15 @@ export class EditorJSParser {
 
 				const recursor = (items: any, listStyle: string) => {
 					const list = items.map((item: any) => {
-						if (item.content && item.items.length === 0) return `<li class='${itemClasses}'>${item.content}</li>`;
+						if (item.content && item.items.length === 0) {
+							return `<li class='${itemClasses}'>${item.content}</li>`;
+						}
 
-						let list = "";
-						if (item.items) list = recursor(item.items, listStyle);
-						return `<li class='${itemClasses}'>${item.content} ${list}</li>`;
+						let sublist: string = "";
+						if (item.items) {
+							sublist = recursor(item.items, listStyle);
+						}
+						return `<li class='${itemClasses}'>${item.content} ${sublist}</li>`;
 					});
 
 					return `<${listStyle} class='list ${listClasses}'>${list.join("")}</${listStyle}>`;
@@ -128,9 +134,11 @@ export class EditorJSParser {
 	}
 
 	public parse(blocks: Array<IOutputBlockData>): Observable<string[]> {
-		if (blocks.length === 0) return of([])
+		if (blocks.length === 0) {
+			return of([]);
+		}
 		return forkJoin(
 			blocks.map(block => this.parseBlock(block))
-		)
+		);
 	}
 }

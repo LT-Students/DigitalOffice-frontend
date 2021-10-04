@@ -8,6 +8,8 @@
 		position: absolute;
 		top: 63px;
 		right: 21px;
+
+		color: mat.get-color-from-palette($do-grey, 300);
 	}
 }
 
@@ -32,13 +34,6 @@
 
 	&__image {
 		margin-right: 13px;
-
-		width: 44px;
-		height: 44px;
-
-		background-color: #00f;
-		// затычковые стили, когда будет картинка - уберу
-		border-radius: 50%;
 	}
 
 	&__content {

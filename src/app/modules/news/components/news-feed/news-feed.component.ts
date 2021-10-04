@@ -12,6 +12,7 @@ import { EditorJSParser } from '../../parser';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
 import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-news-feed',
@@ -24,10 +25,13 @@ export class NewsFeedComponent implements OnInit {
 
 	public fixedTags: boolean;
 
+	public companyName: string;
+
 	constructor(
 		@Inject(DOCUMENT) private _document: Document,
 		private _modalService: ModalService,
 		private _newsService: NewsService,
+		private _companyService: CompanyService,
 		private _cdr: ChangeDetectorRef,
 		private _editorJSParser: EditorJSParser,
 		private _snackBar: MatSnackBar,
@@ -35,6 +39,7 @@ export class NewsFeedComponent implements OnInit {
 	) {
 		this.fixedTags = false;
 		this.newsFeed$ = this._newsFeedService.newsFeed$;
+		this.companyName = this._companyService.getCompanyName();
 	}
 
 	@HostListener('window: scroll', [])
@@ -50,7 +55,7 @@ export class NewsFeedComponent implements OnInit {
 		this._newsFeedService.getArticlePreviews(refresh);
 	}
 
-	public onMenuOpen(event: any): void {
+	public onMenuOpen(event: MouseEvent): void {
 		event.stopPropagation();
 	}
 
