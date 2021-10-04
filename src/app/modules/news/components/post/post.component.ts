@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
@@ -9,6 +9,7 @@ import { OperationResultStatusType } from '@data/api/news-service/models';
 import { ModalService } from '@app/services/modal.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
+import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-post',
@@ -64,11 +65,27 @@ export class PostComponent implements OnInit {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		this._newsService.disableNews(newsId ?? '').subscribe((result) => {
-			if (result.status === OperationResultStatusType.FullSuccess) {
-				this.closeModal(newsId);
-			}
-		});
+		const confirmDialogData: ConfirmDialogModel = {
+			title: 'Удаление новости',
+			message: 'Вы действительно хотите удалить новость? Отменить данное действие будет невозможно.',
+			confirmText: 'Да, удалить',
+		};
+		this._modalService
+			.confirm(confirmDialogData)
+			.afterClosed()
+			.pipe(
+				switchMap((isDeleted) => {
+					if (isDeleted) {
+						return this._newsService.disableNews(newsId ?? '');
+					}
+					return EMPTY;
+				})
+			)
+			.subscribe((result) => {
+				if (result.status === OperationResultStatusType.FullSuccess) {
+					this.closeModal(newsId);
+				}
+			});
 	}
 
 	public closeModal(newsId?: string): void {

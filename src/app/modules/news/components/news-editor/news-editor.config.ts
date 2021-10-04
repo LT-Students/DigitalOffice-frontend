@@ -10,9 +10,9 @@ import NestedList from '@editorjs/nested-list';
 import Quote from '@editorjs/quote';
 // @ts-ignore
 import Delimiter from '@editorjs/delimiter';
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ImageNewsService } from '@app/services/image/image-news.service';
-import { API, BlockAPI, EditorConfig, OutputData } from '@editorjs/editorjs';
+import { EditorConfig, OutputData } from '@editorjs/editorjs';
 import { map, switchMap } from 'rxjs/operators';
 import { OperationResultStatusType } from '@data/api/image-service/models/operation-result-status-type';
 import { CreateImageService } from '@app/services/create-image.service';
@@ -35,6 +35,7 @@ export class NewsEditorConfig {
 	public createConfig(initialData?: OutputData): EditorConfig {
 		return {
 			holder: 'editorjs',
+			// TODO add undo feature
 			// onReady: () => {
 			// 	const undo = new Undo({ editor: editorRef });
 			// 	undo.initialize(initialData);

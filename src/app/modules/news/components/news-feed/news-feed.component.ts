@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy, HostListener, Inject, ChangeDetectorRef } from '@angular/core';
-import { from } from 'rxjs';
+import { EMPTY, from } from 'rxjs';
 import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
 
 import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
@@ -10,6 +10,7 @@ import { ModalService } from '@app/services/modal.service';
 import { EditorJSParser } from '../../parser';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
+import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-news-feed',
@@ -90,11 +91,29 @@ export class NewsFeedComponent implements OnInit {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		this._newsService.disableNews(newsId ?? '').subscribe((result) => {
-			if (result.status === 'FullSuccess') {
-				this.articlePreviews = this.articlePreviews.filter((articlePreview) => articlePreview.id !== newsId);
-			}
-		});
+		const confirmDialogData: ConfirmDialogModel = {
+			title: 'Удаление новости',
+			message: 'Вы действительно хотите удалить новость? Отменить данное действие будет невозможно.',
+			confirmText: 'Да, удалить',
+		};
+		this._modalService
+			.confirm(confirmDialogData)
+			.afterClosed()
+			.pipe(
+				switchMap((isDeleted) => {
+					if (isDeleted) {
+						return this._newsService.disableNews(newsId ?? '');
+					}
+					return EMPTY;
+				})
+			)
+			.subscribe((result) => {
+				if (result.status === 'FullSuccess') {
+					this.articlePreviews = this.articlePreviews.filter(
+						(articlePreview) => articlePreview.id !== newsId
+					);
+				}
+			});
 	}
 
 	public openPost(postId: string | undefined): void {

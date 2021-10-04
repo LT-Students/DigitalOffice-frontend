@@ -22,6 +22,7 @@ import { ModalService } from '@app/services/modal.service';
 import { OperationResultResponseNewsResponse } from '@data/api/news-service/models/operation-result-response-news-response';
 import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
+import { CompanyService } from '@app/services/company/company.service';
 import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
@@ -43,6 +44,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 
 	public isEditorContentEmpty: BehaviorSubject<boolean>;
 	public isEdit: boolean;
+	public companyName: string;
 	private _editor?: EditorJS;
 	private _editorObserver?: MutationObserver;
 	private _destroy$: ReplaySubject<void>;
@@ -55,8 +57,10 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		private _editorConfig: NewsEditorConfig,
 		private _dialogRef: MatDialogRef<NewsEditorComponent>,
 		private _modalService: ModalService,
-		private _elementRef: ElementRef
+		private _elementRef: ElementRef,
+		private _companyService: CompanyService
 	) {
+		this.companyName = this._companyService.getCompanyName();
 		this._dialogRef.disableClose = true;
 		this.isEdit = Boolean(this._newsId);
 		this.isEditorContentEmpty = new BehaviorSubject<boolean>(!this.isEdit);
