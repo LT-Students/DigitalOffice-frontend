@@ -16,7 +16,7 @@ import { OperationResultResponseImageResponse } from '../models/operation-result
 @Injectable({
   providedIn: 'root',
 })
-export class ImageNewsApiService extends BaseService {
+export class NewsImageApiService extends BaseService {
   constructor(
     config: ApiConfiguration,
     http: HttpClient
@@ -25,19 +25,19 @@ export class ImageNewsApiService extends BaseService {
   }
 
   /**
-   * Path part for operation getImageNews
+   * Path part for operation getNewsImage
    */
-  static readonly GetImageNewsPath = '/imagenews/get';
+  static readonly GetNewsImagePath = '/news/get';
 
   /**
    * Returns image information of News.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getImageNews()` instead.
+   * To access only the response body, use `getNewsImage()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getImageNews$Response(params: {
+  getNewsImage$Response(params: {
 
     /**
      * Image global unique identifier.
@@ -45,7 +45,7 @@ export class ImageNewsApiService extends BaseService {
     imageId: string;
   }): Observable<StrictHttpResponse<OperationResultResponseImageResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ImageNewsApiService.GetImageNewsPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, NewsImageApiService.GetNewsImagePath, 'get');
     if (params) {
       rb.query('imageId', params.imageId, {});
     }
@@ -65,11 +65,11 @@ export class ImageNewsApiService extends BaseService {
    * Returns image information of News.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getImageNews$Response()` instead.
+   * To access the full response (for headers, for example), `getNewsImage$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getImageNews(params: {
+  getNewsImage(params: {
 
     /**
      * Image global unique identifier.
@@ -77,29 +77,29 @@ export class ImageNewsApiService extends BaseService {
     imageId: string;
   }): Observable<OperationResultResponseImageResponse> {
 
-    return this.getImageNews$Response(params).pipe(
+    return this.getNewsImage$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponseImageResponse>) => r.body as OperationResultResponseImageResponse)
     );
   }
 
   /**
-   * Path part for operation createImageNews
+   * Path part for operation createNewsImage
    */
-  static readonly CreateImageNewsPath = '/imagenews/create';
+  static readonly CreateNewsImagePath = '/news/create';
 
   /**
    * Adds image and returns its Id.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `createImageNews()` instead.
+   * To access only the response body, use `createNewsImage()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createImageNews$Response(params: {
+  createNewsImage$Response(params: {
     body: CreateImageRequest
   }): Observable<StrictHttpResponse<OperationResultResponseCreateImageNewsResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ImageNewsApiService.CreateImageNewsPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, NewsImageApiService.CreateNewsImagePath, 'post');
     if (params) {
       rb.body(params.body, 'application/json');
     }
@@ -119,15 +119,15 @@ export class ImageNewsApiService extends BaseService {
    * Adds image and returns its Id.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `createImageNews$Response()` instead.
+   * To access the full response (for headers, for example), `createNewsImage$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createImageNews(params: {
+  createNewsImage(params: {
     body: CreateImageRequest
   }): Observable<OperationResultResponseCreateImageNewsResponse> {
 
-    return this.createImageNews$Response(params).pipe(
+    return this.createNewsImage$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponseCreateImageNewsResponse>) => r.body as OperationResultResponseCreateImageNewsResponse)
     );
   }

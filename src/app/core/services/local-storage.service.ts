@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -10,7 +9,7 @@ export class LocalStorageService {
 	get(key: string): any | null {
 		const value: string | null = localStorage.getItem(key);
 		const undefinedCheck = value === 'undefined' ? null : value;
-		return undefinedCheck ? JSON.parse(value) : null;
+		return value && undefinedCheck ? JSON.parse(value) : null;
 	}
 
 	set(key: string, value: any): void {

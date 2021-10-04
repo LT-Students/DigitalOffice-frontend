@@ -91,11 +91,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "minItems": 1,
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/EditNewsRequest"
-                }
+                "$ref": "#/components/schemas/EditNewsRequest"
               }
             }
           }
@@ -236,10 +232,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FindResultResponseNewsInfo"
-                  }
+                  "$ref": "#/components/schemas/FindResultResponseNewsInfo"
                 }
               }
             }
@@ -475,6 +468,9 @@
               "subject": {
                 "type": "string"
               },
+              "pseudonym": {
+                "type": "string"
+              },
               "author": {
                 "$ref": "#/components/schemas/User"
               },
@@ -490,9 +486,8 @@
                 "format": "date",
                 "nullable": true
               },
-              "createdBy": {
-                "type": "string",
-                "format": "uuid"
+              "sender": {
+                "$ref": "#/components/schemas/User"
               }
             }
           },
@@ -544,6 +539,9 @@
           "Subject": {
             "type": "string"
           },
+          "Pseudonym": {
+            "type": "string"
+          },
           "Author": {
             "$ref": "#/components/schemas/User"
           },
@@ -557,6 +555,9 @@
           "CreatedAtUtc": {
             "type": "string",
             "format": "date"
+          },
+          "Sender": {
+            "$ref": "#/components/schemas/User"
           }
         }
       },

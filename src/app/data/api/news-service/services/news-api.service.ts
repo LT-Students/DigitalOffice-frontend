@@ -96,7 +96,7 @@ export class NewsApiService extends BaseService {
      * News global unique identifier.
      */
     newsId: string;
-    body?: Array<EditNewsRequest>
+    body?: EditNewsRequest
   }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
     const rb = new RequestBuilder(this.rootUrl, NewsApiService.EditNewsPath, 'patch');
@@ -131,7 +131,7 @@ export class NewsApiService extends BaseService {
      * News global unique identifier.
      */
     newsId: string;
-    body?: Array<EditNewsRequest>
+    body?: EditNewsRequest
   }): Observable<OperationResultResponse> {
 
     return this.editNews$Response(params).pipe(
@@ -228,7 +228,7 @@ export class NewsApiService extends BaseService {
      */
     departmentId?: string;
     includeDeactivated?: boolean;
-  }): Observable<StrictHttpResponse<Array<FindResultResponseNewsInfo>>> {
+  }): Observable<StrictHttpResponse<FindResultResponseNewsInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, NewsApiService.FindNewsPath, 'get');
     if (params) {
@@ -245,7 +245,7 @@ export class NewsApiService extends BaseService {
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<FindResultResponseNewsInfo>>;
+        return r as StrictHttpResponse<FindResultResponseNewsInfo>;
       })
     );
   }
@@ -280,10 +280,10 @@ export class NewsApiService extends BaseService {
      */
     departmentId?: string;
     includeDeactivated?: boolean;
-  }): Observable<Array<FindResultResponseNewsInfo>> {
+  }): Observable<FindResultResponseNewsInfo> {
 
     return this.findNews$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<FindResultResponseNewsInfo>>) => r.body as Array<FindResultResponseNewsInfo>)
+      map((r: StrictHttpResponse<FindResultResponseNewsInfo>) => r.body as FindResultResponseNewsInfo)
     );
   }
 
