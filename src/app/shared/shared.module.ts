@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MaterialModule } from './material.module';
 
 import { SelectComponent } from './component/select/select.component';
@@ -18,6 +19,8 @@ import { HoursPipe } from './pipes/hours/hours.pipe';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
 import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.component';
+import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 @NgModule({
 	declarations: [
@@ -32,15 +35,18 @@ import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.compon
 		TextDirective,
 		DndDirective,
 		HoursPipe,
+		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
 		BreadcrumbsComponent,
+		ConfirmDialogComponent,
 	],
-	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule],
+	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, InfiniteScrollModule],
 	exports: [
 		CommonModule,
 		RouterModule,
 		MaterialModule,
+		InfiniteScrollModule,
 		ReactiveFormsModule,
 		FormsModule,
 		InputComponent,
@@ -53,8 +59,10 @@ import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.compon
 		DatepickerComponent,
 		StepperComponent,
 		HoursPipe,
+		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
+		ConfirmDialogComponent,
 		BreadcrumbsComponent,
 	],
 })
