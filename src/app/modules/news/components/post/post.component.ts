@@ -1,12 +1,16 @@
-import { Component, ChangeDetectionStrategy, Inject, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
-import { map, mergeMap, tap } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
 
 import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
-import { EditorJSParser } from '../../parser';
 import { OperationResultStatusType } from '@data/api/news-service/models';
+import { ModalService } from '@app/services/modal.service';
+import { NewsFeedService } from '@app/services/news-feed.service';
+import { EditorJSParser } from '../../parser';
+import { NewsEditorComponent } from '../news-editor/news-editor.component';
+import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
 import { CompanyService } from '@app/services/company/company.service';
 
@@ -14,9 +18,9 @@ import { CompanyService } from '@app/services/company/company.service';
 	selector: 'do-post',
 	templateUrl: './post.component.html',
 	styleUrls: ['./post.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PostComponent implements OnInit {
+export class PostComponent {
 	public article$: Observable<Article | undefined>;
 	public companyName: string;
 
@@ -25,37 +29,69 @@ export class PostComponent implements OnInit {
 		private _dialogRef: MatDialogRef<PostComponent>,
 		private _editorJSParser: EditorJSParser,
 		private _newsService: NewsService,
+		private _newsFeedService: NewsFeedService,
+		private _modalService: ModalService,
+		private _cdr: ChangeDetectorRef,
 		private _companyService: CompanyService
 	) {
-		this.article$ = new Observable();
+		this.article$ = this._getNews();
 		this.companyName = this._companyService.getCompanyName();
 	}
 
-	public ngOnInit(): void {
-		this.article$ = this._newsService
-			.getNews(this.postId)
+	private _getNews(): Observable<Article | undefined> {
+		return this._newsService.getNews(this.postId).pipe(
+			map((article) => article.body),
+			mergeMap((article) => {
+				let blocks = JSON.parse(article?.content ?? '[]');
+				let notHiddenBlocks = blocks.filter((block: any) =>
+					block?.tunes && block.tunes?.previewTune ? !block.tunes.previewTune.hidden : true
+				);
+				return this._editorJSParser
+					.parse(notHiddenBlocks)
+					.pipe(map((block) => ({ ...article, content: block.join('') } as Article)));
+			})
+		);
+	}
+
+	public openEditor(): void {
+		this._modalService
+			.fullScreen(NewsEditorComponent, this.postId)
+			.afterClosed()
+			.subscribe({
+				next: (isNewsEdited) => {
+					if (isNewsEdited) {
+						this.article$ = this._getNews();
+						this._cdr.markForCheck();
+					}
+				},
+			});
+	}
+
+	public onNewsDelete(newsId: string | undefined): void {
+		const confirmDialogData: ConfirmDialogModel = {
+			title: 'Удаление новости',
+			message: 'Вы действительно хотите удалить новость? Отменить данное действие будет невозможно.',
+			confirmText: 'Да, удалить',
+		};
+		this._modalService
+			.confirm(confirmDialogData)
+			.afterClosed()
 			.pipe(
-				map(article => article.body),
-				mergeMap(article => {
-					const blocks = JSON.parse(article?.content ?? '[]') as IOutputBlockData[];
-					const notHiddenBlocks = blocks.filter((block) => (block?.tunes && block.tunes?.previewTune) ? !block.tunes.previewTune.hidden : true);
-					return this._editorJSParser.parse(notHiddenBlocks)
-						.pipe(map(block => ({ ...article, content: block.join("") }) as Article));
+				switchMap((isDeleted) => {
+					if (isDeleted) {
+						return this._newsFeedService.deleteNews(newsId ?? '');
+					}
+					return EMPTY;
 				})
 			)
-	}
-
-	public onNewsDelete(): void {
-		this._newsService.disableNews(this.postId).subscribe(
-			result => {
+			.subscribe((result) => {
 				if (result.status === OperationResultStatusType.FullSuccess) {
-					this.closeModal(this.postId);
+					this.closeModal(newsId);
 				}
-			}
-		)
+			});
 	}
 
-	public closeModal(postId?: string): void {
-		this._dialogRef.close(postId);
+	public closeModal(newsId?: string): void {
+		this._dialogRef.close(newsId);
 	}
 }

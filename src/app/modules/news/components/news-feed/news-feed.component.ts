@@ -1,88 +1,58 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy, HostListener, Inject, ChangeDetectorRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { from } from 'rxjs';
-import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { PostComponent } from '../post/post.component';
-import { EditorJSParser } from '../../parser';
-import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
+import { NewsService } from '@app/services/news/news.service';
 import { ArticlePreview } from '@app/models/news.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ModalService } from '@app/services/modal.service';
+import { NewsFeedService } from '@app/services/news-feed.service';
+import { EditorJSParser } from '../../parser';
+import { PostComponent } from '../post/post.component';
+import { NewsEditorComponent } from '../news-editor/news-editor.component';
+import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-news-feed',
 	templateUrl: './news-feed.component.html',
 	styleUrls: ['./news-feed.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewsFeedComponent implements OnInit {
-	public articlePreviews: ArticlePreview[];
+	public newsFeed$: Observable<ArticlePreview[]>;
 
 	public fixedTags: boolean;
-	private _newsCount: number;
-	private _totalCount: number;
 
 	public companyName: string;
 
 	constructor(
 		@Inject(DOCUMENT) private _document: Document,
-		private _matDialog: MatDialog,
+		private _modalService: ModalService,
 		private _newsService: NewsService,
 		private _companyService: CompanyService,
 		private _cdr: ChangeDetectorRef,
-		private _editorJSParser: EditorJSParser
+		private _editorJSParser: EditorJSParser,
+		private _snackBar: MatSnackBar,
+		private _newsFeedService: NewsFeedService
 	) {
 		this.fixedTags = false;
-		this._newsCount = 0;
-		this._totalCount = 0;
-		this.articlePreviews = [];
+		this.newsFeed$ = this._newsFeedService.newsFeed$;
 		this.companyName = this._companyService.getCompanyName();
 	}
 
-	@HostListener("window: scroll", [])
+	@HostListener('window: scroll', [])
 	public onWindowScroll(): void {
 		this.fixedTags = this._document.documentElement.scrollTop >= 100;
 	}
 
 	public ngOnInit(): void {
-		this._getArticlePreviews();
+		this.getData();
 	}
 
-	public getData(): void {
-		if (this._newsCount < this._totalCount) {
-			this._getArticlePreviews();
-		}
-	}
-
-	private _getArticlePreviews(): void {
-		const params: IFindNewsRequest = {
-			skipCount: this._newsCount,
-			takeCount: 10
-		};
-
-		this._newsService
-			.findNews(params)
-			.pipe(
-				tap(articlePreviews => {
-					this._totalCount = articlePreviews.totalCount ?? 0;
-					this._newsCount += articlePreviews.body?.length ?? 0;
-					return articlePreviews
-				}),
-				switchMap(articlePreviews => from(articlePreviews.body ?? [])),
-				concatMap(articlePreview => {
-					return this._editorJSParser
-						.parse(JSON.parse(articlePreview.preview ?? '[]'))
-						.pipe(
-							map(block => ({ ...articlePreview, preview: block.join("") }) as ArticlePreview)
-						)
-				}
-				),
-				toArray(),
-			).subscribe(articlePreviews => {
-				this.articlePreviews = [...this.articlePreviews, ...articlePreviews];
-				this._cdr.markForCheck();
-			});
+	public getData(refresh = false): void {
+		this._newsFeedService.getArticlePreviews(refresh);
 	}
 
 	public onMenuOpen(event: MouseEvent): void {
@@ -90,32 +60,43 @@ export class NewsFeedComponent implements OnInit {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		this._newsService.disableNews(newsId ?? "").subscribe(
-			result => {
-				if (result.status === 'FullSuccess') {
-					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== newsId);
-				}
-			}
-		)
+		const confirmDialogData: ConfirmDialogModel = {
+			title: 'Удаление новости',
+			message: 'Вы действительно хотите удалить новость? Отменить данное действие будет невозможно.',
+			confirmText: 'Да, удалить',
+		};
+		this._modalService
+			.confirm(confirmDialogData)
+			.afterClosed()
+			.pipe(
+				switchMap((isDeleted) => {
+					if (isDeleted) {
+						return this._newsFeedService.deleteNews(newsId ?? '');
+					}
+					return EMPTY;
+				})
+			)
+			.subscribe();
 	}
 
 	public openPost(postId: string | undefined): void {
-		this._matDialog
-			.open(PostComponent,
-				{
-					maxHeight: `100vh`,
-					maxWidth: '100vw',
-					height: `100%`,
-					width: '100%',
-					data: postId,
-					autoFocus: false,
-					panelClass: 'dialog-border-radius-none'
-				})
+		this._modalService.fullScreen(PostComponent, postId).afterClosed().subscribe();
+	}
+
+	public openEditor(newsId?: string): void {
+		this._modalService
+			.fullScreen(NewsEditorComponent, newsId)
 			.afterClosed()
-			.subscribe(newsId => {
-				if (newsId) {
-					this.articlePreviews = this.articlePreviews.filter(articlePreview => articlePreview.id !== newsId);
-				}
-			})
+			.subscribe({
+				next: (isNewsFeedUpdated) => {
+					if (isNewsFeedUpdated) {
+						if (newsId) {
+							this._newsFeedService.editNews(newsId);
+						} else {
+							this.getData(true);
+						}
+					}
+				},
+			});
 	}
 }

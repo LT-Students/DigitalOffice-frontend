@@ -12,7 +12,7 @@ import Quote from '@editorjs/quote';
 import Delimiter from '@editorjs/delimiter';
 import { Injectable } from '@angular/core';
 import { ImageNewsService } from '@app/services/image/image-news.service';
-import EditorJS, { EditorConfig, OutputData } from '@editorjs/editorjs';
+import { EditorConfig, OutputData } from '@editorjs/editorjs';
 import { map, switchMap } from 'rxjs/operators';
 import { OperationResultStatusType } from '@data/api/image-service/models/operation-result-status-type';
 import { CreateImageService } from '@app/services/create-image.service';
@@ -26,24 +26,16 @@ import { Preview } from '../../editorjs-plugins/block-tunes/preview';
 	providedIn: 'root',
 })
 export class NewsEditorConfig {
-	// private readonly _editorConfig: EditorConfig;
-
 	constructor(
 		private _imageNewsService: ImageNewsService,
 		private _createImageService: CreateImageService,
 		private _lsService: LocalStorageService
-	) {
-		// this._editorConfig = this._createConfig();
-	}
+	) {}
 
-	// public get editorConfig() {
-	// 	return this._editorConfig;
-	// }
-	//TODO rework so we can pass editor's instance to config
-	// also pass default data for editing
 	public createConfig(initialData?: OutputData): EditorConfig {
 		return {
 			holder: 'editorjs',
+			// TODO add undo feature
 			// onReady: () => {
 			// 	const undo = new Undo({ editor: editorRef });
 			// 	undo.initialize(initialData);

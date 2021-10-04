@@ -1,42 +1,43 @@
-<mat-card>
-	<div class="editor">
-		<div class="editor__content">
-			<div class="header">
-				<div class="header__tag">
-					<do-profile-image></do-profile-image>
-					<span>Здесь будут теги</span>
-				</div>
-				<button
-					mat-flat-button
-					color="primary"
-					[disabled]="articleHeading.invalid || (editorData | async)?.length === 0"
-					(click)="saveEditorData()"
-				>
-					Опубликовать новость
-				</button>
+<div class="editor">
+	<div class="editor__content">
+		<div class="header">
+			<div class="header__tag">
+				<do-profile-image></do-profile-image>
+				<span>{{ companyName }}</span>
 			</div>
-			<div id="editorjs">
-				<div class="article-subject">
-					<textarea
-						cdkTextareaAutosize
-						autofocus
-						class="mat-h1 article-subject__textarea"
-						maxlength="210"
-						rows="1"
-						placeholder="Поделитесь новостью с коллегами"
-						[formControl]="articleHeading"
-						(keydown.enter)="onEnterPressed($event)"
-					></textarea>
-					<span
-						class="article-subject__chars-left"
-						[ngClass]="{
-							'article-subject__chars-left_show': articleHeading.value.length >= 190,
-							warn: articleHeading.value.length >= 200
-						}"
-						>{{ 210 - articleHeading.value.length }}</span
-					>
-				</div>
+			<button
+				mat-flat-button
+				color="primary"
+				[disabled]="articleSubject.invalid || (isEditorContentEmpty | async)"
+				(click)="onSubmit()"
+			>
+				{{ isEdit ? 'Редактировать новость' : 'Опубликовать новость' }}
+			</button>
+			<button mat-icon-button tabindex="-1" class="close-dialog" type="button" (click)="onEditorClose()">
+				<mat-icon>close</mat-icon>
+			</button>
+		</div>
+		<div id="editorjs">
+			<div class="article-subject">
+				<textarea
+					cdkTextareaAutosize
+					autofocus
+					class="mat-h1 article-subject__textarea"
+					maxlength="210"
+					rows="1"
+					placeholder="Поделитесь новостью с коллегами"
+					[formControl]="articleSubject"
+					(keydown.enter)="onEnterPressed($event)"
+				></textarea>
+				<span
+					class="article-subject__chars-left"
+					[ngClass]="{
+						'article-subject__chars-left_show': articleSubject.value.length >= 190,
+						warn: articleSubject.value.length >= 200
+					}"
+					>{{ 210 - articleSubject.value.length }}</span
+				>
 			</div>
 		</div>
 	</div>
-</mat-card>
+</div>

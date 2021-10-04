@@ -13,4 +13,4 @@ import { NewsRoutingModule } from './news-routing.module';
 	],
 	imports: [SharedModule, NewsRoutingModule],
 })
-export class NewsModule { }
+export class NewsModule {}

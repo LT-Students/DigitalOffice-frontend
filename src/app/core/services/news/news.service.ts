@@ -6,9 +6,9 @@ import { OperationResultResponse } from '@data/api/news-service/models/operation
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
 import { FindResultResponseNewsInfo } from '@data/api/news-service/models/find-result-response-news-info';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { OperationResultResponseNewsResponse } from '@data/api/news-service/models/operation-result-response-news-response';
 import { catchError, tap } from 'rxjs/operators';
-import { NewsPatchOperation } from '@data/api/news-service/models';
+import { OperationResultResponseNewsResponse } from '@data/api/news-service/models/operation-result-response-news-response';
+import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
 
 export interface IFindNewsRequest {
 	skipCount: number;
@@ -20,26 +20,37 @@ export interface IFindNewsRequest {
 
 @Injectable()
 export class NewsService {
-	constructor(private _newsService: NewsApiService, private _snackBar: MatSnackBar) { }
+	constructor(private _newsService: NewsApiService, private _snackBar: MatSnackBar) {}
 
 	public createNews(body: CreateNewsRequest): Observable<OperationResultResponse> {
-		return this._newsService.createNews({ body });
+		return this._newsService.createNews({ body }).pipe(
+			tap(() => this._snackBar.open('Новость успешно опубликована!', '×')),
+			catchError((err) => {
+				this._snackBar.open(err.error.errors, '×');
+				return throwError(err);
+			})
+		);
 	}
 
 	public disableNews(newsId: string): Observable<OperationResultResponse> {
 		const disableRequest: NewsPatchOperation = { op: 'replace', path: '/IsActive', value: false };
-		return this._newsService.editNews({ newsId, body: [disableRequest] })
-			.pipe(
-				tap(() => this._snackBar.open('Новость успешно удалена!', 'x', { duration: 3000 })),
-				catchError(err => {
-					this._snackBar.open('Что-то пошло не так :(', 'x', { duration: 3000 });
-					return throwError(err);
-				})
-			);
+		return this._newsService.editNews({ newsId, body: [disableRequest] }).pipe(
+			tap(() => this._snackBar.open('Новость успешно удалена!', '×', { duration: 3000 })),
+			catchError((err) => {
+				this._snackBar.open('Что-то пошло не так :(', '×', { duration: 3000 });
+				return throwError(err);
+			})
+		);
 	}
 
 	public editNews(newsId: string, body: EditNewsRequest): Observable<OperationResultResponse> {
-		return this._newsService.editNews({ newsId, body });
+		return this._newsService.editNews({ newsId, body }).pipe(
+			tap(() => this._snackBar.open('Новость успешно отредактирована!', '×', { duration: 3000 })),
+			catchError((err) => {
+				this._snackBar.open('Что-то пошло не так :(', '×', { duration: 3000 });
+				return throwError(err);
+			})
+		);
 	}
 
 	public findNews(params: IFindNewsRequest): Observable<FindResultResponseNewsInfo> {
