@@ -10,7 +10,7 @@
             <mat-form-field appearance="fill" class="modal__hours">
                 <mat-label>Часы</mat-label>
                 <input (input)="onHoursInput()" matTooltipPosition="right" [matTooltip]="inputErrorMessage" matInput
-                    formControlName="userHours" />
+                    formControlName="userHours" matTooltipClass="tooltip" />
             </mat-form-field>
             <h3 class="modal__date">ч&nbsp;&nbsp;за {{ projectDate | date: 'LLLL YYYY' }}</h3>
         </div>
