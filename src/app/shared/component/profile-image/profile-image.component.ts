@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ImageInfo } from '@data/api/user-service/models/image-info';
 
@@ -6,7 +5,7 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 	selector: 'do-profile-image',
 	templateUrl: './profile-image.component.html',
 	styleUrls: ['./profile-image.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileImageComponent implements OnInit, OnChanges {
 	@Input() image: ImageInfo | null | undefined;
@@ -16,6 +15,7 @@ export class ProfileImageComponent implements OnInit, OnChanges {
 
 	constructor() {
 		this.size = 'm';
+		this.src = 'assets/images/IAFOR-Blank-Avatar-Image.jpg';
 		this.width = 48;
 	}
 
@@ -44,7 +44,7 @@ export class ProfileImageComponent implements OnInit, OnChanges {
 			case 'l':
 				return 'profile-image_size_l';
 			default:
-				return null;
+				return '';
 		}
 	}
 }

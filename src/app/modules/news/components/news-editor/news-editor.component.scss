@@ -1,0 +1,113 @@
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
+
+$editorWidth: 936px;
+
+#editorjs {
+	min-height: 700px;
+}
+
+.editor {
+	padding: 30px 0;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&__content {
+		width: $editorWidth;
+	}
+}
+
+.close-dialog {
+	position: absolute;
+	right: 40px;
+}
+
+.header {
+	margin-bottom: 40px;
+
+	display: flex;
+	justify-content: space-between;
+
+	&__tag {
+		display: flex;
+		align-items: center;
+	}
+}
+
+.article-subject {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	&__textarea {
+		resize: none;
+
+		overflow-y: hidden;
+
+		width: $editorWidth;
+
+		border: none;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	&__chars-left {
+		align-self: flex-end;
+
+		visibility: hidden;
+
+		&_show {
+			visibility: visible;
+		}
+	}
+}
+
+.ce-block__content,
+.ce-toolbar__content {
+	max-width: $editorWidth;
+}
+
+%toolbar-icon {
+	width: 36px;
+	height: 36px;
+
+	color: mat.get-color-from-palette($do-grey, 800);
+
+	background-color: mat.get-color-from-palette($do-grey, 100);
+
+	border-radius: 50%;
+
+	&:hover {
+		color: unset;
+
+		background-color: mat.get-color-from-palette($do-grey, 300);
+	}
+}
+
+.ce-toolbar {
+	&__actions {
+		top: 1px;
+		right: unset;
+		left: -49px;
+	}
+
+	&__settings-btn {
+		@extend %toolbar-icon;
+		background-image: url('/assets/svg/editor-settings.svg');
+		background-repeat: no-repeat;
+		background-position: center;
+
+		.icon {
+			display: none;
+		}
+	}
+
+	&__plus {
+		@extend %toolbar-icon;
+		margin-left: -15px;
+	}
+}

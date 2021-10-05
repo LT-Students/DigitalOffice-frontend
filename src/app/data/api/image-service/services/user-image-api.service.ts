@@ -14,7 +14,7 @@ import { OperationResultResponseImageResponse } from '../models/operation-result
 @Injectable({
   providedIn: 'root',
 })
-export class ImagemessageApiService extends BaseService {
+export class UserImageApiService extends BaseService {
   constructor(
     config: ApiConfiguration,
     http: HttpClient
@@ -23,19 +23,19 @@ export class ImagemessageApiService extends BaseService {
   }
 
   /**
-   * Path part for operation getImageMessage
+   * Path part for operation getUserImage
    */
-  static readonly GetImageMessagePath = '/imagemessage/get';
+  static readonly GetUserImagePath = '/user/get';
 
   /**
-   * Returns image information of Message.
+   * Returns image information of User.
    *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getImageMessage()` instead.
+   * To access only the response body, use `getUserImage()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getImageMessage$Response(params: {
+  getUserImage$Response(params: {
 
     /**
      * Image global unique identifier.
@@ -43,7 +43,7 @@ export class ImagemessageApiService extends BaseService {
     imageId: string;
   }): Observable<StrictHttpResponse<OperationResultResponseImageResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, ImagemessageApiService.GetImageMessagePath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, UserImageApiService.GetUserImagePath, 'get');
     if (params) {
       rb.query('imageId', params.imageId, {});
     }
@@ -60,14 +60,14 @@ export class ImagemessageApiService extends BaseService {
   }
 
   /**
-   * Returns image information of Message.
+   * Returns image information of User.
    *
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getImageMessage$Response()` instead.
+   * To access the full response (for headers, for example), `getUserImage$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getImageMessage(params: {
+  getUserImage(params: {
 
     /**
      * Image global unique identifier.
@@ -75,7 +75,7 @@ export class ImagemessageApiService extends BaseService {
     imageId: string;
   }): Observable<OperationResultResponseImageResponse> {
 
-    return this.getImageMessage$Response(params).pipe(
+    return this.getUserImage$Response(params).pipe(
       map((r: StrictHttpResponse<OperationResultResponseImageResponse>) => r.body as OperationResultResponseImageResponse)
     );
   }

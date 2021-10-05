@@ -4,10 +4,10 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { ImagemessageApiService } from './services/imagemessage-api.service';
-import { ImageProjectApiService } from './services/image-project-api.service';
-import { ImageUserApiService } from './services/image-user-api.service';
-import { ImageNewsApiService } from './services/image-news-api.service';
+import { MessageImageApiService } from './services/message-image-api.service';
+import { ProjectImageApiService } from './services/project-image-api.service';
+import { UserImageApiService } from './services/user-image-api.service';
+import { NewsImageApiService } from './services/news-image-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,10 +17,10 @@ import { ImageNewsApiService } from './services/image-news-api.service';
   exports: [],
   declarations: [],
   providers: [
-    ImagemessageApiService,
-    ImageProjectApiService,
-    ImageUserApiService,
-    ImageNewsApiService,
+    MessageImageApiService,
+    ProjectImageApiService,
+    UserImageApiService,
+    NewsImageApiService,
     ApiConfiguration
   ],
 })

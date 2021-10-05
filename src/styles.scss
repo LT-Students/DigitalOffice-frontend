@@ -4,6 +4,7 @@
 @use 'layouts/table';
 @use 'do/underlined';
 @use '~@angular/cdk/overlay-prebuilt';
+@use './stylesheets/news-feed/news-feed';
 
 @import './stylesheets/material/expansion-panel';
 
@@ -15,7 +16,7 @@
 
 	box-sizing: border-box;
 
-	font-family: Roboto, 'Helvetica Neue', sans-serif;
+	//font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 div,

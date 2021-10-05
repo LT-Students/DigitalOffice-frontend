@@ -49,7 +49,15 @@ export class CompanyService {
 
 	//TODO create separate service for current company?
 	public getPortalName(): string {
-		return this._company.value && this._company.value.portalName ? this._company.value.portalName : '404. Это портал.';
+		return this._company.value && this._company.value.portalName
+			? this._company.value.portalName
+			: '404. Это портал.';
+	}
+
+	public getCompanyName(): string {
+		return this._company.value && this._company.value?.companyName
+			? this._company.value?.companyName
+			: 'Company Name';
 	}
 
 	private _setCompany(companyInfo: CompanyInfo): void {
