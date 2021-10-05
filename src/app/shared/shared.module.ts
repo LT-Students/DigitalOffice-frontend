@@ -18,6 +18,7 @@ import { HoursPipe } from './pipes/hours/hours.pipe';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
 import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.component';
+import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
 
 @NgModule({
 	declarations: [
@@ -35,6 +36,7 @@ import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.compon
 		PasswordComponent,
 		CommentComponent,
 		BreadcrumbsComponent,
+		TitleDatepickerComponent
 	],
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule],
 	exports: [
@@ -56,6 +58,7 @@ import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.compon
 		PasswordComponent,
 		CommentComponent,
 		BreadcrumbsComponent,
+		TitleDatepickerComponent
 	],
 })
 export class SharedModule {}

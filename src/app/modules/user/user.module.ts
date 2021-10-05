@@ -3,7 +3,6 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AdminModule } from '../admin/admin.module';
 import { SharedModule } from '../../shared/shared.module';
-import { TitleDatepickerComponent } from '../../shared/component/title-datepicker/title-datepicker.component';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { TimeWidgetComponent } from './components/time-widget/time-widget.component';
 import { AddHoursComponent } from './components/add-hours/add-hours.component';
@@ -37,7 +36,6 @@ import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/
 		EditProjectComponent,
 		EditLeaveComponent,
 		DoughnutChartComponent,
-		TitleDatepickerComponent
 	],
 	imports: [
 		SharedModule,

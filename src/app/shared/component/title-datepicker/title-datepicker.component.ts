@@ -28,13 +28,6 @@ export class TitleDatepickerComponent implements OnInit {
 		picker.close();
 	}
 
-	public onPreviousMonthClicked(date: Date): void {
-		this._changeMonth(new Date(date.getFullYear(), date.getMonth() - 1));
-	}
-
-	public onNextMonthClicked(date: Date): void {
-		this._changeMonth(new Date(date.getFullYear(), date.getMonth() + 1));
-	}
 
   ngOnInit(): void {
   }

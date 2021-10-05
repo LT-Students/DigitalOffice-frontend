@@ -1,6 +1,6 @@
 <h3 doUnderline underlinedSize="sm">
-    {{text}} &nbsp;
-    <mat-form-field appearance="fill" class="hidden-form" >
+    {{text}}&nbsp;
+    <mat-form-field appearance="fill" class="hidden-field" >
         <input matInput [matDatepicker]="picker" />
         <mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event, picker)"></mat-datepicker>
     </mat-form-field>

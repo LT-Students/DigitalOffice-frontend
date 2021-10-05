@@ -1,17 +1,7 @@
 <mat-card class="card">
 	<div class="header h3">
-		<h3 doUnderline underlinedSize="sm">
-			Статистика за
-			<mat-form-field class="header__period-input">
-				<input matInput [matDatepicker]="picker" />
-				<mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event); picker.close()"> </mat-datepicker>
-			</mat-form-field>
-			<span (click)="picker.open()" class="text-accent_color_bright header__period">
-				{{ selectedPeriod.startDate | date: 'LLLL YYYY' | titlecase }}
-				<mat-icon class="header__icon">keyboard_arrow_down</mat-icon>
-			</span>
-		</h3>
-	</div>
+        <do-title-datepicker text="Статистика за"></do-title-datepicker>
+    </div>
 	<ng-container *ngIf="employees$ | async as employees; else loader">
 		<table class="table">
 			<colgroup>
