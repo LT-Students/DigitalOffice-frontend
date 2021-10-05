@@ -16,8 +16,8 @@ import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.
 
 export interface EditModalContent {
 	id?: string,
-	name: string | ValidationErrors | null,
-	description?: string  | undefined | null,
+	name: string,
+	description?: string  | null,
 	directorid?:  string,
 }
 
@@ -99,7 +99,7 @@ export class DepartmentCardComponent implements OnInit {
 	public onEditDepartamentClick(): void {
 		const data: EditModalContent = {
 			id: this.departmentInfo?.id,
-			name: this.departmentInfo?.name as string,
+			name: this.departmentInfo?.name ? this.departmentInfo?.name : '',
 			description: this.departmentInfo?.description ? this.departmentInfo?.description : '',
 			directorid: this.departmentInfo?.director?.id ? this.departmentInfo?.director?.id : '',
 		};

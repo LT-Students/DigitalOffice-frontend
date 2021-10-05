@@ -25,7 +25,7 @@ import { EditModalContent } from '../../components/department-card/department-ca
 export class NewDepartmentComponent implements OnInit {
 	public directors$: Observable<UserInfo[] | undefined>;
 	public departmentForm: FormGroup;
-	public _isEdit: boolean | undefined;
+	public isEdit: boolean | undefined;
 	private readonly _departamentInfo: EditModalContent;
 	public isFormChanged: boolean;
 
@@ -40,12 +40,11 @@ export class NewDepartmentComponent implements OnInit {
 		this._departamentInfo = data;
 		this.isFormChanged = false;
 		this.departmentForm = this._formBuilder.group({
-			name: this._departamentInfo ? [ this._departamentInfo.name, Validators.required ] : [ '', [ Validators.required ] ],
+			name: [ this._departamentInfo ? this._departamentInfo.name : '', Validators.required ],
 			description: this._departamentInfo ? this._departamentInfo.description : [ '' ],
 			directorid: this._departamentInfo ? this._departamentInfo.directorid : [ '' ],
 		})
-		if (this._departamentInfo) {
-		this._isEdit = true}
+		this.isEdit = !!this._departamentInfo
 
 		this.directors$ = this._userService.findUsers(0, 500).pipe(map((response) => response.body));
 	}
@@ -111,7 +110,7 @@ export class NewDepartmentComponent implements OnInit {
 	}
 
 	public onSubmitDepartmentForm() {
-		if (this._isEdit) {
+		if (this.isEdit) {
 			this.editDepartment();
 		} else {
 			this.createDepartment();
