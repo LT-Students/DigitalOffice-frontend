@@ -1,5 +1,5 @@
 <mat-card class="chart" *ngIf="selectedDate$ | async as selectedDate">
-<do-title-datepicker text="Часы за"></do-title-datepicker>
+<do-title-datepicker text="Часы за" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
 	<div class="chart__diagram-wrapper">
 		<button (click)="onPreviousMonthClicked(selectedDate)" class="fab-button" mat-mini-fab [class.mat-elevation-z0]="true">
 			<mat-icon>chevron_left</mat-icon>

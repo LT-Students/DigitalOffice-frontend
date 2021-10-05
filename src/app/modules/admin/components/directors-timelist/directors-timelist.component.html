@@ -1,6 +1,6 @@
 <mat-card class="card">
 	<div class="header">
-        <do-title-datepicker text="Таймлист для ДД за"></do-title-datepicker>
+        <do-title-datepicker text="Таймлист для ДД за" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
         <button mat-flat-button color="accent" (click)="onDownload()">
 			<span> <img src="../../../../../assets/svg/download.svg" alt="download" class="header__icon" /> Выгрузить часы </span>
 		</button>

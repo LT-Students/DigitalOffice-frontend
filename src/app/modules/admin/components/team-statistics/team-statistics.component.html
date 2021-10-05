@@ -1,6 +1,6 @@
 <mat-card class="card">
 	<div class="header h3">
-        <do-title-datepicker text="Статистика за"></do-title-datepicker>
+        <do-title-datepicker text="Статистика за" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
     </div>
 	<ng-container *ngIf="employees$ | async as employees; else loader">
 		<table class="table">
