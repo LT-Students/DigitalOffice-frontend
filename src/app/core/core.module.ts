@@ -15,7 +15,6 @@ import { ProjectService } from '@app/services/project/project.service';
 import { TaskService } from '@app/services/project/task.service';
 import { RightsService } from '@app/services/rights/rights.service';
 import { TimeService } from '@app/services/time/time.service';
-import { UserService } from '@app/services/user/user.service';
 import { CertificateService } from '@app/services/user/certificate.service';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { CredentialsService } from '@app/services/user/credentials.service';
@@ -42,7 +41,7 @@ import { environment } from '../../environments/environment';
 		BrowserAnimationsModule,
 		RouterModule,
 		HttpClientModule,
-		AuthenticationApiModule.forRoot({ rootUrl: `https://user.${environment.apiUrl}` }),
+		AuthenticationApiModule.forRoot({ rootUrl: `https://auth.${environment.apiUrl}` }),
 		CompanyApiModule.forRoot({ rootUrl: `https://company.${environment.apiUrl}` }),
 		FileApiModule.forRoot({ rootUrl: `https://file.${environment.apiUrl}` }),
 		ImageApiModule.forRoot({ rootUrl: `https://image.${environment.apiUrl}` }),
