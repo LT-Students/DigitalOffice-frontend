@@ -46,6 +46,7 @@ export class DirectorsTimelistComponent implements OnInit {
   public pageSize: number;
   public pageIndex: number;
   public totalCount: number;
+  public employeeCountMap: { [k: string]: string };
 
 
   constructor(
@@ -60,6 +61,12 @@ export class DirectorsTimelistComponent implements OnInit {
     this.pageSize = 20;
     this.pageIndex = 0;
     this.totalCount = 0;
+
+	this.employeeCountMap = {
+		one: '# сотрудник',
+		few: '# сотрудника',
+		other: '# сотрудников',
+	};
   }
 
   ngOnInit() {
