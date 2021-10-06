@@ -5,11 +5,14 @@
 }
 
 .department {
+	&__header {
+		display: flex;
+		justify-content: space-between;
+	}
+
 	&__info {
 		margin-bottom: 40px;
 		padding-bottom: 40px;
-
-		border-bottom: 1px solid #fafafa;
 	}
 
 	&__label {
@@ -21,6 +24,7 @@
 
 .table {
 	&__header {
+		margin-top: 20px;
 		margin-bottom: 20px;
 
 		display: flex;
