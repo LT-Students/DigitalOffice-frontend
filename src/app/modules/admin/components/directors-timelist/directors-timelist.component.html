@@ -23,7 +23,7 @@
 			<input matInput type="search" />
 			<mat-icon matPrefix>search</mat-icon>
 		</mat-form-field>
-		<h3 class="h3">Найдено {{ totalCount | i18nPlural: employeeCountMap }} сотрудников</h3>
+		<h3 class="h3">Найдено {{ totalCount | i18nPlural: employeeCountMap }}</h3>
 		<ng-container *ngIf="statInfo$ | async as statInfo; else loader">
 			<table class="table timelist__table">
 				<colgroup>
