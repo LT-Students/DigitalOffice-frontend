@@ -1,6 +1,6 @@
 <mat-card class="card_grid activities">
 
-    <do-title-datepicker text="Записи за" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
+    <do-title-datepicker text="Записи за" [selectDate]="selectedDate$ | async" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
 
     <ng-container *ngIf="activities$ | async as activities">
 		<div class="tasks">

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 
 @Component({
@@ -8,19 +8,20 @@ import { MatDatepicker } from '@angular/material/datepicker';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class TitleDatepickerComponent implements OnInit {
-	@Input() text: string | undefined
-	@Output() onSelectedDate: EventEmitter<Date> = new EventEmitter<Date>()
+export class TitleDatepickerComponent {
+	@Input() text: string | undefined;
+	@Input() selectDate?: Date | null;
+	@Output() onSelectedDate: EventEmitter<Date>;
 
-	public selectDate: Date = new Date()
+	constructor() {
+		this.selectDate =  new Date();
+		this.onSelectedDate = new EventEmitter<Date>();
+	}
 
 	public chosenMonthHandler(date: Date, picker: MatDatepicker<any>): void{
 		this.selectDate = date;
-		this.onSelectedDate.emit(this.selectDate)
+		this.onSelectedDate.emit(this.selectDate);
 		picker.close();
-	}
-
-	ngOnInit(): void {
 	}
 
 }
