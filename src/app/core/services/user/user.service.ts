@@ -36,13 +36,19 @@ export class UserService {
 	}
 
 	public findUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<FindResultResponseUserInfo> {
-		return this._userApiService.findUsers({ skipCount: skipPages, takeCount: pageSize, departmentid: departmentId });
+		return this._userApiService.findUsers({
+			skipCount: skipPages,
+			takeCount: pageSize,
+			departmentid: departmentId,
+		});
 	}
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
 		return this._userApiService.createUser({ body: params }).pipe(
 			switchMap((res: OperationResultResponse) => {
-				return res.status === OperationResultStatusType.Failed || res instanceof HttpErrorResponse ? throwError(res) : of(res);
+				return res.status === OperationResultStatusType.Failed || res instanceof HttpErrorResponse
+					? throwError(res)
+					: of(res);
 			}),
 			catchError((error) => throwError(error))
 		);
@@ -203,7 +209,7 @@ export class UserService {
 		return this._userApiService.editUser(params);
 	}
 
-	public getUserSetCredentials(userId: string | undefined): Observable<User> {
+	public getUserSetCredentials(userId?: string): Observable<User> {
 		const params: IGetUserRequest = {
 			userId: userId,
 			includedepartment: true,

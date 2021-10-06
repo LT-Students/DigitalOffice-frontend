@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -11,7 +10,6 @@ import { OfficeListComponent } from './components/office-list/office-list.compon
 import { PositionListComponent } from './components/position-list/position-list.component';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 
-
 const adminRoutes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'dashboard' },
 	{ path: 'dashboard', component: DashboardComponent },
@@ -21,11 +19,11 @@ const adminRoutes: Routes = [
 	{ path: 'offices', component: OfficeListComponent },
 	{ path: 'positions', component: PositionListComponent },
 	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
-	{ path: `${RouteType.DEPARTMENTS}/:id/timelist`, component: DirectorsTimelistComponent }
+	{ path: `${RouteType.DEPARTMENTS}/:id/timelist`, component: DirectorsTimelistComponent },
 ];
 
 @NgModule({
 	imports: [RouterModule.forChild(adminRoutes)],
-	exports: [RouterModule]
+	exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

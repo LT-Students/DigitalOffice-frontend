@@ -1,14 +1,12 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
 import { UserService } from '@app/services/user/user.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { of, throwError } from 'rxjs';
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
+import { throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CompanyService } from '@app/services/company/company.service';
 
@@ -16,7 +14,7 @@ import { CompanyService } from '@app/services/company/company.service';
 	selector: 'do-signup',
 	templateUrl: './signup.component.html',
 	styleUrls: ['./signup.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent implements OnInit {
 	public portalName: string;
@@ -40,7 +38,7 @@ export class SignupComponent implements OnInit {
 		private _fb: FormBuilder
 	) {
 		this.portalName = this._companyService.getPortalName();
-		this.userId = null;
+		this.userId = '';
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
 			password: ['', Validators.required],
@@ -59,10 +57,12 @@ export class SignupComponent implements OnInit {
 		const { login, password } = this.loginForm.getRawValue();
 		const createCredentialsRequest: CreateCredentialsRequest = { login, password, userId: this.userId };
 
-		this._authService.signUp$(createCredentialsRequest).pipe(
-				switchMap(({ body: credentialResponse }: { body: AuthenticationResponse }) => {
+		this._authService
+			.signUp$(createCredentialsRequest)
+			.pipe(
+				switchMap(({ body: credentialResponse }) => {
 					this.isWaiting = false;
-					return this._userService.getUserSetCredentials(credentialResponse.userId);
+					return this._userService.getUserSetCredentials(credentialResponse?.userId);
 				}),
 				catchError((error: string) => {
 					console.log(error);
@@ -73,13 +73,15 @@ export class SignupComponent implements OnInit {
 						},
 					});
 					this.isWaiting = false;
-					return of(null);
+					return throwError(error);
 				})
-			).subscribe((user: User) => {
-					const nextUrl: string = (user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+			)
+			.subscribe({
+				next: (user: User) => {
+					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : '/user/attendance';
 					console.log(user.getFullName);
 					this._router.navigate([nextUrl]);
-				}
-			);
+				},
+			});
 	}
 }
