@@ -1,16 +1,8 @@
 <mat-card class="card_grid activities">
-	<h3 doUnderline underlinedSize="sm">
-		Записи за
-		<mat-form-field class="date-input">
-			<input matInput [matDatepicker]="dp" />
-			<mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event, dp)"> </mat-datepicker>
-		</mat-form-field>
-		<span class="mat-h3 activities__period primary" (click)="dp.open()">
-			{{ selectedDate$ | async | date: 'LLLL YYYY' }}
-			<mat-icon class="activities__icon">keyboard_arrow_down</mat-icon>
-		</span>
-	</h3>
-	<ng-container *ngIf="activities$ | async as activities">
+
+    <do-title-datepicker text="Записи за" [selectDate]="selectedDate$ | async" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
+
+    <ng-container *ngIf="activities$ | async as activities">
 		<div class="tasks">
 			<do-projects [projects]="activities.projects"></do-projects>
 		</div>

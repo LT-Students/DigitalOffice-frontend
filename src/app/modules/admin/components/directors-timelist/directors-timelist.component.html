@@ -1,19 +1,7 @@
 <mat-card class="card">
 	<div class="header">
-		<h3 doUnderline underlinedSize="sm">
-			Таймлист для ДД за
-			<span>
-				<mat-form-field class="header__period-input">
-					<input matInput [matDatepicker]="dp" />
-					<mat-datepicker #dp startView="year" (monthSelected)="chosenMonthHandler($event); dp.close()"> </mat-datepicker>
-				</mat-form-field>
-			</span>
-			<span class="header__period primary" (click)="dp.open()">
-				{{ selectedPeriod.startDate | date: 'LLLL YYYY' }}
-				<mat-icon class="header__icon">keyboard_arrow_down</mat-icon>
-			</span>
-		</h3>
-		<button mat-flat-button color="accent" (click)="onDownload()">
+        <do-title-datepicker text="Таймлист для ДД за" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
+        <button mat-flat-button color="accent" (click)="onDownload()">
 			<span> <img src="../../../../../assets/svg/download.svg" alt="download" class="header__icon" /> Выгрузить часы </span>
 		</button>
 	</div>

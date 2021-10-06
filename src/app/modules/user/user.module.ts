@@ -19,6 +19,7 @@ import { EditProjectComponent } from './modals/edit-project/edit-project.compone
 import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
 import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/doughnut-chart.component';
 
+
 @NgModule({
 	declarations: [
 		AttendanceComponent,
@@ -34,7 +35,7 @@ import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/
 		LeavesComponent,
 		EditProjectComponent,
 		EditLeaveComponent,
-		DoughnutChartComponent
+		DoughnutChartComponent,
 	],
 	imports: [
 		SharedModule,
