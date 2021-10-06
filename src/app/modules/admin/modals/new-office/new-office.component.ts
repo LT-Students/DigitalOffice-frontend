@@ -24,7 +24,7 @@ export class NewOfficeComponent {
 		this.officeForm = this._fb.group({
 			city: ['', [Validators.required, DoValidators.noWhitespaces]],
 			address: ['', [Validators.required, DoValidators.noWhitespaces]],
-			name: ['', [Validators.required, DoValidators.noWhitespaces]],
+			name: ['', [DoValidators.noWhitespaces]],
 		});
 	}
 
