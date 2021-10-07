@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -8,7 +8,6 @@ import { switchMap } from 'rxjs/operators';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 import { DoValidators } from '@app/validators/do-validators';
 import { TimeDurationService } from '@app/services/time-duration.service';
-import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
 	selector: 'do-edit-project',
@@ -31,7 +30,7 @@ export class EditProjectComponent {
 	) {
 		this.editForm = this._initFormGroup();
 		this.projectDate = new Date(this.project.year, this.project.month - 1);
-		this.inputErrorMessage = this._getError();
+		this.inputErrorMessage = "";
 	}
 
 	private _initFormGroup(): FormGroup {
@@ -77,20 +76,19 @@ export class EditProjectComponent {
 		this._dialogRef.close(params);
 	}
 
-	private _getError() {
-		let inputErrorMessage = "";
+	private _getError(): string {
 		const controlErrors = this.editForm.controls['userHours'].errors;
 
 		if (controlErrors?.required) {
-			inputErrorMessage = "Заполните поле"
+			return "Заполните поле";
 		} else if (controlErrors?.number) {
-			inputErrorMessage = "Введите число"
+			return "Введите число";
 		} else if (controlErrors?.max) {
-			inputErrorMessage = "Превышено максимальное значение часов за месяц"
+			return "Превышено максимальное значение часов за месяц";
 		} else if (controlErrors?.min) {
-			inputErrorMessage = "Минимальное значение должно быть больше 0"
+			return "Минимальное значение должно быть больше 0";
 		}
 
-		return inputErrorMessage;
+		return "";
 	}
 }
