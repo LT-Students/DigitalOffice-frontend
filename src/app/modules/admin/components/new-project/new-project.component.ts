@@ -57,7 +57,7 @@ export class NewProjectComponent implements OnInit {
 		this.projectForm = this._formBuilder.group({
 			name: ['', [Validators.required, Validators.maxLength(80)]],
 			departmentId: ['', [Validators.required]],
-			description: [null],
+			description: [null, [Validators.maxLength(300)]],
 			status: [ProjectStatusType.Active],
 			// customer: [''],
 			// shortName: ['', [Validators.required, Validators.maxLength(32)]],

@@ -9,7 +9,6 @@ import { TimeDurationService } from '@app/services/time-duration.service';
 import { IEditWorkTimeRequest, IFindStatRequest, IGetImport, TimeService } from '@app/services/time/time.service';
 import { FindResultResponseStatInfo, LeaveTimeInfo, OperationResultResponse, OperationResultStatusType, StatInfo, UserInfo, WorkTimeInfo, WorkTimeMonthLimitInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
-import { UserService } from '@app/services/user/user.service'
 import { DoValidators } from '@app/validators/do-validators';
 
 interface EditableWorkTime extends WorkTimeInfo {
@@ -46,6 +45,7 @@ export class DirectorsTimelistComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 	public totalCount: number;
+	public employeeCountMap: { [k: string]: string };
 
 
 	constructor(
@@ -60,12 +60,18 @@ export class DirectorsTimelistComponent implements OnInit {
 		this.pageSize = 20;
 		this.pageIndex = 0;
 		this.totalCount = 0;
+
+		this.employeeCountMap = {
+			one: '# сотрудник',
+			few: '# сотрудника',
+			other: '# сотрудников',
+		};
 	}
 
 	ngOnInit() {
 		console.log("Route: ", this._route);
 		this._route.params.pipe(tap(p => this._departmentId = p.id)).subscribe(() => {
-			this.statInfo$ = this._getStat().pipe(tap(result => console.log('Таймлист', result)));
+			this.statInfo$ = this._getStat();
 		})
 	}
 

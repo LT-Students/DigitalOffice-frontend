@@ -27,8 +27,8 @@ export class UserTasksComponent {
 		this.activities$ = this._attendanceService.activities$;
 	}
 
-	public chosenMonthHandler(date: Date, datepicker: MatDatepicker<any>) {
+	public chosenMonthHandler(date: Date) {
 		this._attendanceService.setNewDate(date);
-		datepicker.close();
+
 	}
 }

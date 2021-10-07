@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, ReplaySubject } from 'rxjs';
-
-import { DatePeriod } from '@data/models/date-period';
 import {
 	IEditWorkTimeRequest,
 	IFindLeaveTimesRequest,
@@ -42,7 +40,8 @@ export class AttendanceService {
 	private readonly _canEdit: BehaviorSubject<boolean>;
 	public readonly canEdit$: Observable<boolean>;
 
-	private _userId: string | undefined;
+	private _userId?: string;
+	private _rate: number;
 
 	constructor(
 		private _dateService: DateService,
@@ -63,6 +62,8 @@ export class AttendanceService {
 		this.monthNorm$ = this._monthNorm.asObservable();
 
 		this._holidays = new BehaviorSubject<boolean[]>([]);
+
+		this._rate = 1;
 	}
 
 	public getActivities(): Observable<Activities> {
@@ -85,8 +86,12 @@ export class AttendanceService {
 		};
 
 		return forkJoin({
-			projects: this._timeService.findWorkTimes(workTimesParams).pipe(map((projects) => projects.body?.map((project) => project.workTime))),
-			leaves: this._timeService.findLeaveTimes(leaveTimesParams).pipe(map((leaves) => leaves.body?.map((leave) => leave.leaveTime))),
+			projects: this._timeService
+				.findWorkTimes(workTimesParams)
+				.pipe(map((projects) => projects.body?.map((project) => project.workTime))),
+			leaves: this._timeService
+				.findLeaveTimes(leaveTimesParams)
+				.pipe(map((leaves) => leaves.body?.map((leave) => leave.leaveTime))),
 		}).pipe(tap((activities) => this._setActivities(activities)));
 	}
 
@@ -119,7 +124,7 @@ export class AttendanceService {
 
 	private _setMonthNormAndHolidays(monthNorm: number | undefined, holidays: string | undefined): void {
 		if (monthNorm && holidays) {
-			this._monthNorm.next(monthNorm);
+			this._monthNorm.next(monthNorm * this._rate);
 			this._holidays.next(holidays.split('').map(Number).map(Boolean));
 		}
 	}
@@ -128,8 +133,9 @@ export class AttendanceService {
 		this._activities.next(activities);
 	}
 
-	public setUserId(userId: string | undefined): void {
+	public setUserIdAndRate(userId?: string, rate = 1): void {
 		this._userId = userId;
+		this._rate = rate;
 	}
 
 	private _canEditTime(): boolean {
@@ -162,6 +168,9 @@ export class AttendanceService {
 	}
 
 	public countMaxHours(): number {
-		return this._timeDurationService.countMaxMonthDuration(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth());
+		return this._timeDurationService.countMaxMonthDuration(
+			this._selectedDate.value.getFullYear(),
+			this._selectedDate.value.getMonth()
+		);
 	}
 }
