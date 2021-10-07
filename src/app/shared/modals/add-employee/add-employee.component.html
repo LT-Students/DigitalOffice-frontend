@@ -1,0 +1,58 @@
+<div class='modal'>
+
+    <div class='modal__header'>
+        <h3>Добавление сотрудника в департамент Цифровых решений</h3>
+        <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+    </div>
+
+    <div class="search">
+
+        <div
+            class="search-name"
+        >
+            <button
+                mat-icon-button
+                class="search-name__button"
+            >
+                <img src="/assets/svg/magnifier.svg" alt="magnifier" />
+            </button>
+            <input
+                matInput
+                placeholder="Введите фамилию и имя сотрудника"
+                type="text"
+                class="search-name__input"
+            />
+
+        </div>
+
+        <mat-select class="search-position" placeholder="Выберите должность" disableOptionCentering="true">
+            <mat-option *ngFor="let position of positions" [value]="position">
+                {{ position }}
+            </mat-option>
+        </mat-select>
+
+    </div>
+
+    <h4 class="how-many-staff-title">Добавлено 0 сотрудников</h4>
+
+    <div class="user-row" *ngFor="let member of membersAll">
+        <div>
+            <mat-checkbox
+                [value]="$any(member?.id)"
+            ></mat-checkbox>
+        </div>
+        <div class="user-row__image">
+            <do-profile-image [image]="member?.avatar"></do-profile-image>
+        </div>
+        <div class="general-info user-row__general-info">
+            <div class="general-info__name">{{ member.firstName }} {{ member.lastName }}</div>
+            <div class="general-info__position">{{ member.position }}</div>
+        </div>
+        <div class='user-row__department-info'>{{member.department}}</div>
+    </div>
+
+</div>
+<div class='modal-background'></div>
+
+
+

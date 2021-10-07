@@ -22,6 +22,7 @@ import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.compon
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
+import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
 
 @NgModule({
 	declarations: [
@@ -41,7 +42,8 @@ import { TitleDatepickerComponent } from './component/title-datepicker/title-dat
 		CommentComponent,
 		BreadcrumbsComponent,
 		ConfirmDialogComponent,
-		TitleDatepickerComponent
+		TitleDatepickerComponent,
+		AddEmployeeComponent
 	],
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, InfiniteScrollModule],
 	exports: [
@@ -66,7 +68,8 @@ import { TitleDatepickerComponent } from './component/title-datepicker/title-dat
 		CommentComponent,
 		ConfirmDialogComponent,
 		BreadcrumbsComponent,
-		TitleDatepickerComponent
+		TitleDatepickerComponent,
+		AddEmployeeComponent
 	],
 })
 export class SharedModule {}
