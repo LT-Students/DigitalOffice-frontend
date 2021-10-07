@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { NetService } from '@app/services/net.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,8 +6,18 @@ import { UserService } from '@app/services/user/user.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { PageEvent } from '@angular/material/paginator';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
-import { ModalService } from '@app/services/modal.service';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { OperationResultStatusType } from '@data/api/user-service/models';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
+import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
+import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
+
+export interface EditModalContent {
+	id?: string;
+	name: string;
+	description?: string | null;
+	directorid?: string;
+}
 
 @Component({
 	selector: 'do-department-card',
@@ -23,11 +33,7 @@ export class DepartmentCardComponent implements OnInit {
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
-
-	public peopleCountMap: { [k: string]: string } = {
-		few: '# человека',
-		other: '# человек',
-	};
+	public peopleCountMap: { [k: string]: string };
 
 	constructor(
 		private _netService: NetService,
@@ -42,6 +48,11 @@ export class DepartmentCardComponent implements OnInit {
 		this.pageSize = 10;
 		this.pageIndex = 0;
 		this.sortedUsersInfo = [];
+
+		this.peopleCountMap = {
+			few: '# человека',
+			other: '# человек',
+		};
 	}
 
 	ngOnInit(): void {
@@ -49,13 +60,15 @@ export class DepartmentCardComponent implements OnInit {
 	}
 
 	private _getDepartment(): void {
-		this._netService.getDepartment({ departmentid: this._departmentId, includeusers: true }).subscribe(({ body }) => {
-			this.departmentInfo = body?.department;
-			this.totalCount = body?.users?.length ?? 0;
-			//this.sortedUsersInfo = body?.users?.slice() ?? [];
-			this._getUsers();
-			this._cdr.detectChanges();
-		});
+		this._netService
+			.getDepartment({ departmentid: this._departmentId, includeusers: true })
+			.subscribe(({ body }) => {
+				this.departmentInfo = body?.department;
+				this.totalCount = body?.users?.length ?? 0;
+				//this.sortedUsersInfo = body?.users?.slice() ?? [];
+				this._getUsers();
+				this._cdr.markForCheck();
+			});
 	}
 
 	public onPageChange(event: PageEvent): void {
@@ -65,20 +78,40 @@ export class DepartmentCardComponent implements OnInit {
 	}
 
 	private _getUsers(): void {
-		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize, this._departmentId).subscribe((data) => {
-			this.sortedUsersInfo = data?.body?.slice() ?? [];
-			this.totalCount = this.sortedUsersInfo.length;
-			this._cdr.markForCheck();
-		});
+		this._userService
+			.findUsers(this.pageIndex * this.pageSize, this.pageSize, this._departmentId)
+			.subscribe((data) => {
+				this.sortedUsersInfo = data?.body?.slice() ?? [];
+				this.totalCount = this.sortedUsersInfo.length;
+				this._cdr.markForCheck();
+			});
 	}
 
 	onAddEmployeeClick() {
 		this._modalService
 			.openModal<NewEmployeeComponent, null, any>(NewEmployeeComponent)
 			.afterClosed()
-			.subscribe(result => {
-				if (result?.status === 'FullSuccess')
-					this._getUsers();
+			.subscribe((result) => {
+				if (result?.status === 'FullSuccess') this._getUsers();
+			});
+	}
+
+	public onEditDepartamentClick(): void {
+		const data: EditModalContent = {
+			id: this.departmentInfo?.id,
+			name: this.departmentInfo?.name ? this.departmentInfo?.name : '',
+			description: this.departmentInfo?.description ? this.departmentInfo?.description : '',
+			directorid: this.departmentInfo?.director?.id ? this.departmentInfo?.director?.id : '',
+		};
+		this._modalService
+			.openModal<NewDepartmentComponent, EditModalContent, IDialogResponse>(
+				NewDepartmentComponent,
+				ModalWidth.M,
+				data
+			)
+			.afterClosed()
+			.subscribe((result) => {
+				if (result?.status === OperationResultStatusType.FullSuccess) this._getDepartment();
 			});
 	}
 

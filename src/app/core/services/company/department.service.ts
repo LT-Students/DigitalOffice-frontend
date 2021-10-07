@@ -9,6 +9,8 @@ import { IFindRequestEx } from '@app/types/find-request.interface';
 import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
 import { IEditDepartmentRequest } from '@app/types/edit-department-request.interface';
 
+export type EditDepartmentPath = '/name' | '/description' | '/isactive' | '/directorid';
+
 @Injectable({
 	providedIn: 'root',
 })

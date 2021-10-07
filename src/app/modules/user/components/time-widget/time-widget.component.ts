@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AttendanceService } from '@app/services/attendance.service';
-import { MatDatepicker } from '@angular/material/datepicker';
+
 
 @Component({
 	selector: 'do-time-widget',
@@ -17,13 +17,15 @@ export class TimeWidgetComponent {
 		this.selectedDate$ = this._attendanceService.selectedDate$;
 	}
 
+
+
 	private _changeMonth(date: Date): void {
 		this._attendanceService.setNewDate(date);
 	}
 
-	public chosenMonthHandler(date: Date, picker: MatDatepicker<any>): void {
+	public chosenMonthHandler(date: Date): void {
 		this._changeMonth(date);
-		picker.close();
+
 	}
 
 	public onPreviousMonthClicked(date: Date): void {

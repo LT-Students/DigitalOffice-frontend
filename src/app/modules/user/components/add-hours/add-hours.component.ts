@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
@@ -9,12 +9,12 @@ import { ILeaveType, LeaveTimeModel } from '@app/models/leave-time.model';
 import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IEditWorkTimeRequest } from '@app/services/time/time.service';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse, WorkTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@data/models/date-period';
 import { MatOptionSelectionChange } from '@angular/material/core';
-import { timeValidator } from './add-hours.validators';
 import { TimeDurationService } from '@app/services/time-duration.service';
+import { timeValidator } from './add-hours.validators';
 
 @Component({
 	selector: 'do-add-hours',
@@ -51,7 +51,10 @@ export class AddHoursComponent implements OnDestroy {
 		this.disableWeekends = this._attendanceService.disableWeekends;
 
 		this.addHoursForm = this._fb.group({
-			time: [null, [Validators.required, Validators.min(1), timeValidator(() => this._attendanceService.countMaxHours())]],
+			time: [
+				null,
+				[Validators.required, Validators.min(1), timeValidator(() => this._attendanceService.countMaxHours())],
+			],
 			startDate: [new Date(), [Validators.required]],
 			endDate: [new Date(), [Validators.required]],
 			activity: [null, Validators.required],
@@ -78,14 +81,16 @@ export class AddHoursComponent implements OnDestroy {
 
 	public changeDate(date: Date): void {
 		this._attendanceService.setNewDate(date);
-
 	}
 
 	private _setMonthOptions(selectedDate: Date): Date[] {
 		if (selectedDate.getDate() < 5 && selectedDate.getMonth() === new Date().getMonth()) {
 			const currentDate = new Date();
 			return [currentDate, new Date(currentDate.getFullYear(), currentDate.getMonth() - 1)];
-		} else if (selectedDate.getMonth() < new Date().getMonth() || selectedDate.getFullYear() !== new Date().getFullYear()) {
+		} else if (
+			selectedDate.getMonth() < new Date().getMonth() ||
+			selectedDate.getFullYear() !== new Date().getFullYear()
+		) {
 			return [new Date()];
 		}
 		return [];
