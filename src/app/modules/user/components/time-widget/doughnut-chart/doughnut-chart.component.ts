@@ -93,10 +93,12 @@ export class DoughnutChartComponent implements OnInit {
 	}
 
 	private _updateChart(): void {
+		const chartData: number[] = [];
 		const projectsHours =
 			this.activities?.projects
 				?.filter((project) => project?.userHours)
 				.map((project) => project?.userHours as number) ?? [];
+		chartData.push(...projectsHours);
 		const leavesHours =
 			this.activities?.leaves
 				?.filter((leave) => leave?.startTime && leave.endTime)
@@ -109,13 +111,15 @@ export class DoughnutChartComponent implements OnInit {
 						}),
 					0
 				) ?? 0;
+		if (leavesHours) {
+			chartData.push(leavesHours);
+		}
 		const timeLeft = projectsHours?.reduce((acc, activity) => acc - activity, this.monthNorm) - leavesHours;
 
 		const colors = [...this.COLORS.slice(0, projectsHours?.length + (leavesHours ? 1 : 0)), this.EMPTY_COLOR];
 
 		if (this._chart) {
-			this._chart.data.datasets[0].data = [...projectsHours, leavesHours, timeLeft < 0 ? 0 : timeLeft];
-			console.log(colors, this._chart.data.datasets[0].data);
+			this._chart.data.datasets[0].data = [...chartData, timeLeft < 0 ? 0 : timeLeft];
 			this._chart.data.datasets[0].backgroundColor = colors;
 			this._chart.update();
 		}
