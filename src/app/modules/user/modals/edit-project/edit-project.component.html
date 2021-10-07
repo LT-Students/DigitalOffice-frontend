@@ -9,7 +9,7 @@
         <div>
             <mat-form-field appearance="fill" class="modal__hours" matTooltipPosition="right"
                 [matTooltip]="inputErrorMessage" matTooltipClass="tooltip">
-                <input (input)="onHoursInput()" matInput formControlName="userHours" placeholder="0" />
+                <input (input)="onHoursInput()" matInput formControlName="userHours" placeholder="0" required />
             </mat-form-field>
             <span class="mat-h3">ч за {{ projectDate | date: 'LLLL YYYY' }}</span>
         </div>
