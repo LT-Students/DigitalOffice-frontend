@@ -1,6 +1,6 @@
 {
   "name": "digital-office-frontend",
-  "version": "5.2.0",
+  "version": "0.5.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
