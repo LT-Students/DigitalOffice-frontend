@@ -17,7 +17,7 @@ import { Observable } from 'rxjs';
 	styleUrls: ['./new-role.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewRoleComponent implements OnInit {
+export class NewRoleComponent {
 	public rights$: Observable<RightResponse[]>;
 	public roleForm: FormGroup;
 
@@ -29,13 +29,11 @@ export class NewRoleComponent implements OnInit {
 	) {
 		this.rights$ = this._rightsService.findRights();
 		this.roleForm = this._fb.group({
-			name: ['', [Validators.required]],
+			name: ['', [Validators.required, DoValidators.noWhitespaces]],
 			description: [''],
 			rights: this._fb.array([], [DoValidators.atLeastOneChecked]),
 		});
 	}
-
-	public ngOnInit(): void {}
 
 	public onCheckboxChange(e: MatCheckboxChange): void {
 		const rights: FormArray = this.roleForm?.get('rights') as FormArray;
@@ -61,7 +59,7 @@ export class NewRoleComponent implements OnInit {
 			})
 			.subscribe(
 				(result: OperationResultResponse) => {
-					this._snackBar.open('New role added successfully', 'done', {
+					this._snackBar.open('Новая роль успешно добавлена!', 'done', {
 						duration: 3000,
 					});
 					this._dialogRef.close(result);

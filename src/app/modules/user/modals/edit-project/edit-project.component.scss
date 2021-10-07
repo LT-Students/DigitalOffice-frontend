@@ -11,15 +11,9 @@
 		margin-left: 16px;
 	}
 
-	&__date {
-		padding: 4px 0 12px 0;
-	}
-
-	&__hours-wrapper {
-		display: flex;
-		align-items: center;
-	}
-
+	// &__date {
+	// 	padding: 4px 0 12px 0;
+	// }
 	&__hours {
 		margin-right: 5px;
 		padding: 0;
@@ -39,8 +33,4 @@
 .controls {
 	display: flex;
 	justify-content: space-around;
-
-	//&__button {
-	//	padding: 6px 72px;
-	//}
 }
