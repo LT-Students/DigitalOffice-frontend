@@ -52,7 +52,7 @@ export class AddHoursComponent implements OnDestroy {
 
 		this.addHoursForm = this._fb.group({
 			time: [
-				null,
+				'',
 				[Validators.required, Validators.min(1), timeValidator(() => this._attendanceService.countMaxHours())],
 			],
 			startDate: [new Date(), [Validators.required]],
@@ -98,15 +98,22 @@ export class AddHoursComponent implements OnDestroy {
 
 	public patchWorkTimeInfoIntoForm(workTime: WorkTimeInfo | undefined, event: MatOptionSelectionChange): void {
 		if (event.isUserInput && workTime) {
-			this.addHoursForm.patchValue({
-				time: workTime.userHours,
-				comment: workTime.description,
-			});
+			if (this.addHoursForm.get('time')?.value !== '') {
+				this.addHoursForm.patchValue({
+					comment: workTime.description,
+				});
+			} else {
+				this.addHoursForm.patchValue({
+					time: workTime.userHours,
+					comment: workTime.description,
+				});
+			}
 		}
 	}
 
 	public toggleFormType(isProjectForm: boolean): void {
 		this.isProjectForm = isProjectForm;
+		this.recommendedTime.next(0);
 		const validators = isProjectForm
 			? [Validators.required, Validators.min(1), timeValidator(() => this._attendanceService.countMaxHours())]
 			: [];
