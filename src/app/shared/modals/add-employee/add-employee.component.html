@@ -19,9 +19,9 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="search__position">
-            <mat-label>Favorite food</mat-label>
+            <mat-label>Выберите должность</mat-label>
             <mat-select>
-                <mat-option *ngFor="let position of positions" [value]="">
+                <mat-option *ngFor="let position of positions" [value]="position">
                     {{position}}
                 </mat-option>
             </mat-select>
