@@ -44,7 +44,7 @@ export class DepartmentCardComponent implements OnInit {
 		private _modalService: ModalService,
 		private _route: ActivatedRoute,
 		private _cdr: ChangeDetectorRef,
-		public dialog: MatDialog
+		private dialog: MatDialog
 	) {
 		this._departmentId = this._route.snapshot.params.id;
 		this.totalCount = 0;
@@ -151,7 +151,7 @@ export class DepartmentCardComponent implements OnInit {
 		}
 		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 	}
-	openDialog() {
-		this.dialog.open(AddEmployeeComponent);
+	public openDialog(): void {
+		this.dialog.open(AddEmployeeComponent, { maxWidth: '670px' } );
 	}
 }
