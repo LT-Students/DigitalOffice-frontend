@@ -11,6 +11,8 @@ import { OperationResultStatusType } from '@data/api/user-service/models';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
+import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface EditModalContent {
 	id?: string;
@@ -41,7 +43,8 @@ export class DepartmentCardComponent implements OnInit {
 		private _router: Router,
 		private _modalService: ModalService,
 		private _route: ActivatedRoute,
-		private _cdr: ChangeDetectorRef
+		private _cdr: ChangeDetectorRef,
+		public dialog: MatDialog
 	) {
 		this._departmentId = this._route.snapshot.params.id;
 		this.totalCount = 0;
@@ -147,5 +150,8 @@ export class DepartmentCardComponent implements OnInit {
 			return 0;
 		}
 		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+	}
+	openDialog() {
+		this.dialog.open(AddEmployeeComponent);
 	}
 }

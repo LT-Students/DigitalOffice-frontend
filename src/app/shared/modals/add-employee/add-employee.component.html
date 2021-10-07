@@ -6,53 +6,46 @@
     </div>
 
     <div class="search">
-
-        <div
-            class="search-name"
+        <button
+            mat-icon-button
+            class="search__button"
         >
-            <button
-                mat-icon-button
-                class="search-name__button"
-            >
-                <img src="/assets/svg/magnifier.svg" alt="magnifier" />
-            </button>
-            <input
-                matInput
-                placeholder="Введите фамилию и имя сотрудника"
-                type="text"
-                class="search-name__input"
-            />
+            <img src="/assets/svg/magnifier.svg" alt="magnifier" />
+        </button>
 
-        </div>
+        <mat-form-field class="search__name" appearance="fill">
+            <mat-label>Введите фамилию и имя сотрудника</mat-label>
+            <input matInput placeholder="Романов Владислав" value="">
+        </mat-form-field>
 
-        <mat-select class="search-position" placeholder="Выберите должность" disableOptionCentering="true">
-            <mat-option *ngFor="let position of positions" [value]="position">
-                {{ position }}
-            </mat-option>
-        </mat-select>
-
+        <mat-form-field appearance="fill" class="search__position">
+            <mat-label>Favorite food</mat-label>
+            <mat-select>
+                <mat-option *ngFor="let position of positions" [value]="">
+                    {{position}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 
-    <h4 class="how-many-staff-title">Добавлено 0 сотрудников</h4>
-
-    <div class="user-row" *ngFor="let member of membersAll">
-        <div>
+    <h4>Добавлено 0 сотрудников</h4>
+    <mat-dialog-content>
+        <div class="user-row" *ngFor="let member of membersAll">
             <mat-checkbox
                 [value]="$any(member?.id)"
             ></mat-checkbox>
+            <do-profile-image class="user-row__image" [image]="member?.avatar"></do-profile-image>
+            <div class="user-row__general-info">
+                <div>{{ member.firstName }} {{ member.lastName }}</div>
+                <div class="mat-body-1">{{ member.position }}</div>
+            </div>
+            <div class='user-row__department-info'>{{member.department}}</div>
         </div>
-        <div class="user-row__image">
-            <do-profile-image [image]="member?.avatar"></do-profile-image>
-        </div>
-        <div class="general-info user-row__general-info">
-            <div class="general-info__name">{{ member.firstName }} {{ member.lastName }}</div>
-            <div class="general-info__position">{{ member.position }}</div>
-        </div>
-        <div class='user-row__department-info'>{{member.department}}</div>
-    </div>
+    </mat-dialog-content>
+
 
 </div>
-<div class='modal-background'></div>
+
 
 
 

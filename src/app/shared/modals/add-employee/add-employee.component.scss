@@ -2,31 +2,7 @@
 $height: 32px;
 
 .modal {
-	position: fixed;
-	z-index: 1000;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-
-	margin: 5% 25% 0;
-	padding: 20px;
-
-	overflow: auto;
-
-	background: #fff;
-}
-
-.modal-background {
-	position: fixed;
-	z-index: 900;
-	top: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
-
-	background-color: #000;
-	opacity: 0.75;
+	max-width: 600px;
 }
 
 .modal__header {
@@ -39,64 +15,19 @@ $height: 32px;
 
 	display: flex;
 	justify-content: space-between;
-}
-
-.search-name {
-	display: flex;
-
-	width: 100%;
-
-	height: $height;
-
-	background-color: inherit;
-	border-radius: 5px;
-
-	&:hover {
-		background-color: variables.$light_3;
-	}
-
-	&:focus {
-		border: 2px solid #9e9e9e;
-	}
 
 	&__button {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		height: $height;
-
-		background-color: inherit;
-		border: none;
-		border-radius: 5px;
-
-		.mat-button-wrapper {
-			line-height: $height;
-		}
+		align-self: center;
 	}
 
-	.mat-icon-button {
-		line-height: $height;
-
-		border: none;
+	&__name {
+		width: 100%;
 	}
-}
 
-.search-position {
-	margin-left: 50px;
-	padding: 4px;
-
-	width: 65%;
-	align-self: center;
-
-	&:hover {
-		background-color: variables.$light_3;
+	&__position {
+		margin-left: 50px;
+		align-self: flex-end;
 	}
-}
-
-.how-many-staff-title {
-	font-size: 14px;
-	font-weight: bold;
 }
 
 .user-row {
@@ -112,24 +43,5 @@ $height: 32px;
 
 	&__department-info {
 		margin-left: 45px;
-
-		font-size: 16px;
-		font-weight: bold;
 	}
-}
-
-.search__input::placeholder {
-	text-align: left;
-}
-
-.general-info__name {
-	font-size: 14px;
-	font-weight: bold;
-}
-
-.general-info__position {
-	font-size: 14px;
-	font-weight: bold;
-
-	color: variables.$gray;
 }
