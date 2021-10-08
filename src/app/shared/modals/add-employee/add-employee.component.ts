@@ -17,8 +17,8 @@ export class AddEmployeeComponent {
 		this.positions = ['front', 'back', 'manager', 'lead'];
 	  this.membersAll = [
 		  { firstName: 'Vlad', lastName: 'Romanov', position: 'Front-End разработчик', department: 'Департамент Цифровых решений' },
-		  { firstName: 'Vl', lastName: 'Rom', position: 'Front', department: 'Департамент Цифровых решений' },
-		  { firstName: 'Vladislav', lastName: 'Romanovskiy', position: 'Front-End разработчик', department: 'Департамент Цифровых решений' },
+		  { firstName: 'Vl', lastName: 'Rom', position: 'Front', department: 'Департамент Цифровых решений и не решений' },
+		  { firstName: 'Vladislav', lastName: 'Romanovskiy', position: 'Front-End разработчик and QA Engineer', department: 'Департамент' },
 		  { firstName: 'Vlad', lastName: 'Romanov', position: 'Front-End разработчик', department: 'Департамент Цифровых решений' },
 		  { firstName: 'Vlad', lastName: 'Romanov', position: 'Front-End разработчик', department: 'Департамент Цифровых решений' },
 		  { firstName: 'Vlad', lastName: 'Romanov', position: 'Front-End разработчик', department: 'Департамент Цифровых решений' },
