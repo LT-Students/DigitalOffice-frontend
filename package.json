@@ -111,7 +111,7 @@
       "prettier --write",
       "stylelint --fix"
     ],
-    "src/**/*.{ts,html}, !src/data/api/**/*.ts": [
+    "*.{ts,html}": [
       "prettier --write",
       "eslint --fix"
     ]
