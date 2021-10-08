@@ -5,23 +5,21 @@ import { MatDatepicker } from '@angular/material/datepicker';
 	selector: 'do-title-datepicker',
 	templateUrl: './title-datepicker.component.html',
 	styleUrls: ['./title-datepicker.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class TitleDatepickerComponent {
 	@Input() text: string | undefined;
 	@Input() selectDate?: Date | null;
-	@Output() onSelectedDate: EventEmitter<Date>;
+	@Output() dateSelection: EventEmitter<Date>;
 
 	constructor() {
-		this.selectDate =  new Date();
-		this.onSelectedDate = new EventEmitter<Date>();
+		this.selectDate = new Date();
+		this.dateSelection = new EventEmitter<Date>();
 	}
 
-	public chosenMonthHandler(date: Date, picker: MatDatepicker<any>): void{
+	public chosenMonthHandler(date: Date, picker: MatDatepicker<any>): void {
 		this.selectDate = date;
-		this.onSelectedDate.emit(this.selectDate);
+		this.dateSelection.emit(this.selectDate);
 		picker.close();
 	}
-
 }
