@@ -72,9 +72,9 @@ export class StepperComponent implements OnDestroy, OnChanges, MatFormFieldContr
 	@Input()
 	public disabled: boolean;
 
-	errorState: boolean;
+	public errorState: boolean;
 
-	controlType?: string | undefined;
+	public controlType?: string | undefined;
 
 	@HostBinding('attr.aria-describedby')
 	public userAriaDescribedBy?: string | undefined;
