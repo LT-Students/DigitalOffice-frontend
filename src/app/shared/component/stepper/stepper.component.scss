@@ -1,31 +1,13 @@
-@use 'base/variables';
+.field {
+	width: 100%;
 
-.stepper {
-	&__label {
-		display: block;
+	text-align: center;
 
-		text-align: start;
+	&__input {
+		vertical-align: middle;
 	}
 
 	&__button {
-		&:disabled {
-			padding: 0;
-
-			min-width: 0;
-
-			background-color: transparent;
-		}
-	}
-
-	&__required {
-		margin-left: 1px;
-
-		vertical-align: top;
-	}
-
-	&__form-field {
-		display: block;
-
-		text-align: center;
+		vertical-align: middle;
 	}
 }
