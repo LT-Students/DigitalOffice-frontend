@@ -1,23 +1,23 @@
 <form autocomplete="off" [formGroup]="officeForm" (ngSubmit)="createOffice()">
-	<h3 mat-dialog-title>Новый офис</h3>
-	<mat-dialog-content>
-		<div class="form__container">
-			<mat-form-field appearance="fill">
-				<mat-label>Город</mat-label>
-				<input matInput type="text" id="city" formControlName="city" required />
-			</mat-form-field>
-			<mat-form-field appearance="fill">
-				<mat-label>Адрес</mat-label>
-				<input matInput type="text" id="address" formControlName="address" required />
-			</mat-form-field>
-			<mat-form-field appearance="fill">
-				<mat-label>Название офиса</mat-label>
-				<input matInput type="text" id="name" formControlName="name" />
-			</mat-form-field>
-		</div>
-	</mat-dialog-content>
-	<mat-dialog-actions align="center">
-		<button mat-button mat-dialog-close type="button">Отмена</button>
-		<button mat-flat-button color="primary" type="submit" [disabled]="officeForm.invalid">Добавить офис</button>
-	</mat-dialog-actions>
+    <h3 mat-dialog-title>Новый офис</h3>
+    <mat-dialog-content>
+        <div class="form__container">
+            <mat-form-field appearance="fill">
+                <mat-label>Город</mat-label>
+                <input matInput type="text" id="city" formControlName="city" required />
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Адрес</mat-label>
+                <input matInput type="text" id="address" formControlName="address" required />
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Название офиса</mat-label>
+                <input matInput type="text" id="name" formControlName="name" />
+            </mat-form-field>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="center">
+        <button mat-button mat-dialog-close type="button">Отмена</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="officeForm.invalid">Добавить офис</button>
+    </mat-dialog-actions>
 </form>

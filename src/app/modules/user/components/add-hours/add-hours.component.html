@@ -39,8 +39,8 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Выберите диапазон отсутствия</mat-label>
 					<mat-date-range-input [min]="minDate" [max]="maxDate" [dateFilter]="disableWeekends" [rangePicker]="$any(picker)" required>
-						<input matStartDate formControlName="startDate" />
-						<input matEndDate formControlName="endDate" />
+						<input class='start-date__fix' matStartDate formControlName="startDate" readonly />
+						<input matEndDate formControlName="endDate" readonly />
 					</mat-date-range-input>
 					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 					<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
