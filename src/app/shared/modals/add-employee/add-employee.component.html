@@ -1,44 +1,42 @@
-<div class='modal'>
+<div class="modal">
+	<div class="modal__header">
+		<h3>Добавление сотрудника в департамент Цифровых решений</h3>
+		<button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+	</div>
 
-    <div class='modal__header'>
-        <h3>Добавление сотрудника в департамент Цифровых решений</h3>
-        <button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
-    </div>
+	<div class="search">
+		<mat-form-field class="search__name" appearance="fill">
+			<mat-icon matPrefix class="search__button">search</mat-icon>
+			<mat-label>Введите фамилию и имя сотрудника</mat-label>
+			<input matInput type="search" placeholder="Романов Владислав" />
+		</mat-form-field>
 
-    <div class="search">
-        <mat-form-field class="search__name" appearance="fill">
-            <mat-icon matPrefix class="search__button">search</mat-icon>
-            <mat-label>Введите фамилию и имя сотрудника</mat-label>
-            <input matInput type="search" placeholder="Романов Владислав">
-        </mat-form-field>
+		<mat-form-field appearance="fill" class="search__position">
+			<mat-label>Выберите должность</mat-label>
+			<mat-select>
+				<mat-option *ngFor="let position of positions" [value]="position">
+					{{ position }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
 
-        <mat-form-field appearance="fill" class="search__position">
-            <mat-label>Выберите должность</mat-label>
-            <mat-select>
-                <mat-option *ngFor="let position of positions" [value]="position">
-                    {{position}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-
-    <h4>Добавлено 0 сотрудников</h4>
-    <mat-dialog-content>
-        <div class="user-row" *ngFor="let member of membersAll">
-            <mat-checkbox
-                class="user-row__checkbox"
-                [value]="$any(member?.id)"
-            ></mat-checkbox>
-            <do-profile-image class="user-row__image" [image]="member?.avatar"></do-profile-image>
-            <div class="user-row__general-info">
-                <div>{{ member.firstName }} {{ member.lastName }}</div>
-                <div class="mat-body-1">{{ member.position }}</div>
-            </div>
-            <div class='user-row__department-info'>{{member.department}}</div>
-        </div>
-    </mat-dialog-content>
+	<h4>Добавлено 0 сотрудников</h4>
+	<mat-dialog-content
+		infiniteScroll
+		[infiniteScrollDistance]="3"
+		[infiniteScrollThrottle]="50"
+		(scrolled)="onScroll()"
+		[scrollWindow]="false"
+	>
+		<div class="user-row" *ngFor="let member of membersAll">
+			<mat-checkbox class="user-row__checkbox" [value]="$any(member?.id)"></mat-checkbox>
+			<do-profile-image class="user-row__image" [image]="member?.avatar"></do-profile-image>
+			<div class="user-row__general-info">
+				<div>{{ member.firstName }} {{ member.lastName }}</div>
+				<div class="mat-body-1">{{ member.position === null ? '' : member.position.name }}</div>
+			</div>
+			<div class="user-row__department-info">{{ member.department === null ? '' : member.department.name }}</div>
+		</div>
+	</mat-dialog-content>
 </div>
-
-
-
-

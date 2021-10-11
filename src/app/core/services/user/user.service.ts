@@ -35,11 +35,19 @@ export class UserService {
 			.pipe(switchMap((userResponse: OperationResultResponseUserResponse) => of(new User(userResponse))));
 	}
 
-	public findUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<FindResultResponseUserInfo> {
+	public findUsers(
+		skipPages = 0,
+		pageSize = 10,
+		departmentId?: string,
+		includedepartment?: boolean,
+		includeposition?: boolean
+	): Observable<FindResultResponseUserInfo> {
 		return this._userApiService.findUsers({
 			skipCount: skipPages,
 			takeCount: pageSize,
 			departmentid: departmentId,
+			includedepartment: includedepartment,
+			includeposition: includeposition,
 		});
 	}
 
