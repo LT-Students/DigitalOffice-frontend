@@ -16,7 +16,6 @@ import { Moment } from 'moment';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
-import { setHebrewDay } from '@ng-bootstrap/ng-bootstrap/datepicker/hebrew/hebrew';
 
 @Injectable({
 	providedIn: 'root',

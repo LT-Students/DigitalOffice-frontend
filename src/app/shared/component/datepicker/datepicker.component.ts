@@ -4,7 +4,6 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import localeRu from '@angular/common/locales/ru';
 
 export const DATE_FORMAT = {
 	parse: {

@@ -145,7 +145,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			.filter((key) => this.employeeInfoForm.get(key)?.dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
 		this._employeeService.editEmployee(editRequest).subscribe({
-			next: (result) => {
+			next: () => {
 				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
 			},
 			error: (error: HttpErrorResponse) => {
