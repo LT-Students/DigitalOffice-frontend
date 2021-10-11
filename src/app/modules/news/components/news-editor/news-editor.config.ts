@@ -21,6 +21,7 @@ import { LocalStorageService } from '@app/services/local-storage.service';
 //@ts-ignore
 import Image from '../../editorjs-plugins/blocks/image/bundle.js';
 import { Preview } from '../../editorjs-plugins/block-tunes/preview';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
 	providedIn: 'root',
@@ -89,9 +90,8 @@ export class NewsEditorConfig {
 											this._imageNewsService.createImageNews(ciRequest)
 										),
 										map((response) => {
-											console.log(response);
 											if (response.status === OperationResultStatusType.FullSuccess) {
-												const imageUrl = `https://image.ltdo.xyz/fileimage/get?imageid=${response.body?.imageId}&source=News`;
+												const imageUrl = `https://image.${environment.apiUrl}/fileimage/get?imageid=${response.body?.imageId}&source=News`;
 												return {
 													success: 1,
 													file: {
