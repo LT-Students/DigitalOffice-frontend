@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.6.2.1",
+    "version": "1.6.2.2",
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments."
   },
@@ -759,7 +759,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -769,7 +769,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -826,12 +826,77 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/office/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "officeId",
+          "in": "query",
+          "description": "Office global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Office"
+        ],
+        "operationId": "editOffice",
+        "description": "Edit the specified office by id.\n* The user must have to be admin or has right.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditOfficeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1612,11 +1677,6 @@
         "type": "string",
         "description": "Operation complition result status.",
         "enum": [
-          0,
-          1,
-          2
-        ],
-        "x-enumNames": [
           "FullSuccess",
           "PartialSuccess",
           "Failed"
@@ -1692,6 +1752,36 @@
           }
         }
       },
+      "PatchOfficeDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Name",
+              "/City",
+              "/Address"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
       "PatchDepartmentDocument": {
         "type": "object",
         "required": [
@@ -1757,6 +1847,39 @@
         ],
         "items": {
           "$ref": "#/components/schemas/PatchCompanyDocument"
+        }
+      },
+      "EditOfficeRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "format": "string",
+              "example": "office"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/City",
+            "value": {
+              "format": "string",
+              "example": "Moscow"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Address",
+            "value": {
+              "format": "string",
+              "example": "Moskow, street 51"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchOfficeDocument"
         }
       },
       "EditPositionRequest": {

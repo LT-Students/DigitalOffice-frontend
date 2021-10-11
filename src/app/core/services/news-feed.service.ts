@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, from, Observable } from 'rxjs';
 import { ArticlePreview } from '@app/models/news.model';
 import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
-import { concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
+import { catchError, concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
+import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
 import { EditorJSParser } from '../../modules/news/parser';
 
 @Injectable({
@@ -41,9 +42,19 @@ export class NewsFeedService {
 				}),
 				switchMap((articlePreviews) => from(articlePreviews.body ?? [])),
 				concatMap((articlePreview) => {
-					return this._editorJSParser
-						.parse(JSON.parse(articlePreview.preview ?? '[]'))
-						.pipe(map((block) => ({ ...articlePreview, preview: block.join('') } as ArticlePreview)));
+					try {
+						const preview: IOutputBlockData[] = JSON.parse(articlePreview.preview as string);
+
+						return this._editorJSParser.parse(preview).pipe(
+							map((block) => ({ ...articlePreview, preview: block.join('') } as ArticlePreview)),
+							catchError((err) => {
+								console.log(err);
+								return EMPTY;
+							})
+						);
+					} catch (e) {
+						return EMPTY;
+					}
 				}),
 				toArray(),
 				tap((articlePreviews) => {
@@ -51,7 +62,7 @@ export class NewsFeedService {
 					this._newsFeed.next([...prevValue, ...articlePreviews]);
 				})
 			)
-			.subscribe(() => console.log(this._newsCount, this._totalCount));
+			.subscribe();
 	}
 
 	public deleteNews(newsId: string) {

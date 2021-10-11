@@ -8,11 +8,11 @@ import { ArticlePreview } from '@app/models/news.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalService } from '@app/services/modal.service';
 import { NewsFeedService } from '@app/services/news-feed.service';
+import { CompanyService } from '@app/services/company/company.service';
 import { EditorJSParser } from '../../parser';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
 import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
-import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-news-feed',

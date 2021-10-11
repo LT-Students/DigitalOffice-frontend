@@ -1,6 +1,6 @@
 {
   "name": "digital-office-frontend",
-  "version": "5.0.0",
+  "version": "0.5.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -21,7 +21,8 @@
     "generate.rights": "ng-openapi-gen -c swagger/config/rights.json",
     "generate.time": "ng-openapi-gen -c swagger/config/time.json",
     "generate.user": "ng-openapi-gen -c swagger/config/user.json",
-    "generate-api": "node swagger/generate.js"
+    "generate-api": "node swagger/generate.js",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -76,7 +77,7 @@
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
-    "husky": "^4.3.0",
+    "husky": "^7.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
     "karma": "~6.3.4",
@@ -99,7 +100,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "sh .githooks/pre-commit && npx lint-staged --relative"
+      "pre-commit": "sh .githooks/pre-commit && sh .husky/pre-commit"
     }
   },
   "lint-staged": {
@@ -110,7 +111,7 @@
       "prettier --write",
       "stylelint --fix"
     ],
-    "src/**/*.{ts,html}, !src/data/api/**/*.ts": [
+    "*.{ts,html}": [
       "prettier --write",
       "eslint --fix"
     ]
