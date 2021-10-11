@@ -16,6 +16,7 @@ import { Moment } from 'moment';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
+import { setHebrewDay } from '@ng-bootstrap/ng-bootstrap/datepicker/hebrew/hebrew';
 
 @Injectable({
 	providedIn: 'root',
@@ -96,18 +97,20 @@ export class UserService {
 					break;
 				case 'startWorkingAt':
 					const date: Moment = item.value;
+					const changedDate = new Date(date.toDate().setDate(date.toDate().getDate() + 1));
 					body.push({
 						op: 'replace',
 						path: '/StartWorkingAt',
-						value: date.toISOString(),
+						value: changedDate.toISOString(),
 					});
 					break;
 				case 'dateOfBirth':
 					const dateOfBirth: Moment = item.value;
+					const changedDateOfBirth = new Date(dateOfBirth.toDate().setDate(dateOfBirth.toDate().getDate() + 1));
 					body.push({
 						op: 'replace',
 						path: '/DateOfBirth',
-						value: dateOfBirth.toISOString(),
+						value: changedDateOfBirth.toISOString(),
 					});
 					break;
 				case 'department':
@@ -170,6 +173,7 @@ export class UserService {
 					break;
 			}
 		});
+
 
 		const params: IEditUserRequest = {
 			userId,

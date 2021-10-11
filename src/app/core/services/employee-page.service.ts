@@ -4,6 +4,7 @@ import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { switchMap, tap } from 'rxjs/operators';
+import { userResponse } from '../../modules/employee/mock';
 
 @Injectable({
 	providedIn: 'root',
@@ -37,7 +38,6 @@ export class EmployeePageService {
 		const userId = this._selectedUser.value?.id as string;
 		return this._userService.editUser(userId, editRequest).pipe(
 			switchMap((response) => {
-				console.log(response.body);
 				return this.getEmployee(userId);
 			}),
 		);

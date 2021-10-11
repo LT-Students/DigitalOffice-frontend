@@ -81,7 +81,6 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		this._route.params.subscribe((param) => (this.isEditing = false));
 		this.userSubscription = this._employeeService.selectedUser$.subscribe((user) => {
 			this.user = user;
-			console.log('main-info', user);
 			this._cdr.markForCheck();
 		});
 	}
@@ -145,9 +144,8 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		const editRequest: { path: string; value: any }[] = Object.keys(this.employeeInfoForm.controls)
 			.filter((key) => this.employeeInfoForm.get(key)?.dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
-
 		this._employeeService.editEmployee(editRequest).subscribe({
-			next: () => {
+			next: (result) => {
 				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
 			},
 			error: (error: HttpErrorResponse) => {
