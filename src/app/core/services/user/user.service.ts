@@ -17,13 +17,24 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 
+export interface IFindUsers {
+	skipCount: number;
+	takeCount: number;
+	departmentid?: string;
+	includedeactivated?: boolean;
+	includedepartment?: boolean;
+	includeposition?: boolean;
+	includeoffice?: boolean;
+	includerole?: boolean;
+	includeavatar?: boolean;
+}
+
 @Injectable({
 	providedIn: 'root',
 })
 export class UserService {
 	private _currentUser: BehaviorSubject<User | null>;
 	public readonly currentUser$: Observable<User | null>;
-
 	constructor(private _userApiService: UserApiService) {
 		this._currentUser = new BehaviorSubject<User | null>(null);
 		this.currentUser$ = this._currentUser.asObservable();

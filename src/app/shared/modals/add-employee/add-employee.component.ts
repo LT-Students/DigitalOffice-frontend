@@ -1,5 +1,7 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Input, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Input, OnInit, Inject } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UserInfo } from '@data/api/user-service/models/user-info';
 
 @Component({
 	selector: 'do-modal-add-employee',
@@ -8,25 +10,40 @@ import { UserService } from '@app/services/user/user.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEmployeeComponent implements OnInit {
-	@Input() idToHide?: string[];
 	public positions: string[];
-	public membersAll: any[];
+	public employees: UserInfo[];
+	public pageSize: number;
+	public pageIndex: number;
 
-	constructor(private _userService: UserService, private _cdr: ChangeDetectorRef) {
+	constructor(
+		private _userService: UserService,
+		private _cdr: ChangeDetectorRef,
+		public dialogRef: MatDialogRef<AddEmployeeComponent>,
+		@Inject(MAT_DIALOG_DATA) public data: { idToHide: string[] }
+	) {
 		this.positions = ['front', 'back', 'manager', 'lead'];
-		this.membersAll = [];
+		this.employees = [];
+		this.pageSize = 5;
+		this.pageIndex = 0;
 	}
 	public ngOnInit(): void {
 		this._getPageUsers();
 	}
 
+	onNoClick(): void {
+		this.dialogRef.close();
+	}
+
 	private _getPageUsers(): void {
-		this._userService.findUsers(0, 10, '', true, true).subscribe((data) => {
-			this.membersAll = data?.body?.slice() ?? [];
-			if (this.idToHide !== undefined) {
-				// @ts-ignore
-				this.membersAll = this.membersAll.filter((e) => this.idToHide.indexOf(e.id) === -1);
-			}
+		this._userService.findUsers(this.pageIndex, this.pageSize, '', true, true).subscribe((data) => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+			data?.body?.forEach((el) => {
+				this.employees.push(el);
+			}) ?? [];
+			this.employees = this.employees.filter((e) => this.data.idToHide.indexOf(e.id as string) === -1);
+			console.log(this.employees);
+			this.pageIndex += this.employees.length + this.data.idToHide.length;
+			this.pageSize += this.employees.length + this.data.idToHide.length;
 			this._cdr.markForCheck();
 		});
 	}

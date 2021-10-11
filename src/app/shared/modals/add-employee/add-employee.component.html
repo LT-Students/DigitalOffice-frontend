@@ -23,20 +23,25 @@
 
 	<h4>Добавлено 0 сотрудников</h4>
 	<mat-dialog-content
+		class="scrolled-content"
 		infiniteScroll
 		[infiniteScrollDistance]="3"
 		[infiniteScrollThrottle]="50"
 		(scrolled)="onScroll()"
 		[scrollWindow]="false"
 	>
-		<div class="user-row" *ngFor="let member of membersAll">
+		<div class="user-row" *ngFor="let member of employees">
 			<mat-checkbox class="user-row__checkbox" [value]="$any(member?.id)"></mat-checkbox>
 			<do-profile-image class="user-row__image" [image]="member?.avatar"></do-profile-image>
 			<div class="user-row__general-info">
 				<div>{{ member.firstName }} {{ member.lastName }}</div>
-				<div class="mat-body-1">{{ member.position === null ? '' : member.position.name }}</div>
+				<div class="mat-body-1">{{ member.position === null ? '' : member.position?.name }}</div>
 			</div>
-			<div class="user-row__department-info">{{ member.department === null ? '' : member.department.name }}</div>
+			<div class="user-row__department-info">{{ member.department === null ? '' : member.department?.name }}</div>
 		</div>
 	</mat-dialog-content>
+	<div mat-dialog-actions>
+		<button mat-button (click)="onNoClick()">Отмена</button>
+		<button mat-button cdkFocusInitial>Сохранить</button>
+	</div>
 </div>
