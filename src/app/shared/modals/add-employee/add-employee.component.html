@@ -35,9 +35,9 @@
 			<do-profile-image class="user-row__image" [image]="member?.avatar"></do-profile-image>
 			<div class="user-row__general-info">
 				<div>{{ member.firstName }} {{ member.lastName }}</div>
-				<div class="mat-body-1">{{ member.position === null ? '' : member.position?.name }}</div>
+				<div class="mat-body-1">{{ member.position?.name ?? '' }}</div>
 			</div>
-			<div class="user-row__department-info">{{ member.department === null ? '' : member.department?.name }}</div>
+			<div class="user-row__department-info">{{ member.department?.name ?? '' }}</div>
 		</div>
 	</mat-dialog-content>
 	<div mat-dialog-actions>

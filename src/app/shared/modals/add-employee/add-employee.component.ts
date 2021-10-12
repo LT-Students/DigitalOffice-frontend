@@ -12,7 +12,7 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 export class AddEmployeeComponent implements OnInit {
 	public positions: string[];
 	public employees: UserInfo[];
-	private _usersListSize: number;
+	private _takeUsers: number;
 	private _skipUsers: number;
 
 	constructor(
@@ -23,7 +23,7 @@ export class AddEmployeeComponent implements OnInit {
 	) {
 		this.positions = ['front', 'back', 'manager', 'lead'];
 		this.employees = [];
-		this._usersListSize = 6;
+		this._takeUsers = 6;
 		this._skipUsers = 0;
 	}
 	public ngOnInit(): void {
@@ -38,7 +38,7 @@ export class AddEmployeeComponent implements OnInit {
 		this._userService
 			.findUsers({
 				skipCount: this._skipUsers,
-				takeCount: this._usersListSize,
+				takeCount: this._takeUsers,
 				includedepartment: true,
 				includeposition: true,
 			})
