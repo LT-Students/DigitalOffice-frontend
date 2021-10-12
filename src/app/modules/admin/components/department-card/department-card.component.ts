@@ -157,7 +157,7 @@ export class DepartmentCardComponent implements OnInit {
 	}
 	public openDialog(): void {
 		this._dialog.open(AddEmployeeComponent, {
-			data: { idToHide: ['e59a60de-5e29-4678-b70d-567c0c29bc65'] },
+			data: { idToHide: this.sortedUsersInfo.map((e) => e.id) },
 			maxWidth: '670px',
 		});
 	}
