@@ -82,7 +82,11 @@ export class DepartmentCardComponent implements OnInit {
 
 	private _getUsers(): void {
 		this._userService
-			.findUsers(this.pageIndex * this.pageSize, this.pageSize, this._departmentId)
+			.findUsers({
+				skipCount: this.pageIndex * this.pageSize,
+				takeCount: this.pageSize,
+				departmentid: this._departmentId,
+			})
 			.subscribe((data) => {
 				this.sortedUsersInfo = data?.body?.slice() ?? [];
 				this.totalCount = this.sortedUsersInfo.length;

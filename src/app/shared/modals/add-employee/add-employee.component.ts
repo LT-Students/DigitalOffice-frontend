@@ -35,17 +35,24 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	private _getPageUsers(): void {
-		this._userService.findUsers(this.pageIndex, this.pageSize, '', true, true).subscribe((data) => {
-			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-			data?.body?.forEach((el) => {
-				this.employees.push(el);
-			}) ?? [];
-			this.employees = this.employees.filter((e) => this.data.idToHide.indexOf(e.id as string) === -1);
-			console.log(this.employees);
-			this.pageIndex += this.employees.length + this.data.idToHide.length;
-			this.pageSize += this.employees.length + this.data.idToHide.length;
-			this._cdr.markForCheck();
-		});
+		this._userService
+			.findUsers({
+				skipCount: this.pageIndex,
+				takeCount: this.pageSize,
+				includedepartment: true,
+				includeposition: true,
+			})
+			.subscribe((data) => {
+				// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+				data?.body?.forEach((el) => {
+					this.employees.push(el);
+				}) ?? [];
+				this.employees = this.employees.filter((e) => this.data.idToHide.indexOf(e.id as string) === -1);
+				console.log(this.employees);
+				this.pageIndex += this.employees.length + this.data.idToHide.length;
+				this.pageSize += this.employees.length + this.data.idToHide.length;
+				this._cdr.markForCheck();
+			});
 	}
 
 	public onScroll() {
