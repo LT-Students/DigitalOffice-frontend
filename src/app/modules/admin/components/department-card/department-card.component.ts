@@ -8,11 +8,11 @@ import { PageEvent } from '@angular/material/paginator';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType } from '@data/api/user-service/models';
+import { MatDialog } from '@angular/material/dialog';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
-import { MatDialog } from '@angular/material/dialog';
 
 export interface EditModalContent {
 	id?: string;
@@ -82,7 +82,11 @@ export class DepartmentCardComponent implements OnInit {
 
 	private _getUsers(): void {
 		this._userService
-			.findUsers(this.pageIndex * this.pageSize, this.pageSize, this._departmentId)
+			.findUsers({
+				skipCount: this.pageIndex * this.pageSize,
+				takeCount: this.pageSize,
+				departmentid: this._departmentId,
+			})
 			.subscribe((data) => {
 				this.sortedUsersInfo = data?.body?.slice() ?? [];
 				this.totalCount = this.sortedUsersInfo.length;
@@ -152,6 +156,9 @@ export class DepartmentCardComponent implements OnInit {
 		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 	}
 	public openDialog(): void {
-		this._dialog.open(AddEmployeeComponent, { maxWidth: '670px' } );
+		this._dialog.open(AddEmployeeComponent, {
+			data: { idToHide: this.sortedUsersInfo.map((e) => e.id) },
+			maxWidth: '670px',
+		});
 	}
 }

@@ -32,7 +32,8 @@ export class ManageUsersComponent implements OnInit {
 	constructor(
 		private _userService: UserService,
 		private _modalService: ModalService,
-		private _cdr: ChangeDetectorRef) {
+		private _cdr: ChangeDetectorRef
+	) {
 		this._unsubscribe$ = new Subject<void>();
 		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
 		this.userInfo = [];
@@ -59,7 +60,7 @@ export class ManageUsersComponent implements OnInit {
 			.openModal<NewEmployeeComponent, null, OperationResultResponse>(NewEmployeeComponent)
 			.afterClosed()
 			.subscribe((result) => {
-				console.log('СТАТУС МЕНЕДЖ ЮЗЕРС: ', result?.status)
+				console.log('СТАТУС МЕНЕДЖ ЮЗЕРС: ', result?.status);
 				if (result?.status === OperationResultStatusType.FullSuccess) {
 					this._getPageUsers();
 				}
@@ -68,7 +69,7 @@ export class ManageUsersComponent implements OnInit {
 
 	public toggleUserStatus(user: UserInfo, evt: Event): void {
 		evt.stopPropagation();
-		console.log(evt)
+		console.log(evt);
 		if (user.isActive) {
 			this._userService.disableUser(user?.id ?? '').subscribe(() => {
 				this._getPageUsers();
@@ -114,12 +115,14 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	private _getPageUsers(): void {
-		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
-			this.totalCount = data?.totalCount ?? 0;
-			this.userInfo = data?.body?.slice() ?? [];
-			this.sortedUserInfo = data?.body?.slice() ?? [];
-			console.log(data.body);
-			this._cdr.markForCheck();
-		});
+		this._userService
+			.findUsers({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+			.subscribe((data) => {
+				this.totalCount = data?.totalCount ?? 0;
+				this.userInfo = data?.body?.slice() ?? [];
+				this.sortedUserInfo = data?.body?.slice() ?? [];
+				console.log(data.body);
+				this._cdr.markForCheck();
+			});
 	}
 }

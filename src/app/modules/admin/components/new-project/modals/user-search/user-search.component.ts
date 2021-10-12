@@ -43,7 +43,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		private _dialogRef: MatDialogRef<UserSearchComponent>,
 		private _cdr: ChangeDetectorRef
 	) {
-		this.checkedMembers = [...data.members as UserInfo[]];
+		this.checkedMembers = [...(data.members as UserInfo[])];
 		this.searchName = '';
 		this.members = data.members;
 		this.membersAll = [];
@@ -79,7 +79,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	private _getMembers(): void {
-		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe(
+		this._userService.findUsers({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe(
 			(data) => {
 				this.membersAll = data.body ?? [];
 				this.totalCount = data.totalCount ?? 0;

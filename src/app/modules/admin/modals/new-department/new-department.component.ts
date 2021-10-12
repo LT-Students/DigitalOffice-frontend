@@ -43,7 +43,9 @@ export class NewDepartmentComponent implements OnInit {
 		});
 		this.isEdit = !!this._departamentInfo;
 
-		this.directors$ = this._userService.findUsers(0, 500).pipe(map((response) => response.body));
+		this.directors$ = this._userService
+			.findUsers({ skipCount: 0, takeCount: 500 })
+			.pipe(map((response) => response.body));
 	}
 
 	public ngOnInit(): void {
