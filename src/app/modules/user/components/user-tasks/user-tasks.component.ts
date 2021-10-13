@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MatDatepicker } from '@angular/material/datepicker';
 
 import { OperationResultStatusType } from '@data/api/time-service/models';
 import { Activities, AttendanceService } from '@app/services/attendance.service';
@@ -18,8 +17,6 @@ export interface IDialogResponse {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserTasksComponent {
-	@ViewChild('dp') monthpicker: MatDatepicker<DateTime> | undefined;
-
 	public selectedDate$: Observable<DateTime>;
 	public activities$: Observable<Activities>;
 
