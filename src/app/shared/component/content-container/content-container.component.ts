@@ -3,7 +3,6 @@ import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } fro
 import { UserService } from '@app/services/user/user.service';
 import { AuthService } from '@app/services/auth/auth.service';
 import { Router } from '@angular/router';
-import { User } from '@app/models/user/user.model';
 import { CompanyService } from '@app/services/company/company.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -18,7 +17,7 @@ export class ContentContainerComponent implements OnInit {
 
 	public navOpened: boolean;
 	public portalName: string;
-	private _departmentId: string | undefined;
+	public departmentId: string | undefined;
 
 	constructor(
 		private _userService: UserService,
@@ -32,17 +31,16 @@ export class ContentContainerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this._userService.currentUser$.subscribe(user => {
-			this._departmentId = user?.department?.id;
-		})
+		this._userService.currentUser$.subscribe((user) => {
+			this.departmentId = user?.department?.id;
+		});
 	}
 
 	public onStatClick(): void {
-		if (this._departmentId) {
+		if (this.departmentId) {
 			this.closeNav();
-			this._router.navigate([`/admin/departments/${this._departmentId}/timelist`])
-		}
-		else this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 })
+			this._router.navigate([`/admin/departments/${this.departmentId}/timelist`]);
+		} else this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 });
 	}
 
 	public onLogoClick(): void {
