@@ -6,7 +6,7 @@
 	</mat-form-field>
 
 	<span (click)="picker.open()" class="mat-h3 month-picker primary">
-		{{ selectDate | date: 'LLLL y' }}
+		{{ selectDate | dateTime: 'LLLL y' }}
 		<mat-icon>keyboard_arrow_down</mat-icon>
 	</span>
 </h3>

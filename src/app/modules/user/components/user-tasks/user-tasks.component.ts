@@ -4,6 +4,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 
 import { OperationResultStatusType } from '@data/api/time-service/models';
 import { Activities, AttendanceService } from '@app/services/attendance.service';
+import { DateTime } from 'luxon';
 
 export interface IDialogResponse {
 	status?: OperationResultStatusType;
@@ -17,9 +18,9 @@ export interface IDialogResponse {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserTasksComponent {
-	@ViewChild('dp') monthpicker: MatDatepicker<Date> | undefined;
+	@ViewChild('dp') monthpicker: MatDatepicker<DateTime> | undefined;
 
-	public selectedDate$: Observable<Date>;
+	public selectedDate$: Observable<DateTime>;
 	public activities$: Observable<Activities>;
 
 	constructor(private _attendanceService: AttendanceService) {
@@ -27,8 +28,7 @@ export class UserTasksComponent {
 		this.activities$ = this._attendanceService.activities$;
 	}
 
-	public chosenMonthHandler(date: Date) {
+	public chosenMonthHandler(date: DateTime) {
 		this._attendanceService.setNewDate(date);
-
 	}
 }

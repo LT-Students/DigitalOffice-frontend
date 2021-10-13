@@ -8,11 +8,11 @@ import { NewsService } from '@app/services/news/news.service';
 import { OperationResultStatusType } from '@data/api/news-service/models';
 import { ModalService } from '@app/services/modal.service';
 import { NewsFeedService } from '@app/services/news-feed.service';
-import { EditorJSParser } from '../../parser';
-import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
 import { CompanyService } from '@app/services/company/company.service';
+import { EditorJSParser } from '../../parser';
+import { NewsEditorComponent } from '../news-editor/news-editor.component';
+import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-post',
@@ -68,7 +68,7 @@ export class PostComponent {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		const confirmDialogData: ConfirmDialogModel = {
+		const confirmDialogData: ConfirmDialogData = {
 			title: 'Удаление новости',
 			message: 'Вы действительно хотите удалить новость? Отменить данное действие будет невозможно.',
 			confirmText: 'Да, удалить',
