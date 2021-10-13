@@ -37,7 +37,6 @@ export class EmployeePageService {
 		const userId = this._selectedUser.value?.id as string;
 		return this._userService.editUser(userId, editRequest).pipe(
 			switchMap((response) => {
-				console.log(response.body);
 				return this.getEmployee(userId);
 			}),
 		);
