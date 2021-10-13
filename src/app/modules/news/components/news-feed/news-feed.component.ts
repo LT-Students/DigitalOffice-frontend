@@ -12,7 +12,7 @@ import { CompanyService } from '@app/services/company/company.service';
 import { EditorJSParser } from '../../parser';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-news-feed',

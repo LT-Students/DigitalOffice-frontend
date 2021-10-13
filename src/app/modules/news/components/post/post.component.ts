@@ -41,8 +41,8 @@ export class PostComponent {
 		return this._newsService.getNews(this.postId).pipe(
 			map((article) => article.body),
 			mergeMap((article) => {
-				let blocks = JSON.parse(article?.content ?? '[]');
-				let notHiddenBlocks = blocks.filter((block: any) =>
+				const blocks = JSON.parse(article?.content ?? '[]');
+				const notHiddenBlocks = blocks.filter((block: any) =>
 					block?.tunes && block.tunes?.previewTune ? !block.tunes.previewTune.hidden : true
 				);
 				return this._editorJSParser
