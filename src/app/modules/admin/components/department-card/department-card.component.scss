@@ -23,6 +23,10 @@
 }
 
 .table {
+	p {
+		margin: 0;
+	}
+
 	&__header {
 		margin-top: 20px;
 		margin-bottom: 20px;
@@ -72,4 +76,50 @@
 	&__link:hover {
 		text-decoration: underline;
 	}
+}
+
+.search-actions {
+	margin-bottom: 20px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.search {
+	display: flex;
+	flex-basis: 50%;
+
+	&__name {
+		width: 100%;
+	}
+
+	&__position {
+		margin-left: 30px;
+		align-self: flex-end;
+	}
+
+	&__button {
+		margin-right: 15px;
+	}
+}
+
+.actions {
+	display: flex;
+
+	&__chosen-value {
+		align-self: center;
+	}
+
+	&__position {
+		margin-left: 50px;
+	}
+}
+
+.main-info {
+	display: flex;
+}
+
+.profile-photo {
+	margin-right: 20px;
 }

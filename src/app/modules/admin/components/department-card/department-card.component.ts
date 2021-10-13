@@ -21,6 +21,13 @@ export interface EditModalContent {
 	directorid?: string;
 }
 
+export interface PeriodicElement {
+	name: string;
+	position: number;
+	weight: number;
+	symbol: string;
+}
+
 @Component({
 	selector: 'do-department-card',
 	templateUrl: './department-card.component.html',
@@ -31,11 +38,14 @@ export class DepartmentCardComponent implements OnInit {
 	public departmentInfo: DepartmentInfo | undefined;
 	public sortedUsersInfo: UserInfo[];
 	private _departmentId: string;
-
+	public positions: string[];
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
 	public peopleCountMap: { [k: string]: string };
+	public allComplete: boolean;
+	public showActions: boolean;
+	public checkedNum: number;
 
 	constructor(
 		private _netService: NetService,
@@ -51,6 +61,10 @@ export class DepartmentCardComponent implements OnInit {
 		this.pageSize = 10;
 		this.pageIndex = 0;
 		this.sortedUsersInfo = [];
+		this.positions = ['front', 'back', 'manager', 'lead'];
+		this.allComplete = false;
+		this.showActions = false;
+		this.checkedNum = 0;
 
 		this.peopleCountMap = {
 			few: '# человека',
@@ -86,6 +100,8 @@ export class DepartmentCardComponent implements OnInit {
 				skipCount: this.pageIndex * this.pageSize,
 				takeCount: this.pageSize,
 				departmentid: this._departmentId,
+				includerole: true,
+				includeposition: true,
 			})
 			.subscribe((data) => {
 				this.sortedUsersInfo = data?.body?.slice() ?? [];
@@ -160,5 +176,32 @@ export class DepartmentCardComponent implements OnInit {
 			data: { idToHide: this.sortedUsersInfo.map((e) => e.id) },
 			maxWidth: '670px',
 		});
+	}
+
+	checkedAll(completed: boolean) {
+		this.allComplete = completed;
+		this.checkedNum = this.sortedUsersInfo.length;
+		if (!completed) {
+			this.checkedNum = 0;
+		}
+		if (this.checkedNum > 0) {
+			this.showActions = true;
+		} else {
+			this.showActions = false;
+		}
+	}
+
+	checkedCount(completed: boolean) {
+		if (completed) {
+			this.checkedNum += 1;
+		} else {
+			this.checkedNum -= 1;
+		}
+		if (this.checkedNum > 0) {
+			this.showActions = true;
+		} else {
+			this.showActions = false;
+			this.allComplete = false;
+		}
 	}
 }
