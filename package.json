@@ -1,6 +1,6 @@
 {
   "name": "digital-office-frontend",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -34,6 +34,7 @@
     "@angular/forms": "~12.2.4",
     "@angular/localize": "^12.2.4",
     "@angular/material": "^12.2.4",
+    "@angular/material-luxon-adapter": "^12.2.4",
     "@angular/material-moment-adapter": "^12.2.4",
     "@angular/platform-browser": "~12.2.4",
     "@angular/platform-browser-dynamic": "~12.2.4",
@@ -47,10 +48,12 @@
     "@editorjs/quote": "^2.4.0",
     "@editorjs/underline": "^1.0.0",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
+    "@types/luxon": "^2.0.5",
     "bootstrap": "^4.5.2",
     "canvasjs": "^1.8.3",
     "chart.js": "^3.5.1",
     "editorjs-text-alignment-blocktune": "^1.0.2",
+    "luxon": "^2.0.2",
     "moment": "^2.27.0",
     "ngx-infinite-scroll": "^10.0.1",
     "rxjs": "~6.6.3",

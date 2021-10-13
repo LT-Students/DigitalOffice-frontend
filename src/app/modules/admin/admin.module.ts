@@ -54,6 +54,6 @@ import { TeamStatisticsComponent } from './components/team-statistics/team-stati
 		LeaveLabelPipe,
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
-	exports: [DndDirective, TeamStatisticsComponent],
+	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe],
 })
 export class AdminModule {}

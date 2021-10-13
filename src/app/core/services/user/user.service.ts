@@ -96,18 +96,20 @@ export class UserService {
 					break;
 				case 'startWorkingAt':
 					const date: Moment = item.value;
+					const changedDate = new Date(date.toDate().setDate(date.toDate().getDate() + 1));
 					body.push({
 						op: 'replace',
 						path: '/StartWorkingAt',
-						value: date.toISOString(),
+						value: changedDate.toISOString(),
 					});
 					break;
 				case 'dateOfBirth':
 					const dateOfBirth: Moment = item.value;
+					const changedDateOfBirth = new Date(dateOfBirth.toDate().setDate(dateOfBirth.toDate().getDate() + 1));
 					body.push({
 						op: 'replace',
 						path: '/DateOfBirth',
-						value: dateOfBirth.toISOString(),
+						value: changedDateOfBirth.toISOString(),
 					});
 					break;
 				case 'department':
@@ -170,6 +172,7 @@ export class UserService {
 					break;
 			}
 		});
+
 
 		const params: IEditUserRequest = {
 			userId,
