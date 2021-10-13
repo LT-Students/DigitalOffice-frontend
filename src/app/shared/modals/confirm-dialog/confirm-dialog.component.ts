@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
-export interface ConfirmDialogModel {
+export interface ConfirmDialogData {
 	title: string;
 	message?: string;
 	confirmText: string;
@@ -14,5 +14,5 @@ export interface ConfirmDialogModel {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmDialogComponent {
-	constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogModel) {}
+	constructor(@Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData) {}
 }

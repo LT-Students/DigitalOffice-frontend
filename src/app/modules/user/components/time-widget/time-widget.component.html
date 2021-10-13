@@ -1,13 +1,27 @@
 <mat-card class="chart" *ngIf="selectedDate$ | async as selectedDate">
-<do-title-datepicker text="Часы за" [selectDate]="selectedDate$ | async" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
+	<do-title-datepicker
+		text="Часы за"
+		[selectDate]="selectedDate$ | async"
+		(dateSelection)="chosenMonthHandler($event)"
+	></do-title-datepicker>
 	<div class="chart__diagram-wrapper">
-		<button (click)="onPreviousMonthClicked(selectedDate)" class="fab-button" mat-mini-fab [class.mat-elevation-z0]="true">
+		<button
+			(click)="onPreviousMonthClicked(selectedDate)"
+			class="fab-button"
+			mat-mini-fab
+			[class.mat-elevation-z0]="true"
+		>
 			<mat-icon>chevron_left</mat-icon>
 		</button>
 		<div class="chart__doughnut">
 			<do-doughnut-chart></do-doughnut-chart>
 		</div>
-		<button (click)="onNextMonthClicked(selectedDate)" class="fab-button" mat-mini-fab [class.mat-elevation-z0]="true">
+		<button
+			(click)="onNextMonthClicked(selectedDate)"
+			class="fab-button"
+			mat-mini-fab
+			[class.mat-elevation-z0]="true"
+		>
 			<mat-icon>chevron_right</mat-icon>
 		</button>
 	</div>

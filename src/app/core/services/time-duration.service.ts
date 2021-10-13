@@ -1,42 +1,33 @@
-import { Injectable } from "@angular/core";
-import { DatePeriod } from "@data/models/date-period";
-import { DateService } from "./date.service";
+import { Injectable } from '@angular/core';
+import { DatePeriod } from '@app/types/date-period';
+import { DateFilterFn } from '@angular/material/datepicker';
+import { DateTime } from 'luxon';
+import { DateService } from './date.service';
 
 @Injectable({
-    providedIn: 'root'
+	providedIn: 'root',
 })
 export class TimeDurationService {
-    constructor(
-        private _dateService: DateService
-    ) { }
+	constructor(private _dateService: DateService) {}
 
-    public countMaxMonthDuration(year: number, month: number): number {
-        const currentDatePeriod: DatePeriod = {
-            startDate: new Date(year, month, 1),
-            endDate: new Date(year, month + 1, 0),
-        };
-        return Number(this.getDuration(currentDatePeriod, 24));
-    }
+	public countMaxMonthDuration(year: number, month: number): number {
+		const currentDatePeriod: DatePeriod = {
+			startDate: DateTime.local(year, month, 1),
+			endDate: DateTime.local(year, month).endOf('month'),
+		};
+		return this.getDuration(currentDatePeriod, 24);
+	}
 
-    public getDuration(datePeriod: DatePeriod, hoursPerDay: number = 8, skipHolidays = false, rate: number = 1): number {
-        const daysArray: Date[] = [];
+	public getDuration(datePeriod: DatePeriod, hoursPerDay: number, dateFilter?: DateFilterFn<DateTime>): number {
+		let startDate = datePeriod.startDate;
+		const endDate = (datePeriod.endDate ? datePeriod.endDate : datePeriod.startDate).plus({ days: 1 });
 
-        if (datePeriod.endDate && this._dateService.isSameDay(datePeriod.startDate, datePeriod.endDate)) {
-            return hoursPerDay * rate;
-        } else {
-            const startDate = new Date(datePeriod.startDate as Date);
-            const endDate = new Date(datePeriod.endDate as Date);
+		const days: DateTime[] = [];
+		while (!startDate.startOf('day').equals(endDate.startOf('day'))) {
+			days.push(startDate);
+			startDate = startDate.plus({ days: 1 });
+		}
 
-            while (startDate.getDate() !== endDate.getDate()) {
-                daysArray.push(new Date(startDate));
-                startDate.setDate(startDate.getDate() + 1);
-            }
-
-            if (skipHolidays) {
-                return (daysArray.filter((day: Date) => day.getDay() !== 6 && day.getDay() !== 0).length + 1) * hoursPerDay * rate;
-            } else {
-                return (daysArray.length + 1) * hoursPerDay * rate;
-            }
-        }
-    }
+		return dateFilter ? days.filter(dateFilter).length * hoursPerDay : days.length * hoursPerDay;
+	}
 }

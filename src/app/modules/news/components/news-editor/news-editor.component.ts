@@ -23,7 +23,7 @@ import { OperationResultResponseNewsResponse } from '@data/api/news-service/mode
 import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
 import { CompanyService } from '@app/services/company/company.service';
-import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
 
@@ -134,7 +134,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	}
 
 	public onEditorClose(): void {
-		const confirmDialogData: ConfirmDialogModel = {
+		const confirmDialogData: ConfirmDialogData = {
 			title: 'Закрытие новости',
 			message:
 				'Вы действительно хотите закрыть новость до публикации? Введенная вами информация не будет сохранена.',
