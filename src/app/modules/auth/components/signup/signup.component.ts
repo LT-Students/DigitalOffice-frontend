@@ -2,12 +2,12 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
-import { catchError, finalize, switchMap } from 'rxjs/operators';
-import { UserService } from '@app/services/user/user.service';
+import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CompanyService } from '@app/services/company/company.service';
+import { CurrentUserService } from '@app/services/current-user.service';
 
 @Component({
 	selector: 'do-signup',
@@ -30,7 +30,7 @@ export class SignupComponent implements OnInit {
 
 	constructor(
 		private _authService: AuthService,
-		private _userService: UserService,
+		private _currentUserService: CurrentUserService,
 		private _companyService: CompanyService,
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
@@ -60,9 +60,10 @@ export class SignupComponent implements OnInit {
 		this._authService
 			.signUp$(createCredentialsRequest)
 			.pipe(
-				switchMap(({ body: credentialResponse }) => {
-					return this._userService.getUserSetCredentials(credentialResponse?.userId);
-				}),
+				switchMap(({ body: credentialResponse }) =>
+					this._currentUserService.getUserOnLogin(credentialResponse?.userId)
+				),
+				tap(this._currentUserService.setUser),
 				catchError((error: string) => {
 					console.log(error);
 					this.loginForm.setErrors({

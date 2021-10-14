@@ -1,41 +1,52 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
-import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import {
-	FindResultResponseUserInfo,
-	OperationResultResponseUserResponse,
+	CertificateInfo,
+	CommunicationInfo,
+	EducationInfo,
 	OperationResultStatusType,
 	PatchUserDocument,
+	ProjectInfo,
+	UserAchievementInfo,
+	UserInfo,
 } from '@data/api/user-service/models';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Moment } from 'moment';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+
+export interface IUserResponse {
+	user?: UserInfo;
+	skills?: Array<string>;
+	communications?: Array<CommunicationInfo>;
+	certificates?: Array<CertificateInfo>;
+	achievements?: Array<UserAchievementInfo>;
+	projects?: Array<ProjectInfo>;
+	educations?: Array<EducationInfo>;
+}
 
 @Injectable({
 	providedIn: 'root',
 })
 export class UserService {
-	private _currentUser: BehaviorSubject<User | null>;
-	public readonly currentUser$: Observable<User | null>;
-
-	constructor(private _userApiService: UserApiService) {
-		this._currentUser = new BehaviorSubject<User | null>(null);
-		this.currentUser$ = this._currentUser.asObservable();
-	}
+	constructor(private _userApiService: UserApiService) {}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
 			.getUser(params)
-			.pipe(switchMap((userResponse: OperationResultResponseUserResponse) => of(new User(userResponse))));
+			.pipe(switchMap((userResponse: OperationResultResponse<IUserResponse>) => of(new User(userResponse))));
 	}
 
-	public findUsers(skipPages = 0, pageSize = 10, departmentId?: string): Observable<FindResultResponseUserInfo> {
+	public findUsers(
+		skipPages = 0,
+		pageSize = 10,
+		departmentId?: string
+	): Observable<OperationResultResponse<UserInfo[]>> {
 		return this._userApiService.findUsers({
 			skipCount: skipPages,
 			takeCount: pageSize,
@@ -43,18 +54,19 @@ export class UserService {
 		});
 	}
 
-	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
+	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
 		return this._userApiService.createUser({ body: params }).pipe(
-			switchMap((res: OperationResultResponse) => {
-				return res.status === OperationResultStatusType.Failed || res instanceof HttpErrorResponse
-					? throwError(res)
-					: of(res);
+			switchMap((res) => {
+				return res.status === OperationResultStatusType.Failed ? throwError(res) : of(res);
 			}),
 			catchError((error) => throwError(error))
 		);
 	}
 
-	public editUser(userId: string, changes: { path: string; value: any }[]): Observable<OperationResultResponse> {
+	public editUser(
+		userId: string,
+		changes: { path: string; value: any }[]
+	): Observable<OperationResultResponse<null | {}>> {
 		const body: PatchUserDocument[] = [];
 		/* TODO: сделать функцию, которая маппит название контрола в path */
 		changes.forEach((item: { path: string; value: any }) => {
@@ -105,7 +117,9 @@ export class UserService {
 					break;
 				case 'dateOfBirth':
 					const dateOfBirth: Moment = item.value;
-					const changedDateOfBirth = new Date(dateOfBirth.toDate().setDate(dateOfBirth.toDate().getDate() + 1));
+					const changedDateOfBirth = new Date(
+						dateOfBirth.toDate().setDate(dateOfBirth.toDate().getDate() + 1)
+					);
 					body.push({
 						op: 'replace',
 						path: '/DateOfBirth',
@@ -173,7 +187,6 @@ export class UserService {
 			}
 		});
 
-
 		const params: IEditUserRequest = {
 			userId,
 			body,
@@ -182,7 +195,7 @@ export class UserService {
 		return this._userApiService.editUser(params);
 	}
 
-	public disableUser(userId: string): Observable<OperationResultResponse> {
+	public disableUser(userId: string): Observable<OperationResultResponse<null | {}>> {
 		const params: IEditUserRequest = {
 			userId: userId,
 			body: [
@@ -197,7 +210,7 @@ export class UserService {
 		return this._userApiService.editUser(params);
 	}
 
-	public activateUser(userId: string): Observable<OperationResultResponse> {
+	public activateUser(userId: string): Observable<OperationResultResponse<null | {}>> {
 		const params: IEditUserRequest = {
 			userId: userId,
 			body: [
@@ -210,32 +223,5 @@ export class UserService {
 		};
 
 		return this._userApiService.editUser(params);
-	}
-
-	public getUserSetCredentials(userId?: string): Observable<User> {
-		const params: IGetUserRequest = {
-			userId: userId,
-			includedepartment: true,
-			includeposition: true,
-			includeoffice: true,
-			includecommunications: true,
-			includerole: true,
-			includeimages: true,
-			includeprojects: true,
-		};
-
-		return this.getUser(params).pipe(
-			tap(this._setUser.bind(this)),
-			catchError((error: HttpErrorResponse) => throwError(error))
-		);
-	}
-
-	public isAdmin(): boolean {
-		const user: User | null = this._currentUser.value;
-		return user ? user.isAdmin : false;
-	}
-
-	private _setUser(user: User): void {
-		this._currentUser.next(user);
 	}
 }

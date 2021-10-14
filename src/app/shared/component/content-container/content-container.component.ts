@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
-import { UserService } from '@app/services/user/user.service';
 import { AuthService } from '@app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { CompanyService } from '@app/services/company/company.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CurrentUserService } from '@app/services/current-user.service';
 
 @Component({
 	selector: 'do-content-container',
@@ -20,7 +20,7 @@ export class ContentContainerComponent implements OnInit {
 	public departmentId: string | undefined;
 
 	constructor(
-		private _userService: UserService,
+		private _currentUserService: CurrentUserService,
 		private _authService: AuthService,
 		private _companyService: CompanyService,
 		private _snackBar: MatSnackBar,
@@ -31,7 +31,7 @@ export class ContentContainerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this._userService.currentUser$.subscribe((user) => {
+		this._currentUserService.currentUser$.subscribe((user) => {
 			this.departmentId = user?.department?.id;
 		});
 	}

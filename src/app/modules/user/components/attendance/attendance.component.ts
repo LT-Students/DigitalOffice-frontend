@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { UserService } from '@app/services/user/user.service';
 import { AttendanceService } from '@app/services/attendance.service';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
+import { CurrentUserService } from '@app/services/current-user.service';
 
 @Component({
 	selector: 'do-attendance',
@@ -13,12 +13,12 @@ import { ReplaySubject } from 'rxjs';
 export class AttendanceComponent implements OnInit, OnDestroy {
 	private onDestroy$: ReplaySubject<void>;
 
-	constructor(private _attendanceService: AttendanceService, private _userService: UserService) {
+	constructor(private _attendanceService: AttendanceService, private _currentUserService: CurrentUserService) {
 		this.onDestroy$ = new ReplaySubject<void>(1);
 	}
 
 	ngOnInit() {
-		this._userService.currentUser$
+		this._currentUserService.currentUser$
 			.pipe(
 				takeUntil(this.onDestroy$),
 				tap((user) => this._attendanceService.setUserIdAndRate(user?.id, user?.rate)),

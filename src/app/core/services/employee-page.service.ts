@@ -17,10 +17,9 @@ export class EmployeePageService {
 		this.selectedUser$ = this._selectedUser.asObservable();
 	}
 
-	//TODO if user opens his page take value from UserService
-	public getEmployee(pageId: string): Observable<User> {
+	public getEmployee(userId: string): Observable<User> {
 		const params: IGetUserRequest = {
-			userId: pageId,
+			userId: userId,
 			includedepartment: true,
 			includeposition: true,
 			includeoffice: true,
@@ -35,10 +34,6 @@ export class EmployeePageService {
 
 	public editEmployee(editRequest: { path: string; value: any }[]): Observable<User> {
 		const userId = this._selectedUser.value?.id as string;
-		return this._userService.editUser(userId, editRequest).pipe(
-			switchMap((response) => {
-				return this.getEmployee(userId);
-			}),
-		);
+		return this._userService.editUser(userId, editRequest).pipe(switchMap(() => this.getEmployee(userId)));
 	}
 }

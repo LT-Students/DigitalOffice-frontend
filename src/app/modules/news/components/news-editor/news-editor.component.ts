@@ -13,7 +13,6 @@ import { BehaviorSubject, from, Observable, of, ReplaySubject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
 import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
-import { UserService } from '@app/services/user/user.service';
 import { DoValidators } from '@app/validators/do-validators';
 import { IOutputBlockData, IOutputData } from '@app/models/editorjs/output-data.interface';
 import { LocalStorageService } from '@app/services/local-storage.service';
@@ -23,6 +22,7 @@ import { OperationResultResponseNewsResponse } from '@data/api/news-service/mode
 import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
 import { CompanyService } from '@app/services/company/company.service';
+import { CurrentUserService } from '@app/services/current-user.service';
 import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
@@ -51,7 +51,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) private _newsId: string,
-		private _userService: UserService,
+		private _currentUserService: CurrentUserService,
 		private _newsService: NewsService,
 		private _localStorage: LocalStorageService,
 		private _editorConfig: NewsEditorConfig,
@@ -167,7 +167,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 
 	private _createNews(): void {
 		let userId: string;
-		this._userService.currentUser$
+		this._currentUserService.currentUser$
 			.pipe(
 				tap((user) => (userId = user?.id ?? '')),
 				switchMap(() => from((this._editor as EditorJS).save())),
