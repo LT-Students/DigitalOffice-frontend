@@ -69,7 +69,7 @@
 						</mat-form-field>
 					</div>
 
-					<div class="actions" *ngIf="selection.selected.length > 0; else null">
+					<div class="actions" *ngIf="selection.selected.length > 0">
 						<div>Выбрано {{ selection.selected.length }} сотрудников</div>
 						<div [matMenuTriggerFor]="menu" class="actions__menu">
 							<div>Действия</div>
