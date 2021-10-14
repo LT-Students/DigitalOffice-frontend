@@ -66,7 +66,7 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Офис</mat-label>
 					<mat-select id="office" placeholder="Выберите офис" formControlName="officeId" required>
-						<mat-option *ngFor="let office of offices$" [value]="office.id">
+						<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
 							{{ office.city }}, {{ office.address }}
 						</mat-option>
 					</mat-select>
@@ -74,7 +74,7 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Роль</mat-label>
 					<mat-select id="roleId" placeholder="Выберите роль" formControlName="roleId">
-						<mat-option *ngFor="let role of roles$" [value]="role.id">
+						<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
 							{{ role?.name }}
 						</mat-option>
 					</mat-select>
