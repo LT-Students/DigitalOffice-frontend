@@ -14,7 +14,6 @@ import { ProjectsTableComponent } from './components/projects-table/projects-tab
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TaskFilterPipe } from './pipes/task-filter.pipe';
 import { UserRoutingModule } from './user-routing.module';
-import { DeleteLeaveComponent } from './modals/delete-leave/delete-leave.component';
 import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
 import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/doughnut-chart.component';
@@ -29,20 +28,14 @@ import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/
 		ProjectsComponent,
 		ProjectsTableComponent,
 		ProjectPageComponent,
-		DeleteLeaveComponent,
 		TaskFilterPipe,
 		LeavesComponent,
 		EditProjectComponent,
 		EditLeaveComponent,
-		DoughnutChartComponent
+		DoughnutChartComponent,
 	],
-	imports: [
-		SharedModule,
-		NgbDatepickerModule,
-		AdminModule,
-		UserRoutingModule,
-	],
+	imports: [SharedModule, NgbDatepickerModule, AdminModule, UserRoutingModule],
 	providers: [],
 	exports: [AttendanceComponent],
 })
-export class UserModule { }
+export class UserModule {}

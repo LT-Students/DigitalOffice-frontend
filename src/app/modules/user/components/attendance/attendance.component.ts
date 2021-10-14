@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { UserService } from '@app/services/user/user.service';
 import { AttendanceService } from '@app/services/attendance.service';
 import { switchMap, takeUntil, tap } from 'rxjs/operators';
-import { ReplaySubject, Subscription } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
 	selector: 'do-attendance',
@@ -21,10 +21,10 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 		this._userService.currentUser$
 			.pipe(
 				takeUntil(this.onDestroy$),
-				tap((user) => this._attendanceService.setUserId(user?.id)),
+				tap((user) => this._attendanceService.setUserIdAndRate(user?.id, user?.rate)),
 				switchMap(() => this._attendanceService.selectedDate$),
 				switchMap(() => this._attendanceService.getMonthNormAndHolidays()),
-				switchMap(() => this._attendanceService.getActivities()),
+				switchMap(() => this._attendanceService.getActivities())
 			)
 			.subscribe();
 	}

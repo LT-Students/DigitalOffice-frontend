@@ -1,15 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 
-import { OperationResultResponse } from '@data/api/rights-service/models';
+import { OperationResultResponse, RightInfo } from '@data/api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
-import { RightResponse } from '@data/api/rights-service/models/right-response';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { DoValidators } from '@app/validators/do-validators';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
 	selector: 'do-new-role',
@@ -17,8 +17,8 @@ import { Observable } from 'rxjs';
 	styleUrls: ['./new-role.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewRoleComponent implements OnInit {
-	public rights$: Observable<RightResponse[]>;
+export class NewRoleComponent {
+	public rights$: Observable<RightInfo[]>;
 	public roleForm: FormGroup;
 
 	constructor(
@@ -27,15 +27,13 @@ export class NewRoleComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _snackBar: MatSnackBar
 	) {
-		this.rights$ = this._rightsService.findRights();
+		this.rights$ = this._rightsService.findRights().pipe(tap(console.log));
 		this.roleForm = this._fb.group({
-			name: ['', [Validators.required]],
+			name: ['', [Validators.required, DoValidators.noWhitespaces]],
 			description: [''],
 			rights: this._fb.array([], [DoValidators.atLeastOneChecked]),
 		});
 	}
-
-	public ngOnInit(): void {}
 
 	public onCheckboxChange(e: MatCheckboxChange): void {
 		const rights: FormArray = this.roleForm?.get('rights') as FormArray;
@@ -55,13 +53,18 @@ export class NewRoleComponent implements OnInit {
 	public createRole(): void {
 		this._rightsService
 			.createRole({
-				name: this.roleForm?.get('name')?.value?.trim(),
-				description: this.roleForm?.get('description')?.value?.trim(),
+				localizations: [
+					{
+						name: this.roleForm?.get('name')?.value?.trim(),
+						description: this.roleForm?.get('description')?.value?.trim(),
+						locale: 'zhopa',
+					},
+				],
 				rights: this.roleForm?.get('rights')?.value,
 			})
 			.subscribe(
 				(result: OperationResultResponse) => {
-					this._snackBar.open('New role added successfully', 'done', {
+					this._snackBar.open('Новая роль успешно добавлена!', 'done', {
 						duration: 3000,
 					});
 					this._dialogRef.close(result);
