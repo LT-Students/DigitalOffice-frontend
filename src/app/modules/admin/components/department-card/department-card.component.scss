@@ -22,40 +22,6 @@
 	}
 }
 
-.table {
-	&__header {
-		margin-top: 20px;
-		margin-bottom: 20px;
-
-		display: flex;
-		justify-content: space-between;
-	}
-
-	&__content {
-		width: 100%;
-
-		border-collapse: collapse;
-	}
-
-	&__row {
-		height: 76px;
-
-		border-bottom: 1px solid #f1f1ef;
-
-		&:hover {
-			cursor: pointer;
-
-			background-color: #f1f1ef;
-		}
-	}
-
-	&__column {
-		&_width_little {
-			width: 60px;
-		}
-	}
-}
-
 .navigation {
 	margin-bottom: 40px;
 
@@ -74,8 +40,19 @@
 	}
 }
 
+.table {
+	width: 100%;
+
+	&__header {
+		margin: 20px 0;
+
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
 .search-actions {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 
 	display: flex;
 	justify-content: space-between;
@@ -115,4 +92,37 @@
 
 .profile-photo {
 	margin-right: 20px;
+}
+
+.mat-column-select {
+	width: 50px;
+}
+
+.mat-column-role {
+	width: 250px;
+}
+
+.mat-column-rate {
+	width: 200px;
+}
+
+.mat-column-status {
+	width: 150px;
+}
+
+.mat-cell,
+.mat-header-cell {
+	padding: 0 15px;
+}
+
+.mat-row {
+	height: 76px;
+
+	cursor: pointer;
+}
+
+.mat-header-row {
+	height: 50px;
+
+	cursor: pointer;
 }

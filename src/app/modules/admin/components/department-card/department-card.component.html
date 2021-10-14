@@ -59,8 +59,8 @@
 				</mat-form-field>
 			</div>
 
-			<div class="actions" *ngIf="showActions; else null">
-				<div class="actions__chosen-value">Выбрано {{ checkedNum }} сотрудников</div>
+			<div class="actions" *ngIf="selection.selected.length > 0; else null">
+				<div>Выбрано {{ selection.selected.length }} сотрудников</div>
 				<button mat-button class="actions__menu" [matMenuTriggerFor]="menu">Действия</button>
 				<mat-menu #menu="matMenu">
 					<button mat-menu-item>1-й вариант</button>
@@ -69,58 +69,72 @@
 				</mat-menu>
 			</div>
 		</div>
-		<table class="table__content" matSort (matSortChange)="sortData($event)">
-			<colgroup>
-				<col class="table__column table__column_width_little" />
-			</colgroup>
-			<tr>
-				<th>
+
+		<table mat-table [dataSource]="dataSource" class="table">
+			<ng-container matColumnDef="select">
+				<th mat-header-cell *matHeaderCellDef>
 					<mat-checkbox
-						class="user-row__checkbox"
-						[checked]="allComplete"
-						(change)="checkedAll($event.checked)"
+						(change)="$event ? masterToggle() : null"
+						[checked]="selection.hasValue() && isAllSelected()"
+						[indeterminate]="selection.hasValue() && !isAllSelected()"
 					>
 					</mat-checkbox>
 				</th>
-				<th mat-sort-header="name">Имя</th>
-				<th mat-sort-header="role">Роль</th>
-				<th mat-sort-header="rate">Ставка</th>
-				<th mat-sort-header="status">Статус</th>
-			</tr>
-			<ng-container *ngFor="let userInfo of sortedUsersInfo">
-				<tr class="table__row">
-					<td>
-						<mat-checkbox [checked]="allComplete" (change)="checkedCount($event.checked)"></mat-checkbox>
-					</td>
-					<td>
-						<div class="main-info">
-							<do-profile-image class="profile-photo" [image]="userInfo?.avatar"></do-profile-image>
-							<div>
-								<div>{{ userInfo.firstName }} {{ userInfo.lastName }}</div>
-								<div class="mat-body-1">{{ userInfo?.position?.name }}</div>
-							</div>
-						</div>
-					</td>
-					<td>
-						<ng-container *ngIf="userInfo?.role?.name; else empty">
-							{{ userInfo?.role?.name }}
-						</ng-container>
-					</td>
-					<td>
-						<ng-container *ngIf="userInfo?.rate; else empty">
-							{{ userInfo.rate }}
-						</ng-container>
-					</td>
-					<td>
-						<ng-container *ngIf="userInfo?.isActive; else archived">
-							<div class="user-status">Активен</div>
-						</ng-container>
-						<ng-template #archived>
-							<div class="user-status user-status_archived">В архиве</div>
-						</ng-template>
-					</td>
-				</tr>
+				<td mat-cell *matCellDef="let row">
+					<mat-checkbox
+						(click)="$event.stopPropagation()"
+						(change)="$event ? selection.toggle(row) : null"
+						[checked]="selection.isSelected(row)"
+					>
+					</mat-checkbox>
+				</td>
 			</ng-container>
+
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef>Имя</th>
+				<td mat-cell *matCellDef="let element">
+					<div class="main-info">
+						<do-profile-image class="profile-photo" [image]="element?.avatar"></do-profile-image>
+						<div>
+							<div>{{ element.firstName }} {{ element.lastName }}</div>
+							<div class="mat-body-1">{{ element?.position?.name }}</div>
+						</div>
+					</div>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="role">
+				<th mat-header-cell *matHeaderCellDef>Роль</th>
+				<td mat-cell *matCellDef="let element">
+					<ng-container *ngIf="element?.role?.name; else empty">
+						{{ element?.role?.name }}
+					</ng-container>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="rate">
+				<th mat-header-cell *matHeaderCellDef>Ставка</th>
+				<td mat-cell *matCellDef="let element">
+					<ng-container *ngIf="element?.rate; else empty">
+						{{ element.rate }}
+					</ng-container>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="status">
+				<th mat-header-cell *matHeaderCellDef>Статус</th>
+				<td mat-cell *matCellDef="let element">
+					<ng-container *ngIf="element?.isActive; else archived">
+						<div class="user-status">Активен</div>
+					</ng-container>
+					<ng-template #archived>
+						<div class="user-status user-status_archived">В архиве</div>
+					</ng-template>
+				</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
 		</table>
 	</div>
 </mat-card>

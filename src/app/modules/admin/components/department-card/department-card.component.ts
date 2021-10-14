@@ -9,6 +9,8 @@ import { DepartmentInfo } from '@data/api/company-service/models/department-info
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType } from '@data/api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
@@ -19,13 +21,6 @@ export interface EditModalContent {
 	name: string;
 	description?: string | null;
 	directorid?: string;
-}
-
-export interface PeriodicElement {
-	name: string;
-	position: number;
-	weight: number;
-	symbol: string;
 }
 
 @Component({
@@ -43,9 +38,9 @@ export class DepartmentCardComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 	public peopleCountMap: { [k: string]: string };
-	public allComplete: boolean;
-	public showActions: boolean;
-	public checkedNum: number;
+	public displayedColumns: string[];
+	public dataSource: MatTableDataSource<UserInfo>;
+	public selection: SelectionModel<UserInfo>;
 
 	constructor(
 		private _netService: NetService,
@@ -62,9 +57,9 @@ export class DepartmentCardComponent implements OnInit {
 		this.pageIndex = 0;
 		this.sortedUsersInfo = [];
 		this.positions = ['front', 'back', 'manager', 'lead'];
-		this.allComplete = false;
-		this.showActions = false;
-		this.checkedNum = 0;
+		this.displayedColumns = ['select', 'name', 'role', 'rate', 'status'];
+		this.selection = new SelectionModel<UserInfo>(true, []);
+		this.dataSource = new MatTableDataSource();
 
 		this.peopleCountMap = {
 			few: '# человека',
@@ -74,6 +69,7 @@ export class DepartmentCardComponent implements OnInit {
 
 	ngOnInit(): void {
 		this._getDepartment();
+		console.log(this.dataSource);
 	}
 
 	private _getDepartment(): void {
@@ -105,6 +101,7 @@ export class DepartmentCardComponent implements OnInit {
 			})
 			.subscribe((data) => {
 				this.sortedUsersInfo = data?.body?.slice() ?? [];
+				this.dataSource = new MatTableDataSource(this.sortedUsersInfo);
 				this.totalCount = this.sortedUsersInfo.length;
 				this._cdr.markForCheck();
 			});
@@ -178,30 +175,18 @@ export class DepartmentCardComponent implements OnInit {
 		});
 	}
 
-	checkedAll(completed: boolean) {
-		this.allComplete = completed;
-		this.checkedNum = this.sortedUsersInfo.length;
-		if (!completed) {
-			this.checkedNum = 0;
-		}
-		if (this.checkedNum > 0) {
-			this.showActions = true;
-		} else {
-			this.showActions = false;
-		}
+	isAllSelected() {
+		const numSelected = this.selection.selected.length;
+		const numRows = this.dataSource.data.length;
+		return numSelected === numRows;
 	}
 
-	checkedCount(completed: boolean) {
-		if (completed) {
-			this.checkedNum += 1;
-		} else {
-			this.checkedNum -= 1;
+	masterToggle() {
+		if (this.isAllSelected()) {
+			this.selection.clear();
+			return;
 		}
-		if (this.checkedNum > 0) {
-			this.showActions = true;
-		} else {
-			this.showActions = false;
-			this.allComplete = false;
-		}
+
+		this.selection.select(...this.dataSource.data);
 	}
 }
