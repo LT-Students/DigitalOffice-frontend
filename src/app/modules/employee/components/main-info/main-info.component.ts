@@ -62,19 +62,19 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		this.departments$ = this._netService
 			.getDepartmentsList({
 				skipCount: 0,
-				takeCount: 100,
+				takeCount: 500,
 			})
 			.pipe(map((res) => res.body));
 
 		this.positions$ = this._netService
 			.getPositionsList({
 				skipCount: 0,
-				takeCount: 100,
+				takeCount: 500,
 			})
 			.pipe(map((res) => res.body));
 
-		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).pipe(map((res) => res.body));
-		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 50 }).pipe(map((res) => res.roles));
+		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
+		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
 	}
 
 	public ngOnInit(): void {

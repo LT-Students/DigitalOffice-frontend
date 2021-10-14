@@ -10,202 +10,207 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { OperationResultResponse } from '../models/operation-result-response';
-import { RightResponse } from '../models/right-response';
+import { RightInfo } from '../models/right-info';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class RightsApiService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
-    super(config, http);
-  }
+	constructor(config: ApiConfiguration, http: HttpClient) {
+		super(config, http);
+	}
 
-  /**
-   * Path part for operation addRightsForUser
-   */
-  static readonly AddRightsForUserPath = '/rights/addRightsForUser';
+	/**
+	 * Path part for operation addRightsForUser
+	 */
+	static readonly AddRightsForUserPath = '/rights/addRightsForUser';
 
-  /**
-   * Add rights for user.
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `addRightsForUser()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  addRightsForUser$Response(params: {
+	/**
+	 * Add rights for user.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `addRightsForUser()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	addRightsForUser$Response(params: {
+		/**
+		 * User global unique identifier.
+		 */
+		userId: string;
 
-    /**
-     * User global unique identifier.
-     */
-    userId: string;
+		/**
+		 * Right identifiers.
+		 */
+		rightIds: Array<number>;
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, RightsApiService.AddRightsForUserPath, 'post');
+		if (params) {
+			rb.query('userId', params.userId, {});
+			rb.query('rightIds', params.rightIds, {});
+		}
 
-    /**
-     * Right identifiers.
-     */
-    rightIds: Array<number>;
-  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponse>;
+				})
+			);
+	}
 
-    const rb = new RequestBuilder(this.rootUrl, RightsApiService.AddRightsForUserPath, 'post');
-    if (params) {
-      rb.query('userId', params.userId, {});
-      rb.query('rightIds', params.rightIds, {});
-    }
+	/**
+	 * Add rights for user.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `addRightsForUser$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	addRightsForUser(params: {
+		/**
+		 * User global unique identifier.
+		 */
+		userId: string;
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<OperationResultResponse>;
-      })
-    );
-  }
+		/**
+		 * Right identifiers.
+		 */
+		rightIds: Array<number>;
+	}): Observable<OperationResultResponse> {
+		return this.addRightsForUser$Response(params).pipe(
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
 
-  /**
-   * Add rights for user.
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `addRightsForUser$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  addRightsForUser(params: {
+	/**
+	 * Path part for operation getRightsList
+	 */
+	static readonly GetRightsListPath = '/rights/getRightsList';
 
-    /**
-     * User global unique identifier.
-     */
-    userId: string;
+	/**
+	 * Get all rights.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `getRightsList()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	getRightsList$Response(params?: {
+		/**
+		 * Localization of rights.
+		 */
+		locale?: string;
+	}): Observable<StrictHttpResponse<Array<RightInfo>>> {
+		const rb = new RequestBuilder(this.rootUrl, RightsApiService.GetRightsListPath, 'get');
+		if (params) {
+			rb.query('locale', params.locale, {});
+		}
 
-    /**
-     * Right identifiers.
-     */
-    rightIds: Array<number>;
-  }): Observable<OperationResultResponse> {
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<Array<RightInfo>>;
+				})
+			);
+	}
 
-    return this.addRightsForUser$Response(params).pipe(
-      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-    );
-  }
+	/**
+	 * Get all rights.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `getRightsList$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	getRightsList(params?: {
+		/**
+		 * Localization of rights.
+		 */
+		locale?: string;
+	}): Observable<Array<RightInfo>> {
+		return this.getRightsList$Response(params).pipe(
+			map((r: StrictHttpResponse<Array<RightInfo>>) => r.body as Array<RightInfo>)
+		);
+	}
 
-  /**
-   * Path part for operation getRightsList
-   */
-  static readonly GetRightsListPath = '/rights/getRightsList';
+	/**
+	 * Path part for operation removeRightsFromUser
+	 */
+	static readonly RemoveRightsFromUserPath = '/rights/removeRightsFromUser';
 
-  /**
-   * Get all rights.
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getRightsList()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getRightsList$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<RightResponse>>> {
+	/**
+	 * Remove rights from user.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `removeRightsFromUser()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	removeRightsFromUser$Response(params: {
+		/**
+		 * User global unique identifier.
+		 */
+		userId: string;
 
-    const rb = new RequestBuilder(this.rootUrl, RightsApiService.GetRightsListPath, 'get');
-    if (params) {
-    }
+		/**
+		 * Right identifiers.
+		 */
+		rightIds: Array<number>;
+	}): Observable<StrictHttpResponse<void>> {
+		const rb = new RequestBuilder(this.rootUrl, RightsApiService.RemoveRightsFromUserPath, 'delete');
+		if (params) {
+			rb.query('userId', params.userId, {});
+			rb.query('rightIds', params.rightIds, {});
+		}
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<RightResponse>>;
-      })
-    );
-  }
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'text',
+					accept: '*/*',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+				})
+			);
+	}
 
-  /**
-   * Get all rights.
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `getRightsList$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getRightsList(params?: {
-  }): Observable<Array<RightResponse>> {
+	/**
+	 * Remove rights from user.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `removeRightsFromUser$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	removeRightsFromUser(params: {
+		/**
+		 * User global unique identifier.
+		 */
+		userId: string;
 
-    return this.getRightsList$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<RightResponse>>) => r.body as Array<RightResponse>)
-    );
-  }
-
-  /**
-   * Path part for operation removeRightsFromUser
-   */
-  static readonly RemoveRightsFromUserPath = '/rights/removeRightsFromUser';
-
-  /**
-   * Remove rights from user.
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `removeRightsFromUser()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  removeRightsFromUser$Response(params: {
-
-    /**
-     * User global unique identifier.
-     */
-    userId: string;
-
-    /**
-     * Right identifiers.
-     */
-    rightIds: Array<number>;
-  }): Observable<StrictHttpResponse<void>> {
-
-    const rb = new RequestBuilder(this.rootUrl, RightsApiService.RemoveRightsFromUserPath, 'delete');
-    if (params) {
-      rb.query('userId', params.userId, {});
-      rb.query('rightIds', params.rightIds, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'text',
-      accept: '*/*'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-      })
-    );
-  }
-
-  /**
-   * Remove rights from user.
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `removeRightsFromUser$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  removeRightsFromUser(params: {
-
-    /**
-     * User global unique identifier.
-     */
-    userId: string;
-
-    /**
-     * Right identifiers.
-     */
-    rightIds: Array<number>;
-  }): Observable<void> {
-
-    return this.removeRightsFromUser$Response(params).pipe(
-      map((r: StrictHttpResponse<void>) => r.body as void)
-    );
-  }
-
+		/**
+		 * Right identifiers.
+		 */
+		rightIds: Array<number>;
+	}): Observable<void> {
+		return this.removeRightsFromUser$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
+	}
 }

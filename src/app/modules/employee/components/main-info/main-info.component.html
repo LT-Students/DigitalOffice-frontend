@@ -117,7 +117,7 @@
 			matPrefix
 			type="button"
 			(click)="changeWorkingRate(-0.25)"
-			[disabled]="rate.value === '0'"
+			[disabled]="rate.value === '0.25'"
 		>
 			-
 		</button>
@@ -165,7 +165,10 @@
 			<div class="employee-info__main">
 				<div class="employee-info__avatar">
 					<do-profile-image [image]="employeeInfoForm.get('photo')?.value" size="l"></do-profile-image>
-					<label class="mat-body-1 employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
+					<label
+						class="mat-body-1 employee-info__label employee-info__upload-button"
+						(click)="onOpenDialog()"
+					>
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
 						</mat-icon>
@@ -188,7 +191,10 @@
 				<h4>Общие сведения</h4>
 				<div class="employee-info__columns">
 					<div class="employee-info__first-column">
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+						<mat-form-field
+							class="employee-info__form-field mat-form-field_default-select"
+							appearance="fill"
+						>
 							<mat-label class="employee-info__label"> Должность </mat-label>
 							<mat-select formControlName="position" required>
 								<mat-option *ngFor="let position of positions$ | async" [value]="position.id">
@@ -196,7 +202,10 @@
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+						<mat-form-field
+							class="employee-info__form-field mat-form-field_default-select"
+							appearance="fill"
+						>
 							<mat-label class="employee-info__label"> Департамент </mat-label>
 							<mat-select formControlName="department">
 								<mat-option *ngFor="let department of departments$ | async" [value]="department.id">
@@ -205,7 +214,10 @@
 							</mat-select>
 						</mat-form-field>
 						<do-input controlName="city" [isEdit]="true" label="Местоположение" textSize="small"></do-input>
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+						<mat-form-field
+							class="employee-info__form-field mat-form-field_default-select"
+							appearance="fill"
+						>
 							<mat-label class="employee-info__label">Офис </mat-label>
 							<mat-select formControlName="office" required>
 								<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
@@ -222,7 +234,10 @@
 								<div>{{ user?.rate }}</div>
 							</ng-container>
 						</ng-container>
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+						<mat-form-field
+							class="employee-info__form-field mat-form-field_default-select"
+							appearance="fill"
+						>
 							<mat-label class="employee-info__label">Пол </mat-label>
 							<mat-select formControlName="gender">
 								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
@@ -230,16 +245,27 @@
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
+						<mat-form-field
+							class="employee-info__form-field mat-form-field_default-select"
+							appearance="fill"
+						>
 							<mat-label class="employee-info__label"> Роль </mat-label>
 							<mat-select formControlName="role">
 								<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
-									{{ role.name }}
+									{{ role.localizations?.[0]?.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<do-datepicker controlName="startWorkingAt" [isEdit]="user?.isAdmin" label="В компании с"></do-datepicker>
-						<do-datepicker controlName="dateOfBirth" [isEdit]="user?.isAdmin" label="Дата рождения"></do-datepicker>
+						<do-datepicker
+							controlName="startWorkingAt"
+							[isEdit]="user?.isAdmin"
+							label="В компании с"
+						></do-datepicker>
+						<do-datepicker
+							controlName="dateOfBirth"
+							[isEdit]="user?.isAdmin"
+							label="Дата рождения"
+						></do-datepicker>
 					</div>
 				</div>
 			</div>
@@ -259,7 +285,13 @@
 			</div>
 			<div class="employee-info__form-buttons">
 				<button type="button" mat-button (click)="onReset()">Отменить</button>
-				<button [disabled]="employeeInfoForm.invalid" type="submit" color="primary" class="employee-info__submit" mat-flat-button>
+				<button
+					[disabled]="employeeInfoForm.invalid"
+					type="submit"
+					color="primary"
+					class="employee-info__submit"
+					mat-flat-button
+				>
 					Сохранить
 				</button>
 				<div class="employee-info__required-block">

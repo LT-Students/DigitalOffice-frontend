@@ -4,4 +4,5 @@ export interface OperationResultResponse<T> {
 	body?: T;
 	errors?: string[];
 	status?: OperationResultStatusType;
+	totalCount?: number;
 }
