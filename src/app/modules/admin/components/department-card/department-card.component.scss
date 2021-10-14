@@ -23,10 +23,6 @@
 }
 
 .table {
-	p {
-		margin: 0;
-	}
-
 	&__header {
 		margin-top: 20px;
 		margin-bottom: 20px;
@@ -106,13 +102,10 @@
 
 .actions {
 	display: flex;
+	align-items: center;
 
-	&__chosen-value {
-		align-self: center;
-	}
-
-	&__position {
-		margin-left: 50px;
+	&__menu {
+		margin-left: 20px;
 	}
 }
 

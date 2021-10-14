@@ -59,16 +59,14 @@
 				</mat-form-field>
 			</div>
 
-			<div class="actions" [ngStyle]="{ opacity: showActions ? '1' : '0' }">
-				<p class="actions__chosen-value">Выбрано {{ checkedNum }} сотрудников</p>
-				<mat-form-field appearance="fill" class="search__position">
-					<mat-label>Действия</mat-label>
-					<mat-select>
-						<mat-option *ngFor="let position of positions" [value]="position">
-							{{ position }}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
+			<div class="actions" *ngIf="showActions; else null">
+				<div class="actions__chosen-value">Выбрано {{ checkedNum }} сотрудников</div>
+				<button mat-button class="actions__menu" [matMenuTriggerFor]="menu">Действия</button>
+				<mat-menu #menu="matMenu">
+					<button mat-menu-item>1-й вариант</button>
+					<button mat-menu-item>2-й вариант</button>
+					<button mat-menu-item>3-й вариант</button>
+				</mat-menu>
 			</div>
 		</div>
 		<table class="table__content" matSort (matSortChange)="sortData($event)">
@@ -76,7 +74,7 @@
 				<col class="table__column table__column_width_little" />
 			</colgroup>
 			<tr>
-				<th mat-sort-header="checkbox">
+				<th>
 					<mat-checkbox
 						class="user-row__checkbox"
 						[checked]="allComplete"
@@ -98,8 +96,8 @@
 						<div class="main-info">
 							<do-profile-image class="profile-photo" [image]="userInfo?.avatar"></do-profile-image>
 							<div>
-								<p>{{ userInfo.firstName }} {{ userInfo.lastName }}</p>
-								<p class="mat-body-1">{{ userInfo?.position?.name }}</p>
+								<div>{{ userInfo.firstName }} {{ userInfo.lastName }}</div>
+								<div class="mat-body-1">{{ userInfo?.position?.name }}</div>
 							</div>
 						</div>
 					</td>
@@ -115,25 +113,18 @@
 					</td>
 					<td>
 						<ng-container *ngIf="userInfo?.isActive; else archived">
-							<p class="user-status">Активен</p>
+							<div class="user-status">Активен</div>
 						</ng-container>
 						<ng-template #archived>
-							<p class="user-status user-status_archived">В архиве</p>
+							<div class="user-status user-status_archived">В архиве</div>
 						</ng-template>
 					</td>
 				</tr>
 			</ng-container>
 		</table>
-
-		<mat-paginator
-			[length]="totalCount"
-			[pageSize]="pageSize"
-			[pageSizeOptions]="[10, 25, 50]"
-			(page)="onPageChange($event)"
-		></mat-paginator>
 	</div>
 </mat-card>
 
 <ng-template #empty>
-	<p>—</p>
+	<div>—</div>
 </ng-template>
