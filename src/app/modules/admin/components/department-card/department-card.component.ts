@@ -9,6 +9,8 @@ import { DepartmentInfo } from '@data/api/company-service/models/department-info
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType } from '@data/api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
@@ -31,11 +33,14 @@ export class DepartmentCardComponent implements OnInit {
 	public departmentInfo: DepartmentInfo | undefined;
 	public sortedUsersInfo: UserInfo[];
 	private _departmentId: string;
-
+	public positions: string[];
 	public totalCount: number;
 	public pageSize: number;
 	public pageIndex: number;
 	public peopleCountMap: { [k: string]: string };
+	public displayedColumns: string[];
+	public dataSource: MatTableDataSource<UserInfo>;
+	public selection: SelectionModel<UserInfo>;
 
 	constructor(
 		private _netService: NetService,
@@ -51,6 +56,10 @@ export class DepartmentCardComponent implements OnInit {
 		this.pageSize = 10;
 		this.pageIndex = 0;
 		this.sortedUsersInfo = [];
+		this.positions = ['front', 'back', 'manager', 'lead'];
+		this.displayedColumns = ['select', 'name', 'role', 'rate', 'status'];
+		this.selection = new SelectionModel<UserInfo>(true, []);
+		this.dataSource = new MatTableDataSource();
 
 		this.peopleCountMap = {
 			few: '# человека',
@@ -60,6 +69,7 @@ export class DepartmentCardComponent implements OnInit {
 
 	ngOnInit(): void {
 		this._getDepartment();
+		console.log(this.dataSource);
 	}
 
 	private _getDepartment(): void {
@@ -86,9 +96,12 @@ export class DepartmentCardComponent implements OnInit {
 				skipCount: this.pageIndex * this.pageSize,
 				takeCount: this.pageSize,
 				departmentid: this._departmentId,
+				includerole: true,
+				includeposition: true,
 			})
 			.subscribe((data) => {
 				this.sortedUsersInfo = data?.body?.slice() ?? [];
+				this.dataSource = new MatTableDataSource(this.sortedUsersInfo);
 				this.totalCount = this.sortedUsersInfo.length;
 				this._cdr.markForCheck();
 			});
@@ -160,5 +173,19 @@ export class DepartmentCardComponent implements OnInit {
 			data: { idToHide: this.sortedUsersInfo.map((e) => e.id) },
 			maxWidth: '670px',
 		});
+	}
+
+	public isAllSelected(): boolean {
+		const numSelected = this.selection.selected.length;
+		const numRows = this.dataSource.data.length;
+		return numSelected === numRows;
+	}
+
+	public masterToggle(): void {
+		if (this.isAllSelected()) {
+			this.selection.clear();
+			return;
+		}
+		this.selection.select(...this.dataSource.data);
 	}
 }
