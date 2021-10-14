@@ -195,7 +195,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label">Офис </mat-label>
+							<mat-label class="employee-info__label"> Офис </mat-label>
 							<mat-select formControlName="office" required>
 								<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
 									{{ office.city }}, {{ office.address }}
@@ -228,8 +228,8 @@
 						>
 							<mat-label class="employee-info__label"> Роль </mat-label>
 							<mat-select formControlName="role">
-								<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
-									{{ role.localizations?.[0]?.name }}
+								<mat-option *ngFor="let role of roles$ | async" [value]="role.id"
+									>{{ role.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
