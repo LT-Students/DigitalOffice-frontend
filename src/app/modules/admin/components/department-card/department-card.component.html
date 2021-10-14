@@ -61,8 +61,11 @@
 
 			<div class="actions" *ngIf="selection.selected.length > 0; else null">
 				<div>Выбрано {{ selection.selected.length }} сотрудников</div>
-				<button mat-button class="actions__menu" [matMenuTriggerFor]="menu">Действия</button>
-				<mat-menu #menu="matMenu">
+				<div [matMenuTriggerFor]="menu" class="actions__menu">
+					<div>Действия</div>
+					<div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down" /></div>
+				</div>
+				<mat-menu #menu>
 					<button mat-menu-item>1-й вариант</button>
 					<button mat-menu-item>2-й вариант</button>
 					<button mat-menu-item>3-й вариант</button>

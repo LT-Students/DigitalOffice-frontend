@@ -1,4 +1,6 @@
 @use 'layouts/table';
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
 
 .title {
 	margin-bottom: 40px;
@@ -83,6 +85,17 @@
 
 	&__menu {
 		margin-left: 20px;
+		padding: 10px 16px;
+
+		display: flex;
+		justify-content: space-between;
+
+		width: 200px;
+
+		cursor: pointer;
+
+		background-color: mat.get-color-from-palette($do-grey, 100);
+		border-radius: 5px;
 	}
 }
 
@@ -94,20 +107,22 @@
 	margin-right: 20px;
 }
 
-.mat-column-select {
-	width: 50px;
-}
+.mat-column {
+	&-select {
+		width: 5%;
+	}
 
-.mat-column-role {
-	width: 250px;
-}
+	&-role {
+		width: 23%;
+	}
 
-.mat-column-rate {
-	width: 200px;
-}
+	&-rate {
+		width: 18%;
+	}
 
-.mat-column-status {
-	width: 150px;
+	&-status {
+		width: 13%;
+	}
 }
 
 .mat-cell,
@@ -123,6 +138,4 @@
 
 .mat-header-row {
 	height: 50px;
-
-	cursor: pointer;
 }
