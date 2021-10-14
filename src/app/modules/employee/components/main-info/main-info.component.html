@@ -229,7 +229,8 @@
 							<mat-label class="employee-info__label"> Роль </mat-label>
 							<mat-select formControlName="role">
 								<mat-option *ngFor="let role of roles$ | async" [value]="role.id"
-									>{{ role.name }}
+									>{{
+                                    role?.localizations?.[0]?.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
