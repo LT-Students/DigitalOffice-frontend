@@ -18,7 +18,7 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this._currentUserService.currentUser$
+		this._currentUserService.user$
 			.pipe(
 				takeUntil(this.onDestroy$),
 				tap((user) => this._attendanceService.setUserIdAndRate(user?.id, user?.rate)),

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { catchError } from 'rxjs/operators';
@@ -10,12 +10,12 @@ import { UserService } from '@app/services/user/user.service';
 	providedIn: 'root',
 })
 export class CurrentUserService {
-	private _currentUser: BehaviorSubject<User | null>;
-	public readonly currentUser$: Observable<User | null>;
+	private _user: ReplaySubject<User>;
+	public readonly user$: Observable<User>;
 
 	constructor(private _userService: UserService) {
-		this._currentUser = new BehaviorSubject<User | null>(null);
-		this.currentUser$ = this._currentUser.asObservable();
+		this._user = new ReplaySubject<User>(1);
+		this.user$ = this._user.asObservable();
 	}
 
 	public getUserOnLogin(userId?: string): Observable<User> {
@@ -30,6 +30,6 @@ export class CurrentUserService {
 	}
 
 	public setUser(user: User): void {
-		this._currentUser.next(user);
+		this._user.next(user);
 	}
 }

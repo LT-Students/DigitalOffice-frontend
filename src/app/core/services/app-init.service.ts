@@ -4,6 +4,7 @@ import { switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { CompanyService } from '@app/services/company/company.service';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -11,6 +12,7 @@ import { CurrentUserService } from '@app/services/current-user.service';
 export class AppInitService {
 	constructor(
 		private _currentUserService: CurrentUserService,
+		private _currentCompanyService: CurrentCompanyService,
 		private _companyService: CompanyService,
 		private _localStorage: LocalStorageService,
 		private _authService: AuthService
@@ -25,6 +27,7 @@ export class AppInitService {
 			this._companyService
 				.getCompany()
 				.pipe(
+					tap((company) => this._currentCompanyService.setCompany(company)),
 					switchMap(() => this._currentUserService.getUserOnLogin(userId)),
 					tap((user) => this._currentUserService.setUser(user))
 				)

@@ -2,9 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } fro
 
 import { AuthService } from '@app/services/auth/auth.service';
 import { Router } from '@angular/router';
-import { CompanyService } from '@app/services/company/company.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'do-content-container',
@@ -16,22 +18,22 @@ export class ContentContainerComponent implements OnInit {
 	@ViewChild('menu', { read: ElementRef }) menu: ElementRef | undefined;
 
 	public navOpened: boolean;
-	public portalName: string;
+	public portalName: Observable<string>;
 	public departmentId: string | undefined;
 
 	constructor(
 		private _currentUserService: CurrentUserService,
 		private _authService: AuthService,
-		private _companyService: CompanyService,
+		private _currentCompanyService: CurrentCompanyService,
 		private _snackBar: MatSnackBar,
 		private _router: Router
 	) {
 		this.navOpened = false;
-		this.portalName = this._companyService.getPortalName();
+		this.portalName = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
 	}
 
 	ngOnInit() {
-		this._currentUserService.currentUser$.subscribe((user) => {
+		this._currentUserService.user$.subscribe((user) => {
 			this.departmentId = user?.department?.id;
 		});
 	}
@@ -40,7 +42,9 @@ export class ContentContainerComponent implements OnInit {
 		if (this.departmentId) {
 			this.closeNav();
 			this._router.navigate([`/admin/departments/${this.departmentId}/timelist`]);
-		} else this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 });
+		} else {
+			this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 });
+		}
 	}
 
 	public onLogoClick(): void {

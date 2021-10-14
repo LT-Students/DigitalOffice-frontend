@@ -1,8 +1,10 @@
 import { Input, Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '@app/services/auth/auth.service';
-import { CompanyService } from '@app/services/company/company.service';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'do-header',
@@ -14,17 +16,17 @@ export class HeaderComponent {
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
 	@Output() public menuClick: EventEmitter<MouseEvent>;
 
-	public portalName: string;
+	public portalName: Observable<string>;
 	public currentUser: User | null | undefined;
 
 	constructor(
 		private _authService: AuthService,
 		private _currentUserService: CurrentUserService,
-		private _companyService: CompanyService
+		private _currentCompanyService: CurrentCompanyService
 	) {
 		this.menuClick = new EventEmitter();
-		this.portalName = this._companyService.getPortalName();
-		this._currentUserService.currentUser$.subscribe((user) => (this.currentUser = user));
+		this.portalName = this._currentCompanyService.company$.pipe(map((user) => user.portalName));
+		this._currentUserService.user$.subscribe((user) => (this.currentUser = user));
 	}
 
 	public onLogoutClick(): void {

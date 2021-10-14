@@ -2,12 +2,12 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
-import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
-import { CompanyService } from '@app/services/company/company.service';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
 
 @Component({
 	selector: 'do-signup',
@@ -16,7 +16,7 @@ import { CurrentUserService } from '@app/services/current-user.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent implements OnInit {
-	public portalName: string;
+	public portalName: Observable<string>;
 	public userId: string;
 	public loginForm: FormGroup;
 	public isWaiting: BehaviorSubject<boolean>;
@@ -31,13 +31,13 @@ export class SignupComponent implements OnInit {
 	constructor(
 		private _authService: AuthService,
 		private _currentUserService: CurrentUserService,
-		private _companyService: CompanyService,
+		private _currentCompanyService: CurrentCompanyService,
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private _fb: FormBuilder
 	) {
 		this.isWaiting = new BehaviorSubject<boolean>(false);
-		this.portalName = this._companyService.getPortalName();
+		this.portalName = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
 		this.userId = '';
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
