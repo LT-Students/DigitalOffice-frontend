@@ -1,18 +1,17 @@
-import { Component, ChangeDetectionStrategy, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Inject, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EMPTY, Observable } from 'rxjs';
-import { map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
 import { OperationResultStatusType } from '@data/api/news-service/models';
 import { ModalService } from '@app/services/modal.service';
 import { NewsFeedService } from '@app/services/news-feed.service';
+import { CompanyService } from '@app/services/company/company.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
-import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
-import { CompanyService } from '@app/services/company/company.service';
+import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-post',
@@ -42,8 +41,8 @@ export class PostComponent {
 		return this._newsService.getNews(this.postId).pipe(
 			map((article) => article.body),
 			mergeMap((article) => {
-				let blocks = JSON.parse(article?.content ?? '[]');
-				let notHiddenBlocks = blocks.filter((block: any) =>
+				const blocks = JSON.parse(article?.content ?? '[]');
+				const notHiddenBlocks = blocks.filter((block: any) =>
 					block?.tunes && block.tunes?.previewTune ? !block.tunes.previewTune.hidden : true
 				);
 				return this._editorJSParser
@@ -68,7 +67,7 @@ export class PostComponent {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		const confirmDialogData: ConfirmDialogModel = {
+		const confirmDialogData: ConfirmDialogData = {
 			title: 'Удаление новости',
 			message: 'Вы действительно хотите удалить новость? Отменить данное действие будет невозможно.',
 			confirmText: 'Да, удалить',

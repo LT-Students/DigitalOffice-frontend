@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MatDatepicker } from '@angular/material/datepicker';
 
 import { OperationResultStatusType } from '@data/api/time-service/models';
 import { Activities, AttendanceService } from '@app/services/attendance.service';
+import { DateTime } from 'luxon';
 
 export interface IDialogResponse {
 	status?: OperationResultStatusType;
@@ -17,9 +17,7 @@ export interface IDialogResponse {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserTasksComponent {
-	@ViewChild('dp') monthpicker: MatDatepicker<Date> | undefined;
-
-	public selectedDate$: Observable<Date>;
+	public selectedDate$: Observable<DateTime>;
 	public activities$: Observable<Activities>;
 
 	constructor(private _attendanceService: AttendanceService) {
@@ -27,8 +25,7 @@ export class UserTasksComponent {
 		this.activities$ = this._attendanceService.activities$;
 	}
 
-	public chosenMonthHandler(date: Date, datepicker: MatDatepicker<any>) {
+	public chosenMonthHandler(date: DateTime) {
 		this._attendanceService.setNewDate(date);
-		datepicker.close();
 	}
 }

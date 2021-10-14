@@ -1,4 +1,5 @@
-<do-breadcrumbs [paths]="[{title: 'Администрирование', url: 'admin/dashboard'}, {title: 'Новый проект'}]"></do-breadcrumbs>
+<do-breadcrumbs [paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Новый проект' }]">
+</do-breadcrumbs>
 <h1>Новый проект</h1>
 <mat-card class="card">
 	<form class="project-info" [formGroup]="projectForm" (ngSubmit)="createProject()" autocomplete="off">
@@ -15,13 +16,25 @@
 				<div class="project-info__name">
 					<mat-form-field appearance="fill">
 						<mat-label>Название проекта</mat-label>
-						<input matInput type="text" id="name" formControlName="name" placeholder="Введите название проекта" required />
+						<input
+							matInput
+							type="text"
+							id="name"
+							formControlName="name"
+							placeholder="Введите название проекта"
+							required
+						/>
 					</mat-form-field>
 				</div>
 				<div class="project-info__department">
 					<mat-form-field appearance="fill">
 						<mat-label>Департамент</mat-label>
-						<mat-select id="department" formControlName="departmentId" placeholder="Выберите департамент" required>
+						<mat-select
+							id="department"
+							formControlName="departmentId"
+							placeholder="Выберите департамент"
+							required
+						>
 							<mat-option *ngFor="let department of departments" [value]="department.id">
 								{{ department.name }}
 							</mat-option>
@@ -55,7 +68,13 @@
 				<div class="project-info__description">
 					<mat-form-field appearance="fill">
 						<mat-label>Описание</mat-label>
-						<textarea matInput id="description" formControlName="description" placeholder="Кратко дайте описание проекту"></textarea>
+						<textarea
+							matInput
+							id="description"
+							formControlName="description"
+							placeholder="Кратко дайте описание проекту"
+							maxlength="300"
+						></textarea>
 					</mat-form-field>
 				</div>
 			</div>
@@ -77,7 +96,7 @@
 				<div class="section__title_left">
 					<h3 doUnderline underlinedSize="sm">Команда</h3>
 					&nbsp;
-					<h3 class='primary'>{{ membersAll.length | i18nPlural: pluralTeamCount }}</h3>
+					<h3 class="primary">{{ membersAll.length | i18nPlural: pluralTeamCount }}</h3>
 				</div>
 				<!--				<div class="section__title_right">-->
 				<!--					<button mat-flat-button color="primary" type="button" (click)="showProjectTeam()">Посмотреть всю команду</button>-->
@@ -102,13 +121,19 @@
 					<!--                        >-->
 					<!--                    </div>-->
 				</div>
-				<button mat-flat-button color="accent" type="button" (click)="onAddTeamClick()">Добавить сотрудников</button>
+				<button mat-flat-button color="accent" type="button" (click)="onAddTeamClick()">
+					Добавить сотрудников
+				</button>
 			</div>
 		</div>
 
 		<div class="project-info__actions">
-			<button mat-stroked-button color="warn" class="border-accent_color_bright" type="button" (click)="goBack()">Отмена</button>
-			<button mat-flat-button color="primary" [disabled]="projectForm.invalid" type="submit">Создать проект</button>
+			<button mat-stroked-button color="warn" class="border-accent_color_bright" type="button" (click)="goBack()">
+				Отмена
+			</button>
+			<button mat-flat-button color="primary" [disabled]="projectForm.invalid" type="submit">
+				Создать проект
+			</button>
 		</div>
 	</form>
 </mat-card>

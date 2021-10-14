@@ -62,26 +62,25 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		this.departments$ = this._netService
 			.getDepartmentsList({
 				skipCount: 0,
-				takeCount: 100,
+				takeCount: 500,
 			})
 			.pipe(map((res) => res.body));
 
 		this.positions$ = this._netService
 			.getPositionsList({
 				skipCount: 0,
-				takeCount: 100,
+				takeCount: 500,
 			})
 			.pipe(map((res) => res.body));
 
-		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).pipe(map((res) => res.body));
-		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 50 }).pipe(map((res) => res.roles));
+		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
+		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
 	}
 
 	public ngOnInit(): void {
 		this._route.params.subscribe((param) => (this.isEditing = false));
 		this.userSubscription = this._employeeService.selectedUser$.subscribe((user) => {
 			this.user = user;
-			console.log('main-info', user);
 			this._cdr.markForCheck();
 		});
 	}
@@ -145,7 +144,6 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		const editRequest: { path: string; value: any }[] = Object.keys(this.employeeInfoForm.controls)
 			.filter((key) => this.employeeInfoForm.get(key)?.dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
-
 		this._employeeService.editEmployee(editRequest).subscribe({
 			next: () => {
 				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });

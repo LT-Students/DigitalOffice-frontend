@@ -5,10 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { WorkFlowMode } from '../../modules/employee/employee-page.component';
 import { Team } from '../../modules/admin/components/new-project/team-cards';
-import {
-	ConfirmDialogComponent,
-	ConfirmDialogModel,
-} from '../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../../modules/news/components/post/post.component';
 
 export enum ModalType {
@@ -65,7 +62,7 @@ export class ModalService {
 		});
 	}
 
-	public confirm(confirmData: ConfirmDialogModel): MatDialogRef<ConfirmDialogComponent, ConfirmDialogModel> {
+	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent, ConfirmDialogData> {
 		return this._matDialog.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.M });
 	}
 

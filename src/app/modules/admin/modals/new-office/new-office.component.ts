@@ -4,6 +4,7 @@ import { OfficeService } from '@app/services/company/office.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialogRef } from '@angular/material/dialog';
+import { DoValidators } from '@app/validators/do-validators';
 
 @Component({
 	selector: 'do-new-office',
@@ -21,9 +22,9 @@ export class NewOfficeComponent {
 		private _dialogRef: MatDialogRef<NewOfficeComponent>
 	) {
 		this.officeForm = this._fb.group({
-			city: ['', [Validators.required]],
-			address: ['', [Validators.required]],
-			name: [''],
+			city: ['', [Validators.required, DoValidators.noWhitespaces]],
+			address: ['', [Validators.required, DoValidators.noWhitespaces]],
+			name: ['', [DoValidators.noWhitespaces]],
 		});
 	}
 
@@ -36,13 +37,14 @@ export class NewOfficeComponent {
 			})
 			.subscribe(
 				(result) => {
-					this._snackBar.open('Новый офис успешно добавлен', 'done', {
-						duration: 3000
+					this._snackBar.open('Новый офис успешно добавлен!', 'x', {
+						duration: 3000,
 					});
 					this._dialogRef.close(result);
 				},
 				(error: HttpErrorResponse) => {
-					this._snackBar.open(error.error.Message, 'accept');
+					// error.error.message === undefined, поэтому так
+					this._snackBar.open('Что-то пошло не так :(', 'accept');
 					throw error;
 				}
 			);

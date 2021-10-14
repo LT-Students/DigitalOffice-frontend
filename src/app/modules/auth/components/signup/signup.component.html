@@ -17,10 +17,10 @@
 	</mat-form-field>
 	<div class="form__submit">
 		<button
-			*ngIf="!isWaiting; else spinner"
+			*ngIf="(isWaiting | async) === false; else spinner"
 			mat-flat-button
 			color="primary"
-            class="submit-button"
+			class="submit-button"
 			type="submit"
 			[disabled]="loginForm.invalid"
 		>
