@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { CurrentUserService } from '@app/services/current-user.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class EmployeePageService {
-	private _selectedUser: BehaviorSubject<User | null>;
-	public readonly selectedUser$: Observable<User | null>;
+	private _selectedUser: ReplaySubject<User>;
+	public readonly selectedUser$: Observable<User>;
 
-	constructor(private _userService: UserService) {
-		this._selectedUser = new BehaviorSubject<User | null>(null);
+	constructor(private _userService: UserService, private _currentUserService: CurrentUserService) {
+		this._selectedUser = new ReplaySubject<User>(1);
 		this.selectedUser$ = this._selectedUser.asObservable();
 	}
 
@@ -29,11 +30,25 @@ export class EmployeePageService {
 			includeprojects: true,
 		};
 
-		return this._userService.getUser(params).pipe(tap((user) => this._selectedUser.next(user)));
+		return this._userService.getUser(params).pipe(
+			withLatestFrom(this._currentUserService.user$),
+			tap(([selectedUser, currentUser]) => {
+				this._selectedUser.next(selectedUser);
+				if (currentUser.id === userId) {
+					this._currentUserService.setUser(selectedUser);
+				}
+			}),
+			map(([user, _]) => user)
+		);
 	}
 
 	public editEmployee(editRequest: { path: string; value: any }[]): Observable<User> {
-		const userId = this._selectedUser.value?.id as string;
-		return this._userService.editUser(userId, editRequest).pipe(switchMap(() => this.getEmployee(userId)));
+		return this.selectedUser$.pipe(
+			take(1),
+			map((user) => user.id ?? ''),
+			switchMap((userId) =>
+				this._userService.editUser(userId, editRequest).pipe(switchMap(() => this.getEmployee(userId)))
+			)
+		);
 	}
 }
