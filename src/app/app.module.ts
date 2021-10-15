@@ -11,7 +11,11 @@ import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
 import { CoreModule } from '@app/core.module';
 import { AppInitService } from '@app/services/app-init.service';
 import { FormsModule } from '@angular/forms';
-import { MatLuxonDateModule } from '@angular/material-luxon-adapter';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateModule } from '@angular/material-luxon-adapter';
+import { MatDialogRef } from '@angular/material/dialog';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DoDateAdapter } from '@app/services/do-date-adapter';
+import { DATE_FORMAT } from '@app/configs/date-formats';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminModule } from './modules/admin/admin.module';
@@ -60,6 +64,12 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 			multi: true,
 		},
 		{ provide: LOCALE_ID, useValue: 'ru-RU' },
+		{
+			provide: DateAdapter,
+			useClass: DoDateAdapter,
+			deps: [MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS],
+		},
+		{ provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
 	],
 	bootstrap: [AppComponent],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],

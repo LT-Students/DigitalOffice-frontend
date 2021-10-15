@@ -102,6 +102,7 @@ Settings.defaultLocale = 'ru';
 	],
 	providers: [
 		{ provide: MatDialogRef, useValue: {} },
+		//TODO for some reason range-picker inside AddHoursComponent getting provided only from this module, not from AppModule
 		{
 			provide: DateAdapter,
 			useClass: DoDateAdapter,

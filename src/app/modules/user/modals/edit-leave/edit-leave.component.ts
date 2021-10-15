@@ -10,8 +10,7 @@ import { DateService } from '@app/services/date.service';
 import { LeaveTimePath, PatchRequest } from '@app/types/patch-paths';
 import { PatchLeaveTimeDocument } from '@data/api/time-service/models/patch-leave-time-document';
 import { DateTime } from 'luxon';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { LuxonDateAdapter, MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 
@@ -20,14 +19,7 @@ import { IDialogResponse } from '../../components/user-tasks/user-tasks.componen
 	templateUrl: './edit-leave.component.html',
 	styleUrls: ['./edit-leave.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [
-		{
-			provide: DateAdapter,
-			useClass: LuxonDateAdapter,
-			deps: [MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS],
-		},
-		{ provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT },
-	],
+	providers: [{ provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT }],
 })
 export class EditLeaveComponent {
 	public editForm: FormGroup;
