@@ -109,7 +109,11 @@
 </ng-template>
 
 <ng-template #stepper [formGroup]="employeeInfoForm">
-	<do-stepper [step]="0.25" [max]="1" [min]="0.25" label="Ставка" formControlName="rate"></do-stepper>
+	<mat-form-field appearance="fill">
+		<mat-label>Ставка</mat-label>
+		<do-stepper [step]="0.25" [max]="1" [min]="0.25" formControlName="rate" disabled required></do-stepper>
+		<input disabled />
+	</mat-form-field>
 </ng-template>
 
 <ng-template #emoji [formGroup]="employeeInfoForm">
@@ -172,7 +176,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label"> Должность </mat-label>
+							<mat-label class="employee-info__label"> Должность</mat-label>
 							<mat-select formControlName="position" required>
 								<mat-option *ngFor="let position of positions$ | async" [value]="position.id">
 									{{ position.name }}
@@ -183,7 +187,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label"> Департамент </mat-label>
+							<mat-label class="employee-info__label"> Департамент</mat-label>
 							<mat-select formControlName="department">
 								<mat-option *ngFor="let department of departments$ | async" [value]="department.id">
 									{{ department.name }}
@@ -195,7 +199,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label"> Офис </mat-label>
+							<mat-label class="employee-info__label"> Офис</mat-label>
 							<mat-select formControlName="office" required>
 								<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
 									{{ office.city }}, {{ office.address }}
@@ -215,7 +219,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label">Пол </mat-label>
+							<mat-label class="employee-info__label">Пол</mat-label>
 							<mat-select formControlName="gender">
 								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
 									{{ gender.genderInRussian }}
@@ -226,7 +230,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label"> Роль </mat-label>
+							<mat-label class="employee-info__label"> Роль</mat-label>
 							<mat-select formControlName="role">
 								<mat-option *ngFor="let role of roles$ | async" [value]="role.id"
 									>{{
