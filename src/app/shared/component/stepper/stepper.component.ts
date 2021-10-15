@@ -71,6 +71,8 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		return this._placeholder ?? '';
 	}
 
+	private _placeholder?: string;
+
 	public focused: boolean;
 
 	public empty: boolean;
@@ -93,10 +95,9 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 	private _required: boolean;
 
 	@Input()
-	public set disabled(value: boolean) {
-		console.log('THIS IS VALUE: ', value);
+	public set disabled(value: boolean | string) {
 		this._disabled = coerceBooleanProperty(value);
-		if (this.disabled) {
+		if (this._disabled) {
 			this.stepperControl.disable();
 		} else {
 			this.stepperControl.enable();
@@ -116,8 +117,6 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 
 	@HostBinding('attr.aria-describedby')
 	public userAriaDescribedBy?: string | undefined;
-
-	private _placeholder?: string;
 
 	public stepperControl: FormControl;
 
@@ -173,12 +172,6 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		this.stateChanges.next();
 		this.onChange(this.value);
 	}
-
-	// public ngOnChanges(changes: SimpleChanges): void {
-	// 	if (changes.disabled?.currentValue !== changes.disabled?.previousValue) {
-	// 		this.setDisabledState(changes.disabled.currentValue);
-	// 	}
-	// }
 
 	ngOnDestroy() {
 		this.stateChanges.complete();
