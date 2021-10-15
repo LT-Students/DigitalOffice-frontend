@@ -7,10 +7,15 @@
 	text-align: center;
 
 	&__input {
+		height: 18px;
+
 		vertical-align: middle;
 	}
 
 	&__button {
-		vertical-align: middle;
+		width: 18px;
+		height: 18px;
+
+		line-height: 18px;
 	}
 }
