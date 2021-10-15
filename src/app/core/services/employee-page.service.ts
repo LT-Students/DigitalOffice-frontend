@@ -5,6 +5,7 @@ import { UserService } from '@app/services/user/user.service';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { PatchUserDocument } from '@data/api/user-service/models/patch-user-document';
 
 @Injectable({
 	providedIn: 'root',
@@ -42,7 +43,7 @@ export class EmployeePageService {
 		);
 	}
 
-	public editEmployee(editRequest: { path: string; value: any }[]): Observable<User> {
+	public editEmployee(editRequest: PatchUserDocument[]): Observable<User> {
 		return this.selectedUser$.pipe(
 			take(1),
 			map((user) => user.id ?? ''),
