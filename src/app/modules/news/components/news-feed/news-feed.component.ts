@@ -1,18 +1,18 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy, HostListener, Inject, ChangeDetectorRef } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { NewsService } from '@app/services/news/news.service';
 import { ArticlePreview } from '@app/models/news.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalService } from '@app/services/modal.service';
 import { NewsFeedService } from '@app/services/news-feed.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
 import { EditorJSParser } from '../../parser';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
-import { CompanyService } from '@app/services/company/company.service';
+import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-news-feed',
@@ -25,13 +25,13 @@ export class NewsFeedComponent implements OnInit {
 
 	public fixedTags: boolean;
 
-	public companyName: string;
+	public companyName: Observable<string>;
 
 	constructor(
 		@Inject(DOCUMENT) private _document: Document,
 		private _modalService: ModalService,
 		private _newsService: NewsService,
-		private _companyService: CompanyService,
+		private _currentCompanyService: CurrentCompanyService,
 		private _cdr: ChangeDetectorRef,
 		private _editorJSParser: EditorJSParser,
 		private _snackBar: MatSnackBar,
@@ -39,7 +39,7 @@ export class NewsFeedComponent implements OnInit {
 	) {
 		this.fixedTags = false;
 		this.newsFeed$ = this._newsFeedService.newsFeed$;
-		this.companyName = this._companyService.getCompanyName();
+		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 	}
 
 	@HostListener('window: scroll', [])
@@ -60,7 +60,7 @@ export class NewsFeedComponent implements OnInit {
 	}
 
 	public onNewsDelete(newsId: string | undefined): void {
-		const confirmDialogData: ConfirmDialogModel = {
+		const confirmDialogData: ConfirmDialogData = {
 			title: 'Удаление новости',
 			message: 'Вы действительно хотите удалить новость? Отменить данное действие будет невозможно.',
 			confirmText: 'Да, удалить',

@@ -5,15 +5,15 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { AttendanceService } from '@app/services/attendance.service';
 import { DateService } from '@app/services/date.service';
 import { DateFilterFn } from '@angular/material/datepicker';
-import { ILeaveType, LeaveTimeModel } from '@app/models/leave-time.model';
-import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
+import { ILeaveType, LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IEditWorkTimeRequest } from '@app/services/time/time.service';
+import { ICreateLeaveTimeRequest, IEditWorkTimeRequest } from '@app/services/time/time.service';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse, WorkTimeInfo } from '@data/api/time-service/models';
-import { DatePeriod } from '@data/models/date-period';
-import { MatOptionSelectionChange } from '@angular/material/core';
-import { TimeDurationService } from '@app/services/time-duration.service';
+import { DatePeriod } from '@app/types/date-period';
+import { MAT_DATE_FORMATS, MatOptionSelectionChange } from '@angular/material/core';
+import { DateTime } from 'luxon';
+import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { timeValidator } from './add-hours.validators';
 
 @Component({
@@ -21,33 +21,33 @@ import { timeValidator } from './add-hours.validators';
 	templateUrl: './add-hours.component.html',
 	styleUrls: ['./add-hours.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [{ provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT }],
 })
 export class AddHoursComponent implements OnDestroy {
 	public workTimes$: Observable<Array<WorkTimeInfo | undefined> | undefined>;
-	public selectedDate$: Observable<Date>;
+	public selectedDate$: Observable<DateTime>;
 	public recommendedTime: BehaviorSubject<number>;
 
 	public absences: ILeaveType[];
 	public addHoursForm: FormGroup;
 	public isProjectForm: boolean;
-	public monthOptions: Date[];
-	public disableWeekends: DateFilterFn<Date>;
+	public monthOptions: DateTime[];
+	public disableWeekends: DateFilterFn<DateTime>;
 	private _canEditSubscription: Subscription;
-	public minDate: Date;
-	public maxDate: Date;
+	public minDate: DateTime;
+	public maxDate: DateTime;
 
 	constructor(
 		private _fb: FormBuilder,
 		private _attendanceService: AttendanceService,
 		private _dateService: DateService,
-		private _snackbar: MatSnackBar,
-		private _timeDurationService: TimeDurationService
+		private _snackbar: MatSnackBar
 	) {
 		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 
 		this.isProjectForm = true;
 		this.monthOptions = [];
-		this.absences = LeaveTimeModel.getAllLeaveTypes();
+		this.absences = LeaveTypeModel.getAllLeaveTypes();
 		this.disableWeekends = this._attendanceService.disableWeekends;
 
 		this.addHoursForm = this._fb.group({
@@ -55,8 +55,8 @@ export class AddHoursComponent implements OnDestroy {
 				'',
 				[Validators.required, Validators.min(1), timeValidator(() => this._attendanceService.countMaxHours())],
 			],
-			startDate: [new Date(), [Validators.required]],
-			endDate: [new Date(), [Validators.required]],
+			startDate: [DateTime.now(), [Validators.required]],
+			endDate: [DateTime.now(), [Validators.required]],
 			activity: [null, Validators.required],
 			comment: [null],
 		});
@@ -79,19 +79,16 @@ export class AddHoursComponent implements OnDestroy {
 		});
 	}
 
-	public changeDate(date: Date): void {
+	public changeDate(date: DateTime): void {
 		this._attendanceService.setNewDate(date);
 	}
 
-	private _setMonthOptions(selectedDate: Date): Date[] {
-		if (selectedDate.getDate() < 5 && selectedDate.getMonth() === new Date().getMonth()) {
-			const currentDate = new Date();
-			return [currentDate, new Date(currentDate.getFullYear(), currentDate.getMonth() - 1)];
-		} else if (
-			selectedDate.getMonth() < new Date().getMonth() ||
-			selectedDate.getFullYear() !== new Date().getFullYear()
-		) {
-			return [new Date()];
+	private _setMonthOptions(selectedDate: DateTime): DateTime[] {
+		if (selectedDate.day < 5 && selectedDate.month === DateTime.now().month) {
+			const currentDate = DateTime.now();
+			return [currentDate, currentDate.minus({ months: 1 })];
+		} else if (selectedDate.month < DateTime.now().month || selectedDate.year !== DateTime.now().year) {
+			return [DateTime.now()];
 		}
 		return [];
 	}
@@ -151,28 +148,31 @@ export class AddHoursComponent implements OnDestroy {
 	}
 
 	private _addLeaveTime(): Observable<OperationResultResponse> {
-		const leaveTimeRequest: Omit<CreateLeaveTimeRequest, 'userId'> = {
-			startTime: this.addHoursForm.get('startDate')?.value.toISOString(),
-			endTime: this.addHoursForm.get('endDate')?.value.toISOString(),
+		const timeZoneOffset = (this.addHoursForm.get('startDate')?.value as DateTime).offset;
+		const leaveTimeRequest: Omit<ICreateLeaveTimeRequest, 'userId'> = {
+			startTime: this.addHoursForm.get('startDate')?.value.plus({ minutes: timeZoneOffset }).toISO(),
+			endTime: this.addHoursForm.get('endDate')?.value.plus({ minutes: timeZoneOffset }).toISO(),
 			leaveType: this.addHoursForm.get('activity')?.value,
 			comment: this.addHoursForm.get('comment')?.value,
+			minutes: this.recommendedTime.value * 60,
 		};
 
 		return this._attendanceService.addLeaveTime(leaveTimeRequest);
 	}
 
 	public onClose(): void {
-		const startDateValue = this.addHoursForm.get('startDate')?.value;
+		const startDateValue: DateTime = this.addHoursForm.get('startDate')?.value;
 		const endDateControl = this.addHoursForm.get('endDate');
-		if (!endDateControl?.value || this._dateService.isSameDay(startDateValue, endDateControl.value)) {
-			endDateControl?.setValue(new Date(startDateValue.getTime() + 1));
+		if (!endDateControl?.value || startDateValue.startOf('day').equals(endDateControl.value.startOf('day'))) {
+			endDateControl?.setValue(startDateValue.endOf('day'));
 		}
 
 		const datePeriod: DatePeriod = {
 			startDate: startDateValue,
 			endDate: endDateControl?.value,
 		};
-		this.recommendedTime.next(this._timeDurationService.getDuration(datePeriod, 8, true));
+		console.log(this._attendanceService.getLeaveDuration(datePeriod));
+		this.recommendedTime.next(this._attendanceService.getLeaveDuration(datePeriod));
 	}
 
 	public ngOnDestroy(): void {

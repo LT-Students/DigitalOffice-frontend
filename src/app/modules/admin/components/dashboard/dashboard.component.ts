@@ -13,6 +13,7 @@ import { NewDepartmentComponent } from '../../modals/new-department/new-departme
 import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
+import { NewRoleComponent } from '../../modals/new-role/new-role.component';
 
 @Component({
 	selector: 'do-dashboard',
@@ -43,18 +44,42 @@ export class DashboardComponent implements OnInit {
 			.pipe(
 				switchMap((value: AdminDashboardModalType) => {
 					switch (value) {
-						case this.modalType.NEW_DEPARTMENT: { return this.modalService.openModal(NewDepartmentComponent, ModalWidth.M).afterClosed(); }
-						case this.modalType.NEW_POSITION: { return this.modalService.openModal(NewPositionComponent, ModalWidth.M).afterClosed(); }
-						case this.modalType.NEW_EMPLOYEE: { return this.modalService.openModal(NewEmployeeComponent, ModalWidth.L).afterClosed(); }
-						case this.modalType.NEW_ROLE: { return this.modalService.openModal(NewDepartmentComponent, ModalWidth.M).afterClosed(); }
-						case this.modalType.NEW_OFFICE: { return this.modalService.openModal(NewOfficeComponent, ModalWidth.M).afterClosed(); }
-						case this.modalType.NEW_PROJECT: { return fromPromise(this._router.navigate(['admin/new-project'])); }
-						case this.modalType.MANAGE_USERS: { return fromPromise(this._router.navigate(['admin/manage-users'])); }
-						case this.modalType.DEPARTMENT_LIST: { return fromPromise(this._router.navigate(['departments'])); }
-						case this.modalType.MANAGE_ROLES: { return fromPromise(this._router.navigate(['admin/manage-roles'])); }
-						case this.modalType.OFFICE_LIST: { return fromPromise(this._router.navigate(['admin/offices'])); }
-						case this.modalType.POSITION_LIST: { return fromPromise(this._router.navigate(['admin/positions'])); }
-						default: { return of(false); }
+						case this.modalType.NEW_DEPARTMENT: {
+							return this.modalService.openModal(NewDepartmentComponent, ModalWidth.M).afterClosed();
+						}
+						case this.modalType.NEW_POSITION: {
+							return this.modalService.openModal(NewPositionComponent, ModalWidth.M).afterClosed();
+						}
+						case this.modalType.NEW_EMPLOYEE: {
+							return this.modalService.openModal(NewEmployeeComponent, ModalWidth.L).afterClosed();
+						}
+						case this.modalType.NEW_ROLE: {
+							return this.modalService.openModal(NewRoleComponent, ModalWidth.M).afterClosed();
+						}
+						case this.modalType.NEW_OFFICE: {
+							return this.modalService.openModal(NewOfficeComponent, ModalWidth.M).afterClosed();
+						}
+						case this.modalType.NEW_PROJECT: {
+							return fromPromise(this._router.navigate(['admin/new-project']));
+						}
+						case this.modalType.MANAGE_USERS: {
+							return fromPromise(this._router.navigate(['admin/manage-users']));
+						}
+						case this.modalType.DEPARTMENT_LIST: {
+							return fromPromise(this._router.navigate(['departments']));
+						}
+						case this.modalType.MANAGE_ROLES: {
+							return fromPromise(this._router.navigate(['admin/manage-roles']));
+						}
+						case this.modalType.OFFICE_LIST: {
+							return fromPromise(this._router.navigate(['admin/offices']));
+						}
+						case this.modalType.POSITION_LIST: {
+							return fromPromise(this._router.navigate(['admin/positions']));
+						}
+						default: {
+							return of(false);
+						}
 					}
 				})
 			)
@@ -63,7 +88,8 @@ export class DashboardComponent implements OnInit {
 					result &&
 					result.status &&
 					!(result.errors && result.errors.length) &&
-					(result.status === OperationResultStatusType.FullSuccess || result.status === OperationResultStatusType.PartialSuccess)
+					(result.status === OperationResultStatusType.FullSuccess ||
+						result.status === OperationResultStatusType.PartialSuccess)
 				) {
 					// this._matSnackBar.open('Новый пользователь успешно добавлен!', 'Закрыть', { duration: 7000 });
 				}

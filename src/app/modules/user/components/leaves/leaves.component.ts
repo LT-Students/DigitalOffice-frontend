@@ -1,26 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { LeaveTimeInfo, LeaveType, OperationResultStatusType } from '@data/api/time-service/models';
-import { LeaveTimeModel } from '@app/models/leave-time.model';
+import { EditLeaveTimeRequest, OperationResultStatusType } from '@data/api/time-service/models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { AttendanceService } from '@app/services/attendance.service';
-import { DatePeriod } from '@data/models/date-period';
-import { DeleteLeaveComponent } from '../../modals/delete-leave/delete-leave.component';
+import { LeaveTimeModel } from '@app/models/time/leave-time.model';
+import { TimeService } from '@app/services/time/time.service';
 import { EditLeaveComponent } from '../../modals/edit-leave/edit-leave.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
-import { TimeDurationService } from '@app/services/time-duration.service';
-
-export interface IModalContentConfig {
-	id?: string;
-	startTime?: string;
-	endTime?: string;
-	leaveType?: LeaveType;
-	comment?: string;
-	hours?: number;
-	date?: Date;
-}
+import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-leaves',
@@ -29,7 +18,7 @@ export interface IModalContentConfig {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeavesComponent {
-	@Input() leaves: Array<LeaveTimeInfo | undefined> | undefined | null;
+	@Input() leaves?: Array<LeaveTimeModel>;
 	@ViewChild('comment') comment: ElementRef | undefined;
 
 	public canEdit$: Observable<boolean>;
@@ -39,58 +28,59 @@ export class LeavesComponent {
 		private _cdr: ChangeDetectorRef,
 		private _snackBar: MatSnackBar,
 		private _attendanceService: AttendanceService,
-		private _timeDurationService: TimeDurationService
+		private _timeService: TimeService
 	) {
 		this.leaves = [];
 		this.canEdit$ = this._attendanceService.canEdit$;
 	}
 
-	public getRusType(leaveType: LeaveType | undefined) {
-		return leaveType ? LeaveTimeModel.getLeaveInfoByLeaveType(leaveType)?.leaveInRussian : undefined;
-	}
-
-	public getPeriodInHours(startTime: string, endTime: string): number {
-		const datePeriod: DatePeriod = { startDate: new Date(startTime), endDate: new Date(endTime) };
-
-		return this._timeDurationService.getDuration(datePeriod, 8, true);
-	}
-
-
-	public openEditModal(leave: LeaveTimeInfo | undefined): void {
-		let modalContentConfig: IModalContentConfig = {
-			id: leave?.id,
-			startTime: leave?.startTime,
-			endTime: leave?.endTime,
-			leaveType: leave?.leaveType,
-			comment: leave?.comment,
-			hours: this.getPeriodInHours(leave?.startTime as string, leave?.endTime as string),
-		};
-
+	public openEditModal(leave: LeaveTimeModel): void {
 		this._modalService
-			.openModal<EditLeaveComponent, IModalContentConfig, IDialogResponse>(EditLeaveComponent, ModalWidth.L, modalContentConfig)
+			.openModal<EditLeaveComponent, LeaveTimeModel, IDialogResponse>(EditLeaveComponent, ModalWidth.L, leave)
 			.afterClosed()
 			.subscribe((result) => {
 				if (leave && result?.status === OperationResultStatusType.FullSuccess) {
 					leave.comment = result.data.comment;
 					leave.startTime = result.data.startTime;
 					leave.endTime = result.data.endTime;
+					leave.minutes = result.data.minutes;
 
-					this._cdr.detectChanges();
-					this._snackBar.open('Leave successfully edited', 'Close', { duration: 3000 });
+					this._cdr.markForCheck();
+					this._snackBar.open('Запись успешно отредактирована!', '×', { duration: 3000 });
 				}
 			});
 	}
 
-	public openDeleteModal(leave: LeaveTimeInfo | undefined): void {
-		let modalContentConfig: IModalContentConfig = {
-			leaveType: leave?.leaveType,
-			date: new Date(leave?.startTime as string),
-			id: leave?.id,
+	public openDeleteModal(leave: LeaveTimeModel): void {
+		const confirmDialogData: ConfirmDialogData = {
+			title: 'Удаление записи',
+			confirmText: 'Да, удалить',
+			message: 'Вы действительно хотите удалить запись об отсутствии? Отменить это действие будет невозможно.',
 		};
 
 		this._modalService
-			.openModal<DeleteLeaveComponent, IModalContentConfig, IDialogResponse>(DeleteLeaveComponent, ModalWidth.M, modalContentConfig)
+			.confirm(confirmDialogData)
 			.afterClosed()
-			.subscribe();
+			.subscribe((isDeleted) => {
+				if (isDeleted) {
+					const body: EditLeaveTimeRequest = [
+						{
+							op: 'replace',
+							path: '/IsActive',
+							value: false,
+						},
+					];
+
+					this._timeService
+						.editLeaveTime({
+							leaveTimeId: leave.id,
+							body,
+						})
+						.subscribe(() => {
+							this.leaves = this.leaves?.filter((l) => l.id !== leave.id);
+							this._cdr.markForCheck();
+						});
+				}
+			});
 	}
 }

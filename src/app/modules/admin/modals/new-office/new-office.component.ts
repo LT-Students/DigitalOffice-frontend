@@ -38,7 +38,7 @@ export class NewOfficeComponent {
 			.subscribe(
 				(result) => {
 					this._snackBar.open('Новый офис успешно добавлен!', 'x', {
-						duration: 3000
+						duration: 3000,
 					});
 					this._dialogRef.close(result);
 				},

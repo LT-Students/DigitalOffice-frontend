@@ -4,7 +4,6 @@ import { LeaveTimeApiService } from '@data/api/time-service/services/leave-time-
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { EditWorkTimeRequest } from '@data/api/time-service/models/edit-work-time-request';
-import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
 import { WorkTimeDayJobApiService } from '@data/api/time-service/services/work-time-day-job-api.service';
 import { WorkTimeDayJobIdApiService } from '@data/api/time-service/services/work-time-day-job-id-api.service';
 import { WorkTimeMonthLimitApiService } from '@data/api/time-service/services/work-time-month-limit-api.service';
@@ -75,6 +74,15 @@ export interface IGetImport {
 	year: number;
 }
 
+export interface ICreateLeaveTimeRequest {
+	comment?: string;
+	endTime: string;
+	leaveType: 'Vacation' | 'SickLeave' | 'Training' | 'Idle';
+	minutes: number;
+	startTime?: string;
+	userId: string;
+}
+
 @Injectable()
 export class TimeService {
 	constructor(
@@ -85,7 +93,7 @@ export class TimeService {
 		private _workTimeMonthLimitApiService: WorkTimeMonthLimitApiService,
 		private _statService: StatApiService,
 		private _importService: ImportApiService
-	) { }
+	) {}
 
 	public findWorkTimes(params?: IFindWorkTimesRequest): Observable<FindResultResponseWorkTimeResponse> {
 		return this._workTimeService.findWorkTimes(params);
@@ -95,7 +103,7 @@ export class TimeService {
 		return this._workTimeService.editWorkTime(params);
 	}
 
-	public addLeaveTime(body: CreateLeaveTimeRequest): Observable<OperationResultResponse> {
+	public addLeaveTime(body: ICreateLeaveTimeRequest): Observable<OperationResultResponse> {
 		return this._leaveTimeApiService.addLeaveTime({ body });
 	}
 
@@ -107,7 +115,9 @@ export class TimeService {
 		return this._leaveTimeApiService.editLeaveTime(params);
 	}
 
-	public findWorkTimeMonthLimit(params?: IFindWorkTimeMonthLimitRequest): Observable<FindResultResponseWorkTimeMonthLimitInfo> {
+	public findWorkTimeMonthLimit(
+		params?: IFindWorkTimeMonthLimitRequest
+	): Observable<FindResultResponseWorkTimeMonthLimitInfo> {
 		return this._workTimeMonthLimitApiService.findWorkTimeMonthLimits(params);
 	}
 

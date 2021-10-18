@@ -15,13 +15,13 @@ import { HeaderComponent } from './component/header/header.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
-import { HoursPipe } from './pipes/hours/hours.pipe';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
 import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.component';
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
+import { DateTimePipe } from './pipes/date-time';
 import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
 
 @NgModule({
@@ -36,14 +36,14 @@ import { AddEmployeeComponent } from './modals/add-employee/add-employee.compone
 		StepperComponent,
 		TextDirective,
 		DndDirective,
-		HoursPipe,
 		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
 		BreadcrumbsComponent,
 		ConfirmDialogComponent,
 		TitleDatepickerComponent,
-		AddEmployeeComponent
+		AddEmployeeComponent,
+		DateTimePipe,
 	],
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, InfiniteScrollModule],
 	exports: [
@@ -62,14 +62,14 @@ import { AddEmployeeComponent } from './modals/add-employee/add-employee.compone
 		DndDirective,
 		DatepickerComponent,
 		StepperComponent,
-		HoursPipe,
 		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
 		ConfirmDialogComponent,
 		BreadcrumbsComponent,
 		TitleDatepickerComponent,
-		AddEmployeeComponent
+		DateTimePipe,
+		AddEmployeeComponent,
 	],
 })
 export class SharedModule {}

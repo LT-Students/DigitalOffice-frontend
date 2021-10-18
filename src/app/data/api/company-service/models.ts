@@ -1,4 +1,5 @@
 export { AddDepartmentUsersRequest } from './models/add-department-users-request';
+export { AddImageRequest } from './models/add-image-request';
 export { CreatePositionRequest } from './models/create-position-request';
 export { CreateDepartmentRequest } from './models/create-department-request';
 export { PositionInfo } from './models/position-info';
@@ -17,7 +18,6 @@ export { OperationResultResponse } from './models/operation-result-response';
 export { OperationResultResponseCompanyInfo } from './models/operation-result-response-company-info';
 export { OperationResultResponseDepartmentInfo } from './models/operation-result-response-department-info';
 export { OperationResultResponsePositionInfo } from './models/operation-result-response-position-info';
-export { ImageType } from './models/image-type';
 export { ImageInfo } from './models/image-info';
 export { SmtpInfo } from './models/smtp-info';
 export { AdminInfo } from './models/admin-info';

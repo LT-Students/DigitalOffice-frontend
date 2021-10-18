@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { UserService } from '@app/services/user/user.service';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { CompanyService } from '@app/services/company/company.service';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AppInitService {
 	constructor(
-		private _userService: UserService,
+		private _currentUserService: CurrentUserService,
+		private _currentCompanyService: CurrentCompanyService,
 		private _companyService: CompanyService,
 		private _localStorage: LocalStorageService,
 		private _authService: AuthService
@@ -22,9 +24,15 @@ export class AppInitService {
 		const userId: string | undefined = token ? (JSON.parse(atob(token.split('.')[1])).UserId as string) : undefined;
 
 		return new Promise((resolve) => {
-			this._companyService.getCompany().pipe(
-				switchMap(() => this._userService.getUserSetCredentials(userId))
-			).subscribe().add(resolve);
+			this._companyService
+				.getCompany()
+				.pipe(
+					tap((company) => this._currentCompanyService.setCompany(company)),
+					switchMap(() => this._currentUserService.getUserOnLogin(userId)),
+					tap((user) => this._currentUserService.setUser(user))
+				)
+				.subscribe()
+				.add(resolve);
 		});
 	}
 }
