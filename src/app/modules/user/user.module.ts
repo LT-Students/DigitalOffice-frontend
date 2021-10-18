@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AdminModule } from '../admin/admin.module';
 import { SharedModule } from '../../shared/shared.module';
@@ -34,7 +33,7 @@ import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/
 		EditLeaveComponent,
 		DoughnutChartComponent,
 	],
-	imports: [SharedModule, NgbDatepickerModule, AdminModule, UserRoutingModule],
+	imports: [SharedModule, AdminModule, UserRoutingModule],
 	providers: [],
 	exports: [AttendanceComponent],
 })

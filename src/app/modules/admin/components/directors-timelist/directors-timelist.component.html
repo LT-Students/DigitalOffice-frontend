@@ -47,11 +47,8 @@
 							<tr>
 								<th>{{ stat.user?.firstName }} {{ stat.user?.lastName }}</th>
 								<th>
-									{{ stat.totalHours }}
-									/{{
-										stat.limitInfo && stat.limitInfo.normHours
-											? stat.limitInfo.normHours * stat.rate
-											: 0
+									{{ stat.totalHours }} /{{
+										((stat.limitInfo?.normHours ?? 0) * (stat.user?.rate ?? 0))
 									}}
 								</th>
 								<th>{{ stat.workTimes?.length }}</th>

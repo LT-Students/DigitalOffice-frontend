@@ -163,7 +163,7 @@ export class DirectorsTimelistComponent implements OnInit {
 	}
 
 	private _getStat(): Observable<MappedStatInfo[]> {
-		let params: IFindStatRequest = {
+		const params: IFindStatRequest = {
 			month: this.selectedPeriod.startDate.month,
 			year: this.selectedPeriod.startDate.year,
 			takeCount: this.pageSize,

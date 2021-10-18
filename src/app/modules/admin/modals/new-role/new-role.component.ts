@@ -57,7 +57,7 @@ export class NewRoleComponent {
 					{
 						name: this.roleForm?.get('name')?.value?.trim(),
 						description: this.roleForm?.get('description')?.value?.trim(),
-						locale: 'zhopa',
+						locale: 'ru',
 					},
 				],
 				rights: this.roleForm?.get('rights')?.value,

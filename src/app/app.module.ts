@@ -11,9 +11,10 @@ import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
 import { CoreModule } from '@app/core.module';
 import { AppInitService } from '@app/services/app-init.service';
 import { FormsModule } from '@angular/forms';
+import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateModule } from '@angular/material-luxon-adapter';
+import { MatDialogRef } from '@angular/material/dialog';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { LuxonDateAdapter, MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateModule } from '@angular/material-luxon-adapter';
-import { Settings } from 'luxon';
+import { DoDateAdapter } from '@app/services/do-date-adapter';
 import { DATE_FORMAT } from '@app/configs/date-formats';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -26,7 +27,6 @@ import { InstallerModule } from './modules/installer/installer.module';
 import { NewsModule } from './modules/news/news.module';
 
 registerLocaleData(localeRu);
-Settings.defaultLocale = 'ru';
 
 function initializeCompanyAndUser(appInitService: AppInitService) {
 	return (): Promise<any> => {
@@ -66,7 +66,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 		{ provide: LOCALE_ID, useValue: 'ru-RU' },
 		{
 			provide: DateAdapter,
-			useClass: LuxonDateAdapter,
+			useClass: DoDateAdapter,
 			deps: [MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS],
 		},
 		{ provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },

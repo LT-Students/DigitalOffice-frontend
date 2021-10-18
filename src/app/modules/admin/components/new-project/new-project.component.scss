@@ -32,45 +32,14 @@
 			display: grid;
 
 			&_general {
-				grid-template-columns: 56% 20% 20%;
+				grid-template-columns: 3fr 2fr;
 				grid-gap: 2%;
 			}
 		}
 	}
 
-	&__department {
-		grid-column: 2 / 4;
-	}
-
-	&__date {
-		display: inline-block;
-
-		width: 68%;
-	}
-
 	&__description {
-		grid-column: 1 / 4;
-	}
-
-	&__name,
-	&__department,
-	&__customer,
-	&__description,
-	&__addition,
-	&__date {
-		mat-form-field {
-			width: 100%;
-		}
-	}
-
-	&__label {
-		padding-bottom: 6px;
-
-		display: block;
-
-		font-size: 14px;
-
-		color: variables.$dark_1;
+		grid-column: 1 / 3;
 	}
 
 	&__actions {
@@ -79,27 +48,4 @@
 
 		width: 30%;
 	}
-}
-
-.users {
-	padding-bottom: 10px;
-
-	overflow-x: hidden;
-	overflow-y: auto;
-
-	height: 333px;
-
-	max-height: 333px;
-}
-
-textarea#additionInfo {
-	height: 150px;
-}
-
-.mat-tab-link,
-.mat-tab-label,
-.mat-tab-label-active {
-	padding: 0 40px !important;
-
-	min-width: 0 !important;
 }
