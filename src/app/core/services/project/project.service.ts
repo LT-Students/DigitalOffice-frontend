@@ -4,14 +4,16 @@ import { Observable } from 'rxjs';
 import {
 	AddUsersToProjectRequest,
 	EditProjectRequest,
-	FindResultResponseProjectInfo,
 	ImageContent,
-	OperationResultResponse,
-	OperationResultResponseProjectResponse,
+	ImageInfo,
+	ProjectFileInfo,
+	ProjectInfo,
 	ProjectStatusType,
+	ProjectUserInfo,
 	ProjectUserRequest,
 } from '@data/api/project-service/models';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
 
 export interface IGetProjectRequest {
@@ -21,6 +23,13 @@ export interface IGetProjectRequest {
 	includefiles?: boolean;
 }
 
+export interface IGetProjectResponse {
+	project?: ProjectInfo;
+	users?: Array<ProjectUserInfo>;
+	files?: Array<ProjectFileInfo>;
+	images?: Array<ImageInfo>;
+}
+
 export interface IEditProjectRequest {
 	projectId: string;
 	body: EditProjectRequest;
@@ -28,7 +37,7 @@ export interface IEditProjectRequest {
 
 export interface IRemoveUsersFromProjectRequest {
 	projectId: string;
-	userIds: UUID[];
+	body: UUID[];
 }
 
 export interface ICreateProjectRequest {
@@ -52,7 +61,7 @@ export class ProjectService {
 		skipPages = 0,
 		pageSize = 10,
 		departmentId = undefined
-	): Observable<FindResultResponseProjectInfo> {
+	): Observable<OperationResultResponse<ProjectInfo[]>> {
 		return this._projectService.findProjects({
 			skipCount: skipPages,
 			takeCount: pageSize,
@@ -60,23 +69,23 @@ export class ProjectService {
 		});
 	}
 
-	public getProject(params: IGetProjectRequest): Observable<OperationResultResponseProjectResponse> {
+	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<IGetProjectResponse>> {
 		return this._projectService.getProject(params);
 	}
 
-	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse> {
+	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService.createProject({ body });
 	}
 
-	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse> {
+	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService.editProject(params);
 	}
 
-	public addUsersToProject(body: AddUsersToProjectRequest): Observable<void> {
+	public addUsersToProject(body: AddUsersToProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._userService.addUsersToProject({ body });
 	}
 
-	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<void> {
+	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._userService.removeUsersFromProject(params);
 	}
 }
