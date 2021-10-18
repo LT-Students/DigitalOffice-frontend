@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
@@ -211,15 +211,5 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			'/DateOfBirth': [null],
 			'/Gender': [UserGender],
 		});
-	}
-
-	private _enrichCommunications(): CommunicationInfo[] {
-		if (this.user && this.user.communications) {
-			return this.user.communications.map((communication: CommunicationInfo) => {
-				return { type: communication.type, value: communication.value };
-			});
-		} else {
-			return [];
-		}
 	}
 }
