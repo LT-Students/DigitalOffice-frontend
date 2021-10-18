@@ -1,6 +1,6 @@
 {
   "name": "digital-office-frontend",
-  "version": "4.2.0",
+  "version": "0.5.6",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,13 +14,15 @@
     "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
     "generate.company": "ng-openapi-gen -c swagger/config/company.json",
     "generate.file": "ng-openapi-gen -c swagger/config/file.json",
+    "generate.image": "ng-openapi-gen -c swagger/config/image.json",
     "generate.message": "ng-openapi-gen -c swagger/config/message.json",
     "generate.news": "ng-openapi-gen -c swagger/config/news.json",
     "generate.project": "ng-openapi-gen -c swagger/config/project.json",
     "generate.rights": "ng-openapi-gen -c swagger/config/rights.json",
     "generate.time": "ng-openapi-gen -c swagger/config/time.json",
     "generate.user": "ng-openapi-gen -c swagger/config/user.json",
-    "generate-api": "node swagger/generate.js"
+    "generate-api": "node swagger/generate.js",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -32,15 +34,28 @@
     "@angular/forms": "~12.2.4",
     "@angular/localize": "^12.2.4",
     "@angular/material": "^12.2.4",
+    "@angular/material-luxon-adapter": "^12.2.4",
     "@angular/material-moment-adapter": "^12.2.4",
     "@angular/platform-browser": "~12.2.4",
     "@angular/platform-browser-dynamic": "~12.2.4",
     "@angular/router": "~12.2.4",
+    "@editorjs/delimiter": "^1.2.0",
+    "@editorjs/editorjs": "^2.22.2",
+    "@editorjs/header": "^2.6.1",
+    "@editorjs/image": "^2.6.1",
+    "@editorjs/marker": "^1.2.2",
+    "@editorjs/nested-list": "^1.0.2",
+    "@editorjs/quote": "^2.4.0",
+    "@editorjs/underline": "^1.0.0",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
+    "@types/luxon": "^2.0.5",
     "bootstrap": "^4.5.2",
     "canvasjs": "^1.8.3",
     "chart.js": "^3.5.1",
+    "editorjs-text-alignment-blocktune": "^1.0.2",
+    "luxon": "^2.0.2",
     "moment": "^2.27.0",
+    "ngx-infinite-scroll": "^10.0.1",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.3",
     "zone.js": "~0.11.4"
@@ -61,10 +76,11 @@
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
     "codelyzer": "^6.0.1",
+    "editorjs-undo": "^0.3.0",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
-    "husky": "^4.3.0",
+    "husky": "^7.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
     "karma": "~6.3.4",
@@ -87,7 +103,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "sh .githooks/pre-commit && npx lint-staged --relative"
+      "pre-commit": "sh .githooks/pre-commit && sh .husky/pre-commit"
     }
   },
   "lint-staged": {
@@ -98,7 +114,7 @@
       "prettier --write",
       "stylelint --fix"
     ],
-    "src/**/*.{ts,html}, !src/data/api/**/*.ts": [
+    "*.{ts,html}": [
       "prettier --write",
       "eslint --fix"
     ]

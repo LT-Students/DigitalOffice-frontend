@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -11,6 +10,7 @@ import { EmployeePageComponent } from './modules/employee/employee-page.componen
 import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
 import { DepartmentListComponent } from './modules/admin/components/department-list/department-list.component';
 import { DepartmentCardComponent } from './modules/admin/components/department-card/department-card.component';
+import { NewsFeedComponent } from './modules/news/components/news-feed/news-feed.component';
 
 export const enum RouteType {
 	AUTH = 'auth',
@@ -18,6 +18,7 @@ export const enum RouteType {
 	ADMIN = 'admin',
 	PROJECT = 'project',
 	DEPARTMENTS = 'departments',
+	NEWS = 'news',
 }
 
 const routes: Routes = [
@@ -45,6 +46,10 @@ const routes: Routes = [
 						canActivate: [AdminGuard],
 					},
 					{
+						path: RouteType.NEWS,
+						loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
+					},
+					{
 						path: `${RouteType.USER}/:id`,
 						component: EmployeePageComponent,
 					},
@@ -58,6 +63,7 @@ const routes: Routes = [
 					},
 					{ path: RouteType.DEPARTMENTS, component: DepartmentListComponent },
 					{ path: `${RouteType.DEPARTMENTS}/:id`, component: DepartmentCardComponent },
+					{ path: `news-feed`, component: NewsFeedComponent },
 				],
 			},
 			{

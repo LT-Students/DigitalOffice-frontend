@@ -6,6 +6,7 @@
 @use '~@angular/cdk/overlay-prebuilt';
 @use './stylesheets/material/expansion-panel';
 @use './stylesheets/material/mat-button';
+@use './stylesheets/news-feed/news-feed';
 
 *,
 *::before,
@@ -15,7 +16,7 @@
 
 	box-sizing: border-box;
 
-	font-family: Roboto, 'Helvetica Neue', sans-serif;
+	//font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 div,
@@ -28,6 +29,11 @@ a,
 a:visited,
 a:hover {
 	text-decoration: none;
+}
+
+html,
+body {
+	height: 100%;
 }
 
 body {

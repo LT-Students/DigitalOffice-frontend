@@ -1,10 +1,6 @@
-<div class="navigation">
-	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span>
-		<mat-icon>chevron_right</mat-icon>
-	</span>
-	<a class="navigation__link">Список департаментов</a>
-</div>
+<do-breadcrumbs
+	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Список департаментов' }]"
+></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Департаменты</h3>
@@ -34,7 +30,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let departmentInfo of departmentsInfo" (click)="onDepartmentClick(departmentInfo.id)" class="row row_activable">
+			<tr
+				*ngFor="let departmentInfo of departmentsInfo"
+				(click)="onDepartmentClick(departmentInfo.id)"
+				class="row row_activable"
+			>
 				<td class="cell">
 					<ng-container *ngIf="departmentInfo?.name; else empty">
 						<p class="cell__content cell__content_ellipsissed">{{ departmentInfo.name }}</p>
@@ -58,7 +58,13 @@
 			</tr>
 		</tbody>
 	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"> </mat-paginator>
+	<mat-paginator
+		[length]="totalCount"
+		[pageSize]="pageSize"
+		[pageSizeOptions]="[10, 25, 50]"
+		(page)="onPageChange($event)"
+	>
+	</mat-paginator>
 </mat-card>
 
 <ng-template #empty>

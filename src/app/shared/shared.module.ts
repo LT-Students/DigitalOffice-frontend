@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
 import { MaterialModule } from './material.module';
 
 import { SelectComponent } from './component/select/select.component';
@@ -14,9 +16,13 @@ import { HeaderComponent } from './component/header/header.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
-import { HoursPipe } from './pipes/hours/hours.pipe';
+import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
-import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
+import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.component';
+import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
+import { DateTimePipe } from './pipes/date-time';
 
 @NgModule({
 	declarations: [
@@ -31,20 +37,21 @@ import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive'
 		TextDirective,
 		DndDirective,
 		ButtonLoadingDirective,
-		HoursPipe,
-		CommentComponent
+		CommentComponent,
+		SafeHtmlPipe,
+		PasswordComponent,
+		CommentComponent,
+		BreadcrumbsComponent,
+		ConfirmDialogComponent,
+		TitleDatepickerComponent,
+		DateTimePipe,
 	],
-	imports: [
-		CommonModule,
-		RouterModule,
-		FormsModule,
-		ReactiveFormsModule,
-		MaterialModule
-	],
+	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, InfiniteScrollModule],
 	exports: [
 		CommonModule,
 		RouterModule,
 		MaterialModule,
+		InfiniteScrollModule,
 		ReactiveFormsModule,
 		FormsModule,
 		InputComponent,
@@ -57,8 +64,13 @@ import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive'
 		ButtonLoadingDirective,
 		DatepickerComponent,
 		StepperComponent,
-		HoursPipe,
-		CommentComponent
+		SafeHtmlPipe,
+		PasswordComponent,
+		CommentComponent,
+		ConfirmDialogComponent,
+		BreadcrumbsComponent,
+		TitleDatepickerComponent,
+		DateTimePipe,
 	],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -1,7 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ImageData } from './image-data';
 export interface User {
-  fullName?: null | string;
-  id?: string;
+	avatar?: ImageData;
+	fullName?: null | string;
+	id?: string;
+	lastName?: null | string;
+	middleName?: null | string;
 }
-

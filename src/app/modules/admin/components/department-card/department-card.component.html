@@ -9,10 +9,17 @@
 	</span>
 	<a class="navigation__link">{{ departmentInfo?.name }}</a>
 </div>
-<h1 class="title">{{ departmentInfo?.name }}</h1>
+<h1>{{ departmentInfo?.name }}</h1>
 <mat-card class="card card_standard department">
 	<div class="department__info">
-		<h3 doUnderline underlinedSize="sm">Общая информация</h3>
+		<div class="department__header">
+			<h3 doUnderline underlinedSize="sm">Общая информация</h3>
+			<button mat-flat-button (click)="onEditDepartamentClick()">
+				<mat-icon class="department__button-edit">
+					<img class="department__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
+				</mat-icon>
+			</button>
+		</div>
 		<div class="department__label">
 			<p>Директор</p>
 			<ng-container *ngIf="departmentInfo?.director; else empty">
@@ -26,6 +33,7 @@
 			</ng-container>
 		</div>
 	</div>
+	<mat-divider [inset]="true"></mat-divider>
 	<div class="department__table table">
 		<div class="table__header">
 			<h3 doUnderline underlinedSize="sm">
@@ -74,7 +82,12 @@
 				</tr>
 			</ng-container>
 		</table>
-		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+		<mat-paginator
+			[length]="totalCount"
+			[pageSize]="pageSize"
+			[pageSizeOptions]="[10, 25, 50]"
+			(page)="onPageChange($event)"
+		></mat-paginator>
 	</div>
 </mat-card>
 

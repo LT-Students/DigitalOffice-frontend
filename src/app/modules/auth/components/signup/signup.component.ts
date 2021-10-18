@@ -1,28 +1,25 @@
-//@ts-nocheck
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
-import { catchError, switchMap, tap } from 'rxjs/operators';
-import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { UserService } from '@app/services/user/user.service';
+import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { of, throwError } from 'rxjs';
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
-import { CompanyService } from '@app/services/company/company.service';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
 
 @Component({
 	selector: 'do-signup',
 	templateUrl: './signup.component.html',
 	styleUrls: ['./signup.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent implements OnInit {
-	public portalName: string;
+	public portalName: Observable<string>;
 	public userId: string;
 	public loginForm: FormGroup;
-	public isWaiting = false;
+	public isWaiting: BehaviorSubject<boolean>;
 	public get login() {
 		return this.loginForm.get('login');
 	}
@@ -33,14 +30,15 @@ export class SignupComponent implements OnInit {
 
 	constructor(
 		private _authService: AuthService,
-		private _userService: UserService,
-		private _companyService: CompanyService,
+		private _currentUserService: CurrentUserService,
+		private _currentCompanyService: CurrentCompanyService,
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private _fb: FormBuilder
 	) {
-		this.portalName = this._companyService.getPortalName();
-		this.userId = null;
+		this.isWaiting = new BehaviorSubject<boolean>(false);
+		this.portalName = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
+		this.userId = '';
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
 			password: ['', Validators.required],
@@ -55,15 +53,17 @@ export class SignupComponent implements OnInit {
 	}
 
 	public signUp(): void {
-		this.isWaiting = true;
+		this.isWaiting.next(true);
 		const { login, password } = this.loginForm.getRawValue();
 		const createCredentialsRequest: CreateCredentialsRequest = { login, password, userId: this.userId };
 
-		this._authService.signUp$(createCredentialsRequest).pipe(
-				switchMap(({ body: credentialResponse }: { body: AuthenticationResponse }) => {
-					this.isWaiting = false;
-					return this._userService.getUserSetCredentials(credentialResponse.userId);
-				}),
+		this._authService
+			.signUp$(createCredentialsRequest)
+			.pipe(
+				switchMap(({ body: credentialResponse }) =>
+					this._currentUserService.getUserOnLogin(credentialResponse?.userId)
+				),
+				tap(this._currentUserService.setUser),
 				catchError((error: string) => {
 					console.log(error);
 					this.loginForm.setErrors({
@@ -72,14 +72,16 @@ export class SignupComponent implements OnInit {
 							error: error,
 						},
 					});
-					this.isWaiting = false;
-					return of(null);
-				})
-			).subscribe((user: User) => {
-					const nextUrl: string = (user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
+					return throwError(error);
+				}),
+				finalize(() => this.isWaiting.next(false))
+			)
+			.subscribe({
+				next: (user: User) => {
+					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : '/user/attendance';
 					console.log(user.getFullName);
 					this._router.navigate([nextUrl]);
-				}
-			);
+				},
+			});
 	}
 }

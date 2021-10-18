@@ -1,7 +1,7 @@
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Доска проектов</h3>
-		<button mat-flat-button color="accent" (click)="onAddProjectClick()">+ Создать проект</button>
+		<button mat-flat-button color="accent" routerLink="/admin/new-project">+ Создать проект</button>
 	</div>
 	<table class="table" matSort>
 		<colgroup>
@@ -24,19 +24,32 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr class="row row_activable" *ngFor="let project of projectList" (click)="onProjectClick(project?.id)">
+			<tr
+				class="row row_activable"
+				*ngFor="let project of projectList$ | async"
+				(click)="onProjectClick(project?.id)"
+			>
 				<td class="cell">
 					<p class="cell__content cell__content_breakable">{{ project.name }}</p>
 				</td>
 				<td class="cell">
-					<p class="cell__content cell__content_breakable">{{ project.description ? project.description : '—' }}</p>
+					<p class="cell__content cell__content_breakable">
+						{{ project.description ? project.description : '—' }}
+					</p>
 				</td>
 				<td class="cell">
-					<p class="cell__content cell__content_breakable">{{ project.department?.name ? project.department?.name : '—' }}</p>
+					<p class="cell__content cell__content_breakable">
+						{{ project.department?.name ? project.department?.name : '—' }}
+					</p>
 				</td>
 				<!-- <td>{{ project?.users?.length }}</td> -->
 			</tr>
 		</tbody>
 	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+	<mat-paginator
+		[length]="totalCount"
+		[pageSize]="pageSize"
+		[pageSizeOptions]="[10, 25, 50]"
+		(page)="onPageChange($event)"
+	></mat-paginator>
 </mat-card>

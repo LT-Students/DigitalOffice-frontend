@@ -1,16 +1,6 @@
 <mat-card class="card">
 	<div class="header h3">
-		<h3 doUnderline underlinedSize="sm">
-			Статистика за
-			<mat-form-field class="header__period-input">
-				<input matInput [matDatepicker]="picker" />
-				<mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event); picker.close()"> </mat-datepicker>
-			</mat-form-field>
-			<span (click)="picker.open()" class="text-accent_color_bright header__period">
-				{{ selectedPeriod.startDate | date: 'LLLL YYYY' | titlecase }}
-				<mat-icon class="header__icon">keyboard_arrow_down</mat-icon>
-			</span>
-		</h3>
+		<do-title-datepicker text="Статистика за" (dateSelection)="chosenMonthHandler($event)"></do-title-datepicker>
 	</div>
 	<ng-container *ngIf="employees$ | async as employees; else loader">
 		<table class="table">
@@ -45,9 +35,10 @@
 								<ng-container *ngIf="!employee?.editMode; else input">
 									<ng-container *ngIf="!employee?.managerHours; else managerHours">
 										<strong
-											>{{ employee?.projectHours ? employee.projectHours : 0 }}/<span class="text-gray1">{{
-												employee?.normHours ? employee?.normHours : 0
-											}}</span></strong
+											>{{ employee?.projectHours ? employee.projectHours : 0 }}/<span
+												class="text-gray1"
+												>{{ employee?.normHours ? employee?.normHours : 0 }}</span
+											></strong
 										>
 									</ng-container>
 									<ng-template #managerHours>
@@ -58,7 +49,10 @@
 											</span>
 										</strong>
 										<span class="text-gray1"> &nbsp;Изменено&nbsp; </span>
-										<img src="../../../../../assets/svg/ant-design_info-circle-outlined.svg" alt="info-circle" />
+										<img
+											src="../../../../../assets/svg/ant-design_info-circle-outlined.svg"
+											alt="info-circle"
+										/>
 									</ng-template>
 								</ng-container>
 								<ng-template #input>
@@ -67,7 +61,11 @@
 											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.min">
 												Минимальное значение должно быть не меньше нуля
 											</mat-error>
-											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.number"> Введите число </mat-error>
+											<mat-error
+												*ngIf="hoursGroup.controls['hours_' + employee.id].errors?.number"
+											>
+												Введите число
+											</mat-error>
 											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.max">
 												Превышено максимальное значение
 											</mat-error>
@@ -86,7 +84,10 @@
 							<ng-container *ngIf="employee.leaves?.length; else empty">
 								<div *ngFor="let leave of employee.leaves" class="cell__leave-label">
 									{{ leave.leaveType | leaveLabel }}&nbsp;
-									<img src="../../../../../assets/svg/ant-design_info-circle-outlined.svg" alt="info-circle" />
+									<img
+										src="../../../../../assets/svg/ant-design_info-circle-outlined.svg"
+										alt="info-circle"
+									/>
 								</div>
 							</ng-container>
 							<ng-template #empty>
@@ -105,9 +106,20 @@
 					<tr *ngIf="employee.editMode" class="row">
 						<td colspan="5">
 							<div class="controls">
-								<button mat-button (click)="toggleEditMode(false, employee)" class="controls__button">Отменить</button>
-								<button mat-flat-button color="primary" class="controls__button" (click)="onSubmit('submit', employee)">Сохранить</button>
-								<button mat-flat-button color='warn' (click)="onSubmit('reset', employee)">Сбросить</button>
+								<button mat-button (click)="toggleEditMode(false, employee)" class="controls__button">
+									Отменить
+								</button>
+								<button
+									mat-flat-button
+									color="primary"
+									class="controls__button"
+									(click)="onSubmit('submit', employee)"
+								>
+									Сохранить
+								</button>
+								<button mat-flat-button color="warn" (click)="onSubmit('reset', employee)">
+									Сбросить
+								</button>
 							</div>
 						</td>
 					</tr>

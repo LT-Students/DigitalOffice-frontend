@@ -3,11 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { ProjectService } from '@app/services/project/project.service';
+import { ICreateProjectRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProjectRequest } from '@data/api/project-service/models/project-request';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
 import { Location } from '@angular/common';
@@ -56,16 +55,11 @@ export class NewProjectComponent implements OnInit {
 		this.departments = [];
 
 		this.projectForm = this._formBuilder.group({
-			name: ['', [Validators.required, Validators.maxLength(80)]],
+			name: ['', [Validators.required, Validators.maxLength(150)]],
 			departmentId: ['', [Validators.required]],
-			description: [null],
+			description: [null, [Validators.maxLength(300)]],
+			shortDescription: [null],
 			status: [ProjectStatusType.Active],
-			// customer: [''],
-			// shortName: ['', [Validators.required, Validators.maxLength(32)]],
-			// departments: ['', [Validators.required, Validators.maxLength(32)]],
-			// checkControl: ['', [Validators.required]],
-			// additionInfo: [''],
-			// picker: [''],
 		});
 	}
 
@@ -85,6 +79,7 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public addMember(): void {
+		//TODO replace with infinite scroll modal
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
 		this._modalService
 			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(
@@ -93,9 +88,11 @@ export class NewProjectComponent implements OnInit {
 				modalData
 			)
 			.afterClosed()
-			.subscribe((result: UserInfo[] | undefined) => {
-				this.membersAll = result?.length ? [...result] : [];
-				this._cdr.detectChanges();
+			.subscribe((result?: UserInfo[]) => {
+				if (result?.length) {
+					this.membersAll = [...result];
+					this._cdr.detectChanges();
+				}
 			});
 	}
 
@@ -104,12 +101,14 @@ export class NewProjectComponent implements OnInit {
 			role: ProjectUserRoleType.Manager,
 			userId: user.id ?? '',
 		}));
-		const projectRequest: ProjectRequest = {
+		const projectRequest: ICreateProjectRequest = {
 			name: this.projectForm.get('name')?.value?.trim(),
 			departmentId: this.projectForm.get('departmentId')?.value,
 			description: this.projectForm.get('description')?.value?.trim(),
+			shortDescription: this.projectForm.get('shortDescription')?.value?.trim(),
 			status: this.projectForm.get('status')?.value,
 			users: projectUsers,
+			projectImages: [],
 		};
 		this._projectService.createProject(projectRequest).subscribe(
 			(result) => {
@@ -125,10 +124,6 @@ export class NewProjectComponent implements OnInit {
 				throw error;
 			}
 		);
-	}
-
-	public onAddTeamClick(): void {
-		this.addMember();
 	}
 
 	public showProjectTeam(): void {

@@ -3,14 +3,14 @@
 		<h4 matSubheader>
 			<button mat-icon-button (click)="closeNav()">
 				<mat-icon>menu</mat-icon></button
-			>{{ portalName }}
+			>{{ portalName | async }}
 		</h4>
 		<mat-nav-list dense class="sidenav__group">
 			<a (click)="closeNav()" mat-list-item routerLink="/user/attendance">
 				<mat-icon matListIcon>watch_later</mat-icon>
 				<span class="mat-body">Учет времени</span>
 			</a>
-			<a (click)="onStatClick()" mat-list-item>
+			<a *ngIf="departmentId" (click)="onStatClick()" mat-list-item>
 				<mat-icon matListIcon>analytics</mat-icon>
 				<span class="mat-body">Таймлист</span>
 			</a>
@@ -28,9 +28,8 @@
 			</a>
 		</mat-nav-list>
 	</mat-sidenav>
-
 	<mat-sidenav-content>
-		<do-header (menuClick)="onMenuClick($event)" class="header__container"></do-header>
+		<do-header (menuClick)="onMenuClick($event)"></do-header>
 		<div class="content-container">
 			<div class="wrapper">
 				<router-outlet></router-outlet>

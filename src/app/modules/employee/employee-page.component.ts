@@ -24,15 +24,10 @@ export interface Modes {
 	certificates: WorkFlowMode;
 }
 
-export interface Path {
-	title: string;
-	url?: string;
-}
-
 @Component({
 	selector: 'do-employee-page',
 	templateUrl: './employee-page.component.html',
-	styleUrls: [ './employee-page.component.scss' ],
+	styleUrls: ['./employee-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
@@ -51,20 +46,20 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _snackBar: MatSnackBar,
-		private _cdr: ChangeDetectorRef,
+		private _cdr: ChangeDetectorRef
 	) {
-		this.studyTypes = [ EducationType.Offline, EducationType.Online ];
+		this.studyTypes = [EducationType.Offline, EducationType.Online];
 		this._unsubscribe$ = new Subject<void>();
 	}
 
 	public ngOnInit(): void {
 		// this.isOwner = user.id === this.pageId;
 		this._route.params
-		.pipe(
-			takeUntil(this._unsubscribe$),
-			switchMap((params) => this._employeeService.getEmployee(params.id)),
-		)
-		.subscribe();
+			.pipe(
+				takeUntil(this._unsubscribe$),
+				switchMap((params) => this._employeeService.getEmployee(params.id))
+			)
+			.subscribe();
 	}
 
 	public ngOnDestroy(): void {

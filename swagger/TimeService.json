@@ -7,7 +7,12 @@
   },
   "servers": [
     {
-      "url": "https://time.ltdo.xyz"
+      "url": "https://time.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://time.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {

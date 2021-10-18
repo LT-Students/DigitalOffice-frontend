@@ -4,6 +4,7 @@ import { MaterialModule } from 'src/app/shared/material.module';
 import { DndDirective } from '@app/directives/dnd.directive';
 
 import { SharedModule } from '../../shared/shared.module';
+import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { NewEmployeeComponent } from './modals/new-employee/new-employee.component';
@@ -25,8 +26,7 @@ import { ManageRolesComponent } from './components/manage-roles/manage-roles.com
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
-import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component'
-import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
+import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
 
 @NgModule({
 	declarations: [
@@ -51,9 +51,9 @@ import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
 		PositionListComponent,
 		DirectorsTimelistComponent,
 		TeamStatisticsComponent,
-		LeaveLabelPipe
+		LeaveLabelPipe,
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
-	exports: [DndDirective, TeamStatisticsComponent],
+	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe],
 })
-export class AdminModule { }
+export class AdminModule {}

@@ -1,8 +1,10 @@
-import { Input, Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Input, Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '@app/services/auth/auth.service';
-import { UserService } from '@app/services/user/user.service';
-import { CompanyService } from '@app/services/company/company.service';
 import { User } from '@app/models/user/user.model';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'do-header',
@@ -10,26 +12,28 @@ import { User } from '@app/models/user/user.model';
 	styleUrls: ['./header.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
 	@Output() public menuClick: EventEmitter<MouseEvent>;
 
-	public portalName: string;
+	public portalName: Observable<string>;
 	public currentUser: User | null | undefined;
 
-	constructor(private _authService: AuthService, private _userService: UserService, private _companyService: CompanyService) {
+	constructor(
+		private _authService: AuthService,
+		private _currentUserService: CurrentUserService,
+		private _currentCompanyService: CurrentCompanyService
+	) {
 		this.menuClick = new EventEmitter();
-		this.portalName = _companyService.getPortalName();
-		_userService.currentUser$.subscribe((user) => this.currentUser = user);
+		this.portalName = this._currentCompanyService.company$.pipe(map((user) => user.portalName));
+		this._currentUserService.user$.subscribe((user) => (this.currentUser = user));
 	}
 
-	ngOnInit() {}
-
-	onLogoutClick() {
+	public onLogoutClick(): void {
 		this._authService.logout();
 	}
 
-	onMenuClick(event: MouseEvent) {
+	public onMenuClick(event: MouseEvent): void {
 		this.menuClick.emit(event);
 	}
 }

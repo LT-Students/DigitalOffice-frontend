@@ -6,7 +6,6 @@ import { OfficeInfo } from '@data/api/company-service/models';
 import { CompanyService } from '@app/services/company/company.service';
 import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
 
-
 @Component({
 	selector: 'do-office-list',
 	templateUrl: './office-list.component.html',
@@ -46,10 +45,9 @@ export class OfficeListComponent implements OnInit {
 		this._modalService
 			.openModal<NewOfficeComponent, null, any>(NewOfficeComponent)
 			.afterClosed()
-			.subscribe(result => {
+			.subscribe((result) => {
 				// Fix, then backend change to enum
-				if (result?.status === 'FullSuccess')
-					this._getOfficeList();
+				if (result?.status === 'FullSuccess') this._getOfficeList();
 			});
 	}
 

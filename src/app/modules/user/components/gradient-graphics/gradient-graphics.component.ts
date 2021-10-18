@@ -3,7 +3,7 @@ import { Component, Input, OnInit, OnDestroy, ChangeDetectionStrategy } from '@a
 import { takeUntil } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs';
 
-import { DatePeriod } from '@data/models/date-period';
+import { DatePeriod } from '@app/types/date-period';
 import { AttendanceService } from '../../../../core/services/attendance.service';
 import { DateService } from '../../../../core/services/date.service';
 
@@ -18,7 +18,7 @@ export interface IDailyHoursData {
 	selector: 'do-gradient-graphics',
 	templateUrl: './gradient-graphics.component.html',
 	styleUrls: ['./gradient-graphics.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GradientGraphicsComponent implements OnInit, OnDestroy {
 	private onDestroy$: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -82,12 +82,19 @@ export class GradientGraphicsComponent implements OnInit, OnDestroy {
 		//
 
 		// create string of time period
-		firstPartTimePeriod = this.dailyHoursData[0].day + ' - ' + this.dailyHoursData[breakIndex - 1].day + ' ' + this.dailyHoursData[0].month;
+		firstPartTimePeriod =
+			this.dailyHoursData[0].day +
+			' - ' +
+			this.dailyHoursData[breakIndex - 1].day +
+			' ' +
+			this.dailyHoursData[0].month;
 		this.timePeriod = firstPartTimePeriod + secondPartTimePeriod;
 
 		// to check processing in hours
 		for (let i = 0; i < this.dailyHoursData.length; i++) {
-			this.processingArray[i] = this.dailyHoursData[i].hours > 8 || (this.dailyHoursData[i].hours === 8 && this.dailyHoursData[i].minutes > 0);
+			this.processingArray[i] =
+				this.dailyHoursData[i].hours > 8 ||
+				(this.dailyHoursData[i].hours === 8 && this.dailyHoursData[i].minutes > 0);
 		}
 		//
 	}

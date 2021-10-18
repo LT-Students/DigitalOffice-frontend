@@ -1,30 +1,34 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-
-import { UserService } from '../services/user/user.service';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AdminGuard implements CanLoad {
-	constructor(private userService: UserService, private router: Router) {}
+	constructor(private _currentUserService: CurrentUserService, private _router: Router) {}
 
 	canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
-		if (this.userService.isAdmin()) {
-			return true;
-		} else {
-			this.router.navigate(['/user/attendance']);
-			return false;
-		}
+		return this._currentUserService.user$.pipe(
+			map((user) => user?.isAdmin ?? false),
+			tap((isAdmin) => {
+				if (!isAdmin) {
+					this._router.navigate(['/user/attendance']);
+				}
+			})
+		);
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		if (this.userService.isAdmin()) {
-			return true;
-		} else {
-			this.router.navigate(['/user/attendance']);
-			return false;
-		}
+		return this._currentUserService.user$.pipe(
+			map((user) => user?.isAdmin ?? false),
+			tap((isAdmin) => {
+				if (!isAdmin) {
+					this._router.navigate(['/user/attendance']);
+				}
+			})
+		);
 	}
 }

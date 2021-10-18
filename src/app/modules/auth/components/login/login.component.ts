@@ -1,23 +1,23 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, finalize, tap } from 'rxjs/operators';
+import { catchError, finalize, map, tap } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
-import { BehaviorSubject, of } from 'rxjs';
-import { CompanyService } from '@app/services/company/company.service';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { CurrentCompanyService } from '@app/services/current-company.service';
 
 @Component({
 	selector: 'do-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-	public portalName: string;
+	public portalName: Observable<string>;
 	public loginForm: FormGroup;
 	public loginError: string;
 	public isLoading: BehaviorSubject<boolean>;
@@ -25,12 +25,12 @@ export class LoginComponent implements OnInit {
 	constructor(
 		private _authService: AuthService,
 		private _userService: UserService,
-		private _companyService: CompanyService,
+		private _currentCompanyService: CurrentCompanyService,
 		private _router: Router,
 		private formBuilder: FormBuilder
 	) {
 		this.isLoading = new BehaviorSubject<boolean>(false);
-		this.portalName = _companyService.getPortalName();
+		this.portalName = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
 		this.loginError = '';
 		this.loginForm = this.formBuilder.group({
 			email: ['', Validators.required],
@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
 		this._authService
 			.login(authenticationRequest)
 			.pipe(
-				finalize(() => (this.isLoading.next(false))),
+				finalize(() => this.isLoading.next(false)),
 				catchError((error) => {
 					this.loginError = error.message;
 					this.isLoading.next(false);
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
 			)
 			.subscribe((user: User | null) => {
 				if (user) {
-					this._router.navigate([ user.isAdmin ? '/admin/dashboard' : '/user/attendance' ]);
+					this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
 				}
 			});
 	}

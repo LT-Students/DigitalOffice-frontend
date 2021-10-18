@@ -22,10 +22,24 @@ export class DoughnutChartComponent implements OnInit {
 	public monthNorm: number;
 	public userHours: number;
 
-	public readonly COLORS = ['#FFB2B2', '#C7C6D8', '#D2ECFF', '#FFBE97', '#FFD89E', '#9ABCDB', '#ABF5C0', '#FEECAA', '#FFCDCD'];
+	public readonly COLORS = [
+		'#FFB2B2',
+		'#C7C6D8',
+		'#D2ECFF',
+		'#FFBE97',
+		'#FFD89E',
+		'#9ABCDB',
+		'#ABF5C0',
+		'#FEECAA',
+		'#FFCDCD',
+	];
 	private readonly EMPTY_COLOR = '#F5F5F5';
 
-	constructor(private _attendanceService: AttendanceService, private _cdr: ChangeDetectorRef, private _timeDurationService: TimeDurationService) {
+	constructor(
+		private _attendanceService: AttendanceService,
+		private _cdr: ChangeDetectorRef,
+		private _timeDurationService: TimeDurationService
+	) {
 		this.monthNorm = 160;
 		this.userHours = 0;
 		this.labels = [];
@@ -53,48 +67,37 @@ export class DoughnutChartComponent implements OnInit {
 	}
 
 	private _countUserHours(): number {
-		const projectHours: number = this.activities?.projects?.reduce((acc, project) => acc + (project?.userHours ?? 0), 0) ?? 0;
-		const leavesHours: number =
-			this.activities?.leaves
-				?.filter((leave) => leave?.startTime && leave.startTime)
-				.reduce(
-					(acc, leave) =>
-						acc +
-						this._timeDurationService.getDuration({
-							startDate: new Date(leave?.startTime as string),
-							endDate: new Date(leave?.endTime as string),
-						}),
-					0
-				) ?? 0;
+		const projectHours: number =
+			this.activities?.projects?.reduce((acc, project) => acc + (project?.userHours ?? 0), 0) ?? 0;
+		const leavesHours: number = this.activities?.leaves?.reduce((acc, leave) => acc + leave.hours, 0) ?? 0;
 
 		return projectHours + leavesHours;
 	}
 
 	private _getLabels(): Array<string | undefined> {
 		const projectLabels = this.activities?.projects?.map((project) => project?.project?.name).filter(Boolean) ?? [];
-		return this.activities?.leaves?.length && this.activities.leaves.length > 0 ? projectLabels?.concat('Отсутствия') : projectLabels;
+		return this.activities?.leaves?.length && this.activities.leaves.length > 0
+			? projectLabels?.concat('Отсутствия')
+			: projectLabels;
 	}
 
 	private _updateChart(): void {
-		const projectsHours = this.activities?.projects?.filter((project) => project?.userHours).map((project) => project?.userHours as number) ?? [];
-		const leavesHours =
-			this.activities?.leaves
-				?.filter((leave) => leave?.startTime && leave.endTime)
-				.reduce(
-					(acc, leave) =>
-						acc +
-						this._timeDurationService.getDuration({
-							startDate: new Date(leave?.startTime as string),
-							endDate: new Date(leave?.endTime as string),
-						}),
-					0
-				) ?? 0;
+		const chartData: number[] = [];
+		const projectsHours =
+			this.activities?.projects
+				?.filter((project) => project?.userHours)
+				.map((project) => project?.userHours as number) ?? [];
+		chartData.push(...projectsHours);
+		const leavesHours = this.activities?.leaves?.reduce((acc, leave) => acc + leave.hours, 0) ?? 0;
+		if (leavesHours) {
+			chartData.push(leavesHours);
+		}
 		const timeLeft = projectsHours?.reduce((acc, activity) => acc - activity, this.monthNorm) - leavesHours;
 
 		const colors = [...this.COLORS.slice(0, projectsHours?.length + (leavesHours ? 1 : 0)), this.EMPTY_COLOR];
 
 		if (this._chart) {
-			this._chart.data.datasets[0].data = [...projectsHours, leavesHours, timeLeft < 0 ? 0 : timeLeft];
+			this._chart.data.datasets[0].data = [...chartData, timeLeft < 0 ? 0 : timeLeft];
 			this._chart.data.datasets[0].backgroundColor = colors;
 			this._chart.update();
 		}
