@@ -120,7 +120,7 @@
 <ng-template #stepper [formGroup]="employeeInfoForm">
 	<mat-form-field appearance="fill">
 		<mat-label>Ставка</mat-label>
-		<do-stepper [step]="0.25" [max]="1" [min]="0.25" formControlName="rate" required></do-stepper>
+		<do-stepper [step]="0.25" [max]="1" [min]="0.25" formControlName="/Rate" required></do-stepper>
 	</mat-form-field>
 </ng-template>
 
@@ -153,7 +153,7 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__avatar">
-					<do-profile-image [image]="employeeInfoForm.get('photo')?.value" size="l"></do-profile-image>
+					<do-profile-image [image]="employeeInfoForm.get('/AvatarImage')?.value" size="l"></do-profile-image>
 					<label class="mat-body-1 employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />

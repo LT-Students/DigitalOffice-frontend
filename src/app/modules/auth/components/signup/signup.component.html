@@ -1,5 +1,5 @@
 <form class="form" [formGroup]="loginForm" (ngSubmit)="signUp()" autocomplete="off">
-	<h1 class="form__title">{{ portalName }}</h1>
+	<h1 class="form__title">{{ portalName | async }}</h1>
 	<div class="form__description"><p>Придумайте логин и введите пароль из письма</p></div>
 	<div
 		class="form__error"

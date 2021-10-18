@@ -117,25 +117,16 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		this.toggleEditMode();
 	}
 
-	public changeWorkingRate(step: number) {
-		const currentValue = this.employeeInfoForm.get('/Rate')?.value;
-		const rate = +currentValue + step;
-		this.employeeInfoForm.patchValue({ '/Rate': rate });
-
-		if (this.employeeInfoForm.get('/Rate')?.pristine) {
-			this.employeeInfoForm.get('/Rate')?.markAsDirty();
-		}
-	}
-
 	public onOpenDialog(): void {
-		const dialogRef = this._dialog.open(UploadPhotoComponent, {});
+		const dialogRef = this._dialog.open(UploadPhotoComponent, { autoFocus: false });
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({
-					photo: result,
+					'/AvatarImage': result,
 				});
 				this.employeeInfoForm.get('/AvatarImage')?.markAsDirty();
 			}
+			this._cdr.markForCheck();
 		});
 	}
 
