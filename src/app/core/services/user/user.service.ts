@@ -105,7 +105,9 @@ export class UserService {
 					break;
 				case 'dateOfBirth':
 					const dateOfBirth: Moment = item.value;
-					const changedDateOfBirth = new Date(dateOfBirth.toDate().setDate(dateOfBirth.toDate().getDate() + 1));
+					const changedDateOfBirth = new Date(
+						dateOfBirth.toDate().setDate(dateOfBirth.toDate().getDate() + 1)
+					);
 					body.push({
 						op: 'replace',
 						path: '/DateOfBirth',
@@ -172,7 +174,6 @@ export class UserService {
 					break;
 			}
 		});
-
 
 		const params: IEditUserRequest = {
 			userId,

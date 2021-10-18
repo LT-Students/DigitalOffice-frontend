@@ -38,7 +38,7 @@ export class EmployeePageService {
 		return this._userService.editUser(userId, editRequest).pipe(
 			switchMap((response) => {
 				return this.getEmployee(userId);
-			}),
+			})
 		);
 	}
 }

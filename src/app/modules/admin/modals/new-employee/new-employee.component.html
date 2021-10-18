@@ -12,23 +12,23 @@
 					<input id="firstName" matInput placeholder="Введите имя" formControlName="firstName" required />
 					<mat-error *ngIf="userForm.get('firstName')?.hasError('required')">Имя обязательно!</mat-error>
 					<mat-error *ngIf="userForm.get('firstName')?.hasError('whitespace')"
-						>Имя не может состоять только из пробелов!</mat-error
-					>
+						>Имя не может состоять только из пробелов!
+					</mat-error>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Фамилия</mat-label>
 					<input id="lastName" matInput placeholder="Введите фамилию" formControlName="lastName" required />
 					<mat-error *ngIf="userForm.get('lastName')?.hasError('required')">Фамилия обязательна!</mat-error>
 					<mat-error *ngIf="userForm.get('lastName')?.hasError('whitespace')"
-						>Фамилия не может состоять только из пробелов!</mat-error
-					>
+						>Фамилия не может состоять только из пробелов!
+					</mat-error>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Отчество</mat-label>
 					<input id="middleName" matInput placeholder="Введите отчество" formControlName="middleName" />
 					<mat-error *ngIf="userForm.get('middleName')?.hasError('whitespace')"
-						>Отчество не может состоять только из пробелов!</mat-error
-					>
+						>Отчество не может состоять только из пробелов!
+					</mat-error>
 				</mat-form-field>
 			</div>
 		</div>
@@ -62,27 +62,7 @@
 				</ng-container>
 				<mat-form-field appearance="fill">
 					<mat-label>Ставка</mat-label>
-					<button
-						class="new-employee__rate-button"
-						mat-icon-button
-						matPrefix
-						type="button"
-						(click)="changeWorkingRate(-0.25)"
-						[disabled]="rate.value === '0.25'"
-					>
-						-
-					</button>
-					<input #rate id="rate" class="new-employee__rate" matInput formControlName="rate" readonly />
-					<button
-						class="new-employee__rate-button"
-						mat-icon-button
-						matSuffix
-						type="button"
-						(click)="changeWorkingRate(0.25)"
-						[disabled]="rate.value === '1'"
-					>
-						+
-					</button>
+					<do-stepper [min]="0.25" [max]="1" [step]="0.25" formControlName="rate"></do-stepper>
 				</mat-form-field>
 				<do-datepicker controlName="startWorkingAt" label="Начало работы" format="full" [isEdit]="true">
 				</do-datepicker>

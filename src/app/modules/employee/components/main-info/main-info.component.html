@@ -109,29 +109,9 @@
 </ng-template>
 
 <ng-template #stepper [formGroup]="employeeInfoForm">
-	<mat-form-field class="employee-info__form-field employee-info__stepper" appearance="fill">
+	<mat-form-field appearance="fill">
 		<mat-label>Ставка</mat-label>
-		<button
-			class="employee-info__stepper-button"
-			mat-icon-button
-			matPrefix
-			type="button"
-			(click)="changeWorkingRate(-0.25)"
-			[disabled]="rate.value === '0.25'"
-		>
-			-
-		</button>
-		<input #rate formControlName="rate" matInput readonly required />
-		<button
-			class="employee-info__stepper-button"
-			mat-icon-button
-			matSuffix
-			type="button"
-			(click)="changeWorkingRate(0.25)"
-			[disabled]="rate.value === '1'"
-		>
-			+
-		</button>
+		<do-stepper [step]="0.25" [max]="1" [min]="0.25" formControlName="rate" required></do-stepper>
 	</mat-form-field>
 </ng-template>
 
@@ -172,8 +152,8 @@
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
 						</mat-icon>
-						Обновить фото</label
-					>
+						Обновить фото
+					</label>
 				</div>
 				<ng-container *ngIf="!user?.isAdmin; else nameEdit">
 					<h3 class="employee-info__name">
@@ -195,7 +175,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label"> Должность </mat-label>
+							<mat-label class="employee-info__label"> Должность</mat-label>
 							<mat-select formControlName="position" required>
 								<mat-option *ngFor="let position of positions$ | async" [value]="position.id">
 									{{ position.name }}
@@ -206,7 +186,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label"> Департамент </mat-label>
+							<mat-label class="employee-info__label"> Департамент</mat-label>
 							<mat-select formControlName="department">
 								<mat-option *ngFor="let department of departments$ | async" [value]="department.id">
 									{{ department.name }}
@@ -218,7 +198,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label">Офис </mat-label>
+							<mat-label class="employee-info__label"> Офис</mat-label>
 							<mat-select formControlName="office" required>
 								<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
 									{{ office.city }}, {{ office.address }}
@@ -238,7 +218,7 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label">Пол </mat-label>
+							<mat-label class="employee-info__label">Пол</mat-label>
 							<mat-select formControlName="gender">
 								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
 									{{ gender.genderInRussian }}
@@ -249,23 +229,18 @@
 							class="employee-info__form-field mat-form-field_default-select"
 							appearance="fill"
 						>
-							<mat-label class="employee-info__label"> Роль </mat-label>
+							<mat-label class="employee-info__label"> Роль</mat-label>
 							<mat-select formControlName="role">
-								<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
-									{{ role.localizations?.[0]?.name }}
+								<mat-option *ngFor="let role of roles$ | async" [value]="role.id"
+									>{{
+                                    role?.localizations?.[0]?.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<do-datepicker
-							controlName="startWorkingAt"
-							[isEdit]="user?.isAdmin"
-							label="В компании с"
-						></do-datepicker>
-						<do-datepicker
-							controlName="dateOfBirth"
-							[isEdit]="user?.isAdmin"
-							label="Дата рождения"
-						></do-datepicker>
+						<do-datepicker controlName="startWorkingAt" [isEdit]="user?.isAdmin" label="В компании с">
+						</do-datepicker>
+						<do-datepicker controlName="dateOfBirth" [isEdit]="user?.isAdmin" label="Дата рождения">
+						</do-datepicker>
 					</div>
 				</div>
 			</div>
