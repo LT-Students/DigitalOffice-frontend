@@ -69,18 +69,7 @@ export class DoughnutChartComponent implements OnInit {
 	private _countUserHours(): number {
 		const projectHours: number =
 			this.activities?.projects?.reduce((acc, project) => acc + (project?.userHours ?? 0), 0) ?? 0;
-		const leavesHours: number =
-			this.activities?.leaves
-				?.filter((leave) => leave?.startTime && leave.startTime)
-				.reduce(
-					(acc, leave) =>
-						acc +
-						this._timeDurationService.getDuration({
-							startDate: new Date(leave?.startTime as string),
-							endDate: new Date(leave?.endTime as string),
-						}),
-					0
-				) ?? 0;
+		const leavesHours: number = this.activities?.leaves?.reduce((acc, leave) => acc + leave.hours, 0) ?? 0;
 
 		return projectHours + leavesHours;
 	}
@@ -99,18 +88,7 @@ export class DoughnutChartComponent implements OnInit {
 				?.filter((project) => project?.userHours)
 				.map((project) => project?.userHours as number) ?? [];
 		chartData.push(...projectsHours);
-		const leavesHours =
-			this.activities?.leaves
-				?.filter((leave) => leave?.startTime && leave.endTime)
-				.reduce(
-					(acc, leave) =>
-						acc +
-						this._timeDurationService.getDuration({
-							startDate: new Date(leave?.startTime as string),
-							endDate: new Date(leave?.endTime as string),
-						}),
-					0
-				) ?? 0;
+		const leavesHours = this.activities?.leaves?.reduce((acc, leave) => acc + leave.hours, 0) ?? 0;
 		if (leavesHours) {
 			chartData.push(leavesHours);
 		}

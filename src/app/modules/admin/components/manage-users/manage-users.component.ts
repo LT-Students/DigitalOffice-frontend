@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { Subject } from 'rxjs';
+import { EMPTY, Subject } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
@@ -8,6 +8,7 @@ import { UserService } from '@app/services/user/user.service';
 import { OperationResultResponse, OperationResultStatusType } from '@data/api/user-service/models';
 import { EducationType } from '@data/api/user-service/models/education-type';
 import { ModalService } from '@app/services/modal.service';
+import { switchMap } from 'rxjs/operators';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
@@ -69,15 +70,26 @@ export class ManageUsersComponent implements OnInit {
 
 	public toggleUserStatus(user: UserInfo, evt: Event): void {
 		evt.stopPropagation();
-		console.log(evt);
 		if (user.isActive) {
-			this._userService.disableUser(user?.id ?? '').subscribe(() => {
-				this._getPageUsers();
-			});
+			this._modalService
+				.confirm({
+					confirmText: 'Да, удалить',
+					title: 'Удаление пользователя',
+					message: 'Вы действительно хотите удалить этого пользователя?',
+				})
+				.afterClosed()
+				.pipe(switchMap((confirm) => (confirm ? this._userService.disableUser(user?.id) : EMPTY)))
+				.subscribe(() => this._getPageUsers());
 		} else {
-			this._userService.activateUser(user?.id ?? '').subscribe(() => {
-				this._getPageUsers();
-			});
+			this._modalService
+				.confirm({
+					confirmText: 'Да, восстановить',
+					title: 'Восстановление пользователя',
+					message: 'Вы действительно хотите восстановить этого пользователя?',
+				})
+				.afterClosed()
+				.pipe(switchMap((confirm) => (confirm ? this._userService.activateUser(user?.id) : EMPTY)))
+				.subscribe(() => this._getPageUsers());
 		}
 	}
 

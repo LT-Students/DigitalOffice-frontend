@@ -1,8 +1,13 @@
 <mat-card class="card">
 	<div class="header">
-        <do-title-datepicker text="Таймлист для ДД за" (onSelectedDate)="chosenMonthHandler($event)"></do-title-datepicker>
-        <button mat-flat-button color="accent" (click)="onDownload()">
-			<span> <img src="../../../../../assets/svg/download.svg" alt="download" class="header__icon" /> Выгрузить часы </span>
+		<do-title-datepicker
+			text="Таймлист для ДД за"
+			(dateSelection)="chosenMonthHandler($event)"
+		></do-title-datepicker>
+		<button mat-flat-button color="accent" (click)="onDownload()">
+			<span>
+				<img src="../../../../../assets/svg/download.svg" alt="download" class="header__icon" /> Выгрузить часы
+			</span>
 		</button>
 	</div>
 	<div class="timelist">
@@ -41,7 +46,11 @@
 						<thead>
 							<tr>
 								<th>{{ stat.user?.firstName }} {{ stat.user?.lastName }}</th>
-								<th>{{ stat.totalHours }} /{{ stat.limitInfo?.normHours ? stat.limitInfo?.normHours : 0 }}</th>
+								<th>
+									{{ stat.totalHours }} /{{
+										((stat.limitInfo?.normHours ?? 0) * (stat.user?.rate ?? 0))
+									}}
+								</th>
 								<th>{{ stat.workTimes?.length }}</th>
 								<th>???</th>
 							</tr>
@@ -72,27 +81,45 @@
 										<td class="cell">{{ workTime?.project?.name }}</td>
 										<td class="cell cell_flexible">
 											<ng-container *ngIf="!workTime?.editMode; else input">
-												<ng-container *ngIf="workTime?.managerHours === null; else managerHours">
+												<ng-container
+													*ngIf="workTime?.managerHours === null; else managerHours"
+												>
 													<span>{{ workTime?.userHours ? workTime?.userHours : 0 }}</span>
 												</ng-container>
 												<ng-template #managerHours>
 													<span>{{ workTime?.managerHours }}&nbsp;&nbsp;</span>
 													<span>Изменено&nbsp; </span>
-													<img src="../../../../../assets/svg/ant-design_info-circle-outlined.svg" alt="info-cicle" />
+													<img
+														src="../../../../../assets/svg/ant-design_info-circle-outlined.svg"
+														alt="info-cicle"
+													/>
 												</ng-template>
 											</ng-container>
 											<ng-template #input>
 												<mat-form-field appearance="fill">
-													<mat-error *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.min">
+													<mat-error
+														*ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.min"
+													>
 														Минимальное значение должно быть не меньше нуля
 													</mat-error>
-													<mat-error *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.number">
+													<mat-error
+														*ngIf="
+															hoursGroup.controls['hours_' + workTime.id].errors?.number
+														"
+													>
 														Введите число
 													</mat-error>
-													<mat-error *ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.max">
+													<mat-error
+														*ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.max"
+													>
 														Превышено максимальное значение
 													</mat-error>
-													<input matInput [formControlName]="'hours_' + workTime?.id" ngDefaultControl class="text_bold" />
+													<input
+														matInput
+														[formControlName]="'hours_' + workTime?.id"
+														ngDefaultControl
+														class="text_bold"
+													/>
 												</mat-form-field>
 											</ng-template>
 										</td>
@@ -108,7 +135,11 @@
 									<tr *ngIf="workTime?.editMode" class="row">
 										<td colspan="4">
 											<div class="controls">
-												<button mat-button (click)="toggleEditMode(false, workTime)" class="button controls__button">
+												<button
+													mat-button
+													(click)="toggleEditMode(false, workTime)"
+													class="button controls__button"
+												>
 													Отменить
 												</button>
 												<button
@@ -160,10 +191,8 @@
 										</td>
 										<td class="cell">
 											<span
-												>{{ leave.startTime | date: 'd/M/y' }} - {{ leave.endTime | date: 'd/M/y' }} ({{
-													leave.periodInHours
-												}}
-												ч)</span
+												>{{ leave.startTime | date: 'd/M/y' }} -
+												{{ leave.endTime | date: 'd/M/y' }} ({{ leave.periodInHours }} ч)</span
 											>
 										</td>
 										<td class="cell">

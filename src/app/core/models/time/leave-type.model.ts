@@ -6,7 +6,7 @@ export interface ILeaveType {
 	emojiIcon: string;
 }
 
-export class LeaveTimeModel {
+export class LeaveTypeModel {
 	private static _leaveTypes: ILeaveType[] = [
 		{ leaveType: LeaveType.SickLeave, leaveInRussian: 'Больничный', emojiIcon: '🤧' },
 		{ leaveType: LeaveType.Idle, leaveInRussian: 'Отгул', emojiIcon: '💃🏻' },

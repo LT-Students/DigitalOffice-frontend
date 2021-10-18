@@ -1,4 +1,4 @@
-export { PatchDocument } from './models/patch-document';
+export { TaskPatchDocument } from './models/task-patch-document';
 export { DepartmentInfo } from './models/department-info';
 export { PositionInfo } from './models/position-info';
 export { TaskProperty } from './models/task-property';
@@ -28,6 +28,8 @@ export { FindResponseTaskProperty } from './models/find-response-task-property';
 export { CreateImageRequest } from './models/create-image-request';
 export { RemoveImageRequest } from './models/remove-image-request';
 export { CreateTaskPropertyRequest } from './models/create-task-property-request';
+export { EditTaskPropertyRequest } from './models/edit-task-property-request';
+export { TaskPropertyPatchDocument } from './models/task-property-patch-document';
 export { CreateTaskRequest } from './models/create-task-request';
 export { EditTaskRequest } from './models/edit-task-request';
 export { ErrorResponse } from './models/error-response';

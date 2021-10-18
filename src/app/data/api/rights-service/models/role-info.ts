@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-import { RightResponse } from './right-response';
+import { RightInfo } from './right-info';
+import { RoleLocalizationInfo } from './role-localization-info';
 import { UserInfo } from './user-info';
 export interface RoleInfo {
-  createdAt?: string;
-  createdBy?: string;
-  description?: null | string;
-  id?: string;
-  name?: string;
-  rights?: Array<RightResponse>;
-  users?: Array<UserInfo>;
+	createdAtUtc?: string;
+	createdBy?: string;
+	id?: string;
+	localizations?: Array<RoleLocalizationInfo>;
+	modifiedAtUtc?: null | string;
+	modifiedBy?: UserInfo;
+	rights?: Array<RightInfo>;
 }
-

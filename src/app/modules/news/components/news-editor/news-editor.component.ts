@@ -8,12 +8,11 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import EditorJS from '@editorjs/editorjs';
-import { debounceTime, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, from, Observable, of, ReplaySubject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
 import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
-import { UserService } from '@app/services/user/user.service';
 import { DoValidators } from '@app/validators/do-validators';
 import { IOutputBlockData, IOutputData } from '@app/models/editorjs/output-data.interface';
 import { LocalStorageService } from '@app/services/local-storage.service';
@@ -22,8 +21,9 @@ import { ModalService } from '@app/services/modal.service';
 import { OperationResultResponseNewsResponse } from '@data/api/news-service/models/operation-result-response-news-response';
 import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
-import { CompanyService } from '@app/services/company/company.service';
-import { ConfirmDialogModel } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
+import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
 
@@ -44,23 +44,23 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 
 	public isEditorContentEmpty: BehaviorSubject<boolean>;
 	public isEdit: boolean;
-	public companyName: string;
+	public companyName: Observable<string>;
 	private _editor?: EditorJS;
 	private _editorObserver?: MutationObserver;
 	private _destroy$: ReplaySubject<void>;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) private _newsId: string,
-		private _userService: UserService,
+		private _currentUserService: CurrentUserService,
 		private _newsService: NewsService,
 		private _localStorage: LocalStorageService,
 		private _editorConfig: NewsEditorConfig,
 		private _dialogRef: MatDialogRef<NewsEditorComponent>,
 		private _modalService: ModalService,
 		private _elementRef: ElementRef,
-		private _companyService: CompanyService
+		private _currentCompanyService: CurrentCompanyService
 	) {
-		this.companyName = this._companyService.getCompanyName();
+		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 		this._dialogRef.disableClose = true;
 		this.isEdit = Boolean(this._newsId);
 		this.isEditorContentEmpty = new BehaviorSubject<boolean>(!this.isEdit);
@@ -134,7 +134,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	}
 
 	public onEditorClose(): void {
-		const confirmDialogData: ConfirmDialogModel = {
+		const confirmDialogData: ConfirmDialogData = {
 			title: 'Закрытие новости',
 			message:
 				'Вы действительно хотите закрыть новость до публикации? Введенная вами информация не будет сохранена.',
@@ -167,7 +167,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 
 	private _createNews(): void {
 		let userId: string;
-		this._userService.currentUser$
+		this._currentUserService.user$
 			.pipe(
 				tap((user) => (userId = user?.id ?? '')),
 				switchMap(() => from((this._editor as EditorJS).save())),

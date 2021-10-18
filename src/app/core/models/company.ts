@@ -21,34 +21,33 @@ export interface CompanyInfo {
 }
 
 export class Company implements CompanyInfo {
-	public id: string | null | undefined;
-	public portalName: string | null | undefined;
-	public companyName: string | null | undefined;
-	public description: string | null | undefined;
-	public tagline: string | null | undefined;
-	public siteUrl: string | null | undefined;
-	public logo: ImageInfo | null | undefined;
-	public smtpInfo: SmtpInfo | null | undefined;
-	public departments: DepartmentInfo[] | null | undefined;
-	public positions: PositionInfo[] | null | undefined;
-	public offices: OfficeInfo[] | null | undefined;
-	public IsDepartmentModuleEnabled: boolean | null | undefined;
+	public id: string | null;
+	public portalName: string;
+	public companyName: string;
+	public description: string | null;
+	public tagline: string | null;
+	public siteUrl: string | null;
+	public logo: ImageInfo | null;
+	public smtpInfo: SmtpInfo | null;
+	public departments: DepartmentInfo[] | null;
+	public positions: PositionInfo[] | null;
+	public offices: OfficeInfo[] | null;
+	public IsDepartmentModuleEnabled: boolean | null;
 
-	constructor(data: CompanyInfo) {
-		this.id = setProperty(data.id);
-		this.portalName = setProperty(data.portalName);
-		this.companyName = setProperty(data.companyName);
-		this.description = setProperty(data.description);
-		this.tagline = setProperty(data.tagline);
-		this.siteUrl = setProperty(data.siteUrl);
-		this.logo = setProperty(data.logo);
-		this.smtpInfo = setProperty(data.smtpInfo);
-		this.departments = setProperty(data.departments);
-		this.positions = setProperty(data.positions);
-		this.offices = setProperty(data.offices);
-		this.IsDepartmentModuleEnabled = setProperty(data.IsDepartmentModuleEnabled);
+	constructor(data?: CompanyInfo) {
+		this.id = setProperty(data?.id);
+		this.portalName = setProperty(data?.portalName) ?? 'Portal Name';
+		this.companyName = setProperty(data?.companyName) ?? 'Company Name';
+		this.description = setProperty(data?.description);
+		this.tagline = setProperty(data?.tagline);
+		this.siteUrl = setProperty(data?.siteUrl);
+		this.logo = setProperty(data?.logo);
+		this.smtpInfo = setProperty(data?.smtpInfo);
+		this.departments = setProperty(data?.departments);
+		this.positions = setProperty(data?.positions);
+		this.offices = setProperty(data?.offices);
+		this.IsDepartmentModuleEnabled = setProperty(data?.IsDepartmentModuleEnabled);
 	}
 
 	/* methods */
 }
-

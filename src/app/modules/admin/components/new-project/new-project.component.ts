@@ -55,16 +55,11 @@ export class NewProjectComponent implements OnInit {
 		this.departments = [];
 
 		this.projectForm = this._formBuilder.group({
-			name: ['', [Validators.required, Validators.maxLength(80)]],
+			name: ['', [Validators.required, Validators.maxLength(150)]],
 			departmentId: ['', [Validators.required]],
 			description: [null, [Validators.maxLength(300)]],
+			shortDescription: [null],
 			status: [ProjectStatusType.Active],
-			// customer: [''],
-			// shortName: ['', [Validators.required, Validators.maxLength(32)]],
-			// departments: ['', [Validators.required, Validators.maxLength(32)]],
-			// checkControl: ['', [Validators.required]],
-			// additionInfo: [''],
-			// picker: [''],
 		});
 	}
 
@@ -84,6 +79,7 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public addMember(): void {
+		//TODO replace with infinite scroll modal
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
 		this._modalService
 			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(
@@ -92,9 +88,11 @@ export class NewProjectComponent implements OnInit {
 				modalData
 			)
 			.afterClosed()
-			.subscribe((result: UserInfo[] | undefined) => {
-				this.membersAll = result?.length ? [...result] : [];
-				this._cdr.detectChanges();
+			.subscribe((result?: UserInfo[]) => {
+				if (result?.length) {
+					this.membersAll = [...result];
+					this._cdr.detectChanges();
+				}
 			});
 	}
 
@@ -107,6 +105,7 @@ export class NewProjectComponent implements OnInit {
 			name: this.projectForm.get('name')?.value?.trim(),
 			departmentId: this.projectForm.get('departmentId')?.value,
 			description: this.projectForm.get('description')?.value?.trim(),
+			shortDescription: this.projectForm.get('shortDescription')?.value?.trim(),
 			status: this.projectForm.get('status')?.value,
 			users: projectUsers,
 			projectImages: [],
@@ -125,10 +124,6 @@ export class NewProjectComponent implements OnInit {
 				throw error;
 			}
 		);
-	}
-
-	public onAddTeamClick(): void {
-		this.addMember();
 	}
 
 	public showProjectTeam(): void {
