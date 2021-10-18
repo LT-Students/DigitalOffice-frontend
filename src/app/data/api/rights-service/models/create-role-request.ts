@@ -1,20 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
+import { CreateRoleLocalizationRequest } from './create-role-localization-request';
 export interface CreateRoleRequest {
+	/**
+	 * Role name.
+	 */
+	localizations: Array<CreateRoleLocalizationRequest>;
 
-  /**
-   * Role description.
-   */
-  description?: null | string;
-
-  /**
-   * Role name.
-   */
-  name: string;
-
-  /**
-   * Number of rights.
-   */
-  rights: Array<number>;
+	/**
+	 * Number of rights.
+	 */
+	rights: Array<number>;
 }
-

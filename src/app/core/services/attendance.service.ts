@@ -16,13 +16,18 @@ import { OperationResultResponse } from '@data/api/time-service/models/operation
 import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { LeaveTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { DateService } from './date.service';
 import { TimeDurationService } from './time-duration.service';
 
 export interface Activities {
 	projects?: Array<WorkTimeInfo>;
 	leaves?: Array<LeaveTimeModel>;
+}
+
+interface MonthHolidays {
+	month: number;
+	holidays: boolean[];
 }
 
 @Injectable({
@@ -38,7 +43,8 @@ export class AttendanceService {
 	private readonly _monthNorm: BehaviorSubject<number>;
 	public readonly monthNorm$: Observable<number>;
 
-	private readonly _holidays: BehaviorSubject<boolean[]>;
+	private readonly _holidays: BehaviorSubject<MonthHolidays>;
+	private readonly _leaveIntervals: BehaviorSubject<Interval[]>;
 
 	private readonly _canEdit: BehaviorSubject<boolean>;
 	public readonly canEdit$: Observable<boolean>;
@@ -64,7 +70,8 @@ export class AttendanceService {
 		this._monthNorm = new BehaviorSubject<number>(160);
 		this.monthNorm$ = this._monthNorm.asObservable();
 
-		this._holidays = new BehaviorSubject<boolean[]>([]);
+		this._holidays = new BehaviorSubject<MonthHolidays>({ month: 1, holidays: [] });
+		this._leaveIntervals = new BehaviorSubject<Interval[]>([]);
 
 		this._rate = 1;
 	}
@@ -120,6 +127,30 @@ export class AttendanceService {
 		return this._timeService.addLeaveTime(paramsWithId);
 	}
 
+	public getLeaveTimeIntervals() {
+		const leaveTimesParams: IFindLeaveTimesRequest = {
+			userid: this._userId,
+			skipCount: 0,
+			takeCount: 30,
+			starttime: DateTime.now().minus({ months: 1 }).startOf('month').toISO(),
+			endtime: DateTime.now().plus({ months: 1 }).endOf('month').toISO(),
+		};
+		return this._timeService.findLeaveTimes(leaveTimesParams).pipe(
+			map((leaves) =>
+				leaves.body
+					?.map((res) => res.leaveTime)
+					.filter((leave): leave is LeaveTimeInfo => !!leave)
+					.map((leave) => new LeaveTimeModel(leave))
+					.map((leave) =>
+						Interval.fromISO(
+							`${leave.startTime}/${DateTime.fromISO(leave.endTime).plus({ days: 1 }).toISO()}`
+						)
+					)
+			),
+			tap((intervals) => this._leaveIntervals.next(intervals ?? []))
+		);
+	}
+
 	public getMonthNormAndHolidays(): Observable<any> {
 		const month = this._selectedDate.value.month;
 		const year = this._selectedDate.value.year;
@@ -131,14 +162,18 @@ export class AttendanceService {
 		};
 		return this._timeService.findWorkTimeMonthLimit(params).pipe(
 			map((response) => response.body?.[0]),
-			tap((limit) => this._setMonthNormAndHolidays(limit?.normHours, limit?.holidays))
+			tap((limit) => this._setMonthNormAndHolidays(limit?.normHours, limit?.holidays, limit?.month))
 		);
 	}
 
-	private _setMonthNormAndHolidays(monthNorm: number | undefined, holidays: string | undefined): void {
+	private _setMonthNormAndHolidays(
+		monthNorm: number | undefined,
+		holidays: string | undefined,
+		month?: number
+	): void {
 		if (monthNorm && holidays) {
 			this._monthNorm.next(monthNorm * this._rate);
-			this._holidays.next(holidays.split('').map(Number).map(Boolean));
+			this._holidays.next({ month: month ?? 1, holidays: holidays.split('').map(Number).map(Boolean) });
 		}
 	}
 
@@ -168,8 +203,15 @@ export class AttendanceService {
 	}
 
 	public disableWeekends: DateFilterFn<DateTime> = (d: DateTime | null): boolean => {
-		const day = (d || DateTime.now()).day;
-		return this._holidays.value.every((isHoliday, date) => (isHoliday ? day !== date + 1 : true));
+		const selectedDate = d || DateTime.now();
+		const holidaysMonth = this._holidays.value.month;
+		const holidays = this._holidays.value.holidays;
+		return (
+			(selectedDate.month === holidaysMonth
+				? holidays.every((isHoliday, date) => (isHoliday ? selectedDate.day !== date + 1 : true))
+				: selectedDate.weekday !== 6 && selectedDate.weekday !== 7) &&
+			this._leaveIntervals.value.every((interval) => !interval.contains(selectedDate))
+		);
 	};
 
 	public getCalendarMinMax(): [DateTime, DateTime] {

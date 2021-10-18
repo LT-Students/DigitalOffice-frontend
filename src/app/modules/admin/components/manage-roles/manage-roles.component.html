@@ -1,4 +1,6 @@
-<do-breadcrumbs [paths]="[{title: 'Администрирование', url: 'admin/dashboard'}, {title: 'Управление ролями'}]"></do-breadcrumbs>
+<do-breadcrumbs
+	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление ролями' }]"
+></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Роли</h3>
@@ -20,15 +22,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let role of roles" class="row">
+			<tr *ngFor="let role of roles$ | async" class="row">
 				<td class="cell">
-					<p class="cell__content cell__content_ellipsissed">{{ role.name ? role.name : '—' }}</p>
+					<p class="cell__content cell__content_ellipsissed">{{ role.localizations?.[0]?.name ?? '—' }}</p>
 				</td>
 				<td class="cell">
-					<do-comment [text]="role.description"></do-comment>
+					<do-comment [text]="role.localizations?.[0]?.description"></do-comment>
 				</td>
 			</tr>
 		</tbody>
 	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+	<mat-paginator
+		[length]="totalCount"
+		[pageSize]="pageSize"
+		[pageSizeOptions]="[10, 25, 50]"
+		(page)="onPageChange($event)"
+	></mat-paginator>
 </mat-card>

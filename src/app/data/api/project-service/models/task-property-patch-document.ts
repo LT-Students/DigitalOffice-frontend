@@ -1,15 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface PatchOfficeDocument {
+export interface TaskPropertyPatchDocument {
 	/**
-	 * The operation to be performed.
+	 * The operation to be performed
 	 */
 	op: 'replace';
 
 	/**
 	 * A JSON-Pointer.
 	 */
-	path: '/Name' | '/City' | '/Address';
+	path: '/Name' | '/PropertyType' | '/Description' | '/ProjectId' | '/IsActive';
 
 	/**
 	 * The value to be used within the operations.
