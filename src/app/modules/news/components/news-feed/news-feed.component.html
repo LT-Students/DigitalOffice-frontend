@@ -16,7 +16,7 @@
 							<do-profile-image class="post__image"></do-profile-image>
 							<div>
 								<div>
-									<b>{{ companyName }}</b>
+									<b>{{ companyName | async }}</b>
 								</div>
 								<div class="mat-body-1">{{ post.createdAtUtc | date: 'dd.MM.YYYY' }}</div>
 							</div>
