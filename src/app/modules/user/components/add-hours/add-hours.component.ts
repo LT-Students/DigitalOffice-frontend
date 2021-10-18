@@ -11,10 +11,9 @@ import { ICreateLeaveTimeRequest, IEditWorkTimeRequest } from '@app/services/tim
 import { map, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse, WorkTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatOptionSelectionChange } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MatOptionSelectionChange } from '@angular/material/core';
 import { DateTime } from 'luxon';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
-import { LuxonDateAdapter, MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { timeValidator } from './add-hours.validators';
 
 @Component({
@@ -22,14 +21,7 @@ import { timeValidator } from './add-hours.validators';
 	templateUrl: './add-hours.component.html',
 	styleUrls: ['./add-hours.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [
-		{
-			provide: DateAdapter,
-			useClass: LuxonDateAdapter,
-			deps: [MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS],
-		},
-		{ provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT },
-	],
+	providers: [{ provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT }],
 })
 export class AddHoursComponent implements OnDestroy {
 	public workTimes$: Observable<Array<WorkTimeInfo | undefined> | undefined>;

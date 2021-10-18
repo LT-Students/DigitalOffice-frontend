@@ -86,9 +86,18 @@
 </div>
 
 <ng-template #nameEdit [formGroup]="employeeInfoForm">
-	<do-input controlName="lastName" [isEdit]="isEditing" label="Фамилия" textSize="small" required="true"></do-input>
-	<do-input controlName="firstName" [isEdit]="isEditing" label="Имя" textSize="small" required="true"></do-input>
-	<do-input controlName="middleName" [isEdit]="isEditing" label="Отчество" textSize="small"></do-input>
+	<mat-form-field class="employee-info__form-field" appearance="fill">
+		<mat-label>Фамилия</mat-label>
+		<input matInput formControlName="/LastName" required />
+	</mat-form-field>
+	<mat-form-field class="employee-info__form-field" appearance="fill">
+		<mat-label>Имя</mat-label>
+		<input matInput formControlName="/FirstName" required />
+	</mat-form-field>
+	<mat-form-field class="employee-info__form-field" appearance="fill">
+		<mat-label>Отчество</mat-label>
+		<input matInput formControlName="/MiddleName" />
+	</mat-form-field>
 </ng-template>
 
 <ng-template #about [formGroup]="employeeInfoForm">
@@ -97,7 +106,7 @@
 			<mat-label>О себе</mat-label>
 			<textarea
 				#about
-				formControlName="about"
+				formControlName="/About"
 				matInput
 				placeholder="Напишите немного о себе или оставьте заметку коллегам"
 				maxlength="150"
@@ -117,17 +126,17 @@
 
 <ng-template #emoji [formGroup]="employeeInfoForm">
 	<mat-form-field
-		class="employee-info__form-field mat-form-field_default-select"
+		class="employee-info__form-field"
 		appearance="fill"
 		matTooltipClass="tooltip"
 		matTooltip="Статус будет отображаться рядом с именем пользователя"
 		[matTooltipPosition]="'above'"
 	>
-		<mat-label class="employee-info__label">
+		<mat-label>
 			Эмодзи-статус
 			<mat-icon class="employee-info__hint">help_outline</mat-icon>
 		</mat-label>
-		<mat-select formControlName="status">
+		<mat-select formControlName="/Status">
 			<mat-option *ngFor="let option of statuses" [value]="option.statusType">
 				{{ option.emojiIcon }} {{ option.statusInRussian | titlecase }}
 			</mat-option>
@@ -145,10 +154,7 @@
 			<div class="employee-info__main">
 				<div class="employee-info__avatar">
 					<do-profile-image [image]="employeeInfoForm.get('photo')?.value" size="l"></do-profile-image>
-					<label
-						class="mat-body-1 employee-info__label employee-info__upload-button"
-						(click)="onOpenDialog()"
-					>
+					<label class="mat-body-1 employee-info__upload-button" (click)="onOpenDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
 						</mat-icon>
@@ -171,35 +177,29 @@
 				<h4>Общие сведения</h4>
 				<div class="employee-info__columns">
 					<div class="employee-info__first-column">
-						<mat-form-field
-							class="employee-info__form-field mat-form-field_default-select"
-							appearance="fill"
-						>
-							<mat-label class="employee-info__label"> Должность</mat-label>
-							<mat-select formControlName="position" required>
+						<mat-form-field class="employee-info__form-field" appearance="fill">
+							<mat-label> Должность </mat-label>
+							<mat-select formControlName="/PositionId" required>
 								<mat-option *ngFor="let position of positions$ | async" [value]="position.id">
 									{{ position.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<mat-form-field
-							class="employee-info__form-field mat-form-field_default-select"
-							appearance="fill"
-						>
-							<mat-label class="employee-info__label"> Департамент</mat-label>
-							<mat-select formControlName="department">
+						<mat-form-field class="employee-info__form-field" appearance="fill">
+							<mat-label> Департамент </mat-label>
+							<mat-select formControlName="/DepartmentId">
 								<mat-option *ngFor="let department of departments$ | async" [value]="department.id">
 									{{ department.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<do-input controlName="city" [isEdit]="true" label="Местоположение" textSize="small"></do-input>
-						<mat-form-field
-							class="employee-info__form-field mat-form-field_default-select"
-							appearance="fill"
-						>
-							<mat-label class="employee-info__label"> Офис</mat-label>
-							<mat-select formControlName="office" required>
+						<mat-form-field class="employee-info__form-field" appearance="fill">
+							<mat-label>Местоположение</mat-label>
+							<input matInput formControlName="/City" />
+						</mat-form-field>
+						<mat-form-field class="employee-info__form-field" appearance="fill">
+							<mat-label>Офис </mat-label>
+							<mat-select formControlName="/OfficeId" required>
 								<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
 									{{ office.city }}, {{ office.address }}
 								</mat-option>
@@ -214,33 +214,48 @@
 								<div>{{ user?.rate }}</div>
 							</ng-container>
 						</ng-container>
-						<mat-form-field
-							class="employee-info__form-field mat-form-field_default-select"
-							appearance="fill"
-						>
-							<mat-label class="employee-info__label">Пол</mat-label>
-							<mat-select formControlName="gender">
+						<mat-form-field class="employee-info__form-field" appearance="fill">
+							<mat-label>Пол </mat-label>
+							<mat-select formControlName="/Gender">
 								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
 									{{ gender.genderInRussian }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<mat-form-field
-							class="employee-info__form-field mat-form-field_default-select"
-							appearance="fill"
-						>
-							<mat-label class="employee-info__label"> Роль</mat-label>
-							<mat-select formControlName="role">
-								<mat-option *ngFor="let role of roles$ | async" [value]="role.id"
-									>{{
-                                    role?.localizations?.[0]?.name }}
+						<mat-form-field class="employee-info__form-field" appearance="fill">
+							<mat-label> Роль </mat-label>
+							<mat-select formControlName="/RoleId">
+								<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
+									{{ role.localizations?.[0]?.name }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<do-datepicker controlName="startWorkingAt" [isEdit]="user?.isAdmin" label="В компании с">
-						</do-datepicker>
-						<do-datepicker controlName="dateOfBirth" [isEdit]="user?.isAdmin" label="Дата рождения">
-						</do-datepicker>
+						<mat-form-field class="employee-info__form-field" appearance="fill">
+							<mat-label>В компании с</mat-label>
+							<input
+								matInput
+								formControlName="/StartWorkingAt"
+								[matDatepicker]="picker1"
+								placeholder="ДД месяц ГГГГ"
+							/>
+							<mat-datepicker-toggle matSuffix [for]="picker1">
+								<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+							</mat-datepicker-toggle>
+							<mat-datepicker #picker1></mat-datepicker>
+						</mat-form-field>
+						<mat-form-field class="employee-info__form-field" appearance="fill">
+							<mat-label>Дата рождения</mat-label>
+							<input
+								matInput
+								formControlName="/DateOfBirth"
+								[matDatepicker]="picker2"
+								placeholder="ДД месяц ГГГГ"
+							/>
+							<mat-datepicker-toggle matSuffix [for]="picker2">
+								<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+							</mat-datepicker-toggle>
+							<mat-datepicker #picker2></mat-datepicker>
+						</mat-form-field>
 					</div>
 				</div>
 			</div>

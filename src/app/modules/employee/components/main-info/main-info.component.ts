@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
 import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
-import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
 import { UserService } from '@app/services/user/user.service';
 import { map } from 'rxjs/operators';
-import { UserGender } from '@data/api/user-service/models';
+import { PatchUserDocument, UserGender } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
@@ -21,6 +20,8 @@ import { RightsService } from '@app/services/rights/rights.service';
 import { Observable, Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeePageService } from '@app/services/employee-page.service';
+import { PatchRequest, UserPath } from '@app/types/patch-paths';
+import { DateTime } from 'luxon';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -37,12 +38,13 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 	public genders: IUserGender[];
 	public statuses: IUserStatus[];
 
-	public user: User | null | undefined;
+	public user?: User;
 	public userSubscription: Subscription | undefined;
 	public roles$: Observable<RoleInfo[] | undefined>;
 	public offices$: Observable<OfficeInfo[] | undefined>;
 	public departments$: Observable<DepartmentInfo[] | undefined>;
 	public positions$: Observable<PositionInfo[] | undefined>;
+	private _initialData: PatchRequest<UserPath>;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -55,6 +57,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		private _roleService: RightsService,
 		private _cdr: ChangeDetectorRef
 	) {
+		this._initialData = {};
 		this.genders = PersonalInfoManager.getGenderList();
 		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
@@ -78,7 +81,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-		this._route.params.subscribe((param) => (this.isEditing = false));
+		this._route.params.subscribe(() => (this.isEditing = false));
 		this.userSubscription = this._employeeService.selectedUser$.subscribe((user) => {
 			this.user = user;
 			this._cdr.markForCheck();
@@ -89,61 +92,73 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		this.userSubscription?.unsubscribe();
 	}
 
-	public get communications(): FormArray {
-		return this.employeeInfoForm.get('communications') as FormArray;
-	}
-
-	public isOwner() {
+	public isOwner(): boolean {
 		// return this.user.id === this.pageId;
 		return true;
 	}
 
-	public canEdit() {
+	public canEdit(): boolean {
 		// return this.user.isAdmin || this.isOwner();
 		return true;
 	}
 
-	public toggleEditMode() {
+	public toggleEditMode(): void {
 		this._fillForm();
 		this.isEditing = !this.isEditing;
 	}
 
-	public onSubmit() {
-		this._patchEditUser();
+	public onSubmit(): void {
+		this._editUser();
 		this.toggleEditMode();
 	}
 
-	public onReset() {
+	public onReset(): void {
 		this.employeeInfoForm.reset();
 		this.toggleEditMode();
 	}
 
 	public changeWorkingRate(step: number) {
-		const currentValue = this.employeeInfoForm.get('rate')?.value;
+		const currentValue = this.employeeInfoForm.get('/Rate')?.value;
 		const rate = +currentValue + step;
-		this.employeeInfoForm.patchValue({ rate: rate });
+		this.employeeInfoForm.patchValue({ '/Rate': rate });
 
-		if (this.employeeInfoForm.get('rate')?.pristine) {
-			this.employeeInfoForm.get('rate')?.markAsDirty();
+		if (this.employeeInfoForm.get('/Rate')?.pristine) {
+			this.employeeInfoForm.get('/Rate')?.markAsDirty();
 		}
 	}
 
-	public onOpenDialog() {
+	public onOpenDialog(): void {
 		const dialogRef = this._dialog.open(UploadPhotoComponent, {});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({
 					photo: result,
 				});
-				this.employeeInfoForm.get('photo')?.markAsDirty();
+				this.employeeInfoForm.get('/AvatarImage')?.markAsDirty();
 			}
 		});
 	}
 
-	private _patchEditUser(): void {
-		const editRequest: { path: string; value: any }[] = Object.keys(this.employeeInfoForm.controls)
-			.filter((key) => this.employeeInfoForm.get(key)?.dirty)
-			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
+	private _editUser(): void {
+		const editRequest = (Object.keys(this.employeeInfoForm.controls) as UserPath[]).reduce(
+			(acc: PatchUserDocument[], key) => {
+				const formValue = this.employeeInfoForm.get(key)?.value;
+				if (formValue !== this._initialData[key]) {
+					const patchDocument: PatchUserDocument = {
+						op: 'replace',
+						path: key,
+						value:
+							formValue instanceof DateTime
+								? formValue.plus({ minutes: formValue.offset }).toISO()
+								: formValue,
+					};
+					acc.push(patchDocument);
+				}
+				return acc;
+			},
+			[]
+		);
+
 		this._employeeService.editEmployee(editRequest).subscribe({
 			next: () => {
 				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
@@ -157,68 +172,44 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 
 	private _fillForm(): void {
 		if (this.user) {
-			this.employeeInfoForm.patchValue({
-				firstName: this.user.firstName,
-				lastName: this.user.lastName,
-				middleName: this.user.middleName,
-				photo: this.user.avatarImage,
-				status: this.user.statusEmoji?.statusType,
-				about: this.user.about,
-				position: this.user.position?.id,
-				department: this.user.department?.id,
-				office: this.user.office?.id,
-				role: this.user.role?.id,
-				rate: this.user.rate,
-				city: this.user.city,
-				gender: this.user.gender?.genderType,
-				dateOfBirth: this.user.dateOfBirth,
-				startWorkingAt: this.user.startWorkingAt,
-				communications: this._enrichCommunications(),
-			});
+			this._initialData = {
+				'/FirstName': this.user.firstName,
+				'/LastName': this.user.lastName,
+				'/MiddleName': this.user.middleName,
+				'/AvatarImage': this.user.avatarImage,
+				'/Status': this.user.statusEmoji?.statusType,
+				'/About': this.user.about,
+				'/PositionId': this.user.position?.id,
+				'/DepartmentId': this.user.department?.id,
+				'/OfficeId': this.user.office?.id,
+				'/RoleId': this.user.role?.id,
+				'/Rate': this.user.rate,
+				'/City': this.user.city,
+				'/Gender': this.user.gender?.genderType,
+				'/DateOfBirth': this.user.dateOfBirth,
+				'/StartWorkingAt': this.user.startWorkingAt,
+			};
+			this.employeeInfoForm.patchValue(this._initialData);
 		}
 	}
 
 	private _initEditForm(): FormGroup {
 		return this._fb.group({
-			firstName: ['', Validators.required],
-			lastName: ['', Validators.required],
-			middleName: [''],
-			photo: [''],
-			status: [null],
-			about: [''],
-			position: ['', Validators.required],
-			department: [''],
-			office: ['', Validators.required],
-			role: [''],
-			rate: ['', Validators.required],
-			city: [''],
-			startWorkingAt: [null],
-			dateOfBirth: [null],
-			gender: [UserGender],
-			// communications: this.fb.array([
-			// 	this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
-			// 	this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
-			// ]),
+			'/FirstName': ['', Validators.required],
+			'/LastName': ['', Validators.required],
+			'/MiddleName': [''],
+			'/AvatarImage': [''],
+			'/Status': [null],
+			'/About': [''],
+			'/PositionId': ['', Validators.required],
+			'/DepartmentId': [''],
+			'/OfficeId': ['', Validators.required],
+			'/RoleId': [''],
+			'/Rate': ['', Validators.required],
+			'/City': [''],
+			'/StartWorkingAt': [null],
+			'/DateOfBirth': [null],
+			'/Gender': [UserGender],
 		});
-	}
-
-	private _initCommunications(): void {
-		if (this.user && this.user.communications) {
-			this.user.communications
-				.map((communication: CommunicationInfo) => {
-					return this._fb.group({ type: '', value: '' });
-				})
-				.forEach((group: FormGroup) => this.communications.push(group));
-		}
-	}
-
-	private _enrichCommunications(): CommunicationInfo[] {
-		if (this.user && this.user.communications) {
-			return this.user.communications.map((communication: CommunicationInfo) => {
-				return { type: communication.type, value: communication.value };
-			});
-		} else {
-			return [];
-		}
 	}
 }

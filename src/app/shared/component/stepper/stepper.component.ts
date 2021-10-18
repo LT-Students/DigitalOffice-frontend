@@ -1,14 +1,4 @@
-import {
-	Component,
-	Input,
-	ChangeDetectionStrategy,
-	HostBinding,
-	OnDestroy,
-	Optional,
-	Self,
-	OnChanges,
-	SimpleChanges,
-} from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, HostBinding, OnDestroy, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { DoValidators } from '@app/validators/do-validators';
@@ -28,7 +18,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 	],
 })
 export class StepperComponent implements OnDestroy, MatFormFieldControl<number>, ControlValueAccessor {
-	static uniqueId = 0;
+	private static _uniqueId = 0;
 
 	@Input()
 	public step: number;
@@ -133,7 +123,7 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		this.step = 1;
 		this.min = Number.MIN_SAFE_INTEGER;
 		this.max = Number.MAX_SAFE_INTEGER;
-		this.id = `custom-stepper-field-id-${StepperComponent.uniqueId++}`;
+		this.id = `custom-stepper-field-id-${StepperComponent._uniqueId++}`;
 		this.empty = false;
 		this.errorState = false;
 		this.userAriaDescribedBy = '';
@@ -156,7 +146,7 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		this.onTouch = fn;
 	}
 
-	public setDisabledState(isDisabled: boolean) {
+	public setDisabledState(isDisabled: boolean): void {
 		this.disabled = isDisabled;
 		this.stateChanges.next();
 	}

@@ -8,10 +8,10 @@ import { AuthenticationResponse } from '@data/api/auth-service/models/authentica
 import { AuthApiService } from '@data/api/auth-service/services/auth-api.service';
 import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { UserService } from '@app/services/user/user.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { OperationResultResponseCredentialsResponse } from '@data/api/user-service/models/operation-result-response-credentials-response';
 import { User } from '@app/models/user/user.model';
+import { CurrentUserService } from '@app/services/current-user.service';
 import { LocalStorageService } from '../local-storage.service';
 
 @Injectable({
@@ -20,7 +20,7 @@ import { LocalStorageService } from '../local-storage.service';
 export class AuthService {
 	constructor(
 		private authApiService: AuthApiService,
-		private _userService: UserService,
+		private _currentUserService: CurrentUserService,
 		private credentialsApiService: CredentialsApiService,
 		private localStorageService: LocalStorageService,
 		private _router: Router
@@ -28,8 +28,11 @@ export class AuthService {
 
 	public login(authenticationRequest: AuthenticationRequest): Observable<User> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
-			tap((authenticationInfo: AuthenticationResponse) => this._setCredentialsToLocalStorage(authenticationInfo)),
-			switchMap((authResponse: AuthenticationResponse) => this._userService.getUserSetCredentials(authResponse.userId))
+			tap((authResponse) => this._setCredentialsToLocalStorage(authResponse)),
+			switchMap((authResponse: AuthenticationResponse) =>
+				this._currentUserService.getUserOnLogin(authResponse.userId)
+			),
+			tap((user) => this._currentUserService.setUser(user))
 		);
 	}
 
@@ -44,7 +47,9 @@ export class AuthService {
 		return token != null;
 	}
 
-	public signUp$(createCredentialsRequest: CreateCredentialsRequest): Observable<OperationResultResponseCredentialsResponse> {
+	public signUp$(
+		createCredentialsRequest: CreateCredentialsRequest
+	): Observable<OperationResultResponseCredentialsResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
 			tap((response) => {
 				if (response.body) {
