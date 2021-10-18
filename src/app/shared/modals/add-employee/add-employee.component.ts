@@ -27,7 +27,6 @@ export class AddEmployeeComponent implements OnInit {
 		private _userService: UserService,
 		private _userApiService: UserApiService,
 		private _cdr: ChangeDetectorRef,
-		private _modalService: ModalService,
 		private _dialogRef: MatDialogRef<AddEmployeeComponent>,
 
 		@Inject(MAT_DIALOG_DATA) private _data: { idToHide: string[]; pageId: string }
@@ -70,26 +69,18 @@ export class AddEmployeeComponent implements OnInit {
 
 	public addToProject(): void {
 		console.log(this.selection.selected);
-		this._modalService
-			.confirm({
-				confirmText: 'Да, удалить',
-				title: 'Удаление сотрудника',
-				message: 'Вы действительно хотите удалить этого сотрудника?',
-			})
-			.afterClosed()
-			.subscribe(() => {
-				const arr: any = [];
-				this.selection.selected.map((e) => {
-					return arr.push({ role: ProjectUserRoleType.Employee, userId: e.id });
-				});
 
-				this._userApiService
-					.addUsersToProject({
-						body: { projectId: this._data.pageId, users: [...arr] },
-					})
-					.subscribe(() => {
-						this._cdr.markForCheck();
-					});
+		const arr: any = [];
+		this.selection.selected.map((e) => {
+			return arr.push({ role: ProjectUserRoleType.Employee, userId: e.id });
+		});
+
+		this._userApiService
+			.addUsersToProject({
+				body: { projectId: this._data.pageId, users: [...arr] },
+			})
+			.subscribe(() => {
+				this._cdr.markForCheck();
 			});
 	}
 }
