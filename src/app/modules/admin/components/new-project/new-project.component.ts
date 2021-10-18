@@ -55,7 +55,7 @@ export class NewProjectComponent implements OnInit {
 		this.departments = [];
 
 		this.projectForm = this._formBuilder.group({
-			name: ['', [Validators.required, Validators.maxLength(80)]],
+			name: ['', [Validators.required, Validators.maxLength(150)]],
 			departmentId: ['', [Validators.required]],
 			description: [null, [Validators.maxLength(300)]],
 			shortDescription: [null],
