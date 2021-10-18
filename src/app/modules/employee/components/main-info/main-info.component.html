@@ -118,29 +118,9 @@
 </ng-template>
 
 <ng-template #stepper [formGroup]="employeeInfoForm">
-	<mat-form-field class="employee-info__form-field employee-info__stepper" appearance="fill">
+	<mat-form-field appearance="fill">
 		<mat-label>Ставка</mat-label>
-		<button
-			class="employee-info__stepper-button"
-			mat-icon-button
-			matPrefix
-			type="button"
-			(click)="changeWorkingRate(-0.25)"
-			[disabled]="rate.value === '0.25'"
-		>
-			-
-		</button>
-		<input #rate formControlName="/Rate" matInput readonly required />
-		<button
-			class="employee-info__stepper-button"
-			mat-icon-button
-			matSuffix
-			type="button"
-			(click)="changeWorkingRate(0.25)"
-			[disabled]="rate.value === '1'"
-		>
-			+
-		</button>
+		<do-stepper [step]="0.25" [max]="1" [min]="0.25" formControlName="rate" required></do-stepper>
 	</mat-form-field>
 </ng-template>
 
@@ -178,8 +158,8 @@
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
 						</mat-icon>
-						Обновить фото</label
-					>
+						Обновить фото
+					</label>
 				</div>
 				<ng-container *ngIf="!user?.isAdmin; else nameEdit">
 					<h3 class="employee-info__name">
