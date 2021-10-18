@@ -35,7 +35,6 @@ interface MappedStatInfo {
 	limitInfo?: WorkTimeMonthLimitInfo;
 	user?: UserInfo;
 	workTimes?: Array<EditableWorkTime>;
-	rate: number;
 }
 
 @Component({
@@ -194,7 +193,6 @@ export class DirectorsTimelistComponent implements OnInit {
 				...workTime,
 				editMode: false,
 			})),
-			rate: statInfo.user?.rate ?? 0,
 		};
 	}
 
