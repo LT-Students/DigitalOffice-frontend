@@ -24,30 +24,51 @@
 	}
 }
 
-.user-row {
-	padding: 15px 0;
-
-	display: flex;
-	align-items: center;
-
-	border-bottom: 1px solid #cecece;
-
-	&__image,
-	&__checkbox {
-		margin-right: 20px;
-	}
-
-	&__general-info {
-		flex-basis: 40%;
-
-		margin-right: 20px;
-	}
-
-	&__department-info {
-		flex-basis: 50%;
-	}
+.table {
+	width: 100%;
 }
 
 .scrolled-content {
 	max-height: 300px;
+}
+
+.main-info {
+	display: flex;
+}
+
+.profile-photo {
+	margin-right: 20px;
+}
+
+.mat-column {
+	&-select {
+		width: 5%;
+	}
+
+	&-name {
+		width: 55%;
+	}
+
+	&-department {
+		width: 40%;
+	}
+}
+
+.mat-cell,
+.mat-header-cell {
+	padding: 0 15px;
+}
+
+.mat-row {
+	height: 76px;
+
+	cursor: pointer;
+}
+
+.mat-header-row {
+	height: 50px;
+}
+
+td.mat-cell:first-of-type {
+	padding-left: 0;
 }

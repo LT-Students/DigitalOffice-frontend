@@ -69,7 +69,6 @@ export class DepartmentCardComponent implements OnInit {
 
 	ngOnInit(): void {
 		this._getDepartment();
-		console.log(this.dataSource);
 	}
 
 	private _getDepartment(): void {

@@ -1,18 +1,14 @@
-import {
-	Component,
-	OnInit,
-	ChangeDetectionStrategy,
-	ChangeDetectorRef,
-	ViewChild,
-	ViewEncapsulation,
-} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { ProjectUserInfo } from '@data/api/project-service/models/project-user-info';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { UserApiService } from '@data/api/project-service/services/user-api.service';
+import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 
 @Component({
 	selector: 'do-project-page',
@@ -36,7 +32,10 @@ export class ProjectPageComponent implements OnInit {
 	constructor(
 		private _route: ActivatedRoute,
 		private _projectService: ProjectService,
-		private _cdr: ChangeDetectorRef
+		private _cdr: ChangeDetectorRef,
+		private _dialog: MatDialog,
+		private _userApiService: UserApiService,
+		private _router: Router
 	) {
 		this.projectId = '';
 		this.projectUsers = [];
@@ -92,5 +91,38 @@ export class ProjectPageComponent implements OnInit {
 			return;
 		}
 		this.selection.select(...this.dataSource.data);
+	}
+
+	public openDialog(): void {
+		const dialogRef = this._dialog.open(AddEmployeeComponent, {
+			data: { idToHide: this.projectUsers.map((e) => e.id), pageId: this.projectId },
+			maxWidth: '670px',
+		});
+		dialogRef.afterClosed().subscribe((result) => {
+			this._projectService
+				.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
+				.subscribe((result) => {
+					this.projectInfo = result.body?.project ?? {};
+					this.projectUsers = result.body?.users ?? [];
+					this.dataSource = new MatTableDataSource(this.projectUsers);
+					this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
+					this.projectDuration = this._countProjectDuration();
+					this._cdr.markForCheck();
+				});
+		});
+	}
+
+	removeFromProject() {
+		console.log(this.projectId);
+		const ids: any = [];
+		this.selection.selected.map((e) => {
+			return ids.push(e.id);
+		});
+		console.log(ids);
+		this._userApiService.removeUsersFromProject({ projectId: this.projectId, userIds: ids.join('') }).subscribe();
+	}
+
+	onUserClick(userId: string | undefined) {
+		this._router.navigate([`/user/${userId}`]);
 	}
 }
