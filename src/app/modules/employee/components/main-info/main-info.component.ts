@@ -78,7 +78,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-		this._route.params.subscribe((param) => (this.isEditing = false));
+		this._route.params.subscribe(() => (this.isEditing = false));
 		this.userSubscription = this._employeeService.selectedUser$.subscribe((user) => {
 			this.user = user;
 			this._cdr.markForCheck();
@@ -144,6 +144,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		const editRequest: { path: string; value: any }[] = Object.keys(this.employeeInfoForm.controls)
 			.filter((key) => this.employeeInfoForm.get(key)?.dirty)
 			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
+
 		this._employeeService.editEmployee(editRequest).subscribe({
 			next: () => {
 				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
@@ -200,16 +201,6 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			// 	this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
 			// ]),
 		});
-	}
-
-	private _initCommunications(): void {
-		if (this.user && this.user.communications) {
-			this.user.communications
-				.map((communication: CommunicationInfo) => {
-					return this._fb.group({ type: '', value: '' });
-				})
-				.forEach((group: FormGroup) => this.communications.push(group));
-		}
 	}
 
 	private _enrichCommunications(): CommunicationInfo[] {

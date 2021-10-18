@@ -1,14 +1,4 @@
-import {
-	Component,
-	Input,
-	ChangeDetectionStrategy,
-	HostBinding,
-	OnDestroy,
-	Optional,
-	Self,
-	OnChanges,
-	SimpleChanges,
-} from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, HostBinding, OnDestroy, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { DoValidators } from '@app/validators/do-validators';
@@ -140,6 +130,10 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		this.ngControl = null;
 	}
 
+	public ngOnDestroy(): void {
+		this.stateChanges.complete();
+	}
+
 	public writeValue(value: number): void {
 		this.value = Number(value);
 	}
@@ -171,9 +165,5 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		this.value += step;
 		this.stateChanges.next();
 		this.onChange(this.value);
-	}
-
-	ngOnDestroy() {
-		this.stateChanges.complete();
 	}
 }

@@ -35,6 +35,7 @@ interface MappedStatInfo {
 	limitInfo?: WorkTimeMonthLimitInfo;
 	user?: UserInfo;
 	workTimes?: Array<EditableWorkTime>;
+	rate: number;
 }
 
 @Component({
@@ -78,7 +79,6 @@ export class DirectorsTimelistComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log('Route: ', this._route);
 		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe(() => {
 			this.statInfo$ = this._getStat();
 		});
@@ -188,12 +188,13 @@ export class DirectorsTimelistComponent implements OnInit {
 			totalHours: this._getTotalHours(statInfo.workTimes ?? []),
 			leaveTimes: statInfo.leaveTimes?.map<IconedLeaveTimeInfo>((leaveTime) => ({
 				...leaveTime,
-				periodInHours: this._getPeriodInHours(leaveTime.startTime ?? '', leaveTime.endTime ?? ''),
+				periodInHours: (leaveTime.minutes ?? 0) / 60,
 			})),
 			workTimes: statInfo.workTimes?.map<EditableWorkTime>((workTime) => ({
 				...workTime,
 				editMode: false,
 			})),
+			rate: statInfo.user?.rate ?? 0,
 		};
 	}
 
@@ -210,10 +211,5 @@ export class DirectorsTimelistComponent implements OnInit {
 			startDate,
 			endDate: startDate.endOf('month'),
 		};
-	}
-
-	private _getPeriodInHours(startTime: string, endTime: string): number {
-		const datePeriod: DatePeriod = { startDate: DateTime.fromISO(startTime), endDate: DateTime.fromISO(endTime) };
-		return this._timeDurationService.getDuration(datePeriod, 8);
 	}
 }

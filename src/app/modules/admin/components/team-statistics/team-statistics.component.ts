@@ -8,6 +8,7 @@ import {
 	OperationResultResponse,
 	OperationResultStatusType,
 	StatInfo,
+	WorkTimeInfo,
 } from '@data/api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { Observable } from 'rxjs';
@@ -135,22 +136,27 @@ export class TeamStatisticsComponent implements OnInit {
 	}
 
 	private _mapStatInfo(statInfo: StatInfo): EmployeeStats {
-		const employeeInfo: EmployeeStats = {
+		const workTimeInfo: WorkTimeInfo | undefined = statInfo.workTimes?.find(
+			(workTime) => workTime.project?.id === this.projectId
+		);
+
+		const projectHours: number = workTimeInfo?.userHours ?? 0;
+		const managerHours: number = workTimeInfo?.managerHours ?? 0;
+
+		return {
 			workTimeId: statInfo.workTimes?.[0] ? statInfo.workTimes?.[0].id : undefined,
 			id: statInfo.user?.id,
 			editMode: false,
 			firstName: statInfo.user?.firstName ?? '',
 			lastName: statInfo.user?.lastName ?? '',
 			middleName: statInfo.user?.middleName ?? '',
-			projectHours: statInfo.workTimes?.[0] ? statInfo.workTimes[0].userHours : 0,
-			managerHours: statInfo.workTimes?.[0] ? statInfo.workTimes[0].managerHours : 0,
+			projectHours,
+			managerHours,
 			leaves: statInfo.leaveTimes ?? [],
 			position: '-',
 			projectsCount: 0,
-			normHours: statInfo.limitInfo?.normHours,
+			normHours: (statInfo.limitInfo?.normHours ?? 0) * (statInfo.user?.rate ?? 0),
 		};
-
-		return employeeInfo;
 	}
 
 	private _setDatePeriod(startDate: DateTime): DatePeriod {
