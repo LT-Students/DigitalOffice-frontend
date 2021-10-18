@@ -6,11 +6,14 @@
 	></do-title-datepicker>
 
 	<ng-container *ngIf="activities$ | async as activities">
-		<div class="tasks">
+		<div *ngIf="activities.projects?.length; else emptyList" class="tasks">
 			<do-projects [projects]="activities.projects"></do-projects>
 		</div>
-		<div class="tasks">
+		<div *ngIf="activities.leaves?.length; else emptyList" class="tasks">
 			<do-leaves [leaves]="activities.leaves"></do-leaves>
 		</div>
+		<ng-template #emptyList>
+			<p class="mat-body-1">Нет данных о внесенных часах</p>
+		</ng-template>
 	</ng-container>
 </mat-card>

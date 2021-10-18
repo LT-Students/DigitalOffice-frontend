@@ -31,7 +31,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="table-wrapper">
+	<div *ngIf="projectUsers.length > 0; else emptyList" class="table-wrapper">
 		<mat-tab-group>
 			<mat-tab #team>
 				<ng-template mat-tab-label>
@@ -75,11 +75,17 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="row row_activable" *ngFor="let userInfo of projectUsers" routerLink="/user/{{ userInfo.id }}">
+						<tr
+							class="row row_activable"
+							*ngFor="let userInfo of projectUsers"
+							routerLink="/user/{{ userInfo.id }}"
+						>
 							<td class="cell">
 								<do-profile-image [image]="$any(userInfo?.avatarImage)"></do-profile-image>
 							</td>
-							<td class="cell cell_vertical-middle">{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
+							<td class="cell cell_vertical-middle">
+								{{ userInfo?.firstName }} {{ userInfo?.lastName }}
+							</td>
 							<td class="cell cell_vertical-middle">{{ userInfo?.department?.name ?? '—' }}</td>
 							<td class="cell cell_vertical-middle">{{ userInfo?.position?.name ?? '—' }}</td>
 							<td class="cell cell_vertical-middle">{{ userInfo?.rate ? userInfo?.rate : '—' }}</td>
@@ -95,7 +101,9 @@
 				<ng-template mat-tab-label>
 					<mat-icon class="table-wrapper__icon">
 						<svg
-							[ngClass]="statistics.isActive ? 'table-wrapper__label-orange' : 'table-wrapper__label-grey'"
+							[ngClass]="
+								statistics.isActive ? 'table-wrapper__label-orange' : 'table-wrapper__label-grey'
+							"
 							width="19"
 							height="18"
 							viewBox="0 0 19 18"
@@ -111,4 +119,7 @@
 			</mat-tab>
 		</mat-tab-group>
 	</div>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о команде'"></do-empty-list>
+	</ng-template>
 </mat-card>

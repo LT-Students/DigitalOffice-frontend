@@ -10,7 +10,7 @@
 			</span>
 		</button>
 	</div>
-	<div class="timelist">
+	<div *ngIf="employeeCount; else emptyList" class="timelist">
 		<mat-form-field appearance="fill" class="timelist__search-form">
 			<mat-label>Поиск по фамилии и имени</mat-label>
 			<input matInput type="search" />
@@ -60,7 +60,7 @@
 				<ng-template matExpansionPanelContent>
 					<div class="panel__table">
 						<h4 class="h4">Детализация по проектам</h4>
-						<table class="table">
+						<table *ngIf="stat.workTimes?.length; else emptyNote" class="table">
 							<colgroup>
 								<col class="column column_width_m" />
 								<col class="column column_width_m" />
@@ -168,7 +168,7 @@
 					<!-- </ng-container> -->
 					<div class="panel__table">
 						<h4 class="h4">Детализация по отсутствиям</h4>
-						<table class="table">
+						<table *ngIf="stat.leaveTimes?.length; else emptyNote" class="table">
 							<colgroup>
 								<col class="column column_width_m" />
 								<col class="column column_width_m" />
@@ -203,6 +203,9 @@
 								</ng-container>
 							</tbody>
 						</table>
+						<ng-template #emptyNote>
+							<p class="mat-body-1">Нет данных о введенных часах</p>
+						</ng-template>
 					</div>
 				</ng-template>
 			</mat-expansion-panel>
@@ -221,4 +224,7 @@
 		>
 		</mat-paginator>
 	</div>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
+	</ng-template>
 </mat-card>

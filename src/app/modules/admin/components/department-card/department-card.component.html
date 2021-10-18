@@ -12,14 +12,14 @@
 <h1>{{ departmentInfo?.name }}</h1>
 <mat-card class="card card_standard department">
 	<div class="department__info">
-        <div class='department__header'>
-            <h3 doUnderline underlinedSize="sm">Общая информация</h3>
-            <button mat-flat-button (click)="onEditDepartamentClick()">
-                <mat-icon class='department__button-edit'>
-                    <img class='department__button-edit__img' src='assets/svg/edit.svg' alt='edit'>
-                </mat-icon>
-            </button>
-        </div>
+		<div class="department__header">
+			<h3 doUnderline underlinedSize="sm">Общая информация</h3>
+			<button mat-flat-button (click)="onEditDepartamentClick()">
+				<mat-icon class="department__button-edit">
+					<img class="department__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
+				</mat-icon>
+			</button>
+		</div>
 		<div class="department__label">
 			<p>Директор</p>
 			<ng-container *ngIf="departmentInfo?.director; else empty">
@@ -33,7 +33,7 @@
 			</ng-container>
 		</div>
 	</div>
-    <mat-divider [inset]="true"></mat-divider>
+	<mat-divider [inset]="true"></mat-divider>
 	<div class="department__table table">
 		<div class="table__header">
 			<h3 doUnderline underlinedSize="sm">
@@ -41,7 +41,7 @@
 			</h3>
 			<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 		</div>
-		<table class="table__content" matSort (matSortChange)="sortData($event)">
+		<table *ngIf="totalCount > 0; else emptyList" class="table__content" matSort (matSortChange)="sortData($event)">
 			<colgroup>
 				<col class="table__column table__column_width_little" />
 			</colgroup>
@@ -82,7 +82,15 @@
 				</tr>
 			</ng-container>
 		</table>
-		<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+		<ng-template #emptyList>
+			<do-empty-list [emptyMessage]="'В данном департаменте нет сотрудников'"></do-empty-list>
+		</ng-template>
+		<mat-paginator
+			[length]="totalCount"
+			[pageSize]="pageSize"
+			[pageSizeOptions]="[10, 25, 50]"
+			(page)="onPageChange($event)"
+		></mat-paginator>
 	</div>
 </mat-card>
 

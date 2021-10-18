@@ -57,6 +57,8 @@ export class DirectorsTimelistComponent implements OnInit {
 	public totalCount: number;
 	public employeeCountMap: { [k: string]: string };
 
+	public employeeCount: number | undefined;
+
 	constructor(
 		private _cdr: ChangeDetectorRef,
 		private _formBuilder: FormBuilder,
@@ -70,6 +72,8 @@ export class DirectorsTimelistComponent implements OnInit {
 		this.pageIndex = 0;
 		this.totalCount = 0;
 
+		this.employeeCount = 0;
+
 		this.employeeCountMap = {
 			one: '# сотрудник',
 			few: '# сотрудника',
@@ -81,6 +85,11 @@ export class DirectorsTimelistComponent implements OnInit {
 		console.log('Route: ', this._route);
 		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe(() => {
 			this.statInfo$ = this._getStat();
+
+			this.statInfo$.subscribe((value) => {
+				this.employeeCount = value?.length;
+				this._cdr.markForCheck();
+			});
 		});
 	}
 

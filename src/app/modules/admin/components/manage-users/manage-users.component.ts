@@ -131,7 +131,6 @@ export class ManageUsersComponent implements OnInit {
 			this.totalCount = data?.totalCount ?? 0;
 			this.userInfo = data?.body?.slice() ?? [];
 			this.sortedUserInfo = data?.body?.slice() ?? [];
-			console.log(data.body);
 			this._cdr.markForCheck();
 		});
 	}

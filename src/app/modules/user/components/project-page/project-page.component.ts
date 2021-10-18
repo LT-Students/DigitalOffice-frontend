@@ -28,7 +28,6 @@ export class ProjectPageComponent implements OnInit {
 	public dayCountMap: { [k: string]: string };
 	public participantCountMap: { [k: string]: string };
 
-
 	constructor(
 		private _route: ActivatedRoute,
 		private _projectService: ProjectService,

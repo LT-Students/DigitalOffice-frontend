@@ -27,6 +27,8 @@ export class NewsFeedComponent implements OnInit {
 
 	public companyName: Observable<string>;
 
+	public newsCount: number;
+
 	constructor(
 		@Inject(DOCUMENT) private _document: Document,
 		private _modalService: ModalService,
@@ -40,6 +42,7 @@ export class NewsFeedComponent implements OnInit {
 		this.fixedTags = false;
 		this.newsFeed$ = this._newsFeedService.newsFeed$;
 		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
+		this.newsCount = 0;
 	}
 
 	@HostListener('window: scroll', [])
@@ -53,6 +56,10 @@ export class NewsFeedComponent implements OnInit {
 
 	public getData(refresh = false): void {
 		this._newsFeedService.getArticlePreviews(refresh);
+		this.newsFeed$.subscribe((value) => {
+			this.newsCount = value.length;
+			this._cdr.markForCheck();
+		});
 	}
 
 	public onMenuOpen(event: MouseEvent): void {

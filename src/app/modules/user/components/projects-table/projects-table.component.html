@@ -3,49 +3,54 @@
 		<h3 doUnderline underlinedSize="sm">Доска проектов</h3>
 		<button mat-flat-button color="accent" routerLink="/admin/new-project">+ Создать проект</button>
 	</div>
-	<table class="table" matSort>
-		<colgroup>
-			<col class="column column_width_m" />
-			<col class="column column_width_l" />
-			<col class="column column_width_m" />
-		</colgroup>
-		<thead>
-			<tr class="row">
-				<th class="cell heading" mat-sort-header="name">
-					<p class="heading__content">Наименование</p>
-				</th>
-				<th class="cell heading" mat-sort-header="description">
-					<p class="heading__content">Описание</p>
-				</th>
-				<th class="cell heading" mat-sort-header="director">
-					<p class="heading__content">Департамент</p>
-				</th>
-				<!-- <th mat-sort-header="amount">Количество участников</th> -->
-			</tr>
-		</thead>
-		<tbody>
-			<tr
-				class="row row_activable"
-				*ngFor="let project of projectList$ | async"
-				(click)="onProjectClick(project?.id)"
-			>
-				<td class="cell">
-					<p class="cell__content cell__content_breakable">{{ project.name }}</p>
-				</td>
-				<td class="cell">
-					<p class="cell__content cell__content_breakable">
-						{{ project.description ? project.description : '—' }}
-					</p>
-				</td>
-				<td class="cell">
-					<p class="cell__content cell__content_breakable">
-						{{ project.department?.name ? project.department?.name : '—' }}
-					</p>
-				</td>
-				<!-- <td>{{ project?.users?.length }}</td> -->
-			</tr>
-		</tbody>
-	</table>
+	<ng-container *ngIf="projectList$ | async as projectList">
+		<table *ngIf="totalCount > 0; else emptyList" class="table" matSort>
+			<colgroup>
+				<col class="column column_width_m" />
+				<col class="column column_width_l" />
+				<col class="column column_width_m" />
+			</colgroup>
+			<thead>
+				<tr class="row">
+					<th class="cell heading" mat-sort-header="name">
+						<p class="heading__content">Наименование</p>
+					</th>
+					<th class="cell heading" mat-sort-header="description">
+						<p class="heading__content">Описание</p>
+					</th>
+					<th class="cell heading" mat-sort-header="director">
+						<p class="heading__content">Департамент</p>
+					</th>
+					<!-- <th mat-sort-header="amount">Количество участников</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					class="row row_activable"
+					*ngFor="let project of projectList$ | async"
+					(click)="onProjectClick(project?.id)"
+				>
+					<td class="cell">
+						<p class="cell__content cell__content_breakable">{{ project.name }}</p>
+					</td>
+					<td class="cell">
+						<p class="cell__content cell__content_breakable">
+							{{ project.description ? project.description : '—' }}
+						</p>
+					</td>
+					<td class="cell">
+						<p class="cell__content cell__content_breakable">
+							{{ project.department?.name ? project.department?.name : '—' }}
+						</p>
+					</td>
+					<!-- <td>{{ project?.users?.length }}</td> -->
+				</tr>
+			</tbody>
+		</table>
+	</ng-container>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о проектах'"></do-empty-list>
+	</ng-template>
 	<mat-paginator
 		[length]="totalCount"
 		[pageSize]="pageSize"
