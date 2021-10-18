@@ -68,9 +68,9 @@ export class UserService {
 		return this._userApiService.editUser(params);
 	}
 
-	public disableUser(userId: string): Observable<OperationResultResponse<null | {}>> {
+	public disableUser(userId: string | undefined): Observable<OperationResultResponse<null | {}>> {
 		const params: IEditUserRequest = {
-			userId: userId,
+			userId: userId ?? '',
 			body: [
 				{
 					op: 'replace',
@@ -83,9 +83,9 @@ export class UserService {
 		return this._userApiService.editUser(params);
 	}
 
-	public activateUser(userId: string): Observable<OperationResultResponse<null | {}>> {
+	public activateUser(userId: string | undefined): Observable<OperationResultResponse<null | {}>> {
 		const params: IEditUserRequest = {
-			userId: userId,
+			userId: userId ?? '',
 			body: [
 				{
 					op: 'replace',

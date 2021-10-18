@@ -13,70 +13,51 @@
 				</div>
 			</div>
 			<div class="section__content section__content_general">
-				<div class="project-info__name">
-					<mat-form-field appearance="fill">
-						<mat-label>Название проекта</mat-label>
-						<input
-							matInput
-							type="text"
-							id="name"
-							formControlName="name"
-							placeholder="Введите название проекта"
-							required
-						/>
-					</mat-form-field>
-				</div>
-				<div class="project-info__department">
-					<mat-form-field appearance="fill">
-						<mat-label>Департамент</mat-label>
-						<mat-select
-							id="department"
-							formControlName="departmentId"
-							placeholder="Выберите департамент"
-							required
-						>
-							<mat-option *ngFor="let department of departments" [value]="department.id">
-								{{ department.name }}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-				<div class="project-info__customer">
-					<mat-form-field appearance="fill">
-						<mat-label>Заказчик</mat-label>
-						<input matInput type="text" id="customer" placeholder="Введите данные заказчика" />
-					</mat-form-field>
-				</div>
-				<!--<div class='project-info__date'>
-          <do-datepicker
-              controlName="date"
-              label="Дата запуска"
-              format='full'
-              [isEdit]='true'
-          ></do-datepicker>
-        </div>-->
-				<div class="project-info__status">
-					<mat-form-field appearance="fill">
-						<mat-label>Статус</mat-label>
-						<mat-select id="status" formControlName="status">
-							<mat-option *ngFor="let status of statuses" [value]="status.type">
-								{{ status.name | titlecase }}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-				<div class="project-info__description">
-					<mat-form-field appearance="fill">
-						<mat-label>Описание</mat-label>
-						<textarea
-							matInput
-							id="description"
-							formControlName="description"
-							placeholder="Кратко дайте описание проекту"
-							maxlength="300"
-						></textarea>
-					</mat-form-field>
-				</div>
+				<mat-form-field appearance="fill">
+					<mat-label>Название проекта</mat-label>
+					<input
+						matInput
+						type="text"
+						formControlName="name"
+						placeholder="Введите название проекта"
+						required
+					/>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Департамент</mat-label>
+					<mat-select formControlName="departmentId" placeholder="Выберите департамент" required>
+						<mat-option *ngFor="let department of departments" [value]="department.id">
+							{{ department.name }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Короткое описание</mat-label>
+					<input
+						matInput
+						type="text"
+						formControlName="shortDescription"
+						maxlength="100"
+						placeholder="Короткое описание"
+					/>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Статус</mat-label>
+					<mat-select formControlName="status">
+						<mat-option *ngFor="let status of statuses" [value]="status.type">
+							{{ status.name | titlecase }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field class="project-info__description" appearance="fill">
+					<mat-label>Описание</mat-label>
+					<textarea
+						matInput
+						formControlName="description"
+						placeholder="Дайте описание проекту"
+						maxlength="300"
+					></textarea>
+				</mat-form-field>
 			</div>
 		</div>
 
@@ -121,9 +102,7 @@
 					<!--                        >-->
 					<!--                    </div>-->
 				</div>
-				<button mat-flat-button color="accent" type="button" (click)="onAddTeamClick()">
-					Добавить сотрудников
-				</button>
+				<button mat-flat-button color="accent" type="button" (click)="addMember()">Добавить сотрудников</button>
 			</div>
 		</div>
 
