@@ -8,7 +8,7 @@ import { DateFilterFn } from '@angular/material/datepicker';
 import { ILeaveType, LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ICreateLeaveTimeRequest, IEditWorkTimeRequest } from '@app/services/time/time.service';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse, WorkTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { MAT_DATE_FORMATS, MatOptionSelectionChange } from '@angular/material/core';
@@ -37,7 +37,7 @@ export class AddHoursComponent implements OnDestroy {
 	public minDate: DateTime;
 	public maxDate: DateTime;
 
-	public loading: boolean;
+	public loading: BehaviorSubject<boolean>;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -45,7 +45,7 @@ export class AddHoursComponent implements OnDestroy {
 		private _dateService: DateService,
 		private _snackbar: MatSnackBar
 	) {
-		this.loading = false;
+		this.loading = new BehaviorSubject<boolean>(false);
 
 		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 
@@ -125,20 +125,26 @@ export class AddHoursComponent implements OnDestroy {
 
 	public onSubmit(): void {
 		const sendRequest = this.isProjectForm ? this._editWorkTime() : this._addLeaveTime();
-		this.loading = true;
+		this.loading.next(true);
 
-		sendRequest.pipe(switchMap(() => this._attendanceService.getActivities())).subscribe(
-			() => {
-				this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
-				this.addHoursForm.reset();
-				this.isProjectForm = true;
-				this.loading = false;
-			},
-			(error) => {
-				this._snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
-				throw error;
-			}
-		);
+		sendRequest
+			.pipe(
+				switchMap(() => this._attendanceService.getActivities()),
+				finalize(() => {
+					this.loading.next(false);
+				})
+			)
+			.subscribe(
+				() => {
+					this._snackbar.open('Запись успешно добавлена!', 'Закрыть', { duration: 5000 });
+					this.addHoursForm.reset();
+					this.isProjectForm = true;
+				},
+				(error) => {
+					this._snackbar.open(error.error.Message, 'Закрыть', { duration: 5000 });
+					throw error;
+				}
+			);
 	}
 
 	private _editWorkTime(): Observable<OperationResultResponse> {

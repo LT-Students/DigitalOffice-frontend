@@ -2,10 +2,15 @@
   "root": true,
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": [
+        "*.ts"
+      ],
       "parser": "@typescript-eslint/parser",
       "parserOptions": {
-        "project": ["tsconfig.*?.json", "e2e/tsconfig.json"],
+        "project": [
+          "tsconfig.*?.json",
+          "e2e/tsconfig.json"
+        ],
         "createDefaultProgram": true
       },
       "extends": [
@@ -35,7 +40,6 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "do",
             "style": "camelCase"
           }
         ],
@@ -86,16 +90,31 @@
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/prefer-function-type": "error",
         "@typescript-eslint/quotes": "off",
-        "@typescript-eslint/semi": ["off", null],
+        "@typescript-eslint/semi": [
+          "off",
+          null
+        ],
         "@typescript-eslint/type-annotation-spacing": "error",
         "space-infix-ops": "error",
-        "object-curly-spacing": ["error", "always"],
-        "arrow-body-style":  "off",
-        "arrow-parens": ["off", "always"],
-        "brace-style": ["off", "off"],
+        "object-curly-spacing": [
+          "error",
+          "always"
+        ],
+        "arrow-body-style": "off",
+        "arrow-parens": [
+          "off",
+          "always"
+        ],
+        "brace-style": [
+          "off",
+          "off"
+        ],
         "comma-dangle": "off",
         "eol-last": "off",
-        "eqeqeq": ["error", "smart"],
+        "eqeqeq": [
+          "error",
+          "smart"
+        ],
         "import/no-deprecated": "warn",
         "import/order": "error",
         "jsdoc/no-types": "off",
@@ -138,7 +157,10 @@
         "no-fallthrough": "error",
         "no-irregular-whitespace": "off",
         "no-multiple-empty-lines": "off",
-        "no-restricted-imports": ["error", "rxjs/Rx"],
+        "no-restricted-imports": [
+          "error",
+          "rxjs/Rx"
+        ],
         "no-shadow": "off",
         "no-throw-literal": "error",
         "no-trailing-spaces": "off",
@@ -148,13 +170,20 @@
         "quote-props": "off",
         "radix": "error",
         "space-before-function-paren": "off",
-        "space-in-parens": ["off", "never"]
+        "space-in-parens": [
+          "off",
+          "never"
+        ]
       }
     },
     {
-      "files": ["*.html"],
+      "files": [
+        "*.html"
+      ],
       "parser": "@angular-eslint/template-parser",
-      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
       "rules": {
         "@angular-eslint/template/banana-in-box": "error",
         "@angular-eslint/template/no-negated-async": "error"

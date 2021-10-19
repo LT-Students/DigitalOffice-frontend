@@ -1,7 +1,17 @@
-import { ComponentFactory, ComponentFactoryResolver, ComponentRef, Directive, Input, OnChanges, Renderer2, SimpleChanges, ViewContainerRef } from "@angular/core";
-import { MatButton } from "@angular/material/button";
-import { ThemePalette } from "@angular/material/core";
-import { MatProgressSpinner } from "@angular/material/progress-spinner";
+import {
+	ComponentFactory,
+	ComponentFactoryResolver,
+	ComponentRef,
+	Directive,
+	Input,
+	OnChanges,
+	Renderer2,
+	SimpleChanges,
+	ViewContainerRef,
+} from '@angular/core';
+import { MatButton } from '@angular/material/button';
+import { ThemePalette } from '@angular/material/core';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Directive({
 	selector: `button[mat-button][loading],
@@ -10,7 +20,7 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
 	button[mat-fab][loading],
 	button[mat-mini-fab][loading],
 	button[mat-stroked-button][loading],
-	button[mat-flat-button][loading]`
+	button[mat-flat-button][loading]`,
 })
 export class ButtonLoadingDirective implements OnChanges {
 	@Input() disabled: boolean;
@@ -18,7 +28,6 @@ export class ButtonLoadingDirective implements OnChanges {
 	@Input() color: ThemePalette;
 	private spinnerFactory: ComponentFactory<MatProgressSpinner>;
 	private spinner: ComponentRef<MatProgressSpinner> | null;
-
 
 	constructor(
 		private matButton: MatButton,
