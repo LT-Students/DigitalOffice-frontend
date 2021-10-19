@@ -7,7 +7,7 @@
 		</button>
 	</div>
 
-	<div *ngIf="newsCount > 0; else emptyList" class="news">
+	<div *ngIf="newsFeed$; else emptyList" class="news">
 		<div *ngIf="newsFeed$ | async as news">
 			<mat-card *ngFor="let post of news" (click)="openPost(post.id)" class="post news__post">
 				<div class="post__info">

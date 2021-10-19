@@ -86,13 +86,6 @@ export class DirectorsTimelistComponent implements OnInit {
 		console.log('Route: ', this._route);
 		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe((value) => {
 			this.statInfo$ = this._getStat();
-			console.log('value', value);
-
-			// this.statInfo$.subscribe((value) => {
-			// 	this.employeeCount = value?.length as number;
-			// 	this._cdr.markForCheck();
-			// 	console.log("value1", value)
-			// });
 		});
 	}
 
@@ -185,10 +178,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
 		return this._timeService.findStat(params).pipe(
 			tap((result: FindResultResponseStatInfo) => {
-				// this.totalCount = result.totalCount ?? 0;
 				this.totalCount.next(result.totalCount ?? 0);
-				// this._cdr.markForCheck();
-				console.log('this.totalCount', result.totalCount);
 			}),
 			map(
 				(result: FindResultResponseStatInfo) =>
