@@ -66,9 +66,9 @@
 					<div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down" /></div>
 				</div>
 				<mat-menu #menu>
-					<button mat-menu-item>1-й вариант</button>
-					<button mat-menu-item>2-й вариант</button>
-					<button mat-menu-item>3-й вариант</button>
+					<button mat-menu-item>
+						Удалить {{ selection.selected.length > 1 ? 'сотрудников' : 'сотрудника' }}
+					</button>
 				</mat-menu>
 			</div>
 		</div>
@@ -95,7 +95,7 @@
 
 			<ng-container matColumnDef="name">
 				<th mat-header-cell *matHeaderCellDef>Имя</th>
-				<td mat-cell *matCellDef="let element" (click)="onUserClick(element?.id)">
+				<td mat-cell *matCellDef="let element">
 					<div class="main-info">
 						<do-profile-image class="profile-photo" [image]="element?.avatar"></do-profile-image>
 						<div>
@@ -108,7 +108,7 @@
 
 			<ng-container matColumnDef="role">
 				<th mat-header-cell *matHeaderCellDef>Роль</th>
-				<td mat-cell *matCellDef="let element" (click)="onUserClick(element?.id)">
+				<td mat-cell *matCellDef="let element">
 					<ng-container *ngIf="element?.role?.name; else empty">
 						{{ element?.role?.name }}
 					</ng-container>
@@ -117,7 +117,7 @@
 
 			<ng-container matColumnDef="rate">
 				<th mat-header-cell *matHeaderCellDef>Ставка</th>
-				<td mat-cell *matCellDef="let element" (click)="onUserClick(element?.id)">
+				<td mat-cell *matCellDef="let element">
 					<ng-container *ngIf="element?.rate; else empty">
 						{{ element.rate }}
 					</ng-container>
@@ -126,7 +126,7 @@
 
 			<ng-container matColumnDef="status">
 				<th mat-header-cell *matHeaderCellDef>Статус</th>
-				<td mat-cell *matCellDef="let element" (click)="onUserClick(element?.id)">
+				<td mat-cell *matCellDef="let element">
 					<ng-container *ngIf="element?.isActive; else archived">
 						<div class="user-status">Активен</div>
 					</ng-container>
@@ -137,7 +137,11 @@
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+			<tr
+				mat-row
+				*matRowDef="let row; columns: displayedColumns"
+				(click)="selection.toggle(row); onUserClick(row.id)"
+			></tr>
 		</table>
 	</div>
 </mat-card>

@@ -25,6 +25,7 @@ export class ProjectPageComponent implements OnInit {
 	public projectDuration: number;
 	public dayCountMap: { [k: string]: string };
 	public participantCountMap: { [k: string]: string };
+	public employeeCountMap: { [k: string]: string };
 	public positions: string[];
 	public displayedColumns: string[];
 	public dataSource: MatTableDataSource<ProjectUserInfo>;
@@ -58,6 +59,12 @@ export class ProjectPageComponent implements OnInit {
 			one: '# участник',
 			few: '# участника',
 			other: '# участников',
+		};
+
+		this.employeeCountMap = {
+			one: 'сотрудника',
+			few: 'сотрудников',
+			other: 'сотрудников',
 		};
 	}
 
@@ -113,7 +120,7 @@ export class ProjectPageComponent implements OnInit {
 		});
 	}
 
-	removeFromProject() {
+	public removeFromProject(): void {
 		this._modalService
 			.confirm({
 				confirmText: 'Да, удалить',
@@ -124,11 +131,8 @@ export class ProjectPageComponent implements OnInit {
 			})
 			.afterClosed()
 			.subscribe(() => {
-				const ids: any = [];
-				this.selection.selected.map((e) => {
-					return ids.push(e.id);
-				});
-				console.log(ids);
+				const ids: string[] = [];
+				this.selection.selected.map((e) => ids.push(e.id ?? ''));
 				this._userApiService.removeUsersFromProject({ projectId: this.projectId, body: ids }).subscribe(() => {
 					this._projectService
 						.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
@@ -142,7 +146,7 @@ export class ProjectPageComponent implements OnInit {
 			});
 	}
 
-	onUserClick(userId: string | undefined) {
+	public onUserClick(userId: string | undefined): void {
 		this._router.navigate([`/user/${userId}`]);
 	}
 }

@@ -6,7 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
-import { ModalService } from '@app/services/modal.service';
+import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
 
 @Component({
 	selector: 'do-modal-add-employee',
@@ -50,7 +50,7 @@ export class AddEmployeeComponent implements OnInit {
 	public getPageUsers(): void {
 		this._userService
 			.findUsers({
-				skipCount: this._skipUsers * this._takeUsers,
+				skipCount: this._skipUsers,
 				takeCount: this._takeUsers,
 				includedepartment: true,
 				includeposition: true,
@@ -68,16 +68,19 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	public addToProject(): void {
-		console.log(this.selection.selected);
+		const _users: Array<ProjectUserRequest> = this.selection.selected.reduce(function (
+			newArr: Array<ProjectUserRequest>,
+			user
+		) {
+			newArr.push({ role: ProjectUserRoleType.Employee, userId: user.id ?? '' });
 
-		const arr: any = [];
-		this.selection.selected.map((e) => {
-			return arr.push({ role: ProjectUserRoleType.Employee, userId: e.id });
-		});
+			return newArr;
+		},
+		[]);
 
 		this._userApiService
 			.addUsersToProject({
-				body: { projectId: this._data.pageId, users: [...arr] },
+				body: { projectId: this._data.pageId, users: [..._users] },
 			})
 			.subscribe(() => {
 				this._cdr.markForCheck();
