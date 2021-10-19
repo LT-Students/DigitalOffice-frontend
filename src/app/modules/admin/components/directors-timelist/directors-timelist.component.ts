@@ -4,6 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 import { TimeDurationService } from '@app/services/time-duration.service';
 import { IEditWorkTimeRequest, IFindStatRequest, IGetImport, TimeService } from '@app/services/time/time.service';
@@ -54,10 +55,10 @@ export class DirectorsTimelistComponent implements OnInit {
 
 	public pageSize: number;
 	public pageIndex: number;
-	public totalCount: number;
+	public totalCount: BehaviorSubject<number>;
 	public employeeCountMap: { [k: string]: string };
 
-	public employeeCount: number | undefined;
+	public employeeCount: number;
 
 	constructor(
 		private _cdr: ChangeDetectorRef,
@@ -70,7 +71,7 @@ export class DirectorsTimelistComponent implements OnInit {
 		this.hoursGroup = this._formBuilder.group({});
 		this.pageSize = 20;
 		this.pageIndex = 0;
-		this.totalCount = 0;
+		this.totalCount = new BehaviorSubject<number>(0);
 
 		this.employeeCount = 0;
 
@@ -83,13 +84,15 @@ export class DirectorsTimelistComponent implements OnInit {
 
 	ngOnInit() {
 		console.log('Route: ', this._route);
-		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe(() => {
+		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe((value) => {
 			this.statInfo$ = this._getStat();
+			console.log('value', value);
 
-			this.statInfo$.subscribe((value) => {
-				this.employeeCount = value?.length;
-				this._cdr.markForCheck();
-			});
+			// this.statInfo$.subscribe((value) => {
+			// 	this.employeeCount = value?.length as number;
+			// 	this._cdr.markForCheck();
+			// 	console.log("value1", value)
+			// });
 		});
 	}
 
@@ -182,7 +185,10 @@ export class DirectorsTimelistComponent implements OnInit {
 
 		return this._timeService.findStat(params).pipe(
 			tap((result: FindResultResponseStatInfo) => {
-				this.totalCount = result.totalCount ?? 0;
+				// this.totalCount = result.totalCount ?? 0;
+				this.totalCount.next(result.totalCount ?? 0);
+				// this._cdr.markForCheck();
+				console.log('this.totalCount', result.totalCount);
 			}),
 			map(
 				(result: FindResultResponseStatInfo) =>

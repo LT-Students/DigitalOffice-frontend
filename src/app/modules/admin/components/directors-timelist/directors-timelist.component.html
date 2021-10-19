@@ -10,13 +10,13 @@
 			</span>
 		</button>
 	</div>
-	<div *ngIf="employeeCount; else emptyList" class="timelist">
+	<div class="timelist">
 		<mat-form-field appearance="fill" class="timelist__search-form">
 			<mat-label>Поиск по фамилии и имени</mat-label>
 			<input matInput type="search" />
 			<mat-icon matPrefix>search</mat-icon>
 		</mat-form-field>
-		<h3 class="h3">Найдено {{ totalCount | i18nPlural: employeeCountMap }}</h3>
+		<!--		<h3 class="h3">Найдено {{ count | i18nPlural: employeeCountMap }}</h3>-->
 		<ng-container *ngIf="statInfo$ | async as statInfo; else loader">
 			<table class="table timelist__table">
 				<colgroup>
@@ -216,7 +216,7 @@
 			</div>
 		</ng-template>
 		<mat-paginator
-			[length]="totalCount"
+			[length]="totalCount | async"
 			[pageIndex]="pageIndex"
 			[pageSize]="pageSize"
 			[pageSizeOptions]="[20, 35, 50]"

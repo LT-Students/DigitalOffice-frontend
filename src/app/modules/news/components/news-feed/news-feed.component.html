@@ -9,41 +9,34 @@
 
 	<div *ngIf="newsCount > 0; else emptyList" class="news">
 		<div *ngIf="newsFeed$ | async as news">
-			<div>
-				<mat-card *ngFor="let post of news" (click)="openPost(post.id)" class="post news__post">
-					<div class="post__info">
-						<div class="post__tag">
-							<do-profile-image class="post__image"></do-profile-image>
+			<mat-card *ngFor="let post of news" (click)="openPost(post.id)" class="post news__post">
+				<div class="post__info">
+					<div class="post__tag">
+						<do-profile-image class="post__image"></do-profile-image>
+						<div>
 							<div>
-								<div>
-									<b>{{ companyName | async }}</b>
-								</div>
-								<div class="mat-body-1">{{ post.createdAtUtc | date: 'dd.MM.YYYY' }}</div>
+								<b>{{ companyName | async }}</b>
 							</div>
+							<div class="mat-body-1">{{ post.createdAtUtc | date: 'dd.MM.YYYY' }}</div>
 						</div>
-						<button
-							class="post__more"
-							mat-icon-button
-							(click)="onMenuOpen($event)"
-							[matMenuTriggerFor]="menu"
-						>
-							<mat-icon>more_horiz</mat-icon>
-						</button>
-						<mat-menu #menu>
-							<button mat-menu-item (click)="openEditor(post.id)">Редактировать</button>
-							<button mat-menu-item (click)="onNewsDelete(post.id)">Удалить</button>
-						</mat-menu>
 					</div>
-					<div class="post__content">
-						<div class="ce-block">
-							<div class="ce-block__content">
-								<h4>{{ post.subject }}</h4>
-							</div>
+					<button class="post__more" mat-icon-button (click)="onMenuOpen($event)" [matMenuTriggerFor]="menu">
+						<mat-icon>more_horiz</mat-icon>
+					</button>
+					<mat-menu #menu>
+						<button mat-menu-item (click)="openEditor(post.id)">Редактировать</button>
+						<button mat-menu-item (click)="onNewsDelete(post.id)">Удалить</button>
+					</mat-menu>
+				</div>
+				<div class="post__content">
+					<div class="ce-block">
+						<div class="ce-block__content">
+							<h4>{{ post.subject }}</h4>
 						</div>
-						<div [innerHTML]="post.preview | safeHtml"></div>
 					</div>
-				</mat-card>
-			</div>
+					<div [innerHTML]="post.preview | safeHtml"></div>
+				</div>
+			</mat-card>
 		</div>
 		<div>
 			<mat-card class="tags" [ngClass]="{ tags_fixed: fixedTags }">
