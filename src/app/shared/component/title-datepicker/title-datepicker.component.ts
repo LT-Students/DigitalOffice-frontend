@@ -18,8 +18,8 @@ export class TitleDatepickerComponent {
 		this.dateSelection = new EventEmitter<DateTime>();
 	}
 
-	public chosenMonthHandler(date: Date, picker: MatDatepicker<any>): void {
-		this.selectDate = DateTime.fromJSDate(date).startOf('month');
+	public chosenMonthHandler(date: DateTime, picker: MatDatepicker<any>): void {
+		this.selectDate = date;
 		this.dateSelection.emit(this.selectDate);
 		picker.close();
 	}
