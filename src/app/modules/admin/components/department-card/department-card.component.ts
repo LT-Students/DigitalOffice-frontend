@@ -41,6 +41,7 @@ export class DepartmentCardComponent implements OnInit {
 	public displayedColumns: string[];
 	public dataSource: MatTableDataSource<UserInfo>;
 	public selection: SelectionModel<UserInfo>;
+	public employeeCountMap: { [k: string]: string };
 
 	constructor(
 		private _netService: NetService,
@@ -65,11 +66,16 @@ export class DepartmentCardComponent implements OnInit {
 			few: '# человека',
 			other: '# человек',
 		};
+
+		this.employeeCountMap = {
+			one: 'Выбран # сотрудник',
+			few: 'Выбрано # сотрудника',
+			other: 'Выбрано # сотрудников',
+		};
 	}
 
 	ngOnInit(): void {
 		this._getDepartment();
-		console.log(this.dataSource);
 	}
 
 	private _getDepartment(): void {
