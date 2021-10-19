@@ -29,6 +29,18 @@ export interface IUserResponse {
 	educations?: Array<EducationInfo>;
 }
 
+export interface IFindUsers {
+	skipCount: number;
+	takeCount: number;
+	departmentid?: string;
+	includedeactivated?: boolean;
+	includedepartment?: boolean;
+	includeposition?: boolean;
+	includeoffice?: boolean;
+	includerole?: boolean;
+	includeavatar?: boolean;
+}
+
 @Injectable({
 	providedIn: 'root',
 })
@@ -41,16 +53,8 @@ export class UserService {
 			.pipe(switchMap((userResponse: OperationResultResponse<IUserResponse>) => of(new User(userResponse))));
 	}
 
-	public findUsers(
-		skipPages = 0,
-		pageSize = 10,
-		departmentId?: string
-	): Observable<OperationResultResponse<UserInfo[]>> {
-		return this._userApiService.findUsers({
-			skipCount: skipPages,
-			takeCount: pageSize,
-			departmentid: departmentId,
-		});
+	public findUsers(params: IFindUsers): Observable<OperationResultResponse<UserInfo[]>> {
+		return this._userApiService.findUsers(params);
 	}
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
