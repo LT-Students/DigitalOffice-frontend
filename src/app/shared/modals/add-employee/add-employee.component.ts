@@ -7,6 +7,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
+import { ProjectService } from '@app/services/project/project.service';
 
 @Component({
 	selector: 'do-modal-add-employee',
@@ -28,7 +29,7 @@ export class AddEmployeeComponent implements OnInit {
 		private _userApiService: UserApiService,
 		private _cdr: ChangeDetectorRef,
 		private _dialogRef: MatDialogRef<AddEmployeeComponent>,
-
+		private _projectService: ProjectService,
 		@Inject(MAT_DIALOG_DATA) private _data: { idToHide: string[]; pageId: string }
 	) {
 		this.positions = ['front', 'back', 'manager', 'lead'];
@@ -78,12 +79,8 @@ export class AddEmployeeComponent implements OnInit {
 		},
 		[]);
 
-		this._userApiService
-			.addUsersToProject({
-				body: { projectId: this._data.pageId, users: [..._users] },
-			})
-			.subscribe(() => {
-				this._cdr.markForCheck();
-			});
+		this._projectService.addUsersToProject({ projectId: this._data.pageId, users: [..._users] }).subscribe(() => {
+			this._cdr.markForCheck();
+		});
 	}
 }

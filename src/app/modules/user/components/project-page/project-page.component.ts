@@ -37,7 +37,6 @@ export class ProjectPageComponent implements OnInit {
 		private _cdr: ChangeDetectorRef,
 		private _dialog: MatDialog,
 		private _modalService: ModalService,
-		private _userApiService: UserApiService,
 		private _router: Router
 	) {
 		this.projectId = '';
@@ -133,7 +132,7 @@ export class ProjectPageComponent implements OnInit {
 			.subscribe(() => {
 				const ids: string[] = [];
 				this.selection.selected.map((e) => ids.push(e.id ?? ''));
-				this._userApiService.removeUsersFromProject({ projectId: this.projectId, body: ids }).subscribe(() => {
+				this._projectService.removeUsersFromProject({ projectId: this.projectId, body: ids }).subscribe(() => {
 					this._projectService
 						.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
 						.subscribe((result) => {
