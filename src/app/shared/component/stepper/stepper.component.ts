@@ -130,6 +130,10 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		this.ngControl = null;
 	}
 
+	public ngOnDestroy(): void {
+		this.stateChanges.complete();
+	}
+
 	public writeValue(value: number): void {
 		this.value = Number(value);
 	}
@@ -161,9 +165,5 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		this.value += step;
 		this.stateChanges.next();
 		this.onChange(this.value);
-	}
-
-	ngOnDestroy() {
-		this.stateChanges.complete();
 	}
 }

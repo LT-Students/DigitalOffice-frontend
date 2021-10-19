@@ -22,6 +22,7 @@ import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.c
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
 import { DateTimePipe } from './pipes/date-time';
+import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
 
 @NgModule({
@@ -42,6 +43,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		BreadcrumbsComponent,
 		ConfirmDialogComponent,
 		TitleDatepickerComponent,
+		AddEmployeeComponent,
 		DateTimePipe,
 		EmptyListComponent,
 	],
@@ -69,6 +71,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		BreadcrumbsComponent,
 		TitleDatepickerComponent,
 		DateTimePipe,
+		AddEmployeeComponent,
 		EmptyListComponent,
 	],
 })

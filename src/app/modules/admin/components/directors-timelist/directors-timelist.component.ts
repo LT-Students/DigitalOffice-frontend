@@ -58,8 +58,6 @@ export class DirectorsTimelistComponent implements OnInit {
 	public totalCount: BehaviorSubject<number>;
 	public employeeCountMap: { [k: string]: string };
 
-	public employeeCount: number;
-
 	constructor(
 		private _cdr: ChangeDetectorRef,
 		private _formBuilder: FormBuilder,
@@ -73,8 +71,6 @@ export class DirectorsTimelistComponent implements OnInit {
 		this.pageIndex = 0;
 		this.totalCount = new BehaviorSubject<number>(0);
 
-		this.employeeCount = 0;
-
 		this.employeeCountMap = {
 			one: '# сотрудник',
 			few: '# сотрудника',
@@ -83,8 +79,7 @@ export class DirectorsTimelistComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log('Route: ', this._route);
-		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe((value) => {
+		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe(() => {
 			this.statInfo$ = this._getStat();
 		});
 	}
@@ -193,7 +188,7 @@ export class DirectorsTimelistComponent implements OnInit {
 			totalHours: this._getTotalHours(statInfo.workTimes ?? []),
 			leaveTimes: statInfo.leaveTimes?.map<IconedLeaveTimeInfo>((leaveTime) => ({
 				...leaveTime,
-				periodInHours: this._getPeriodInHours(leaveTime.startTime ?? '', leaveTime.endTime ?? ''),
+				periodInHours: (leaveTime.minutes ?? 0) / 60,
 			})),
 			workTimes: statInfo.workTimes?.map<EditableWorkTime>((workTime) => ({
 				...workTime,
@@ -215,10 +210,5 @@ export class DirectorsTimelistComponent implements OnInit {
 			startDate,
 			endDate: startDate.endOf('month'),
 		};
-	}
-
-	private _getPeriodInHours(startTime: string, endTime: string): number {
-		const datePeriod: DatePeriod = { startDate: DateTime.fromISO(startTime), endDate: DateTime.fromISO(endTime) };
-		return this._timeDurationService.getDuration(datePeriod, 8);
 	}
 }
