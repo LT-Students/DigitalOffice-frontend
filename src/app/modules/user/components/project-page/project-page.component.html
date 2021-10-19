@@ -73,15 +73,13 @@
 					</div>
 
 					<div class="actions" *ngIf="selection.selected.length > 0">
-						<div>Выбрано {{ selection.selected.length }} сотрудников</div>
+						<div>{{ selection.selected.length | i18nPlural: employeeCountMap }}</div>
 						<div [matMenuTriggerFor]="menu" class="actions__menu">
 							<div>Действия</div>
 							<div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down" /></div>
 						</div>
 						<mat-menu #menu>
-							<button mat-menu-item (click)="removeFromProject()">
-								Удалить {{ selection.selected.length | i18nPlural: employeeCountMap }}
-							</button>
+							<button mat-menu-item (click)="removeFromProject()">Удалить сотрудников</button>
 						</mat-menu>
 					</div>
 				</div>

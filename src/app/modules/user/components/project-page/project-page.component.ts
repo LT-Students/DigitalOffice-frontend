@@ -7,7 +7,6 @@ import { ProjectUserInfo } from '@data/api/project-service/models/project-user-i
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { ModalService } from '@app/services/modal.service';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 
@@ -61,9 +60,9 @@ export class ProjectPageComponent implements OnInit {
 		};
 
 		this.employeeCountMap = {
-			one: 'сотрудника',
-			few: 'сотрудников',
-			other: 'сотрудников',
+			one: 'Выбран # сотрудник',
+			few: 'Выбрано # сотрудника',
+			other: 'Выбрано # сотрудников',
 		};
 	}
 
@@ -114,6 +113,7 @@ export class ProjectPageComponent implements OnInit {
 					this.projectInfo = result.body?.project ?? {};
 					this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
 					this.dataSource = new MatTableDataSource(this.projectUsers);
+					this.selection.clear();
 					this._cdr.markForCheck();
 				});
 		});
@@ -123,25 +123,31 @@ export class ProjectPageComponent implements OnInit {
 		this._modalService
 			.confirm({
 				confirmText: 'Да, удалить',
-				title: `Удаление ${this.selection.selected.length > 1 ? 'сотрудников' : 'сотрудника'}`,
-				message: `Вы действительно хотите удалить ${
-					this.selection.selected.length > 1 ? ' этих сотрудников' : 'этого сотрудника'
-				}?`,
+				title: 'Удаление сотрудников',
+				message: 'Вы действительно хотите удалить указанных сотрудников?',
 			})
 			.afterClosed()
-			.subscribe(() => {
-				const ids: string[] = [];
-				this.selection.selected.map((e) => ids.push(e.id ?? ''));
-				this._projectService.removeUsersFromProject({ projectId: this.projectId, body: ids }).subscribe(() => {
+			.subscribe((result) => {
+				if (result) {
+					const ids: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
+						newArr.push(user.id ?? '');
+
+						return newArr;
+					}, []);
 					this._projectService
-						.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
-						.subscribe((result) => {
-							this.projectInfo = result.body?.project ?? {};
-							this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
-							this.dataSource = new MatTableDataSource(this.projectUsers);
-							this._cdr.markForCheck();
+						.removeUsersFromProject({ projectId: this.projectId, body: ids })
+						.subscribe(() => {
+							this._projectService
+								.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
+								.subscribe((result) => {
+									this.projectInfo = result.body?.project ?? {};
+									this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
+									this.dataSource = new MatTableDataSource(this.projectUsers);
+									this.selection.clear();
+									this._cdr.markForCheck();
+								});
 						});
-				});
+				}
 			});
 	}
 

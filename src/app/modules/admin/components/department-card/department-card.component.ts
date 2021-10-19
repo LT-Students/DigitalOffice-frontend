@@ -41,6 +41,7 @@ export class DepartmentCardComponent implements OnInit {
 	public displayedColumns: string[];
 	public dataSource: MatTableDataSource<UserInfo>;
 	public selection: SelectionModel<UserInfo>;
+	public employeeCountMap: { [k: string]: string };
 
 	constructor(
 		private _netService: NetService,
@@ -64,6 +65,12 @@ export class DepartmentCardComponent implements OnInit {
 		this.peopleCountMap = {
 			few: '# человека',
 			other: '# человек',
+		};
+
+		this.employeeCountMap = {
+			one: 'Выбран # сотрудник',
+			few: 'Выбрано # сотрудника',
+			other: 'Выбрано # сотрудников',
 		};
 	}
 

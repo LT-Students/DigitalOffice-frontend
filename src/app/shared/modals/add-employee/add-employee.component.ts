@@ -69,7 +69,7 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	public addToProject(): void {
-		const _users: Array<ProjectUserRequest> = this.selection.selected.reduce(function (
+		const users: Array<ProjectUserRequest> = this.selection.selected.reduce(function (
 			newArr: Array<ProjectUserRequest>,
 			user
 		) {
@@ -79,7 +79,7 @@ export class AddEmployeeComponent implements OnInit {
 		},
 		[]);
 
-		this._projectService.addUsersToProject({ projectId: this._data.pageId, users: [..._users] }).subscribe(() => {
+		this._projectService.addUsersToProject({ projectId: this._data.pageId, users: [...users] }).subscribe(() => {
 			this._cdr.markForCheck();
 		});
 	}
