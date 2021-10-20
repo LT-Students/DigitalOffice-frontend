@@ -127,12 +127,14 @@ export class ManageUsersComponent implements OnInit {
 	}
 
 	private _getPageUsers(): void {
-		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
-			this.totalCount = data?.totalCount ?? 0;
-			this.userInfo = data?.body?.slice() ?? [];
-			this.sortedUserInfo = data?.body?.slice() ?? [];
-			console.log(data.body);
-			this._cdr.markForCheck();
-		});
+		this._userService
+			.findUsers({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+			.subscribe((data) => {
+				this.totalCount = data?.totalCount ?? 0;
+				this.userInfo = data?.body?.slice() ?? [];
+				this.sortedUserInfo = data?.body?.slice() ?? [];
+				console.log(data.body);
+				this._cdr.markForCheck();
+			});
 	}
 }

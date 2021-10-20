@@ -7,48 +7,38 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { ProjectApiService } from './services/project-api.service';
 import { ImageApiService } from './services/image-api.service';
 import { UserApiService } from './services/user-api.service';
-import { TaskPropertyApiService } from './services/task-property-api.service';
-import { TaskApiService } from './services/task-api.service';
 
 /**
  * Module that provides all services and configuration.
  */
 @NgModule({
-  imports: [],
-  exports: [],
-  declarations: [],
-  providers: [
-    ProjectApiService,
-    ImageApiService,
-    UserApiService,
-    TaskPropertyApiService,
-    TaskApiService,
-    ApiConfiguration
-  ],
+	imports: [],
+	exports: [],
+	declarations: [],
+	providers: [ProjectApiService, ImageApiService, UserApiService, ApiConfiguration],
 })
 export class ProjectApiModule {
-  static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ProjectApiModule> {
-    return {
-      ngModule: ProjectApiModule,
-      providers: [
-        {
-          provide: ApiConfiguration,
-          useValue: params
-        }
-      ]
-    }
-  }
+	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ProjectApiModule> {
+		return {
+			ngModule: ProjectApiModule,
+			providers: [
+				{
+					provide: ApiConfiguration,
+					useValue: params,
+				},
+			],
+		};
+	}
 
-  constructor( 
-    @Optional() @SkipSelf() parentModule: ProjectApiModule,
-    @Optional() http: HttpClient
-  ) {
-    if (parentModule) {
-      throw new Error('ProjectApiModule is already loaded. Import in your base AppModule only.');
-    }
-    if (!http) {
-      throw new Error('You need to import the HttpClientModule in your AppModule! \n' +
-      'See also https://github.com/angular/angular/issues/20575');
-    }
-  }
+	constructor(@Optional() @SkipSelf() parentModule: ProjectApiModule, @Optional() http: HttpClient) {
+		if (parentModule) {
+			throw new Error('ProjectApiModule is already loaded. Import in your base AppModule only.');
+		}
+		if (!http) {
+			throw new Error(
+				'You need to import the HttpClientModule in your AppModule! \n' +
+					'See also https://github.com/angular/angular/issues/20575'
+			);
+		}
+	}
 }

@@ -25,6 +25,8 @@ import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.c
 import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
 import { DateTimePipe } from './pipes/date-time';
+import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
+import { EmptyListComponent } from './component/empty-list/empty-list.component';
 
 @NgModule({
 	declarations: [
@@ -44,7 +46,9 @@ import { DateTimePipe } from './pipes/date-time';
 		BreadcrumbsComponent,
 		ConfirmDialogComponent,
 		TitleDatepickerComponent,
+		AddEmployeeComponent,
 		DateTimePipe,
+		EmptyListComponent,
 	],
 	imports: [
 		CommonModule,
@@ -80,6 +84,8 @@ import { DateTimePipe } from './pipes/date-time';
 		BreadcrumbsComponent,
 		TitleDatepickerComponent,
 		DateTimePipe,
+		AddEmployeeComponent,
+		EmptyListComponent,
 	],
 })
 export class SharedModule {}

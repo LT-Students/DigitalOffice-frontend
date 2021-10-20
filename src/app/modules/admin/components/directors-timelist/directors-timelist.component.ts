@@ -4,6 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 import { TimeDurationService } from '@app/services/time-duration.service';
 import { IEditWorkTimeRequest, IFindStatRequest, IGetImport, TimeService } from '@app/services/time/time.service';
@@ -54,7 +55,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
 	public pageSize: number;
 	public pageIndex: number;
-	public totalCount: number;
+	public totalCount: BehaviorSubject<number>;
 	public employeeCountMap: { [k: string]: string };
 
 	constructor(
@@ -68,7 +69,7 @@ export class DirectorsTimelistComponent implements OnInit {
 		this.hoursGroup = this._formBuilder.group({});
 		this.pageSize = 20;
 		this.pageIndex = 0;
-		this.totalCount = 0;
+		this.totalCount = new BehaviorSubject<number>(0);
 
 		this.employeeCountMap = {
 			one: '# сотрудник',
@@ -78,7 +79,6 @@ export class DirectorsTimelistComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log('Route: ', this._route);
 		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe(() => {
 			this.statInfo$ = this._getStat();
 		});
@@ -173,7 +173,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
 		return this._timeService.findStat(params).pipe(
 			tap((result: FindResultResponseStatInfo) => {
-				this.totalCount = result.totalCount ?? 0;
+				this.totalCount.next(result.totalCount ?? 0);
 			}),
 			map(
 				(result: FindResultResponseStatInfo) =>
@@ -188,7 +188,7 @@ export class DirectorsTimelistComponent implements OnInit {
 			totalHours: this._getTotalHours(statInfo.workTimes ?? []),
 			leaveTimes: statInfo.leaveTimes?.map<IconedLeaveTimeInfo>((leaveTime) => ({
 				...leaveTime,
-				periodInHours: this._getPeriodInHours(leaveTime.startTime ?? '', leaveTime.endTime ?? ''),
+				periodInHours: (leaveTime.minutes ?? 0) / 60,
 			})),
 			workTimes: statInfo.workTimes?.map<EditableWorkTime>((workTime) => ({
 				...workTime,
@@ -210,10 +210,5 @@ export class DirectorsTimelistComponent implements OnInit {
 			startDate,
 			endDate: startDate.endOf('month'),
 		};
-	}
-
-	private _getPeriodInHours(startTime: string, endTime: string): number {
-		const datePeriod: DatePeriod = { startDate: DateTime.fromISO(startTime), endDate: DateTime.fromISO(endTime) };
-		return this._timeDurationService.getDuration(datePeriod, 8);
 	}
 }
