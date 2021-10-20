@@ -57,21 +57,15 @@ export class EditProjectComponent implements OnInit {
 		this.departments = [];
 		this.projectInfo = this._data.projectInfo;
 
-		this.projectForm = this._formBuilder.group({
+		this._initialData = {
 			'/Name': [this.projectInfo.name, [Validators.required, Validators.maxLength(150)]],
 			'/DepartmentId': [this.projectInfo.department.id, [Validators.required]],
 			'/Description': [this.projectInfo.description, [Validators.maxLength(300)]],
 			'/ShortDescription': [this.projectInfo.shortDescription],
 			'/Status': [this.projectInfo.status],
-		});
-
-		this._initialData = {
-			'/Name': this.projectInfo.name,
-			'/DepartmentId': this.projectInfo.department.id,
-			'/Description': this.projectInfo.description,
-			'/ShortDescription': this.projectInfo.shortDescription,
-			'/Status': this.projectInfo.status,
 		};
+
+		this.projectForm = this._formBuilder.group(this._initialData);
 	}
 
 	ngOnInit(): void {
@@ -104,7 +98,7 @@ export class EditProjectComponent implements OnInit {
 		const editRequest = (Object.keys(this.projectForm.controls) as ProjectPath[]).reduce((acc, key) => {
 			const formValue = this.projectForm.get(key)?.value;
 			console.log('formvalue', formValue);
-			console.log('initial', this._initialData[key]);
+			console.log('initial', this._initialData[key][0]);
 			if (formValue !== this._initialData[key]) {
 				const patchDocument: any = {
 					op: 'replace',
