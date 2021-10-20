@@ -1,0 +1,68 @@
+<h1>Редактирование проекта</h1>
+<mat-card class="card">
+	<form class="project-info" [formGroup]="projectForm" autocomplete="off">
+		<div class="project-info__section">
+			<div class="section__title">
+				<div class="section__title_left">
+					<h3 doUnderline underlinedSize="sm">Общая информация</h3>
+				</div>
+				<div class="section__title_right">
+					<span class="project-info__title warn">* Обязательное поле</span>
+				</div>
+			</div>
+			<div class="section__content section__content_general">
+				<mat-form-field appearance="fill">
+					<mat-label>Название проекта</mat-label>
+					<input
+						matInput
+						type="text"
+						formControlName="name"
+						placeholder="Введите название проекта"
+						maxlength="150"
+						required
+						value="hello"
+					/>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Департамент</mat-label>
+					<mat-select formControlName="departmentId" placeholder="Выберите департамент" required>
+						<mat-option *ngFor="let department of departments" [value]="department.id">
+							{{ department.name }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Короткое описание</mat-label>
+					<input
+						matInput
+						type="text"
+						formControlName="shortDescription"
+						maxlength="100"
+						placeholder="Короткое описание"
+					/>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Статус</mat-label>
+					<mat-select formControlName="status">
+						<mat-option *ngFor="let status of statuses" [value]="status.type">
+							{{ status.name | titlecase }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field class="project-info__description" appearance="fill">
+					<mat-label>Описание</mat-label>
+					<textarea
+						matInput
+						formControlName="description"
+						placeholder="Дайте описание проекту"
+						maxlength="300"
+					></textarea>
+				</mat-form-field>
+			</div>
+		</div>
+		<div mat-dialog-actions class="project-info__actions">
+			<button mat-button (click)="onClose()">Отмена</button>
+			<button mat-flat-button color="primary" (click)="onClose()">Сохранить</button>
+		</div>
+	</form>
+</mat-card>
