@@ -10,14 +10,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
-import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
-import { RouteType } from '../../../../app-routing.module';
-import { UserSearchComponent } from '../../components/new-project/modals/user-search/user-search.component';
-import { WorkFlowMode } from '../../../employee/employee-page.component';
-import { Team, TeamMember } from '../../components/new-project/team-cards';
+import { Team } from '../../components/new-project/team-cards';
 
 @Component({
 	selector: 'do-edit-project',
@@ -83,84 +77,12 @@ export class EditProjectComponent implements OnInit {
 		);
 	}
 
-	public addMember(): void {
-		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
-		this._modalService
-			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(
-				UserSearchComponent,
-				ModalWidth.L,
-				modalData
-			)
-			.afterClosed()
-			.subscribe((result?: UserInfo[]) => {
-				if (result?.length) {
-					this.membersAll = [...result];
-					this._cdr.detectChanges();
-				}
-			});
-	}
-
-	// public createProject(): void {
-	// 	const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({
-	// 		role: ProjectUserRoleType.Manager,
-	// 		userId: user.id ?? '',
-	// 	}));
-	// 	const projectRequest: ICreateProjectRequest = {
-	// 		name: this.projectForm.get('name')?.value?.trim(),
-	// 		departmentId: this.projectForm.get('departmentId')?.value,
-	// 		description: this.projectForm.get('description')?.value?.trim(),
-	// 		shortDescription: this.projectForm.get('shortDescription')?.value?.trim(),
-	// 		status: this.projectForm.get('status')?.value,
-	// 		users: projectUsers,
-	// 		projectImages: [],
-	// 	};
-	// 	this._projectService.createProject(projectRequest).subscribe(
-	// 		(result) => {
-	// 			this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
-	// 			this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
-	// 		},
-	// 		(error) => {
-	// 			let errorMessage = error.error.errors;
-	// 			if (error.status === 409) {
-	// 				errorMessage = 'Проект с таким названием уже существует';
-	// 			}
-	// 			this._snackBar.open(errorMessage, 'accept');
-	// 			throw error;
-	// 		}
-	// 	);
-	// }
-
-	public showProjectTeam(): void {
-		const configData: UserSearchModalConfig = {
-			team: { name: 'all', members: this._getAllMembers() },
-			mode: WorkFlowMode.VIEW,
-		};
-		this._modalService.openModal(UserSearchComponent, ModalWidth.L, configData);
-	}
-
 	public saveDraft(): void {
 		console.log('Сохранить черновик');
 	}
 
-	public totalMembersCount(): number {
-		return this.membersAll.length;
-		// return this.teams.map((team: Team) => team.members.length).reduce((sum: number, teamTotalNumber) => sum + teamTotalNumber, 0);
-	}
-
 	public goBack(): void {
 		this._location.back();
-	}
-
-	private _getAllMembers(): TeamMember[] {
-		return this.teams
-			.map((team: Team) => team.members)
-			.reduce((prev: TeamMember[], currentValue: TeamMember[]) => prev.concat(currentValue), []);
-	}
-
-	private _sortLeads(team: Team): void {
-		const leads: TeamMember[] = team.members.filter((member: TeamMember) => member.lead);
-		const ordinary: TeamMember[] = team.members.filter((member: TeamMember) => !member.lead);
-		team.members = [...leads, ...ordinary];
 	}
 
 	public onClose(): void {
