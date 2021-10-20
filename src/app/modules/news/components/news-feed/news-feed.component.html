@@ -7,8 +7,8 @@
 		</button>
 	</div>
 
-	<div *ngIf="newsFeed$; else emptyList" class="news">
-		<div *ngIf="newsFeed$ | async as news">
+	<div *ngIf="newsFeed$ | async as news" class="news">
+		<div *ngIf="news?.length; else emptyList">
 			<mat-card *ngFor="let post of news" (click)="openPost(post.id)" class="post news__post">
 				<div class="post__info">
 					<div class="post__tag">
