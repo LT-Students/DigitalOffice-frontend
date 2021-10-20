@@ -17,3 +17,5 @@ export type UserPath =
 	| '/OfficeId'
 	| '/About'
 	| '/IsActive';
+
+export type ProjectPath = '/Name' | '/ShortName' | '/Description' | '/ShortDescription' | '/Status' | '/DepartmentId';

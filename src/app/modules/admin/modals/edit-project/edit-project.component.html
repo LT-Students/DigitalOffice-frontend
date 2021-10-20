@@ -16,16 +16,16 @@
 					<input
 						matInput
 						type="text"
-						formControlName="name"
+						formControlName="/Name"
 						placeholder="Введите название проекта"
 						maxlength="150"
 						required
-						value="hello"
+						value="мяу"
 					/>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Департамент</mat-label>
-					<mat-select formControlName="departmentId" placeholder="Выберите департамент" required>
+					<mat-select formControlName="/DepartmentId" placeholder="Выберите департамент" required>
 						<mat-option *ngFor="let department of departments" [value]="department.id">
 							{{ department.name }}
 						</mat-option>
@@ -36,14 +36,14 @@
 					<input
 						matInput
 						type="text"
-						formControlName="shortDescription"
+						formControlName="/ShortDescription"
 						maxlength="100"
 						placeholder="Короткое описание"
 					/>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Статус</mat-label>
-					<mat-select formControlName="status">
+					<mat-select formControlName="/Status">
 						<mat-option *ngFor="let status of statuses" [value]="status.type">
 							{{ status.name | titlecase }}
 						</mat-option>
@@ -53,7 +53,7 @@
 					<mat-label>Описание</mat-label>
 					<textarea
 						matInput
-						formControlName="description"
+						formControlName="/Description"
 						placeholder="Дайте описание проекту"
 						maxlength="300"
 					></textarea>
@@ -62,7 +62,7 @@
 		</div>
 		<div mat-dialog-actions class="project-info__actions">
 			<button mat-button (click)="onClose()">Отмена</button>
-			<button mat-flat-button color="primary" (click)="onClose()">Сохранить</button>
+			<button mat-flat-button color="primary" (click)="editProject(); onClose()">Сохранить</button>
 		</div>
 	</form>
 </mat-card>
