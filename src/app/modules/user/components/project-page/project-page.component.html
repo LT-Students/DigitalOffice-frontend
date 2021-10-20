@@ -3,7 +3,10 @@
 		<div>
 			<h1>{{ projectInfo?.name }}</h1>
 			<div class="card__splitter"></div>
-			<p>{{ projectInfo?.department?.name }}</p>
+			<div class="card__name-edit-project">
+				<div>{{ projectInfo?.department?.name }}</div>
+				<button mat-flat-button color="accent" (click)="openEditProjectModal()">Редактировать проект</button>
+			</div>
 		</div>
 	</div>
 	<div class="card__content">
@@ -51,7 +54,9 @@
 				</ng-template>
 				<div class="team">
 					<h3 doUnderline underlinedSize="sm">Команда</h3>
-					<button mat-flat-button color="accent" (click)="openDialog()">+ Добавить сотрудников</button>
+					<button mat-flat-button color="accent" (click)="openAddEmployeeModal()">
+						+ Добавить сотрудников
+					</button>
 				</div>
 
 				<div class="search-actions">

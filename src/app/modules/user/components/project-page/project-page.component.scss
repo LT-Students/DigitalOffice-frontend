@@ -28,6 +28,11 @@
 		justify-content: space-between;
 		flex-wrap: wrap;
 	}
+
+	&__name-edit-project {
+		display: flex;
+		align-items: center;
+	}
 }
 
 .description {
