@@ -6,15 +6,18 @@ $header-height: 56px;
 	opacity: 1;
 }
 
-.header {
+:host {
 	position: fixed;
 	z-index: 2;
 	top: 0;
 
+	width: 100%;
+}
+
+.header {
 	padding: 0 38px;
 
-	width: 100%;
-
+	//width: 100%;
 	height: $header-height;
 
 	background-color: variables.$light_1;

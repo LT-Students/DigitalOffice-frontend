@@ -6,11 +6,7 @@ import { NewsEditorComponent } from './components/news-editor/news-editor.compon
 import { NewsRoutingModule } from './news-routing.module';
 
 @NgModule({
-	declarations: [
-		NewsEditorComponent,
-		NewsFeedComponent,
-		PostComponent
-	],
+	declarations: [NewsEditorComponent, NewsFeedComponent, PostComponent],
 	imports: [SharedModule, NewsRoutingModule],
 })
 export class NewsModule {}
