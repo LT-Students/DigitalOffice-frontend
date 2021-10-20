@@ -8,6 +8,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalService } from '@app/services/modal.service';
+import { ProjectStatus } from '@app/models/project/project-status';
+import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-project.component';
 
@@ -30,6 +32,8 @@ export class ProjectPageComponent implements OnInit {
 	public displayedColumns: string[];
 	public dataSource: MatTableDataSource<ProjectUserInfo>;
 	public selection: SelectionModel<ProjectUserInfo>;
+	public statuses: ProjectStatus[];
+	public status: ProjectStatus[];
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -47,6 +51,11 @@ export class ProjectPageComponent implements OnInit {
 		this.displayedColumns = ['select', 'name', 'role', 'rate', 'status'];
 		this.selection = new SelectionModel<ProjectUserInfo>(true, []);
 		this.dataSource = new MatTableDataSource();
+		this.statuses = [
+			new ProjectStatus(ProjectStatusType.Active),
+			new ProjectStatus(ProjectStatusType.Closed),
+			new ProjectStatus(ProjectStatusType.Suspend),
+		];
 
 		this.dayCountMap = {
 			one: '# день',
@@ -65,6 +74,8 @@ export class ProjectPageComponent implements OnInit {
 			few: 'Выбрано # сотрудника',
 			other: 'Выбрано # сотрудников',
 		};
+
+		this.status = [];
 	}
 
 	ngOnInit(): void {
@@ -84,6 +95,7 @@ export class ProjectPageComponent implements OnInit {
 				this.dataSource = new MatTableDataSource(this.projectUsers);
 				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
 				this.projectDuration = this._countProjectDuration();
+				this.status = this.statuses.filter((e) => e.type === this.projectInfo?.status);
 				this._cdr.markForCheck();
 			});
 	}

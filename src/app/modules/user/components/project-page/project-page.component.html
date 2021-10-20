@@ -21,7 +21,7 @@
 						<p>Команда</p>
 					</div>
 					<div class="description__column">
-						<p>{{ projectInfo?.status }}</p>
+						<p>{{ status[0].name | titlecase }}</p>
 						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
 						<p>{{ projectDuration | i18nPlural: dayCountMap }}</p>
 						<p>{{ projectUsers?.length | i18nPlural: participantCountMap }}</p>
