@@ -3,12 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { ICreateProjectRequest, ProjectService } from '@app/services/project/project.service';
+import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
@@ -97,7 +96,7 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public createProject(): void {
-		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({
+		const projectUsers: ICreateUserRequest[] = this.membersAll.map((user) => ({
 			role: ProjectUserRoleType.Manager,
 			userId: user.id ?? '',
 		}));
