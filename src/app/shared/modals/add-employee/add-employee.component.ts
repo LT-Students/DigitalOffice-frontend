@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Input, OnInit, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, Inject } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserInfo } from '@data/api/user-service/models/user-info';
@@ -6,8 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
-import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
-import { ProjectService } from '@app/services/project/project.service';
+import { ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 
 @Component({
 	selector: 'do-modal-add-employee',
@@ -69,8 +68,8 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	public addToProject(): void {
-		const users: Array<ProjectUserRequest> = this.selection.selected.reduce(function (
-			newArr: Array<ProjectUserRequest>,
+		const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
+			newArr: Array<ICreateUserRequest>,
 			user
 		) {
 			newArr.push({ role: ProjectUserRoleType.Employee, userId: user.id ?? '' });
