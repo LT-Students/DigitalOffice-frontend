@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddEmployeeComponent } from './add-employee.component';
+import { EmptyListComponent } from './empty-list.component';
 
-describe('ModalAddEmployeeComponent', () => {
-	let component: AddEmployeeComponent;
-	let fixture: ComponentFixture<AddEmployeeComponent>;
+describe('EmptyListComponent', () => {
+	let component: EmptyListComponent;
+	let fixture: ComponentFixture<EmptyListComponent>;
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			declarations: [AddEmployeeComponent],
+			declarations: [EmptyListComponent],
 		}).compileComponents();
 	});
 
 	beforeEach(() => {
-		fixture = TestBed.createComponent(AddEmployeeComponent);
+		fixture = TestBed.createComponent(EmptyListComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
 	});

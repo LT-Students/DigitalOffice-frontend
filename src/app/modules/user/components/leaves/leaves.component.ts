@@ -31,6 +31,7 @@ export class LeavesComponent {
 		private _timeService: TimeService
 	) {
 		this.leaves = [];
+
 		this.canEdit$ = this._attendanceService.canEdit$;
 	}
 

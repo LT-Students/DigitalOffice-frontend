@@ -31,7 +31,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="table-wrapper">
+	<div *ngIf="projectUsers.length > 0; else emptyList" class="table-wrapper">
 		<mat-tab-group>
 			<mat-tab #team>
 				<ng-template mat-tab-label>
@@ -180,4 +180,7 @@
 			</mat-tab>
 		</mat-tab-group>
 	</div>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о команде'"></do-empty-list>
+	</ng-template>
 </mat-card>

@@ -1,10 +1,12 @@
-<do-breadcrumbs [paths]="[{title: 'Администрирование', url: 'admin/dashboard'}, {title: 'Список департаментов'}]"></do-breadcrumbs>
+<do-breadcrumbs
+	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Список департаментов' }]"
+></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Департаменты</h3>
 		<button mat-flat-button color="accent" (click)="onAddDepartmentClick()">+ Создать департамент</button>
 	</div>
-	<table class="table" matSort (matSortChange)="sortData($event)">
+	<table *ngIf="totalCount > 0; else emptyList" class="table" matSort (matSortChange)="sortData($event)">
 		<colgroup>
 			<col class="column column_width_m" />
 			<col class="column column_width_m" />
@@ -28,7 +30,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr *ngFor="let departmentInfo of departmentsInfo" (click)="onDepartmentClick(departmentInfo.id)" class="row row_activable">
+			<tr
+				*ngFor="let departmentInfo of departmentsInfo"
+				(click)="onDepartmentClick(departmentInfo.id)"
+				class="row row_activable"
+			>
 				<td class="cell">
 					<ng-container *ngIf="departmentInfo?.name; else empty">
 						<p class="cell__content cell__content_ellipsissed">{{ departmentInfo.name }}</p>
@@ -52,7 +58,16 @@
 			</tr>
 		</tbody>
 	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"> </mat-paginator>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о департаментах'"></do-empty-list>
+	</ng-template>
+	<mat-paginator
+		[length]="totalCount"
+		[pageSize]="pageSize"
+		[pageSizeOptions]="[10, 25, 50]"
+		(page)="onPageChange($event)"
+	>
+	</mat-paginator>
 </mat-card>
 
 <ng-template #empty>
