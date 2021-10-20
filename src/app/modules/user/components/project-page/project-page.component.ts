@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
-import { ProjectUserInfo } from '@data/api/project-service/models/project-user-info';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalService } from '@app/services/modal.service';
+import { UserInfo } from '@data/api/project-service/models/user-info';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 
 @Component({
@@ -19,7 +19,7 @@ import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add
 export class ProjectPageComponent implements OnInit {
 	public projectId: string;
 	public projectInfo: ProjectInfo | undefined;
-	public projectUsers: Array<ProjectUserInfo>;
+	public projectUsers: Array<UserInfo>;
 	public projectCreatedAt: Date;
 	public projectDuration: number;
 	public dayCountMap: { [k: string]: string };
@@ -27,8 +27,8 @@ export class ProjectPageComponent implements OnInit {
 	public employeeCountMap: { [k: string]: string };
 	public positions: string[];
 	public displayedColumns: string[];
-	public dataSource: MatTableDataSource<ProjectUserInfo>;
-	public selection: SelectionModel<ProjectUserInfo>;
+	public dataSource: MatTableDataSource<UserInfo>;
+	public selection: SelectionModel<UserInfo>;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -44,7 +44,7 @@ export class ProjectPageComponent implements OnInit {
 		this.projectDuration = 0;
 		this.positions = ['front', 'back', 'manager', 'lead'];
 		this.displayedColumns = ['select', 'name', 'role', 'rate', 'status'];
-		this.selection = new SelectionModel<ProjectUserInfo>(true, []);
+		this.selection = new SelectionModel<UserInfo>(true, []);
 		this.dataSource = new MatTableDataSource();
 
 		this.dayCountMap = {
