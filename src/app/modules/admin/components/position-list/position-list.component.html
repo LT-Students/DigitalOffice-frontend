@@ -6,7 +6,7 @@
 		<h3 doUnderline underlinedSize="sm">Должности</h3>
 		<button mat-flat-button color="accent" (click)="onAddPositionClick()">+ Создать должность</button>
 	</div>
-	<table class="table" matSort>
+	<table *ngIf="totalCount > 0; else emptyList" class="table" matSort>
 		<colgroup>
 			<col class="column column_width_m" />
 			<col class="column column_width_l" />
@@ -32,6 +32,9 @@
 			</tr>
 		</tbody>
 	</table>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о должностях'"></do-empty-list>
+	</ng-template>
 	<mat-paginator
 		[length]="totalCount"
 		[pageSize]="pageSize"

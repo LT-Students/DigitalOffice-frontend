@@ -6,7 +6,7 @@
 		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
 		<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 	</div>
-	<table class="table" matSort (matSortChange)="sortData($event)">
+	<table *ngIf="totalCount > 0; else emptyList" class="table" matSort (matSortChange)="sortData($event)">
 		<colgroup>
 			<col class="column column_width_little" />
 			<!-- <col class='column column_width_sm'>
@@ -75,6 +75,9 @@
 			</tr>
 		</tbody>
 	</table>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
+	</ng-template>
 	<mat-paginator
 		[length]="totalCount"
 		[pageSize]="pageSize"

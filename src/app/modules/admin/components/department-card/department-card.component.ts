@@ -83,6 +83,7 @@ export class DepartmentCardComponent implements OnInit {
 			.getDepartment({ departmentid: this._departmentId, includeusers: true })
 			.subscribe(({ body }) => {
 				this.departmentInfo = body?.department;
+
 				this.totalCount = body?.users?.length ?? 0;
 				//this.sortedUsersInfo = body?.users?.slice() ?? [];
 				this._getUsers();

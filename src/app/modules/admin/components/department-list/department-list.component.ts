@@ -7,6 +7,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { ModalService } from '@app/services/modal.service';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { RouteType } from '../../../../app-routing.module';
+
 // import { Observable } from 'rxjs';
 // import { map, tap } from 'rxjs/operators';
 
@@ -51,8 +52,7 @@ export class DepartmentListComponent implements OnInit {
 			.openModal<NewDepartmentComponent, undefined, any>(NewDepartmentComponent)
 			.afterClosed()
 			.subscribe((result) => {
-				console.log('RESULT: ', result);
-				// Fix, then backend chnage to enum type
+				// Fix, then backend change to enum type
 				if (result?.status === 'FullSuccess') this._getDepartments();
 			});
 	}
@@ -69,10 +69,7 @@ export class DepartmentListComponent implements OnInit {
 
 	private _getDepartments(): void {
 		this.netService
-			.getDepartmentsList({
-				skipCount: this.pageIndex * this.pageSize,
-				takeCount: this.pageSize,
-			})
+			.getDepartmentsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
 			.subscribe((res) => {
 				this.totalCount = res.totalCount ?? 0;
 				this.departmentsInfo = res.body ?? [];
@@ -100,7 +97,7 @@ export class DepartmentListComponent implements OnInit {
 				case 'name':
 					return this._compare(a.name, b.name, isAsc);
 				case 'description':
-					return this._compare(a.description ?? '', b.description ?? '', isAsc);
+					return this._compare(a.description as string, b.description as string, isAsc);
 				case 'director':
 					return this._compare(a.director?.firstName, b.director?.firstName, isAsc);
 				case 'amount':

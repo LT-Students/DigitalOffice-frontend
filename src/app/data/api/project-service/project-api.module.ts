@@ -7,8 +7,6 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { ProjectApiService } from './services/project-api.service';
 import { ImageApiService } from './services/image-api.service';
 import { UserApiService } from './services/user-api.service';
-import { TaskPropertyApiService } from './services/task-property-api.service';
-import { TaskApiService } from './services/task-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -17,14 +15,7 @@ import { TaskApiService } from './services/task-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [
-		ProjectApiService,
-		ImageApiService,
-		UserApiService,
-		TaskPropertyApiService,
-		TaskApiService,
-		ApiConfiguration,
-	],
+	providers: [ProjectApiService, ImageApiService, UserApiService, ApiConfiguration],
 })
 export class ProjectApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ProjectApiModule> {

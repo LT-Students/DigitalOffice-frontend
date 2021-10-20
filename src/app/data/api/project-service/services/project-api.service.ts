@@ -227,7 +227,7 @@ export class ProjectApiService extends BaseService {
 
 	/**
 	 * Editing specific project by Id.
-	 * *  __The user must have been the department director projects.
+	 * *  __The user must have been the department director.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
 	 * To access only the response body, use `editProject()` instead.
@@ -264,7 +264,7 @@ export class ProjectApiService extends BaseService {
 
 	/**
 	 * Editing specific project by Id.
-	 * *  __The user must have been the department director projects.
+	 * *  __The user must have been the department director.
 	 *
 	 * This method provides access to only to the response body.
 	 * To access the full response (for headers, for example), `editProject$Response()` instead.

@@ -6,7 +6,7 @@
 		<h3 doUnderline underlinedSize="sm">Департаменты</h3>
 		<button mat-flat-button color="accent" (click)="onAddDepartmentClick()">+ Создать департамент</button>
 	</div>
-	<table class="table" matSort (matSortChange)="sortData($event)">
+	<table *ngIf="totalCount > 0; else emptyList" class="table" matSort (matSortChange)="sortData($event)">
 		<colgroup>
 			<col class="column column_width_m" />
 			<col class="column column_width_m" />
@@ -58,6 +58,9 @@
 			</tr>
 		</tbody>
 	</table>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о департаментах'"></do-empty-list>
+	</ng-template>
 	<mat-paginator
 		[length]="totalCount"
 		[pageSize]="pageSize"

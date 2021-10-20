@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
 import { Observable } from 'rxjs';
 import {
-	AddUsersToProjectRequest,
 	EditProjectRequest,
 	ImageContent,
 	ImageInfo,
 	ProjectFileInfo,
 	ProjectInfo,
 	ProjectStatusType,
-	ProjectUserInfo,
-	ProjectUserRequest,
+	ProjectUserRoleType,
+	UserInfo,
 } from '@data/api/project-service/models';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -25,7 +24,7 @@ export interface IGetProjectRequest {
 
 export interface IGetProjectResponse {
 	project?: ProjectInfo;
-	users?: Array<ProjectUserInfo>;
+	users?: Array<UserInfo>;
 	files?: Array<ProjectFileInfo>;
 	images?: Array<ImageInfo>;
 }
@@ -33,6 +32,16 @@ export interface IGetProjectResponse {
 export interface IEditProjectRequest {
 	projectId: string;
 	body: EditProjectRequest;
+}
+
+export interface ICreateUserRequest {
+	role: ProjectUserRoleType;
+	userId: string;
+}
+
+export interface IAddUsersToProjectRequest {
+	projectId: string;
+	users: Array<ICreateUserRequest>;
 }
 
 export interface IRemoveUsersFromProjectRequest {
@@ -48,7 +57,7 @@ export interface ICreateProjectRequest {
 	shortDescription?: string;
 	shortName?: string;
 	status: ProjectStatusType;
-	users: Array<ProjectUserRequest>;
+	users: Array<ICreateUserRequest>;
 }
 
 @Injectable({
@@ -81,11 +90,11 @@ export class ProjectService {
 		return this._projectService.editProject(params);
 	}
 
-	public addUsersToProject(body: AddUsersToProjectRequest): Observable<OperationResultResponse<{}>> {
-		return this._userService.addUsersToProject({ body });
+	public addUsersToProject(body: IAddUsersToProjectRequest): Observable<OperationResultResponse<{}>> {
+		return this._userService.createProjectUsers({ body });
 	}
 
 	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<OperationResultResponse<{}>> {
-		return this._userService.removeUsersFromProject(params);
+		return this._userService.removeProjectUsers(params);
 	}
 }
