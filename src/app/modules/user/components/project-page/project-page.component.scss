@@ -6,11 +6,11 @@
 	&__header {
 		padding: 0 0 40px;
 
-		display: flex;
-		justify-content: space-between;
-
 		border-bottom: 1px solid variables.$light_3;
-		flex-wrap: wrap;
+	}
+
+	&__button-edit {
+		height: 50%;
 	}
 
 	&__splitter {
@@ -31,7 +31,10 @@
 
 	&__name-edit-project {
 		display: flex;
-		align-items: center;
+
+		justify-content: space-between;
+
+		width: 100%;
 	}
 }
 

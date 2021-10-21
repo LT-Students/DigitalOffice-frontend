@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ModalService } from '@app/services/modal.service';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { switchMap } from 'rxjs/operators';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-project.component';
 
@@ -32,8 +33,7 @@ export class ProjectPageComponent implements OnInit {
 	public displayedColumns: string[];
 	public dataSource: MatTableDataSource<ProjectUserInfo>;
 	public selection: SelectionModel<ProjectUserInfo>;
-	public statuses: ProjectStatus[];
-	public status: ProjectStatus[];
+	public status: ProjectStatus;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -51,11 +51,6 @@ export class ProjectPageComponent implements OnInit {
 		this.displayedColumns = ['select', 'name', 'role', 'rate', 'status'];
 		this.selection = new SelectionModel<ProjectUserInfo>(true, []);
 		this.dataSource = new MatTableDataSource();
-		this.statuses = [
-			new ProjectStatus(ProjectStatusType.Active),
-			new ProjectStatus(ProjectStatusType.Closed),
-			new ProjectStatus(ProjectStatusType.Suspend),
-		];
 
 		this.dayCountMap = {
 			one: '# день',
@@ -75,7 +70,7 @@ export class ProjectPageComponent implements OnInit {
 			other: 'Выбрано # сотрудников',
 		};
 
-		this.status = [];
+		this.status = new ProjectStatus(this.projectInfo?.status ?? ProjectStatusType.Active);
 	}
 
 	ngOnInit(): void {
@@ -95,7 +90,6 @@ export class ProjectPageComponent implements OnInit {
 				this.dataSource = new MatTableDataSource(this.projectUsers);
 				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
 				this.projectDuration = this._countProjectDuration();
-				this.status = this.statuses.filter((e) => e.type === this.projectInfo?.status);
 				this._cdr.markForCheck();
 			});
 	}
@@ -143,17 +137,20 @@ export class ProjectPageComponent implements OnInit {
 			data: { projectInfo: this.projectInfo },
 			width: '800px',
 		});
-		dialogRef.afterClosed().subscribe(() => {
-			this._projectService
-				.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
-				.subscribe((result) => {
-					this.projectInfo = result.body?.project ?? {};
-					this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
-					this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
-					this.projectDuration = this._countProjectDuration();
-					this._cdr.markForCheck();
-				});
-		});
+		dialogRef
+			.afterClosed()
+			.pipe(
+				switchMap(() =>
+					this._projectService.getProject({
+						projectId: this.projectId,
+						includeusers: true,
+						shownotactiveusers: true,
+					})
+				)
+			)
+			.subscribe(() => {
+				this._updateProjectInfo();
+			});
 	}
 
 	public removeFromProject(): void {
@@ -190,5 +187,17 @@ export class ProjectPageComponent implements OnInit {
 
 	public onUserClick(userId: string | undefined): void {
 		this._router.navigate([`/user/${userId}`]);
+	}
+
+	private _updateProjectInfo() {
+		this._projectService
+			.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
+			.subscribe((result) => {
+				this.projectInfo = result.body?.project ?? {};
+				this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
+				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
+				this.projectDuration = this._countProjectDuration();
+				this._cdr.markForCheck();
+			});
 	}
 }
