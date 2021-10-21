@@ -47,10 +47,5 @@
 	<ng-template #emptyList>
 		<do-empty-list [emptyMessage]="'Нет данных о проектах'"></do-empty-list>
 	</ng-template>
-	<mat-paginator
-		[length]="totalCount"
-		[pageSize]="pageSize"
-		[pageSizeOptions]="[10, 25, 50]"
-		(page)="onPageChange($event)"
-	></mat-paginator>
+	<mat-paginator [length]="totalCount" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
 </mat-card>

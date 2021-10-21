@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
+import { EmployeePageService } from '@app/services/employee-page.service';
 import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
 import { ProjectPageComponent } from './modules/user/components/project-page/project-page.component';
 import { EmployeePageComponent } from './modules/employee/employee-page.component';
@@ -51,10 +52,9 @@ const routes: Routes = [
 					{
 						path: `${RouteType.USER}/:id`,
 						component: EmployeePageComponent,
-					},
-					{
-						path: RouteType.USER,
-						component: EmployeePageComponent,
+						resolve: {
+							employee: EmployeePageService,
+						},
 					},
 					{
 						path: `${RouteType.PROJECT}/:id`,

@@ -5,12 +5,13 @@ import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
 import { catchError, concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
 import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { EditorJSParser } from '../../modules/news/parser';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class NewsFeedService {
+export class NewsFeedService implements Resolve<ArticlePreview[]> {
 	private _newsFeed: BehaviorSubject<ArticlePreview[]>;
 	public newsFeed$: Observable<ArticlePreview[]>;
 	private _newsCount: number;
@@ -21,6 +22,10 @@ export class NewsFeedService {
 		this.newsFeed$ = this._newsFeed.asObservable();
 		this._newsCount = 0;
 		this._totalCount = 1;
+	}
+
+	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ArticlePreview[]> {
+		return this.getArticlePreviews();
 	}
 
 	public getArticlePreviews(refresh = false): Observable<ArticlePreview[]> {

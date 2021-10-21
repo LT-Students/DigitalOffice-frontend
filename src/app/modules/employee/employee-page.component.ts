@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { skip, switchMap, takeUntil } from 'rxjs/operators';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { ArchiveComponent } from './modals/archive/archive.component';
 import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
@@ -27,7 +27,7 @@ export interface Modes {
 @Component({
 	selector: 'do-employee-page',
 	templateUrl: './employee-page.component.html',
-	styleUrls: [ './employee-page.component.scss' ],
+	styleUrls: ['./employee-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
@@ -46,20 +46,21 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _snackBar: MatSnackBar,
-		private _cdr: ChangeDetectorRef,
+		private _cdr: ChangeDetectorRef
 	) {
-		this.studyTypes = [ EducationType.Offline, EducationType.Online ];
+		this.studyTypes = [EducationType.Offline, EducationType.Online];
 		this._unsubscribe$ = new Subject<void>();
 	}
 
 	public ngOnInit(): void {
 		// this.isOwner = user.id === this.pageId;
 		this._route.params
-		.pipe(
-			takeUntil(this._unsubscribe$),
-			switchMap((params) => this._employeeService.getEmployee(params.id)),
-		)
-		.subscribe();
+			.pipe(
+				skip(1),
+				takeUntil(this._unsubscribe$),
+				switchMap((params) => this._employeeService.getEmployee(params.id))
+			)
+			.subscribe();
 	}
 
 	public ngOnDestroy(): void {

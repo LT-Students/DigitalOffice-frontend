@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, forkJoin, Observable, ReplaySubject, pipe } from 'rxjs';
+import { BehaviorSubject, forkJoin, Observable, ReplaySubject } from 'rxjs';
 import {
 	ICreateLeaveTimeRequest,
 	IEditWorkTimeRequest,
@@ -8,7 +8,7 @@ import {
 	IFindWorkTimesRequest,
 	TimeService,
 } from '@app/services/time/time.service';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { UserService } from '@app/services/user/user.service';
 import { DateFilterFn } from '@angular/material/datepicker';
@@ -17,6 +17,8 @@ import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { LeaveTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { DateTime, Interval } from 'luxon';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { CurrentUserService } from '@app/services/current-user.service';
 import { DateService } from './date.service';
 import { TimeDurationService } from './time-duration.service';
 
@@ -33,7 +35,7 @@ interface MonthHolidays {
 @Injectable({
 	providedIn: 'root',
 })
-export class AttendanceService {
+export class AttendanceService implements Resolve<Activities> {
 	private readonly _activities: ReplaySubject<Activities>;
 	public readonly activities$: Observable<Activities>;
 
@@ -56,7 +58,8 @@ export class AttendanceService {
 		private _dateService: DateService,
 		private _timeService: TimeService,
 		private _userService: UserService,
-		private _timeDurationService: TimeDurationService
+		private _timeDurationService: TimeDurationService,
+		private _currentUserService: CurrentUserService
 	) {
 		this._selectedDate = new BehaviorSubject<DateTime>(DateTime.now());
 		this.selectedDate$ = this._selectedDate.asObservable();
@@ -74,6 +77,16 @@ export class AttendanceService {
 		this._leaveIntervals = new BehaviorSubject<Interval[]>([]);
 
 		this._rate = 1;
+	}
+
+	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Activities> {
+		return this._currentUserService.user$.pipe(
+			take(1),
+			tap((user) => this.setUserIdAndRate(user?.id, user?.rate)),
+			switchMap(() => this.getLeaveTimeIntervals()),
+			switchMap(() => this.getMonthNormAndHolidays()),
+			switchMap(() => this.getActivities())
+		);
 	}
 
 	public getActivities(): Observable<Activities> {
