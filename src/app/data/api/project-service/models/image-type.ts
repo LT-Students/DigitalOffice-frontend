@@ -5,6 +5,6 @@
  * Type of the entity.
  */
 export enum ImageType {
-  Project = 'Project',
-  Task = 'Task'
+	Project = 'Project',
+	Task = 'Task',
 }

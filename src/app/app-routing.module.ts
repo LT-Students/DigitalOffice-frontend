@@ -63,7 +63,7 @@ const routes: Routes = [
 					},
 					{ path: RouteType.DEPARTMENTS, component: DepartmentListComponent },
 					{ path: `${RouteType.DEPARTMENTS}/:id`, component: DepartmentCardComponent },
-					{ path: `news-feed`, component: NewsFeedComponent }
+					{ path: `news-feed`, component: NewsFeedComponent },
 				],
 			},
 			{
@@ -82,4 +82,4 @@ const routes: Routes = [
 	imports: [RouterModule.forRoot(routes)],
 	exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

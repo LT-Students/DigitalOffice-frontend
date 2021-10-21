@@ -17,10 +17,7 @@ import { OperationResultResponseListImageInfo } from '../models/operation-result
 	providedIn: 'root',
 })
 export class ImageApiService extends BaseService {
-	constructor(
-		config: ApiConfiguration,
-		http: HttpClient
-	) {
+	constructor(config: ApiConfiguration, http: HttpClient) {
 		super(config, http);
 	}
 
@@ -39,24 +36,25 @@ export class ImageApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	addImage$Response(params: {
-		body: AddImageRequest
-	}): Observable<StrictHttpResponse<string>> {
-
+	addImage$Response(params: { body: AddImageRequest }): Observable<StrictHttpResponse<string>> {
 		const rb = new RequestBuilder(this.rootUrl, ImageApiService.AddImagePath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
 
-		return this.http.request(rb.build({
-			responseType: 'json',
-			accept: 'application/json'
-		})).pipe(
-			filter((r: any) => r instanceof HttpResponse),
-			map((r: HttpResponse<any>) => {
-				return r as StrictHttpResponse<string>;
-			})
-		);
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<string>;
+				})
+			);
 	}
 
 	/**
@@ -69,13 +67,8 @@ export class ImageApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	addImage(params: {
-		body: AddImageRequest
-	}): Observable<string> {
-
-		return this.addImage$Response(params).pipe(
-			map((r: StrictHttpResponse<string>) => r.body as string)
-		);
+	addImage(params: { body: AddImageRequest }): Observable<string> {
+		return this.addImage$Response(params).pipe(map((r: StrictHttpResponse<string>) => r.body as string));
 	}
 
 	/**
@@ -92,27 +85,29 @@ export class ImageApiService extends BaseService {
 	 * This method doesn't expect any request body.
 	 */
 	getImage$Response(params: {
-
 		/**
 		 * Image global unique identifier.
 		 */
 		imageId: string;
 	}): Observable<StrictHttpResponse<OperationResultResponseImageInfo>> {
-
 		const rb = new RequestBuilder(this.rootUrl, ImageApiService.GetImagePath, 'get');
 		if (params) {
 			rb.query('imageId', params.imageId, {});
 		}
 
-		return this.http.request(rb.build({
-			responseType: 'json',
-			accept: 'application/json'
-		})).pipe(
-			filter((r: any) => r instanceof HttpResponse),
-			map((r: HttpResponse<any>) => {
-				return r as StrictHttpResponse<OperationResultResponseImageInfo>;
-			})
-		);
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponseImageInfo>;
+				})
+			);
 	}
 
 	/**
@@ -124,13 +119,11 @@ export class ImageApiService extends BaseService {
 	 * This method doesn't expect any request body.
 	 */
 	getImage(params: {
-
 		/**
 		 * Image global unique identifier.
 		 */
 		imageId: string;
 	}): Observable<OperationResultResponseImageInfo> {
-
 		return this.getImage$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponseImageInfo>) => r.body as OperationResultResponseImageInfo)
 		);
@@ -150,23 +143,26 @@ export class ImageApiService extends BaseService {
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
 	findImages$Response(params: {
-		body: Array<string>
+		body: Array<string>;
 	}): Observable<StrictHttpResponse<OperationResultResponseListImageInfo>> {
-
 		const rb = new RequestBuilder(this.rootUrl, ImageApiService.FindImagesPath, 'get');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
 
-		return this.http.request(rb.build({
-			responseType: 'json',
-			accept: 'application/json'
-		})).pipe(
-			filter((r: any) => r instanceof HttpResponse),
-			map((r: HttpResponse<any>) => {
-				return r as StrictHttpResponse<OperationResultResponseListImageInfo>;
-			})
-		);
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponseListImageInfo>;
+				})
+			);
 	}
 
 	/**
@@ -177,13 +173,12 @@ export class ImageApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	findImages(params: {
-		body: Array<string>
-	}): Observable<OperationResultResponseListImageInfo> {
-
+	findImages(params: { body: Array<string> }): Observable<OperationResultResponseListImageInfo> {
 		return this.findImages$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponseListImageInfo>) => r.body as OperationResultResponseListImageInfo)
+			map(
+				(r: StrictHttpResponse<OperationResultResponseListImageInfo>) =>
+					r.body as OperationResultResponseListImageInfo
+			)
 		);
 	}
-
 }

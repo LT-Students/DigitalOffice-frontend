@@ -13,40 +13,39 @@ import { NewsImageApiService } from './services/news-image-api.service';
  * Module that provides all services and configuration.
  */
 @NgModule({
-  imports: [],
-  exports: [],
-  declarations: [],
-  providers: [
-    MessageImageApiService,
-    ProjectImageApiService,
-    UserImageApiService,
-    NewsImageApiService,
-    ApiConfiguration
-  ],
+	imports: [],
+	exports: [],
+	declarations: [],
+	providers: [
+		MessageImageApiService,
+		ProjectImageApiService,
+		UserImageApiService,
+		NewsImageApiService,
+		ApiConfiguration,
+	],
 })
 export class ImageApiModule {
-  static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ImageApiModule> {
-    return {
-      ngModule: ImageApiModule,
-      providers: [
-        {
-          provide: ApiConfiguration,
-          useValue: params
-        }
-      ]
-    }
-  }
+	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ImageApiModule> {
+		return {
+			ngModule: ImageApiModule,
+			providers: [
+				{
+					provide: ApiConfiguration,
+					useValue: params,
+				},
+			],
+		};
+	}
 
-  constructor( 
-    @Optional() @SkipSelf() parentModule: ImageApiModule,
-    @Optional() http: HttpClient
-  ) {
-    if (parentModule) {
-      throw new Error('ImageApiModule is already loaded. Import in your base AppModule only.');
-    }
-    if (!http) {
-      throw new Error('You need to import the HttpClientModule in your AppModule! \n' +
-      'See also https://github.com/angular/angular/issues/20575');
-    }
-  }
+	constructor(@Optional() @SkipSelf() parentModule: ImageApiModule, @Optional() http: HttpClient) {
+		if (parentModule) {
+			throw new Error('ImageApiModule is already loaded. Import in your base AppModule only.');
+		}
+		if (!http) {
+			throw new Error(
+				'You need to import the HttpClientModule in your AppModule! \n' +
+					'See also https://github.com/angular/angular/issues/20575'
+			);
+		}
+	}
 }

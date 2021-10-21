@@ -89,7 +89,12 @@
 			<mat-label>Комментарий</mat-label>
 			<textarea matInput formControlName="comment" placeholder="Оставьте комментарий для менеджера"></textarea>
 		</mat-form-field>
-		<button mat-flat-button color="primary" [disabled]="addHoursForm.invalid || addHoursForm.disabled">
+		<button
+			mat-flat-button
+			color="primary"
+			[loading]="(loading | async) ?? false"
+			[disabled]="addHoursForm.invalid || addHoursForm.disabled"
+		>
 			{{ isProjectForm ? 'Сохранить' : 'Добавить' }} часы
 		</button>
 	</form>

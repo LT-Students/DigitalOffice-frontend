@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
 import { MaterialModule } from './material.module';
 
 import { SelectComponent } from './component/select/select.component';
@@ -37,6 +38,8 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		StepperComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
+		CommentComponent,
 		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
@@ -62,6 +65,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		HeaderComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
 		DatepickerComponent,
 		StepperComponent,
 		SafeHtmlPipe,

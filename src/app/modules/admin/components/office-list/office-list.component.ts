@@ -45,10 +45,9 @@ export class OfficeListComponent implements OnInit {
 		this._modalService
 			.openModal<NewOfficeComponent, null, any>(NewOfficeComponent)
 			.afterClosed()
-			.subscribe(result => {
+			.subscribe((result) => {
 				// Fix, then backend change to enum
-				if (result?.status === 'FullSuccess')
-					this._getOfficeList();
+				if (result?.status === 'FullSuccess') this._getOfficeList();
 			});
 	}
 

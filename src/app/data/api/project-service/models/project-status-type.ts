@@ -6,7 +6,7 @@
  * May be empty, default value: 'Active'.
  */
 export enum ProjectStatusType {
-  Active = 'Active',
-  Closed = 'Closed',
-  Suspend = 'Suspend'
+	Active = 'Active',
+	Closed = 'Closed',
+	Suspend = 'Suspend',
 }

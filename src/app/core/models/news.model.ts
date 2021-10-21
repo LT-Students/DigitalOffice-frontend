@@ -1,4 +1,4 @@
-import { NewsInfo } from "@data/api/news-service/models/news-info";
+import { NewsInfo } from '@data/api/news-service/models/news-info';
 
 export interface ArticlePreview extends Omit<NewsInfo, 'preview'> {
 	preview: string;
