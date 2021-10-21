@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { ProjectService } from '@app/services/project/project.service';
+import { IGetProjectResponse, ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { ProjectUserInfo } from '@data/api/project-service/models/project-user-info';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -11,6 +11,8 @@ import { ModalService } from '@app/services/modal.service';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { switchMap } from 'rxjs/operators';
+import { OperationResultResponseProjectResponse } from '@data/api/project-service/models/operation-result-response-project-response';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-project.component';
 
@@ -119,17 +121,20 @@ export class ProjectPageComponent implements OnInit {
 			data: { idToHide: this.projectUsers.map((e) => e.id), pageId: this.projectId },
 			maxWidth: '670px',
 		});
-		dialogRef.afterClosed().subscribe(() => {
-			this._projectService
-				.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
-				.subscribe((result) => {
-					this.projectInfo = result.body?.project ?? {};
-					this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
-					this.dataSource = new MatTableDataSource(this.projectUsers);
-					this.selection.clear();
-					this._cdr.markForCheck();
-				});
-		});
+		dialogRef
+			.afterClosed()
+			.pipe(
+				switchMap(() =>
+					this._projectService.getProject({
+						projectId: this.projectId,
+						includeusers: true,
+						shownotactiveusers: true,
+					})
+				)
+			)
+			.subscribe((result) => {
+				this._updateProjectInfo(result);
+			});
 	}
 
 	public openEditProjectModal(): void {
@@ -148,8 +153,8 @@ export class ProjectPageComponent implements OnInit {
 					})
 				)
 			)
-			.subscribe(() => {
-				this._updateProjectInfo();
+			.subscribe((result) => {
+				this._updateProjectInfo(result);
 			});
 	}
 
@@ -189,15 +194,11 @@ export class ProjectPageComponent implements OnInit {
 		this._router.navigate([`/user/${userId}`]);
 	}
 
-	private _updateProjectInfo() {
-		this._projectService
-			.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
-			.subscribe((result) => {
-				this.projectInfo = result.body?.project ?? {};
-				this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
-				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
-				this.projectDuration = this._countProjectDuration();
-				this._cdr.markForCheck();
-			});
+	private _updateProjectInfo(result: OperationResultResponse<IGetProjectResponse>) {
+		this.projectInfo = result.body?.project ?? {};
+		this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
+		this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
+		this.projectDuration = this._countProjectDuration();
+		this._cdr.markForCheck();
 	}
 }
