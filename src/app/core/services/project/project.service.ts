@@ -20,6 +20,8 @@ export interface IGetProjectRequest {
 	includeusers?: boolean;
 	shownotactiveusers?: boolean;
 	includefiles?: boolean;
+	includeDescription?: boolean;
+	includeShortDescription?: boolean;
 }
 
 export interface IGetProjectResponse {

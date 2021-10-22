@@ -1,10 +1,15 @@
 <mat-card class="card card_standard">
 	<div class="card__header">
-		<div>
+		<div class="card__name-edit-project">
 			<h1>{{ projectInfo?.name }}</h1>
-			<div class="card__splitter"></div>
-			<p>{{ projectInfo?.department?.name }}</p>
+			<button mat-flat-button class="card__button-edit" (click)="openEditProjectModal()">
+				<mat-icon>
+					<img class="card__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
+				</mat-icon>
+			</button>
 		</div>
+		<div class="card__splitter"></div>
+		<div>{{ projectInfo?.department?.name }}</div>
 	</div>
 	<div class="card__content">
 		<div>
@@ -18,7 +23,7 @@
 						<p>Команда</p>
 					</div>
 					<div class="description__column">
-						<p>{{ projectInfo?.status }}</p>
+						<p>{{ status.name | titlecase }}</p>
 						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
 						<p>{{ projectDuration | i18nPlural: dayCountMap }}</p>
 						<p>{{ projectUsers?.length | i18nPlural: participantCountMap }}</p>
@@ -51,7 +56,9 @@
 				</ng-template>
 				<div class="team">
 					<h3 doUnderline underlinedSize="sm">Команда</h3>
-					<button mat-flat-button color="accent" (click)="openDialog()">+ Добавить сотрудников</button>
+					<button mat-flat-button color="accent" (click)="openAddEmployeeModal()">
+						+ Добавить сотрудников
+					</button>
 				</div>
 
 				<div class="search-actions">
