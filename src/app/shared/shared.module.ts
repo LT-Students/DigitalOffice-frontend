@@ -8,6 +8,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
 import { MaterialModule } from './material.module';
 
 import { SelectComponent } from './component/select/select.component';
@@ -40,6 +41,8 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		StepperComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
+		CommentComponent,
 		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
@@ -75,6 +78,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		HeaderComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
 		DatepickerComponent,
 		StepperComponent,
 		SafeHtmlPipe,

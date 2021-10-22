@@ -5,6 +5,6 @@
  * Type of image.
  */
 export enum ImageType {
-  Full = 'Full',
-  Thumb = 'Thumb'
+	Full = 'Full',
+	Thumb = 'Thumb',
 }

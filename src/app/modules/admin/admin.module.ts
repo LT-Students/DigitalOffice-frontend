@@ -27,6 +27,7 @@ import { OfficeListComponent } from './components/office-list/office-list.compon
 import { PositionListComponent } from './components/position-list/position-list.component';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
+import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 
 @NgModule({
 	declarations: [
@@ -52,8 +53,9 @@ import { TeamStatisticsComponent } from './components/team-statistics/team-stati
 		DirectorsTimelistComponent,
 		TeamStatisticsComponent,
 		LeaveLabelPipe,
+		EditProjectComponent,
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
-	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe],
+	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe, EditProjectComponent],
 })
 export class AdminModule {}
