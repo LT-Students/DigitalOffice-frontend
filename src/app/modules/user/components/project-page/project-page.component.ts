@@ -35,8 +35,6 @@ export class ProjectPageComponent implements OnInit {
 	public displayedColumns: string[];
 	public dataSource: MatTableDataSource<UserInfo>;
 	public selection: SelectionModel<UserInfo>;
-	public dataSource: MatTableDataSource<ProjectUserInfo>;
-	public selection: SelectionModel<ProjectUserInfo>;
 	public status: ProjectStatus;
 
 	constructor(
@@ -53,7 +51,7 @@ export class ProjectPageComponent implements OnInit {
 		this.projectDuration = 0;
 		this.positions = ['front', 'back', 'manager', 'lead'];
 		this.displayedColumns = ['select', 'name', 'role', 'rate', 'status'];
-		this.selection = new SelectionModel<ProjectUserInfo>(true, []);
+		this.selection = new SelectionModel<UserInfo>(true, []);
 		this.dataSource = new MatTableDataSource();
 
 		this.dayCountMap = {
