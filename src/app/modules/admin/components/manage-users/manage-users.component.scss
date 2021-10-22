@@ -22,16 +22,16 @@
 	}
 
 	&__delete-button {
-		visibility: hidden;
-
 		text-align: right;
+
+		opacity: 0;
 	}
 }
 
 .row {
 	&:hover {
 		.table__delete-button {
-			visibility: visible;
+			opacity: 1;
 		}
 	}
 }
