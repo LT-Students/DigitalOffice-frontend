@@ -1,10 +1,12 @@
-<do-breadcrumbs [paths]="[{title: 'Администрирование', url: 'admin/dashboard'}, {title: 'Управление сотрудниками'}]"></do-breadcrumbs>
+<do-breadcrumbs
+	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление сотрудниками' }]"
+></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
 		<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 	</div>
-	<table class="table" matSort (matSortChange)="sortData($event)">
+	<table *ngIf="totalCount > 0; else emptyList" class="table" matSort (matSortChange)="sortData($event)">
 		<colgroup>
 			<col class="column column_width_little" />
 			<!-- <col class='column column_width_sm'>
@@ -73,7 +75,15 @@
 			</tr>
 		</tbody>
 	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
+	</ng-template>
+	<mat-paginator
+		[length]="totalCount"
+		[pageSize]="pageSize"
+		[pageSizeOptions]="[10, 25, 50]"
+		(page)="onPageChange($event)"
+	></mat-paginator>
 </mat-card>
 
 <ng-template #empty>

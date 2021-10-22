@@ -12,7 +12,6 @@ import { ImageService } from '@app/services/file/image.service';
 import { MessageService } from '@app/services/message/message.service';
 import { NewsService } from '@app/services/news/news.service';
 import { ProjectService } from '@app/services/project/project.service';
-import { TaskService } from '@app/services/project/task.service';
 import { RightsService } from '@app/services/rights/rights.service';
 import { TimeService } from '@app/services/time/time.service';
 import { CertificateService } from '@app/services/user/certificate.service';
@@ -63,7 +62,6 @@ import { environment } from '../../environments/environment';
 		MessageService,
 		NewsService,
 		ProjectService,
-		TaskService,
 		RightsService,
 		TimeService,
 		CertificateService,

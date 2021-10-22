@@ -37,7 +37,6 @@ export class ProjectsTableComponent {
 	public onProjectClick(projectId: string | undefined): void {
 		this._router.navigate([`${RouteType.PROJECT}/${projectId}`]);
 	}
-
 	private _getProjectList(): Observable<ProjectInfo[]> {
 		return this._projectService.findProjects(this.pageIndex * this.pageSize, this.pageSize).pipe(
 			tap((response) => (this.totalCount = response.totalCount ?? 0)),

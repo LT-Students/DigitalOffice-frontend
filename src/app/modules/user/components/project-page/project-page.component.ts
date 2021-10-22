@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { IGetProjectResponse, ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
-import { ProjectUserInfo } from '@data/api/project-service/models/project-user-info';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalService } from '@app/services/modal.service';
+import { UserInfo } from '@data/api/project-service/models/user-info';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { switchMap } from 'rxjs/operators';
@@ -25,7 +25,7 @@ import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-pr
 export class ProjectPageComponent implements OnInit {
 	public projectId: string;
 	public projectInfo: ProjectInfo | undefined;
-	public projectUsers: Array<ProjectUserInfo>;
+	public projectUsers: Array<UserInfo>;
 	public projectCreatedAt: Date;
 	public projectDuration: number;
 	public dayCountMap: { [k: string]: string };
@@ -33,6 +33,8 @@ export class ProjectPageComponent implements OnInit {
 	public employeeCountMap: { [k: string]: string };
 	public positions: string[];
 	public displayedColumns: string[];
+	public dataSource: MatTableDataSource<UserInfo>;
+	public selection: SelectionModel<UserInfo>;
 	public dataSource: MatTableDataSource<ProjectUserInfo>;
 	public selection: SelectionModel<ProjectUserInfo>;
 	public status: ProjectStatus;

@@ -71,7 +71,7 @@
 			</div>
 		</div>
 
-		<table mat-table [dataSource]="dataSource" class="table">
+		<table *ngIf="totalCount > 0; else emptyList" mat-table [dataSource]="dataSource" class="table">
 			<ng-container matColumnDef="select">
 				<th mat-header-cell *matHeaderCellDef>
 					<mat-checkbox
@@ -141,6 +141,9 @@
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onUserClick(row.id)"></tr>
 		</table>
+		<ng-template #emptyList>
+			<do-empty-list [emptyMessage]="'В данном департаменте нет сотрудников'"></do-empty-list>
+		</ng-template>
 	</div>
 </mat-card>
 

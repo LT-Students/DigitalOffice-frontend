@@ -7,6 +7,6 @@
  * ,Enum numbers description.
  */
 export enum ProjectUserRoleType {
-  Manager = 'Manager',
-  Employee = 'Employee'
+	Manager = 'Manager',
+	Employee = 'Employee',
 }

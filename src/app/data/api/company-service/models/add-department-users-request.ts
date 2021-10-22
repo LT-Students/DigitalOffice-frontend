@@ -5,11 +5,9 @@
  * Specific department users data.
  */
 export interface AddDepartmentUsersRequest {
-
-  /**
-   * Specific department identifier.
-   */
-  deprtmentId: string;
-  users?: Array<string>;
+	/**
+	 * Specific department identifier.
+	 */
+	deprtmentId: string;
+	users?: Array<string>;
 }
-

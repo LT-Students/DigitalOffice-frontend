@@ -24,10 +24,7 @@ import { UploadPhotoComponent } from './modals/upload-photo/upload-photo.compone
 		ProjectsComponent,
 		UploadPhotoComponent,
 	],
-	imports: [
-		SharedModule,
-		AdminModule
-	],
+	imports: [SharedModule, AdminModule],
 	providers: [],
 })
 export class EmployeeModule {}

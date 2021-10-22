@@ -1,22 +1,25 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { TimeService } from '@app/services/time/time.service';
 import { AttendanceService } from '@app/services/attendance.service';
-import { switchMap } from 'rxjs/operators';
+import { finalize, switchMap } from 'rxjs/operators';
 import { DoValidators } from '@app/validators/do-validators';
 import { TimeDurationService } from '@app/services/time-duration.service';
+import { BehaviorSubject } from 'rxjs';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 
 @Component({
 	selector: 'do-edit-project',
 	templateUrl: './edit-project.component.html',
 	styleUrls: ['./edit-project.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditProjectComponent {
 	public editForm: FormGroup;
 	public projectDate: Date;
+	public loading: BehaviorSubject<boolean>;
 
 	public inputErrorMessage: string;
 
@@ -31,6 +34,7 @@ export class EditProjectComponent {
 		this.editForm = this._initFormGroup();
 		this.projectDate = new Date(this.project.year, this.project.month - 1);
 		this.inputErrorMessage = '';
+		this.loading = new BehaviorSubject<boolean>(false);
 	}
 
 	private _initFormGroup(): FormGroup {
@@ -55,6 +59,7 @@ export class EditProjectComponent {
 	}
 
 	public onSubmitClick(): void {
+		this.loading.next(true);
 		this._timeService
 			.editWorkTime({
 				workTimeId: this.project.id,
@@ -71,8 +76,15 @@ export class EditProjectComponent {
 					},
 				],
 			})
-			.pipe(switchMap(() => this._attendanceService.getActivities()))
-			.subscribe(() => this.onClose());
+			.pipe(
+				switchMap(() => this._attendanceService.getActivities()),
+				finalize(() => {
+					this.loading.next(false);
+				})
+			)
+			.subscribe(() => {
+				this.onClose();
+			});
 	}
 
 	public onClose(params?: IDialogResponse): void {

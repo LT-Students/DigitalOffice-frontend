@@ -4,6 +4,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 import { TimeDurationService } from '@app/services/time-duration.service';
 import { IEditWorkTimeRequest, IFindStatRequest, IGetImport, TimeService } from '@app/services/time/time.service';
@@ -54,7 +55,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
 	public pageSize: number;
 	public pageIndex: number;
-	public totalCount: number;
+	public totalCount: BehaviorSubject<number>;
 	public employeeCountMap: { [k: string]: string };
 
 	constructor(
@@ -68,7 +69,7 @@ export class DirectorsTimelistComponent implements OnInit {
 		this.hoursGroup = this._formBuilder.group({});
 		this.pageSize = 20;
 		this.pageIndex = 0;
-		this.totalCount = 0;
+		this.totalCount = new BehaviorSubject<number>(0);
 
 		this.employeeCountMap = {
 			one: '# сотрудник',
@@ -172,7 +173,7 @@ export class DirectorsTimelistComponent implements OnInit {
 
 		return this._timeService.findStat(params).pipe(
 			tap((result: FindResultResponseStatInfo) => {
-				this.totalCount = result.totalCount ?? 0;
+				this.totalCount.next(result.totalCount ?? 0);
 			}),
 			map(
 				(result: FindResultResponseStatInfo) =>

@@ -16,7 +16,7 @@
 					<input matInput formControlName="siteUrl" placeholder="Введите доменное имя" required />
 				</mat-form-field>
 				<div class="wizard__buttons">
-					<button mat-button matStepperNext [disabled]='companyForm.invalid'>Далее</button>
+					<button mat-button matStepperNext [disabled]="companyForm.invalid">Далее</button>
 				</div>
 			</div>
 		</form>
@@ -45,12 +45,16 @@
 					<mat-label>Логин</mat-label>
 					<input matInput formControlName="login" placeholder="Введите логин" required />
 				</mat-form-field>
-                    <do-password class="wizard__input" formControlName="password" placeholder="Придумайте пароль"></do-password>
-                    <do-password class="wizard__input" placeholder="Повторите пароль" formControlName="confirmPassword">
-                    </do-password>
+				<do-password
+					class="wizard__input"
+					formControlName="password"
+					placeholder="Придумайте пароль"
+				></do-password>
+				<do-password class="wizard__input" placeholder="Повторите пароль" formControlName="confirmPassword">
+				</do-password>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
-					<button mat-button matStepperNext [disabled]='adminForm.invalid'>Далее</button>
+					<button mat-button matStepperNext [disabled]="adminForm.invalid">Далее</button>
 				</div>
 			</div>
 		</form>
@@ -71,12 +75,22 @@
 					<mat-label>E-mail</mat-label>
 					<input matInput formControlName="email" placeholder="example@mail.com" required />
 				</mat-form-field>
-                    <do-password class="wizard__input" formControlName="password" placeholder="Придумайте пароль"></do-password>
-                    <do-password class="wizard__input" placeholder="Повторите пароль" formControlName="confirmPassword"></do-password>
+				<do-password
+					class="wizard__input"
+					formControlName="password"
+					placeholder="Придумайте пароль"
+				></do-password>
+				<do-password
+					class="wizard__input"
+					placeholder="Повторите пароль"
+					formControlName="confirmPassword"
+				></do-password>
 				<mat-checkbox formControlName="enableSsl" required>Включить SSL</mat-checkbox>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
-					<button mat-button type="submit" [disabled]='smtpForm.invalid' (click)='submitForm()'>Завершить</button>
+					<button mat-button type="submit" [disabled]="smtpForm.invalid" (click)="submitForm()">
+						Завершить
+					</button>
 				</div>
 			</div>
 		</form>

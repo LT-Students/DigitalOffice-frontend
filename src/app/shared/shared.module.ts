@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
 import { MaterialModule } from './material.module';
 
 import { SelectComponent } from './component/select/select.component';
@@ -23,6 +24,7 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
 import { DateTimePipe } from './pipes/date-time';
 import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
+import { EmptyListComponent } from './component/empty-list/empty-list.component';
 
 @NgModule({
 	declarations: [
@@ -36,6 +38,8 @@ import { AddEmployeeComponent } from './modals/add-employee/add-employee.compone
 		StepperComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
+		CommentComponent,
 		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
@@ -44,6 +48,7 @@ import { AddEmployeeComponent } from './modals/add-employee/add-employee.compone
 		TitleDatepickerComponent,
 		AddEmployeeComponent,
 		DateTimePipe,
+		EmptyListComponent,
 	],
 	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, InfiniteScrollModule],
 	exports: [
@@ -60,6 +65,7 @@ import { AddEmployeeComponent } from './modals/add-employee/add-employee.compone
 		HeaderComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
 		DatepickerComponent,
 		StepperComponent,
 		SafeHtmlPipe,
@@ -70,6 +76,7 @@ import { AddEmployeeComponent } from './modals/add-employee/add-employee.compone
 		TitleDatepickerComponent,
 		DateTimePipe,
 		AddEmployeeComponent,
+		EmptyListComponent,
 	],
 })
 export class SharedModule {}

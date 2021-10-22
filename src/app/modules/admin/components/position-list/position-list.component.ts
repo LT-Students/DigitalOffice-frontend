@@ -3,8 +3,8 @@ import { PageEvent } from '@angular/material/paginator';
 
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { NetService } from '@app/services/net.service';
-import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 import { ModalService } from '@app/services/modal.service';
+import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 
 @Component({
 	selector: 'do-position-list',
@@ -19,11 +19,7 @@ export class PositionListComponent implements OnInit {
 	public pageSize: number;
 	public pageIndex: number;
 
-	constructor(
-		private _modalService: ModalService,
-		private _netService: NetService,
-		private _cdr: ChangeDetectorRef
-	) {
+	constructor(private _modalService: ModalService, private _netService: NetService, private _cdr: ChangeDetectorRef) {
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
@@ -38,7 +34,7 @@ export class PositionListComponent implements OnInit {
 		this._modalService
 			.openModal<NewPositionComponent, null, any>(NewPositionComponent)
 			.afterClosed()
-			.subscribe(result => {
+			.subscribe((result) => {
 				if (result?.status === 'FullSuccess') {
 					this._getPositions();
 				}
@@ -52,11 +48,12 @@ export class PositionListComponent implements OnInit {
 	}
 
 	private _getPositions(): void {
-		this._netService.getPositionsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
-			this.positions = data?.body ?? [];
-			console.log(data.body)
-			this.totalCount = data?.totalCount ?? 0;
-			this._cdr.markForCheck();
-		});
+		this._netService
+			.getPositionsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+			.subscribe((data) => {
+				this.positions = data?.body ?? [];
+				this.totalCount = data?.totalCount ?? 0;
+				this._cdr.markForCheck();
+			});
 	}
 }

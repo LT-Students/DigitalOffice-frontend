@@ -4,9 +4,10 @@ import { NetService } from '@app/services/net.service';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { Router } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
+import { ModalService } from '@app/services/modal.service';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { RouteType } from '../../../../app-routing.module';
-import { ModalService } from '@app/services/modal.service';
+
 // import { Observable } from 'rxjs';
 // import { map, tap } from 'rxjs/operators';
 
@@ -50,11 +51,9 @@ export class DepartmentListComponent implements OnInit {
 		this._modalService
 			.openModal<NewDepartmentComponent, undefined, any>(NewDepartmentComponent)
 			.afterClosed()
-			.subscribe(result => {
-				console.log("RESULT: ", result)
-				// Fix, then backend chnage to enum type
-				if (result?.status === 'FullSuccess')
-					this._getDepartments();
+			.subscribe((result) => {
+				// Fix, then backend change to enum type
+				if (result?.status === 'FullSuccess') this._getDepartments();
 			});
 	}
 
@@ -69,12 +68,14 @@ export class DepartmentListComponent implements OnInit {
 	}
 
 	private _getDepartments(): void {
-		this.netService.getDepartmentsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
-			this.totalCount = res.totalCount ?? 0;
-			this.departmentsInfo = res.body ?? [];
-			this.sortedDepartmentsInfo = res.body ?? [];
-			this._cdr.markForCheck();
-		});
+		this.netService
+			.getDepartmentsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+			.subscribe((res) => {
+				this.totalCount = res.totalCount ?? 0;
+				this.departmentsInfo = res.body ?? [];
+				this.sortedDepartmentsInfo = res.body ?? [];
+				this._cdr.markForCheck();
+			});
 
 		// this.departmentsInfo$ = this.netService.getDepartmentsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
 		// 	.pipe(
@@ -96,7 +97,7 @@ export class DepartmentListComponent implements OnInit {
 				case 'name':
 					return this._compare(a.name, b.name, isAsc);
 				case 'description':
-					return this._compare(a.description!, b.description!, isAsc);
+					return this._compare(a.description as string, b.description as string, isAsc);
 				case 'director':
 					return this._compare(a.director?.firstName, b.director?.firstName, isAsc);
 				case 'amount':
