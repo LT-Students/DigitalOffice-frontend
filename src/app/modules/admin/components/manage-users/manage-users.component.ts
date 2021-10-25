@@ -46,6 +46,10 @@ export class ManageUsersComponent {
 		this._userParams.next({
 			skipCount: event.pageIndex * event.pageSize,
 			takeCount: event.pageSize,
+			includeavatar: true,
+			includeposition: true,
+			includedepartment: true,
+			includerole: true,
 		});
 	}
 

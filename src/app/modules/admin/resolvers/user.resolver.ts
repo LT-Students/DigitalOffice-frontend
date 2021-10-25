@@ -15,6 +15,13 @@ export class UserResolver implements Resolve<OperationResultResponse<UserInfo[]>
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<OperationResultResponse<UserInfo[]>> {
-		return this._userService.findUsers({ skipCount: 0, takeCount: 10 });
+		return this._userService.findUsers({
+			skipCount: 0,
+			takeCount: 10,
+			includeavatar: true,
+			includeposition: true,
+			includedepartment: true,
+			includerole: true,
+		});
 	}
 }
