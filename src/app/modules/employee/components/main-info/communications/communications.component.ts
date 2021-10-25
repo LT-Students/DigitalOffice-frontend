@@ -40,7 +40,7 @@ export class CommunicationsComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this._employeePageService.selectedUser$.subscribe((user) => {
-			this.communications = user.communications ?? [];
+			this.communications = this._mapCommunications(user.communications ?? []);
 			this.employeeId = user.id ?? '';
 			this._countEmailContacts();
 			this.communications.sort((contact1, contact2) => this._communicationCompareFn(contact1, contact2));
@@ -120,7 +120,7 @@ export class CommunicationsComponent implements OnInit {
 
 	private _getCommunications(): void {
 		this._employeePageService.getEmployee(this.employeeId).subscribe((user) => {
-			this.communications = user.communications ?? [];
+			this.communications = this._mapCommunications(user.communications ?? []);
 			this._countEmailContacts();
 			this.communications.sort((contact1, contact2) => this._communicationCompareFn(contact1, contact2));
 			this._cdr.markForCheck();
@@ -152,5 +152,15 @@ export class CommunicationsComponent implements OnInit {
 		}
 
 		return 0;
+	}
+
+	private _mapCommunications(communications: CommunicationInfo[]): CommunicationInfo[] {
+		return communications?.map((contact) => {
+			const mappedContact = { ...contact };
+			if (mappedContact.type === 'Phone') {
+				mappedContact.value = '+' + mappedContact.value;
+			}
+			return mappedContact;
+		});
 	}
 }

@@ -9,6 +9,7 @@ import { catchError, finalize } from 'rxjs/operators';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { DoValidators } from '@app/validators/do-validators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { parsePhoneNumber } from 'libphonenumber-js';
 
 @Component({
 	selector: 'do-add-contact',
@@ -65,6 +66,11 @@ export class AddContactComponent {
 
 	public onSubmit(): void {
 		this.loading.next(true);
+
+		if (this.contactForm.get('type')?.value === 'Phone') {
+			const phoneNum = parsePhoneNumber(this.contactForm.get('value')?.value);
+			this.contactForm.get('value')?.setValue(phoneNum.countryCallingCode.toString() + phoneNum.nationalNumber);
+		}
 
 		const type: CommunicationType =
 			CommunicationType[this.contactForm.controls['type'].value as keyof typeof CommunicationType];

@@ -53,6 +53,7 @@
     "canvasjs": "^1.8.3",
     "chart.js": "^3.5.1",
     "editorjs-text-alignment-blocktune": "^1.0.2",
+    "libphonenumber-js": "^1.9.38",
     "luxon": "^2.0.2",
     "moment": "^2.27.0",
     "ngx-infinite-scroll": "^10.0.1",

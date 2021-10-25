@@ -17,7 +17,7 @@
 	<mat-error *ngIf="control.errors?.['twitter']"
 		>Имя пользователя twitter может содержать символы a-z, 0-9 и нижнее подчёркивание.
 	</mat-error>
-	<mat-error *ngIf="control.errors?.['phone']">Некорректный формат номера.</mat-error>
+	<mat-error *ngIf="control.errors?.['phone']">Введите корректный номер телефона в международном формате. </mat-error>
 	<mat-error *ngIf="control.errors?.['maxlength']"
 		>Имя пользователя не может быть длиннее {{control.errors?.['maxlength'] | i18nPlural: symbolsCountMap }}.
 	</mat-error>

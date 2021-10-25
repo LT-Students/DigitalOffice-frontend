@@ -10,6 +10,7 @@ import { catchError, finalize } from 'rxjs/operators';
 import { CommunicationType } from '@data/api/user-service/models/communication-type';
 import { DoValidators } from '@app/validators/do-validators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { parsePhoneNumber } from 'libphonenumber-js';
 
 @Component({
 	selector: 'do-edit-contact',
@@ -48,6 +49,11 @@ export class EditContactComponent {
 	public onSubmit(): void {
 		this.loading.next(true);
 
+		if (this.dialogData.type === 'Phone') {
+			const phoneNum = parsePhoneNumber(this.control.value);
+			this.control.setValue(phoneNum.countryCallingCode.toString() + phoneNum.nationalNumber);
+		}
+
 		const type: CommunicationType = CommunicationType[this.dialogData.type as keyof typeof CommunicationType];
 
 		const request: IEditCommunicationRequest = {
@@ -83,12 +89,22 @@ export class EditContactComponent {
 	private _initControl(): FormControl {
 		let validators: ValidatorFn[] = [Validators.required];
 
-		const initControlValue: string =
-			this.dialogData.type === 'Twitter' || this.dialogData.type === 'Telegram'
-				? this.dialogData.value?.slice(1) ?? ''
-				: this.dialogData.value ?? '';
+		let initControlValue: string;
 
-		let control = this._fb.control(initControlValue);
+		switch (this.dialogData.type) {
+			case 'Twitter':
+			case 'Telegram': {
+				initControlValue = this.dialogData.value?.slice(1) ?? '';
+				break;
+			}
+			case 'Phone': {
+				initControlValue = '+' + this.dialogData.value ?? '';
+				break;
+			}
+			default: {
+				initControlValue = this.dialogData.value ?? '';
+			}
+		}
 
 		switch (this.dialogData.type) {
 			case CommunicationType.Email: {
@@ -115,8 +131,6 @@ export class EditContactComponent {
 				break;
 		}
 
-		control.addValidators(validators);
-
-		return control;
+		return this._fb.control(initControlValue, validators);
 	}
 }

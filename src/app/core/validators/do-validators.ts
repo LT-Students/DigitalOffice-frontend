@@ -1,4 +1,5 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 function isEmptyInputValue(value: any): boolean {
 	return value == null || value.length === 0;
@@ -9,7 +10,7 @@ const NUMBER_REGEXP = /^-?\d*\.?\d+$/;
 const TELEGRAM_REGEXP = /^[A-Za-z]+(_?[A-Za-z0-9])*$/;
 // Не уверен за этот regex, но пока пусть будет, если кто умный - подайте идею.
 const SKYPE_REGEXP = /^[A-Za-z][A-Za-z0-9.,\-_]+$/;
-const PHONE_REGEXP = /^\d{0,14}$/;
+// const PHONE_REGEXP = /^\d{0,14}$/;
 const TWITTER_REGEXP = /^[a-zA-Z0-9_]+$/;
 
 export class DoValidators {
@@ -44,7 +45,10 @@ export class DoValidators {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return PHONE_REGEXP.test(control.value) ? null : { phone: true };
+		if (!isValidPhoneNumber(control.value)) {
+			return { phone: true };
+		}
+		return null;
 	}
 
 	static skype(control: AbstractControl): ValidationErrors | null {
