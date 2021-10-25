@@ -128,7 +128,13 @@ export class ManageUsersComponent implements OnInit {
 
 	private _getPageUsers(): void {
 		this._userService
-			.findUsers({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+			.findUsers({
+				skipCount: this.pageIndex * this.pageSize,
+				takeCount: this.pageSize,
+				includerole: true,
+				includeposition: true,
+				includedepartment: true,
+			})
 			.subscribe((data) => {
 				this.totalCount = data?.totalCount ?? 0;
 				this.userInfo = data?.body?.slice() ?? [];
