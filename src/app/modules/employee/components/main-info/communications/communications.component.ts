@@ -5,10 +5,10 @@ import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { OperationResultStatusType } from '@data/api/user-service/models/operation-result-status-type';
 import { CommunicationService } from '@app/services/user/communication.service';
-import { CommunicationType } from '@data/api/user-service/models/communication-type';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { ConfirmDialogData } from '../../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
@@ -22,6 +22,7 @@ import { EditContactComponent } from './edit-contact/edit-contact.component';
 export class CommunicationsComponent implements OnInit {
 	@Input() public mainInfoEditing: boolean;
 	public communications: CommunicationInfo[];
+	public communications$: BehaviorSubject<CommunicationInfo[]>;
 	public employeeId: string;
 	public emailContactCount: number;
 
@@ -30,8 +31,10 @@ export class CommunicationsComponent implements OnInit {
 		private _modalService: ModalService,
 		private _cdr: ChangeDetectorRef,
 		private _communicationService: CommunicationService,
-		private _snackBar: MatSnackBar
+		private _snackBar: MatSnackBar,
+		private _clipboard: Clipboard
 	) {
+		this.communications$ = new BehaviorSubject<CommunicationInfo[]>([]);
 		this.mainInfoEditing = false;
 		this.communications = [];
 		this.employeeId = '';
@@ -40,18 +43,18 @@ export class CommunicationsComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this._employeePageService.selectedUser$.subscribe((user) => {
-			this.communications = user.communications ?? [];
+			this.communications = this._mapCommunications(user.communications ?? []);
 			this.employeeId = user.id ?? '';
-			this._countEmailContacts();
 			this.communications.sort((contact1, contact2) => this._communicationCompareFn(contact1, contact2));
 			this._cdr.markForCheck();
 		});
 	}
 
 	public onCommunicationClick(contact: CommunicationInfo): void {
-		navigator.clipboard.writeText(contact.value ?? '').then(() => {
+		const copied: boolean = this._clipboard.copy(contact.value ?? '');
+		if (copied) {
 			this._snackBar.open('Контакт скопирован в буфер обмена', 'x', { duration: 3000 });
-		});
+		}
 	}
 
 	public onAddClick(): void {
@@ -71,11 +74,17 @@ export class CommunicationsComponent implements OnInit {
 
 	public onEditClick(contact: CommunicationInfo, event: MouseEvent): void {
 		event.stopPropagation();
+
+		const modalContentConfig: CommunicationInfo = {
+			...contact,
+			value: contact.type === 'Twitter' || contact.type === 'Telegram' ? contact.value?.slice(1) : contact.value,
+		};
+
 		this._modalService
 			.openModal<EditContactComponent, CommunicationInfo, { response: OperationResultResponse; value: string }>(
 				EditContactComponent,
 				ModalWidth.M,
-				contact
+				modalContentConfig
 			)
 			.afterClosed()
 			.subscribe((result) => {
@@ -103,34 +112,27 @@ export class CommunicationsComponent implements OnInit {
 					const errorMessage: string = err.error?.errors ? err.error.errors[0] : 'Что-то пошло не так :(';
 					this._snackBar.open(errorMessage, 'x', { duration: 3000 });
 					return throwError(err);
+				}),
+				switchMap((confirmResult) => {
+					if (confirmResult) {
+						return this._communicationService.removeCommunication({ communicationId: contact.id ?? '' });
+					} else {
+						return new Observable<null>();
+					}
 				})
 			)
-			.subscribe((confirmResult) => {
-				if (confirmResult) {
-					this._communicationService
-						.removeCommunication({ communicationId: contact.id ?? '' })
-						.subscribe((result) => {
-							if (result.status === OperationResultStatusType.FullSuccess) {
-								this._getCommunications();
-							}
-						});
+			.subscribe((result) => {
+				if (result?.status === OperationResultStatusType.FullSuccess) {
+					this._getCommunications();
 				}
 			});
 	}
 
 	private _getCommunications(): void {
 		this._employeePageService.getEmployee(this.employeeId).subscribe((user) => {
-			this.communications = user.communications ?? [];
-			this._countEmailContacts();
+			this.communications = this._mapCommunications(user.communications ?? []);
 			this.communications.sort((contact1, contact2) => this._communicationCompareFn(contact1, contact2));
 			this._cdr.markForCheck();
-		});
-	}
-
-	private _countEmailContacts(): void {
-		this.emailContactCount = 0;
-		this.communications.forEach((communication) => {
-			if (communication.type === CommunicationType.Email) this.emailContactCount++;
 		});
 	}
 
@@ -152,5 +154,18 @@ export class CommunicationsComponent implements OnInit {
 		}
 
 		return 0;
+	}
+
+	private _mapCommunications(communications: CommunicationInfo[]): CommunicationInfo[] {
+		this.emailContactCount = 0;
+
+		return communications?.map((contact) => {
+			const mappedContact = { ...contact };
+			if (mappedContact.type === 'Phone') {
+				mappedContact.value = '+' + mappedContact.value;
+			}
+			this.emailContactCount++;
+			return mappedContact;
+		});
 	}
 }

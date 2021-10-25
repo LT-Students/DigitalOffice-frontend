@@ -36,14 +36,16 @@
 		<mat-error *ngIf="contactForm.controls['value']?.errors?.['twitter']"
 			>Имя пользователя twitter может содержать символы a-z, 0-9 и нижнее подчёркивание.
 		</mat-error>
-		<mat-error *ngIf="contactForm.controls['value']?.errors?.['phone']">Некорректный формат номера.</mat-error>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['phone']"
+			>Введите корректный номер телефона в международном формате.
+		</mat-error>
 		<mat-error *ngIf="contactForm.controls['value']?.errors?.['maxlength']"
 			>Имя пользователя не может быть длиннее
-			{{contactForm.controls['value']?.errors?.['maxlength'] | i18nPlural: symbolsCountMap }}.
+			{{contactForm.controls['value']?.errors?.['maxlength'].requiredLength | i18nPlural: symbolsCountMap }}.
 		</mat-error>
 		<mat-error *ngIf="contactForm.controls['value']?.errors?.['minlength']"
 			>Имя пользователя не может быть короче
-			{{contactForm.controls['value']?.errors?.['minlength'] | i18nPlural: symbolsCountMap }}.
+			{{contactForm.controls['value']?.errors?.['minlength'].requiredLength | i18nPlural: symbolsCountMap }}.
 		</mat-error>
 	</mat-form-field>
 </div>

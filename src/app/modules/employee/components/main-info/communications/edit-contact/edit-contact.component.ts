@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
@@ -8,8 +8,9 @@ import { OperationResultResponse } from '@data/api/user-service/models/operation
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { CommunicationType } from '@data/api/user-service/models/communication-type';
-import { DoValidators } from '@app/validators/do-validators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { parsePhoneNumber } from 'libphonenumber-js';
+import { CommunicationTypeModel } from '@app/models/communication.model';
 
 @Component({
 	selector: 'do-edit-contact',
@@ -36,8 +37,12 @@ export class EditContactComponent {
 			one: '# символа',
 			other: '# символов',
 		};
-		this.viewContactType = this.dialogData.type === 'Phone' ? 'Рабочий номер' : this.dialogData.type ?? '';
-		this.control = this._initControl();
+		this.viewContactType =
+			CommunicationTypeModel.getContactTypeInfoByType(this.dialogData.type)?.viewTypeValue ?? '';
+		this.control = this._fb.control(
+			this.dialogData.value,
+			CommunicationTypeModel.getValidatorsByType(this.dialogData.type)
+		);
 		this.loading = new BehaviorSubject<boolean>(false);
 	}
 
@@ -47,6 +52,11 @@ export class EditContactComponent {
 
 	public onSubmit(): void {
 		this.loading.next(true);
+
+		if (this.dialogData.type === 'Phone') {
+			const phoneNum = parsePhoneNumber(this.control.value);
+			this.control.setValue(phoneNum.countryCallingCode.toString() + phoneNum.nationalNumber);
+		}
 
 		const type: CommunicationType = CommunicationType[this.dialogData.type as keyof typeof CommunicationType];
 
@@ -60,8 +70,6 @@ export class EditContactComponent {
 				},
 			],
 		};
-
-		console.log('REQUEST:', request);
 
 		this._communicationService
 			.editCommunication(request)
@@ -78,45 +86,5 @@ export class EditContactComponent {
 			.subscribe((result) => {
 				this.onClose({ response: result, value: `@${this.control.value}` });
 			});
-	}
-
-	private _initControl(): FormControl {
-		let validators: ValidatorFn[] = [Validators.required];
-
-		const initControlValue: string =
-			this.dialogData.type === 'Twitter' || this.dialogData.type === 'Telegram'
-				? this.dialogData.value?.slice(1) ?? ''
-				: this.dialogData.value ?? '';
-
-		let control = this._fb.control(initControlValue);
-
-		switch (this.dialogData.type) {
-			case CommunicationType.Email: {
-				validators.push(DoValidators.email);
-				break;
-			}
-			case CommunicationType.Phone: {
-				validators.push(DoValidators.phone);
-				break;
-			}
-			case CommunicationType.Telegram: {
-				validators.push(DoValidators.telegram);
-				break;
-			}
-			case CommunicationType.Skype: {
-				validators.push(DoValidators.skype);
-				break;
-			}
-			case CommunicationType.Twitter: {
-				validators.push(DoValidators.twitter);
-				break;
-			}
-			default:
-				break;
-		}
-
-		control.addValidators(validators);
-
-		return control;
 	}
 }

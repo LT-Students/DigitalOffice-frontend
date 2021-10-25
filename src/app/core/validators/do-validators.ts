@@ -1,4 +1,5 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 function isEmptyInputValue(value: any): boolean {
 	return value == null || value.length === 0;
@@ -9,8 +10,7 @@ const NUMBER_REGEXP = /^-?\d*\.?\d+$/;
 const TELEGRAM_REGEXP = /^[A-Za-z]+(_?[A-Za-z0-9])*$/;
 // Не уверен за этот regex, но пока пусть будет, если кто умный - подайте идею.
 const SKYPE_REGEXP = /^[A-Za-z][A-Za-z0-9.,\-_]+$/;
-const PHONE_REGEXP = /^\d{0,14}$/;
-const TWITTER_REGEXP = /^[a-zA-Z0-9_]+$/;
+const TWITTER_REGEXP = /^\w+$/;
 
 export class DoValidators {
 	static email(control: AbstractControl): ValidationErrors | null {
@@ -25,26 +25,15 @@ export class DoValidators {
 			return null;
 		}
 
-		const errors: { minlength?: any; maxlength?: any; telegram?: boolean } | null = {};
-
-		if (control.value.length < 5) {
-			errors.minlength = 5;
-		}
-		if (control.value.length > 32) {
-			errors.maxlength = 32;
-		}
-		if (!TELEGRAM_REGEXP.test(control.value)) {
-			errors.telegram = true;
-		}
-
-		return errors;
+		return TELEGRAM_REGEXP.test(control.value) ? null : { telegram: true };
 	}
 
 	static phone(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return PHONE_REGEXP.test(control.value) ? null : { phone: true };
+
+		return isValidPhoneNumber(control.value) ? null : { phone: true };
 	}
 
 	static skype(control: AbstractControl): ValidationErrors | null {
@@ -52,19 +41,7 @@ export class DoValidators {
 			return null;
 		}
 
-		const errors: { minlength?: any; maxlength?: any; skype?: boolean } | null = {};
-
-		if (control.value.length < 5) {
-			errors.minlength = 5;
-		}
-		if (control.value.length > 31) {
-			errors.maxlength = 31;
-		}
-		if (!SKYPE_REGEXP.test(control.value)) {
-			errors.skype = true;
-		}
-
-		return errors;
+		return SKYPE_REGEXP.test(control.value) ? null : { skype: true };
 	}
 
 	static twitter(control: AbstractControl): ValidationErrors | null {
@@ -72,25 +49,14 @@ export class DoValidators {
 			return null;
 		}
 
-		const errors: { minlength?: any; maxlength?: any; twitter?: boolean } | null = {};
-
-		if (control.value.length < 1) {
-			errors.minlength = 1;
-		}
-		if (control.value.length > 15) {
-			errors.maxlength = 15;
-		}
-		if (!TWITTER_REGEXP.test(control.value)) {
-			errors.twitter = true;
-		}
-
-		return errors;
+		return TWITTER_REGEXP.test(control.value) ? null : { twitter: true };
 	}
 
 	static number(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
+
 		return NUMBER_REGEXP.test(control.value) ? null : { number: true };
 	}
 
