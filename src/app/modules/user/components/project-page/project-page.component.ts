@@ -10,8 +10,7 @@ import { ModalService } from '@app/services/modal.service';
 import { UserInfo } from '@data/api/project-service/models/user-info';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { switchMap } from 'rxjs/operators';
-import { OperationResultResponseProjectResponse } from '@data/api/project-service/models/operation-result-response-project-response';
+import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-project.component';
@@ -25,7 +24,6 @@ import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-pr
 export class ProjectPageComponent implements OnInit {
 	public projectId: string;
 	public projectInfo: ProjectInfo | undefined;
-	public projectUsers: Array<UserInfo>;
 	public projectCreatedAt: Date;
 	public projectDuration: number;
 	public dayCountMap: { [k: string]: string };
@@ -46,7 +44,6 @@ export class ProjectPageComponent implements OnInit {
 		private _router: Router
 	) {
 		this.projectId = '';
-		this.projectUsers = [];
 		this.projectCreatedAt = new Date();
 		this.projectDuration = 0;
 		this.positions = ['front', 'back', 'manager', 'lead'];
@@ -73,27 +70,13 @@ export class ProjectPageComponent implements OnInit {
 		};
 
 		this.status = new ProjectStatus(this.projectInfo?.status ?? ProjectStatusType.Active);
+		this._route.data
+			.pipe(map((response) => response.project))
+			.subscribe((project) => this._updateProjectInfo(project));
 	}
 
 	ngOnInit(): void {
 		this.projectId = this._route.snapshot.params.id;
-		this._projectService
-			.getProject({
-				projectId: this.projectId,
-				includeusers: true,
-				shownotactiveusers: true,
-				includeDescription: true,
-				includeShortDescription: true,
-			})
-			.subscribe((result) => {
-				console.log(result?.body?.users);
-				this.projectInfo = result.body?.project ?? {};
-				this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
-				this.dataSource = new MatTableDataSource(this.projectUsers);
-				this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
-				this.projectDuration = this._countProjectDuration();
-				this._cdr.markForCheck();
-			});
 	}
 
 	private _countProjectDuration(): number {
@@ -118,7 +101,7 @@ export class ProjectPageComponent implements OnInit {
 
 	public openAddEmployeeModal(): void {
 		const dialogRef = this._dialog.open(AddEmployeeComponent, {
-			data: { idToHide: this.projectUsers.map((e) => e.id), pageId: this.projectId },
+			data: { idToHide: this.dataSource.data.map((e) => e.id), pageId: this.projectId },
 			maxWidth: '670px',
 		});
 		dialogRef
@@ -179,11 +162,8 @@ export class ProjectPageComponent implements OnInit {
 							this._projectService
 								.getProject({ projectId: this.projectId, includeusers: true, shownotactiveusers: true })
 								.subscribe((result) => {
-									this.projectInfo = result.body?.project ?? {};
-									this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
-									this.dataSource = new MatTableDataSource(this.projectUsers);
 									this.selection.clear();
-									this._cdr.markForCheck();
+									this._updateProjectInfo(result);
 								});
 						});
 				}
@@ -196,7 +176,7 @@ export class ProjectPageComponent implements OnInit {
 
 	private _updateProjectInfo(result: OperationResultResponse<IGetProjectResponse>) {
 		this.projectInfo = result.body?.project ?? {};
-		this.projectUsers = result?.body?.users?.filter((e) => e.isActive) ?? [];
+		this.dataSource = new MatTableDataSource(result?.body?.users?.filter((e) => e.isActive) ?? []);
 		this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
 		this.projectDuration = this._countProjectDuration();
 		this._cdr.markForCheck();

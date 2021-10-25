@@ -45,7 +45,10 @@ export class RightsService {
 	}
 
 	public findRoles(params: IFindRequest): Observable<OperationResultResponse<RoleInfo[]>> {
-		return this._roleService.findRoles(params);
+		return this._roleService.findRoles({
+			...params,
+			locale: 'ru',
+		});
 	}
 
 	public getRole(params: IGetRoleRequest): Observable<OperationResultResponse<IRoleResponse>> {

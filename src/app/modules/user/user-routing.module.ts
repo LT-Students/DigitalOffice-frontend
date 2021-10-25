@@ -5,7 +5,7 @@ import { AttendanceService } from '@app/services/attendance.service';
 import { RouteType } from '../../app-routing.module';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
-import { ProjectResolver } from './resolvers/project.resolver';
+import { ProjectListResolver } from './resolvers/project-list.resolver';
 
 const userRoutes: Routes = [
 	{ path: '', pathMatch: 'full', redirectTo: 'attendance' },
@@ -20,7 +20,7 @@ const userRoutes: Routes = [
 		path: 'projects-table',
 		component: ProjectsTableComponent,
 		resolve: {
-			project: ProjectResolver,
+			projects: ProjectListResolver,
 		},
 	},
 	{ path: '**', redirectTo: RouteType.USER, pathMatch: 'full' },

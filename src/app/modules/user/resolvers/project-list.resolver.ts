@@ -8,13 +8,13 @@ import { ProjectInfo } from '@data/api/project-service/models/project-info';
 @Injectable({
 	providedIn: 'root',
 })
-export class ProjectResolver implements Resolve<OperationResultResponse<ProjectInfo[]>> {
+export class ProjectListResolver implements Resolve<OperationResultResponse<ProjectInfo[]>> {
 	constructor(private _projectService: ProjectService) {}
 
 	public resolve(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<OperationResultResponse<ProjectInfo[]>> {
-		return this._projectService.findProjects(0, 10);
+		return this._projectService.findProjects({ skipCount: 0, takeCount: 10 });
 	}
 }

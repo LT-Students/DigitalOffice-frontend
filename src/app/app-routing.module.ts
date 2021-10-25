@@ -11,6 +11,9 @@ import { EmployeePageComponent } from './modules/employee/employee-page.componen
 import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
 import { DepartmentListComponent } from './modules/admin/components/department-list/department-list.component';
 import { DepartmentCardComponent } from './modules/admin/components/department-card/department-card.component';
+import { DepartmentListResolver } from './modules/admin/resolvers/department-list.resolver';
+import { DepartmentPageResolver } from './modules/admin/resolvers/department-page.resolver';
+import { ProjectPageResolver } from './modules/user/resolvers/project-page.resolver';
 
 export const enum RouteType {
 	AUTH = 'auth',
@@ -59,9 +62,24 @@ const routes: Routes = [
 					{
 						path: `${RouteType.PROJECT}/:id`,
 						component: ProjectPageComponent,
+						resolve: {
+							project: ProjectPageResolver,
+						},
 					},
-					{ path: RouteType.DEPARTMENTS, component: DepartmentListComponent },
-					{ path: `${RouteType.DEPARTMENTS}/:id`, component: DepartmentCardComponent },
+					{
+						path: RouteType.DEPARTMENTS,
+						component: DepartmentListComponent,
+						resolve: {
+							departments: DepartmentListResolver,
+						},
+					},
+					{
+						path: `${RouteType.DEPARTMENTS}/:id`,
+						component: DepartmentCardComponent,
+						resolve: {
+							department: DepartmentPageResolver,
+						},
+					},
 				],
 			},
 			{
