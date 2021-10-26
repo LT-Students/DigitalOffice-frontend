@@ -3,17 +3,17 @@ import { ValidatorFn, Validators } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 
 export interface IContactType {
-	viewTypeValue: string;
+	contactName: string;
 	type: CommunicationType;
 }
 
 export class CommunicationTypeModel {
 	private static _types: IContactType[] = [
-		{ viewTypeValue: 'Email', type: CommunicationType.Email },
-		{ viewTypeValue: 'Рабочий номер', type: CommunicationType.Phone },
-		{ viewTypeValue: 'Telegram', type: CommunicationType.Telegram },
-		{ viewTypeValue: 'Skype', type: CommunicationType.Skype },
-		{ viewTypeValue: 'Twitter', type: CommunicationType.Twitter },
+		{ contactName: 'Email', type: CommunicationType.Email },
+		{ contactName: 'Рабочий номер', type: CommunicationType.Phone },
+		{ contactName: 'Telegram', type: CommunicationType.Telegram },
+		{ contactName: 'Skype', type: CommunicationType.Skype },
+		{ contactName: 'Twitter', type: CommunicationType.Twitter },
 	];
 
 	public static getContactTypeInfoByType(contactType: CommunicationType | undefined): IContactType | undefined {

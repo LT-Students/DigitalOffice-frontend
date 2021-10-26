@@ -7,7 +7,7 @@ import { OperationResultStatusType } from '@data/api/user-service/models/operati
 import { CommunicationService } from '@app/services/user/communication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { EMPTY, iif, throwError } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ConfirmDialogData } from '../../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { AddContactComponent } from './add-contact/add-contact.component';
@@ -22,7 +22,6 @@ import { EditContactComponent } from './edit-contact/edit-contact.component';
 export class CommunicationsComponent implements OnInit {
 	@Input() public mainInfoEditing: boolean;
 	public communications: CommunicationInfo[];
-	public communications$: BehaviorSubject<CommunicationInfo[]>;
 	public employeeId: string;
 	public emailContactCount: number;
 
@@ -34,7 +33,6 @@ export class CommunicationsComponent implements OnInit {
 		private _snackBar: MatSnackBar,
 		private _clipboard: Clipboard
 	) {
-		this.communications$ = new BehaviorSubject<CommunicationInfo[]>([]);
 		this.mainInfoEditing = false;
 		this.communications = [];
 		this.employeeId = '';
@@ -114,11 +112,11 @@ export class CommunicationsComponent implements OnInit {
 					return throwError(err);
 				}),
 				switchMap((confirmResult) => {
-					if (confirmResult) {
-						return this._communicationService.removeCommunication({ communicationId: contact.id ?? '' });
-					} else {
-						return new Observable<null>();
-					}
+					return iif(
+						() => !!confirmResult,
+						this._communicationService.removeCommunication({ communicationId: contact.id ?? '' }),
+						EMPTY
+					);
 				})
 			)
 			.subscribe((result) => {

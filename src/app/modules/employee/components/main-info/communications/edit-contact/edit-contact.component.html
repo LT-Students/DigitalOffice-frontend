@@ -1,10 +1,10 @@
 <h3 mat-dialog-title class="title">Редактирование {{ dialogData.type }}</h3>
 <mat-form-field appearance="fill" class="field" floatLabel="always">
-	<mat-label>{{ viewContactType }}</mat-label>
+	<mat-label>{{ contactName }}</mat-label>
 	<mat-icon matPrefix *ngIf="dialogData.type === 'Telegram' || dialogData.type === 'Twitter'"
 		>alternate_email
 	</mat-icon>
-	<input matInput [formControl]="control" [placeholder]="'Введите' + viewContactType" />
+	<input matInput [formControl]="control" [placeholder]="'Введите' + contactName" />
 	<mat-error *ngIf="control.errors?.['required']">Поле обязательно.</mat-error>
 	<mat-error *ngIf="control.errors?.['email']">Введите корректный email.</mat-error>
 	<mat-error *ngIf="control.errors?.['telegram']"

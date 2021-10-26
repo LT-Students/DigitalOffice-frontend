@@ -22,7 +22,7 @@ export class EditContactComponent {
 	public loading: BehaviorSubject<boolean>;
 	public control: FormControl;
 
-	public viewContactType: string;
+	public contactName: string;
 
 	public symbolsCountMap: { [k: string]: string };
 
@@ -37,8 +37,7 @@ export class EditContactComponent {
 			one: '# символа',
 			other: '# символов',
 		};
-		this.viewContactType =
-			CommunicationTypeModel.getContactTypeInfoByType(this.dialogData.type)?.viewTypeValue ?? '';
+		this.contactName = CommunicationTypeModel.getContactTypeInfoByType(this.dialogData.type)?.contactName ?? '';
 		this.control = this._fb.control(
 			this.dialogData.value,
 			CommunicationTypeModel.getValidatorsByType(this.dialogData.type)

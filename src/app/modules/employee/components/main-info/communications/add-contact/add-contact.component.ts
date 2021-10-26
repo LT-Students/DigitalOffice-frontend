@@ -20,7 +20,7 @@ import { CommunicationTypeModel, IContactType } from '@app/models/communication.
 export class AddContactComponent {
 	public loading: BehaviorSubject<boolean>;
 	public contactTypes: IContactType[];
-	public viewSelectedType: string;
+	public contactName: string;
 
 	public contactForm: FormGroup;
 
@@ -40,8 +40,8 @@ export class AddContactComponent {
 		};
 		this.loading = new BehaviorSubject<boolean>(false);
 		this.contactTypes = CommunicationTypeModel.getAllTypes();
-		this.viewSelectedType =
-			CommunicationTypeModel.getContactTypeInfoByType(this.contactTypes[0].type)?.viewTypeValue ?? '';
+		this.contactName =
+			CommunicationTypeModel.getContactTypeInfoByType(this.contactTypes[0].type)?.contactName ?? '';
 		this.contactForm = this._fb.group({
 			type: this.contactTypes[0].type,
 			value: ['', [Validators.required]],
@@ -51,7 +51,7 @@ export class AddContactComponent {
 	public onTypeChange(type: CommunicationType, event: MatOptionSelectionChange): void {
 		if (event.source.selected) {
 			this._setValueValidators(type);
-			this.viewSelectedType = CommunicationTypeModel.getContactTypeInfoByType(type)?.viewTypeValue ?? '';
+			this.contactName = CommunicationTypeModel.getContactTypeInfoByType(type)?.contactName ?? '';
 		}
 	}
 
