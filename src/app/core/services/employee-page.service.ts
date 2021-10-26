@@ -6,17 +6,22 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { PatchUserDocument } from '@data/api/user-service/models/patch-user-document';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class EmployeePageService {
+export class EmployeePageService implements Resolve<User> {
 	private _selectedUser: ReplaySubject<User>;
 	public readonly selectedUser$: Observable<User>;
 
 	constructor(private _userService: UserService, private _currentUserService: CurrentUserService) {
 		this._selectedUser = new ReplaySubject<User>(1);
 		this.selectedUser$ = this._selectedUser.asObservable();
+	}
+
+	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User> {
+		return this.getEmployee(route.params.id);
 	}
 
 	public getEmployee(userId: string): Observable<User> {

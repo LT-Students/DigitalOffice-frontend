@@ -76,12 +76,21 @@ export class DirectorsTimelistComponent implements OnInit {
 			few: '# сотрудника',
 			other: '# сотрудников',
 		};
+
+		this.statInfo$ = this._route.data.pipe(
+			map((response) => response.timelist),
+			tap((result: FindResultResponseStatInfo) => {
+				this.totalCount.next(result.totalCount ?? 0);
+			}),
+			map(
+				(result: FindResultResponseStatInfo) =>
+					result.body?.map((statInfo: StatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
+			)
+		);
 	}
 
 	ngOnInit() {
-		this._route.params.pipe(tap((p) => (this._departmentId = p.id))).subscribe(() => {
-			this.statInfo$ = this._getStat();
-		});
+		this._route.params.subscribe((p) => (this._departmentId = p.id));
 	}
 
 	public toggleEditMode(editMode: boolean, workTime: EditableWorkTime): void {

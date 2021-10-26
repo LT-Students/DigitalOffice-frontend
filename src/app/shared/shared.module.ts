@@ -5,6 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
+import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
 import { MaterialModule } from './material.module';
 
@@ -50,7 +53,17 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		DateTimePipe,
 		EmptyListComponent,
 	],
-	imports: [CommonModule, RouterModule, FormsModule, ReactiveFormsModule, MaterialModule, InfiniteScrollModule],
+	imports: [
+		CommonModule,
+		RouterModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule,
+		InfiniteScrollModule,
+		LoadingBarHttpClientModule,
+		// LoadingBarRouterModule,
+		LoadingBarModule,
+	],
 	exports: [
 		CommonModule,
 		RouterModule,
