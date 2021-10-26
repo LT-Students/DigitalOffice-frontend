@@ -12,7 +12,6 @@ import { CoreModule } from '@app/core.module';
 import { AppInitService } from '@app/services/app-init.service';
 import { FormsModule } from '@angular/forms';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateModule } from '@angular/material-luxon-adapter';
-import { MatDialogRef } from '@angular/material/dialog';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DoDateAdapter } from '@app/services/do-date-adapter';
 import { DATE_FORMAT } from '@app/configs/date-formats';

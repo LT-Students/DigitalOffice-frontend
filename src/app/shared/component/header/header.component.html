@@ -9,7 +9,7 @@
 	</h4>
 	<a mat-tab-link routerLink="/user/attendance" routerLinkActive="active">Учет времени</a>
 	<a mat-tab-link routerLink="/user/projects-table" routerLinkActive="active">Доска проектов</a>
-	<a mat-tab-link routerLink="/news-feed" routerLinkActive="active">Новости</a>
+	<a mat-tab-link routerLink="/news" routerLinkActive="active">Новости</a>
 	<a *ngIf="currentUser?.isAdmin" mat-tab-link routerLink="/admin/dashboard" routerLinkActive="active"
 		>Администрирование</a
 	>
@@ -25,3 +25,4 @@
 		<button mat-menu-item (click)="onLogoutClick()">Выход</button>
 	</mat-menu>
 </nav>
+<ngx-loading-bar [fixed]="false" color="#FA7D57"></ngx-loading-bar>

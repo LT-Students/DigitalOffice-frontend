@@ -20,6 +20,8 @@ export interface IGetProjectRequest {
 	includeusers?: boolean;
 	shownotactiveusers?: boolean;
 	includefiles?: boolean;
+	includeDescription?: boolean;
+	includeShortDescription?: boolean;
 }
 
 export interface IGetProjectResponse {
@@ -60,22 +62,20 @@ export interface ICreateProjectRequest {
 	users: Array<ICreateUserRequest>;
 }
 
+export interface IFindProjects {
+	skipCount: number;
+	takeCount: number;
+	departmentId?: string;
+}
+
 @Injectable({
 	providedIn: 'root',
 })
 export class ProjectService {
 	constructor(private _projectService: ProjectApiService, private _userService: UserApiService) {}
 
-	public findProjects(
-		skipPages = 0,
-		pageSize = 10,
-		departmentId = undefined
-	): Observable<OperationResultResponse<ProjectInfo[]>> {
-		return this._projectService.findProjects({
-			skipCount: skipPages,
-			takeCount: pageSize,
-			departmentid: departmentId,
-		});
+	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
+		return this._projectService.findProjects(params);
 	}
 
 	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<IGetProjectResponse>> {
