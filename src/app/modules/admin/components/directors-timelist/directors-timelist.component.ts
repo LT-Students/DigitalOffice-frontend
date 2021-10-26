@@ -30,7 +30,7 @@ interface IconedLeaveTimeInfo extends LeaveTimeInfo {
 	periodInHours: number;
 }
 
-export interface MappedStatInfo {
+interface MappedStatInfo {
 	totalHours: number;
 	leaveTimes?: IconedLeaveTimeInfo[];
 	limitInfo?: WorkTimeMonthLimitInfo;
