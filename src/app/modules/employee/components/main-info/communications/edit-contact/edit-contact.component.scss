@@ -1,0 +1,23 @@
+.title {
+	margin-top: 24px;
+
+	text-align: center;
+}
+
+.field {
+	width: 100%;
+}
+
+.controls {
+	margin-top: 36px;
+	margin-bottom: 12px;
+
+	display: flex;
+	justify-content: center;
+
+	&__button {
+		margin: 0 35px;
+
+		width: 180px;
+	}
+}

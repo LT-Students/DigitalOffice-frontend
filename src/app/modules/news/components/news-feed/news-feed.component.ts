@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, OnInit, ChangeDetectionStrategy, HostListener, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, HostListener, Inject, ChangeDetectorRef } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -20,7 +20,7 @@ import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/conf
 	styleUrls: ['./news-feed.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewsFeedComponent implements OnInit {
+export class NewsFeedComponent {
 	public newsFeed$: Observable<ArticlePreview[]>;
 
 	public fixedTags: boolean;
@@ -47,12 +47,8 @@ export class NewsFeedComponent implements OnInit {
 		this.fixedTags = this._document.documentElement.scrollTop >= 100;
 	}
 
-	public ngOnInit(): void {
-		this.getData();
-	}
-
 	public getData(refresh = false): void {
-		this._newsFeedService.getArticlePreviews(refresh);
+		this._newsFeedService.getArticlePreviews(refresh).subscribe();
 	}
 
 	public onMenuOpen(event: MouseEvent): void {
@@ -91,7 +87,7 @@ export class NewsFeedComponent implements OnInit {
 				next: (isNewsFeedUpdated) => {
 					if (isNewsFeedUpdated) {
 						if (newsId) {
-							this._newsFeedService.editNews(newsId);
+							this._newsFeedService.replaceEditedNews(newsId).subscribe();
 						} else {
 							this.getData(true);
 						}
