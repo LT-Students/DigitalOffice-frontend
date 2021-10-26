@@ -12,6 +12,9 @@ import { ArchiveComponent } from './modals/archive/archive.component';
 import { SkillsComponent } from './components/competences/skills/skills.component';
 import { UploadPhotoComponent } from './modals/upload-photo/upload-photo.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
+import { CommunicationsComponent } from './components/main-info/communications/communications.component';
+import { EditContactComponent } from './components/main-info/communications/edit-contact/edit-contact.component';
+import { AddContactComponent } from './components/main-info/communications/add-contact/add-contact.component';
 
 @NgModule({
 	declarations: [
@@ -24,6 +27,9 @@ import { EmployeeRoutingModule } from './employee-routing.module';
 		ArchiveComponent,
 		ProjectsComponent,
 		UploadPhotoComponent,
+		CommunicationsComponent,
+		EditContactComponent,
+		AddContactComponent,
 	],
 	imports: [SharedModule, AdminModule, EmployeeRoutingModule],
 	providers: [],

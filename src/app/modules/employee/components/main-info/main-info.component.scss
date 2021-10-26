@@ -1,4 +1,6 @@
 @use 'base/variables';
+@use 'base/palettes' as *;
+@use '~@angular/material' as mat;
 
 .employee-info {
 	&__wrapper {
@@ -6,7 +8,7 @@
 
 		min-width: 600px;
 
-		grid-template-columns: 25% 41% 31% 3%;
+		grid-template-columns: 30fr 40fr 30fr;
 	}
 
 	&__form {
@@ -14,6 +16,8 @@
 	}
 
 	&__main {
+		margin: 56px 15px 0 47px;
+
 		display: flex;
 		flex-direction: column;
 
@@ -21,38 +25,22 @@
 	}
 
 	&__general {
-		margin-right: 32px;
-		margin-left: 32px;
+		margin: 52px 32px 0 15px;
+	}
+
+	&__general-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 
 	&__additional {
-		display: flex;
+		background-color: mat.get-color-from-palette($do-grey, 50);
 
-		width: 100%;
-
-		.additional__line {
-			margin-right: 70px;
-
-			width: 2px;
-			height: 70%;
-
-			align-self: center;
+		&_editing {
+			grid-row: 1 / 3;
+			grid-column: 3 / 4;
 		}
-
-		.form__column {
-			width: 100%;
-
-			.communications {
-				display: flex;
-				flex-direction: column;
-			}
-		}
-	}
-
-	&__memo {
-		position: absolute;
-		right: 47px;
-		bottom: 42px;
 	}
 
 	&__avatar {
@@ -90,50 +78,8 @@
 		height: 16px;
 	}
 
-	&__form-buttons {
-		position: relative;
-
-		margin-top: 32px;
-
-		display: flex;
-		justify-content: center;
-
-		grid-column: 1 / 4;
-	}
-
-	&__submit {
-		margin-left: 87px;
-
-		width: 185px;
-	}
-
 	&__form-field {
 		display: block;
-	}
-
-	&__working-hours {
-		display: inline-block;
-
-		width: 45%;
-	}
-
-	&__substitute {
-		text-decoration: underline;
-		text-underline-offset: 1px;
-	}
-
-	&__stepper {
-		text-align: center;
-	}
-
-	&__stepper-button {
-		&:disabled {
-			padding: 0;
-
-			min-width: 0;
-
-			background-color: transparent;
-		}
 	}
 
 	&__about {
@@ -145,22 +91,10 @@
 		justify-content: space-between;
 	}
 
-	&__first-column {
-		width: 100%;
-	}
-
 	&__second-column {
 		margin-left: 32px;
 
 		width: 185px;
-	}
-
-	&__border {
-		margin: 50px 50px 0 50px;
-
-		height: 320px;
-
-		border-left: 1px solid variables.$light_3;
 	}
 
 	&__hint {
@@ -175,8 +109,24 @@
 	}
 
 	&__required-block {
-		position: absolute;
-
-		right: 0;
+		margin: 32px 0 0 57px;
 	}
+}
+
+.controls {
+	padding: 32px 0 52px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&__button {
+		margin: 0 35px;
+
+		width: 180px;
+	}
+}
+
+.title {
+	margin: 0;
 }

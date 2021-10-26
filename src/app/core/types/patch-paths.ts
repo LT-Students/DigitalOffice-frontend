@@ -7,7 +7,7 @@ export type UserPath =
 	| '/Gender'
 	| '/DateOfBirth'
 	| '/City'
-	| '/AvatarImage'
+	| '/AvatarFileId'
 	| '/Status'
 	| '/StartWorkingAt'
 	| '/Rate'

@@ -98,9 +98,14 @@ export class UserApiService extends BaseService {
 		includeprojects?: boolean;
 
 		/**
-		 * Include images content in answer.
+		 * Include certificate and achievments images content in answer.
 		 */
 		includeimages?: boolean;
+
+		/**
+		 * Include user images content in answer.
+		 */
+		includeuserimages?: boolean;
 
 		/**
 		 * Include educations info in answer.
@@ -122,6 +127,7 @@ export class UserApiService extends BaseService {
 			rb.query('includeskills', params.includeskills, {});
 			rb.query('includeprojects', params.includeprojects, {});
 			rb.query('includeimages', params.includeimages, {});
+			rb.query('includeuserimages', params.includeuserimages, {});
 			rb.query('includeeducations', params.includeeducations, {});
 		}
 
@@ -210,9 +216,14 @@ export class UserApiService extends BaseService {
 		includeprojects?: boolean;
 
 		/**
-		 * Include images content in answer.
+		 * Include certificate and achievments images content in answer.
 		 */
 		includeimages?: boolean;
+
+		/**
+		 * Include user images content in answer.
+		 */
+		includeuserimages?: boolean;
 
 		/**
 		 * Include educations info in answer.
