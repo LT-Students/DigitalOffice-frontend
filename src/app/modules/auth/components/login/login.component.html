@@ -1,5 +1,4 @@
 <form class="form" [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
-	<h1>{{ portalName | async }}</h1>
 	<span *ngIf="loginError" class="mat-caption warn"> Неверный логин или пароль :( </span>
 	<mat-form-field appearance="standard" class="form__input-field">
 		<input matInput type="email" placeholder="Корпоративный e-mail или логин" formControlName="email" />
