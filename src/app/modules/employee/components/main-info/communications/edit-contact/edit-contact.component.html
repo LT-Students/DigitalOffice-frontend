@@ -8,7 +8,7 @@
 		matInput
 		*ngIf="dialogData.type !== 'Phone'; else phoneInput"
 		[formControl]="control"
-		[placeholder]="'Введите ' + (contactName | lowercase)"
+		[placeholder]="'Введите ' + (contactName | lowercase) + ' в международном формате'"
 	/>
 	<ng-template #phoneInput>
 		<input
@@ -16,8 +16,8 @@
 			[formControl]="control"
 			(paste)="onPhonePaste($event)"
 			(input)="onPhoneInput($event)"
-			(keydown.backspace)="OnPhoneKeyDown($event)"
-			[placeholder]="'Введите ' + (contactName | lowercase)"
+			(keydown.backspace)="OnPhoneKeyDown()"
+			[placeholder]="'Введите номер в международном формате'"
 		/>
 	</ng-template>
 	<mat-error *ngIf="control.errors?.['required']">Поле обязательно.</mat-error>

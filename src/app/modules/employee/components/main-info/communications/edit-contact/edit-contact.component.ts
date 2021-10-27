@@ -49,23 +49,23 @@ export class EditContactComponent {
 		this._matDialogRef.close(result);
 	}
 
-	private _getInputNumbersValue(input: any) {
+	private _getInputNumbersValue(input: FormControl): string {
 		return input.value.replace(/\D/g, '');
 	}
 
-	public onPhoneInput(e: any) {
-		let input = e.target;
-		let inputNumbersValue = this._getInputNumbersValue(input);
+	public onPhoneInput(e: Event): void {
+		let inputNumbersValue: string = this._getInputNumbersValue(this.control);
 		let formattedInputValue = '';
-		let selectionStart = input.selectionStart;
+		let selectionStart: number | null = (e.target as HTMLInputElement).selectionStart;
 
-		if (!inputNumbersValue) {
-			return (input.value = '');
-		}
+		if (!inputNumbersValue) this.control.setValue('');
 
-		if (input.value.length !== selectionStart) {
-			if (e.data && /\D/g.test(e.data)) {
-				input.value = formattedInputValue;
+		if (this.control.value.length !== selectionStart) {
+			if (this.control.value.length > 18) {
+				this.control.setValue(inputNumbersValue);
+			}
+			if (/\D/g.test(this.control.value[this.control.value.length - 1])) {
+				this.control.setValue(formattedInputValue);
 			}
 			return;
 		}
@@ -73,7 +73,8 @@ export class EditContactComponent {
 		if (['7', '8', '9'].includes(inputNumbersValue[0])) {
 			if (inputNumbersValue[0] === '9') inputNumbersValue = '7' + inputNumbersValue;
 			let firstSymbols = '+7';
-			formattedInputValue = input.value = firstSymbols + ' ';
+			formattedInputValue = firstSymbols + ' ';
+			this.control.setValue(firstSymbols + ' ');
 			if (inputNumbersValue.length > 1) {
 				formattedInputValue += '(' + inputNumbersValue.substring(1, 4);
 			}
@@ -89,25 +90,19 @@ export class EditContactComponent {
 		} else {
 			formattedInputValue = '+' + inputNumbersValue.substring(0, 16);
 		}
-		input.value = formattedInputValue;
+		this.control.setValue(formattedInputValue);
 	}
 
-	public OnPhoneKeyDown(e: any) {
-		if (this._getInputNumbersValue(e.target).length === 1) {
-			e.target.value = '';
-		}
+	public OnPhoneKeyDown(): void {
+		if (this._getInputNumbersValue(this.control).length === 1) this.control.setValue('');
 	}
 
-	public onPhonePaste(e: any) {
-		let input = e.target,
-			inputNumbersValue = this._getInputNumbersValue(input);
-		let pasted = e.clipboardData;
+	public onPhonePaste(e: ClipboardEvent): void {
+		let inputNumbersValue: string = this._getInputNumbersValue(this.control);
+		let pasted: DataTransfer | null = e.clipboardData;
 		if (pasted) {
-			let pastedText = pasted.getData('Text');
-			if (/\D/g.test(pastedText)) {
-				input.value = inputNumbersValue;
-				return;
-			}
+			let pastedText: string = pasted.getData('Text');
+			if (/\D/g.test(pastedText)) this.control.setValue(inputNumbersValue);
 		}
 	}
 
