@@ -4,6 +4,7 @@ import { CredentialsApiService } from '@data/api/user-service/services/credentia
 import { ChangePasswordRequest } from '@data/api/user-service/models/change-password-request';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { UUID } from '@app/types/uuid.type';
 
 export interface IForgotPasswordRequest {
 	userEmail: string;
@@ -29,5 +30,9 @@ export class CredentialsService {
 
 	public forgotPassword(params: IForgotPasswordRequest): Observable<OperationResultResponse<{} | null>> {
 		return this._credentialsService.forgotPassword(params);
+	}
+
+	public checkPendingCredentials(userId: UUID): Observable<OperationResultResponse<{} | null>> {
+		return this._credentialsService.checkPendingCredentials({ userid: userId });
 	}
 }

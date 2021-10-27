@@ -531,6 +531,39 @@
         }
       }
     },
+    "/credentials/checkpending": {
+      "parameters": [
+        {
+          "name": "userid",
+          "in": "query",
+          "description": "Unique user identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Credentials"
+        ],
+        "operationId": "checkPendingCredentials",
+        "description": "This endpoint must be used only for user first time login operation.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/password/generate": {
       "parameters": [
         {
@@ -1335,6 +1368,7 @@
               }
             }
           }
+
         }
       }
     },
@@ -1841,6 +1875,7 @@
             }
           }
         }
+
       },
       "CreateUserRequest": {
         "type": "object",

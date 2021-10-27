@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from '@app/guards/auth.guard';
+import { SignupGuard } from '@app/guards/signup.guard';
 import { RouteType } from '../../app-routing.module';
 import { LoginComponent } from './components/login/login.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
@@ -21,7 +22,7 @@ const authRoutes: Routes = [
 			},
 			{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
 			{ path: 'forgotpassword', component: ForgotPasswordComponent },
-			{ path: 'reset', component: ResetPasswordComponent },
+			{ path: 'reset', component: ResetPasswordComponent, canActivate: [SignupGuard] },
 			{ path: 'firstlogin', component: SignupComponent },
 		],
 	},
