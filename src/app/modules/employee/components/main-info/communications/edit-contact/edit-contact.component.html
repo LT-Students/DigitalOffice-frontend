@@ -8,7 +8,7 @@
 		matInput
 		*ngIf="dialogData.type !== 'Phone'; else phoneInput"
 		[formControl]="control"
-		[placeholder]="'Введите ' + (contactName | lowercase) + ' в международном формате'"
+		[placeholder]="'Введите ' + (contactName | lowercase)"
 	/>
 	<ng-template #phoneInput>
 		<input

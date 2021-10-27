@@ -49,12 +49,12 @@ export class EditContactComponent {
 		this._matDialogRef.close(result);
 	}
 
-	private _getInputNumbersValue(input: FormControl): string {
-		return input.value.replace(/\D/g, '');
+	private _getInputNumbersValue(): string {
+		return this.control.value.replace(/\D/g, '');
 	}
 
 	public onPhoneInput(e: Event): void {
-		let inputNumbersValue: string = this._getInputNumbersValue(this.control);
+		let inputNumbersValue: string = this._getInputNumbersValue();
 		let formattedInputValue = '';
 		let selectionStart: number | null = (e.target as HTMLInputElement).selectionStart;
 
@@ -72,7 +72,7 @@ export class EditContactComponent {
 
 		if (['7', '8', '9'].includes(inputNumbersValue[0])) {
 			if (inputNumbersValue[0] === '9') inputNumbersValue = '7' + inputNumbersValue;
-			let firstSymbols = '+7';
+			const firstSymbols = '+7';
 			formattedInputValue = firstSymbols + ' ';
 			this.control.setValue(firstSymbols + ' ');
 			if (inputNumbersValue.length > 1) {
@@ -94,15 +94,14 @@ export class EditContactComponent {
 	}
 
 	public OnPhoneKeyDown(): void {
-		if (this._getInputNumbersValue(this.control).length === 1) this.control.setValue('');
+		if (this._getInputNumbersValue().length === 1) this.control.setValue('');
 	}
 
 	public onPhonePaste(e: ClipboardEvent): void {
-		let inputNumbersValue: string = this._getInputNumbersValue(this.control);
-		let pasted: DataTransfer | null = e.clipboardData;
-		if (pasted) {
-			let pastedText: string = pasted.getData('Text');
-			if (/\D/g.test(pastedText)) this.control.setValue(inputNumbersValue);
+		const inputNumbersValue: string = this._getInputNumbersValue();
+		const pasted: DataTransfer | null = e.clipboardData;
+		if (pasted && /\D/g.test(pasted?.getData('text') ?? '')) {
+			this.control.setValue(inputNumbersValue);
 		}
 	}
 
