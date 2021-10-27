@@ -1,13 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
-import { catchError, finalize, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { CurrentCompanyService } from '@app/services/current-company.service';
 
 @Component({
 	selector: 'do-signup',
@@ -15,9 +14,7 @@ import { CurrentCompanyService } from '@app/services/current-company.service';
 	styleUrls: ['./signup.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignupComponent implements OnInit {
-	public portalName: Observable<string>;
-	public userId: string;
+export class SignupComponent {
 	public loginForm: FormGroup;
 	public isWaiting: BehaviorSubject<boolean>;
 	public get login() {
@@ -31,39 +28,35 @@ export class SignupComponent implements OnInit {
 	constructor(
 		private _authService: AuthService,
 		private _currentUserService: CurrentUserService,
-		private _currentCompanyService: CurrentCompanyService,
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private _fb: FormBuilder
 	) {
 		this.isWaiting = new BehaviorSubject<boolean>(false);
-		this.portalName = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
-		this.userId = '';
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
 			password: ['', Validators.required],
 		});
 	}
 
-	ngOnInit(): void {
-		this._activatedRoute.queryParams.subscribe((params: Params) => {
-			console.log(params);
-			this.userId = params['userId'];
-		});
-	}
-
 	public signUp(): void {
 		this.isWaiting.next(true);
-		const { login, password } = this.loginForm.getRawValue();
-		const createCredentialsRequest: CreateCredentialsRequest = { login, password, userId: this.userId };
-
-		this._authService
-			.signUp$(createCredentialsRequest)
+		this._activatedRoute.queryParams
 			.pipe(
+				switchMap((params: Params) => {
+					const { login, password } = this.loginForm.getRawValue();
+					const createCredentialsRequest: CreateCredentialsRequest = {
+						login,
+						password,
+						userId: params['userId'],
+					};
+
+					return this._authService.signUp$(createCredentialsRequest);
+				}),
 				switchMap(({ body: credentialResponse }) =>
 					this._currentUserService.getUserOnLogin(credentialResponse?.userId)
 				),
-				tap(this._currentUserService.setUser),
+				tap((user) => this._currentUserService.setUser(user)),
 				catchError((error: string) => {
 					console.log(error);
 					this.loginForm.setErrors({
@@ -79,7 +72,6 @@ export class SignupComponent implements OnInit {
 			.subscribe({
 				next: (user: User) => {
 					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : '/user/attendance';
-					console.log(user.getFullName);
 					this._router.navigate([nextUrl]);
 				},
 			});
