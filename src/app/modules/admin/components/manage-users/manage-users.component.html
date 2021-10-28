@@ -6,6 +6,36 @@
 		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
 		<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 	</div>
+	<div class="filters">
+		<mat-form-field class="filters__mat-form-elem-one" appearance="fill">
+			<mat-label>Search</mat-label>
+			<input matInput type="text" maxlength="150" placeholder="Поиск по фамилии и имени" />
+		</mat-form-field>
+
+		<mat-form-field class="filters__mat-form-elem-two" appearance="fill">
+			<mat-label>Выберите должность</mat-label>
+			<mat-select>
+				<mat-option value="one">Должность 1</mat-option>
+				<mat-option value="two">Должность 2</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field class="filters__mat-form-elem-three" appearance="fill">
+			<mat-label>Выберите департамент</mat-label>
+			<mat-select>
+				<mat-option value="one">Департамент 1</mat-option>
+				<mat-option value="two">Департамент 2</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<mat-form-field class="filters__mat-form-elem-four" appearance="fill">
+			<mat-label>Статус</mat-label>
+			<mat-select>
+				<mat-option value="one">Активные</mat-option>
+				<mat-option value="two">Все</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
 	<table *ngIf="totalCount > 0; else emptyList" class="table" matSort (matSortChange)="sortData($event)">
 		<colgroup>
 			<col class="column column_width_little" />
