@@ -22,7 +22,15 @@
 			alternate_email
 		</mat-icon>
 		<mat-label>{{ contactForm.controls['type'].value }}</mat-label>
-		<input matInput formControlName="value" [placeholder]="'Введите новый ' + contactName" />
+		<input
+			matInput
+			formControlName="value"
+			*ngIf="contactForm.controls['type'].value !== 'Phone'; else phoneInput"
+			[placeholder]="'Введите новый ' + contactName"
+		/>
+		<ng-template #phoneInput>
+			<do-phone-input formControlName="value"></do-phone-input>
+		</ng-template>
 		<mat-error *ngIf="contactForm.controls['value']?.errors?.['required']">Поле обязательно.</mat-error>
 		<mat-error *ngIf="contactForm.controls['value']?.errors?.['email']">Введите корректный email.</mat-error>
 		<mat-error *ngIf="contactForm.controls['value']?.errors?.['telegram']"
