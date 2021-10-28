@@ -6,7 +6,6 @@ import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
-import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
 import { MaterialModule } from './material.module';
@@ -28,6 +27,7 @@ import { TitleDatepickerComponent } from './component/title-datepicker/title-dat
 import { DateTimePipe } from './pipes/date-time';
 import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
+import { PhoneInputComponent } from './component/phone-input/phone-input.component';
 
 @NgModule({
 	declarations: [
@@ -52,6 +52,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		AddEmployeeComponent,
 		DateTimePipe,
 		EmptyListComponent,
+		PhoneInputComponent,
 	],
 	imports: [
 		CommonModule,
@@ -61,7 +62,6 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		MaterialModule,
 		InfiniteScrollModule,
 		LoadingBarHttpClientModule,
-		// LoadingBarRouterModule,
 		LoadingBarModule,
 	],
 	exports: [
@@ -90,6 +90,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		DateTimePipe,
 		AddEmployeeComponent,
 		EmptyListComponent,
+		PhoneInputComponent,
 	],
 })
 export class SharedModule {}

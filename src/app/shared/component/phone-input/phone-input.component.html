@@ -1,0 +1,8 @@
+<input
+	matInput
+	[formControl]="control"
+	(paste)="onPhonePaste($event)"
+	(input)="onPhoneInput($event)"
+	(keydown.backspace)="OnPhoneKeyDown()"
+	[placeholder]="'Введите номер в международном формате'"
+/>
