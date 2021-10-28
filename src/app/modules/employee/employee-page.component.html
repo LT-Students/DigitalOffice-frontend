@@ -1,18 +1,36 @@
-<!--<div class="employee-page__header flex">-->
-<!--    <do-breadcrumbs [paths]="paths"></do-breadcrumbs>-->
-<!--    <div class="employee-page__button flex" doText color="gray1" (click)="onOpenDialog()">-->
-<!--        <ng-container *ngIf="user?.isAdmin">-->
-<!--            <mat-icon>archive</mat-icon>-->
-<!--            <span class="employee-page__button-label">Добавить в архив</span>-->
-<!--        </ng-container>-->
-<!--        <ng-container *ngIf="!user?.isAdmin && isOwner">-->
-<!--            <mat-icon>live_help</mat-icon>-->
-<!--            <span class="employee-page__button-label">Запрос администратору</span>-->
-<!--        </ng-container>-->
-<!--    </div>-->
-<!--</div>-->
-<mat-card class="card card_employee">
-    <do-employee-page-main-info></do-employee-page-main-info>
+<div class="employee-page__header flex">
+	<do-breadcrumbs
+		[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление сотрудниками' }]"
+	></do-breadcrumbs>
+	<ng-container *ngIf="userLogged$ | async">
+		<div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__button flex">
+			<!--        <ng-container *ngIf='selectedUser.id as userId'>-->
+			<div *ngIf="selectedUser?.isActive; else restore">
+				<div (click)="onDeleteEmployeeClick(selectedUser.id)">
+					<mat-icon>archive</mat-icon>
+					<span class="employee-page__button-label">{{
+						selectedUser?.isActive ? 'Добавить в архив' : 'Восстановить'
+					}}</span>
+				</div>
+			</div>
+			<ng-template #restore>
+				<div (click)="onRestoreEmployeeClick(selectedUser.id)">
+					<mat-icon>restore_from_trash</mat-icon>
+					<span class="employee-page__button-label">{{
+						!selectedUser?.isActive ? 'Восстановить' : 'Добавить в архив'
+					}}</span>
+				</div>
+			</ng-template>
+			<!--        </ng-container>-->
+		</div>
+	</ng-container>
+	<!--        <ng-container *ngIf="!user?.isAdmin && isOwner">-->
+	<!--            <mat-icon>live_help</mat-icon>-->
+	<!--            <span class="employee-page__button-label">Запрос администратору</span>-->
+	<!--        </ng-container>-->
+</div>
+<mat-card class="card card_employee card_employee__info">
+	<do-employee-page-main-info></do-employee-page-main-info>
 </mat-card>
 <!--<div class="card card_employee" *ngIf='user'>-->
 <!--    <do-employee-page-competences-->
@@ -20,6 +38,6 @@
 <!--        [studyTypes]="studyTypes"-->
 <!--    ></do-employee-page-competences>-->
 <!--</div>-->
-<mat-card class="card card_employee">
-    <do-employee-page-projects></do-employee-page-projects>
+<mat-card class="card card_employee card_employee__projects">
+	<do-employee-page-projects></do-employee-page-projects>
 </mat-card>
