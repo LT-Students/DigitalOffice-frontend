@@ -26,7 +26,7 @@
 						<p>{{ status.name | titlecase }}</p>
 						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
 						<p>{{ projectDuration | i18nPlural: dayCountMap }}</p>
-						<p>{{ projectUsers?.length | i18nPlural: participantCountMap }}</p>
+						<p>{{ dataSource.data?.length | i18nPlural: participantCountMap }}</p>
 					</div>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 			</div>
 		</div>
 	</div>
-	<div *ngIf="projectUsers.length > 0; else emptyList" class="table-wrapper">
+	<div *ngIf="dataSource.data.length > 0; else emptyList" class="table-wrapper">
 		<mat-tab-group>
 			<mat-tab #team>
 				<ng-template mat-tab-label>

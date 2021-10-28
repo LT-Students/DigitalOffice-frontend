@@ -6,15 +6,13 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY, Observable, Subject, BehaviorSubject, ReplaySubject, pipe, Subscription, observable } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
-import { filter, map, publishBehavior, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { filter, map, publishBehavior, switchMap, takeUntil, tap, skip } from 'rxjs/operators';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { ModalService } from '@app/services/modal.service';
 import { IUserGender } from '@app/models/user/personal-info-manager';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
-import { objectKeys } from 'codelyzer/util/objectKeys';
 import { NewEmployeeComponent } from '../admin/modals/new-employee/new-employee.component';
 import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
 import { ArchiveComponent } from './modals/archive/archive.component';
@@ -82,11 +80,14 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-		//this.isOwner = this.userId === this.pageId;
-		this.selectedUser$ = this._route.paramMap.pipe(
-			takeUntil(this._unsubscribe$),
-			switchMap((params: ParamMap) => this._employeeService.getEmployee(params.get('id') as string))
-		);
+		// this.isOwner = user.id === this.pageId;
+		this.selectedUser$ = this._paramMap.params
+			.pipe(
+				skip(1),
+				takeUntil(this._unsubscribe$),
+				switchMap((params: ParamMap) => this._employeeService.getEmployee(params.get('id') as string))
+			)
+			.subscribe();
 	}
 
 	public onDeleteEmployeeClick(userId: string | undefined): void {

@@ -1,11 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 import { RoleInfo } from '@data/api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
 import { PageEvent } from '@angular/material/paginator';
 import { ModalService } from '@app/services/modal.service';
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { iif, Observable, ReplaySubject } from 'rxjs';
+import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { IFindRequest } from '@app/types/find-request.interface';
+import { ActivatedRoute } from '@angular/router';
 import { NewRoleComponent } from '../../modals/new-role/new-role.component';
 
 @Component({
@@ -15,45 +18,43 @@ import { NewRoleComponent } from '../../modals/new-role/new-role.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageRolesComponent {
-	public roles$: Observable<RoleInfo[]>;
+	private _rolesParams: ReplaySubject<IFindRequest>;
+	public roles$: Observable<OperationResultResponse<RoleInfo[]>>;
 
-	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
-
-	constructor(private _modalService: ModalService, private _rightsService: RightsService) {
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-		this.roles$ = this._getRoleList();
+	constructor(
+		private _modalService: ModalService,
+		private _rightsService: RightsService,
+		private _route: ActivatedRoute
+	) {
+		this._rolesParams = new ReplaySubject<IFindRequest>(1);
+		this.roles$ = this._rolesParams.pipe(
+			startWith(null),
+			switchMap((params: IFindRequest | null) =>
+				iif(
+					() => !!params,
+					this._rightsService.findRoles(params as IFindRequest),
+					this._route.data.pipe(map((response) => response.roles))
+				)
+			)
+		);
 	}
 
 	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getRoleList();
+		this._rolesParams.next({
+			skipCount: event.pageIndex * event.pageSize,
+			takeCount: event.pageSize,
+		});
 	}
 
 	public onAddRoleClick(): void {
 		this._modalService
 			.openModal<NewRoleComponent, null, any>(NewRoleComponent)
 			.afterClosed()
-			.subscribe((result) => {
-				console.log('RES: ', result?.status);
+			.pipe(withLatestFrom(this._rolesParams))
+			.subscribe(([result, params]) => {
 				if (result?.status === 0) {
-					this.roles$ = this._getRoleList();
+					this._rolesParams.next(params);
 				}
 			});
-	}
-
-	private _getRoleList(): Observable<RoleInfo[]> {
-		return this._rightsService
-			.findRoles({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
-			.pipe(
-				tap((res) => {
-					this.totalCount = res.totalCount ?? 0;
-				}),
-				map((res) => res.body ?? [])
-			);
 	}
 }
