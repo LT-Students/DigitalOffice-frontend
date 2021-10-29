@@ -17,7 +17,13 @@
 					<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
 				</div>
 				<div class="employee-info__general">
-					<h4>Общие сведения</h4>
+					<div class="employee-info__general-header">
+						<h4 class="title">Общие сведения</h4>
+						<button mat-icon-button (click)="toggleEditMode()">
+							<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+						</button>
+					</div>
+
 					<div class="employee-info__columns">
 						<div class="employee-info__first-column">
 							<div *ngIf="user?.position">
@@ -62,23 +68,7 @@
 					</div>
 				</div>
 				<div class="employee-info__additional">
-					<mat-divider class="additional__line" vertical></mat-divider>
-					<div class="form__column">
-						<h4>Контакты</h4>
-						<div class="employee-info__columns">
-							<div>
-								<div *ngFor="let communication of user?.communications">
-									<p class="mat-caption">{{ communication.type }}</p>
-									<p>{{ communication.value }}</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="employee-info__edit-button">
-					<button type="button" mat-icon-button aria-label="Edit employee info" (click)="toggleEditMode()">
-						<img src="../../../../../assets/svg/edit.svg" alt="Edit" />
-					</button>
+					<do-communications></do-communications>
 				</div>
 			</div>
 		</ng-container>
@@ -120,7 +110,7 @@
 <ng-template #stepper [formGroup]="employeeInfoForm">
 	<mat-form-field appearance="fill">
 		<mat-label>Ставка</mat-label>
-		<do-stepper [step]="0.25" [max]="1" [min]="0.25" formControlName="rate" required></do-stepper>
+		<do-stepper [step]="0.25" [max]="1" [min]="0.25" formControlName="/Rate" required></do-stepper>
 	</mat-form-field>
 </ng-template>
 
@@ -142,10 +132,6 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<!--    <ng-container *ngIf="isEditing && employeeInfoForm.get('status')?.value === userStatus.Vacation">-->
-	<!--        <label class='small_text text-gray'>Замещает: </label>-->
-	<!--        <span class='small_text text-gray employee-info__substitute'>Назначить замещающего</span>-->
-	<!--    </ng-container>-->
 </ng-template>
 
 <ng-template #editForm>
@@ -178,7 +164,7 @@
 				<div class="employee-info__columns">
 					<div class="employee-info__first-column">
 						<mat-form-field class="employee-info__form-field" appearance="fill">
-							<mat-label> Должность </mat-label>
+							<mat-label> Должность</mat-label>
 							<mat-select formControlName="/PositionId" required>
 								<mat-option *ngFor="let position of positions$ | async" [value]="position.id">
 									{{ position.name }}
@@ -186,7 +172,7 @@
 							</mat-select>
 						</mat-form-field>
 						<mat-form-field class="employee-info__form-field" appearance="fill">
-							<mat-label> Департамент </mat-label>
+							<mat-label> Департамент</mat-label>
 							<mat-select formControlName="/DepartmentId">
 								<mat-option *ngFor="let department of departments$ | async" [value]="department.id">
 									{{ department.name }}
@@ -198,7 +184,7 @@
 							<input matInput formControlName="/City" />
 						</mat-form-field>
 						<mat-form-field class="employee-info__form-field" appearance="fill">
-							<mat-label>Офис </mat-label>
+							<mat-label>Офис</mat-label>
 							<mat-select formControlName="/OfficeId" required>
 								<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
 									{{ office.city }}, {{ office.address }}
@@ -215,7 +201,7 @@
 							</ng-container>
 						</ng-container>
 						<mat-form-field class="employee-info__form-field" appearance="fill">
-							<mat-label>Пол </mat-label>
+							<mat-label>Пол</mat-label>
 							<mat-select formControlName="/Gender">
 								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
 									{{ gender.genderInRussian }}
@@ -223,7 +209,7 @@
 							</mat-select>
 						</mat-form-field>
 						<mat-form-field class="employee-info__form-field" appearance="fill">
-							<mat-label> Роль </mat-label>
+							<mat-label> Роль</mat-label>
 							<mat-select formControlName="/RoleId">
 								<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
 									{{ role.localizations?.[0]?.name }}
@@ -259,34 +245,24 @@
 					</div>
 				</div>
 			</div>
-			<div class="employee-info__additional">
-				<mat-divider class="additional__line" vertical></mat-divider>
-				<div class="form__column">
-					<h4>Контакты</h4>
-					<div class="employee-info__columns">
-						<div>
-							<div *ngFor="let communication of user?.communications">
-								<p>{{ communication.type }}</p>
-								<p>{{ communication.value }}</p>
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="employee-info__additional employee-info__additional_editing">
+				<do-communications [mainInfoEditing]="true"></do-communications>
 			</div>
-			<div class="employee-info__form-buttons">
-				<button type="button" mat-button (click)="onReset()">Отменить</button>
+			<div class="employee-info__required-block">
+				<span class="warn"> <sup>*</sup>&nbsp;Обязательное поле</span>
+			</div>
+			<div class="controls">
+				<button type="button" mat-button (click)="onReset()" class="controls__button">Отменить</button>
 				<button
 					[disabled]="employeeInfoForm.invalid"
+					[loading]="(loading | async) ?? false"
 					type="submit"
 					color="primary"
-					class="employee-info__submit"
+					class="controls__button"
 					mat-flat-button
 				>
 					Сохранить
 				</button>
-				<div class="employee-info__required-block">
-					<span class="warn"> <sup>*</sup>&nbsp;Обязательное поле</span>
-				</div>
 			</div>
 		</div>
 	</form>

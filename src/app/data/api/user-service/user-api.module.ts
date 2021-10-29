@@ -9,8 +9,9 @@ import { CredentialsApiService } from './services/credentials-api.service';
 import { EducationApiService } from './services/education-api.service';
 import { CertificateApiService } from './services/certificate-api.service';
 import { CommunicationApiService } from './services/communication-api.service';
-import { AvatarApiService } from './services/avatar-api.service';
+import { ImageApiService } from './services/image-api.service';
 import { SkillApiService } from './services/skill-api.service';
+import { AchievementApiService } from './services/achievement-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -25,8 +26,9 @@ import { SkillApiService } from './services/skill-api.service';
 		EducationApiService,
 		CertificateApiService,
 		CommunicationApiService,
-		AvatarApiService,
+		ImageApiService,
 		SkillApiService,
+		AchievementApiService,
 		ApiConfiguration,
 	],
 })

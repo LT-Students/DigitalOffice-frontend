@@ -1,7 +1,13 @@
 .card_employee {
 	margin-bottom: 45px;
 
-	padding: 52px 47px;
+	&__info {
+		padding: 0;
+	}
+
+	&__projects {
+		padding: 52px 47px;
+	}
 }
 
 .card_employee:last-child {

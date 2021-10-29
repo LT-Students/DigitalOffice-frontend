@@ -114,6 +114,90 @@
 		[pageSizeOptions]="[10, 25, 50]"
 		(page)="onPageChange($event)"
 	></mat-paginator>
+	<ng-container *ngIf="users$ | async as users">
+		<table
+			*ngIf="users.totalCount ?? 0 > 0; else emptyList"
+			class="table"
+			matSort
+			(matSortChange)="sortData($event)"
+		>
+			<colgroup>
+				<col class="column column_width_little" />
+				<!-- <col class='column column_width_sm'>
+                <col class='column column_width_sm'>
+                <col class='column column_width_m'>
+                <col class='column column_width_sm'>
+                <col class='column column_width_t'>
+                <col class='column column_width_t'> -->
+			</colgroup>
+			<thead>
+				<tr class="row">
+					<th class="cell heading"></th>
+					<th class="cell heading" mat-sort-header="name">
+						<p class="heading__content">Имя</p>
+					</th>
+					<th class="cell heading" mat-sort-header="department">
+						<p class="heading__content">Департамент</p>
+					</th>
+					<th class="cell heading" mat-sort-header="role">
+						<p class="heading__content">Роль</p>
+					</th>
+					<th class="cell heading" mat-sort-header="rate">
+						<p class="heading__content">Ставка</p>
+					</th>
+					<th class="cell heading" mat-sort-header="status">
+						<p class="heading__content">Статус</p>
+					</th>
+					<th class="cell heading"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="row row_activable" *ngFor="let user of users.body" routerLink="/user/{{ user?.id }}">
+					<td class="cell cell_vertical-middle">
+						<do-profile-image [image]="user?.avatar"></do-profile-image>
+					</td>
+					<td class="cell cell_vertical-middle">
+						<p>{{ user?.firstName }} {{ user?.lastName }}</p>
+						<p>{{ user?.position?.name }}</p>
+					</td>
+					<td class="cell cell_vertical-middle">
+						<ng-container *ngIf="user?.department?.name; else empty">
+							<p>{{ user?.department?.name }}</p>
+						</ng-container>
+					</td>
+					<td class="cell cell_vertical-middle">
+						<ng-container *ngIf="user?.role?.name; else empty">
+							<p class="cell__content_breakable">{{ user?.role?.name }}</p>
+						</ng-container>
+					</td>
+					<td class="cell">
+						<p>{{ user?.rate }}</p>
+					</td>
+					<td class="cell cell_vertical-middle">
+						<ng-container *ngIf="user?.isActive; else archived">
+							<p class="user-status">Активен</p>
+						</ng-container>
+						<ng-template #archived>
+							<p class="user-status user-status_archived">В архиве</p>
+						</ng-template>
+					</td>
+					<td class="cell table__delete-button cell_vertical-middle">
+						<button mat-mini-fab color="primary" (click)="toggleUserStatus(user, $event)">
+							<mat-icon>{{ user.isActive ? 'delete' : 'unarchive' }}</mat-icon>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-template #emptyList>
+			<do-empty-list [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
+		</ng-template>
+		<mat-paginator
+			[length]="users.totalCount ?? 0"
+			[pageSizeOptions]="[10, 25, 50]"
+			(page)="onPageChange($event)"
+		></mat-paginator>
+	</ng-container>
 </mat-card>
 
 <ng-template #empty>

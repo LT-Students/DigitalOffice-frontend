@@ -7,7 +7,7 @@ import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { PatchUserDocument, UserGender } from '@data/api/user-service/models';
 import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,7 +17,7 @@ import { OfficeInfo } from '@data/api/company-service/models/office-info';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { RightsService } from '@app/services/rights/rights.service';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { PatchRequest, UserPath } from '@app/types/patch-paths';
@@ -31,6 +31,8 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainInfoComponent implements OnInit, OnDestroy {
+	public loading: BehaviorSubject<boolean>;
+
 	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
 	public employeeInfoForm: FormGroup;
@@ -57,6 +59,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		private _roleService: RightsService,
 		private _cdr: ChangeDetectorRef
 	) {
+		this.loading = new BehaviorSubject<boolean>(false);
 		this._initialData = {};
 		this.genders = PersonalInfoManager.getGenderList();
 		this.statuses = UserStatusModel.getAllStatuses();
@@ -109,7 +112,6 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 
 	public onSubmit(): void {
 		this._editUser();
-		this.toggleEditMode();
 	}
 
 	public onReset(): void {
@@ -134,12 +136,13 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 				this.employeeInfoForm.patchValue({
 					photo: result,
 				});
-				this.employeeInfoForm.get('/AvatarImage')?.markAsDirty();
+				this.employeeInfoForm.get('/AvatarFileId')?.markAsDirty();
 			}
 		});
 	}
 
 	private _editUser(): void {
+		this.loading.next(true);
 		const editRequest = (Object.keys(this.employeeInfoForm.controls) as UserPath[]).reduce(
 			(acc: PatchUserDocument[], key) => {
 				const formValue = this.employeeInfoForm.get(key)?.value;
@@ -159,15 +162,23 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			[]
 		);
 
-		this._employeeService.editEmployee(editRequest).subscribe({
-			next: () => {
-				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
-			},
-			error: (error: HttpErrorResponse) => {
-				console.log(error);
-				this._snackBar.open(error.message, 'Close', { duration: 5000 });
-			},
-		});
+		this._employeeService
+			.editEmployee(editRequest)
+			.pipe(
+				finalize(() => {
+					this.loading.next(false);
+				})
+			)
+			.subscribe({
+				next: () => {
+					this.toggleEditMode();
+					this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
+				},
+				error: (error: HttpErrorResponse) => {
+					console.log(error);
+					this._snackBar.open(error.message, 'Close', { duration: 5000 });
+				},
+			});
 	}
 
 	private _fillForm(): void {
@@ -176,7 +187,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 				'/FirstName': this.user.firstName,
 				'/LastName': this.user.lastName,
 				'/MiddleName': this.user.middleName,
-				'/AvatarImage': this.user.avatarImage,
+				'/AvatarFileId': this.user.avatarImage?.id,
 				'/Status': this.user.statusEmoji?.statusType,
 				'/About': this.user.about,
 				'/PositionId': this.user.position?.id,
@@ -198,7 +209,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			'/FirstName': ['', Validators.required],
 			'/LastName': ['', Validators.required],
 			'/MiddleName': [''],
-			'/AvatarImage': [''],
+			'/AvatarFileId': [''],
 			'/Status': [null],
 			'/About': [''],
 			'/PositionId': ['', Validators.required],

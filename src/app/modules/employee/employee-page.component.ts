@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { skip, switchMap, takeUntil } from 'rxjs/operators';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { ArchiveComponent } from './modals/archive/archive.component';
 import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
@@ -56,6 +56,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		// this.isOwner = user.id === this.pageId;
 		this._route.params
 			.pipe(
+				skip(1),
 				takeUntil(this._unsubscribe$),
 				switchMap((params) => this._employeeService.getEmployee(params.id))
 			)
