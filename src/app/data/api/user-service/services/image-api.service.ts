@@ -9,7 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { AddImagesRequest } from '../models/add-images-request';
+import { CreateImageRequest } from '../models/create-image-request';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { RemoveImagesRequest } from '../models/remove-images-request';
 
@@ -22,20 +22,22 @@ export class ImageApiService extends BaseService {
 	}
 
 	/**
-	 * Path part for operation addImages
+	 * Path part for operation createImage
 	 */
-	static readonly AddImagesPath = '/image/add';
+	static readonly CreateImagePath = '/image/create';
 
 	/**
 	 * The method attempts to add image to user/certificate/education. The user must have the rights to add images to other users - Add/Edit/Remove users.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `addImages()` instead.
+	 * To access only the response body, use `createImage()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	addImages$Response(params: { body: AddImagesRequest }): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, ImageApiService.AddImagesPath, 'post');
+	createImage$Response(params: {
+		body: CreateImageRequest;
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, ImageApiService.CreateImagePath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
@@ -59,12 +61,12 @@ export class ImageApiService extends BaseService {
 	 * The method attempts to add image to user/certificate/education. The user must have the rights to add images to other users - Add/Edit/Remove users.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `addImages$Response()` instead.
+	 * To access the full response (for headers, for example), `createImage$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	addImages(params: { body: AddImagesRequest }): Observable<OperationResultResponse> {
-		return this.addImages$Response(params).pipe(
+	createImage(params: { body: CreateImageRequest }): Observable<OperationResultResponse> {
+		return this.createImage$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}
@@ -170,6 +172,58 @@ export class ImageApiService extends BaseService {
 	 */
 	removeImages(params: { body: RemoveImagesRequest }): Observable<OperationResultResponse> {
 		return this.removeImages$Response(params).pipe(
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
+
+	/**
+	 * Path part for operation changeAvatar
+	 */
+	static readonly ChangeAvatarPath = '/image/editavatar';
+
+	/**
+	 * This method is used to change user's avatar
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `changeAvatar()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	changeAvatar$Response(params: {
+		userId: string;
+		imageId: string;
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, ImageApiService.ChangeAvatarPath, 'get');
+		if (params) {
+			rb.query('userId', params.userId, {});
+			rb.query('imageId', params.imageId, {});
+		}
+
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponse>;
+				})
+			);
+	}
+
+	/**
+	 * This method is used to change user's avatar
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `changeAvatar$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	changeAvatar(params: { userId: string; imageId: string }): Observable<OperationResultResponse> {
+		return this.changeAvatar$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}

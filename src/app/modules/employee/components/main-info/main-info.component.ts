@@ -124,13 +124,13 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 	}
 
 	public changeWorkingRate(step: number) {
-		const currentValue = this.employeeInfoForm.get('/Rate')?.value;
-		const rate = +currentValue + step;
-		this.employeeInfoForm.patchValue({ '/Rate': rate });
-
-		if (this.employeeInfoForm.get('/Rate')?.pristine) {
-			this.employeeInfoForm.get('/Rate')?.markAsDirty();
-		}
+		// const currentValue = this.employeeInfoForm.get('/Rate')?.value;
+		// const rate = +currentValue + step;
+		// this.employeeInfoForm.patchValue({ '/Rate': rate });
+		//
+		// if (this.employeeInfoForm.get('/Rate')?.pristine) {
+		// 	this.employeeInfoForm.get('/Rate')?.markAsDirty();
+		// }
 	}
 
 	public onOpenDialog(): void {
@@ -194,11 +194,11 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 				'/AvatarFileId': this.user.avatarImage?.id,
 				'/Status': this.user.statusEmoji?.statusType,
 				'/About': this.user.about,
-				'/PositionId': this.user.position?.id,
-				'/DepartmentId': this.user.department?.id,
+				// '/PositionId': this.user.position?.id,
+				// '/DepartmentId': this.user.department?.id,
 				'/OfficeId': this.user.office?.id,
 				'/RoleId': this.user.role?.id,
-				'/Rate': this.user.rate,
+				// '/Rate': this.user.rate,
 				'/City': this.user.city,
 				'/Gender': this.user.gender?.genderType,
 				'/DateOfBirth': this.user.dateOfBirth,
@@ -216,11 +216,11 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			'/AvatarFileId': [''],
 			'/Status': [null],
 			'/About': [''],
-			'/PositionId': ['', Validators.required],
-			'/DepartmentId': [''],
+			// '/PositionId': ['', Validators.required],
+			// '/DepartmentId': [''],
 			'/OfficeId': ['', Validators.required],
 			'/RoleId': [''],
-			'/Rate': ['', Validators.required],
+			// '/Rate': ['', Validators.required],
 			'/City': [''],
 			'/StartWorkingAt': [null],
 			'/DateOfBirth': [null],

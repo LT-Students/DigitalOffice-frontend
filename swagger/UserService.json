@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.0.1",
+    "version": "1.4.0.2",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -230,16 +230,6 @@
             "type": "integer"
           },
           "required": true
-        },
-        {
-          "name": "departmentid",
-          "in": "query",
-          "description": "Specific department of users.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": false
         },
         {
           "name": "includedeactivated",
@@ -520,6 +510,39 @@
           },
           "409": {
             "description": "Conflict. User with this login already exits.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/credentials/checkpending": {
+      "parameters": [
+        {
+          "name": "userid",
+          "in": "query",
+          "description": "Unique user identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Credentials"
+        ],
+        "operationId": "checkPendingCredentials",
+        "description": "This endpoint must be used only for user first time login operation.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1272,7 +1295,7 @@
         }
       }
     },
-    "/image/add": {
+    "/image/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -1282,13 +1305,13 @@
         "tags": [
           "Image"
         ],
-        "operationId": "addImages",
+        "operationId": "createImage",
         "description": "The method attempts to add image to user/certificate/education. The user must have the rights to add images to other users - Add/Edit/Remove users.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddImagesRequest"
+                "$ref": "#/components/schemas/CreateImageRequest"
               }
             }
           },
@@ -1335,6 +1358,7 @@
               }
             }
           }
+
         }
       }
     },
@@ -1404,6 +1428,16 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Images were not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -1430,6 +1464,72 @@
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/editavatar": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "userId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "required": true
+        },
+        {
+          "name": "imageId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "changeAvatar",
+        "description": "This method is used to change user's avatar",
         "responses": {
           "200": {
             "description": "Ok.",
@@ -1841,6 +1941,7 @@
             }
           }
         }
+
       },
       "CreateUserRequest": {
         "type": "object",
@@ -2150,9 +2251,6 @@
               "/AvatarFileId",
               "/Status",
               "/StartWorkingAt",
-              "/Rate",
-              "/DepartmentId",
-              "/PositionId",
               "/RoleId",
               "/OfficeId",
               "/About",
@@ -2249,7 +2347,8 @@
             "nullable": true
           },
           "Rate": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "About": {
             "type": "string",
@@ -2842,12 +2941,16 @@
           "Content": {
             "description": "Image content.",
             "type": "string",
-            "format": "byte"
+            "format": "base64"
           },
           "Extension": {
             "description": "Image extension.",
             "type": "string",
             "example": ".png"
+          },
+          "IsCurrentAvatar": {
+            "description": "shows whether the image is the current avatar or not",
+            "default": false
           }
         }
       },
@@ -3082,12 +3185,13 @@
           }
         }
       },
-      "AddImagesRequest": {
+      "CreateImageRequest": {
         "type": "object",
         "required": [
           "EntityId",
           "EntityType",
-          "Images"
+          "Content",
+          "Extension"
         ],
         "properties": {
           "EntityId": {
@@ -3105,11 +3209,25 @@
               "education"
             ]
           },
-          "Images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AddImageRequest"
-            }
+          "Name": {
+            "type": "string",
+            "description": "Image name",
+            "nullable": true,
+            "example": "Cat1"
+          },
+          "Content": {
+            "description": "Image content.",
+            "type": "string",
+            "format": "base64"
+          },
+          "Extension": {
+            "description": "Image extension.",
+            "type": "string",
+            "example": ".png"
+          },
+          "IsCurrentAvatar": {
+            "description": "shows whether the image is the current avatar or not",
+            "default": false
           }
         }
       },
