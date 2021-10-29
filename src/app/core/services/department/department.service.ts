@@ -8,12 +8,12 @@ import { DepartmentInfo } from '@data/api/department-service/models/department-i
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { ProjectInfo } from '@data/api/department-service/models/project-info';
 import { IFindRequestEx } from '@app/types/find-request.interface';
+import { CreateUserRequest } from '@data/api/department-service/models/create-user-request';
 
-export interface ICreateDepartmentRequest {
+export interface CreateDepartmentRequest {
 	description?: null | string;
-	directorUserId?: null | string;
 	name: string;
-	users?: Array<string>;
+	users?: Array<CreateUserRequest>;
 }
 
 export interface IGetDepartment {
@@ -39,7 +39,7 @@ export interface DepartmentInfoEx {
 export class DepartmentService {
 	constructor(private _departmentApiService: DepartmentApiService) {}
 
-	public createDepartment(body: ICreateDepartmentRequest): Observable<OperationResultResponse<{} | null>> {
+	public createDepartment(body: CreateDepartmentRequest): Observable<OperationResultResponse<{} | null>> {
 		return this._departmentApiService.createDepartment({ body });
 	}
 
@@ -57,10 +57,8 @@ export class DepartmentService {
 
 	public addUsersToDepartment(departmentId: UUID, userIds: UUID[]): Observable<OperationResultResponse<{} | null>> {
 		return this._departmentApiService.addDepartmentUsers({
-			body: {
-				deprtmentId: departmentId,
-				users: userIds,
-			},
+			departmentid: departmentId,
+			body: [...userIds],
 		});
 	}
 

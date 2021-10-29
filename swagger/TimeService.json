@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.7.0",
+    "version": "1.1.7.1",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -1250,7 +1250,6 @@
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2020-07-18T08:23",
             "nullable": true
-
           },
           "Jobs": {
             "type": "array",
