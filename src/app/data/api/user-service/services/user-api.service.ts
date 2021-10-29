@@ -261,11 +261,6 @@ export class UserApiService extends BaseService {
 		 * Number of users to take.
 		 */
 		takeCount: number;
-
-		/**
-		 * Specific department of users.
-		 */
-		departmentid?: string;
 		includedeactivated?: boolean;
 		includedepartment?: boolean;
 		includeposition?: boolean;
@@ -277,7 +272,6 @@ export class UserApiService extends BaseService {
 		if (params) {
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
-			rb.query('departmentid', params.departmentid, {});
 			rb.query('includedeactivated', params.includedeactivated, {});
 			rb.query('includedepartment', params.includedepartment, {});
 			rb.query('includeposition', params.includeposition, {});
@@ -319,11 +313,6 @@ export class UserApiService extends BaseService {
 		 * Number of users to take.
 		 */
 		takeCount: number;
-
-		/**
-		 * Specific department of users.
-		 */
-		departmentid?: string;
 		includedeactivated?: boolean;
 		includedepartment?: boolean;
 		includeposition?: boolean;

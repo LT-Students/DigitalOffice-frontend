@@ -4,10 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '@app/services/user/user.service';
 import { UserSearchModalConfig } from '@app/services/modal.service';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
-import { NetService } from '@app/services/net.service';
 import { PageEvent } from '@angular/material/paginator';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { PositionService } from '@app/services/position/position.service';
 import { Team, teamCards } from '../../team-cards';
 import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 
@@ -39,7 +39,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: UserSearchModalConfig,
 		private _userService: UserService,
-		private _netService: NetService,
+		private _positionService: PositionService,
 		private _dialogRef: MatDialogRef<UserSearchComponent>,
 		private _cdr: ChangeDetectorRef
 	) {
@@ -90,7 +90,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	private _getPositions(): void {
-		this._netService.getPositionsList({ skipCount: 0, takeCount: 100 }).subscribe(
+		this._positionService.findPositions({ skipCount: 0, takeCount: 100 }).subscribe(
 			(data) => {
 				this.positions = data.body ?? [];
 			},

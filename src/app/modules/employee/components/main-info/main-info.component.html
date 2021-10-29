@@ -44,10 +44,10 @@
 							</div>
 						</div>
 						<div class="employee-info__second-column">
-							<div *ngIf="user?.rate">
-								<p class="mat-caption">Ставка</p>
-								<p>{{ user?.rate }}</p>
-							</div>
+							<!--							<div *ngIf="user?.rate">-->
+							<!--								<p class="mat-caption">Ставка</p>-->
+							<!--								<p>{{ user?.rate }}</p>-->
+							<!--							</div>-->
 							<div>
 								<p class="mat-caption">Пол</p>
 								<p>{{ user?.gender?.genderInRussian }}</p>
@@ -163,22 +163,22 @@
 				<h4>Общие сведения</h4>
 				<div class="employee-info__columns">
 					<div class="employee-info__first-column">
-						<mat-form-field class="employee-info__form-field" appearance="fill">
-							<mat-label> Должность</mat-label>
-							<mat-select formControlName="/PositionId" required>
-								<mat-option *ngFor="let position of positions$ | async" [value]="position.id">
-									{{ position.name }}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
-						<mat-form-field class="employee-info__form-field" appearance="fill">
-							<mat-label> Департамент</mat-label>
-							<mat-select formControlName="/DepartmentId">
-								<mat-option *ngFor="let department of departments$ | async" [value]="department.id">
-									{{ department.name }}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
+						<!--						<mat-form-field class="employee-info__form-field" appearance="fill">-->
+						<!--							<mat-label> Должность</mat-label>-->
+						<!--							<mat-select formControlName="/PositionId" required>-->
+						<!--								<mat-option *ngFor="let position of positions$ | async" [value]="position.id">-->
+						<!--									{{ position.name }}-->
+						<!--								</mat-option>-->
+						<!--							</mat-select>-->
+						<!--						</mat-form-field>-->
+						<!--						<mat-form-field class="employee-info__form-field" appearance="fill">-->
+						<!--							<mat-label> Департамент</mat-label>-->
+						<!--							<mat-select formControlName="/DepartmentId">-->
+						<!--								<mat-option *ngFor="let department of departments$ | async" [value]="department.id">-->
+						<!--									{{ department.name }}-->
+						<!--								</mat-option>-->
+						<!--							</mat-select>-->
+						<!--						</mat-form-field>-->
 						<mat-form-field class="employee-info__form-field" appearance="fill">
 							<mat-label>Местоположение</mat-label>
 							<input matInput formControlName="/City" />
@@ -194,12 +194,12 @@
 						<ng-container *ngTemplateOutlet="emoji"></ng-container>
 					</div>
 					<div class="employee-info__second-column">
-						<ng-container *ngIf="canEdit()">
-							<ng-container *ngIf="!user?.isAdmin; else stepper">
-								<p>Ставка</p>
-								<div>{{ user?.rate }}</div>
-							</ng-container>
-						</ng-container>
+						<!--						<ng-container *ngIf="canEdit()">-->
+						<!--							<ng-container *ngIf="!user?.isAdmin; else stepper">-->
+						<!--								<p>Ставка</p>-->
+						<!--								<div>{{ user?.rate }}</div>-->
+						<!--							</ng-container>-->
+						<!--						</ng-container>-->
 						<mat-form-field class="employee-info__form-field" appearance="fill">
 							<mat-label>Пол</mat-label>
 							<mat-select formControlName="/Gender">

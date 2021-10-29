@@ -12,6 +12,11 @@ export interface AddImageRequest {
 	extension: string;
 
 	/**
+	 * shows whether the image is the current avatar or not
+	 */
+	isCurrentAvatar?: any;
+
+	/**
 	 * Image name.
 	 */
 	name: string;

@@ -38,7 +38,7 @@ export { PatchCertificateDocument } from './models/patch-certificate-document';
 export { CreateCommunicationRequest } from './models/create-communication-request';
 export { EditCommunicationRequest } from './models/edit-communication-request';
 export { CommunicationPatchDocument } from './models/communication-patch-document';
-export { AddImagesRequest } from './models/add-images-request';
+export { CreateImageRequest } from './models/create-image-request';
 export { RemoveImagesRequest } from './models/remove-images-request';
 export { ImagesIds } from './models/images-ids';
 export { CreateSkillRequest } from './models/create-skill-request';
