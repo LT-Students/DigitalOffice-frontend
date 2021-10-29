@@ -4,24 +4,24 @@
 	></do-breadcrumbs>
 	<ng-container *ngIf="userLogged$ | async">
 		<div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__button flex">
-			<!--        <ng-container *ngIf='selectedUser.id as userId'>-->
-			<div *ngIf="selectedUser?.isActive; else restore">
-				<div (click)="onDeleteEmployeeClick(selectedUser.id)">
-					<mat-icon>archive</mat-icon>
-					<span class="employee-page__button-label">{{
-						selectedUser?.isActive ? 'Добавить в архив' : 'Восстановить'
-					}}</span>
+			<ng-container *ngIf="selectedUser.id as userId">
+				<div *ngIf="selectedUser?.isActive; else restore">
+					<div (click)="onDeleteEmployeeClick(selectedUser.id)">
+						<mat-icon>archive</mat-icon>
+						<span class="employee-page__button-label">{{
+							selectedUser?.isActive ? 'Добавить в архив' : 'Восстановить'
+						}}</span>
+					</div>
 				</div>
-			</div>
-			<ng-template #restore>
-				<div (click)="onRestoreEmployeeClick(selectedUser.id)">
-					<mat-icon>restore_from_trash</mat-icon>
-					<span class="employee-page__button-label">{{
-						!selectedUser?.isActive ? 'Восстановить' : 'Добавить в архив'
-					}}</span>
-				</div>
-			</ng-template>
-			<!--        </ng-container>-->
+				<ng-template #restore>
+					<div (click)="onRestoreEmployeeClick(selectedUser.id)">
+						<mat-icon>restore_from_trash</mat-icon>
+						<span class="employee-page__button-label">{{
+							!selectedUser?.isActive ? 'Восстановить' : 'Добавить в архив'
+						}}</span>
+					</div>
+				</ng-template>
+			</ng-container>
 		</div>
 	</ng-container>
 	<!--        <ng-container *ngIf="!user?.isAdmin && isOwner">-->
