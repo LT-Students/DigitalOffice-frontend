@@ -13,6 +13,7 @@
     "prettier": "prettier --write src/**/*.{ts,scss}",
     "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
     "generate.company": "ng-openapi-gen -c swagger/config/company.json",
+    "generate.department": "ng-openapi-gen -c swagger/config/department.json",
     "generate.file": "ng-openapi-gen -c swagger/config/file.json",
     "generate.image": "ng-openapi-gen -c swagger/config/image.json",
     "generate.message": "ng-openapi-gen -c swagger/config/message.json",

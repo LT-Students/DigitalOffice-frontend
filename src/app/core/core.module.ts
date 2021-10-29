@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { CompanyService } from '@app/services/company/company.service';
-import { DepartmentService } from '@app/services/company/department.service';
 import { OfficeService } from '@app/services/company/office.service';
 import { PositionService } from '@app/services/company/position.service';
 import { FileService } from '@app/services/file/file.service';
@@ -31,6 +30,7 @@ import { NewsApiModule } from '@data/api/news-service/news-api.module';
 import { ProjectApiModule } from '@data/api/project-service/project-api.module';
 import { RightsApiModule } from '@data/api/rights-service/rights-api.module';
 import { TimeApiModule } from '@data/api/time-service/time-api.module';
+import { DepartmentApiModule } from '@data/api/department-service/department-api.module';
 import { environment } from '../../environments/environment';
 
 @NgModule({
@@ -41,6 +41,7 @@ import { environment } from '../../environments/environment';
 		RouterModule,
 		HttpClientModule,
 		AuthenticationApiModule.forRoot({ rootUrl: `https://auth.${environment.apiUrl}` }),
+		DepartmentApiModule.forRoot({ rootUrl: `https://department.${environment.apiUrl}` }),
 		CompanyApiModule.forRoot({ rootUrl: `https://company.${environment.apiUrl}` }),
 		FileApiModule.forRoot({ rootUrl: `https://file.${environment.apiUrl}` }),
 		ImageApiModule.forRoot({ rootUrl: `https://image.${environment.apiUrl}` }),
@@ -54,7 +55,6 @@ import { environment } from '../../environments/environment';
 	providers: [
 		AuthService,
 		CompanyService,
-		DepartmentService,
 		OfficeService,
 		PositionService,
 		FileService,
