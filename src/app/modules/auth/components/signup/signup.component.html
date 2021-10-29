@@ -1,13 +1,12 @@
 <form class="form" [formGroup]="loginForm" (ngSubmit)="signUp()" autocomplete="off">
-	<h1 class="form__title">{{ portalName }}</h1>
 	<div class="form__description"><p>Придумайте логин и введите пароль из письма</p></div>
 	<div
-		class="form__error"
-		*ngIf="loginForm.hasError('busy') || (login?.touched && password?.touched && loginForm.invalid)"
+		class="form__error warn"
+		*ngIf="loginForm.errors?.['busy'] || (login?.touched && password?.touched && loginForm.invalid)"
 	>
 		<small *ngIf="login?.dirty && login?.invalid">Логин обязателен :(</small>
 		<small *ngIf="password?.dirty && password?.invalid">Пароль обязателен :(</small>
-		<small *ngIf="loginForm.hasError('busy')">{{ loginForm.getError('busy').error }}</small>
+		<small *ngIf="loginForm.hasError('busy')">{{ loginForm.errors?.['busy'].userFriendlyMessage }}</small>
 	</div>
 	<mat-form-field class="form__input-field">
 		<input matInput name="login" type="text" placeholder="Логин" formControlName="login" />
@@ -17,7 +16,7 @@
 	</mat-form-field>
 	<div class="form__submit">
 		<button
-			*ngIf="(isWaiting | async) === false; else spinner"
+			*ngIf="(isWaiting$$ | async) === false; else spinner"
 			mat-flat-button
 			color="primary"
 			class="submit-button"
