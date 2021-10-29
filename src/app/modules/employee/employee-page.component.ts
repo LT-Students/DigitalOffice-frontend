@@ -81,13 +81,11 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 
 	public ngOnInit(): void {
 		// this.isOwner = user.id === this.pageId;
-		this.selectedUser$ = this._paramMap.params
-			.pipe(
-				skip(1),
-				takeUntil(this._unsubscribe$),
-				switchMap((params: ParamMap) => this._employeeService.getEmployee(params.get('id') as string))
-			)
-			.subscribe();
+		this.selectedUser$ = this._route.paramMap.pipe(
+			skip(1),
+			takeUntil(this._unsubscribe$),
+			switchMap((params: ParamMap) => this._employeeService.getEmployee(params.get('id') as string))
+		);
 	}
 
 	public onDeleteEmployeeClick(userId: string | undefined): void {
@@ -113,10 +111,11 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 				message: 'Вы действительно хотите восстановить этого пользователя?',
 			})
 			.afterClosed()
-			.pipe(switchMap((confirm) => (confirm ? this._userService.activateUser(userId) : EMPTY)))
-			.subscribe(() => {
-				this._employeeService.getEmployee(this.userId as string).subscribe();
-			});
+			.pipe(
+				switchMap((confirm) => (confirm ? this._userService.activateUser(userId) : EMPTY)),
+				switchMap(() => this._employeeService.getEmployee(this.userId as string))
+			)
+			.subscribe();
 	}
 
 	public ngOnDestroy(): void {
