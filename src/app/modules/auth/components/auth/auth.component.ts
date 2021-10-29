@@ -10,8 +10,8 @@ import { map } from 'rxjs/operators';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthComponent {
-	public portalName: Observable<string>;
+	public portalName$: Observable<string>;
 	constructor(private _currentCompanyService: CurrentCompanyService) {
-		this.portalName = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
+		this.portalName$ = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
 	}
 }

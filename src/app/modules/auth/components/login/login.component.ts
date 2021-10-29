@@ -18,7 +18,7 @@ import { BehaviorSubject, of } from 'rxjs';
 export class LoginComponent implements OnInit {
 	public loginForm: FormGroup;
 	public loginError: string;
-	public isLoading: BehaviorSubject<boolean>;
+	public isLoading$$: BehaviorSubject<boolean>;
 
 	constructor(
 		private _authService: AuthService,
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 		private _router: Router,
 		private formBuilder: FormBuilder
 	) {
-		this.isLoading = new BehaviorSubject<boolean>(false);
+		this.isLoading$$ = new BehaviorSubject<boolean>(false);
 		this.loginError = '';
 		this.loginForm = this.formBuilder.group({
 			email: ['', Validators.required],
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	public login(): void {
-		this.isLoading.next(true);
+		this.isLoading$$.next(true);
 
 		const authenticationRequest: AuthenticationRequest = {
 			loginData: this.loginForm.get('email')?.value.trim(),
@@ -57,10 +57,10 @@ export class LoginComponent implements OnInit {
 		this._authService
 			.login(authenticationRequest)
 			.pipe(
-				finalize(() => this.isLoading.next(false)),
+				finalize(() => this.isLoading$$.next(false)),
 				catchError((error) => {
 					this.loginError = error.message;
-					this.isLoading.next(false);
+					this.isLoading$$.next(false);
 					console.log('Getting user info failed.', error.message);
 					return of(null);
 				})

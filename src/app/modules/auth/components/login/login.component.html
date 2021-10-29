@@ -8,7 +8,7 @@
 	</mat-form-field>
 	<div class="form__submit">
 		<button
-			*ngIf="(isLoading | async) === false; else spinner"
+			*ngIf="(isLoading$$ | async) === false; else spinner"
 			mat-flat-button
 			class="submit-button"
 			type="submit"

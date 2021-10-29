@@ -14,12 +14,12 @@ import { finalize } from 'rxjs/operators';
 })
 export class ForgotPasswordComponent {
 	public forgotPasswordForm: FormGroup;
-	public isWaiting: BehaviorSubject<boolean>;
-	public isCompleted: BehaviorSubject<boolean>;
+	public isWaiting$$: BehaviorSubject<boolean>;
+	public isCompleted$$: BehaviorSubject<boolean>;
 
 	constructor(private _credentialService: CredentialsService, private _formBuilder: FormBuilder) {
-		this.isWaiting = new BehaviorSubject<boolean>(false);
-		this.isCompleted = new BehaviorSubject<boolean>(false);
+		this.isWaiting$$ = new BehaviorSubject<boolean>(false);
+		this.isCompleted$$ = new BehaviorSubject<boolean>(false);
 
 		this.forgotPasswordForm = this._formBuilder.group({
 			email: ['', [Validators.required, DoValidators.email]],
@@ -27,14 +27,14 @@ export class ForgotPasswordComponent {
 	}
 
 	public resetPassword(): void {
-		this.isWaiting.next(true);
+		this.isWaiting$$.next(true);
 		this._credentialService
 			.forgotPassword({ userEmail: this.forgotPasswordForm.get('email')?.value.trim() })
 			.pipe(
 				finalize(() => {
-					this.isWaiting.next(false);
+					this.isWaiting$$.next(false);
 				})
 			)
-			.subscribe({ next: () => this.isCompleted.next(true) });
+			.subscribe({ next: () => this.isCompleted$$.next(true) });
 	}
 }

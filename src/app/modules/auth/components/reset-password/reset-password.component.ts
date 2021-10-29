@@ -14,8 +14,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ResetPasswordComponent {
 	public resetForm: FormGroup;
-	public isLoading: BehaviorSubject<boolean>;
-	public isCompleted: BehaviorSubject<boolean>;
+	public isLoading$$: BehaviorSubject<boolean>;
+	public isCompleted$$: BehaviorSubject<boolean>;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -27,12 +27,12 @@ export class ResetPasswordComponent {
 			password: ['', Validators.required],
 			secret: ['', Validators.required],
 		});
-		this.isLoading = new BehaviorSubject<boolean>(false);
-		this.isCompleted = new BehaviorSubject<boolean>(false);
+		this.isLoading$$ = new BehaviorSubject<boolean>(false);
+		this.isCompleted$$ = new BehaviorSubject<boolean>(false);
 	}
 
 	public resetPassword(): void {
-		this.isLoading.next(true);
+		this.isLoading$$.next(true);
 		this._route.queryParamMap
 			.pipe(
 				switchMap((params) => {
@@ -44,11 +44,11 @@ export class ResetPasswordComponent {
 					};
 					return this._credentialsService.changePassword(request);
 				}),
-				finalize(() => this.isLoading.next(false))
+				finalize(() => this.isLoading$$.next(false))
 			)
 			.subscribe({
 				next: () => {
-					this.isCompleted.next(true);
+					this.isCompleted$$.next(true);
 				},
 			});
 	}

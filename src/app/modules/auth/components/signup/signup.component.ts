@@ -16,7 +16,7 @@ import { CurrentUserService } from '@app/services/current-user.service';
 })
 export class SignupComponent {
 	public loginForm: FormGroup;
-	public isWaiting: BehaviorSubject<boolean>;
+	public isWaiting$$: BehaviorSubject<boolean>;
 	public get login() {
 		return this.loginForm.get('login');
 	}
@@ -32,7 +32,7 @@ export class SignupComponent {
 		private _router: Router,
 		private _fb: FormBuilder
 	) {
-		this.isWaiting = new BehaviorSubject<boolean>(false);
+		this.isWaiting$$ = new BehaviorSubject<boolean>(false);
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
 			password: ['', Validators.required],
@@ -40,7 +40,7 @@ export class SignupComponent {
 	}
 
 	public signUp(): void {
-		this.isWaiting.next(true);
+		this.isWaiting$$.next(true);
 		this._activatedRoute.queryParams
 			.pipe(
 				switchMap((params: Params) => {
@@ -67,7 +67,7 @@ export class SignupComponent {
 					});
 					return throwError(error);
 				}),
-				finalize(() => this.isWaiting.next(false))
+				finalize(() => this.isWaiting$$.next(false))
 			)
 			.subscribe({
 				next: (user: User) => {
