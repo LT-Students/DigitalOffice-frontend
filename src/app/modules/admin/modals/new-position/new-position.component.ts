@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
-import { PositionService } from '@app/services/company/position.service';
+import { PositionService } from '@app/services/position/position.service';
 
 @Component({
 	selector: 'do-new-position',
@@ -28,7 +28,7 @@ export class NewPositionComponent {
 
 	createPosition(): void {
 		this._positionService
-			.addPosition({
+			.createPosition({
 				name: this.positionForm.controls['name'].value?.trim(),
 				description: this.positionForm.controls['description'].value?.trim(),
 			})

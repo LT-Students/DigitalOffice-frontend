@@ -1,15 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectService } from '@app/services/project/project.service';
-import { NetService } from '@app/services/net.service';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PatchRequest, ProjectPath } from '@app/types/patch-paths';
 import { ProjectPatchDocument } from '@data/api/project-service/models/project-patch-document';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DepartmentService } from '@app/services/department/department.service';
 
 @Component({
 	selector: 'do-edit-project',
@@ -27,7 +27,7 @@ export class EditProjectComponent {
 	constructor(
 		private _formBuilder: FormBuilder,
 		private _projectService: ProjectService,
-		private _netService: NetService,
+		private _departmentService: DepartmentService,
 		private _cdr: ChangeDetectorRef,
 		private _dialogRef: MatDialogRef<EditProjectComponent>,
 		@Inject(MAT_DIALOG_DATA) private _data: { projectInfo: any[] }
@@ -49,8 +49,8 @@ export class EditProjectComponent {
 		};
 
 		this.projectForm = this._formBuilder.group(this._initialData);
-		this.departments = this._netService
-			.getDepartmentsList({ skipCount: 0, takeCount: 100 })
+		this.departments = this._departmentService
+			.findDepartments({ skipCount: 0, takeCount: 100 })
 			.pipe(map((value) => value.body));
 	}
 

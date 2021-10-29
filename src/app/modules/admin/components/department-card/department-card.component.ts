@@ -1,6 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Sort } from '@angular/material/sort';
-import { NetService } from '@app/services/net.service';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@app/services/user/user.service';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
@@ -11,6 +9,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DepartmentUserInfo } from '@data/api/company-service/models/department-user-info';
 import { map } from 'rxjs/operators';
+import { DepartmentService } from '@app/services/department/department.service';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
@@ -40,7 +39,7 @@ export class DepartmentCardComponent {
 	public employeeCountMap: { [k: string]: string };
 
 	constructor(
-		private _netService: NetService,
+		private _departmentService: DepartmentService,
 		private _userService: UserService,
 		private _router: Router,
 		private _modalService: ModalService,
@@ -76,7 +75,7 @@ export class DepartmentCardComponent {
 	}
 
 	private _getDepartment(): void {
-		this._netService
+		this._departmentService
 			.getDepartment({ departmentid: this._departmentId, includeusers: true })
 			.subscribe(({ body }) => {
 				this.departmentInfo = body?.department;
