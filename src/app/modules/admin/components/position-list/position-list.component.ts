@@ -5,9 +5,9 @@ import { ModalService } from '@app/services/modal.service';
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { iif, Observable, ReplaySubject } from 'rxjs';
-import { IPositionInfo, PositionService } from '@app/services/company/position.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { IFindRequestEx } from '@app/types/find-request.interface';
+import { IPositionInfo, PositionService } from '@app/services/position/position.service';
 import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 
 @Component({

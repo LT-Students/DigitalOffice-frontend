@@ -8,7 +8,7 @@ import { iif, Observable, ReplaySubject } from 'rxjs';
 import { IFindRequest } from '@app/types/find-request.interface';
 import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { DepartmentService } from '@app/services/company/department.service';
+import { DepartmentService } from '@app/services/department/department.service';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 
 @Component({

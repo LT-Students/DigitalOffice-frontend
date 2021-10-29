@@ -7,10 +7,10 @@ import { Observable } from 'rxjs';
 import { UserService } from '@app/services/user/user.service';
 import { map } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { DepartmentService } from '@app/services/company/department.service';
 import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
 import { PatchDepartmentDocument } from '@data/api/company-service/models/patch-department-document';
-import { EditDepartmentPath } from '@app/services/company/department.service';
+import { DepartmentService } from '@app/services/department/department.service';
+import { DepartmentPath } from '@app/types/patch-paths';
 import { EditModalContent } from '../../components/department-card/department-card.component';
 
 @Component({
@@ -59,7 +59,7 @@ export class NewDepartmentComponent implements OnInit {
 
 	public createDepartment(): void {
 		this._departmentService
-			.addDepartment({
+			.createDepartment({
 				name: this.departmentForm.get('name')?.value?.trim(),
 				description: this.departmentForm.get('description')?.value?.trim(),
 				directorUserId: this.departmentForm.get('directorid')?.value,
@@ -89,7 +89,7 @@ export class NewDepartmentComponent implements OnInit {
 				if (this.departmentForm.controls[key].value !== this._departamentInfo[key as keyof EditModalContent]) {
 					const patchDepartmentDocument: PatchDepartmentDocument = {
 						op: 'replace',
-						path: `/${key}` as EditDepartmentPath,
+						path: `/${key}` as DepartmentPath,
 						value: this.departmentForm.controls[key].value,
 					};
 					acc.push(patchDepartmentDocument);

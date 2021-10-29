@@ -9,7 +9,6 @@ import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { finalize, map } from 'rxjs/operators';
 import { PatchUserDocument, UserGender } from '@data/api/user-service/models';
-import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
@@ -22,6 +21,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { PatchRequest, UserPath } from '@app/types/patch-paths';
 import { DateTime } from 'luxon';
+import { PositionService } from '@app/services/position/position.service';
+import { DepartmentService } from '@app/services/department/department.service';
+import { CompanyService } from '@app/services/company/company.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -52,8 +54,10 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		private _fb: FormBuilder,
 		private _route: ActivatedRoute,
 		private _userService: UserService,
+		private _positionService: PositionService,
+		private _departmentService: DepartmentService,
+		private _officeService: CompanyService,
 		private _employeeService: EmployeePageService,
-		private _netService: NetService,
 		private _dialog: MatDialog,
 		private _snackBar: MatSnackBar,
 		private _roleService: RightsService,
@@ -65,21 +69,21 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
 		this.employeeInfoForm = this._initEditForm();
-		this.departments$ = this._netService
-			.getDepartmentsList({
+		this.departments$ = this._departmentService
+			.findDepartments({
 				skipCount: 0,
 				takeCount: 500,
 			})
 			.pipe(map((res) => res.body));
 
-		this.positions$ = this._netService
-			.getPositionsList({
+		this.positions$ = this._positionService
+			.findPositions({
 				skipCount: 0,
 				takeCount: 500,
 			})
 			.pipe(map((res) => res.body));
 
-		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
+		this.offices$ = this._officeService.findOffices({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
 		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
 	}
 
@@ -120,13 +124,13 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 	}
 
 	public changeWorkingRate(step: number) {
-		const currentValue = this.employeeInfoForm.get('/Rate')?.value;
-		const rate = +currentValue + step;
-		this.employeeInfoForm.patchValue({ '/Rate': rate });
-
-		if (this.employeeInfoForm.get('/Rate')?.pristine) {
-			this.employeeInfoForm.get('/Rate')?.markAsDirty();
-		}
+		// const currentValue = this.employeeInfoForm.get('/Rate')?.value;
+		// const rate = +currentValue + step;
+		// this.employeeInfoForm.patchValue({ '/Rate': rate });
+		//
+		// if (this.employeeInfoForm.get('/Rate')?.pristine) {
+		// 	this.employeeInfoForm.get('/Rate')?.markAsDirty();
+		// }
 	}
 
 	public onOpenDialog(): void {
@@ -190,11 +194,11 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 				'/AvatarFileId': this.user.avatarImage?.id,
 				'/Status': this.user.statusEmoji?.statusType,
 				'/About': this.user.about,
-				'/PositionId': this.user.position?.id,
-				'/DepartmentId': this.user.department?.id,
+				// '/PositionId': this.user.position?.id,
+				// '/DepartmentId': this.user.department?.id,
 				'/OfficeId': this.user.office?.id,
 				'/RoleId': this.user.role?.id,
-				'/Rate': this.user.rate,
+				// '/Rate': this.user.rate,
 				'/City': this.user.city,
 				'/Gender': this.user.gender?.genderType,
 				'/DateOfBirth': this.user.dateOfBirth,
@@ -212,11 +216,11 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			'/AvatarFileId': [''],
 			'/Status': [null],
 			'/About': [''],
-			'/PositionId': ['', Validators.required],
-			'/DepartmentId': [''],
+			// '/PositionId': ['', Validators.required],
+			// '/DepartmentId': [''],
 			'/OfficeId': ['', Validators.required],
 			'/RoleId': [''],
-			'/Rate': ['', Validators.required],
+			// '/Rate': ['', Validators.required],
 			'/City': [''],
 			'/StartWorkingAt': [null],
 			'/DateOfBirth': [null],
