@@ -12,7 +12,7 @@ import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angu
 import { CommunicationTypeModel } from '@app/models/communication.model';
 import { CommunicationType } from '@data/api/user-service/models/communication-type';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
@@ -29,6 +29,8 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 	],
 })
 export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>, ControlValueAccessor {
+	public control: FormControl;
+
 	public get value(): number {
 		return this.control.value;
 	}
@@ -115,8 +117,6 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 		this.ngControl = null;
 	}
 
-	public control: FormControl;
-
 	ngOnInit(): void {
 		this.control.valueChanges.subscribe((value) => {
 			this._onChange(value);
@@ -124,7 +124,11 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 	}
 
 	private _getInputNumbersValue(): string {
-		return this.control.value.replace(/\D/g, '');
+		if (this.control.value !== '+') {
+			return this.control.value.replace(/\D/g, '');
+		} else {
+			return '+';
+		}
 	}
 
 	public onPhoneInput(e: Event): void {
@@ -146,9 +150,10 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 
 		if (['7', '8', '9'].includes(inputNumbersValue[0])) {
 			if (inputNumbersValue[0] === '9') inputNumbersValue = '7' + inputNumbersValue;
-			const firstSymbols = '+7';
+			const firstSymbols = inputNumbersValue[0] === '8' ? '8' : '+7';
 			formattedInputValue = firstSymbols + ' ';
-			this.control.setValue(firstSymbols + ' ');
+			this.control.setValue(formattedInputValue);
+
 			if (inputNumbersValue.length > 1) {
 				formattedInputValue += '(' + inputNumbersValue.substring(1, 4);
 			}
@@ -162,7 +167,11 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 				formattedInputValue += '-' + inputNumbersValue.substring(9, 11);
 			}
 		} else {
-			formattedInputValue = '' + inputNumbersValue.substring(0, 16);
+			if (inputNumbersValue[0] === '+') {
+				formattedInputValue = inputNumbersValue.substring(0, 15);
+			} else {
+				formattedInputValue = '+' + inputNumbersValue.substring(0, 16);
+			}
 		}
 		this.control.setValue(formattedInputValue);
 	}

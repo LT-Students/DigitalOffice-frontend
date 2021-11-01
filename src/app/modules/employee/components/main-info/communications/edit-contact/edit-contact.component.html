@@ -11,7 +11,7 @@
 		[placeholder]="'Введите ' + (contactName | lowercase)"
 	/>
 	<ng-template #phoneInput>
-		<do-phone-input [formControl]="control"></do-phone-input>
+		<do-phone-input [formControl]="control" placeholder="Введите номер в международном формате"></do-phone-input>
 	</ng-template>
 	<mat-error *ngIf="control.errors?.['required']">Поле обязательно.</mat-error>
 	<mat-error *ngIf="control.errors?.['email']">Введите корректный email.</mat-error>
