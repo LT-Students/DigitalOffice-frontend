@@ -150,7 +150,7 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 
 		if (['7', '8', '9'].includes(inputNumbersValue[0])) {
 			if (inputNumbersValue[0] === '9') inputNumbersValue = '7' + inputNumbersValue;
-			const firstSymbols = inputNumbersValue[0] === '8' ? '8' : '+7';
+			const firstSymbols = '+7';
 			formattedInputValue = firstSymbols + ' ';
 			this.control.setValue(formattedInputValue);
 
