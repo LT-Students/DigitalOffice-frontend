@@ -132,6 +132,7 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 	}
 
 	public onPhoneInput(e: Event): void {
+		this.errorState = this.control.invalid;
 		let inputNumbersValue: string = this._getInputNumbersValue();
 		let formattedInputValue = '';
 		let selectionStart: number | null = (e.target as HTMLInputElement).selectionStart;
