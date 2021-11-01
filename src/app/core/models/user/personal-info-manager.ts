@@ -19,7 +19,7 @@ export class PersonalInfoManager {
 		{ genderType: UserGender.NotSelected, genderInRussian: 'Не выбран' },
 	];
 
-	constructor(public _user: UserInfo | undefined) {}
+	constructor(private _user: UserInfo | undefined) {}
 
 	public static getGenderInfoByType(genderType: UserGender): IUserGender | undefined {
 		return this._genders.find((gender: IUserGender) => gender.genderType === genderType);
