@@ -172,6 +172,9 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 			} else {
 				formattedInputValue = '+' + inputNumbersValue.substring(0, 16);
 			}
+			if (this.control.value.length === 0) {
+				formattedInputValue = '';
+			}
 		}
 		this.control.setValue(formattedInputValue);
 	}
