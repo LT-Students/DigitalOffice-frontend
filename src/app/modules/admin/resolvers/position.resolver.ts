@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { IPositionInfo, PositionService } from '@app/services/company/position.service';
+import { PositionService } from '@app/services/position/position.service';
+import { PositionInfo } from '@data/api/position-service/models/position-info';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class PositionResolver implements Resolve<OperationResultResponse<IPositionInfo[]>> {
+export class PositionResolver implements Resolve<OperationResultResponse<PositionInfo[]>> {
 	constructor(private _positionService: PositionService) {}
 	public resolve(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
-	): Observable<OperationResultResponse<IPositionInfo[]>> {
+	): Observable<OperationResultResponse<PositionInfo[]>> {
 		return this._positionService.findPositions({ skipCount: 0, takeCount: 10 });
 	}
 }

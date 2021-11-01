@@ -96,7 +96,7 @@ export class PersonalInfoManager {
 	}
 
 	public get rate(): number | undefined {
-		return this._user?.rate;
+		return this._user?.rate ?? 0;
 	}
 
 	public get office(): OfficeInfo | null | undefined {
