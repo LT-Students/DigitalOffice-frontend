@@ -1,19 +1,11 @@
-import {
-	Component,
-	OnInit,
-	ChangeDetectionStrategy,
-	forwardRef,
-	Optional,
-	Self,
-	HostBinding,
-	Input,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy, forwardRef, Optional, Self, HostBinding, Input } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
 import { CommunicationTypeModel } from '@app/models/communication.model';
 import { CommunicationType } from '@data/api/user-service/models/communication-type';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { tap } from 'rxjs/operators';
 
 @Component({
 	selector: 'do-phone-input',
@@ -28,7 +20,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 		},
 	],
 })
-export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>, ControlValueAccessor {
+export class PhoneInputComponent implements MatFormFieldControl<number>, ControlValueAccessor {
 	public control: FormControl;
 
 	public get value(): number {
@@ -115,12 +107,15 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 		this.errorState = false;
 		this.userAriaDescribedBy = '';
 		this.ngControl = null;
-	}
-
-	ngOnInit(): void {
-		this.control.valueChanges.subscribe((value) => {
-			this._onChange(value);
-		});
+		this.control.valueChanges
+			.pipe(
+				tap(() => {
+					this.errorState = this.control.invalid && this.control.dirty;
+				})
+			)
+			.subscribe((value) => {
+				this._onChange(value);
+			});
 	}
 
 	private _getInputNumbersValue(): string {
@@ -132,7 +127,6 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 	}
 
 	public onPhoneInput(e: Event): void {
-		this.errorState = this.control.invalid;
 		let inputNumbersValue: string = this._getInputNumbersValue();
 		let formattedInputValue = '';
 		let selectionStart: number | null = (e.target as HTMLInputElement).selectionStart;
@@ -142,12 +136,6 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 		}
 
 		if (this.control.value.length !== selectionStart) {
-			if (this.control.value.length > 18) {
-				this.control.setValue(inputNumbersValue);
-			}
-			if (/\D/g.test(this.control.value[this.control.value.length - 1])) {
-				this.control.setValue(formattedInputValue);
-			}
 			return;
 		}
 
