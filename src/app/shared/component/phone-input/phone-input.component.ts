@@ -101,7 +101,7 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 		if (this.ngControl != null) {
 			this.ngControl.valueAccessor = this;
 		}
-		this.control = this._fb.control('hello', CommunicationTypeModel.getValidatorsByType(CommunicationType.Phone));
+		this.control = this._fb.control('', CommunicationTypeModel.getValidatorsByType(CommunicationType.Phone));
 		this._required = false;
 		this._disabled = false;
 		if (this.ngControl != null) {
@@ -137,7 +137,9 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 		let formattedInputValue = '';
 		let selectionStart: number | null = (e.target as HTMLInputElement).selectionStart;
 
-		if (!inputNumbersValue) this.control.setValue('');
+		if (!inputNumbersValue) {
+			this.control.setValue('');
+		}
 
 		if (this.control.value.length !== selectionStart) {
 			if (this.control.value.length > 18) {
@@ -150,7 +152,9 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 		}
 
 		if (['7', '8', '9'].includes(inputNumbersValue[0])) {
-			if (inputNumbersValue[0] === '9') inputNumbersValue = '7' + inputNumbersValue;
+			if (inputNumbersValue[0] === '9') {
+				inputNumbersValue = '7' + inputNumbersValue;
+			}
 			const firstSymbols = '+7';
 			formattedInputValue = firstSymbols + ' ';
 			this.control.setValue(formattedInputValue);
@@ -181,7 +185,9 @@ export class PhoneInputComponent implements OnInit, MatFormFieldControl<number>,
 	}
 
 	public OnPhoneKeyDown(): void {
-		if (this._getInputNumbersValue().length === 1) this.control.setValue('');
+		if (this._getInputNumbersValue().length === 1) {
+			this.control.setValue('');
+		}
 	}
 
 	public onPhonePaste(e: ClipboardEvent): void {
