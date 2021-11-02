@@ -84,15 +84,35 @@
 												<ng-container
 													*ngIf="workTime?.managerHours === null; else managerHours"
 												>
-													<span>{{ workTime?.userHours ? workTime?.userHours : 0 }}</span>
+													<span>{{ workTime?.userHours ?? 0 }}</span>
 												</ng-container>
 												<ng-template #managerHours>
-													<span>{{ workTime?.managerHours }}&nbsp;&nbsp;</span>
-													<span>Изменено&nbsp; </span>
-													<img
-														src="../../../../../assets/svg/ant-design_info-circle-outlined.svg"
-														alt="info-cicle"
-													/>
+													<div class="flex flex_ai_center">
+														<span>{{ workTime?.managerHours }}&nbsp;&nbsp;</span>
+														<span class="mat-caption">
+															Изменено
+															<mat-icon
+																class="vertical-align_middle"
+																inline
+																[mdePopoverTriggerFor]="popover"
+																mdePopoverPositionY="above"
+																[mdePopoverOffsetX]="-13"
+																>info_outline
+															</mat-icon>
+														</span>
+													</div>
+													<mde-popover
+														#popover="mdePopover"
+														[mdePopoverOverlapTrigger]="false"
+													>
+														<span class="mat-small">Автор изменения</span>
+														<!--TODO replace with real name when backend will send this data-->
+														<p>Имя Менеджера</p>
+														<span class="mat-small">Дата изменения</span>
+														<p>{{ workTime?.modifiedAtUtc | date: 'dd/MM/YYYY' }}</p>
+														<span class="mat-small">Часы сотрудника</span>
+														<p>{{ workTime?.userHours ?? 0 }}</p>
+													</mde-popover>
 												</ng-template>
 											</ng-container>
 											<ng-template #input>

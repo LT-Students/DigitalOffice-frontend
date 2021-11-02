@@ -32,7 +32,34 @@
 				<p>{{ project?.project?.name }}</p>
 			</td>
 			<td class="cell">
-				<p>{{ project?.userHours ? project?.userHours : 0 }} ч</p>
+				<ng-container *ngIf="project?.managerHours === null; else managerHours">
+					<span>{{ project?.userHours ?? 0 }}</span>
+				</ng-container>
+				<ng-template #managerHours>
+					<div class="flex flex_ai_center">
+						<span>{{ project?.managerHours }}&nbsp;&nbsp;</span>
+						<span class="mat-caption">
+							Изменено
+							<mat-icon
+								class="vertical-align_middle"
+								inline
+								[mdePopoverTriggerFor]="popover"
+								mdePopoverPositionY="above"
+								[mdePopoverOffsetX]="-13"
+								>info_outline
+							</mat-icon>
+						</span>
+					</div>
+					<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+						<span class="mat-small">Автор изменения</span>
+						<!--TODO replace with real name when backend will send this data-->
+						<p>Имя Менеджера</p>
+						<span class="mat-small">Дата изменения</span>
+						<p>{{ project?.modifiedAtUtc | date: 'dd/MM/YYYY' }}</p>
+						<span class="mat-small">Часы сотрудника</span>
+						<p>{{ project?.userHours ?? 0 }}</p>
+					</mde-popover>
+				</ng-template>
 			</td>
 			<td class="cell">
 				<p *ngIf="project?.modifiedAtUtc; else empty">{{ project?.modifiedAtUtc | date: 'd MMMM' }}</p>
