@@ -161,8 +161,8 @@ export class CommunicationsComponent implements OnInit {
 			const mappedContact = { ...contact };
 			if (mappedContact.type === 'Phone') {
 				mappedContact.value = '+' + mappedContact.value;
+				this.emailContactCount++;
 			}
-			this.emailContactCount++;
 			return mappedContact;
 		});
 	}
