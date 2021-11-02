@@ -41,10 +41,10 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 	}
 
 	public get placeholder(): string {
-		return this._placeholder ?? '';
+		return this._placeholder;
 	}
 
-	private _placeholder?: string;
+	private _placeholder: string;
 
 	public focused: boolean;
 
@@ -100,7 +100,7 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 		this._disabled = false;
 		this.focused = true;
 		this.stateChanges = new Subject<void>();
-		this.placeholder = '';
+		this._placeholder = '';
 		this.id = `custom-phone-input-id-${PhoneInputComponent._uniqueId++}`;
 		this.empty = false;
 		this.errorState = false;
@@ -127,10 +127,11 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 	public onInput(e: Event): void {
 		let inputNumbersValue: string = this._getInputNumbersValue();
 		let formattedInputValue = '';
-		let selectionStart: number | null = (e.target as HTMLInputElement).selectionStart;
+		const selectionStart: number | null = (e.target as HTMLInputElement).selectionStart;
 
 		if (!inputNumbersValue) {
 			this.control.setValue('');
+			return;
 		}
 
 		if (this.control.value.length !== selectionStart) {
@@ -170,7 +171,7 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 		this.control.setValue(formattedInputValue);
 	}
 
-	public OnBackspaceDown(): void {
+	public onBackspaceDown(): void {
 		if (this._getInputNumbersValue().length === 1) {
 			this.control.setValue('');
 		}
@@ -179,7 +180,7 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 	public onPaste(e: ClipboardEvent): void {
 		const inputNumbersValue: string = this._getInputNumbersValue();
 		const pasted: DataTransfer | null = e.clipboardData;
-		if (/\D/g.test(pasted?.getData('text') ?? '')) {
+		if (pasted && /\D/g.test(pasted.getData('text'))) {
 			this.control.setValue(inputNumbersValue);
 		}
 	}
