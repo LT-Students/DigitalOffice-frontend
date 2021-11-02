@@ -1,4 +1,6 @@
 @use 'base/variables';
+@use 'globals/flex';
+@use 'globals/utils';
 @use 'layouts/card';
 @use 'layouts/forms';
 @use 'layouts/table';
@@ -6,6 +8,7 @@
 @use '~@angular/cdk/overlay-prebuilt';
 @use './stylesheets/material/expansion-panel';
 @use './stylesheets/material/mat-button';
+@use './stylesheets/material/popover';
 @use './stylesheets/news-feed/news-feed';
 
 *,

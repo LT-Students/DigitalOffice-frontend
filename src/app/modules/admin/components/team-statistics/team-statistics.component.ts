@@ -28,6 +28,7 @@ export interface EmployeeStats {
 	normHours?: number;
 	leaves?: LeaveTimeInfo[];
 	projectsCount?: number;
+	modifiedAtUtc: string;
 }
 
 @Component({
@@ -142,9 +143,10 @@ export class TeamStatisticsComponent implements OnInit {
 
 		const projectHours: number = workTimeInfo?.userHours ?? 0;
 		const managerHours: number = workTimeInfo?.managerHours ?? 0;
+		console.log(statInfo);
 
 		return {
-			workTimeId: statInfo.workTimes?.[0] ? statInfo.workTimes?.[0].id : undefined,
+			workTimeId: workTimeInfo?.id ?? '',
 			id: statInfo.user?.id,
 			editMode: false,
 			firstName: statInfo.user?.firstName ?? '',
@@ -156,6 +158,7 @@ export class TeamStatisticsComponent implements OnInit {
 			position: '-',
 			projectsCount: 0,
 			normHours: (statInfo.limitInfo?.normHours ?? 0) * (statInfo.user?.rate ?? 0),
+			modifiedAtUtc: statInfo.workTimes?.[0].modifiedAtUtc ?? '',
 		};
 	}
 
