@@ -9,9 +9,9 @@ import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
+import { MdePopoverModule } from '@material-extended/mde';
 import { MaterialModule } from './material.module';
 
-import { SelectComponent } from './component/select/select.component';
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
 import { SearchComponent } from './component/search/search.component';
@@ -31,7 +31,6 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 
 @NgModule({
 	declarations: [
-		SelectComponent,
 		ProfileImageComponent,
 		ContentContainerComponent,
 		SearchComponent,
@@ -63,16 +62,17 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		LoadingBarHttpClientModule,
 		// LoadingBarRouterModule,
 		LoadingBarModule,
+		MdePopoverModule,
 	],
 	exports: [
 		CommonModule,
 		RouterModule,
 		MaterialModule,
 		InfiniteScrollModule,
+		MdePopoverModule,
 		ReactiveFormsModule,
 		FormsModule,
 		InputComponent,
-		SelectComponent,
 		ProfileImageComponent,
 		SearchComponent,
 		HeaderComponent,

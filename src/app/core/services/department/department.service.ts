@@ -8,13 +8,7 @@ import { DepartmentInfo } from '@data/api/department-service/models/department-i
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { ProjectInfo } from '@data/api/department-service/models/project-info';
 import { IFindRequestEx } from '@app/types/find-request.interface';
-import { CreateUserRequest } from '@data/api/department-service/models/create-user-request';
-
-export interface CreateDepartmentRequest {
-	description?: null | string;
-	name: string;
-	users?: Array<CreateUserRequest>;
-}
+import { CreateDepartmentRequest } from '@data/api/department-service/models/create-department-request';
 
 export interface IGetDepartment {
 	departmentid: string;
