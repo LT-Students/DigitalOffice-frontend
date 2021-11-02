@@ -117,6 +117,9 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 	}
 
 	private _getInputNumbersValue(): string {
+		if (['8', '9'].includes(this.control.value[1])) {
+			return '+' + this.control.value.replace(/\D/g, '');
+		}
 		if (this.control.value !== '+') {
 			return this.control.value.replace(/\D/g, '');
 		} else {
