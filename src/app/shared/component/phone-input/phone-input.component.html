@@ -2,8 +2,8 @@
 	matInput
 	type="tel"
 	[formControl]="control"
-	(paste)="onPhonePaste($event)"
-	(input)="onPhoneInput($event)"
-	(keydown.backspace)="OnPhoneKeyDown()"
+	(paste)="onPaste($event)"
+	(input)="onInput($event)"
+	(keydown.backspace)="OnBackspaceDown()"
 	[placeholder]="placeholder"
 />

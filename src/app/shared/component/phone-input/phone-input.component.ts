@@ -21,6 +21,8 @@ import { tap } from 'rxjs/operators';
 	],
 })
 export class PhoneInputComponent implements MatFormFieldControl<number>, ControlValueAccessor {
+	private static _uniqueId = 0;
+
 	public control: FormControl;
 
 	public get value(): number {
@@ -96,17 +98,13 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 		this.control = this._fb.control('', CommunicationTypeModel.getValidatorsByType(CommunicationType.Phone));
 		this._required = false;
 		this._disabled = false;
-		if (this.ngControl != null) {
-			this.ngControl.valueAccessor = this;
-		}
 		this.focused = true;
 		this.stateChanges = new Subject<void>();
 		this.placeholder = '';
-		this.id = `custom-phone-input-id-${this.control.value}`;
+		this.id = `custom-phone-input-id-${PhoneInputComponent._uniqueId++}`;
 		this.empty = false;
 		this.errorState = false;
 		this.userAriaDescribedBy = '';
-		this.ngControl = null;
 		this.control.valueChanges
 			.pipe(
 				tap(() => {
@@ -126,7 +124,7 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 		}
 	}
 
-	public onPhoneInput(e: Event): void {
+	public onInput(e: Event): void {
 		let inputNumbersValue: string = this._getInputNumbersValue();
 		let formattedInputValue = '';
 		let selectionStart: number | null = (e.target as HTMLInputElement).selectionStart;
@@ -172,16 +170,16 @@ export class PhoneInputComponent implements MatFormFieldControl<number>, Control
 		this.control.setValue(formattedInputValue);
 	}
 
-	public OnPhoneKeyDown(): void {
+	public OnBackspaceDown(): void {
 		if (this._getInputNumbersValue().length === 1) {
 			this.control.setValue('');
 		}
 	}
 
-	public onPhonePaste(e: ClipboardEvent): void {
+	public onPaste(e: ClipboardEvent): void {
 		const inputNumbersValue: string = this._getInputNumbersValue();
 		const pasted: DataTransfer | null = e.clipboardData;
-		if (pasted && /\D/g.test(pasted?.getData('text') ?? '')) {
+		if (/\D/g.test(pasted?.getData('text') ?? '')) {
 			this.control.setValue(inputNumbersValue);
 		}
 	}
