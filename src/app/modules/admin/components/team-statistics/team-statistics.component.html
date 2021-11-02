@@ -115,7 +115,7 @@
 											{{ leave.startTime | date: 'dd/MM/YYYY' }}-{{
 												leave.endTime | date: 'dd/MM/YYYY'
 											}}
-											({{ leave?.minutes ?? 0 / 60 }} ч)
+											({{ (leave?.minutes ?? 0) / 60 }} ч)
 										</p>
 									</mde-popover>
 								</div>
