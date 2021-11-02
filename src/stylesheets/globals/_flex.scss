@@ -1,0 +1,21 @@
+.flex {
+	display: flex;
+
+	&_inline {
+		display: inline-flex;
+	}
+
+	&_ai {
+		&_center {
+			align-items: center;
+		}
+
+		&_start {
+			align-items: flex-start;
+		}
+
+		&_end {
+			align-items: flex-end;
+		}
+	}
+}
