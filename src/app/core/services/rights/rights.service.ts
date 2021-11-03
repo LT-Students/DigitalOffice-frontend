@@ -69,7 +69,7 @@ export class RightsService {
 				})
 			),
 			catchError((err) => {
-				let errorMessage: string = err.error.errors[0] ?? 'Что-то пошло не так :(';
+				let errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
 				if (err.status === 409) {
 					errorMessage = 'Проект с таким названием уже существует';
 				}

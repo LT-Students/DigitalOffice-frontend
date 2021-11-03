@@ -40,7 +40,7 @@ export class NewsService {
 		return this._newsService.createNews({ body }).pipe(
 			tap(() => this._snackBar.open('Новость успешно опубликована!', '×')),
 			catchError((err) => {
-				const errorMessage: string = err.error.errors[0] ?? 'Что-то пошло не так :(';
+				const errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
 				this._snackBar.open(errorMessage, '×', { duration: 3000 });
 				return throwError(err);
 			})
@@ -52,7 +52,7 @@ export class NewsService {
 		return this._newsService.editNews({ newsId, body: [disableRequest] }).pipe(
 			tap(() => this._snackBar.open('Новость успешно удалена!', '×', { duration: 3000 })),
 			catchError((err) => {
-				const errorMessage: string = err.error.errors[0] ?? 'Что-то пошло не так :(';
+				const errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
 				this._snackBar.open(errorMessage, '×', { duration: 3000 });
 				return throwError(err);
 			})
@@ -63,7 +63,7 @@ export class NewsService {
 		return this._newsService.editNews({ newsId, body }).pipe(
 			tap(() => this._snackBar.open('Новость успешно отредактирована!', '×', { duration: 3000 })),
 			catchError((err) => {
-				const errorMessage: string = err.error.errors[0] ?? 'Что-то пошло не так :(';
+				const errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
 				this._snackBar.open(errorMessage, '×', { duration: 3000 });
 				return throwError(err);
 			})

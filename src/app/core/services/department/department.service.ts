@@ -49,7 +49,7 @@ export class DepartmentService {
 				})
 			),
 			catchError((err) => {
-				let errorMessage: string = err.error.errors[0] ?? 'Что-то пошло не так :(';
+				let errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
 				if (err.status === 409) {
 					errorMessage = 'Департамент с таким названием уже существует';
 				}
@@ -75,7 +75,7 @@ export class DepartmentService {
 				})
 			),
 			catchError((err) => {
-				const errorMessage: string = err.error.errors[0] ?? 'Что-то пошло не так :(';
+				const errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
 				this._snackBar.open(errorMessage, '×', { duration: 3000 });
 				return throwError(err);
 			})

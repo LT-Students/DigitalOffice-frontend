@@ -61,7 +61,7 @@ export class EmployeePageService implements Resolve<User> {
 				})
 			),
 			catchError((err) => {
-				const errorMessage: string = err.error.errors[0] ?? 'Что-то пошло не так :(';
+				const errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
 				this._snackBar.open(errorMessage, '×', { duration: 3000 });
 				return throwError(err);
 			}),
