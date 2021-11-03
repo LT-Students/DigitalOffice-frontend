@@ -1,20 +1,28 @@
-<div class="employee-page__header flex">
+<div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__header flex">
 	<do-breadcrumbs
-		[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление сотрудниками' }]"
+		[paths]="[
+			{ title: 'Администрирование', url: 'admin/dashboard' },
+			{ title: 'Управление сотрудниками', url: 'admin/manage-users' },
+			{ title: selectedUser.getFullName }
+		]"
 	></do-breadcrumbs>
 	<ng-container *ngIf="userLogged$ | async">
-		<div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__button flex">
+		<div class="employee-page__button flex">
 			<button
 				mat-button
 				class="employee-page__button mat-body-1"
 				*ngIf="selectedUser?.isActive; else restore"
-				(click)="onDeleteEmployeeClick(selectedUser.id)"
+				(click)="onActionEmployeeClick(selectedUser.id, 'disable')"
 			>
 				<mat-icon>archive</mat-icon>
 				<span class="employee-page__button-label">Добавить в архив</span>
 			</button>
 			<ng-template #restore>
-				<button mat-button class="employee-page__button" (click)="onRestoreEmployeeClick(selectedUser.id)">
+				<button
+					mat-button
+					class="employee-page__button"
+					(click)="onActionEmployeeClick(selectedUser.id, 'activate')"
+				>
 					<mat-icon>restore_from_trash</mat-icon>
 					<span class="employee-page__button-label">Восстановить</span>
 				</button>

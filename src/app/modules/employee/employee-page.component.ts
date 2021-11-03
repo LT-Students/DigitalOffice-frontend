@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { EducationType } from '@data/api/user-service/models';
+import { EducationType, OperationResultResponse } from '@data/api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,6 +11,7 @@ import { EmployeePageService } from '@app/services/employee-page.service';
 import { ModalService } from '@app/services/modal.service';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { ConfirmDialogData } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -53,7 +54,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		this.studyTypes = [EducationType.Offline, EducationType.Online];
 		this._unsubscribe$$ = new Subject<void>();
 		this.selectedUser$ = this._employeeService.selectedUser$;
-		this.userLogged$ = this._currentUserService.user$.pipe(map((item) => item.isAdmin));
+		this.userLogged$ = this._currentUserService.user$.pipe(map((user) => user.isAdmin));
 	}
 
 	public ngOnInit(): void {
@@ -66,38 +67,35 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 			.subscribe();
 	}
 
-	public onDeleteEmployeeClick(userId: string | undefined): void {
-		if (userId !== undefined) {
-			this._modalService
-				.confirm({
-					confirmText: 'Да, удалить',
-					title: 'Удаление пользователя',
-					message: 'Вы действительно хотите удалить этого пользователя?',
-				})
-				.afterClosed()
-				.pipe(
-					switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(userId), EMPTY)),
-					switchMap(() => this._employeeService.getEmployee(userId))
-				)
-				.subscribe();
+	public onActionEmployeeClick(userId: string | undefined, action: 'activate' | 'disable'): void {
+		if (!userId) {
+			return;
 		}
-	}
-
-	onRestoreEmployeeClick(userId: string | undefined) {
-		if (userId !== undefined) {
-			this._modalService
-				.confirm({
-					confirmText: 'Да, восстановить',
-					title: 'Восстановление пользователя',
-					message: 'Вы действительно хотите восстановить этого пользователя?',
-				})
-				.afterClosed()
-				.pipe(
-					switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(userId), EMPTY)),
-					switchMap(() => this._employeeService.getEmployee(userId))
-				)
-				.subscribe();
+		let actionWithUser$: Observable<OperationResultResponse>;
+		let config: ConfirmDialogData;
+		if (action === 'disable') {
+			actionWithUser$ = this._userService.disableUser(userId);
+			config = {
+				confirmText: 'Да, удалить',
+				title: 'Удаление пользователя',
+				message: 'Вы действительно хотите удалить этого пользователя?',
+			};
+		} else {
+			actionWithUser$ = this._userService.activateUser(userId);
+			config = {
+				confirmText: 'Да, восстановить',
+				title: 'Восстановление пользователя',
+				message: 'Вы действительно хотите восстановить этого пользователя?',
+			};
 		}
+		this._modalService
+			.confirm(config)
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) => iif(() => !!confirm, actionWithUser$, EMPTY)),
+				switchMap(() => this._employeeService.getEmployee(userId))
+			)
+			.subscribe();
 	}
 
 	public ngOnDestroy(): void {
