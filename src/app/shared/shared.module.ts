@@ -6,12 +6,11 @@ import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
-import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
+import { MdePopoverModule } from '@material-extended/mde';
 import { MaterialModule } from './material.module';
 
-import { SelectComponent } from './component/select/select.component';
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
 import { SearchComponent } from './component/search/search.component';
@@ -28,10 +27,10 @@ import { TitleDatepickerComponent } from './component/title-datepicker/title-dat
 import { DateTimePipe } from './pipes/date-time';
 import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
+import { PhoneInputComponent } from './component/phone-input/phone-input.component';
 
 @NgModule({
 	declarations: [
-		SelectComponent,
 		ProfileImageComponent,
 		ContentContainerComponent,
 		SearchComponent,
@@ -52,6 +51,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		AddEmployeeComponent,
 		DateTimePipe,
 		EmptyListComponent,
+		PhoneInputComponent,
 	],
 	imports: [
 		CommonModule,
@@ -61,18 +61,18 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		MaterialModule,
 		InfiniteScrollModule,
 		LoadingBarHttpClientModule,
-		// LoadingBarRouterModule,
 		LoadingBarModule,
+		MdePopoverModule,
 	],
 	exports: [
 		CommonModule,
 		RouterModule,
 		MaterialModule,
 		InfiniteScrollModule,
+		MdePopoverModule,
 		ReactiveFormsModule,
 		FormsModule,
 		InputComponent,
-		SelectComponent,
 		ProfileImageComponent,
 		SearchComponent,
 		HeaderComponent,
@@ -90,6 +90,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 		DateTimePipe,
 		AddEmployeeComponent,
 		EmptyListComponent,
+		PhoneInputComponent,
 	],
 })
 export class SharedModule {}
