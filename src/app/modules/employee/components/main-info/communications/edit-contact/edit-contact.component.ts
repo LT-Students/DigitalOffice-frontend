@@ -30,8 +30,7 @@ export class EditContactComponent {
 		@Inject(MAT_DIALOG_DATA) public dialogData: CommunicationInfo,
 		private _matDialogRef: MatDialogRef<EditContactComponent>,
 		private _fb: FormBuilder,
-		private _communicationService: CommunicationService,
-		private _snackBar: MatSnackBar
+		private _communicationService: CommunicationService
 	) {
 		this.symbolsCountMap = {
 			one: '# символа',
@@ -74,8 +73,6 @@ export class EditContactComponent {
 			.editCommunication(request)
 			.pipe(
 				catchError((err) => {
-					const errMessage: string = err.error?.errors ? err.error.errors[0] : 'Что-то пошло не так :(';
-					this._snackBar.open(errMessage, 'x', { duration: 3000 });
 					return throwError(err);
 				}),
 				finalize(() => {

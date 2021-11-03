@@ -16,7 +16,7 @@ import { OfficeInfo } from '@data/api/company-service/models/office-info';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { RightsService } from '@app/services/rights/rights.service';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { PatchRequest, UserPath } from '@app/types/patch-paths';
@@ -59,7 +59,6 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		private _officeService: CompanyService,
 		private _employeeService: EmployeePageService,
 		private _dialog: MatDialog,
-		private _snackBar: MatSnackBar,
 		private _roleService: RightsService,
 		private _cdr: ChangeDetectorRef
 	) {
@@ -176,11 +175,9 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			.subscribe({
 				next: () => {
 					this.toggleEditMode();
-					this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
 				},
 				error: (error: HttpErrorResponse) => {
-					console.log(error);
-					this._snackBar.open(error.message, 'Close', { duration: 5000 });
+					return throwError(error);
 				},
 			});
 	}

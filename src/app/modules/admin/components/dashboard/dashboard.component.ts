@@ -26,12 +26,7 @@ export class DashboardComponent implements OnInit {
 	public openModalClick: Subject<AdminDashboardModalType>;
 	public modalType: typeof AdminDashboardModalType;
 
-	constructor(
-		private _router: Router,
-		private _matSnackBar: MatSnackBar,
-		public dialog: MatDialog,
-		public modalService: ModalService
-	) {
+	constructor(private _router: Router, public dialog: MatDialog, public modalService: ModalService) {
 		this.today = new Date();
 		this.openModalClick = new Subject<AdminDashboardModalType>();
 		this.modalType = AdminDashboardModalType;

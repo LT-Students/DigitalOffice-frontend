@@ -24,8 +24,7 @@ export class NewRoleComponent {
 	constructor(
 		private _rightsService: RightsService,
 		private _dialogRef: MatDialogRef<NewRoleComponent>,
-		private _fb: FormBuilder,
-		private _snackBar: MatSnackBar
+		private _fb: FormBuilder
 	) {
 		this.rights$ = this._rightsService.findRights().pipe(tap(console.log));
 		this.roleForm = this._fb.group({
@@ -64,17 +63,9 @@ export class NewRoleComponent {
 			})
 			.subscribe(
 				(result: OperationResultResponse) => {
-					this._snackBar.open('Новая роль успешно добавлена!', 'done', {
-						duration: 3000,
-					});
 					this._dialogRef.close(result);
 				},
 				(error: HttpErrorResponse) => {
-					let errorMessage = error.error.errors;
-					if (error.status === 409) {
-						errorMessage = 'Роль с таким названием уже существует';
-					}
-					this._snackBar.open(errorMessage, 'accept');
 					throw error;
 				}
 			);

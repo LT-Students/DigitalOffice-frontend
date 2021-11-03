@@ -31,8 +31,7 @@ export class AddContactComponent {
 		private _fb: FormBuilder,
 		private _dialogRef: MatDialogRef<AddContactComponent>,
 		private _communicationService: CommunicationService,
-		private _employeePageService: EmployeePageService,
-		private _snackBar: MatSnackBar
+		private _employeePageService: EmployeePageService
 	) {
 		this.symbolsCountMap = {
 			one: '# символа',
@@ -83,8 +82,6 @@ export class AddContactComponent {
 			.createCommunication(request)
 			.pipe(
 				catchError((err) => {
-					const errorMessage: string = err.error.errors ? err.error.errors[0] : 'Что-то пошло не так :(';
-					this._snackBar.open(errorMessage, '×', { duration: 3000 });
 					return throwError(err);
 				}),
 				finalize(() => {

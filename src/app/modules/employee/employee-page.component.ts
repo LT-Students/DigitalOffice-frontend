@@ -45,7 +45,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		private _employeeService: EmployeePageService,
 		private _route: ActivatedRoute,
 		private _router: Router,
-		private _snackBar: MatSnackBar,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.studyTypes = [EducationType.Offline, EducationType.Online];

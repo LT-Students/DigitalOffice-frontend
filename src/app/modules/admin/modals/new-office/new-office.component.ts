@@ -18,7 +18,6 @@ export class NewOfficeComponent {
 	constructor(
 		private _fb: FormBuilder,
 		private _officeService: OfficeService,
-		private _snackBar: MatSnackBar,
 		private _dialogRef: MatDialogRef<NewOfficeComponent>
 	) {
 		this.officeForm = this._fb.group({
@@ -37,14 +36,9 @@ export class NewOfficeComponent {
 			})
 			.subscribe(
 				(result) => {
-					this._snackBar.open('Новый офис успешно добавлен!', 'x', {
-						duration: 3000,
-					});
 					this._dialogRef.close(result);
 				},
 				(error: HttpErrorResponse) => {
-					// error.error.message === undefined, поэтому так
-					this._snackBar.open('Что-то пошло не так :(', 'accept');
 					throw error;
 				}
 			);

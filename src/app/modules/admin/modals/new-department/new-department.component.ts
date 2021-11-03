@@ -31,7 +31,6 @@ export class NewDepartmentComponent implements OnInit {
 		public _departmentService: DepartmentService,
 		private _dialogRef: MatDialogRef<NewDepartmentComponent>,
 		private _formBuilder: FormBuilder,
-		private _snackBar: MatSnackBar,
 		@Inject(MAT_DIALOG_DATA) data: EditModalContent
 	) {
 		this._departamentInfo = data;
@@ -67,17 +66,9 @@ export class NewDepartmentComponent implements OnInit {
 			})
 			.subscribe(
 				(result) => {
-					this._snackBar.open('Новый департамент успешно добавлен', 'done', {
-						duration: 3000,
-					});
 					this._dialogRef.close(result);
 				},
 				(error: HttpErrorResponse) => {
-					let errorMessage = error.error.errors;
-					if (error.status === 409) {
-						errorMessage = 'Департамент с таким названием уже существует';
-					}
-					this._snackBar.open(errorMessage, 'accept');
 					throw error;
 				}
 			);
@@ -105,9 +96,6 @@ export class NewDepartmentComponent implements OnInit {
 				body: editBody,
 			})
 			.subscribe((result: OperationResultResponse) => {
-				this._snackBar.open('Департамент успешно изменен', 'done', {
-					duration: 3000,
-				});
 				this._dialogRef.close(result);
 			});
 	}

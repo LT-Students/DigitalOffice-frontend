@@ -34,7 +34,6 @@ export class NewsFeedComponent {
 		private _currentCompanyService: CurrentCompanyService,
 		private _cdr: ChangeDetectorRef,
 		private _editorJSParser: EditorJSParser,
-		private _snackBar: MatSnackBar,
 		private _newsFeedService: NewsFeedService
 	) {
 		this.fixedTags = false;

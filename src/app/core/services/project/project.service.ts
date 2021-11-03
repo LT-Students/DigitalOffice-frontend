@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import {
 	EditProjectRequest,
 	ImageContent,
@@ -14,6 +14,8 @@ import {
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
+import { catchError, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface IGetProjectRequest {
 	projectId: string;
@@ -72,7 +74,11 @@ export interface IFindProjects {
 	providedIn: 'root',
 })
 export class ProjectService {
-	constructor(private _projectService: ProjectApiService, private _userService: UserApiService) {}
+	constructor(
+		private _projectService: ProjectApiService,
+		private _userService: UserApiService,
+		private _snackBar: MatSnackBar
+	) {}
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
 		return this._projectService.findProjects(params);
@@ -83,7 +89,21 @@ export class ProjectService {
 	}
 
 	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
-		return this._projectService.createProject({ body });
+		return this._projectService.createProject({ body }).pipe(
+			tap(() =>
+				this._snackBar.open('Проект успешно создан!', 'done', {
+					duration: 3000,
+				})
+			),
+			catchError((err) => {
+				let errorMessage: string = err.error.errors[0] ?? 'Что-то пошло не так :(';
+				if (err.status === 409) {
+					errorMessage = 'Проект с таким названием уже существует';
+				}
+				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				return throwError(err);
+			})
+		);
 	}
 
 	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse<{}>> {
