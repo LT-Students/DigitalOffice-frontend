@@ -7,27 +7,25 @@
 		]"
 	></do-breadcrumbs>
 	<ng-container *ngIf="userLogged$ | async">
-		<div class="employee-page__button flex">
+		<button
+			mat-button
+			class="employee-page__button mat-body-1 flex"
+			*ngIf="selectedUser?.isActive; else restore"
+			(click)="onActionEmployeeClick(selectedUser.id, 'disable')"
+		>
+			<mat-icon>archive</mat-icon>
+			<span class="employee-page__button-label">Добавить в архив</span>
+		</button>
+		<ng-template #restore>
 			<button
 				mat-button
 				class="employee-page__button mat-body-1"
-				*ngIf="selectedUser?.isActive; else restore"
-				(click)="onActionEmployeeClick(selectedUser.id, 'disable')"
+				(click)="onActionEmployeeClick(selectedUser.id, 'activate')"
 			>
-				<mat-icon>archive</mat-icon>
-				<span class="employee-page__button-label">Добавить в архив</span>
+				<mat-icon>restore_from_trash</mat-icon>
+				<span class="employee-page__button-label">Восстановить</span>
 			</button>
-			<ng-template #restore>
-				<button
-					mat-button
-					class="employee-page__button"
-					(click)="onActionEmployeeClick(selectedUser.id, 'activate')"
-				>
-					<mat-icon>restore_from_trash</mat-icon>
-					<span class="employee-page__button-label">Восстановить</span>
-				</button>
-			</ng-template>
-		</div>
+		</ng-template>
 	</ng-container>
 </div>
 <mat-card class="card card_employee card_employee__info">
