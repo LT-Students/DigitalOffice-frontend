@@ -8,7 +8,6 @@ import { OperationResultResponse } from '@data/api/user-service/models/operation
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { CommunicationType } from '@data/api/user-service/models/communication-type';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel } from '@app/models/communication.model';
 

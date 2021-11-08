@@ -5,7 +5,6 @@ import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';

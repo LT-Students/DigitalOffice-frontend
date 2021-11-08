@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/cor
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { UserService } from '@app/services/user/user.service';
 import { map } from 'rxjs/operators';

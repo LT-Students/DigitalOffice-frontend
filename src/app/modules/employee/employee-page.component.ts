@@ -3,7 +3,6 @@ import { UserService } from '@app/services/user/user.service';
 import { EducationType } from '@data/api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
 import { skip, switchMap, takeUntil } from 'rxjs/operators';

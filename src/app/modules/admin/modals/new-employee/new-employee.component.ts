@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -46,7 +45,6 @@ export class NewEmployeeComponent implements OnDestroy {
 	constructor(
 		private _formBuilder: FormBuilder,
 		private _userService: UserService,
-		private _matSnackBar: MatSnackBar,
 		private _dialogRef: MatDialogRef<any>,
 		private _rightsService: RightsService,
 		private _positionService: PositionService,
@@ -82,24 +80,9 @@ export class NewEmployeeComponent implements OnDestroy {
 			.pipe(takeUntil(this._unsubscribe$))
 			.subscribe(
 				(result: OperationResultResponse) => {
-					if (result.errors && result.errors.length) {
-						const message = result.errors.join('\n');
-						this._matSnackBar.open(message, 'Закрыть');
-					}
-					this._matSnackBar.open('Пользователь успешно создан', 'Закрыть', { duration: 3000 });
 					this._dialogRef.close(result);
 				},
 				(error: OperationResultResponse | HttpErrorResponse) => {
-					let message =
-						error && 'errors' in error
-							? error.errors?.[0]
-							: 'error' in error
-							? error.error.message
-							: 'Упс! Что-то пошло не так.';
-					if (error.status === 409) {
-						message = 'Пользователь с такой электронной почтой уже существует';
-					}
-					this._matSnackBar.open(message, 'Закрыть');
 					throw error;
 				}
 			);
@@ -109,10 +92,6 @@ export class NewEmployeeComponent implements OnDestroy {
 		this.userForm.patchValue({
 			rate: +this.userForm.get('rate')?.value + step,
 		});
-	}
-
-	public onCancelClick() {
-		return this._matSnackBar._openedSnackBarRef?.dismissWithAction();
 	}
 
 	private _initForm(): FormGroup {

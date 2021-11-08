@@ -5,7 +5,6 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { NewsService } from '@app/services/news/news.service';
 import { ArticlePreview } from '@app/models/news.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalService } from '@app/services/modal.service';
 import { NewsFeedService } from '@app/services/news-feed.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';

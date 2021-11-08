@@ -9,7 +9,6 @@ import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { finalize, map } from 'rxjs/operators';
 import { PatchUserDocument, UserGender } from '@data/api/user-service/models';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';

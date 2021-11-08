@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OfficeService } from '@app/services/company/office.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialogRef } from '@angular/material/dialog';
 import { DoValidators } from '@app/validators/do-validators';

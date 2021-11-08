@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
@@ -18,6 +18,7 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface IUserResponse {
 	user?: UserInfo;
@@ -45,7 +46,7 @@ export interface IFindUsers {
 	providedIn: 'root',
 })
 export class UserService {
-	constructor(private _userApiService: UserApiService) {}
+	constructor(private _userApiService: UserApiService, private _snackBar: MatSnackBar) {}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
@@ -59,10 +60,19 @@ export class UserService {
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
 		return this._userApiService.createUser({ body: params }).pipe(
-			switchMap((res) => {
-				return res.status === OperationResultStatusType.Failed ? throwError(res) : of(res);
-			}),
-			catchError((error) => throwError(error))
+			tap(() =>
+				this._snackBar.open('Пользователь успешно создан!', 'done', {
+					duration: 3000,
+				})
+			),
+			catchError((err) => {
+				let errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
+				if (err.status === 409) {
+					errorMessage = 'Пользователь с такими данными уже существует';
+				}
+				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				return throwError(err);
+			})
 		);
 	}
 
