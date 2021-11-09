@@ -4,9 +4,9 @@ export { CreateRoleLocalizationRequest } from './models/create-role-localization
 export { RoleInfo } from './models/role-info';
 export { UserInfo } from './models/user-info';
 export { RoleLocalizationInfo } from './models/role-localization-info';
-export { ErrorResponse } from './models/error-response';
 export { OperationResultResponse } from './models/operation-result-response';
 export { OperationResultStatusType } from './models/operation-result-status-type';
 export { OperationResultResponseRoleResponse } from './models/operation-result-response-role-response';
+export { OperationResultResponseRights } from './models/operation-result-response-rights';
 export { FindResultResponseRoleInfo } from './models/find-result-response-role-info';
 export { FindResultResponse } from './models/find-result-response';
