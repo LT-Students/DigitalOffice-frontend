@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@app/services/user/user.service';
-import { DepartmentInfo } from '@data/api/company-service/models/department-info';
+import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType } from '@data/api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { DepartmentUserInfo } from '@data/api/company-service/models/department-user-info';
+import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { map } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
