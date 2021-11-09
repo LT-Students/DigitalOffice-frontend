@@ -3,12 +3,15 @@
 @use '~@angular/material' as mat;
 
 .employee-info {
+	display: flex;
+
 	&__wrapper {
 		display: grid;
 
 		min-width: 600px;
+		max-width: 848px;
 
-		grid-template-columns: 30fr 40fr 30fr;
+		grid-template-columns: 30fr 40fr;
 	}
 
 	&__form {
@@ -35,6 +38,9 @@
 	}
 
 	&__additional {
+		width: 100%;
+		max-width: 393px;
+
 		background-color: mat.get-color-from-palette($do-grey, 50);
 
 		&_editing {

@@ -1,6 +1,6 @@
 <div class="employee-info">
 	<ng-container *ngIf="user">
-		<ng-container *ngIf="!canEdit() || !isEditing; else editForm">
+		<ng-container *ngIf="!isEditing; else editForm">
 			<div class="employee-info__wrapper">
 				<div class="employee-info__main">
 					<div class="employee-info__avatar">
@@ -67,11 +67,11 @@
 						</div>
 					</div>
 				</div>
-				<div class="employee-info__additional">
-					<do-communications></do-communications>
-				</div>
 			</div>
 		</ng-container>
+		<div class="employee-info__additional">
+			<do-communications></do-communications>
+		</div>
 	</ng-container>
 </div>
 
@@ -244,9 +244,6 @@
 						</mat-form-field>
 					</div>
 				</div>
-			</div>
-			<div class="employee-info__additional employee-info__additional_editing">
-				<do-communications [mainInfoEditing]="true"></do-communications>
 			</div>
 			<div class="employee-info__required-block">
 				<span class="warn"> <sup>*</sup>&nbsp;Обязательное поле</span>

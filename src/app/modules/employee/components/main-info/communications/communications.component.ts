@@ -20,7 +20,7 @@ import { EditContactComponent } from './edit-contact/edit-contact.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommunicationsComponent implements OnInit {
-	@Input() public mainInfoEditing: boolean;
+	// @Input() public mainInfoEditing: boolean;
 	public communications: CommunicationInfo[];
 	public employeeId: string;
 	public emailContactCount: number;
@@ -33,7 +33,8 @@ export class CommunicationsComponent implements OnInit {
 		private _snackBar: MatSnackBar,
 		private _clipboard: Clipboard
 	) {
-		this.mainInfoEditing = false;
+		console.log('Initial');
+		// this.mainInfoEditing = false;
 		this.communications = [];
 		this.employeeId = '';
 		this.emailContactCount = 0;
