@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Sort } from '@angular/material/sort';
-import { DepartmentInfo } from '@data/api/company-service/models/department-info';
+import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { ActivatedRoute } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 import { ModalService } from '@app/services/modal.service';

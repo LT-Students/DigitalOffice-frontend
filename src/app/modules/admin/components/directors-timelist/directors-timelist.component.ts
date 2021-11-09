@@ -122,7 +122,8 @@ export class DirectorsTimelistComponent implements OnInit {
 			body: [
 				{
 					op: 'replace',
-					path: '/ManagerHours',
+					// path: '/ManagerHours',
+					path: '/Hours',
 					value:
 						type === 'submit' ? Number(this.hoursGroup.get(`hours_${workTime.id}`)?.value ?? 0) : undefined,
 				},
