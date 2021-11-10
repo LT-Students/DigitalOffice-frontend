@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { CreateUserRequest } from './create-user-request';
 export interface CreateDepartmentRequest {
 	/**
 	 * Department description.
@@ -7,13 +8,8 @@ export interface CreateDepartmentRequest {
 	description?: null | string;
 
 	/**
-	 * Specific director user id this department.
-	 */
-	directorUserId?: null | string;
-
-	/**
 	 * Department name.
 	 */
 	name: string;
-	users?: Array<string>;
+	users?: Array<CreateUserRequest>;
 }

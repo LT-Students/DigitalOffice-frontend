@@ -4,9 +4,9 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { UserRightsApiService } from './services/user-rights-api.service';
-import { RightsApiService } from './services/rights-api.service';
-import { RoleApiService } from './services/role-api.service';
+import { OfficeApiService } from './services/office-api.service';
+import { CompanyApiService } from './services/company-api.service';
+import { UserOfficeApiService } from './services/user-office-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -15,12 +15,12 @@ import { RoleApiService } from './services/role-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [UserRightsApiService, RightsApiService, RoleApiService, ApiConfiguration],
+	providers: [OfficeApiService, CompanyApiService, UserOfficeApiService, ApiConfiguration],
 })
-export class RightsApiModule {
-	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<RightsApiModule> {
+export class OfficeApiModule {
+	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<OfficeApiModule> {
 		return {
-			ngModule: RightsApiModule,
+			ngModule: OfficeApiModule,
 			providers: [
 				{
 					provide: ApiConfiguration,
@@ -30,9 +30,9 @@ export class RightsApiModule {
 		};
 	}
 
-	constructor(@Optional() @SkipSelf() parentModule: RightsApiModule, @Optional() http: HttpClient) {
+	constructor(@Optional() @SkipSelf() parentModule: OfficeApiModule, @Optional() http: HttpClient) {
 		if (parentModule) {
-			throw new Error('RightsApiModule is already loaded. Import in your base AppModule only.');
+			throw new Error('OfficeApiModule is already loaded. Import in your base AppModule only.');
 		}
 		if (!http) {
 			throw new Error(
