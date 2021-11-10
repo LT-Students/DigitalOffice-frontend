@@ -27,7 +27,7 @@ export class NewRoleComponent {
 		private _fb: FormBuilder,
 		private _snackBar: MatSnackBar
 	) {
-		this.rights$ = this._rightsService.findRights().pipe(map((rigths) => rigths.body ?? []));
+		this.rights$ = this._rightsService.findRights().pipe(map((rights) => rights.body ?? []));
 		this.roleForm = this._fb.group({
 			name: ['', [Validators.required, DoValidators.noWhitespaces]],
 			description: [''],
