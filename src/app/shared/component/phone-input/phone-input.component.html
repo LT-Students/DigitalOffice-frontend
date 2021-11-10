@@ -1,0 +1,9 @@
+<input
+	matInput
+	type="tel"
+	[formControl]="control"
+	(paste)="onPaste($event)"
+	(input)="onInput($event)"
+	(keydown.backspace)="onBackspaceDown()"
+	[placeholder]="placeholder"
+/>
