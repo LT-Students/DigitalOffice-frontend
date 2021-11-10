@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { CreateUserRequest } from './create-user-request';
+import { FileContent } from './file-content';
 import { ImageContent } from './image-content';
 import { ProjectStatusType } from './project-status-type';
 export interface CreateProjectRequest {
@@ -13,6 +14,7 @@ export interface CreateProjectRequest {
 	 * Project description.
 	 */
 	description?: string;
+	files?: Array<FileContent>;
 
 	/**
 	 * Project name.
