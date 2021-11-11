@@ -4,8 +4,8 @@ import { UserInfo } from './user-info';
 import { WorkTimeInfo } from './work-time-info';
 import { WorkTimeMonthLimitInfo } from './work-time-month-limit-info';
 export interface WorkTimeResponse {
-  limitInfo?: WorkTimeMonthLimitInfo;
-  user?: UserInfo;
-  workTime?: WorkTimeInfo;
+	limitInfo?: WorkTimeMonthLimitInfo;
+	manager?: UserInfo;
+	user?: UserInfo;
+	workTime?: WorkTimeInfo;
 }
-

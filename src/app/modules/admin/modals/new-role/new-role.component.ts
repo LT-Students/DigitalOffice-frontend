@@ -8,7 +8,7 @@ import { RightsService } from '@app/services/rights/rights.service';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { DoValidators } from '@app/validators/do-validators';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'do-new-role',
@@ -25,7 +25,7 @@ export class NewRoleComponent {
 		private _dialogRef: MatDialogRef<NewRoleComponent>,
 		private _fb: FormBuilder
 	) {
-		this.rights$ = this._rightsService.findRights().pipe(tap(console.log));
+		this.rights$ = this._rightsService.findRights().pipe(map((rights) => rights.body ?? []));
 		this.roleForm = this._fb.group({
 			name: ['', [Validators.required, DoValidators.noWhitespaces]],
 			description: [''],

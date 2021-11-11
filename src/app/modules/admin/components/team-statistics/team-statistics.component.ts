@@ -102,7 +102,8 @@ export class TeamStatisticsComponent implements OnInit {
 			body: [
 				{
 					op: 'replace',
-					path: '/ManagerHours',
+					// path: '/ManagerHours',
+					path: '/Hours',
 					value:
 						type === 'submit' ? Number(this.hoursGroup.get(`hours_${employee.id}`)?.value ?? 0) : undefined,
 				},

@@ -18,6 +18,7 @@
     "generate.image": "ng-openapi-gen -c swagger/config/image.json",
     "generate.message": "ng-openapi-gen -c swagger/config/message.json",
     "generate.news": "ng-openapi-gen -c swagger/config/news.json",
+    "generate.office": "ng-openapi-gen -c swagger/config/office.json",
     "generate.position": "ng-openapi-gen -c swagger/config/position.json",
     "generate.project": "ng-openapi-gen -c swagger/config/project.json",
     "generate.rights": "ng-openapi-gen -c swagger/config/rights.json",

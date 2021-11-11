@@ -5,7 +5,7 @@ import {
 	EditProjectRequest,
 	ImageContent,
 	ImageInfo,
-	ProjectFileInfo,
+	// ProjectFileInfo,
 	ProjectInfo,
 	ProjectStatusType,
 	ProjectUserRoleType,
@@ -29,7 +29,7 @@ export interface IGetProjectRequest {
 export interface IGetProjectResponse {
 	project?: ProjectInfo;
 	users?: Array<UserInfo>;
-	files?: Array<ProjectFileInfo>;
+	// files?: Array<ProjectFileInfo>;
 	images?: Array<ImageInfo>;
 }
 

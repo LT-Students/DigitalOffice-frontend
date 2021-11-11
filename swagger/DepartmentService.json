@@ -289,6 +289,16 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Department global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
         }
       ],
       "post": {
@@ -301,7 +311,12 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddDepartmentUsersRequest"
+                "type": "array",
+                "items": {
+                  "description": "Specific user identifier.",
+                  "type": "string",
+                  "format": "uuid"
+                }
               }
             }
           },
@@ -617,20 +632,32 @@
             "type": "string",
             "nullable": true
           },
-          "DirectorUserId": {
-            "description": "Specific director user id this department.",
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
           "Users": {
             "type": "array",
             "items": {
-              "type": "string",
-              "format": "uuid"
+              "$ref": "#/components/schemas/CreateUserRequest"
             }
           }
         }
+      },
+      "CreateUserRequest": {
+        "type": "object",
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Role": {
+            "$ref": "#/components/schemas/DepartmentUserRole"
+          }
+        }
+      },
+      "DepartmentUserRole": {
+        "type": "string",
+        "enum": [
+          "Employee",
+          "Director"
+        ]
       },
       "EditDepartmentRequest": {
         "type": "array",
@@ -648,28 +675,6 @@
         ],
         "items": {
           "$ref": "#/components/schemas/PatchDepartmentDocument"
-        }
-      },
-      "AddDepartmentUsersRequest": {
-        "type": "object",
-        "description": "Specific department users data.",
-        "required": [
-          "DeprtmentId",
-          "UsersIds"
-        ],
-        "properties": {
-          "DeprtmentId": {
-            "description": "Specific department identifier.",
-            "type": "string",
-            "format": "uuid"
-          },
-          "Users": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
         }
       },
       "OperationResultResponse": {

@@ -17,12 +17,12 @@ import { map, takeUntil } from 'rxjs/operators';
 import { RightsService } from '@app/services/rights/rights.service';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
-import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
-import { FindResultResponsePositionInfo } from '@data/api/company-service/models/find-result-response-position-info';
+import { FindResultResponseDepartmentInfo } from '@data/api/department-service/models/find-result-response-department-info';
+import { FindResultResponsePositionInfo } from '@data/api/position-service/models/find-result-response-position-info';
 import { DoValidators } from '@app/validators/do-validators';
 import { PositionService } from '@app/services/position/position.service';
 import { DepartmentService } from '@app/services/department/department.service';
-import { CompanyService } from '@app/services/company/company.service';
+import { OfficeService } from '@app/services/company/office.service';
 
 @Component({
 	selector: 'do-new-employee',
@@ -49,7 +49,7 @@ export class NewEmployeeComponent implements OnDestroy {
 		private _rightsService: RightsService,
 		private _positionService: PositionService,
 		private _departmentService: DepartmentService,
-		private _officeService: CompanyService
+		private _officeService: OfficeService
 	) {
 		this.message = '';
 		this.userForm = this._initForm();

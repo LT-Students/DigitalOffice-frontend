@@ -93,7 +93,6 @@ export class UserService {
 				},
 			],
 		};
-
 		return this._userApiService.editUser(params);
 	}
 

@@ -22,7 +22,7 @@ import { PatchRequest, UserPath } from '@app/types/patch-paths';
 import { DateTime } from 'luxon';
 import { PositionService } from '@app/services/position/position.service';
 import { DepartmentService } from '@app/services/department/department.service';
-import { CompanyService } from '@app/services/company/company.service';
+import { OfficeService } from '@app/services/company/office.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -55,7 +55,7 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		private _userService: UserService,
 		private _positionService: PositionService,
 		private _departmentService: DepartmentService,
-		private _officeService: CompanyService,
+		private _officeService: OfficeService,
 		private _employeeService: EmployeePageService,
 		private _dialog: MatDialog,
 		private _roleService: RightsService,
@@ -187,13 +187,13 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 				'/FirstName': this.user.firstName,
 				'/LastName': this.user.lastName,
 				'/MiddleName': this.user.middleName,
-				'/AvatarFileId': this.user.avatarImage?.id,
+				// '/AvatarFileId': this.user.avatarImage?.id,
 				'/Status': this.user.statusEmoji?.statusType,
 				'/About': this.user.about,
 				// '/PositionId': this.user.position?.id,
 				// '/DepartmentId': this.user.department?.id,
-				'/OfficeId': this.user.office?.id,
-				'/RoleId': this.user.role?.id,
+				// '/OfficeId': this.user.office?.id,
+				// '/RoleId': this.user.role?.id,
 				// '/Rate': this.user.rate,
 				'/City': this.user.city,
 				'/Gender': this.user.gender?.genderType,

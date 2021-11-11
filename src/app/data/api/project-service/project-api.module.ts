@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ProjectApiService } from './services/project-api.service';
+import { FileApiService } from './services/file-api.service';
 import { ImageApiService } from './services/image-api.service';
 import { UserApiService } from './services/user-api.service';
 
@@ -15,7 +16,7 @@ import { UserApiService } from './services/user-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [ProjectApiService, ImageApiService, UserApiService, ApiConfiguration],
+	providers: [ProjectApiService, FileApiService, ImageApiService, UserApiService, ApiConfiguration],
 })
 export class ProjectApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ProjectApiModule> {

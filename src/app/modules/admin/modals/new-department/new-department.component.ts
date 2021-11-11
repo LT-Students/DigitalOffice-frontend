@@ -7,7 +7,7 @@ import { UserService } from '@app/services/user/user.service';
 import { map } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
-import { PatchDepartmentDocument } from '@data/api/company-service/models/patch-department-document';
+import { PatchDepartmentDocument } from '@data/api/department-service/models/patch-department-document';
 import { DepartmentService } from '@app/services/department/department.service';
 import { DepartmentPath } from '@app/types/patch-paths';
 import { EditModalContent } from '../../components/department-card/department-card.component';
@@ -56,11 +56,12 @@ export class NewDepartmentComponent implements OnInit {
 	}
 
 	public createDepartment(): void {
+		console.log('ДИРЕКТОР:', this.departmentForm.get('directorid')?.value);
 		this._departmentService
 			.createDepartment({
 				name: this.departmentForm.get('name')?.value?.trim(),
 				description: this.departmentForm.get('description')?.value?.trim(),
-				directorUserId: this.departmentForm.get('directorid')?.value,
+				// directorUserId: this.departmentForm.get('directorid')?.value,
 				users: [],
 			})
 			.subscribe(

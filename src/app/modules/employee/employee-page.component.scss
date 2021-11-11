@@ -20,16 +20,12 @@
 }
 
 .employee-page {
-	&__header {
-		margin-bottom: 48px;
-	}
-
 	&__button {
-		cursor: pointer;
+		margin-bottom: 15px;
 
-		&:hover {
-			color: #707070;
-		}
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	&__button-label {
