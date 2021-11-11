@@ -1,0 +1,75 @@
+<h3 mat-dialog-title class="title">Создание контакта</h3>
+<div [formGroup]="contactForm">
+	<mat-form-field appearance="fill" class="field">
+		<mat-label>Тип контакта</mat-label>
+		<mat-select formControlName="type">
+			<mat-option
+				*ngFor="let type of contactTypes"
+				[value]="type.type"
+				(onSelectionChange)="onTypeChange(type.type, $event)"
+			>
+				{{ type.contactName }}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<mat-form-field appearance="fill" class="field" floatLabel="always">
+		<mat-icon
+			matPrefix
+			*ngIf="
+				contactForm.controls['type'].value === 'Telegram' || contactForm.controls['type'].value === 'Twitter'
+			"
+		>
+			alternate_email
+		</mat-icon>
+		<mat-label>{{ contactForm.controls['type'].value }}</mat-label>
+		<input
+			matInput
+			formControlName="value"
+			*ngIf="contactForm.controls['type'].value !== 'Phone'; else phoneInput"
+			[placeholder]="'Введите новый ' + contactName"
+		/>
+		<ng-template #phoneInput>
+			<do-phone-input
+				formControlName="value"
+				placeholder="Введите номер в международном формате"
+			></do-phone-input>
+		</ng-template>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['required']">Поле обязательно.</mat-error>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['email']">Введите корректный email.</mat-error>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['telegram']"
+			>Имя пользователя telegram может содержать символы a-z, 0-9 и нижнее подчёркивание. Имя не может начинаться
+			с цифры, а также начинаться и заканчиваться нижним подчёркиванием.
+		</mat-error>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['skype']"
+			>Имя пользователя skype может содержать символы a-z, 0-9, а также запятую, тире, точку и нижнее
+			подчёркивание.
+		</mat-error>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['twitter']"
+			>Имя пользователя twitter может содержать символы a-z, 0-9 и нижнее подчёркивание.
+		</mat-error>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['phone']"
+			>Введите корректный номер телефона в международном формате.
+		</mat-error>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['maxlength']"
+			>Имя пользователя не может быть длиннее
+			{{contactForm.controls['value']?.errors?.['maxlength'].requiredLength | i18nPlural: symbolsCountMap }}.
+		</mat-error>
+		<mat-error *ngIf="contactForm.controls['value']?.errors?.['minlength']"
+			>Имя пользователя не может быть короче
+			{{contactForm.controls['value']?.errors?.['minlength'].requiredLength | i18nPlural: symbolsCountMap }}.
+		</mat-error>
+	</mat-form-field>
+</div>
+<div class="controls">
+	<button mat-flat-button (click)="onClose()" class="controls__button">Отменить</button>
+	<button
+		mat-flat-button
+		color="primary"
+		(click)="onSubmit()"
+		class="controls__button"
+		[disabled]="contactForm.invalid"
+		[loading]="(loading | async) ?? false"
+	>
+		Сохранить
+	</button>
+</div>

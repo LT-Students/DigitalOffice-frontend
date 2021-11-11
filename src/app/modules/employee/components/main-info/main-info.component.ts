@@ -7,9 +7,8 @@ import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { PatchUserDocument, UserGender } from '@data/api/user-service/models';
-import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
@@ -17,11 +16,14 @@ import { OfficeInfo } from '@data/api/company-service/models/office-info';
 import { DepartmentInfo } from '@data/api/company-service/models/department-info';
 import { PositionInfo } from '@data/api/company-service/models/position-info';
 import { RightsService } from '@app/services/rights/rights.service';
-import { Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { PatchRequest, UserPath } from '@app/types/patch-paths';
 import { DateTime } from 'luxon';
+import { PositionService } from '@app/services/position/position.service';
+import { DepartmentService } from '@app/services/department/department.service';
+import { CompanyService } from '@app/services/company/company.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -31,6 +33,8 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainInfoComponent implements OnInit, OnDestroy {
+	public loading: BehaviorSubject<boolean>;
+
 	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
 	public employeeInfoForm: FormGroup;
@@ -50,33 +54,36 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		private _fb: FormBuilder,
 		private _route: ActivatedRoute,
 		private _userService: UserService,
+		private _positionService: PositionService,
+		private _departmentService: DepartmentService,
+		private _officeService: CompanyService,
 		private _employeeService: EmployeePageService,
-		private _netService: NetService,
 		private _dialog: MatDialog,
 		private _snackBar: MatSnackBar,
 		private _roleService: RightsService,
 		private _cdr: ChangeDetectorRef
 	) {
+		this.loading = new BehaviorSubject<boolean>(false);
 		this._initialData = {};
 		this.genders = PersonalInfoManager.getGenderList();
 		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
 		this.employeeInfoForm = this._initEditForm();
-		this.departments$ = this._netService
-			.getDepartmentsList({
+		this.departments$ = this._departmentService
+			.findDepartments({
 				skipCount: 0,
 				takeCount: 500,
 			})
 			.pipe(map((res) => res.body));
 
-		this.positions$ = this._netService
-			.getPositionsList({
+		this.positions$ = this._positionService
+			.findPositions({
 				skipCount: 0,
 				takeCount: 500,
 			})
 			.pipe(map((res) => res.body));
 
-		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
+		this.offices$ = this._officeService.findOffices({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
 		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
 	}
 
@@ -109,7 +116,6 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 
 	public onSubmit(): void {
 		this._editUser();
-		this.toggleEditMode();
 	}
 
 	public onReset(): void {
@@ -117,20 +123,30 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 		this.toggleEditMode();
 	}
 
+	public changeWorkingRate(step: number) {
+		// const currentValue = this.employeeInfoForm.get('/Rate')?.value;
+		// const rate = +currentValue + step;
+		// this.employeeInfoForm.patchValue({ '/Rate': rate });
+		//
+		// if (this.employeeInfoForm.get('/Rate')?.pristine) {
+		// 	this.employeeInfoForm.get('/Rate')?.markAsDirty();
+		// }
+	}
+
 	public onOpenDialog(): void {
-		const dialogRef = this._dialog.open(UploadPhotoComponent, { autoFocus: false });
+		const dialogRef = this._dialog.open(UploadPhotoComponent, {});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({
-					'/AvatarImage': result,
+					photo: result,
 				});
-				this.employeeInfoForm.get('/AvatarImage')?.markAsDirty();
+				this.employeeInfoForm.get('/AvatarFileId')?.markAsDirty();
 			}
-			this._cdr.markForCheck();
 		});
 	}
 
 	private _editUser(): void {
+		this.loading.next(true);
 		const editRequest = (Object.keys(this.employeeInfoForm.controls) as UserPath[]).reduce(
 			(acc: PatchUserDocument[], key) => {
 				const formValue = this.employeeInfoForm.get(key)?.value;
@@ -150,15 +166,23 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			[]
 		);
 
-		this._employeeService.editEmployee(editRequest).subscribe({
-			next: () => {
-				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
-			},
-			error: (error: HttpErrorResponse) => {
-				console.log(error);
-				this._snackBar.open(error.message, 'Close', { duration: 5000 });
-			},
-		});
+		this._employeeService
+			.editEmployee(editRequest)
+			.pipe(
+				finalize(() => {
+					this.loading.next(false);
+				})
+			)
+			.subscribe({
+				next: () => {
+					this.toggleEditMode();
+					this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
+				},
+				error: (error: HttpErrorResponse) => {
+					console.log(error);
+					this._snackBar.open(error.message, 'Close', { duration: 5000 });
+				},
+			});
 	}
 
 	private _fillForm(): void {
@@ -167,14 +191,14 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 				'/FirstName': this.user.firstName,
 				'/LastName': this.user.lastName,
 				'/MiddleName': this.user.middleName,
-				'/AvatarImage': this.user.avatarImage,
+				'/AvatarFileId': this.user.avatarImage?.id,
 				'/Status': this.user.statusEmoji?.statusType,
 				'/About': this.user.about,
-				'/PositionId': this.user.position?.id,
-				'/DepartmentId': this.user.department?.id,
+				// '/PositionId': this.user.position?.id,
+				// '/DepartmentId': this.user.department?.id,
 				'/OfficeId': this.user.office?.id,
 				'/RoleId': this.user.role?.id,
-				'/Rate': this.user.rate,
+				// '/Rate': this.user.rate,
 				'/City': this.user.city,
 				'/Gender': this.user.gender?.genderType,
 				'/DateOfBirth': this.user.dateOfBirth,
@@ -189,14 +213,14 @@ export class MainInfoComponent implements OnInit, OnDestroy {
 			'/FirstName': ['', Validators.required],
 			'/LastName': ['', Validators.required],
 			'/MiddleName': [''],
-			'/AvatarImage': [''],
+			'/AvatarFileId': [''],
 			'/Status': [null],
 			'/About': [''],
-			'/PositionId': ['', Validators.required],
-			'/DepartmentId': [''],
+			// '/PositionId': ['', Validators.required],
+			// '/DepartmentId': [''],
 			'/OfficeId': ['', Validators.required],
 			'/RoleId': [''],
-			'/Rate': ['', Validators.required],
+			// '/Rate': ['', Validators.required],
 			'/City': [''],
 			'/StartWorkingAt': [null],
 			'/DateOfBirth': [null],

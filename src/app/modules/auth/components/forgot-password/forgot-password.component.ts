@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { UserService } from '@app/services/user/user.service';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { CurrentCompanyService } from '@app/services/current-company.service';
+import { BehaviorSubject } from 'rxjs';
+import { DoValidators } from '@app/validators/do-validators';
+import { CredentialsService } from '@app/services/user/credentials.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
 	selector: 'do-forgot-password',
@@ -12,34 +12,29 @@ import { CurrentCompanyService } from '@app/services/current-company.service';
 	styleUrls: ['./forgot-password.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ForgotPasswordComponent implements OnInit {
-	public portalName: Observable<string>;
+export class ForgotPasswordComponent {
 	public forgotPasswordForm: FormGroup;
-	public isWaiting = false;
-	public isCompleted = false;
+	public isWaiting$$: BehaviorSubject<boolean>;
+	public isCompleted$$: BehaviorSubject<boolean>;
 
-	constructor(
-		private userService: UserService,
-		private _currentCompanyService: CurrentCompanyService,
-		private formBuilder: FormBuilder
-	) {
-		this.portalName = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
-		this.forgotPasswordForm = this.formBuilder.group({
-			email: ['', [Validators.required, Validators.email]],
+	constructor(private _credentialService: CredentialsService, private _formBuilder: FormBuilder) {
+		this.isWaiting$$ = new BehaviorSubject<boolean>(false);
+		this.isCompleted$$ = new BehaviorSubject<boolean>(false);
+
+		this.forgotPasswordForm = this._formBuilder.group({
+			email: ['', [Validators.required, DoValidators.email]],
 		});
 	}
 
-	ngOnInit(): void {}
-
-	public resetPassword() {
-		this.isWaiting = true;
-		setTimeout(() => {
-			this.isCompleted = true;
-			this.isWaiting = false;
-		}, 1000);
-	}
-
-	public isEmailInputValid(): boolean {
-		return !(this.forgotPasswordForm.get('email')?.dirty && this.forgotPasswordForm.get('email')?.invalid);
+	public resetPassword(): void {
+		this.isWaiting$$.next(true);
+		this._credentialService
+			.forgotPassword({ userEmail: this.forgotPasswordForm.get('email')?.value.trim() })
+			.pipe(
+				finalize(() => {
+					this.isWaiting$$.next(false);
+				})
+			)
+			.subscribe({ next: () => this.isCompleted$$.next(true) });
 	}
 }

@@ -10,14 +10,14 @@
 			</span>
 		</button>
 	</div>
-	<div class="timelist">
-		<mat-form-field appearance="fill" class="timelist__search-form">
-			<mat-label>Поиск по фамилии и имени</mat-label>
-			<input matInput type="search" />
-			<mat-icon matPrefix>search</mat-icon>
-		</mat-form-field>
-		<h3 class="h3">Найдено {{ totalCount | i18nPlural: employeeCountMap }}</h3>
-		<ng-container *ngIf="statInfo$ | async as statInfo; else loader">
+	<ng-container *ngIf="statInfo$ | async as statInfo; else loader">
+		<div class="timelist" *ngIf="(totalCount | async) ?? 0 > 0; else emptyList">
+			<mat-form-field appearance="fill" class="timelist__search-form">
+				<mat-label>Поиск по фамилии и имени</mat-label>
+				<input matInput type="search" />
+				<mat-icon matPrefix>search</mat-icon>
+			</mat-form-field>
+			<h3 class="h3">Найдено {{ totalCount | async | i18nPlural: employeeCountMap }}</h3>
 			<table class="table timelist__table">
 				<colgroup>
 					<col class="column column_width_m" />
@@ -47,9 +47,9 @@
 							<tr>
 								<th>{{ stat.user?.firstName }} {{ stat.user?.lastName }}</th>
 								<th>
-									{{ stat.totalHours }} /{{
-										((stat.limitInfo?.normHours ?? 0) * (stat.user?.rate ?? 0))
-									}}
+									{{
+										stat.totalHours
+									}}/{{((stat.limitInfo?.normHours ?? 0) * (stat.user?.rate ?? 0))}}
 								</th>
 								<th>{{ stat.workTimes?.length }}</th>
 								<th>???</th>
@@ -60,7 +60,7 @@
 				<ng-template matExpansionPanelContent>
 					<div class="panel__table">
 						<h4 class="h4">Детализация по проектам</h4>
-						<table class="table">
+						<table *ngIf="stat.workTimes?.length; else emptyNote" class="table">
 							<colgroup>
 								<col class="column column_width_m" />
 								<col class="column column_width_m" />
@@ -84,15 +84,35 @@
 												<ng-container
 													*ngIf="workTime?.managerHours === null; else managerHours"
 												>
-													<span>{{ workTime?.userHours ? workTime?.userHours : 0 }}</span>
+													<span>{{ workTime?.userHours ?? 0 }}</span>
 												</ng-container>
 												<ng-template #managerHours>
-													<span>{{ workTime?.managerHours }}&nbsp;&nbsp;</span>
-													<span>Изменено&nbsp; </span>
-													<img
-														src="../../../../../assets/svg/ant-design_info-circle-outlined.svg"
-														alt="info-cicle"
-													/>
+													<div class="flex flex_ai_center">
+														<span>{{ workTime?.managerHours }}&nbsp;&nbsp;</span>
+														<span class="mat-caption">
+															Изменено
+															<mat-icon
+																class="vertical-align_middle"
+																inline
+																[mdePopoverTriggerFor]="popover"
+																mdePopoverPositionY="above"
+																[mdePopoverOffsetX]="-13"
+																>info_outline
+															</mat-icon>
+														</span>
+													</div>
+													<mde-popover
+														#popover="mdePopover"
+														[mdePopoverOverlapTrigger]="false"
+													>
+														<span class="mat-small">Автор изменения</span>
+														<!--TODO replace with real name when backend will send this data-->
+														<p>Имя Менеджера</p>
+														<span class="mat-small">Дата изменения</span>
+														<p>{{ workTime?.modifiedAtUtc | date: 'dd/MM/YYYY' }}</p>
+														<span class="mat-small">Часы сотрудника</span>
+														<p>{{ workTime?.userHours ?? 0 }}</p>
+													</mde-popover>
 												</ng-template>
 											</ng-container>
 											<ng-template #input>
@@ -168,7 +188,7 @@
 					<!-- </ng-container> -->
 					<div class="panel__table">
 						<h4 class="h4">Детализация по отсутствиям</h4>
-						<table class="table">
+						<table *ngIf="stat.leaveTimes?.length; else emptyNote" class="table">
 							<colgroup>
 								<col class="column column_width_m" />
 								<col class="column column_width_m" />
@@ -203,22 +223,29 @@
 								</ng-container>
 							</tbody>
 						</table>
+						<ng-template #emptyNote>
+							<p class="mat-body-1">Нет данных о введенных часах</p>
+						</ng-template>
 					</div>
 				</ng-template>
 			</mat-expansion-panel>
-		</ng-container>
-		<ng-template #loader>
-			<div class="loader">
-				<mat-spinner></mat-spinner>
-			</div>
-		</ng-template>
-		<mat-paginator
-			[length]="totalCount"
-			[pageIndex]="pageIndex"
-			[pageSize]="pageSize"
-			[pageSizeOptions]="[20, 35, 50]"
-			(page)="onPageChange($event)"
-		>
-		</mat-paginator>
-	</div>
+		</div>
+	</ng-container>
+	<ng-template #loader>
+		<div class="loader">
+			<mat-spinner></mat-spinner>
+		</div>
+	</ng-template>
+	<mat-paginator
+		[length]="totalCount | async"
+		[pageIndex]="pageIndex"
+		[pageSize]="pageSize"
+		[pageSizeOptions]="[20, 35, 50]"
+		(page)="onPageChange($event)"
+	>
+	</mat-paginator>
+
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
+	</ng-template>
 </mat-card>

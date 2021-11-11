@@ -1,9 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 
-import { ModalService } from '@app/services/modal.service';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OfficeInfo } from '@data/api/company-service/models';
 import { CompanyService } from '@app/services/company/company.service';
+import { iif, Observable, ReplaySubject } from 'rxjs';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { ActivatedRoute } from '@angular/router';
+import { IFindRequestEx } from '@app/types/find-request.interface';
+import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
 
 @Component({
@@ -12,53 +17,45 @@ import { NewOfficeComponent } from '../../modals/new-office/new-office.component
 	styleUrls: ['./office-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OfficeListComponent implements OnInit {
-	public offices: OfficeInfo[];
-
-	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
+export class OfficeListComponent {
+	public offices$: Observable<OperationResultResponse<OfficeInfo[]>>;
+	private _officesParams: ReplaySubject<IFindRequestEx>;
 
 	constructor(
 		private _modalService: ModalService,
 		private _companyService: CompanyService,
-		private _cdr: ChangeDetectorRef
+		private _route: ActivatedRoute
 	) {
-		this.offices = [];
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-		this.offices = [];
-	}
-
-	public ngOnInit(): void {
-		this._getOfficeList();
-	}
-
-	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getOfficeList();
+		this._officesParams = new ReplaySubject<IFindRequestEx>(1);
+		this.offices$ = this._officesParams.pipe(
+			startWith(null),
+			switchMap((params: IFindRequestEx | null) =>
+				iif(
+					() => !!params,
+					this._companyService.findOffices(params as IFindRequestEx),
+					this._route.data.pipe(map((response) => response.offices))
+				)
+			)
+		);
 	}
 
 	public onAddOfficeClick(): void {
 		this._modalService
-			.openModal<NewOfficeComponent, null, any>(NewOfficeComponent)
+			.openModal<NewOfficeComponent, null, any>(NewOfficeComponent, ModalWidth.M)
 			.afterClosed()
-			.subscribe(result => {
+			.pipe(withLatestFrom(this._officesParams))
+			.subscribe(([result, params]) => {
 				// Fix, then backend change to enum
-				if (result?.status === 'FullSuccess')
-					this._getOfficeList();
+				if (result?.status === 'FullSuccess') {
+					this._officesParams.next(params);
+				}
 			});
 	}
 
-	private _getOfficeList(): void {
-		this._companyService
-			.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
-			.subscribe((data) => {
-				this.totalCount = data.totalCount ?? 0;
-				this.offices = data.body ?? [];
-				this._cdr.markForCheck();
-			});
+	public onPageChange(event: PageEvent): void {
+		this._officesParams.next({
+			skipCount: event.pageIndex * event.pageSize,
+			takeCount: event.pageSize,
+		});
 	}
 }

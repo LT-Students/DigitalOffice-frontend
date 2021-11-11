@@ -7,13 +7,13 @@ export type UserPath =
 	| '/Gender'
 	| '/DateOfBirth'
 	| '/City'
-	| '/AvatarImage'
+	| '/AvatarFileId'
 	| '/Status'
 	| '/StartWorkingAt'
-	| '/Rate'
-	| '/DepartmentId'
-	| '/PositionId'
 	| '/RoleId'
 	| '/OfficeId'
 	| '/About'
 	| '/IsActive';
+
+export type ProjectPath = '/Name' | '/ShortName' | '/Description' | '/ShortDescription' | '/Status' | '/DepartmentId';
+export type DepartmentPath = '/name' | '/description' | '/isactive' | '/directorid';

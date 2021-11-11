@@ -8,6 +8,6 @@ import { WizardComponent } from './components/wizard/wizard.component';
 
 @NgModule({
 	declarations: [WizardComponent],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, SharedModule],
+	imports: [CommonModule, ReactiveFormsModule, FormsModule, MaterialModule, SharedModule],
 })
 export class InstallerModule {}

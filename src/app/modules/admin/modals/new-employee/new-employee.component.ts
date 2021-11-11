@@ -13,7 +13,6 @@ import {
 	UserStatus,
 } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user/user.service';
-import { NetService } from '@app/services/net.service';
 import { Observable, Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { RightsService } from '@app/services/rights/rights.service';
@@ -22,6 +21,9 @@ import { OfficeInfo } from '@data/api/company-service/models/office-info';
 import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
 import { FindResultResponsePositionInfo } from '@data/api/company-service/models/find-result-response-position-info';
 import { DoValidators } from '@app/validators/do-validators';
+import { PositionService } from '@app/services/position/position.service';
+import { DepartmentService } from '@app/services/department/department.service';
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-new-employee',
@@ -43,21 +45,26 @@ export class NewEmployeeComponent implements OnDestroy {
 
 	constructor(
 		private _formBuilder: FormBuilder,
-		private _netService: NetService,
 		private _userService: UserService,
 		private _matSnackBar: MatSnackBar,
 		private _dialogRef: MatDialogRef<any>,
-		private _rightsService: RightsService
+		private _rightsService: RightsService,
+		private _positionService: PositionService,
+		private _departmentService: DepartmentService,
+		private _officeService: CompanyService
 	) {
 		this.message = '';
 		this.userForm = this._initForm();
-		this.position$ = this._netService.getPositionsList({ skipCount: 0, takeCount: 500 });
-		this.department$ = this.department$ = this._netService.getDepartmentsList({ skipCount: 0, takeCount: 500 });
+		this.position$ = this._positionService.findPositions({ skipCount: 0, takeCount: 500 });
+		this.department$ = this.department$ = this._departmentService.findDepartments({
+			skipCount: 0,
+			takeCount: 500,
+		});
 		this.roles$ = this._rightsService
 			.findRoles({ skipCount: 0, takeCount: 500 })
 			.pipe(map((res) => res.body ?? []));
-		this.offices$ = this._netService
-			.getOfficesList({ skipCount: 0, takeCount: 500 })
+		this.offices$ = this._officeService
+			.findOffices({ skipCount: 0, takeCount: 500 })
 			.pipe(map((res) => res.body ?? []));
 		this._unsubscribe$ = new Subject<void>();
 	}

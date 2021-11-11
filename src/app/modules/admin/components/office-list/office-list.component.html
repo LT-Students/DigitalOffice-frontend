@@ -1,41 +1,52 @@
-<do-breadcrumbs [paths]="[{title: 'Администрирование', url: 'admin/dashboard'}, {title: 'Управление офисами'}]"></do-breadcrumbs>
+<do-breadcrumbs
+	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление офисами' }]"
+></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Офисы</h3>
 		<button mat-flat-button color="accent" (click)="onAddOfficeClick()">+ Добавить офис</button>
 	</div>
-	<table class="table" matSort>
-		<colgroup>
-			<col class="column column_width_m" />
-			<col class="column column_width_l" />
-			<col class="column column_width_m" />
-		</colgroup>
-		<thead>
-			<tr class="row">
-				<th mat-sort-header="city" class="cell">
-					<p>Город</p>
-				</th>
-				<th mat-sort-header="address" class="cell">
-					<p>Адрес</p>
-				</th>
-				<th mat-sort-header="name" class="cell">
-					<p>Название</p>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let office of offices" class="row">
-				<td class="cell">
-					<p class="cell__content cell__content_ellipsissed">{{ office.city ? office.city : '-' }}</p>
-				</td>
-				<td class="cell">
-					<do-comment [text]="office.address"></do-comment>
-				</td>
-				<td class="cell">
-					<p class="cell__content cell__content_ellipsissed">{{ office.name ? office.name : '—' }}</p>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+	<ng-container *ngIf="offices$ | async as offices">
+		<table *ngIf="offices.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
+			<colgroup>
+				<col class="column column_width_m" />
+				<col class="column column_width_l" />
+				<col class="column column_width_m" />
+			</colgroup>
+			<thead>
+				<tr class="row">
+					<th mat-sort-header="city" class="cell">
+						<p>Город</p>
+					</th>
+					<th mat-sort-header="address" class="cell">
+						<p>Адрес</p>
+					</th>
+					<th mat-sort-header="name" class="cell">
+						<p>Название</p>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let office of offices.body" class="row">
+					<td class="cell">
+						<p class="cell__content cell__content_ellipsissed">{{ office.city ?? '—' }}</p>
+					</td>
+					<td class="cell">
+						<do-comment [text]="office.address"></do-comment>
+					</td>
+					<td class="cell">
+						<p class="cell__content cell__content_ellipsissed">{{ office.name ?? '—' }}</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-template #emptyList>
+			<do-empty-list [emptyMessage]="'Нет данных об офисах'"></do-empty-list>
+		</ng-template>
+		<mat-paginator
+			[length]="offices.totalCount ?? 0"
+			[pageSizeOptions]="[10, 25, 50]"
+			(page)="onPageChange($event)"
+		></mat-paginator>
+	</ng-container>
 </mat-card>

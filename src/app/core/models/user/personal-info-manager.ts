@@ -96,7 +96,7 @@ export class PersonalInfoManager {
 	}
 
 	public get rate(): number | undefined {
-		return this._user?.rate;
+		return this._user?.rate ?? 0;
 	}
 
 	public get office(): OfficeInfo | null | undefined {
@@ -117,5 +117,9 @@ export class PersonalInfoManager {
 
 	public get department(): DepartmentInfo | null | undefined {
 		return this._user?.department;
+	}
+
+	public get isActive(): boolean {
+		return this._user?.isActive ?? false;
 	}
 }

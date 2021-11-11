@@ -1,10 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 
-import { PositionInfo } from '@data/api/company-service/models/position-info';
-import { NetService } from '@app/services/net.service';
-import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 import { ModalService } from '@app/services/modal.service';
+import { ActivatedRoute } from '@angular/router';
+import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { iif, Observable, ReplaySubject } from 'rxjs';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { IFindRequestEx } from '@app/types/find-request.interface';
+import { IPositionInfo, PositionService } from '@app/services/position/position.service';
+import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 
 @Component({
 	selector: 'do-position-list',
@@ -12,51 +16,44 @@ import { ModalService } from '@app/services/modal.service';
 	styleUrls: ['./position-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PositionListComponent implements OnInit {
-	public positions: PositionInfo[];
-
-	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
+export class PositionListComponent {
+	private _positions: ReplaySubject<IFindRequestEx>;
+	public positions$: Observable<OperationResultResponse<IPositionInfo[]>>;
 
 	constructor(
 		private _modalService: ModalService,
-		private _netService: NetService,
-		private _cdr: ChangeDetectorRef
+		private _positionService: PositionService,
+		private _route: ActivatedRoute
 	) {
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-		this.positions = [];
-	}
-
-	public ngOnInit(): void {
-		this._getPositions();
+		this._positions = new ReplaySubject<IFindRequestEx>(1);
+		this.positions$ = this._positions.pipe(
+			startWith(null),
+			switchMap((params: IFindRequestEx | null) =>
+				iif(
+					() => !!params,
+					this._positionService.findPositions(params as IFindRequestEx),
+					this._route.data.pipe(map((response) => response.positions))
+				)
+			)
+		);
 	}
 
 	public onAddPositionClick(): void {
 		this._modalService
 			.openModal<NewPositionComponent, null, any>(NewPositionComponent)
 			.afterClosed()
-			.subscribe(result => {
+			.pipe(withLatestFrom(this._positions))
+			.subscribe(([result, params]) => {
 				if (result?.status === 'FullSuccess') {
-					this._getPositions();
+					this._positions.next(params);
 				}
 			});
 	}
 
 	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getPositions();
-	}
-
-	private _getPositions(): void {
-		this._netService.getPositionsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
-			this.positions = data?.body ?? [];
-			console.log(data.body)
-			this.totalCount = data?.totalCount ?? 0;
-			this._cdr.markForCheck();
+		this._positions.next({
+			skipCount: event.pageIndex * event.pageSize,
+			takeCount: event.pageSize,
 		});
 	}
 }

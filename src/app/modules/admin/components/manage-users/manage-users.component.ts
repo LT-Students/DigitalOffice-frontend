@@ -1,14 +1,15 @@
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { EMPTY, Subject } from 'rxjs';
+import { EMPTY, iif, Observable, ReplaySubject } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { UserService } from '@app/services/user/user.service';
-import { OperationResultResponse, OperationResultStatusType } from '@data/api/user-service/models';
-import { EducationType } from '@data/api/user-service/models/education-type';
+import { IFindUsers, UserService } from '@app/services/user/user.service';
+import { OperationResultStatusType } from '@data/api/user-service/models';
 import { ModalService } from '@app/services/modal.service';
-import { switchMap } from 'rxjs/operators';
+import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { ActivatedRoute } from '@angular/router';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
@@ -17,53 +18,49 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	styleUrls: ['./manage-users.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageUsersComponent implements OnInit {
+export class ManageUsersComponent {
 	@ViewChild(MatSort) sort: MatSort | undefined;
 
-	public displayedColumns: string[];
-	public userInfo: UserInfo[] | undefined;
-	public sortedUserInfo: UserInfo[] | undefined;
-	public studyTypes: EducationType[];
-	private _unsubscribe$: Subject<void>;
-
-	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
+	public users$: Observable<OperationResultResponse<UserInfo[]>>;
+	private _userParams: ReplaySubject<IFindUsers>;
 
 	constructor(
 		private _userService: UserService,
 		private _modalService: ModalService,
-		private _cdr: ChangeDetectorRef
+		private _route: ActivatedRoute
 	) {
-		this._unsubscribe$ = new Subject<void>();
-		this.displayedColumns = ['name', 'department', 'role', 'rate', 'status', 'edit'];
-		this.userInfo = [];
-		this.sortedUserInfo = [];
-		this.studyTypes = [EducationType.Offline, EducationType.Online];
-
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-	}
-
-	public ngOnInit(): void {
-		this._getPageUsers();
+		this._userParams = new ReplaySubject<IFindUsers>(1);
+		this.users$ = this._userParams.pipe(
+			startWith(null),
+			switchMap((params: IFindUsers | null) =>
+				iif(
+					() => !!params,
+					this._userService.findUsers(params as IFindUsers),
+					this._route.data.pipe(map((response) => response.users))
+				)
+			)
+		);
 	}
 
 	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getPageUsers();
+		this._userParams.next({
+			skipCount: event.pageIndex * event.pageSize,
+			takeCount: event.pageSize,
+			includeavatar: true,
+			includeposition: true,
+			includedepartment: true,
+			includerole: true,
+		});
 	}
 
-	public onAddEmployeeClick() {
+	public onAddEmployeeClick(): void {
 		this._modalService
-			.openModal<NewEmployeeComponent, null, OperationResultResponse>(NewEmployeeComponent)
+			.openModal<NewEmployeeComponent, null, OperationResultResponse<UserInfo[]>>(NewEmployeeComponent)
 			.afterClosed()
-			.subscribe((result) => {
-				console.log('СТАТУС МЕНЕДЖ ЮЗЕРС: ', result?.status);
+			.pipe(withLatestFrom(this._userParams))
+			.subscribe(([result, params]) => {
 				if (result?.status === OperationResultStatusType.FullSuccess) {
-					this._getPageUsers();
+					this._userParams.next(params);
 				}
 			});
 	}
@@ -78,8 +75,11 @@ export class ManageUsersComponent implements OnInit {
 					message: 'Вы действительно хотите удалить этого пользователя?',
 				})
 				.afterClosed()
-				.pipe(switchMap((confirm) => (confirm ? this._userService.disableUser(user?.id) : EMPTY)))
-				.subscribe(() => this._getPageUsers());
+				.pipe(
+					switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)),
+					switchMap(() => this._userParams)
+				)
+				.subscribe((params) => this._userParams.next(params));
 		} else {
 			this._modalService
 				.confirm({
@@ -88,51 +88,44 @@ export class ManageUsersComponent implements OnInit {
 					message: 'Вы действительно хотите восстановить этого пользователя?',
 				})
 				.afterClosed()
-				.pipe(switchMap((confirm) => (confirm ? this._userService.activateUser(user?.id) : EMPTY)))
-				.subscribe(() => this._getPageUsers());
+				.pipe(
+					switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(user?.id), EMPTY)),
+					switchMap(() => this._userParams)
+				)
+				.subscribe((params) => this._userParams.next(params));
 		}
 	}
 
 	public sortData(sort: Sort): void {
-		const data = this.userInfo?.slice();
-		if (!sort.active || sort.direction === '') {
-			this.sortedUserInfo = data;
-			return;
-		}
-
-		this.sortedUserInfo = data?.sort((a: UserInfo, b: UserInfo) => {
-			const isAsc = sort.direction === 'asc';
-			switch (sort.active) {
-				case 'name':
-					return this._compare(a.firstName, b.firstName, isAsc);
-				case 'department':
-					return this._compare(a.department?.name, b.department?.name, isAsc);
-				case 'role':
-					return this._compare(a.position?.name, b.position?.name, isAsc);
-				case 'rate':
-					return this._compare(a.rate, b.rate, isAsc);
-				case 'status':
-					return this._compare(a.status, b.status, isAsc);
-				default:
-					return 0;
-			}
-		});
+		// 	const data = this.users$?.slice();
+		// 	if (!sort.active || sort.direction === '') {
+		// 		this.users$ = data;
+		// 		return;
+		// 	}
+		//
+		// 	this.users$ = data?.sort((a: UserInfo, b: UserInfo) => {
+		// 		const isAsc = sort.direction === 'asc';
+		// 		switch (sort.active) {
+		// 			case 'name':
+		// 				return this._compare(a.firstName, b.firstName, isAsc);
+		// 			case 'department':
+		// 				return this._compare(a.department?.name, b.department?.name, isAsc);
+		// 			case 'role':
+		// 				return this._compare(a.position?.name, b.position?.name, isAsc);
+		// 			case 'rate':
+		// 				return this._compare(a.rate, b.rate, isAsc);
+		// 			case 'status':
+		// 				return this._compare(a.status, b.status, isAsc);
+		// 			default:
+		// 				return 0;
+		// 		}
+		// 	});
 	}
-
-	private _compare(a: number | string | undefined, b: number | string | undefined, isAsc: boolean) {
-		if (typeof a === 'undefined' || typeof b === 'undefined') {
-			return 0;
-		}
-		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-	}
-
-	private _getPageUsers(): void {
-		this._userService.findUsers(this.pageIndex * this.pageSize, this.pageSize).subscribe((data) => {
-			this.totalCount = data?.totalCount ?? 0;
-			this.userInfo = data?.body?.slice() ?? [];
-			this.sortedUserInfo = data?.body?.slice() ?? [];
-			console.log(data.body);
-			this._cdr.markForCheck();
-		});
-	}
+	//
+	// private _compare(a: number | string | undefined, b: number | string | undefined, isAsc: boolean) {
+	// 	if (typeof a === 'undefined' || typeof b === 'undefined') {
+	// 		return 0;
+	// 	}
+	// 	return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+	// }
 }

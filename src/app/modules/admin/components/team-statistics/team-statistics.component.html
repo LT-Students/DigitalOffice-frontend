@@ -35,24 +35,36 @@
 								<ng-container *ngIf="!employee?.editMode; else input">
 									<ng-container *ngIf="!employee?.managerHours; else managerHours">
 										<strong
-											>{{ employee?.projectHours ? employee.projectHours : 0 }}/<span
-												class="text-gray1"
-												>{{ employee?.normHours ? employee?.normHours : 0 }}</span
-											></strong
+											>{{ employee?.projectHours }}/<span class="text-gray1">{{
+												employee?.normHours ?? 0
+											}}</span></strong
 										>
 									</ng-container>
 									<ng-template #managerHours>
 										<strong>
 											{{ employee?.managerHours }}/
-											<span class="text-gray1">
-												{{ employee?.normHours ? employee?.normHours : 0 }}
-											</span>
+											<span class="text-gray1"> {{ employee?.normHours ?? 0 }}&nbsp; </span>
 										</strong>
-										<span class="text-gray1"> &nbsp;Изменено&nbsp; </span>
-										<img
-											src="../../../../../assets/svg/ant-design_info-circle-outlined.svg"
-											alt="info-circle"
-										/>
+										<span class="mat-caption">
+											Изменено
+											<mat-icon
+												class="vertical-align_middle"
+												inline
+												[mdePopoverTriggerFor]="popover"
+												mdePopoverPositionY="above"
+												[mdePopoverOffsetX]="-13"
+												>info_outline
+											</mat-icon>
+										</span>
+										<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+											<span class="mat-small">Автор изменения</span>
+											<!--TODO replace with real name when backend will send this data-->
+											<p>Имя Менеджера</p>
+											<span class="mat-small">Дата изменения</span>
+											<p>{{ employee?.modifiedAtUtc | date: 'dd/MM/YYYY' }}</p>
+											<span class="mat-small">Часы сотрудника</span>
+											<p>{{ employee?.projectHours ?? 0 }}</p>
+										</mde-popover>
 									</ng-template>
 								</ng-container>
 								<ng-template #input>
@@ -74,8 +86,8 @@
 												[formControlName]="'hours_' + employee?.id"
 												ngDefaultControl
 												class="text_bold"
-											/> </mat-form-field
-										>/{{ employee?.normHours ? employee?.normHours : 0 }}
+										/></mat-form-field>
+										/{{ employee?.normHours ? employee?.normHours : 0 }}
 									</div>
 								</ng-template>
 							</div>
@@ -84,10 +96,28 @@
 							<ng-container *ngIf="employee.leaves?.length; else empty">
 								<div *ngFor="let leave of employee.leaves" class="cell__leave-label">
 									{{ leave.leaveType | leaveLabel }}&nbsp;
-									<img
-										src="../../../../../assets/svg/ant-design_info-circle-outlined.svg"
-										alt="info-circle"
-									/>
+									<span class="mat-caption">
+										<mat-icon
+											class="vertical-align_middle"
+											inline
+											[mdePopoverTriggerFor]="popover"
+											mdePopoverPositionY="above"
+											[mdePopoverOffsetX]="-13"
+											>info_outline
+										</mat-icon>
+									</span>
+									<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+										<p class="text-align_center">
+											<strong>{{ leave.leaveType | leaveLabel: false }}</strong>
+										</p>
+										<span class="mat-small">Даты отсутствия</span>
+										<p>
+											{{ leave.startTime | date: 'dd/MM/YYYY' }}-{{
+												leave.endTime | date: 'dd/MM/YYYY'
+											}}
+											({{ (leave?.minutes ?? 0) / 60 }} ч)
+										</p>
+									</mde-popover>
 								</div>
 							</ng-container>
 							<ng-template #empty>

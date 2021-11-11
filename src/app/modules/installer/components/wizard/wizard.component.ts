@@ -15,49 +15,53 @@ export class WizardComponent implements OnInit {
 	public adminForm: FormGroup;
 	public smtpForm: FormGroup;
 
-	constructor(private _formBuilder: FormBuilder, private _companyApiService: CompanyApiService, private _router: Router, private _titleService: Title) {
+	constructor(
+		private _formBuilder: FormBuilder,
+		private _companyApiService: CompanyApiService,
+		private _router: Router,
+		private _titleService: Title
+	) {
 		this._titleService.setTitle('Installer');
 		this.companyForm = this._formBuilder.group({
 			companyName: ['', Validators.required],
 			portalName: ['', Validators.required],
 			siteUrl: ['', Validators.required],
 		});
-		this.adminForm = this._formBuilder.group({
-			firstName: ['', Validators.required],
-			lastName: ['', Validators.required],
-			middleName: [''],
-			email: ['', Validators.required],
-			login: ['', Validators.required],
-			password: ['', Validators.required],
-			confirmPassword: ['', Validators.required],
-		},
+		this.adminForm = this._formBuilder.group(
+			{
+				firstName: ['', Validators.required],
+				lastName: ['', Validators.required],
+				middleName: [''],
+				email: ['', Validators.required],
+				login: ['', Validators.required],
+				password: ['', Validators.required],
+				confirmPassword: ['', Validators.required],
+			},
 			{ validators: this.matchControls('password', 'confirmPassword') }
 		);
-		this.smtpForm = this._formBuilder.group({
-			host: ['', Validators.required],
-			port: ['', Validators.required],
-			enableSsl: ['', Validators.required],
-			email: ['', Validators.required],
-			password: ['', Validators.required],
-			confirmPassword: ['', Validators.required],
-		},
+		this.smtpForm = this._formBuilder.group(
+			{
+				host: ['', Validators.required],
+				port: ['', Validators.required],
+				enableSsl: ['', Validators.required],
+				email: ['', Validators.required],
+				password: ['', Validators.required],
+				confirmPassword: ['', Validators.required],
+			},
 			{ validators: this.matchControls('password', 'confirmPassword') }
 		);
-
 	}
 
-	ngOnInit() {
-	}
+	ngOnInit() {}
 
-	public matchControls(field1: string | (string | number)[], field2: string | (string | number)[]): ValidatorFn | null  {
+	public matchControls(
+		field1: string | (string | number)[],
+		field2: string | (string | number)[]
+	): ValidatorFn | null {
 		return (group: AbstractControl): ValidationErrors | null => {
 			const control1 = group.get(field1);
 			const control2 = group.get(field2);
-			return control1 &&
-			control2 &&
-			control1.value &&
-			control2.value &&
-			control1.value !== control2.value
+			return control1 && control2 && control1.value && control2.value && control1.value !== control2.value
 				? { matchingPasswords: 'Пароль не совпадает' }
 				: null;
 		};

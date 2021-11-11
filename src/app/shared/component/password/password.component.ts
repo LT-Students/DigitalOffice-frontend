@@ -1,15 +1,5 @@
-import {
-	Component,
-	ChangeDetectionStrategy,
-	Input,
-	Self, Optional,
-} from '@angular/core';
-import {
-	ControlValueAccessor,
-	FormControl, FormGroupDirective,
-	NgControl,
-	NgForm, Validators,
-} from '@angular/forms';
+import { Component, ChangeDetectionStrategy, Input, Self, Optional } from '@angular/core';
+import { ControlValueAccessor, FormControl, FormGroupDirective, NgControl, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 
 class PasswordFieldErrorMatcher implements ErrorStateMatcher {
@@ -28,7 +18,6 @@ class PasswordFieldErrorMatcher implements ErrorStateMatcher {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PasswordComponent implements ControlValueAccessor {
-
 	@Input() public disabled: boolean;
 	@Input() public placeholder: string;
 	public hide: boolean;
@@ -47,7 +36,7 @@ export class PasswordComponent implements ControlValueAccessor {
 		this.hide = true;
 		this.onChange = () => {};
 		this.onTouched = () => {};
-		this.control = new FormControl(null, [ Validators.required ]);
+		this.control = new FormControl(null, [Validators.required]);
 		this.control.valueChanges.subscribe((value) => {
 			this.setValue(value);
 		});

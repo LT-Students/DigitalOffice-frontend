@@ -1,4 +1,4 @@
 /* tslint:disable */
 /* eslint-disable */
-import { PatchCommunicationDocument } from './patch-communication-document';
-export type EditCommunicationRequest = Array<PatchCommunicationDocument>;
+import { CommunicationPatchDocument } from './communication-patch-document';
+export type EditCommunicationRequest = Array<CommunicationPatchDocument>;
