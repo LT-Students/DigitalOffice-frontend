@@ -3,12 +3,12 @@ import { PageEvent } from '@angular/material/paginator';
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OfficeInfo } from '@data/api/company-service/models';
-import { CompanyService } from '@app/services/company/company.service';
 import { iif, Observable, ReplaySubject } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { IFindRequestEx } from '@app/types/find-request.interface';
 import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { OfficeService } from '@app/services/company/office.service';
 import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
 
 @Component({
@@ -23,7 +23,7 @@ export class OfficeListComponent {
 
 	constructor(
 		private _modalService: ModalService,
-		private _companyService: CompanyService,
+		private _officeService: OfficeService,
 		private _route: ActivatedRoute
 	) {
 		this._officesParams = new ReplaySubject<IFindRequestEx>(1);
@@ -32,7 +32,7 @@ export class OfficeListComponent {
 			switchMap((params: IFindRequestEx | null) =>
 				iif(
 					() => !!params,
-					this._companyService.findOffices(params as IFindRequestEx),
+					this._officeService.findOffices(params as IFindRequestEx),
 					this._route.data.pipe(map((response) => response.offices))
 				)
 			)

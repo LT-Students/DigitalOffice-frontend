@@ -11,7 +11,6 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreateProjectUsersRequest } from '../models/create-project-users-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { UUID } from '@app/types/uuid.type';
 
 @Injectable({
 	providedIn: 'root',
@@ -92,7 +91,7 @@ export class UserApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
-		body: UUID[];
+		body: Array<string>;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, UserApiService.RemoveProjectUsersPath, 'delete');
 		if (params) {
@@ -129,7 +128,7 @@ export class UserApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
-		body: UUID[];
+		body: Array<string>;
 	}): Observable<OperationResultResponse> {
 		return this.removeProjectUsers$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

@@ -151,7 +151,8 @@ export class AddHoursComponent implements OnDestroy {
 		const workTimeRequest: IEditWorkTimeRequest = {
 			workTimeId: this.addHoursForm.get('activity')?.value,
 			body: [
-				{ op: 'replace', path: '/UserHours', value: this.addHoursForm.get('time')?.value },
+				// { op: 'replace', path: '/UserHours', value: this.addHoursForm.get('time')?.value },
+				{ op: 'replace', path: '/Hours', value: this.addHoursForm.get('time')?.value },
 				{ op: 'replace', path: '/Description', value: this.addHoursForm.get('comment')?.value },
 			],
 		};

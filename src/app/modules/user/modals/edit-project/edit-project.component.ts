@@ -71,7 +71,8 @@ export class EditProjectComponent {
 					},
 					{
 						op: 'replace',
-						path: '/UserHours',
+						// path: '/UserHours',
+						path: '/Hours',
 						value: this.editForm.get('userHours')?.value,
 					},
 				],

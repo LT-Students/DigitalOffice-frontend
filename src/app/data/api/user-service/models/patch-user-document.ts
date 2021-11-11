@@ -4,7 +4,7 @@ export interface PatchUserDocument {
 	/**
 	 * The operation to be performed.
 	 */
-	op: 'add' | 'replace' | 'delete';
+	op: 'replace';
 
 	/**
 	 * A JSON-Pointer.
@@ -16,11 +16,8 @@ export interface PatchUserDocument {
 		| '/Gender'
 		| '/DateOfBirth'
 		| '/City'
-		| '/AvatarFileId'
 		| '/Status'
 		| '/StartWorkingAt'
-		| '/RoleId'
-		| '/OfficeId'
 		| '/About'
 		| '/IsActive';
 
