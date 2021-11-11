@@ -118,4 +118,8 @@ export class PersonalInfoManager {
 	public get department(): DepartmentInfo | null | undefined {
 		return this._user?.department;
 	}
+
+	public get isActive(): boolean {
+		return this._user?.isActive ?? false;
+	}
 }
