@@ -21,21 +21,21 @@ export interface IEditDepartment {
 	body?: EditDepartmentRequest;
 }
 
-export interface DepartmentInfoEx {
+export interface IDepartmentInfoEx {
 	department?: DepartmentInfo;
 	users?: Array<DepartmentUserInfo>;
 	projects?: ProjectInfo;
 }
 
 export interface ICreateDepartmentRequest {
-	description?: null | string;
+	description?: string;
 	name: string;
 	users?: Array<ICreateUserRequest>;
 }
 
 export interface ICreateUserRequest {
-	role?: DepartmentUserRole;
-	userId?: string;
+	role: DepartmentUserRole;
+	userId: string;
 }
 
 @Injectable({
@@ -48,7 +48,7 @@ export class DepartmentService {
 		return this._departmentApiService.createDepartment({ body });
 	}
 
-	public getDepartment(params: IGetDepartment): Observable<OperationResultResponse<DepartmentInfoEx>> {
+	public getDepartment(params: IGetDepartment): Observable<OperationResultResponse<IDepartmentInfoEx>> {
 		return this._departmentApiService.getDepartment(params);
 	}
 
