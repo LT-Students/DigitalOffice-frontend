@@ -9,35 +9,33 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { CreateProjectUsersRequest } from '../models/create-project-users-request';
+import { CreateFilesRequest } from '../models/create-files-request';
 import { OperationResultResponse } from '../models/operation-result-response';
+import { RemoveFilesRequest } from '../models/remove-files-request';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class UserApiService extends BaseService {
+export class FileApiService extends BaseService {
 	constructor(config: ApiConfiguration, http: HttpClient) {
 		super(config, http);
 	}
 
 	/**
-	 * Path part for operation createProjectUsers
+	 * Path part for operation createFile
 	 */
-	static readonly CreateProjectUsersPath = '/user/create';
+	static readonly CreateFilePath = '/file/create';
 
 	/**
-	 * Adding specific users to project.
-	 * *  __The user must have access right__ -- Add/Edit/Remove projects.
+	 * Add files to Project.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `createProjectUsers()` instead.
+	 * To access only the response body, use `createFile()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createProjectUsers$Response(params: {
-		body: CreateProjectUsersRequest;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.CreateProjectUsersPath, 'post');
+	createFile$Response(params: { body: CreateFilesRequest }): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, FileApiService.CreateFilePath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
@@ -58,44 +56,35 @@ export class UserApiService extends BaseService {
 	}
 
 	/**
-	 * Adding specific users to project.
-	 * *  __The user must have access right__ -- Add/Edit/Remove projects.
+	 * Add files to Project.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `createProjectUsers$Response()` instead.
+	 * To access the full response (for headers, for example), `createFile$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createProjectUsers(params: { body: CreateProjectUsersRequest }): Observable<OperationResultResponse> {
-		return this.createProjectUsers$Response(params).pipe(
+	createFile(params: { body: CreateFilesRequest }): Observable<OperationResultResponse> {
+		return this.createFile$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}
 
 	/**
-	 * Path part for operation removeProjectUsers
+	 * Path part for operation removeFile
 	 */
-	static readonly RemoveProjectUsersPath = '/user/remove';
+	static readonly RemoveFilePath = '/file/remove';
 
 	/**
-	 * Remove specific users from specific project.
-	 * * __The user must have access right__ -- Add/Edit/Remove project.
+	 * Remove files from Project.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `removeProjectUsers()` instead.
+	 * To access only the response body, use `removeFile()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	removeProjectUsers$Response(params: {
-		/**
-		 * Project global unique identifier.
-		 */
-		projectId: string;
-		body: Array<string>;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.RemoveProjectUsersPath, 'delete');
+	removeFile$Response(params: { body: RemoveFilesRequest }): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, FileApiService.RemoveFilePath, 'delete');
 		if (params) {
-			rb.query('projectId', params.projectId, {});
 			rb.body(params.body, 'application/json');
 		}
 
@@ -115,22 +104,15 @@ export class UserApiService extends BaseService {
 	}
 
 	/**
-	 * Remove specific users from specific project.
-	 * * __The user must have access right__ -- Add/Edit/Remove project.
+	 * Remove files from Project.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `removeProjectUsers$Response()` instead.
+	 * To access the full response (for headers, for example), `removeFile$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	removeProjectUsers(params: {
-		/**
-		 * Project global unique identifier.
-		 */
-		projectId: string;
-		body: Array<string>;
-	}): Observable<OperationResultResponse> {
-		return this.removeProjectUsers$Response(params).pipe(
+	removeFile(params: { body: RemoveFilesRequest }): Observable<OperationResultResponse> {
+		return this.removeFile$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}

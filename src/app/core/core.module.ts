@@ -30,6 +30,7 @@ import { RightsApiModule } from '@data/api/rights-service/rights-api.module';
 import { TimeApiModule } from '@data/api/time-service/time-api.module';
 import { DepartmentApiModule } from '@data/api/department-service/department-api.module';
 import { PositionApiModule } from '@data/api/position-service/position-api.module';
+import { OfficeApiModule } from '@data/api/office-service/office-api.module';
 import { environment } from '../../environments/environment';
 
 @NgModule({
@@ -51,6 +52,7 @@ import { environment } from '../../environments/environment';
 		RightsApiModule.forRoot({ rootUrl: `https://rights.${environment.apiUrl}` }),
 		TimeApiModule.forRoot({ rootUrl: `https://time.${environment.apiUrl}` }),
 		UserApiModule.forRoot({ rootUrl: `https://user.${environment.apiUrl}` }),
+		OfficeApiModule.forRoot({ rootUrl: `https://office.${environment.apiUrl}` }),
 	],
 	providers: [
 		AuthService,

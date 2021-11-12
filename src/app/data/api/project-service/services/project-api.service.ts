@@ -36,11 +36,6 @@ export class ProjectApiService extends BaseService {
 	 */
 	findProjects$Response(params: {
 		/**
-		 * Find project with this departments id.
-		 */
-		departmentid?: string;
-
-		/**
 		 * Number of entries to skip
 		 */
 		skipCount: number;
@@ -52,7 +47,6 @@ export class ProjectApiService extends BaseService {
 	}): Observable<StrictHttpResponse<FindResultResponseProjectInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindProjectsPath, 'get');
 		if (params) {
-			rb.query('departmentid', params.departmentid, {});
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
 		}
@@ -79,11 +73,6 @@ export class ProjectApiService extends BaseService {
 	 * This method doesn't expect any request body.
 	 */
 	findProjects(params: {
-		/**
-		 * Find project with this departments id.
-		 */
-		departmentid?: string;
-
 		/**
 		 * Number of entries to skip
 		 */

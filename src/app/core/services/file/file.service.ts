@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FileApiService } from '@data/api/file-service/services/file-api.service';
-import { IDisableFileRequest } from '@app/types/disable-file-request.interface';
 import { FileInfo } from '@data/api/file-service/models/file-info';
-import { AddFileRequest } from '@data/api/file-service/models/add-file-request';
+import { EditFileRequest } from '@data/api/file-service/models/edit-file-request';
+import { OperationResultResponse } from '@data/api/file-service/models/operation-result-response';
+
+interface IEditFileRequest {
+	fileId: string;
+	body: EditFileRequest;
+}
 
 @Injectable({
 	providedIn: 'root',
@@ -11,15 +16,19 @@ import { AddFileRequest } from '@data/api/file-service/models/add-file-request';
 export class FileService {
 	constructor(private _fileService: FileApiService) {}
 
-	public addNewFile(body: AddFileRequest): Observable<string> {
-		return this._fileService.addFile({ body });
+	// public addNewFile(body: AddFileRequest): Observable<string> {
+	// 	return this._fileService.addFile({ body });
+	// }
+
+	public editFile(params: IEditFileRequest): Observable<OperationResultResponse> {
+		return this._fileService.editFile(params);
 	}
 
-	public getFile(fileId: string): Observable<FileInfo[]> {
-		return this._fileService.getFile({ fileId });
+	public getFile(filesIds: string[]): Observable<FileInfo[]> {
+		return this._fileService.getFile({ filesIds });
 	}
 
-	public disableFile(params: IDisableFileRequest): Observable<void> {
-		return this._fileService.disableFile(params);
-	}
+	// public disableFile(params: IDisableFileRequest): Observable<void> {
+	// 	return this._fileService.disableFile(params);
+	// }
 }

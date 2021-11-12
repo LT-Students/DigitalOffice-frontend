@@ -1,25 +1,36 @@
-<!--<div class="employee-page__header flex">-->
-<!--    <do-breadcrumbs [paths]="paths"></do-breadcrumbs>-->
-<!--    <div class="employee-page__button flex" doText color="gray1" (click)="onOpenDialog()">-->
-<!--        <ng-container *ngIf="user?.isAdmin">-->
-<!--            <mat-icon>archive</mat-icon>-->
-<!--            <span class="employee-page__button-label">Добавить в архив</span>-->
-<!--        </ng-container>-->
-<!--        <ng-container *ngIf="!user?.isAdmin && isOwner">-->
-<!--            <mat-icon>live_help</mat-icon>-->
-<!--            <span class="employee-page__button-label">Запрос администратору</span>-->
-<!--        </ng-container>-->
-<!--    </div>-->
-<!--</div>-->
+<div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__header flex">
+	<do-breadcrumbs
+		[paths]="[
+			{ title: 'Администрирование', url: 'admin/dashboard' },
+			{ title: 'Управление сотрудниками', url: 'admin/manage-users' },
+			{ title: selectedUser.getFullName }
+		]"
+	></do-breadcrumbs>
+	<ng-container *ngIf="userLogged$ | async">
+		<button
+			mat-button
+			class="employee-page__button mat-body-1 flex"
+			*ngIf="selectedUser?.isActive; else restore"
+			(click)="onActionEmployeeClick(selectedUser.id, 'disable')"
+		>
+			<mat-icon>archive</mat-icon>
+			<span class="employee-page__button-label">Добавить в архив</span>
+		</button>
+		<ng-template #restore>
+			<button
+				mat-button
+				class="employee-page__button mat-body-1"
+				(click)="onActionEmployeeClick(selectedUser.id, 'activate')"
+			>
+				<mat-icon>restore_from_trash</mat-icon>
+				<span class="employee-page__button-label">Восстановить</span>
+			</button>
+		</ng-template>
+	</ng-container>
+</div>
 <mat-card class="card card_employee card_employee__info">
 	<do-employee-page-main-info></do-employee-page-main-info>
 </mat-card>
-<!--<div class="card card_employee" *ngIf='user'>-->
-<!--    <do-employee-page-competences-->
-<!--        [user]='user'-->
-<!--        [studyTypes]="studyTypes"-->
-<!--    ></do-employee-page-competences>-->
-<!--</div>-->
 <mat-card class="card card_employee card_employee__projects">
 	<do-employee-page-projects></do-employee-page-projects>
 </mat-card>

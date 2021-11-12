@@ -1,18 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface AddFileRequest {
+export interface FileContent {
 	/**
 	 * File content.
 	 */
 	content: string;
 
 	/**
-	 * File extension.
+	 * Extension of the file.
 	 */
 	extension: string;
 
 	/**
-	 * File name.
+	 * Name of the file.
 	 */
-	name?: string;
+	name?: null | string;
 }
