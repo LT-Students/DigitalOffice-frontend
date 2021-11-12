@@ -9,8 +9,9 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { AddFileRequest } from '../models/add-file-request';
+import { EditFileRequest } from '../models/edit-file-request';
 import { FileInfo } from '../models/file-info';
+import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -18,56 +19,6 @@ import { FileInfo } from '../models/file-info';
 export class FileApiService extends BaseService {
 	constructor(config: ApiConfiguration, http: HttpClient) {
 		super(config, http);
-	}
-
-	/**
-	 * Path part for operation addFile
-	 */
-	static readonly AddFilePath = '/file/add';
-
-	/**
-	 * Add a new file.
-	 *
-	 * The method attempts to add the new file.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `addFile()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	addFile$Response(params: { body: AddFileRequest }): Observable<StrictHttpResponse<string>> {
-		const rb = new RequestBuilder(this.rootUrl, FileApiService.AddFilePath, 'post');
-		if (params) {
-			rb.body(params.body, 'application/json');
-		}
-
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<string>;
-				})
-			);
-	}
-
-	/**
-	 * Add a new file.
-	 *
-	 * The method attempts to add the new file.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `addFile$Response()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	addFile(params: { body: AddFileRequest }): Observable<string> {
-		return this.addFile$Response(params).pipe(map((r: StrictHttpResponse<string>) => r.body as string));
 	}
 
 	/**
@@ -87,13 +38,13 @@ export class FileApiService extends BaseService {
 	 */
 	getFile$Response(params: {
 		/**
-		 * File global unique identifier.
+		 * Files global unique identifiers.
 		 */
-		fileId: string;
+		filesIds: Array<string>;
 	}): Observable<StrictHttpResponse<Array<FileInfo>>> {
 		const rb = new RequestBuilder(this.rootUrl, FileApiService.GetFilePath, 'get');
 		if (params) {
-			rb.query('fileId', params.fileId, {});
+			rb.query('filesIds', params.filesIds, {});
 		}
 
 		return this.http
@@ -123,9 +74,9 @@ export class FileApiService extends BaseService {
 	 */
 	getFile(params: {
 		/**
-		 * File global unique identifier.
+		 * Files global unique identifiers.
 		 */
-		fileId: string;
+		filesIds: Array<string>;
 	}): Observable<Array<FileInfo>> {
 		return this.getFile$Response(params).pipe(
 			map((r: StrictHttpResponse<Array<FileInfo>>) => r.body as Array<FileInfo>)
@@ -133,62 +84,63 @@ export class FileApiService extends BaseService {
 	}
 
 	/**
-	 * Path part for operation disableFile
+	 * Path part for operation editFile
 	 */
-	static readonly DisableFilePath = '/file/disable';
+	static readonly EditFilePath = '/file/edit';
 
 	/**
-	 * Disable the file by Id.
-	 *
-	 * The method attempts to disable file by id.
+	 * Editing file by Id.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `disableFile()` instead.
+	 * To access only the response body, use `editFile()` instead.
 	 *
-	 * This method doesn't expect any request body.
+	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	disableFile$Response(params: {
+	editFile$Response(params: {
 		/**
 		 * File global unique identifier.
 		 */
 		fileId: string;
-	}): Observable<StrictHttpResponse<void>> {
-		const rb = new RequestBuilder(this.rootUrl, FileApiService.DisableFilePath, 'get');
+		body: EditFileRequest;
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, FileApiService.EditFilePath, 'patch');
 		if (params) {
 			rb.query('fileId', params.fileId, {});
+			rb.body(params.body, 'application/json');
 		}
 
 		return this.http
 			.request(
 				rb.build({
-					responseType: 'text',
-					accept: '*/*',
+					responseType: 'json',
+					accept: 'application/json',
 				})
 			)
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+					return r as StrictHttpResponse<OperationResultResponse>;
 				})
 			);
 	}
 
 	/**
-	 * Disable the file by Id.
-	 *
-	 * The method attempts to disable file by id.
+	 * Editing file by Id.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `disableFile$Response()` instead.
+	 * To access the full response (for headers, for example), `editFile$Response()` instead.
 	 *
-	 * This method doesn't expect any request body.
+	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	disableFile(params: {
+	editFile(params: {
 		/**
 		 * File global unique identifier.
 		 */
 		fileId: string;
-	}): Observable<void> {
-		return this.disableFile$Response(params).pipe(map((r: StrictHttpResponse<void>) => r.body as void));
+		body: EditFileRequest;
+	}): Observable<OperationResultResponse> {
+		return this.editFile$Response(params).pipe(
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
 	}
 }

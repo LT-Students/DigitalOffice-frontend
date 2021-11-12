@@ -49,7 +49,7 @@ export interface UserInfo {
 	 * Count of project, which user included.
 	 */
 	projectCount?: number;
-	rate?: number;
+	rate?: null | number;
 	role?: ProjectUserRoleType;
 	status?: UserStatus;
 }

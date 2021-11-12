@@ -8,7 +8,7 @@ import { DepartmentInfo } from '@data/api/department-service/models/department-i
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { ProjectInfo } from '@data/api/department-service/models/project-info';
 import { IFindRequestEx } from '@app/types/find-request.interface';
-import { CreateDepartmentRequest } from '@data/api/department-service/models/create-department-request';
+import { DepartmentUserRole } from '@data/api/department-service/models/department-user-role';
 
 export interface IGetDepartment {
 	departmentid: string;
@@ -21,10 +21,21 @@ export interface IEditDepartment {
 	body?: EditDepartmentRequest;
 }
 
-export interface DepartmentInfoEx {
+export interface IDepartmentInfoEx {
 	department?: DepartmentInfo;
 	users?: Array<DepartmentUserInfo>;
 	projects?: ProjectInfo;
+}
+
+export interface ICreateDepartmentRequest {
+	description?: string;
+	name: string;
+	users?: Array<ICreateUserRequest>;
+}
+
+export interface ICreateUserRequest {
+	role: DepartmentUserRole;
+	userId: string;
 }
 
 @Injectable({
@@ -33,11 +44,11 @@ export interface DepartmentInfoEx {
 export class DepartmentService {
 	constructor(private _departmentApiService: DepartmentApiService) {}
 
-	public createDepartment(body: CreateDepartmentRequest): Observable<OperationResultResponse<{} | null>> {
+	public createDepartment(body: ICreateDepartmentRequest): Observable<OperationResultResponse<{} | null>> {
 		return this._departmentApiService.createDepartment({ body });
 	}
 
-	public getDepartment(params: IGetDepartment): Observable<OperationResultResponse<DepartmentInfoEx>> {
+	public getDepartment(params: IGetDepartment): Observable<OperationResultResponse<IDepartmentInfoEx>> {
 		return this._departmentApiService.getDepartment(params);
 	}
 
