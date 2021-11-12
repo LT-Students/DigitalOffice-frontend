@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
 import { Observable, throwError } from 'rxjs';
 import {
@@ -79,7 +79,7 @@ export class ProjectService {
 	constructor(
 		private _projectService: ProjectApiService,
 		private _userService: UserApiService,
-		private _snackBar: MatSnackBar
+		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
 	) {}
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
@@ -93,17 +93,11 @@ export class ProjectService {
 	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService.createProject({ body }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Project, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Project, MessageMethod.Create);
 			})
 		);
 	}

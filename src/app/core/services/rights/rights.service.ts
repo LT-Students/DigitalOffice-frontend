@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { Observable, throwError } from 'rxjs';
@@ -38,7 +38,7 @@ export class RightsService {
 		private _rightsService: RightsApiService,
 		private _roleService: RoleApiService,
 		private _userRightsService: UserRightsApiService,
-		private _snackBar: MatSnackBar
+		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
 	) {}
 
 	public addRightsForUser(params: IAddRightsForUserRequest): Observable<OperationResultResponse<any>> {
@@ -68,17 +68,11 @@ export class RightsService {
 	public createRole(body: CreateRoleRequest): Observable<OperationResultResponse<any>> {
 		return this._roleService.createRole({ body }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Rights, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Rights, MessageMethod.Create);
 			})
 		);
 	}

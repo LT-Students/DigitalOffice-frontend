@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { PositionApiService } from '@data/api/position-service/services/position-api.service';
 import { UUID } from '@app/types/uuid.type';
 import { IFindRequestEx } from '@app/types/find-request.interface';
@@ -32,22 +32,19 @@ export interface IPositionInfo {
 	providedIn: 'root',
 })
 export class PositionService {
-	constructor(private _positionApiService: PositionApiService, private _snackBar: MatSnackBar) {}
+	constructor(
+		private _positionApiService: PositionApiService,
+		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
+	) {}
 
 	public createPosition(body: ICreatePositionRequest): Observable<OperationResultResponse<{} | null>> {
 		return this._positionApiService.createPosition({ body }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Position, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Position, MessageMethod.Create);
 			})
 		);
 	}

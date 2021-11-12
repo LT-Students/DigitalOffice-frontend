@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
@@ -48,7 +48,7 @@ export interface IFindUsers {
 	providedIn: 'root',
 })
 export class UserService {
-	constructor(private _userApiService: UserApiService, private _snackBar: MatSnackBar) {}
+	constructor(private _userApiService: UserApiService, private _responseMessage: ResponseMessageModel) {}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
@@ -63,17 +63,11 @@ export class UserService {
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
 		return this._userApiService.createUser({ body: params }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.User, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.User, MessageMethod.Create);
 			})
 		);
 	}

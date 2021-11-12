@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { NewsApiService } from '@data/api/news-service/services/news-api.service';
 import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
@@ -36,22 +36,19 @@ interface IGetNewsResponse {
 
 @Injectable()
 export class NewsService {
-	constructor(private _newsService: NewsApiService, private _snackBar: MatSnackBar) {}
+	constructor(
+		private _newsService: NewsApiService,
+		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
+	) {}
 
 	public createNews(body: CreateNewsRequest): Observable<OperationResultResponse<{}>> {
 		return this._newsService.createNews({ body }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Create);
 			})
 		);
 	}
@@ -60,17 +57,11 @@ export class NewsService {
 		const disableRequest: NewsPatchOperation = { op: 'replace', path: '/IsActive', value: false };
 		return this._newsService.editNews({ newsId, body: [disableRequest] }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Remove),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Remove);
 			})
 		);
 	}
@@ -78,17 +69,11 @@ export class NewsService {
 	public editNews(newsId: string, body: EditNewsRequest): Observable<OperationResultResponse<{}>> {
 		return this._newsService.editNews({ newsId, body }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Edit),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Edit);
 			})
 		);
 	}

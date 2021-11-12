@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { CommunicationApiService } from '@data/api/user-service/services/communication-api.service';
 import { CreateCommunicationRequest } from '@data/api/user-service/models/create-communication-request';
@@ -20,22 +20,20 @@ export interface IRemoveCommunicationRequest {
 	providedIn: 'root',
 })
 export class CommunicationService {
-	constructor(private _communicationService: CommunicationApiService, private _snackBar: MatSnackBar) {}
+	constructor(
+		private _communicationService: CommunicationApiService,
+		private _snackBar: MatSnackBar,
+		private _responseMessage: ResponseMessageModel
+	) {}
 
 	public createCommunication(body: CreateCommunicationRequest): Observable<OperationResultResponse> {
 		return this._communicationService.createCommunication({ body }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Communication, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Communication, MessageMethod.Create);
 			})
 		);
 	}
@@ -43,17 +41,12 @@ export class CommunicationService {
 	public editCommunication(params: IEditCommunicationRequest): Observable<OperationResultResponse> {
 		return this._communicationService.editCommunication(params).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Communication, MessageMethod.Edit),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				console.log('hf,jnt!');
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Communication, MessageMethod.Edit);
 			})
 		);
 	}

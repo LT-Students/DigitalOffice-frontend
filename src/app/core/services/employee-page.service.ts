@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
@@ -21,7 +21,7 @@ export class EmployeePageService implements Resolve<User> {
 	constructor(
 		private _userService: UserService,
 		private _currentUserService: CurrentUserService,
-		private _snackBar: MatSnackBar
+		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
 	) {
 		this._selectedUser = new ReplaySubject<User>(1);
 		this.selectedUser$ = this._selectedUser.asObservable();
@@ -58,17 +58,11 @@ export class EmployeePageService implements Resolve<User> {
 	public editEmployee(editRequest: PatchUserDocument[]): Observable<User> {
 		return this.selectedUser$.pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.EmployeePage, MessageMethod.Edit),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.EmployeePage, MessageMethod.Edit);
 			}),
 			take(1),
 			map((user) => user.id ?? ''),

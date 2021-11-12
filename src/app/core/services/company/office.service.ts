@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
 import { catchError, tap } from 'rxjs/operators';
@@ -18,23 +18,17 @@ export class OfficeService {
 	constructor(
 		private _companyService: CompanyApiService,
 		private _officeService: OfficeApiService,
-		private _snackBar: MatSnackBar
+		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
 	) {}
 
 	public createOffice(body: CreateOfficeRequest): Observable<OperationResultResponse> {
 		return this._officeService.createOffice({ body }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Office, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Office, MessageMethod.Create);
 			})
 		);
 	}

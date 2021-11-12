@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { DepartmentApiService } from '@data/api/department-service/services/department-api.service';
 import { EditDepartmentRequest } from '@data/api/department-service/models/edit-department-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -46,22 +46,19 @@ export interface ICreateUserRequest {
 	providedIn: 'root',
 })
 export class DepartmentService {
-	constructor(private _departmentApiService: DepartmentApiService, private _snackBar: MatSnackBar) {}
+	constructor(
+		private _departmentApiService: DepartmentApiService,
+		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
+	) {}
 
 	public createDepartment(body: ICreateDepartmentRequest): Observable<OperationResultResponse<{} | null>> {
 		return this._departmentApiService.createDepartment({ body }).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Department, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Department, MessageMethod.Create);
 			})
 		);
 	}
@@ -77,17 +74,11 @@ export class DepartmentService {
 	public editDepartment(params: IEditDepartment): Observable<OperationResultResponse<{} | null>> {
 		return this._departmentApiService.editDepartment(params).pipe(
 			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				this._responseMessage.showErrorMessage(err);
 				return throwError(err);
 			}),
 			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Department, MessageMethod.Edit),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
+				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Department, MessageMethod.Edit);
 			})
 		);
 	}
