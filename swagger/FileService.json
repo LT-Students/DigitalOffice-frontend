@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.0",
+    "version": "1.1.1.0",
     "title": "FileService",
     "description": "FileService is an API intended to work with files and images."
   },
@@ -16,47 +16,6 @@
     }
   ],
   "paths": {
-    "/file/add": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "File"
-        ],
-        "operationId": "addFile",
-        "summary": "Add a new file.",
-        "description": "The method attempts to add the new file.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddFileRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "New file Id.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.\n* Error in the field.\n"
-          }
-        }
-      }
-    },
     "/file/get": {
       "parameters": [
         {
@@ -72,12 +31,15 @@
         "description": "The method attempts to get the file by id.",
         "parameters": [
           {
-            "name": "fileId",
+            "name": "filesIds",
             "in": "query",
-            "description": "File global unique identifier.",
+            "description": "Files global unique identifiers.",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
             },
             "required": true
           }
@@ -102,59 +64,26 @@
         }
       }
     },
-    "/file/disable": {
+    "/file/edit": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/fileId"
         }
       ],
-      "get": {
+      "patch": {
         "tags": [
           "File"
         ],
-        "operationId": "disableFile",
-        "summary": "Disable the file by Id.",
-        "description": "The method attempts to disable file by id.",
-        "parameters": [
-          {
-            "name": "fileId",
-            "in": "query",
-            "description": "File global unique identifier.",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully disabled file."
-          },
-          "404": {
-            "description": "Not Found.\n* File with this id was not found.\n"
-          }
-        }
-      }
-    },
-    "/image/add": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Image"
-        ],
-        "operationId": "addImage",
-        "summary": "Add a new image and thumb.",
-        "description": "The method attempts to add the new image and get new file Id. A smaller version of the image (thumb) will also be added. Acceptable image formats: .jpg, .jpeg, .png, , .gif, .bmp, .tga",
+        "operationId": "editFile",
+        "description": "Editing file by Id.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddImageRequest"
+                "$ref": "#/components/schemas/EditFileRequest"
               }
             }
           },
@@ -162,131 +91,31 @@
         },
         "responses": {
           "200": {
-            "description": "New image Id.",
+            "description": "File respose.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request.\n* Error in the field.\n* The server couldn't process the image.\n"
-          }
-        }
-      }
-    },
-    "/image/get": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "imageId",
-          "in": "query",
-          "description": "Image global unique identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "get": {
-        "tags": [
-          "Image"
-        ],
-        "operationId": "getImage",
-        "description": "Get image by id.",
-        "responses": {
-          "200": {
-            "description": "Successfily returned image by id.",
+            "description": "Bad request.\n* Error in the field.\n",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseImageInfo"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           },
           "403": {
-            "description": "Forbidden.",
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/image/find": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Image"
-        ],
-        "operationId": "findImages",
-        "description": "Fined images by ids.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successfily returned image by id.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseListImageInfo"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -297,30 +126,6 @@
   },
   "components": {
     "schemas": {
-      "AddFileRequest": {
-        "type": "object",
-        "required": [
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Name": {
-            "description": "File name.",
-            "type": "string",
-            "example": "Avatar"
-          },
-          "Content": {
-            "description": "File content.",
-            "type": "string",
-            "format": "byte"
-          },
-          "Extension": {
-            "description": "File extension.",
-            "type": "string",
-            "example": "txt"
-          }
-        }
-      },
       "FileInfo": {
         "type": "object",
         "required": [
@@ -352,70 +157,6 @@
           }
         }
       },
-      "AddImageRequest": {
-        "type": "object",
-        "properties": {
-          "Name": {
-            "description": "Image name.",
-            "type": "string",
-            "example": "Avatar"
-          },
-          "Content": {
-            "description": "Image content.",
-            "type": "string",
-            "format": "byte"
-          },
-          "Extension": {
-            "description": "Image extension.",
-            "type": "string",
-            "example": ".png"
-          }
-        }
-      },
-      "ImageInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "description": "Image global unique identifier.",
-            "type": "string",
-            "format": "uuid"
-          },
-          "ParentId": {
-            "description": "If this image is thumb it is full image global unique identifier, else null.",
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "Type": {
-            "$ref": "#/components/schemas/ImageType"
-          },
-          "Name": {
-            "description": "Image name.",
-            "type": "string",
-            "example": "Avatar"
-          },
-          "Content": {
-            "description": "Image content.",
-            "type": "string",
-            "format": "byte"
-          },
-          "Extension": {
-            "description": "Image extension.",
-            "type": "string",
-            "example": ".png"
-          }
-        }
-      },
-      "ImageType": {
-        "type": "string",
-        "description": "Type of image.",
-        "enum": [
-          "Full",
-          "Thumb"
-        ],
-        "example": "Full",
-        "default": "Full"
-      },
       "OperationResultStatusType": {
         "type": "string",
         "description": "Operation complition result status.",
@@ -426,74 +167,6 @@
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"
-      },
-      "OperationResultResponseImageInfo": {
-        "type": "object",
-        "properties": {
-          "Body": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Image global unique identifier.",
-                "type": "string",
-                "format": "uuid"
-              },
-              "parentId": {
-                "description": "If this image is thumb it is full image global unique identifier, else null.",
-                "type": "string",
-                "format": "uuid",
-                "nullable": true
-              },
-              "type": {
-                "$ref": "#/components/schemas/ImageType"
-              },
-              "name": {
-                "description": "Image name.",
-                "type": "string",
-                "example": "Avatar"
-              },
-              "content": {
-                "description": "Image content.",
-                "type": "string",
-                "format": "byte"
-              },
-              "extension": {
-                "description": "Image extension.",
-                "type": "string",
-                "example": ".png"
-              }
-            }
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "OperationResultResponseListImageInfo": {
-        "type": "object",
-        "properties": {
-          "Body": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImageInfo"
-            }
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
       },
       "ErrorResponse": {
         "description": "Error information",
@@ -510,6 +183,74 @@
             "type": "string"
           }
         }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EditFileRequest": {
+        "type": "array",
+        "minItems": 1,
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "items": {
+          "$ref": "#/components/schemas/FilePatchDocument"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "type": "string",
+              "description": "new name"
+            }
+          }
+        ]
+      },
+      "FilePatchDocument": {
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Name",
+              "/Content"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
       }
     },
     "parameters": {
@@ -520,6 +261,16 @@
         "schema": {
           "type": "string",
           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
+        },
+        "required": true
+      },
+      "fileId": {
+        "name": "fileId",
+        "in": "query",
+        "description": "File global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
         },
         "required": true
       }
