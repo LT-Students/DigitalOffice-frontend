@@ -101,7 +101,7 @@ export class ProjectPageComponent implements OnInit {
 
 	public openAddEmployeeModal(): void {
 		const dialogRef = this._dialog.open(AddEmployeeComponent, {
-			data: { idToHide: this.dataSource.data.map((e) => e.id), pageId: this.projectId },
+			data: { idToHide: this.dataSource.data.map((e) => e.id), pageId: this.projectId, openFrom: 'project' },
 			maxWidth: '670px',
 		});
 		dialogRef

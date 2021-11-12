@@ -39,7 +39,7 @@
 			<h3 doUnderline underlinedSize="sm">
 				Сотрудники <span class="mat-h3 primary">{{ totalCount | i18nPlural: peopleCountMap }}</span>
 			</h3>
-			<button mat-flat-button color="accent" (click)="openDialog()">+ Добавить сотрудников</button>
+			<button mat-flat-button color="accent" (click)="openAddEmployeeModal()">+ Добавить сотрудников</button>
 		</div>
 		<div class="search-actions">
 			<div class="search">
@@ -66,7 +66,7 @@
 					<div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down" /></div>
 				</div>
 				<mat-menu #menu>
-					<button mat-menu-item>Удалить сотрудников</button>
+					<button (click)="removeFromDepartment()" mat-menu-item>Удалить сотрудников</button>
 				</mat-menu>
 			</div>
 		</div>
