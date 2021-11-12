@@ -6,6 +6,8 @@ import { IEditCommunicationRequest } from '@app/types/edit-communication-request
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { catchError, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageTriggeredFrom, MessageMethod } from '@app/models/response/response-message';
 
 export interface IRemoveCommunicationRequest {
 	/**
@@ -22,36 +24,36 @@ export class CommunicationService {
 
 	public createCommunication(body: CreateCommunicationRequest): Observable<OperationResultResponse> {
 		return this._communicationService.createCommunication({ body }).pipe(
-			tap(() =>
-				this._snackBar.open('Контакт успешно создан!', 'done', {
-					duration: 3000,
-				})
-			),
 			catchError((err) => {
-				let errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
-				if (err.status === 409) {
-					errorMessage = 'Контакт с таким названием уже существует';
-				}
-				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
 				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Communication, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
 			})
 		);
 	}
 
 	public editCommunication(params: IEditCommunicationRequest): Observable<OperationResultResponse> {
 		return this._communicationService.editCommunication(params).pipe(
-			tap(() =>
-				this._snackBar.open('Контакт успешно изменен!', 'done', {
-					duration: 3000,
-				})
-			),
 			catchError((err) => {
-				let errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
-				if (err.status === 409) {
-					errorMessage = 'Вы ввели такое же значение';
-				}
-				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
 				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Communication, MessageMethod.Edit),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
 			})
 		);
 	}

@@ -16,6 +16,8 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { UUID } from '@app/types/uuid.type';
 import { catchError, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface IGetProjectRequest {
 	projectId: string;
@@ -90,18 +92,18 @@ export class ProjectService {
 
 	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService.createProject({ body }).pipe(
-			tap(() =>
-				this._snackBar.open('Проект успешно создан!', 'done', {
-					duration: 3000,
-				})
-			),
 			catchError((err) => {
-				let errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
-				if (err.status === 409) {
-					errorMessage = 'Проект с таким названием уже существует';
-				}
-				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
 				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Project, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
 			})
 		);
 	}

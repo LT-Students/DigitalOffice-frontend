@@ -8,6 +8,8 @@ import { CreateOfficeRequest } from '@data/api/office-service/models/create-offi
 import { IFindRequestEx } from '@app/types/find-request.interface';
 import { OfficeApiService } from '@data/api/office-service/services/office-api.service';
 import { FindResultResponseOfficeInfo } from '@data/api/office-service/models/find-result-response-office-info';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 @Injectable({
 	providedIn: 'root',
@@ -21,15 +23,18 @@ export class OfficeService {
 
 	public createOffice(body: CreateOfficeRequest): Observable<OperationResultResponse> {
 		return this._officeService.createOffice({ body }).pipe(
-			tap(() =>
-				this._snackBar.open('Новый офис успешно добавлен!', 'done', {
-					duration: 3000,
-				})
-			),
 			catchError((err) => {
-				const errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
-				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
 				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Office, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
 			})
 		);
 	}

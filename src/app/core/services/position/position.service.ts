@@ -8,6 +8,8 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { PositionInfo } from '@data/api/position-service/models/position-info';
 import { catchError, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface ICreatePositionRequest {
 	name: string;
@@ -34,18 +36,18 @@ export class PositionService {
 
 	public createPosition(body: ICreatePositionRequest): Observable<OperationResultResponse<{} | null>> {
 		return this._positionApiService.createPosition({ body }).pipe(
-			tap(() =>
-				this._snackBar.open('Новая должность успешно добавлена', 'done', {
-					duration: 3000,
-				})
-			),
 			catchError((err) => {
-				let errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
-				if (err.status === 409) {
-					errorMessage = 'Должность с таким названием уже существует';
-				}
-				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
 				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Position, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
 			})
 		);
 	}

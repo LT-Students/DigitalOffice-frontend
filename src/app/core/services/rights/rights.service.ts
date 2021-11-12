@@ -11,6 +11,8 @@ import { catchError, tap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRightsApiService } from '@data/api/rights-service/services/user-rights-api.service';
 import { OperationResultResponseRights } from '@data/api/rights-service/models/operation-result-response-rights';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface IAddRightsForUserRequest {
 	userId: string;
@@ -65,18 +67,18 @@ export class RightsService {
 
 	public createRole(body: CreateRoleRequest): Observable<OperationResultResponse<any>> {
 		return this._roleService.createRole({ body }).pipe(
-			tap(() =>
-				this._snackBar.open('Новая роль успешно добавлена!', 'done', {
-					duration: 3000,
-				})
-			),
 			catchError((err) => {
-				let errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
-				if (err.status === 409) {
-					errorMessage = 'Проект с таким названием уже существует';
-				}
-				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
 				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Rights, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
 			})
 		);
 	}

@@ -8,6 +8,8 @@ import { CurrentUserService } from '@app/services/current-user.service';
 import { PatchUserDocument } from '@data/api/user-service/models/patch-user-document';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 @Injectable({
 	providedIn: 'root',
@@ -55,15 +57,18 @@ export class EmployeePageService implements Resolve<User> {
 
 	public editEmployee(editRequest: PatchUserDocument[]): Observable<User> {
 		return this.selectedUser$.pipe(
-			tap(() =>
-				this._snackBar.open('Данные успешно изменены', 'done', {
-					duration: 3000,
-				})
-			),
 			catchError((err) => {
-				const errorMessage: string = err.error.errors?.[0] ?? 'Что-то пошло не так :(';
-				this._snackBar.open(errorMessage, '×', { duration: 3000 });
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
 				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.EmployeePage, MessageMethod.Edit),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
 			}),
 			take(1),
 			map((user) => user.id ?? ''),
