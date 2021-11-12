@@ -35,7 +35,10 @@ export class NewDepartmentComponent implements OnInit {
 		this._departamentInfo = data;
 		this.isFormChanged = false;
 		this.departmentForm = this._formBuilder.group({
-			name: [this._departamentInfo ? this._departamentInfo.name : '', Validators.required],
+			name: [
+				this._departamentInfo ? this._departamentInfo.name : '',
+				[Validators.required, Validators.minLength(3)],
+			],
 			description: [this._departamentInfo ? this._departamentInfo.description : ''],
 			directorid: [this._departamentInfo ? this._departamentInfo.directorid : ''],
 		});
