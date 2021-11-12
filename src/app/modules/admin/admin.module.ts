@@ -5,6 +5,7 @@ import { DndDirective } from '@app/directives/dnd.directive';
 
 import { SharedModule } from '../../shared/shared.module';
 import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
+import { ProjectTypePipe } from '../../shared/pipes/project-type.pipe';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { NewEmployeeComponent } from './modals/new-employee/new-employee.component';
@@ -53,9 +54,10 @@ import { EditProjectComponent } from './modals/edit-project/edit-project.compone
 		DirectorsTimelistComponent,
 		TeamStatisticsComponent,
 		LeaveLabelPipe,
+		ProjectTypePipe,
 		EditProjectComponent,
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
-	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe, EditProjectComponent],
+	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe, EditProjectComponent, ProjectTypePipe],
 })
 export class AdminModule {}
