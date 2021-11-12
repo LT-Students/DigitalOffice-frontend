@@ -7,11 +7,11 @@ export type UserPath =
 	| '/Gender'
 	| '/DateOfBirth'
 	| '/City'
-	| '/AvatarFileId'
+	// | '/AvatarFileId'
 	| '/Status'
 	| '/StartWorkingAt'
-	| '/RoleId'
-	| '/OfficeId'
+	// | '/RoleId'
+	// | '/OfficeId'
 	| '/About'
 	| '/IsActive';
 

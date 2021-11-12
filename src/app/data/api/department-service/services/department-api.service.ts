@@ -9,7 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { AddDepartmentUsersRequest } from '../models/add-department-users-request';
 import { CreateDepartmentRequest } from '../models/create-department-request';
 import { EditDepartmentRequest } from '../models/edit-department-request';
 import { FindResultResponseDepartmentInfo } from '../models/find-result-response-department-info';
@@ -311,10 +310,15 @@ export class DepartmentApiService extends BaseService {
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
 	addDepartmentUsers$Response(params: {
-		body: AddDepartmentUsersRequest;
+		/**
+		 * Department global unique identifier.
+		 */
+		departmentid: string;
+		body: Array<string>;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.AddDepartmentUsersPath, 'post');
 		if (params) {
+			rb.query('departmentid', params.departmentid, {});
 			rb.body(params.body, 'application/json');
 		}
 
@@ -342,7 +346,13 @@ export class DepartmentApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	addDepartmentUsers(params: { body: AddDepartmentUsersRequest }): Observable<OperationResultResponse> {
+	addDepartmentUsers(params: {
+		/**
+		 * Department global unique identifier.
+		 */
+		departmentid: string;
+		body: Array<string>;
+	}): Observable<OperationResultResponse> {
 		return this.addDepartmentUsers$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);

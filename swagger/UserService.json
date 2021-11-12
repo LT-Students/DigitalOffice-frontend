@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.0.2",
+    "version": "1.4.0.3",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -1358,7 +1358,6 @@
               }
             }
           }
-
         }
       }
     },
@@ -1546,7 +1545,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1556,7 +1555,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1941,7 +1940,6 @@
             }
           }
         }
-
       },
       "CreateUserRequest": {
         "type": "object",
@@ -2206,16 +2204,6 @@
               "format": "float",
               "example": 0.25
             }
-          },
-          {
-            "op": "replace",
-            "path": "/AvatarFileId",
-            "value": {
-              "description": "Unique image identifier (image must be added to database).",
-              "type": "string",
-              "format": "uuid",
-              "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
-            }
           }
         ],
         "items": {
@@ -2233,9 +2221,7 @@
             "type": "string",
             "description": "The operation to be performed.",
             "enum": [
-              "add",
-              "replace",
-              "delete"
+              "replace"
             ]
           },
           "path": {
@@ -2248,11 +2234,8 @@
               "/Gender",
               "/DateOfBirth",
               "/City",
-              "/AvatarFileId",
               "/Status",
               "/StartWorkingAt",
-              "/RoleId",
-              "/OfficeId",
               "/About",
               "/IsActive"
             ]
@@ -2500,6 +2483,12 @@
           "Address": {
             "type": "string",
             "nullable": false
+          },
+          "Longitude": {
+            "type": "number"
+          },
+          "Latitude": {
+            "type": "number"
           }
         }
       },

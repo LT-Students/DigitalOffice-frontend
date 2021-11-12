@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2.0",
+    "version": "1.2.2.1",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -20,16 +20,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "departmentid",
-          "in": "query",
-          "description": "Find project with this departments id.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": false
         },
         {
           "name": "skipCount",
@@ -246,6 +236,118 @@
           },
           "400": {
             "description": "Bad request.\n* Error in the field.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/file/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "createFile",
+        "description": "Add files to Project.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFilesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully add files to the project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/file/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "delete": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "removeFile",
+        "description": "Remove files from Project.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveFilesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully removed images from project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -543,6 +645,29 @@
         "example": "Sick",
         "default": "WorkFromOffice"
       },
+      "FileContent": {
+        "type": "object",
+        "required": [
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Name of the file.",
+            "type": "string",
+            "nullable": true
+          },
+          "Content": {
+            "description": "File content.",
+            "type": "string"
+          },
+          "Extension": {
+            "description": "Extension of the file.",
+            "type": "string",
+            "example": ".txt"
+          }
+        }
+      },
       "ImageContent": {
         "type": "object",
         "required": [
@@ -636,7 +761,8 @@
             "$ref": "#/components/schemas/UserStatus"
           },
           "Rate": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "CreatedAtUtc": {
             "description": "Data and time added user to project.",
@@ -672,7 +798,7 @@
           }
         }
       },
-      "ProjectFileInfo": {
+      "FileInfo": {
         "type": "object",
         "properties": {
           "ProjectId": {
@@ -807,6 +933,12 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ImageContent"
+            }
+          },
+          "Files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileContent"
             }
           }
         }
@@ -949,32 +1081,6 @@
           }
         }
       },
-      "ProjectResponse": {
-        "type": "object",
-        "properties": {
-          "Project": {
-            "$ref": "#/components/schemas/ProjectInfo"
-          },
-          "Users": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserInfo"
-            }
-          },
-          "Files": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectFileInfo"
-            }
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
       "FindResultResponseProjectInfo": {
         "type": "object",
         "properties": {
@@ -997,6 +1103,45 @@
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
+          }
+        }
+      },
+      "CreateFilesRequest": {
+        "type": "object",
+        "required": [
+          "ProjectId",
+          "Files"
+        ],
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileContent"
+            }
+          }
+        }
+      },
+      "RemoveFilesRequest": {
+        "type": "object",
+        "required": [
+          "ProjectId",
+          "FilesIds"
+        ],
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FilesIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         }
       },
@@ -1082,7 +1227,8 @@
               "files": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ProjectFileInfo"
+                  "type": "string",
+                  "format": "uuid"
                 },
                 "nullable": true
               },
