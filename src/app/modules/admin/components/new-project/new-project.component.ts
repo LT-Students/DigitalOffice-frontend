@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
-import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
@@ -26,7 +25,7 @@ export class NewProjectComponent implements OnInit {
 	public projectForm: FormGroup;
 	public teams: Team[];
 	public departments: DepartmentInfo[];
-	public statuses: ProjectStatus[];
+	public statuses: ProjectStatusType[];
 	public membersAll: UserInfo[];
 	public pluralTeamCount: { [k: string]: string };
 
@@ -44,11 +43,7 @@ export class NewProjectComponent implements OnInit {
 			few: '# человека',
 			other: '# человек',
 		};
-		this.statuses = [
-			new ProjectStatus(ProjectStatusType.Active),
-			new ProjectStatus(ProjectStatusType.Closed),
-			new ProjectStatus(ProjectStatusType.Suspend),
-		];
+		this.statuses = [ProjectStatusType.Active, ProjectStatusType.Closed, ProjectStatusType.Suspend];
 		this.teams = [];
 		this.membersAll = [];
 		this.departments = [];

@@ -45,8 +45,8 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Статус</mat-label>
 					<mat-select formControlName="status">
-						<mat-option *ngFor="let status of statuses" [value]="status.type">
-							{{ status.name | titlecase }}
+						<mat-option *ngFor="let status of statuses" [value]="status">
+							{{ status | projectType | titlecase }}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>

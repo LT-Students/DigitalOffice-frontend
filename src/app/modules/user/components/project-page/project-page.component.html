@@ -23,7 +23,7 @@
 						<p>Команда</p>
 					</div>
 					<div class="description__column">
-						<p>{{ status.name | titlecase }}</p>
+						<p>{{ status | projectType | titlecase }}</p>
 						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
 						<p>{{ projectDuration | i18nPlural: dayCountMap }}</p>
 						<p>{{ dataSource.data?.length | i18nPlural: participantCountMap }}</p>
