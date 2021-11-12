@@ -1,6 +1,6 @@
 import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { EMPTY, iif, Observable, ReplaySubject } from 'rxjs';
+import { EMPTY, from, iif, Observable, ReplaySubject } from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
@@ -10,6 +10,7 @@ import { ModalService } from '@app/services/modal.service';
 import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
+import { MatSelectChange } from '@angular/material/select/select';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
@@ -23,12 +24,13 @@ export class ManageUsersComponent {
 
 	public users$: Observable<OperationResultResponse<UserInfo[]>>;
 	private _userParams: ReplaySubject<IFindUsers>;
-
+	private _includedeactivated: boolean;
 	constructor(
 		private _userService: UserService,
 		private _modalService: ModalService,
 		private _route: ActivatedRoute
 	) {
+		this._includedeactivated = false;
 		this._userParams = new ReplaySubject<IFindUsers>(1);
 		this.users$ = this._userParams.pipe(
 			startWith(null),
@@ -42,6 +44,26 @@ export class ManageUsersComponent {
 		);
 	}
 
+	public selectionChangeHandler(event: MatSelectChange): void {
+		if (event.value === 'all') {
+			this._includedeactivated = true;
+			console.log(this._includedeactivated);
+		} else {
+			this._includedeactivated = false;
+			console.log(this._includedeactivated);
+		}
+		this._userParams.next({
+			skipCount: 0,
+			takeCount: 10,
+			includeavatar: true,
+			includeposition: true,
+			includedepartment: true,
+			includerole: true,
+
+			includedeactivated: this._includedeactivated,
+		});
+	}
+
 	public onPageChange(event: PageEvent): void {
 		this._userParams.next({
 			skipCount: event.pageIndex * event.pageSize,
@@ -50,7 +72,9 @@ export class ManageUsersComponent {
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,
+			includedeactivated: this._includedeactivated,
 		});
+		console.log(this._userParams);
 	}
 
 	public onAddEmployeeClick(): void {
