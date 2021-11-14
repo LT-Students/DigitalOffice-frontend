@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
+import { ILeaveType } from '@app/models/time/leave-type.model';
 
 @Component({
 	selector: 'do-edit-project',
@@ -19,7 +21,7 @@ import { ProjectStatusType } from '@data/api/project-service/models/project-stat
 export class EditProjectComponent {
 	public projectForm: FormGroup;
 	public departments: Observable<Array<DepartmentInfo> | undefined>;
-	public statuses: ProjectStatusType[];
+	public statuses: IProjectStatusType[];
 	public projectInfo: any;
 	private _initialData: PatchRequest<ProjectPath>;
 
@@ -31,7 +33,7 @@ export class EditProjectComponent {
 		private _dialogRef: MatDialogRef<EditProjectComponent>,
 		@Inject(MAT_DIALOG_DATA) private _data: { projectInfo: any[] }
 	) {
-		this.statuses = [ProjectStatusType.Active, ProjectStatusType.Closed, ProjectStatusType.Suspend];
+		this.statuses = ProjectTypeModel.getAllProjectTypes();
 
 		this.projectInfo = this._data.projectInfo;
 
@@ -56,7 +58,7 @@ export class EditProjectComponent {
 	public editProject(): void {
 		const editRequest = (Object.keys(this.projectForm.controls) as ProjectPath[]).reduce(
 			(acc: ProjectPatchDocument[], key) => {
-				let formValue = this.projectForm.get(key)?.value;
+				const formValue = this.projectForm.get(key)?.value;
 
 				if (formValue !== this._initialData[key][0]) {
 					const patchDocument: ProjectPatchDocument = {

@@ -34,7 +34,7 @@ export class ProjectPageComponent implements OnInit {
 	public dataSource: MatTableDataSource<UserInfo>;
 	public selection: SelectionModel<UserInfo>;
 	public status: ProjectStatusType | undefined;
-	public iProjectStatusType: IProjectStatusType | undefined;
+	public IProjectStatusType: IProjectStatusType | undefined;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -70,7 +70,7 @@ export class ProjectPageComponent implements OnInit {
 			other: 'Выбрано # сотрудников',
 		};
 
-		this.status = this.iProjectStatusType?.type;
+		this.status = this.IProjectStatusType?.type;
 
 		this._route.data
 			.pipe(map((response) => response.project))
@@ -140,7 +140,6 @@ export class ProjectPageComponent implements OnInit {
 			)
 			.subscribe((result) => {
 				this._updateProjectInfo(result);
-				console.log('result', result);
 			});
 	}
 

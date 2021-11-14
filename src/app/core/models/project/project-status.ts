@@ -1,4 +1,5 @@
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { ILeaveType } from '@app/models/time/leave-type.model';
 
 export enum ProjectStatusTypeRu {
 	Active = 'активный',
@@ -20,5 +21,9 @@ export class ProjectTypeModel {
 
 	public static getProjectType(projectStatusType?: ProjectStatusType | undefined): IProjectStatusType | undefined {
 		return this._projectTypes.find((status: IProjectStatusType) => status.type === projectStatusType);
+	}
+
+	public static getAllProjectTypes(): IProjectStatusType[] {
+		return this._projectTypes.slice();
 	}
 }
