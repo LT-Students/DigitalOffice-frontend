@@ -8,9 +8,7 @@ import { ProjectPatchDocument } from '@data/api/project-service/models/project-p
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
-import { ILeaveType } from '@app/models/time/leave-type.model';
 
 @Component({
 	selector: 'do-edit-project',

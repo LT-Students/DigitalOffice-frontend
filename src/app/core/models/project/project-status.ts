@@ -1,5 +1,4 @@
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { ILeaveType } from '@app/models/time/leave-type.model';
 
 export enum ProjectStatusTypeRu {
 	Active = 'активный',
