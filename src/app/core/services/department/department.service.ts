@@ -52,15 +52,9 @@ export class DepartmentService {
 	) {}
 
 	public createDepartment(body: ICreateDepartmentRequest): Observable<OperationResultResponse<{} | null>> {
-		return this._departmentApiService.createDepartment({ body }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Department, MessageMethod.Create);
-			})
-		);
+		return this._departmentApiService
+			.createDepartment({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Create));
 	}
 
 	public getDepartment(params: IGetDepartment): Observable<OperationResultResponse<IDepartmentInfoEx>> {
@@ -72,15 +66,9 @@ export class DepartmentService {
 	}
 
 	public editDepartment(params: IEditDepartment): Observable<OperationResultResponse<{} | null>> {
-		return this._departmentApiService.editDepartment(params).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Department, MessageMethod.Edit);
-			})
-		);
+		return this._departmentApiService
+			.editDepartment(params)
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Edit));
 	}
 
 	public addUsersToDepartment(departmentId: UUID, userIds: UUID[]): Observable<OperationResultResponse<{} | null>> {

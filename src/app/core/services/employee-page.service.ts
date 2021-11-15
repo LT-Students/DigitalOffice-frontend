@@ -57,13 +57,7 @@ export class EmployeePageService implements Resolve<User> {
 
 	public editEmployee(editRequest: PatchUserDocument[]): Observable<User> {
 		return this.selectedUser$.pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.EmployeePage, MessageMethod.Edit);
-			}),
+			this._responseMessage.message(MessageTriggeredFrom.EmployeePage, MessageMethod.Edit),
 			take(1),
 			map((user) => user.id ?? ''),
 			switchMap((userId) =>

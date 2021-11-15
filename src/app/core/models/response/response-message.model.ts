@@ -1,6 +1,8 @@
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { catchError, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 
 export interface IErrorMessageTypes {
 	triggered?: MessageTriggeredFrom;
@@ -58,5 +60,19 @@ export class ResponseMessageModel {
 		this._snackBar.open(errorMessage, '', {
 			duration: 3000,
 		});
+	}
+
+	public message(triggeredFrom: MessageTriggeredFrom, method: MessageMethod) {
+		return (source: Observable<any>) => {
+			return source.pipe(
+				catchError((err) => {
+					this.showErrorMessage(err);
+					return throwError(err);
+				}),
+				tap(() => {
+					this.showSuccessMessage(triggeredFrom, method);
+				})
+			);
+		};
 	}
 }

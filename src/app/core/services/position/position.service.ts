@@ -38,15 +38,9 @@ export class PositionService {
 	) {}
 
 	public createPosition(body: ICreatePositionRequest): Observable<OperationResultResponse<{} | null>> {
-		return this._positionApiService.createPosition({ body }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Position, MessageMethod.Create);
-			})
-		);
+		return this._positionApiService
+			.createPosition({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Create));
 	}
 
 	public getPosition(positionId: UUID): Observable<OperationResultResponse<IPositionInfo>> {

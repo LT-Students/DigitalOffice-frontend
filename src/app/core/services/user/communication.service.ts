@@ -27,28 +27,15 @@ export class CommunicationService {
 	) {}
 
 	public createCommunication(body: CreateCommunicationRequest): Observable<OperationResultResponse> {
-		return this._communicationService.createCommunication({ body }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Communication, MessageMethod.Create);
-			})
-		);
+		return this._communicationService
+			.createCommunication({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Communication, MessageMethod.Create));
 	}
 
 	public editCommunication(params: IEditCommunicationRequest): Observable<OperationResultResponse> {
-		return this._communicationService.editCommunication(params).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				console.log('hf,jnt!');
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Communication, MessageMethod.Edit);
-			})
-		);
+		return this._communicationService
+			.editCommunication(params)
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Communication, MessageMethod.Edit));
 	}
 
 	public removeCommunication(params: IRemoveCommunicationRequest): Observable<OperationResultResponse> {

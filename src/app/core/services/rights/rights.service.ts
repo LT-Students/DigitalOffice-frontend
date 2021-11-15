@@ -66,14 +66,8 @@ export class RightsService {
 	}
 
 	public createRole(body: CreateRoleRequest): Observable<OperationResultResponse<any>> {
-		return this._roleService.createRole({ body }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Rights, MessageMethod.Create);
-			})
-		);
+		return this._roleService
+			.createRole({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Rights, MessageMethod.Create));
 	}
 }

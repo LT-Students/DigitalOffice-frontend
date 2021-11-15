@@ -91,15 +91,9 @@ export class ProjectService {
 	}
 
 	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
-		return this._projectService.createProject({ body }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Project, MessageMethod.Create);
-			})
-		);
+		return this._projectService
+			.createProject({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Project, MessageMethod.Create));
 	}
 
 	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse<{}>> {

@@ -22,15 +22,9 @@ export class OfficeService {
 	) {}
 
 	public createOffice(body: CreateOfficeRequest): Observable<OperationResultResponse> {
-		return this._officeService.createOffice({ body }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.Office, MessageMethod.Create);
-			})
-		);
+		return this._officeService
+			.createOffice({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Create));
 	}
 
 	public findOffices(params: IFindRequestEx): Observable<FindResultResponseOfficeInfo> {

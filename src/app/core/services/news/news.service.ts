@@ -42,40 +42,22 @@ export class NewsService {
 	) {}
 
 	public createNews(body: CreateNewsRequest): Observable<OperationResultResponse<{}>> {
-		return this._newsService.createNews({ body }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Create);
-			})
-		);
+		return this._newsService
+			.createNews({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Create));
 	}
 
 	public disableNews(newsId: string): Observable<OperationResultResponse<{}>> {
 		const disableRequest: NewsPatchOperation = { op: 'replace', path: '/IsActive', value: false };
-		return this._newsService.editNews({ newsId, body: [disableRequest] }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Remove);
-			})
-		);
+		return this._newsService
+			.editNews({ newsId, body: [disableRequest] })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Remove));
 	}
 
 	public editNews(newsId: string, body: EditNewsRequest): Observable<OperationResultResponse<{}>> {
-		return this._newsService.editNews({ newsId, body }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Edit);
-			})
-		);
+		return this._newsService
+			.editNews({ newsId, body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Edit));
 	}
 
 	public findNews(params: IFindNewsRequest): Observable<OperationResultResponse<NewsInfo[]>> {

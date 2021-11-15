@@ -61,15 +61,9 @@ export class UserService {
 	}
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
-		return this._userApiService.createUser({ body: params }).pipe(
-			catchError((err) => {
-				this._responseMessage.showErrorMessage(err);
-				return throwError(err);
-			}),
-			tap(() => {
-				this._responseMessage.showSuccessMessage(MessageTriggeredFrom.User, MessageMethod.Create);
-			})
-		);
+		return this._userApiService
+			.createUser({ body: params })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.User, MessageMethod.Create));
 	}
 
 	public editUser(userId: string, body: PatchUserDocument[]): Observable<OperationResultResponse<null | {}>> {
