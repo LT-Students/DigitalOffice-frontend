@@ -48,7 +48,14 @@
 			Создать департамент
 		</button>
 		<ng-template #editDepartamentButton>
-			<button mat-flat-button color="primary" type="submit" [disabled]="departmentForm.invalid">Сохранить</button>
+			<button
+				mat-flat-button
+				color="primary"
+				type="submit"
+				[disabled]="departmentForm.invalid || departmentForm.pristine"
+			>
+				Сохранить
+			</button>
 		</ng-template>
 	</mat-dialog-actions>
 </form>
