@@ -21,13 +21,13 @@
 			</button>
 		</div>
 		<div class="department__label">
-			<p>Директор</p>
+			<p class="mat-body-1">Директор</p>
 			<ng-container *ngIf="departmentInfo?.director; else empty">
 				<p>{{ departmentInfo?.director?.firstName }} {{ departmentInfo?.director?.lastName }}</p>
 			</ng-container>
 		</div>
 		<div class="department__label">
-			<p>Описание</p>
+			<p class="mat-body-1">Описание</p>
 			<ng-container *ngIf="departmentInfo?.description; else empty">
 				<p>{{ departmentInfo?.description }}</p>
 			</ng-container>
