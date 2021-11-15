@@ -36,7 +36,7 @@
 					<mat-label>Статус</mat-label>
 					<mat-select formControlName="/Status">
 						<mat-option *ngFor="let status of statuses" [value]="status.type">
-							{{ status.name | titlecase }}
+							{{ status.type | projectType | titlecase }}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>

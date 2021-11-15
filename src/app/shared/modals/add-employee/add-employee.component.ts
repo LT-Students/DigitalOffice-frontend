@@ -7,6 +7,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
+import { DepartmentService } from '@app/services/department/department.service';
 
 @Component({
 	selector: 'do-modal-add-employee',
@@ -29,7 +30,8 @@ export class AddEmployeeComponent implements OnInit {
 		private _cdr: ChangeDetectorRef,
 		private _dialogRef: MatDialogRef<AddEmployeeComponent>,
 		private _projectService: ProjectService,
-		@Inject(MAT_DIALOG_DATA) private _data: { idToHide: string[]; pageId: string }
+		private _departmentService: DepartmentService,
+		@Inject(MAT_DIALOG_DATA) private _data: { idToHide: string[]; pageId: string; openFrom: string }
 	) {
 		this.positions = ['front', 'back', 'manager', 'lead'];
 		this.employees = [];
@@ -68,18 +70,33 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	public addToProject(): void {
-		const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
-			newArr: Array<ICreateUserRequest>,
-			user
-		) {
-			newArr.push({ role: ProjectUserRoleType.Employee, userId: user.id ?? '' });
+		if (this._data.openFrom === 'project') {
+			const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
+				newArr: Array<ICreateUserRequest>,
+				user
+			) {
+				newArr.push({ role: ProjectUserRoleType.Employee, userId: user.id ?? '' });
 
-			return newArr;
-		},
-		[]);
+				return newArr;
+			},
+			[]);
 
-		this._projectService.addUsersToProject({ projectId: this._data.pageId, users: [...users] }).subscribe(() => {
-			this._cdr.markForCheck();
-		});
+			this._projectService
+				.addUsersToProject({ projectId: this._data.pageId, users: [...users] })
+				.subscribe(() => {
+					this._cdr.markForCheck();
+				});
+		}
+		if (this._data.openFrom === 'department') {
+			const users: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
+				newArr.push(user.id ?? '');
+
+				return newArr;
+			}, []);
+
+			this._departmentService.addUsersToDepartment(this._data.pageId, [...users]).subscribe(() => {
+				this._cdr.markForCheck();
+			});
+		}
 	}
 }
