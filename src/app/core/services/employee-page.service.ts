@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
-import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { catchError, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { PatchUserDocument } from '@data/api/user-service/models/patch-user-document';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,7 +18,11 @@ export class EmployeePageService implements Resolve<User> {
 	private _selectedUser: ReplaySubject<User>;
 	public readonly selectedUser$: Observable<User>;
 
-	constructor(private _userService: UserService, private _currentUserService: CurrentUserService) {
+	constructor(
+		private _userService: UserService,
+		private _currentUserService: CurrentUserService,
+		private _snackBar: MatSnackBar
+	) {
 		this._selectedUser = new ReplaySubject<User>(1);
 		this.selectedUser$ = this._selectedUser.asObservable();
 	}
@@ -50,6 +57,19 @@ export class EmployeePageService implements Resolve<User> {
 
 	public editEmployee(editRequest: PatchUserDocument[]): Observable<User> {
 		return this.selectedUser$.pipe(
+			catchError((err) => {
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.EmployeePage, MessageMethod.Edit),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
+			}),
 			take(1),
 			map((user) => user.id ?? ''),
 			switchMap((userId) =>

@@ -4,7 +4,6 @@ import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
@@ -35,7 +34,6 @@ export class NewProjectComponent implements OnInit {
 		private _projectService: ProjectService,
 		private _modalService: ModalService,
 		private _departmentService: DepartmentService,
-		private _snackBar: MatSnackBar,
 		private _location: Location,
 		private _router: Router,
 		private _cdr: ChangeDetectorRef
@@ -107,15 +105,9 @@ export class NewProjectComponent implements OnInit {
 		};
 		this._projectService.createProject(projectRequest).subscribe(
 			(result) => {
-				this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
 				this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
 			},
 			(error) => {
-				let errorMessage = error.error.errors;
-				if (error.status === 409) {
-					errorMessage = 'Проект с таким названием уже существует';
-				}
-				this._snackBar.open(errorMessage, 'accept');
 				throw error;
 			}
 		);

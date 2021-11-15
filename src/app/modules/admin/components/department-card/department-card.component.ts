@@ -139,7 +139,7 @@ export class DepartmentCardComponent {
 					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
 				})
 			)
-			.subscribe(({ body }) => {
+			.subscribe(() => {
 				this._cdr.markForCheck();
 			});
 	}

@@ -8,7 +8,6 @@ import { OperationResultResponse } from '@data/api/user-service/models/operation
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { CommunicationType } from '@data/api/user-service/models/communication-type';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel } from '@app/models/communication.model';
 
@@ -30,8 +29,7 @@ export class EditContactComponent {
 		@Inject(MAT_DIALOG_DATA) public dialogData: CommunicationInfo,
 		private _matDialogRef: MatDialogRef<EditContactComponent>,
 		private _fb: FormBuilder,
-		private _communicationService: CommunicationService,
-		private _snackBar: MatSnackBar
+		private _communicationService: CommunicationService
 	) {
 		this.symbolsCountMap = {
 			one: '# символа',
@@ -74,8 +72,6 @@ export class EditContactComponent {
 			.editCommunication(request)
 			.pipe(
 				catchError((err) => {
-					const errMessage: string = err.error?.errors ? err.error.errors[0] : 'Что-то пошло не так :(';
-					this._snackBar.open(errMessage, 'x', { duration: 3000 });
 					return throwError(err);
 				}),
 				finalize(() => {

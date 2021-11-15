@@ -73,6 +73,8 @@
 	</mat-dialog-content>
 	<div mat-dialog-actions>
 		<button mat-button (click)="onClose()">Отмена</button>
-		<button mat-flat-button color="primary" (click)="addUsers()">Сохранить</button>
+		<button mat-flat-button color="primary" (click)="addUsers()" [disabled]="selection.selected.length < 1">
+			Сохранить
+		</button>
 	</div>
 </div>
