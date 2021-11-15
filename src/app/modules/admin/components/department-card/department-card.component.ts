@@ -122,15 +122,24 @@ export class DepartmentCardComponent {
 		dialogRef
 			.afterClosed()
 			.pipe(
-				switchMap(() =>
-					this._departmentService.getDepartment({ departmentid: this._departmentId, includeusers: true })
-				)
+				switchMap((result) => {
+					if (result === undefined) {
+						return EMPTY;
+					} else {
+						return this._departmentService.getDepartment({
+							departmentid: this._departmentId,
+							includeusers: true,
+						});
+					}
+				}),
+				tap(({ body }) => {
+					this.departmentInfo = body?.department;
+
+					this.totalCount = body?.users?.length ?? 0;
+					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
+				})
 			)
 			.subscribe(({ body }) => {
-				this.departmentInfo = body?.department;
-
-				this.totalCount = body?.users?.length ?? 0;
-				this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
 				this._cdr.markForCheck();
 			});
 	}

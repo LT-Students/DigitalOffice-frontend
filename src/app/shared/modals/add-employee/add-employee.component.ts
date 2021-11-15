@@ -45,8 +45,12 @@ export class AddEmployeeComponent implements OnInit {
 		this.getPageUsers();
 	}
 
-	public onClose(): void {
-		this._dialogRef.close();
+	public onClose(action: string): void {
+		if (action === 'Cancel') {
+			this._dialogRef.close();
+		} else {
+			this._dialogRef.close('+');
+		}
 	}
 
 	public getPageUsers(): void {
@@ -58,7 +62,6 @@ export class AddEmployeeComponent implements OnInit {
 				includeposition: true,
 			})
 			.subscribe((data) => {
-				console.log(data.body);
 				if (data.body !== undefined) {
 					data.body = data.body.filter((e) => this._data.idToHide.indexOf(e.id as string) === -1);
 					this.employees.push(...data.body);
