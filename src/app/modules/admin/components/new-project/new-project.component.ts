@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { DepartmentService } from '@app/services/department/department.service';
+import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
@@ -25,7 +26,7 @@ export class NewProjectComponent implements OnInit {
 	public projectForm: FormGroup;
 	public teams: Team[];
 	public departments: DepartmentInfo[];
-	public statuses: ProjectStatusType[];
+	public statuses: IProjectStatusType[];
 	public membersAll: UserInfo[];
 	public pluralTeamCount: { [k: string]: string };
 
@@ -43,7 +44,7 @@ export class NewProjectComponent implements OnInit {
 			few: '# человека',
 			other: '# человек',
 		};
-		this.statuses = [ProjectStatusType.Active, ProjectStatusType.Closed, ProjectStatusType.Suspend];
+		this.statuses = ProjectTypeModel.getAllProjectTypes();
 		this.teams = [];
 		this.membersAll = [];
 		this.departments = [];
