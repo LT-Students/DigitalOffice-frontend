@@ -37,7 +37,7 @@ export class EditProjectComponent {
 
 		this._initialData = {
 			'/Name': [this.projectInfo.name, [Validators.required, Validators.maxLength(150)]],
-			'/DepartmentId': [this.projectInfo.department.id, [Validators.required]],
+			'/DepartmentId': [this.projectInfo.department?.id ?? null, [Validators.required]],
 			'/Description': [this.projectInfo.description, [Validators.maxLength(300)]],
 			'/ShortDescription': [this.projectInfo.shortDescription],
 			'/Status': [this.projectInfo.status],
@@ -70,6 +70,7 @@ export class EditProjectComponent {
 			},
 			[]
 		);
+
 		this._projectService.editProject({ projectId: this.projectInfo.id, body: editRequest }).subscribe();
 	}
 }

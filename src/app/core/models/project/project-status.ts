@@ -12,7 +12,7 @@ export interface IProjectStatusType {
 }
 
 export class ProjectTypeModel {
-	public static _projectTypes: IProjectStatusType[] = [
+	private static _projectTypes: IProjectStatusType[] = [
 		{ type: ProjectStatusType.Active, name: ProjectStatusTypeRu.Active },
 		{ type: ProjectStatusType.Closed, name: ProjectStatusTypeRu.Closed },
 		{ type: ProjectStatusType.Suspend, name: ProjectStatusTypeRu.Suspend },

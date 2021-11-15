@@ -11,7 +11,7 @@ export class ProjectTypePipe implements PipeTransform {
 		if (!type) return '';
 		else {
 			const projectTypeModel: IProjectStatusType | undefined = ProjectTypeModel.getProjectType(type);
-			return `${projectTypeModel?.name ?? ''}`;
+			return projectTypeModel?.name ?? '';
 		}
 	}
 }

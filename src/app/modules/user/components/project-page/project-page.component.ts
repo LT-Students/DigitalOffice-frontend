@@ -8,7 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalService } from '@app/services/modal.service';
 import { UserInfo } from '@data/api/project-service/models/user-info';
-import { IProjectStatusType, ProjectStatusTypeRu, ProjectTypeModel } from '@app/models/project/project-status';
+import { ProjectTypeModel } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -34,7 +34,6 @@ export class ProjectPageComponent implements OnInit {
 	public dataSource: MatTableDataSource<UserInfo>;
 	public selection: SelectionModel<UserInfo>;
 	public status: ProjectStatusType | undefined;
-	public IProjectStatusType: IProjectStatusType | undefined;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -70,7 +69,8 @@ export class ProjectPageComponent implements OnInit {
 			other: 'Выбрано # сотрудников',
 		};
 
-		this.status = this.IProjectStatusType?.type;
+		// console.log('this.IProjectStatusType?.type', this.IProjectStatusType?.type);
+		// this.status = this.IProjectStatusType?.type;
 
 		this._route.data
 			.pipe(map((response) => response.project))
