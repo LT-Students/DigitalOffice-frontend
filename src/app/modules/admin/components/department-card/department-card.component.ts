@@ -177,5 +177,30 @@ export class DepartmentCardComponent {
 					});
 				}
 			});
+		// .pipe(
+		// 		switchMap((result) => {
+		// 			if (result) {
+		// 				const ids: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
+		// 					newArr.push(user.id ?? '');
+		//
+		// 					return newArr;
+		// 				}, []);
+		// 				this._departmentService.removeUsersFromDepartment(this._departmentId, ids).subscribe(() => {
+		// 					this._departmentService.getDepartment({
+		// 						departmentid: this._departmentId,
+		// 						includeusers: true,
+		// 					});
+		// 				});
+		// 			}
+		// 		})
+		// 	)
+		// 		.subscribe(({ body }) => {
+		// 			this.selection.clear();
+		// 			this.departmentInfo = body?.department;
+		//
+		// 			this.totalCount = body?.users?.length ?? 0;
+		// 			this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
+		// 			this._cdr.markForCheck();
+		// 		});
 	}
 }

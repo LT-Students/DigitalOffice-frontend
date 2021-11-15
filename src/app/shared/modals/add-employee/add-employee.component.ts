@@ -69,7 +69,7 @@ export class AddEmployeeComponent implements OnInit {
 			});
 	}
 
-	public addToProject(): void {
+	public addUsers(): void {
 		if (this._data.openFrom === 'project') {
 			const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
 				newArr: Array<ICreateUserRequest>,
@@ -81,11 +81,7 @@ export class AddEmployeeComponent implements OnInit {
 			},
 			[]);
 
-			this._projectService
-				.addUsersToProject({ projectId: this._data.pageId, users: [...users] })
-				.subscribe(() => {
-					this._cdr.markForCheck();
-				});
+			this._projectService.addUsersToProject({ projectId: this._data.pageId, users: [...users] }).subscribe();
 		}
 		if (this._data.openFrom === 'department') {
 			const users: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
@@ -94,9 +90,7 @@ export class AddEmployeeComponent implements OnInit {
 				return newArr;
 			}, []);
 
-			this._departmentService.addUsersToDepartment(this._data.pageId, [...users]).subscribe(() => {
-				this._cdr.markForCheck();
-			});
+			this._departmentService.addUsersToDepartment(this._data.pageId, [...users]).subscribe();
 		}
 	}
 }
