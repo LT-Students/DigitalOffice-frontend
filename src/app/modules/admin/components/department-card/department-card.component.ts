@@ -8,8 +8,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
-import { map } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
+import { EMPTY } from 'rxjs';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
@@ -109,11 +110,38 @@ export class DepartmentCardComponent {
 		this._router.navigate([`/user/${userId}`]);
 	}
 
-	public openDialog(): void {
-		this._dialog.open(AddEmployeeComponent, {
-			data: { idToHide: this.dataSource.data.map((e) => e.id) },
+	public openAddEmployeeModal(): void {
+		const dialogRef = this._dialog.open(AddEmployeeComponent, {
+			data: {
+				idToHide: this.dataSource.data.map((e) => e.id),
+				pageId: this._departmentId,
+				openFrom: 'department',
+			},
 			maxWidth: '670px',
 		});
+		dialogRef
+			.afterClosed()
+			.pipe(
+				switchMap((result) => {
+					if (result === undefined) {
+						return EMPTY;
+					} else {
+						return this._departmentService.getDepartment({
+							departmentid: this._departmentId,
+							includeusers: true,
+						});
+					}
+				}),
+				tap(({ body }) => {
+					this.departmentInfo = body?.department;
+
+					this.totalCount = body?.users?.length ?? 0;
+					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
+				})
+			)
+			.subscribe(() => {
+				this._cdr.markForCheck();
+			});
 	}
 
 	public isAllSelected(): boolean {
@@ -128,5 +156,66 @@ export class DepartmentCardComponent {
 			return;
 		}
 		this.selection.select(...this.dataSource.data);
+	}
+
+	public removeFromDepartment(): void {
+		this._modalService
+			.confirm({
+				confirmText: 'Да, удалить',
+				title: 'Удаление сотрудников',
+				message: 'Вы действительно хотите удалить указанных сотрудников?',
+			})
+			.afterClosed()
+			// .subscribe((result) => {
+			// 	if (result) {
+			// 		const ids: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
+			// 			newArr.push(user.id ?? '');
+			//
+			// 			return newArr;
+			// 		}, []);
+			// 		this._departmentService.removeUsersFromDepartment(this._departmentId, ids).subscribe(() => {
+			// 			this._departmentService
+			// 				.getDepartment({ departmentid: this._departmentId, includeusers: true })
+			// 				.subscribe(({ body }) => {
+			// 					this.selection.clear();
+			// 					this.departmentInfo = body?.department;
+			//
+			// 					this.totalCount = body?.users?.length ?? 0;
+			// 					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
+			// 					this._cdr.markForCheck();
+			// 				});
+			// 		});
+			// 	}
+			// });
+			.pipe(
+				switchMap((result) => {
+					if (result) {
+						const ids: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
+							newArr.push(user.id ?? '');
+
+							return newArr;
+						}, []);
+						return this._departmentService.removeUsersFromDepartment(this._departmentId, ids);
+					} else {
+						return EMPTY;
+					}
+				}),
+				switchMap(() => {
+					return this._departmentService.getDepartment({
+						departmentid: this._departmentId,
+						includeusers: true,
+					});
+				}),
+				tap(({ body }) => {
+					this.selection.clear();
+					this.departmentInfo = body?.department;
+
+					this.totalCount = body?.users?.length ?? 0;
+					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
+				})
+			)
+			.subscribe(() => {
+				this._cdr.markForCheck();
+			});
 	}
 }

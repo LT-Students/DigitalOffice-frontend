@@ -6,24 +6,23 @@ export enum ProjectStatusTypeRu {
 	Suspend = 'приостановлен',
 }
 
-export interface IProjectStatus {
-	name: ProjectStatusTypeRu | null;
-	type: ProjectStatusType;
+export interface IProjectStatusType {
+	type?: ProjectStatusType;
+	name: ProjectStatusTypeRu;
 }
 
-export class ProjectStatus implements IProjectStatus {
-	name: ProjectStatusTypeRu | null;
-	type: ProjectStatusType;
+export class ProjectTypeModel {
+	private static _projectTypes: IProjectStatusType[] = [
+		{ type: ProjectStatusType.Active, name: ProjectStatusTypeRu.Active },
+		{ type: ProjectStatusType.Closed, name: ProjectStatusTypeRu.Closed },
+		{ type: ProjectStatusType.Suspend, name: ProjectStatusTypeRu.Suspend },
+	];
 
-	constructor(type: ProjectStatusType) {
-		this.type = type;
-		this.name =
-			type === ProjectStatusType.Active
-				? ProjectStatusTypeRu.Active
-				: type === ProjectStatusType.Closed
-				? ProjectStatusTypeRu.Closed
-				: type === ProjectStatusType.Suspend
-				? ProjectStatusTypeRu.Suspend
-				: null;
+	public static getProjectType(projectStatusType?: ProjectStatusType | undefined): IProjectStatusType | undefined {
+		return this._projectTypes.find((status: IProjectStatusType) => status.type === projectStatusType);
+	}
+
+	public static getAllProjectTypes(): IProjectStatusType[] {
+		return this._projectTypes.slice();
 	}
 }
