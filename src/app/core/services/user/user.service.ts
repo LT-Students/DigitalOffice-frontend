@@ -8,6 +8,7 @@ import {
 	CertificateInfo,
 	CommunicationInfo,
 	EducationInfo,
+	ImageInfo,
 	OperationResultStatusType,
 	PatchUserDocument,
 	ProjectInfo,
@@ -18,6 +19,8 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { ImageApiService } from '@data/api/user-service/services/image-api.service';
+import { UUID } from '@app/types/uuid.type';
 
 export interface IUserResponse {
 	user?: UserInfo;
@@ -45,7 +48,7 @@ export interface IFindUsers {
 	providedIn: 'root',
 })
 export class UserService {
-	constructor(private _userApiService: UserApiService) {}
+	constructor(private _userApiService: UserApiService, private _imageApiService: ImageApiService) {}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
@@ -99,5 +102,14 @@ export class UserService {
 		};
 
 		return this._userApiService.editUser(params);
+	}
+
+	public createAvatarImage(image: ImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
+		//@ts-ignore
+		return this._imageApiService.createImage({ body: { ...image, entityType: 'user', entityId: userId } });
+	}
+
+	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse<null | {}>> {
+		return this._imageApiService.changeAvatar({ userId: userId, imageId: imageId });
 	}
 }

@@ -32,7 +32,7 @@ export class EmployeePageService implements Resolve<User> {
 			includeoffice: true,
 			includecommunications: true,
 			includerole: true,
-			includeimages: true,
+			includeuserimages: true,
 			includeprojects: true,
 		};
 
