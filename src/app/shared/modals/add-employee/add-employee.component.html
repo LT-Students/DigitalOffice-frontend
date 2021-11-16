@@ -30,7 +30,7 @@
 		(scrolled)="getPageUsers()"
 		[scrollWindow]="false"
 	>
-		<table mat-table [dataSource]="dataSource" class="table">
+		<table mat-table *ngIf="usersFound; else spinner" [dataSource]="dataSource" class="table">
 			<ng-container matColumnDef="select">
 				<td mat-cell *matCellDef="let row">
 					<mat-checkbox
@@ -64,12 +64,17 @@
 
 			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
 		</table>
+		<ng-template #spinner>
+			<mat-spinner></mat-spinner>
+		</ng-template>
 		<ng-template #empty>
 			<div>—</div>
 		</ng-template>
 	</mat-dialog-content>
 	<div mat-dialog-actions>
 		<button mat-button (click)="onClose()">Отмена</button>
-		<button mat-flat-button color="primary" (click)="addToProject(); onClose()">Сохранить</button>
+		<button mat-flat-button color="primary" (click)="addUsers()" [disabled]="selection.selected.length < 1">
+			Сохранить
+		</button>
 	</div>
 </div>

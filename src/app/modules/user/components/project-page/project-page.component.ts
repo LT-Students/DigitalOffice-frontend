@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { IGetProjectResponse, ProjectService } from '@app/services/project/project.service';
@@ -8,7 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalService } from '@app/services/modal.service';
 import { UserInfo } from '@data/api/project-service/models/user-info';
-import { ProjectStatus } from '@app/models/project/project-status';
+import { ProjectTypeModel } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -33,7 +33,7 @@ export class ProjectPageComponent implements OnInit {
 	public displayedColumns: string[];
 	public dataSource: MatTableDataSource<UserInfo>;
 	public selection: SelectionModel<UserInfo>;
-	public status: ProjectStatus;
+	public status: ProjectStatusType | undefined;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -69,7 +69,9 @@ export class ProjectPageComponent implements OnInit {
 			other: 'Выбрано # сотрудников',
 		};
 
-		this.status = new ProjectStatus(this.projectInfo?.status ?? ProjectStatusType.Active);
+		// console.log('this.IProjectStatusType?.type', this.IProjectStatusType?.type);
+		// this.status = this.IProjectStatusType?.type;
+
 		this._route.data
 			.pipe(map((response) => response.project))
 			.subscribe((project) => this._updateProjectInfo(project));
@@ -101,7 +103,7 @@ export class ProjectPageComponent implements OnInit {
 
 	public openAddEmployeeModal(): void {
 		const dialogRef = this._dialog.open(AddEmployeeComponent, {
-			data: { idToHide: this.dataSource.data.map((e) => e.id), pageId: this.projectId },
+			data: { idToHide: this.dataSource.data.map((e) => e.id), pageId: this.projectId, openFrom: 'project' },
 			maxWidth: '670px',
 		});
 		dialogRef
@@ -176,6 +178,7 @@ export class ProjectPageComponent implements OnInit {
 
 	private _updateProjectInfo(result: OperationResultResponse<IGetProjectResponse>) {
 		this.projectInfo = result.body?.project ?? {};
+		this.status = ProjectTypeModel.getProjectType(this.projectInfo?.status)?.type;
 		this.dataSource = new MatTableDataSource(result?.body?.users?.filter((e) => e.isActive) ?? []);
 		this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);
 		this.projectDuration = this._countProjectDuration();

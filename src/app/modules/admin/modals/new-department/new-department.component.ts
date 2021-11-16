@@ -1,8 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { UserService } from '@app/services/user/user.service';
 import { map } from 'rxjs/operators';
@@ -19,25 +18,25 @@ import { EditModalContent } from '../../components/department-card/department-ca
 	styleUrls: ['./new-department.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewDepartmentComponent implements OnInit {
+export class NewDepartmentComponent {
 	public directors$: Observable<UserInfo[] | undefined>;
 	public departmentForm: FormGroup;
 	public isEdit: boolean | undefined;
 	private readonly _departamentInfo: EditModalContent;
-	public isFormChanged: boolean;
 
 	constructor(
 		public _userService: UserService,
 		public _departmentService: DepartmentService,
 		private _dialogRef: MatDialogRef<NewDepartmentComponent>,
 		private _formBuilder: FormBuilder,
-		private _snackBar: MatSnackBar,
 		@Inject(MAT_DIALOG_DATA) data: EditModalContent
 	) {
 		this._departamentInfo = data;
-		this.isFormChanged = false;
 		this.departmentForm = this._formBuilder.group({
-			name: [this._departamentInfo ? this._departamentInfo.name : '', Validators.required],
+			name: [
+				this._departamentInfo ? this._departamentInfo.name : '',
+				[Validators.required, Validators.minLength(3)],
+			],
 			description: [this._departamentInfo ? this._departamentInfo.description : ''],
 			directorid: [this._departamentInfo ? this._departamentInfo.directorid : ''],
 		});
@@ -48,17 +47,7 @@ export class NewDepartmentComponent implements OnInit {
 			.pipe(map((response) => response.body));
 	}
 
-	public ngOnInit(): void {
-		this.departmentForm.valueChanges.subscribe((x) => {
-			this.isFormChanged =
-				this._departamentInfo.name !== x.name ||
-				this._departamentInfo.description !== x.description ||
-				this._departamentInfo.directorid !== x.directorid;
-		});
-	}
-
 	public createDepartment(): void {
-		console.log('ДИРЕКТОР:', this.departmentForm.get('directorid')?.value);
 		this._departmentService
 			.createDepartment({
 				name: this.departmentForm.get('name')?.value?.trim(),
@@ -68,17 +57,9 @@ export class NewDepartmentComponent implements OnInit {
 			})
 			.subscribe(
 				(result) => {
-					this._snackBar.open('Новый департамент успешно добавлен', 'done', {
-						duration: 3000,
-					});
 					this._dialogRef.close(result);
 				},
 				(error: HttpErrorResponse) => {
-					let errorMessage = error.error.errors;
-					if (error.status === 409) {
-						errorMessage = 'Департамент с таким названием уже существует';
-					}
-					this._snackBar.open(errorMessage, 'accept');
 					throw error;
 				}
 			);
@@ -106,9 +87,6 @@ export class NewDepartmentComponent implements OnInit {
 				body: editBody,
 			})
 			.subscribe((result: OperationResultResponse) => {
-				this._snackBar.open('Департамент успешно изменен', 'done', {
-					duration: 3000,
-				});
 				this._dialogRef.close(result);
 			});
 	}

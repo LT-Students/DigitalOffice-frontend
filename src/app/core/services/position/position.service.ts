@@ -3,9 +3,13 @@ import { PositionApiService } from '@data/api/position-service/services/position
 import { UUID } from '@app/types/uuid.type';
 import { IFindRequestEx } from '@app/types/find-request.interface';
 import { EditPositionRequest } from '@data/api/position-service/models/edit-position-request';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { catchError, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface ICreatePositionRequest {
 	name: string;
@@ -28,10 +32,24 @@ export interface IPositionInfo {
 	providedIn: 'root',
 })
 export class PositionService {
-	constructor(private _positionApiService: PositionApiService) {}
+	constructor(private _positionApiService: PositionApiService, private _snackBar: MatSnackBar) {}
 
 	public createPosition(body: ICreatePositionRequest): Observable<OperationResultResponse<{} | null>> {
-		return this._positionApiService.createPosition({ body });
+		return this._positionApiService.createPosition({ body }).pipe(
+			catchError((err) => {
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Position, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
+			})
+		);
 	}
 
 	public getPosition(positionId: UUID): Observable<OperationResultResponse<IPositionInfo>> {

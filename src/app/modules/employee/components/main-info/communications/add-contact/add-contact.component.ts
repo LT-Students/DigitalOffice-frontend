@@ -7,7 +7,6 @@ import { EmployeePageService } from '@app/services/employee-page.service';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { MatOptionSelectionChange } from '@angular/material/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel, IContactType } from '@app/models/communication.model';
 
@@ -31,8 +30,7 @@ export class AddContactComponent {
 		private _fb: FormBuilder,
 		private _dialogRef: MatDialogRef<AddContactComponent>,
 		private _communicationService: CommunicationService,
-		private _employeePageService: EmployeePageService,
-		private _snackBar: MatSnackBar
+		private _employeePageService: EmployeePageService
 	) {
 		this.symbolsCountMap = {
 			one: '# символа',
@@ -83,8 +81,6 @@ export class AddContactComponent {
 			.createCommunication(request)
 			.pipe(
 				catchError((err) => {
-					const errorMessage: string = err.error.errors ? err.error.errors[0] : 'Что-то пошло не так :(';
-					this._snackBar.open(errorMessage, '×', { duration: 3000 });
 					return throwError(err);
 				}),
 				finalize(() => {

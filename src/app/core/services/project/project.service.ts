@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import {
 	EditProjectRequest,
 	ImageContent,
@@ -14,6 +14,10 @@ import {
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
+import { catchError, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface IGetProjectRequest {
 	projectId: string;
@@ -72,7 +76,11 @@ export interface IFindProjects {
 	providedIn: 'root',
 })
 export class ProjectService {
-	constructor(private _projectService: ProjectApiService, private _userService: UserApiService) {}
+	constructor(
+		private _projectService: ProjectApiService,
+		private _userService: UserApiService,
+		private _snackBar: MatSnackBar
+	) {}
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
 		return this._projectService.findProjects(params);
@@ -83,7 +91,21 @@ export class ProjectService {
 	}
 
 	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
-		return this._projectService.createProject({ body });
+		return this._projectService.createProject({ body }).pipe(
+			catchError((err) => {
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Project, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
+			})
+		);
 	}
 
 	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse<{}>> {

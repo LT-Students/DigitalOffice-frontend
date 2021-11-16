@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
@@ -21,6 +21,9 @@ import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ImageApiService } from '@data/api/user-service/services/image-api.service';
 import { UUID } from '@app/types/uuid.type';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface IUserResponse {
 	user?: UserInfo;
@@ -48,7 +51,11 @@ export interface IFindUsers {
 	providedIn: 'root',
 })
 export class UserService {
-	constructor(private _userApiService: UserApiService, private _imageApiService: ImageApiService) {}
+	constructor(
+		private _userApiService: UserApiService,
+		private _imageApiService: ImageApiService,
+		private _snackBar: MatSnackBar
+	) {}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
@@ -62,10 +69,19 @@ export class UserService {
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
 		return this._userApiService.createUser({ body: params }).pipe(
-			switchMap((res) => {
-				return res.status === OperationResultStatusType.Failed ? throwError(res) : of(res);
+			catchError((err) => {
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				return throwError(err);
 			}),
-			catchError((error) => throwError(error))
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.User, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
+			})
 		);
 	}
 

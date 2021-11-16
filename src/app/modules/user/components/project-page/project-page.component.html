@@ -9,21 +9,21 @@
 			</button>
 		</div>
 		<div class="card__splitter"></div>
-		<div>{{ projectInfo?.department?.name }}</div>
+		<div class="mat-body-1">{{ projectInfo?.department?.name }}</div>
 	</div>
 	<div class="card__content">
 		<div>
 			<div class="description">
 				<h2 class="description__title">Детали проекта</h2>
 				<div class="description__body">
-					<div class="description__column">
+					<div class="description__column mat-body-1">
 						<p>Статус</p>
 						<p>Запуск проекта</p>
 						<p>Проект длится</p>
 						<p>Команда</p>
 					</div>
 					<div class="description__column">
-						<p>{{ status.name | titlecase }}</p>
+						<p>{{ status | projectType | titlecase }}</p>
 						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
 						<p>{{ projectDuration | i18nPlural: dayCountMap }}</p>
 						<p>{{ dataSource.data?.length | i18nPlural: participantCountMap }}</p>
