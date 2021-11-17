@@ -2,8 +2,6 @@
 @use 'base/palettes' as *;
 
 .communications {
-	padding: 52px 0 0;
-
 	height: 100%;
 
 	background-color: mat.get-color-from-palette($do-grey, 50);
@@ -11,11 +9,7 @@
 	&__contacts {
 		overflow-y: auto;
 
-		height: 612px;
-
-		&_cutted {
-			height: 340px;
-		}
+		height: 100%;
 	}
 
 	&__contact {
