@@ -1,16 +1,17 @@
-import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { EMPTY, from, iif, Observable, ReplaySubject } from 'rxjs';
-import { PageEvent } from '@angular/material/paginator';
+import { EMPTY, from, iif, Observable, ReplaySubject, Subject, combineLatest, pipe } from 'rxjs';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { IFindUsers, UserService } from '@app/services/user/user.service';
 import { OperationResultStatusType } from '@data/api/user-service/models';
 import { ModalService } from '@app/services/modal.service';
-import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { map, startWith, switchMap, withLatestFrom, tap, find } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { MatSelectChange } from '@angular/material/select/select';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
@@ -19,72 +20,71 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	styleUrls: ['./manage-users.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageUsersComponent {
+export class ManageUsersComponent implements AfterViewInit {
 	@ViewChild(MatSort) sort: MatSort | undefined;
+	@ViewChild('paginator') paginator: MatPaginator | undefined;
 
 	public users$: Observable<OperationResultResponse<UserInfo[]>>;
-	private _userParams: ReplaySubject<IFindUsers>;
-	private _includedeactivated: boolean;
+	public filters: FormGroup;
+	private _refreshCurrentPage$$: Subject<any>;
+
 	constructor(
 		private _userService: UserService,
 		private _modalService: ModalService,
-		private _route: ActivatedRoute
+		private _route: ActivatedRoute,
+		private _fb: FormBuilder
 	) {
-		this._includedeactivated = false;
-		this._userParams = new ReplaySubject<IFindUsers>(1);
-		this.users$ = this._userParams.pipe(
-			startWith(null),
-			switchMap((params: IFindUsers | null) =>
-				iif(
-					() => !!params,
-					this._userService.findUsers(params as IFindUsers),
-					this._route.data.pipe(map((response) => response.users))
-				)
-			)
-		);
+		this._refreshCurrentPage$$ = new Subject<any>();
+		this.filters = this._fb.group({
+			active: ['active'],
+		});
+		this.users$ = new Observable<OperationResultResponse<UserInfo[]>>();
 	}
 
-	public selectionChangeHandler(event: MatSelectChange): void {
-		if (event.value === 'all') {
-			this._includedeactivated = true;
-			console.log(this._includedeactivated);
-		} else {
-			this._includedeactivated = false;
-			console.log(this._includedeactivated);
+	public ngAfterViewInit(): void {
+		if (this.paginator !== undefined) {
+			this.users$ = combineLatest([
+				this.filters.valueChanges.pipe(
+					startWith(null),
+					tap(() => this.paginator?.firstPage())
+				),
+				this.paginator.page.pipe(startWith(null)),
+				this._refreshCurrentPage$$.pipe(startWith(null)),
+			]).pipe(
+				switchMap(([filters, page]) =>
+					filters !== null || page !== null
+						? this.getUsers(filters, page)
+						: this._route.data.pipe(map((response) => response.users))
+				),
+				tap((res) => {
+					if (this.paginator) {
+						this.paginator.length = res.totalCount ?? 0;
+					}
+				})
+			);
 		}
-		this._userParams.next({
-			skipCount: 0,
-			takeCount: 10,
-			includeavatar: true,
-			includeposition: true,
-			includedepartment: true,
-			includerole: true,
-
-			includedeactivated: this._includedeactivated,
-		});
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this._userParams.next({
-			skipCount: event.pageIndex * event.pageSize,
-			takeCount: event.pageSize,
+	public getUsers(filters: any, event: PageEvent | null): Observable<any> {
+		return this._userService.findUsers({
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
 			includeavatar: true,
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,
-			includedeactivated: this._includedeactivated,
+			includedeactivated: filters.active === 'all',
 		});
-		console.log(this._userParams);
 	}
 
 	public onAddEmployeeClick(): void {
 		this._modalService
 			.openModal<NewEmployeeComponent, null, OperationResultResponse<UserInfo[]>>(NewEmployeeComponent)
 			.afterClosed()
-			.pipe(withLatestFrom(this._userParams))
-			.subscribe(([result, params]) => {
+
+			.subscribe((result) => {
 				if (result?.status === OperationResultStatusType.FullSuccess) {
-					this._userParams.next(params);
+					this._refreshCurrentPage$$.next();
 				}
 			});
 	}
@@ -99,11 +99,8 @@ export class ManageUsersComponent {
 					message: 'Вы действительно хотите удалить этого пользователя?',
 				})
 				.afterClosed()
-				.pipe(
-					switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)),
-					switchMap(() => this._userParams)
-				)
-				.subscribe((params) => this._userParams.next(params));
+				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)))
+				.subscribe((params) => {});
 		} else {
 			this._modalService
 				.confirm({
@@ -112,11 +109,10 @@ export class ManageUsersComponent {
 					message: 'Вы действительно хотите восстановить этого пользователя?',
 				})
 				.afterClosed()
-				.pipe(
-					switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(user?.id), EMPTY)),
-					switchMap(() => this._userParams)
-				)
-				.subscribe((params) => this._userParams.next(params));
+				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(user?.id), EMPTY)))
+				.subscribe((params) => {
+					this._refreshCurrentPage$$.next();
+				});
 		}
 	}
 
