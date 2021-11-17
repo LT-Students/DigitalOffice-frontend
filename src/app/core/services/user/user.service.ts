@@ -1,6 +1,6 @@
-import { Inject, Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
@@ -8,7 +8,6 @@ import {
 	CertificateInfo,
 	CommunicationInfo,
 	EducationInfo,
-	OperationResultStatusType,
 	PatchUserDocument,
 	ProjectInfo,
 	UserAchievementInfo,
@@ -18,7 +17,6 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 

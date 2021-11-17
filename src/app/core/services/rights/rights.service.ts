@@ -1,14 +1,12 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IFindRequest } from '@app/types/find-request.interface';
 import { CreateRoleRequest } from '@data/api/rights-service/models/create-role-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { UserInfo } from '@data/api/rights-service/models/user-info';
-import { catchError, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRightsApiService } from '@data/api/rights-service/services/user-rights-api.service';
 import { OperationResultResponseRights } from '@data/api/rights-service/models/operation-result-response-rights';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';

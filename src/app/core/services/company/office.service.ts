@@ -1,8 +1,6 @@
-import { Inject, Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
-import { catchError, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CompanyApiService } from '@data/api/office-service/services/company-api.service';
 import { CreateOfficeRequest } from '@data/api/office-service/models/create-office-request';
 import { IFindRequestEx } from '@app/types/find-request.interface';

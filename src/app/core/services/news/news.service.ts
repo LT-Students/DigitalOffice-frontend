@@ -1,10 +1,8 @@
-import { Inject, Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { NewsApiService } from '@data/api/news-service/services/news-api.service';
 import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, tap } from 'rxjs/operators';
 import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { NewsInfo } from '@data/api/news-service/models/news-info';

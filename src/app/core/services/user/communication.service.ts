@@ -1,11 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { CommunicationApiService } from '@data/api/user-service/services/communication-api.service';
 import { CreateCommunicationRequest } from '@data/api/user-service/models/create-communication-request';
 import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
-import { catchError, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageTriggeredFrom, MessageMethod } from '@app/models/response/response-message';
 

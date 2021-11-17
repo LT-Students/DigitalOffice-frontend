@@ -1,11 +1,10 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
 	EditProjectRequest,
 	ImageContent,
 	ImageInfo,
-	// ProjectFileInfo,
 	ProjectInfo,
 	ProjectStatusType,
 	ProjectUserRoleType,
@@ -14,8 +13,6 @@ import {
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
-import { catchError, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 

@@ -1,13 +1,11 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PositionApiService } from '@data/api/position-service/services/position-api.service';
 import { UUID } from '@app/types/uuid.type';
 import { IFindRequestEx } from '@app/types/find-request.interface';
 import { EditPositionRequest } from '@data/api/position-service/models/edit-position-request';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { PositionInfo } from '@data/api/position-service/models/position-info';
-import { catchError, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 

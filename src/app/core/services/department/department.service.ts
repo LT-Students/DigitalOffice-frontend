@@ -1,15 +1,13 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { DepartmentApiService } from '@data/api/department-service/services/department-api.service';
 import { EditDepartmentRequest } from '@data/api/department-service/models/edit-department-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UUID } from '@app/types/uuid.type';
 import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { ProjectInfo } from '@data/api/department-service/models/project-info';
 import { IFindRequestEx } from '@app/types/find-request.interface';
-import { catchError, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { DepartmentUserRole } from '@data/api/department-service/models/department-user-role';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
