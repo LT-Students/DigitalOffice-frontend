@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { OperationResultStatusType } from '@data/api/user-service/models/operation-result-status-type';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
@@ -26,12 +25,7 @@ export class DashboardComponent implements OnInit {
 	public openModalClick: Subject<AdminDashboardModalType>;
 	public modalType: typeof AdminDashboardModalType;
 
-	constructor(
-		private _router: Router,
-		private _matSnackBar: MatSnackBar,
-		public dialog: MatDialog,
-		public modalService: ModalService
-	) {
+	constructor(private _router: Router, public dialog: MatDialog, public modalService: ModalService) {
 		this.today = new Date();
 		this.openModalClick = new Subject<AdminDashboardModalType>();
 		this.modalType = AdminDashboardModalType;

@@ -1,15 +1,14 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
-import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectService } from '@app/services/project/project.service';
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PatchRequest, ProjectPath } from '@app/types/patch-paths';
 import { ProjectPatchDocument } from '@data/api/project-service/models/project-patch-document';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
+import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
 
 @Component({
 	selector: 'do-edit-project',
@@ -20,7 +19,7 @@ import { DepartmentService } from '@app/services/department/department.service';
 export class EditProjectComponent {
 	public projectForm: FormGroup;
 	public departments: Observable<Array<DepartmentInfo> | undefined>;
-	public statuses: ProjectStatus[];
+	public statuses: IProjectStatusType[];
 	public projectInfo: any;
 	private _initialData: PatchRequest<ProjectPath>;
 
@@ -32,17 +31,13 @@ export class EditProjectComponent {
 		private _dialogRef: MatDialogRef<EditProjectComponent>,
 		@Inject(MAT_DIALOG_DATA) private _data: { projectInfo: any[] }
 	) {
-		this.statuses = [
-			new ProjectStatus(ProjectStatusType.Active),
-			new ProjectStatus(ProjectStatusType.Closed),
-			new ProjectStatus(ProjectStatusType.Suspend),
-		];
+		this.statuses = ProjectTypeModel.getAllProjectTypes();
 
 		this.projectInfo = this._data.projectInfo;
 
 		this._initialData = {
 			'/Name': [this.projectInfo.name, [Validators.required, Validators.maxLength(150)]],
-			'/DepartmentId': [this.projectInfo.department.id, [Validators.required]],
+			'/DepartmentId': [this.projectInfo.department?.id ?? null, [Validators.required]],
 			'/Description': [this.projectInfo.description, [Validators.maxLength(300)]],
 			'/ShortDescription': [this.projectInfo.shortDescription],
 			'/Status': [this.projectInfo.status],
@@ -62,6 +57,7 @@ export class EditProjectComponent {
 		const editRequest = (Object.keys(this.projectForm.controls) as ProjectPath[]).reduce(
 			(acc: ProjectPatchDocument[], key) => {
 				const formValue = this.projectForm.get(key)?.value;
+
 				if (formValue !== this._initialData[key][0]) {
 					const patchDocument: ProjectPatchDocument = {
 						op: 'replace',
@@ -74,6 +70,7 @@ export class EditProjectComponent {
 			},
 			[]
 		);
+
 		this._projectService.editProject({ projectId: this.projectInfo.id, body: editRequest }).subscribe();
 	}
 }
