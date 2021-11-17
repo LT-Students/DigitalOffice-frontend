@@ -1,6 +1,6 @@
 import { Component, ViewChild, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { EMPTY, iif, Observable, Subject, combineLatest } from 'rxjs';
+import { EMPTY, iif, Observable, Subject, combineLatest, observable } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
@@ -64,7 +64,7 @@ export class ManageUsersComponent implements AfterViewInit {
 		}
 	}
 
-	public getUsers(filters: any, event: PageEvent | null): Observable<any> {
+	public getUsers(filters: any, event: PageEvent | null): Observable<OperationResultResponse<UserInfo[]>> {
 		return this._userService.findUsers({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,
 			takeCount: event ? event.pageSize : 10,
