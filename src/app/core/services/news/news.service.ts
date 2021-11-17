@@ -36,10 +36,7 @@ interface IGetNewsResponse {
 
 @Injectable()
 export class NewsService {
-	constructor(
-		private _newsService: NewsApiService,
-		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
-	) {}
+	constructor(private _newsService: NewsApiService, private _responseMessage: ResponseMessageModel) {}
 
 	public createNews(body: CreateNewsRequest): Observable<OperationResultResponse<{}>> {
 		return this._newsService

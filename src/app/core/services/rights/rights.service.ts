@@ -38,7 +38,7 @@ export class RightsService {
 		private _rightsService: RightsApiService,
 		private _roleService: RoleApiService,
 		private _userRightsService: UserRightsApiService,
-		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
+		private _responseMessage: ResponseMessageModel
 	) {}
 
 	public addRightsForUser(params: IAddRightsForUserRequest): Observable<OperationResultResponse<any>> {

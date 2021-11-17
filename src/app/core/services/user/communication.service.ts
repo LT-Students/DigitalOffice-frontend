@@ -22,7 +22,6 @@ export interface IRemoveCommunicationRequest {
 export class CommunicationService {
 	constructor(
 		private _communicationService: CommunicationApiService,
-		private _snackBar: MatSnackBar,
 		private _responseMessage: ResponseMessageModel
 	) {}
 

@@ -27,19 +27,19 @@ export class ResponseMessageModel {
 		{ triggered: MessageTriggeredFrom.News, feminine: true },
 	];
 
-	public getSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, success: any): string {
+	public getSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, status: string): string {
 		const result = this._responseMessageTypes.find((item) => item.triggered === triggeredFrom);
 		let successMessage = `${triggeredFrom} успешно ${method}${result?.feminine === true ? 'а' : ''}`;
-		if (success.status === 'PartialSuccess') {
+		if (status === 'PartialSuccess') {
 			successMessage = 'Выполнено частично';
 		}
 		return successMessage;
 	}
 
-	public showSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, success: any): void {
+	public showSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, status: string): void {
 		const result = this._responseMessageTypes.find((item) => item.triggered === triggeredFrom);
 		let successMessage = `${triggeredFrom} успешно ${method}${result?.feminine === true ? 'а' : ''}`;
-		if (success.status === 'PartialSuccess') {
+		if (status === 'PartialSuccess') {
 			successMessage = 'Выполнено частично';
 		}
 		this._snackBar.open(successMessage, '×', {
@@ -78,7 +78,7 @@ export class ResponseMessageModel {
 					return throwError(err);
 				}),
 				tap((result) => {
-					this.showSuccessMessage(triggeredFrom, method, result);
+					this.showSuccessMessage(triggeredFrom, method, result.status);
 				})
 			);
 		};

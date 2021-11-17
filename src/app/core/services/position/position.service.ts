@@ -32,10 +32,7 @@ export interface IPositionInfo {
 	providedIn: 'root',
 })
 export class PositionService {
-	constructor(
-		private _positionApiService: PositionApiService,
-		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
-	) {}
+	constructor(private _positionApiService: PositionApiService, private _responseMessage: ResponseMessageModel) {}
 
 	public createPosition(body: ICreatePositionRequest): Observable<OperationResultResponse<{} | null>> {
 		return this._positionApiService

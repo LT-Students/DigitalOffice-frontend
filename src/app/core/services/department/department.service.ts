@@ -46,10 +46,7 @@ export interface ICreateUserRequest {
 	providedIn: 'root',
 })
 export class DepartmentService {
-	constructor(
-		private _departmentApiService: DepartmentApiService,
-		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
-	) {}
+	constructor(private _departmentApiService: DepartmentApiService, private _responseMessage: ResponseMessageModel) {}
 
 	public createDepartment(body: ICreateDepartmentRequest): Observable<OperationResultResponse<{} | null>> {
 		return this._departmentApiService

@@ -79,7 +79,7 @@ export class ProjectService {
 	constructor(
 		private _projectService: ProjectApiService,
 		private _userService: UserApiService,
-		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
+		private _responseMessage: ResponseMessageModel
 	) {}
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {

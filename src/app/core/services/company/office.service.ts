@@ -18,7 +18,7 @@ export class OfficeService {
 	constructor(
 		private _companyService: CompanyApiService,
 		private _officeService: OfficeApiService,
-		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
+		private _responseMessage: ResponseMessageModel
 	) {}
 
 	public createOffice(body: CreateOfficeRequest): Observable<OperationResultResponse> {

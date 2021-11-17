@@ -21,7 +21,7 @@ export class EmployeePageService implements Resolve<User> {
 	constructor(
 		private _userService: UserService,
 		private _currentUserService: CurrentUserService,
-		@Inject(ResponseMessageModel) private _responseMessage: ResponseMessageModel
+		private _responseMessage: ResponseMessageModel
 	) {
 		this._selectedUser = new ReplaySubject<User>(1);
 		this.selectedUser$ = this._selectedUser.asObservable();
