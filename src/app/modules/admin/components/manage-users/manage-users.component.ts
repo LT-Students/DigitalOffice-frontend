@@ -1,16 +1,15 @@
 import { Component, ViewChild, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { EMPTY, from, iif, Observable, ReplaySubject, Subject, combineLatest, pipe } from 'rxjs';
+import { EMPTY, iif, Observable, Subject, combineLatest } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { IFindUsers, UserService } from '@app/services/user/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { OperationResultStatusType } from '@data/api/user-service/models';
 import { ModalService } from '@app/services/modal.service';
 import { map, startWith, switchMap, withLatestFrom, tap, find } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
-import { MatSelectChange } from '@angular/material/select/select';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
