@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Image } from '@app/models/image.model';
+import { UploadedImage } from '@app/models/image.model';
 import { Observable } from 'rxjs';
 import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
 
@@ -30,7 +30,7 @@ export class UploadPhotoComponent {
 	}
 
 	private _handleFile(file: File): void {
-		const image = new Image(file);
+		const image = new UploadedImage(file);
 		this.resultFile$ = image.getCreateImageRequest();
 		this.imagePreview$ = image.getLocalUrl();
 		this.isImageUploaded = true;

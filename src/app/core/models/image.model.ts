@@ -1,7 +1,17 @@
 import { Observable, Subscriber } from 'rxjs';
 import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
+import { ImageType } from '@data/api/user-service/models/image-type';
 
-export class Image {
+export interface IImageInfo {
+	content: string;
+	extension: string;
+	id?: string;
+	name: null | string;
+	parentId: null | string;
+	type?: ImageType;
+}
+
+export class UploadedImage {
 	constructor(private _image: File) {}
 
 	public get name(): string {

@@ -8,8 +8,6 @@ import {
 	CertificateInfo,
 	CommunicationInfo,
 	EducationInfo,
-	ImageInfo,
-	OperationResultStatusType,
 	PatchUserDocument,
 	ProjectInfo,
 	UserAchievementInfo,
@@ -24,6 +22,7 @@ import { UUID } from '@app/types/uuid.type';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
+import { IImageInfo } from '@app/models/image.model';
 
 export interface IUserResponse {
 	user?: UserInfo;
@@ -120,8 +119,7 @@ export class UserService {
 		return this._userApiService.editUser(params);
 	}
 
-	public createAvatarImage(image: ImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
-		//@ts-ignore
+	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
 		return this._imageApiService.createImage({ body: { ...image, entityType: 'user', entityId: userId } });
 	}
 
