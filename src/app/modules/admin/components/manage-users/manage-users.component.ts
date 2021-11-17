@@ -80,7 +80,6 @@ export class ManageUsersComponent implements AfterViewInit {
 		this._modalService
 			.openModal<NewEmployeeComponent, null, OperationResultResponse<UserInfo[]>>(NewEmployeeComponent)
 			.afterClosed()
-
 			.subscribe((result) => {
 				if (result?.status === OperationResultStatusType.FullSuccess) {
 					this._refreshCurrentPage$$.next();
@@ -99,7 +98,9 @@ export class ManageUsersComponent implements AfterViewInit {
 				})
 				.afterClosed()
 				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)))
-				.subscribe((params) => {});
+				.subscribe((response) => {
+					this._refreshCurrentPage$$.next();
+				});
 		} else {
 			this._modalService
 				.confirm({
@@ -109,7 +110,7 @@ export class ManageUsersComponent implements AfterViewInit {
 				})
 				.afterClosed()
 				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(user?.id), EMPTY)))
-				.subscribe((params) => {
+				.subscribe((response) => {
 					this._refreshCurrentPage$$.next();
 				});
 		}
