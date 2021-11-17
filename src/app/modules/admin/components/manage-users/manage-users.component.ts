@@ -72,7 +72,7 @@ export class ManageUsersComponent implements AfterViewInit {
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,
-			includedeactivated: filters.active === 'all',
+			includedeactivated: filters?.active === 'all',
 		});
 	}
 
