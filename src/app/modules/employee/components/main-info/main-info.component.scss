@@ -8,11 +8,15 @@
 
 		min-width: 600px;
 
-		grid-template-columns: 3fr 4fr 3fr;
+		grid-template-columns: 30fr 40fr 30fr;
+	}
+
+	&__form {
+		width: 100%;
 	}
 
 	&__main {
-		margin: 56px 15px 52px 47px;
+		margin: 56px 15px 0 47px;
 
 		display: flex;
 		flex-direction: column;
@@ -21,7 +25,7 @@
 	}
 
 	&__general {
-		margin: 52px 32px 52px 15px;
+		margin: 52px 32px 0 15px;
 	}
 
 	&__general-header {
@@ -31,22 +35,12 @@
 	}
 
 	&__additional {
-		position: relative;
-
 		background-color: mat.get-color-from-palette($do-grey, 50);
-	}
 
-	&__communications {
-		position: absolute;
-		top: 0;
-		left: 0;
-
-		padding-top: 52px;
-
-		overflow-y: hidden;
-
-		width: 100%;
-		height: 100%;
+		&_editing {
+			grid-row: 1 / 3;
+			grid-column: 3 / 4;
+		}
 	}
 
 	&__avatar {
@@ -84,6 +78,10 @@
 		height: 16px;
 	}
 
+	&__form-field {
+		display: block;
+	}
+
 	&__about {
 		line-height: 21px;
 	}
@@ -97,10 +95,6 @@
 		margin-left: 32px;
 
 		width: 185px;
-
-		mat-form-field {
-			width: 185px;
-		}
 	}
 
 	&__hint {
@@ -115,14 +109,11 @@
 	}
 
 	&__required-block {
-		text-align: left;
+		margin: 32px 0 0 57px;
 	}
 }
 
 .controls {
-	position: absolute;
-	bottom: 0;
-
 	padding: 32px 0 52px;
 
 	display: flex;
@@ -134,4 +125,8 @@
 
 		width: 180px;
 	}
+}
+
+.title {
+	margin: 0;
 }

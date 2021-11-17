@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
@@ -17,12 +17,8 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ImageApiService } from '@data/api/user-service/services/image-api.service';
-import { UUID } from '@app/types/uuid.type';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
-import { IImageInfo } from '@app/models/image.model';
 
 export interface IUserResponse {
 	user?: UserInfo;
@@ -50,11 +46,7 @@ export interface IFindUsers {
 	providedIn: 'root',
 })
 export class UserService {
-	constructor(
-		private _userApiService: UserApiService,
-		private _imageApiService: ImageApiService,
-		private _snackBar: MatSnackBar
-	) {}
+	constructor(private _userApiService: UserApiService, private _responseMessage: ResponseMessageModel) {}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
@@ -67,21 +59,9 @@ export class UserService {
 	}
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
-		return this._userApiService.createUser({ body: params }).pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.User, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			})
-		);
+		return this._userApiService
+			.createUser({ body: params })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.User, MessageMethod.Create));
 	}
 
 	public editUser(userId: string, body: PatchUserDocument[]): Observable<OperationResultResponse<null | {}>> {
@@ -117,13 +97,5 @@ export class UserService {
 		};
 
 		return this._userApiService.editUser(params);
-	}
-
-	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
-		return this._imageApiService.createImage({ body: { ...image, entityType: 'user', entityId: userId } });
-	}
-
-	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse<null | {}>> {
-		return this._imageApiService.changeAvatar({ userId: userId, imageId: imageId });
 	}
 }

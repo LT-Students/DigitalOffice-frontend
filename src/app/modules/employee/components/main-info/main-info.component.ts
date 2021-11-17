@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,15 +6,23 @@ import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model
 import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
-import { finalize, map, switchMap, take } from 'rxjs/operators';
-import { ImageInfo, PatchUserDocument, UserGender } from '@data/api/user-service/models';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserService } from '@app/services/user/user.service';
+import { finalize, map } from 'rxjs/operators';
+import { PatchUserDocument, UserGender } from '@data/api/user-service/models';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
-import { BehaviorSubject, EMPTY, forkJoin, Observable } from 'rxjs';
+import { RoleInfo } from '@data/api/rights-service/models/role-info';
+import { OfficeInfo } from '@data/api/company-service/models/office-info';
+import { DepartmentInfo } from '@data/api/company-service/models/department-info';
+import { PositionInfo } from '@data/api/company-service/models/position-info';
+import { RightsService } from '@app/services/rights/rights.service';
+import { BehaviorSubject, Observable, Subscription, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { PatchRequest, UserPath } from '@app/types/patch-paths';
 import { DateTime } from 'luxon';
-import { UserService } from '@app/services/user/user.service';
+import { PositionService } from '@app/services/position/position.service';
+import { DepartmentService } from '@app/services/department/department.service';
+import { OfficeService } from '@app/services/company/office.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -23,27 +31,34 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 	styleUrls: ['./main-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainInfoComponent implements OnInit {
+export class MainInfoComponent implements OnInit, OnDestroy {
 	public loading: BehaviorSubject<boolean>;
 
 	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
-	public editPaths: typeof UserPath = UserPath;
 	public employeeInfoForm: FormGroup;
 	public isEditing: boolean;
 	public genders: IUserGender[];
 	public statuses: IUserStatus[];
 
-	public user$: Observable<User>;
-	private _initialData: PatchRequest<UserPath> & { avatarImage?: ImageInfo | null };
+	public user?: User;
+	public userSubscription: Subscription | undefined;
+	public roles$: Observable<RoleInfo[] | undefined>;
+	public offices$: Observable<OfficeInfo[] | undefined>;
+	public departments$: Observable<DepartmentInfo[] | undefined>;
+	public positions$: Observable<PositionInfo[] | undefined>;
+	private _initialData: PatchRequest<UserPath>;
 
 	constructor(
 		private _fb: FormBuilder,
 		private _route: ActivatedRoute,
-		private _employeeService: EmployeePageService,
 		private _userService: UserService,
+		private _positionService: PositionService,
+		private _departmentService: DepartmentService,
+		private _officeService: OfficeService,
+		private _employeeService: EmployeePageService,
 		private _dialog: MatDialog,
-		private _snackBar: MatSnackBar,
+		private _roleService: RightsService,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.loading = new BehaviorSubject<boolean>(false);
@@ -52,11 +67,34 @@ export class MainInfoComponent implements OnInit {
 		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
 		this.employeeInfoForm = this._initEditForm();
-		this.user$ = this._employeeService.selectedUser$;
+		this.departments$ = this._departmentService
+			.findDepartments({
+				skipCount: 0,
+				takeCount: 500,
+			})
+			.pipe(map((res) => res.body));
+
+		this.positions$ = this._positionService
+			.findPositions({
+				skipCount: 0,
+				takeCount: 500,
+			})
+			.pipe(map((res) => res.body));
+
+		this.offices$ = this._officeService.findOffices({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
+		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 500 }).pipe(map((res) => res.body));
 	}
 
 	public ngOnInit(): void {
 		this._route.params.subscribe(() => (this.isEditing = false));
+		this.userSubscription = this._employeeService.selectedUser$.subscribe((user) => {
+			this.user = user;
+			this._cdr.markForCheck();
+		});
+	}
+
+	public ngOnDestroy(): void {
+		this.userSubscription?.unsubscribe();
 	}
 
 	public isOwner(): boolean {
@@ -69,11 +107,13 @@ export class MainInfoComponent implements OnInit {
 		return true;
 	}
 
-	public toggleEditMode(user?: User): void {
-		if (user) {
-			this._fillForm(user);
-		}
+	public toggleEditMode(): void {
+		this._fillForm();
 		this.isEditing = !this.isEditing;
+	}
+
+	public onSubmit(): void {
+		this._editUser();
 	}
 
 	public onReset(): void {
@@ -81,82 +121,84 @@ export class MainInfoComponent implements OnInit {
 		this.toggleEditMode();
 	}
 
-	public onAvatarUploadDialog(): void {
+	public changeWorkingRate(step: number) {
+		// const currentValue = this.employeeInfoForm.get('/Rate')?.value;
+		// const rate = +currentValue + step;
+		// this.employeeInfoForm.patchValue({ '/Rate': rate });
+		//
+		// if (this.employeeInfoForm.get('/Rate')?.pristine) {
+		// 	this.employeeInfoForm.get('/Rate')?.markAsDirty();
+		// }
+	}
+
+	public onOpenDialog(): void {
 		const dialogRef = this._dialog.open(UploadPhotoComponent, {});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({
-					avatarImage: result,
+					photo: result,
 				});
-				this.employeeInfoForm.get('avatarImage')?.markAsDirty();
-				this._cdr.markForCheck();
+				this.employeeInfoForm.get('/AvatarFileId')?.markAsDirty();
 			}
 		});
 	}
 
-	public onSubmit(): void {
+	private _editUser(): void {
 		this.loading.next(true);
+		const editRequest = (Object.keys(this.employeeInfoForm.controls) as UserPath[]).reduce(
+			(acc: PatchUserDocument[], key) => {
+				const formValue = this.employeeInfoForm.get(key)?.value;
+				if (formValue !== this._initialData[key]) {
+					const patchDocument: PatchUserDocument = {
+						op: 'replace',
+						path: key,
+						value:
+							formValue instanceof DateTime
+								? formValue.plus({ minutes: formValue.offset }).toISO()
+								: formValue,
+					};
+					acc.push(patchDocument);
+				}
+				return acc;
+			},
+			[]
+		);
 
-		const { avatarImage, ...userInfo } = this.employeeInfoForm.controls;
-		const editRequest = (Object.keys(userInfo) as UserPath[]).reduce((acc: PatchUserDocument[], key) => {
-			const formValue = this.employeeInfoForm.get(key)?.value;
-			if (formValue !== this._initialData[key]) {
-				const patchDocument: PatchUserDocument = {
-					op: 'replace',
-					path: key,
-					value:
-						formValue instanceof DateTime
-							? formValue.plus({ minutes: formValue.offset }).toISO()
-							: formValue,
-				};
-				acc.push(patchDocument);
-			}
-			return acc;
-		}, []);
-
-		this._employeeService.selectedUser$
+		this._employeeService
+			.editEmployee(editRequest)
 			.pipe(
-				take(1),
-				map((user) => user.id ?? ''),
-				switchMap((userId) =>
-					forkJoin([
-						this._userService.editUser(userId, editRequest),
-						avatarImage.dirty
-							? this._userService
-									.createAvatarImage(avatarImage.value, userId)
-									.pipe(
-										switchMap((response) =>
-											this._userService.changeAvatar(response.body as string, userId)
-										)
-									)
-							: EMPTY,
-					]).pipe(switchMap(() => this._employeeService.getEmployee(userId)))
-				),
 				finalize(() => {
 					this.loading.next(false);
 				})
 			)
 			.subscribe({
-				next: () => this.toggleEditMode(),
-				error: (err) => {
-					throw err;
+				next: () => {
+					this.toggleEditMode();
+				},
+				error: (error: HttpErrorResponse) => {
+					return throwError(error);
 				},
 			});
 	}
 
-	private _fillForm(user: User): void {
-		if (user) {
+	private _fillForm(): void {
+		if (this.user) {
 			this._initialData = {
-				[UserPath.FIRST_NAME]: user.firstName,
-				[UserPath.LAST_NAME]: user.lastName,
-				[UserPath.MIDDLE_NAME]: user.middleName,
-				[UserPath.STATUS]: user.statusEmoji?.statusType,
-				[UserPath.ABOUT]: user.about,
-				[UserPath.CITY]: user.city,
-				[UserPath.START_WORKING_AT]: user.startWorkingAt,
-				[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
-				[UserPath.GENDER]: user.gender?.genderType,
-				avatarImage: user.avatarImage,
+				'/FirstName': this.user.firstName,
+				'/LastName': this.user.lastName,
+				'/MiddleName': this.user.middleName,
+				// '/AvatarFileId': this.user.avatarImage?.id,
+				'/Status': this.user.statusEmoji?.statusType,
+				'/About': this.user.about,
+				// '/PositionId': this.user.position?.id,
+				// '/DepartmentId': this.user.department?.id,
+				// '/OfficeId': this.user.office?.id,
+				// '/RoleId': this.user.role?.id,
+				// '/Rate': this.user.rate,
+				'/City': this.user.city,
+				'/Gender': this.user.gender?.genderType,
+				'/DateOfBirth': this.user.dateOfBirth,
+				'/StartWorkingAt': this.user.startWorkingAt,
 			};
 			this.employeeInfoForm.patchValue(this._initialData);
 		}
@@ -164,16 +206,21 @@ export class MainInfoComponent implements OnInit {
 
 	private _initEditForm(): FormGroup {
 		return this._fb.group({
-			[UserPath.FIRST_NAME]: ['', Validators.required],
-			[UserPath.LAST_NAME]: ['', Validators.required],
-			[UserPath.MIDDLE_NAME]: [''],
-			[UserPath.STATUS]: [null],
-			[UserPath.ABOUT]: [''],
-			[UserPath.CITY]: [''],
-			[UserPath.START_WORKING_AT]: [null],
-			[UserPath.DATE_OF_BIRTH]: [null],
-			[UserPath.GENDER]: [UserGender.NotSelected],
-			avatarImage: [null],
+			'/FirstName': ['', Validators.required],
+			'/LastName': ['', Validators.required],
+			'/MiddleName': [''],
+			'/AvatarFileId': [''],
+			'/Status': [null],
+			'/About': [''],
+			// '/PositionId': ['', Validators.required],
+			// '/DepartmentId': [''],
+			'/OfficeId': ['', Validators.required],
+			'/RoleId': [''],
+			// '/Rate': ['', Validators.required],
+			'/City': [''],
+			'/StartWorkingAt': [null],
+			'/DateOfBirth': [null],
+			'/Gender': [UserGender],
 		});
 	}
 }

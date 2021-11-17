@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
@@ -20,6 +20,7 @@ import { EditContactComponent } from './edit-contact/edit-contact.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommunicationsComponent implements OnInit {
+	@Input() public mainInfoEditing: boolean;
 	public communications: CommunicationInfo[];
 	public employeeId: string;
 	public emailContactCount: number;
@@ -32,6 +33,7 @@ export class CommunicationsComponent implements OnInit {
 		private _snackBar: MatSnackBar,
 		private _clipboard: Clipboard
 	) {
+		this.mainInfoEditing = false;
 		this.communications = [];
 		this.employeeId = '';
 		this.emailContactCount = 0;

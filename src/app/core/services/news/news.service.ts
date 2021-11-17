@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { NewsApiService } from '@data/api/news-service/services/news-api.service';
 import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, tap } from 'rxjs/operators';
 import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { NewsInfo } from '@data/api/news-service/models/news-info';
@@ -36,61 +34,25 @@ interface IGetNewsResponse {
 
 @Injectable()
 export class NewsService {
-	constructor(private _newsService: NewsApiService, private _snackBar: MatSnackBar) {}
+	constructor(private _newsService: NewsApiService, private _responseMessage: ResponseMessageModel) {}
 
 	public createNews(body: CreateNewsRequest): Observable<OperationResultResponse<{}>> {
-		return this._newsService.createNews({ body }).pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			})
-		);
+		return this._newsService
+			.createNews({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Create));
 	}
 
 	public disableNews(newsId: string): Observable<OperationResultResponse<{}>> {
 		const disableRequest: NewsPatchOperation = { op: 'replace', path: '/IsActive', value: false };
-		return this._newsService.editNews({ newsId, body: [disableRequest] }).pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Remove),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			})
-		);
+		return this._newsService
+			.editNews({ newsId, body: [disableRequest] })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Remove));
 	}
 
 	public editNews(newsId: string, body: EditNewsRequest): Observable<OperationResultResponse<{}>> {
-		return this._newsService.editNews({ newsId, body }).pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.News, MessageMethod.Edit),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			})
-		);
+		return this._newsService
+			.editNews({ newsId, body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Edit));
 	}
 
 	public findNews(params: IFindNewsRequest): Observable<OperationResultResponse<NewsInfo[]>> {

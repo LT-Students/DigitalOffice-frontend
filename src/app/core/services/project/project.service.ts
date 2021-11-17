@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
 	EditProjectRequest,
 	ImageContent,
 	ImageInfo,
-	// ProjectFileInfo,
 	ProjectInfo,
 	ProjectStatusType,
 	ProjectUserRoleType,
@@ -14,8 +13,6 @@ import {
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
-import { catchError, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
@@ -79,7 +76,7 @@ export class ProjectService {
 	constructor(
 		private _projectService: ProjectApiService,
 		private _userService: UserApiService,
-		private _snackBar: MatSnackBar
+		private _responseMessage: ResponseMessageModel
 	) {}
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
@@ -91,21 +88,9 @@ export class ProjectService {
 	}
 
 	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
-		return this._projectService.createProject({ body }).pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Project, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			})
-		);
+		return this._projectService
+			.createProject({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Project, MessageMethod.Create));
 	}
 
 	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse<{}>> {
