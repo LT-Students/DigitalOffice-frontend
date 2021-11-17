@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, throwError } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
-import { catchError, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { PatchUserDocument } from '@data/api/user-service/models/patch-user-document';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ResponseMessageModel } from '@app/models/response/response-message.model';
-import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
+import { UUID } from '@app/types/uuid.type';
 
 @Injectable({
 	providedIn: 'root',
@@ -31,7 +29,7 @@ export class EmployeePageService implements Resolve<User> {
 		return this.getEmployee(route.params.id);
 	}
 
-	public getEmployee(userId: string): Observable<User> {
+	public getEmployee(userId: UUID): Observable<User> {
 		const params: IGetUserRequest = {
 			userId: userId,
 			includedepartment: true,
@@ -52,29 +50,6 @@ export class EmployeePageService implements Resolve<User> {
 				}
 			}),
 			map(([user, _]) => user)
-		);
-	}
-
-	public editEmployee(editRequest: PatchUserDocument[]): Observable<User> {
-		return this.selectedUser$.pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.EmployeePage, MessageMethod.Edit),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			}),
-			take(1),
-			map((user) => user.id ?? ''),
-			switchMap((userId) =>
-				this._userService.editUser(userId, editRequest).pipe(switchMap(() => this.getEmployee(userId)))
-			)
 		);
 	}
 }

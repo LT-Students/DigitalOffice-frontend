@@ -114,31 +114,39 @@ export class MainInfoComponent implements OnInit {
 			return acc;
 		}, []);
 
-		forkJoin([
-			this._employeeService.editEmployee(editRequest),
-			avatarImage.dirty
-				? this._employeeService.selectedUser$.pipe(
-						take(1),
-						map((user) => user.id ?? ''),
-						switchMap((userId) =>
-							this._userService
-								.createAvatarImage(avatarImage.value, userId)
-								.pipe(
-									switchMap((response) =>
-										this._userService.changeAvatar(response.body as string, userId)
-									)
-								)
-						)
-				  )
-				: EMPTY,
-		])
+		this._employeeService.selectedUser$
 			.pipe(
+				take(1),
+				map((user) => user.id ?? ''),
+				switchMap((userId) =>
+					forkJoin([
+						this._userService.editUser(userId, editRequest),
+						avatarImage.dirty
+							? this._employeeService.selectedUser$.pipe(
+									take(1),
+									map((user) => user.id ?? ''),
+									switchMap((userId) =>
+										this._userService
+											.createAvatarImage(avatarImage.value, userId)
+											.pipe(
+												switchMap((response) =>
+													this._userService.changeAvatar(response.body as string, userId)
+												)
+											)
+									)
+							  )
+							: EMPTY,
+					]).pipe(switchMap(() => this._employeeService.getEmployee(userId)))
+				),
 				finalize(() => {
 					this.loading.next(false);
 				})
 			)
 			.subscribe({
 				next: () => this.toggleEditMode(),
+				error: (err) => {
+					throw err;
+				},
 			});
 	}
 
