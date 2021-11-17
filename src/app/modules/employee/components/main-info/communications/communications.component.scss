@@ -2,7 +2,8 @@
 @use 'base/palettes' as *;
 
 .communications {
-	padding: 52px 0 0;
+	display: flex;
+	flex-direction: column;
 
 	height: 100%;
 
@@ -11,11 +12,7 @@
 	&__contacts {
 		overflow-y: auto;
 
-		height: 612px;
-
-		&_cutted {
-			height: 340px;
-		}
+		height: 100%;
 	}
 
 	&__contact {

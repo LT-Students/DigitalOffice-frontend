@@ -8,12 +8,15 @@ import { CreateImageRequest } from '@data/api/image-service/models/create-image-
 export class CreateImageService {
 	constructor() {}
 
-	public getCreateImageRequest(file: File): Observable<any> {
+	/**
+	 * @deprecated we should use Image class from image.model.ts. This service soon will be deleted.
+	 */
+	public getCreateImageRequest(file: File): Observable<CreateImageRequest> {
 		const extension = file.type.split('/').pop();
 		const fileReader = new FileReader();
 		fileReader.readAsBinaryString(file);
 
-		return new Observable<any>((observer: Subscriber<any>): void => {
+		return new Observable<CreateImageRequest>((observer: Subscriber<CreateImageRequest>): void => {
 			fileReader.onload = (evt: ProgressEvent<FileReader>): void => {
 				const imageContent = btoa(evt.target?.result as string);
 				const imageRequest: CreateImageRequest = {
