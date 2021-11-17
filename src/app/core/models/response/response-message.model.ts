@@ -28,57 +28,39 @@ export class ResponseMessageModel {
 	];
 
 	public getSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, status: string): string {
-		const result = this._responseMessageTypes.find((item) => item.triggered === triggeredFrom);
-		let successMessage = `${triggeredFrom} успешно ${method}${result?.feminine === true ? 'а' : ''}`;
 		if (status === 'PartialSuccess') {
-			successMessage = 'Выполнено частично';
+			return 'Выполнено частично';
 		}
-		return successMessage;
-	}
-
-	public showSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, status: string): void {
 		const result = this._responseMessageTypes.find((item) => item.triggered === triggeredFrom);
-		let successMessage = `${triggeredFrom} успешно ${method}${result?.feminine === true ? 'а' : ''}`;
-		if (status === 'PartialSuccess') {
-			successMessage = 'Выполнено частично';
-		}
-		this._snackBar.open(successMessage, '×', {
-			duration: 3000,
-		});
+		return `${triggeredFrom} успешно ${method}${result?.feminine === true ? 'а' : ''}`;
 	}
 
 	public getErrorMessage(err: any): string {
-		let errorMessage: string = err.error.errors?.join(' ') ?? 'Что-то пошло не так :(';
 		if (err.status === 403) {
-			errorMessage = 'Недостаточно прав доступа';
+			return 'Недостаточно прав доступа';
 		}
 		if (err.status === 404) {
-			errorMessage = 'Операция отклонена';
+			return 'Операция отклонена';
 		}
-		return errorMessage;
+		return err.error.errors?.join(' ') ?? 'Что-то пошло не так :(';
 	}
 
-	public showErrorMessage(err: any): void {
-		let errorMessage: string = err.error.errors?.join(' ') ?? 'Что-то пошло не так :(';
-		if (err.status === 403) {
-			errorMessage = 'Недостаточно прав доступа';
-		} else if (err.status === 404) {
-			errorMessage = 'Операция отклонена';
-		}
-		this._snackBar.open(errorMessage, '×', {
-			duration: 3000,
-		});
-	}
-
-	public message(triggeredFrom: MessageTriggeredFrom, method: MessageMethod) {
-		return (source: Observable<any>) => {
+	public message(
+		triggeredFrom: MessageTriggeredFrom,
+		method: MessageMethod
+	): (source: Observable<any>) => Observable<any> {
+		return (source) => {
 			return source.pipe(
 				catchError((err) => {
-					this.showErrorMessage(err);
+					this._snackBar.open(this.getErrorMessage(err), '×', {
+						duration: 3000,
+					});
 					return throwError(err);
 				}),
 				tap((result) => {
-					this.showSuccessMessage(triggeredFrom, method, result.status);
+					this._snackBar.open(this.getSuccessMessage(triggeredFrom, method, result.status), '×', {
+						duration: 3000,
+					});
 				})
 			);
 		};
