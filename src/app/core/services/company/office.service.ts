@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
+import { catchError, tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CompanyApiService } from '@data/api/office-service/services/company-api.service';
 import { CreateOfficeRequest } from '@data/api/office-service/models/create-office-request';
 import { IFindRequestEx } from '@app/types/find-request.interface';
@@ -16,13 +18,25 @@ export class OfficeService {
 	constructor(
 		private _companyService: CompanyApiService,
 		private _officeService: OfficeApiService,
-		private _responseMessage: ResponseMessageModel
+		private _snackBar: MatSnackBar
 	) {}
 
 	public createOffice(body: CreateOfficeRequest): Observable<OperationResultResponse> {
-		return this._officeService
-			.createOffice({ body })
-			.pipe(this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Create));
+		return this._officeService.createOffice({ body }).pipe(
+			catchError((err) => {
+				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
+				return throwError(err);
+			}),
+			tap(() => {
+				this._snackBar.open(
+					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Office, MessageMethod.Create),
+					'done',
+					{
+						duration: 3000,
+					}
+				);
+			})
+		);
 	}
 
 	public findOffices(params: IFindRequestEx): Observable<FindResultResponseOfficeInfo> {

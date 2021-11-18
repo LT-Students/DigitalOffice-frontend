@@ -52,6 +52,7 @@ export interface IGetUserRequest {
 	 * Include images content in answer.
 	 */
 	includeimages?: boolean;
+	includeuserimages?: boolean;
 	/**
 	 * Include educations info in answer.
 	 */

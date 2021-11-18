@@ -1,46 +1,38 @@
-//@ts-nocheck
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AddImageRequest } from '@data/api/user-service/models/add-image-request';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { UploadedImage } from '@app/models/image.model';
+import { Observable } from 'rxjs';
+import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
 
 @Component({
 	selector: 'do-upload-photo',
 	templateUrl: './upload-photo.component.html',
 	styleUrls: ['./upload-photo.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploadPhotoComponent implements OnInit {
-	public isPhotoUploaded: boolean;
-	public photoPreview: string;
-	public resultFile: AddImageRequest;
+export class UploadPhotoComponent {
+	public isImageUploaded: boolean;
+	public imagePreview$?: Observable<string>;
+	public resultFile$?: Observable<CreateImageRequest>;
 
-	constructor() {
-		this.isPhotoUploaded = false;
-		this.photoPreview = null;
-		this.resultFile = null;
+	constructor(private _cdr: ChangeDetectorRef) {
+		this.isImageUploaded = false;
 	}
 
-	ngOnInit(): void {}
-
-	onFileDropped(event): void {
-		this.handleFile(event[0]);
+	public onFileDropped(event: FileList): void {
+		this._handleFile(event[0]);
 	}
 
-	onFileChanged(event): void {
-		this.handleFile(event.target.files[0]);
+	public onFileChanged(event: Event): void {
+		const file = (event.target as HTMLInputElement).files?.[0];
+		if (file) {
+			this._handleFile(file);
+		}
 	}
 
-	handleFile(file): void {
-		const extension = file.name.split('.').pop().toLowerCase();
-
-		this.isPhotoUploaded = true;
-		const reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onload = (evt) => {
-			this.photoPreview = evt.target.result as string;
-			this.resultFile = {
-				content: this.photoPreview.split(',')[1],
-				extension: '.' + extension,
-			};
-		};
+	private _handleFile(file: File): void {
+		const image = new UploadedImage(file);
+		this.resultFile$ = image.getCreateImageRequest();
+		this.imagePreview$ = image.getLocalUrl();
+		this.isImageUploaded = true;
 	}
 }
