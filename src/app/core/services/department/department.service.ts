@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { DepartmentApiService } from '@data/api/department-service/services/department-api.service';
 import { EditDepartmentRequest } from '@data/api/department-service/models/edit-department-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { UUID } from '@app/types/uuid.type';
 import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { ProjectInfo } from '@data/api/department-service/models/project-info';
 import { IFindRequestEx } from '@app/types/find-request.interface';
-import { catchError, tap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { DepartmentUserRole } from '@data/api/department-service/models/department-user-role';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
@@ -46,24 +44,12 @@ export interface ICreateUserRequest {
 	providedIn: 'root',
 })
 export class DepartmentService {
-	constructor(private _departmentApiService: DepartmentApiService, private _snackBar: MatSnackBar) {}
+	constructor(private _departmentApiService: DepartmentApiService, private _responseMessage: ResponseMessageModel) {}
 
 	public createDepartment(body: ICreateDepartmentRequest): Observable<OperationResultResponse<{} | null>> {
-		return this._departmentApiService.createDepartment({ body }).pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Department, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			})
-		);
+		return this._departmentApiService
+			.createDepartment({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Create));
 	}
 
 	public getDepartment(params: IGetDepartment): Observable<OperationResultResponse<IDepartmentInfoEx>> {
@@ -75,21 +61,9 @@ export class DepartmentService {
 	}
 
 	public editDepartment(params: IEditDepartment): Observable<OperationResultResponse<{} | null>> {
-		return this._departmentApiService.editDepartment(params).pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.Department, MessageMethod.Edit),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			})
-		);
+		return this._departmentApiService
+			.editDepartment(params)
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Edit));
 	}
 
 	public addUsersToDepartment(departmentId: UUID, userIds: UUID[]): Observable<OperationResultResponse<{} | null>> {

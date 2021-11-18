@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { UserApiService } from '@data/api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
@@ -19,7 +19,6 @@ import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ImageApiService } from '@data/api/user-service/services/image-api.service';
 import { UUID } from '@app/types/uuid.type';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { IImageInfo } from '@app/models/image.model';
@@ -53,7 +52,7 @@ export class UserService {
 	constructor(
 		private _userApiService: UserApiService,
 		private _imageApiService: ImageApiService,
-		private _snackBar: MatSnackBar
+		private _responseMessage: ResponseMessageModel
 	) {}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
@@ -67,21 +66,9 @@ export class UserService {
 	}
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
-		return this._userApiService.createUser({ body: params }).pipe(
-			catchError((err) => {
-				this._snackBar.open(ResponseMessageModel.getErrorMessage(err), '×', { duration: 3000 });
-				return throwError(err);
-			}),
-			tap(() => {
-				this._snackBar.open(
-					ResponseMessageModel.getSuccessMessage(MessageTriggeredFrom.User, MessageMethod.Create),
-					'done',
-					{
-						duration: 3000,
-					}
-				);
-			})
-		);
+		return this._userApiService
+			.createUser({ body: params })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.User, MessageMethod.Create));
 	}
 
 	public editUser(userId: string, body: PatchUserDocument[]): Observable<OperationResultResponse<null | {}>> {
