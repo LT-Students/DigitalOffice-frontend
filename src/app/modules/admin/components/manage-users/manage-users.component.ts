@@ -25,7 +25,7 @@ export class ManageUsersComponent implements AfterViewInit {
 
 	public users$: Observable<OperationResultResponse<UserInfo[]>>;
 	public filters: FormGroup;
-	private _refreshCurrentPage$$: Subject<any>;
+	private _refreshCurrentPage$$: Subject<void>;
 
 	constructor(
 		private _userService: UserService,
@@ -33,7 +33,7 @@ export class ManageUsersComponent implements AfterViewInit {
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder
 	) {
-		this._refreshCurrentPage$$ = new Subject<any>();
+		this._refreshCurrentPage$$ = new Subject<void>();
 		this.filters = this._fb.group({
 			active: ['active'],
 		});
