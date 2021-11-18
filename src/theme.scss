@@ -12,11 +12,11 @@ $custom-typography: mat.define-typography-config(
 	$title: mat.define-typography-level(28px, 32px, 700, 'Montserrat'),
 	$subheading-2: mat.define-typography-level(22px, 33px, 700, 'Montserrat'),
 	$subheading-1: mat.define-typography-level(18px, 27px, 700, 'Montserrat'),
-	$body-1: mat.define-typography-level(16px, 24px, 400),
+	$body-1: mat.define-typography-level(16px, 24px, 500),
 	$body-2: mat.define-typography-level(16px, 24px, 700),
-	$caption: mat.define-typography-level(14px, 24px, 400),
-	$input: mat.define-typography-level(16px, 1.125, 400),
-	$button: mat.define-typography-level(16px, 24px, 400),
+	$caption: mat.define-typography-level(14px, 24px, 500),
+	$input: mat.define-typography-level(16px, 1.125, 500),
+	$button: mat.define-typography-level(16px, 24px, 500),
 );
 
 @function create-theme(
