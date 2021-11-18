@@ -1,13 +1,13 @@
 import { Component, ViewChild, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { EMPTY, iif, Observable, Subject, combineLatest, observable } from 'rxjs';
+import { EMPTY, iif, Observable, Subject, combineLatest } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
 import { OperationResultStatusType } from '@data/api/user-service/models';
 import { ModalService } from '@app/services/modal.service';
-import { map, startWith, switchMap, withLatestFrom, tap, find } from 'rxjs/operators';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -64,7 +64,10 @@ export class ManageUsersComponent implements AfterViewInit {
 		}
 	}
 
-	public getUsers(filters: any, event: PageEvent | null): Observable<OperationResultResponse<UserInfo[]>> {
+	public getUsers(
+		filters: FormBuilder<any>,
+		event: PageEvent | null
+	): Observable<OperationResultResponse<UserInfo[]>> {
 		return this._userService.findUsers({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,
 			takeCount: event ? event.pageSize : 10,
