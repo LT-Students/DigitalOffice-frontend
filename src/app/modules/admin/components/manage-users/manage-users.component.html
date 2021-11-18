@@ -8,33 +8,34 @@
 	</div>
 
 	<div class="filters" [formGroup]="filters">
-		<mat-form-field class="filters__mat-form-elem-four" appearance="fill">
+		<!--        <mat-form-field class='filters__search' appearance='fill'>-->
+		<!--            <mat-label>Search</mat-label>-->
+		<!--            <input matInput type='text' maxlength='150' placeholder='Поиск по фамилии и имени' />-->
+		<!--        </mat-form-field>-->
+
+		<!--        <mat-form-field class='filters__post' appearance='fill'>-->
+		<!--            <mat-label>Выберите должность</mat-label>-->
+		<!--            <mat-select>-->
+		<!--                <mat-option value='one'>Должность 1</mat-option>-->
+		<!--                <mat-option value='two'>Должность 2</mat-option>-->
+		<!--            </mat-select>-->
+		<!--        </mat-form-field>-->
+
+		<!--        <mat-form-field class='filters__department' appearance='fill'>-->
+		<!--            <mat-label>Выберите департамент</mat-label>-->
+		<!--            <mat-select>-->
+		<!--                <mat-option value='one'>Департамент 1</mat-option>-->
+		<!--                <mat-option value='two'>Департамент 2</mat-option>-->
+		<!--            </mat-select>-->
+		<!--        </mat-form-field>-->
+
+		<mat-form-field class="filters__status" appearance="fill">
 			<mat-label>Статус</mat-label>
 			<mat-select formControlName="active">
 				<mat-option value="active">Активные</mat-option>
 				<mat-option value="all">Все</mat-option>
 			</mat-select>
 		</mat-form-field>
-		<!--        <mat-form-field class="filters__mat-form-elem-one" appearance="fill">-->
-		<!--            <mat-label>Search</mat-label>-->
-		<!--            <input matInput type="text" maxlength="150" placeholder="Поиск по фамилии и имени" />-->
-		<!--        </mat-form-field>-->
-
-		<!--        <mat-form-field class="filters__mat-form-elem-two" appearance="fill">-->
-		<!--            <mat-label>Выберите должность</mat-label>-->
-		<!--            <mat-select>-->
-		<!--                <mat-option value="one">Должность 1</mat-option>-->
-		<!--                <mat-option value="two">Должность 2</mat-option>-->
-		<!--            </mat-select>-->
-		<!--        </mat-form-field>-->
-
-		<!--        <mat-form-field class="filters__mat-form-elem-three" appearance="fill">-->
-		<!--            <mat-label>Выберите департамент</mat-label>-->
-		<!--            <mat-select>-->
-		<!--                <mat-option value="one">Департамент 1</mat-option>-->
-		<!--                <mat-option value="two">Департамент 2</mat-option>-->
-		<!--            </mat-select>-->
-		<!--        </mat-form-field>-->
 	</div>
 
 	<ng-container *ngIf="users$ | async as users">
