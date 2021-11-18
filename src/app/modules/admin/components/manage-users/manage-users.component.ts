@@ -21,7 +21,7 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 })
 export class ManageUsersComponent implements AfterViewInit {
 	@ViewChild(MatSort) sort: MatSort | undefined;
-	@ViewChild('paginator') paginator: MatPaginator | undefined;
+	@ViewChild(MatPaginator) paginator?: MatPaginator;
 
 	public users$: Observable<OperationResultResponse<UserInfo[]>>;
 	public filters: FormGroup;
