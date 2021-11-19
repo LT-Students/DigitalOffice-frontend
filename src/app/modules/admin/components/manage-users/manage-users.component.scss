@@ -5,6 +5,34 @@
 	justify-content: space-between;
 }
 
+.filters {
+	//по макету длина: 1 144px;
+	margin-top: 32px;
+
+	display: flex;
+	justify-content: space-between;
+
+	width: 100%;
+	gap: 32px;
+
+	&__search {
+		width: 30.06%;
+		height: 24px;
+	}
+
+	&__post {
+		width: 25%;
+	}
+
+	&__department {
+		width: 25%;
+	}
+
+	&____status {
+		width: 11.54%;
+	}
+}
+
 .table {
 	&__status {
 		width: 67px;

@@ -1,15 +1,16 @@
-import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
-import { EMPTY, iif, Observable, ReplaySubject } from 'rxjs';
-import { PageEvent } from '@angular/material/paginator';
+import { EMPTY, iif, Observable, Subject, combineLatest } from 'rxjs';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { IFindUsers, UserService } from '@app/services/user/user.service';
+import { UserService } from '@app/services/user/user.service';
 import { OperationResultStatusType } from '@data/api/user-service/models';
 import { ModalService } from '@app/services/modal.service';
-import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 
 @Component({
@@ -18,38 +19,60 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 	styleUrls: ['./manage-users.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageUsersComponent {
+export class ManageUsersComponent implements AfterViewInit {
 	@ViewChild(MatSort) sort: MatSort | undefined;
+	@ViewChild(MatPaginator) paginator?: MatPaginator;
 
 	public users$: Observable<OperationResultResponse<UserInfo[]>>;
-	private _userParams: ReplaySubject<IFindUsers>;
+	public filters: FormGroup;
+	private _refreshCurrentPage$$: Subject<void>;
 
 	constructor(
 		private _userService: UserService,
 		private _modalService: ModalService,
-		private _route: ActivatedRoute
+		private _route: ActivatedRoute,
+		private _fb: FormBuilder
 	) {
-		this._userParams = new ReplaySubject<IFindUsers>(1);
-		this.users$ = this._userParams.pipe(
-			startWith(null),
-			switchMap((params: IFindUsers | null) =>
-				iif(
-					() => !!params,
-					this._userService.findUsers(params as IFindUsers),
-					this._route.data.pipe(map((response) => response.users))
-				)
-			)
-		);
+		this._refreshCurrentPage$$ = new Subject<void>();
+		this.filters = this._fb.group({
+			all: [false],
+		});
+		this.users$ = new Observable<OperationResultResponse<UserInfo[]>>();
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this._userParams.next({
-			skipCount: event.pageIndex * event.pageSize,
-			takeCount: event.pageSize,
+	public ngAfterViewInit(): void {
+		if (this.paginator !== undefined) {
+			this.users$ = combineLatest([
+				this.filters.valueChanges.pipe(
+					startWith(null),
+					tap(() => this.paginator?.firstPage())
+				),
+				this.paginator.page.pipe(startWith(null)),
+				this._refreshCurrentPage$$.pipe(startWith(null)),
+			]).pipe(
+				switchMap(([filters, page]) =>
+					filters !== null || page !== null
+						? this.getUsers(filters, page)
+						: this._route.data.pipe(map((response) => response.users))
+				),
+				tap((res) => {
+					if (this.paginator) {
+						this.paginator.length = res.totalCount ?? 0;
+					}
+				})
+			);
+		}
+	}
+
+	public getUsers(filters: any, event: PageEvent | null): Observable<OperationResultResponse<UserInfo[]>> {
+		return this._userService.findUsers({
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
 			includeavatar: true,
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,
+			includedeactivated: filters?.all,
 		});
 	}
 
@@ -57,10 +80,9 @@ export class ManageUsersComponent {
 		this._modalService
 			.openModal<NewEmployeeComponent, null, OperationResultResponse<UserInfo[]>>(NewEmployeeComponent)
 			.afterClosed()
-			.pipe(withLatestFrom(this._userParams))
-			.subscribe(([result, params]) => {
+			.subscribe((result) => {
 				if (result?.status === OperationResultStatusType.FullSuccess) {
-					this._userParams.next(params);
+					this._refreshCurrentPage$$.next();
 				}
 			});
 	}
@@ -75,11 +97,10 @@ export class ManageUsersComponent {
 					message: 'Вы действительно хотите удалить этого пользователя?',
 				})
 				.afterClosed()
-				.pipe(
-					switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)),
-					switchMap(() => this._userParams)
-				)
-				.subscribe((params) => this._userParams.next(params));
+				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)))
+				.subscribe((response) => {
+					this._refreshCurrentPage$$.next();
+				});
 		} else {
 			this._modalService
 				.confirm({
@@ -88,11 +109,10 @@ export class ManageUsersComponent {
 					message: 'Вы действительно хотите восстановить этого пользователя?',
 				})
 				.afterClosed()
-				.pipe(
-					switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(user?.id), EMPTY)),
-					switchMap(() => this._userParams)
-				)
-				.subscribe((params) => this._userParams.next(params));
+				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(user?.id), EMPTY)))
+				.subscribe((response) => {
+					this._refreshCurrentPage$$.next();
+				});
 		}
 	}
 

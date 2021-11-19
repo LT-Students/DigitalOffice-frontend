@@ -6,6 +6,38 @@
 		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
 		<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 	</div>
+
+	<div class="filters" [formGroup]="filters">
+		<!--        <mat-form-field class='filters__search' appearance='fill'>-->
+		<!--            <mat-label>Search</mat-label>-->
+		<!--            <input matInput type='text' maxlength='150' placeholder='Поиск по фамилии и имени' />-->
+		<!--        </mat-form-field>-->
+
+		<!--        <mat-form-field class='filters__post' appearance='fill'>-->
+		<!--            <mat-label>Выберите должность</mat-label>-->
+		<!--            <mat-select>-->
+		<!--                <mat-option value='one'>Должность 1</mat-option>-->
+		<!--                <mat-option value='two'>Должность 2</mat-option>-->
+		<!--            </mat-select>-->
+		<!--        </mat-form-field>-->
+
+		<!--        <mat-form-field class='filters__department' appearance='fill'>-->
+		<!--            <mat-label>Выберите департамент</mat-label>-->
+		<!--            <mat-select>-->
+		<!--                <mat-option value='one'>Департамент 1</mat-option>-->
+		<!--                <mat-option value='two'>Департамент 2</mat-option>-->
+		<!--            </mat-select>-->
+		<!--        </mat-form-field>-->
+
+		<mat-form-field class="filters__status" appearance="fill">
+			<mat-label>Статус</mat-label>
+			<mat-select formControlName="all">
+				<mat-option [value]="false">Активные</mat-option>
+				<mat-option [value]="true">Все</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+
 	<ng-container *ngIf="users$ | async as users">
 		<table
 			*ngIf="users.totalCount ?? 0 > 0; else emptyList"
@@ -16,11 +48,11 @@
 			<colgroup>
 				<col class="column column_width_little" />
 				<!-- <col class='column column_width_sm'>
-                <col class='column column_width_sm'>
-                <col class='column column_width_m'>
-                <col class='column column_width_sm'>
-                <col class='column column_width_t'>
-                <col class='column column_width_t'> -->
+                    <col class='column column_width_sm'>
+                    <col class='column column_width_m'>
+                    <col class='column column_width_sm'>
+                    <col class='column column_width_t'>
+                    <col class='column column_width_t'> -->
 			</colgroup>
 			<thead>
 				<tr class="row">
@@ -84,12 +116,8 @@
 		<ng-template #emptyList>
 			<do-empty-list [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
 		</ng-template>
-		<mat-paginator
-			[length]="users.totalCount ?? 0"
-			[pageSizeOptions]="[10, 25, 50]"
-			(page)="onPageChange($event)"
-		></mat-paginator>
 	</ng-container>
+	<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 </mat-card>
 
 <ng-template #empty>
