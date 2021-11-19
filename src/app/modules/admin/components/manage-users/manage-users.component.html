@@ -31,9 +31,9 @@
 
 		<mat-form-field class="filters__status" appearance="fill">
 			<mat-label>Статус</mat-label>
-			<mat-select formControlName="active">
-				<mat-option value="active">Активные</mat-option>
-				<mat-option value="all">Все</mat-option>
+			<mat-select formControlName="all">
+				<mat-option [value]="false">Активные</mat-option>
+				<mat-option [value]="true">Все</mat-option>
 			</mat-select>
 		</mat-form-field>
 	</div>

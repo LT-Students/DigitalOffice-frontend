@@ -35,7 +35,7 @@ export class ManageUsersComponent implements AfterViewInit {
 	) {
 		this._refreshCurrentPage$$ = new Subject<void>();
 		this.filters = this._fb.group({
-			active: ['active'],
+			all: [false],
 		});
 		this.users$ = new Observable<OperationResultResponse<UserInfo[]>>();
 	}
@@ -64,10 +64,7 @@ export class ManageUsersComponent implements AfterViewInit {
 		}
 	}
 
-	public getUsers(
-		filters: FormBuilder<any>,
-		event: PageEvent | null
-	): Observable<OperationResultResponse<UserInfo[]>> {
+	public getUsers(filters: any, event: PageEvent | null): Observable<OperationResultResponse<UserInfo[]>> {
 		return this._userService.findUsers({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,
 			takeCount: event ? event.pageSize : 10,
@@ -75,7 +72,7 @@ export class ManageUsersComponent implements AfterViewInit {
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,
-			includedeactivated: filters?.active === 'all',
+			includedeactivated: filters?.all,
 		});
 	}
 
