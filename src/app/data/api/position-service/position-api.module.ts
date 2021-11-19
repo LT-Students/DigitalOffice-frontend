@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { PositionApiService } from './services/position-api.service';
+import { PositionUserApiService } from './services/position-user-api.service';
+import { UserRateApiService } from './services/user-rate-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -13,7 +15,7 @@ import { PositionApiService } from './services/position-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [PositionApiService, ApiConfiguration],
+	providers: [PositionApiService, PositionUserApiService, UserRateApiService, ApiConfiguration],
 })
 export class PositionApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<PositionApiModule> {
