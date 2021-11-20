@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { iif, Observable, ReplaySubject } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { IFindRequestEx } from '@app/types/find-request.interface';
+import { IFindRequest } from '@app/services/position/position.service';
 import { IPositionInfo, PositionService } from '@app/services/position/position.service';
 import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 
@@ -17,7 +17,7 @@ import { NewPositionComponent } from '../../modals/new-position/new-position.com
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PositionListComponent {
-	private _positions: ReplaySubject<IFindRequestEx>;
+	private _positions: ReplaySubject<IFindRequest>;
 	public positions$: Observable<OperationResultResponse<IPositionInfo[]>>;
 
 	constructor(
@@ -25,13 +25,13 @@ export class PositionListComponent {
 		private _positionService: PositionService,
 		private _route: ActivatedRoute
 	) {
-		this._positions = new ReplaySubject<IFindRequestEx>(1);
+		this._positions = new ReplaySubject<IFindRequest>(1);
 		this.positions$ = this._positions.pipe(
 			startWith(null),
-			switchMap((params: IFindRequestEx | null) =>
+			switchMap((params: IFindRequest | null) =>
 				iif(
 					() => !!params,
-					this._positionService.findPositions(params as IFindRequestEx),
+					this._positionService.findPositions(params as IFindRequest),
 					this._route.data.pipe(map((response) => response.positions))
 				)
 			)
@@ -52,8 +52,8 @@ export class PositionListComponent {
 
 	public onPageChange(event: PageEvent): void {
 		this._positions.next({
-			skipCount: event.pageIndex * event.pageSize,
-			takeCount: event.pageSize,
+			skipcount: event.pageIndex * event.pageSize,
+			takecount: event.pageSize,
 		});
 	}
 }

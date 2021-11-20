@@ -90,7 +90,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	private _getPositions(): void {
-		this._positionService.findPositions({ skipCount: 0, takeCount: 100 }).subscribe(
+		this._positionService.findPositions({ skipcount: 0, takecount: 100 }).subscribe(
 			(data) => {
 				this.positions = data.body ?? [];
 			},
@@ -147,7 +147,7 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		if ($event.checked) {
 			this.checkedMembers.push(user);
 		} else {
-			const uncheckedUserIndex = this.checkedMembers.findIndex((u, index) => u.id === user.id);
+			const uncheckedUserIndex = this.checkedMembers.findIndex((u) => u.id === user.id);
 			this.checkedMembers.splice(uncheckedUserIndex, 1);
 		}
 	}
