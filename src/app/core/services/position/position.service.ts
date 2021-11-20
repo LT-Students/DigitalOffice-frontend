@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PositionApiService } from '@data/api/position-service/services/position-api.service';
 import { UUID } from '@app/types/uuid.type';
-import { IFindRequestEx } from '@app/types/find-request.interface';
 import { EditPositionRequest } from '@data/api/position-service/models/edit-position-request';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -26,6 +25,12 @@ export interface IPositionInfo {
 	isactive?: boolean;
 }
 
+export interface IFindRequest {
+	skipcount: number;
+	takecount: number;
+	includedeactivated?: boolean;
+}
+
 @Injectable({
 	providedIn: 'root',
 })
@@ -43,7 +48,7 @@ export class PositionService {
 	}
 
 	//TODO merge PositionInfo and IPositionInfo into one interface
-	public findPositions(params: IFindRequestEx): Observable<OperationResultResponse<PositionInfo[]>> {
+	public findPositions(params: IFindRequest): Observable<OperationResultResponse<PositionInfo[]>> {
 		return this._positionApiService.findPositions(params);
 	}
 

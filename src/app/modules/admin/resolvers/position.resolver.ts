@@ -10,10 +10,11 @@ import { PositionInfo } from '@data/api/position-service/models/position-info';
 })
 export class PositionResolver implements Resolve<OperationResultResponse<PositionInfo[]>> {
 	constructor(private _positionService: PositionService) {}
+
 	public resolve(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<OperationResultResponse<PositionInfo[]>> {
-		return this._positionService.findPositions({ skipCount: 0, takeCount: 10 });
+		return this._positionService.findPositions({ skipcount: 0, takecount: 10 });
 	}
 }

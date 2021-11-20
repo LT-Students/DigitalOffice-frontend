@@ -35,7 +35,7 @@ export class ManageUsersComponent implements AfterViewInit {
 	) {
 		this._refreshCurrentPage$$ = new Subject<void>();
 		this.filters = this._fb.group({
-			all: [false],
+			showDeactivatedUsers: [false],
 		});
 		this.users$ = new Observable<OperationResultResponse<UserInfo[]>>();
 	}
@@ -72,7 +72,7 @@ export class ManageUsersComponent implements AfterViewInit {
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,
-			includedeactivated: filters?.all,
+			includedeactivated: filters?.showDeactivatedUsers,
 		});
 	}
 
@@ -98,7 +98,7 @@ export class ManageUsersComponent implements AfterViewInit {
 				})
 				.afterClosed()
 				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)))
-				.subscribe((response) => {
+				.subscribe(() => {
 					this._refreshCurrentPage$$.next();
 				});
 		} else {
@@ -110,7 +110,7 @@ export class ManageUsersComponent implements AfterViewInit {
 				})
 				.afterClosed()
 				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(user?.id), EMPTY)))
-				.subscribe((response) => {
+				.subscribe(() => {
 					this._refreshCurrentPage$$.next();
 				});
 		}
@@ -141,6 +141,7 @@ export class ManageUsersComponent implements AfterViewInit {
 		// 		}
 		// 	});
 	}
+
 	//
 	// private _compare(a: number | string | undefined, b: number | string | undefined, isAsc: boolean) {
 	// 	if (typeof a === 'undefined' || typeof b === 'undefined') {
