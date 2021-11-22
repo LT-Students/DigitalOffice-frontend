@@ -11,7 +11,7 @@ import { AdminDashboardModalType, ModalService, ModalWidth } from '@app/services
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
-import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
+import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 import { NewRoleComponent } from '../../modals/new-role/new-role.component';
 
 @Component({
@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
 							return this.modalService.openModal(NewRoleComponent, ModalWidth.M).afterClosed();
 						}
 						case this.modalType.NEW_OFFICE: {
-							return this.modalService.openModal(NewOfficeComponent, ModalWidth.M).afterClosed();
+							return this.modalService.openModal(AddEditOfficeComponent, ModalWidth.M).afterClosed();
 						}
 						case this.modalType.NEW_PROJECT: {
 							return fromPromise(this._router.navigate(['admin/new-project']));

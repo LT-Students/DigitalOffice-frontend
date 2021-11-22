@@ -1,5 +1,7 @@
-<form class="data-form" [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartmentForm()">
-	<h3 mat-dialog-title>{{ isEdit ? 'Редактирование департамента' : 'Создание департамента' }}</h3>
+<form [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartmentForm()">
+	<h3 mat-dialog-title class="text-align_center">
+		{{ isEdit ? 'Редактирование департамента' : 'Создание департамента' }}
+	</h3>
 	<mat-dialog-content class="new-department">
 		<div class="form__container">
 			<div class="new-department__input-container">
@@ -36,7 +38,7 @@
 			</div>
 		</div>
 	</mat-dialog-content>
-	<mat-dialog-actions align="center">
+	<mat-dialog-actions class="flex flex_jc_center">
 		<button mat-button mat-dialog-close type="button">Отмена</button>
 		<button
 			*ngIf="!isEdit; else editDepartamentButton"

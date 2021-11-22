@@ -49,7 +49,7 @@ export const enum ModalWidth {
 export class ModalService {
 	constructor(private _matDialog: MatDialog) {}
 
-	public openModal<C, T, R>(
+	public openModal<C, T = any, R = any>(
 		component: ComponentType<C>,
 		modalWidth?: ModalWidth,
 		modalContentConfig?: T,
