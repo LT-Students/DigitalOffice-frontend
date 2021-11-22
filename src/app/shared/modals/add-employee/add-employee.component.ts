@@ -25,6 +25,8 @@ export class AddEmployeeComponent implements OnInit {
 	public dataSource: MatTableDataSource<UserInfo>;
 	public selection: SelectionModel<UserInfo>;
 	public usersFound: boolean;
+	public moduleName: string;
+	public openFromRu: string;
 
 	constructor(
 		private _userService: UserService,
@@ -33,7 +35,8 @@ export class AddEmployeeComponent implements OnInit {
 		private _dialogRef: MatDialogRef<AddEmployeeComponent>,
 		private _projectService: ProjectService,
 		private _departmentService: DepartmentService,
-		@Inject(MAT_DIALOG_DATA) private _data: { idToHide: string[]; pageId: string; openFrom: string }
+		@Inject(MAT_DIALOG_DATA)
+		private _data: { idToHide: string[]; pageId: string; openFrom: string; moduleName: string }
 	) {
 		this.positions = ['front', 'back', 'manager', 'lead'];
 		this.employees = [];
@@ -43,9 +46,16 @@ export class AddEmployeeComponent implements OnInit {
 		this.selection = new SelectionModel<UserInfo>(true, []);
 		this.dataSource = new MatTableDataSource();
 		this.usersFound = false;
+		this.moduleName = this._data.moduleName;
+		this.openFromRu = '';
 	}
 	public ngOnInit(): void {
 		this.getPageUsers();
+		if (this._data.openFrom === 'project') {
+			this.openFromRu = 'проект';
+		} else {
+			this.openFromRu = 'департамент';
+		}
 	}
 
 	public onClose(result?: OperationResultResponse<{} | null>): void {
@@ -74,6 +84,7 @@ export class AddEmployeeComponent implements OnInit {
 
 	public addUsers(): void {
 		if (this._data.openFrom === 'project') {
+			this.openFromRu = 'проект';
 			const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
 				newArr: Array<ICreateUserRequest>,
 				user
@@ -91,6 +102,7 @@ export class AddEmployeeComponent implements OnInit {
 				});
 		}
 		if (this._data.openFrom === 'department') {
+			this.openFromRu = 'департамент';
 			const users: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
 				newArr.push(user.id ?? '');
 
