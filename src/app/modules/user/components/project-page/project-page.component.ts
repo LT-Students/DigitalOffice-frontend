@@ -135,6 +135,7 @@ export class ProjectPageComponent implements OnInit {
 						projectId: this.projectId,
 						includeusers: true,
 						shownotactiveusers: true,
+						includeShortDescription: true,
 					})
 				)
 			)

@@ -1,7 +1,7 @@
 <mat-card class="card card_standard">
 	<div class="card__header">
 		<div class="card__name-edit-project">
-			<h1>{{ projectInfo?.name }}</h1>
+			<h1 class="card__title">{{ projectInfo?.name }}</h1>
 			<button mat-flat-button class="card__button-edit" (click)="openEditProjectModal()">
 				<mat-icon>
 					<img class="card__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
@@ -36,6 +36,9 @@
 			</div>
 		</div>
 	</div>
+	<button mat-flat-button *ngIf="dataSource.data?.length === 0" color="accent" (click)="openAddEmployeeModal()">
+		+ Добавить сотрудников
+	</button>
 	<div *ngIf="dataSource.data.length > 0; else emptyList" class="table-wrapper">
 		<mat-tab-group>
 			<mat-tab #team>
