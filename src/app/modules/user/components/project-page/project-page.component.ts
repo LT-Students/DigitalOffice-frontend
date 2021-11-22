@@ -14,6 +14,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-project.component';
+import { openAddEmployeeModalFrom } from '../../../../shared/modals/add-employee/add-employee';
 
 @Component({
 	selector: 'do-project-page',
@@ -106,7 +107,7 @@ export class ProjectPageComponent implements OnInit {
 			data: {
 				idToHide: this.dataSource.data.map((e) => e.id),
 				pageId: this.projectId,
-				openFrom: 'project',
+				openFrom: openAddEmployeeModalFrom.Project,
 				moduleName: this.projectInfo?.name,
 			},
 			maxWidth: '670px',

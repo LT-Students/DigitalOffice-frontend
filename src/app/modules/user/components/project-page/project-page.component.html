@@ -36,10 +36,9 @@
 			</div>
 		</div>
 	</div>
-	<button mat-flat-button *ngIf="dataSource.data?.length === 0" color="accent" (click)="openAddEmployeeModal()">
-		+ Добавить сотрудников
-	</button>
-	<div *ngIf="dataSource.data.length > 0; else emptyList" class="table-wrapper">
+</mat-card>
+<mat-card>
+	<div class="table-wrapper">
 		<mat-tab-group>
 			<mat-tab #team>
 				<ng-template mat-tab-label>
@@ -64,109 +63,114 @@
 					</button>
 				</div>
 
-				<div class="search-actions">
-					<div class="search">
-						<mat-form-field class="search__name" appearance="fill">
-							<mat-icon matPrefix class="search__button">search</mat-icon>
-							<mat-label>Поиск по фамилии и имени</mat-label>
-							<input matInput type="search" placeholder="Романов Владислав" />
-						</mat-form-field>
+				<div *ngIf="dataSource.data.length > 0; else emptyList">
+					<div class="search-actions">
+						<div class="search">
+							<mat-form-field class="search__name" appearance="fill">
+								<mat-icon matPrefix class="search__button">search</mat-icon>
+								<mat-label>Поиск по фамилии и имени</mat-label>
+								<input matInput type="search" placeholder="Романов Владислав" />
+							</mat-form-field>
 
-						<mat-form-field appearance="fill" class="search__position">
-							<mat-label>Выберите должность</mat-label>
-							<mat-select>
-								<mat-option *ngFor="let position of positions" [value]="position">
-									{{ position }}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
-					</div>
-
-					<div class="actions" *ngIf="selection.selected.length > 0">
-						<div>{{ selection.selected.length | i18nPlural: employeeCountMap }}</div>
-						<div [matMenuTriggerFor]="menu" class="actions__menu">
-							<div>Действия</div>
-							<div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down" /></div>
+							<mat-form-field appearance="fill" class="search__position">
+								<mat-label>Выберите должность</mat-label>
+								<mat-select>
+									<mat-option *ngFor="let position of positions" [value]="position">
+										{{ position }}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
 						</div>
-						<mat-menu #menu>
-							<button mat-menu-item (click)="removeFromProject()">Удалить сотрудников</button>
-						</mat-menu>
-					</div>
-				</div>
 
-				<table mat-table [dataSource]="dataSource" class="table">
-					<ng-container matColumnDef="select">
-						<th mat-header-cell *matHeaderCellDef>
-							<mat-checkbox
-								(change)="$event ? masterToggle() : null"
-								[checked]="selection.hasValue() && isAllSelected()"
-								[indeterminate]="selection.hasValue() && !isAllSelected()"
-							>
-							</mat-checkbox>
-						</th>
-						<td
-							mat-cell
-							*matCellDef="let row"
-							(click)="$event.stopPropagation(); $event ? selection.toggle(row) : null"
-						>
-							<mat-checkbox
-								(click)="$event ? selection.toggle(row) : null"
-								(change)="$event ? selection.toggle(row) : null"
-								[checked]="selection.isSelected(row)"
-							>
-							</mat-checkbox>
-						</td>
-					</ng-container>
-
-					<ng-container matColumnDef="name">
-						<th mat-header-cell *matHeaderCellDef>Имя</th>
-						<td mat-cell *matCellDef="let element">
-							<div class="main-info">
-								<do-profile-image class="profile-photo" [image]="element?.avatar"></do-profile-image>
-								<div>
-									<div>{{ element.firstName }} {{ element.lastName }}</div>
-									<div class="mat-body-1">{{ element?.position?.name }}</div>
-								</div>
+						<div class="actions" *ngIf="selection.selected.length > 0">
+							<div>{{ selection.selected.length | i18nPlural: employeeCountMap }}</div>
+							<div [matMenuTriggerFor]="menu" class="actions__menu">
+								<div>Действия</div>
+								<div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down" /></div>
 							</div>
-						</td>
-					</ng-container>
+							<mat-menu #menu>
+								<button mat-menu-item (click)="removeFromProject()">Удалить сотрудников</button>
+							</mat-menu>
+						</div>
+					</div>
 
-					<ng-container matColumnDef="role">
-						<th mat-header-cell *matHeaderCellDef>Роль</th>
-						<td mat-cell *matCellDef="let element">
-							<ng-container *ngIf="element?.role?.name; else empty">
-								{{ element?.role?.name }}
-							</ng-container>
-						</td>
-					</ng-container>
+					<table mat-table [dataSource]="dataSource" class="table">
+						<ng-container matColumnDef="select">
+							<th mat-header-cell *matHeaderCellDef>
+								<mat-checkbox
+									(change)="$event ? masterToggle() : null"
+									[checked]="selection.hasValue() && isAllSelected()"
+									[indeterminate]="selection.hasValue() && !isAllSelected()"
+								>
+								</mat-checkbox>
+							</th>
+							<td
+								mat-cell
+								*matCellDef="let row"
+								(click)="$event.stopPropagation(); $event ? selection.toggle(row) : null"
+							>
+								<mat-checkbox
+									(click)="$event ? selection.toggle(row) : null"
+									(change)="$event ? selection.toggle(row) : null"
+									[checked]="selection.isSelected(row)"
+								>
+								</mat-checkbox>
+							</td>
+						</ng-container>
 
-					<ng-container matColumnDef="rate">
-						<th mat-header-cell *matHeaderCellDef>Ставка</th>
-						<td mat-cell *matCellDef="let element">
-							<ng-container *ngIf="element?.rate; else empty">
-								{{ element.rate }}
-							</ng-container>
-						</td>
-					</ng-container>
+						<ng-container matColumnDef="name">
+							<th mat-header-cell *matHeaderCellDef>Имя</th>
+							<td mat-cell *matCellDef="let element">
+								<div class="main-info">
+									<do-profile-image
+										class="profile-photo"
+										[image]="element?.avatar"
+									></do-profile-image>
+									<div>
+										<div>{{ element.firstName }} {{ element.lastName }}</div>
+										<div class="mat-body-1">{{ element?.position?.name }}</div>
+									</div>
+								</div>
+							</td>
+						</ng-container>
 
-					<ng-container matColumnDef="status">
-						<th mat-header-cell *matHeaderCellDef>Статус</th>
-						<td mat-cell *matCellDef="let element">
-							<ng-container *ngIf="element?.isActive; else archived">
-								<div class="user-status">Активен</div>
-							</ng-container>
-							<ng-template #archived>
-								<div class="user-status user-status_archived">В архиве</div>
-							</ng-template>
-						</td>
-					</ng-container>
+						<ng-container matColumnDef="role">
+							<th mat-header-cell *matHeaderCellDef>Роль</th>
+							<td mat-cell *matCellDef="let element">
+								<ng-container *ngIf="element?.role?.name; else empty">
+									{{ element?.role?.name }}
+								</ng-container>
+							</td>
+						</ng-container>
 
-					<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-					<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onUserClick(row.id)"></tr>
-					<ng-template #empty>
-						<div>—</div>
-					</ng-template>
-				</table>
+						<ng-container matColumnDef="rate">
+							<th mat-header-cell *matHeaderCellDef>Ставка</th>
+							<td mat-cell *matCellDef="let element">
+								<ng-container *ngIf="element?.rate; else empty">
+									{{ element.rate }}
+								</ng-container>
+							</td>
+						</ng-container>
+
+						<ng-container matColumnDef="status">
+							<th mat-header-cell *matHeaderCellDef>Статус</th>
+							<td mat-cell *matCellDef="let element">
+								<ng-container *ngIf="element?.isActive; else archived">
+									<div class="user-status">Активен</div>
+								</ng-container>
+								<ng-template #archived>
+									<div class="user-status user-status_archived">В архиве</div>
+								</ng-template>
+							</td>
+						</ng-container>
+
+						<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+						<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onUserClick(row.id)"></tr>
+						<ng-template #empty>
+							<div>—</div>
+						</ng-template>
+					</table>
+				</div>
 			</mat-tab>
 			<mat-tab #statistics>
 				<ng-template mat-tab-label>

@@ -9,6 +9,7 @@ import { ProjectUserRoleType } from '@data/api/project-service/models/project-us
 import { ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { DepartmentService } from '@app/services/department/department.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { openAddEmployeeModalFrom } from './add-employee';
 
 @Component({
 	selector: 'do-modal-add-employee',
@@ -49,12 +50,13 @@ export class AddEmployeeComponent implements OnInit {
 		this.moduleName = this._data.moduleName;
 		this.openFromRu = '';
 	}
+
 	public ngOnInit(): void {
 		this.getPageUsers();
-		if (this._data.openFrom === 'project') {
-			this.openFromRu = 'проект';
+		if (this._data.openFrom === openAddEmployeeModalFrom.Project) {
+			this.openFromRu = openAddEmployeeModalFrom.Project;
 		} else {
-			this.openFromRu = 'департамент';
+			this.openFromRu = openAddEmployeeModalFrom.Department;
 		}
 	}
 
@@ -83,8 +85,7 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	public addUsers(): void {
-		if (this._data.openFrom === 'project') {
-			this.openFromRu = 'проект';
+		if (this._data.openFrom === openAddEmployeeModalFrom.Project) {
 			const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
 				newArr: Array<ICreateUserRequest>,
 				user
@@ -101,8 +102,7 @@ export class AddEmployeeComponent implements OnInit {
 					this.onClose(result);
 				});
 		}
-		if (this._data.openFrom === 'department') {
-			this.openFromRu = 'департамент';
+		if (this._data.openFrom === openAddEmployeeModalFrom.Department) {
 			const users: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
 				newArr.push(user.id ?? '');
 
