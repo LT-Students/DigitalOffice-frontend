@@ -7,11 +7,11 @@
   },
   "servers": [
     {
-      "url": "https://company.ltdo.xyz",
+      "url": "https://position.ltdo.xyz",
       "description": "Production server"
     },
     {
-      "url": "https://company.dev.ltdo.xyz",
+      "url": "https://position.dev.ltdo.xyz",
       "description": "Development server"
     }
   ],
