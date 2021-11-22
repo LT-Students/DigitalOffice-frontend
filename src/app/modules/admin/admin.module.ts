@@ -20,7 +20,7 @@ import { DeleteDirectionComponent } from './components/new-project/modals/delete
 import { AdminRoutingModule } from './admin-routing.module';
 import { NewRoleComponent } from './modals/new-role/new-role.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
-import { NewOfficeComponent } from './modals/new-office/new-office.component';
+import { AddEditOfficeComponent } from './modals/add-edit-office/add-edit-office.component';
 import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { DepartmentCardComponent } from './components/department-card/department-card.component';
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
@@ -45,7 +45,7 @@ import { EditProjectComponent } from './modals/edit-project/edit-project.compone
 		DeleteDirectionComponent,
 		NewRoleComponent,
 		ManageUsersComponent,
-		NewOfficeComponent,
+		AddEditOfficeComponent,
 		DepartmentListComponent,
 		DepartmentCardComponent,
 		ManageRolesComponent,

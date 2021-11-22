@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { BehaviorSubject, EMPTY, forkJoin, Observable } from 'rxjs';
 import { EmployeePageService } from '@app/services/employee-page.service';
-import { PatchRequest, UserPath } from '@app/types/patch-paths';
+import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { DateTime } from 'luxon';
 import { UserService } from '@app/services/user/user.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
@@ -35,7 +35,7 @@ export class MainInfoComponent implements OnInit {
 	public statuses: IUserStatus[];
 
 	public user$: Observable<User>;
-	private _initialData: PatchRequest<UserPath> & { avatarImage?: ImageInfo | null };
+	private _initialData: InitialDataEditRequest<UserPath> & { avatarImage?: ImageInfo | null };
 
 	constructor(
 		private _fb: FormBuilder,

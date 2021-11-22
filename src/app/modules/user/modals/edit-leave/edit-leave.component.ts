@@ -7,7 +7,7 @@ import { DateFilterFn } from '@angular/material/datepicker';
 import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { DatePeriod } from '@app/types/date-period';
 import { DateService } from '@app/services/date.service';
-import { LeaveTimePath, PatchRequest } from '@app/types/patch-paths';
+import { LeaveTimePath, InitialDataEditRequest } from '@app/types/edit-request';
 import { PatchLeaveTimeDocument } from '@data/api/time-service/models/patch-leave-time-document';
 import { DateTime } from 'luxon';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
@@ -25,7 +25,7 @@ export class EditLeaveComponent {
 	public editForm: FormGroup;
 	public periodInHours: number;
 	public disableWeekends: DateFilterFn<DateTime>;
-	private readonly _initialData: PatchRequest<LeaveTimePath>;
+	private readonly _initialData: InitialDataEditRequest<LeaveTimePath>;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public leave: LeaveTimeModel,

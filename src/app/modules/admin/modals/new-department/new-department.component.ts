@@ -9,7 +9,7 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
 import { PatchDepartmentDocument } from '@data/api/department-service/models/patch-department-document';
 import { DepartmentService } from '@app/services/department/department.service';
-import { DepartmentPath } from '@app/types/patch-paths';
+import { DepartmentPath } from '@app/types/edit-request';
 import { EditModalContent } from '../../components/department-card/department-card.component';
 
 @Component({

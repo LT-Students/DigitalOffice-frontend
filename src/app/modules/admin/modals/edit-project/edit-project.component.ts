@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project/project.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PatchRequest, ProjectPath } from '@app/types/patch-paths';
+import { InitialDataEditRequest, ProjectPath } from '@app/types/edit-request';
 import { ProjectPatchDocument } from '@data/api/project-service/models/project-patch-document';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -21,7 +21,7 @@ export class EditProjectComponent {
 	public departments: Observable<Array<DepartmentInfo> | undefined>;
 	public statuses: IProjectStatusType[];
 	public projectInfo: any;
-	private _initialData: PatchRequest<ProjectPath>;
+	private _initialData: InitialDataEditRequest<ProjectPath>;
 
 	constructor(
 		private _formBuilder: FormBuilder,
