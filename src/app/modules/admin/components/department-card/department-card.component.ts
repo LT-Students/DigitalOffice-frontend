@@ -11,7 +11,7 @@ import { DepartmentUserInfo } from '@data/api/department-service/models/departme
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
 import { EMPTY } from 'rxjs';
-import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
+import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 
@@ -95,8 +95,8 @@ export class DepartmentCardComponent {
 			directorid: this.departmentInfo?.director?.id ?? '',
 		};
 		this._modalService
-			.openModal<NewDepartmentComponent, EditModalContent, IDialogResponse>(
-				NewDepartmentComponent,
+			.openModal<AddEditDepartmentComponent, EditModalContent, IDialogResponse>(
+				AddEditDepartmentComponent,
 				ModalWidth.M,
 				data
 			)

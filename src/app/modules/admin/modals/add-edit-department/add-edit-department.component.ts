@@ -14,11 +14,11 @@ import { EditModalContent } from '../../components/department-card/department-ca
 
 @Component({
 	selector: 'do-new-department',
-	templateUrl: './new-department.component.html',
-	styleUrls: ['./new-department.component.scss'],
+	templateUrl: './add-edit-department.component.html',
+	styleUrls: ['./add-edit-department.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewDepartmentComponent {
+export class AddEditDepartmentComponent {
 	public directors$: Observable<UserInfo[] | undefined>;
 	public departmentForm: FormGroup;
 	public isEdit: boolean | undefined;
@@ -27,7 +27,7 @@ export class NewDepartmentComponent {
 	constructor(
 		public _userService: UserService,
 		public _departmentService: DepartmentService,
-		private _dialogRef: MatDialogRef<NewDepartmentComponent>,
+		private _dialogRef: MatDialogRef<AddEditDepartmentComponent>,
 		private _formBuilder: FormBuilder,
 		@Inject(MAT_DIALOG_DATA) data: EditModalContent
 	) {

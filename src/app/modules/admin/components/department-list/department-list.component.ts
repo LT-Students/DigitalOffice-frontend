@@ -9,7 +9,7 @@ import { IFindRequest } from '@app/types/find-request.interface';
 import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { DepartmentService } from '@app/services/department/department.service';
-import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
+import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
 
 @Component({
 	selector: 'do-department-list',
@@ -41,7 +41,7 @@ export class DepartmentListComponent {
 
 	public onAddDepartmentClick(): void {
 		this._modalService
-			.openModal<NewDepartmentComponent, undefined, any>(NewDepartmentComponent)
+			.openModal<AddEditDepartmentComponent, undefined, any>(AddEditDepartmentComponent)
 			.afterClosed()
 			.pipe(withLatestFrom(this._departmentParams))
 			.subscribe(([result, params]) => {

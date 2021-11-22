@@ -14,7 +14,7 @@ import { UserSearchComponent } from './components/new-project/modals/user-search
 import { TeamCardComponent } from './components/team-cards/team-card.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ProgressComponent } from './components/upload/progress/progress.component';
-import { NewDepartmentComponent } from './modals/new-department/new-department.component';
+import { AddEditDepartmentComponent } from './modals/add-edit-department/add-edit-department.component';
 import { NewPositionComponent } from './modals/new-position/new-position.component';
 import { DeleteDirectionComponent } from './components/new-project/modals/delete-direction/delete-direction.component';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -40,7 +40,7 @@ import { EditProjectComponent } from './modals/edit-project/edit-project.compone
 		TeamCardComponent,
 		UploadComponent,
 		ProgressComponent,
-		NewDepartmentComponent,
+		AddEditDepartmentComponent,
 		NewPositionComponent,
 		DeleteDirectionComponent,
 		NewRoleComponent,

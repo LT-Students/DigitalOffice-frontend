@@ -8,7 +8,7 @@ import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType, ModalService, ModalWidth } from '@app/services/modal.service';
-import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
+import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
 import { NewPositionComponent } from '../../modals/new-position/new-position.component';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit {
 				switchMap((value: AdminDashboardModalType) => {
 					switch (value) {
 						case this.modalType.NEW_DEPARTMENT: {
-							return this.modalService.openModal(NewDepartmentComponent, ModalWidth.M).afterClosed();
+							return this.modalService.openModal(AddEditDepartmentComponent, ModalWidth.M).afterClosed();
 						}
 						case this.modalType.NEW_POSITION: {
 							return this.modalService.openModal(NewPositionComponent, ModalWidth.M).afterClosed();
