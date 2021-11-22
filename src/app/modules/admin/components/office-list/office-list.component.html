@@ -6,6 +6,15 @@
 		<h3 doUnderline underlinedSize="sm">Офисы</h3>
 		<button mat-flat-button color="accent" (click)="onAddEditOffice()">+ Добавить офис</button>
 	</div>
+	<div class="filters" [formGroup]="filters">
+		<mat-form-field class="filters__status" appearance="fill">
+			<mat-label>Статус</mat-label>
+			<mat-select formControlName="showDeactivated">
+				<mat-option [value]="false">Активные</mat-option>
+				<mat-option [value]="true">Все</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
 	<ng-container *ngIf="offices$ | async as offices">
 		<table *ngIf="offices.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
 			<colgroup>

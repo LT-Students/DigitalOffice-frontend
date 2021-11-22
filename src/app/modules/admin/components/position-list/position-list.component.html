@@ -4,7 +4,16 @@
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Должности</h3>
-		<button mat-flat-button color="accent" (click)="onAddPositionClick()">+ Создать должность</button>
+		<button mat-flat-button color="accent" (click)="onAddEditPosition()">+ Создать должность</button>
+	</div>
+	<div class="filters" [formGroup]="filters">
+		<mat-form-field class="filters__status" appearance="fill">
+			<mat-label>Статус</mat-label>
+			<mat-select formControlName="showDeactivated">
+				<mat-option [value]="false">Активные</mat-option>
+				<mat-option [value]="true">Все</mat-option>
+			</mat-select>
+		</mat-form-field>
 	</div>
 	<ng-container *ngIf="positions$ | async as positions">
 		<table *ngIf="positions.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
@@ -20,6 +29,7 @@
 					<th mat-sort-header="description" class="cell">
 						<p>Описание</p>
 					</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -30,16 +40,19 @@
 					<td class="cell">
 						<do-comment [text]="position.description"></do-comment>
 					</td>
+					<td class="cell">
+						<button mat-icon-button (click)="onAddEditPosition(position)">
+							<mat-icon class="department__button-edit">
+								<img class="department__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
+							</mat-icon>
+						</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 		<ng-template #emptyList>
 			<do-empty-list [emptyMessage]="'Нет данных о должностях'"></do-empty-list>
 		</ng-template>
-		<mat-paginator
-			[length]="positions.totalCount ?? 0"
-			[pageSizeOptions]="[10, 25, 50]"
-			(page)="onPageChange($event)"
-		></mat-paginator>
 	</ng-container>
+	<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 </mat-card>

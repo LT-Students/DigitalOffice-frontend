@@ -10,6 +10,13 @@ export interface PatchDocument<T extends PatchPath> {
 export type PatchPath = UserPath | OfficePath | LeaveTimePath | ProjectPath | DepartmentPath;
 
 export type LeaveTimePath = '/Minutes' | '/StartTime' | '/EndTime' | '/LeaveType' | '/Comment' | '/IsActive';
+
+export enum PositionPath {
+	NAME = '/name',
+	DESCRIPTION = '/description',
+	IS_ACTIVE = '/isactive',
+}
+
 export enum UserPath {
 	FIRST_NAME = '/FirstName',
 	LAST_NAME = '/LastName',
