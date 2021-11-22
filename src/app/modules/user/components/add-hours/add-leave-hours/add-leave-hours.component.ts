@@ -75,7 +75,9 @@ export class AddLeaveHoursComponent {
 					this.loading$$.next(false);
 				})
 			)
-			.subscribe();
+			.subscribe(() => {
+				// this.addLeaveForm.reset();
+			});
 	}
 
 	private _addLeaveTime(): Observable<OperationResultResponse> {
@@ -87,6 +89,8 @@ export class AddLeaveHoursComponent {
 			comment: this.addLeaveForm.get('comment')?.value,
 			minutes: this.recommendedTime$$.value * 60,
 		};
+
+		console.log('REQUEST:', leaveTimeRequest);
 
 		return this._attendanceService.addLeaveTime(leaveTimeRequest);
 	}
