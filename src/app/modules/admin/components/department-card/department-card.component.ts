@@ -116,6 +116,7 @@ export class DepartmentCardComponent {
 				idToHide: this.dataSource.data.map((e) => e.id),
 				pageId: this._departmentId,
 				openFrom: 'department',
+				moduleName: this.departmentInfo?.name,
 			},
 			maxWidth: '670px',
 		});
