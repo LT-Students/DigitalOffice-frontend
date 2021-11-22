@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit {
 				catchError((error) => {
 					this.loginError = error.message;
 					this.isLoading$$.next(false);
-					console.log('Getting user info failed.', error.message);
 					return of(null);
 				})
 			)
