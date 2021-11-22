@@ -43,9 +43,9 @@ export class AddLeaveHoursComponent {
 
 		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 		this.addLeaveForm = this._fb.group({
-			leaveType: [this.absences[0].leaveType, [Validators.required]],
-			startDate: [DateTime.now(), [Validators.required]],
-			endDate: [DateTime.now(), [Validators.required]],
+			leaveType: [null, [Validators.required]],
+			startDate: [null, [Validators.required]],
+			endDate: [null, [Validators.required]],
 			comment: [null],
 		});
 	}
@@ -76,7 +76,7 @@ export class AddLeaveHoursComponent {
 				})
 			)
 			.subscribe(() => {
-				// this.addLeaveForm.reset();
+				this.addLeaveForm.reset();
 			});
 	}
 

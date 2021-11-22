@@ -12,21 +12,21 @@ import { ActivatedRoute } from '@angular/router';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AttendanceComponent implements OnInit, OnDestroy {
-	private onDestroy$: ReplaySubject<void>;
+	private onDestroy$$: ReplaySubject<void>;
 
 	constructor(
 		private _attendanceService: AttendanceService,
 		private _currentUserService: CurrentUserService,
 		private _activatedRoute: ActivatedRoute
 	) {
-		this.onDestroy$ = new ReplaySubject<void>(1);
+		this.onDestroy$$ = new ReplaySubject<void>(1);
 	}
 
-	ngOnInit() {
+	public ngOnInit(): void {
 		this._attendanceService.selectedDate$
 			.pipe(
 				skip(1),
-				takeUntil(this.onDestroy$),
+				takeUntil(this.onDestroy$$),
 				switchMap(() => this._attendanceService.getMonthNormAndHolidays()),
 				switchMap(() => this._attendanceService.getActivities())
 			)
@@ -34,7 +34,7 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnDestroy() {
-		this.onDestroy$.next();
-		this.onDestroy$.complete();
+		this.onDestroy$$.next();
+		this.onDestroy$$.complete();
 	}
 }

@@ -82,7 +82,7 @@ export class AttendanceService implements Resolve<Activities> {
 	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Activities> {
 		return this._currentUserService.user$.pipe(
 			take(1),
-			tap((user) => this.setUserIdAndRate(user?.id, user?.rate)),
+			tap((user) => this.setUserIdAndRate(user?.id, user?.rate ?? 1)),
 			switchMap(() => this.getLeaveTimeIntervals()),
 			switchMap(() => this.getMonthNormAndHolidays()),
 			switchMap(() => this.getActivities())
@@ -220,9 +220,6 @@ export class AttendanceService implements Resolve<Activities> {
 		const holidaysMonth = this._holidays.value.month;
 		const holidays = this._holidays.value.holidays;
 
-		console.log('holidaysMonth', holidaysMonth);
-		console.log('holidays', holidays);
-
 		return (
 			(selectedDate.month === holidaysMonth
 				? holidays.every((isHoliday, date) => (isHoliday ? selectedDate.day !== date + 1 : true))
@@ -247,7 +244,6 @@ export class AttendanceService implements Resolve<Activities> {
 	}
 
 	public getLeaveDuration(datePeriod: DatePeriod): number {
-		// TODO: как починят rate используй this._rate
-		return this._timeDurationService.getDuration(datePeriod, 8 * 0.5, this.disableWeekends);
+		return this._timeDurationService.getDuration(datePeriod, 8 * this._rate, this.disableWeekends);
 	}
 }
