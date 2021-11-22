@@ -15,7 +15,7 @@ export class SignupGuard implements CanActivate {
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		const redirectUrl = this._router.createUrlTree(['/auth/login']);
-		return this._credentialsService.checkPendingCredentials(route.paramMap.get('userId') ?? '').pipe(
+		return this._credentialsService.checkPendingCredentials(route.queryParamMap.get('userId') ?? '').pipe(
 			map((response) => !!response.body),
 			switchMap((pendingStatus) => iif(() => pendingStatus, of(true), of(redirectUrl))),
 			catchError(() => of(redirectUrl))
