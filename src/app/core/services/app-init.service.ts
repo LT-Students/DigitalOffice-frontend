@@ -18,21 +18,28 @@ export class AppInitService {
 		private _authService: AuthService
 	) {}
 
-	public getCompanyAndUser(): Promise<any> {
+	public getCompanyAndUser(): Promise<any> | undefined {
 		const token: string | null = this._localStorage.get('access_token');
 
 		const userId: string | undefined = token ? (JSON.parse(atob(token.split('.')[1])).UserId as string) : undefined;
-
 		return new Promise((resolve) => {
-			this._companyService
-				.getCompany()
-				.pipe(
-					tap((company) => this._currentCompanyService.setCompany(company)),
-					switchMap(() => this._currentUserService.getUserOnLogin(userId)),
-					tap((user) => this._currentUserService.setUser(user))
-				)
-				.subscribe()
-				.add(resolve);
+			if (token === null) {
+				this._companyService
+					.getCompany()
+					.pipe(tap((company) => this._currentCompanyService.setCompany(company)))
+					.subscribe()
+					.add(resolve);
+			} else {
+				this._companyService
+					.getCompany()
+					.pipe(
+						tap((company) => this._currentCompanyService.setCompany(company)),
+						switchMap(() => this._currentUserService.getUserOnLogin(userId)),
+						tap((user) => this._currentUserService.setUser(user))
+					)
+					.subscribe()
+					.add(resolve);
+			}
 		});
 	}
 }

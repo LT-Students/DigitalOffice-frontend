@@ -28,7 +28,7 @@ import { NewsModule } from './modules/news/news.module';
 registerLocaleData(localeRu);
 
 function initializeCompanyAndUser(appInitService: AppInitService) {
-	return (): Promise<any> => {
+	return (): Promise<any> | undefined => {
 		return appInitService.getCompanyAndUser();
 	};
 }
