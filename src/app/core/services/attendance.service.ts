@@ -219,6 +219,10 @@ export class AttendanceService implements Resolve<Activities> {
 		const selectedDate = d || DateTime.now();
 		const holidaysMonth = this._holidays.value.month;
 		const holidays = this._holidays.value.holidays;
+
+		console.log('holidaysMonth', holidaysMonth);
+		console.log('holidays', holidays);
+
 		return (
 			(selectedDate.month === holidaysMonth
 				? holidays.every((isHoliday, date) => (isHoliday ? selectedDate.day !== date + 1 : true))
@@ -243,6 +247,7 @@ export class AttendanceService implements Resolve<Activities> {
 	}
 
 	public getLeaveDuration(datePeriod: DatePeriod): number {
-		return this._timeDurationService.getDuration(datePeriod, 8 * this._rate, this.disableWeekends);
+		// TODO: как починят rate используй this._rate
+		return this._timeDurationService.getDuration(datePeriod, 8 * 0.5, this.disableWeekends);
 	}
 }

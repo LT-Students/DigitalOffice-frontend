@@ -16,6 +16,7 @@ import { UserRoutingModule } from './user-routing.module';
 import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
 import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/doughnut-chart.component';
+import { AddLeaveHoursComponent } from './components/add-hours/add-leave-hours/add-leave-hours.component';
 
 @NgModule({
 	declarations: [
@@ -32,6 +33,7 @@ import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/
 		EditProjectComponent,
 		EditLeaveComponent,
 		DoughnutChartComponent,
+		AddLeaveHoursComponent,
 	],
 	imports: [SharedModule, AdminModule, UserRoutingModule],
 	providers: [],
