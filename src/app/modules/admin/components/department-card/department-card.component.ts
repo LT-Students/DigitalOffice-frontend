@@ -13,8 +13,10 @@ import { DepartmentService } from '@app/services/department/department.service';
 import { EMPTY } from 'rxjs';
 import { NewDepartmentComponent } from '../../modals/new-department/new-department.component';
 import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
-import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
-import { openAddEmployeeModalFrom } from '../../../../shared/modals/add-employee/add-employee';
+import {
+	AddEmployeeComponent,
+	OpenAddEmployeeModalFrom,
+} from '../../../../shared/modals/add-employee/add-employee.component';
 
 export interface EditModalContent {
 	id?: string;
@@ -116,7 +118,7 @@ export class DepartmentCardComponent {
 			data: {
 				idToHide: this.dataSource.data.map((e) => e.id),
 				pageId: this._departmentId,
-				openFrom: openAddEmployeeModalFrom.Department,
+				openFrom: OpenAddEmployeeModalFrom.Department,
 				moduleName: this.departmentInfo?.name,
 			},
 			maxWidth: '670px',
