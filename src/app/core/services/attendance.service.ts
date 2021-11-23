@@ -82,7 +82,7 @@ export class AttendanceService implements Resolve<Activities> {
 	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Activities> {
 		return this._currentUserService.user$.pipe(
 			take(1),
-			tap((user) => this.setUserIdAndRate(user?.id, user?.rate)),
+			tap((user) => this.setUserIdAndRate(user.id, user.rate)),
 			switchMap(() => this.getLeaveTimeIntervals()),
 			switchMap(() => this.getMonthNormAndHolidays()),
 			switchMap(() => this.getActivities())
@@ -194,7 +194,7 @@ export class AttendanceService implements Resolve<Activities> {
 		this._activities.next(activities);
 	}
 
-	public setUserIdAndRate(userId?: string, rate = 1): void {
+	public setUserIdAndRate(userId: string, rate: number): void {
 		this._userId = userId;
 		this._rate = rate;
 	}
@@ -219,6 +219,7 @@ export class AttendanceService implements Resolve<Activities> {
 		const selectedDate = d || DateTime.now();
 		const holidaysMonth = this._holidays.value.month;
 		const holidays = this._holidays.value.holidays;
+
 		return (
 			(selectedDate.month === holidaysMonth
 				? holidays.every((isHoliday, date) => (isHoliday ? selectedDate.day !== date + 1 : true))

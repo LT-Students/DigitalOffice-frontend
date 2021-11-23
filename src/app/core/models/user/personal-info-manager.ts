@@ -67,8 +67,8 @@ export class PersonalInfoManager {
 		return this._user?.dateOfBirth ? new Date(this._user.dateOfBirth) : undefined;
 	}
 
-	public get id(): string | undefined {
-		return this._user?.id;
+	public get id(): string {
+		return this._user?.id ?? '';
 	}
 
 	public get startWorkingAt(): Date | undefined {
@@ -95,8 +95,8 @@ export class PersonalInfoManager {
 		return this._user?.role;
 	}
 
-	public get rate(): number | undefined {
-		return this._user?.rate ?? 0;
+	public get rate(): number {
+		return this._user?.rate ?? 1;
 	}
 
 	public get office(): OfficeInfo | null | undefined {
