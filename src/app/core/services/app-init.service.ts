@@ -5,8 +5,7 @@ import { AuthService } from '@app/services/auth/auth.service';
 import { CompanyService } from '@app/services/company/company.service';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
-import { EMPTY, iif, Observable } from 'rxjs';
-import { User } from '@app/models/user/user.model';
+import { EMPTY, iif } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
