@@ -9,7 +9,12 @@ import { ProjectUserRoleType } from '@data/api/project-service/models/project-us
 import { ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { DepartmentService } from '@app/services/department/department.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { openAddEmployeeModalFrom } from './add-employee';
+
+export enum OpenAddEmployeeModalFrom {
+	Default = '',
+	Project = 'Проект',
+	Department = 'Департамент',
+}
 
 @Component({
 	selector: 'do-modal-add-employee',
@@ -27,7 +32,7 @@ export class AddEmployeeComponent implements OnInit {
 	public selection: SelectionModel<UserInfo>;
 	public usersFound: boolean;
 	public moduleName: string;
-	public openFromRu: string;
+	public openFromRu: OpenAddEmployeeModalFrom;
 
 	constructor(
 		private _userService: UserService,
@@ -37,7 +42,7 @@ export class AddEmployeeComponent implements OnInit {
 		private _projectService: ProjectService,
 		private _departmentService: DepartmentService,
 		@Inject(MAT_DIALOG_DATA)
-		private _data: { idToHide: string[]; pageId: string; openFrom: string; moduleName: string }
+		private _data: { idToHide: string[]; pageId: string; openFrom: OpenAddEmployeeModalFrom; moduleName: string }
 	) {
 		this.positions = ['front', 'back', 'manager', 'lead'];
 		this.employees = [];
@@ -48,15 +53,15 @@ export class AddEmployeeComponent implements OnInit {
 		this.dataSource = new MatTableDataSource();
 		this.usersFound = false;
 		this.moduleName = this._data.moduleName;
-		this.openFromRu = '';
+		this.openFromRu = OpenAddEmployeeModalFrom.Default;
 	}
 
 	public ngOnInit(): void {
 		this.getPageUsers();
-		if (this._data.openFrom === openAddEmployeeModalFrom.Project) {
-			this.openFromRu = openAddEmployeeModalFrom.Project;
+		if (this._data.openFrom === OpenAddEmployeeModalFrom.Project) {
+			this.openFromRu = OpenAddEmployeeModalFrom.Project;
 		} else {
-			this.openFromRu = openAddEmployeeModalFrom.Department;
+			this.openFromRu = OpenAddEmployeeModalFrom.Department;
 		}
 	}
 
@@ -85,7 +90,7 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	public addUsers(): void {
-		if (this._data.openFrom === openAddEmployeeModalFrom.Project) {
+		if (this._data.openFrom === OpenAddEmployeeModalFrom.Project) {
 			const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
 				newArr: Array<ICreateUserRequest>,
 				user
@@ -102,7 +107,7 @@ export class AddEmployeeComponent implements OnInit {
 					this.onClose(result);
 				});
 		}
-		if (this._data.openFrom === openAddEmployeeModalFrom.Department) {
+		if (this._data.openFrom === OpenAddEmployeeModalFrom.Department) {
 			const users: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
 				newArr.push(user.id ?? '');
 

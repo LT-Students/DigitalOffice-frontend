@@ -57,7 +57,7 @@
 					<p>Команда</p>
 				</ng-template>
 				<div class="team">
-					<h3 doUnderline underlinedSize="sm">Команда</h3>
+					<h3 class="team__title" doUnderline underlinedSize="sm">Команда</h3>
 					<button mat-flat-button color="accent" (click)="openAddEmployeeModal()">
 						+ Добавить сотрудников
 					</button>
@@ -190,7 +190,10 @@
 					</mat-icon>
 					<p>Статистика команды</p>
 				</ng-template>
-				<do-team-statistics [projectId]="projectId"></do-team-statistics>
+				<do-team-statistics
+					*ngIf="dataSource.data.length > 0; else emptyList"
+					[projectId]="projectId"
+				></do-team-statistics>
 			</mat-tab>
 		</mat-tab-group>
 	</div>
