@@ -11,12 +11,15 @@ import { ILeaveType, LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { finalize, switchMap } from 'rxjs/operators';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 
 @Component({
 	selector: 'do-add-leave-hours',
 	templateUrl: './add-leave-hours.component.html',
 	styleUrls: ['./add-leave-hours.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [{ provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT }],
 })
 export class AddLeaveHoursComponent {
 	public addLeaveForm: FormGroup;
@@ -61,7 +64,7 @@ export class AddLeaveHoursComponent {
 			startDate: startDateValue,
 			endDate: endDateControl?.value,
 		};
-		console.log(this._attendanceService.getLeaveDuration(datePeriod));
+
 		this.recommendedTime$$.next(this._attendanceService.getLeaveDuration(datePeriod));
 	}
 

@@ -67,8 +67,8 @@ export class PersonalInfoManager {
 		return this._user?.dateOfBirth ? new Date(this._user.dateOfBirth) : undefined;
 	}
 
-	public get id(): string | undefined {
-		return this._user?.id;
+	public get id(): string {
+		return this._user?.id ?? '';
 	}
 
 	public get startWorkingAt(): Date | undefined {
