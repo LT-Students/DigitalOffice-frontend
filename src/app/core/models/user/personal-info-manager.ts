@@ -1,11 +1,11 @@
 import { UserGender } from '@data/api/user-service/models/user-gender';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
-import { ImageInfo } from '@data/api/user-service/models/image-info';
 import { RoleInfo } from '@data/api/user-service/models/role-info';
 import { OfficeInfo } from '@data/api/user-service/models/office-info';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
+import { IImageInfo } from '@app/models/image.model';
 
 export interface IUserGender {
 	genderType: UserGender;
@@ -19,7 +19,7 @@ export class PersonalInfoManager {
 		{ genderType: UserGender.NotSelected, genderInRussian: 'Не выбран' },
 	];
 
-	constructor(private _user: UserInfo | undefined) {}
+	constructor(private _user: UserInfo) {}
 
 	public static getGenderInfoByType(genderType: UserGender): IUserGender | undefined {
 		return this._genders.find((gender: IUserGender) => gender.genderType === genderType);
@@ -83,8 +83,15 @@ export class PersonalInfoManager {
 		return UserStatusModel.getUserStatusInfoByType(this._user?.status);
 	}
 
-	public get avatarImage(): ImageInfo | null | undefined {
-		return this._user?.avatar;
+	public get avatarImage(): IImageInfo | null {
+		if (this._user.avatar && this._user.avatar?.id && this._user.avatar?.extension && this._user.avatar?.content) {
+			return {
+				id: this._user.avatar.id,
+				content: this._user.avatar.content,
+				extension: this._user.avatar.extension,
+			};
+		}
+		return null;
 	}
 
 	public get gender(): IUserGender | undefined {

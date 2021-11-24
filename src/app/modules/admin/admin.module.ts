@@ -18,7 +18,7 @@ import { AddEditDepartmentComponent } from './modals/add-edit-department/add-edi
 import { AddEditPositionComponent } from './modals/add-edit-position/add-edit-position.component';
 import { DeleteDirectionComponent } from './components/new-project/modals/delete-direction/delete-direction.component';
 import { AdminRoutingModule } from './admin-routing.module';
-import { NewRoleComponent } from './modals/new-role/new-role.component';
+import { AddEditRoleComponent } from './modals/add-edit-role/add-edit-role.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 import { AddEditOfficeComponent } from './modals/add-edit-office/add-edit-office.component';
 import { DepartmentListComponent } from './components/department-list/department-list.component';
@@ -44,7 +44,7 @@ import { EditCompanyComponent } from './modals/edit-company/edit-company.compone
 		AddEditDepartmentComponent,
 		AddEditPositionComponent,
 		DeleteDirectionComponent,
-		NewRoleComponent,
+		AddEditRoleComponent,
 		ManageUsersComponent,
 		AddEditOfficeComponent,
 		DepartmentListComponent,

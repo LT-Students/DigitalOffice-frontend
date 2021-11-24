@@ -12,7 +12,7 @@ import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
-import { NewRoleComponent } from '../../modals/new-role/new-role.component';
+import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 import { EditCompanyComponent } from '../../modals/edit-company/edit-company.component';
 
 @Component({
@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
 							return this.modalService.openModal(NewEmployeeComponent, ModalWidth.L).afterClosed();
 						}
 						case this.modalType.NEW_ROLE: {
-							return this.modalService.openModal(NewRoleComponent, ModalWidth.M).afterClosed();
+							return this.modalService.openModal(AddEditRoleComponent, ModalWidth.M).afterClosed();
 						}
 						case this.modalType.NEW_OFFICE: {
 							return this.modalService.openModal(AddEditOfficeComponent, ModalWidth.M).afterClosed();
