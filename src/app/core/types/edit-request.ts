@@ -31,9 +31,23 @@ export enum CompanyPath {
 	DEPARTMENT_MODULE_ENABLED = '/isdepartmentmoduleenabled',
 }
 
-export type LeaveTimePath = '/Minutes' | '/StartTime' | '/EndTime' | '/LeaveType' | '/Comment' | '/IsActive';
+export enum LeaveTimePath {
+	MINUTES = '/Minutes',
+	START_TIME = '/StartTime',
+	END_TIME = '/EndTime',
+	LEAVE_TYPE = '/LeaveType',
+	COMMENT = '/Comment',
+	IS_ACTIVE = '/IsActive',
+}
 
-export type ProjectPath = '/Name' | '/ShortName' | '/Description' | '/ShortDescription' | '/Status' | '/DepartmentId';
+export enum ProjectPath {
+	NAME = '/Name',
+	SHORT_NAME = '/ShortName',
+	DESCRIPTION = '/Description',
+	SHORT_DESCRIPTION = '/ShortDescription',
+	STATUS = '/Status',
+	DEPARTMENT_ID = '/DepartmentId',
+}
 
 export enum PositionPath {
 	NAME = '/name',

@@ -8,10 +8,10 @@ import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { DatePeriod } from '@app/types/date-period';
 import { DateService } from '@app/services/date.service';
 import { LeaveTimePath, InitialDataEditRequest } from '@app/types/edit-request';
-import { PatchLeaveTimeDocument } from '@data/api/time-service/models/patch-leave-time-document';
 import { DateTime } from 'luxon';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
+import { createEditRequest } from '@app/utils/utils';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 
 @Component({
@@ -22,6 +22,8 @@ import { IDialogResponse } from '../../components/user-tasks/user-tasks.componen
 	providers: [{ provide: MAT_DATE_FORMATS, useValue: RANGE_DATE_FORMAT }],
 })
 export class EditLeaveComponent {
+	public LeaveTimePath = LeaveTimePath;
+
 	public editForm: FormGroup;
 	public periodInHours: number;
 	public disableWeekends: DateFilterFn<DateTime>;
@@ -36,10 +38,10 @@ export class EditLeaveComponent {
 		private _attendanceService: AttendanceService
 	) {
 		this._initialData = {
-			'/Comment': [this.leave.comment],
-			'/StartTime': [new Date(this.leave.startTime), [Validators.required]],
-			'/EndTime': [new Date(this.leave.endTime), [Validators.required]],
-			'/Minutes': [this.leave.minutes],
+			[LeaveTimePath.COMMENT]: [this.leave.comment],
+			[LeaveTimePath.START_TIME]: [new Date(this.leave.startTime), [Validators.required]],
+			[LeaveTimePath.END_TIME]: [new Date(this.leave.endTime), [Validators.required]],
+			[LeaveTimePath.MINUTES]: [this.leave.minutes],
 		};
 		this.editForm = this._fb.group(this._initialData);
 
@@ -67,25 +69,7 @@ export class EditLeaveComponent {
 	}
 
 	public onSubmitClick(): void {
-		const timeZoneOffset = (this.editForm.get('/StartTime')?.value as DateTime).offset;
-		const editRequest = (Object.keys(this.editForm.controls) as LeaveTimePath[]).reduce(
-			(acc: PatchLeaveTimeDocument[], key) => {
-				const formValue = this.editForm.get(key)?.value;
-				if (formValue !== this._initialData[key][0]) {
-					const patchDocument: PatchLeaveTimeDocument = {
-						op: 'replace',
-						path: key,
-						value:
-							formValue instanceof DateTime
-								? formValue.plus({ minutes: timeZoneOffset }).toISO()
-								: formValue,
-					};
-					acc.push(patchDocument);
-				}
-				return acc;
-			},
-			[]
-		);
+		const editRequest = createEditRequest(this.editForm.getRawValue(), this._initialData);
 
 		this._timeService
 			.editLeaveTime({
