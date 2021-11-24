@@ -1,0 +1,27 @@
+.add-hours {
+	padding: 32px 48px;
+
+	&__form {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	&__time-wrapper {
+		display: flex;
+	}
+
+	&__absence-time {
+		margin-left: 32px;
+
+		display: inline-block;
+	}
+
+	&__date-picker {
+		display: inline-flex;
+
+		align-items: center;
+
+		cursor: pointer;
+	}
+}

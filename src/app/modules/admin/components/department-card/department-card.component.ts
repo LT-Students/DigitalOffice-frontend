@@ -12,7 +12,10 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
 import { EMPTY } from 'rxjs';
 import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
-import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
+import {
+	AddEmployeeComponent,
+	OpenAddEmployeeModalFrom,
+} from '../../../../shared/modals/add-employee/add-employee.component';
 
 @Component({
 	selector: 'do-department-card',
@@ -97,7 +100,8 @@ export class DepartmentCardComponent {
 			data: {
 				idToHide: this.dataSource.data.map((e) => e.id),
 				pageId: this._departmentId,
-				openFrom: 'department',
+				openFrom: OpenAddEmployeeModalFrom.Department,
+				moduleName: this.departmentInfo?.name,
 			},
 			maxWidth: '670px',
 		});
