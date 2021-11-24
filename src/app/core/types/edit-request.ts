@@ -7,9 +7,33 @@ export interface PatchDocument<T extends PatchPath> {
 	path: T;
 	value: any;
 }
-export type PatchPath = UserPath | OfficePath | LeaveTimePath | ProjectPath | DepartmentPath;
+export type PatchPath =
+	| UserPath
+	| OfficePath
+	| LeaveTimePath
+	| ProjectPath
+	| DepartmentPath
+	| PositionPath
+	| CompanyPath;
+
+export enum CompanyPath {
+	PORTAL_NAME = '/portalname',
+	COMPANY_NAME = '/companyname',
+	SITE_URL = '/siteurl',
+	TAGLINE = '/tagline',
+	DESCRIPTION = '/description',
+	LOGO = '/logo',
+	HOST = '/host',
+	PORT = '/port',
+	ENABLE_SSL = '/enablessl',
+	EMAIL = '/email',
+	PASSWORD = '/password',
+	DEPARTMENT_MODULE_ENABLED = '/isdepartmentmoduleenabled',
+}
 
 export type LeaveTimePath = '/Minutes' | '/StartTime' | '/EndTime' | '/LeaveType' | '/Comment' | '/IsActive';
+
+export type ProjectPath = '/Name' | '/ShortName' | '/Description' | '/ShortDescription' | '/Status' | '/DepartmentId';
 
 export enum PositionPath {
 	NAME = '/name',
@@ -38,5 +62,9 @@ export enum OfficePath {
 	LONGITUDE = '/Longitude',
 }
 
-export type ProjectPath = '/Name' | '/ShortName' | '/Description' | '/ShortDescription' | '/Status' | '/DepartmentId';
-export type DepartmentPath = '/name' | '/description' | '/isactive' | '/directorid';
+export enum DepartmentPath {
+	NAME = '/name',
+	DESCRIPTION = '/description',
+	IS_ACTIVE = '/isactive',
+	DIRECTOR_ID = '/directorid',
+}

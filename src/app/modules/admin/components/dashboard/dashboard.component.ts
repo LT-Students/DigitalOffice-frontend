@@ -13,6 +13,7 @@ import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edi
 import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 import { NewRoleComponent } from '../../modals/new-role/new-role.component';
+import { EditCompanyComponent } from '../../modals/edit-company/edit-company.component';
 
 @Component({
 	selector: 'do-dashboard',
@@ -52,6 +53,9 @@ export class DashboardComponent implements OnInit {
 						}
 						case this.modalType.NEW_OFFICE: {
 							return this.modalService.openModal(AddEditOfficeComponent, ModalWidth.M).afterClosed();
+						}
+						case this.modalType.COMPANY_SETTINGS: {
+							return this.modalService.openModal(EditCompanyComponent, ModalWidth.L).afterClosed();
 						}
 						case this.modalType.NEW_PROJECT: {
 							return fromPromise(this._router.navigate(['admin/new-project']));
