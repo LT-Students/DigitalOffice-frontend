@@ -7,8 +7,9 @@ import { OfficeInfo } from '@data/api/office-service/models/office-info';
 import { InitialDataEditRequest, OfficePath } from '@app/types/edit-request';
 import { createEditRequest } from '@app/utils/utils';
 import { UUID } from '@app/types/uuid.type';
-import { EMPTY, iif, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { finalize } from 'rxjs/operators';
 
 @Component({
 	selector: 'do-new-office',
@@ -21,6 +22,7 @@ export class AddEditOfficeComponent {
 
 	public officeForm: FormGroup;
 	public isEditMode: boolean;
+	public loading$$: BehaviorSubject<boolean>;
 	private readonly _officeInfo?: InitialDataEditRequest<OfficePath> & { id: UUID };
 
 	constructor(
@@ -30,6 +32,7 @@ export class AddEditOfficeComponent {
 		private _dialogRef: MatDialogRef<AddEditOfficeComponent>
 	) {
 		this.isEditMode = !!officeInfo;
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 
 		this.officeForm = this._fb.group({
 			[OfficePath.CITY]: ['', [Validators.required, DoValidators.noWhitespaces]],
@@ -49,12 +52,15 @@ export class AddEditOfficeComponent {
 	}
 
 	public onSubmit(): void {
-		iif(() => this.isEditMode, this._editOffice(), this._createOffice()).subscribe({
-			next: (result) => this._dialogRef.close(result),
-			error: (error) => {
-				throw error;
-			},
-		});
+		this.loading$$.next(true);
+		iif(() => this.isEditMode, this._editOffice(), this._createOffice())
+			.pipe(finalize(() => this.loading$$.next(false)))
+			.subscribe({
+				next: (result) => this._dialogRef.close(result),
+				error: (error) => {
+					throw error;
+				},
+			});
 	}
 
 	private _createOffice(): Observable<OperationResultResponse<any>> {

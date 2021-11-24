@@ -12,15 +12,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
 import { EMPTY } from 'rxjs';
 import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
-import { IDialogResponse } from '../../../user/components/user-tasks/user-tasks.component';
 import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
-
-export interface EditModalContent {
-	id?: string;
-	name: string;
-	description?: string | null;
-	directorid?: string;
-}
 
 @Component({
 	selector: 'do-department-card',
@@ -88,18 +80,8 @@ export class DepartmentCardComponent {
 	}
 
 	public onEditDepartamentClick(): void {
-		const data: EditModalContent = {
-			id: this.departmentInfo?.id,
-			name: this.departmentInfo?.name ?? '',
-			description: this.departmentInfo?.description ?? '',
-			directorid: this.departmentInfo?.director?.id ?? '',
-		};
 		this._modalService
-			.openModal<AddEditDepartmentComponent, EditModalContent, IDialogResponse>(
-				AddEditDepartmentComponent,
-				ModalWidth.M,
-				data
-			)
+			.openModal<AddEditDepartmentComponent>(AddEditDepartmentComponent, ModalWidth.M, this.departmentInfo)
 			.afterClosed()
 			.subscribe((result) => {
 				if (result?.status === OperationResultStatusType.FullSuccess) this._getDepartment();

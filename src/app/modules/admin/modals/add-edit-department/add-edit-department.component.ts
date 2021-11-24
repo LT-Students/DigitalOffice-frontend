@@ -2,15 +2,16 @@ import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { UserService } from '@app/services/user/user.service';
-import { map } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { OperationResultResponse } from '@data/api/company-service/models/operation-result-response';
-import { PatchDepartmentDocument } from '@data/api/department-service/models/patch-department-document';
 import { DepartmentService } from '@app/services/department/department.service';
-import { DepartmentPath } from '@app/types/edit-request';
-import { EditModalContent } from '../../components/department-card/department-card.component';
+import { DepartmentPath, InitialDataEditRequest } from '@app/types/edit-request';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { createEditRequest } from '@app/utils/utils';
+import { DepartmentInfo } from '@data/api/department-service/models/department-info';
+import { UUID } from '@app/types/uuid.type';
 
 @Component({
 	selector: 'do-new-department',
@@ -19,42 +20,66 @@ import { EditModalContent } from '../../components/department-card/department-ca
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddEditDepartmentComponent {
+	public EditPath = DepartmentPath;
+
 	public directors$: Observable<UserInfo[] | undefined>;
 	public departmentForm: FormGroup;
-	public isEdit: boolean | undefined;
-	private readonly _departamentInfo: EditModalContent;
+	public isEdit: boolean;
+	public loading$$: BehaviorSubject<boolean>;
+	private readonly _departmentInfo?: InitialDataEditRequest<DepartmentPath> & { id: UUID };
 
 	constructor(
 		public _userService: UserService,
 		public _departmentService: DepartmentService,
 		private _dialogRef: MatDialogRef<AddEditDepartmentComponent>,
 		private _formBuilder: FormBuilder,
-		@Inject(MAT_DIALOG_DATA) data: EditModalContent
+		@Inject(MAT_DIALOG_DATA) departmentInfo: Required<DepartmentInfo>
 	) {
-		this._departamentInfo = data;
 		this.departmentForm = this._formBuilder.group({
-			name: [
-				this._departamentInfo ? this._departamentInfo.name : '',
-				[Validators.required, Validators.minLength(3)],
-			],
-			description: [this._departamentInfo ? this._departamentInfo.description : ''],
-			directorid: [this._departamentInfo ? this._departamentInfo.directorid : ''],
+			[DepartmentPath.NAME]: ['', [Validators.required, Validators.minLength(3)]],
+			[DepartmentPath.DESCRIPTION]: [''],
+			[DepartmentPath.DIRECTOR_ID]: [''],
 		});
-		this.isEdit = !!this._departamentInfo;
+		this.isEdit = !!departmentInfo;
+		this.loading$$ = new BehaviorSubject<boolean>(false);
+
+		if (this.isEdit) {
+			this._departmentInfo = {
+				id: departmentInfo.id,
+				[DepartmentPath.NAME]: departmentInfo.name,
+				[DepartmentPath.DESCRIPTION]: departmentInfo.description,
+				[DepartmentPath.DIRECTOR_ID]: departmentInfo.director?.id,
+			};
+			this.departmentForm.patchValue(this._departmentInfo);
+		}
 
 		this.directors$ = this._userService
 			.findUsers({ skipCount: 0, takeCount: 500 })
 			.pipe(map((response) => response.body));
 	}
 
-	public createDepartment(): void {
-		this._departmentService
-			.createDepartment({
-				name: this.departmentForm.get('name')?.value?.trim(),
-				description: this.departmentForm.get('description')?.value?.trim(),
-				// directorUserId: this.departmentForm.get('directorid')?.value,
-				users: [],
-			})
+	public createDepartment(): Observable<OperationResultResponse<any>> {
+		return this._departmentService.createDepartment({
+			name: this.departmentForm.get(DepartmentPath.NAME)?.value?.trim(),
+			description: this.departmentForm.get(DepartmentPath.DESCRIPTION)?.value?.trim(),
+			users: [],
+		});
+	}
+
+	public editDepartment(): Observable<OperationResultResponse<any>> {
+		if (!this._departmentInfo) {
+			return EMPTY;
+		}
+
+		const { id, ...departmentInfo } = this._departmentInfo;
+		const editRequest = createEditRequest(this.departmentForm.getRawValue(), departmentInfo);
+		return this._departmentService.editDepartment(id, editRequest);
+	}
+
+	public onSubmitDepartmentForm(): void {
+		this.loading$$.next(true);
+		iif(() => this.isEdit, this.editDepartment(), this.createDepartment())
+			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe(
 				(result) => {
 					this._dialogRef.close(result);
@@ -63,39 +88,5 @@ export class AddEditDepartmentComponent {
 					throw error;
 				}
 			);
-	}
-
-	public editDepartment(): void {
-		const editBody = Object.keys(this.departmentForm.controls).reduce(
-			(acc: Array<PatchDepartmentDocument>, key) => {
-				if (this.departmentForm.controls[key].value !== this._departamentInfo[key as keyof EditModalContent]) {
-					const patchDepartmentDocument: PatchDepartmentDocument = {
-						op: 'replace',
-						path: `/${key}` as DepartmentPath,
-						value: this.departmentForm.controls[key].value,
-					};
-					acc.push(patchDepartmentDocument);
-				}
-				return acc;
-			},
-			[]
-		);
-
-		this._departmentService
-			.editDepartment({
-				departmentId: this._departamentInfo.id as string,
-				body: editBody,
-			})
-			.subscribe((result: OperationResultResponse) => {
-				this._dialogRef.close(result);
-			});
-	}
-
-	public onSubmitDepartmentForm() {
-		if (this.isEdit) {
-			this.editDepartment();
-		} else {
-			this.createDepartment();
-		}
 	}
 }

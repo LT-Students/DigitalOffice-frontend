@@ -20,7 +20,13 @@
 	</mat-dialog-content>
 	<mat-dialog-actions class="flex flex_jc_center">
 		<button mat-button mat-dialog-close type="button">Отмена</button>
-		<button mat-flat-button color="primary" type="submit" [disabled]="officeForm.invalid">
+		<button
+			mat-flat-button
+			color="primary"
+			[loading]="(loading$$ | async) ?? false"
+			type="submit"
+			[disabled]="officeForm.invalid"
+		>
 			{{ isEditMode ? 'Редактировать офис' : 'Добавить офис' }}
 		</button>
 	</mat-dialog-actions>

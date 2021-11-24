@@ -5,10 +5,11 @@ import { PositionService } from '@app/services/position/position.service';
 import { DoValidators } from '@app/validators/do-validators';
 import { InitialDataEditRequest, PositionPath } from '@app/types/edit-request';
 import { UUID } from '@app/types/uuid.type';
-import { EMPTY, iif, Observable } from 'rxjs';
+import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { createEditRequest } from '@app/utils/utils';
 import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { finalize } from 'rxjs/operators';
 
 @Component({
 	selector: 'do-new-position',
@@ -21,6 +22,7 @@ export class AddEditPositionComponent {
 
 	public positionForm: FormGroup;
 	public isEditMode: boolean;
+	public loading$$: BehaviorSubject<boolean>;
 	private readonly _positionInfo?: InitialDataEditRequest<PositionPath> & { id: UUID };
 
 	constructor(
@@ -29,6 +31,7 @@ export class AddEditPositionComponent {
 		private _positionService: PositionService,
 		private _dialogRef: MatDialogRef<AddEditPositionComponent>
 	) {
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.isEditMode = !!positionInfo;
 
 		this.positionForm = this._fb.group({
@@ -47,12 +50,15 @@ export class AddEditPositionComponent {
 	}
 
 	public onSubmit(): void {
-		iif(() => this.isEditMode, this._editPosition(), this._createPosition()).subscribe({
-			next: (result) => this._dialogRef.close(result),
-			error: (error) => {
-				throw error;
-			},
-		});
+		this.loading$$.next(true);
+		iif(() => this.isEditMode, this._editPosition(), this._createPosition())
+			.pipe(finalize(() => this.loading$$.next(false)))
+			.subscribe({
+				next: (result) => this._dialogRef.close(result),
+				error: (error) => {
+					throw error;
+				},
+			});
 	}
 
 	private _createPosition(): Observable<OperationResultResponse<any>> {
@@ -67,8 +73,8 @@ export class AddEditPositionComponent {
 			return EMPTY;
 		}
 
-		const { id, ...officeInfo } = this._positionInfo;
-		const editRequest = createEditRequest(this.positionForm.getRawValue(), officeInfo);
+		const { id, ...positionInfo } = this._positionInfo;
+		const editRequest = createEditRequest(this.positionForm.getRawValue(), positionInfo);
 		return this._positionService.editPosition(id, editRequest);
 	}
 }

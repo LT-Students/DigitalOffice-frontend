@@ -29,6 +29,7 @@ import { PositionListComponent } from './components/position-list/position-list.
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
 import { EditProjectComponent } from './modals/edit-project/edit-project.component';
+import { EditCompanyComponent } from './modals/edit-company/edit-company.component';
 
 @NgModule({
 	declarations: [
@@ -56,6 +57,7 @@ import { EditProjectComponent } from './modals/edit-project/edit-project.compone
 		LeaveLabelPipe,
 		ProjectTypePipe,
 		EditProjectComponent,
+		EditCompanyComponent,
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
 	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe, EditProjectComponent, ProjectTypePipe],
