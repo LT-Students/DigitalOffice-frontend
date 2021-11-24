@@ -8,9 +8,10 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { UserInfo } from '@data/api/rights-service/models/user-info';
 import { UserRightsApiService } from '@data/api/rights-service/services/user-rights-api.service';
-import { OperationResultResponseRights } from '@data/api/rights-service/models/operation-result-response-rights';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
+import { RightInfo } from '@data/api/rights-service/models/right-info';
+import { UUID } from '@app/types/uuid.type';
 
 export interface IAddRightsForUserRequest {
 	userId: string;
@@ -44,7 +45,7 @@ export class RightsService {
 	}
 
 	//TODO create enum for locales
-	public findRights(): Observable<OperationResultResponseRights> {
+	public findRights(): Observable<OperationResultResponse<RightInfo[]>> {
 		return this._rightsService.getRightsList({ locale: 'ru' });
 	}
 
@@ -67,5 +68,14 @@ export class RightsService {
 		return this._roleService
 			.createRole({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Rights, MessageMethod.Create));
+	}
+
+	public editRoleRightsSet(roleId: UUID, rights: number[]): Observable<OperationResultResponse<any>> {
+		return this._roleService.editRoleRights({
+			body: {
+				roleId: roleId,
+				rights: rights,
+			},
+		});
 	}
 }

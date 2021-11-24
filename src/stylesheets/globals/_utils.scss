@@ -9,3 +9,9 @@
 		text-align: center;
 	}
 }
+
+.word-wrap {
+	&_break-word {
+		word-wrap: break-word;
+	}
+}

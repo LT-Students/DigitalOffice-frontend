@@ -69,7 +69,7 @@ export class DoValidators {
 	}
 
 	static atLeastOneChecked(control: AbstractControl): ValidationErrors | null {
-		if (control.value.length > 0) {
+		if (Object.values(control.value).includes(true)) {
 			return null;
 		}
 		return { atLeastOneChecked: true };
