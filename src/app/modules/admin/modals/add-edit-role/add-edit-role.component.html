@@ -47,6 +47,8 @@
 	</mat-dialog-content>
 	<mat-dialog-actions class="flex flex_jc_center">
 		<button mat-button mat-dialog-close type="button">Отмена</button>
-		<button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid">Создать роль</button>
+		<button mat-flat-button color="primary" type="submit" [disabled]="roleForm.invalid">
+			{{ isEditMode ? 'Редактировать роль' : 'Создать роль' }}
+		</button>
 	</mat-dialog-actions>
 </form>
