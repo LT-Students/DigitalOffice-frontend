@@ -84,7 +84,7 @@ export class PersonalInfoManager {
 	}
 
 	public get avatarImage(): IImageInfo | null {
-		if (this._user.avatar && this._user.avatar?.id && this._user.avatar?.extension && this._user.avatar?.content) {
+		if (this._user.avatar && this._user.avatar.id && this._user.avatar.extension && this._user.avatar.content) {
 			return {
 				id: this._user.avatar.id,
 				content: this._user.avatar.content,
