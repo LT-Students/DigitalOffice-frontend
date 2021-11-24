@@ -68,6 +68,13 @@ export class DoValidators {
 		return isValid ? null : { whitespace: true };
 	}
 
+	static doName(control: AbstractControl): ValidationErrors | null {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		return /(^\s+|\s+$)/.test(control.value) ? { name: true } : null;
+	}
+
 	static atLeastOneChecked(control: AbstractControl): ValidationErrors | null {
 		if (control.value.length > 0) {
 			return null;

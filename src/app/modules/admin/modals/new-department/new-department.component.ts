@@ -10,6 +10,7 @@ import { OperationResultResponse } from '@data/api/company-service/models/operat
 import { PatchDepartmentDocument } from '@data/api/department-service/models/patch-department-document';
 import { DepartmentService } from '@app/services/department/department.service';
 import { DepartmentPath } from '@app/types/patch-paths';
+import { DoValidators } from '@app/validators/do-validators';
 import { EditModalContent } from '../../components/department-card/department-card.component';
 
 @Component({
@@ -35,7 +36,7 @@ export class NewDepartmentComponent {
 		this.departmentForm = this._formBuilder.group({
 			name: [
 				this._departamentInfo ? this._departamentInfo.name : '',
-				[Validators.required, Validators.minLength(3)],
+				[Validators.required, Validators.minLength(3), DoValidators.doName],
 			],
 			description: [this._departamentInfo ? this._departamentInfo.description : ''],
 			directorid: [this._departamentInfo ? this._departamentInfo.directorid : ''],
