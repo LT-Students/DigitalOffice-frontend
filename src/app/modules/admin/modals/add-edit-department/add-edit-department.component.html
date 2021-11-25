@@ -1,11 +1,13 @@
-<form class="data-form" [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartmentForm()">
-	<h3 mat-dialog-title>{{ isEdit ? 'Редактирование департамента' : 'Создание департамента' }}</h3>
+<form [formGroup]="departmentForm" (ngSubmit)="onSubmitDepartmentForm()">
+	<h3 mat-dialog-title class="text-align_center">
+		{{ isEdit ? 'Редактирование департамента' : 'Создание департамента' }}
+	</h3>
 	<mat-dialog-content class="new-department">
 		<div class="form__container">
 			<div class="new-department__input-container">
 				<mat-form-field appearance="fill">
 					<mat-label>Название департамента</mat-label>
-					<input matInput type="text" id="name" formControlName="name" required />
+					<input matInput type="text" [formControlName]="EditPath.NAME" required />
 					<mat-error *ngIf="departmentForm.controls['name']?.errors?.['required']">
 						Поле не должно быть пустым
 					</mat-error>
@@ -15,7 +17,7 @@
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Директор</mat-label>
-					<mat-select id="director" formControlName="directorid">
+					<mat-select [formControlName]="EditPath.DIRECTOR_ID">
 						<mat-option *ngFor="let director of directors$ | async" [value]="director.id">
 							{{ director.lastName + ' ' + director.firstName }}
 						</mat-option>
@@ -26,8 +28,7 @@
 					<textarea
 						#description
 						matInput
-						id="description"
-						formControlName="description"
+						[formControlName]="EditPath.DESCRIPTION"
 						placeholder="Напишите немного о новом департаменте"
 						maxlength="1000"
 					></textarea>
@@ -36,26 +37,16 @@
 			</div>
 		</div>
 	</mat-dialog-content>
-	<mat-dialog-actions align="center">
+	<mat-dialog-actions class="flex flex_jc_center">
 		<button mat-button mat-dialog-close type="button">Отмена</button>
 		<button
-			*ngIf="!isEdit; else editDepartamentButton"
 			mat-flat-button
 			color="primary"
 			type="submit"
+			[loading]="(loading$$ | async) ?? false"
 			[disabled]="departmentForm.invalid"
 		>
-			Создать департамент
+			{{ isEdit ? 'Редактировать департамент' : 'Создать департамент' }}
 		</button>
-		<ng-template #editDepartamentButton>
-			<button
-				mat-flat-button
-				color="primary"
-				type="submit"
-				[disabled]="departmentForm.invalid || departmentForm.pristine"
-			>
-				Сохранить
-			</button>
-		</ng-template>
 	</mat-dialog-actions>
 </form>

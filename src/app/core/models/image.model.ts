@@ -1,14 +1,12 @@
 import { Observable, Subscriber } from 'rxjs';
-import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
-import { ImageType } from '@data/api/user-service/models/image-type';
 
 export interface IImageInfo {
+	id?: string;
+	parentId?: string | null;
 	content: string;
 	extension: string;
-	id?: string;
-	name: null | string;
-	parentId: null | string;
-	type?: ImageType;
+	name?: string | null;
+	enablePreview?: boolean;
 }
 
 export class UploadedImage {
@@ -38,15 +36,15 @@ export class UploadedImage {
 		});
 	}
 
-	public getCreateImageRequest(): Observable<CreateImageRequest> {
+	public getCreateImageRequest(): Observable<IImageInfo> {
 		const extension = this.extension;
 		const fileReader = new FileReader();
 		fileReader.readAsBinaryString(this._image);
 
-		return new Observable<CreateImageRequest>((observer: Subscriber<any>): void => {
+		return new Observable<IImageInfo>((observer: Subscriber<any>): void => {
 			fileReader.onload = (evt: ProgressEvent<FileReader>): void => {
 				const imageContent = btoa(evt.target?.result as string);
-				const imageRequest: CreateImageRequest = {
+				const imageRequest: IImageInfo = {
 					content: imageContent,
 					extension: `.${extension}`,
 					enablePreview: true,

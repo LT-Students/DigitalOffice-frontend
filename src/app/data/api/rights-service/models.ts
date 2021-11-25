@@ -1,6 +1,7 @@
 export { RightInfo } from './models/right-info';
 export { CreateRoleRequest } from './models/create-role-request';
 export { CreateRoleLocalizationRequest } from './models/create-role-localization-request';
+export { UpdateRoleRightsRequest } from './models/update-role-rights-request';
 export { RoleInfo } from './models/role-info';
 export { UserInfo } from './models/user-info';
 export { RoleLocalizationInfo } from './models/role-localization-info';

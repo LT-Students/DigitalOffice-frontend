@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DepartmentApiService } from '@data/api/department-service/services/department-api.service';
-import { EditDepartmentRequest } from '@data/api/department-service/models/edit-department-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { Observable } from 'rxjs';
 import { UUID } from '@app/types/uuid.type';
@@ -11,16 +10,12 @@ import { IFindRequestEx } from '@app/types/find-request.interface';
 import { DepartmentUserRole } from '@data/api/department-service/models/department-user-role';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
+import { DepartmentPath, EditRequest } from '@app/types/edit-request';
 
 export interface IGetDepartment {
 	departmentid: string;
 	includeusers?: boolean;
 	includeprojects?: boolean;
-}
-
-export interface IEditDepartment {
-	departmentId: string;
-	body?: EditDepartmentRequest;
 }
 
 export interface IDepartmentInfoEx {
@@ -60,9 +55,12 @@ export class DepartmentService {
 		return this._departmentApiService.findDepartments(params);
 	}
 
-	public editDepartment(params: IEditDepartment): Observable<OperationResultResponse<{} | null>> {
+	public editDepartment(
+		departmentId: UUID,
+		editRequest: EditRequest<DepartmentPath>
+	): Observable<OperationResultResponse<{} | null>> {
 		return this._departmentApiService
-			.editDepartment(params)
+			.editDepartment({ departmentId: departmentId, body: editRequest })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Edit));
 	}
 

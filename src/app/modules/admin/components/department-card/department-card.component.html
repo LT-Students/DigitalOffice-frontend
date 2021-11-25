@@ -1,14 +1,10 @@
-<div class="navigation">
-	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span>
-		<mat-icon>chevron_right</mat-icon>
-	</span>
-	<a class="navigation__link" routerLink="/departments">Список департаментов</a>
-	<span>
-		<mat-icon>chevron_right</mat-icon>
-	</span>
-	<a class="navigation__link">{{ departmentInfo?.name }}</a>
-</div>
+<do-breadcrumbs
+	[paths]="[
+		{ title: 'Администрирование', url: 'admin/dashboard' },
+		{ title: 'Список департаментов', url: '/departments' },
+		{ title: departmentInfo?.name ?? 'DEPARTMENT_NAME' }
+	]"
+></do-breadcrumbs>
 <h1>{{ departmentInfo?.name }}</h1>
 <mat-card class="card card_standard department">
 	<div class="department__info">

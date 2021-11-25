@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OfficeInfo } from '@data/api/company-service/models';
-import { iif, Observable, ReplaySubject } from 'rxjs';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
-import { IFindRequestEx } from '@app/types/find-request.interface';
-import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OfficeService } from '@app/services/company/office.service';
-import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 
 @Component({
 	selector: 'do-office-list',
@@ -17,45 +17,63 @@ import { NewOfficeComponent } from '../../modals/new-office/new-office.component
 	styleUrls: ['./office-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OfficeListComponent {
-	public offices$: Observable<OperationResultResponse<OfficeInfo[]>>;
-	private _officesParams: ReplaySubject<IFindRequestEx>;
+export class OfficeListComponent implements AfterViewInit {
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
+
+	public offices$!: Observable<OperationResultResponse<OfficeInfo[]>>;
+	public filters: FormGroup;
+	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: ModalService,
 		private _officeService: OfficeService,
-		private _route: ActivatedRoute
+		private _route: ActivatedRoute,
+		private _fb: FormBuilder
 	) {
-		this._officesParams = new ReplaySubject<IFindRequestEx>(1);
-		this.offices$ = this._officesParams.pipe(
-			startWith(null),
-			switchMap((params: IFindRequestEx | null) =>
-				iif(
-					() => !!params,
-					this._officeService.findOffices(params as IFindRequestEx),
-					this._route.data.pipe(map((response) => response.offices))
-				)
-			)
+		this.filters = this._fb.group({
+			showDeactivated: [false],
+		});
+		this._refreshCurrentPage$$ = new Subject<boolean>();
+	}
+
+	public ngAfterViewInit(): void {
+		this.offices$ = combineLatest([
+			this.filters.valueChanges.pipe(
+				startWith(null),
+				tap(() => this.paginator?.firstPage())
+			),
+			this.paginator.page.pipe(startWith(null)),
+			this._refreshCurrentPage$$.pipe(startWith(null)),
+		]).pipe(
+			switchMap(([filters, page, refresh]) =>
+				filters !== null || page !== null || refresh
+					? this.getOffices(filters, page)
+					: this._route.data.pipe(map((response) => response.offices))
+			),
+			tap((res) => {
+				this.paginator.length = res.totalCount ?? 0;
+			})
 		);
 	}
 
-	public onAddOfficeClick(): void {
+	public onAddEditOffice(officeInfo?: OfficeInfo): void {
 		this._modalService
-			.openModal<NewOfficeComponent, null, any>(NewOfficeComponent, ModalWidth.M)
+			.openModal<AddEditOfficeComponent>(AddEditOfficeComponent, ModalWidth.M, officeInfo)
 			.afterClosed()
-			.pipe(withLatestFrom(this._officesParams))
-			.subscribe(([result, params]) => {
-				// Fix, then backend change to enum
-				if (result?.status === 'FullSuccess') {
-					this._officesParams.next(params);
-				}
+			.subscribe({
+				next: (result) => {
+					if (result?.status !== OperationResultStatusType.Failed) {
+						this._refreshCurrentPage$$.next(true);
+					}
+				},
 			});
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this._officesParams.next({
-			skipCount: event.pageIndex * event.pageSize,
-			takeCount: event.pageSize,
+	public getOffices(filters: any, event: PageEvent | null): Observable<OperationResultResponse<OfficeInfo[]>> {
+		return this._officeService.findOffices({
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
+			includeDeactivated: filters?.showDeactivated,
 		});
 	}
 }

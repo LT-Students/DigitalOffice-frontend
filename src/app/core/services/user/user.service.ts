@@ -8,7 +8,6 @@ import {
 	CertificateInfo,
 	CommunicationInfo,
 	EducationInfo,
-	PatchUserDocument,
 	ProjectInfo,
 	UserAchievementInfo,
 	UserInfo,
@@ -22,6 +21,7 @@ import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { IImageInfo } from '@app/models/image.model';
+import { EditRequest, UserPath } from '@app/types/edit-request';
 
 export interface IUserResponse {
 	user?: UserInfo;
@@ -71,8 +71,11 @@ export class UserService {
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.User, MessageMethod.Create));
 	}
 
-	public editUser(userId: string, body: PatchUserDocument[]): Observable<OperationResultResponse<null | {}>> {
-		const params: IEditUserRequest = { userId, body };
+	public editUser(
+		userId: string,
+		editRequest: EditRequest<UserPath>
+	): Observable<OperationResultResponse<null | {}>> {
+		const params: IEditUserRequest = { userId: userId, body: editRequest };
 
 		return this._userApiService.editUser(params);
 	}
@@ -107,7 +110,9 @@ export class UserService {
 	}
 
 	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
-		return this._imageApiService.createImage({ body: { ...image, entityType: 'user', entityId: userId } });
+		return this._imageApiService.createImage({
+			body: { ...image, entityType: 'user', entityId: userId },
+		});
 	}
 
 	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse<null | {}>> {

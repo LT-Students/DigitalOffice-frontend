@@ -13,6 +13,7 @@ import { CreateRoleRequest } from '../models/create-role-request';
 import { FindResultResponseRoleInfo } from '../models/find-result-response-role-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseRoleResponse } from '../models/operation-result-response-role-response';
+import { UpdateRoleRightsRequest } from '../models/update-role-rights-request';
 
 @Injectable({
 	providedIn: 'root',
@@ -194,6 +195,114 @@ export class RoleApiService extends BaseService {
 	createRole(params: { body: CreateRoleRequest }): Observable<OperationResultResponse> {
 		return this.createRole$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
+
+	/**
+	 * Path part for operation editRoleStatus
+	 */
+	static readonly EditRoleStatusPath = '/roles/editstatus';
+
+	/**
+	 * The method attempts to change role's status. The user must be admin.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `editRoleStatus()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	editRoleStatus$Response(params: {
+		roleId: string;
+		isActive: boolean;
+	}): Observable<StrictHttpResponse<OperationResultResponseRoleResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, RoleApiService.EditRoleStatusPath, 'put');
+		if (params) {
+			rb.query('roleId', params.roleId, {});
+			rb.query('isActive', params.isActive, {});
+		}
+
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponseRoleResponse>;
+				})
+			);
+	}
+
+	/**
+	 * The method attempts to change role's status. The user must be admin.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `editRoleStatus$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	editRoleStatus(params: { roleId: string; isActive: boolean }): Observable<OperationResultResponseRoleResponse> {
+		return this.editRoleStatus$Response(params).pipe(
+			map(
+				(r: StrictHttpResponse<OperationResultResponseRoleResponse>) =>
+					r.body as OperationResultResponseRoleResponse
+			)
+		);
+	}
+
+	/**
+	 * Path part for operation editRoleRights
+	 */
+	static readonly EditRoleRightsPath = '/roles/updaterightsset';
+
+	/**
+	 * The method attempts to update the role's rights set. The user must be admin.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `editRoleRights()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	editRoleRights$Response(params: {
+		body: UpdateRoleRightsRequest;
+	}): Observable<StrictHttpResponse<OperationResultResponseRoleResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, RoleApiService.EditRoleRightsPath, 'post');
+		if (params) {
+			rb.body(params.body, 'application/json');
+		}
+
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponseRoleResponse>;
+				})
+			);
+	}
+
+	/**
+	 * The method attempts to update the role's rights set. The user must be admin.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `editRoleRights$Response()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	editRoleRights(params: { body: UpdateRoleRightsRequest }): Observable<OperationResultResponseRoleResponse> {
+		return this.editRoleRights$Response(params).pipe(
+			map(
+				(r: StrictHttpResponse<OperationResultResponseRoleResponse>) =>
+					r.body as OperationResultResponseRoleResponse
+			)
 		);
 	}
 }

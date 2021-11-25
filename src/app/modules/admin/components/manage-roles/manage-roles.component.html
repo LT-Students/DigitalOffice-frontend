@@ -4,12 +4,13 @@
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Роли</h3>
-		<button mat-flat-button color="accent" (click)="onAddRoleClick()">+ Создать роль</button>
+		<button mat-flat-button color="accent" (click)="onAddEditRole()">+ Создать роль</button>
 	</div>
 	<ng-container *ngIf="roles$ | async as roles">
 		<table *ngIf="roles.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
 			<colgroup>
 				<col class="column column_width_m" />
+				<col class="column column_width_l" />
 				<col class="column column_width_l" />
 			</colgroup>
 			<thead>
@@ -20,6 +21,7 @@
 					<th mat-sort-header="description" class="cell">
 						<p>Описание</p>
 					</th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -32,16 +34,19 @@
 					<td class="cell">
 						<do-comment [text]="role.localizations?.[0]?.description"></do-comment>
 					</td>
+					<td class="cell text-align_right">
+						<button mat-icon-button (click)="onAddEditRole(role)">
+							<mat-icon class="department__button-edit">
+								<img class="department__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
+							</mat-icon>
+						</button>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 		<ng-template #emptyList>
-			<do-empty-list [emptyMessage]="'Нет данных о ролях'"></do-empty-list>
+			<do-empty-list emptyMessage="Нет данных о ролях"></do-empty-list>
 		</ng-template>
-		<mat-paginator
-			[length]="roles.totalCount ?? 0"
-			[pageSizeOptions]="[10, 25, 50]"
-			(page)="onPageChange($event)"
-		></mat-paginator>
 	</ng-container>
+	<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 </mat-card>

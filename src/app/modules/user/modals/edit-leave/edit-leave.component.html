@@ -8,8 +8,8 @@
 			<mat-form-field class="modal__range-picker" appearance="fill">
 				<mat-label>Выберите диапазон отсутствия</mat-label>
 				<mat-date-range-input [rangePicker]="$any(picker)" [dateFilter]="disableWeekends">
-					<input matStartDate placeholder="Начало" formControlName="/StartTime" readonly />
-					<input matEndDate placeholder=" Конец" formControlName="/EndTime" readonly />
+					<input matStartDate placeholder="Начало" [formControlName]="LeaveTimePath.START_TIME" readonly />
+					<input matEndDate placeholder=" Конец" [formControlName]="LeaveTimePath.END_TIME" readonly />
 				</mat-date-range-input>
 				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-date-range-picker #picker (closed)="dateSelected()"></mat-date-range-picker>
@@ -23,7 +23,11 @@
 		<div>
 			<mat-form-field appearance="fill" class="modal__description">
 				<mat-label>Комментарий</mat-label>
-				<textarea matInput class="modal__description-field" formControlName="/Comment"></textarea>
+				<textarea
+					matInput
+					class="modal__description-field"
+					[formControlName]="LeaveTimePath.COMMENT"
+				></textarea>
 			</mat-form-field>
 		</div>
 		<div class="controls">
