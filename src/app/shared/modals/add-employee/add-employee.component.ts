@@ -33,6 +33,7 @@ export class AddEmployeeComponent implements OnInit {
 	public usersFound: boolean;
 	public moduleName: string;
 	public openFromRu: OpenAddEmployeeModalFrom;
+	public employeeCountMap: { [k: string]: string };
 
 	constructor(
 		private _userService: UserService,
@@ -54,6 +55,12 @@ export class AddEmployeeComponent implements OnInit {
 		this.usersFound = false;
 		this.moduleName = this._data.moduleName;
 		this.openFromRu = OpenAddEmployeeModalFrom.Default;
+
+		this.employeeCountMap = {
+			one: 'Добавить # сотрудника',
+			few: 'Добавить # сотрудника',
+			other: 'Добавить # сотрудников',
+		};
 	}
 
 	public ngOnInit(): void {
@@ -80,6 +87,10 @@ export class AddEmployeeComponent implements OnInit {
 			.subscribe((data) => {
 				if (data.body !== undefined) {
 					data.body = data.body.filter((e) => this._data.idToHide.indexOf(e.id as string) === -1);
+					const employeesId = this.employees.map((employee) => {
+						return employee.id;
+					});
+					data.body = data.body.filter((e) => employeesId.indexOf(e.id as string) === -1);
 					this.employees.push(...data.body);
 					this.dataSource = new MatTableDataSource(this.employees);
 					this._skipUsers += data.body.length;
