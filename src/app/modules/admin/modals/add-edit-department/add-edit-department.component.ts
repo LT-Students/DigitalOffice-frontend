@@ -36,7 +36,6 @@ export class AddEditDepartmentComponent {
 		private _formBuilder: FormBuilder,
 		@Inject(MAT_DIALOG_DATA) departmentInfo: Required<DepartmentInfo>
 	) {
-		console.log('Name:', DepartmentPath.NAME);
 		this.departmentForm = this._formBuilder.group({
 			[DepartmentPath.NAME]: ['', [Validators.required, Validators.minLength(3), DoValidators.trimmedName]],
 			[DepartmentPath.DESCRIPTION]: [''],
