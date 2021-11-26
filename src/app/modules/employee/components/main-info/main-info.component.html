@@ -89,21 +89,21 @@
 				</div>
 				<mat-form-field appearance="fill">
 					<mat-label>Фамилия</mat-label>
-					<input matInput [formControlName]="editPaths.LAST_NAME" required />
+					<input matInput [formControlName]="EditPath.LAST_NAME" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Имя</mat-label>
-					<input matInput [formControlName]="editPaths.FIRST_NAME" required />
+					<input matInput [formControlName]="EditPath.FIRST_NAME" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Отчество</mat-label>
-					<input matInput [formControlName]="editPaths.MIDDLE_NAME" />
+					<input matInput [formControlName]="EditPath.MIDDLE_NAME" />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>О себе</mat-label>
 					<textarea
 						#about
-						[formControlName]="editPaths.ABOUT"
+						[formControlName]="EditPath.ABOUT"
 						matInput
 						placeholder="Напишите немного о себе или оставьте заметку коллегам"
 						maxlength="150"
@@ -129,7 +129,7 @@
 						</div>
 						<mat-form-field appearance="fill">
 							<mat-label>Местоположение</mat-label>
-							<input matInput [formControlName]="editPaths.CITY" />
+							<input matInput [formControlName]="EditPath.CITY" />
 						</mat-form-field>
 						<div *ngIf="user?.office?.city">
 							<p class="mat-caption">Офис</p>
@@ -145,7 +145,7 @@
 								Эмодзи-статус
 								<mat-icon class="employee-info__hint">help_outline</mat-icon>
 							</mat-label>
-							<mat-select [formControlName]="editPaths.STATUS">
+							<mat-select [formControlName]="EditPath.STATUS">
 								<mat-option *ngFor="let option of statuses" [value]="option.statusType">
 									{{ option.emojiIcon }} {{ option.statusInRussian | titlecase }}
 								</mat-option>
@@ -161,7 +161,7 @@
 						<!--						</ng-container>-->
 						<mat-form-field appearance="fill">
 							<mat-label>Пол</mat-label>
-							<mat-select [formControlName]="editPaths.GENDER">
+							<mat-select [formControlName]="EditPath.GENDER">
 								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
 									{{ gender.genderInRussian }}
 								</mat-option>
@@ -175,7 +175,7 @@
 							<mat-label>В компании с</mat-label>
 							<input
 								matInput
-								[formControlName]="editPaths.START_WORKING_AT"
+								[formControlName]="EditPath.START_WORKING_AT"
 								[matDatepicker]="picker1"
 								placeholder="ДД месяц ГГГГ"
 							/>
@@ -188,7 +188,7 @@
 							<mat-label>Дата рождения</mat-label>
 							<input
 								matInput
-								[formControlName]="editPaths.DATE_OF_BIRTH"
+								[formControlName]="EditPath.DATE_OF_BIRTH"
 								[matDatepicker]="picker2"
 								placeholder="ДД месяц ГГГГ"
 							/>

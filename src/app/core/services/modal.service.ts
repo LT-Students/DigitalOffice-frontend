@@ -28,6 +28,7 @@ export enum AdminDashboardModalType {
 	DEPARTMENT_LIST,
 	OFFICE_LIST,
 	POSITION_LIST,
+	COMPANY_SETTINGS,
 }
 
 export interface UserSearchModalConfig {
@@ -49,7 +50,7 @@ export const enum ModalWidth {
 export class ModalService {
 	constructor(private _matDialog: MatDialog) {}
 
-	public openModal<C, T, R>(
+	public openModal<C, T = any, R = any>(
 		component: ComponentType<C>,
 		modalWidth?: ModalWidth,
 		modalContentConfig?: T,

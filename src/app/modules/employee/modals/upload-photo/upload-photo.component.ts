@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { UploadedImage } from '@app/models/image.model';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { IImageInfo, UploadedImage } from '@app/models/image.model';
 import { Observable } from 'rxjs';
-import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
 
 @Component({
 	selector: 'do-upload-photo',
@@ -12,9 +11,9 @@ import { CreateImageRequest } from '@data/api/image-service/models/create-image-
 export class UploadPhotoComponent {
 	public isImageUploaded: boolean;
 	public imagePreview$?: Observable<string>;
-	public resultFile$?: Observable<CreateImageRequest>;
+	public resultFile$?: Observable<IImageInfo>;
 
-	constructor(private _cdr: ChangeDetectorRef) {
+	constructor() {
 		this.isImageUploaded = false;
 	}
 

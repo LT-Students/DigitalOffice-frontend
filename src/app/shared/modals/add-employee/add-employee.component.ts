@@ -10,6 +10,12 @@ import { ICreateUserRequest, ProjectService } from '@app/services/project/projec
 import { DepartmentService } from '@app/services/department/department.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
+export enum OpenAddEmployeeModalFrom {
+	Default = '',
+	Project = 'Проект',
+	Department = 'Департамент',
+}
+
 @Component({
 	selector: 'do-modal-add-employee',
 	templateUrl: './add-employee.component.html',
@@ -25,6 +31,8 @@ export class AddEmployeeComponent implements OnInit {
 	public dataSource: MatTableDataSource<UserInfo>;
 	public selection: SelectionModel<UserInfo>;
 	public usersFound: boolean;
+	public moduleName: string;
+	public openFromRu: OpenAddEmployeeModalFrom;
 
 	constructor(
 		private _userService: UserService,
@@ -33,7 +41,8 @@ export class AddEmployeeComponent implements OnInit {
 		private _dialogRef: MatDialogRef<AddEmployeeComponent>,
 		private _projectService: ProjectService,
 		private _departmentService: DepartmentService,
-		@Inject(MAT_DIALOG_DATA) private _data: { idToHide: string[]; pageId: string; openFrom: string }
+		@Inject(MAT_DIALOG_DATA)
+		private _data: { idToHide: string[]; pageId: string; openFrom: OpenAddEmployeeModalFrom; moduleName: string }
 	) {
 		this.positions = ['front', 'back', 'manager', 'lead'];
 		this.employees = [];
@@ -43,9 +52,17 @@ export class AddEmployeeComponent implements OnInit {
 		this.selection = new SelectionModel<UserInfo>(true, []);
 		this.dataSource = new MatTableDataSource();
 		this.usersFound = false;
+		this.moduleName = this._data.moduleName;
+		this.openFromRu = OpenAddEmployeeModalFrom.Default;
 	}
+
 	public ngOnInit(): void {
 		this.getPageUsers();
+		if (this._data.openFrom === OpenAddEmployeeModalFrom.Project) {
+			this.openFromRu = OpenAddEmployeeModalFrom.Project;
+		} else {
+			this.openFromRu = OpenAddEmployeeModalFrom.Department;
+		}
 	}
 
 	public onClose(result?: OperationResultResponse<{} | null>): void {
@@ -73,7 +90,7 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	public addUsers(): void {
-		if (this._data.openFrom === 'project') {
+		if (this._data.openFrom === OpenAddEmployeeModalFrom.Project) {
 			const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
 				newArr: Array<ICreateUserRequest>,
 				user
@@ -90,7 +107,7 @@ export class AddEmployeeComponent implements OnInit {
 					this.onClose(result);
 				});
 		}
-		if (this._data.openFrom === 'department') {
+		if (this._data.openFrom === OpenAddEmployeeModalFrom.Department) {
 			const users: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
 				newArr.push(user.id ?? '');
 

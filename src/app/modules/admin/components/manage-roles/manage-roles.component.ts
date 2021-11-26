@@ -1,15 +1,15 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
 
 import { RoleInfo } from '@data/api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
-import { PageEvent } from '@angular/material/paginator';
-import { ModalService } from '@app/services/modal.service';
-import { iif, Observable, ReplaySubject } from 'rxjs';
-import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { IFindRequest } from '@app/types/find-request.interface';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
-import { NewRoleComponent } from '../../modals/new-role/new-role.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 
 @Component({
 	selector: 'do-manage-roles',
@@ -17,44 +17,62 @@ import { NewRoleComponent } from '../../modals/new-role/new-role.component';
 	styleUrls: ['./manage-roles.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageRolesComponent {
-	private _rolesParams: ReplaySubject<IFindRequest>;
-	public roles$: Observable<OperationResultResponse<RoleInfo[]>>;
+export class ManageRolesComponent implements AfterViewInit {
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
+
+	public roles$!: Observable<OperationResultResponse<RoleInfo[]>>;
+	public filters: FormGroup;
+	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: ModalService,
 		private _rightsService: RightsService,
-		private _route: ActivatedRoute
+		private _route: ActivatedRoute,
+		private _fb: FormBuilder
 	) {
-		this._rolesParams = new ReplaySubject<IFindRequest>(1);
-		this.roles$ = this._rolesParams.pipe(
-			startWith(null),
-			switchMap((params: IFindRequest | null) =>
-				iif(
-					() => !!params,
-					this._rightsService.findRoles(params as IFindRequest),
-					this._route.data.pipe(map((response) => response.roles))
-				)
-			)
+		this.filters = this._fb.group({
+			showDeactivated: [false],
+		});
+		this._refreshCurrentPage$$ = new Subject<boolean>();
+	}
+
+	public ngAfterViewInit(): void {
+		this.roles$ = combineLatest([
+			this.filters.valueChanges.pipe(
+				startWith(null),
+				tap(() => this.paginator?.firstPage())
+			),
+			this.paginator.page.pipe(startWith(null)),
+			this._refreshCurrentPage$$.pipe(startWith(null)),
+		]).pipe(
+			switchMap(([filters, page, refresh]) =>
+				filters !== null || page !== null || refresh
+					? this.getRoles(filters, page)
+					: this._route.data.pipe(map((response) => response.roles))
+			),
+			tap((res) => {
+				this.paginator.length = res.totalCount ?? 0;
+			})
 		);
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this._rolesParams.next({
-			skipCount: event.pageIndex * event.pageSize,
-			takeCount: event.pageSize,
-		});
+	public onAddEditRole(roleInfo?: RoleInfo): void {
+		this._modalService
+			.openModal<AddEditRoleComponent>(AddEditRoleComponent, ModalWidth.M, roleInfo)
+			.afterClosed()
+			.subscribe({
+				next: (result) => {
+					if (result?.status !== OperationResultStatusType.Failed) {
+						this._refreshCurrentPage$$.next(true);
+					}
+				},
+			});
 	}
 
-	public onAddRoleClick(): void {
-		this._modalService
-			.openModal<NewRoleComponent, null, any>(NewRoleComponent)
-			.afterClosed()
-			.pipe(withLatestFrom(this._rolesParams))
-			.subscribe(([result, params]) => {
-				if (result?.status === 0) {
-					this._rolesParams.next(params);
-				}
-			});
+	public getRoles(filters: any, event: PageEvent | null): Observable<OperationResultResponse<RoleInfo[]>> {
+		return this._rightsService.findRoles({
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
+		});
 	}
 }

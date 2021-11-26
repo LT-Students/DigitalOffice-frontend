@@ -12,7 +12,10 @@ import { ProjectTypeModel } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
+import {
+	AddEmployeeComponent,
+	OpenAddEmployeeModalFrom,
+} from '../../../../shared/modals/add-employee/add-employee.component';
 import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-project.component';
 
 @Component({
@@ -103,7 +106,12 @@ export class ProjectPageComponent implements OnInit {
 
 	public openAddEmployeeModal(): void {
 		const dialogRef = this._dialog.open(AddEmployeeComponent, {
-			data: { idToHide: this.dataSource.data.map((e) => e.id), pageId: this.projectId, openFrom: 'project' },
+			data: {
+				idToHide: this.dataSource.data.map((e) => e.id),
+				pageId: this.projectId,
+				openFrom: OpenAddEmployeeModalFrom.Project,
+				moduleName: this.projectInfo?.name,
+			},
 			maxWidth: '670px',
 		});
 		dialogRef
@@ -135,6 +143,7 @@ export class ProjectPageComponent implements OnInit {
 						projectId: this.projectId,
 						includeusers: true,
 						shownotactiveusers: true,
+						includeShortDescription: true,
 					})
 				)
 			)

@@ -3,10 +3,10 @@ import { Observable, of } from 'rxjs';
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { CreateCompanyRequest } from '@data/api/company-service/models/create-company-request';
 import { IGetCompanyRequest } from '@app/types/get-company-request.interface';
-import { EditCompanyRequest } from '@data/api/company-service/models/edit-company-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { switchMap } from 'rxjs/operators';
 import { Company } from '@app/models/company';
+import { CompanyPath, EditRequest } from '@app/types/edit-request';
 
 @Injectable({
 	providedIn: 'root',
@@ -22,7 +22,7 @@ export class CompanyService {
 		return this._companyService.getCompany(params).pipe(switchMap((res) => of(new Company(res.body))));
 	}
 
-	public editCompany(body: EditCompanyRequest): Observable<OperationResultResponse<null | {}>> {
-		return this._companyService.editCompany({ body });
+	public editCompany(editRequest: EditRequest<CompanyPath>): Observable<OperationResultResponse<null | {}>> {
+		return this._companyService.editCompany({ body: editRequest });
 	}
 }

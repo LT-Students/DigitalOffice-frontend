@@ -8,6 +8,8 @@ export enum MessageTriggeredFrom {
 	User = 'Пользователь',
 	EmployeePage = 'Карточка пользователя',
 	News = 'Новость',
+	LeaveTime = 'Отсутствие',
+	WorkTime = 'Запись',
 }
 
 export enum MessageMethod {

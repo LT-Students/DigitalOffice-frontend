@@ -1,0 +1,29 @@
+<form autocomplete="off" [formGroup]="positionForm" (ngSubmit)="onSubmit()">
+	<h3 mat-dialog-title class="text-align_center">
+		{{ this.isEditMode ? 'Редактирование должности' : 'Создание должности' }}
+	</h3>
+	<mat-dialog-content>
+		<div class="form__container">
+			<mat-form-field appearance="fill">
+				<mat-label>Название должности</mat-label>
+				<input matInput type="text" [formControlName]="EditPath.NAME" required />
+			</mat-form-field>
+			<mat-form-field appearance="fill">
+				<mat-label>Описание</mat-label>
+				<input matInput type="text" [formControlName]="EditPath.DESCRIPTION" />
+			</mat-form-field>
+		</div>
+	</mat-dialog-content>
+	<mat-dialog-actions class="flex flex_jc_center">
+		<button mat-button mat-dialog-close type="button">Отмена</button>
+		<button
+			mat-flat-button
+			color="primary"
+			[loading]="(loading$$ | async) ?? false"
+			type="submit"
+			[disabled]="positionForm.invalid"
+		>
+			{{ isEditMode ? 'Редактировать должность' : 'Создать должность' }}
+		</button>
+	</mat-dialog-actions>
+</form>

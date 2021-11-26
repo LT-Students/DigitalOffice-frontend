@@ -18,4 +18,34 @@
 			align-items: flex-end;
 		}
 	}
+
+	&_jc {
+		&_center {
+			justify-content: center;
+		}
+
+		&_start {
+			justify-content: flex-start;
+		}
+
+		&_end {
+			justify-content: flex-end;
+		}
+
+		&_space-between {
+			justify-content: space-between;
+		}
+
+		&_space-around {
+			justify-content: space-around;
+		}
+
+		&_space-evenly {
+			justify-content: space-evenly;
+		}
+
+		&_stretch {
+			justify-content: stretch;
+		}
+	}
 }

@@ -8,7 +8,7 @@
 					<input
 						matInput
 						type="text"
-						formControlName="/Name"
+						[formControlName]="ProjectPath.NAME"
 						placeholder="Введите название проекта"
 						maxlength="150"
 						required
@@ -16,7 +16,11 @@
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Департамент</mat-label>
-					<mat-select formControlName="/DepartmentId" placeholder="Выберите департамент" required>
+					<mat-select
+						[formControlName]="ProjectPath.DEPARTMENT_ID"
+						placeholder="Выберите департамент"
+						required
+					>
 						<mat-option *ngFor="let department of departments | async" [value]="department.id">
 							{{ department.name }}
 						</mat-option>
@@ -27,14 +31,14 @@
 					<input
 						matInput
 						type="text"
-						formControlName="/ShortDescription"
+						[formControlName]="ProjectPath.SHORT_DESCRIPTION"
 						maxlength="100"
 						placeholder="Короткое описание"
 					/>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Статус</mat-label>
-					<mat-select formControlName="/Status">
+					<mat-select [formControlName]="ProjectPath.STATUS">
 						<mat-option *ngFor="let status of statuses" [value]="status.type">
 							{{ status.type | projectType | titlecase }}
 						</mat-option>
@@ -44,7 +48,7 @@
 					<mat-label>Описание</mat-label>
 					<textarea
 						matInput
-						formControlName="/Description"
+						[formControlName]="ProjectPath.DESCRIPTION"
 						placeholder="Дайте описание проекту"
 						maxlength="300"
 					></textarea>
