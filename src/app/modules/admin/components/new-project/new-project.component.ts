@@ -6,12 +6,18 @@ import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { DepartmentService } from '@app/services/department/department.service';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { EMPTY } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
+import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';
 
@@ -22,12 +28,16 @@ import { Team, TeamMember } from './team-cards';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewProjectComponent implements OnInit {
+	public totalCount: number;
+	public departmentInfo: DepartmentInfo | undefined;
 	public projectForm: FormGroup;
 	public teams: Team[];
 	public departments: DepartmentInfo[];
 	public statuses: IProjectStatusType[];
 	public membersAll: UserInfo[];
 	public pluralTeamCount: { [k: string]: string };
+	private _departmentId: string;
+	public dataSource: MatTableDataSource<DepartmentUserInfo>;
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -36,8 +46,12 @@ export class NewProjectComponent implements OnInit {
 		private _departmentService: DepartmentService,
 		private _location: Location,
 		private _router: Router,
-		private _cdr: ChangeDetectorRef
+		private _route: ActivatedRoute,
+		private _cdr: ChangeDetectorRef,
+		private _dialog: MatDialog
 	) {
+		this.totalCount = 0;
+		this._departmentId = this._route.snapshot.params.id;
 		this.pluralTeamCount = {
 			few: '# человека',
 			other: '# человек',
@@ -46,7 +60,7 @@ export class NewProjectComponent implements OnInit {
 		this.teams = [];
 		this.membersAll = [];
 		this.departments = [];
-
+		this.dataSource = new MatTableDataSource();
 		this.projectForm = this._formBuilder.group({
 			name: ['', [Validators.required, Validators.maxLength(150)]],
 			departmentId: ['', [Validators.required]],
@@ -60,6 +74,41 @@ export class NewProjectComponent implements OnInit {
 		this._getDepartments();
 
 		// this.teams.forEach((team: Team) => this._sortLeads(team));
+	}
+
+	public openAddEmployeeModal(): void {
+		const dialogRef = this._dialog.open(AddEmployeeComponent, {
+			data: {
+				idToHide: this.dataSource.data.map((e) => e.id),
+				pageId: this._departmentId,
+				openFrom: 'department',
+			},
+			maxWidth: '670px',
+		});
+
+		dialogRef
+			.afterClosed()
+			.pipe(
+				switchMap((result) => {
+					if (result === undefined) {
+						return EMPTY;
+					} else {
+						return this._departmentService.getDepartment({
+							departmentid: this._departmentId,
+							includeusers: true,
+						});
+					}
+				}),
+				tap(({ body }) => {
+					this.departmentInfo = body?.department;
+
+					this.totalCount = body?.users?.length ?? 0;
+					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
+				})
+			)
+			.subscribe(() => {
+				this._cdr.markForCheck();
+			});
 	}
 
 	private _getDepartments(): void {
