@@ -8,12 +8,17 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Название департамента</mat-label>
 					<input matInput type="text" [formControlName]="EditPath.NAME" required />
-					<mat-error *ngIf="departmentForm.controls['name']?.errors?.['required']">
+					<mat-error *ngIf="departmentForm.controls['/name']?.errors?.['required']">
 						Поле не должно быть пустым
 					</mat-error>
-					<mat-error *ngIf="departmentForm.controls['name']?.errors?.['minlength']">
-						Минимум 3 символа
+					<mat-error *ngIf="departmentForm.controls['/name']?.errors?.name; else minlength">
+						Недопустимое название
 					</mat-error>
+					<ng-template #minlength>
+						<mat-error *ngIf="departmentForm.controls['/name']?.errors?.['minlength']">
+							Минимум 3 символа
+						</mat-error>
+					</ng-template>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Директор</mat-label>
