@@ -37,6 +37,7 @@
 				color="primary"
 				class="controls__button"
 				type="submit"
+				[loading]="(loading$$ | async) ?? false"
 				[disabled]="editForm.invalid"
 			>
 				Сохранить

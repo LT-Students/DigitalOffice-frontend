@@ -8,7 +8,6 @@ import { MainInfoComponent } from './components/main-info/main-info.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 
 import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
-import { ArchiveComponent } from './modals/archive/archive.component';
 import { SkillsComponent } from './components/competences/skills/skills.component';
 import { UploadPhotoComponent } from './modals/upload-photo/upload-photo.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
@@ -22,9 +21,7 @@ import { AddContactComponent } from './components/main-info/communications/add-c
 		CompetencesComponent,
 		MainInfoComponent,
 		AdminRequestComponent,
-		ArchiveComponent,
 		SkillsComponent,
-		ArchiveComponent,
 		ProjectsComponent,
 		UploadPhotoComponent,
 		CommunicationsComponent,

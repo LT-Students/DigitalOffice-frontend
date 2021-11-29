@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { LoadingBarHttpClientModule } from '@ngx-loading-bar/http-client';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
 import { MdePopoverModule } from '@material-extended/mde';
@@ -28,6 +27,7 @@ import { DateTimePipe } from './pipes/date-time';
 import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
 import { PhoneInputComponent } from './component/phone-input/phone-input.component';
+import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-bar-routing.module';
 
 @NgModule({
 	declarations: [
@@ -41,7 +41,6 @@ import { PhoneInputComponent } from './component/phone-input/phone-input.compone
 		TextDirective,
 		DndDirective,
 		ButtonLoadingDirective,
-		CommentComponent,
 		SafeHtmlPipe,
 		PasswordComponent,
 		CommentComponent,
@@ -60,8 +59,8 @@ import { PhoneInputComponent } from './component/phone-input/phone-input.compone
 		ReactiveFormsModule,
 		MaterialModule,
 		InfiniteScrollModule,
-		LoadingBarHttpClientModule,
 		LoadingBarModule,
+		LoadingBarRoutingModule,
 		MdePopoverModule,
 	],
 	exports: [

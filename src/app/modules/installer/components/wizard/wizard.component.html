@@ -1,4 +1,4 @@
-<mat-horizontal-stepper #stepper class="wizard" linear>
+<mat-horizontal-stepper class="wizard" linear>
 	<mat-step [stepControl]="companyForm" editable>
 		<form [formGroup]="companyForm">
 			<ng-template matStepLabel>Введите данные о компании</ng-template>
@@ -88,7 +88,13 @@
 				<mat-checkbox formControlName="enableSsl" required>Включить SSL</mat-checkbox>
 				<div>
 					<button mat-button matStepperPrevious>Назад</button>
-					<button mat-button type="submit" [disabled]="smtpForm.invalid" (click)="submitForm()">
+					<button
+						mat-button
+						type="submit"
+						[loading]="(loading$$ | async) ?? false"
+						[disabled]="smtpForm.invalid"
+						(click)="submitForm()"
+					>
 						Завершить
 					</button>
 				</div>
