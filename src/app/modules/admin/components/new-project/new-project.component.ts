@@ -17,7 +17,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
-import { AddEmployeeComponent } from '../../../../shared/modals/add-employee/add-employee.component';
+import {
+	AddEmployeeComponent,
+	OpenAddEmployeeModalFrom,
+} from '../../../../shared/modals/add-employee/add-employee.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';
 
@@ -79,36 +82,18 @@ export class NewProjectComponent implements OnInit {
 	public openAddEmployeeModal(): void {
 		const dialogRef = this._dialog.open(AddEmployeeComponent, {
 			data: {
-				idToHide: this.dataSource.data.map((e) => e.id),
-				pageId: this._departmentId,
-				openFrom: 'department',
+				idToHide: this.membersAll.map((e) => e.id),
+				openFrom: OpenAddEmployeeModalFrom.Project,
 			},
 			maxWidth: '670px',
 		});
 
-		dialogRef
-			.afterClosed()
-			.pipe(
-				switchMap((result) => {
-					if (result === undefined) {
-						return EMPTY;
-					} else {
-						return this._departmentService.getDepartment({
-							departmentid: this._departmentId,
-							includeusers: true,
-						});
-					}
-				}),
-				tap(({ body }) => {
-					this.departmentInfo = body?.department;
-
-					this.totalCount = body?.users?.length ?? 0;
-					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
-				})
-			)
-			.subscribe(() => {
+		dialogRef.afterClosed().subscribe((result?: UserInfo[]) => {
+			if (result?.length) {
+				this.membersAll.push(...result);
 				this._cdr.markForCheck();
-			});
+			}
+		});
 	}
 
 	private _getDepartments(): void {
@@ -118,24 +103,6 @@ export class NewProjectComponent implements OnInit {
 			},
 			(error) => console.log(error)
 		);
-	}
-
-	public addMember(): void {
-		//TODO replace with infinite scroll modal
-		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
-		this._modalService
-			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(
-				UserSearchComponent,
-				ModalWidth.L,
-				modalData
-			)
-			.afterClosed()
-			.subscribe((result?: UserInfo[]) => {
-				if (result?.length) {
-					this.membersAll = [...result];
-					this._cdr.detectChanges();
-				}
-			});
 	}
 
 	public createProject(): void {
