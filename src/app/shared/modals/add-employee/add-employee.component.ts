@@ -36,11 +36,11 @@ export class AddEmployeeComponent implements OnInit {
 
 	constructor(
 		private _userService: UserService,
-		private _userApiService: UserApiService,
+		// private _userApiService: UserApiService,
 		private _cdr: ChangeDetectorRef,
 		private _dialogRef: MatDialogRef<AddEmployeeComponent>,
-		private _projectService: ProjectService,
-		private _departmentService: DepartmentService,
+		// private _projectService: ProjectService,
+		// private _departmentService: DepartmentService,
 		@Inject(MAT_DIALOG_DATA)
 		private _data: { idToHide: string[]; pageId: string; openFrom: OpenAddEmployeeModalFrom; moduleName: string }
 	) {
@@ -65,7 +65,7 @@ export class AddEmployeeComponent implements OnInit {
 		}
 	}
 
-	public onClose(result?: OperationResultResponse<{} | null>): void {
+	public onClose(result?: UserInfo[]): void {
 		this._dialogRef.close(result);
 	}
 
@@ -90,33 +90,6 @@ export class AddEmployeeComponent implements OnInit {
 	}
 
 	public addUsers(): void {
-		if (this._data.openFrom === OpenAddEmployeeModalFrom.Project) {
-			const users: Array<ICreateUserRequest> = this.selection.selected.reduce(function (
-				newArr: Array<ICreateUserRequest>,
-				user
-			) {
-				newArr.push({ role: ProjectUserRoleType.Employee, userId: user.id ?? '' });
-
-				return newArr;
-			},
-			[]);
-
-			this._projectService
-				.addUsersToProject({ projectId: this._data.pageId, users: [...users] })
-				.subscribe((result) => {
-					this.onClose(result);
-				});
-		}
-		if (this._data.openFrom === OpenAddEmployeeModalFrom.Department) {
-			const users: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
-				newArr.push(user.id ?? '');
-
-				return newArr;
-			}, []);
-
-			this._departmentService.addUsersToDepartment(this._data.pageId, [...users]).subscribe((result) => {
-				this.onClose(result);
-			});
-		}
+		this.onClose(this.selection.selected);
 	}
 }
