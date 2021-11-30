@@ -313,62 +313,6 @@
           }
         }
       }
-    },
-    "/user/editrate": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "put": {
-        "tags": [
-          "UserRate"
-        ],
-        "operationId": "editUserRate",
-        "description": "Edit user rate.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditUserRateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success of operation will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
@@ -425,22 +369,6 @@
           "PositionId": {
             "type": "string",
             "format": "uuid"
-          }
-        }
-      },
-      "EditUserRateRequest": {
-        "type": "object",
-        "required": [
-          "UserId",
-          "Rate"
-        ],
-        "properties": {
-          "UserId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Rate": {
-            "type": "number"
           }
         }
       },
