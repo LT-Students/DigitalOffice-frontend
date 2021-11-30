@@ -59,5 +59,13 @@
 </mat-dialog-content>
 <div mat-dialog-actions class="actions">
 	<button mat-button class="actions__cancel" (click)="onClose()">Отмена</button>
-	<button mat-flat-button class="actions__save" color="primary" (click)="editProject(); onClose()">Сохранить</button>
+	<button
+		mat-flat-button
+		class="actions__save"
+		color="primary"
+		[loading]="(loading$$ | async) ?? false"
+		(click)="editProject(); onClose()"
+	>
+		Сохранить
+	</button>
 </div>

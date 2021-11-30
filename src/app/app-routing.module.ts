@@ -22,6 +22,7 @@ export const enum RouteType {
 	PROJECT = 'project',
 	DEPARTMENTS = 'departments',
 	NEWS = 'news',
+	INSTALLER = 'installer',
 }
 
 const routes: Routes = [
@@ -89,7 +90,7 @@ const routes: Routes = [
 		],
 	},
 	{
-		path: 'installer',
+		path: RouteType.INSTALLER,
 		component: WizardComponent,
 	},
 ];

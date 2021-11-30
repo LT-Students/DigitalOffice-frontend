@@ -119,6 +119,7 @@
 				type="submit"
 				mat-flat-button
 				color="primary"
+				[loading]="(loading$$ | async) ?? false"
 				[disabled]="userForm.invalid"
 			>
 				Сохранить

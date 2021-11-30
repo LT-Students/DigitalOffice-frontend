@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { DepartmentService } from '@app/services/department/department.service';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
+import { BehaviorSubject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
@@ -28,6 +30,7 @@ export class NewProjectComponent implements OnInit {
 	public statuses: IProjectStatusType[];
 	public membersAll: UserInfo[];
 	public pluralTeamCount: { [k: string]: string };
+	public loading$$: BehaviorSubject<boolean>;
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -54,6 +57,8 @@ export class NewProjectComponent implements OnInit {
 			shortDescription: [null],
 			status: [ProjectStatusType.Active],
 		});
+
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 	}
 
 	ngOnInit(): void {
@@ -90,6 +95,8 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public createProject(): void {
+		this.loading$$.next(true);
+
 		const projectUsers: ICreateUserRequest[] = this.membersAll.map((user) => ({
 			role: ProjectUserRoleType.Manager,
 			userId: user.id ?? '',
@@ -103,14 +110,17 @@ export class NewProjectComponent implements OnInit {
 			users: projectUsers,
 			projectImages: [],
 		};
-		this._projectService.createProject(projectRequest).subscribe(
-			(result) => {
-				this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
-			},
-			(error) => {
-				throw error;
-			}
-		);
+		this._projectService
+			.createProject(projectRequest)
+			.pipe(finalize(() => this.loading$$.next(false)))
+			.subscribe(
+				(result) => {
+					this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
+				},
+				(error) => {
+					throw error;
+				}
+			);
 	}
 
 	public showProjectTeam(): void {

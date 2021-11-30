@@ -3,6 +3,8 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn,
 import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { BehaviorSubject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
 	selector: 'do-wizard',
@@ -15,12 +17,15 @@ export class WizardComponent implements OnInit {
 	public adminForm: FormGroup;
 	public smtpForm: FormGroup;
 
+	public loading$$: BehaviorSubject<boolean>;
+
 	constructor(
 		private _formBuilder: FormBuilder,
 		private _companyApiService: CompanyApiService,
 		private _router: Router,
 		private _titleService: Title
 	) {
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this._titleService.setTitle('Installer');
 		this.companyForm = this._formBuilder.group({
 			companyName: ['', Validators.required],
@@ -68,6 +73,7 @@ export class WizardComponent implements OnInit {
 	}
 
 	public submitForm(): void {
+		this.loading$$.next(true);
 		this._companyApiService
 			.createCompany({
 				body: {
@@ -91,6 +97,7 @@ export class WizardComponent implements OnInit {
 					},
 				},
 			})
+			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe(
 				(result) => {
 					this._router.navigate(['/auth/login']);
