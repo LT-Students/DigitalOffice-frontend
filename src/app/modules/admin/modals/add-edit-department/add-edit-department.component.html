@@ -8,12 +8,23 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Название департамента</mat-label>
 					<input matInput type="text" [formControlName]="EditPath.NAME" required />
-					<mat-error *ngIf="departmentForm.controls['name']?.errors?.['required']">
+					<mat-error
+						*ngIf="
+							departmentForm.controls[EditPath.NAME]?.errors?.required ||
+								departmentForm.controls[EditPath.NAME]?.errors?.whitespace;
+							else validname
+						"
+					>
 						Поле не должно быть пустым
 					</mat-error>
-					<mat-error *ngIf="departmentForm.controls['name']?.errors?.['minlength']">
-						Минимум 3 символа
-					</mat-error>
+					<ng-template #validname>
+						<mat-error *ngIf="departmentForm.controls[EditPath.NAME]?.errors?.oneSpaceBetweenWords">
+							Только один пробел допускается между словами
+						</mat-error>
+						<mat-error *ngIf="departmentForm.controls[EditPath.NAME]?.errors?.minlength">
+							Минимум 3 символа
+						</mat-error>
+					</ng-template>
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Директор</mat-label>

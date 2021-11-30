@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 
 function isEmptyInputValue(value: any): boolean {
@@ -68,10 +68,44 @@ export class DoValidators {
 		return isValid ? null : { whitespace: true };
 	}
 
+	static trimmedName(control: AbstractControl): ValidationErrors | null {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		return /(^\s+|\s+$)/.test(control.value) ? { name: true } : null;
+	}
+
+	static oneSpaceBetweenWords(control: AbstractControl): ValidationErrors | null {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		return /(\S\s{2,}\S)/.test(control.value) ? { oneSpaceBetweenWords: true } : null;
+	}
+
 	static atLeastOneChecked(control: AbstractControl): ValidationErrors | null {
 		if (Object.values(control.value).includes(true)) {
 			return null;
 		}
 		return { atLeastOneChecked: true };
+	}
+
+	static matchMinLength(minLength: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (isEmptyInputValue(control.value)) {
+				return null;
+			}
+			const strLength = control.value.trim().length;
+			return strLength < minLength ? { minlength: true } : null;
+		};
+	}
+
+	static matchMaxLength(maxLength: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (isEmptyInputValue(control.value)) {
+				return null;
+			}
+			const strLength = control.value.trim().length;
+			return strLength > maxLength ? { maxlength: true } : null;
+		};
 	}
 }
