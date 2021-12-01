@@ -6,7 +6,6 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { PositionApiService } from './services/position-api.service';
 import { PositionUserApiService } from './services/position-user-api.service';
-import { UserRateApiService } from './services/user-rate-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -15,7 +14,7 @@ import { UserRateApiService } from './services/user-rate-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [PositionApiService, PositionUserApiService, UserRateApiService, ApiConfiguration],
+	providers: [PositionApiService, PositionUserApiService, ApiConfiguration],
 })
 export class PositionApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<PositionApiModule> {

@@ -31,6 +31,7 @@ import { TimeApiModule } from '@data/api/time-service/time-api.module';
 import { DepartmentApiModule } from '@data/api/department-service/department-api.module';
 import { PositionApiModule } from '@data/api/position-service/position-api.module';
 import { OfficeApiModule } from '@data/api/office-service/office-api.module';
+import { PasswordService } from '@app/services/user/password.service';
 import { environment } from '../../environments/environment';
 
 @NgModule({
@@ -68,6 +69,7 @@ import { environment } from '../../environments/environment';
 		CertificateService,
 		CommunicationService,
 		CredentialsService,
+		PasswordService,
 		EducationService,
 		EmployeePageService,
 	],

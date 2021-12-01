@@ -1,10 +1,10 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
-import { CredentialsService } from '@app/services/user/credentials.service';
-import { ChangePasswordRequest } from '@data/api/user-service/models/change-password-request';
 import { finalize, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { PasswordService } from '@app/services/user/password.service';
+import { ReconstructPasswordRequest } from '@data/api/user-service/models/reconstruct-password-request';
 
 @Component({
 	selector: 'do-reset-password',
@@ -17,11 +17,7 @@ export class ResetPasswordComponent {
 	public isLoading$$: BehaviorSubject<boolean>;
 	public isCompleted$$: BehaviorSubject<boolean>;
 
-	constructor(
-		private _fb: FormBuilder,
-		private _credentialsService: CredentialsService,
-		private _route: ActivatedRoute
-	) {
+	constructor(private _fb: FormBuilder, private _passwordService: PasswordService, private _route: ActivatedRoute) {
 		this.resetForm = this._fb.group({
 			login: ['', Validators.required],
 			password: ['', Validators.required],
@@ -36,13 +32,13 @@ export class ResetPasswordComponent {
 		this._route.queryParamMap
 			.pipe(
 				switchMap((params) => {
-					const request: ChangePasswordRequest = {
+					const request: ReconstructPasswordRequest = {
 						userId: params.get('userId') ?? undefined,
 						login: this.resetForm.get('login')?.value.trim(),
 						newPassword: this.resetForm.get('password')?.value,
 						secret: this.resetForm.get('secret')?.value,
 					};
-					return this._credentialsService.changePassword(request);
+					return this._passwordService.reconstructPassword(request);
 				}),
 				finalize(() => this.isLoading$$.next(false))
 			)
