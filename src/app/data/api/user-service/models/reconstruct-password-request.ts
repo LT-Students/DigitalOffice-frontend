@@ -1,15 +1,20 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface ChangePasswordRequest {
+export interface ReconstructPasswordRequest {
+	/**
+	 * User login.
+	 */
+	login?: string;
+
 	/**
 	 * New user password.
 	 */
 	newPassword?: string;
 
 	/**
-	 * Old user password.
+	 * Secret from email.
 	 */
-	password?: string;
+	secret?: string;
 
 	/**
 	 * Unique user identifier.
