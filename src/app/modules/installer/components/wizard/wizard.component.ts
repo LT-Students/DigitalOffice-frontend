@@ -48,6 +48,7 @@ export class WizardComponent implements OnInit {
 			{
 				host: ['', Validators.required],
 				port: ['', Validators.required],
+				workingDays: ['', Validators.required],
 				enableSsl: ['', Validators.required],
 				email: ['', Validators.required],
 				password: ['', Validators.required],
