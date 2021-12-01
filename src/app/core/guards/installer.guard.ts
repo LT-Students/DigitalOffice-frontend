@@ -27,11 +27,18 @@ export class InstallerGuard implements CanActivate, CanLoad {
 			map((company) => !!company),
 			tap((companyExists) => {
 				if (!companyExists) {
-					this._router.navigate(['installer']);
+					if (route.routeConfig?.path !== 'installer') {
+						this._router.navigate(['installer']);
+					}
+				} else {
+					if (route.routeConfig?.path !== '') {
+						this._router.navigate(['']);
+					}
 				}
 			})
 		);
 	}
+
 	canLoad(
 		route: Route,
 		segments: UrlSegment[]
