@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-wizard',
@@ -21,7 +21,7 @@ export class WizardComponent implements OnInit {
 
 	constructor(
 		private _formBuilder: FormBuilder,
-		private _companyApiService: CompanyApiService,
+		private _companyService: CompanyService,
 		private _router: Router,
 		private _titleService: Title
 	) {
@@ -75,27 +75,25 @@ export class WizardComponent implements OnInit {
 
 	public submitForm(): void {
 		this.loading$$.next(true);
-		this._companyApiService
+		this._companyService
 			.createCompany({
-				body: {
-					companyName: this.companyForm.get('companyName')?.value,
-					portalName: this.companyForm.get('portalName')?.value,
-					siteUrl: this.companyForm.get('siteUrl')?.value,
-					adminInfo: {
-						firstName: this.adminForm.get('firstName')?.value,
-						lastName: this.adminForm.get('lastName')?.value,
-						middleName: this.adminForm.get('middleName')?.value,
-						email: this.adminForm.get('email')?.value,
-						login: this.adminForm.get('login')?.value,
-						password: this.adminForm.get('password')?.value,
-					},
-					smtpInfo: {
-						host: this.smtpForm.get('host')?.value,
-						port: this.smtpForm.get('port')?.value,
-						email: this.smtpForm.get('email')?.value,
-						password: this.smtpForm.get('password')?.value,
-						enableSsl: this.smtpForm.get('enableSsl')?.value,
-					},
+				companyName: this.companyForm.get('companyName')?.value,
+				portalName: this.companyForm.get('portalName')?.value,
+				siteUrl: this.companyForm.get('siteUrl')?.value,
+				adminInfo: {
+					firstName: this.adminForm.get('firstName')?.value,
+					lastName: this.adminForm.get('lastName')?.value,
+					middleName: this.adminForm.get('middleName')?.value,
+					email: this.adminForm.get('email')?.value,
+					login: this.adminForm.get('login')?.value,
+					password: this.adminForm.get('password')?.value,
+				},
+				smtpInfo: {
+					host: this.smtpForm.get('host')?.value,
+					port: this.smtpForm.get('port')?.value,
+					email: this.smtpForm.get('email')?.value,
+					password: this.smtpForm.get('password')?.value,
+					enableSsl: this.smtpForm.get('enableSsl')?.value,
 				},
 			})
 			.pipe(finalize(() => this.loading$$.next(false)))

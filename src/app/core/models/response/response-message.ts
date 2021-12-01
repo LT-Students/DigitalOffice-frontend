@@ -10,6 +10,7 @@ export enum MessageTriggeredFrom {
 	News = 'Новость',
 	LeaveTime = 'Отсутствие',
 	WorkTime = 'Запись',
+	Company = 'Компания',
 }
 
 export enum MessageMethod {

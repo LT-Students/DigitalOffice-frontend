@@ -7,15 +7,19 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { switchMap } from 'rxjs/operators';
 import { Company } from '@app/models/company';
 import { CompanyPath, EditRequest } from '@app/types/edit-request';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class CompanyService {
-	constructor(private _companyService: CompanyApiService) {}
+	constructor(private _companyService: CompanyApiService, private _responseService: ResponseMessageModel) {}
 
 	public createCompany(body: CreateCompanyRequest): Observable<OperationResultResponse<null | {}>> {
-		return this._companyService.createCompany({ body });
+		return this._companyService
+			.createCompany({ body })
+			.pipe(this._responseService.message(MessageTriggeredFrom.Company, MessageMethod.Create));
 	}
 
 	public getCompany(params?: IGetCompanyRequest): Observable<Company> {
