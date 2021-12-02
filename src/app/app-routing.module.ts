@@ -92,6 +92,7 @@ const routes: Routes = [
 	{
 		path: RouteType.INSTALLER,
 		component: WizardComponent,
+		canActivate: [InstallerGuard],
 	},
 ];
 
