@@ -12,6 +12,7 @@ import {
 import { Observable } from 'rxjs';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { map, tap } from 'rxjs/operators';
+import { RouteType } from '../../app-routing.module';
 
 @Injectable({
 	providedIn: 'root',
@@ -27,8 +28,8 @@ export class InstallerGuard implements CanActivate, CanLoad {
 			map((company) => !!company),
 			tap((companyExists) => {
 				if (!companyExists) {
-					if (route.routeConfig?.path !== 'installer') {
-						this._router.navigate(['installer']);
+					if (route.routeConfig?.path !== RouteType.INSTALLER) {
+						this._router.navigate([RouteType.INSTALLER]);
 					}
 				} else {
 					if (route.routeConfig?.path !== '') {
@@ -47,7 +48,7 @@ export class InstallerGuard implements CanActivate, CanLoad {
 			map((company) => !!company),
 			tap((companyExists) => {
 				if (!companyExists) {
-					this._router.navigate(['installer']);
+					this._router.navigate([RouteType.INSTALLER]);
 				}
 			})
 		);
