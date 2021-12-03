@@ -77,7 +77,7 @@ export class WizardComponent implements OnInit {
 		this.loading$$.next(true);
 		this._companyService
 			.createCompany({
-				workDaysApiUrl: this.companyForm.get('workDaysApiUrl')?.value,
+				workDaysApiUrl: this.smtpForm.get('workDaysApiUrl')?.value,
 				companyName: this.companyForm.get('companyName')?.value,
 				portalName: this.companyForm.get('portalName')?.value,
 				siteUrl: this.companyForm.get('siteUrl')?.value,
@@ -99,7 +99,7 @@ export class WizardComponent implements OnInit {
 			})
 			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe(
-				(result) => {
+				() => {
 					this._router.navigate(['/auth/login']);
 				},
 				(error) => console.log(error)

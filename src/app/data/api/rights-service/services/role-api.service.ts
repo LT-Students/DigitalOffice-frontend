@@ -214,7 +214,7 @@ export class RoleApiService extends BaseService {
 	editRoleStatus$Response(params: {
 		roleId: string;
 		isActive: boolean;
-	}): Observable<StrictHttpResponse<OperationResultResponseRoleResponse>> {
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, RoleApiService.EditRoleStatusPath, 'put');
 		if (params) {
 			rb.query('roleId', params.roleId, {});
@@ -231,7 +231,7 @@ export class RoleApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponseRoleResponse>;
+					return r as StrictHttpResponse<OperationResultResponse>;
 				})
 			);
 	}
@@ -244,12 +244,9 @@ export class RoleApiService extends BaseService {
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	editRoleStatus(params: { roleId: string; isActive: boolean }): Observable<OperationResultResponseRoleResponse> {
+	editRoleStatus(params: { roleId: string; isActive: boolean }): Observable<OperationResultResponse> {
 		return this.editRoleStatus$Response(params).pipe(
-			map(
-				(r: StrictHttpResponse<OperationResultResponseRoleResponse>) =>
-					r.body as OperationResultResponseRoleResponse
-			)
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}
 
@@ -268,7 +265,7 @@ export class RoleApiService extends BaseService {
 	 */
 	editRoleRights$Response(params: {
 		body: UpdateRoleRightsRequest;
-	}): Observable<StrictHttpResponse<OperationResultResponseRoleResponse>> {
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, RoleApiService.EditRoleRightsPath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
@@ -284,7 +281,7 @@ export class RoleApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponseRoleResponse>;
+					return r as StrictHttpResponse<OperationResultResponse>;
 				})
 			);
 	}
@@ -297,12 +294,9 @@ export class RoleApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editRoleRights(params: { body: UpdateRoleRightsRequest }): Observable<OperationResultResponseRoleResponse> {
+	editRoleRights(params: { body: UpdateRoleRightsRequest }): Observable<OperationResultResponse> {
 		return this.editRoleRights$Response(params).pipe(
-			map(
-				(r: StrictHttpResponse<OperationResultResponseRoleResponse>) =>
-					r.body as OperationResultResponseRoleResponse
-			)
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}
 }
