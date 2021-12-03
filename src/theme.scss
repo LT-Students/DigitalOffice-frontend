@@ -2,20 +2,21 @@
 @use 'base/palettes' as *;
 @use 'material/fab-button' as fab;
 @use 'material/expansion-panel' as expansion;
+@use 'material/datepicker';
 
 /* ======== Angular material custom themes ======== */
 
 $custom-typography: mat.define-typography-config(
-	$font-family: 'Roboto, "Helvetica Neue", sans-serif',
+	$font-family: 'Lato, Roboto, "Helvetica Neue", sans-serif',
 	$headline: mat.define-typography-level(35px, 40px, 700, 'Montserrat'),
 	$title: mat.define-typography-level(28px, 32px, 700, 'Montserrat'),
 	$subheading-2: mat.define-typography-level(22px, 33px, 700, 'Montserrat'),
 	$subheading-1: mat.define-typography-level(18px, 27px, 700, 'Montserrat'),
-	$body-1: mat.define-typography-level(16px, 24px, 400),
+	$body-1: mat.define-typography-level(16px, 24px, 500),
 	$body-2: mat.define-typography-level(16px, 24px, 700),
-	$caption: mat.define-typography-level(14px, 24px, 400),
-	$input: mat.define-typography-level(16px, 1, 400),
-	$button: mat.define-typography-level(16px, 24px, 400),
+	$caption: mat.define-typography-level(14px, 24px, 500),
+	$input: mat.define-typography-level(16px, 1.125, 500),
+	$button: mat.define-typography-level(16px, 24px, 500),
 );
 
 @function create-theme(
@@ -25,7 +26,14 @@ $custom-typography: mat.define-typography-config(
 	$foreground: $light-theme-foreground-palette,
 	$background: $light-theme-background-palette
 ) {
-	@return (primary: $primary, accent: $accent, warn: $warn, is-dark: false, foreground: $foreground, background: $background);
+	@return (
+		primary: $primary,
+		accent: $accent,
+		warn: $warn,
+		is-dark: false,
+		foreground: $foreground,
+		background: $background
+	);
 }
 
 $theme-primary: mat.define-palette($do-orange);
@@ -34,7 +42,7 @@ $theme-warn: mat.define-palette(mat.$red-palette, 400);
 $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 
 @include mat.all-component-themes($app-theme);
-@include mat.button-theme(
+@include mat.button-color(
 	mat.define-light-theme(
 		(
 			color: (
@@ -45,7 +53,7 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 		)
 	)
 );
-@include mat.form-field-theme(
+@include mat.form-field-color(
 	mat.define-light-theme(
 		(
 			color: (
@@ -55,7 +63,7 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 		)
 	)
 );
-@include mat.input-theme(
+@include mat.input-color(
 	mat.define-light-theme(
 		(
 			color: (
@@ -65,7 +73,7 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 		)
 	)
 );
-@include mat.datepicker-theme(
+@include mat.datepicker-color(
 	mat.define-light-theme(
 		(
 			color: (
@@ -75,7 +83,7 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 		)
 	)
 );
-@include mat.select-theme(
+@include mat.select-color(
 	mat.define-light-theme(
 		(
 			color: (
@@ -85,7 +93,7 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 		)
 	)
 );
-@include mat.checkbox-theme(
+@include mat.checkbox-color(
 	mat.define-light-theme(
 		(
 			color: (

@@ -1,11 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { ModalService } from '@app/services/modal.service';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OfficeInfo } from '@data/api/company-service/models';
-import { CompanyService } from '@app/services/company/company.service';
-import { NewOfficeComponent } from '../../modals/new-office/new-office.component';
-
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { ActivatedRoute } from '@angular/router';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { OfficeService } from '@app/services/company/office.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 
 @Component({
 	selector: 'do-office-list',
@@ -13,53 +17,63 @@ import { NewOfficeComponent } from '../../modals/new-office/new-office.component
 	styleUrls: ['./office-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class OfficeListComponent implements OnInit {
-	public offices: OfficeInfo[];
+export class OfficeListComponent implements AfterViewInit {
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
-	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
+	public offices$!: Observable<OperationResultResponse<OfficeInfo[]>>;
+	public filters: FormGroup;
+	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: ModalService,
-		private _companyService: CompanyService,
-		private _cdr: ChangeDetectorRef
+		private _officeService: OfficeService,
+		private _route: ActivatedRoute,
+		private _fb: FormBuilder
 	) {
-		this.offices = [];
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-		this.offices = [];
+		this.filters = this._fb.group({
+			showDeactivated: [false],
+		});
+		this._refreshCurrentPage$$ = new Subject<boolean>();
 	}
 
-	public ngOnInit(): void {
-		this._getOfficeList();
+	public ngAfterViewInit(): void {
+		this.offices$ = combineLatest([
+			this.filters.valueChanges.pipe(
+				startWith(null),
+				tap(() => this.paginator?.firstPage())
+			),
+			this.paginator.page.pipe(startWith(null)),
+			this._refreshCurrentPage$$.pipe(startWith(null)),
+		]).pipe(
+			switchMap(([filters, page, refresh]) =>
+				filters !== null || page !== null || refresh
+					? this.getOffices(filters, page)
+					: this._route.data.pipe(map((response) => response.offices))
+			),
+			tap((res) => {
+				this.paginator.length = res.totalCount ?? 0;
+			})
+		);
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getOfficeList();
-	}
-
-	public onAddOfficeClick(): void {
+	public onAddEditOffice(officeInfo?: OfficeInfo): void {
 		this._modalService
-			.openModal<NewOfficeComponent, null, any>(NewOfficeComponent)
+			.openModal<AddEditOfficeComponent>(AddEditOfficeComponent, ModalWidth.M, officeInfo)
 			.afterClosed()
-			.subscribe(result => {
-				// Fix, then backend change to enum
-				if (result?.status === 'FullSuccess')
-					this._getOfficeList();
+			.subscribe({
+				next: (result) => {
+					if (result?.status !== OperationResultStatusType.Failed) {
+						this._refreshCurrentPage$$.next(true);
+					}
+				},
 			});
 	}
 
-	private _getOfficeList(): void {
-		this._companyService
-			.findOffices({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
-			.subscribe((data) => {
-				this.totalCount = data.totalCount ?? 0;
-				this.offices = data.body ?? [];
-				this._cdr.markForCheck();
-			});
+	public getOffices(filters: any, event: PageEvent | null): Observable<OperationResultResponse<OfficeInfo[]>> {
+		return this._officeService.findOffices({
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
+			includeDeactivated: filters?.showDeactivated,
+		});
 	}
 }

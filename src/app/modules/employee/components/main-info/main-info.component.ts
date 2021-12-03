@@ -1,26 +1,20 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
 import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
-import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { UserService } from '@app/services/user/user.service';
-import { map } from 'rxjs/operators';
+import { finalize, map, switchMap, take } from 'rxjs/operators';
 import { UserGender } from '@data/api/user-service/models';
-import { NetService } from '@app/services/net.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
-import { RoleInfo } from '@data/api/rights-service/models/role-info';
-import { OfficeInfo } from '@data/api/company-service/models/office-info';
-import { DepartmentInfo } from '@data/api/company-service/models/department-info';
-import { PositionInfo } from '@data/api/company-service/models/position-info';
-import { RightsService } from '@app/services/rights/rights.service';
-import { Observable, Subscription } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { EmployeePageService } from '@app/services/employee-page.service';
+import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
+import { UserService } from '@app/services/user/user.service';
+import { createEditRequest } from '@app/utils/utils';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({
@@ -29,198 +23,142 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 	styleUrls: ['./main-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MainInfoComponent implements OnInit, OnDestroy {
+export class MainInfoComponent implements OnInit {
+	public loading: BehaviorSubject<boolean>;
+
 	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
+	public EditPath: typeof UserPath = UserPath;
 	public employeeInfoForm: FormGroup;
 	public isEditing: boolean;
 	public genders: IUserGender[];
 	public statuses: IUserStatus[];
 
-	public user: User | null | undefined;
-	public userSubscription: Subscription | undefined;
-	public roles$: Observable<RoleInfo[] | undefined>;
-	public offices$: Observable<OfficeInfo[] | undefined>;
-	public departments$: Observable<DepartmentInfo[] | undefined>;
-	public positions$: Observable<PositionInfo[] | undefined>;
+	public user$: Observable<User>;
+	private _initialData: InitialDataEditRequest<UserPath>;
 
 	constructor(
 		private _fb: FormBuilder,
 		private _route: ActivatedRoute,
-		private _userService: UserService,
 		private _employeeService: EmployeePageService,
-		private _netService: NetService,
+		private _userService: UserService,
 		private _dialog: MatDialog,
 		private _snackBar: MatSnackBar,
-		private _roleService: RightsService,
 		private _cdr: ChangeDetectorRef
 	) {
+		this.loading = new BehaviorSubject<boolean>(false);
+		this._initialData = {};
 		this.genders = PersonalInfoManager.getGenderList();
 		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
 		this.employeeInfoForm = this._initEditForm();
-		this.departments$ = this._netService
-			.getDepartmentsList({
-				skipCount: 0,
-				takeCount: 100,
-			})
-			.pipe(map((res) => res.body));
-
-		this.positions$ = this._netService
-			.getPositionsList({
-				skipCount: 0,
-				takeCount: 100,
-			})
-			.pipe(map((res) => res.body));
-
-		this.offices$ = this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).pipe(map((res) => res.body));
-		this.roles$ = this._roleService.findRoles({ skipCount: 0, takeCount: 50 }).pipe(map((res) => res.roles));
+		this.user$ = this._employeeService.selectedUser$;
 	}
 
 	public ngOnInit(): void {
-		this._route.params.subscribe((param) => (this.isEditing = false));
-		this.userSubscription = this._employeeService.selectedUser$.subscribe((user) => {
-			this.user = user;
-			console.log('main-info', user);
-			this._cdr.markForCheck();
-		});
+		this._route.params.subscribe(() => (this.isEditing = false));
 	}
 
-	public ngOnDestroy(): void {
-		this.userSubscription?.unsubscribe();
-	}
-
-	public get communications(): FormArray {
-		return this.employeeInfoForm.get('communications') as FormArray;
-	}
-
-	public isOwner() {
+	public isOwner(): boolean {
 		// return this.user.id === this.pageId;
 		return true;
 	}
 
-	public canEdit() {
+	public canEdit(): boolean {
 		// return this.user.isAdmin || this.isOwner();
 		return true;
 	}
 
-	public toggleEditMode() {
-		this._fillForm();
+	public toggleEditMode(user?: User): void {
+		if (user) {
+			this._fillForm(user);
+		}
 		this.isEditing = !this.isEditing;
 	}
 
-	public onSubmit() {
-		this._patchEditUser();
-		this.toggleEditMode();
-	}
-
-	public onReset() {
+	public onReset(): void {
 		this.employeeInfoForm.reset();
 		this.toggleEditMode();
 	}
 
-	public changeWorkingRate(step: number) {
-		const currentValue = this.employeeInfoForm.get('rate')?.value;
-		const rate = +currentValue + step;
-		this.employeeInfoForm.patchValue({ rate: rate });
-
-		if (this.employeeInfoForm.get('rate')?.pristine) {
-			this.employeeInfoForm.get('rate')?.markAsDirty();
-		}
-	}
-
-	public onOpenDialog() {
-		const dialogRef = this._dialog.open(UploadPhotoComponent, {});
+	public onAvatarUploadDialog(): void {
+		const dialogRef = this._dialog.open(UploadPhotoComponent);
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({
-					photo: result,
+					avatarImage: result,
 				});
-				this.employeeInfoForm.get('photo')?.markAsDirty();
+				this.employeeInfoForm.get('avatarImage')?.markAsDirty();
+				this._cdr.markForCheck();
 			}
 		});
 	}
 
-	private _patchEditUser(): void {
-		const editRequest: { path: string; value: any }[] = Object.keys(this.employeeInfoForm.controls)
-			.filter((key) => this.employeeInfoForm.get(key)?.dirty)
-			.map((key) => ({ path: key, value: this.employeeInfoForm.get(key)?.value }));
+	public onSubmit(): void {
+		this.loading.next(true);
 
-		this._employeeService.editEmployee(editRequest).subscribe({
-			next: () => {
-				this._snackBar.open('User was edited successfully', 'Close', { duration: 3000 });
-			},
-			error: (error: HttpErrorResponse) => {
-				console.log(error);
-				this._snackBar.open(error.message, 'Close', { duration: 5000 });
-			},
-		});
+		const { avatarImage, ...userInfo } = this.employeeInfoForm.getRawValue();
+		const editRequest = createEditRequest(userInfo, this._initialData);
+
+		this._employeeService.selectedUser$
+			.pipe(
+				take(1),
+				map((user) => user.id ?? ''),
+				switchMap((userId) =>
+					forkJoin([
+						this._userService.editUser(userId, editRequest),
+						this.employeeInfoForm.get('avatarImage')?.dirty
+							? this._userService
+									.createAvatarImage(avatarImage, userId)
+									.pipe(
+										switchMap((response) =>
+											this._userService.changeAvatar(response.body as string, userId)
+										)
+									)
+							: of(null),
+					]).pipe(switchMap(() => this._employeeService.getEmployee(userId)))
+				),
+				finalize(() => {
+					this.loading.next(false);
+				})
+			)
+			.subscribe({
+				next: () => this.toggleEditMode(),
+				error: (err) => {
+					throw err;
+				},
+			});
 	}
 
-	private _fillForm(): void {
-		if (this.user) {
-			this.employeeInfoForm.patchValue({
-				firstName: this.user.firstName,
-				lastName: this.user.lastName,
-				middleName: this.user.middleName,
-				photo: this.user.avatarImage,
-				status: this.user.statusEmoji?.statusType,
-				about: this.user.about,
-				position: this.user.position?.id,
-				department: this.user.department?.id,
-				office: this.user.office?.id,
-				role: this.user.role?.id,
-				rate: this.user.rate,
-				city: this.user.city,
-				gender: this.user.gender?.genderType,
-				dateOfBirth: this.user.dateOfBirth,
-				startWorkingAt: this.user.startWorkingAt,
-				communications: this._enrichCommunications(),
-			});
+	private _fillForm(user: User): void {
+		if (user) {
+			this._initialData = {
+				[UserPath.FIRST_NAME]: user.firstName,
+				[UserPath.LAST_NAME]: user.lastName,
+				[UserPath.MIDDLE_NAME]: user.middleName,
+				[UserPath.STATUS]: user.statusEmoji?.statusType,
+				[UserPath.ABOUT]: user.about,
+				[UserPath.CITY]: user.city,
+				[UserPath.START_WORKING_AT]: user.startWorkingAt,
+				[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
+				[UserPath.GENDER]: user.gender?.genderType,
+			};
+			this.employeeInfoForm.patchValue({ ...this._initialData, avatarImage: user.avatarImage });
 		}
 	}
 
 	private _initEditForm(): FormGroup {
 		return this._fb.group({
-			firstName: ['', Validators.required],
-			lastName: ['', Validators.required],
-			middleName: [''],
-			photo: [''],
-			status: [null],
-			about: [''],
-			position: ['', Validators.required],
-			department: [''],
-			office: ['', Validators.required],
-			role: [''],
-			rate: ['', Validators.required],
-			city: [''],
-			startWorkingAt: [null],
-			dateOfBirth: [null],
-			gender: [UserGender],
-			// communications: this.fb.array([
-			// 	this.fb.group({ type: CommunicationType.Email, value: ['', Validators.required] }),
-			// 	this.fb.group({ type: CommunicationType.Phone, value: ['', Validators.required] }),
-			// ]),
+			[UserPath.FIRST_NAME]: ['', Validators.required],
+			[UserPath.LAST_NAME]: ['', Validators.required],
+			[UserPath.MIDDLE_NAME]: [''],
+			[UserPath.STATUS]: [null],
+			[UserPath.ABOUT]: [''],
+			[UserPath.CITY]: [''],
+			[UserPath.START_WORKING_AT]: [null],
+			[UserPath.DATE_OF_BIRTH]: [null],
+			[UserPath.GENDER]: [UserGender.NotSelected],
+			avatarImage: [null],
 		});
-	}
-
-	private _initCommunications(): void {
-		if (this.user && this.user.communications) {
-			this.user.communications
-				.map((communication: CommunicationInfo) => {
-					return this._fb.group({ type: '', value: '' });
-				})
-				.forEach((group: FormGroup) => this.communications.push(group));
-		}
-	}
-
-	private _enrichCommunications(): CommunicationInfo[] {
-		if (this.user && this.user.communications) {
-			return this.user.communications.map((communication: CommunicationInfo) => {
-				return { type: communication.type, value: communication.value };
-			});
-		} else {
-			return [];
-		}
 	}
 }

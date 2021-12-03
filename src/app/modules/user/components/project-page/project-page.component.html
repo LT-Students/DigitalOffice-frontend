@@ -1,27 +1,32 @@
 <mat-card class="card card_standard">
 	<div class="card__header">
-		<div>
-			<h1>{{ projectInfo?.name }}</h1>
-			<div class="card__splitter"></div>
-			<p>{{ projectInfo?.department?.name }}</p>
+		<div class="card__name-edit-project">
+			<h1 class="card__title">{{ projectInfo?.name }}</h1>
+			<button mat-flat-button class="card__button-edit" (click)="openEditProjectModal()">
+				<mat-icon>
+					<img class="card__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
+				</mat-icon>
+			</button>
 		</div>
+		<div class="card__splitter"></div>
+		<div class="mat-body-1">{{ projectInfo?.department?.name }}</div>
 	</div>
 	<div class="card__content">
 		<div>
 			<div class="description">
 				<h2 class="description__title">Детали проекта</h2>
 				<div class="description__body">
-					<div class="description__column">
+					<div class="description__column mat-body-1">
 						<p>Статус</p>
 						<p>Запуск проекта</p>
 						<p>Проект длится</p>
 						<p>Команда</p>
 					</div>
 					<div class="description__column">
-						<p>{{ projectInfo?.status }}</p>
+						<p>{{ status | projectType | titlecase }}</p>
 						<p>{{ projectCreatedAt | date: 'd MMMM y' }}</p>
 						<p>{{ projectDuration | i18nPlural: dayCountMap }}</p>
-						<p>{{ projectUsers?.length | i18nPlural: participantCountMap }}</p>
+						<p>{{ dataSource.data?.length | i18nPlural: participantCountMap }}</p>
 					</div>
 				</div>
 			</div>
@@ -31,6 +36,8 @@
 			</div>
 		</div>
 	</div>
+</mat-card>
+<mat-card>
 	<div class="table-wrapper">
 		<mat-tab-group>
 			<mat-tab #team>
@@ -49,53 +56,129 @@
 					</mat-icon>
 					<p>Команда</p>
 				</ng-template>
-				<h3 doUnderline underlinedSize="sm">Команда</h3>
-				<table class="table" matSort>
-					<colgroup>
-						<col class="column column_width-little" />
-					</colgroup>
-					<thead>
-						<tr class="row">
-							<th class="cell"></th>
-							<th class="cell" mat-sort-header="name">
-								<p>Имя</p>
+				<div class="team">
+					<h3 class="team__title" doUnderline underlinedSize="sm">Команда</h3>
+					<button mat-flat-button color="accent" (click)="openAddEmployeeModal()">
+						+ Добавить сотрудников
+					</button>
+				</div>
+
+				<div *ngIf="dataSource.data.length > 0; else emptyList">
+					<div class="search-actions">
+						<div class="search">
+							<mat-form-field class="search__name" appearance="fill">
+								<mat-icon matPrefix class="search__button">search</mat-icon>
+								<mat-label>Поиск по фамилии и имени</mat-label>
+								<input matInput type="search" placeholder="Романов Владислав" />
+							</mat-form-field>
+
+							<mat-form-field appearance="fill" class="search__position">
+								<mat-label>Выберите должность</mat-label>
+								<mat-select>
+									<mat-option *ngFor="let position of positions" [value]="position">
+										{{ position }}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="actions" *ngIf="selection.selected.length > 0">
+							<div>{{ selection.selected.length | i18nPlural: employeeCountMap }}</div>
+							<div [matMenuTriggerFor]="menu" class="actions__menu">
+								<div>Действия</div>
+								<div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down" /></div>
+							</div>
+							<mat-menu #menu>
+								<button mat-menu-item (click)="removeFromProject()">Удалить сотрудников</button>
+							</mat-menu>
+						</div>
+					</div>
+
+					<table mat-table [dataSource]="dataSource" class="table">
+						<ng-container matColumnDef="select">
+							<th mat-header-cell *matHeaderCellDef>
+								<mat-checkbox
+									(change)="$event ? masterToggle() : null"
+									[checked]="selection.hasValue() && isAllSelected()"
+									[indeterminate]="selection.hasValue() && !isAllSelected()"
+								>
+								</mat-checkbox>
 							</th>
-							<th class="cell" mat-sort-header="department">
-								<p>Департамент</p>
-							</th>
-							<th class="cell" mat-sort-header="role">
-								<p>Роль</p>
-							</th>
-							<th class="cell" mat-sort-header="rate">
-								<p>Ставка</p>
-							</th>
-							<th class="cell" mat-sort-header="status">
-								<p>Статус</p>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr class="row row_activable" *ngFor="let userInfo of projectUsers" routerLink="/user/{{ userInfo.id }}">
-							<td class="cell">
-								<do-profile-image [image]="$any(userInfo?.avatarImage)"></do-profile-image>
+							<td
+								mat-cell
+								*matCellDef="let row"
+								(click)="$event.stopPropagation(); $event ? selection.toggle(row) : null"
+							>
+								<mat-checkbox
+									(click)="$event ? selection.toggle(row) : null"
+									(change)="$event ? selection.toggle(row) : null"
+									[checked]="selection.isSelected(row)"
+								>
+								</mat-checkbox>
 							</td>
-							<td class="cell cell_vertical-middle">{{ userInfo?.firstName }} {{ userInfo?.lastName }}</td>
-							<td class="cell cell_vertical-middle">{{ userInfo?.department?.name ?? '—' }}</td>
-							<td class="cell cell_vertical-middle">{{ userInfo?.position?.name ?? '—' }}</td>
-							<td class="cell cell_vertical-middle">{{ userInfo?.rate ? userInfo?.rate : '—' }}</td>
-							<td class="cell cell_vertical-middle">
-								<p *ngIf="userInfo?.isActive" class="user-status">Активен</p>
-								<p class="user-status user-status_archived" *ngIf="!userInfo?.isActive">В архиве</p>
+						</ng-container>
+
+						<ng-container matColumnDef="name">
+							<th mat-header-cell *matHeaderCellDef>Имя</th>
+							<td mat-cell *matCellDef="let element">
+								<div class="main-info">
+									<do-profile-image
+										class="profile-photo"
+										[image]="element?.avatar"
+									></do-profile-image>
+									<div>
+										<div>{{ element.firstName }} {{ element.lastName }}</div>
+										<div class="mat-body-1">{{ element?.position?.name }}</div>
+									</div>
+								</div>
 							</td>
-						</tr>
-					</tbody>
-				</table>
+						</ng-container>
+
+						<ng-container matColumnDef="role">
+							<th mat-header-cell *matHeaderCellDef>Роль</th>
+							<td mat-cell *matCellDef="let element">
+								<ng-container *ngIf="element?.role?.name; else empty">
+									{{ element?.role?.name }}
+								</ng-container>
+							</td>
+						</ng-container>
+
+						<ng-container matColumnDef="rate">
+							<th mat-header-cell *matHeaderCellDef>Ставка</th>
+							<td mat-cell *matCellDef="let element">
+								<ng-container *ngIf="element?.rate; else empty">
+									{{ element.rate }}
+								</ng-container>
+							</td>
+						</ng-container>
+
+						<ng-container matColumnDef="status">
+							<th mat-header-cell *matHeaderCellDef>Статус</th>
+							<td mat-cell *matCellDef="let element">
+								<ng-container *ngIf="element?.isActive; else archived">
+									<div class="user-status">Активен</div>
+								</ng-container>
+								<ng-template #archived>
+									<div class="user-status user-status_archived">В архиве</div>
+								</ng-template>
+							</td>
+						</ng-container>
+
+						<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+						<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onUserClick(row.id)"></tr>
+						<ng-template #empty>
+							<div>—</div>
+						</ng-template>
+					</table>
+				</div>
 			</mat-tab>
 			<mat-tab #statistics>
 				<ng-template mat-tab-label>
 					<mat-icon class="table-wrapper__icon">
 						<svg
-							[ngClass]="statistics.isActive ? 'table-wrapper__label-orange' : 'table-wrapper__label-grey'"
+							[ngClass]="
+								statistics.isActive ? 'table-wrapper__label-orange' : 'table-wrapper__label-grey'
+							"
 							width="19"
 							height="18"
 							viewBox="0 0 19 18"
@@ -107,8 +190,14 @@
 					</mat-icon>
 					<p>Статистика команды</p>
 				</ng-template>
-				<do-team-statistics [projectId]="projectId"></do-team-statistics>
+				<do-team-statistics
+					*ngIf="dataSource.data.length > 0; else emptyList"
+					[projectId]="projectId"
+				></do-team-statistics>
 			</mat-tab>
 		</mat-tab-group>
 	</div>
+	<ng-template #emptyList>
+		<do-empty-list [emptyMessage]="'Нет данных о команде'"></do-empty-list>
+	</ng-template>
 </mat-card>

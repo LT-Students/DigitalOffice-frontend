@@ -1,12 +1,19 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { TimeDurationService } from '@app/services/time-duration.service';
 import { IEditWorkTimeRequest, IFindStatRequest, TimeService } from '@app/services/time/time.service';
 import { DoValidators } from '@app/validators/do-validators';
-import { LeaveTimeInfo, OperationResultResponse, OperationResultStatusType, StatInfo } from '@data/api/time-service/models';
-import { DatePeriod } from '@data/models/date-period';
+import {
+	LeaveTimeInfo,
+	OperationResultResponse,
+	OperationResultStatusType,
+	StatInfo,
+	WorkTimeInfo,
+} from '@data/api/time-service/models';
+import { DatePeriod } from '@app/types/date-period';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DateTime } from 'luxon';
 
 export interface EmployeeStats {
 	id?: string;
@@ -21,6 +28,7 @@ export interface EmployeeStats {
 	normHours?: number;
 	leaves?: LeaveTimeInfo[];
 	projectsCount?: number;
+	modifiedAtUtc: string;
 }
 
 @Component({
@@ -49,7 +57,7 @@ export class TeamStatisticsComponent implements OnInit {
 	) {
 		this.hoursGroup = this._formBuilder.group({});
 		this.projectId = '';
-		this.selectedPeriod = this._setDatePeriod(new Date());
+		this.selectedPeriod = this._setDatePeriod(DateTime.now());
 		this.pageIndex = 0;
 		this.pageSize = 20;
 		this.totalCount = 0;
@@ -59,27 +67,29 @@ export class TeamStatisticsComponent implements OnInit {
 		this.employees$ = this._getEmployees();
 	}
 
-	public chosenMonthHandler(date: Date): void {
+	public chosenMonthHandler(date: DateTime): void {
 		this.selectedPeriod = this._setDatePeriod(date);
-		this.employees$ = this._getEmployees()
+		this.employees$ = this._getEmployees();
 	}
 
 	public toggleEditMode(editMode: boolean, employee: EmployeeStats): void {
 		employee.editMode = editMode;
 
 		if (editMode) {
-			const year: number = this.selectedPeriod.startDate?.getFullYear()!
-			const month: number = this.selectedPeriod.startDate?.getMonth()!
+			const year: number = this.selectedPeriod.startDate.year;
+			const month: number = this.selectedPeriod.startDate.month;
 
 			const validators: ValidatorFn[] = [
 				Validators.min(0),
 				Validators.max(this._timeDurationService.countMaxMonthDuration(year, month)),
-				DoValidators.number
-			]
+				DoValidators.number,
+			];
 
-			this.hoursGroup.addControl(`hours_${employee.id}`, this._formBuilder.control(employee.managerHours ?? 0, validators));
-		}
-		else {
+			this.hoursGroup.addControl(
+				`hours_${employee.id}`,
+				this._formBuilder.control(employee.managerHours ?? 0, validators)
+			);
+		} else {
 			this.hoursGroup.removeControl(`hours_${employee.id}`);
 		}
 	}
@@ -92,64 +102,71 @@ export class TeamStatisticsComponent implements OnInit {
 			body: [
 				{
 					op: 'replace',
-					path: '/ManagerHours',
-					value: type === 'submit' ? Number(this.hoursGroup.get(`hours_${employee.id}`)?.value ?? 0) : undefined
-				}
-			]
-		}
+					// path: '/ManagerHours',
+					path: '/Hours',
+					value:
+						type === 'submit' ? Number(this.hoursGroup.get(`hours_${employee.id}`)?.value ?? 0) : undefined,
+				},
+			],
+		};
 
 		this._timeService.editWorkTime(params).subscribe((result: OperationResultResponse) => {
 			if (result.status === OperationResultStatusType.FullSuccess) {
-				employee.managerHours = type === 'submit' ? Number(this.hoursGroup.get(`hours_${employee.id}`)?.value ?? 0) : null;
-				this.toggleEditMode(false, employee)
+				employee.managerHours =
+					type === 'submit' ? Number(this.hoursGroup.get(`hours_${employee.id}`)?.value ?? 0) : null;
+				this.toggleEditMode(false, employee);
 
 				this._cdr.markForCheck();
 			}
-		})
+		});
 	}
 
 	private _getEmployees(): Observable<EmployeeStats[]> {
 		const params: IFindStatRequest = {
 			projectId: this.projectId,
-			month: Number(this.selectedPeriod.startDate?.getMonth()) + 1,
-			year: Number(this.selectedPeriod.startDate?.getFullYear()),
+			month: this.selectedPeriod.startDate.month,
+			year: this.selectedPeriod.startDate.year,
 			takeCount: this.pageSize,
-			skipCount: this.pageIndex * this.pageSize
-		}
+			skipCount: this.pageIndex * this.pageSize,
+		};
 
-		return this._timeService
-			.findStat(params)
-			.pipe(
-				map((result) => {
-					return result.body?.map(statInfo => this._mapStatInfo(statInfo)) ?? [];
-				}))
+		return this._timeService.findStat(params).pipe(
+			map((result) => {
+				return result.body?.map((statInfo) => this._mapStatInfo(statInfo)) ?? [];
+			})
+		);
 	}
 
 	private _mapStatInfo(statInfo: StatInfo): EmployeeStats {
-		const employeeInfo: EmployeeStats = {
-			workTimeId: statInfo.workTimes?.[0] ? statInfo.workTimes?.[0].id : undefined,
+		const workTimeInfo: WorkTimeInfo | undefined = statInfo.workTimes?.find(
+			(workTime) => workTime.project?.id === this.projectId
+		);
+
+		const projectHours: number = workTimeInfo?.userHours ?? 0;
+		const managerHours: number = workTimeInfo?.managerHours ?? 0;
+		console.log(statInfo);
+
+		return {
+			workTimeId: workTimeInfo?.id ?? '',
 			id: statInfo.user?.id,
 			editMode: false,
 			firstName: statInfo.user?.firstName ?? '',
 			lastName: statInfo.user?.lastName ?? '',
 			middleName: statInfo.user?.middleName ?? '',
-			projectHours: statInfo.workTimes?.[0] ? statInfo.workTimes[0].userHours : 0,
-			managerHours: statInfo.workTimes?.[0] ? statInfo.workTimes[0].managerHours : 0,
+			projectHours,
+			managerHours,
 			leaves: statInfo.leaveTimes ?? [],
 			position: '-',
 			projectsCount: 0,
-			normHours: statInfo.limitInfo?.normHours
-		}
-
-		return employeeInfo;
+			normHours: (statInfo.limitInfo?.normHours ?? 0) * (statInfo.user?.rate ?? 0),
+			modifiedAtUtc: statInfo.workTimes?.[0].modifiedAtUtc ?? '',
+		};
 	}
 
-	private _setDatePeriod(startDate: Date): DatePeriod {
-		const datePeriod: DatePeriod = {
+	private _setDatePeriod(startDate: DateTime): DatePeriod {
+		return {
 			startDate,
-			endDate: new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0)
-		}
-
-		return datePeriod;
+			endDate: startDate.endOf('month'),
+		};
 	}
 }

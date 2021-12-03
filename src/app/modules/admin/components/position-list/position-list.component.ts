@@ -1,10 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { PositionInfo } from '@data/api/company-service/models/position-info';
-import { NetService } from '@app/services/net.service';
-import { NewPositionComponent } from '../../modals/new-position/new-position.component';
-import { ModalService } from '@app/services/modal.service';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { ActivatedRoute } from '@angular/router';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { IPositionInfo, PositionService } from '@app/services/position/position.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 
 @Component({
 	selector: 'do-position-list',
@@ -12,51 +17,63 @@ import { ModalService } from '@app/services/modal.service';
 	styleUrls: ['./position-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PositionListComponent implements OnInit {
-	public positions: PositionInfo[];
+export class PositionListComponent implements AfterViewInit {
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
-	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
+	public positions$!: Observable<OperationResultResponse<IPositionInfo[]>>;
+	public filters: FormGroup;
+	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: ModalService,
-		private _netService: NetService,
-		private _cdr: ChangeDetectorRef
+		private _positionService: PositionService,
+		private _route: ActivatedRoute,
+		private _fb: FormBuilder
 	) {
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-		this.positions = [];
+		this.filters = this._fb.group({
+			showDeactivated: [false],
+		});
+		this._refreshCurrentPage$$ = new Subject<boolean>();
 	}
 
-	public ngOnInit(): void {
-		this._getPositions();
+	public ngAfterViewInit(): void {
+		this.positions$ = combineLatest([
+			this.filters.valueChanges.pipe(
+				startWith(null),
+				tap(() => this.paginator?.firstPage())
+			),
+			this.paginator.page.pipe(startWith(null)),
+			this._refreshCurrentPage$$.pipe(startWith(null)),
+		]).pipe(
+			switchMap(([filters, page, refresh]) =>
+				filters !== null || page !== null || refresh
+					? this.getPositions(filters, page)
+					: this._route.data.pipe(map((response) => response.positions))
+			),
+			tap((res) => {
+				this.paginator.length = res.totalCount ?? 0;
+			})
+		);
 	}
 
-	public onAddPositionClick(): void {
+	public onAddEditPosition(positionInfo?: PositionInfo): void {
 		this._modalService
-			.openModal<NewPositionComponent, null, any>(NewPositionComponent)
+			.openModal<AddEditPositionComponent>(AddEditPositionComponent, ModalWidth.M, positionInfo)
 			.afterClosed()
-			.subscribe(result => {
-				if (result?.status === 'FullSuccess') {
-					this._getPositions();
-				}
+			.subscribe({
+				next: (result) => {
+					if (result?.status !== OperationResultStatusType.Failed) {
+						this._refreshCurrentPage$$.next(true);
+					}
+				},
 			});
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getPositions();
-	}
-
-	private _getPositions(): void {
-		this._netService.getPositionsList({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((data) => {
-			this.positions = data?.body ?? [];
-			console.log(data.body)
-			this.totalCount = data?.totalCount ?? 0;
-			this._cdr.markForCheck();
+	public getPositions(filters: any, event: PageEvent | null): Observable<OperationResultResponse<PositionInfo[]>> {
+		return this._positionService.findPositions({
+			skipcount: event ? event.pageIndex * event.pageSize : 0,
+			takecount: event ? event.pageSize : 10,
+			includedeactivated: filters?.showDeactivated,
 		});
 	}
 }

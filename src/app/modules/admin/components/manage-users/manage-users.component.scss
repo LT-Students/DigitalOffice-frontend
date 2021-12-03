@@ -5,6 +5,34 @@
 	justify-content: space-between;
 }
 
+.filters {
+	//по макету длина: 1 144px;
+	margin-top: 32px;
+
+	display: flex;
+	justify-content: space-between;
+
+	width: 100%;
+	gap: 32px;
+
+	&__search {
+		width: 30.06%;
+		height: 24px;
+	}
+
+	&__post {
+		width: 25%;
+	}
+
+	&__department {
+		width: 25%;
+	}
+
+	&____status {
+		width: 11.54%;
+	}
+}
+
 .table {
 	&__status {
 		width: 67px;
@@ -22,34 +50,16 @@
 	}
 
 	&__delete-button {
-		visibility: hidden;
-
 		text-align: right;
-	}
-}
 
-.navigation {
-	margin-bottom: 40px;
-
-	&__link {
-		display: inline-block;
-
-		height: 24px;
-
-		vertical-align: top;
-
-		color: inherit;
-	}
-
-	&__link:hover {
-		text-decoration: underline;
+		opacity: 0;
 	}
 }
 
 .row {
 	&:hover {
 		.table__delete-button {
-			visibility: visible;
+			opacity: 1;
 		}
 	}
 }

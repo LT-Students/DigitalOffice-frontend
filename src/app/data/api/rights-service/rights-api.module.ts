@@ -4,6 +4,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { UserRightsApiService } from './services/user-rights-api.service';
 import { RightsApiService } from './services/rights-api.service';
 import { RoleApiService } from './services/role-api.service';
 
@@ -11,38 +12,33 @@ import { RoleApiService } from './services/role-api.service';
  * Module that provides all services and configuration.
  */
 @NgModule({
-  imports: [],
-  exports: [],
-  declarations: [],
-  providers: [
-    RightsApiService,
-    RoleApiService,
-    ApiConfiguration
-  ],
+	imports: [],
+	exports: [],
+	declarations: [],
+	providers: [UserRightsApiService, RightsApiService, RoleApiService, ApiConfiguration],
 })
 export class RightsApiModule {
-  static forRoot(params: ApiConfigurationParams): ModuleWithProviders<RightsApiModule> {
-    return {
-      ngModule: RightsApiModule,
-      providers: [
-        {
-          provide: ApiConfiguration,
-          useValue: params
-        }
-      ]
-    }
-  }
+	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<RightsApiModule> {
+		return {
+			ngModule: RightsApiModule,
+			providers: [
+				{
+					provide: ApiConfiguration,
+					useValue: params,
+				},
+			],
+		};
+	}
 
-  constructor( 
-    @Optional() @SkipSelf() parentModule: RightsApiModule,
-    @Optional() http: HttpClient
-  ) {
-    if (parentModule) {
-      throw new Error('RightsApiModule is already loaded. Import in your base AppModule only.');
-    }
-    if (!http) {
-      throw new Error('You need to import the HttpClientModule in your AppModule! \n' +
-      'See also https://github.com/angular/angular/issues/20575');
-    }
-  }
+	constructor(@Optional() @SkipSelf() parentModule: RightsApiModule, @Optional() http: HttpClient) {
+		if (parentModule) {
+			throw new Error('RightsApiModule is already loaded. Import in your base AppModule only.');
+		}
+		if (!http) {
+			throw new Error(
+				'You need to import the HttpClientModule in your AppModule! \n' +
+					'See also https://github.com/angular/angular/issues/20575'
+			);
+		}
+	}
 }

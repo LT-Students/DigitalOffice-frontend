@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { ImageApiService } from '@data/api/file-service/services/image-api.service';
-import { ImageRequest } from '@data/api/file-service/models/image-request';
+import { UserImageApiService } from '@data/api/image-service/services/user-image-api.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ImageService {
-	constructor(private _imageService: ImageApiService) {}
+	constructor(private _imageService: UserImageApiService) {}
 
-	public addNewImage(body: ImageRequest): Observable<string> {
-		return this._imageService.addNewImage({ body });
-	}
+	// public addNewImage(body: AddImageRequest): Observable<string> {
+	// 	return this._imageService.addImage({ body });
+	// }
 }

@@ -1,10 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
 
-import { OperationResultStatusType, RoleInfo, OperationResultResponse } from '@data/api/rights-service/models';
+import { RoleInfo } from '@data/api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
-import { PageEvent } from '@angular/material/paginator';
-import { NewRoleComponent } from '../../modals/new-role/new-role.component';
-import { ModalService } from '@app/services/modal.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { map, startWith, switchMap, tap } from 'rxjs/operators';
+import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 
 @Component({
 	selector: 'do-manage-roles',
@@ -12,51 +17,62 @@ import { ModalService } from '@app/services/modal.service';
 	styleUrls: ['./manage-roles.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ManageRolesComponent implements OnInit {
-	public roles: RoleInfo[];
+export class ManageRolesComponent implements AfterViewInit {
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
-	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
+	public roles$!: Observable<OperationResultResponse<RoleInfo[]>>;
+	public filters: FormGroup;
+	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _modalService: ModalService,
 		private _rightsService: RightsService,
-		private _cdr: ChangeDetectorRef
+		private _route: ActivatedRoute,
+		private _fb: FormBuilder
 	) {
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-		this.roles = [];
+		this.filters = this._fb.group({
+			showDeactivated: [false],
+		});
+		this._refreshCurrentPage$$ = new Subject<boolean>();
 	}
 
-	public ngOnInit(): void {
-		this._getRoleList();
+	public ngAfterViewInit(): void {
+		this.roles$ = combineLatest([
+			this.filters.valueChanges.pipe(
+				startWith(null),
+				tap(() => this.paginator?.firstPage())
+			),
+			this.paginator.page.pipe(startWith(null)),
+			this._refreshCurrentPage$$.pipe(startWith(null)),
+		]).pipe(
+			switchMap(([filters, page, refresh]) =>
+				filters !== null || page !== null || refresh
+					? this.getRoles(filters, page)
+					: this._route.data.pipe(map((response) => response.roles))
+			),
+			tap((res) => {
+				this.paginator.length = res.totalCount ?? 0;
+			})
+		);
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getRoleList();
-	}
-
-	public onAddRoleClick(): void {
+	public onAddEditRole(roleInfo?: RoleInfo): void {
 		this._modalService
-			.openModal<NewRoleComponent, null, any>(NewRoleComponent)
+			.openModal<AddEditRoleComponent>(AddEditRoleComponent, ModalWidth.M, roleInfo)
 			.afterClosed()
-			.subscribe(result => {
-				console.log('RES: ', result?.status)
-				if (result?.status === 0) {
-					this._getRoleList();
-				}
+			.subscribe({
+				next: (result) => {
+					if (result?.status !== OperationResultStatusType.Failed) {
+						this._refreshCurrentPage$$.next(true);
+					}
+				},
 			});
 	}
 
-	private _getRoleList(): void {
-		this._rightsService.findRoles({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe((res) => {
-			this.totalCount = res.totalCount ?? 0;
-			this.roles = res.roles ?? [];
-			this._cdr.markForCheck();
+	public getRoles(filters: any, event: PageEvent | null): Observable<OperationResultResponse<RoleInfo[]>> {
+		return this._rightsService.findRoles({
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
 		});
 	}
 }

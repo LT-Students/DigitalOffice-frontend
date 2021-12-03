@@ -1,11 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
-import { UserService } from '@app/services/user/user.service';
 import { AuthService } from '@app/services/auth/auth.service';
 import { Router } from '@angular/router';
-import { User } from '@app/models/user/user.model';
-import { CompanyService } from '@app/services/company/company.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'do-content-container',
@@ -13,44 +14,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	styleUrls: ['./content-container.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentContainerComponent implements OnInit {
+export class ContentContainerComponent {
 	@ViewChild('menu', { read: ElementRef }) menu: ElementRef | undefined;
 
 	public navOpened: boolean;
-	public portalName: string;
-	private _departmentId: string | undefined;
+	public portalName$: Observable<string>;
+	public departmentId$: Observable<string>;
 
 	constructor(
-		private _userService: UserService,
+		private _currentUserService: CurrentUserService,
 		private _authService: AuthService,
-		private _companyService: CompanyService,
+		private _currentCompanyService: CurrentCompanyService,
 		private _snackBar: MatSnackBar,
 		private _router: Router
 	) {
 		this.navOpened = false;
-		this.portalName = this._companyService.getPortalName();
+		this.portalName$ = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
+		this.departmentId$ = this._currentUserService.user$.pipe(map((user) => user.department?.id ?? ''));
 	}
 
-	ngOnInit() {
-		this._userService.currentUser$.subscribe(user => {
-			this._departmentId = user?.department?.id;
-		})
-	}
-
-	public onStatClick(): void {
-		if (this._departmentId) {
+	public onStatClick(departmentId: string): void {
+		if (departmentId) {
 			this.closeNav();
-			this._router.navigate([`/admin/departments/${this._departmentId}/timelist`])
+			this._router.navigate([`/admin/departments/${departmentId}/timelist`]);
+		} else {
+			this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 });
 		}
-		else this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 })
-	}
-
-	public onLogoClick(): void {
-		this._router.navigate(['/user/attendance']);
-	}
-
-	public onLogoutClick(): void {
-		this._authService.logout();
 	}
 
 	public onMenuClick(event: MouseEvent): void {

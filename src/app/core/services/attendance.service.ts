@@ -1,56 +1,67 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable, ReplaySubject } from 'rxjs';
-
-import { DatePeriod } from '@data/models/date-period';
 import {
+	ICreateLeaveTimeRequest,
 	IEditWorkTimeRequest,
 	IFindLeaveTimesRequest,
 	IFindWorkTimeMonthLimitRequest,
 	IFindWorkTimesRequest,
 	TimeService,
 } from '@app/services/time/time.service';
-import { map, tap } from 'rxjs/operators';
-import { LeaveTimeInfo } from '@data/api/time-service/models/leave-time-info';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { UserService } from '@app/services/user/user.service';
 import { DateFilterFn } from '@angular/material/datepicker';
-import { CreateLeaveTimeRequest } from '@data/api/time-service/models/create-leave-time-request';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
+import { LeaveTimeModel } from '@app/models/time/leave-time.model';
+import { LeaveTimeInfo } from '@data/api/time-service/models';
+import { DatePeriod } from '@app/types/date-period';
+import { DateTime, Interval } from 'luxon';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { CurrentUserService } from '@app/services/current-user.service';
 import { DateService } from './date.service';
 import { TimeDurationService } from './time-duration.service';
 
 export interface Activities {
-	projects?: Array<WorkTimeInfo | undefined>;
-	leaves?: Array<LeaveTimeInfo | undefined>;
+	projects?: Array<WorkTimeInfo>;
+	leaves?: Array<LeaveTimeModel>;
+}
+
+interface MonthHolidays {
+	month: number;
+	holidays: boolean[];
 }
 
 @Injectable({
 	providedIn: 'root',
 })
-export class AttendanceService {
+export class AttendanceService implements Resolve<Activities> {
 	private readonly _activities: ReplaySubject<Activities>;
 	public readonly activities$: Observable<Activities>;
 
-	private readonly _selectedDate: BehaviorSubject<Date>;
-	public readonly selectedDate$: Observable<Date>;
+	private readonly _selectedDate: BehaviorSubject<DateTime>;
+	public readonly selectedDate$: Observable<DateTime>;
 
 	private readonly _monthNorm: BehaviorSubject<number>;
 	public readonly monthNorm$: Observable<number>;
 
-	private readonly _holidays: BehaviorSubject<boolean[]>;
+	private readonly _holidays: BehaviorSubject<MonthHolidays>;
+	private readonly _leaveIntervals: BehaviorSubject<Interval[]>;
 
 	private readonly _canEdit: BehaviorSubject<boolean>;
 	public readonly canEdit$: Observable<boolean>;
 
-	private _userId: string | undefined;
+	private _userId?: string;
+	private _rate: number;
 
 	constructor(
 		private _dateService: DateService,
 		private _timeService: TimeService,
 		private _userService: UserService,
-		private _timeDurationService: TimeDurationService
+		private _timeDurationService: TimeDurationService,
+		private _currentUserService: CurrentUserService
 	) {
-		this._selectedDate = new BehaviorSubject<Date>(new Date());
+		this._selectedDate = new BehaviorSubject<DateTime>(DateTime.now());
 		this.selectedDate$ = this._selectedDate.asObservable();
 
 		this._activities = new ReplaySubject<Activities>(1);
@@ -62,31 +73,58 @@ export class AttendanceService {
 		this._monthNorm = new BehaviorSubject<number>(160);
 		this.monthNorm$ = this._monthNorm.asObservable();
 
-		this._holidays = new BehaviorSubject<boolean[]>([]);
+		this._holidays = new BehaviorSubject<MonthHolidays>({ month: 1, holidays: [] });
+		this._leaveIntervals = new BehaviorSubject<Interval[]>([]);
+
+		this._rate = 1;
+	}
+
+	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Activities> {
+		return this._currentUserService.user$.pipe(
+			take(1),
+			tap((user) => this.setUserIdAndRate(user.id, user.rate)),
+			switchMap(() => this.getLeaveTimeIntervals()),
+			switchMap(() => this.getMonthNormAndHolidays()),
+			switchMap(() => this.getActivities())
+		);
 	}
 
 	public getActivities(): Observable<Activities> {
-		const month = this._selectedDate.value.getMonth();
-		const year = this._selectedDate.value.getFullYear();
+		const date = this._selectedDate.value;
 
 		const workTimesParams: IFindWorkTimesRequest = {
 			userid: this._userId,
 			skipCount: 0,
 			takeCount: 10,
-			month: month + 1,
-			year: year,
+			month: date.month,
+			year: date.year,
 		};
 		const leaveTimesParams: IFindLeaveTimesRequest = {
 			userid: this._userId,
 			skipCount: 0,
 			takeCount: 10,
-			starttime: new Date(year, month, 1).toISOString(),
-			endtime: new Date(year, month + 1, 0).toISOString(),
+			starttime: date.startOf('month').toISO(),
+			endtime: date.endOf('month').toISO(),
 		};
 
 		return forkJoin({
-			projects: this._timeService.findWorkTimes(workTimesParams).pipe(map((projects) => projects.body?.map((project) => project.workTime))),
-			leaves: this._timeService.findLeaveTimes(leaveTimesParams).pipe(map((leaves) => leaves.body?.map((leave) => leave.leaveTime))),
+			projects: this._timeService
+				.findWorkTimes(workTimesParams)
+				.pipe(
+					map((projects) =>
+						projects.body
+							?.map((project) => project.workTime)
+							.filter((workTime): workTime is WorkTimeInfo => !!workTime)
+					)
+				),
+			leaves: this._timeService.findLeaveTimes(leaveTimesParams).pipe(
+				map((leaves) =>
+					leaves.body
+						?.map((res) => res.leaveTime)
+						.filter((leave): leave is LeaveTimeInfo => !!leave)
+						.map((leave) => new LeaveTimeModel(leave))
+				)
+			),
 		}).pipe(tap((activities) => this._setActivities(activities)));
 	}
 
@@ -94,33 +132,61 @@ export class AttendanceService {
 		return this._timeService.editWorkTime(params);
 	}
 
-	public addLeaveTime(params: Omit<CreateLeaveTimeRequest, 'userId'>): Observable<OperationResultResponse> {
-		const paramsWithId: CreateLeaveTimeRequest = {
+	public addLeaveTime(params: Omit<ICreateLeaveTimeRequest, 'userId'>): Observable<OperationResultResponse> {
+		const paramsWithId: ICreateLeaveTimeRequest = {
 			...params,
 			userId: this._userId ?? '',
 		};
 		return this._timeService.addLeaveTime(paramsWithId);
 	}
 
+	public getLeaveTimeIntervals() {
+		const leaveTimesParams: IFindLeaveTimesRequest = {
+			userid: this._userId,
+			skipCount: 0,
+			takeCount: 30,
+			starttime: DateTime.now().minus({ months: 1 }).startOf('month').toISO(),
+			endtime: DateTime.now().plus({ months: 1 }).endOf('month').toISO(),
+		};
+		return this._timeService.findLeaveTimes(leaveTimesParams).pipe(
+			map((leaves) =>
+				leaves.body
+					?.map((res) => res.leaveTime)
+					.filter((leave): leave is LeaveTimeInfo => !!leave)
+					.map((leave) => new LeaveTimeModel(leave))
+					.map((leave) =>
+						Interval.fromISO(
+							`${leave.startTime}/${DateTime.fromISO(leave.endTime).plus({ days: 1 }).toISO()}`
+						)
+					)
+			),
+			tap((intervals) => this._leaveIntervals.next(intervals ?? []))
+		);
+	}
+
 	public getMonthNormAndHolidays(): Observable<any> {
-		const month = this._selectedDate.value.getMonth();
-		const year = this._selectedDate.value.getFullYear();
+		const month = this._selectedDate.value.month;
+		const year = this._selectedDate.value.year;
 		const params: IFindWorkTimeMonthLimitRequest = {
-			month: month + 1,
+			month: month,
 			year: year,
 			skipCount: 0,
 			takeCount: 1,
 		};
 		return this._timeService.findWorkTimeMonthLimit(params).pipe(
 			map((response) => response.body?.[0]),
-			tap((limit) => this._setMonthNormAndHolidays(limit?.normHours, limit?.holidays))
+			tap((limit) => this._setMonthNormAndHolidays(limit?.normHours, limit?.holidays, limit?.month))
 		);
 	}
 
-	private _setMonthNormAndHolidays(monthNorm: number | undefined, holidays: string | undefined): void {
+	private _setMonthNormAndHolidays(
+		monthNorm: number | undefined,
+		holidays: string | undefined,
+		month?: number
+	): void {
 		if (monthNorm && holidays) {
-			this._monthNorm.next(monthNorm);
-			this._holidays.next(holidays.split('').map(Number).map(Boolean));
+			this._monthNorm.next(monthNorm * this._rate);
+			this._holidays.next({ month: month ?? 1, holidays: holidays.split('').map(Number).map(Boolean) });
 		}
 	}
 
@@ -128,40 +194,56 @@ export class AttendanceService {
 		this._activities.next(activities);
 	}
 
-	public setUserId(userId: string | undefined): void {
+	public setUserIdAndRate(userId: string, rate: number): void {
 		this._userId = userId;
+		this._rate = rate;
 	}
 
 	private _canEditTime(): boolean {
-		const currentDate = new Date();
+		const currentDate = DateTime.now();
 		const selectedDate = this._selectedDate.value;
 
 		return (
-			currentDate.getFullYear() === selectedDate.getFullYear() &&
-			(currentDate.getMonth() === selectedDate.getMonth() ||
-				(currentDate.getDate() <= 5 && currentDate.getMonth() === selectedDate.getMonth() + 1))
+			currentDate.year === selectedDate.year &&
+			(currentDate.month === selectedDate.month ||
+				(currentDate.day <= 5 && currentDate.month === selectedDate.month + 1))
 		);
 	}
 
-	public setNewDate(date: Date): void {
+	public setNewDate(date: DateTime): void {
 		this._selectedDate.next(date);
 		this._canEdit.next(this._canEditTime());
 	}
 
-	public disableWeekends: DateFilterFn<Date> = (d: Date | null): boolean => {
-		const day = (d || new Date()).getDate();
-		return this._holidays.value.every((isHoliday, date) => (isHoliday ? day !== date + 1 : true));
+	public disableWeekends: DateFilterFn<DateTime> = (d: DateTime | null): boolean => {
+		const selectedDate = d || DateTime.now();
+		const holidaysMonth = this._holidays.value.month;
+		const holidays = this._holidays.value.holidays;
+
+		return (
+			(selectedDate.month === holidaysMonth
+				? holidays.every((isHoliday, date) => (isHoliday ? selectedDate.day !== date + 1 : true))
+				: selectedDate.weekday !== 6 && selectedDate.weekday !== 7) &&
+			this._leaveIntervals.value.every((interval) => !interval.contains(selectedDate))
+		);
 	};
 
-	public getCalendarMinMax(): [Date, Date] {
-		const currentDate = new Date();
-		const minDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - (this._canEdit.value ? 1 : 0));
-		const maxDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0);
+	public getCalendarMinMax(): [DateTime, DateTime] {
+		const currentDate = DateTime.now();
+		const minDate = currentDate.minus({ months: this._canEdit.value ? 1 : 0 }).startOf('month');
+		const maxDate = currentDate.plus({ months: 1 }).endOf('month');
 
 		return [minDate, maxDate];
 	}
 
 	public countMaxHours(): number {
-		return this._timeDurationService.countMaxMonthDuration(this._selectedDate.value.getFullYear(), this._selectedDate.value.getMonth());
+		return this._timeDurationService.countMaxMonthDuration(
+			this._selectedDate.value.year,
+			this._selectedDate.value.month
+		);
+	}
+
+	public getLeaveDuration(datePeriod: DatePeriod): number {
+		return this._timeDurationService.getDuration(datePeriod, 8 * this._rate, this.disableWeekends);
 	}
 }

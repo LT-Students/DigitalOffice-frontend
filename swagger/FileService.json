@@ -1,68 +1,45 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.3",
+    "version": "1.1.1.0",
     "title": "FileService",
     "description": "FileService is an API intended to work with files and images."
   },
   "servers": [
     {
-      "url": "https://file.ltdo.xyz"
+      "url": "https://file.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://file.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {
-    "/file/addNewFile": {
-      "post": {
-        "tags": [
-          "File"
-        ],
-        "operationId": "addNewFile",
-        "summary": "Add a new file.",
-        "description": "The method attempts to add the new file.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/File"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "New file Id.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.\n* Error in the field.\n"
-          }
+    "/file/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
         }
-      }
-    },
-    "/file/getFileById": {
+      ],
       "get": {
         "tags": [
           "File"
         ],
-        "operationId": "getFileById",
+        "operationId": "getFile",
         "summary": "Returns the file by Id.",
         "description": "The method attempts to get the file by id.",
         "parameters": [
           {
-            "name": "fileId",
+            "name": "filesIds",
             "in": "query",
-            "description": "File global unique identifier.",
+            "description": "Files global unique identifiers.",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
             },
             "required": true
           }
@@ -75,7 +52,7 @@
                 "schema": {
                   "type": "object",
                   "items": {
-                    "$ref": "#/components/schemas/File"
+                    "$ref": "#/components/schemas/FileInfo"
                   }
                 }
               }
@@ -87,49 +64,26 @@
         }
       }
     },
-    "/file/disableFileById": {
-      "get": {
+    "/file/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/fileId"
+        }
+      ],
+      "patch": {
         "tags": [
           "File"
         ],
-        "operationId": "disableFileById",
-        "summary": "Disable the file by Id.",
-        "description": "The method attempts to disable file by id.",
-        "parameters": [
-          {
-            "name": "fileId",
-            "in": "query",
-            "description": "File global unique identifier.",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successfully disabled file."
-          },
-          "404": {
-            "description": "Not Found.\n* File with this id was not found.\n"
-          }
-        }
-      }
-    },
-    "/file/addNewImage": {
-      "post": {
-        "tags": [
-          "Image"
-        ],
-        "operationId": "addNewImage",
-        "summary": "Add a new image and thumb.",
-        "description": "The method attempts to add the new image and get new file Id. A smaller version of the image (thumb) will also be added. Acceptable image formats: .jpg, .jpeg, .png, , .gif, .bmp, .tga",
+        "operationId": "editFile",
+        "description": "Editing file by Id.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ImageRequest"
+                "$ref": "#/components/schemas/EditFileRequest"
               }
             }
           },
@@ -137,18 +91,34 @@
         },
         "responses": {
           "200": {
-            "description": "New image Id.",
+            "description": "File respose.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request.\n* Error in the field.\n* The server couldn't process the image.\n"
+            "description": "Bad request.\n* Error in the field.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -156,7 +126,7 @@
   },
   "components": {
     "schemas": {
-      "File": {
+      "FileInfo": {
         "type": "object",
         "required": [
           "Name",
@@ -167,7 +137,8 @@
           "Id": {
             "description": "File global unique identifier.",
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
           },
           "Name": {
             "description": "File name.",
@@ -177,38 +148,131 @@
           "Content": {
             "description": "File content.",
             "type": "string",
-            "example": "Avatar"
+            "format": "byte"
           },
           "Extension": {
             "description": "File extension.",
             "type": "string",
-            "example": ".txt"
+            "example": "txt"
           }
         }
       },
-      "ImageRequest": {
-        "type": "object",
-        "required": [
-          "Name",
-          "Content"
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
         ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
         "properties": {
-          "Name": {
-            "description": "Image name.",
-            "type": "string",
-            "example": "Avatar"
+          "UtcTime": {
+            "type": "string"
           },
-          "Content": {
-            "description": "Image content.",
-            "type": "string",
-            "example": "Avatar"
+          "Header": {
+            "type": "string"
           },
-          "Extension": {
-            "description": "Image extension.",
-            "type": "string",
-            "example": ".txt"
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
           }
         }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EditFileRequest": {
+        "type": "array",
+        "minItems": 1,
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "items": {
+          "$ref": "#/components/schemas/FilePatchDocument"
+        },
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "type": "string",
+              "description": "new name"
+            }
+          }
+        ]
+      },
+      "FilePatchDocument": {
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Name",
+              "/Content"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
+        },
+        "required": true
+      },
+      "fileId": {
+        "name": "fileId",
+        "in": "query",
+        "description": "File global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
       }
     }
   }

@@ -1,14 +1,16 @@
 @use 'base/variables';
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
 
 .card {
 	&__header {
 		padding: 0 0 40px;
 
-		display: flex;
-		justify-content: space-between;
-
 		border-bottom: 1px solid variables.$light_3;
-		flex-wrap: wrap;
+	}
+
+	&__button-edit {
+		height: 50%;
 	}
 
 	&__splitter {
@@ -25,6 +27,18 @@
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
+	}
+
+	&__name-edit-project {
+		display: flex;
+
+		justify-content: space-between;
+
+		width: 100%;
+	}
+
+	&__title {
+		margin-bottom: 10px;
 	}
 }
 
@@ -78,14 +92,114 @@
 }
 
 .table {
-	&__status {
-		width: 67px;
-		height: 24px;
+	width: 100%;
 
-		text-align: center;
+	&__header {
+		margin: 20px 0;
 
-		background-color: #00e676;
+		display: flex;
+		justify-content: space-between;
+	}
+}
 
-		border-radius: 10px;
+.search-actions {
+	margin-bottom: 10px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.search {
+	display: flex;
+	flex-basis: 50%;
+
+	&__name {
+		width: 100%;
+	}
+
+	&__position {
+		margin-left: 30px;
+		align-self: flex-end;
+	}
+
+	&__button {
+		margin-right: 15px;
+	}
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+
+	&__menu {
+		margin-left: 20px;
+		padding: 10px 16px;
+
+		display: flex;
+		justify-content: space-between;
+
+		width: 200px;
+
+		cursor: pointer;
+
+		background-color: mat.get-color-from-palette($do-grey, 100);
+		border-radius: 5px;
+	}
+}
+
+.main-info {
+	display: flex;
+}
+
+.profile-photo {
+	margin-right: 20px;
+}
+
+.mat-column {
+	&-select {
+		width: 5%;
+	}
+
+	&-name {
+		width: 41%;
+	}
+
+	&-role {
+		width: 23%;
+	}
+
+	&-rate {
+		width: 18%;
+	}
+
+	&-status {
+		width: 13%;
+	}
+}
+
+.mat-cell,
+.mat-header-cell {
+	padding: 0 15px;
+}
+
+.mat-row {
+	height: 76px;
+
+	cursor: pointer;
+}
+
+.mat-header-row {
+	height: 50px;
+}
+
+.team {
+	margin-top: 30px;
+
+	display: flex;
+	justify-content: space-between;
+
+	&__title {
+		margin-bottom: 0;
 	}
 }

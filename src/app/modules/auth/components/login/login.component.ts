@@ -8,29 +8,25 @@ import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
 import { BehaviorSubject, of } from 'rxjs';
-import { CompanyService } from '@app/services/company/company.service';
 
 @Component({
 	selector: 'do-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
-	public portalName: string;
 	public loginForm: FormGroup;
 	public loginError: string;
-	public isLoading: BehaviorSubject<boolean>;
+	public isLoading$$: BehaviorSubject<boolean>;
 
 	constructor(
 		private _authService: AuthService,
 		private _userService: UserService,
-		private _companyService: CompanyService,
 		private _router: Router,
 		private formBuilder: FormBuilder
 	) {
-		this.isLoading = new BehaviorSubject<boolean>(false);
-		this.portalName = _companyService.getPortalName();
+		this.isLoading$$ = new BehaviorSubject<boolean>(false);
 		this.loginError = '';
 		this.loginForm = this.formBuilder.group({
 			email: ['', Validators.required],
@@ -51,7 +47,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	public login(): void {
-		this.isLoading.next(true);
+		this.isLoading$$.next(true);
 
 		const authenticationRequest: AuthenticationRequest = {
 			loginData: this.loginForm.get('email')?.value.trim(),
@@ -61,17 +57,16 @@ export class LoginComponent implements OnInit {
 		this._authService
 			.login(authenticationRequest)
 			.pipe(
-				finalize(() => (this.isLoading.next(false))),
+				finalize(() => this.isLoading$$.next(false)),
 				catchError((error) => {
 					this.loginError = error.message;
-					this.isLoading.next(false);
-					console.log('Getting user info failed.', error.message);
+					this.isLoading$$.next(false);
 					return of(null);
 				})
 			)
 			.subscribe((user: User | null) => {
 				if (user) {
-					this._router.navigate([ user.isAdmin ? '/admin/dashboard' : '/user/attendance' ]);
+					this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
 				}
 			});
 	}

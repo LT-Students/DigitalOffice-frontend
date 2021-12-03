@@ -4,9 +4,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextDirective } from '@app/directives/text.directive';
 import { DndDirective } from '@app/directives/dnd.directive';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
+import { MdePopoverModule } from '@material-extended/mde';
 import { MaterialModule } from './material.module';
 
-import { SelectComponent } from './component/select/select.component';
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
 import { SearchComponent } from './component/search/search.component';
@@ -14,12 +17,20 @@ import { HeaderComponent } from './component/header/header.component';
 import { InputComponent } from './component/input/input.component';
 import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
-import { HoursPipe } from './pipes/hours/hours.pipe';
+import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
+import { BreadcrumbsComponent } from './component/breadcrumbs/breadcrumbs.component';
+import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import { TitleDatepickerComponent } from './component/title-datepicker/title-datepicker.component';
+import { DateTimePipe } from './pipes/date-time';
+import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
+import { EmptyListComponent } from './component/empty-list/empty-list.component';
+import { PhoneInputComponent } from './component/phone-input/phone-input.component';
+import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-bar-routing.module';
 
 @NgModule({
 	declarations: [
-		SelectComponent,
 		ProfileImageComponent,
 		ContentContainerComponent,
 		SearchComponent,
@@ -29,33 +40,56 @@ import { CommentComponent } from './component/comment/comment.component';
 		StepperComponent,
 		TextDirective,
 		DndDirective,
-		HoursPipe,
-		CommentComponent
+		ButtonLoadingDirective,
+		SafeHtmlPipe,
+		PasswordComponent,
+		CommentComponent,
+		BreadcrumbsComponent,
+		ConfirmDialogComponent,
+		TitleDatepickerComponent,
+		AddEmployeeComponent,
+		DateTimePipe,
+		EmptyListComponent,
+		PhoneInputComponent,
 	],
 	imports: [
 		CommonModule,
 		RouterModule,
 		FormsModule,
 		ReactiveFormsModule,
-		MaterialModule
+		MaterialModule,
+		InfiniteScrollModule,
+		LoadingBarModule,
+		LoadingBarRoutingModule,
+		MdePopoverModule,
 	],
 	exports: [
 		CommonModule,
 		RouterModule,
 		MaterialModule,
+		InfiniteScrollModule,
+		MdePopoverModule,
 		ReactiveFormsModule,
 		FormsModule,
 		InputComponent,
-		SelectComponent,
 		ProfileImageComponent,
 		SearchComponent,
 		HeaderComponent,
 		TextDirective,
 		DndDirective,
+		ButtonLoadingDirective,
 		DatepickerComponent,
 		StepperComponent,
-		HoursPipe,
-		CommentComponent
+		SafeHtmlPipe,
+		PasswordComponent,
+		CommentComponent,
+		ConfirmDialogComponent,
+		BreadcrumbsComponent,
+		TitleDatepickerComponent,
+		DateTimePipe,
+		AddEmployeeComponent,
+		EmptyListComponent,
+		PhoneInputComponent,
 	],
 })
-export class SharedModule { }
+export class SharedModule {}

@@ -3,27 +3,30 @@
 import { AddImageRequest } from './add-image-request';
 import { EducationType } from './education-type';
 export interface CreateCertificateRequest {
-  educationType: EducationType;
-  image: AddImageRequest;
+	educationType: EducationType;
 
-  /**
-   * Certificate name.
-   */
-  name: string;
+	/**
+	 * Array of certificate images.
+	 */
+	images?: Array<AddImageRequest>;
 
-  /**
-   * Date of issue of the certificate.
-   */
-  receivedAt: string;
+	/**
+	 * Certificate name.
+	 */
+	name: string;
 
-  /**
-   * Name of school.
-   */
-  schoolName: string;
+	/**
+	 * Date of issue of the certificate.
+	 */
+	receivedAt: string;
 
-  /**
-   * Unique user identifier.
-   */
-  userId: string;
+	/**
+	 * Name of school.
+	 */
+	schoolName: string;
+
+	/**
+	 * Unique user identifier.
+	 */
+	userId: string;
 }
-

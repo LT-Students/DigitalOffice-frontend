@@ -2,62 +2,80 @@ import { Injectable } from '@angular/core';
 import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@data/api/rights-service/models/operation-result-response';
-import { RightResponse } from '@data/api/rights-service/models/right-response';
 import { IFindRequest } from '@app/types/find-request.interface';
-import { RolesResponse } from '@data/api/rights-service/models/roles-response';
-import { RoleResponse } from '@data/api/rights-service/models/role-response';
 import { CreateRoleRequest } from '@data/api/rights-service/models/create-role-request';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { RoleInfo } from '@data/api/rights-service/models/role-info';
+import { UserInfo } from '@data/api/rights-service/models/user-info';
+import { UserRightsApiService } from '@data/api/rights-service/services/user-rights-api.service';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
+import { RightInfo } from '@data/api/rights-service/models/right-info';
+import { UUID } from '@app/types/uuid.type';
 
 export interface IAddRightsForUserRequest {
-	/**
-	 * User global unique identifier.
-	 */
 	userId: string;
-
-	/**
-	 * Right identifiers.
-	 */
-	rightIds: number[];
+	body: number[];
 }
 
-export type IRemoveRightsFromUserRequest = IAddRightsForUserRequest
+export type IRemoveRightsFromUserRequest = IAddRightsForUserRequest;
 
 export interface IGetRoleRequest {
 	roleId: string;
 }
 
+export interface IRoleResponse {
+	role?: RoleInfo;
+	users?: Array<UserInfo>;
+}
+
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class RightsService {
 	constructor(
 		private _rightsService: RightsApiService,
 		private _roleService: RoleApiService,
-	) {
+		private _userRightsService: UserRightsApiService,
+		private _responseMessage: ResponseMessageModel
+	) {}
+
+	public addRightsForUser(params: IAddRightsForUserRequest): Observable<OperationResultResponse<any>> {
+		return this._userRightsService.create(params);
 	}
 
-	public addRightsForUser(params: IAddRightsForUserRequest): Observable<OperationResultResponse> {
-		return this._rightsService.addRightsForUser(params);
+	//TODO create enum for locales
+	public findRights(): Observable<OperationResultResponse<RightInfo[]>> {
+		return this._rightsService.getRightsList({ locale: 'ru' });
 	}
 
-	public findRights(): Observable<RightResponse[]>  {
-		return this._rightsService.getRightsList();
+	public removeRightsFromUser(params: IRemoveRightsFromUserRequest): Observable<OperationResultResponse<any>> {
+		return this._userRightsService.removeRightsFromUser(params);
 	}
 
-	public removeRightsFromUser(params: IRemoveRightsFromUserRequest): Observable<void> {
-		return this._rightsService.removeRightsFromUser(params);
+	public findRoles(params: IFindRequest): Observable<OperationResultResponse<RoleInfo[]>> {
+		return this._roleService.findRoles({
+			...params,
+			locale: 'ru',
+		});
 	}
 
-	public findRoles(params: IFindRequest): Observable<RolesResponse> {
-		return this._roleService.findRoles(params);
-	}
-
-	public getRole(params: IGetRoleRequest): Observable<RoleResponse> {
+	public getRole(params: IGetRoleRequest): Observable<OperationResultResponse<IRoleResponse>> {
 		return this._roleService.getRole(params);
 	}
 
-	public createRole(body: CreateRoleRequest): Observable<OperationResultResponse> {
-		return this._roleService.createRole({ body });
+	public createRole(body: CreateRoleRequest): Observable<OperationResultResponse<any>> {
+		return this._roleService
+			.createRole({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Rights, MessageMethod.Create));
+	}
+
+	public editRoleRightsSet(roleId: UUID, rights: number[]): Observable<OperationResultResponse<any>> {
+		return this._roleService.editRoleRights({
+			body: {
+				roleId: roleId,
+				rights: rights,
+			},
+		});
 	}
 }

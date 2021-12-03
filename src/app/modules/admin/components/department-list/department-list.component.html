@@ -1,64 +1,79 @@
-<div class="navigation">
-	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span>
-		<mat-icon>chevron_right</mat-icon>
-	</span>
-	<a class="navigation__link">Список департаментов</a>
-</div>
+<do-breadcrumbs
+	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Список департаментов' }]"
+></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Департаменты</h3>
 		<button mat-flat-button color="accent" (click)="onAddDepartmentClick()">+ Создать департамент</button>
 	</div>
-	<table class="table" matSort (matSortChange)="sortData($event)">
-		<colgroup>
-			<col class="column column_width_m" />
-			<col class="column column_width_m" />
-			<col class="column column_width_m" />
-			<col class="column column_width_sm" />
-		</colgroup>
-		<thead>
-			<tr class="row">
-				<th class="cell heading" mat-sort-header="name">
-					<p class="heading__content">Наименование</p>
-				</th>
-				<th class="cell heading" mat-sort-header="description">
-					<p class="heading__content">Описание</p>
-				</th>
-				<th class="cell heading" mat-sort-header="director">
-					<p class="heading__content">Директор</p>
-				</th>
-				<th class="cell heading" mat-sort-header="amount">
-					<p class="heading__content">Количество сотрудников</p>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let departmentInfo of departmentsInfo" (click)="onDepartmentClick(departmentInfo.id)" class="row row_activable">
-				<td class="cell">
-					<ng-container *ngIf="departmentInfo?.name; else empty">
-						<p class="cell__content cell__content_ellipsissed">{{ departmentInfo.name }}</p>
-					</ng-container>
-				</td>
-				<td class="cell">
-					<ng-container *ngIf="departmentInfo?.description; else empty">
-						<p class="cell__content cell__content_ellipsissed">{{ departmentInfo.description }}</p>
-					</ng-container>
-				</td>
-				<td class="cell">
-					<ng-container *ngIf="departmentInfo?.director; else empty">
-						<p class="cell__content cell__content_ellipsissed">
-							{{ departmentInfo.director?.firstName }} {{ departmentInfo.director?.lastName }}
-						</p>
-					</ng-container>
-				</td>
-				<td class="cell">
-					<p class="">{{ departmentInfo.countUsers }}</p>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"> </mat-paginator>
+	<ng-container *ngIf="departments$ | async as departments">
+		<table
+			*ngIf="departments.totalCount ?? 0 > 0; else emptyList"
+			class="table"
+			matSort
+			(matSortChange)="sortData($event)"
+		>
+			<colgroup>
+				<col class="column column_width_m" />
+				<col class="column column_width_m" />
+				<col class="column column_width_m" />
+				<col class="column column_width_sm" />
+			</colgroup>
+			<thead>
+				<tr class="row">
+					<th class="cell heading" mat-sort-header="name">
+						<p class="heading__content">Наименование</p>
+					</th>
+					<th class="cell heading" mat-sort-header="description">
+						<p class="heading__content">Описание</p>
+					</th>
+					<th class="cell heading" mat-sort-header="director">
+						<p class="heading__content">Директор</p>
+					</th>
+					<th class="cell heading" mat-sort-header="amount">
+						<p class="heading__content">Количество сотрудников</p>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					*ngFor="let department of departments.body"
+					class="row row_activable"
+					[routerLink]="'/departments/' + department?.id"
+				>
+					<td class="cell">
+						<ng-container *ngIf="department?.name; else empty">
+							<p class="cell__content cell__content_ellipsissed">{{ department.name }}</p>
+						</ng-container>
+					</td>
+					<td class="cell">
+						<ng-container *ngIf="department?.description; else empty">
+							<p class="cell__content cell__content_ellipsissed">{{ department.description }}</p>
+						</ng-container>
+					</td>
+					<td class="cell">
+						<ng-container *ngIf="department?.director; else empty">
+							<p class="cell__content cell__content_ellipsissed">
+								{{ department.director?.firstName }} {{ department.director?.lastName }}
+							</p>
+						</ng-container>
+					</td>
+					<td class="cell">
+						<p class="">{{ department.countUsers }}</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-template #emptyList>
+			<do-empty-list [emptyMessage]="'Нет данных о департаментах'"></do-empty-list>
+		</ng-template>
+		<mat-paginator
+			[length]="departments.totalCount ?? 0"
+			[pageSizeOptions]="[10, 25, 50]"
+			(page)="onPageChange($event)"
+		>
+		</mat-paginator>
+	</ng-container>
 </mat-card>
 
 <ng-template #empty>

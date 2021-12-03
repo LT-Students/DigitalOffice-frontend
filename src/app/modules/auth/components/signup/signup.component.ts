@@ -1,28 +1,22 @@
-//@ts-nocheck
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
-import { catchError, switchMap, tap } from 'rxjs/operators';
-import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { UserService } from '@app/services/user/user.service';
+import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
 import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { of, throwError } from 'rxjs';
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
-import { CompanyService } from '@app/services/company/company.service';
+import { CurrentUserService } from '@app/services/current-user.service';
 
 @Component({
 	selector: 'do-signup',
 	templateUrl: './signup.component.html',
 	styleUrls: ['./signup.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignupComponent implements OnInit {
-	public portalName: string;
-	public userId: string;
+export class SignupComponent {
 	public loginForm: FormGroup;
-	public isWaiting = false;
+	public isWaiting$$: BehaviorSubject<boolean>;
 	public get login() {
 		return this.loginForm.get('login');
 	}
@@ -33,37 +27,36 @@ export class SignupComponent implements OnInit {
 
 	constructor(
 		private _authService: AuthService,
-		private _userService: UserService,
-		private _companyService: CompanyService,
+		private _currentUserService: CurrentUserService,
 		private _activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private _fb: FormBuilder
 	) {
-		this.portalName = this._companyService.getPortalName();
-		this.userId = null;
+		this.isWaiting$$ = new BehaviorSubject<boolean>(false);
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
 			password: ['', Validators.required],
 		});
 	}
 
-	ngOnInit(): void {
-		this._activatedRoute.queryParams.subscribe((params: Params) => {
-			console.log(params);
-			this.userId = params['userId'];
-		});
-	}
-
 	public signUp(): void {
-		this.isWaiting = true;
-		const { login, password } = this.loginForm.getRawValue();
-		const createCredentialsRequest: CreateCredentialsRequest = { login, password, userId: this.userId };
+		this.isWaiting$$.next(true);
+		this._activatedRoute.queryParams
+			.pipe(
+				switchMap((params: Params) => {
+					const { login, password } = this.loginForm.getRawValue();
+					const createCredentialsRequest: CreateCredentialsRequest = {
+						login,
+						password,
+						userId: params['userId'],
+					};
 
-		this._authService.signUp$(createCredentialsRequest).pipe(
-				switchMap(({ body: credentialResponse }: { body: AuthenticationResponse }) => {
-					this.isWaiting = false;
-					return this._userService.getUserSetCredentials(credentialResponse.userId);
+					return this._authService.signUp$(createCredentialsRequest);
 				}),
+				switchMap(({ body: credentialResponse }) =>
+					this._currentUserService.getUserOnLogin(credentialResponse?.userId)
+				),
+				tap((user) => this._currentUserService.setUser(user)),
 				catchError((error: string) => {
 					console.log(error);
 					this.loginForm.setErrors({
@@ -72,14 +65,15 @@ export class SignupComponent implements OnInit {
 							error: error,
 						},
 					});
-					this.isWaiting = false;
-					return of(null);
-				})
-			).subscribe((user: User) => {
-					const nextUrl: string = (user.isAdmin) ? '/admin/dashboard' : '/user/attendance';
-					console.log(user.getFullName);
+					return throwError(error);
+				}),
+				finalize(() => this.isWaiting$$.next(false))
+			)
+			.subscribe({
+				next: (user: User) => {
+					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : '/user/attendance';
 					this._router.navigate([nextUrl]);
-				}
-			);
+				},
+			});
 	}
 }

@@ -1,13 +1,14 @@
-//@ts-nocheck
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { AuthGuard } from '@app/guards/auth.guard';
+import { SignupGuard } from '@app/guards/signup.guard';
 import { RouteType } from '../../app-routing.module';
 import { LoginComponent } from './components/login/login.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { AuthComponent } from './components/auth/auth.component';
-import { AuthGuard } from '@app/guards/auth.guard';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 const authRoutes: Routes = [
 	{
@@ -19,10 +20,11 @@ const authRoutes: Routes = [
 				pathMatch: 'full',
 				redirectTo: 'login',
 			},
-			{ path: 'login', component: LoginComponent, canActivate: [AuthGuard], },
+			{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
 			{ path: 'forgotpassword', component: ForgotPasswordComponent },
-			{ path: 'firstlogin', component: SignupComponent },
-		]
+			{ path: 'reset', component: ResetPasswordComponent },
+			{ path: 'firstlogin', component: SignupComponent, canActivate: [SignupGuard] },
+		],
 	},
 	{ path: '**', redirectTo: RouteType.AUTH, pathMatch: 'full' },
 ];

@@ -1,9 +1,6 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
@@ -15,77 +12,61 @@ import {
 	UserStatus,
 } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user/user.service';
-import { NetService } from '@app/services/net.service';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-// import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 import { RightsService } from '@app/services/rights/rights.service';
-import { RolesResponse } from '@data/api/rights-service/models/roles-response';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
-import { FindResultResponseDepartmentInfo } from '@data/api/company-service/models/find-result-response-department-info';
-import { FindResultResponsePositionInfo } from '@data/api/company-service/models/find-result-response-position-info';
+import { FindResultResponseDepartmentInfo } from '@data/api/department-service/models/find-result-response-department-info';
+import { FindResultResponsePositionInfo } from '@data/api/position-service/models/find-result-response-position-info';
 import { DoValidators } from '@app/validators/do-validators';
-
-export const DATE_FORMAT = {
-	parse: {
-		dateInput: 'LL',
-	},
-	display: {
-		dateInput: 'd MMMM y',
-		monthYearLabel: 'YYYY',
-	},
-};
+import { PositionService } from '@app/services/position/position.service';
+import { DepartmentService } from '@app/services/department/department.service';
+import { OfficeService } from '@app/services/company/office.service';
 
 @Component({
 	selector: 'do-new-employee',
 	templateUrl: './new-employee.component.html',
 	styleUrls: ['./new-employee.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [
-		{
-			provide: DateAdapter,
-			useClass: MomentDateAdapter,
-			deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-		},
-		{ provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
-	],
 })
-export class NewEmployeeComponent implements OnInit, OnDestroy {
+export class NewEmployeeComponent implements OnDestroy {
 	public message: string;
 	//public imagePath;
 	//public imgURL: any;
 	public userForm: FormGroup;
 	public position$: Observable<FindResultResponsePositionInfo>;
 	public department$: Observable<FindResultResponseDepartmentInfo>;
-	public roles: RoleInfo[];
-	public offices: OfficeInfo[];
+	public roles$: Observable<RoleInfo[]>;
+	public offices$: Observable<OfficeInfo[]>;
+	public loading$$: BehaviorSubject<boolean>;
 
 	private _unsubscribe$: Subject<void>;
 
 	constructor(
 		private _formBuilder: FormBuilder,
-		private _netService: NetService,
 		private _userService: UserService,
-		private _matSnackBar: MatSnackBar,
 		private _dialogRef: MatDialogRef<any>,
-		private _rightsService: RightsService
+		private _rightsService: RightsService,
+		private _positionService: PositionService,
+		private _departmentService: DepartmentService,
+		private _officeService: OfficeService
 	) {
 		this.message = '';
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.userForm = this._initForm();
-		this.position$ = new Observable(undefined);
-		this.department$ = new Observable(undefined);
-		this.roles = [];
-		this.offices = [];
+		this.position$ = this._positionService.findPositions({ skipcount: 0, takecount: 500 });
+		this.department$ = this.department$ = this._departmentService.findDepartments({
+			skipCount: 0,
+			takeCount: 500,
+		});
+		this.roles$ = this._rightsService
+			.findRoles({ skipCount: 0, takeCount: 500 })
+			.pipe(map((res) => res.body ?? []));
+		this.offices$ = this._officeService
+			.findOffices({ skipCount: 0, takeCount: 500 })
+			.pipe(map((res) => res.body ?? []));
 		this._unsubscribe$ = new Subject<void>();
-	}
-
-	public ngOnInit(): void {
-		this.getPositions();
-		this.getDepartments();
-		this.getRoles();
-		this.getOffices();
-		this._initForm();
 	}
 
 	public ngOnDestroy(): void {
@@ -93,50 +74,21 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		this._unsubscribe$.complete();
 	}
 
-	public getPositions(): void {
-		this.position$ = this._netService.getPositionsList({ skipCount: 0, takeCount: 100 });
-	}
-
-	public getDepartments(): void {
-		this.department$ = this._netService.getDepartmentsList({ skipCount: 0, takeCount: 100 });
-	}
-
-	public getRoles(): void {
-		this._rightsService.findRoles({ skipCount: 0, takeCount: 50 }).subscribe(({ roles }: RolesResponse) => {
-			this.roles = roles ?? [];
-		});
-	}
-
-	public getOffices(): void {
-		this._netService.getOfficesList({ skipCount: 0, takeCount: 100 }).subscribe(
-			({ body: offices }) => {
-				this.offices = offices ?? [];
-			},
-			(error) => console.log(error)
-		);
-	}
-
 	public createEmployee(): void {
+		this.loading$$.next(true);
 		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
 
 		this._userService
 			.createUser(params)
-			.pipe(takeUntil(this._unsubscribe$))
+			.pipe(
+				finalize(() => this.loading$$.next(false)),
+				takeUntil(this._unsubscribe$)
+			)
 			.subscribe(
 				(result: OperationResultResponse) => {
-					if (result.errors && result.errors.length) {
-						const message = result.errors.join('\n');
-						this._matSnackBar.open(message, 'Закрыть');
-					}
-					this._matSnackBar.open('Пользователь успешно создан', 'Закрыть', { duration: 3000 });
 					this._dialogRef.close(result);
 				},
 				(error: OperationResultResponse | HttpErrorResponse) => {
-					let message = error && 'errors' in error ? error.errors?.[0] : 'error' in error ? error.error.message : 'Упс! Что-то пошло не так.';
-					if (error.status === 409) {
-						message = 'Пользователь с такой электронной почтой уже существует';
-					}
-					this._matSnackBar.open(message, 'Закрыть');
 					throw error;
 				}
 			);
@@ -146,10 +98,6 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 		this.userForm.patchValue({
 			rate: +this.userForm.get('rate')?.value + step,
 		});
-	}
-
-	public onCancelClick() {
-		return this._matSnackBar._openedSnackBarRef?.dismissWithAction();
 	}
 
 	private _initForm(): FormGroup {
@@ -176,7 +124,7 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			},
 		];
 
-		const params: CreateUserRequest = {
+		return {
 			firstName: this.userForm.get('firstName')?.value?.trim(),
 			lastName: this.userForm.get('lastName')?.value?.trim(),
 			middleName: this.userForm.get('middleName')?.value?.trim(),
@@ -191,7 +139,5 @@ export class NewEmployeeComponent implements OnInit, OnDestroy {
 			officeId: this.userForm.get('officeId')?.value,
 			roleId: this.userForm.get('roleId')?.value,
 		};
-
-		return params;
 	}
 }

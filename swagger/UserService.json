@@ -1,13 +1,18 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.0",
+    "version": "1.4.0.4",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
   "servers": [
     {
-      "url": "https://user.ltdo.xyz"
+      "url": "https://user.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://user.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {
@@ -128,7 +133,16 @@
         {
           "name": "includeimages",
           "in": "query",
-          "description": "Include images content in answer.",
+          "description": "Include certificate and achievments images content in answer.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeuserimages",
+          "in": "query",
+          "description": "Include user images content in answer.",
           "schema": {
             "type": "boolean"
           },
@@ -151,8 +165,8 @@
         "operationId": "getUser",
         "description": "Returns user information.",
         "responses": {
-          "200": {
-            "description": "Ok.",
+          "201": {
+            "description": "Created.",
             "content": {
               "application/json": {
                 "schema": {
@@ -162,11 +176,11 @@
             }
           },
           "400": {
-            "description": "Bad Request.\n* You must specify 'userId' or|and 'name' or|and 'email'.",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -176,7 +190,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -200,16 +214,6 @@
           "$ref": "#/components/parameters/securityToken"
         },
         {
-          "name": "departmentid",
-          "in": "query",
-          "description": "Specific department of users.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": false
-        },
-        {
           "name": "skipCount",
           "in": "query",
           "description": "Number of entries to skip.",
@@ -226,6 +230,54 @@
             "type": "integer"
           },
           "required": true
+        },
+        {
+          "name": "includedeactivated",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includedepartment",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeposition",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeoffice",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includerole",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeavatar",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
         }
       ],
       "get": {
@@ -391,63 +443,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/disable": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "userId",
-          "in": "query",
-          "description": "User global unique identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "operationId": "disableUser",
-        "description": "Delete the specified user by id. The user must have right - Add/Edit/Remove users.",
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Disable user operation success (boolean) status will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
                   "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
@@ -525,6 +521,39 @@
         }
       }
     },
+    "/credentials/checkpending": {
+      "parameters": [
+        {
+          "name": "userid",
+          "in": "query",
+          "description": "Unique user identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Credentials"
+        ],
+        "operationId": "checkPendingCredentials",
+        "description": "This endpoint must be used only for user first time login operation.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/password/generate": {
       "parameters": [
         {
@@ -533,7 +562,7 @@
       ],
       "get": {
         "tags": [
-          "Credentials"
+          "Password"
         ],
         "operationId": "generatePassword",
         "description": "Returns randomly generated password.",
@@ -554,9 +583,14 @@
       }
     },
     "/password/change": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "post": {
         "tags": [
-          "Credentials"
+          "Password"
         ],
         "operationId": "changePassword",
         "description": "Change user password.",
@@ -581,7 +615,7 @@
             }
           },
           "400": {
-            "description": "Bad Request.\n* Login or new password empty. ",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -591,7 +625,7 @@
             }
           },
           "403": {
-            "description": "Forbidden.\n* Invalid user data.",
+            "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
@@ -601,7 +635,67 @@
             }
           },
           "404": {
-            "description": "Not Found.\n* User credentionals was not found.",
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/password/reconstruct": {
+      "post": {
+        "tags": [
+          "Password"
+        ],
+        "operationId": "reconstructPassword",
+        "description": "Change user password use secret from email.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReconstructPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Change user password operation success (boolean) status will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -627,7 +721,7 @@
       ],
       "get": {
         "tags": [
-          "Credentials"
+          "Password"
         ],
         "operationId": "forgotPassword",
         "description": "Initiates sending a email with instructions on how to change the user's password.",
@@ -710,6 +804,16 @@
           },
           "403": {
             "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict.\n* Token was not entered.\n* Invalid token.\n* User has not rights.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -1082,8 +1186,8 @@
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Ok.",
+          "201": {
+            "description": "Created.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1097,7 +1201,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1107,22 +1211,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Conflict.\n* Position with this name already exists.",
-            "content": {
-              "application/json": {
-                "schema": {
                   "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           }
-
         }
       }
     },
@@ -1173,7 +1266,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1183,7 +1276,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1193,7 +1286,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1239,6 +1332,72 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "createImage",
+        "description": "The method attempts to add image to user/certificate/education. The user must have the rights to add images to other users - Add/Edit/Remove users.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. Image was added to entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
@@ -1250,6 +1409,494 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Bad Gateway. Something goes wrong on the server's side",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "entityId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "required": true
+        },
+        {
+          "name": "entityType",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "description": "Type of the entity",
+            "enum": [
+              "user",
+              "certificate",
+              "education"
+            ]
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "GetImages",
+        "description": "This method is used to get all images, that belong to entity",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Images were not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "removeImages",
+        "description": "The method attempts to remove images from entity",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveImagesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/editavatar": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "userId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "required": true
+        },
+        {
+          "name": "imageId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "changeAvatar",
+        "description": "This method is used to change user's avatar",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/skill/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "skill"
+        ],
+        "operationId": "createSkill",
+        "description": "The method attempts to add skill. The sender must have the rights 'Add/Edit/Remove users' or must be an admin to create skill.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSkillRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. Skill was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. Sender has no rights and not an admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict. Skill with that name already exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/achievement/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Achievement"
+        ],
+        "operationId": "createAchievement",
+        "description": "The method attempts to create acievement. The sender must have the rights 'Add/Edit/Remove users' or must be an admin to create achievement.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAchievementRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. Achievement was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/achievement/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/achievementId"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Achievement"
+        ],
+        "operationId": "editAchievement",
+        "description": "Edit the specified achievement by id.\n* The user must have to be owner or has right.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditAchievementRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/achievement/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/achievementId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Achievement"
+        ],
+        "operationId": "getAchievement",
+        "responses": {
+          "200": {
+            "description": "Successfully returned achievment information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseAchievementResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/achievement/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of users to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Achievement"
+        ],
+        "operationId": "findAchievement",
+        "description": "Returns all achievement information by filter.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned list of achievement.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FindResultResponseAchievementInfo"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BadRequest"
                 }
               }
             }
@@ -1358,7 +2005,6 @@
             }
           }
         }
-
       },
       "CreateUserRequest": {
         "type": "object",
@@ -1623,20 +2269,6 @@
               "format": "float",
               "example": 0.25
             }
-          },
-          {
-            "op": "add",
-            "path": "/AvatarImage",
-            "value": {
-              "$ref": "#/components/schemas/AddImageRequest"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/AvatarImage",
-            "value": {
-              "$ref": "#/components/schemas/AddImageRequest"
-            }
           }
         ],
         "items": {
@@ -1654,9 +2286,7 @@
             "type": "string",
             "description": "The operation to be performed.",
             "enum": [
-              "add",
-              "replace",
-              "delete"
+              "replace"
             ]
           },
           "path": {
@@ -1669,14 +2299,8 @@
               "/Gender",
               "/DateOfBirth",
               "/City",
-              "/AvatarImage",
               "/Status",
               "/StartWorkingAt",
-              "/Rate",
-              "/DepartmentId",
-              "/PositionId",
-              "/RoleId",
-              "/OfficeId",
               "/About",
               "/IsActive"
             ]
@@ -1771,7 +2395,8 @@
             "nullable": true
           },
           "Rate": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "About": {
             "type": "string",
@@ -1836,6 +2461,20 @@
           "Name": {
             "type": "string",
             "nullable": true
+          }
+        }
+      },
+      "ImageConsist": {
+        "type": "object",
+        "properties": {
+          "Content": {
+            "type": "string",
+            "nullable": false,
+            "description": "Image file content in base64 encoded string."
+          },
+          "Extension": {
+            "type": "string",
+            "nullable": false
           }
         }
       },
@@ -1909,6 +2548,12 @@
           "Address": {
             "type": "string",
             "nullable": false
+          },
+          "Longitude": {
+            "type": "number"
+          },
+          "Latitude": {
+            "type": "number"
           }
         }
       },
@@ -1986,6 +2631,12 @@
           },
           "Status": {
             "type": "string"
+          },
+          "ShortName": {
+            "type": "string"
+          },
+          "ShortDescription": {
+            "type": "string"
           }
         }
       },
@@ -1998,10 +2649,31 @@
             "format": "uuid",
             "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
           },
-          "Secret": {
+          "Password": {
+            "description": "Old user password.",
+            "type": "string",
+            "example": "22cf2f"
+          },
+          "NewPassword": {
+            "description": "New user password.",
+            "type": "string",
+            "example": "Mypassword"
+          }
+        }
+      },
+      "ReconstructPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "UserId": {
+            "description": "Unique user identifier.",
             "type": "string",
             "format": "uuid",
             "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+          },
+          "Secret": {
+            "description": "Secret from email.",
+            "type": "string",
+            "example": "22cf2f"
           },
           "Login": {
             "description": "User login.",
@@ -2038,6 +2710,24 @@
           "Body": {
             "type": "object",
             "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseImagesIds": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/ImagesIds"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -2100,8 +2790,7 @@
         "enum": [
           "FullSuccess",
           "PartialSuccess",
-          "Failed",
-          "Conflict"
+          "Failed"
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"
@@ -2254,6 +2943,13 @@
             "type": "string",
             "format": "date",
             "example": "2021-01-21T00:00:00.000Z"
+          },
+          "Images": {
+            "description": "Array of education images.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddImageRequest"
+            }
           }
         }
       },
@@ -2307,6 +3003,7 @@
       "AddImageRequest": {
         "type": "object",
         "required": [
+          "Name",
           "Content",
           "Extension"
         ],
@@ -2319,12 +3016,16 @@
           "Content": {
             "description": "Image content.",
             "type": "string",
-            "format": "byte"
+            "format": "base64"
           },
           "Extension": {
             "description": "Image extension.",
             "type": "string",
             "example": ".png"
+          },
+          "IsCurrentAvatar": {
+            "description": "shows whether the image is the current avatar or not",
+            "default": false
           }
         }
       },
@@ -2335,8 +3036,7 @@
           "Name",
           "SchoolName",
           "ReceivedAt",
-          "EducationType",
-          "Image"
+          "EducationType"
         ],
         "properties": {
           "UserId": {
@@ -2364,8 +3064,12 @@
           "EducationType": {
             "$ref": "#/components/schemas/EducationType"
           },
-          "Image": {
-            "$ref": "#/components/schemas/AddImageRequest"
+          "Images": {
+            "description": "Array of certificate images.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddImageRequest"
+            }
           }
         }
       },
@@ -2503,17 +3207,31 @@
         "example": [
           {
             "op": "replace",
-            "path": "/value",
+            "path": "/Type",
             "value": {
               "type": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Value",
+            "value": {
+              "type": "string",
+              "enum": [
+                "Skype",
+                "Phone",
+                "Email",
+                "Telegram",
+                "Twitter"
+              ]
             }
           }
         ],
         "items": {
-          "$ref": "#/components/schemas/PatchCommunicationDocument"
+          "$ref": "#/components/schemas/CommunicationPatchDocument"
         }
       },
-      "PatchCommunicationDocument": {
+      "CommunicationPatchDocument": {
         "type": "object",
         "required": [
           "op",
@@ -2541,6 +3259,230 @@
             "description": "The value to be used within the operations."
           }
         }
+      },
+      "CreateImageRequest": {
+        "type": "object",
+        "required": [
+          "EntityId",
+          "EntityType",
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "EntityId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique entity (user/certificate/education) identifier.",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "EntityType": {
+            "type": "string",
+            "description": "Type of the entity",
+            "enum": [
+              "user",
+              "certificate",
+              "education"
+            ]
+          },
+          "Name": {
+            "type": "string",
+            "description": "Image name",
+            "nullable": true,
+            "example": "Cat1"
+          },
+          "Content": {
+            "description": "Image content.",
+            "type": "string",
+            "format": "base64"
+          },
+          "Extension": {
+            "description": "Image extension.",
+            "type": "string",
+            "example": ".png"
+          },
+          "IsCurrentAvatar": {
+            "description": "shows whether the image is the current avatar or not",
+            "default": false
+          }
+        }
+      },
+      "RemoveImagesRequest": {
+        "type": "object",
+        "required": [
+          "EntityId",
+          "EntityType",
+          "ImagesIds"
+        ],
+        "properties": {
+          "EntityId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique entity (user/certificate/education) identifier.",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "EntityType": {
+            "type": "string",
+            "description": "Type of the entity",
+            "enum": [
+              "user",
+              "certificate",
+              "education"
+            ]
+          },
+          "ImagesIds": {
+            "$ref": "#/components/schemas/ImagesIds"
+          }
+        }
+      },
+      "ImagesIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "uuid"
+        }
+      },
+      "CreateSkillRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Unique name of the skill.",
+            "type": "string",
+            "nullable": false,
+            "example": "Frontend"
+          }
+        }
+      },
+      "CreateAchievementRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Unique name of the achievement.",
+            "type": "string",
+            "nullable": false,
+            "example": "Frontend"
+          },
+          "Description": {
+            "description": "Description of the achievment.",
+            "type": "string",
+            "nullable": true,
+            "example": "Frontend"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageConsist"
+          }
+        }
+      },
+      "EditAchievementRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Unique name of the achievement.",
+            "type": "string",
+            "nullable": false,
+            "example": "Frontend"
+          },
+          "Description": {
+            "description": "Description of the achievment.",
+            "type": "string",
+            "nullable": true,
+            "example": "Frontend"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageConsist"
+          }
+        }
+      },
+      "OperationResultResponseAchievementResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "image": {
+                "$ref": "#/components/schemas/ImageConsist"
+              },
+              "createdatutc": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "createdby": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseAchievementInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter achievement."
+          },
+          "Body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "image": {
+                "$ref": "#/components/schemas/ImageConsist"
+              },
+              "createdatutc": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              }
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       }
     },
     "parameters": {
@@ -2551,6 +3493,16 @@
         "schema": {
           "type": "string",
           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
+        },
+        "required": true
+      },
+      "achievementId": {
+        "name": "achievmentId",
+        "in": "query",
+        "description": "Achievement global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
         },
         "required": true
       }

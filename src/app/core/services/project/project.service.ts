@@ -1,45 +1,73 @@
 import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
-import { ProjectRequest } from '@data/api/project-service/models/project-request';
-import { Observable, of } from 'rxjs';
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { Observable } from 'rxjs';
 import {
-	AddUsersToProjectRequest,
 	EditProjectRequest,
-	FindResponseProjectInfo,
-	OperationResultResponse,
-	OperationResultResponseProjectResponse,
+	ImageContent,
+	ImageInfo,
+	// ProjectFileInfo,
+	ProjectInfo,
+	ProjectStatusType,
+	ProjectUserRoleType,
+	UserInfo,
 } from '@data/api/project-service/models';
-import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { UserApiService } from '@data/api/project-service/services/user-api.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
-import { positions, projects } from '../../../modules/employee/mock';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface IGetProjectRequest {
-
-	/**
-	 * Project global unique identifier.
-	 */
 	projectId: string;
 	includeusers?: boolean;
 	shownotactiveusers?: boolean;
 	includefiles?: boolean;
+	includeDescription?: boolean;
+	includeShortDescription?: boolean;
+}
+
+export interface IGetProjectResponse {
+	project?: ProjectInfo;
+	users?: Array<UserInfo>;
+	// files?: Array<ProjectFileInfo>;
+	images?: Array<ImageInfo>;
 }
 
 export interface IEditProjectRequest {
-	/**
-	 * Project global unique identifier.
-	 */
 	projectId: string;
-	body: EditProjectRequest
+	body: EditProjectRequest;
+}
+
+export interface ICreateUserRequest {
+	role: ProjectUserRoleType;
+	userId: string;
+}
+
+export interface IAddUsersToProjectRequest {
+	projectId: string;
+	users: Array<ICreateUserRequest>;
 }
 
 export interface IRemoveUsersFromProjectRequest {
-	/**
-	 * Project global unique identifier.
-	 */
 	projectId: string;
-	userIds: UUID[];
+	body: UUID[];
+}
+
+export interface ICreateProjectRequest {
+	departmentId?: string;
+	description?: string;
+	name: string;
+	projectImages: Array<ImageContent>;
+	shortDescription?: string;
+	shortName?: string;
+	status: ProjectStatusType;
+	users: Array<ICreateUserRequest>;
+}
+
+export interface IFindProjects {
+	skipCount: number;
+	takeCount: number;
+	departmentId?: string;
 }
 
 @Injectable({
@@ -48,50 +76,33 @@ export interface IRemoveUsersFromProjectRequest {
 export class ProjectService {
 	constructor(
 		private _projectService: ProjectApiService,
-		private _userService: UserApiService
-	) { }
+		private _userService: UserApiService,
+		private _responseMessage: ResponseMessageModel
+	) {}
 
-	public findProjects(skipPages = 0, pageSize = 10): Observable<FindResponseProjectInfo> {
-		return this._projectService.findProjects({ skipCount: skipPages, takeCount: pageSize });
-		// .pipe(switchMap((projects: FindResponseProjectInfo) => of(projects.body)));
+	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
+		return this._projectService.findProjects(params);
 	}
 
-	public getProject(params: IGetProjectRequest): Observable<OperationResultResponseProjectResponse> {
+	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<IGetProjectResponse>> {
 		return this._projectService.getProject(params);
 	}
 
-	public createProject(body: ProjectRequest): Observable<OperationResultResponse> {
-		return this._projectService.createProject({ body });
+	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
+		return this._projectService
+			.createProject({ body })
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Project, MessageMethod.Create));
 	}
 
-	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse> {
+	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService.editProject(params);
 	}
 
-	public addUsersToProject(body: AddUsersToProjectRequest): Observable<void> {
-		return this._userService.addUsersToProject({ body });
+	public addUsersToProject(body: IAddUsersToProjectRequest): Observable<OperationResultResponse<{}>> {
+		return this._userService.createProjectUsers({ body });
 	}
 
-	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<void> {
-		return this._userService.removeUsersFromProject(params);
-	}
-
-	/*TODO: переделать, когда бэк сделает корректную схему для findProjects */
-	// public getUserProjectsInfo(projects: ProjectInfo[]): Observable<ProjectInfo[]> {
-	// 	return forkJoin(
-	// 		projects.map((project: ProjectInfo) => {
-	// 			return this._projectService
-	// 				.getProject({ projectId: project.id })
-	// 				.pipe(switchMap((projectExpanded: ProjectResponse) => of(projectExpanded.project)));
-	// 		})
-	// 	);
-	// }
-
-	public getMockUserProjectsInfo(): Observable<ProjectInfo[]> {
-		return of(projects);
-	}
-
-	public getProjectPositions(): Observable<PositionInfo[]> {
-		return of(positions);
+	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<OperationResultResponse<{}>> {
+		return this._userService.removeProjectUsers(params);
 	}
 }

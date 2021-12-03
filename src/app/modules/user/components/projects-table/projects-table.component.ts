@@ -1,10 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 
-import { ProjectService } from '@app/services/project/project.service';
+import { IFindProjects, ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
-import { RouteType } from '../../../../app-routing.module';
+import { iif, Observable, ReplaySubject } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
 @Component({
 	selector: 'do-projects-table',
@@ -12,48 +14,25 @@ import { RouteType } from '../../../../app-routing.module';
 	styleUrls: ['./projects-table.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectsTableComponent implements OnInit {
-	public projectList: ProjectInfo[];
+export class ProjectsTableComponent {
+	public projectList$: Observable<OperationResultResponse<ProjectInfo[]>>;
+	public _projectListParams: ReplaySubject<IFindProjects>;
 
-	public totalCount: number;
-	public pageSize: number;
-	public pageIndex: number;
-
-	constructor(
-		private _projectService: ProjectService,
-		private _router: Router,
-		private _cdr: ChangeDetectorRef
-	) {
-		this.projectList = [];
-		this.totalCount = 0;
-		this.pageSize = 10;
-		this.pageIndex = 0;
-		this.projectList = [];
-	}
-
-	public ngOnInit(): void {
-		this._getProjectList();
+	constructor(private _projectService: ProjectService, private _route: ActivatedRoute) {
+		this._projectListParams = new ReplaySubject<IFindProjects>(1);
+		this.projectList$ = this._projectListParams.pipe(
+			startWith(null),
+			switchMap((params: IFindProjects | null) =>
+				iif(
+					() => !!params,
+					this._projectService.findProjects(params as IFindProjects),
+					this._route.data.pipe(map((response) => response.projects))
+				)
+			)
+		);
 	}
 
 	public onPageChange(event: PageEvent): void {
-		this.pageSize = event.pageSize;
-		this.pageIndex = event.pageIndex;
-		this._getProjectList();
-	}
-
-	public onProjectClick(projectId: string | undefined): void {
-		this._router.navigate([`${RouteType.PROJECT}/${projectId}`]);
-	}
-
-	public onAddProjectClick(): void {
-		this._router.navigate(['admin/new-project']);
-	}
-
-	private _getProjectList(): void {
-		this._projectService.findProjects(this.pageIndex * this.pageSize, this.pageSize).subscribe((result) => {
-			this.totalCount = result.totalCount ?? 0;
-			this.projectList = result.body ?? [];
-			this._cdr.detectChanges();
-		});
+		this._projectListParams.next({ skipCount: event.pageIndex * event.pageSize, takeCount: event.pageSize });
 	}
 }

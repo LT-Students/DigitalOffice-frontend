@@ -1,17 +1,17 @@
 <div class="projects-table">
 	<h3 class="projects-table__card-title" doUnderline underlinedSize="sm">Проекты</h3>
 	<ng-container *ngFor="let section of projects$ | async">
-		<section *ngIf="section.projects.length > 0" class="projects-table__section">
+		<section class="projects-table__section">
 			<h3 class="projects-table__group-title">
 				{{ section.name }}
 				<span class="mat-h3 primary">{{ section.projects.length | i18nPlural: section.plural }}</span>
 			</h3>
-			<div class="projects-table__container">
+			<div *ngIf="section.projects.length > 0; else emptyList" class="projects-table__container">
 				<div *ngFor="let project of section.projects" class="projects-table__project">
 					<h4>{{ project.name }}</h4>
 					<!--          <p>project.consumer.name</p>-->
 					<p class="projects-table__description">
-						{{ project.description ? project.description : 'Описание отсутствует' }}
+						{{ project.shortDescription ? project.shortDescription : 'Описание отсутствует' }}
 					</p>
 					<!--          <p>Направление</p>-->
 					<!--          <p>{{ project.shortName }}</p>-->
@@ -26,6 +26,9 @@
 					</p>
 				</div>
 			</div>
+			<ng-template #emptyList>
+				<do-empty-list [emptyMessage]="'Нет данных о проектах'"></do-empty-list>
+			</ng-template>
 		</section>
 	</ng-container>
 </div>

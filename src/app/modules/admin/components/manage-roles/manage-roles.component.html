@@ -1,40 +1,52 @@
-<div class="navigation">
-	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span>
-		<mat-icon>chevron_right</mat-icon>
-	</span>
-	<a class="navigation__link">Управление ролями</a>
-</div>
+<do-breadcrumbs
+	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление ролями' }]"
+></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Роли</h3>
-		<button mat-flat-button color="accent" (click)="onAddRoleClick()">+ Создать роль</button>
+		<button mat-flat-button color="accent" (click)="onAddEditRole()">+ Создать роль</button>
 	</div>
-	<table class="table" matSort>
-		<colgroup>
-			<col class="column column_width_m" />
-			<col class="column column_width_l" />
-		</colgroup>
-		<thead>
-			<tr class="row">
-				<th mat-sort-header="name" class="cell">
-					<p>Название</p>
-				</th>
-				<th mat-sort-header="description" class="cell">
-					<p>Описание</p>
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let role of roles" class="row">
-				<td class="cell">
-					<p class="cell__content cell__content_ellipsissed">{{ role.name ? role.name : '—' }}</p>
-				</td>
-				<td class="cell">
-					<do-comment [text]="role.description"></do-comment>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+	<ng-container *ngIf="roles$ | async as roles">
+		<table *ngIf="roles.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
+			<colgroup>
+				<col class="column column_width_m" />
+				<col class="column column_width_l" />
+				<col class="column column_width_l" />
+			</colgroup>
+			<thead>
+				<tr class="row">
+					<th mat-sort-header="name" class="cell">
+						<p>Название</p>
+					</th>
+					<th mat-sort-header="description" class="cell">
+						<p>Описание</p>
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let role of roles.body" class="row">
+					<td class="cell">
+						<p class="cell__content cell__content_ellipsissed">
+							{{ role.localizations?.[0]?.name ?? '—' }}
+						</p>
+					</td>
+					<td class="cell">
+						<do-comment [text]="role.localizations?.[0]?.description"></do-comment>
+					</td>
+					<td class="cell text-align_right">
+						<button mat-icon-button (click)="onAddEditRole(role)">
+							<mat-icon class="department__button-edit">
+								<img class="department__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
+							</mat-icon>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-template #emptyList>
+			<do-empty-list emptyMessage="Нет данных о ролях"></do-empty-list>
+		</ng-template>
+	</ng-container>
+	<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 </mat-card>

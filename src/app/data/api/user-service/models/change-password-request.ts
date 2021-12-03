@@ -1,21 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ChangePasswordRequest {
+	/**
+	 * New user password.
+	 */
+	newPassword?: string;
 
-  /**
-   * User login.
-   */
-  login?: string;
+	/**
+	 * Old user password.
+	 */
+	password?: string;
 
-  /**
-   * New user password.
-   */
-  newPassword?: string;
-  secret?: string;
-
-  /**
-   * Unique user identifier.
-   */
-  userId?: string;
+	/**
+	 * Unique user identifier.
+	 */
+	userId?: string;
 }
-

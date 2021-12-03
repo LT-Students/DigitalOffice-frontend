@@ -1,0 +1,60 @@
+<form autocomplete="off" [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+	<h3 mat-dialog-title class="text-align_center">{{ isEditMode ? 'Редактирования набора прав' : 'Новая роль' }}</h3>
+	<mat-dialog-content class="new-role">
+		<div class="new-role__form">
+			<div class="new-role__input-container">
+				<ng-container *ngIf="!isEditMode; else editView">
+					<mat-form-field appearance="fill">
+						<mat-label>Название</mat-label>
+						<input matInput type="text" id="name" formControlName="name" required />
+					</mat-form-field>
+					<mat-form-field appearance="fill">
+						<mat-label>Описание</mat-label>
+						<input matInput type="text" id="description" formControlName="description" />
+					</mat-form-field>
+				</ng-container>
+				<ng-template #editView>
+					<div>
+						<p class="mat-caption">Название</p>
+						<p class="word-wrap_break-word">{{ roleInfo?.localizations?.[0]?.name }}</p>
+					</div>
+					<div *ngIf="roleInfo?.localizations?.[0]?.description">
+						<p class="mat-caption">Описание</p>
+						<p class="word-wrap_break-word">{{ roleInfo?.localizations?.[0]?.description }}</p>
+					</div>
+				</ng-template>
+				<mat-divider></mat-divider>
+				<div class="new-role__input">
+					<p>
+						Выберите права<sup
+							class="primary"
+							matTooltip="Выберите хотя бы одно право"
+							matTooltipPosition="right"
+							>*</sup
+						>
+					</p>
+					<ng-container formGroupName="rights" *ngIf="rights$ | async as rights; else spinner">
+						<p *ngFor="let right of rights">
+							<mat-checkbox [formControlName]="right.rightId!">{{ right?.name }}</mat-checkbox>
+						</p>
+					</ng-container>
+					<ng-template #spinner>
+						<mat-spinner></mat-spinner>
+					</ng-template>
+				</div>
+			</div>
+		</div>
+	</mat-dialog-content>
+	<mat-dialog-actions class="flex flex_jc_center">
+		<button mat-button mat-dialog-close type="button">Отмена</button>
+		<button
+			mat-flat-button
+			color="primary"
+			type="submit"
+			[loading]="(loading$$ | async) ?? false"
+			[disabled]="roleForm.invalid"
+		>
+			{{ isEditMode ? 'Редактировать роль' : 'Создать роль' }}
+		</button>
+	</mat-dialog-actions>
+</form>

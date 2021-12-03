@@ -1,16 +1,6 @@
 <mat-card class="card">
 	<div class="header h3">
-		<h3 doUnderline underlinedSize="sm">
-			Статистика за
-			<mat-form-field class="header__period-input">
-				<input matInput [matDatepicker]="picker" />
-				<mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event); picker.close()"> </mat-datepicker>
-			</mat-form-field>
-			<span (click)="picker.open()" class="text-accent_color_bright header__period">
-				{{ selectedPeriod.startDate | date: 'LLLL YYYY' | titlecase }}
-				<mat-icon class="header__icon">keyboard_arrow_down</mat-icon>
-			</span>
-		</h3>
+		<do-title-datepicker text="Статистика за" (dateSelection)="chosenMonthHandler($event)"></do-title-datepicker>
 	</div>
 	<ng-container *ngIf="employees$ | async as employees; else loader">
 		<table class="table">
@@ -45,20 +35,36 @@
 								<ng-container *ngIf="!employee?.editMode; else input">
 									<ng-container *ngIf="!employee?.managerHours; else managerHours">
 										<strong
-											>{{ employee?.projectHours ? employee.projectHours : 0 }}/<span class="text-gray1">{{
-												employee?.normHours ? employee?.normHours : 0
+											>{{ employee?.projectHours }}/<span class="text-gray1">{{
+												employee?.normHours ?? 0
 											}}</span></strong
 										>
 									</ng-container>
 									<ng-template #managerHours>
 										<strong>
 											{{ employee?.managerHours }}/
-											<span class="text-gray1">
-												{{ employee?.normHours ? employee?.normHours : 0 }}
-											</span>
+											<span class="text-gray1"> {{ employee?.normHours ?? 0 }}&nbsp; </span>
 										</strong>
-										<span class="text-gray1"> &nbsp;Изменено&nbsp; </span>
-										<img src="../../../../../assets/svg/ant-design_info-circle-outlined.svg" alt="info-circle" />
+										<span class="mat-caption">
+											Изменено
+											<mat-icon
+												class="vertical-align_middle"
+												inline
+												[mdePopoverTriggerFor]="popover"
+												mdePopoverPositionY="above"
+												[mdePopoverOffsetX]="-13"
+												>info_outline
+											</mat-icon>
+										</span>
+										<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+											<span class="mat-small">Автор изменения</span>
+											<!--TODO replace with real name when backend will send this data-->
+											<p>Имя Менеджера</p>
+											<span class="mat-small">Дата изменения</span>
+											<p>{{ employee?.modifiedAtUtc | date: 'dd/MM/YYYY' }}</p>
+											<span class="mat-small">Часы сотрудника</span>
+											<p>{{ employee?.projectHours ?? 0 }}</p>
+										</mde-popover>
 									</ng-template>
 								</ng-container>
 								<ng-template #input>
@@ -67,7 +73,11 @@
 											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.min">
 												Минимальное значение должно быть не меньше нуля
 											</mat-error>
-											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.number"> Введите число </mat-error>
+											<mat-error
+												*ngIf="hoursGroup.controls['hours_' + employee.id].errors?.number"
+											>
+												Введите число
+											</mat-error>
 											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.max">
 												Превышено максимальное значение
 											</mat-error>
@@ -76,8 +86,8 @@
 												[formControlName]="'hours_' + employee?.id"
 												ngDefaultControl
 												class="text_bold"
-											/> </mat-form-field
-										>/{{ employee?.normHours ? employee?.normHours : 0 }}
+										/></mat-form-field>
+										/{{ employee?.normHours ? employee?.normHours : 0 }}
 									</div>
 								</ng-template>
 							</div>
@@ -86,7 +96,28 @@
 							<ng-container *ngIf="employee.leaves?.length; else empty">
 								<div *ngFor="let leave of employee.leaves" class="cell__leave-label">
 									{{ leave.leaveType | leaveLabel }}&nbsp;
-									<img src="../../../../../assets/svg/ant-design_info-circle-outlined.svg" alt="info-circle" />
+									<span class="mat-caption">
+										<mat-icon
+											class="vertical-align_middle"
+											inline
+											[mdePopoverTriggerFor]="popover"
+											mdePopoverPositionY="above"
+											[mdePopoverOffsetX]="-13"
+											>info_outline
+										</mat-icon>
+									</span>
+									<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+										<p class="text-align_center">
+											<strong>{{ leave.leaveType | leaveLabel: false }}</strong>
+										</p>
+										<span class="mat-small">Даты отсутствия</span>
+										<p>
+											{{ leave.startTime | date: 'dd/MM/YYYY' }}-{{
+												leave.endTime | date: 'dd/MM/YYYY'
+											}}
+											({{ (leave?.minutes ?? 0) / 60 }} ч)
+										</p>
+									</mde-popover>
 								</div>
 							</ng-container>
 							<ng-template #empty>
@@ -105,9 +136,20 @@
 					<tr *ngIf="employee.editMode" class="row">
 						<td colspan="5">
 							<div class="controls">
-								<button mat-button (click)="toggleEditMode(false, employee)" class="controls__button">Отменить</button>
-								<button mat-flat-button color="primary" class="controls__button" (click)="onSubmit('submit', employee)">Сохранить</button>
-								<button mat-flat-button color='warn' (click)="onSubmit('reset', employee)">Сбросить</button>
+								<button mat-button (click)="toggleEditMode(false, employee)" class="controls__button">
+									Отменить
+								</button>
+								<button
+									mat-flat-button
+									color="primary"
+									class="controls__button"
+									(click)="onSubmit('submit', employee)"
+								>
+									Сохранить
+								</button>
+								<button mat-flat-button color="warn" (click)="onSubmit('reset', employee)">
+									Сбросить
+								</button>
 							</div>
 						</td>
 					</tr>

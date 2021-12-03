@@ -1,18 +1,17 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DepartmentInfo } from '@data/api/user-service/models/department-info';
-import { ProjectStatus } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { ProjectService } from '@app/services/project/project.service';
+import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
-import { NetService } from '@app/services/net.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ProjectRequest } from '@data/api/project-service/models/project-request';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { ProjectUserRequest } from '@data/api/project-service/models/project-user-request';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
+import { DepartmentService } from '@app/services/department/department.service';
+import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
+import { BehaviorSubject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
@@ -28,16 +27,16 @@ export class NewProjectComponent implements OnInit {
 	public projectForm: FormGroup;
 	public teams: Team[];
 	public departments: DepartmentInfo[];
-	public statuses: ProjectStatus[];
+	public statuses: IProjectStatusType[];
 	public membersAll: UserInfo[];
 	public pluralTeamCount: { [k: string]: string };
+	public loading$$: BehaviorSubject<boolean>;
 
 	constructor(
 		private _formBuilder: FormBuilder,
 		private _projectService: ProjectService,
 		private _modalService: ModalService,
-		private _netService: NetService,
-		private _snackBar: MatSnackBar,
+		private _departmentService: DepartmentService,
 		private _location: Location,
 		private _router: Router,
 		private _cdr: ChangeDetectorRef
@@ -46,27 +45,20 @@ export class NewProjectComponent implements OnInit {
 			few: '# человека',
 			other: '# человек',
 		};
-		this.statuses = [
-			new ProjectStatus(ProjectStatusType.Active),
-			new ProjectStatus(ProjectStatusType.Closed),
-			new ProjectStatus(ProjectStatusType.Suspend),
-		];
+		this.statuses = ProjectTypeModel.getAllProjectTypes();
 		this.teams = [];
 		this.membersAll = [];
 		this.departments = [];
 
 		this.projectForm = this._formBuilder.group({
-			name: ['', [Validators.required, Validators.maxLength(80)]],
+			name: ['', [Validators.required, Validators.maxLength(150)]],
 			departmentId: ['', [Validators.required]],
-			description: [null],
+			description: [null, [Validators.maxLength(300)]],
+			shortDescription: [null],
 			status: [ProjectStatusType.Active],
-			// customer: [''],
-			// shortName: ['', [Validators.required, Validators.maxLength(32)]],
-			// departments: ['', [Validators.required, Validators.maxLength(32)]],
-			// checkControl: ['', [Validators.required]],
-			// additionInfo: [''],
-			// picker: [''],
 		});
+
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 	}
 
 	ngOnInit(): void {
@@ -76,7 +68,7 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	private _getDepartments(): void {
-		this._netService.getDepartmentsList({ skipCount: 0, takeCount: 100 }).subscribe(
+		this._departmentService.findDepartments({ skipCount: 0, takeCount: 100 }).subscribe(
 			(data) => {
 				this.departments = data.body ?? [];
 			},
@@ -85,6 +77,7 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public addMember(): void {
+		//TODO replace with infinite scroll modal
 		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
 		this._modalService
 			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(
@@ -93,42 +86,41 @@ export class NewProjectComponent implements OnInit {
 				modalData
 			)
 			.afterClosed()
-			.subscribe((result: UserInfo[] | undefined) => {
-				this.membersAll = result?.length ? [...result] : [];
-				this._cdr.detectChanges();
+			.subscribe((result?: UserInfo[]) => {
+				if (result?.length) {
+					this.membersAll = [...result];
+					this._cdr.detectChanges();
+				}
 			});
 	}
 
 	public createProject(): void {
-		const projectUsers: ProjectUserRequest[] = this.membersAll.map((user) => ({
+		this.loading$$.next(true);
+
+		const projectUsers: ICreateUserRequest[] = this.membersAll.map((user) => ({
 			role: ProjectUserRoleType.Manager,
 			userId: user.id ?? '',
 		}));
-		const projectRequest: ProjectRequest = {
+		const projectRequest: ICreateProjectRequest = {
 			name: this.projectForm.get('name')?.value?.trim(),
 			departmentId: this.projectForm.get('departmentId')?.value,
 			description: this.projectForm.get('description')?.value?.trim(),
+			shortDescription: this.projectForm.get('shortDescription')?.value?.trim(),
 			status: this.projectForm.get('status')?.value,
 			users: projectUsers,
+			projectImages: [],
 		};
-		this._projectService.createProject(projectRequest).subscribe(
-			(result) => {
-				this._snackBar.open('Project successfully created', 'Закрыть', { duration: 3000 });
-				this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
-			},
-			(error) => {
-				let errorMessage = error.error.errors;
-				if (error.status === 409) {
-					errorMessage = 'Проект с таким названием уже существует';
+		this._projectService
+			.createProject(projectRequest)
+			.pipe(finalize(() => this.loading$$.next(false)))
+			.subscribe(
+				(result) => {
+					this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
+				},
+				(error) => {
+					throw error;
 				}
-				this._snackBar.open(errorMessage, 'accept');
-				throw error;
-			}
-		);
-	}
-
-	public onAddTeamClick(): void {
-		this.addMember();
+			);
 	}
 
 	public showProjectTeam(): void {

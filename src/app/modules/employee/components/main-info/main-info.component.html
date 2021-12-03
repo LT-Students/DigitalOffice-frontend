@@ -1,7 +1,7 @@
 <div class="employee-info">
-	<ng-container *ngIf="user">
-		<ng-container *ngIf="!canEdit() || !isEditing; else editForm">
-			<div class="employee-info__wrapper">
+	<ng-container *ngIf="user$ | async as user">
+		<div class="employee-info__wrapper">
+			<ng-container *ngIf="!canEdit() || !isEditing; else editForm">
 				<div class="employee-info__main">
 					<div class="employee-info__avatar">
 						<do-profile-image [image]="user?.avatarImage" size="l"></do-profile-image>
@@ -17,7 +17,13 @@
 					<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
 				</div>
 				<div class="employee-info__general">
-					<h4>Общие сведения</h4>
+					<div class="employee-info__general-header">
+						<h4>Общие сведения</h4>
+						<button mat-icon-button (click)="toggleEditMode(user)">
+							<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+						</button>
+					</div>
+
 					<div class="employee-info__columns">
 						<div class="employee-info__first-column">
 							<div *ngIf="user?.position">
@@ -38,10 +44,10 @@
 							</div>
 						</div>
 						<div class="employee-info__second-column">
-							<div *ngIf="user?.rate">
-								<p class="mat-caption">Ставка</p>
-								<p>{{ user?.rate }}</p>
-							</div>
+							<!--							<div *ngIf="user?.rate">-->
+							<!--								<p class="mat-caption">Ставка</p>-->
+							<!--								<p>{{ user?.rate }}</p>-->
+							<!--							</div>-->
 							<div>
 								<p class="mat-caption">Пол</p>
 								<p>{{ user?.gender?.genderInRussian }}</p>
@@ -61,211 +67,153 @@
 						</div>
 					</div>
 				</div>
-				<div class="employee-info__additional">
-					<mat-divider class="additional__line" vertical></mat-divider>
-					<div class="form__column">
-						<h4>Контакты</h4>
-						<div class="employee-info__columns">
-							<div>
-								<div *ngFor="let communication of user?.communications">
-									<p class="mat-caption">{{ communication.type }}</p>
-									<p>{{ communication.value }}</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="employee-info__edit-button">
-					<button type="button" mat-icon-button aria-label="Edit employee info" (click)="toggleEditMode()">
-						<img src="../../../../../assets/svg/edit.svg" alt="Edit" />
-					</button>
-				</div>
+			</ng-container>
+			<div class="employee-info__additional">
+				<do-communications class="employee-info__communications"></do-communications>
 			</div>
-		</ng-container>
-	</ng-container>
-</div>
+		</div>
 
-<ng-template #nameEdit [formGroup]="employeeInfoForm">
-	<do-input controlName="lastName" [isEdit]="isEditing" label="Фамилия" textSize="small" required="true"></do-input>
-	<do-input controlName="firstName" [isEdit]="isEditing" label="Имя" textSize="small" required="true"></do-input>
-	<do-input controlName="middleName" [isEdit]="isEditing" label="Отчество" textSize="small"></do-input>
-</ng-template>
-
-<ng-template #about [formGroup]="employeeInfoForm">
-	<ng-container *ngIf="user?.isAdmin">
-		<mat-form-field class="employee-info__form-field" appearance="fill">
-			<mat-label>О себе</mat-label>
-			<textarea
-				#about
-				formControlName="about"
-				matInput
-				placeholder="Напишите немного о себе или оставьте заметку коллегам"
-				maxlength="150"
-				cdkTextareaAutosize="true"
-			></textarea>
-			<mat-hint align="end">{{ about.value.length }}/150</mat-hint>
-		</mat-form-field>
-	</ng-container>
-</ng-template>
-
-<ng-template #stepper [formGroup]="employeeInfoForm">
-	<mat-form-field class="employee-info__form-field employee-info__stepper" appearance="fill">
-		<mat-label>Ставка</mat-label>
-		<button
-			class="employee-info__stepper-button"
-			mat-icon-button
-			matPrefix
-			type="button"
-			(click)="changeWorkingRate(-0.25)"
-			[disabled]="rate.value === '0'"
-		>
-			-
-		</button>
-		<input #rate formControlName="rate" matInput readonly required />
-		<button
-			class="employee-info__stepper-button"
-			mat-icon-button
-			matSuffix
-			type="button"
-			(click)="changeWorkingRate(0.25)"
-			[disabled]="rate.value === '1'"
-		>
-			+
-		</button>
-	</mat-form-field>
-</ng-template>
-
-<ng-template #emoji [formGroup]="employeeInfoForm">
-	<mat-form-field
-		class="employee-info__form-field mat-form-field_default-select"
-		appearance="fill"
-		matTooltipClass="tooltip"
-		matTooltip="Статус будет отображаться рядом с именем пользователя"
-		[matTooltipPosition]="'above'"
-	>
-		<mat-label class="employee-info__label">
-			Эмодзи-статус
-			<mat-icon class="employee-info__hint">help_outline</mat-icon>
-		</mat-label>
-		<mat-select formControlName="status">
-			<mat-option *ngFor="let option of statuses" [value]="option.statusType">
-				{{ option.emojiIcon }} {{ option.statusInRussian | titlecase }}
-			</mat-option>
-		</mat-select>
-	</mat-form-field>
-	<!--    <ng-container *ngIf="isEditing && employeeInfoForm.get('status')?.value === userStatus.Vacation">-->
-	<!--        <label class='small_text text-gray'>Замещает: </label>-->
-	<!--        <span class='small_text text-gray employee-info__substitute'>Назначить замещающего</span>-->
-	<!--    </ng-container>-->
-</ng-template>
-
-<ng-template #editForm>
-	<form class="employee-info__form" [formGroup]="employeeInfoForm" (ngSubmit)="onSubmit()">
-		<div class="employee-info__wrapper">
+		<ng-template #editForm [formGroup]="employeeInfoForm">
 			<div class="employee-info__main">
 				<div class="employee-info__avatar">
-					<do-profile-image [image]="employeeInfoForm.get('photo')?.value" size="l"></do-profile-image>
-					<label class="mat-body-1 employee-info__label employee-info__upload-button" (click)="onOpenDialog()">
+					<do-profile-image
+						[image]="employeeInfoForm.controls['avatarImage']?.value"
+						size="l"
+					></do-profile-image>
+					<label class="mat-body-1 employee-info__upload-button" (click)="onAvatarUploadDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
 						</mat-icon>
-						Обновить фото</label
-					>
+						Обновить фото
+					</label>
 				</div>
-				<ng-container *ngIf="!user?.isAdmin; else nameEdit">
-					<h3 class="employee-info__name">
-						{{ user?.getFullName }}&nbsp;<span
-							matTooltipClass="tooltip"
-							[matTooltip]="user?.firstName + ' ' + (user?.statusEmoji?.statusInRussian | lowercase)"
-							[matTooltipPosition]="'above'"
-							>{{ user?.statusEmoji?.emojiIcon }}</span
-						>
-					</h3>
-				</ng-container>
-				<ng-container *ngTemplateOutlet="about"></ng-container>
+				<mat-form-field appearance="fill">
+					<mat-label>Фамилия</mat-label>
+					<input matInput [formControlName]="EditPath.LAST_NAME" required />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Имя</mat-label>
+					<input matInput [formControlName]="EditPath.FIRST_NAME" required />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Отчество</mat-label>
+					<input matInput [formControlName]="EditPath.MIDDLE_NAME" />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>О себе</mat-label>
+					<textarea
+						#about
+						[formControlName]="EditPath.ABOUT"
+						matInput
+						placeholder="Напишите немного о себе или оставьте заметку коллегам"
+						maxlength="150"
+						cdkTextareaAutosize="true"
+					></textarea>
+					<mat-hint align="end">{{ about.value.length }}/150</mat-hint>
+				</mat-form-field>
+				<div class="employee-info__required-block">
+					<span class="warn"> <sup>*</sup>&nbsp;Обязательное поле</span>
+				</div>
 			</div>
 			<div class="employee-info__general">
 				<h4>Общие сведения</h4>
 				<div class="employee-info__columns">
 					<div class="employee-info__first-column">
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
-							<mat-label class="employee-info__label"> Должность </mat-label>
-							<mat-select formControlName="position" required>
-								<mat-option *ngFor="let position of positions$ | async" [value]="position.id">
-									{{ position.name }}
+						<div *ngIf="user?.position">
+							<p class="mat-caption">Должность</p>
+							<p>{{ user?.position?.name }}</p>
+						</div>
+						<div *ngIf="user?.department">
+							<p class="mat-caption">Департамент</p>
+							<p>{{ user.department?.name }}</p>
+						</div>
+						<mat-form-field appearance="fill">
+							<mat-label>Местоположение</mat-label>
+							<input matInput [formControlName]="EditPath.CITY" />
+						</mat-form-field>
+						<div *ngIf="user?.office?.city">
+							<p class="mat-caption">Офис</p>
+							<p>{{ user?.office?.city }}, {{ user?.office?.address }}</p>
+						</div>
+						<mat-form-field
+							appearance="fill"
+							matTooltipClass="tooltip"
+							matTooltip="Статус будет отображаться рядом с именем пользователя"
+							[matTooltipPosition]="'above'"
+						>
+							<mat-label>
+								Эмодзи-статус
+								<mat-icon class="employee-info__hint">help_outline</mat-icon>
+							</mat-label>
+							<mat-select [formControlName]="EditPath.STATUS">
+								<mat-option *ngFor="let option of statuses" [value]="option.statusType">
+									{{ option.emojiIcon }} {{ option.statusInRussian | titlecase }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
-							<mat-label class="employee-info__label"> Департамент </mat-label>
-							<mat-select formControlName="department">
-								<mat-option *ngFor="let department of departments$ | async" [value]="department.id">
-									{{ department.name }}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
-						<do-input controlName="city" [isEdit]="true" label="Местоположение" textSize="small"></do-input>
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
-							<mat-label class="employee-info__label">Офис </mat-label>
-							<mat-select formControlName="office" required>
-								<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
-									{{ office.city }}, {{ office.address }}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
-						<ng-container *ngTemplateOutlet="emoji"></ng-container>
 					</div>
 					<div class="employee-info__second-column">
-						<ng-container *ngIf="canEdit()">
-							<ng-container *ngIf="!user?.isAdmin; else stepper">
-								<p>Ставка</p>
-								<div>{{ user?.rate }}</div>
-							</ng-container>
-						</ng-container>
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
-							<mat-label class="employee-info__label">Пол </mat-label>
-							<mat-select formControlName="gender">
+						<!--						<ng-container *ngIf="canEdit()">-->
+						<!--							<ng-container *ngIf="!user?.isAdmin; else stepper">-->
+						<!--								<p>Ставка</p>-->
+						<!--								<div>{{ user?.rate }}</div>-->
+						<!--							</ng-container>-->
+						<!--						</ng-container>-->
+						<mat-form-field appearance="fill">
+							<mat-label>Пол</mat-label>
+							<mat-select [formControlName]="EditPath.GENDER">
 								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
 									{{ gender.genderInRussian }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-						<mat-form-field class="employee-info__form-field mat-form-field_default-select" appearance="fill">
-							<mat-label class="employee-info__label"> Роль </mat-label>
-							<mat-select formControlName="role">
-								<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
-									{{ role.name }}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
-						<do-datepicker controlName="startWorkingAt" [isEdit]="user?.isAdmin" label="В компании с"></do-datepicker>
-						<do-datepicker controlName="dateOfBirth" [isEdit]="user?.isAdmin" label="Дата рождения"></do-datepicker>
-					</div>
-				</div>
-			</div>
-			<div class="employee-info__additional">
-				<mat-divider class="additional__line" vertical></mat-divider>
-				<div class="form__column">
-					<h4>Контакты</h4>
-					<div class="employee-info__columns">
-						<div>
-							<div *ngFor="let communication of user?.communications">
-								<p>{{ communication.type }}</p>
-								<p>{{ communication.value }}</p>
-							</div>
+						<div *ngIf="user?.role?.name">
+							<p class="mat-caption">Роль</p>
+							<p>{{ user.role?.name }}</p>
 						</div>
+						<mat-form-field appearance="fill">
+							<mat-label>В компании с</mat-label>
+							<input
+								matInput
+								[formControlName]="EditPath.START_WORKING_AT"
+								[matDatepicker]="picker1"
+								placeholder="ДД месяц ГГГГ"
+							/>
+							<mat-datepicker-toggle matSuffix [for]="picker1">
+								<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+							</mat-datepicker-toggle>
+							<mat-datepicker #picker1></mat-datepicker>
+						</mat-form-field>
+						<mat-form-field appearance="fill">
+							<mat-label>Дата рождения</mat-label>
+							<input
+								matInput
+								[formControlName]="EditPath.DATE_OF_BIRTH"
+								[matDatepicker]="picker2"
+								placeholder="ДД месяц ГГГГ"
+							/>
+							<mat-datepicker-toggle matSuffix [for]="picker2">
+								<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+							</mat-datepicker-toggle>
+							<mat-datepicker #picker2></mat-datepicker>
+						</mat-form-field>
 					</div>
 				</div>
-			</div>
-			<div class="employee-info__form-buttons">
-				<button type="button" mat-button (click)="onReset()">Отменить</button>
-				<button [disabled]="employeeInfoForm.invalid" type="submit" color="primary" class="employee-info__submit" mat-flat-button>
-					Сохранить
-				</button>
-				<div class="employee-info__required-block">
-					<span class="warn"> <sup>*</sup>&nbsp;Обязательное поле</span>
+				<div class="controls">
+					<button type="button" mat-button (click)="onReset()" class="controls__button">Отменить</button>
+					<button
+						[disabled]="employeeInfoForm.invalid"
+						[loading]="(loading | async) ?? false"
+						type="submit"
+						color="primary"
+						class="controls__button"
+						mat-flat-button
+						(click)="onSubmit()"
+					>
+						Сохранить
+					</button>
 				</div>
 			</div>
-		</div>
-	</form>
-</ng-template>
+		</ng-template>
+	</ng-container>
+</div>

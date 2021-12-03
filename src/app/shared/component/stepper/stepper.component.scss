@@ -1,31 +1,21 @@
-@use 'base/variables';
+.field {
+	display: flex;
+	justify-content: center;
 
-.stepper {
-	&__label {
-		display: block;
+	width: 100%;
 
-		text-align: start;
+	text-align: center;
+
+	&__input {
+		height: 18px;
+
+		vertical-align: middle;
 	}
 
 	&__button {
-		&:disabled {
-			padding: 0;
+		width: 18px;
+		height: 18px;
 
-			min-width: 0;
-
-			background-color: transparent;
-		}
-	}
-
-	&__required {
-		margin-left: 1px;
-
-		vertical-align: top;
-	}
-
-	&__form-field {
-		display: block;
-
-		text-align: center;
+		line-height: 18px;
 	}
 }

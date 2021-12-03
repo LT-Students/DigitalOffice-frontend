@@ -1,11 +1,10 @@
 {
   "name": "digital-office-frontend",
-  "version": "4.2.0",
+  "version": "0.6.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "services": "ng serve && start.bat",
-    "build": "ng build",
+    "build": "ng build --configuration=production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -13,14 +12,19 @@
     "prettier": "prettier --write src/**/*.{ts,scss}",
     "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
     "generate.company": "ng-openapi-gen -c swagger/config/company.json",
+    "generate.department": "ng-openapi-gen -c swagger/config/department.json",
     "generate.file": "ng-openapi-gen -c swagger/config/file.json",
+    "generate.image": "ng-openapi-gen -c swagger/config/image.json",
     "generate.message": "ng-openapi-gen -c swagger/config/message.json",
     "generate.news": "ng-openapi-gen -c swagger/config/news.json",
+    "generate.office": "ng-openapi-gen -c swagger/config/office.json",
+    "generate.position": "ng-openapi-gen -c swagger/config/position.json",
     "generate.project": "ng-openapi-gen -c swagger/config/project.json",
     "generate.rights": "ng-openapi-gen -c swagger/config/rights.json",
     "generate.time": "ng-openapi-gen -c swagger/config/time.json",
     "generate.user": "ng-openapi-gen -c swagger/config/user.json",
-    "generate-api": "node swagger/generate.js"
+    "generate-api": "node swagger/generate.js",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -32,15 +36,33 @@
     "@angular/forms": "~12.2.4",
     "@angular/localize": "^12.2.4",
     "@angular/material": "^12.2.4",
+    "@angular/material-luxon-adapter": "^12.2.4",
     "@angular/material-moment-adapter": "^12.2.4",
     "@angular/platform-browser": "~12.2.4",
     "@angular/platform-browser-dynamic": "~12.2.4",
     "@angular/router": "~12.2.4",
+    "@editorjs/delimiter": "^1.2.0",
+    "@editorjs/editorjs": "^2.22.2",
+    "@editorjs/header": "^2.6.1",
+    "@editorjs/image": "^2.6.1",
+    "@editorjs/marker": "^1.2.2",
+    "@editorjs/nested-list": "^1.0.2",
+    "@editorjs/quote": "^2.4.0",
+    "@editorjs/underline": "^1.0.0",
+    "@material-extended/mde": "^3.0.3",
     "@ng-bootstrap/ng-bootstrap": "^7.0.0",
+    "@ngx-loading-bar/core": "^5.1.2",
+    "@ngx-loading-bar/http-client": "^5.1.2",
+    "@ngx-loading-bar/router": "^5.1.2",
+    "@types/luxon": "^2.0.5",
     "bootstrap": "^4.5.2",
     "canvasjs": "^1.8.3",
     "chart.js": "^3.5.1",
+    "editorjs-text-alignment-blocktune": "^1.0.2",
+    "libphonenumber-js": "^1.9.38",
+    "luxon": "^2.0.2",
     "moment": "^2.27.0",
+    "ngx-infinite-scroll": "^10.0.1",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.3",
     "zone.js": "~0.11.4"
@@ -61,10 +83,11 @@
     "@typescript-eslint/eslint-plugin": "4.3.0",
     "@typescript-eslint/parser": "4.3.0",
     "codelyzer": "^6.0.1",
+    "editorjs-undo": "^0.3.0",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-import": "^2.22.1",
-    "husky": "^4.3.0",
+    "husky": "^7.0.0",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~6.0.0",
     "karma": "~6.3.4",
@@ -74,6 +97,7 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "lint-staged": "^10.5.0",
     "ng-openapi-gen": "^0.16.0",
+    "postcss": "^8.4.4",
     "prettier": "^2.1.2",
     "protractor": "~7.0.0",
     "stylelint": "^13.13.1",
@@ -87,7 +111,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "sh .githooks/pre-commit && npx lint-staged --relative"
+      "pre-commit": "sh .githooks/pre-commit && sh .husky/pre-commit"
     }
   },
   "lint-staged": {
@@ -98,7 +122,7 @@
       "prettier --write",
       "stylelint --fix"
     ],
-    "src/**/*.{ts,html}, !src/data/api/**/*.ts": [
+    "*.{ts,html}": [
       "prettier --write",
       "eslint --fix"
     ]

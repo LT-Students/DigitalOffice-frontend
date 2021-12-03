@@ -1,54 +1,26 @@
 @use 'layouts/table';
+@use '~@angular/material' as mat;
+@use 'base/palettes' as *;
 
 .title {
 	margin-bottom: 40px;
 }
 
 .department {
+	&__header {
+		display: flex;
+		justify-content: space-between;
+	}
+
 	&__info {
 		margin-bottom: 40px;
 		padding-bottom: 40px;
-
-		border-bottom: 1px solid #fafafa;
 	}
 
 	&__label {
 		margin-top: 16px;
 
 		width: 50%;
-	}
-}
-
-.table {
-	&__header {
-		margin-bottom: 20px;
-
-		display: flex;
-		justify-content: space-between;
-	}
-
-	&__content {
-		width: 100%;
-
-		border-collapse: collapse;
-	}
-
-	&__row {
-		height: 76px;
-
-		border-bottom: 1px solid #f1f1ef;
-
-		&:hover {
-			cursor: pointer;
-
-			background-color: #f1f1ef;
-		}
-	}
-
-	&__column {
-		&_width_little {
-			width: 60px;
-		}
 	}
 }
 
@@ -68,4 +40,106 @@
 	&__link:hover {
 		text-decoration: underline;
 	}
+}
+
+.table {
+	width: 100%;
+
+	&__header {
+		margin: 20px 0;
+
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+.search-actions {
+	margin-bottom: 10px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.search {
+	display: flex;
+	flex-basis: 50%;
+
+	&__name {
+		width: 100%;
+	}
+
+	&__position {
+		margin-left: 30px;
+		align-self: flex-end;
+	}
+
+	&__button {
+		margin-right: 15px;
+	}
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+
+	&__menu {
+		margin-left: 20px;
+		padding: 10px 16px;
+
+		display: flex;
+		justify-content: space-between;
+
+		width: 200px;
+
+		cursor: pointer;
+
+		background-color: mat.get-color-from-palette($do-grey, 100);
+		border-radius: 5px;
+	}
+}
+
+.main-info {
+	display: flex;
+}
+
+.profile-photo {
+	margin-right: 20px;
+}
+
+.mat-column {
+	&-select {
+		width: 5%;
+	}
+
+	&-name {
+		width: 41%;
+	}
+
+	&-role {
+		width: 23%;
+	}
+
+	&-rate {
+		width: 18%;
+	}
+
+	&-status {
+		width: 13%;
+	}
+}
+
+.mat-cell,
+.mat-header-cell {
+	padding: 0 15px;
+}
+
+.mat-row {
+	height: 76px;
+
+	cursor: pointer;
+}
+
+.mat-header-row {
+	height: 50px;
 }

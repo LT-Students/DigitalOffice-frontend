@@ -1,85 +1,123 @@
-<div class="navigation">
-	<a class="navigation__link" routerLink="/admin/dashboard">Администрирование</a>
-	<span>
-		<mat-icon>chevron_right</mat-icon>
-	</span>
-	<a class="navigation__link">Управление сотрудниками</a>
-</div>
+<do-breadcrumbs
+	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление сотрудниками' }]"
+></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
 		<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 	</div>
-	<table class="table" matSort (matSortChange)="sortData($event)">
-		<colgroup>
-			<col class="column column_width_little" />
-			<!-- <col class='column column_width_sm'>
-			<col class='column column_width_sm'>
-			<col class='column column_width_m'>
-			<col class='column column_width_sm'>
-			<col class='column column_width_t'>
-			<col class='column column_width_t'> -->
-		</colgroup>
-		<thead>
-			<tr class="row">
-				<th class="cell heading"></th>
-				<th class="cell heading" mat-sort-header="name">
-					<p class="heading__content">Имя</p>
-				</th>
-				<th class="cell heading" mat-sort-header="department">
-					<p class="heading__content">Департамент</p>
-				</th>
-				<th class="cell heading" mat-sort-header="role">
-					<p class="heading__content">Роль</p>
-				</th>
-				<th class="cell heading" mat-sort-header="rate">
-					<p class="heading__content">Ставка</p>
-				</th>
-				<th class="cell heading" mat-sort-header="status">
-					<p class="heading__content">Статус</p>
-				</th>
-				<th class="cell heading"></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr class="row row_activable" *ngFor="let userInfo of sortedUserInfo" routerLink="/user/{{ userInfo?.id }}">
-				<td class="cell cell_vertical-middle">
-					<do-profile-image [image]="userInfo?.avatar"></do-profile-image>
-				</td>
-				<td class="cell cell_vertical-middle">
-					<p>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</p>
-					<p>{{ userInfo?.position?.name }}</p>
-				</td>
-				<td class="cell cell_vertical-middle">
-					<ng-container *ngIf="userInfo?.department?.name; else empty">
-						<p>{{ userInfo?.department?.name }}</p>
-					</ng-container>
-				</td>
-				<td class="cell cell_vertical-middle">
-					<ng-container *ngIf="userInfo?.role?.name; else empty">
-						<p class="cell__content_breakable">{{ userInfo?.role?.name }}</p>
-					</ng-container>
-				</td>
-				<td class="cell">
-					<p>{{ userInfo?.rate }}</p>
-				</td>
-				<td class="cell cell_vertical-middle">
-					<ng-container *ngIf="userInfo?.isActive; else archived">
-						<p class="user-status">Активен</p>
-					</ng-container>
-					<ng-template #archived>
-						<p class="user-status user-status_archived">В архиве</p>
-					</ng-template>
-				</td>
-				<td class="cell table__delete-button cell_vertical-middle">
-					<button mat-mini-fab color="primary" (click)="toggleUserStatus(userInfo, $event)">
-						<mat-icon>{{ userInfo.isActive ? 'delete' : 'unarchive' }}</mat-icon>
-					</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+
+	<div class="filters" [formGroup]="filters">
+		<!--        <mat-form-field class='filters__search' appearance='fill'>-->
+		<!--            <mat-label>Search</mat-label>-->
+		<!--            <input matInput type='text' maxlength='150' placeholder='Поиск по фамилии и имени' />-->
+		<!--        </mat-form-field>-->
+
+		<!--        <mat-form-field class='filters__post' appearance='fill'>-->
+		<!--            <mat-label>Выберите должность</mat-label>-->
+		<!--            <mat-select>-->
+		<!--                <mat-option value='one'>Должность 1</mat-option>-->
+		<!--                <mat-option value='two'>Должность 2</mat-option>-->
+		<!--            </mat-select>-->
+		<!--        </mat-form-field>-->
+
+		<!--        <mat-form-field class='filters__department' appearance='fill'>-->
+		<!--            <mat-label>Выберите департамент</mat-label>-->
+		<!--            <mat-select>-->
+		<!--                <mat-option value='one'>Департамент 1</mat-option>-->
+		<!--                <mat-option value='two'>Департамент 2</mat-option>-->
+		<!--            </mat-select>-->
+		<!--        </mat-form-field>-->
+
+		<mat-form-field class="filters__status" appearance="fill">
+			<mat-label>Статус</mat-label>
+			<mat-select formControlName="showDeactivatedUsers">
+				<mat-option [value]="false">Активные</mat-option>
+				<mat-option [value]="true">Все</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+
+	<ng-container *ngIf="users$ | async as users">
+		<table
+			*ngIf="users.totalCount ?? 0 > 0; else emptyList"
+			class="table"
+			matSort
+			(matSortChange)="sortData($event)"
+		>
+			<colgroup>
+				<col class="column column_width_little" />
+				<!-- <col class='column column_width_sm'>
+                    <col class='column column_width_sm'>
+                    <col class='column column_width_m'>
+                    <col class='column column_width_sm'>
+                    <col class='column column_width_t'>
+                    <col class='column column_width_t'> -->
+			</colgroup>
+			<thead>
+				<tr class="row">
+					<th class="cell heading"></th>
+					<th class="cell heading" mat-sort-header="name">
+						<p class="heading__content">Имя</p>
+					</th>
+					<th class="cell heading" mat-sort-header="department">
+						<p class="heading__content">Департамент</p>
+					</th>
+					<th class="cell heading" mat-sort-header="role">
+						<p class="heading__content">Роль</p>
+					</th>
+					<th class="cell heading" mat-sort-header="rate">
+						<p class="heading__content">Ставка</p>
+					</th>
+					<th class="cell heading" mat-sort-header="status">
+						<p class="heading__content">Статус</p>
+					</th>
+					<th class="cell heading"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="row row_activable" *ngFor="let user of users.body" routerLink="/user/{{ user?.id }}">
+					<td class="cell cell_vertical-middle">
+						<do-profile-image [image]="user?.avatar"></do-profile-image>
+					</td>
+					<td class="cell cell_vertical-middle">
+						<p>{{ user?.firstName }} {{ user?.lastName }}</p>
+						<p>{{ user?.position?.name }}</p>
+					</td>
+					<td class="cell cell_vertical-middle">
+						<ng-container *ngIf="user?.department?.name; else empty">
+							<p>{{ user?.department?.name }}</p>
+						</ng-container>
+					</td>
+					<td class="cell cell_vertical-middle">
+						<ng-container *ngIf="user?.role?.name; else empty">
+							<p class="cell__content_breakable">{{ user?.role?.name }}</p>
+						</ng-container>
+					</td>
+					<td class="cell">
+						<p>{{ user?.rate }}</p>
+					</td>
+					<td class="cell cell_vertical-middle">
+						<ng-container *ngIf="user?.isActive; else archived">
+							<p class="user-status">Активен</p>
+						</ng-container>
+						<ng-template #archived>
+							<p class="user-status user-status_archived">В архиве</p>
+						</ng-template>
+					</td>
+					<td class="cell table__delete-button cell_vertical-middle">
+						<button mat-mini-fab color="primary" (click)="toggleUserStatus(user, $event)">
+							<mat-icon>{{ user.isActive ? 'delete' : 'unarchive' }}</mat-icon>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-template #emptyList>
+			<do-empty-list [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
+		</ng-template>
+	</ng-container>
+	<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 </mat-card>
 
 <ng-template #empty>

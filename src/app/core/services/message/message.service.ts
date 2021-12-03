@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NewsRequest } from '@data/api/news-service/models/news-request';
-import { NewsResponse } from '@data/api/news-service/models/news-response';
 import { MessageApiService } from '@data/api/message-service/services/message-api.service';
 import { WorkspaceApiService } from '@data/api/message-service/services/workspace-api.service';
 import { Workspace } from '@data/api/message-service/models/workspace';
@@ -25,16 +23,13 @@ export interface IRemoveWorkspaceRequest {
 
 @Injectable()
 export class MessageService {
-	constructor(
-		private _messageService: MessageApiService,
-		private _workspaceService: WorkspaceApiService
-	) {}
+	constructor(private _messageService: MessageApiService, private _workspaceService: WorkspaceApiService) {}
 
 	public addEmailTemplate(body: EmailTemplateRequest): Observable<string> {
 		return this._messageService.addEmailTemplate({ body });
 	}
 
-	public editEmailTemplate(body: EditEmailTemplateRequest): Observable<void>{
+	public editEmailTemplate(body: EditEmailTemplateRequest): Observable<void> {
 		return this._messageService.editEmailTemplate({ body });
 	}
 
@@ -43,10 +38,10 @@ export class MessageService {
 	}
 
 	public createWorkspace(body: Workspace): Observable<string> {
-		return this._workspaceService.create({ body })
+		return this._workspaceService.create({ body });
 	}
 
 	public removeWorkspace(params: IRemoveWorkspaceRequest): Observable<OperationResultResponse> {
-		return this._workspaceService.remove(params)
+		return this._workspaceService.remove(params);
 	}
 }

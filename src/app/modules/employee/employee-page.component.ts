@@ -1,15 +1,17 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { EducationType } from '@data/api/user-service/models';
+import { EducationType, OperationResultResponse } from '@data/api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subject } from 'rxjs';
+import { EMPTY, iif, Observable, Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
-import { switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, skip } from 'rxjs/operators';
 import { EmployeePageService } from '@app/services/employee-page.service';
-import { ArchiveComponent } from './modals/archive/archive.component';
-import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
+import { ModalService } from '@app/services/modal.service';
+import { User } from '@app/models/user/user.model';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { ConfirmDialogData } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {
@@ -24,24 +26,18 @@ export interface Modes {
 	certificates: WorkFlowMode;
 }
 
-export interface Path {
-	title: string;
-	url?: string;
-}
-
 @Component({
 	selector: 'do-employee-page',
 	templateUrl: './employee-page.component.html',
-	styleUrls: [ './employee-page.component.scss' ],
+	styleUrls: ['./employee-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
 	public studyTypes: EducationType[];
-	// public paths: Path[];
-	// public isOwner: boolean;
 
-	// private dialogRef;
-	private _unsubscribe$: Subject<void>;
+	private _unsubscribe$$: Subject<void>;
+	public selectedUser$: Observable<User>;
+	public userLogged$: Observable<boolean | undefined>;
 
 	constructor(
 		private _dialog: MatDialog,
@@ -52,38 +48,58 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		private _router: Router,
 		private _snackBar: MatSnackBar,
 		private _cdr: ChangeDetectorRef,
+		private _modalService: ModalService,
+		private _currentUserService: CurrentUserService
 	) {
-		this.studyTypes = [ EducationType.Offline, EducationType.Online ];
-		this._unsubscribe$ = new Subject<void>();
+		this.studyTypes = [EducationType.Offline, EducationType.Online];
+		this._unsubscribe$$ = new Subject<void>();
+		this.selectedUser$ = this._employeeService.selectedUser$;
+		this.userLogged$ = this._currentUserService.user$.pipe(map((user) => user.isAdmin));
 	}
 
 	public ngOnInit(): void {
-		// this.isOwner = user.id === this.pageId;
-		this._route.params
-		.pipe(
-			takeUntil(this._unsubscribe$),
-			switchMap((params) => this._employeeService.getEmployee(params.id)),
-		)
-		.subscribe();
+		this._route.paramMap
+			.pipe(
+				skip(1),
+				takeUntil(this._unsubscribe$$),
+				switchMap((params: ParamMap) => this._employeeService.getEmployee(params.get('id') as string))
+			)
+			.subscribe();
+	}
+
+	public onActionEmployeeClick(userId: string | undefined, action: 'activate' | 'disable'): void {
+		if (!userId) {
+			return;
+		}
+		let actionWithUser$: Observable<OperationResultResponse>;
+		let config: ConfirmDialogData;
+		if (action === 'disable') {
+			actionWithUser$ = this._userService.disableUser(userId);
+			config = {
+				confirmText: 'Да, удалить',
+				title: 'Удаление пользователя',
+				message: 'Вы действительно хотите удалить этого пользователя?',
+			};
+		} else {
+			actionWithUser$ = this._userService.activateUser(userId);
+			config = {
+				confirmText: 'Да, восстановить',
+				title: 'Восстановление пользователя',
+				message: 'Вы действительно хотите восстановить этого пользователя?',
+			};
+		}
+		this._modalService
+			.confirm(config)
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) => iif(() => !!confirm, actionWithUser$, EMPTY)),
+				switchMap(() => this._employeeService.getEmployee(userId))
+			)
+			.subscribe();
 	}
 
 	public ngOnDestroy(): void {
-		this._unsubscribe$.next();
-		this._unsubscribe$.complete();
+		this._unsubscribe$$.next();
+		this._unsubscribe$$.complete();
 	}
-
-	// onOpenDialog(): void {
-	// 	const dialogComponent = this.user.isAdmin ? ArchiveComponent : AdminRequestComponent;
-	//
-	// 	this.dialogRef = this._dialog.open(dialogComponent, {});
-	// 	this.dialogRef.afterClosed().subscribe((result: string) => {
-	// 		this.showMessage(result);
-	// 	});
-	// }
-	//
-	// showMessage(message: string): void {
-	// 	if (message) {
-	// 		this._snackBar.open(message, 'accept', { duration: 3000 });
-	// 	}
-	// }
 }
