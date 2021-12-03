@@ -13,6 +13,7 @@ import { ResponseMessageModel } from '@app/models/response/response-message.mode
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
+import { DatePipe } from '@angular/common';
 
 @Component({
 	selector: 'do-add-leave-hours',
@@ -26,10 +27,12 @@ export class AddLeaveHoursComponent {
 
 	public loading$$: BehaviorSubject<boolean>;
 
+	public currentDate: Date;
 	public minDate: DateTime;
 	public maxDate: DateTime;
 	public recommendedTime$$: BehaviorSubject<number>;
 	public disableWeekends: DateFilterFn<DateTime>;
+	private _datePipe: DatePipe;
 
 	public absences: ILeaveType[];
 
@@ -43,14 +46,17 @@ export class AddLeaveHoursComponent {
 
 		this.disableWeekends = this._attendanceService.disableWeekends;
 		this.absences = LeaveTypeModel.getAllLeaveTypes();
+		this.currentDate = new Date();
+		this._datePipe = new DatePipe('en-US');
 
-		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 		this.addLeaveForm = this._fb.group({
 			leaveType: [null, [Validators.required]],
 			startDate: [null, [Validators.required]],
 			endDate: [null, [Validators.required]],
 			comment: [null],
 		});
+
+		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 	}
 
 	public onClose(): void {
@@ -96,5 +102,55 @@ export class AddLeaveHoursComponent {
 		console.log('REQUEST:', leaveTimeRequest);
 
 		return this._attendanceService.addLeaveTime(leaveTimeRequest);
+	}
+
+	public addHoursToAbsenceValidation(): { disabled: boolean; tooltipMessage: string } {
+		if (this.addLeaveForm.get('leaveType')?.value === 'SickLeave') {
+			if (
+				this.currentDate.getMonth() === 11 &&
+				Number(this._datePipe.transform(this.addLeaveForm.get('endDate')?.value, 'M')) === 1
+			) {
+				return {
+					disabled: false,
+					tooltipMessage: '',
+				};
+			}
+			if (
+				Number(this._datePipe.transform(this.addLeaveForm.get('endDate')?.value, 'Y')) >
+				this.currentDate.getFullYear()
+			) {
+				return {
+					disabled: true,
+					tooltipMessage: 'Проставлять больничный можно только на 1 месяц вперед от текущего месяца',
+				};
+			}
+			if (
+				Number(this._datePipe.transform(this.addLeaveForm.get('endDate')?.value, 'M')) -
+					this.currentDate.getMonth() >
+				3
+			) {
+				return {
+					disabled: true,
+					tooltipMessage: 'Проставлять больничный можно только на 1 месяц вперед от текущего месяца',
+				};
+			}
+		}
+		if (
+			Number(this._datePipe.transform(this.addLeaveForm.get('startDate')?.value, 'Y')) <
+				this.currentDate.getFullYear() ||
+			Number(this._datePipe.transform(this.addLeaveForm.get('startDate')?.value, 'M')) <
+				this.currentDate.getMonth() + 1
+		) {
+			if (this.addLeaveForm.get('leaveType')?.value === 'SickLeave') {
+				return { disabled: false, tooltipMessage: '' };
+			}
+			if (this.currentDate.getDate() > 5) {
+				return {
+					disabled: true,
+					tooltipMessage: 'Проставлять даты за прошлый месяц можно только в первые 5 дней текущего месяца',
+				};
+			}
+		}
+		return { disabled: false, tooltipMessage: '' };
 	}
 }

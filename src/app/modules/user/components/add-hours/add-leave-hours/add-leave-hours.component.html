@@ -32,12 +32,18 @@
 		<mat-label>Комментарий</mat-label>
 		<textarea matInput formControlName="comment" placeholder="Оставьте комментарий для менеджера"></textarea>
 	</mat-form-field>
-	<button
-		mat-flat-button
-		color="primary"
-		[loading]="(loading$$ | async) ?? false"
-		[disabled]="addLeaveForm.invalid || addLeaveForm.disabled"
+	<div
+		matTooltip="{{ addHoursToAbsenceValidation().tooltipMessage }}"
+		[matTooltipDisabled]="!addHoursToAbsenceValidation().disabled"
 	>
-		Добавить часы
-	</button>
+		<button
+			mat-flat-button
+			class="add-hours__absence-submit"
+			color="primary"
+			[loading]="(loading$$ | async) ?? false"
+			[disabled]="addLeaveForm.invalid || addLeaveForm.disabled || addHoursToAbsenceValidation().disabled"
+		>
+			Добавить часы
+		</button>
+	</div>
 </form>
