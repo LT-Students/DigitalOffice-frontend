@@ -11,4 +11,6 @@ export { OperationResultStatusType } from './models/operation-result-status-type
 export { OperationResultResponse } from './models/operation-result-response';
 export { OperationResultResponseCompanyInfo } from './models/operation-result-response-company-info';
 export { PatchCompanyDocument } from './models/patch-company-document';
+export { PatchCompanyUserDocument } from './models/patch-company-user-document';
 export { EditCompanyRequest } from './models/edit-company-request';
+export { EditCompanyUserRequest } from './models/edit-company-user-request';

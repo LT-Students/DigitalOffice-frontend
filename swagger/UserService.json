@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.0.3",
+    "version": "1.4.0.4",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -562,7 +562,7 @@
       ],
       "get": {
         "tags": [
-          "Credentials"
+          "Password"
         ],
         "operationId": "generatePassword",
         "description": "Returns randomly generated password.",
@@ -583,9 +583,14 @@
       }
     },
     "/password/change": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
       "post": {
         "tags": [
-          "Credentials"
+          "Password"
         ],
         "operationId": "changePassword",
         "description": "Change user password.",
@@ -610,7 +615,7 @@
             }
           },
           "400": {
-            "description": "Bad Request.\n* Login or new password empty. ",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -620,7 +625,7 @@
             }
           },
           "403": {
-            "description": "Forbidden.\n* Invalid user data.",
+            "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
@@ -630,7 +635,67 @@
             }
           },
           "404": {
-            "description": "Not Found.\n* User credentionals was not found.",
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/password/reconstruct": {
+      "post": {
+        "tags": [
+          "Password"
+        ],
+        "operationId": "reconstructPassword",
+        "description": "Change user password use secret from email.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReconstructPasswordRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Change user password operation success (boolean) status will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -656,7 +721,7 @@
       ],
       "get": {
         "tags": [
-          "Credentials"
+          "Password"
         ],
         "operationId": "forgotPassword",
         "description": "Initiates sending a email with instructions on how to change the user's password.",
@@ -2584,10 +2649,31 @@
             "format": "uuid",
             "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
           },
-          "Secret": {
+          "Password": {
+            "description": "Old user password.",
+            "type": "string",
+            "example": "22cf2f"
+          },
+          "NewPassword": {
+            "description": "New user password.",
+            "type": "string",
+            "example": "Mypassword"
+          }
+        }
+      },
+      "ReconstructPasswordRequest": {
+        "type": "object",
+        "properties": {
+          "UserId": {
+            "description": "Unique user identifier.",
             "type": "string",
             "format": "uuid",
             "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+          },
+          "Secret": {
+            "description": "Secret from email.",
+            "type": "string",
+            "example": "22cf2f"
           },
           "Login": {
             "description": "User login.",

@@ -1,7 +1,6 @@
 export { CreatePositionRequest } from './models/create-position-request';
 export { EditPositionRequest } from './models/edit-position-request';
 export { CreatePositionUserRequest } from './models/create-position-user-request';
-export { EditUserRateRequest } from './models/edit-user-rate-request';
 export { PatchPositionDocument } from './models/patch-position-document';
 export { PositionInfo } from './models/position-info';
 export { OperationResultStatusType } from './models/operation-result-status-type';

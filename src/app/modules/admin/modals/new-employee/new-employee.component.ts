@@ -12,8 +12,8 @@ import {
 	UserStatus,
 } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user/user.service';
-import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 import { RightsService } from '@app/services/rights/rights.service';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
 import { OfficeInfo } from '@data/api/company-service/models/office-info';
@@ -39,6 +39,7 @@ export class NewEmployeeComponent implements OnDestroy {
 	public department$: Observable<FindResultResponseDepartmentInfo>;
 	public roles$: Observable<RoleInfo[]>;
 	public offices$: Observable<OfficeInfo[]>;
+	public loading$$: BehaviorSubject<boolean>;
 
 	private _unsubscribe$: Subject<void>;
 
@@ -52,6 +53,7 @@ export class NewEmployeeComponent implements OnDestroy {
 		private _officeService: OfficeService
 	) {
 		this.message = '';
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.userForm = this._initForm();
 		this.position$ = this._positionService.findPositions({ skipcount: 0, takecount: 500 });
 		this.department$ = this.department$ = this._departmentService.findDepartments({
@@ -73,11 +75,15 @@ export class NewEmployeeComponent implements OnDestroy {
 	}
 
 	public createEmployee(): void {
+		this.loading$$.next(true);
 		const params: CreateUserRequest = this._convertFormDataToCreateUserParams();
 
 		this._userService
 			.createUser(params)
-			.pipe(takeUntil(this._unsubscribe$))
+			.pipe(
+				finalize(() => this.loading$$.next(false)),
+				takeUntil(this._unsubscribe$)
+			)
 			.subscribe(
 				(result: OperationResultResponse) => {
 					this._dialogRef.close(result);

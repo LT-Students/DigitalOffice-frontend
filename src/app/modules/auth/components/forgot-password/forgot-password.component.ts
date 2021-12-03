@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { BehaviorSubject } from 'rxjs';
 import { DoValidators } from '@app/validators/do-validators';
-import { CredentialsService } from '@app/services/user/credentials.service';
 import { finalize } from 'rxjs/operators';
+import { PasswordService } from '@app/services/user/password.service';
 
 @Component({
 	selector: 'do-forgot-password',
@@ -17,7 +17,7 @@ export class ForgotPasswordComponent {
 	public isWaiting$$: BehaviorSubject<boolean>;
 	public isCompleted$$: BehaviorSubject<boolean>;
 
-	constructor(private _credentialService: CredentialsService, private _formBuilder: FormBuilder) {
+	constructor(private _passwordService: PasswordService, private _formBuilder: FormBuilder) {
 		this.isWaiting$$ = new BehaviorSubject<boolean>(false);
 		this.isCompleted$$ = new BehaviorSubject<boolean>(false);
 
@@ -28,7 +28,7 @@ export class ForgotPasswordComponent {
 
 	public resetPassword(): void {
 		this.isWaiting$$.next(true);
-		this._credentialService
+		this._passwordService
 			.forgotPassword({ userEmail: this.forgotPasswordForm.get('email')?.value.trim() })
 			.pipe(
 				finalize(() => {

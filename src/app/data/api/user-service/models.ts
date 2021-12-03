@@ -18,6 +18,7 @@ export { CertificateInfo } from './models/certificate-info';
 export { UserAchievementInfo } from './models/user-achievement-info';
 export { ProjectInfo } from './models/project-info';
 export { ChangePasswordRequest } from './models/change-password-request';
+export { ReconstructPasswordRequest } from './models/reconstruct-password-request';
 export { ErrorResponse } from './models/error-response';
 export { OperationResultResponse } from './models/operation-result-response';
 export { CommunicationType } from './models/communication-type';

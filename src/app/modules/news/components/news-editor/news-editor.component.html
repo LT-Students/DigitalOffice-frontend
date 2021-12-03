@@ -8,7 +8,8 @@
 			<button
 				mat-flat-button
 				color="primary"
-				[disabled]="articleSubject.invalid || (isEditorContentEmpty | async)"
+				[loading]="(loading$$ | async) ?? false"
+				[disabled]="articleSubject.invalid || (isEditorContentEmpty | async) ?? false"
 				(click)="onSubmit()"
 			>
 				{{ isEdit ? 'Редактировать новость' : 'Опубликовать новость' }}

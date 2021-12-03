@@ -4,7 +4,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "services": "ng serve && start.bat",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

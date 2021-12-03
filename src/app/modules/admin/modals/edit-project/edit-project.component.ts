@@ -4,8 +4,8 @@ import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project/project.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { InitialDataEditRequest, ProjectPath } from '@app/types/edit-request';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { finalize, map } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
 import { createEditRequest } from '@app/utils/utils';
@@ -24,6 +24,7 @@ export class EditProjectComponent {
 	public statuses: IProjectStatusType[];
 	public projectInfo: any;
 	private readonly _initialData: InitialDataEditRequest<ProjectPath>;
+	public loading$$: BehaviorSubject<boolean>;
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -34,6 +35,7 @@ export class EditProjectComponent {
 		@Inject(MAT_DIALOG_DATA) private _data: { projectInfo: any[] }
 	) {
 		this.statuses = ProjectTypeModel.getAllProjectTypes();
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 
 		this.projectInfo = this._data.projectInfo;
 
@@ -56,8 +58,12 @@ export class EditProjectComponent {
 	}
 
 	public editProject(): void {
+		this.loading$$.next(true);
 		const editRequest = createEditRequest(this.projectForm.getRawValue(), this._initialData);
 
-		this._projectService.editProject({ projectId: this.projectInfo.id, body: editRequest }).subscribe();
+		this._projectService
+			.editProject({ projectId: this.projectInfo.id, body: editRequest })
+			.pipe(finalize(() => this.loading$$.next(false)))
+			.subscribe();
 	}
 }

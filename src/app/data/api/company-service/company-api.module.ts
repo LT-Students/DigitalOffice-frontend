@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { CompanyApiService } from './services/company-api.service';
+import { CompanyUserApiService } from './services/company-user-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -13,7 +14,7 @@ import { CompanyApiService } from './services/company-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [CompanyApiService, ApiConfiguration],
+	providers: [CompanyApiService, CompanyUserApiService, ApiConfiguration],
 })
 export class CompanyApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<CompanyApiModule> {

@@ -8,8 +8,8 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import EditorJS from '@editorjs/editorjs';
-import { debounceTime, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { BehaviorSubject, from, Observable, of, ReplaySubject } from 'rxjs';
+import { debounceTime, finalize, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { BehaviorSubject, from, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
 import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
@@ -23,6 +23,7 @@ import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-ope
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
@@ -41,6 +42,7 @@ interface NewsDraft {
 })
 export class NewsEditorComponent implements OnInit, OnDestroy {
 	public articleSubject: FormControl;
+	public loading$$: BehaviorSubject<boolean>;
 
 	public isEditorContentEmpty: BehaviorSubject<boolean>;
 	public isEdit: boolean;
@@ -60,6 +62,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		private _elementRef: ElementRef,
 		private _currentCompanyService: CurrentCompanyService
 	) {
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 		this._dialogRef.disableClose = true;
 		this.isEdit = Boolean(this._newsId);
@@ -158,59 +161,56 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	}
 
 	public onSubmit(): void {
-		if (this.isEdit) {
-			this._editNews();
-		} else {
-			this._createNews();
-		}
-	}
-
-	private _createNews(): void {
-		let userId: string;
-		this._currentUserService.user$
-			.pipe(
-				tap((user) => (userId = user?.id ?? '')),
-				switchMap(() => from((this._editor as EditorJS).save())),
-				switchMap((outputData) => {
-					const [newsContent, previewContent] = this._prepareOutputData(outputData);
-					const news: CreateNewsRequest = {
-						authorId: userId,
-						subject: this.articleSubject.value.trim(),
-						preview: JSON.stringify(previewContent),
-						content: JSON.stringify(newsContent),
-					};
-					return this._newsService.createNews(news);
-				})
-			)
+		this.loading$$.next(true);
+		iif(() => this.isEdit, this._editNews(), this._createNews())
+			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe({
 				next: (response) => {
 					this._closeAndEmptyDraft(true);
-					this._modalService.fullScreen(PostComponent, response.body);
+					if (this.isEdit) {
+						this._modalService.fullScreen(PostComponent, response.body);
+					}
 				},
 			});
 	}
 
-	private _editNews(): void {
-		from((this._editor as EditorJS).save())
-			.pipe(
-				switchMap((outputData) => {
-					const [newsContent, previewContent] = this._prepareOutputData(outputData);
-					const editRequest: EditNewsRequest = [
-						{ op: 'replace', path: '/Content', value: JSON.stringify(newsContent) },
-						{ op: 'replace', path: '/Preview', value: JSON.stringify(previewContent) },
-					];
-					if (this.articleSubject.dirty) {
-						const subject: NewsPatchOperation = {
-							op: 'replace',
-							path: '/Subject',
-							value: this.articleSubject.value,
-						};
-						editRequest.push(subject);
-					}
-					return this._newsService.editNews(this._newsId, editRequest);
-				})
-			)
-			.subscribe({ next: () => this._closeAndEmptyDraft(true) });
+	private _createNews(): Observable<OperationResultResponse<any>> {
+		let userId: string;
+		return this._currentUserService.user$.pipe(
+			tap((user) => (userId = user?.id ?? '')),
+			switchMap(() => from((this._editor as EditorJS).save())),
+			switchMap((outputData) => {
+				const [newsContent, previewContent] = this._prepareOutputData(outputData);
+				const news: CreateNewsRequest = {
+					authorId: userId,
+					subject: this.articleSubject.value.trim(),
+					preview: JSON.stringify(previewContent),
+					content: JSON.stringify(newsContent),
+				};
+				return this._newsService.createNews(news);
+			})
+		);
+	}
+
+	private _editNews(): Observable<OperationResultResponse<any>> {
+		return from((this._editor as EditorJS).save()).pipe(
+			switchMap((outputData) => {
+				const [newsContent, previewContent] = this._prepareOutputData(outputData);
+				const editRequest: EditNewsRequest = [
+					{ op: 'replace', path: '/Content', value: JSON.stringify(newsContent) },
+					{ op: 'replace', path: '/Preview', value: JSON.stringify(previewContent) },
+				];
+				if (this.articleSubject.dirty) {
+					const subject: NewsPatchOperation = {
+						op: 'replace',
+						path: '/Subject',
+						value: this.articleSubject.value,
+					};
+					editRequest.push(subject);
+				}
+				return this._newsService.editNews(this._newsId, editRequest);
+			})
+		);
 	}
 
 	private _prepareOutputData(outputData: IOutputData): [IOutputBlockData[], IOutputBlockData[]] {

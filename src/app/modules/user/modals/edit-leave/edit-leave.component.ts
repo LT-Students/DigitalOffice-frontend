@@ -12,6 +12,8 @@ import { DateTime } from 'luxon';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { createEditRequest } from '@app/utils/utils';
+import { BehaviorSubject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 
 @Component({
@@ -28,6 +30,7 @@ export class EditLeaveComponent {
 	public periodInHours: number;
 	public disableWeekends: DateFilterFn<DateTime>;
 	private readonly _initialData: InitialDataEditRequest<LeaveTimePath>;
+	public loading$$: BehaviorSubject<boolean>;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public leave: LeaveTimeModel,
@@ -37,6 +40,7 @@ export class EditLeaveComponent {
 		private _dateService: DateService,
 		private _attendanceService: AttendanceService
 	) {
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this._initialData = {
 			[LeaveTimePath.COMMENT]: [this.leave.comment],
 			[LeaveTimePath.START_TIME]: [new Date(this.leave.startTime), [Validators.required]],
@@ -69,6 +73,7 @@ export class EditLeaveComponent {
 	}
 
 	public onSubmitClick(): void {
+		this.loading$$.next(true);
 		const editRequest = createEditRequest(this.editForm.getRawValue(), this._initialData);
 
 		this._timeService
@@ -76,6 +81,7 @@ export class EditLeaveComponent {
 				leaveTimeId: this.leave.id,
 				body: editRequest,
 			})
+			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe((res) =>
 				this.onClose({
 					status: res.status,

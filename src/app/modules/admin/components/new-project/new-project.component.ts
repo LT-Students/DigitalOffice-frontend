@@ -10,6 +10,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { DepartmentService } from '@app/services/department/department.service';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
+import { BehaviorSubject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -41,6 +43,7 @@ export class NewProjectComponent implements OnInit {
 	public pluralTeamCount: { [k: string]: string };
 	private _departmentId: string;
 	public dataSource: MatTableDataSource<DepartmentUserInfo>;
+	public loading$$: BehaviorSubject<boolean>;
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -71,6 +74,8 @@ export class NewProjectComponent implements OnInit {
 			shortDescription: [null],
 			status: [ProjectStatusType.Active],
 		});
+
+		this.loading$$ = new BehaviorSubject<boolean>(false);
 	}
 
 	ngOnInit(): void {
@@ -119,14 +124,17 @@ export class NewProjectComponent implements OnInit {
 			users: projectUsers,
 			projectImages: [],
 		};
-		this._projectService.createProject(projectRequest).subscribe(
-			(result) => {
-				this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
-			},
-			(error) => {
-				throw error;
-			}
-		);
+		this._projectService
+			.createProject(projectRequest)
+			.pipe(finalize(() => this.loading$$.next(false)))
+			.subscribe(
+				(result) => {
+					this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
+				},
+				(error) => {
+					throw error;
+				}
+			);
 	}
 
 	public showProjectTeam(): void {

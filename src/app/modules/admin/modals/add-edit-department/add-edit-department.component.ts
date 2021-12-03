@@ -12,6 +12,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { createEditRequest } from '@app/utils/utils';
 import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { UUID } from '@app/types/uuid.type';
+import { DoValidators } from '@app/validators/do-validators';
 
 @Component({
 	selector: 'do-new-department',
@@ -36,7 +37,15 @@ export class AddEditDepartmentComponent {
 		@Inject(MAT_DIALOG_DATA) departmentInfo: Required<DepartmentInfo>
 	) {
 		this.departmentForm = this._formBuilder.group({
-			[DepartmentPath.NAME]: ['', [Validators.required, Validators.minLength(3)]],
+			[DepartmentPath.NAME]: [
+				'',
+				[
+					Validators.required,
+					DoValidators.noWhitespaces,
+					DoValidators.matchMinLength(3),
+					DoValidators.oneSpaceBetweenWords,
+				],
+			],
 			[DepartmentPath.DESCRIPTION]: [''],
 			[DepartmentPath.DIRECTOR_ID]: [''],
 		});

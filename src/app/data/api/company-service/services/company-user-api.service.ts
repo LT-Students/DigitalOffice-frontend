@@ -9,34 +9,34 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { EditUserRateRequest } from '../models/edit-user-rate-request';
+import { EditCompanyUserRequest } from '../models/edit-company-user-request';
 import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class UserRateApiService extends BaseService {
+export class CompanyUserApiService extends BaseService {
 	constructor(config: ApiConfiguration, http: HttpClient) {
 		super(config, http);
 	}
 
 	/**
-	 * Path part for operation editUserRate
+	 * Path part for operation editCompanyUser
 	 */
-	static readonly EditUserRatePath = '/user/editrate';
+	static readonly EditCompanyUserPath = '/companyuser/edit';
 
 	/**
-	 * Edit user rate.
+	 * Chage user rate or start working at.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `editUserRate()` instead.
+	 * To access only the response body, use `editCompanyUser()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editUserRate$Response(params: {
-		body: EditUserRateRequest;
+	editCompanyUser$Response(params?: {
+		body?: EditCompanyUserRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserRateApiService.EditUserRatePath, 'put');
+		const rb = new RequestBuilder(this.rootUrl, CompanyUserApiService.EditCompanyUserPath, 'patch');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
@@ -57,15 +57,15 @@ export class UserRateApiService extends BaseService {
 	}
 
 	/**
-	 * Edit user rate.
+	 * Chage user rate or start working at.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `editUserRate$Response()` instead.
+	 * To access the full response (for headers, for example), `editCompanyUser$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editUserRate(params: { body: EditUserRateRequest }): Observable<OperationResultResponse> {
-		return this.editUserRate$Response(params).pipe(
+	editCompanyUser(params?: { body?: EditCompanyUserRequest }): Observable<OperationResultResponse> {
+		return this.editCompanyUser$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}

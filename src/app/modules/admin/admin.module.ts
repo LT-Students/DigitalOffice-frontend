@@ -7,7 +7,6 @@ import { SharedModule } from '../../shared/shared.module';
 import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
 import { ProjectTypePipe } from '../../shared/pipes/project-type.pipe';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AdminComponent } from './components/admin/admin.component';
 import { NewEmployeeComponent } from './modals/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { UserSearchComponent } from './components/new-project/modals/user-search/user-search.component';
@@ -34,7 +33,6 @@ import { EditCompanyComponent } from './modals/edit-company/edit-company.compone
 @NgModule({
 	declarations: [
 		DashboardComponent,
-		AdminComponent,
 		NewEmployeeComponent,
 		NewProjectComponent,
 		UserSearchComponent,
