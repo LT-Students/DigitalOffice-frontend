@@ -138,8 +138,10 @@ export class AddLeaveHoursComponent {
 		if (
 			Number(this._datePipe.transform(this.addLeaveForm.get('startDate')?.value, 'Y')) <
 				this.currentDate.getFullYear() ||
-			Number(this._datePipe.transform(this.addLeaveForm.get('startDate')?.value, 'M')) <
-				this.currentDate.getMonth() + 1
+			(Number(this._datePipe.transform(this.addLeaveForm.get('startDate')?.value, 'M')) <
+				this.currentDate.getMonth() + 1 &&
+				Number(this._datePipe.transform(this.addLeaveForm.get('startDate')?.value, 'Y')) ===
+					this.currentDate.getFullYear())
 		) {
 			if (this.addLeaveForm.get('leaveType')?.value === 'SickLeave') {
 				return { disabled: false, tooltipMessage: '' };
