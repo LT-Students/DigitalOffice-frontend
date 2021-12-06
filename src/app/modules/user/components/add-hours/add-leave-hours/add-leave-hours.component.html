@@ -2,13 +2,7 @@
 	<div class="add-hours__time-wrapper">
 		<mat-form-field appearance="fill">
 			<mat-label>Выберите диапазон отсутствия</mat-label>
-			<mat-date-range-input
-				[min]="minDate"
-				[max]="maxDate"
-				[dateFilter]="disableWeekends"
-				[rangePicker]="$any(picker)"
-				required
-			>
+			<mat-date-range-input [min]="minDate" [dateFilter]="disableWeekends" [rangePicker]="$any(picker)" required>
 				<input matStartDate formControlName="startDate" readonly />
 				<input matEndDate formControlName="endDate" readonly />
 			</mat-date-range-input>

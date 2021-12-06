@@ -105,6 +105,12 @@ export class AddLeaveHoursComponent {
 	}
 
 	public addHoursToAbsenceValidation(): { disabled: boolean; tooltipMessage: string } {
+		if (this.addLeaveForm.get('endDate')?.value === null || this.addLeaveForm.get('startDate')?.value === null) {
+			return {
+				disabled: false,
+				tooltipMessage: '',
+			};
+		}
 		if (this.addLeaveForm.get('leaveType')?.value === 'SickLeave') {
 			if (
 				this.currentDate.getMonth() === 11 &&
