@@ -531,30 +531,6 @@
           }
         }
       },
-      "CertificateInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          },
-          "SchoolName": {
-            "type": "string"
-          },
-          "EducationType": {
-            "$ref": "#/components/schemas/EducationType"
-          },
-          "ReceivedAt": {
-            "type": "string"
-          },
-          "Image": {
-            "$ref": "#/components/schemas/ImageInfo"
-          }
-        }
-      },
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
@@ -579,7 +555,11 @@
         "type": "object",
         "properties": {
           "Body": {
-            "$ref": "#/components/schemas/ImagesIds"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -758,31 +738,6 @@
             "type": "string",
             "format": "date",
             "example": "2021-01-21T00:00:00.000Z"
-          }
-        }
-      },
-      "EducationInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "UniversityName": {
-            "type": "string"
-          },
-          "QualificationName": {
-            "type": "string"
-          },
-          "FormEducation": {
-            "$ref": "#/components/schemas/FormEducation"
-          },
-          "AdmissionAt": {
-            "type": "string"
-          },
-          "IssueAt": {
-            "type": "string",
-            "nullable": true
           }
         }
       },
