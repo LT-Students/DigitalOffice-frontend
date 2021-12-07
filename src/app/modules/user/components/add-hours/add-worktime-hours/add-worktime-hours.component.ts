@@ -10,6 +10,7 @@ import { MatOptionSelectionChange } from '@angular/material/core';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { IEditWorkTimeRequest } from '@app/services/time/time.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { DoValidators } from '@app/validators/do-validators';
 import { timeValidator } from '../add-hours.validators';
 
 @Component({
@@ -24,6 +25,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	public selectedDate$: Observable<DateTime>;
 	public addHoursForm: FormGroup;
 	public monthOptions: DateTime[];
+	public tooltip: { disabled: boolean; message: string };
 
 	private _canEditSubscription: Subscription;
 
@@ -37,7 +39,13 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		this.addHoursForm = this._fb.group({
 			time: [
 				'',
-				[Validators.required, Validators.min(1), timeValidator(() => this._attendanceService.countMaxHours())],
+				[
+					Validators.required,
+					Validators.min(1),
+					Validators.max(3),
+					DoValidators.onlyNumbers,
+					timeValidator(() => this._attendanceService.countMaxHours()),
+				],
 			],
 			activity: [null, Validators.required],
 			comment: [null],
@@ -57,6 +65,8 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 				}
 			},
 		});
+
+		this.tooltip = { disabled: true, message: '' };
 	}
 
 	public ngOnDestroy(): void {
@@ -120,11 +130,19 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		return [];
 	}
 
-	numberOnly(event: KeyboardEvent): boolean {
-		const charCode = event.which ? event.which : event.keyCode;
-		if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-			return false;
+	public makeTooltipMessage(): void {
+		this.tooltip = { disabled: true, message: '' };
+		if (this.addHoursForm.controls['time'].errors?.required) {
+			this.tooltip = { disabled: false, message: 'Поле обязательно' };
 		}
-		return true;
+		if (this.addHoursForm.controls['time'].errors?.max) {
+			this.tooltip = { disabled: false, message: 'Допустимо не более 3-х символов' };
+		}
+		if (this.addHoursForm.controls['time'].errors?.min) {
+			this.tooltip = { disabled: false, message: 'Минимальное значение должно быть больше 0' };
+		}
+		if (this.addHoursForm.controls['time'].errors?.onlyNumbers) {
+			this.tooltip = { disabled: false, message: 'Допустим ввод только целых чисел' };
+		}
 	}
 }

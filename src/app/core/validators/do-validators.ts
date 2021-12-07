@@ -108,4 +108,11 @@ export class DoValidators {
 			return strLength > maxLength ? { maxlength: true } : null;
 		};
 	}
+
+	static onlyNumbers(control: AbstractControl): ValidationErrors | null {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		return /\D/g.test(control.value) ? { onlyNumbers: true } : null;
+	}
 }
