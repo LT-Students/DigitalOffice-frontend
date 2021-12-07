@@ -7,10 +7,8 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { UserApiService } from './services/user-api.service';
 import { CredentialsApiService } from './services/credentials-api.service';
 import { PasswordApiService } from './services/password-api.service';
-import { EducationApiService } from './services/education-api.service';
-import { CertificateApiService } from './services/certificate-api.service';
 import { CommunicationApiService } from './services/communication-api.service';
-import { ImageApiService } from './services/image-api.service';
+import { AvatarApiService } from './services/avatar-api.service';
 import { SkillApiService } from './services/skill-api.service';
 import { AchievementApiService } from './services/achievement-api.service';
 
@@ -25,10 +23,8 @@ import { AchievementApiService } from './services/achievement-api.service';
 		UserApiService,
 		CredentialsApiService,
 		PasswordApiService,
-		EducationApiService,
-		CertificateApiService,
 		CommunicationApiService,
-		ImageApiService,
+		AvatarApiService,
 		SkillApiService,
 		AchievementApiService,
 		ApiConfiguration,
