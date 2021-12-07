@@ -1,7 +1,7 @@
 <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 	<div>
 		<mat-form-field class="add-hours__time" appearance="fill">
-			<input matInput formControlName="time" type="text" maxlength="3" placeholder="0" />
+			<input matInput formControlName="time" type="number" maxlength="3" placeholder="0" />
 			<mat-error *ngIf="addHoursForm.controls['time'].errors?.required">Поле обязательно</mat-error>
 			<mat-error *ngIf="addHoursForm.controls['time'].errors?.min"
 				>Минимальное значение должно быть больше 0
