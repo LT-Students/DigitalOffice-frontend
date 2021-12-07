@@ -41,6 +41,7 @@ import { environment } from '../../environments/environment';
 		BrowserAnimationsModule,
 		RouterModule,
 		HttpClientModule,
+		EducationApiModule.forRoot({ rootUrl: `https://education.${environment.apiUrl}` }),
 		AuthenticationApiModule.forRoot({ rootUrl: `https://auth.${environment.apiUrl}` }),
 		DepartmentApiModule.forRoot({ rootUrl: `https://department.${environment.apiUrl}` }),
 		CompanyApiModule.forRoot({ rootUrl: `https://company.${environment.apiUrl}` }),
