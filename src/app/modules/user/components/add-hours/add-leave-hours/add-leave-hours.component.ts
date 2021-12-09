@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AttendanceService } from '@app/services/attendance.service';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
@@ -116,38 +116,30 @@ export class AddLeaveHoursComponent {
 	public addHoursToAbsenceValidation(): void {
 		this.tooltip = { disabled: true, message: '' };
 
-		if (this.addLeaveForm.get('endDate')?.value && this.addLeaveForm.get('startDate')?.value) {
-		}
-		const endDateMonth = this.addLeaveForm.get('endDate')?.value.month;
-		const endDateYear = this.addLeaveForm.get('endDate')?.value.year;
-		const startDateMonth = this.addLeaveForm.get('startDate')?.value.month;
-		const startDateYear = this.addLeaveForm.get('startDate')?.value.year;
-
 		const leaveType: string = this.addLeaveForm.get('leaveType')?.value;
 		const startDate: DateTime = this.addLeaveForm.get('startDate')?.value;
 		const endDate: DateTime = this.addLeaveForm.get('endDate')?.value;
-
-		const currentMonth = this.currentDate.month;
-		const currentYear = this.currentDate.year;
 		const currentDay = this.currentDate.day;
+
+		const fromStartToCurrentInterval = Interval.fromDateTimes(
+			startDate.startOf('month'),
+			this.currentDate.startOf('month')
+		);
+		const fromCurrentToEndInterval = Interval.fromDateTimes(
+			this.currentDate.startOf('month'),
+			endDate.startOf('month')
+		);
 
 		if (endDate === null || startDate === null) {
 			return;
 		} else if (leaveType === LeaveType.SickLeave) {
-			if (currentMonth === 12 && endDateMonth === 1) {
-				this.tooltip = { disabled: true, message: '' };
-			} else if (endDateYear > currentYear) {
-				this.tooltip = {
-					disabled: false,
-					message: 'Проставлять больничный можно только на 1 месяц вперед от текущего месяца',
-				};
-			} else if (endDateMonth - currentMonth > 2) {
+			if (fromCurrentToEndInterval.length('months') >= 2) {
 				this.tooltip = {
 					disabled: false,
 					message: 'Проставлять больничный можно только на 1 месяц вперед от текущего месяца',
 				};
 			}
-		} else if (startDateYear < currentYear || (startDateMonth < currentMonth && startDateYear === currentYear)) {
+		} else if (fromStartToCurrentInterval.length('months') >= 1) {
 			if (leaveType === LeaveType.SickLeave) {
 				this.tooltip = { disabled: true, message: '' };
 			} else if (currentDay > 5) {
