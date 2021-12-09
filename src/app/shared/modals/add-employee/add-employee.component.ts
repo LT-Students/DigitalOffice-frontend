@@ -81,8 +81,4 @@ export class AddEmployeeComponent implements OnInit {
 				}
 			});
 	}
-
-	public addUsers(): void {
-		this.onClose(this.selection.selected);
-	}
 }
