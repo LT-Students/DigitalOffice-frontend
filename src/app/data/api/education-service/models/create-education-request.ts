@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-import { AddImageRequest } from './add-image-request';
 import { FormEducation } from './form-education';
 export interface CreateEducationRequest {
 	/**
@@ -8,11 +7,6 @@ export interface CreateEducationRequest {
 	 */
 	admissionAt: string;
 	formEducation: FormEducation;
-
-	/**
-	 * Array of education images.
-	 */
-	images?: Array<AddImageRequest>;
 
 	/**
 	 * Date of issuue.
@@ -25,7 +19,7 @@ export interface CreateEducationRequest {
 	qualificationName: string;
 
 	/**
-	 * Name of univerity.
+	 * Name of the univerity.
 	 */
 	universityName: string;
 

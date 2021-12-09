@@ -1,20 +1,10 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface CreateImageRequest {
+export interface CreateAvatarRequest {
 	/**
 	 * Image content.
 	 */
 	content: string;
-
-	/**
-	 * Unique entity (user/certificate/education) identifier.
-	 */
-	entityId: string;
-
-	/**
-	 * Type of the entity
-	 */
-	entityType: 'user' | 'certificate' | 'education';
 
 	/**
 	 * Image extension.
@@ -30,4 +20,9 @@ export interface CreateImageRequest {
 	 * Image name
 	 */
 	name?: null | string;
+
+	/**
+	 * Unique entity user identifier.
+	 */
+	userId?: string;
 }

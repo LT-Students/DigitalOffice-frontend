@@ -53,9 +53,14 @@ export class UserApiService extends BaseService {
 		email?: string;
 
 		/**
-		 * Include user communications info in answer.
+		 * Include user current avatar in answer.
 		 */
-		includecommunications?: boolean;
+		includecurrentavatar?: boolean;
+
+		/**
+		 * Include all user current avatars in answer.
+		 */
+		includeavatars?: boolean;
 
 		/**
 		 * Include user certificates info in answer.
@@ -63,9 +68,14 @@ export class UserApiService extends BaseService {
 		includecertificates?: boolean;
 
 		/**
-		 * Include user achievements info in answer.
+		 * Include user communications info in answer.
 		 */
-		includeachievements?: boolean;
+		includecommunications?: boolean;
+
+		/**
+		 * Include user company info in answer.
+		 */
+		includecompany?: boolean;
 
 		/**
 		 * Include user department info in answer.
@@ -73,14 +83,24 @@ export class UserApiService extends BaseService {
 		includedepartment?: boolean;
 
 		/**
-		 * Include user position info in answer.
+		 * Include educations info in answer.
 		 */
-		includeposition?: boolean;
+		includeeducations?: boolean;
 
 		/**
 		 * Include user office info in answer.
 		 */
 		includeoffice?: boolean;
+
+		/**
+		 * Include user position info in answer.
+		 */
+		includeposition?: boolean;
+
+		/**
+		 * Include user projects info in answer.
+		 */
+		includeprojects?: boolean;
 
 		/**
 		 * Include user role info in answer.
@@ -93,42 +113,28 @@ export class UserApiService extends BaseService {
 		includeskills?: boolean;
 
 		/**
-		 * Include user projects info in answer.
+		 * Role localization.
 		 */
-		includeprojects?: boolean;
-
-		/**
-		 * Include certificate and achievments images content in answer.
-		 */
-		includeimages?: boolean;
-
-		/**
-		 * Include user images content in answer.
-		 */
-		includeuserimages?: boolean;
-
-		/**
-		 * Include educations info in answer.
-		 */
-		includeeducations?: boolean;
+		locale?: string;
 	}): Observable<StrictHttpResponse<OperationResultResponseUserResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, UserApiService.GetUserPath, 'get');
 		if (params) {
 			rb.query('userId', params.userId, {});
 			rb.query('name', params.name, {});
 			rb.query('email', params.email, {});
-			rb.query('includecommunications', params.includecommunications, {});
+			rb.query('includecurrentavatar', params.includecurrentavatar, {});
+			rb.query('includeavatars', params.includeavatars, {});
 			rb.query('includecertificates', params.includecertificates, {});
-			rb.query('includeachievements', params.includeachievements, {});
+			rb.query('includecommunications', params.includecommunications, {});
+			rb.query('includecompany', params.includecompany, {});
 			rb.query('includedepartment', params.includedepartment, {});
-			rb.query('includeposition', params.includeposition, {});
+			rb.query('includeeducations', params.includeeducations, {});
 			rb.query('includeoffice', params.includeoffice, {});
+			rb.query('includeposition', params.includeposition, {});
+			rb.query('includeprojects', params.includeprojects, {});
 			rb.query('includerole', params.includerole, {});
 			rb.query('includeskills', params.includeskills, {});
-			rb.query('includeprojects', params.includeprojects, {});
-			rb.query('includeimages', params.includeimages, {});
-			rb.query('includeuserimages', params.includeuserimages, {});
-			rb.query('includeeducations', params.includeeducations, {});
+			rb.query('locale', params.locale, {});
 		}
 
 		return this.http
@@ -171,9 +177,14 @@ export class UserApiService extends BaseService {
 		email?: string;
 
 		/**
-		 * Include user communications info in answer.
+		 * Include user current avatar in answer.
 		 */
-		includecommunications?: boolean;
+		includecurrentavatar?: boolean;
+
+		/**
+		 * Include all user current avatars in answer.
+		 */
+		includeavatars?: boolean;
 
 		/**
 		 * Include user certificates info in answer.
@@ -181,9 +192,14 @@ export class UserApiService extends BaseService {
 		includecertificates?: boolean;
 
 		/**
-		 * Include user achievements info in answer.
+		 * Include user communications info in answer.
 		 */
-		includeachievements?: boolean;
+		includecommunications?: boolean;
+
+		/**
+		 * Include user company info in answer.
+		 */
+		includecompany?: boolean;
 
 		/**
 		 * Include user department info in answer.
@@ -191,14 +207,24 @@ export class UserApiService extends BaseService {
 		includedepartment?: boolean;
 
 		/**
-		 * Include user position info in answer.
+		 * Include educations info in answer.
 		 */
-		includeposition?: boolean;
+		includeeducations?: boolean;
 
 		/**
 		 * Include user office info in answer.
 		 */
 		includeoffice?: boolean;
+
+		/**
+		 * Include user position info in answer.
+		 */
+		includeposition?: boolean;
+
+		/**
+		 * Include user projects info in answer.
+		 */
+		includeprojects?: boolean;
 
 		/**
 		 * Include user role info in answer.
@@ -211,24 +237,9 @@ export class UserApiService extends BaseService {
 		includeskills?: boolean;
 
 		/**
-		 * Include user projects info in answer.
+		 * Role localization.
 		 */
-		includeprojects?: boolean;
-
-		/**
-		 * Include certificate and achievments images content in answer.
-		 */
-		includeimages?: boolean;
-
-		/**
-		 * Include user images content in answer.
-		 */
-		includeuserimages?: boolean;
-
-		/**
-		 * Include educations info in answer.
-		 */
-		includeeducations?: boolean;
+		locale?: string;
 	}): Observable<OperationResultResponseUserResponse> {
 		return this.getUser$Response(params).pipe(
 			map(

@@ -24,6 +24,7 @@ export class CurrentUserService {
 			includedepartment: true,
 			includerole: true,
 			includeimages: true,
+			includecurrentavatar: true,
 		};
 
 		return this._userService.getUser(params).pipe(catchError((error: HttpErrorResponse) => throwError(error)));
