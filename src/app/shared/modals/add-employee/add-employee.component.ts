@@ -51,11 +51,7 @@ export class AddEmployeeComponent implements OnInit {
 
 	public ngOnInit(): void {
 		this.getPageUsers();
-		if (this._data.openFrom === OpenAddEmployeeModalFrom.Project) {
-			this.openFromRu = OpenAddEmployeeModalFrom.Project;
-		} else {
-			this.openFromRu = OpenAddEmployeeModalFrom.Department;
-		}
+		this.openFromRu = this._data.openFrom;
 	}
 
 	public onClose(result?: UserInfo[]): void {
