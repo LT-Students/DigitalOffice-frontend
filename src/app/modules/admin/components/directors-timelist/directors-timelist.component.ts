@@ -102,7 +102,7 @@ export class DirectorsTimelistComponent implements OnInit {
 			const validators: ValidatorFn[] = [
 				Validators.min(0),
 				Validators.max(this._timeDurationService.countMaxMonthDuration(year, month)),
-				DoValidators.number,
+				DoValidators.floatNumber,
 			];
 
 			this.hoursGroup.addControl(

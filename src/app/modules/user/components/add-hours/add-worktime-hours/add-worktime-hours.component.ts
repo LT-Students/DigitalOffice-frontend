@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { AttendanceService } from '@app/services/attendance.service';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
@@ -12,6 +12,7 @@ import { IEditWorkTimeRequest } from '@app/services/time/time.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { DoValidators } from '@app/validators/do-validators';
 import { timeValidator } from '../add-hours.validators';
+import { ITooltip } from '../add-leave-hours/add-leave-hours.component';
 
 @Component({
 	selector: 'do-add-worktime-hours',
@@ -25,7 +26,8 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	public selectedDate$: Observable<DateTime>;
 	public addHoursForm: FormGroup;
 	public monthOptions: DateTime[];
-	public tooltip: { disabled: boolean; message: string };
+	public tooltip: ITooltip;
+	public monthNorm: number;
 
 	private _canEditSubscription: Subscription;
 
@@ -36,19 +38,23 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.monthOptions = [];
+		this.monthNorm = 160;
 		this.addHoursForm = this._fb.group({
 			time: [
 				'',
 				[
 					Validators.required,
-					Validators.min(1),
-					Validators.max(3),
-					DoValidators.onlyNumbers,
+					Validators.min(0),
+					Validators.max(this.monthNorm),
+					DoValidators.intNum,
 					timeValidator(() => this._attendanceService.countMaxHours()),
 				],
 			],
 			activity: [null, Validators.required],
 			comment: [null],
+		});
+		this.addHoursForm.get('time')?.valueChanges.subscribe(() => {
+			this.makeTooltipMessage();
 		});
 		this.workTimes$ = this._attendanceService.activities$.pipe(map((activities) => activities.projects));
 		this.selectedDate$ = this._attendanceService.selectedDate$.pipe(
@@ -65,7 +71,9 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 				}
 			},
 		});
-
+		this._attendanceService.monthNorm$.subscribe({
+			next: (monthNorm) => (this.monthNorm = monthNorm),
+		});
 		this.tooltip = { disabled: true, message: '' };
 	}
 
@@ -132,17 +140,25 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 
 	public makeTooltipMessage(): void {
 		this.tooltip = { disabled: true, message: '' };
-		if (this.addHoursForm.controls['time'].errors?.required) {
+		const errors: ValidationErrors | null = this.addHoursForm.controls['time'].errors;
+		if (errors?.required) {
 			this.tooltip = { disabled: false, message: 'Поле обязательно' };
+			return;
 		}
-		if (this.addHoursForm.controls['time'].errors?.max) {
-			this.tooltip = { disabled: false, message: 'Допустимо не более 3-х символов' };
+		if (errors?.max) {
+			this.tooltip = {
+				disabled: false,
+				message: `В этом месяце можно поставить не больше ${this.monthNorm} часов`,
+			};
+			return;
 		}
-		if (this.addHoursForm.controls['time'].errors?.min) {
-			this.tooltip = { disabled: false, message: 'Минимальное значение должно быть больше 0' };
+		if (errors?.min) {
+			this.tooltip = { disabled: false, message: 'Минимальное значение - 0' };
+			return;
 		}
-		if (this.addHoursForm.controls['time'].errors?.onlyNumbers) {
+		if (errors?.onlyNumbers) {
 			this.tooltip = { disabled: false, message: 'Допустим ввод только целых чисел' };
+			return;
 		}
 	}
 }

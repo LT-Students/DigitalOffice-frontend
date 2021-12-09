@@ -13,6 +13,7 @@ import { ResponseMessageModel } from '@app/models/response/response-message.mode
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
+import { LeaveType } from '@data/api/time-service/models';
 
 export interface ITooltip {
 	disabled: boolean;
@@ -56,6 +57,9 @@ export class AddLeaveHoursComponent {
 			startDate: [null, [Validators.required]],
 			endDate: [null, [Validators.required]],
 			comment: [null],
+		});
+		this.addLeaveForm.get('leaveType')?.valueChanges.subscribe(() => {
+			this.addHoursToAbsenceValidation();
 		});
 
 		[this.minDate] = this._attendanceService.getCalendarMinMax();
@@ -112,22 +116,24 @@ export class AddLeaveHoursComponent {
 	public addHoursToAbsenceValidation(): void {
 		this.tooltip = { disabled: true, message: '' };
 
+		if (this.addLeaveForm.get('endDate')?.value && this.addLeaveForm.get('startDate')?.value) {
+		}
 		const endDateMonth = this.addLeaveForm.get('endDate')?.value.month;
 		const endDateYear = this.addLeaveForm.get('endDate')?.value.year;
 		const startDateMonth = this.addLeaveForm.get('startDate')?.value.month;
 		const startDateYear = this.addLeaveForm.get('startDate')?.value.year;
 
-		const getLeaveTypeValue = this.addLeaveForm.get('leaveType')?.value;
-		const getStartDateValue = this.addLeaveForm.get('startDate')?.value;
-		const getEndDateValue = this.addLeaveForm.get('endDate')?.value;
+		const leaveType: string = this.addLeaveForm.get('leaveType')?.value;
+		const startDate: DateTime = this.addLeaveForm.get('startDate')?.value;
+		const endDate: DateTime = this.addLeaveForm.get('endDate')?.value;
 
 		const currentMonth = this.currentDate.month;
 		const currentYear = this.currentDate.year;
 		const currentDay = this.currentDate.day;
 
-		if (getEndDateValue === null || getStartDateValue === null) {
-			this.tooltip = { disabled: true, message: '' };
-		} else if (getLeaveTypeValue === 'SickLeave') {
+		if (endDate === null || startDate === null) {
+			return;
+		} else if (leaveType === LeaveType.SickLeave) {
 			if (currentMonth === 12 && endDateMonth === 1) {
 				this.tooltip = { disabled: true, message: '' };
 			} else if (endDateYear > currentYear) {
@@ -142,7 +148,7 @@ export class AddLeaveHoursComponent {
 				};
 			}
 		} else if (startDateYear < currentYear || (startDateMonth < currentMonth && startDateYear === currentYear)) {
-			if (getLeaveTypeValue === 'SickLeave') {
+			if (leaveType === LeaveType.SickLeave) {
 				this.tooltip = { disabled: true, message: '' };
 			} else if (currentDay > 5) {
 				this.tooltip = {
