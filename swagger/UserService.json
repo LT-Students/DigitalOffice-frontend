@@ -50,9 +50,18 @@
           "required": false
         },
         {
-          "name": "includecommunications",
+          "name": "includecurrentavatar",
           "in": "query",
-          "description": "Include user communications info in answer.",
+          "description": "Include user current avatar in answer.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeavatars",
+          "in": "query",
+          "description": "Include all user current avatars in answer.",
           "schema": {
             "type": "boolean"
           },
@@ -68,9 +77,18 @@
           "required": false
         },
         {
-          "name": "includeachievements",
+          "name": "includecommunications",
           "in": "query",
-          "description": "Include user achievements info in answer.",
+          "description": "Include user communications info in answer.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includecompany",
+          "in": "query",
+          "description": "Include user company info in answer.",
           "schema": {
             "type": "boolean"
           },
@@ -86,9 +104,9 @@
           "required": false
         },
         {
-          "name": "includeposition",
+          "name": "includeeducations",
           "in": "query",
-          "description": "Include user position info in answer.",
+          "description": "Include educations info in answer.",
           "schema": {
             "type": "boolean"
           },
@@ -98,6 +116,24 @@
           "name": "includeoffice",
           "in": "query",
           "description": "Include user office info in answer.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeposition",
+          "in": "query",
+          "description": "Include user position info in answer.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeprojects",
+          "in": "query",
+          "description": "Include user projects info in answer.",
           "schema": {
             "type": "boolean"
           },
@@ -122,38 +158,11 @@
           "required": false
         },
         {
-          "name": "includeprojects",
+          "name": "locale",
           "in": "query",
-          "description": "Include user projects info in answer.",
+          "description": "Role localization.",
           "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeimages",
-          "in": "query",
-          "description": "Include certificate and achievments images content in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeuserimages",
-          "in": "query",
-          "description": "Include user images content in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeeducations",
-          "in": "query",
-          "description": "Include educations info in answer.",
-          "schema": {
-            "type": "boolean"
+            "type": "string"
           },
           "required": false
         }

@@ -110,8 +110,15 @@ export class UserService {
 	}
 
 	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
+		console.log('Загружаю и делаю');
 		return this._imageApiService.createAvatar({
-			body: { content: image.content, userId, extension: image.extension, name: image.name },
+			body: {
+				content: image.content,
+				userId,
+				extension: image.extension,
+				name: image.name,
+				isCurrentAvatar: true,
+			},
 		});
 	}
 
