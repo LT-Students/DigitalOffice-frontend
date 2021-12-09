@@ -134,8 +134,7 @@ export class DepartmentCardComponent {
 	public isAllSelected(): boolean {
 		const numSelected = this.selection.selected.length;
 		const numRows = this.dataSource.data.length;
-		console.log(this.selection.select, '1');
-		console.log(this.dataSource.data, '2');
+
 		return numSelected === numRows;
 	}
 
