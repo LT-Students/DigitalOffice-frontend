@@ -4,7 +4,6 @@ import { UserService } from '@app/services/user/user.service';
 import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType, UserInfo } from '@data/api/user-service/models';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
@@ -40,8 +39,7 @@ export class DepartmentCardComponent {
 		private _router: Router,
 		private _modalService: ModalService,
 		private _route: ActivatedRoute,
-		private _cdr: ChangeDetectorRef,
-		private _dialog: MatDialog
+		private _cdr: ChangeDetectorRef
 	) {
 		this._departmentId = this._route.snapshot.params.id;
 		this.totalCount = 0;
@@ -96,15 +94,13 @@ export class DepartmentCardComponent {
 	}
 
 	public openAddEmployeeModal(): void {
-		const dialogRef = this._dialog.open(AddEmployeeComponent, {
-			data: {
-				idToHide: this.dataSource.data.map((e) => e.id),
-				openFrom: OpenAddEmployeeModalFrom.Department,
-				moduleName: this.departmentInfo?.name,
-			},
-			maxWidth: '670px',
+		const modal = this._modalService.openModal(AddEmployeeComponent, ModalWidth.L, {
+			idToHide: this.dataSource.data.map((e) => e.id),
+			openFrom: OpenAddEmployeeModalFrom.Department,
+			moduleName: this.departmentInfo?.name,
 		});
-		dialogRef
+
+		modal
 			.afterClosed()
 			.pipe(
 				switchMap((result: UserInfo[] | undefined) => {

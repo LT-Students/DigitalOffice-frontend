@@ -12,11 +12,9 @@ import { DepartmentService } from '@app/services/department/department.service';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
+import { ComponentType } from '@angular/cdk/overlay';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
 import {
@@ -33,8 +31,6 @@ import { Team, TeamMember } from './team-cards';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NewProjectComponent implements OnInit {
-	public totalCount: number;
-	public departmentInfo: DepartmentInfo | undefined;
 	public projectForm: FormGroup;
 	public teams: Team[];
 	public departments: DepartmentInfo[];
@@ -53,10 +49,8 @@ export class NewProjectComponent implements OnInit {
 		private _location: Location,
 		private _router: Router,
 		private _route: ActivatedRoute,
-		private _cdr: ChangeDetectorRef,
-		private _dialog: MatDialog
+		private _cdr: ChangeDetectorRef
 	) {
-		this.totalCount = 0;
 		this._departmentId = this._route.snapshot.params.id;
 		this.pluralTeamCount = {
 			few: '# человека',
@@ -85,15 +79,12 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	public openAddEmployeeModal(): void {
-		const dialogRef = this._dialog.open(AddEmployeeComponent, {
-			data: {
-				idToHide: this.membersAll.map((e) => e.id),
-				openFrom: OpenAddEmployeeModalFrom.Project,
-			},
-			maxWidth: '670px',
+		const modal = this._modalService.openModal(AddEmployeeComponent, ModalWidth.L, {
+			idToHide: this.membersAll.map((e) => e.id),
+			openFrom: OpenAddEmployeeModalFrom.Project,
 		});
 
-		dialogRef.afterClosed().subscribe((result?: UserInfo[]) => {
+		modal.afterClosed().subscribe((result?: UserInfo[]) => {
 			if (result?.length) {
 				this.membersAll.push(...result);
 				this._cdr.markForCheck();
