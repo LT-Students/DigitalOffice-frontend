@@ -1,6 +1,6 @@
 <div class="modal">
 	<div class="modal__header">
-		<h3>Добавление сотрудника в {{ openFromRu | lowercase }} {{ moduleName }}</h3>
+		<h3>Добавление сотрудников в {{ openFromRu | lowercase }} {{ moduleName }}</h3>
 		<button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
 	</div>
 
@@ -21,7 +21,13 @@
 		</mat-form-field>
 	</div>
 
-	<h4>Добавлено 0 сотрудников</h4>
+	<h4>
+		{{
+			selection.selected.length < 1
+				? 'Выберите сотрудников для добавления'
+				: (selection.selected.length | i18nPlural: employeeCountMap)
+		}}
+	</h4>
 	<mat-dialog-content
 		class="scrolled-content"
 		infiniteScroll

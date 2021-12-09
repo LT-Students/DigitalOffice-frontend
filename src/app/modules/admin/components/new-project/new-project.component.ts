@@ -14,7 +14,6 @@ import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
-import { ComponentType } from '@angular/cdk/overlay';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
 import {
@@ -37,7 +36,6 @@ export class NewProjectComponent implements OnInit {
 	public statuses: IProjectStatusType[];
 	public membersAll: UserInfo[];
 	public pluralTeamCount: { [k: string]: string };
-	private _departmentId: string;
 	public dataSource: MatTableDataSource<DepartmentUserInfo>;
 	public loading$$: BehaviorSubject<boolean>;
 
@@ -51,7 +49,6 @@ export class NewProjectComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private _cdr: ChangeDetectorRef
 	) {
-		this._departmentId = this._route.snapshot.params.id;
 		this.pluralTeamCount = {
 			few: '# человека',
 			other: '# человек',
