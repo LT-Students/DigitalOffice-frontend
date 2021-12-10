@@ -29,6 +29,7 @@ import { DirectorsTimelistComponent } from './components/directors-timelist/dire
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
 import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 import { EditCompanyComponent } from './modals/edit-company/edit-company.component';
+import { ChangeUserPasswordComponent } from './modals/change-user-password/change-user-password.component';
 
 @NgModule({
 	declarations: [
@@ -56,6 +57,7 @@ import { EditCompanyComponent } from './modals/edit-company/edit-company.compone
 		ProjectTypePipe,
 		EditProjectComponent,
 		EditCompanyComponent,
+		ChangeUserPasswordComponent,
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
 	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe, EditProjectComponent, ProjectTypePipe],

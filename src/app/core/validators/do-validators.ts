@@ -11,6 +11,7 @@ const TELEGRAM_REGEXP = /^[A-Za-z]+(_?[A-Za-z0-9])*$/;
 // Не уверен за этот regex, но пока пусть будет, если кто умный - подайте идею.
 const SKYPE_REGEXP = /^[A-Za-z][A-Za-z0-9.,\-_]+$/;
 const TWITTER_REGEXP = /^\w+$/;
+const PASSWORD_REGEXP = /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\])[\w<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\]{8,14}$/;
 
 export class DoValidators {
 	static email(control: AbstractControl): ValidationErrors | null {
@@ -107,5 +108,12 @@ export class DoValidators {
 			const strLength = control.value.trim().length;
 			return strLength > maxLength ? { maxlength: true } : null;
 		};
+	}
+
+	static password(control: AbstractControl) {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		return PASSWORD_REGEXP.test(control.value) ? null : { password: true };
 	}
 }
