@@ -68,18 +68,18 @@ export class AddLeaveHoursComponent {
 	public onClose(): void {
 		const startDateValue: DateTime = this.addLeaveForm.get('startDate')?.value;
 		const endDateControl = this.addLeaveForm.get('endDate');
-		if (!endDateControl?.value || startDateValue.startOf('day').equals(endDateControl.value.startOf('day'))) {
-			endDateControl?.setValue(startDateValue.endOf('day'));
-		}
-
-		const datePeriod: DatePeriod = {
-			startDate: startDateValue,
-			endDate: endDateControl?.value,
-		};
-
-		this.recommendedTime$$.next(this._attendanceService.getLeaveDuration(datePeriod));
-		if (this.addLeaveForm.get('leaveType')?.value) {
-			this.addHoursToAbsenceValidation();
+		if (startDateValue !== null) {
+			if (!endDateControl?.value || startDateValue?.startOf('day').equals(endDateControl.value.startOf('day'))) {
+				endDateControl?.setValue(startDateValue.endOf('day') ?? this.currentDate);
+			}
+			const datePeriod: DatePeriod = {
+				startDate: startDateValue,
+				endDate: endDateControl?.value,
+			};
+			this.recommendedTime$$.next(this._attendanceService.getLeaveDuration(datePeriod));
+			if (this.addLeaveForm.get('leaveType')?.value) {
+				this.addHoursToAbsenceValidation();
+			}
 		}
 	}
 
@@ -121,14 +121,25 @@ export class AddLeaveHoursComponent {
 		const endDate: DateTime = this.addLeaveForm.get('endDate')?.value;
 		const currentDay = this.currentDate.day;
 
-		const fromStartToCurrentInterval = Interval.fromDateTimes(
-			startDate.startOf('month'),
+		let fromStartToCurrentInterval = Interval.fromDateTimes(
+			this.currentDate.startOf('month'),
 			this.currentDate.startOf('month')
 		);
-		const fromCurrentToEndInterval = Interval.fromDateTimes(
+		let fromCurrentToEndInterval = Interval.fromDateTimes(
 			this.currentDate.startOf('month'),
-			endDate.startOf('month')
+			this.currentDate.startOf('month')
 		);
+
+		if (startDate !== null && endDate !== null) {
+			fromStartToCurrentInterval = Interval.fromDateTimes(
+				startDate.startOf('month'),
+				this.currentDate.startOf('month')
+			);
+			fromCurrentToEndInterval = Interval.fromDateTimes(
+				this.currentDate.startOf('month'),
+				endDate.startOf('month')
+			);
+		}
 
 		if (endDate === null || startDate === null) {
 			return;
