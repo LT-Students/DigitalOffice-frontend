@@ -77,7 +77,7 @@ export class NewProjectComponent implements OnInit {
 
 	public openAddEmployeeModal(): void {
 		const modal = this._modalService.openModal(AddEmployeeComponent, ModalWidth.L, {
-			idToHide: this.membersAll.map((e) => e.id),
+			idToHide: this.membersAll.map((user) => user.id),
 			openFrom: OpenAddEmployeeModalFrom.Project,
 		});
 

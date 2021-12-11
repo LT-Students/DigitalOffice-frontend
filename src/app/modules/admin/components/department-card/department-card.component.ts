@@ -95,7 +95,7 @@ export class DepartmentCardComponent {
 
 	public openAddEmployeeModal(): void {
 		const modal = this._modalService.openModal(AddEmployeeComponent, ModalWidth.L, {
-			idToHide: this.dataSource.data.map((e) => e.id),
+			idToHide: this.dataSource.data.map((user) => user.id),
 			openFrom: OpenAddEmployeeModalFrom.Department,
 			moduleName: this.departmentInfo?.name,
 		});
@@ -105,7 +105,9 @@ export class DepartmentCardComponent {
 			.pipe(
 				switchMap((result: UserInfo[] | undefined) => {
 					if (result !== undefined) {
-						const usersId: string[] = result.map((m) => m.id).filter((id) => id !== undefined) as string[];
+						const usersId: string[] = result
+							.map((user) => user.id)
+							.filter((id) => id !== undefined) as string[];
 
 						return this._departmentService.addUsersToDepartment(this._departmentId, usersId);
 					} else {
