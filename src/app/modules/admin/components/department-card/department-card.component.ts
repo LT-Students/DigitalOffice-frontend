@@ -3,8 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@app/services/user/user.service';
 import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { OperationResultStatusType } from '@data/api/user-service/models';
-import { MatDialog } from '@angular/material/dialog';
+import { OperationResultStatusType, UserInfo } from '@data/api/user-service/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
@@ -40,8 +39,7 @@ export class DepartmentCardComponent {
 		private _router: Router,
 		private _modalService: ModalService,
 		private _route: ActivatedRoute,
-		private _cdr: ChangeDetectorRef,
-		private _dialog: MatDialog
+		private _cdr: ChangeDetectorRef
 	) {
 		this._departmentId = this._route.snapshot.params.id;
 		this.totalCount = 0;
@@ -96,29 +94,34 @@ export class DepartmentCardComponent {
 	}
 
 	public openAddEmployeeModal(): void {
-		const dialogRef = this._dialog.open(AddEmployeeComponent, {
-			data: {
-				idToHide: this.dataSource.data.map((e) => e.id),
-				pageId: this._departmentId,
-				openFrom: OpenAddEmployeeModalFrom.Department,
-				moduleName: this.departmentInfo?.name,
-			},
-			maxWidth: '670px',
+		const modal = this._modalService.openModal(AddEmployeeComponent, ModalWidth.L, {
+			idToHide: this.dataSource.data.map((user) => user.id),
+			openFrom: OpenAddEmployeeModalFrom.Department,
+			moduleName: this.departmentInfo?.name,
 		});
-		dialogRef
+
+		modal
 			.afterClosed()
 			.pipe(
-				switchMap((result) => {
-					if (result === undefined) {
-						return EMPTY;
+				switchMap((result: UserInfo[] | undefined) => {
+					if (result !== undefined) {
+						const usersId: string[] = result
+							.map((user) => user.id)
+							.filter((id) => id !== undefined) as string[];
+
+						return this._departmentService.addUsersToDepartment(this._departmentId, usersId);
 					} else {
-						return this._departmentService.getDepartment({
-							departmentid: this._departmentId,
-							includeusers: true,
-						});
+						return EMPTY;
 					}
 				}),
+				switchMap(() => {
+					return this._departmentService.getDepartment({
+						departmentid: this._departmentId,
+						includeusers: true,
+					});
+				}),
 				tap(({ body }) => {
+					this.selection.clear();
 					this.departmentInfo = body?.department;
 
 					this.totalCount = body?.users?.length ?? 0;
@@ -133,6 +136,7 @@ export class DepartmentCardComponent {
 	public isAllSelected(): boolean {
 		const numSelected = this.selection.selected.length;
 		const numRows = this.dataSource.data.length;
+
 		return numSelected === numRows;
 	}
 

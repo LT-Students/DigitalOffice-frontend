@@ -33,11 +33,16 @@ export class CompanyUserApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editCompanyUser$Response(params?: {
+	editCompanyUser$Response(params: {
+		/**
+		 * Unique user identifier.
+		 */
+		userId: string;
 		body?: EditCompanyUserRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, CompanyUserApiService.EditCompanyUserPath, 'patch');
 		if (params) {
+			rb.query('userId', params.userId, {});
 			rb.body(params.body, 'application/json');
 		}
 
@@ -64,7 +69,13 @@ export class CompanyUserApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editCompanyUser(params?: { body?: EditCompanyUserRequest }): Observable<OperationResultResponse> {
+	editCompanyUser(params: {
+		/**
+		 * Unique user identifier.
+		 */
+		userId: string;
+		body?: EditCompanyUserRequest;
+	}): Observable<OperationResultResponse> {
 		return this.editCompanyUser$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);

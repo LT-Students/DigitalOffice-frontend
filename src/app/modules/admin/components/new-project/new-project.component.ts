@@ -6,14 +6,20 @@ import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
 import { DepartmentService } from '@app/services/department/department.service';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { MatTableDataSource } from '@angular/material/table';
+import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
+import {
+	AddEmployeeComponent,
+	OpenAddEmployeeModalFrom,
+} from '../../../../shared/modals/add-employee/add-employee.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';
 
@@ -30,6 +36,7 @@ export class NewProjectComponent implements OnInit {
 	public statuses: IProjectStatusType[];
 	public membersAll: UserInfo[];
 	public pluralTeamCount: { [k: string]: string };
+	public dataSource: MatTableDataSource<DepartmentUserInfo>;
 	public loading$$: BehaviorSubject<boolean>;
 
 	constructor(
@@ -39,6 +46,7 @@ export class NewProjectComponent implements OnInit {
 		private _departmentService: DepartmentService,
 		private _location: Location,
 		private _router: Router,
+		private _route: ActivatedRoute,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.pluralTeamCount = {
@@ -49,7 +57,7 @@ export class NewProjectComponent implements OnInit {
 		this.teams = [];
 		this.membersAll = [];
 		this.departments = [];
-
+		this.dataSource = new MatTableDataSource();
 		this.projectForm = this._formBuilder.group({
 			name: ['', [Validators.required, Validators.maxLength(150)]],
 			departmentId: ['', [Validators.required]],
@@ -67,6 +75,20 @@ export class NewProjectComponent implements OnInit {
 		// this.teams.forEach((team: Team) => this._sortLeads(team));
 	}
 
+	public openAddEmployeeModal(): void {
+		const modal = this._modalService.openModal(AddEmployeeComponent, ModalWidth.L, {
+			idToHide: this.membersAll.map((user) => user.id),
+			openFrom: OpenAddEmployeeModalFrom.Project,
+		});
+
+		modal.afterClosed().subscribe((result?: UserInfo[]) => {
+			if (result?.length) {
+				this.membersAll.push(...result);
+				this._cdr.markForCheck();
+			}
+		});
+	}
+
 	private _getDepartments(): void {
 		this._departmentService.findDepartments({ skipCount: 0, takeCount: 100 }).subscribe(
 			(data) => {
@@ -76,27 +98,7 @@ export class NewProjectComponent implements OnInit {
 		);
 	}
 
-	public addMember(): void {
-		//TODO replace with infinite scroll modal
-		const modalData: UserSearchModalConfig = { mode: WorkFlowMode.ADD, members: this.membersAll };
-		this._modalService
-			.openModal<UserSearchComponent, UserSearchModalConfig, UserInfo[]>(
-				UserSearchComponent,
-				ModalWidth.L,
-				modalData
-			)
-			.afterClosed()
-			.subscribe((result?: UserInfo[]) => {
-				if (result?.length) {
-					this.membersAll = [...result];
-					this._cdr.detectChanges();
-				}
-			});
-	}
-
 	public createProject(): void {
-		this.loading$$.next(true);
-
 		const projectUsers: ICreateUserRequest[] = this.membersAll.map((user) => ({
 			role: ProjectUserRoleType.Manager,
 			userId: user.id ?? '',
