@@ -6,8 +6,7 @@ import { CurrentCompanyService } from '@app/services/current-company.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { OperationResultStatusType } from '@data/api/user-service/models';
-import { ChangeUserPasswordComponent } from '../../../modules/admin/modals/change-user-password/change-user-password.component';
+import { ChangeUserPasswordComponent } from '../../modals/change-user-password/change-user-password.component';
 
 @Component({
 	selector: 'do-header',
