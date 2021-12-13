@@ -2200,13 +2200,11 @@
       },
       "ChangePasswordRequest": {
         "type": "object",
+        "required": [
+          "Password",
+          "NewPassword"
+        ],
         "properties": {
-          "UserId": {
-            "description": "Unique user identifier.",
-            "type": "string",
-            "format": "uuid",
-            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
-          },
           "Password": {
             "description": "Old user password.",
             "type": "string",
