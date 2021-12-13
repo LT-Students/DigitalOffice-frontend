@@ -69,8 +69,8 @@ export class AddLeaveHoursComponent {
 		const startDateValue: DateTime = this.addLeaveForm.get('startDate')?.value;
 		const endDateControl = this.addLeaveForm.get('endDate');
 		if (!startDateValue) return;
-		if (!endDateControl?.value || startDateValue?.startOf('day')) {
-			endDateControl?.setValue(startDateValue.endOf('day') ?? this.currentDate);
+		if (!endDateControl?.value) {
+			endDateControl?.setValue(startDateValue.endOf('day'));
 		}
 		const datePeriod: DatePeriod = {
 			startDate: startDateValue,
@@ -115,7 +115,7 @@ export class AddLeaveHoursComponent {
 	public addHoursToAbsenceValidation(): void {
 		this.tooltip = { disabled: true, message: '' };
 
-		const leaveType: string = this.addLeaveForm.get('leaveType')?.value;
+		const leaveType: LeaveType = this.addLeaveForm.get('leaveType')?.value;
 		const startDate: DateTime = this.addLeaveForm.get('startDate')?.value;
 		const endDate: DateTime = this.addLeaveForm.get('endDate')?.value;
 		const currentDay = this.currentDate.day;
@@ -150,9 +150,7 @@ export class AddLeaveHoursComponent {
 				};
 			}
 		} else if (fromStartToCurrentInterval.length('months') === 1) {
-			if (leaveType === LeaveType.SickLeave) {
-				this.tooltip = { disabled: true, message: '' };
-			} else if (currentDay > 5) {
+			if (currentDay > 5) {
 				this.tooltip = {
 					disabled: false,
 					message: 'Проставлять даты за прошлый месяц можно только в первые 5 дней текущего месяца',
