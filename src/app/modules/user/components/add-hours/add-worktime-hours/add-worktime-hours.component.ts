@@ -1,17 +1,16 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, iif, Observable, of, Subscription } from 'rxjs';
 import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { AttendanceService } from '@app/services/attendance.service';
-import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { IEditWorkTimeRequest } from '@app/services/time/time.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work-time-request';
 import { DoValidators } from '@app/validators/do-validators';
-import { timeValidator } from '../add-hours.validators';
 import { ITooltip } from '../add-leave-hours/add-leave-hours.component';
 
 @Component({
@@ -22,10 +21,12 @@ import { ITooltip } from '../add-leave-hours/add-leave-hours.component';
 })
 export class AddWorktimeHoursComponent implements OnDestroy {
 	public loading$$: BehaviorSubject<boolean>;
-	public workTimes$: Observable<Array<WorkTimeInfo | undefined> | undefined>;
+	public workTimes$: Observable<WorkTimeInfo[]>;
+	public selectedDate: DateTime;
 	public selectedDate$: Observable<DateTime>;
 	public addHoursForm: FormGroup;
 	public monthOptions: DateTime[];
+	public isAnotherExist: boolean;
 	public tooltip: ITooltip;
 	public monthNorm: number;
 
@@ -36,6 +37,8 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		private _attendanceService: AttendanceService,
 		private _responseService: ResponseMessageModel
 	) {
+		this.isAnotherExist = false;
+		this.selectedDate = DateTime.now();
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.monthOptions = [];
 		this.monthNorm = 160;
@@ -47,9 +50,20 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		this.addHoursForm.get('time')?.valueChanges.subscribe(() => {
 			this.makeTooltipMessage();
 		});
-		this.workTimes$ = this._attendanceService.activities$.pipe(map((activities) => activities.projects));
+		this.workTimes$ = this._attendanceService.activities$.pipe(
+			map((activities) => activities.projects ?? []),
+			tap((projects) => this._checkIfAnotherExist(projects)),
+			switchMap((projects) => {
+				return iif(
+					() => this.isAnotherExist,
+					of(projects),
+					of([{ id: 'another', project: { name: undefined } } as WorkTimeInfo, ...projects])
+				);
+			})
+		);
 		this.selectedDate$ = this._attendanceService.selectedDate$.pipe(
 			tap((date) => {
+				this.selectedDate = date;
 				this.monthOptions = this._setMonthOptions(date);
 			})
 		);
@@ -79,10 +93,20 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	public onSubmit(): void {
 		this.loading$$.next(true);
 
-		this._editWorkTime()
+		const createWorkTimeRequest: CreateWorkTimeRequest = {
+			hours: this.addHoursForm.get('time')?.value ?? 0,
+			year: this.selectedDate.year,
+			month: this.selectedDate.month,
+			description: this.addHoursForm.get('comment')?.value ?? '',
+		};
+
+		const action = !this.isAnotherExist
+			? this._attendanceService.createWorkTime(createWorkTimeRequest)
+			: this._editWorkTime();
+
+		action
 			.pipe(
 				switchMap(() => this._attendanceService.getActivities()),
-				this._responseService.message(MessageTriggeredFrom.WorkTime, MessageMethod.Create),
 				finalize(() => {
 					this.loading$$.next(false);
 				})
@@ -92,19 +116,30 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 			});
 	}
 
-	public patchWorkTimeInfoIntoForm(workTime: WorkTimeInfo | undefined, event: MatOptionSelectionChange): void {
-		if (event.isUserInput && workTime) {
-			if (this.addHoursForm.get('time')?.value !== '') {
-				this.addHoursForm.patchValue({
-					comment: workTime.description,
-				});
-			} else {
+	public patchWorkTimeInfoIntoForm(workTime: WorkTimeInfo, event: MatOptionSelectionChange): void {
+		const isWorkTimeProjectIdEmpty: boolean = this._isGUIDEmpty(workTime?.project?.id ?? '');
+
+		if (event.isUserInput) {
+			this.addHoursForm.get('comment')?.clearValidators();
+			if (isWorkTimeProjectIdEmpty || workTime.id === 'another') {
+				this.addHoursForm.get('comment')?.addValidators(Validators.required);
+				this.addHoursForm.get('comment')?.updateValueAndValidity();
+			}
+			if (this.addHoursForm.get('time')?.value === '') {
 				this.addHoursForm.patchValue({
 					time: workTime.userHours,
+				});
+			}
+			if (this.addHoursForm.get('comment')?.value !== '') {
+				this.addHoursForm.patchValue({
 					comment: workTime.description,
 				});
 			}
 		}
+	}
+
+	private _checkIfAnotherExist(projects: WorkTimeInfo[]): void {
+		this.isAnotherExist = !!projects.find((value) => this._isGUIDEmpty(value.project?.id ?? ''));
 	}
 
 	private _editWorkTime(): Observable<OperationResultResponse> {
@@ -151,5 +186,9 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 			this.tooltip = { disabled: false, message: 'Допустим ввод только целых чисел' };
 			return;
 		}
+	}
+
+	private _isGUIDEmpty(id: string): boolean {
+		return id === '00000000-0000-0000-0000-000000000000';
 	}
 }
