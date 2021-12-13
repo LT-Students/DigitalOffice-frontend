@@ -11,6 +11,9 @@ const TELEGRAM_REGEXP = /^[A-Za-z]+(_?[A-Za-z0-9])*$/;
 // Не уверен за этот regex, но пока пусть будет, если кто умный - подайте идею.
 const SKYPE_REGEXP = /^[A-Za-z][A-Za-z0-9.,\-_]+$/;
 const TWITTER_REGEXP = /^\w+$/;
+const TRIMMED_NAME_REGEXP = /(^\s+|\s+$)/;
+const ONE_SPACE_BETWEEN_WORDS_REGEXP = /(\S\s{2,}\S)/;
+const INTEGER_NUMBER_REGEXP = /^-*\d+$/;
 
 export class DoValidators {
 	static email(control: AbstractControl): ValidationErrors | null {
@@ -52,12 +55,12 @@ export class DoValidators {
 		return TWITTER_REGEXP.test(control.value) ? null : { twitter: true };
 	}
 
-	static number(control: AbstractControl): ValidationErrors | null {
+	static floatNumber(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
 
-		return NUMBER_REGEXP.test(control.value) ? null : { number: true };
+		return NUMBER_REGEXP.test(control.value) ? null : { floatNumber: true };
 	}
 
 	static noWhitespaces(control: AbstractControl): ValidationErrors | null {
@@ -72,14 +75,14 @@ export class DoValidators {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return /(^\s+|\s+$)/.test(control.value) ? { name: true } : null;
+		return TRIMMED_NAME_REGEXP.test(control.value) ? { name: true } : null;
 	}
 
 	static oneSpaceBetweenWords(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return /(\S\s{2,}\S)/.test(control.value) ? { oneSpaceBetweenWords: true } : null;
+		return ONE_SPACE_BETWEEN_WORDS_REGEXP.test(control.value) ? { oneSpaceBetweenWords: true } : null;
 	}
 
 	static atLeastOneChecked(control: AbstractControl): ValidationErrors | null {
@@ -107,5 +110,12 @@ export class DoValidators {
 			const strLength = control.value.trim().length;
 			return strLength > maxLength ? { maxlength: true } : null;
 		};
+	}
+
+	static intNum(control: AbstractControl): ValidationErrors | null {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		return INTEGER_NUMBER_REGEXP.test(control.value) ? null : { intNum: true };
 	}
 }

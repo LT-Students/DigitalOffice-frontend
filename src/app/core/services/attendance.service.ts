@@ -231,7 +231,7 @@ export class AttendanceService implements Resolve<Activities> {
 	public getCalendarMinMax(): [DateTime, DateTime] {
 		const currentDate = DateTime.now();
 		const minDate = currentDate.minus({ months: this._canEdit.value ? 1 : 0 }).startOf('month');
-		const maxDate = currentDate.plus({ months: 1 }).endOf('month');
+		const maxDate = currentDate.plus({ months: 24 }).endOf('month');
 
 		return [minDate, maxDate];
 	}

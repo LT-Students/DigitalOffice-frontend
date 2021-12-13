@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AttendanceService } from '@app/services/attendance.service';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
@@ -13,6 +13,12 @@ import { ResponseMessageModel } from '@app/models/response/response-message.mode
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
+import { LeaveType } from '@data/api/time-service/models';
+
+export interface ITooltip {
+	disabled: boolean;
+	message?: string;
+}
 
 @Component({
 	selector: 'do-add-leave-hours',
@@ -26,10 +32,11 @@ export class AddLeaveHoursComponent {
 
 	public loading$$: BehaviorSubject<boolean>;
 
+	public currentDate: DateTime;
 	public minDate: DateTime;
-	public maxDate: DateTime;
 	public recommendedTime$$: BehaviorSubject<number>;
 	public disableWeekends: DateFilterFn<DateTime>;
+	public tooltip: ITooltip;
 
 	public absences: ILeaveType[];
 
@@ -40,32 +47,39 @@ export class AddLeaveHoursComponent {
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.recommendedTime$$ = new BehaviorSubject<number>(0);
-
+		this.tooltip = { disabled: true };
 		this.disableWeekends = this._attendanceService.disableWeekends;
 		this.absences = LeaveTypeModel.getAllLeaveTypes();
+		this.currentDate = DateTime.local();
 
-		[this.minDate, this.maxDate] = this._attendanceService.getCalendarMinMax();
 		this.addLeaveForm = this._fb.group({
 			leaveType: [null, [Validators.required]],
 			startDate: [null, [Validators.required]],
 			endDate: [null, [Validators.required]],
 			comment: [null],
 		});
+		this.addLeaveForm.get('leaveType')?.valueChanges.subscribe(() => {
+			this.addHoursToAbsenceValidation();
+		});
+
+		[this.minDate] = this._attendanceService.getCalendarMinMax();
 	}
 
 	public onClose(): void {
 		const startDateValue: DateTime = this.addLeaveForm.get('startDate')?.value;
 		const endDateControl = this.addLeaveForm.get('endDate');
-		if (!endDateControl?.value || startDateValue.startOf('day').equals(endDateControl.value.startOf('day'))) {
-			endDateControl?.setValue(startDateValue.endOf('day'));
+		if (!startDateValue) return;
+		if (!endDateControl?.value || startDateValue?.startOf('day')) {
+			endDateControl?.setValue(startDateValue.endOf('day') ?? this.currentDate);
 		}
-
 		const datePeriod: DatePeriod = {
 			startDate: startDateValue,
 			endDate: endDateControl?.value,
 		};
-
 		this.recommendedTime$$.next(this._attendanceService.getLeaveDuration(datePeriod));
+		if (this.addLeaveForm.get('leaveType')?.value) {
+			this.addHoursToAbsenceValidation();
+		}
 	}
 
 	public onSubmit(): void {
@@ -96,5 +110,54 @@ export class AddLeaveHoursComponent {
 		console.log('REQUEST:', leaveTimeRequest);
 
 		return this._attendanceService.addLeaveTime(leaveTimeRequest);
+	}
+
+	public addHoursToAbsenceValidation(): void {
+		this.tooltip = { disabled: true, message: '' };
+
+		const leaveType: string = this.addLeaveForm.get('leaveType')?.value;
+		const startDate: DateTime = this.addLeaveForm.get('startDate')?.value;
+		const endDate: DateTime = this.addLeaveForm.get('endDate')?.value;
+		const currentDay = this.currentDate.day;
+
+		let fromStartToCurrentInterval = Interval.fromDateTimes(
+			this.currentDate.startOf('month'),
+			this.currentDate.startOf('month')
+		);
+		let fromCurrentToEndInterval = Interval.fromDateTimes(
+			this.currentDate.startOf('month'),
+			this.currentDate.startOf('month')
+		);
+
+		if (endDate === null || startDate === null) {
+			return;
+		} else {
+			fromStartToCurrentInterval = Interval.fromDateTimes(
+				startDate.startOf('month'),
+				this.currentDate.startOf('month')
+			);
+			fromCurrentToEndInterval = Interval.fromDateTimes(
+				this.currentDate.startOf('month'),
+				endDate.startOf('month')
+			);
+		}
+
+		if (leaveType === LeaveType.SickLeave) {
+			if (fromCurrentToEndInterval.length('months') > 1) {
+				this.tooltip = {
+					disabled: false,
+					message: 'Проставлять больничный можно только на 1 месяц вперед от текущего месяца',
+				};
+			}
+		} else if (fromStartToCurrentInterval.length('months') === 1) {
+			if (leaveType === LeaveType.SickLeave) {
+				this.tooltip = { disabled: true, message: '' };
+			} else if (currentDay > 5) {
+				this.tooltip = {
+					disabled: false,
+					message: 'Проставлять даты за прошлый месяц можно только в первые 5 дней текущего месяца',
+				};
+			}
+		}
 	}
 }
