@@ -30,13 +30,13 @@
 	</div>
 	<mat-form-field appearance="fill">
 		<mat-label>Выберите проект</mat-label>
-		<mat-select formControlName="activity" required>
+		<mat-select formControlName="activity">
 			<mat-option
 				*ngFor="let workTime of workTimes$ | async"
 				[value]="workTime?.id"
 				(onSelectionChange)="patchWorkTimeInfoIntoForm(workTime, $event)"
 			>
-				{{ workTime?.project?.name }}
+				{{ workTime?.project?.name ?? 'Другое' }}
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
