@@ -127,9 +127,9 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 				this.addHoursForm.get('comment')?.addValidators(Validators.required);
 				this.addHoursForm.get('comment')?.updateValueAndValidity();
 			}
-			if (this.addHoursForm.get('time')?.value !== '') {
+			if (this.addHoursForm.get('time')?.value === '') {
 				this.addHoursForm.patchValue({
-					comment: workTime.description,
+					time: workTime.userHours,
 				});
 			}
 			if (this.addHoursForm.get('comment')?.value !== '') {
