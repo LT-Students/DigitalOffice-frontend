@@ -1,10 +1,12 @@
-import { Input, Component, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthService } from '@app/services/auth/auth.service';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { ChangeUserPasswordComponent } from '../../modals/change-user-password/change-user-password.component';
 
 @Component({
 	selector: 'do-header',
@@ -22,7 +24,8 @@ export class HeaderComponent {
 	constructor(
 		private _authService: AuthService,
 		private _currentUserService: CurrentUserService,
-		private _currentCompanyService: CurrentCompanyService
+		private _currentCompanyService: CurrentCompanyService,
+		private _modalService: ModalService
 	) {
 		this.menuClick = new EventEmitter();
 		this.portalName = this._currentCompanyService.company$.pipe(map((user) => user.portalName));
@@ -35,5 +38,9 @@ export class HeaderComponent {
 
 	public onMenuClick(event: MouseEvent): void {
 		this.menuClick.emit(event);
+	}
+
+	public onChangePasswordClick(userId: string | undefined): void {
+		this._modalService.openModal(ChangeUserPasswordComponent, ModalWidth.M, userId);
 	}
 }

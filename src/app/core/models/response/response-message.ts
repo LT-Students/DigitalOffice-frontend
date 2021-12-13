@@ -11,6 +11,7 @@ export enum MessageTriggeredFrom {
 	LeaveTime = 'Отсутствие',
 	WorkTime = 'Запись',
 	Company = 'Компания',
+	Password = 'Пароль',
 }
 
 export enum MessageMethod {

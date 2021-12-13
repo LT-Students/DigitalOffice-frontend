@@ -15,6 +15,8 @@ const TWITTER_REGEXP = /^\w+$/;
 const TRIMMED_NAME_REGEXP = /(^\s+|\s+$)/;
 const ONE_SPACE_BETWEEN_WORDS_REGEXP = /(\S\s{2,}\S)/;
 const INTEGER_NUMBER_REGEXP = /^-?\d+$/;
+const PASSWORD_REGEXP =
+	/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\])[\w<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\]{8,14}$/;
 
 export class DoValidators {
 	static email(control: AbstractControl): ValidationErrors | null {
@@ -118,5 +120,12 @@ export class DoValidators {
 			return null;
 		}
 		return INTEGER_NUMBER_REGEXP.test(control.value) ? null : { intNum: true };
+	}
+
+	static password(control: AbstractControl) {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		return PASSWORD_REGEXP.test(control.value) ? null : { password: true };
 	}
 }
