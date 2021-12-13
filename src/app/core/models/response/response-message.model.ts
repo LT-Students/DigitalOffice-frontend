@@ -25,6 +25,7 @@ export class ResponseMessageModel {
 		{ triggered: MessageTriggeredFrom.User, feminine: false },
 		{ triggered: MessageTriggeredFrom.EmployeePage, feminine: true },
 		{ triggered: MessageTriggeredFrom.News, feminine: true },
+		{ triggered: MessageTriggeredFrom.WorkTime, feminine: true },
 	];
 
 	public getSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, status: string): string {

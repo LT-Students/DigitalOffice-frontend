@@ -102,7 +102,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 			description: this.addHoursForm.get('comment')?.value ?? '',
 		};
 
-		const action = this.isAnotherExist
+		const action = !this.isAnotherExist
 			? this._attendanceService.createWorkTime(createWorkTimeRequest)
 			: this._editWorkTime();
 

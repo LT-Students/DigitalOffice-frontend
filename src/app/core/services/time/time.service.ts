@@ -104,7 +104,9 @@ export class TimeService {
 	}
 
 	public editWorkTime(params: IEditWorkTimeRequest): Observable<OperationResultResponse> {
-		return this._workTimeService.editWorkTime(params);
+		return this._workTimeService
+			.editWorkTime(params)
+			.pipe(this._responseModel.message(MessageTriggeredFrom.WorkTime, MessageMethod.Edit));
 	}
 
 	public createWorkTime(body: CreateWorkTimeRequest): Observable<OperationResultResponse> {
