@@ -40,7 +40,7 @@ export class HeaderComponent {
 		this.menuClick.emit(event);
 	}
 
-	public onChangePasswordClick(userId: string | undefined): void {
-		this._modalService.openModal(ChangeUserPasswordComponent, ModalWidth.M, userId);
+	public onChangePasswordClick(): void {
+		this._modalService.openModal(ChangeUserPasswordComponent, ModalWidth.M);
 	}
 }

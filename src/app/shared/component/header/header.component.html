@@ -22,7 +22,7 @@
 	</div>
 	<mat-menu #menu="matMenu" xPosition="before">
 		<button mat-menu-item [routerLink]="['user', currentUser?.id]">Карточка сотрудника</button>
-		<button mat-menu-item (click)="onChangePasswordClick(currentUser?.id)">Сменить пароль</button>
+		<button mat-menu-item (click)="onChangePasswordClick()">Сменить пароль</button>
 		<button mat-menu-item (click)="onLogoutClick()">Выход</button>
 	</mat-menu>
 </nav>

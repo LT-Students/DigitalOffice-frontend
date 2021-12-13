@@ -1,8 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ChangePasswordRequest } from '@data/api/user-service/models/change-password-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { PasswordService } from '@app/services/user/password.service';
@@ -22,8 +21,7 @@ export class ChangeUserPasswordComponent {
 	constructor(
 		private _fb: FormBuilder,
 		private _dialogRef: MatDialogRef<any>,
-		private _passwordService: PasswordService,
-		@Inject(MAT_DIALOG_DATA) public userId: string | undefined
+		private _passwordService: PasswordService
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.passwordForm = _fb.group({
@@ -36,7 +34,6 @@ export class ChangeUserPasswordComponent {
 		const body: ChangePasswordRequest = {
 			newPassword: this.passwordForm.get('new_password')?.value?.trim(),
 			password: this.passwordForm.get('old_password')?.value?.trim(),
-			userId: this.userId,
 		};
 		this.loading$$.next(true);
 		this._passwordService
