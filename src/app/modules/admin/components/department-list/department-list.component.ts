@@ -1,14 +1,15 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { ActivatedRoute } from '@angular/router';
-import { PageEvent } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalService } from '@app/services/modal.service';
-import { iif, Observable, ReplaySubject } from 'rxjs';
+import { combineLatest, EMPTY, iif, Observable, ReplaySubject, Subject } from 'rxjs';
 import { IFindRequest } from '@app/types/find-request.interface';
-import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { DepartmentService } from '@app/services/department/department.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
 
 @Component({
@@ -17,25 +18,45 @@ import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add
 	styleUrls: ['./department-list.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DepartmentListComponent {
+export class DepartmentListComponent implements AfterViewInit {
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
+
 	private _departmentParams: ReplaySubject<IFindRequest>;
-	public departments$: Observable<OperationResultResponse<DepartmentInfo[]>>;
+	public filters: FormGroup;
+	public departments$!: Observable<OperationResultResponse<DepartmentInfo[]>>;
+
+	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
 		private _departmentService: DepartmentService,
 		private _modalService: ModalService,
-		private _route: ActivatedRoute
+		private _route: ActivatedRoute,
+		private _fb: FormBuilder
 	) {
+		this.filters = this._fb.group({
+			showDeactivated: [false],
+		});
+		this._refreshCurrentPage$$ = new Subject<boolean>();
 		this._departmentParams = new ReplaySubject<IFindRequest>(1);
-		this.departments$ = this._departmentParams.pipe(
-			startWith(null),
-			switchMap((params: IFindRequest | null) =>
-				iif(
-					() => !!params,
-					this._departmentService.findDepartments(params as IFindRequest),
-					this._route.data.pipe(map((response) => response.departments))
-				)
-			)
+	}
+
+	public ngAfterViewInit(): void {
+		this.departments$ = combineLatest([
+			this.filters.valueChanges.pipe(
+				startWith({ showDeactivated: false }),
+				tap(() => this.paginator.firstPage())
+			),
+			this.paginator.page.pipe(startWith(null)),
+			this._refreshCurrentPage$$.pipe(startWith(null)),
+		]).pipe(
+			switchMap(([filters, page, refresh]) =>
+				filters !== null || page !== null || refresh
+					? this.getDepartments(filters, page)
+					: this._route.data.pipe(map((response) => response.departments))
+			),
+			tap((res) => {
+				this.paginator.length = res?.totalCount ?? 0;
+			})
 		);
 	}
 
@@ -52,11 +73,26 @@ export class DepartmentListComponent {
 			});
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this._departmentParams.next({
-			skipCount: event.pageIndex * event.pageSize,
-			takeCount: event.pageSize,
-		});
+	public onDeleteDepartment(department: DepartmentInfo, event: MouseEvent): void {
+		console.log(event);
+		event.stopPropagation();
+		this._modalService
+			.confirm({
+				confirmText: 'Да, удалить',
+				message: `Вы действительно хотите удалить департамент ${department.name}?`,
+				title: `Удаление департамента ${department.name}`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((result) => {
+					return iif(() => !!result, this._departmentService.deleteDepartment(department.id ?? ''), EMPTY);
+				})
+			)
+			.subscribe((result) => {
+				if (result.status !== OperationResultStatusType.Failed) {
+					this._refreshCurrentPage$$.next(true);
+				}
+			});
 	}
 
 	public sortData(sort: Sort): void {
@@ -88,5 +124,16 @@ export class DepartmentListComponent {
 			return 0;
 		}
 		return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+	}
+
+	public getDepartments(
+		filters: any,
+		event: PageEvent | null
+	): Observable<OperationResultResponse<DepartmentInfo[]>> {
+		return this._departmentService.findDepartments({
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
+			includeDeactivated: filters.showDeactivated,
+		});
 	}
 }
