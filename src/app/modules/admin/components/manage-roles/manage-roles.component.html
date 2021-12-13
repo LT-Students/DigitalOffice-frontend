@@ -6,6 +6,15 @@
 		<h3 doUnderline underlinedSize="sm">Роли</h3>
 		<button mat-flat-button color="accent" (click)="onAddEditRole()">+ Создать роль</button>
 	</div>
+	<div class="filters" [formGroup]="filters">
+		<mat-form-field class="filters__status" appearance="fill">
+			<mat-label>Статус</mat-label>
+			<mat-select formControlName="showDeactivated">
+				<mat-option [value]="false">Активные</mat-option>
+				<mat-option [value]="true">Все</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
 	<ng-container *ngIf="roles$ | async as roles">
 		<table *ngIf="roles.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
 			<colgroup>
@@ -36,8 +45,13 @@
 					</td>
 					<td class="cell text-align_right">
 						<button mat-icon-button (click)="onAddEditRole(role)">
-							<mat-icon class="department__button-edit">
-								<img class="department__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
+							<mat-icon>
+								<img src="assets/svg/edit.svg" alt="edit" />
+							</mat-icon>
+						</button>
+						<button mat-icon-button (click)="onDeleteRole(role)">
+							<mat-icon>
+								<img src="assets/svg/delete.svg" alt="edit" />
 							</mat-icon>
 						</button>
 					</td>

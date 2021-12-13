@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
 import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
 import { Observable } from 'rxjs';
-import { IFindRequest } from '@app/types/find-request.interface';
+import { IFindRequestEx } from '@app/types/find-request.interface';
 import { CreateRoleRequest } from '@data/api/rights-service/models/create-role-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { RoleInfo } from '@data/api/rights-service/models/role-info';
@@ -12,6 +12,11 @@ import { ResponseMessageModel } from '@app/models/response/response-message.mode
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { RightInfo } from '@data/api/rights-service/models/right-info';
 import { UUID } from '@app/types/uuid.type';
+
+export interface IEditRoleStatusRequest {
+	roleId: string;
+	isActive: boolean;
+}
 
 export interface IAddRightsForUserRequest {
 	userId: string;
@@ -53,7 +58,7 @@ export class RightsService {
 		return this._userRightsService.removeRightsFromUser(params);
 	}
 
-	public findRoles(params: IFindRequest): Observable<OperationResultResponse<RoleInfo[]>> {
+	public findRoles(params: IFindRequestEx): Observable<OperationResultResponse<RoleInfo[]>> {
 		return this._roleService.findRoles({
 			...params,
 			locale: 'ru',
@@ -62,6 +67,12 @@ export class RightsService {
 
 	public getRole(params: IGetRoleRequest): Observable<OperationResultResponse<IRoleResponse>> {
 		return this._roleService.getRole(params);
+	}
+
+	public deleteRole(params: IEditRoleStatusRequest): Observable<OperationResultResponse<any>> {
+		return this._roleService
+			.editRoleStatus(params)
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Rights, MessageMethod.Remove));
 	}
 
 	public createRole(body: CreateRoleRequest): Observable<OperationResultResponse<any>> {
