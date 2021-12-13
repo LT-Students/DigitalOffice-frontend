@@ -11,7 +11,6 @@ import { IEditWorkTimeRequest } from '@app/services/time/time.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work-time-request';
 import { DoValidators } from '@app/validators/do-validators';
-import { timeValidator } from '../add-hours.validators';
 import { ITooltip } from '../add-leave-hours/add-leave-hours.component';
 
 @Component({
@@ -51,7 +50,6 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		this.addHoursForm.get('time')?.valueChanges.subscribe(() => {
 			this.makeTooltipMessage();
 		});
-		this.workTimes$ = this._attendanceService.activities$.pipe(map((activities) => activities.projects));
 		this.workTimes$ = this._attendanceService.activities$.pipe(
 			map((activities) => activities.projects ?? []),
 			tap((projects) => this._checkIfAnotherExist(projects)),
