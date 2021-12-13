@@ -350,7 +350,8 @@
               "/City",
               "/Address",
               "/Latitude",
-              "/Longitude"
+              "/Longitude",
+              "/IsActive"
             ]
           },
           "value": {

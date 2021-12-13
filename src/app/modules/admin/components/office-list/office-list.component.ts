@@ -3,7 +3,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OfficeInfo } from '@data/api/company-service/models';
-import { combineLatest, Observable, Subject } from 'rxjs';
+import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
@@ -66,6 +66,26 @@ export class OfficeListComponent implements AfterViewInit {
 						this._refreshCurrentPage$$.next(true);
 					}
 				},
+			});
+	}
+
+	public onDeleteOffice(officeInfo: OfficeInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: `Да, удалить`,
+				message: `Вы действительно хотите удалить офис ${officeInfo.name}?`,
+				title: `Удаление офиса ${officeInfo.name}`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) => {
+					return iif(() => !!confirm, this._officeService.deleteOffice(officeInfo.id ?? ''), EMPTY);
+				})
+			)
+			.subscribe((result) => {
+				if (result?.status !== OperationResultStatusType.Failed) {
+					this._refreshCurrentPage$$.next(true);
+				}
 			});
 	}
 

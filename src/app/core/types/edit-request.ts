@@ -2,11 +2,13 @@ export type FormDataEditRequest<T extends PatchPath> = { [key in T]?: any };
 export type InitialDataEditRequest<T extends PatchPath> = FormDataEditRequest<T>;
 
 export type EditRequest<T extends PatchPath> = PatchDocument<T>[];
+
 export interface PatchDocument<T extends PatchPath> {
 	op: 'replace';
 	path: T;
 	value: any;
 }
+
 export type PatchPath =
 	| UserPath
 	| OfficePath
@@ -74,6 +76,7 @@ export enum OfficePath {
 	ADDRESS = '/Address',
 	LATITUDE = '/Latitude',
 	LONGITUDE = '/Longitude',
+	IS_ACTIVE = '/IsActive',
 }
 
 export enum DepartmentPath {
