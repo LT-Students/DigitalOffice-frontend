@@ -43,7 +43,7 @@ export class EditProjectComponent {
 				this.project.userHours,
 				[
 					Validators.required,
-					DoValidators.floatNumber,
+					DoValidators.intNum,
 					Validators.max(
 						this._timeDurationService.countMaxMonthDuration(this.project.year, this.project.month - 1)
 					),

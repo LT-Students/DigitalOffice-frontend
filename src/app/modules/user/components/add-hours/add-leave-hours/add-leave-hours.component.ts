@@ -68,18 +68,17 @@ export class AddLeaveHoursComponent {
 	public onClose(): void {
 		const startDateValue: DateTime = this.addLeaveForm.get('startDate')?.value;
 		const endDateControl = this.addLeaveForm.get('endDate');
-		if (startDateValue !== null) {
-			if (!endDateControl?.value || startDateValue?.startOf('day').equals(endDateControl.value.startOf('day'))) {
-				endDateControl?.setValue(startDateValue.endOf('day') ?? this.currentDate);
-			}
-			const datePeriod: DatePeriod = {
-				startDate: startDateValue,
-				endDate: endDateControl?.value,
-			};
-			this.recommendedTime$$.next(this._attendanceService.getLeaveDuration(datePeriod));
-			if (this.addLeaveForm.get('leaveType')?.value) {
-				this.addHoursToAbsenceValidation();
-			}
+		if (!startDateValue) return;
+		if (!endDateControl?.value || startDateValue?.startOf('day')) {
+			endDateControl?.setValue(startDateValue.endOf('day') ?? this.currentDate);
+		}
+		const datePeriod: DatePeriod = {
+			startDate: startDateValue,
+			endDate: endDateControl?.value,
+		};
+		this.recommendedTime$$.next(this._attendanceService.getLeaveDuration(datePeriod));
+		if (this.addLeaveForm.get('leaveType')?.value) {
+			this.addHoursToAbsenceValidation();
 		}
 	}
 
@@ -130,7 +129,9 @@ export class AddLeaveHoursComponent {
 			this.currentDate.startOf('month')
 		);
 
-		if (startDate !== null && endDate !== null) {
+		if (endDate === null || startDate === null) {
+			return;
+		} else {
 			fromStartToCurrentInterval = Interval.fromDateTimes(
 				startDate.startOf('month'),
 				this.currentDate.startOf('month')
@@ -141,16 +142,14 @@ export class AddLeaveHoursComponent {
 			);
 		}
 
-		if (endDate === null || startDate === null) {
-			return;
-		} else if (leaveType === LeaveType.SickLeave) {
-			if (fromCurrentToEndInterval.length('months') >= 2) {
+		if (leaveType === LeaveType.SickLeave) {
+			if (fromCurrentToEndInterval.length('months') > 1) {
 				this.tooltip = {
 					disabled: false,
 					message: 'Проставлять больничный можно только на 1 месяц вперед от текущего месяца',
 				};
 			}
-		} else if (fromStartToCurrentInterval.length('months') >= 1) {
+		} else if (fromStartToCurrentInterval.length('months') === 1) {
 			if (leaveType === LeaveType.SickLeave) {
 				this.tooltip = { disabled: true, message: '' };
 			} else if (currentDay > 5) {
@@ -159,8 +158,6 @@ export class AddLeaveHoursComponent {
 					message: 'Проставлять даты за прошлый месяц можно только в первые 5 дней текущего месяца',
 				};
 			}
-		} else {
-			this.tooltip = { disabled: true, message: '' };
 		}
 	}
 }

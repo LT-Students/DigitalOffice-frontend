@@ -40,16 +40,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		this.monthOptions = [];
 		this.monthNorm = 160;
 		this.addHoursForm = this._fb.group({
-			time: [
-				'',
-				[
-					Validators.required,
-					Validators.min(0),
-					Validators.max(this.monthNorm),
-					DoValidators.intNum,
-					timeValidator(() => this._attendanceService.countMaxHours()),
-				],
-			],
+			time: ['', [Validators.required, Validators.min(0), Validators.max(this.monthNorm), DoValidators.intNum]],
 			activity: [null, Validators.required],
 			comment: [null],
 		});
@@ -156,7 +147,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 			this.tooltip = { disabled: false, message: 'Минимальное значение - 0' };
 			return;
 		}
-		if (errors?.onlyNumbers) {
+		if (errors?.intNum) {
 			this.tooltip = { disabled: false, message: 'Допустим ввод только целых чисел' };
 			return;
 		}

@@ -13,7 +13,7 @@ const SKYPE_REGEXP = /^[A-Za-z][A-Za-z0-9.,\-_]+$/;
 const TWITTER_REGEXP = /^\w+$/;
 const TRIMMED_NAME_REGEXP = /(^\s+|\s+$)/;
 const ONE_SPACE_BETWEEN_WORDS_REGEXP = /(\S\s{2,}\S)/;
-const INTEGER_NUMBER_REGEXP = /\D/g;
+const INTEGER_NUMBER_REGEXP = /^-*\d+$/;
 
 export class DoValidators {
 	static email(control: AbstractControl): ValidationErrors | null {
@@ -116,6 +116,6 @@ export class DoValidators {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return INTEGER_NUMBER_REGEXP.test(control.value) ? { intNum: true } : null;
+		return INTEGER_NUMBER_REGEXP.test(control.value) ? null : { intNum: true };
 	}
 }
