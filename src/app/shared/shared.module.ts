@@ -28,6 +28,7 @@ import { AddEmployeeComponent } from './modals/add-employee/add-employee.compone
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
 import { PhoneInputComponent } from './component/phone-input/phone-input.component';
 import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-bar-routing.module';
+import { ChangeUserPasswordComponent } from './modals/change-user-password/change-user-password.component';
 
 @NgModule({
 	declarations: [
@@ -51,6 +52,7 @@ import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-b
 		DateTimePipe,
 		EmptyListComponent,
 		PhoneInputComponent,
+		ChangeUserPasswordComponent,
 	],
 	imports: [
 		CommonModule,
@@ -90,6 +92,7 @@ import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-b
 		AddEmployeeComponent,
 		EmptyListComponent,
 		PhoneInputComponent,
+		ChangeUserPasswordComponent,
 	],
 })
 export class SharedModule {}

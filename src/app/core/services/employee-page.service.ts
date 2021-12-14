@@ -39,6 +39,7 @@ export class EmployeePageService implements Resolve<User> {
 			includerole: true,
 			includeuserimages: true,
 			includeprojects: true,
+			includecurrentavatar: true,
 		};
 
 		return this._userService.getUser(params).pipe(

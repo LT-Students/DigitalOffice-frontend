@@ -4,15 +4,10 @@ export interface ChangePasswordRequest {
 	/**
 	 * New user password.
 	 */
-	newPassword?: string;
+	newPassword: string;
 
 	/**
 	 * Old user password.
 	 */
-	password?: string;
-
-	/**
-	 * Unique user identifier.
-	 */
-	userId?: string;
+	password: string;
 }

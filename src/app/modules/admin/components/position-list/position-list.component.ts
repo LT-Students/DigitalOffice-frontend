@@ -1,10 +1,10 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
-import { combineLatest, Observable, Subject } from 'rxjs';
+import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { IPositionInfo, PositionService } from '@app/services/position/position.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -39,7 +39,7 @@ export class PositionListComponent implements AfterViewInit {
 	public ngAfterViewInit(): void {
 		this.positions$ = combineLatest([
 			this.filters.valueChanges.pipe(
-				startWith(null),
+				startWith({ showDeactivated: false }),
 				tap(() => this.paginator?.firstPage())
 			),
 			this.paginator.page.pipe(startWith(null)),
@@ -69,11 +69,31 @@ export class PositionListComponent implements AfterViewInit {
 			});
 	}
 
+	public onDeletePosition(positionInfo: PositionInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: 'Да, удалить',
+				title: `Удаление должности ${positionInfo.name}`,
+				message: `Вы действительно хотите удалить должность ${positionInfo.name}`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) =>
+					iif(() => !!confirm, this._positionService.deletePosition(positionInfo.id ?? ''), EMPTY)
+				)
+			)
+			.subscribe((result) => {
+				if (result.status !== OperationResultStatusType.Failed) {
+					this._refreshCurrentPage$$.next(true);
+				}
+			});
+	}
+
 	public getPositions(filters: any, event: PageEvent | null): Observable<OperationResultResponse<PositionInfo[]>> {
 		return this._positionService.findPositions({
 			skipcount: event ? event.pageIndex * event.pageSize : 0,
 			takecount: event ? event.pageSize : 10,
-			includedeactivated: filters?.showDeactivated,
+			includedeactivated: filters.showDeactivated,
 		});
 	}
 }

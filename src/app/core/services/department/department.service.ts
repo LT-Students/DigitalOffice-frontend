@@ -59,9 +59,19 @@ export class DepartmentService {
 		departmentId: UUID,
 		editRequest: EditRequest<DepartmentPath>
 	): Observable<OperationResultResponse<{} | null>> {
-		return this._departmentApiService
-			.editDepartment({ departmentId: departmentId, body: editRequest })
-			.pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Edit));
+		return this._editDepartment(departmentId, editRequest).pipe(
+			this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Edit)
+		);
+	}
+
+	public deleteDepartment(departmentId: UUID): Observable<OperationResultResponse<{} | null>> {
+		return this._editDepartment(departmentId, [
+			{
+				op: 'replace',
+				path: DepartmentPath.IS_ACTIVE,
+				value: false,
+			},
+		]).pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Remove));
 	}
 
 	public addUsersToDepartment(departmentId: UUID, userIds: UUID[]): Observable<OperationResultResponse<{} | null>> {
@@ -79,5 +89,12 @@ export class DepartmentService {
 			departmentid: departmentId,
 			body: userIds,
 		});
+	}
+
+	private _editDepartment(
+		departmentId: UUID,
+		editRequest: EditRequest<DepartmentPath>
+	): Observable<OperationResultResponse<{} | null>> {
+		return this._departmentApiService.editDepartment({ departmentId: departmentId, body: editRequest });
 	}
 }

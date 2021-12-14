@@ -4,7 +4,7 @@ import { RoleInfo } from '@data/api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { combineLatest, Observable, Subject } from 'rxjs';
+import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -39,7 +39,7 @@ export class ManageRolesComponent implements AfterViewInit {
 	public ngAfterViewInit(): void {
 		this.roles$ = combineLatest([
 			this.filters.valueChanges.pipe(
-				startWith(null),
+				startWith({ showDeactivated: false }),
 				tap(() => this.paginator?.firstPage())
 			),
 			this.paginator.page.pipe(startWith(null)),
@@ -69,10 +69,38 @@ export class ManageRolesComponent implements AfterViewInit {
 			});
 	}
 
+	public onDeleteRole(roleInfo: RoleInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: 'Да, удалить роль',
+				title: `Удаление роли ${roleInfo.localizations?.[0]?.name}`,
+				message: `Вы действительно хотите удалить роль ${roleInfo.localizations?.[0]?.name}?`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) => {
+					return iif(
+						() => !!confirm,
+						this._rightsService.deleteRole({
+							roleId: roleInfo.id ?? '',
+							isActive: false,
+						}),
+						EMPTY
+					);
+				})
+			)
+			.subscribe((result) => {
+				if (result?.status !== OperationResultStatusType.Failed) {
+					this._refreshCurrentPage$$.next(true);
+				}
+			});
+	}
+
 	public getRoles(filters: any, event: PageEvent | null): Observable<OperationResultResponse<RoleInfo[]>> {
 		return this._rightsService.findRoles({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,
 			takeCount: event ? event.pageSize : 10,
+			includeDeactivated: filters.showDeactivated,
 		});
 	}
 }

@@ -9,35 +9,36 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { CreateImageRequest } from '../models/create-image-request';
+import { CreateAvatarRequest } from '../models/create-avatar-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { RemoveImagesRequest } from '../models/remove-images-request';
+import { OperationResultResponseImagesResponse } from '../models/operation-result-response-images-response';
+import { RemoveAvatarRequest } from '../models/remove-avatar-request';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class ImageApiService extends BaseService {
+export class AvatarApiService extends BaseService {
 	constructor(config: ApiConfiguration, http: HttpClient) {
 		super(config, http);
 	}
 
 	/**
-	 * Path part for operation createImage
+	 * Path part for operation createAvatar
 	 */
-	static readonly CreateImagePath = '/image/create';
+	static readonly CreateAvatarPath = '/avatar/create';
 
 	/**
-	 * The method attempts to add image to user/certificate/education. The user must have the rights to add images to other users - Add/Edit/Remove users.
+	 * The method attempts to add image to user.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `createImage()` instead.
+	 * To access only the response body, use `createAvatar()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createImage$Response(params: {
-		body: CreateImageRequest;
+	createAvatar$Response(params: {
+		body: CreateAvatarRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, ImageApiService.CreateImagePath, 'post');
+		const rb = new RequestBuilder(this.rootUrl, AvatarApiService.CreateAvatarPath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
@@ -58,40 +59,38 @@ export class ImageApiService extends BaseService {
 	}
 
 	/**
-	 * The method attempts to add image to user/certificate/education. The user must have the rights to add images to other users - Add/Edit/Remove users.
+	 * The method attempts to add image to user.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `createImage$Response()` instead.
+	 * To access the full response (for headers, for example), `createAvatar$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createImage(params: { body: CreateImageRequest }): Observable<OperationResultResponse> {
-		return this.createImage$Response(params).pipe(
+	createAvatar(params: { body: CreateAvatarRequest }): Observable<OperationResultResponse> {
+		return this.createAvatar$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}
 
 	/**
-	 * Path part for operation getImages
+	 * Path part for operation getAvatar
 	 */
-	static readonly GetImagesPath = '/image/get';
+	static readonly GetAvatarPath = '/avatar/get';
 
 	/**
-	 * This method is used to get all images, that belong to entity
+	 * This method is used to get all user avatars
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `getImages()` instead.
+	 * To access only the response body, use `getAvatar()` instead.
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	getImages$Response(params: {
-		entityId: string;
-		entityType: 'user' | 'certificate' | 'education';
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, ImageApiService.GetImagesPath, 'get');
+	getAvatar$Response(params: {
+		userId: string;
+	}): Observable<StrictHttpResponse<OperationResultResponseImagesResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, AvatarApiService.GetAvatarPath, 'get');
 		if (params) {
-			rb.query('entityId', params.entityId, {});
-			rb.query('entityType', params.entityType, {});
+			rb.query('userId', params.userId, {});
 		}
 
 		return this.http
@@ -104,45 +103,45 @@ export class ImageApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
+					return r as StrictHttpResponse<OperationResultResponseImagesResponse>;
 				})
 			);
 	}
 
 	/**
-	 * This method is used to get all images, that belong to entity
+	 * This method is used to get all user avatars
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `getImages$Response()` instead.
+	 * To access the full response (for headers, for example), `getAvatar$Response()` instead.
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	getImages(params: {
-		entityId: string;
-		entityType: 'user' | 'certificate' | 'education';
-	}): Observable<OperationResultResponse> {
-		return this.getImages$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+	getAvatar(params: { userId: string }): Observable<OperationResultResponseImagesResponse> {
+		return this.getAvatar$Response(params).pipe(
+			map(
+				(r: StrictHttpResponse<OperationResultResponseImagesResponse>) =>
+					r.body as OperationResultResponseImagesResponse
+			)
 		);
 	}
 
 	/**
-	 * Path part for operation removeImages
+	 * Path part for operation removeAvatar
 	 */
-	static readonly RemoveImagesPath = '/image/remove';
+	static readonly RemoveAvatarPath = '/avatar/remove';
 
 	/**
-	 * The method attempts to remove images from entity
+	 * The method attempts to remove avatars from user
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `removeImages()` instead.
+	 * To access only the response body, use `removeAvatar()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	removeImages$Response(params: {
-		body: RemoveImagesRequest;
+	removeAvatar$Response(params: {
+		body: RemoveAvatarRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, ImageApiService.RemoveImagesPath, 'post');
+		const rb = new RequestBuilder(this.rootUrl, AvatarApiService.RemoveAvatarPath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
@@ -163,37 +162,37 @@ export class ImageApiService extends BaseService {
 	}
 
 	/**
-	 * The method attempts to remove images from entity
+	 * The method attempts to remove avatars from user
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `removeImages$Response()` instead.
+	 * To access the full response (for headers, for example), `removeAvatar$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	removeImages(params: { body: RemoveImagesRequest }): Observable<OperationResultResponse> {
-		return this.removeImages$Response(params).pipe(
+	removeAvatar(params: { body: RemoveAvatarRequest }): Observable<OperationResultResponse> {
+		return this.removeAvatar$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}
 
 	/**
-	 * Path part for operation changeAvatar
+	 * Path part for operation editAvatar
 	 */
-	static readonly ChangeAvatarPath = '/image/editavatar';
+	static readonly EditAvatarPath = '/avatar/editcurrent';
 
 	/**
 	 * This method is used to change user's avatar
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `changeAvatar()` instead.
+	 * To access only the response body, use `editAvatar()` instead.
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	changeAvatar$Response(params: {
+	editAvatar$Response(params: {
 		userId: string;
 		imageId: string;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, ImageApiService.ChangeAvatarPath, 'get');
+		const rb = new RequestBuilder(this.rootUrl, AvatarApiService.EditAvatarPath, 'get');
 		if (params) {
 			rb.query('userId', params.userId, {});
 			rb.query('imageId', params.imageId, {});
@@ -218,12 +217,12 @@ export class ImageApiService extends BaseService {
 	 * This method is used to change user's avatar
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `changeAvatar$Response()` instead.
+	 * To access the full response (for headers, for example), `editAvatar$Response()` instead.
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	changeAvatar(params: { userId: string; imageId: string }): Observable<OperationResultResponse> {
-		return this.changeAvatar$Response(params).pipe(
+	editAvatar(params: { userId: string; imageId: string }): Observable<OperationResultResponse> {
+		return this.editAvatar$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}

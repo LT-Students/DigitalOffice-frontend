@@ -108,14 +108,14 @@ export class MainInfoComponent implements OnInit {
 					forkJoin([
 						this._userService.editUser(userId, editRequest),
 						this.employeeInfoForm.get('avatarImage')?.dirty
-							? this._userService
-									.createAvatarImage(avatarImage, userId)
-									.pipe(
-										switchMap((response) =>
-											this._userService.changeAvatar(response.body as string, userId)
-										)
-									)
-							: of(null),
+							? this._userService.createAvatarImage(avatarImage, userId)
+							: // .pipe(
+							  // 		switchMap((response) => {
+							  // 			console.log('response', response);
+							  // 			return this._userService.changeAvatar(response.body as string, userId);
+							  // 		})
+							  //   )
+							  of(null),
 					]).pipe(switchMap(() => this._employeeService.getEmployee(userId)))
 				),
 				finalize(() => {

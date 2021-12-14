@@ -9,7 +9,7 @@ export interface PatchOfficeDocument {
 	/**
 	 * A JSON-Pointer.
 	 */
-	path: '/Name' | '/City' | '/Address' | '/Latitude' | '/Longitude';
+	path: '/Name' | '/City' | '/Address' | '/Latitude' | '/Longitude' | '/IsActive';
 
 	/**
 	 * The value to be used within the operations.

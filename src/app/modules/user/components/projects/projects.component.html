@@ -29,7 +29,7 @@
 	<tbody>
 		<tr *ngFor="let project of projects" class="row">
 			<td class="cell">
-				<p>{{ project?.project?.name }}</p>
+				<p>{{ project?.project?.name ?? 'Другое' }}</p>
 			</td>
 			<td class="cell">
 				<ng-container *ngIf="project?.managerHours === null; else managerHours">

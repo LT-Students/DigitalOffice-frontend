@@ -51,6 +51,21 @@ export class PositionService {
 		positionId: UUID,
 		params: EditRequest<PositionPath>
 	): Observable<OperationResultResponse<{} | null>> {
+		return this._editPosition(positionId, params).pipe(
+			this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Edit)
+		);
+	}
+
+	public deletePosition(positionId: UUID): Observable<OperationResultResponse<{} | null>> {
+		return this._editPosition(positionId, [{ op: 'replace', path: PositionPath.IS_ACTIVE, value: false }]).pipe(
+			this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Remove)
+		);
+	}
+
+	private _editPosition(
+		positionId: UUID,
+		params: EditRequest<PositionPath>
+	): Observable<OperationResultResponse<{} | null>> {
 		return this._positionApiService.editPosition({ positionId: positionId, body: params });
 	}
 }

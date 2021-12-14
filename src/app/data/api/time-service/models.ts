@@ -1,6 +1,7 @@
 export { CreateLeaveTimeRequest } from './models/create-leave-time-request';
 export { EditLeaveTimeRequest } from './models/edit-leave-time-request';
 export { PatchLeaveTimeDocument } from './models/patch-leave-time-document';
+export { CreateWorkTimeRequest } from './models/create-work-time-request';
 export { CreateWorkTimeDayJobRequest } from './models/create-work-time-day-job-request';
 export { EditWorkTimeDayJobRequest } from './models/edit-work-time-day-job-request';
 export { PatchWorkTimeDayJobDocument } from './models/patch-work-time-day-job-document';

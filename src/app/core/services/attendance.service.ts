@@ -14,7 +14,7 @@ import { UserService } from '@app/services/user/user.service';
 import { DateFilterFn } from '@angular/material/datepicker';
 import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
 import { LeaveTimeModel } from '@app/models/time/leave-time.model';
-import { LeaveTimeInfo } from '@data/api/time-service/models';
+import { CreateWorkTimeRequest, LeaveTimeInfo } from '@data/api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { DateTime, Interval } from 'luxon';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
@@ -132,6 +132,10 @@ export class AttendanceService implements Resolve<Activities> {
 		return this._timeService.editWorkTime(params);
 	}
 
+	public createWorkTime(body: CreateWorkTimeRequest): Observable<OperationResultResponse> {
+		return this._timeService.createWorkTime(body);
+	}
+
 	public addLeaveTime(params: Omit<ICreateLeaveTimeRequest, 'userId'>): Observable<OperationResultResponse> {
 		const paramsWithId: ICreateLeaveTimeRequest = {
 			...params,
@@ -231,7 +235,7 @@ export class AttendanceService implements Resolve<Activities> {
 	public getCalendarMinMax(): [DateTime, DateTime] {
 		const currentDate = DateTime.now();
 		const minDate = currentDate.minus({ months: this._canEdit.value ? 1 : 0 }).startOf('month');
-		const maxDate = currentDate.plus({ months: 1 }).endOf('month');
+		const maxDate = currentDate.plus({ months: 24 }).endOf('month');
 
 		return [minDate, maxDate];
 	}

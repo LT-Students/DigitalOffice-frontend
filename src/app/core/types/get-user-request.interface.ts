@@ -57,4 +57,8 @@ export interface IGetUserRequest {
 	 * Include educations info in answer.
 	 */
 	includeeducations?: boolean;
+	/**
+	 * Include avatar info in answer.
+	 */
+	includecurrentavatar?: boolean;
 }

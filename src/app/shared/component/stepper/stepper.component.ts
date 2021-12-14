@@ -118,7 +118,7 @@ export class StepperComponent implements OnDestroy, MatFormFieldControl<number>,
 		}
 		this.focused = true;
 		this.stateChanges = new Subject<void>();
-		this.stepperControl = new FormControl(0, [DoValidators.number]);
+		this.stepperControl = new FormControl(0, [DoValidators.floatNumber]);
 		this.placeholder = '';
 		this.step = 1;
 		this.min = Number.MIN_SAFE_INTEGER;

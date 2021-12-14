@@ -194,6 +194,16 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "userId",
+          "in": "query",
+          "description": "Unique user identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
         }
       ],
       "patch": {
