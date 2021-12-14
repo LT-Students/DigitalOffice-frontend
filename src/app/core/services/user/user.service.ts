@@ -16,7 +16,7 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ImageApiService } from '@data/api/user-service/services/image-api.service';
+import { AvatarApiService } from '@data/api/user-service/services/avatar-api.service';
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
@@ -51,7 +51,7 @@ export interface IFindUsers {
 export class UserService {
 	constructor(
 		private _userApiService: UserApiService,
-		private _imageApiService: ImageApiService,
+		private _imageApiService: AvatarApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
 
@@ -110,12 +110,19 @@ export class UserService {
 	}
 
 	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
-		return this._imageApiService.createImage({
-			body: { ...image, entityType: 'user', entityId: userId },
+		console.log('Загружаю и делаю');
+		return this._imageApiService.createAvatar({
+			body: {
+				content: image.content,
+				userId,
+				extension: image.extension,
+				name: image.name,
+				isCurrentAvatar: true,
+			},
 		});
 	}
 
 	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse<null | {}>> {
-		return this._imageApiService.changeAvatar({ userId: userId, imageId: imageId });
+		return this._imageApiService.editAvatar({ userId: userId, imageId: imageId });
 	}
 }

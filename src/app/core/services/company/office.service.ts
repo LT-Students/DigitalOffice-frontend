@@ -34,4 +34,10 @@ export class OfficeService {
 	public editOffice(officeId: UUID, editParams: EditRequest<OfficePath>): Observable<OperationResultResponse<any>> {
 		return this._officeService.editOffice({ officeId: officeId, body: editParams });
 	}
+
+	public deleteOffice(officeId: UUID): Observable<OperationResultResponse<any>> {
+		return this.editOffice(officeId, [{ op: 'replace', path: OfficePath.IS_ACTIVE, value: false }]).pipe(
+			this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Remove)
+		);
+	}
 }

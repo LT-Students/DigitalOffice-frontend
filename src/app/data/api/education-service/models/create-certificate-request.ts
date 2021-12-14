@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-import { AddImageRequest } from './add-image-request';
 import { EducationType } from './education-type';
+import { ImageContent } from './image-content';
 export interface CreateCertificateRequest {
 	educationType: EducationType;
 
 	/**
 	 * Array of certificate images.
 	 */
-	images?: Array<AddImageRequest>;
+	images?: Array<ImageContent>;
 
 	/**
 	 * Certificate name.

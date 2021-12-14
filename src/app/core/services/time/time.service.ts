@@ -16,6 +16,9 @@ import { StatApiService } from '@data/api/time-service/services/stat-api.service
 import { ImportApiService } from '@data/api/time-service/services/import-api.service';
 import { FindResultResponseStatInfo } from '@data/api/time-service/models/find-result-response-stat-info';
 import { OperationResultResponseByteArray } from '@data/api/time-service/models/operation-result-response-byte-array';
+import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work-time-request';
+import { ResponseMessageModel } from '@app/models/response/response-message.model';
+import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface IFindWorkTimesRequest {
 	userid?: string;
@@ -86,6 +89,7 @@ export interface ICreateLeaveTimeRequest {
 @Injectable()
 export class TimeService {
 	constructor(
+		private _responseModel: ResponseMessageModel,
 		private _workTimeService: WorkTimeApiService,
 		private _leaveTimeApiService: LeaveTimeApiService,
 		private _workTimeDayJobApiService: WorkTimeDayJobApiService,
@@ -100,7 +104,15 @@ export class TimeService {
 	}
 
 	public editWorkTime(params: IEditWorkTimeRequest): Observable<OperationResultResponse> {
-		return this._workTimeService.editWorkTime(params);
+		return this._workTimeService
+			.editWorkTime(params)
+			.pipe(this._responseModel.message(MessageTriggeredFrom.WorkTime, MessageMethod.Edit));
+	}
+
+	public createWorkTime(body: CreateWorkTimeRequest): Observable<OperationResultResponse> {
+		return this._workTimeService
+			.createWorkTime({ body })
+			.pipe(this._responseModel.message(MessageTriggeredFrom.WorkTime, MessageMethod.Create));
 	}
 
 	public addLeaveTime(body: ICreateLeaveTimeRequest): Observable<OperationResultResponse> {
