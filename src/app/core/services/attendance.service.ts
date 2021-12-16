@@ -144,7 +144,7 @@ export class AttendanceService implements Resolve<Activities> {
 		return this._timeService.addLeaveTime(paramsWithId);
 	}
 
-	public getLeaveTimeIntervals() {
+	public getLeaveTimeIntervals(): Observable<Interval[] | undefined> {
 		const leaveTimesParams: IFindLeaveTimesRequest = {
 			userid: this._userId,
 			skipCount: 0,

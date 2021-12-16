@@ -88,6 +88,7 @@ export class AddLeaveHoursComponent {
 			.pipe(
 				this._responseService.message(MessageTriggeredFrom.LeaveTime, MessageMethod.Create),
 				switchMap(() => this._attendanceService.getActivities()),
+				switchMap(() => this._attendanceService.getLeaveTimeIntervals()),
 				finalize(() => {
 					this.loading$$.next(false);
 				})
