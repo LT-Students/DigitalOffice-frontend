@@ -17,6 +17,7 @@ import { CurrentUserService } from '@app/services/current-user.service';
 export class SignupComponent {
 	public loginForm: FormGroup;
 	public isWaiting$$: BehaviorSubject<boolean>;
+
 	public get login() {
 		return this.loginForm.get('login');
 	}
@@ -58,7 +59,6 @@ export class SignupComponent {
 				),
 				tap((user) => this._currentUserService.setUser(user)),
 				catchError((error: string) => {
-					console.log(error);
 					this.loginForm.setErrors({
 						busy: {
 							userFriendlyMessage: 'Упс! Возникла ошибка',

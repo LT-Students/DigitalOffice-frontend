@@ -79,23 +79,19 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	private _getMembers(): void {
-		this._userService.findUsers({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize }).subscribe(
-			(data) => {
+		this._userService
+			.findUsers({ skipCount: this.pageIndex * this.pageSize, takeCount: this.pageSize })
+			.subscribe((data) => {
 				this.membersAll = data.body ?? [];
 				this.totalCount = data.totalCount ?? 0;
 				this._cdr.markForCheck();
-			},
-			(error) => console.log(error)
-		);
+			});
 	}
 
 	private _getPositions(): void {
-		this._positionService.findPositions({ skipcount: 0, takecount: 100 }).subscribe(
-			(data) => {
-				this.positions = data.body ?? [];
-			},
-			(error) => console.log(error)
-		);
+		this._positionService.findPositions({ skipcount: 0, takecount: 100 }).subscribe((data) => {
+			this.positions = data.body ?? [];
+		});
 	}
 
 	public onSelect() {
@@ -119,7 +115,6 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	}
 
 	public onSave(): void {
-		console.log(this.checkedMembers);
 		this._dialogRef.close(this.checkedMembers);
 	}
 
@@ -167,6 +162,5 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		this.membersAll = teamCards
 			.map((team: Team) => team.members)
 			.reduce((prev: UserInfo[], currentValue: UserInfo[]) => prev.concat(currentValue), []);
-		console.log('initSearchMode');
 	}
 }

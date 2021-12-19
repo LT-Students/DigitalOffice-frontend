@@ -108,8 +108,6 @@ export class AddLeaveHoursComponent {
 			minutes: this.recommendedTime$$.value * 60,
 		};
 
-		console.log('REQUEST:', leaveTimeRequest);
-
 		return this._attendanceService.addLeaveTime(leaveTimeRequest);
 	}
 

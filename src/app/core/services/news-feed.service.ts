@@ -52,7 +52,6 @@ export class NewsFeedService implements Resolve<ArticlePreview[]> {
 					return this._editorJSParser.parse(preview).pipe(
 						map((block) => ({ ...articlePreview, preview: block.join('') } as ArticlePreview)),
 						catchError((err) => {
-							console.log(err);
 							return EMPTY;
 						})
 					);

@@ -98,11 +98,8 @@ export class WizardComponent implements OnInit {
 				},
 			})
 			.pipe(finalize(() => this.loading$$.next(false)))
-			.subscribe(
-				() => {
-					this._router.navigate(['/auth/login']);
-				},
-				(error) => console.log(error)
-			);
+			.subscribe(() => {
+				this._router.navigate(['/auth/login']);
+			});
 	}
 }
