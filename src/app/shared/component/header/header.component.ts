@@ -17,9 +17,8 @@ import { ChangeUserPasswordComponent } from '../../modals/change-user-password/c
 export class HeaderComponent {
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
 	@Output() public menuClick: EventEmitter<MouseEvent>;
-
 	public portalName: Observable<string>;
-	public currentUser: User | null | undefined;
+	public currentUser$: Observable<User>;
 
 	constructor(
 		private _authService: AuthService,
@@ -29,7 +28,7 @@ export class HeaderComponent {
 	) {
 		this.menuClick = new EventEmitter();
 		this.portalName = this._currentCompanyService.company$.pipe(map((user) => user.portalName));
-		this._currentUserService.user$.subscribe((user) => (this.currentUser = user));
+		this.currentUser$ = this._currentUserService.user$;
 	}
 
 	public onLogoutClick(): void {

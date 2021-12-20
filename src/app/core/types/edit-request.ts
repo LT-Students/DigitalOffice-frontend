@@ -48,7 +48,7 @@ export enum ProjectPath {
 	DESCRIPTION = '/Description',
 	SHORT_DESCRIPTION = '/ShortDescription',
 	STATUS = '/Status',
-	DEPARTMENT_ID = '/DepartmentId',
+	// DEPARTMENT_ID = '/DepartmentId',
 }
 
 export enum PositionPath {
