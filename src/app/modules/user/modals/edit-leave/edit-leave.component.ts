@@ -40,6 +40,7 @@ export class EditLeaveComponent {
 		private _dateService: DateService,
 		private _attendanceService: AttendanceService
 	) {
+		// TODO: либо здесь, либо в другом месте компоненты начать удалять из интервалов редактируемый интервал
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this._initialData = {
 			[LeaveTimePath.COMMENT]: [this.leave.comment],

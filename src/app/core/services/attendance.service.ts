@@ -158,12 +158,20 @@ export class AttendanceService implements Resolve<Activities> {
 					?.map((res) => res.leaveTime)
 					.filter((leave): leave is LeaveTimeInfo => !!leave)
 					.map((leave) => new LeaveTimeModel(leave))
-					.map((leave) =>
-						Interval.fromISO(
-							`${leave.startTime}/${DateTime.fromISO(leave.endTime).plus({ days: 1 }).toISO()}`
-						)
+					.map(
+						(leave) => {
+							const timeZoneOffset = DateTime.fromISO(leave.startTime).offset;
+							return Interval.fromDateTimes(
+								DateTime.fromISO(leave.startTime),
+								DateTime.fromISO(leave.endTime).plus({ minutes: timeZoneOffset })
+							);
+						}
+						// Interval.fromISO(
+						// 	`${leave.startTime}/${DateTime.fromISO(leave.endTime).plus({ days: 1 }).toISO()}`
+						// )
 					)
 			),
+			tap((intervals) => console.log('New intervals', intervals)),
 			tap((intervals) => this._leaveIntervals.next(intervals ?? []))
 		);
 	}
@@ -219,8 +227,27 @@ export class AttendanceService implements Resolve<Activities> {
 		this._canEdit.next(this._canEditTime());
 	}
 
+	// TODO: эта функция должна вычищать из интервалов редактируемый интервал, но проблема текущей реализации в том, что она не сохраняет
+	// предыдущий интервал, то есть [Interval1, Interval2, Interval3] -> [Interval1, Interval2] это первое редактирование, но мы его отменили, например
+	// Тогда следующее редактирование (уже другого интервала) будет фильтроваться не по [Interval1, Interval2, Interval3], а по [Interval1, Interval2],
+	// что неправильно. Если не понял - напиши, распишу подробнее.
+	// Возможно имеет смысл пересмотреть логику удаления и когда это делать, или что-то добавить в эту функцию
+	public removeInterval(dateInterval: Interval): void {
+		console.log('Removing interval', dateInterval);
+		const leaveIntervals = [...this._leaveIntervals.value];
+		console.log('intervals before', leaveIntervals);
+		const newIntervals = leaveIntervals.filter((interval) => !interval.equals(dateInterval));
+		console.log('intervals after', newIntervals);
+
+		this._leaveIntervals.next([...newIntervals]);
+	}
+
 	public disableWeekends: DateFilterFn<DateTime> = (d: DateTime | null): boolean => {
+		// console.log('Интервалы в _leaveIntervals', this._leaveIntervals.value);
+
+		console.log('date', d);
 		const selectedDate = d || DateTime.now();
+		console.log(this._leaveIntervals.value.every((interval) => !interval.contains(selectedDate)));
 		const holidaysMonth = this._holidays.value.month;
 		const holidays = this._holidays.value.holidays;
 

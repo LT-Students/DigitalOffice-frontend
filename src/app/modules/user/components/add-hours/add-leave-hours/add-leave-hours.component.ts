@@ -99,10 +99,29 @@ export class AddLeaveHoursComponent {
 	}
 
 	private _addLeaveTime(): Observable<OperationResultResponse> {
+		// TODO: при добавлении отсутствия часы startTime должны быть в начале дня, а endTime в конце дня, но с учётом таймзоны.
+		// Таким образом 2021.12.13T03:00:00Z+3 - 2021.12.17T21:00:00Z+3 (или что-то подобное)
 		const timeZoneOffset = (this.addLeaveForm.get('startDate')?.value as DateTime).offset;
+
+		// console.log('startDate', this.addLeaveForm.get('startDate')?.value);
+		// console.log(
+		// 	'startDate, after plus',
+		// 	this.addLeaveForm.get('startDate')?.value.plus({ minutes: timeZoneOffset }).toISO()
+		// );
+		//
+		// console.log('endDate', this.addLeaveForm.get('endDate')?.value);
+		// console.log(
+		// 	'endDate, after plus',
+		// 	this.addLeaveForm.get('endDate')?.value.minus({ minutes: timeZoneOffset }).plus({ days: 1 }).toISO()
+		// );
+
 		const leaveTimeRequest: Omit<ICreateLeaveTimeRequest, 'userId'> = {
 			startTime: this.addLeaveForm.get('startDate')?.value.plus({ minutes: timeZoneOffset }).toISO(),
-			endTime: this.addLeaveForm.get('endDate')?.value.plus({ minutes: timeZoneOffset }).toISO(),
+			endTime: this.addLeaveForm
+				.get('endDate')
+				?.value.minus({ minutes: timeZoneOffset })
+				.plus({ days: 1 })
+				.toISO(),
 			leaveType: this.addLeaveForm.get('leaveType')?.value,
 			comment: this.addLeaveForm.get('comment')?.value,
 			minutes: this.recommendedTime$$.value * 60,
