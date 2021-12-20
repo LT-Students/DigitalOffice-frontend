@@ -9,7 +9,7 @@ export interface ProjectPatchDocument {
 	/**
 	 * A JSON-Pointer.
 	 */
-	path: '/Name' | '/ShortName' | '/Description' | '/ShortDescription' | '/Status' | '/DepartmentId';
+	path: '/Name' | '/ShortName' | '/Description' | '/ShortDescription' | '/Status';
 
 	/**
 	 * The value to be used within the operations.

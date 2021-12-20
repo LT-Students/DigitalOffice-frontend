@@ -5,13 +5,14 @@ import { IGetProjectResponse, ProjectService } from '@app/services/project/proje
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatDialog } from '@angular/material/dialog';
-import { ModalService } from '@app/services/modal.service';
+import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { UserInfo } from '@data/api/project-service/models/user-info';
 import { ProjectTypeModel } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { EMPTY } from 'rxjs';
+import { ProjectUserRoleType } from '@data/api/project-service/models';
 import {
 	AddEmployeeComponent,
 	OpenAddEmployeeModalFrom,
@@ -42,7 +43,6 @@ export class ProjectPageComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private _projectService: ProjectService,
 		private _cdr: ChangeDetectorRef,
-		private _dialog: MatDialog,
 		private _modalService: ModalService,
 		private _router: Router
 	) {
@@ -105,18 +105,33 @@ export class ProjectPageComponent implements OnInit {
 	}
 
 	public openAddEmployeeModal(): void {
-		const dialogRef = this._dialog.open(AddEmployeeComponent, {
-			data: {
+		const dialogRef = this._modalService.openModal<AddEmployeeComponent, any, UserInfo[]>(
+			AddEmployeeComponent,
+			ModalWidth.L,
+			{
 				idToHide: this.dataSource.data.map((e) => e.id),
 				pageId: this.projectId,
 				openFrom: OpenAddEmployeeModalFrom.Project,
 				moduleName: this.projectInfo?.name,
-			},
-			maxWidth: '670px',
-		});
+			}
+		);
+
 		dialogRef
 			.afterClosed()
 			.pipe(
+				switchMap((users) => {
+					if (!users) return EMPTY;
+					else
+						return this._projectService.addUsersToProject({
+							projectId: this.projectId,
+							users: users.map((user) => {
+								return {
+									userId: user.id ?? '',
+									role: user.role ?? ProjectUserRoleType.Employee,
+								};
+							}),
+						});
+				}),
 				switchMap(() =>
 					this._projectService.getProject({
 						projectId: this.projectId,
@@ -131,9 +146,8 @@ export class ProjectPageComponent implements OnInit {
 	}
 
 	public openEditProjectModal(): void {
-		const dialogRef = this._dialog.open(EditProjectComponent, {
-			data: { projectInfo: this.projectInfo },
-			width: '800px',
+		const dialogRef = this._modalService.openModal(EditProjectComponent, ModalWidth.L, {
+			projectInfo: this.projectInfo,
 		});
 		dialogRef
 			.afterClosed()
