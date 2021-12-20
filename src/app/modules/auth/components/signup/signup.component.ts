@@ -46,7 +46,7 @@ export class SignupComponent {
 				switchMap((params: Params) => {
 					const { login, password } = this.loginForm.getRawValue();
 					const createCredentialsRequest: CreateCredentialsRequest = {
-						login,
+						login: login.trim(),
 						password,
 						userId: params['userId'],
 					};
