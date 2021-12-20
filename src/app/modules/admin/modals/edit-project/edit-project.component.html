@@ -16,11 +16,7 @@
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Департамент</mat-label>
-					<mat-select
-						[formControlName]="ProjectPath.DEPARTMENT_ID"
-						placeholder="Выберите департамент"
-						required
-					>
+					<mat-select formControlName="departmentId" placeholder="Выберите департамент" required>
 						<mat-option *ngFor="let department of departments | async" [value]="department.id">
 							{{ department.name }}
 						</mat-option>
@@ -64,7 +60,7 @@
 		class="actions__save"
 		color="primary"
 		[loading]="(loading$$ | async) ?? false"
-		(click)="editProject(); onClose()"
+		(click)="editProject()"
 	>
 		Сохранить
 	</button>
