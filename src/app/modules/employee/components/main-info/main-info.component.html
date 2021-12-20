@@ -171,19 +171,19 @@
 							<p class="mat-caption">Роль</p>
 							<p>{{ user.role?.name }}</p>
 						</div>
-						<mat-form-field appearance="fill">
-							<mat-label>В компании с</mat-label>
-							<input
-								matInput
-								[formControlName]="EditPath.START_WORKING_AT"
-								[matDatepicker]="picker1"
-								placeholder="ДД месяц ГГГГ"
-							/>
-							<mat-datepicker-toggle matSuffix [for]="picker1">
-								<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-							</mat-datepicker-toggle>
-							<mat-datepicker #picker1></mat-datepicker>
-						</mat-form-field>
+						<!--						<mat-form-field appearance="fill">-->
+						<!--							<mat-label>В компании с</mat-label>-->
+						<!--							<input-->
+						<!--								matInput-->
+						<!--								[formControlName]="EditPath.START_WORKING_AT"-->
+						<!--								[matDatepicker]="picker1"-->
+						<!--								placeholder="ДД месяц ГГГГ"-->
+						<!--							/>-->
+						<!--							<mat-datepicker-toggle matSuffix [for]="picker1">-->
+						<!--								<mat-icon matDatepickerToggleIcon>date_range</mat-icon>-->
+						<!--							</mat-datepicker-toggle>-->
+						<!--							<mat-datepicker #picker1></mat-datepicker>-->
+						<!--						</mat-form-field>-->
 						<mat-form-field appearance="fill">
 							<mat-label>Дата рождения</mat-label>
 							<input
