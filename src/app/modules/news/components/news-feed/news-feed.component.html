@@ -1,4 +1,5 @@
-<div infiniteScroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50" (scrolled)="getData()">
+<!--infinite-scroll [infiniteScrollDistance]="3" [infiniteScrollThrottle]="50" (scrolled)="getData()"-->
+<div>
 	<div class="header">
 		<h1>Новости</h1>
 		<button mat-flat-button color="primary" class="header__button" (click)="openEditor()">
@@ -45,6 +46,8 @@
 			</mat-card>
 		</div>
 	</div>
+	<mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)" [length]="totalCount">
+	</mat-paginator>
 	<ng-template #emptyList>
 		<p class="mat-body-1">Нет новостей</p>
 	</ng-template>
