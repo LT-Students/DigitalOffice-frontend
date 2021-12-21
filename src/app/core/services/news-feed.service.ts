@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, from, Observable } from 'rxjs';
 import { ArticlePreview } from '@app/models/news.model';
-import { IFindNewsRequest, NewsService } from '@app/services/news/news.service';
+import { NewsService } from '@app/services/news/news.service';
 import { catchError, concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
 import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -14,8 +14,8 @@ import { EditorJSParser } from '../../modules/news/parser';
 export class NewsFeedService implements Resolve<ArticlePreview[]> {
 	private _newsFeed: BehaviorSubject<ArticlePreview[]>;
 	public newsFeed$: Observable<ArticlePreview[]>;
-	private _newsCount: number;
-	private _totalCount: number;
+	public _newsCount: number;
+	public _totalCount: number;
 
 	constructor(private _editorJSParser: EditorJSParser, private _newsService: NewsService) {
 		this._newsFeed = new BehaviorSubject<ArticlePreview[]>([]);
@@ -25,20 +25,13 @@ export class NewsFeedService implements Resolve<ArticlePreview[]> {
 	}
 
 	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ArticlePreview[]> {
-		return this.getArticlePreviews();
+		return this.getArticlePreviews({
+			skipCount: 0,
+			takeCount: 10,
+		});
 	}
 
-	public getArticlePreviews(refresh = false): Observable<ArticlePreview[]> {
-		if (refresh) {
-			this._newsCount = 0;
-			this._newsFeed.next([]);
-		}
-
-		const params: IFindNewsRequest = {
-			skipCount: this._newsCount,
-			takeCount: 10,
-		};
-
+	public getArticlePreviews(params: { skipCount: number; takeCount: number }): Observable<ArticlePreview[]> {
 		return this._newsService.findNews(params).pipe(
 			tap((articlePreviews) => {
 				this._totalCount = articlePreviews.totalCount ?? 0;
@@ -62,11 +55,50 @@ export class NewsFeedService implements Resolve<ArticlePreview[]> {
 			}),
 			toArray(),
 			tap((articlePreviews) => {
-				const prevValue = this._newsFeed.value;
-				this._newsFeed.next([...prevValue, ...articlePreviews]);
+				this._newsFeed.next([...articlePreviews]);
 			})
 		);
 	}
+
+	// public getArticlePreviews(refresh = false): Observable<ArticlePreview[]> {
+	// 	if (refresh) {
+	// 		this._newsCount = 0;
+	// 		this._newsFeed.next([]);
+	// 	}
+	//
+	// 	const params: IFindNewsRequest = {
+	// 		skipCount: this._newsCount,
+	// 		takeCount: 50,
+	// 	};
+	//
+	// 	return this._newsService.findNews(params).pipe(
+	// 		tap((articlePreviews) => {
+	// 			this._totalCount = articlePreviews.totalCount ?? 0;
+	// 			this._newsCount += articlePreviews.body?.length ?? 0;
+	// 		}),
+	// 		switchMap((articlePreviews) => from(articlePreviews.body ?? [])),
+	// 		concatMap((articlePreview) => {
+	// 			try {
+	// 				const preview: IOutputBlockData[] = JSON.parse(articlePreview.preview as string);
+	//
+	// 				return this._editorJSParser.parse(preview).pipe(
+	// 					map((block) => ({ ...articlePreview, preview: block.join('') } as ArticlePreview)),
+	// 					catchError((err) => {
+	// 						console.log(err);
+	// 						return EMPTY;
+	// 					})
+	// 				);
+	// 			} catch (e) {
+	// 				return EMPTY;
+	// 			}
+	// 		}),
+	// 		toArray(),
+	// 		tap((articlePreviews) => {
+	// 			const prevValue = this._newsFeed.value;
+	// 			this._newsFeed.next([...prevValue, ...articlePreviews]);
+	// 		})
+	// 	);
+	// }
 
 	public deleteNews(newsId: string): Observable<OperationResultResponse<{}>> {
 		return this._newsService.disableNews(newsId).pipe(
