@@ -20,10 +20,6 @@
 		text-align: center;
 	}
 
-	&__edit-form {
-		display: flex;
-	}
-
 	&__general {
 		margin: 52px 32px 52px 15px;
 	}
@@ -49,7 +45,7 @@
 
 		overflow-y: hidden;
 
-		width: 325px;
+		width: 100%;
 		height: 100%;
 	}
 
