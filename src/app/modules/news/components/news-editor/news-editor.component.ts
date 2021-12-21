@@ -1,5 +1,6 @@
 import {
 	ChangeDetectionStrategy,
+	ChangeDetectorRef,
 	Component,
 	ElementRef,
 	Inject,
@@ -8,7 +9,7 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import EditorJS from '@editorjs/editorjs';
-import { debounceTime, finalize, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { finalize, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, from, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
@@ -52,7 +53,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	private _destroy$: ReplaySubject<void>;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) private _newsId: string,
+		@Inject(MAT_DIALOG_DATA) private data: { _newsId: string; openedFromPost?: boolean },
 		private _currentUserService: CurrentUserService,
 		private _newsService: NewsService,
 		private _localStorage: LocalStorageService,
@@ -60,12 +61,13 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		private _dialogRef: MatDialogRef<NewsEditorComponent>,
 		private _modalService: ModalService,
 		private _elementRef: ElementRef,
-		private _currentCompanyService: CurrentCompanyService
+		private _currentCompanyService: CurrentCompanyService,
+		private _cdr: ChangeDetectorRef
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 		this._dialogRef.disableClose = true;
-		this.isEdit = Boolean(this._newsId);
+		this.isEdit = Boolean(this.data._newsId);
 		this.isEditorContentEmpty = new BehaviorSubject<boolean>(!this.isEdit);
 
 		this.articleSubject = new FormControl('', [Validators.required, DoValidators.noWhitespaces]);
@@ -77,17 +79,20 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		this._initializeEditor()
 			.pipe(
 				switchMap(() => this._detectEditorChanges()),
-				debounceTime(200),
+				// debounceTime(200),
 				skip(1),
 				takeUntil(this._destroy$),
 				switchMap(() => from((this._editor as EditorJS).save())),
 				tap((outputData) => {
+					this.isEditorContentEmpty.next(!outputData.blocks.length);
 					if (!this.isEdit) {
 						this._saveDraft(outputData);
 					}
 				})
 			)
-			.subscribe();
+			.subscribe(() => {
+				this._cdr.markForCheck();
+			});
 
 		this._dialogRef.keydownEvents().subscribe((event) => {
 			if (event.key === 'Escape') {
@@ -103,8 +108,8 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	}
 
 	private _initializeEditor(): Observable<OperationResultResponseNewsResponse | null> {
-		if (this._newsId) {
-			return this._newsService.getNews(this._newsId).pipe(
+		if (this.data._newsId) {
+			return this._newsService.getNews(this.data._newsId).pipe(
 				tap((response) => {
 					console.log(response);
 					this.articleSubject.setValue(response.body?.subject);
@@ -165,10 +170,10 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		iif(() => this.isEdit, this._editNews(), this._createNews())
 			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe({
-				next: (response) => {
+				next: () => {
 					this._closeAndEmptyDraft(true);
-					if (this.isEdit) {
-						this._modalService.fullScreen(PostComponent, response.body);
+					if (this.isEdit && !this.data.openedFromPost) {
+						this._modalService.fullScreen(PostComponent, this.data._newsId);
 					}
 				},
 			});
@@ -208,7 +213,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 					};
 					editRequest.push(subject);
 				}
-				return this._newsService.editNews(this._newsId, editRequest);
+				return this._newsService.editNews(this.data._newsId, editRequest);
 			})
 		);
 	}
