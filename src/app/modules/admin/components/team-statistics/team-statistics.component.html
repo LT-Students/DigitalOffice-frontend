@@ -36,7 +36,7 @@
 									<ng-container *ngIf="!employee?.managerHours; else managerHours">
 										<strong
 											>{{ employee?.projectHours }}/<span class="text-gray1">{{
-												employee?.normHours ?? 0
+                                        employee?.normHours ?? 0
 											}}</span></strong
 										>
 									</ng-container>
@@ -74,9 +74,9 @@
 												Минимальное значение должно быть не меньше нуля
 											</mat-error>
 											<mat-error
-												*ngIf="hoursGroup.controls['hours_' + employee.id].errors?.number"
+												*ngIf="hoursGroup.controls['hours_' + employee.id].errors?.intNum"
 											>
-												Введите число
+												Значение может быть только целым числом
 											</mat-error>
 											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.max">
 												Превышено максимальное значение
@@ -143,6 +143,7 @@
 									mat-flat-button
 									color="primary"
 									class="controls__button"
+									[disabled]="hoursGroup.controls['hours_' + employee.id].invalid"
 									(click)="onSubmit('submit', employee)"
 								>
 									Сохранить
