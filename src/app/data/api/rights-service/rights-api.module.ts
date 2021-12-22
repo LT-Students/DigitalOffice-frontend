@@ -7,6 +7,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { UserRightsApiService } from './services/user-rights-api.service';
 import { RightsApiService } from './services/rights-api.service';
 import { RoleApiService } from './services/role-api.service';
+import { RoleLocalizationApiService } from './services/role-localization-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -15,7 +16,7 @@ import { RoleApiService } from './services/role-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [UserRightsApiService, RightsApiService, RoleApiService, ApiConfiguration],
+	providers: [UserRightsApiService, RightsApiService, RoleApiService, RoleLocalizationApiService, ApiConfiguration],
 })
 export class RightsApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<RightsApiModule> {
