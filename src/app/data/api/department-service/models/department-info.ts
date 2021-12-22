@@ -18,6 +18,7 @@ export interface DepartmentInfo {
 	 * Department id.
 	 */
 	id?: string;
+	isActive?: boolean;
 
 	/**
 	 * Department name.
