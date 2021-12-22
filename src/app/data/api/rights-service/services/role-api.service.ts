@@ -43,6 +43,11 @@ export class RoleApiService extends BaseService {
 		locale?: string;
 
 		/**
+		 * Include deactivated roles
+		 */
+		includedeactivated?: boolean;
+
+		/**
 		 * Number of entries to skip
 		 */
 		skipCount: number;
@@ -55,6 +60,7 @@ export class RoleApiService extends BaseService {
 		const rb = new RequestBuilder(this.rootUrl, RoleApiService.FindRolesPath, 'get');
 		if (params) {
 			rb.query('locale', params.locale, {});
+			rb.query('includedeactivated', params.includedeactivated, {});
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
 		}
@@ -87,6 +93,11 @@ export class RoleApiService extends BaseService {
 		 * Localization of rights.
 		 */
 		locale?: string;
+
+		/**
+		 * Include deactivated roles
+		 */
+		includedeactivated?: boolean;
 
 		/**
 		 * Number of entries to skip

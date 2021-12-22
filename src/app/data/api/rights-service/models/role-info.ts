@@ -7,6 +7,7 @@ export interface RoleInfo {
 	createdAtUtc?: string;
 	createdBy?: string;
 	id?: string;
+	isActive?: boolean;
 	localizations?: Array<RoleLocalizationInfo>;
 	modifiedAtUtc?: null | string;
 	modifiedBy?: UserInfo;

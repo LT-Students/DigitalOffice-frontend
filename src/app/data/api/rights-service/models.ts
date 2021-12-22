@@ -1,6 +1,8 @@
 export { RightInfo } from './models/right-info';
 export { CreateRoleRequest } from './models/create-role-request';
 export { CreateRoleLocalizationRequest } from './models/create-role-localization-request';
+export { EditRoleLocalizationRequest } from './models/edit-role-localization-request';
+export { PatchRoleLocalizationDocument } from './models/patch-role-localization-document';
 export { UpdateRoleRightsRequest } from './models/update-role-rights-request';
 export { RoleInfo } from './models/role-info';
 export { UserInfo } from './models/user-info';
@@ -10,4 +12,3 @@ export { OperationResultStatusType } from './models/operation-result-status-type
 export { OperationResultResponseRoleResponse } from './models/operation-result-response-role-response';
 export { OperationResultResponseRights } from './models/operation-result-response-rights';
 export { FindResultResponseRoleInfo } from './models/find-result-response-role-info';
-export { FindResultResponse } from './models/find-result-response';
