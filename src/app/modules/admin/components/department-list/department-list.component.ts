@@ -95,6 +95,26 @@ export class DepartmentListComponent implements AfterViewInit {
 			});
 	}
 
+	public onRestoreDepartment(department: DepartmentInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: 'Да, восстановить',
+				message: `Вы действительно хотите восстановить департамент ${department.name}?`,
+				title: `Восстановление департамента ${department.name}`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((result) => {
+					return iif(() => !!result, this._departmentService.restoreDepartment(department.id ?? ''), EMPTY);
+				})
+			)
+			.subscribe((result) => {
+				if (result.status !== OperationResultStatusType.Failed) {
+					this._refreshCurrentPage$$.next(true);
+				}
+			});
+	}
+
 	public sortData(sort: Sort): void {
 		// const data = this.departmentsInfo.slice();
 		// if (!sort.active || sort.direction === '') {

@@ -47,11 +47,20 @@
 								<img src="assets/svg/edit.svg" alt="edit" />
 							</mat-icon>
 						</button>
-						<button mat-icon-button (click)="onDeletePosition(position)">
+						<button
+							*ngIf="position.isActive; else restore"
+							mat-icon-button
+							(click)="onDeletePosition(position)"
+						>
 							<mat-icon>
 								<img src="assets/svg/delete.svg" alt="edit" />
 							</mat-icon>
 						</button>
+						<ng-template #restore>
+							<button mat-icon-button (click)="onRestorePosition(position)">
+								<mat-icon class="restore-icon">restore</mat-icon>
+							</button>
+						</ng-template>
 					</td>
 				</tr>
 			</tbody>
