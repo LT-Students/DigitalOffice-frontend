@@ -120,14 +120,14 @@
 													<mat-error
 														*ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.min"
 													>
-														Минимальное значение должно быть не меньше нуля
+														Минимальное значение должно быть не одного нуля
 													</mat-error>
 													<mat-error
 														*ngIf="
 															hoursGroup.controls['hours_' + workTime.id].errors?.number
 														"
 													>
-														Введите число
+														Введите целое число
 													</mat-error>
 													<mat-error
 														*ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.max"
@@ -166,6 +166,7 @@
 													mat-flat-button
 													color="primary"
 													class="button controls__button"
+													[disabled]="hoursGroup.controls['hours_' + workTime.id].invalid"
 													(click)="onSubmit('submit', workTime, stat)"
 												>
 													Сохранить
@@ -231,11 +232,13 @@
 			</mat-expansion-panel>
 		</div>
 	</ng-container>
+
 	<ng-template #loader>
 		<div class="loader">
 			<mat-spinner></mat-spinner>
 		</div>
 	</ng-template>
+
 	<mat-paginator
 		[length]="totalCount | async"
 		[pageIndex]="pageIndex"
