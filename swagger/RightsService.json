@@ -219,7 +219,7 @@
           "required": false
         },
         {
-          "name": "includedeactivated",
+          "name": "includeDeactivated",
           "in": "query",
           "description": "Include deactivated roles",
           "schema": {
