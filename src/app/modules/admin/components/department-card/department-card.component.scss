@@ -2,6 +2,12 @@
 @use '~@angular/material' as mat;
 @use 'base/palettes' as *;
 
+.erasable {
+	//white-space: nowrap;
+	overflow: hidden;
+	//text-overflow: ellipsis;
+}
+
 .title {
 	margin-bottom: 40px;
 }
