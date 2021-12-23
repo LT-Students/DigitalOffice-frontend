@@ -144,7 +144,6 @@ export class TeamStatisticsComponent implements OnInit {
 
 		const projectHours: number = workTimeInfo?.userHours ?? 0;
 		const managerHours: number = workTimeInfo?.managerHours ?? 0;
-		console.log(statInfo);
 
 		return {
 			workTimeId: workTimeInfo?.id ?? '',

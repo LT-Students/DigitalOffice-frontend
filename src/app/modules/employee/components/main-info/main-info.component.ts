@@ -139,7 +139,7 @@ export class MainInfoComponent implements OnInit {
 				[UserPath.STATUS]: user.statusEmoji?.statusType,
 				[UserPath.ABOUT]: user.about,
 				[UserPath.CITY]: user.city,
-				[UserPath.START_WORKING_AT]: user.startWorkingAt,
+				// [UserPath.START_WORKING_AT]: user.startWorkingAt,
 				[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
 				[UserPath.GENDER]: user.gender?.genderType,
 			};
@@ -155,7 +155,7 @@ export class MainInfoComponent implements OnInit {
 			[UserPath.STATUS]: [null],
 			[UserPath.ABOUT]: [''],
 			[UserPath.CITY]: [''],
-			[UserPath.START_WORKING_AT]: [null],
+			// [UserPath.START_WORKING_AT]: [null],
 			[UserPath.DATE_OF_BIRTH]: [null],
 			[UserPath.GENDER]: [UserGender.NotSelected],
 			avatarImage: [null],

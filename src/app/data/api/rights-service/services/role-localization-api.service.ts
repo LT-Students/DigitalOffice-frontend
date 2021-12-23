@@ -9,36 +9,35 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { CreateProjectUsersRequest } from '../models/create-project-users-request';
+import { CreateRoleLocalizationRequest } from '../models/create-role-localization-request';
+import { EditRoleLocalizationRequest } from '../models/edit-role-localization-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-// import { UserId } from '../models/user-id';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class UserApiService extends BaseService {
+export class RoleLocalizationApiService extends BaseService {
 	constructor(config: ApiConfiguration, http: HttpClient) {
 		super(config, http);
 	}
 
 	/**
-	 * Path part for operation createProjectUsers
+	 * Path part for operation createRoleLocalization
 	 */
-	static readonly CreateProjectUsersPath = '/user/create';
+	static readonly CreateRoleLocalizationPath = '/rolelocalization/create';
 
 	/**
-	 * Adding specific users to project.
-	 * *  __The user must have access right__ -- Add/Edit/Remove projects.
+	 * The method attempts to create the role's localization. The user must be admin.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `createProjectUsers()` instead.
+	 * To access only the response body, use `createRoleLocalization()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createProjectUsers$Response(params: {
-		body: CreateProjectUsersRequest;
+	createRoleLocalization$Response(params: {
+		body: CreateRoleLocalizationRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.CreateProjectUsersPath, 'post');
+		const rb = new RequestBuilder(this.rootUrl, RoleLocalizationApiService.CreateRoleLocalizationPath, 'post');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
@@ -59,44 +58,39 @@ export class UserApiService extends BaseService {
 	}
 
 	/**
-	 * Adding specific users to project.
-	 * *  __The user must have access right__ -- Add/Edit/Remove projects.
+	 * The method attempts to create the role's localization. The user must be admin.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `createProjectUsers$Response()` instead.
+	 * To access the full response (for headers, for example), `createRoleLocalization$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createProjectUsers(params: { body: CreateProjectUsersRequest }): Observable<OperationResultResponse> {
-		return this.createProjectUsers$Response(params).pipe(
+	createRoleLocalization(params: { body: CreateRoleLocalizationRequest }): Observable<OperationResultResponse> {
+		return this.createRoleLocalization$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}
 
 	/**
-	 * Path part for operation removeProjectUsers
+	 * Path part for operation editRoleLocalization
 	 */
-	static readonly RemoveProjectUsersPath = '/user/remove';
+	static readonly EditRoleLocalizationPath = '/rolelocalization/edit';
 
 	/**
-	 * Remove specific users from specific project.
-	 * * __The user must have access right__ -- Add/Edit/Remove project.
+	 * Editing role's localization by Id. The user must be admin.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `removeProjectUsers()` instead.
+	 * To access only the response body, use `editRoleLocalization()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	removeProjectUsers$Response(params: {
-		/**
-		 * Project global unique identifier.
-		 */
-		projectId: string;
-		body: Array<string>;
+	editRoleLocalization$Response(params: {
+		roleLocalizationId: string;
+		body: EditRoleLocalizationRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.RemoveProjectUsersPath, 'delete');
+		const rb = new RequestBuilder(this.rootUrl, RoleLocalizationApiService.EditRoleLocalizationPath, 'patch');
 		if (params) {
-			rb.query('projectId', params.projectId, {});
+			rb.query('roleLocalizationId', params.roleLocalizationId, {});
 			rb.body(params.body, 'application/json');
 		}
 
@@ -116,22 +110,18 @@ export class UserApiService extends BaseService {
 	}
 
 	/**
-	 * Remove specific users from specific project.
-	 * * __The user must have access right__ -- Add/Edit/Remove project.
+	 * Editing role's localization by Id. The user must be admin.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `removeProjectUsers$Response()` instead.
+	 * To access the full response (for headers, for example), `editRoleLocalization$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	removeProjectUsers(params: {
-		/**
-		 * Project global unique identifier.
-		 */
-		projectId: string;
-		body: Array<string>;
+	editRoleLocalization(params: {
+		roleLocalizationId: string;
+		body: EditRoleLocalizationRequest;
 	}): Observable<OperationResultResponse> {
-		return this.removeProjectUsers$Response(params).pipe(
+		return this.editRoleLocalization$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}

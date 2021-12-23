@@ -41,13 +41,17 @@ export class EditProjectComponent {
 
 		this._initialData = {
 			[ProjectPath.NAME]: [this.projectInfo.name, [Validators.required, Validators.maxLength(150)]],
-			[ProjectPath.DEPARTMENT_ID]: [this.projectInfo.department?.id ?? null, [Validators.required]],
+			// [ProjectPath.DEPARTMENT_ID]: [this.projectInfo.department?.id ?? null, [Validators.required]],
 			[ProjectPath.DESCRIPTION]: [this.projectInfo.description, [Validators.maxLength(300)]],
 			[ProjectPath.SHORT_DESCRIPTION]: [this.projectInfo.shortDescription],
 			[ProjectPath.STATUS]: [this.projectInfo.status],
 		};
 
-		this.projectForm = this._formBuilder.group(this._initialData);
+		this.projectForm = this._formBuilder.group({
+			...this._initialData,
+			departmentId: [{ value: this.projectInfo.department?.id ?? null, disabled: true }, [Validators.required]],
+		});
+
 		this.departments = this._departmentService
 			.findDepartments({ skipCount: 0, takeCount: 100 })
 			.pipe(map((value) => value.body));
@@ -59,11 +63,24 @@ export class EditProjectComponent {
 
 	public editProject(): void {
 		this.loading$$.next(true);
-		const editRequest = createEditRequest(this.projectForm.getRawValue(), this._initialData);
+
+		const changedProperties: { [key: string]: any } = {};
+
+		Object.keys(this.projectForm.controls).forEach((name) => {
+			const currentControl = this.projectForm.controls[name];
+
+			if (currentControl.dirty) {
+				changedProperties[name] = currentControl.value;
+			}
+		});
+
+		const editRequest = createEditRequest(changedProperties, this._initialData);
 
 		this._projectService
 			.editProject({ projectId: this.projectInfo.id, body: editRequest })
 			.pipe(finalize(() => this.loading$$.next(false)))
-			.subscribe();
+			.subscribe(() => {
+				this.onClose();
+			});
 	}
 }

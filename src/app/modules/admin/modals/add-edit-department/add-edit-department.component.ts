@@ -1,18 +1,19 @@
-import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { HttpErrorResponse } from '@angular/common/http';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { UserService } from '@app/services/user/user.service';
 import { finalize, map } from 'rxjs/operators';
 import { UserInfo } from '@data/api/user-service/models/user-info';
-import { DepartmentService } from '@app/services/department/department.service';
+import { DepartmentService, ICreateUserRequest } from '@app/services/department/department.service';
 import { DepartmentPath, InitialDataEditRequest } from '@app/types/edit-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { createEditRequest } from '@app/utils/utils';
 import { DepartmentInfo } from '@data/api/department-service/models/department-info';
 import { UUID } from '@app/types/uuid.type';
 import { DoValidators } from '@app/validators/do-validators';
+import { DepartmentUserRole } from '@data/api/department-service/models/department-user-role';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
 	selector: 'do-new-department',
@@ -46,8 +47,8 @@ export class AddEditDepartmentComponent {
 					DoValidators.oneSpaceBetweenWords,
 				],
 			],
-			[DepartmentPath.DESCRIPTION]: [''],
-			[DepartmentPath.DIRECTOR_ID]: [''],
+			[DepartmentPath.DESCRIPTION]: [null],
+			[DepartmentPath.DIRECTOR_ID]: [null],
 		});
 		this.isEdit = !!departmentInfo;
 		this.loading$$ = new BehaviorSubject<boolean>(false);
@@ -62,16 +63,33 @@ export class AddEditDepartmentComponent {
 			this.departmentForm.patchValue(this._departmentInfo);
 		}
 
-		this.directors$ = this._userService
-			.findUsers({ skipCount: 0, takeCount: 500 })
-			.pipe(map((response) => response.body));
+		this.directors$ = this._userService.findUsers({ skipCount: 0, takeCount: 500, includedepartment: true }).pipe(
+			map((response) => response.body ?? []),
+			map((users) => {
+				if (this.isEdit) {
+					return users.filter((user) => user.department?.id === this._departmentInfo?.id);
+				}
+				return users;
+			})
+		);
 	}
 
 	public createDepartment(): Observable<OperationResultResponse<any>> {
+		const directorId: string | undefined = this.departmentForm.get(DepartmentPath.DIRECTOR_ID)?.value ?? undefined;
+
+		const director: ICreateUserRequest | undefined = directorId
+			? {
+					userId: directorId,
+					role: DepartmentUserRole.Director,
+			  }
+			: undefined;
+
+		console.log(director);
+
 		return this._departmentService.createDepartment({
 			name: this.departmentForm.get(DepartmentPath.NAME)?.value?.trim(),
 			description: this.departmentForm.get(DepartmentPath.DESCRIPTION)?.value?.trim(),
-			users: [],
+			users: director ? [director] : [],
 		});
 	}
 
