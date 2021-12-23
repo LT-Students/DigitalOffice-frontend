@@ -89,15 +89,15 @@
 				</div>
 				<mat-form-field appearance="fill">
 					<mat-label>Фамилия</mat-label>
-					<input matInput [formControlName]="EditPath.LAST_NAME" required />
+					<input matInput autocomplete="off" [formControlName]="EditPath.LAST_NAME" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Имя</mat-label>
-					<input matInput [formControlName]="EditPath.FIRST_NAME" required />
+					<input matInput autocomplete="off" [formControlName]="EditPath.FIRST_NAME" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Отчество</mat-label>
-					<input matInput [formControlName]="EditPath.MIDDLE_NAME" />
+					<input matInput autocomplete="off" [formControlName]="EditPath.MIDDLE_NAME" />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>О себе</mat-label>
@@ -105,6 +105,7 @@
 						#about
 						[formControlName]="EditPath.ABOUT"
 						matInput
+						autocomplete="off"
 						placeholder="Напишите немного о себе или оставьте заметку коллегам"
 						maxlength="150"
 						cdkTextareaAutosize="true"
@@ -129,7 +130,7 @@
 						</div>
 						<mat-form-field appearance="fill">
 							<mat-label>Местоположение</mat-label>
-							<input matInput [formControlName]="EditPath.CITY" />
+							<input matInput autocomplete="off" [formControlName]="EditPath.CITY" />
 						</mat-form-field>
 						<div *ngIf="user?.office?.city">
 							<p class="mat-caption">Офис</p>
