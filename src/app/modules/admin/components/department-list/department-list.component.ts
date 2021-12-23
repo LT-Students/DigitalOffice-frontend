@@ -95,7 +95,8 @@ export class DepartmentListComponent implements AfterViewInit {
 			});
 	}
 
-	public onRestoreDepartment(department: DepartmentInfo): void {
+	public onRestoreDepartment(department: DepartmentInfo, event: MouseEvent): void {
+		event.stopPropagation();
 		this._modalService
 			.confirm({
 				confirmText: 'Да, восстановить',
