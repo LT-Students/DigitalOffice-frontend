@@ -60,16 +60,16 @@
 					<th class="cell heading" mat-sort-header="name">
 						<p class="heading__content">Имя</p>
 					</th>
-					<th class="cell heading" mat-sort-header="department">
+					<th class="cell heading" mat-header-row="department">
 						<p class="heading__content">Департамент</p>
 					</th>
-					<th class="cell heading" mat-sort-header="role">
+					<th class="cell heading" mat-header-row="role">
 						<p class="heading__content">Роль</p>
 					</th>
-					<th class="cell heading" mat-sort-header="rate">
+					<th class="cell heading" mat-header-row="rate">
 						<p class="heading__content">Ставка</p>
 					</th>
-					<th class="cell heading" mat-sort-header="status">
+					<th class="cell heading" mat-header-row="status">
 						<p class="heading__content">Статус</p>
 					</th>
 					<th class="cell heading"></th>
@@ -90,8 +90,8 @@
 						</ng-container>
 					</td>
 					<td class="cell cell_vertical-middle">
-						<ng-container *ngIf="user?.role?.name; else empty">
-							<p class="cell__content_breakable">{{ user?.role?.name }}</p>
+						<ng-container>
+							<p class="cell__content_breakable">{{ user | json }}</p>
 						</ng-container>
 					</td>
 					<td class="cell">
