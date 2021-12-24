@@ -96,6 +96,33 @@ export class ManageRolesComponent implements AfterViewInit {
 			});
 	}
 
+	public onRestoreRole(roleInfo: RoleInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: 'Да, восстановить роль',
+				title: `Восстановление роли ${roleInfo.localizations?.[0]?.name}`,
+				message: `Вы действительно хотите восстановить роль ${roleInfo.localizations?.[0]?.name}?`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) => {
+					return iif(
+						() => !!confirm,
+						this._rightsService.restoreRole({
+							roleId: roleInfo.id ?? '',
+							isActive: true,
+						}),
+						EMPTY
+					);
+				})
+			)
+			.subscribe((result) => {
+				if (result?.status !== OperationResultStatusType.Failed) {
+					this._refreshCurrentPage$$.next(true);
+				}
+			});
+	}
+
 	public getRoles(filters: any, event: PageEvent | null): Observable<OperationResultResponse<RoleInfo[]>> {
 		return this._rightsService.findRoles({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,

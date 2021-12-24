@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@a
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { OfficeInfo } from '@data/api/company-service/models';
+import { OfficeInfo } from '@data/api/office-service/models';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -80,6 +80,26 @@ export class OfficeListComponent implements AfterViewInit {
 			.pipe(
 				switchMap((confirm) => {
 					return iif(() => !!confirm, this._officeService.deleteOffice(officeInfo.id ?? ''), EMPTY);
+				})
+			)
+			.subscribe((result) => {
+				if (result?.status !== OperationResultStatusType.Failed) {
+					this._refreshCurrentPage$$.next(true);
+				}
+			});
+	}
+
+	public onRestoreOffice(officeInfo: OfficeInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: `Да, восстановить`,
+				message: `Вы действительно хотите восстановить офис ${officeInfo.name}?`,
+				title: `Восстановление офиса ${officeInfo.name}`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) => {
+					return iif(() => !!confirm, this._officeService.restoreOffice(officeInfo.id ?? ''), EMPTY);
 				})
 			)
 			.subscribe((result) => {

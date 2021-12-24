@@ -89,6 +89,26 @@ export class PositionListComponent implements AfterViewInit {
 			});
 	}
 
+	public onRestorePosition(positionInfo: PositionInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: 'Да, восстановить',
+				title: `Восстановление должности ${positionInfo.name}`,
+				message: `Вы действительно хотите восстановить должность ${positionInfo.name}`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) =>
+					iif(() => !!confirm, this._positionService.restorePosition(positionInfo.id ?? ''), EMPTY)
+				)
+			)
+			.subscribe((result) => {
+				if (result.status !== OperationResultStatusType.Failed) {
+					this._refreshCurrentPage$$.next(true);
+				}
+			});
+	}
+
 	public getPositions(filters: any, event: PageEvent | null): Observable<OperationResultResponse<PositionInfo[]>> {
 		return this._positionService.findPositions({
 			skipcount: event ? event.pageIndex * event.pageSize : 0,
