@@ -7,7 +7,7 @@ import { EMPTY, iif, Observable } from 'rxjs';
 import { AttendanceService } from '@app/services/attendance.service';
 import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { TimeService } from '@app/services/time/time.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { EditLeaveComponent } from '../../modals/edit-leave/edit-leave.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
 import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
@@ -40,6 +40,7 @@ export class LeavesComponent {
 		this._modalService
 			.openModal<EditLeaveComponent, LeaveTimeModel, IDialogResponse>(EditLeaveComponent, ModalWidth.L, leave)
 			.afterClosed()
+			.pipe(tap(() => this._attendanceService.getLeaveTimeIntervals().subscribe()))
 			.subscribe((result) => {
 				if (leave && result?.status === OperationResultStatusType.FullSuccess) {
 					leave.comment = result.data.comment;
