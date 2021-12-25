@@ -62,8 +62,8 @@ export class EditLeaveComponent {
 	}
 
 	public dateSelected(): void {
-		let startDateValue = DateTime.fromISO(new Date(this.editForm.get('/StartTime')?.value).toISOString());
-		let endDateValue = DateTime.fromISO(new Date(this.editForm.get('/EndTime')?.value).toISOString());
+		const startDateValue: DateTime = this.editForm.get('/StartTime')?.value;
+		let endDateValue: DateTime = this.editForm.get('/EndTime')?.value;
 		if (!startDateValue.isValid || !endDateValue.isValid) return;
 		const endDateControl = this.editForm.get('/EndTime');
 		if (startDateValue.startOf('day').equals(endDateValue.startOf('day'))) {
