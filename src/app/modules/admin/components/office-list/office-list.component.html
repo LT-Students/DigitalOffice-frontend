@@ -53,11 +53,16 @@
 								<img src="assets/svg/edit.svg" alt="edit" />
 							</mat-icon>
 						</button>
-						<button mat-icon-button (click)="onDeleteOffice(office)">
+						<button *ngIf="office.isActive; else restore" mat-icon-button (click)="onDeleteOffice(office)">
 							<mat-icon>
 								<img src="assets/svg/delete.svg" alt="edit" />
 							</mat-icon>
 						</button>
+						<ng-template #restore>
+							<button mat-icon-button (click)="onRestoreOffice(office)">
+								<mat-icon class="restore-icon">restore</mat-icon>
+							</button>
+						</ng-template>
 					</td>
 				</tr>
 			</tbody>

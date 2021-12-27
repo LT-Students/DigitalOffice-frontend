@@ -118,22 +118,44 @@
 											<ng-template #input>
 												<mat-form-field appearance="fill">
 													<mat-error
-														*ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.min"
-													>
-														Минимальное значение должно быть не меньше нуля
-													</mat-error>
-													<mat-error
 														*ngIf="
-															hoursGroup.controls['hours_' + workTime.id].errors?.number
+															hoursGroup.controls['hours_' + workTime.id].errors?.min;
+															else errIntNum
 														"
 													>
-														Введите число
+														Минимальное значение должно быть не меньше единицы
 													</mat-error>
-													<mat-error
-														*ngIf="hoursGroup.controls['hours_' + workTime.id].errors?.max"
-													>
-														Превышено максимальное значение
-													</mat-error>
+													<ng-template #errIntNum>
+														<mat-error
+															*ngIf="
+																hoursGroup.controls['hours_' + workTime.id].errors
+																	?.intNum;
+																else errMax
+															"
+														>
+															Значение может быть только целым числом
+														</mat-error>
+													</ng-template>
+													<ng-template #errMax>
+														<mat-error
+															*ngIf="
+																hoursGroup.controls['hours_' + workTime.id].errors?.max;
+																else errRequired
+															"
+														>
+															Превышено максимальное значение
+														</mat-error>
+													</ng-template>
+													<ng-template #errRequired>
+														<mat-error
+															*ngIf="
+																hoursGroup.controls['hours_' + workTime.id].errors
+																	?.required
+															"
+														>
+															Поле не может быть пустым
+														</mat-error>
+													</ng-template>
 													<input
 														matInput
 														[formControlName]="'hours_' + workTime?.id"
@@ -166,6 +188,7 @@
 													mat-flat-button
 													color="primary"
 													class="button controls__button"
+													[disabled]="hoursGroup.controls['hours_' + workTime.id].invalid"
 													(click)="onSubmit('submit', workTime, stat)"
 												>
 													Сохранить
@@ -231,11 +254,13 @@
 			</mat-expansion-panel>
 		</div>
 	</ng-container>
+
 	<ng-template #loader>
 		<div class="loader">
 			<mat-spinner></mat-spinner>
 		</div>
 	</ng-template>
+
 	<mat-paginator
 		[length]="totalCount | async"
 		[pageIndex]="pageIndex"

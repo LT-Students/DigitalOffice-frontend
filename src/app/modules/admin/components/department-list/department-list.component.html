@@ -71,11 +71,20 @@
 						<p class="">{{ department.countUsers }}</p>
 					</td>
 					<td class="cell text-align_right">
-						<button mat-icon-button (click)="onDeleteDepartment(department, $event)">
+						<button
+							*ngIf="department.isActive; else restore"
+							mat-icon-button
+							(click)="onDeleteDepartment(department, $event)"
+						>
 							<mat-icon>
 								<img src="assets/svg/delete.svg" alt="edit" />
 							</mat-icon>
 						</button>
+						<ng-template #restore>
+							<button mat-icon-button (click)="onRestoreDepartment(department, $event)">
+								<mat-icon class="restore-icon">restore</mat-icon>
+							</button>
+						</ng-template>
 					</td>
 				</tr>
 			</tbody>

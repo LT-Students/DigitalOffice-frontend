@@ -17,7 +17,7 @@ export interface IPositionInfo {
 	id?: string;
 	name?: string;
 	description?: string;
-	isactive?: boolean;
+	isActive?: boolean;
 }
 
 export interface IFindRequest {
@@ -59,6 +59,12 @@ export class PositionService {
 	public deletePosition(positionId: UUID): Observable<OperationResultResponse<{} | null>> {
 		return this._editPosition(positionId, [{ op: 'replace', path: PositionPath.IS_ACTIVE, value: false }]).pipe(
 			this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Remove)
+		);
+	}
+
+	public restorePosition(positionId: UUID): Observable<OperationResultResponse<{} | null>> {
+		return this._editPosition(positionId, [{ op: 'replace', path: PositionPath.IS_ACTIVE, value: true }]).pipe(
+			this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Restore)
 		);
 	}
 

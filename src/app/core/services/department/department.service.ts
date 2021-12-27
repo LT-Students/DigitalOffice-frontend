@@ -74,6 +74,16 @@ export class DepartmentService {
 		]).pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Remove));
 	}
 
+	public restoreDepartment(departmentId: UUID): Observable<OperationResultResponse<{} | null>> {
+		return this._editDepartment(departmentId, [
+			{
+				op: 'replace',
+				path: DepartmentPath.IS_ACTIVE,
+				value: true,
+			},
+		]).pipe(this._responseMessage.message(MessageTriggeredFrom.Department, MessageMethod.Restore));
+	}
+
 	public addUsersToDepartment(departmentId: UUID, userIds: UUID[]): Observable<OperationResultResponse<{} | null>> {
 		return this._departmentApiService.addDepartmentUsers({
 			departmentid: departmentId,
