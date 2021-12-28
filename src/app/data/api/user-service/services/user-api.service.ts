@@ -277,7 +277,7 @@ export class UserApiService extends BaseService {
 		includeposition?: boolean;
 		includeoffice?: boolean;
 		includerole?: boolean;
-		includeavatar?: boolean;
+		includecurrentavatar?: boolean;
 	}): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
 		if (params) {
@@ -288,7 +288,7 @@ export class UserApiService extends BaseService {
 			rb.query('includeposition', params.includeposition, {});
 			rb.query('includeoffice', params.includeoffice, {});
 			rb.query('includerole', params.includerole, {});
-			rb.query('includeavatar', params.includeavatar, {});
+			rb.query('includecurrentavatar', params.includecurrentavatar, {});
 		}
 
 		return this.http
@@ -329,7 +329,7 @@ export class UserApiService extends BaseService {
 		includeposition?: boolean;
 		includeoffice?: boolean;
 		includerole?: boolean;
-		includeavatar?: boolean;
+		includecurrentavatar?: boolean;
 	}): Observable<FindResultResponseUserInfo> {
 		return this.findUsers$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)

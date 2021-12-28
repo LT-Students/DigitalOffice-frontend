@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.0.5",
+    "version": "1.4.1.0",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -174,7 +174,7 @@
         "operationId": "getUser",
         "description": "Returns user information.",
         "responses": {
-          "201": {
+          "200": {
             "description": "Created.",
             "content": {
               "application/json": {
@@ -194,22 +194,12 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden.\n* Enter tokken.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
           "404": {
             "description": "Not Found.\n* User was not found.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -281,7 +271,7 @@
           "required": false
         },
         {
-          "name": "includeavatar",
+          "name": "includecurrentavatar",
           "in": "query",
           "schema": {
             "type": "boolean"
@@ -377,7 +367,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -1474,6 +1464,52 @@
           }
         }
       }
+    },
+    "/gender/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "gender"
+        ],
+        "operationId": "createGender",
+        "description": "The method attempts to add gender.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateGenderRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. Gender was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1566,6 +1602,7 @@
             }
           }
         }
+
       },
       "CreateUserRequest": {
         "type": "object",
@@ -2615,6 +2652,20 @@
           },
           "Image": {
             "$ref": "#/components/schemas/ImageConsist"
+          }
+        }
+      },
+      "CreateGenderRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Unique name of the gender.",
+            "type": "string",
+            "nullable": false,
+            "example": "Female"
           }
         }
       },

@@ -68,7 +68,7 @@ export class ManageUsersComponent implements AfterViewInit {
 		return this._userService.findUsers({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,
 			takeCount: event ? event.pageSize : 10,
-			includeavatar: true,
+			includecurrentavatar: true,
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,

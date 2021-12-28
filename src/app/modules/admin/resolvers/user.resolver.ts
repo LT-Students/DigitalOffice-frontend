@@ -18,7 +18,7 @@ export class UserResolver implements Resolve<OperationResultResponse<UserInfo[]>
 		return this._userService.findUsers({
 			skipCount: 0,
 			takeCount: 10,
-			includeavatar: true,
+			includecurrentavatar: true,
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,
