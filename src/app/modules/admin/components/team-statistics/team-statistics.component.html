@@ -70,17 +70,41 @@
 								<ng-template #input>
 									<div>
 										<mat-form-field appearance="fill">
-											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.min">
-												Минимальное значение должно быть не меньше нуля
-											</mat-error>
 											<mat-error
-												*ngIf="hoursGroup.controls['hours_' + employee.id].errors?.number"
+												*ngIf="
+													hoursGroup.controls['hours_' + employee.id].errors?.min;
+													else errIntNum
+												"
 											>
-												Введите число
+												Минимальное значение должно быть не меньше единицы
 											</mat-error>
-											<mat-error *ngIf="hoursGroup.controls['hours_' + employee.id].errors?.max">
-												Превышено максимальное значение
-											</mat-error>
+											<ng-template #errIntNum>
+												<mat-error
+													*ngIf="
+														hoursGroup.controls['hours_' + employee.id].errors?.intNum;
+														else errMax
+													"
+												>
+													Значение может быть только целым числом
+												</mat-error>
+											</ng-template>
+											<ng-template #errMax>
+												<mat-error
+													*ngIf="
+														hoursGroup.controls['hours_' + employee.id].errors?.max;
+														else errRequired
+													"
+												>
+													Превышено максимальное значение
+												</mat-error>
+											</ng-template>
+											<ng-template #errRequired>
+												<mat-error
+													*ngIf="hoursGroup.controls['hours_' + employee.id].errors?.required"
+												>
+													Поле не может быть пустым
+												</mat-error>
+											</ng-template>
 											<input
 												matInput
 												[formControlName]="'hours_' + employee?.id"
@@ -143,6 +167,7 @@
 									mat-flat-button
 									color="primary"
 									class="controls__button"
+									[disabled]="hoursGroup.controls['hours_' + employee.id].invalid"
 									(click)="onSubmit('submit', employee)"
 								>
 									Сохранить

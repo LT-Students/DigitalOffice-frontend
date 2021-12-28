@@ -54,7 +54,7 @@ export class PostComponent {
 
 	public openEditor(): void {
 		this._modalService
-			.fullScreen(NewsEditorComponent, this.postId)
+			.fullScreen(NewsEditorComponent, { _newsId: this.postId, openedFromPost: true })
 			.afterClosed()
 			.subscribe({
 				next: (isNewsEdited) => {

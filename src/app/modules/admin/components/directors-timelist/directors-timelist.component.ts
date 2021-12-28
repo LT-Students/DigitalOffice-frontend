@@ -100,7 +100,8 @@ export class DirectorsTimelistComponent implements OnInit {
 			const month: number = this.selectedPeriod.startDate.month;
 
 			const validators: ValidatorFn[] = [
-				Validators.min(0),
+				Validators.required,
+				Validators.min(1),
 				Validators.max(this._timeDurationService.countMaxMonthDuration(year, month)),
 				DoValidators.intNum,
 			];

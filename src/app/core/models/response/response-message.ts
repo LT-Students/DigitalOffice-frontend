@@ -18,4 +18,5 @@ export enum MessageMethod {
 	Create = 'добавлен',
 	Remove = 'удален',
 	Edit = 'изменен',
+	Restore = 'восстановлен',
 }

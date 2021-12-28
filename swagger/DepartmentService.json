@@ -458,12 +458,15 @@
             "type": "string",
             "nullable": true
           },
-          "Director": {
-            "$ref": "#/components/schemas/UserInfo",
-            "nullable": true
+          "IsActive": {
+            "type": "boolean"
           },
           "CountUsers": {
             "type": "integer"
+          },
+          "Director": {
+            "$ref": "#/components/schemas/UserInfo",
+            "nullable": true
           }
         }
       },

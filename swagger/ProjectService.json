@@ -1020,14 +1020,6 @@
                 "Suspend"
               ]
             }
-          },
-          {
-            "op": "replace",
-            "path": "/DepartmentId",
-            "value": {
-              "type": "string",
-              "format": "uuid"
-            }
           }
         ]
       },
@@ -1053,8 +1045,7 @@
               "/ShortName",
               "/Description",
               "/ShortDescription",
-              "/Status",
-              "/DepartmentId"
+              "/Status"
             ]
           },
           "value": {

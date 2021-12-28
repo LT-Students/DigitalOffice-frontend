@@ -40,4 +40,10 @@ export class OfficeService {
 			this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Remove)
 		);
 	}
+
+	public restoreOffice(officeId: UUID): Observable<OperationResultResponse<any>> {
+		return this.editOffice(officeId, [{ op: 'replace', path: OfficePath.IS_ACTIVE, value: true }]).pipe(
+			this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Restore)
+		);
+	}
 }

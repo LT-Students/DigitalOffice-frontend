@@ -75,6 +75,12 @@ export class RightsService {
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Rights, MessageMethod.Remove));
 	}
 
+	public restoreRole(params: IEditRoleStatusRequest): Observable<OperationResultResponse<any>> {
+		return this._roleService
+			.editRoleStatus(params)
+			.pipe(this._responseMessage.message(MessageTriggeredFrom.Rights, MessageMethod.Restore));
+	}
+
 	public createRole(body: CreateRoleRequest): Observable<OperationResultResponse<any>> {
 		return this._roleService
 			.createRole({ body })
