@@ -37,6 +37,7 @@ export { RemoveAvatarRequest } from './models/remove-avatar-request';
 export { CreateSkillRequest } from './models/create-skill-request';
 export { CreateAchievementRequest } from './models/create-achievement-request';
 export { EditAchievementRequest } from './models/edit-achievement-request';
+export { CreateGenderRequest } from './models/create-gender-request';
 export { OperationResultResponseAchievementResponse } from './models/operation-result-response-achievement-response';
 export { OperationResultResponseImagesResponse } from './models/operation-result-response-images-response';
 export { FindResultResponseAchievementInfo } from './models/find-result-response-achievement-info';

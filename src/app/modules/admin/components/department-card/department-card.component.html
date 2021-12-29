@@ -95,7 +95,7 @@
 				<th mat-header-cell *matHeaderCellDef>Имя</th>
 				<td mat-cell *matCellDef="let element" class="erasable">
 					<div class="main-info">
-						<do-profile-image class="profile-photo" [image]="element?.avatar"></do-profile-image>
+						<do-profile-image class="profile-photo" [image]="element?.avatarImage"></do-profile-image>
 						<div>
 							<div>{{ element.firstName }} {{ element.lastName }}</div>
 							<div class="mat-body-1">{{ element?.position?.name }}</div>

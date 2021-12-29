@@ -68,7 +68,7 @@ export class ManageUsersComponent implements AfterViewInit {
 		return this._userService.findUsers({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,
 			takeCount: event ? event.pageSize : 10,
-			includeavatar: true,
+			includecurrentavatar: true,
 			includeposition: true,
 			includedepartment: true,
 			includerole: true,
@@ -100,6 +100,7 @@ export class ManageUsersComponent implements AfterViewInit {
 				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)))
 				.subscribe(() => {
 					this._refreshCurrentPage$$.next();
+					this.filters.setValue({ showDeactivatedUsers: false });
 				});
 		} else {
 			this._modalService
