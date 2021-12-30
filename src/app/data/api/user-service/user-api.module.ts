@@ -11,6 +11,7 @@ import { CommunicationApiService } from './services/communication-api.service';
 import { AvatarApiService } from './services/avatar-api.service';
 import { SkillApiService } from './services/skill-api.service';
 import { AchievementApiService } from './services/achievement-api.service';
+import { GenderApiService } from './services/gender-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -27,6 +28,7 @@ import { AchievementApiService } from './services/achievement-api.service';
 		AvatarApiService,
 		SkillApiService,
 		AchievementApiService,
+		GenderApiService,
 		ApiConfiguration,
 	],
 })

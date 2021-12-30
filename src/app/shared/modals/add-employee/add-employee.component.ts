@@ -85,6 +85,7 @@ export class AddEmployeeComponent implements OnInit {
 				takeCount: this._takeUsers + (this.countToHide || this._data.idToHide.length),
 				includedepartment: true,
 				includeposition: true,
+				includecurrentavatar: true,
 			})
 			.pipe(
 				tap((result) => {

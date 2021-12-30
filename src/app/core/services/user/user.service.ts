@@ -42,7 +42,7 @@ export interface IFindUsers {
 	includeposition?: boolean;
 	includeoffice?: boolean;
 	includerole?: boolean;
-	includeavatar?: boolean;
+	includecurrentavatar?: boolean;
 }
 
 @Injectable({
