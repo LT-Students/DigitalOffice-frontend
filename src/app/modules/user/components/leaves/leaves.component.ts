@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { EditLeaveTimeRequest, OperationResultStatusType } from '@data/api/time-service/models';
+import { OperationResultStatusType } from '@data/api/time-service/models';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
+import { EMPTY, iif, Observable } from 'rxjs';
 import { AttendanceService } from '@app/services/attendance.service';
 import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { TimeService } from '@app/services/time/time.service';
+import { switchMap, tap } from 'rxjs/operators';
 import { EditLeaveComponent } from '../../modals/edit-leave/edit-leave.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
 import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
@@ -39,6 +40,7 @@ export class LeavesComponent {
 		this._modalService
 			.openModal<EditLeaveComponent, LeaveTimeModel, IDialogResponse>(EditLeaveComponent, ModalWidth.L, leave)
 			.afterClosed()
+			.pipe(tap(() => this._attendanceService.getLeaveTimeIntervals().subscribe()))
 			.subscribe((result) => {
 				if (leave && result?.status === OperationResultStatusType.FullSuccess) {
 					leave.comment = result.data.comment;
@@ -47,7 +49,6 @@ export class LeavesComponent {
 					leave.minutes = result.data.minutes;
 
 					this._cdr.markForCheck();
-					this._snackBar.open('Запись успешно отредактирована!', '×', { duration: 3000 });
 				}
 			});
 	}
@@ -62,26 +63,15 @@ export class LeavesComponent {
 		this._modalService
 			.confirm(confirmDialogData)
 			.afterClosed()
-			.subscribe((isDeleted) => {
-				if (isDeleted) {
-					const body: EditLeaveTimeRequest = [
-						{
-							op: 'replace',
-							path: '/IsActive',
-							value: false,
-						},
-					];
-
-					this._timeService
-						.editLeaveTime({
-							leaveTimeId: leave.id,
-							body,
-						})
-						.subscribe(() => {
-							this.leaves = this.leaves?.filter((l) => l.id !== leave.id);
-							this._cdr.markForCheck();
-						});
-				}
+			.pipe(
+				switchMap((confirmed) => {
+					return iif(() => !!confirmed, this._timeService.deleteLeaveTime(leave.id), EMPTY);
+				}),
+				switchMap(() => this._attendanceService.getLeaveTimeIntervals())
+			)
+			.subscribe(() => {
+				this.leaves = this.leaves?.filter((l) => l.id !== leave.id);
+				this._cdr.markForCheck();
 			});
 	}
 }

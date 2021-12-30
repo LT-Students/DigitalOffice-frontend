@@ -90,12 +90,9 @@ export class NewProjectComponent implements OnInit {
 	}
 
 	private _getDepartments(): void {
-		this._departmentService.findDepartments({ skipCount: 0, takeCount: 100 }).subscribe(
-			(data) => {
-				this.departments = data.body ?? [];
-			},
-			(error) => console.log(error)
-		);
+		this._departmentService.findDepartments({ skipCount: 0, takeCount: 100 }).subscribe((data) => {
+			this.departments = data.body ?? [];
+		});
 	}
 
 	public createProject(): void {
@@ -133,9 +130,7 @@ export class NewProjectComponent implements OnInit {
 		this._modalService.openModal(UserSearchComponent, ModalWidth.L, configData);
 	}
 
-	public saveDraft(): void {
-		console.log('Сохранить черновик');
-	}
+	public saveDraft(): void {}
 
 	public totalMembersCount(): number {
 		return this.membersAll.length;

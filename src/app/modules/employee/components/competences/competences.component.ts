@@ -35,7 +35,7 @@ export interface Modes {
 	selector: 'do-employee-page-competences',
 	templateUrl: 'competences.component.html',
 	styleUrls: ['competences.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
 		{
 			provide: DateAdapter,
@@ -88,9 +88,8 @@ export class CompetencesComponent implements OnInit {
 			: null;
 
 		this.institutes = this.certificates.slice();
-
-		console.log(this.certificates);
 	}
+
 	public onStartYearSelected(selectedDate: any): void {
 		const dateToSet: Date = new Date(selectedDate.year(), 0, 1);
 		this.editForm.patchValue({ startYear: dateToSet });
@@ -144,7 +143,10 @@ export class CompetencesComponent implements OnInit {
 	}
 
 	public onCertificateImageAddClicked(): void {
-		const modalRef: MatDialogRef<UploadPhotoComponent> = this._modalService.openModal(UploadPhotoComponent, ModalWidth.M);
+		const modalRef: MatDialogRef<UploadPhotoComponent> = this._modalService.openModal(
+			UploadPhotoComponent,
+			ModalWidth.M
+		);
 
 		modalRef.afterClosed().subscribe((data: ImageInfo) => {
 			this.editForm.patchValue({ certificateImage: data.content });
@@ -152,7 +154,8 @@ export class CompetencesComponent implements OnInit {
 	}
 
 	public onSkillsEditClicked(): void {
-		this.sectionModes.skills = this.sectionModes.skills === WorkFlowMode.VIEW ? WorkFlowMode.EDIT : WorkFlowMode.VIEW;
+		this.sectionModes.skills =
+			this.sectionModes.skills === WorkFlowMode.VIEW ? WorkFlowMode.EDIT : WorkFlowMode.VIEW;
 	}
 
 	public onRowEditClicked(item: Certificate | UniversityInfo): void {
@@ -168,7 +171,7 @@ export class CompetencesComponent implements OnInit {
 			id: setProperty(item.id),
 		});
 		if (item instanceof UniversityInfo) {
-			this.editForm.patchValue({ startYear: item.admissionAt })
+			this.editForm.patchValue({ startYear: item.admissionAt });
 		}
 	}
 

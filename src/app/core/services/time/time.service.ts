@@ -124,6 +124,28 @@ export class TimeService {
 	}
 
 	public editLeaveTime(params: IEditLeaveTimeRequest): Observable<OperationResultResponse> {
+		return this._editLeaveTime(params).pipe(
+			this._responseModel.message(MessageTriggeredFrom.LeaveTime, MessageMethod.Edit)
+		);
+	}
+
+	public deleteLeaveTime(leaveTimeId: string): Observable<OperationResultResponse> {
+		const deleteRequest: IEditLeaveTimeRequest = {
+			leaveTimeId,
+			body: [
+				{
+					op: 'replace',
+					path: '/IsActive',
+					value: false,
+				},
+			],
+		};
+		return this._editLeaveTime(deleteRequest).pipe(
+			this._responseModel.message(MessageTriggeredFrom.LeaveTime, MessageMethod.Remove)
+		);
+	}
+
+	private _editLeaveTime(params: IEditLeaveTimeRequest): Observable<OperationResultResponse> {
 		return this._leaveTimeApiService.editLeaveTime(params);
 	}
 

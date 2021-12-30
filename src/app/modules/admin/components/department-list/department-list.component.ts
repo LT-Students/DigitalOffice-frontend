@@ -74,7 +74,6 @@ export class DepartmentListComponent implements AfterViewInit {
 	}
 
 	public onDeleteDepartment(department: DepartmentInfo, event: MouseEvent): void {
-		console.log(event);
 		event.stopPropagation();
 		this._modalService
 			.confirm({

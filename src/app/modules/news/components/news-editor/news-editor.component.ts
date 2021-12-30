@@ -111,7 +111,6 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		if (this.data._newsId) {
 			return this._newsService.getNews(this.data._newsId).pipe(
 				tap((response) => {
-					console.log(response);
 					this.articleSubject.setValue(response.body?.subject);
 					const newsContent: IOutputData = { blocks: JSON.parse(response.body?.content as string) };
 					this._editor = new EditorJS(this._editorConfig.createConfig(newsContent));

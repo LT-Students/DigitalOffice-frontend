@@ -111,7 +111,6 @@ export class MainInfoComponent implements OnInit {
 							? this._userService.createAvatarImage(avatarImage, userId)
 							: // .pipe(
 							  // 		switchMap((response) => {
-							  // 			console.log('response', response);
 							  // 			return this._userService.changeAvatar(response.body as string, userId);
 							  // 		})
 							  //   )

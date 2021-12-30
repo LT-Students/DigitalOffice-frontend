@@ -144,7 +144,7 @@ export class AttendanceService implements Resolve<Activities> {
 		return this._timeService.addLeaveTime(paramsWithId);
 	}
 
-	public getLeaveTimeIntervals() {
+	public getLeaveTimeIntervals(): Observable<Interval[] | undefined> {
 		const leaveTimesParams: IFindLeaveTimesRequest = {
 			userid: this._userId,
 			skipCount: 0,
@@ -158,11 +158,13 @@ export class AttendanceService implements Resolve<Activities> {
 					?.map((res) => res.leaveTime)
 					.filter((leave): leave is LeaveTimeInfo => !!leave)
 					.map((leave) => new LeaveTimeModel(leave))
-					.map((leave) =>
-						Interval.fromISO(
-							`${leave.startTime}/${DateTime.fromISO(leave.endTime).plus({ days: 1 }).toISO()}`
-						)
-					)
+					.map((leave) => {
+						const timeZoneOffset = DateTime.fromISO(leave.startTime).offset;
+						return Interval.fromDateTimes(
+							DateTime.fromISO(leave.startTime),
+							DateTime.fromISO(leave.endTime).plus({ minutes: timeZoneOffset })
+						);
+					})
 			),
 			tap((intervals) => this._leaveIntervals.next(intervals ?? []))
 		);
@@ -217,6 +219,12 @@ export class AttendanceService implements Resolve<Activities> {
 	public setNewDate(date: DateTime): void {
 		this._selectedDate.next(date);
 		this._canEdit.next(this._canEditTime());
+	}
+
+	public removeInterval(dateInterval: Interval): void {
+		const leaveIntervals = [...this._leaveIntervals.value];
+		const newIntervals = leaveIntervals.filter((interval) => !interval.equals(dateInterval));
+		this._leaveIntervals.next([...newIntervals]);
 	}
 
 	public disableWeekends: DateFilterFn<DateTime> = (d: DateTime | null): boolean => {

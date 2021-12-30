@@ -72,9 +72,6 @@ export class ProjectPageComponent implements OnInit {
 			other: 'Выбрано # сотрудников',
 		};
 
-		// console.log('this.IProjectStatusType?.type', this.IProjectStatusType?.type);
-		// this.status = this.IProjectStatusType?.type;
-
 		this._route.data
 			.pipe(map((response) => response.project))
 			.subscribe((project) => this._updateProjectInfo(project));

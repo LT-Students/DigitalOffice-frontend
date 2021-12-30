@@ -8,7 +8,7 @@ import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { DatePeriod } from '@app/types/date-period';
 import { DateService } from '@app/services/date.service';
 import { LeaveTimePath, InitialDataEditRequest } from '@app/types/edit-request';
-import { DateTime } from 'luxon';
+import { DateTime, Interval } from 'luxon';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { createEditRequest } from '@app/utils/utils';
@@ -41,6 +41,12 @@ export class EditLeaveComponent {
 		private _attendanceService: AttendanceService
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
+		const timeZoneOffset = DateTime.fromISO(leave.startTime).offset;
+		const currentInterval = Interval.fromDateTimes(
+			DateTime.fromISO(this.leave.startTime),
+			DateTime.fromISO(this.leave.endTime).plus({ minutes: timeZoneOffset })
+		);
+
 		this._initialData = {
 			[LeaveTimePath.COMMENT]: [this.leave.comment],
 			[LeaveTimePath.START_TIME]: [new Date(this.leave.startTime), [Validators.required]],
@@ -50,19 +56,24 @@ export class EditLeaveComponent {
 		this.editForm = this._fb.group(this._initialData);
 
 		this.periodInHours = leave.hours;
+		this._attendanceService.removeInterval(currentInterval);
 		this.disableWeekends = this._attendanceService.disableWeekends;
 	}
 
 	public dateSelected(): void {
-		const startDateValue = this.editForm.get('/StartTime')?.value;
+		const startDateValue: DateTime = DateTime.fromISO(
+			new Date(this.editForm.get('/StartTime')?.value).toISOString()
+		);
+		let endDateValue: DateTime = DateTime.fromISO(new Date(this.editForm.get('/EndTime')?.value).toISOString());
+		if (!startDateValue.isValid || !endDateValue.isValid) return;
 		const endDateControl = this.editForm.get('/EndTime');
-		if (!endDateControl?.value || startDateValue.startOf('day').equals(endDateControl.value.startOf('day'))) {
-			endDateControl?.setValue(new Date(startDateValue.getTime() + 1));
+		if (+startDateValue === +endDateValue) {
+			endDateValue = startDateValue.plus({ days: 1 });
+			endDateControl?.setValue(endDateValue);
 		}
-
 		const datePeriod: DatePeriod = {
 			startDate: startDateValue,
-			endDate: endDateControl?.value,
+			endDate: endDateValue,
 		};
 		this.periodInHours = this._attendanceService.getLeaveDuration(datePeriod);
 		this.editForm.get('/Minutes')?.setValue(this.periodInHours * 60);

@@ -42,14 +42,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.monthOptions = [];
 		this.monthNorm = 160;
-		this.addHoursForm = this._fb.group({
-			time: ['', [Validators.required, Validators.min(0), Validators.max(this.monthNorm), DoValidators.intNum]],
-			activity: [null, Validators.required],
-			comment: [null],
-		});
-		this.addHoursForm.get('time')?.valueChanges.subscribe(() => {
-			this.makeTooltipMessage();
-		});
+
 		this.workTimes$ = this._attendanceService.activities$.pipe(
 			map((activities) => activities.projects ?? []),
 			tap((projects) => this._checkIfAnotherExist(projects)),
@@ -67,6 +60,20 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 				this.monthOptions = this._setMonthOptions(date);
 			})
 		);
+
+		this._attendanceService.monthNorm$.subscribe({
+			next: (monthNorm) => (this.monthNorm = monthNorm),
+		});
+		this.tooltip = { disabled: true, message: '' };
+
+		this.addHoursForm = this._fb.group({
+			time: ['', [Validators.required, Validators.min(0), Validators.max(this.monthNorm), DoValidators.intNum]],
+			activity: [null, Validators.required],
+			comment: [null],
+		});
+		this.addHoursForm.get('time')?.valueChanges.subscribe(() => {
+			this.makeTooltipMessage();
+		});
 		this._canEditSubscription = this._attendanceService.canEdit$.subscribe({
 			next: (canEdit) => {
 				if (canEdit) {
@@ -76,10 +83,6 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 				}
 			},
 		});
-		this._attendanceService.monthNorm$.subscribe({
-			next: (monthNorm) => (this.monthNorm = monthNorm),
-		});
-		this.tooltip = { disabled: true, message: '' };
 	}
 
 	public ngOnDestroy(): void {
