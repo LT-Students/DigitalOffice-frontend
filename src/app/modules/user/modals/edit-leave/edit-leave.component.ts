@@ -40,7 +40,6 @@ export class EditLeaveComponent {
 		private _dateService: DateService,
 		private _attendanceService: AttendanceService
 	) {
-		// TODO: либо здесь, либо в другом месте компоненты начать удалять из интервалов редактируемый интервал
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		const timeZoneOffset = DateTime.fromISO(leave.startTime).offset;
 		const currentInterval = Interval.fromDateTimes(
@@ -62,11 +61,13 @@ export class EditLeaveComponent {
 	}
 
 	public dateSelected(): void {
-		const startDateValue: DateTime = this.editForm.get('/StartTime')?.value;
-		let endDateValue: DateTime = this.editForm.get('/EndTime')?.value;
+		const startDateValue: DateTime = DateTime.fromISO(
+			new Date(this.editForm.get('/StartTime')?.value).toISOString()
+		);
+		let endDateValue: DateTime = DateTime.fromISO(new Date(this.editForm.get('/EndTime')?.value).toISOString());
 		if (!startDateValue.isValid || !endDateValue.isValid) return;
 		const endDateControl = this.editForm.get('/EndTime');
-		if (startDateValue.startOf('day').equals(endDateValue.startOf('day'))) {
+		if (+startDateValue === +endDateValue) {
 			endDateValue = startDateValue.plus({ days: 1 });
 			endDateControl?.setValue(endDateValue);
 		}
