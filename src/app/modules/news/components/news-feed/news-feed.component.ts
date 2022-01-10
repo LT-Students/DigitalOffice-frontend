@@ -125,8 +125,8 @@ export class NewsFeedComponent {
 		this._modalService
 			.fullScreen(NewsEditorComponent, { _newsId: newsId })
 			.afterClosed()
-			.subscribe({
-				next: (isNewsFeedUpdated) => {
+			.pipe(
+				switchMap((isNewsFeedUpdated) => {
 					if (isNewsFeedUpdated) {
 						if (newsId) {
 							this._newsFeedService.replaceEditedNews(newsId).subscribe();
@@ -137,7 +137,24 @@ export class NewsFeedComponent {
 							});
 						}
 					}
-				},
+				})
+			)
+			// .subscribe({
+			// 	next: (isNewsFeedUpdated) => {
+			// 		if (isNewsFeedUpdated) {
+			// 			if (newsId) {
+			// 				this._newsFeedService.replaceEditedNews(newsId).subscribe();
+			// 			} else {
+			// 				this.getData({
+			// 					takeCount: this.pageSize,
+			// 					skipCount: this.pageIndex * this.pageSize,
+			// 				});
+			// 			}
+			// 		}
+			// 	},
+			// })
+			.subscribe(() => {
+				this._cdr.markForCheck();
 			});
 	}
 }
