@@ -9,7 +9,7 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import EditorJS from '@editorjs/editorjs';
-import { finalize, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { finalize, first, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, from, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
@@ -181,6 +181,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	private _createNews(): Observable<OperationResultResponse<any>> {
 		let userId: string;
 		return this._currentUserService.user$.pipe(
+			first(),
 			tap((user) => (userId = user?.id ?? '')),
 			switchMap(() => from((this._editor as EditorJS).save())),
 			switchMap((outputData) => {
