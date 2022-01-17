@@ -155,7 +155,7 @@ export class TeamStatisticsComponent implements OnInit {
 			middleName: statInfo.user?.middleName ?? '',
 			projectHours,
 			managerHours,
-			leaves: statInfo.leaveTimes ?? [],
+			leaves: statInfo.leaveTimes?.filter((leaveTime) => leaveTime.isActive) ?? [],
 			position: '-',
 			projectsCount: 0,
 			normHours: (statInfo.limitInfo?.normHours ?? 0) * (statInfo.user?.rate ?? 0),
