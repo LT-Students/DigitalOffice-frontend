@@ -116,7 +116,7 @@ export class TimeService {
 	}
 
 	public addLeaveTime(body: ICreateLeaveTimeRequest): Observable<OperationResultResponse> {
-		return this._leaveTimeApiService.addLeaveTime({ body });
+		return this._leaveTimeApiService.createLeaveTime({ body });
 	}
 
 	public findLeaveTimes(params?: IFindLeaveTimesRequest): Observable<FindResultResponseLeaveTimeResponse> {

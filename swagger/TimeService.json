@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.7.3",
+    "version": "1.1.7.4",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -16,7 +16,7 @@
     }
   ],
   "paths": {
-    "/leavetime/add": {
+    "/leavetime/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -26,7 +26,7 @@
         "tags": [
           "LeaveTime"
         ],
-        "operationId": "addLeaveTime",
+        "operationId": "createLeaveTime",
         "description": "Sets the leavetime for the user.",
         "requestBody": {
           "content": {
@@ -1011,18 +1011,18 @@
             "type": "integer"
           },
           "StartTime": {
-            "description": "Start time leave from task.",
+            "description": "Start time leave from task with timezone offset.",
             "type": "string",
             "format": "date-time",
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2020-07-18T08:23"
+            "pattern": "YYYY-MM-DDTHH:mm:ssZ",
+            "example": "2021-06-23T09:07:21-07:00"
           },
           "EndTime": {
-            "description": "End time leave from task.",
+            "description": "End time leave from task with timezone offset.",
             "type": "string",
             "format": "date-time",
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2021-06-18T08:23"
+            "pattern": "YYYY-MM-DDTHH:mm:ssZ",
+            "example": "2021-06-23T09:07:21+07:00"
           },
           "LeaveType": {
             "description": "The reason for which lost time.",
@@ -1050,6 +1050,17 @@
             "path": "/Minutes",
             "value": {
               "type": "integer"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/StartTime",
+            "value": {
+              "description": "New start time leave from task including timezone offset.",
+              "type": "string",
+              "format": "date-time",
+              "pattern": "YYYY-MM-DDTHH:mm:ssZ",
+              "example": "2021-06-23T09:07:21-07:00"
             }
           }
         ],
@@ -1093,7 +1104,8 @@
         "type": "object",
         "required": [
           "Year",
-          "Month"
+          "Month",
+          "Offset"
         ],
         "properties": {
           "Hours": {
@@ -1110,6 +1122,11 @@
           "Month": {
             "type": "integer",
             "example": "12"
+          },
+          "Offset": {
+            "description": "User's timezone offset. Must be in [-12,12] interval.",
+            "type": "integer",
+            "example": "-12"
           }
         }
       },
