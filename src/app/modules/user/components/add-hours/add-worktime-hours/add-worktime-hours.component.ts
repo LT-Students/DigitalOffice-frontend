@@ -101,6 +101,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 			year: this.selectedDate.year,
 			month: this.selectedDate.month,
 			description: this.addHoursForm.get('comment')?.value ?? '',
+			offset: DateTime.now().offset / 60,
 		};
 
 		const action = !this.isAnotherExist
