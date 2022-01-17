@@ -21,8 +21,6 @@ export class EditProjectComponent {
 	public projectDate: Date;
 	public loading: BehaviorSubject<boolean>;
 
-	public inputErrorMessage: string;
-
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public project: any,
 		private _fb: FormBuilder,
@@ -33,7 +31,6 @@ export class EditProjectComponent {
 	) {
 		this.editForm = this._initFormGroup();
 		this.projectDate = new Date(this.project.year, this.project.month - 1);
-		this.inputErrorMessage = '';
 		this.loading = new BehaviorSubject<boolean>(false);
 	}
 
@@ -52,10 +49,6 @@ export class EditProjectComponent {
 			],
 			description: [this.project.description],
 		});
-	}
-
-	public onHoursInput(): void {
-		this.inputErrorMessage = this._getError();
 	}
 
 	public onSubmitClick(): void {
@@ -90,21 +83,5 @@ export class EditProjectComponent {
 
 	public onClose(params?: IDialogResponse): void {
 		this._dialogRef.close(params);
-	}
-
-	private _getError(): string {
-		const controlErrors = this.editForm.controls['userHours'].errors;
-
-		if (controlErrors?.required) {
-			return 'Заполните поле';
-		} else if (controlErrors?.number) {
-			return 'Введите число';
-		} else if (controlErrors?.max) {
-			return 'Превышено максимальное значение часов за месяц';
-		} else if (controlErrors?.min) {
-			return 'Минимальное значение должно быть больше 0';
-		}
-
-		return '';
 	}
 }

@@ -7,14 +7,26 @@
 	</h3>
 	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
 		<div>
-			<mat-form-field
-				appearance="fill"
-				class="modal__hours"
-				matTooltipPosition="right"
-				[matTooltip]="inputErrorMessage"
-				matTooltipClass="tooltip"
-			>
-				<input (input)="onHoursInput()" matInput formControlName="userHours" placeholder="0" required />
+			<mat-form-field appearance="fill">
+				<input matInput formControlName="userHours" type="text" placeholder="0" />
+				<mat-error *ngIf="editForm.controls['userHours']?.errors?.min; else errIntNum">
+					Минимальное значение должно быть больше 0
+				</mat-error>
+				<ng-template #errIntNum>
+					<mat-error *ngIf="editForm.controls['userHours']?.errors?.intNum; else errMax">
+						Значение может быть только целым числом
+					</mat-error>
+				</ng-template>
+				<ng-template #errMax>
+					<mat-error *ngIf="editForm.controls['userHours']?.errors?.max; else errRequired">
+						Превышено максимальное значение
+					</mat-error>
+				</ng-template>
+				<ng-template #errRequired>
+					<mat-error *ngIf="editForm.controls['userHours']?.errors?.required">
+						Поле не может быть пустым
+					</mat-error>
+				</ng-template>
 			</mat-form-field>
 			<span class="mat-h3">ч за {{ projectDate | date: 'LLLL YYYY' }}</span>
 		</div>
