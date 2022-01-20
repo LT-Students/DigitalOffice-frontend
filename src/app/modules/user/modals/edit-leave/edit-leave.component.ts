@@ -13,7 +13,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { createEditRequest } from '@app/utils/utils';
 import { BehaviorSubject } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs/operators';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 
 @Component({
@@ -66,15 +66,19 @@ export class EditLeaveComponent {
 		);
 		let endDateValue: DateTime = DateTime.fromISO(new Date(this.editForm.get('/EndTime')?.value).toISOString());
 		if (!startDateValue.isValid || !endDateValue.isValid) return;
+		const startDateControl = this.editForm.get('/StartTime');
 		const endDateControl = this.editForm.get('/EndTime');
 		if (+startDateValue === +endDateValue) {
 			endDateValue = startDateValue.plus({ days: 1 });
-			endDateControl?.setValue(endDateValue);
 		}
+		startDateControl?.setValue(startDateValue);
+		endDateControl?.setValue(endDateValue);
+
 		const datePeriod: DatePeriod = {
 			startDate: startDateValue,
 			endDate: endDateValue,
 		};
+
 		this.periodInHours = this._attendanceService.getLeaveDuration(datePeriod);
 		this.editForm.get('/Minutes')?.setValue(this.periodInHours * 60);
 	}
@@ -92,7 +96,10 @@ export class EditLeaveComponent {
 				leaveTimeId: this.leave.id,
 				body: editRequest,
 			})
-			.pipe(finalize(() => this.loading$$.next(false)))
+			.pipe(
+				finalize(() => this.loading$$.next(false)),
+				tap(() => this._attendanceService.getActivities().subscribe())
+			)
 			.subscribe((res) =>
 				this.onClose({
 					status: res.status,
