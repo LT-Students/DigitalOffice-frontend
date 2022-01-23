@@ -1,18 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
-import { ImageInfo } from './image-info';
+import { DepartmentUserRole } from './department-user-role';
 import { PositionInfo } from './position-info';
+import { UserInfo } from './user-info';
 
 /**
  * User data of specific department.
  */
 export interface DepartmentUserInfo {
-	firstName?: string;
-	id?: string;
-	image?: null | ImageInfo;
+	createdAtUtc?: string;
 	isActive?: boolean;
-	lastName?: string;
-	middleName?: null | string;
+	leftAtUtc?: null | string;
 	position?: PositionInfo;
-	rate?: number;
+	role?: DepartmentUserRole;
+	user?: UserInfo;
 }

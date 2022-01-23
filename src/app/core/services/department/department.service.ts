@@ -11,17 +11,20 @@ import { DepartmentUserRole } from '@data/api/department-service/models/departme
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { DepartmentPath, EditRequest } from '@app/types/edit-request';
+import { NewsInfo } from '@data/api/department-service/models/news-info';
 
 export interface IGetDepartment {
-	departmentid: string;
-	includeusers?: boolean;
-	includeprojects?: boolean;
+	departmentId: string;
+	includeUsers?: boolean;
+	includeProjects?: boolean;
+	includeNews?: boolean;
 }
 
 export interface IDepartmentInfoEx {
 	department?: DepartmentInfo;
 	users?: Array<DepartmentUserInfo>;
-	projects?: ProjectInfo;
+	projects?: Array<ProjectInfo>;
+	news?: Array<NewsInfo>;
 }
 
 export interface ICreateDepartmentRequest {

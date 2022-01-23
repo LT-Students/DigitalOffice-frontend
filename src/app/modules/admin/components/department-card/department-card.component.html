@@ -10,7 +10,7 @@
 	<div class="department__info">
 		<div class="department__header">
 			<h3 doUnderline underlinedSize="sm">Общая информация</h3>
-			<button mat-flat-button (click)="onEditDepartamentClick()">
+			<button mat-flat-button (click)="onEditDepartmentClick()">
 				<mat-icon class="department__button-edit">
 					<img class="department__button-edit__img" src="assets/svg/edit.svg" alt="edit" />
 				</mat-icon>
@@ -19,7 +19,7 @@
 		<div class="department__label">
 			<p class="mat-body-1">Директор</p>
 			<ng-container *ngIf="departmentInfo?.director; else empty">
-				<p>{{ departmentInfo?.director?.firstName }} {{ departmentInfo?.director?.lastName }}</p>
+				<p>{{ departmentInfo?.director?.user?.firstName }} {{ departmentInfo?.director?.user?.lastName }}</p>
 			</ng-container>
 		</div>
 		<div class="department__label">
@@ -93,12 +93,15 @@
 
 			<ng-container matColumnDef="name">
 				<th mat-header-cell *matHeaderCellDef>Имя</th>
-				<td mat-cell *matCellDef="let element" class="erasable">
+				<td mat-cell *matCellDef="let departmentUser" class="erasable">
 					<div class="main-info">
-						<do-profile-image class="profile-photo" [image]="element?.avatarImage"></do-profile-image>
+						<do-profile-image
+							class="profile-photo"
+							[image]="departmentUser.user.avatarImage"
+						></do-profile-image>
 						<div>
-							<div>{{ element.firstName }} {{ element.lastName }}</div>
-							<div class="mat-body-1">{{ element?.position?.name }}</div>
+							<div>{{ departmentUser.user.firstName }} {{ departmentUser.user.lastName }}</div>
+							<div class="mat-body-1">{{ departmentUser.user.position?.name }}</div>
 						</div>
 					</div>
 				</td>

@@ -63,7 +63,7 @@
 					<td class="cell">
 						<ng-container *ngIf="department?.director; else empty">
 							<p class="cell__content cell__content_ellipsissed">
-								{{ department.director?.firstName }} {{ department.director?.lastName }}
+								{{ department.director?.user?.firstName }} {{ department.director?.user?.lastName }}
 							</p>
 						</ng-container>
 					</td>
@@ -93,7 +93,7 @@
 			<do-empty-list [emptyMessage]="'Нет данных о департаментах'"></do-empty-list>
 		</ng-template>
 	</ng-container>
-	<mat-paginator [pageSizeOptions]="[10, 25, 50]"> </mat-paginator>
+	<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
 </mat-card>
 
 <ng-template #empty>

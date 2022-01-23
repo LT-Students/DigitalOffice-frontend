@@ -12,12 +12,12 @@
 						*ngIf="
 							departmentForm.controls[EditPath.NAME]?.errors?.required ||
 								departmentForm.controls[EditPath.NAME]?.errors?.whitespace;
-							else validname
+							else validName
 						"
 					>
 						Поле не должно быть пустым
 					</mat-error>
-					<ng-template #validname>
+					<ng-template #validName>
 						<mat-error *ngIf="departmentForm.controls[EditPath.NAME]?.errors?.oneSpaceBetweenWords">
 							Только один пробел допускается между словами
 						</mat-error>
