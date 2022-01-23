@@ -15,9 +15,10 @@ export class DepartmentPageResolver implements Resolve<OperationResultResponse<I
 		state: RouterStateSnapshot
 	): Observable<OperationResultResponse<IDepartmentInfoEx>> {
 		return this._departmentService.getDepartment({
-			departmentid: route.params.id,
-			includeprojects: false,
-			includeusers: true,
+			departmentId: route.params.id,
+			includeProjects: false,
+			includeUsers: true,
+			includeNews: false,
 		});
 	}
 }
