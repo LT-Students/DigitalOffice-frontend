@@ -105,15 +105,19 @@ export class NewsFeedComponent {
 					return EMPTY;
 				})
 			)
-			.subscribe();
+			.subscribe(() => {
+				this.getData({
+					takeCount: this.pageSize,
+					skipCount: this.pageIndex * this.pageSize,
+				});
+			});
 	}
 
 	public openPost(postId: string | undefined): void {
 		this._modalService
 			.fullScreen(PostComponent, postId)
 			.afterClosed()
-			.subscribe((result) => {
-				console.log(result);
+			.subscribe(() => {
 				this.getData({
 					takeCount: this.pageSize,
 					skipCount: this.pageIndex * this.pageSize,
