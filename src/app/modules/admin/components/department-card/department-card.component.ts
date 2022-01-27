@@ -70,7 +70,7 @@ export class DepartmentCardComponent {
 
 	private _getDepartment(): void {
 		this._departmentService
-			.getDepartment({ departmentid: this._departmentId, includeusers: true })
+			.getDepartment({ departmentId: this._departmentId, includeUsers: true })
 			.subscribe(({ body }) => {
 				this.departmentInfo = body?.department;
 
@@ -80,7 +80,7 @@ export class DepartmentCardComponent {
 			});
 	}
 
-	public onEditDepartamentClick(): void {
+	public onEditDepartmentClick(): void {
 		this._modalService
 			.openModal<AddEditDepartmentComponent>(AddEditDepartmentComponent, ModalWidth.M, this.departmentInfo)
 			.afterClosed()
@@ -95,7 +95,7 @@ export class DepartmentCardComponent {
 
 	public openAddEmployeeModal(): void {
 		const modal = this._modalService.openModal(AddEmployeeComponent, ModalWidth.L, {
-			idToHide: this.dataSource.data.map((user) => user.id),
+			idToHide: this.dataSource.data.map((departmentUser) => departmentUser.user?.id),
 			openFrom: OpenAddEmployeeModalFrom.Department,
 			moduleName: this.departmentInfo?.name,
 		});
@@ -116,8 +116,8 @@ export class DepartmentCardComponent {
 				}),
 				switchMap(() => {
 					return this._departmentService.getDepartment({
-						departmentid: this._departmentId,
-						includeusers: true,
+						departmentId: this._departmentId,
+						includeUsers: true,
 					});
 				}),
 				tap(({ body }) => {
@@ -180,11 +180,15 @@ export class DepartmentCardComponent {
 			.pipe(
 				switchMap((result) => {
 					if (result) {
-						const ids: string[] = this.selection.selected.reduce(function (newArr: string[], user) {
-							newArr.push(user.id ?? '');
+						const ids: string[] = this.selection.selected.reduce(function (
+							newArr: string[],
+							departmentUser
+						) {
+							newArr.push(departmentUser.user?.id ?? '');
 
 							return newArr;
-						}, []);
+						},
+						[]);
 						return this._departmentService.removeUsersFromDepartment(this._departmentId, ids);
 					} else {
 						return EMPTY;
@@ -192,8 +196,8 @@ export class DepartmentCardComponent {
 				}),
 				switchMap(() => {
 					return this._departmentService.getDepartment({
-						departmentid: this._departmentId,
-						includeusers: true,
+						departmentId: this._departmentId,
+						includeUsers: true,
 					});
 				}),
 				tap(({ body }) => {

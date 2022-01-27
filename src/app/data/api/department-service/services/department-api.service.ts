@@ -13,7 +13,7 @@ import { CreateDepartmentRequest } from '../models/create-department-request';
 import { EditDepartmentRequest } from '../models/edit-department-request';
 import { FindResultResponseDepartmentInfo } from '../models/find-result-response-department-info';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { OperationResultResponseDepartmentInfo } from '../models/operation-result-response-department-info';
+import { OperationResultResponseDepartmentResponse } from '../models/operation-result-response-department-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -92,23 +92,29 @@ export class DepartmentApiService extends BaseService {
 		/**
 		 * Department global unique identifier.
 		 */
-		departmentid: string;
+		departmentId: string;
 
 		/**
 		 * Response would include department users.
 		 */
-		includeusers?: boolean;
+		includeUsers?: boolean;
 
 		/**
 		 * Response would include department projects.
 		 */
-		includeprojects?: boolean;
-	}): Observable<StrictHttpResponse<OperationResultResponseDepartmentInfo>> {
+		includeProjects?: boolean;
+
+		/**
+		 * Response would include department news.
+		 */
+		includeNews?: boolean;
+	}): Observable<StrictHttpResponse<OperationResultResponseDepartmentResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetDepartmentPath, 'get');
 		if (params) {
-			rb.query('departmentid', params.departmentid, {});
-			rb.query('includeusers', params.includeusers, {});
-			rb.query('includeprojects', params.includeprojects, {});
+			rb.query('departmentId', params.departmentId, {});
+			rb.query('includeUsers', params.includeUsers, {});
+			rb.query('includeProjects', params.includeProjects, {});
+			rb.query('includeNews', params.includeNews, {});
 		}
 
 		return this.http
@@ -121,7 +127,7 @@ export class DepartmentApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponseDepartmentInfo>;
+					return r as StrictHttpResponse<OperationResultResponseDepartmentResponse>;
 				})
 			);
 	}
@@ -138,22 +144,27 @@ export class DepartmentApiService extends BaseService {
 		/**
 		 * Department global unique identifier.
 		 */
-		departmentid: string;
+		departmentId: string;
 
 		/**
 		 * Response would include department users.
 		 */
-		includeusers?: boolean;
+		includeUsers?: boolean;
 
 		/**
 		 * Response would include department projects.
 		 */
-		includeprojects?: boolean;
-	}): Observable<OperationResultResponseDepartmentInfo> {
+		includeProjects?: boolean;
+
+		/**
+		 * Response would include department news.
+		 */
+		includeNews?: boolean;
+	}): Observable<OperationResultResponseDepartmentResponse> {
 		return this.getDepartment$Response(params).pipe(
 			map(
-				(r: StrictHttpResponse<OperationResultResponseDepartmentInfo>) =>
-					r.body as OperationResultResponseDepartmentInfo
+				(r: StrictHttpResponse<OperationResultResponseDepartmentResponse>) =>
+					r.body as OperationResultResponseDepartmentResponse
 			)
 		);
 	}

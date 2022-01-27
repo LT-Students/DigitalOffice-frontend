@@ -7,6 +7,7 @@ import { Observable, throwError } from 'rxjs';
 export interface IErrorMessageTypes {
 	triggered?: MessageTriggeredFrom;
 	feminine: boolean;
+	neuter: boolean;
 }
 
 @Injectable({
@@ -16,16 +17,18 @@ export class ResponseMessageModel {
 	constructor(private _snackBar: MatSnackBar) {}
 
 	private _responseMessageTypes: IErrorMessageTypes[] = [
-		{ triggered: MessageTriggeredFrom.Project, feminine: false },
-		{ triggered: MessageTriggeredFrom.Department, feminine: false },
-		{ triggered: MessageTriggeredFrom.Office, feminine: false },
-		{ triggered: MessageTriggeredFrom.Position, feminine: true },
-		{ triggered: MessageTriggeredFrom.Rights, feminine: true },
-		{ triggered: MessageTriggeredFrom.Communication, feminine: false },
-		{ triggered: MessageTriggeredFrom.User, feminine: false },
-		{ triggered: MessageTriggeredFrom.EmployeePage, feminine: true },
-		{ triggered: MessageTriggeredFrom.News, feminine: true },
-		{ triggered: MessageTriggeredFrom.WorkTime, feminine: true },
+		{ triggered: MessageTriggeredFrom.Project, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.Department, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.Office, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.Position, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.Rights, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.Communication, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.User, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.EmployeePage, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.News, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.WorkTime, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.Password, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.LeaveTime, feminine: false, neuter: true },
 	];
 
 	public getSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, status: string): string {
@@ -33,7 +36,9 @@ export class ResponseMessageModel {
 			return 'Выполнено частично';
 		}
 		const result = this._responseMessageTypes.find((item) => item.triggered === triggeredFrom);
-		return `${triggeredFrom} успешно ${method}${result?.feminine === true ? 'а' : ''}`;
+		return `${triggeredFrom} успешно ${method}${
+			result?.feminine === true ? 'а' : result?.neuter === true ? 'о' : ''
+		}`;
 	}
 
 	public getErrorMessage(err: any): string {

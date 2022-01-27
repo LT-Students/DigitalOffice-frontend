@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0.0",
+    "version": "1.0.0.1",
     "title": "DepartmentService",
     "description": "DepartmentService, is intended to work with the department."
   },
@@ -96,7 +96,7 @@
         "description": "Returns department by id.",
         "parameters": [
           {
-            "name": "departmentid",
+            "name": "departmentId",
             "in": "query",
             "description": "Department global unique identifier.",
             "schema": {
@@ -106,7 +106,7 @@
             "required": true
           },
           {
-            "name": "includeusers",
+            "name": "includeUsers",
             "in": "query",
             "description": "Response would include department users.",
             "schema": {
@@ -115,9 +115,18 @@
             "required": false
           },
           {
-            "name": "includeprojects",
+            "name": "includeProjects",
             "in": "query",
             "description": "Response would include department projects.",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false
+          },
+          {
+            "name": "includeNews",
+            "in": "query",
+            "description": "Response would include department news.",
             "schema": {
               "type": "boolean"
             },
@@ -130,7 +139,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseDepartmentInfo"
+                  "$ref": "#/components/schemas/OperationResultResponseDepartmentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -465,7 +484,7 @@
             "type": "integer"
           },
           "Director": {
-            "$ref": "#/components/schemas/UserInfo",
+            "$ref": "#/components/schemas/DepartmentUserInfo",
             "nullable": true
           }
         }
@@ -474,32 +493,25 @@
         "type": "object",
         "description": "User data of specific department.",
         "properties": {
-          "Id": {
+          "User": {
+            "type": "object",
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "CreatedAtUtc": {
             "type": "string",
-            "format": "uuid"
+            "format": "date"
           },
-          "FirstName": {
-            "type": "string"
-          },
-          "LastName": {
-            "type": "string"
-          },
-          "MiddleName": {
+          "LeftAtUtc": {
             "type": "string",
+            "format": "date",
             "nullable": true
-          },
-          "Rate": {
-            "type": "number",
-            "format": "float"
           },
           "IsActive": {
-            "type": "boolean",
-            "example": true
+            "type": "boolean"
           },
-          "Image": {
+          "Role": {
             "type": "object",
-            "$ref": "#/components/schemas/ImageInfo",
-            "nullable": true
+            "$ref": "#/components/schemas/DepartmentUserRole"
           },
           "Position": {
             "type": "object",
@@ -528,17 +540,8 @@
             "example": "Alexandrovich",
             "nullable": true
           },
-          "Rate": {
-            "type": "number"
-          },
-          "IsActive": {
-            "type": "boolean"
-          },
-          "Image": {
+          "Avatar": {
             "$ref": "#/components/schemas/ImageInfo"
-          },
-          "Position": {
-            "$ref": "#/components/schemas/PositionInfo"
           }
         }
       },
@@ -552,16 +555,13 @@
           "Name": {
             "type": "string"
           },
+          "Status": {
+            "type": "string"
+          },
           "ShortName": {
             "type": "string"
           },
-          "Description": {
-            "type": "string"
-          },
           "ShortDescription": {
-            "type": "string"
-          },
-          "Status": {
             "type": "string"
           }
         }
@@ -617,6 +617,34 @@
           },
           "Extension": {
             "type": "string"
+          }
+        }
+      },
+      "NewsInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Preview": {
+            "type": "string"
+          },
+          "Subject": {
+            "type": "string"
+          },
+          "Pseudonym": {
+            "type": "string"
+          },
+          "Author": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "CreatedAtUtc": {
+            "type": "string",
+            "format": "date"
+          },
+          "Sender": {
+            "$ref": "#/components/schemas/UserInfo"
           }
         }
       },
@@ -699,7 +727,7 @@
           }
         }
       },
-      "OperationResultResponseDepartmentInfo": {
+      "OperationResultResponseDepartmentResponse": {
         "type": "object",
         "properties": {
           "Body": {
@@ -707,7 +735,6 @@
             "description": "Full departmant information.",
             "properties": {
               "department": {
-                "type": "object",
                 "$ref": "#/components/schemas/DepartmentInfo"
               },
               "users": {
@@ -717,8 +744,16 @@
                 }
               },
               "projects": {
-                "type": "object",
-                "$ref": "#/components/schemas/ProjectInfo"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProjectInfo"
+                }
+              },
+              "news": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/NewsInfo"
+                }
               }
             }
           },
