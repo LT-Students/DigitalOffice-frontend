@@ -12,8 +12,8 @@ import { DateTime, Interval } from 'luxon';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { createEditRequest } from '@app/utils/utils';
-import { BehaviorSubject } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 
 @Component({
@@ -61,24 +61,23 @@ export class EditLeaveComponent {
 	}
 
 	public dateSelected(): void {
-		const startDateValue: DateTime = DateTime.fromISO(
-			new Date(this.editForm.get('/StartTime')?.value).toISOString()
-		);
-		let endDateValue: DateTime = DateTime.fromISO(new Date(this.editForm.get('/EndTime')?.value).toISOString());
-		if (!startDateValue.isValid || !endDateValue.isValid) return;
 		const startDateControl = this.editForm.get('/StartTime');
 		const endDateControl = this.editForm.get('/EndTime');
+		const startDateValue: DateTime = DateTime.fromISO(new Date(startDateControl?.value).toISOString());
+		let endDateValue: DateTime = DateTime.fromISO(new Date(endDateControl?.value).toISOString());
+		const timeZoneOffset = startDateValue?.offset;
+
+		if (!startDateValue.isValid || !endDateValue.isValid || +endDateValue === 0) return;
+
 		if (+startDateValue === +endDateValue) {
-			endDateValue = startDateValue.plus({ days: 1 });
+			endDateValue = startDateValue.endOf('day').minus({ minutes: timeZoneOffset });
 		}
 		startDateControl?.setValue(startDateValue);
 		endDateControl?.setValue(endDateValue);
-
 		const datePeriod: DatePeriod = {
 			startDate: startDateValue,
 			endDate: endDateValue,
 		};
-
 		this.periodInHours = this._attendanceService.getLeaveDuration(datePeriod);
 		this.editForm.get('/Minutes')?.setValue(this.periodInHours * 60);
 	}
@@ -90,26 +89,26 @@ export class EditLeaveComponent {
 	public onSubmitClick(): void {
 		this.loading$$.next(true);
 		const editRequest = createEditRequest(this.editForm.getRawValue(), this._initialData);
-
 		this._timeService
 			.editLeaveTime({
 				leaveTimeId: this.leave.id,
 				body: editRequest,
 			})
-			.pipe(
-				finalize(() => this.loading$$.next(false)),
-				tap(() => this._attendanceService.getActivities().subscribe())
-			)
-			.subscribe((res) =>
-				this.onClose({
-					status: res.status,
-					data: {
-						startTime: this.editForm.get('/StartTime')?.value,
-						endTime: this.editForm.get('/EndTime')?.value,
-						minutes: this.editForm.get('/Minutes')?.value,
-						comment: this.editForm.get('/Comment')?.value,
-					},
-				})
+			.pipe(finalize(() => this.loading$$.next(false)))
+			.subscribe(
+				(res) => {
+					this.onClose({
+						status: res.status,
+						data: {
+							startTime: this.editForm.get('/StartTime')?.value,
+							endTime: this.editForm.get('/EndTime')?.value,
+							minutes: this.editForm.get('/Minutes')?.value,
+							comment: this.editForm.get('/Comment')?.value,
+						},
+					});
+				},
+				(err) => console.log(err),
+				() => this._attendanceService.getActivities().subscribe()
 			);
 	}
 }
