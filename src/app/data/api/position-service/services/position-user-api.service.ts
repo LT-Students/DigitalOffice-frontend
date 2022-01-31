@@ -21,22 +21,22 @@ export class PositionUserApiService extends BaseService {
 	}
 
 	/**
-	 * Path part for operation createPositionuser
+	 * Path part for operation editPositionUser
 	 */
-	static readonly CreatePositionuserPath = '/user/createposition';
+	static readonly EditPositionUserPath = '/user/edit';
 
 	/**
 	 * Chage user position.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `createPositionuser()` instead.
+	 * To access only the response body, use `editPositionUser()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createPositionuser$Response(params: {
+	editPositionUser$Response(params: {
 		body: CreatePositionUserRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, PositionUserApiService.CreatePositionuserPath, 'post');
+		const rb = new RequestBuilder(this.rootUrl, PositionUserApiService.EditPositionUserPath, 'put');
 		if (params) {
 			rb.body(params.body, 'application/json');
 		}
@@ -60,12 +60,12 @@ export class PositionUserApiService extends BaseService {
 	 * Chage user position.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `createPositionuser$Response()` instead.
+	 * To access the full response (for headers, for example), `editPositionUser$Response()` instead.
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createPositionuser(params: { body: CreatePositionUserRequest }): Observable<OperationResultResponse> {
-		return this.createPositionuser$Response(params).pipe(
+	editPositionUser(params: { body: CreatePositionUserRequest }): Observable<OperationResultResponse> {
+		return this.editPositionUser$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);
 	}
