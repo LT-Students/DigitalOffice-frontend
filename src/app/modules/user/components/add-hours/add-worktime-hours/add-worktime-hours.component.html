@@ -1,6 +1,7 @@
 <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
-	<div>
-		<mat-form-field class="add-hours__time" appearance="fill">
+	<div class="add-hours__container">
+		<mat-form-field class="add-hours__time" appearance="outline">
+			<mat-label>Колличество часов</mat-label>
 			<input
 				matInput
 				matTooltip="{{ tooltip.message }}"
@@ -10,25 +11,49 @@
 				placeholder="0"
 			/>
 		</mat-form-field>
-		<span class="mat-h3" *ngIf="selectedDate$ | async as selectedDate"
-			>ч за
-			<a class="mat-h3" *ngIf="monthOptions.length === 0; else selectMonth">
-				{{ selectedDate | dateTime: 'LLLL y' }}
-			</a>
-			<ng-template #selectMonth>
-				<a class="mat-h3 add-hours__menu" [matMenuTriggerFor]="monthMenu"
-					>{{ selectedDate | dateTime: 'LLLL y' }}
-					<mat-icon>expand_more</mat-icon>
-				</a>
-			</ng-template>
-		</span>
-		<mat-menu #monthMenu="matMenu">
-			<button mat-menu-item *ngFor="let month of monthOptions" (click)="changeDate(month)">
-				{{ month | dateTime: 'LLLL y' | titlecase }}
-			</button>
-		</mat-menu>
+
+		<mat-form-field class="add-hours__month" appearance="outline">
+			<mat-label>Месяц</mat-label>
+			<mat-select>
+				<mat-option value="option">Месяц 1</mat-option>
+				<mat-option value="option">Месяц 2</mat-option>
+				<mat-option value="option">Месяц 3</mat-option>
+				<mat-option value="option">Месяц 4</mat-option>
+				<mat-option value="option">Месяц 5</mat-option>
+			</mat-select>
+		</mat-form-field>
 	</div>
-	<mat-form-field appearance="fill">
+
+	<!--    <div class="add-hours__container"></div>-->
+	<!--		<mat-form-field class="add-hours__time" appearance="fill">-->
+	<!--			<input-->
+	<!--				matInput-->
+	<!--				matTooltip="{{ tooltip.message }}"-->
+	<!--				[matTooltipDisabled]="tooltip.disabled"-->
+	<!--				formControlName="time"-->
+	<!--				type="text"-->
+	<!--				placeholder="0"-->
+	<!--			/>-->
+	<!--		</mat-form-field>-->
+	<!--		<span class="mat-h3" *ngIf="selectedDate$ | async as selectedDate"-->
+	<!--			>ч за-->
+	<!--			<a class="mat-h3" *ngIf="monthOptions.length === 0; else selectMonth">-->
+	<!--				{{ selectedDate | dateTime: 'LLLL y' }}-->
+	<!--			</a>-->
+	<!--			<ng-template #selectMonth>-->
+	<!--				<a class="mat-h3 add-hours__menu" [matMenuTriggerFor]="monthMenu"-->
+	<!--					>{{ selectedDate | dateTime: 'LLLL y' }}-->
+	<!--					<mat-icon>expand_more</mat-icon>-->
+	<!--				</a>-->
+	<!--			</ng-template>-->
+	<!--		</span>-->
+	<mat-menu #monthMenu="matMenu">
+		<button mat-menu-item *ngFor="let month of monthOptions" (click)="changeDate(month)">
+			{{ month | dateTime: 'LLLL y' | titlecase }}
+		</button>
+	</mat-menu>
+
+	<mat-form-field class="add-hours__project" appearance="outline">
 		<mat-label>Выберите проект</mat-label>
 		<mat-select formControlName="activity">
 			<mat-option
@@ -40,10 +65,17 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<mat-form-field appearance="fill">
+
+	<mat-form-field class="add-hours__comments" appearance="outline">
 		<mat-label>Комментарий</mat-label>
-		<textarea matInput formControlName="comment" placeholder="Оставьте комментарий для менеджера"></textarea>
+		<textarea
+			class=""
+			matInput
+			formControlName="comment"
+			placeholder="Оставьте комментарий для менеджера"
+		></textarea>
 	</mat-form-field>
+
 	<button
 		mat-flat-button
 		color="primary"
