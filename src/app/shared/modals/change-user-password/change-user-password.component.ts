@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ChangePasswordRequest } from '@data/api/user-service/models/change-password-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { PasswordService } from '@app/services/user/password.service';
@@ -17,17 +17,29 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ChangeUserPasswordComponent {
 	public passwordForm: FormGroup;
 	public loading$$: BehaviorSubject<boolean>;
-
+	public toolTipText;
 	constructor(
 		private _fb: FormBuilder,
 		private _dialogRef: MatDialogRef<any>,
 		private _passwordService: PasswordService
 	) {
+		this.toolTipText = `
+		Длина пароля должна быть не менее 8 и не более 14 символов.
+			Пароль должен состоять из букв латинского алфавита, цифр и
+		не менее одного из следующих специальных символов:
+			. , : ; ? ! * + % - < > @ [ ] / \ _  $ # { }
+		Буквенная часть пароля должна содержать как строчные,
+			так и прописные буквы. Запрещено использование пробела`;
+
 		this.loading$$ = new BehaviorSubject<boolean>(false);
-		this.passwordForm = _fb.group({
-			old_password: ['', [Validators.required]],
-			new_password: ['', [Validators.required, DoValidators.password]],
-		});
+		this.passwordForm = _fb.group(
+			{
+				old_password: ['', [Validators.required]],
+				new_password: ['', [Validators.required, DoValidators.password]],
+				confirm_password: ['', [Validators.required]],
+			},
+			{ validators: [this.passwordMatchValidator] }
+		);
 	}
 
 	public onChangePasswordSubmit(): void {
@@ -47,5 +59,18 @@ export class ChangeUserPasswordComponent {
 					throw error;
 				}
 			);
+	}
+
+	public passwordMatchValidator(group: FormGroup): void {
+		const pass = group.get('new_password')?.value;
+		const confirmPass = group.get('confirm_password')?.value;
+		if (confirmPass.length === 0 || confirmPass === null) {
+			return;
+		}
+		if (pass !== confirmPass) {
+			group.get('confirm_password')?.setErrors({ noMatch: true });
+		} else {
+			group.get('confirm_password')?.setErrors(null);
+		}
 	}
 }
