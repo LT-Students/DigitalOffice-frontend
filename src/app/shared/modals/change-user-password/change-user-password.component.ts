@@ -1,13 +1,20 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ChangePasswordRequest } from '@data/api/user-service/models/change-password-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { PasswordService } from '@app/services/user/password.service';
 import { finalize } from 'rxjs/operators';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+class CrossFieldErrorMatcher implements ErrorStateMatcher {
+	public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+		return !!(control?.dirty || control?.touched) && !!form?.invalid;
+	}
+}
 
 @Component({
 	selector: 'do-change-password',
@@ -17,7 +24,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ChangeUserPasswordComponent {
 	public passwordForm: FormGroup;
 	public loading$$: BehaviorSubject<boolean>;
-	public toolTipText;
+	public toolTipText: string;
+	public errorMatcher: CrossFieldErrorMatcher;
 	constructor(
 		private _fb: FormBuilder,
 		private _dialogRef: MatDialogRef<any>,
@@ -38,8 +46,9 @@ export class ChangeUserPasswordComponent {
 				new_password: ['', [Validators.required, DoValidators.password]],
 				confirm_password: ['', [Validators.required]],
 			},
-			{ validators: [this.passwordMatchValidator] }
+			{ validators: DoValidators.matchControls('new_password', 'confirm_password') }
 		);
+		this.errorMatcher = new CrossFieldErrorMatcher();
 	}
 
 	public onChangePasswordSubmit(): void {
@@ -59,18 +68,5 @@ export class ChangeUserPasswordComponent {
 					throw error;
 				}
 			);
-	}
-
-	public passwordMatchValidator(group: FormGroup): void {
-		const pass = group.get('new_password')?.value;
-		const confirmPass = group.get('confirm_password')?.value;
-		if (confirmPass.length === 0 || confirmPass === null) {
-			return;
-		}
-		if (pass !== confirmPass) {
-			group.get('confirm_password')?.setErrors({ noMatch: true });
-		} else {
-			group.get('confirm_password')?.setErrors(null);
-		}
 	}
 }
