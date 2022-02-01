@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface CreatePositionUserRequest {
-	positionId: string;
+	positionId?: string;
 	userId: string;
 }
