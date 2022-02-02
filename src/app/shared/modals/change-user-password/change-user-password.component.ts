@@ -1,13 +1,20 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ChangePasswordRequest } from '@data/api/user-service/models/change-password-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { PasswordService } from '@app/services/user/password.service';
 import { finalize } from 'rxjs/operators';
 import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+class CrossFieldErrorMatcher implements ErrorStateMatcher {
+	public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+		return !!(control?.dirty || control?.touched) && !!form?.invalid;
+	}
+}
 
 @Component({
 	selector: 'do-change-password',
@@ -17,17 +24,31 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ChangeUserPasswordComponent {
 	public passwordForm: FormGroup;
 	public loading$$: BehaviorSubject<boolean>;
-
+	public toolTipText: string;
+	public errorMatcher: CrossFieldErrorMatcher;
 	constructor(
 		private _fb: FormBuilder,
 		private _dialogRef: MatDialogRef<any>,
 		private _passwordService: PasswordService
 	) {
+		this.toolTipText = `
+		Длина пароля должна быть не менее 8 и не более 14 символов.
+			Пароль должен состоять из букв латинского алфавита, цифр и
+		не менее одного из следующих специальных символов:
+			. , : ; ? ! * + % - < > @ [ ] / \ _  $ # { }
+		Буквенная часть пароля должна содержать как строчные,
+			так и прописные буквы. Запрещено использование пробела`;
+
 		this.loading$$ = new BehaviorSubject<boolean>(false);
-		this.passwordForm = _fb.group({
-			old_password: ['', [Validators.required]],
-			new_password: ['', [Validators.required, DoValidators.password]],
-		});
+		this.passwordForm = _fb.group(
+			{
+				old_password: ['', [Validators.required]],
+				new_password: ['', [Validators.required, DoValidators.password]],
+				confirm_password: ['', [Validators.required]],
+			},
+			{ validators: DoValidators.matchControls('new_password', 'confirm_password') }
+		);
+		this.errorMatcher = new CrossFieldErrorMatcher();
 	}
 
 	public onChangePasswordSubmit(): void {
