@@ -23,11 +23,10 @@ export class TimeDurationService {
 		const endDate = (datePeriod.endDate ? datePeriod.endDate : datePeriod.startDate).plus({ days: 1 });
 
 		const days: DateTime[] = [];
-		while (!startDate.startOf('day').equals(endDate.startOf('day'))) {
+		while (+startDate.startOf('day') !== +endDate.startOf('day')) {
 			days.push(startDate);
 			startDate = startDate.plus({ days: 1 });
 		}
-
 		return dateFilter ? days.filter(dateFilter).length * hoursPerDay : days.length * hoursPerDay;
 	}
 }
