@@ -24,18 +24,24 @@
 	}
 
 	&__time {
-		margin: 0;
-
 		width: 50%;
 	}
 
 	&__month {
 		margin: 0;
+		padding: 0;
 
 		width: 50%;
 	}
 
-	&__comment {
-		min-height: 508px;
+	&__comment-textarea {
+		margin: 0;
+		padding: 0;
+
+		min-height: 106px;
 	}
+}
+
+mat-form-field.mat-form-field {
+	margin: 0;
 }

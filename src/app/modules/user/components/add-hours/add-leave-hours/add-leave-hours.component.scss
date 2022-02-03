@@ -7,8 +7,17 @@
 		gap: 16px;
 	}
 
-	&__time-wrapper {
+	&__container {
 		display: flex;
+		gap: 22px;
+	}
+
+	&__date-range {
+		width: 270px;
+	}
+
+	&__comment-textarea {
+		min-height: 106px;
 	}
 
 	&__absence-time {

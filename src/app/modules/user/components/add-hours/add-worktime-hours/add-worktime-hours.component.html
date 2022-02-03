@@ -47,6 +47,7 @@
 	<!--				</a>-->
 	<!--			</ng-template>-->
 	<!--		</span>-->
+
 	<mat-menu #monthMenu="matMenu">
 		<button mat-menu-item *ngFor="let month of monthOptions" (click)="changeDate(month)">
 			{{ month | dateTime: 'LLLL y' | titlecase }}
@@ -69,7 +70,7 @@
 	<mat-form-field class="add-hours__comments" appearance="outline">
 		<mat-label>Комментарий</mat-label>
 		<textarea
-			class=""
+			class="add-hours__comment-textarea"
 			matInput
 			formControlName="comment"
 			placeholder="Оставьте комментарий для менеджера"

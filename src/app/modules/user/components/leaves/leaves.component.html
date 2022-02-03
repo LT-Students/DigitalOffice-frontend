@@ -1,4 +1,5 @@
 <h4>Таблица отсутствий</h4>
+
 <table class="table">
 	<colgroup>
 		<col class="column column_width_m" />
@@ -7,6 +8,7 @@
 		<col class="column column_width_l" />
 		<col class="column column_width_t" />
 	</colgroup>
+
 	<thead>
 		<tr class="row">
 			<th class="cell">
@@ -26,6 +28,7 @@
 			</th>
 		</tr>
 	</thead>
+
 	<tbody>
 		<tr *ngFor="let leave of leaves" class="row">
 			<td class="cell">
@@ -33,29 +36,29 @@
 					{{ leave.leaveType | leaveLabel: false }}
 				</p>
 			</td>
+
 			<td class="cell">
 				<p>{{ leave.hours }} ч</p>
 			</td>
+
 			<td class="cell">
 				<p>{{ leave.startTime | date: 'd MMMM' }} - {{ leave.endTime | date: 'd MMMM' }}</p>
 			</td>
+
 			<td class="cell">
 				<do-comment [text]="leave?.comment"></do-comment>
 			</td>
+
 			<td class="cell cell__icon">
-				<button *ngIf="canEdit$ | async" mat-icon-button [matMenuTriggerFor]="menu">
-					<mat-icon>more_horiz</mat-icon>
+				<button class="cell__btn" mat-menu-item (click)="openEditModal(leave)">
+					<mat-icon class="cell__btn-icon">edit</mat-icon>
+					<!--span>Редактировать</span>-->
 				</button>
-				<mat-menu #menu="matMenu">
-					<button mat-menu-item (click)="openEditModal(leave)">
-						<mat-icon>edit</mat-icon>
-						<span>Редактировать</span>
-					</button>
-					<button mat-menu-item (click)="openDeleteModal(leave)">
-						<mat-icon>delete</mat-icon>
-						<span>Удалить</span>
-					</button>
-				</mat-menu>
+
+				<button class="cell__btn" mat-menu-item (click)="openDeleteModal(leave)">
+					<mat-icon class="cell__btn-icon">delete</mat-icon>
+					<!--<span>Удалить</span>-->
+				</button>
 			</td>
 		</tr>
 	</tbody>

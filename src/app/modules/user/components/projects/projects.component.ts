@@ -5,6 +5,7 @@ import { OperationResultStatusType } from '@data/api/time-service/models/operati
 import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
+import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 export interface IModalContentConfig {
 	id?: string;
@@ -20,25 +21,22 @@ export interface IModalContentConfig {
 	selector: 'do-projects',
 	templateUrl: './projects.component.html',
 	styleUrls: ['./projects.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent {
 	@Input() public projects: Array<WorkTimeInfo | undefined> | undefined | null;
 	@Input() public canEdit: boolean;
+	// @Input() public canDelete: boolean;
 	public selectedDate: Date;
 
-	constructor(
-		private _modalService: ModalService,
-		private _snackBar: MatSnackBar,
-		private _cdr: ChangeDetectorRef
-	) {
+	constructor(private _modalService: ModalService, private _snackBar: MatSnackBar, private _cdr: ChangeDetectorRef) {
 		this.selectedDate = new Date();
 		this.projects = [];
 		this.canEdit = true;
 	}
 
 	public getDate(year: number, month: number) {
-		return new Date(year, month + 1, 0)
+		return new Date(year, month + 1, 0);
 	}
 
 	public openEditModal(project: WorkTimeInfo | undefined) {
@@ -49,11 +47,15 @@ export class ProjectsComponent {
 			managerHours: project?.managerHours ?? 0,
 			description: project?.description,
 			month: project?.month,
-			year: project?.year
-		}
+			year: project?.year,
+		};
 
 		this._modalService
-			.openModal<EditProjectComponent, IModalContentConfig, IDialogResponse>(EditProjectComponent, ModalWidth.L, modalContentConfig)
+			.openModal<EditProjectComponent, IModalContentConfig, IDialogResponse>(
+				EditProjectComponent,
+				ModalWidth.L,
+				modalContentConfig
+			)
 			.afterClosed()
 			.subscribe((res) => {
 				if (project && res?.status === OperationResultStatusType.FullSuccess) {
@@ -64,6 +66,28 @@ export class ProjectsComponent {
 					this._cdr.detectChanges();
 					this._snackBar.open('Project successfully edited', 'Close', { duration: 3000 });
 				}
-			})
+			});
+	}
+
+	//Заглушка: причиной является отсутствие нужной ф-ии в модуле.
+	public openDeleteModal(project: WorkTimeInfo | undefined) {
+		const confirmDialogData: ConfirmDialogData = {
+			title: 'Удаление записи',
+			confirmText: 'Да, удалить',
+			message: 'Вы действительно хотите удалить запись об отсутствии? Отменить это действие будет невозможно.',
+		};
+
+		this._modalService
+			.confirm(confirmDialogData)
+			.afterClosed()
+			.pipe
+			// switchMap((confirmed) => {
+			// 	return iif(() => !!confirmed, this._timeService.deleteLeaveTime(leave.id), EMPTY);
+			// }),
+			// switchMap(() => this._attendanceService.getLeaveTimeIntervals())
+			()
+			.subscribe(() => {
+				this._cdr.markForCheck();
+			});
 	}
 }
