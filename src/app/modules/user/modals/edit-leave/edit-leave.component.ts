@@ -27,6 +27,7 @@ export class EditLeaveComponent {
 	public LeaveTimePath = LeaveTimePath;
 
 	public editForm: FormGroup;
+	public formHasChanged: boolean;
 	public periodInHours: number;
 	public disableWeekends: DateFilterFn<DateTime>;
 	private readonly _initialData: InitialDataEditRequest<LeaveTimePath>;
@@ -49,32 +50,53 @@ export class EditLeaveComponent {
 
 		this._initialData = {
 			[LeaveTimePath.COMMENT]: [this.leave.comment],
-			[LeaveTimePath.START_TIME]: [new Date(this.leave.startTime), [Validators.required]],
-			[LeaveTimePath.END_TIME]: [new Date(this.leave.endTime), [Validators.required]],
+			[LeaveTimePath.START_TIME]: [DateTime.fromISO(this.leave.startTime), [Validators.required]],
+			[LeaveTimePath.END_TIME]: [DateTime.fromISO(this.leave.endTime), [Validators.required]],
 			[LeaveTimePath.MINUTES]: [this.leave.minutes],
 		};
+		this.formHasChanged = false;
 		this.editForm = this._fb.group(this._initialData);
-
+		this._onCreateGroupFormValueChange();
 		this.periodInHours = leave.hours;
 		this._attendanceService.removeInterval(currentInterval);
 		this.disableWeekends = this._attendanceService.disableWeekends;
 	}
 
+	private _onCreateGroupFormValueChange() {
+		const initialComment = this.editForm.get(LeaveTimePath.COMMENT)?.value;
+		const initialStartTime: DateTime = this.editForm.get(LeaveTimePath.START_TIME)?.value;
+		const initialEndTime: DateTime = this.editForm.get(LeaveTimePath.END_TIME)?.value;
+
+		this.editForm.valueChanges.subscribe((value) => {
+			this.formHasChanged =
+				initialComment !== value[LeaveTimePath.COMMENT] ||
+				+initialStartTime !== +value[LeaveTimePath.START_TIME] ||
+				+initialEndTime !== +value[LeaveTimePath.END_TIME];
+		});
+	}
+
 	public dateSelected(): void {
-		const startDateValue: DateTime = DateTime.fromISO(
-			new Date(this.editForm.get('/StartTime')?.value).toISOString()
-		);
-		let endDateValue: DateTime = DateTime.fromISO(new Date(this.editForm.get('/EndTime')?.value).toISOString());
-		if (!startDateValue.isValid || !endDateValue.isValid) return;
+		const startDateControl = this.editForm.get('/StartTime');
 		const endDateControl = this.editForm.get('/EndTime');
+		const startDateValue: DateTime = startDateControl?.value;
+		let endDateValue: DateTime = endDateControl?.value;
+
+		const timeZoneOffset = startDateValue?.offset;
+
+		if (!startDateValue.isValid || !endDateValue.isValid || +endDateValue === 0) return;
+
 		if (+startDateValue === +endDateValue) {
-			endDateValue = startDateValue.plus({ days: 1 });
-			endDateControl?.setValue(endDateValue);
+			endDateValue = startDateValue.endOf('day').minus({ minutes: timeZoneOffset });
 		}
+
+		startDateControl?.setValue(startDateValue);
+		endDateControl?.setValue(endDateValue);
+
 		const datePeriod: DatePeriod = {
 			startDate: startDateValue,
 			endDate: endDateValue,
 		};
+
 		this.periodInHours = this._attendanceService.getLeaveDuration(datePeriod);
 		this.editForm.get('/Minutes')?.setValue(this.periodInHours * 60);
 	}
@@ -86,23 +108,26 @@ export class EditLeaveComponent {
 	public onSubmitClick(): void {
 		this.loading$$.next(true);
 		const editRequest = createEditRequest(this.editForm.getRawValue(), this._initialData);
-
 		this._timeService
 			.editLeaveTime({
 				leaveTimeId: this.leave.id,
 				body: editRequest,
 			})
 			.pipe(finalize(() => this.loading$$.next(false)))
-			.subscribe((res) =>
-				this.onClose({
-					status: res.status,
-					data: {
-						startTime: this.editForm.get('/StartTime')?.value,
-						endTime: this.editForm.get('/EndTime')?.value,
-						minutes: this.editForm.get('/Minutes')?.value,
-						comment: this.editForm.get('/Comment')?.value,
-					},
-				})
+			.subscribe(
+				(res) => {
+					this.onClose({
+						status: res.status,
+						data: {
+							startTime: this.editForm.get('/StartTime')?.value,
+							endTime: this.editForm.get('/EndTime')?.value,
+							minutes: this.editForm.get('/Minutes')?.value,
+							comment: this.editForm.get('/Comment')?.value,
+						},
+					});
+				},
+				(err) => console.log(err),
+				() => this._attendanceService.getActivities().subscribe()
 			);
 	}
 }

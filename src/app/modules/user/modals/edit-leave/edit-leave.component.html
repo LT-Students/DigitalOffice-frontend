@@ -38,7 +38,7 @@
 				class="controls__button"
 				type="submit"
 				[loading]="(loading$$ | async) ?? false"
-				[disabled]="editForm.invalid"
+				[disabled]="editForm.invalid || !formHasChanged"
 			>
 				Сохранить
 			</button>
