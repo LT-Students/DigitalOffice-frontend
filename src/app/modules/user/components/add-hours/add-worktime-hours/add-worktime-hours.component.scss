@@ -4,7 +4,6 @@
 	&__form {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
 	}
 
 	&__menu {
@@ -18,7 +17,7 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		gap: 10px;
+		gap: 0 10px;
 
 		width: 100%;
 	}
