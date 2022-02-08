@@ -9,22 +9,31 @@
 	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
 		<div class="modal__time">
 			<mat-form-field
-				appearance="outline"
 				class="modal__hours"
 				matTooltipPosition="right"
 				[matTooltip]="inputErrorMessage"
 				matTooltipClass="tooltip"
 			>
 				<mat-label>Колличество часов</mat-label>
-				<input (input)="onHoursInput()" matInput formControlName="userHours" placeholder="0" required />
+				<input matInput formControlName="userHours" (input)="onHoursInput()" placeholder="0" required />
 			</mat-form-field>
-			<span class="mat-h3">ч за {{ projectDate | date: 'LLLL YYYY' }}</span>
+			<span class="mat-h3"> за {{ projectDate | date: 'LLLL YYYY' }} </span>
 		</div>
 
 		<div class="modal__comment">
-			<mat-form-field appearance="outline" class="modal__description">
+			<mat-form-field class="modal__description">
 				<mat-label>Комментарий</mat-label>
-				<textarea matInput formControlName="description" class="modal__description-field"></textarea>
+				<textarea
+					matInput
+					formControlName="description"
+					class="modal__description-field"
+					#textarea
+					placeholder="Оставьте комментарий для менеджера"
+					minlength="0"
+					maxlength="500"
+				>
+				</textarea>
+				<mat-hint class="add-hours__hint">{{ textarea.value?.length || 0 }}/500</mat-hint>
 			</mat-form-field>
 		</div>
 

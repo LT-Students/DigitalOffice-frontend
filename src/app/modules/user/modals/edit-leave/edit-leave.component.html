@@ -6,7 +6,7 @@
 
 	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
 		<div class="modal__range">
-			<mat-form-field class="modal__range-picker" appearance="outline">
+			<mat-form-field class="modal__range-picker">
 				<mat-label>Выберите диапазон отсутствия</mat-label>
 				<mat-date-range-input [rangePicker]="$any(picker)" [dateFilter]="disableWeekends">
 					<input matStartDate placeholder="Начало" [formControlName]="LeaveTimePath.START_TIME" readonly />
@@ -24,7 +24,7 @@
 		</div>
 
 		<div>
-			<mat-form-field appearance="outline" class="modal__description">
+			<mat-form-field class="modal__description">
 				<mat-label>Комментарий</mat-label>
 				<textarea
 					matInput

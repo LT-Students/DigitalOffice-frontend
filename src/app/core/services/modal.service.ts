@@ -6,7 +6,6 @@ import { UserInfo } from '@data/api/user-service/models/user-info';
 import { WorkFlowMode } from '../../modules/employee/employee-page.component';
 import { Team } from '../../modules/admin/components/new-project/team-cards';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
-import { PostComponent } from '../../modules/news/components/post/post.component';
 
 export enum ModalType {
 	CREATE,

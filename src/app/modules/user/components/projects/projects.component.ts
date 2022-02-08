@@ -53,7 +53,7 @@ export class ProjectsComponent {
 		this._modalService
 			.openModal<EditProjectComponent, IModalContentConfig, IDialogResponse>(
 				EditProjectComponent,
-				ModalWidth.L,
+				ModalWidth.M,
 				modalContentConfig
 			)
 			.afterClosed()

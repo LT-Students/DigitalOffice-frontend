@@ -38,7 +38,7 @@ export class LeavesComponent {
 
 	public openEditModal(leave: LeaveTimeModel): void {
 		this._modalService
-			.openModal<EditLeaveComponent, LeaveTimeModel, IDialogResponse>(EditLeaveComponent, ModalWidth.L, leave)
+			.openModal<EditLeaveComponent, LeaveTimeModel, IDialogResponse>(EditLeaveComponent, ModalWidth.M, leave)
 			.afterClosed()
 			.pipe(tap(() => this._attendanceService.getLeaveTimeIntervals().subscribe()))
 			.subscribe((result) => {

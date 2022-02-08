@@ -58,6 +58,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 			tap((date) => {
 				this.selectedDate = date;
 				this.monthOptions = this._setMonthOptions(date);
+				console.log(this.selectedDate, this.monthOptions);
 			})
 		);
 
@@ -159,6 +160,8 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	}
 
 	private _setMonthOptions(selectedDate: DateTime): DateTime[] {
+		console.log(selectedDate.day, selectedDate.month, DateTime.now().month);
+
 		if (selectedDate.day < 5 && selectedDate.month === DateTime.now().month) {
 			const currentDate = DateTime.now();
 			return [currentDate, currentDate.minus({ months: 1 })];

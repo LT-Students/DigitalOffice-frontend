@@ -33,14 +33,22 @@
 		width: 50%;
 	}
 
+	&__comments {
+		position: relative;
+
+		display: inline-block;
+	}
+
 	&__comment-textarea {
 		margin: 0;
 		padding: 0;
 
 		min-height: 106px;
 	}
-}
 
-mat-form-field.mat-form-field {
-	margin: 0;
+	//&__hint {
+	//	position: absolute;
+	//	bottom: 0;
+	//	right: 0;
+	//}
 }
