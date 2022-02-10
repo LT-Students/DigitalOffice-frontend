@@ -7,6 +7,7 @@ import { DndDirective } from '@app/directives/dnd.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
+import { BlockPasteDirective } from '@app/directives/block-paste.directive';
 import { MdePopoverModule } from '@material-extended/mde';
 import { MaterialModule } from './material.module';
 
@@ -53,6 +54,7 @@ import { ChangeUserPasswordComponent } from './modals/change-user-password/chang
 		EmptyListComponent,
 		PhoneInputComponent,
 		ChangeUserPasswordComponent,
+		BlockPasteDirective,
 	],
 	imports: [
 		CommonModule,
@@ -93,6 +95,7 @@ import { ChangeUserPasswordComponent } from './modals/change-user-password/chang
 		EmptyListComponent,
 		PhoneInputComponent,
 		ChangeUserPasswordComponent,
+		BlockPasteDirective,
 	],
 })
 export class SharedModule {}

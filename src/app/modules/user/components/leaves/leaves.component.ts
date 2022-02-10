@@ -67,7 +67,8 @@ export class LeavesComponent {
 				switchMap((confirmed) => {
 					return iif(() => !!confirmed, this._timeService.deleteLeaveTime(leave.id), EMPTY);
 				}),
-				switchMap(() => this._attendanceService.getLeaveTimeIntervals())
+				switchMap(() => this._attendanceService.getLeaveTimeIntervals()),
+				switchMap(() => this._attendanceService.getActivities())
 			)
 			.subscribe(() => {
 				this.leaves = this.leaves?.filter((l) => l.id !== leave.id);

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.1.0",
+    "version": "1.0.1.1",
     "title": "PositionService",
     "description": "PositionService is an API that intended to work with positions."
   },
@@ -258,17 +258,17 @@
         }
       }
     },
-    "/user/createposition": {
+    "/user/edit": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
         }
       ],
-      "post": {
+      "put": {
         "tags": [
           "PositionUser"
         ],
-        "operationId": "createPositionuser",
+        "operationId": "editPositionUser",
         "description": "Chage user position.",
         "requestBody": {
           "content": {
@@ -358,8 +358,7 @@
       "CreatePositionUserRequest": {
         "type": "object",
         "required": [
-          "UserId",
-          "PositionId"
+          "UserId"
         ],
         "properties": {
           "UserId": {
