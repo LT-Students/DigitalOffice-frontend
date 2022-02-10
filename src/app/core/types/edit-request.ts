@@ -61,13 +61,16 @@ export enum UserPath {
 	FIRST_NAME = '/FirstName',
 	LAST_NAME = '/LastName',
 	MIDDLE_NAME = '/MiddleName',
-	GENDER = '/Gender',
+	GENDER_ID = '/GenderId',
 	DATE_OF_BIRTH = '/DateOfBirth',
-	CITY = '/City',
 	STATUS = '/Status',
-	START_WORKING_AT = '/StartWorkingAt',
 	ABOUT = '/About',
 	IS_ACTIVE = '/IsActive',
+	IS_ADMIN = '/IsAdmin',
+	LATITUDE = '/Latitude',
+	LONGITUDE = '/Longitude',
+	BUSINESS_HOURS_FROM_UTC = '/BusinessHoursFromUtc',
+	BUSINESS_HOURS_TO_UTC = '/BusinessHoursToUtc',
 }
 
 export enum OfficePath {

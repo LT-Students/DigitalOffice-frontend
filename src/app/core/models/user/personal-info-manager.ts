@@ -1,4 +1,4 @@
-import { UserGender } from '@data/api/user-service/models/user-gender';
+// import { UserGender } from '@data/api/user-service/models/user-gender';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
 import { RoleInfo } from '@data/api/user-service/models/role-info';
@@ -7,26 +7,27 @@ import { DepartmentInfo } from '@data/api/user-service/models/department-info';
 import { PositionInfo } from '@data/api/user-service/models/position-info';
 import { IImageInfo } from '@app/models/image.model';
 
-export interface IUserGender {
-	genderType: UserGender;
-	genderInRussian: string;
-}
+// export interface IUserGender {
+// 	genderType: UserGender;
+// 	genderInRussian: string;
+// }
 
 export class PersonalInfoManager {
-	private static _genders: IUserGender[] = [
-		{ genderType: UserGender.Male, genderInRussian: 'Мужской' },
-		{ genderType: UserGender.Female, genderInRussian: 'Женский' },
-		{ genderType: UserGender.NotSelected, genderInRussian: 'Не выбран' },
-	];
+	// private static _genders: IUserGender[] = [
+	// 	{ genderType: UserGender.Male, genderInRussian: 'Мужской' },
+	// 	{ genderType: UserGender.Female, genderInRussian: 'Женский' },
+	// 	{ genderType: UserGender.NotSelected, genderInRussian: 'Не выбран' },
+	// ];
 
 	constructor(private _user: UserInfo) {}
 
-	public static getGenderInfoByType(genderType: UserGender): IUserGender | undefined {
-		return this._genders.find((gender: IUserGender) => gender.genderType === genderType);
-	}
+	// public static getGenderInfoByType(genderType: UserGender): IUserGender | undefined {
+	// 	return this._genders.find((gender: IUserGender) => gender.genderType === genderType);
+	// }
 
-	public static getGenderList(): IUserGender[] {
-		return this._genders.slice();
+	public static getGenderList(): string[] {
+		return [];
+		// return this._genders.slice();
 	}
 
 	public get firstName(): string {
@@ -94,8 +95,9 @@ export class PersonalInfoManager {
 		return null;
 	}
 
-	public get gender(): IUserGender | undefined {
-		return PersonalInfoManager.getGenderInfoByType(this._user?.gender ?? UserGender.NotSelected);
+	public get gender(): string | null | undefined {
+		return this._user?.gender;
+		// return PersonalInfoManager.getGenderInfoByType(this._user?.gender ?? UserGender.NotSelected);
 	}
 
 	public get role(): RoleInfo | null | undefined {
@@ -115,7 +117,8 @@ export class PersonalInfoManager {
 	}
 
 	public get city(): string | null | undefined {
-		return this._user?.city;
+		return null;
+		// return this._user?.city;
 	}
 
 	public get position(): PositionInfo | null | undefined {

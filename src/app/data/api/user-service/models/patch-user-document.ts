@@ -13,13 +13,16 @@ export interface PatchUserDocument {
 		| '/FirstName'
 		| '/LastName'
 		| '/MiddleName'
-		| '/Gender'
-		| '/DateOfBirth'
-		| '/City'
 		| '/Status'
-		| '/StartWorkingAt'
+		| '/IsAdmin'
+		| '/IsActive'
+		| '/DateOfBirth'
+		| '/GenderId'
 		| '/About'
-		| '/IsActive';
+		| '/BusinessHoursFromUtc'
+		| '/BusinessHoursToUtc'
+		| '/Latitude'
+		| '/Longitude';
 
 	/**
 	 * The value to be used within the operations.

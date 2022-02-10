@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface DepartmentInfo {
+export interface CompanyInfo {
 	id?: string;
 	name?: string;
 }

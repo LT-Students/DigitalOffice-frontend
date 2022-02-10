@@ -9,7 +9,7 @@ import {
 	CommunicationInfo,
 	EducationInfo,
 	ProjectInfo,
-	UserAchievementInfo,
+	// UserAchievementInfo,
 	UserInfo,
 } from '@data/api/user-service/models';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
@@ -28,7 +28,7 @@ export interface IUserResponse {
 	skills?: Array<string>;
 	communications?: Array<CommunicationInfo>;
 	certificates?: Array<CertificateInfo>;
-	achievements?: Array<UserAchievementInfo>;
+	// achievements?: Array<UserAchievementInfo>;
 	projects?: Array<ProjectInfo>;
 	educations?: Array<EducationInfo>;
 }

@@ -43,11 +43,6 @@ export class UserApiService extends BaseService {
 		userId?: string;
 
 		/**
-		 * User first or last name.
-		 */
-		name?: string;
-
-		/**
 		 * Any of user emails. Can not be used with &#x60;includecommunications&#x60;.
 		 */
 		email?: string;
@@ -120,7 +115,6 @@ export class UserApiService extends BaseService {
 		const rb = new RequestBuilder(this.rootUrl, UserApiService.GetUserPath, 'get');
 		if (params) {
 			rb.query('userId', params.userId, {});
-			rb.query('name', params.name, {});
 			rb.query('email', params.email, {});
 			rb.query('includecurrentavatar', params.includecurrentavatar, {});
 			rb.query('includeavatars', params.includeavatars, {});
@@ -165,11 +159,6 @@ export class UserApiService extends BaseService {
 		 * User global unique identifier.
 		 */
 		userId?: string;
-
-		/**
-		 * User first or last name.
-		 */
-		name?: string;
 
 		/**
 		 * Any of user emails. Can not be used with &#x60;includecommunications&#x60;.
@@ -272,6 +261,16 @@ export class UserApiService extends BaseService {
 		 * Number of users to take.
 		 */
 		takeCount: number;
+
+		/**
+		 * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
+		 */
+		ascendingsort?: boolean;
+
+		/**
+		 * Find for users containing a substring in the full name
+		 */
+		fullnameincludesubstring?: string;
 		includedeactivated?: boolean;
 		includedepartment?: boolean;
 		includeposition?: boolean;
@@ -283,6 +282,8 @@ export class UserApiService extends BaseService {
 		if (params) {
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
+			rb.query('ascendingsort', params.ascendingsort, {});
+			rb.query('fullnameincludesubstring', params.fullnameincludesubstring, {});
 			rb.query('includedeactivated', params.includedeactivated, {});
 			rb.query('includedepartment', params.includedepartment, {});
 			rb.query('includeposition', params.includeposition, {});
@@ -324,6 +325,16 @@ export class UserApiService extends BaseService {
 		 * Number of users to take.
 		 */
 		takeCount: number;
+
+		/**
+		 * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
+		 */
+		ascendingsort?: boolean;
+
+		/**
+		 * Find for users containing a substring in the full name
+		 */
+		fullnameincludesubstring?: string;
 		includedeactivated?: boolean;
 		includedepartment?: boolean;
 		includeposition?: boolean;

@@ -1,20 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
+import { CompanyInfo } from './company-info';
 import { DepartmentInfo } from './department-info';
 import { ImageInfo } from './image-info';
 import { OfficeInfo } from './office-info';
 import { PositionInfo } from './position-info';
 import { RoleInfo } from './role-info';
-import { UserGender } from './user-gender';
 import { UserStatus } from './user-status';
 export interface UserInfo {
-	about?: null | string;
 	avatar?: null | ImageInfo;
-	city?: null | string;
-	dateOfBirth?: null | string;
+	company?: null | CompanyInfo;
 	department?: null | DepartmentInfo;
 	firstName?: string;
-	gender?: UserGender;
 	id?: string;
 	isActive?: boolean;
 	isAdmin?: boolean;
@@ -26,4 +23,7 @@ export interface UserInfo {
 	role?: null | RoleInfo;
 	startWorkingAt?: null | string;
 	status?: UserStatus;
+	dateOfBirth?: null | string;
+	gender?: string;
+	about?: null | string;
 }

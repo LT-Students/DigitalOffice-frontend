@@ -7,9 +7,8 @@ import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { finalize, map, switchMap, take } from 'rxjs/operators';
-import { UserGender } from '@data/api/user-service/models';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
+import { PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
@@ -31,7 +30,7 @@ export class MainInfoComponent implements OnInit {
 	public EditPath: typeof UserPath = UserPath;
 	public employeeInfoForm: FormGroup;
 	public isEditing: boolean;
-	public genders: IUserGender[];
+	public genders: string[];
 	public statuses: IUserStatus[];
 
 	public user$: Observable<User>;
@@ -137,10 +136,10 @@ export class MainInfoComponent implements OnInit {
 				[UserPath.MIDDLE_NAME]: user.middleName,
 				[UserPath.STATUS]: user.statusEmoji?.statusType,
 				[UserPath.ABOUT]: user.about,
-				[UserPath.CITY]: user.city,
+				// [UserPath.CITY]: user.city,
 				// [UserPath.START_WORKING_AT]: user.startWorkingAt,
 				[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
-				[UserPath.GENDER]: user.gender?.genderType,
+				// [UserPath.GENDER]: user.gender,
 			};
 			this.employeeInfoForm.patchValue({ ...this._initialData, avatarImage: user.avatarImage });
 		}
@@ -153,10 +152,10 @@ export class MainInfoComponent implements OnInit {
 			[UserPath.MIDDLE_NAME]: [''],
 			[UserPath.STATUS]: [null],
 			[UserPath.ABOUT]: [''],
-			[UserPath.CITY]: [''],
+			// [UserPath.CITY]: [''],
 			// [UserPath.START_WORKING_AT]: [null],
 			[UserPath.DATE_OF_BIRTH]: [null],
-			[UserPath.GENDER]: [UserGender.NotSelected],
+			// [UserPath.GENDER]: [''],
 			avatarImage: [null],
 		});
 	}

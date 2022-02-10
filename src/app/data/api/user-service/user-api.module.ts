@@ -9,8 +9,6 @@ import { CredentialsApiService } from './services/credentials-api.service';
 import { PasswordApiService } from './services/password-api.service';
 import { CommunicationApiService } from './services/communication-api.service';
 import { AvatarApiService } from './services/avatar-api.service';
-import { SkillApiService } from './services/skill-api.service';
-import { AchievementApiService } from './services/achievement-api.service';
 import { GenderApiService } from './services/gender-api.service';
 
 /**
@@ -26,8 +24,6 @@ import { GenderApiService } from './services/gender-api.service';
 		PasswordApiService,
 		CommunicationApiService,
 		AvatarApiService,
-		SkillApiService,
-		AchievementApiService,
 		GenderApiService,
 		ApiConfiguration,
 	],

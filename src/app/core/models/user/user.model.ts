@@ -1,4 +1,4 @@
-import { UserAchievementInfo } from '@data/api/user-service/models/user-achievement-info';
+// import { UserAchievementInfo } from '@data/api/user-service/models/user-achievement-info';
 import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
 import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
 import { ProjectInfo } from '@data/api/user-service/models/project-info';
@@ -9,7 +9,7 @@ import { setProperty } from '@app/utils/utils';
 import { UserInfo } from '@data/api/user-service/models/user-info';
 
 export interface IUser {
-	achievements?: UserAchievementInfo[] | null;
+	// achievements?: UserAchievementInfo[] | null;
 	certificates?: CertificateInfo[] | null;
 	educations?: EducationInfo[] | null;
 	communications?: CommunicationInfo[] | null;
@@ -18,7 +18,7 @@ export interface IUser {
 }
 
 export class User extends PersonalInfoManager implements IUser {
-	achievements: UserAchievementInfo[] | null | undefined;
+	// achievements: UserAchievementInfo[] | null | undefined;
 	certificates: CertificateInfo[] | null | undefined;
 	communications: CommunicationInfo[] | null | undefined;
 	projects: ProjectInfo[] | null | undefined;
@@ -26,7 +26,7 @@ export class User extends PersonalInfoManager implements IUser {
 
 	constructor(data: OperationResultResponseUserResponse) {
 		super(data?.body?.user as UserInfo);
-		this.achievements = setProperty(data?.body?.achievements);
+		// this.achievements = setProperty(data?.body?.achievements);
 		this.certificates = setProperty(data?.body?.certificates);
 		this.communications = setProperty(data?.body?.communications);
 		this.projects = setProperty(data?.body?.projects);
