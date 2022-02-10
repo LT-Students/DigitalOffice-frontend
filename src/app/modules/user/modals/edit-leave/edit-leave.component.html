@@ -27,10 +27,15 @@
 			<mat-form-field class="modal__description">
 				<mat-label>Комментарий</mat-label>
 				<textarea
-					matInput
 					class="modal__description-field"
+					matInput
+					#textarea
 					[formControlName]="LeaveTimePath.COMMENT"
+					minlength="0"
+					maxlength="500"
+					placeholder="Оставьте комментарий для менеджера"
 				></textarea>
+				<mat-hint class="add-hours__hint">{{ textarea.value?.length || 0 }}/500</mat-hint>
 			</mat-form-field>
 		</div>
 
