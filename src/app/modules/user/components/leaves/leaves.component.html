@@ -42,7 +42,7 @@
 			</td>
 
 			<td class="cell">
-				<p>{{ leave.startTime | date: 'd MMMM' }} - {{ leave.endTime | date: 'd MMMM' }}</p>
+				<p>{{ leave.startTime | date: 'd' }} - {{ leave.endTime | date: 'd MMMM' }}</p>
 			</td>
 
 			<td class="cell">
@@ -61,17 +61,6 @@
 						<img class="cell__btn-img" src="../assets/svg/delete.svg" alt="иконка удаления" />
 					</mat-icon>
 				</button>
-
-				<!--				<button class="cell__btn" mat-menu-item (click)="openEditModal(leave)">-->
-				<!--					<mat-icon class="cell__btn-icon">edit</mat-icon>-->
-				<!--					&lt;!&ndash;span>Редактировать</span>&ndash;&gt;-->
-				<!--				</button>-->
-
-				<!--				<button class="cell__btn" mat-menu-item (click)="openDeleteModal(leave)">-->
-				<!--					<mat-icon class="cell__btn-icon">edit</mat-icon>-->
-				<!--					&lt;!&ndash;<span>Удалить</span>&ndash;&gt;-->
-				<!--				</button>-->
-				<!--			</td>-->
 			</td>
 		</tr>
 	</tbody>
