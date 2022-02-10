@@ -1,7 +1,7 @@
 <div class="modal">
 	<h3>
 		Редактирование часов
-		<span class="mat-h3 primary">за {{ leave.leaveType | leaveLabel: false | lowercase }}</span>
+		<span class="mat-h3 primary"> за {{ leave.leaveType | leaveLabel: false | lowercase }} </span>
 	</h3>
 
 	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
