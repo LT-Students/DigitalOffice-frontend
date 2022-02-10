@@ -5,7 +5,7 @@
 		<col class="column column_width_m" />
 		<col class="column column_width_sm" />
 		<col class="column column_width_sm" />
-		<col class="column column_width_l" />
+		<col class="column column_width_mx" />
 		<col class="column column_width_t" />
 	</colgroup>
 
@@ -76,11 +76,15 @@
 
 			<td class="cell cell__icon">
 				<button class="cell__btn" *ngIf="canEdit" mat-menu-item (click)="openEditModal(project)">
-					<mat-icon class="cell__btn-icon">edit</mat-icon>
+					<mat-icon class="cell__btn-icon">
+						<img class="cell__btn-img" src="../assets/svg/edit.svg" alt="иконка редактирования" />
+					</mat-icon>
 				</button>
 
 				<button class="cell__btn" mat-menu-item (click)="openDeleteModal(project)">
-					<mat-icon class="cell__btn-icon">delete</mat-icon>
+					<mat-icon class="cell__btn-icon">
+						<img class="cell__btn-img" src="../assets/svg/delete.svg" alt="иконка удаления" />
+					</mat-icon>
 				</button>
 			</td>
 		</tr>
