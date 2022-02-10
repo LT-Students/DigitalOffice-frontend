@@ -5,7 +5,7 @@
 		<col class="column column_width_m" />
 		<col class="column column_width_sm" />
 		<col class="column column_width_sm" />
-		<col class="column column_width_l" />
+		<col class="column column_width_mx" />
 		<col class="column column_width_t" />
 	</colgroup>
 
@@ -51,14 +51,27 @@
 
 			<td class="cell cell__icon">
 				<button class="cell__btn" mat-menu-item (click)="openEditModal(leave)">
-					<mat-icon class="cell__btn-icon">edit</mat-icon>
-					<!--span>Редактировать</span>-->
+					<mat-icon class="cell__btn-icon">
+						<img class="cell__btn-img" src="../assets/svg/edit.svg" alt="иконка редактирования" />
+					</mat-icon>
 				</button>
 
 				<button class="cell__btn" mat-menu-item (click)="openDeleteModal(leave)">
-					<mat-icon class="cell__btn-icon">delete</mat-icon>
-					<!--<span>Удалить</span>-->
+					<mat-icon class="cell__btn-icon">
+						<img class="cell__btn-img" src="../assets/svg/delete.svg" alt="иконка удаления" />
+					</mat-icon>
 				</button>
+
+				<!--				<button class="cell__btn" mat-menu-item (click)="openEditModal(leave)">-->
+				<!--					<mat-icon class="cell__btn-icon">edit</mat-icon>-->
+				<!--					&lt;!&ndash;span>Редактировать</span>&ndash;&gt;-->
+				<!--				</button>-->
+
+				<!--				<button class="cell__btn" mat-menu-item (click)="openDeleteModal(leave)">-->
+				<!--					<mat-icon class="cell__btn-icon">edit</mat-icon>-->
+				<!--					&lt;!&ndash;<span>Удалить</span>&ndash;&gt;-->
+				<!--				</button>-->
+				<!--			</td>-->
 			</td>
 		</tr>
 	</tbody>

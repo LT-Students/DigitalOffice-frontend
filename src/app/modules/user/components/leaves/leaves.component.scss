@@ -5,6 +5,16 @@
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
+
+		width: 80px;
+	}
+
+	&__btn-icon {
+		margin: 0;
+		padding: 0;
+
+		width: 40px;
+		height: 40px;
 	}
 
 	&__btn {
@@ -29,9 +39,5 @@
 		color: inherit;
 		background-color: transparent;
 		border: none;
-	}
-
-	&__btn-icon {
-		margin: 0 0 0 24px;
 	}
 }
