@@ -12,18 +12,18 @@
 			/>
 		</mat-form-field>
 
-		<!--		<mat-form-field class="add-hours__month">-->
-		<!--			<mat-label>Месяц</mat-label>-->
-		<!--			<mat-select>-->
-		<!--                <mat-option *ngFor="let selectedDate of month; else mothOpyions">-->
-		<!--                    {{ selectedDate | dateTime: 'LLLL y' }}-->
-		<!--                </mat-option>-->
+		<mat-form-field class="add-hours__month">
+			<mat-label>Месяц</mat-label>
+			<mat-select>
+				<mat-option>
+					{{ selectedDate | dateTime: 'LLLL y' }}
+				</mat-option>
 
-		<!--                <ng-template #mothOpyions>-->
-		<!--                    <mat-option>опция</mat-option>-->
-		<!--                </ng-template>-->
-		<!--			</mat-select>-->
-		<!--		</mat-form-field>-->
+				<ng-template #mothOpyions>
+					<mat-option>опция</mat-option>
+				</ng-template>
+			</mat-select>
+		</mat-form-field>
 	</div>
 
 	<mat-form-field class="add-hours__project">
