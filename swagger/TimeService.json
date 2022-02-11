@@ -1117,16 +1117,16 @@
           },
           "Year": {
             "type": "integer",
-            "example": "2021"
+            "example":"2021"
           },
           "Month": {
             "type": "integer",
-            "example": "12"
+            "example":"12"
           },
           "Offset": {
             "description": "User's timezone offset. Must be in [-12,12] interval.",
             "type": "integer",
-            "example": "-12"
+            "example":"-12"
           }
         }
       },
@@ -1340,6 +1340,7 @@
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2020-07-18T08:23",
             "nullable": true
+
           },
           "Jobs": {
             "type": "array",
