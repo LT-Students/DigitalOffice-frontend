@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
@@ -24,6 +24,11 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainInfoComponent implements OnInit {
+	public toolTipText: {
+		firstName: string;
+		lastName: string;
+		middleName: string;
+	};
 	public loading: BehaviorSubject<boolean>;
 
 	public userStatus: typeof UserStatus = UserStatus;
@@ -46,6 +51,27 @@ export class MainInfoComponent implements OnInit {
 		private _snackBar: MatSnackBar,
 		private _cdr: ChangeDetectorRef
 	) {
+		this.toolTipText = {
+			firstName: `
+				Текст имени может содержать только буквы русского алфавита.
+				Первая буква должна быть заглавной.
+				Все остальные только строчные.`,
+			lastName: `
+				Текст фамилии может содержать только буквы русского алфавита.
+				Первая буква должна быть заглавной.
+				Все остальные только строчные.
+			`,
+			middleName: `
+				Текст отчества может содержать только буквы русского алфавита.
+				Первая буква должна быть заглавной.
+				Все остальные только строчные.
+			`,
+		};
+
+		// `
+		// 	Текст имени может содержать только буквы русского алфовита.
+		// 	Первая буква должна быть заглавной.
+		// 	Все остальные только строчные.`;
 		this.loading = new BehaviorSubject<boolean>(false);
 		this._initialData = {};
 		this.genders = PersonalInfoManager.getGenderList();

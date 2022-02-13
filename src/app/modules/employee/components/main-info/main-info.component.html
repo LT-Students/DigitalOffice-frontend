@@ -92,17 +92,37 @@
 
 				<mat-form-field>
 					<mat-label>Фамилия</mat-label>
-					<input matInput autocomplete="off" [formControlName]="EditPath.LAST_NAME" required />
+					<input
+						matInput
+						autocomplete="off"
+						pattern="^[А-Я-Ё]{1}[а-я-ё]+$"
+						[formControlName]="EditPath.LAST_NAME"
+						matTooltip="{{ toolTipText.lastName }}"
+						required
+					/>
 				</mat-form-field>
 
 				<mat-form-field>
 					<mat-label>Имя</mat-label>
-					<input matInput autocomplete="off" [formControlName]="EditPath.FIRST_NAME" required />
+					<input
+						matInput
+						autocomplete="off"
+						pattern="^[А-Я-Ё]{1}[а-я-ё]+$"
+						[formControlName]="EditPath.FIRST_NAME"
+						matTooltip="{{ toolTipText.firstName }}"
+						required
+					/>
 				</mat-form-field>
 
 				<mat-form-field>
 					<mat-label>Отчество</mat-label>
-					<input matInput autocomplete="off" [formControlName]="EditPath.MIDDLE_NAME" />
+					<input
+						matInput
+						autocomplete="off"
+						pattern="^[А-Я-Ё]{1}[а-я-ё]+$"
+						[formControlName]="EditPath.MIDDLE_NAME"
+						matTooltip="{{ toolTipText.middleName }}"
+					/>
 				</mat-form-field>
 
 				<mat-form-field>
@@ -126,6 +146,7 @@
 
 			<div class="employee-info__general">
 				<h4>Общие сведения</h4>
+
 				<div class="employee-info__columns">
 					<div class="employee-info__first-column">
 						<div *ngIf="user?.position">
@@ -210,7 +231,6 @@
 								[matDatepicker]="picker2"
 								placeholder="ДД месяц ГГГГ"
 							/>
-
 							<mat-datepicker-toggle matSuffix [for]="picker2">
 								<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 							</mat-datepicker-toggle>
