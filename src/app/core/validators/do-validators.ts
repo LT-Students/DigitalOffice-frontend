@@ -15,8 +15,16 @@ const TRIMMED_NAME_REGEXP = /(^\s+|\s+$)/;
 const ONE_SPACE_BETWEEN_WORDS_REGEXP = /(\S\s{2,}\S)/;
 const INTEGER_NUMBER_REGEXP = /^-?\d+$/;
 const PASSWORD_REGEXP = /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\])[\w<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\]{8,14}$/;
+const NAME_REGEXP = /^[A-ZА-ЯЁ]{1}[a-zа-яё]+$/;
 
 export class DoValidators {
+	static fullName(control: AbstractControl): ValidationErrors | null {
+		if (isEmptyInputValue(control.value)) {
+			return null;
+		}
+		return NAME_REGEXP.test(control.value) ? null : { name: true };
+	}
+
 	static email(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;
