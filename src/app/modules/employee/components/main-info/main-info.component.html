@@ -16,6 +16,7 @@
 					</h3>
 					<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
 				</div>
+
 				<div class="employee-info__general">
 					<div class="employee-info__general-header">
 						<h4>Общие сведения</h4>
@@ -68,6 +69,7 @@
 					</div>
 				</div>
 			</ng-container>
+
 			<div class="employee-info__additional">
 				<do-communications class="employee-info__communications"></do-communications>
 			</div>
@@ -87,19 +89,23 @@
 						Обновить фото
 					</label>
 				</div>
-				<mat-form-field appearance="fill">
+
+				<mat-form-field>
 					<mat-label>Фамилия</mat-label>
 					<input matInput autocomplete="off" [formControlName]="EditPath.LAST_NAME" required />
 				</mat-form-field>
-				<mat-form-field appearance="fill">
+
+				<mat-form-field>
 					<mat-label>Имя</mat-label>
 					<input matInput autocomplete="off" [formControlName]="EditPath.FIRST_NAME" required />
 				</mat-form-field>
-				<mat-form-field appearance="fill">
+
+				<mat-form-field>
 					<mat-label>Отчество</mat-label>
 					<input matInput autocomplete="off" [formControlName]="EditPath.MIDDLE_NAME" />
 				</mat-form-field>
-				<mat-form-field appearance="fill">
+
+				<mat-form-field>
 					<mat-label>О себе</mat-label>
 					<textarea
 						#about
@@ -112,10 +118,12 @@
 					></textarea>
 					<mat-hint align="end">{{ about.value.length }}/150</mat-hint>
 				</mat-form-field>
+
 				<div class="employee-info__required-block">
 					<span class="warn"> <sup>*</sup>&nbsp;Обязательное поле</span>
 				</div>
 			</div>
+
 			<div class="employee-info__general">
 				<h4>Общие сведения</h4>
 				<div class="employee-info__columns">
@@ -124,20 +132,23 @@
 							<p class="mat-caption">Должность</p>
 							<p>{{ user?.position?.name }}</p>
 						</div>
+
 						<div *ngIf="user?.department">
 							<p class="mat-caption">Департамент</p>
 							<p>{{ user.department?.name }}</p>
 						</div>
-						<mat-form-field appearance="fill">
+
+						<mat-form-field>
 							<mat-label>Местоположение</mat-label>
 							<input matInput autocomplete="off" [formControlName]="EditPath.CITY" />
 						</mat-form-field>
+
 						<div *ngIf="user?.office?.city">
 							<p class="mat-caption">Офис</p>
 							<p>{{ user?.office?.city }}, {{ user?.office?.address }}</p>
 						</div>
+
 						<mat-form-field
-							appearance="fill"
 							matTooltipClass="tooltip"
 							matTooltip="Статус будет отображаться рядом с именем пользователя"
 							[matTooltipPosition]="'above'"
@@ -146,6 +157,7 @@
 								Эмодзи-статус
 								<mat-icon class="employee-info__hint">help_outline</mat-icon>
 							</mat-label>
+
 							<mat-select [formControlName]="EditPath.STATUS">
 								<mat-option *ngFor="let option of statuses" [value]="option.statusType">
 									{{ option.emojiIcon }} {{ option.statusInRussian | titlecase }}
@@ -153,6 +165,7 @@
 							</mat-select>
 						</mat-form-field>
 					</div>
+
 					<div class="employee-info__second-column">
 						<!--						<ng-container *ngIf="canEdit()">-->
 						<!--							<ng-container *ngIf="!user?.isAdmin; else stepper">-->
@@ -160,19 +173,22 @@
 						<!--								<div>{{ user?.rate }}</div>-->
 						<!--							</ng-container>-->
 						<!--						</ng-container>-->
-						<mat-form-field appearance="fill">
+						<mat-form-field>
 							<mat-label>Пол</mat-label>
+
 							<mat-select [formControlName]="EditPath.GENDER">
 								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
 									{{ gender.genderInRussian }}
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
+
 						<div *ngIf="user?.role?.name">
 							<p class="mat-caption">Роль</p>
 							<p>{{ user.role?.name }}</p>
 						</div>
-						<!--						<mat-form-field appearance="fill">-->
+
+						<!--						<mat-form-field-->
 						<!--							<mat-label>В компании с</mat-label>-->
 						<!--							<input-->
 						<!--								matInput-->
@@ -185,14 +201,16 @@
 						<!--							</mat-datepicker-toggle>-->
 						<!--							<mat-datepicker #picker1></mat-datepicker>-->
 						<!--						</mat-form-field>-->
-						<mat-form-field appearance="fill">
+						<mat-form-field>
 							<mat-label>Дата рождения</mat-label>
+
 							<input
 								matInput
 								[formControlName]="EditPath.DATE_OF_BIRTH"
 								[matDatepicker]="picker2"
 								placeholder="ДД месяц ГГГГ"
 							/>
+
 							<mat-datepicker-toggle matSuffix [for]="picker2">
 								<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 							</mat-datepicker-toggle>
@@ -200,8 +218,10 @@
 						</mat-form-field>
 					</div>
 				</div>
+
 				<div class="controls">
 					<button type="button" mat-button (click)="onReset()" class="controls__button">Отменить</button>
+
 					<button
 						[disabled]="employeeInfoForm.invalid"
 						[loading]="(loading | async) ?? false"
