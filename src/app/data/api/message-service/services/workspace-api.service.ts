@@ -9,128 +9,394 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { CreateWorkspaceRequest } from '../models/create-workspace-request';
+import { EditWorkspaceRequest } from '../models/edit-workspace-request';
+import { FindResultResponseShortWorkspaceInfo } from '../models/find-result-response-short-workspace-info';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { Workspace } from '../models/workspace';
+import { OperationResultResponseWorkspaceInfo } from '../models/operation-result-response-workspace-info';
 
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class WorkspaceApiService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
-    super(config, http);
-  }
+	constructor(config: ApiConfiguration, http: HttpClient) {
+		super(config, http);
+	}
 
-  /**
-   * Path part for operation create
-   */
-  static readonly CreatePath = '/workspace/create';
+	/**
+	 * Path part for operation createWorkspace
+	 */
+	static readonly CreateWorkspacePath = '/workspace/create';
 
-  /**
-   * Create a new workspace.
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `create()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  create$Response(params: {
-    body: Workspace
-  }): Observable<StrictHttpResponse<string>> {
+	/**
+	 * Create a new workspace.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `createWorkspace()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	createWorkspace$Response(params: {
+		body: CreateWorkspaceRequest;
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, WorkspaceApiService.CreateWorkspacePath, 'post');
+		if (params) {
+			rb.body(params.body, 'application/json');
+		}
 
-    const rb = new RequestBuilder(this.rootUrl, WorkspaceApiService.CreatePath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/json');
-    }
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponse>;
+				})
+			);
+	}
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<string>;
-      })
-    );
-  }
+	/**
+	 * Create a new workspace.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `createWorkspace$Response()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	createWorkspace(params: { body: CreateWorkspaceRequest }): Observable<OperationResultResponse> {
+		return this.createWorkspace$Response(params).pipe(
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
 
-  /**
-   * Create a new workspace.
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `create$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  create(params: {
-    body: Workspace
-  }): Observable<string> {
+	/**
+	 * Path part for operation findWorkspace
+	 */
+	static readonly FindWorkspacePath = '/workspace/find';
 
-    return this.create$Response(params).pipe(
-      map((r: StrictHttpResponse<string>) => r.body as string)
-    );
-  }
+	/**
+	 * Returns all workspaces information with pagination.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `findWorkspace()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	findWorkspace$Response(params: {
+		/**
+		 * Number of entries to skip
+		 */
+		skipCount: number;
 
-  /**
-   * Path part for operation remove
-   */
-  static readonly RemovePath = '/workspace/remove';
+		/**
+		 * Number of unsent email to take.
+		 */
+		takeCount: number;
+		includeDeactivated?: boolean;
+	}): Observable<StrictHttpResponse<FindResultResponseShortWorkspaceInfo>> {
+		const rb = new RequestBuilder(this.rootUrl, WorkspaceApiService.FindWorkspacePath, 'get');
+		if (params) {
+			rb.query('skipCount', params.skipCount, {});
+			rb.query('takeCount', params.takeCount, {});
+			rb.query('includeDeactivated', params.includeDeactivated, {});
+		}
 
-  /**
-   * Deletes the specified workspace by id.
-   * * The user must have to be owner or admin.
-   *
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `remove()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  remove$Response(params: {
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<FindResultResponseShortWorkspaceInfo>;
+				})
+			);
+	}
 
-    /**
-     * User global unique identifier.
-     */
-    workspaceId: string;
-  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+	/**
+	 * Returns all workspaces information with pagination.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `findWorkspace$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	findWorkspace(params: {
+		/**
+		 * Number of entries to skip
+		 */
+		skipCount: number;
 
-    const rb = new RequestBuilder(this.rootUrl, WorkspaceApiService.RemovePath, 'delete');
-    if (params) {
-      rb.query('workspaceId', params.workspaceId, {});
-    }
+		/**
+		 * Number of unsent email to take.
+		 */
+		takeCount: number;
+		includeDeactivated?: boolean;
+	}): Observable<FindResultResponseShortWorkspaceInfo> {
+		return this.findWorkspace$Response(params).pipe(
+			map(
+				(r: StrictHttpResponse<FindResultResponseShortWorkspaceInfo>) =>
+					r.body as FindResultResponseShortWorkspaceInfo
+			)
+		);
+	}
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<OperationResultResponse>;
-      })
-    );
-  }
+	/**
+	 * Path part for operation getWorkspace
+	 */
+	static readonly GetWorkspacePath = '/workspace/get';
 
-  /**
-   * Deletes the specified workspace by id.
-   * * The user must have to be owner or admin.
-   *
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `remove$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  remove(params: {
+	/**
+	 * Returns workspace information.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `getWorkspace()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	getWorkspace$Response(params: {
+		/**
+		 * Id of workspace.
+		 */
+		workspaceId: string;
+		includeUsers?: boolean;
+		includeChannels?: boolean;
+	}): Observable<StrictHttpResponse<OperationResultResponseWorkspaceInfo>> {
+		const rb = new RequestBuilder(this.rootUrl, WorkspaceApiService.GetWorkspacePath, 'get');
+		if (params) {
+			rb.query('workspaceId', params.workspaceId, {});
+			rb.query('includeUsers', params.includeUsers, {});
+			rb.query('includeChannels', params.includeChannels, {});
+		}
 
-    /**
-     * User global unique identifier.
-     */
-    workspaceId: string;
-  }): Observable<OperationResultResponse> {
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponseWorkspaceInfo>;
+				})
+			);
+	}
 
-    return this.remove$Response(params).pipe(
-      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-    );
-  }
+	/**
+	 * Returns workspace information.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `getWorkspace$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	getWorkspace(params: {
+		/**
+		 * Id of workspace.
+		 */
+		workspaceId: string;
+		includeUsers?: boolean;
+		includeChannels?: boolean;
+	}): Observable<OperationResultResponseWorkspaceInfo> {
+		return this.getWorkspace$Response(params).pipe(
+			map(
+				(r: StrictHttpResponse<OperationResultResponseWorkspaceInfo>) =>
+					r.body as OperationResultResponseWorkspaceInfo
+			)
+		);
+	}
 
+	/**
+	 * Path part for operation editWorkspace
+	 */
+	static readonly EditWorkspacePath = '/workspace/edit';
+
+	/**
+	 * Edit the specified workspace by id.
+	 * * The user must have to be owner or admin.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `editWorkspace()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	editWorkspace$Response(params: {
+		/**
+		 * User global unique identifier.
+		 */
+		workspaceId: string;
+		body: EditWorkspaceRequest;
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, WorkspaceApiService.EditWorkspacePath, 'patch');
+		if (params) {
+			rb.query('workspaceId', params.workspaceId, {});
+			rb.body(params.body, 'application/json');
+		}
+
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponse>;
+				})
+			);
+	}
+
+	/**
+	 * Edit the specified workspace by id.
+	 * * The user must have to be owner or admin.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `editWorkspace$Response()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	editWorkspace(params: {
+		/**
+		 * User global unique identifier.
+		 */
+		workspaceId: string;
+		body: EditWorkspaceRequest;
+	}): Observable<OperationResultResponse> {
+		return this.editWorkspace$Response(params).pipe(
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
+
+	/**
+	 * Path part for operation addWorkspaceUsers
+	 */
+	static readonly AddWorkspaceUsersPath = '/users/createworkspaceuser';
+
+	/**
+	 * Adds a new users to workspace.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `addWorkspaceUsers()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	addWorkspaceUsers$Response(params: {
+		/**
+		 * Workspace global unique identifier.
+		 */
+		workspaceid: string;
+		body: Array<string>;
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, WorkspaceApiService.AddWorkspaceUsersPath, 'post');
+		if (params) {
+			rb.query('workspaceid', params.workspaceid, {});
+			rb.body(params.body, 'application/json');
+		}
+
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponse>;
+				})
+			);
+	}
+
+	/**
+	 * Adds a new users to workspace.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `addWorkspaceUsers$Response()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	addWorkspaceUsers(params: {
+		/**
+		 * Workspace global unique identifier.
+		 */
+		workspaceid: string;
+		body: Array<string>;
+	}): Observable<OperationResultResponse> {
+		return this.addWorkspaceUsers$Response(params).pipe(
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
+
+	/**
+	 * Path part for operation removeUsers
+	 */
+	static readonly RemoveUsersPath = '/users/removeworkspaceuser';
+
+	/**
+	 * Remove users from Workspace.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `removeUsers()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	removeUsers$Response(params: {
+		/**
+		 * workspace global unique identifier.
+		 */
+		workspaceid: string;
+		body: Array<string>;
+	}): Observable<StrictHttpResponse<OperationResultResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, WorkspaceApiService.RemoveUsersPath, 'delete');
+		if (params) {
+			rb.query('workspaceid', params.workspaceid, {});
+			rb.body(params.body, 'application/json');
+		}
+
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<OperationResultResponse>;
+				})
+			);
+	}
+
+	/**
+	 * Remove users from Workspace.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `removeUsers$Response()` instead.
+	 *
+	 * This method sends `application/json` and handles request body of type `application/json`.
+	 */
+	removeUsers(params: {
+		/**
+		 * workspace global unique identifier.
+		 */
+		workspaceid: string;
+		body: Array<string>;
+	}): Observable<OperationResultResponse> {
+		return this.removeUsers$Response(params).pipe(
+			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
 }

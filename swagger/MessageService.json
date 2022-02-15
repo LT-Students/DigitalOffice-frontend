@@ -1,128 +1,21 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.5",
+    "version": "1.3.1.1",
     "title": "MessageService",
     "description": "MessageService, is intended to work with the messages, emails and email templates."
   },
   "servers": [
     {
-      "url": "https://message.ltdo.xyz"
+      "url": "https://message.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://message.dev.ltdo.xyz",
+      "description": "Development server"
     }
   ],
   "paths": {
-    "/email/addEmailTemplate": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Message"
-        ],
-        "operationId": "addEmailTemplate",
-        "description": "Adds new email template and returns its Id.\n* __The user must have access to the right__ -- Add/Edit/Remove templates.\n",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EmailTemplateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "204": {
-            "description": "New email template Id.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "format": "uuid"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.\n"
-          }
-        }
-      }
-    },
-    "/email/removeEmailTemplate": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Message"
-        ],
-        "operationId": "removeEmailTemplate",
-        "description": "Deletes email template.",
-        "parameters": [
-          {
-            "name": "emailTemplateId",
-            "in": "query",
-            "description": "Email template global unique identifier.",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No content."
-          },
-          "404": {
-            "description": "Not Found.\n* Email template with this id was not found.\n"
-          }
-        }
-      }
-    },
-    "/email/editEmailTemplate": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Message"
-        ],
-        "operationId": "editEmailTemplate",
-        "description": "Changes email templait.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditEmailTemplateRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "The message template was changed successfully.\n  * OK\n"
-          },
-          "204": {
-            "description": "No content."
-          },
-          "400": {
-            "description": "Bad request."
-          },
-          "404": {
-            "description": "The email template with specific id does not exist. \n* Not found\n"
-          }
-        }
-      }
-    },
     "/workspace/create": {
       "parameters": [
         {
@@ -133,37 +26,167 @@
         "tags": [
           "Workspace"
         ],
-        "operationId": "create",
+        "operationId": "createWorkspace",
         "description": "Create a new workspace.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Workspace"
+                "$ref": "#/components/schemas/CreateWorkspaceRequest"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "New workspace Id.",
+          "201": {
+            "description": "New workspace Id will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request.\n"
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/workspace/remove": {
+    "/workspace/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of unsent email to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "findWorkspace",
+        "description": "Returns all workspaces information with pagination.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseShortWorkspaceInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseShortWorkspaceInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "workspaceId",
+          "in": "query",
+          "description": "Id of workspace.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        },
+        {
+          "name": "includeUsers",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeChannels",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "getWorkspace",
+        "description": "Returns workspace information.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseWorkspaceInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace/edit": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -179,15 +202,35 @@
           "required": true
         }
       ],
-      "delete": {
+      "patch": {
         "tags": [
           "Workspace"
         ],
-        "operationId": "remove",
-        "description": "Deletes the specified workspace by id.\n* The user must have to be owner or admin.\n",
+        "operationId": "editWorkspace",
+        "description": "Edit the specified workspace by id.\n* The user must have to be owner or admin.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditWorkspaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Remove workspace operation success (boolean) status will be in response Body property.",
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
             "content": {
               "application/json": {
                 "schema": {
@@ -201,17 +244,475 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channel/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Channel"
+        ],
+        "operationId": "createChannel",
+        "description": "Create a new channel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "New workspace Id will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channel/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "channelid",
+          "in": "query",
+          "description": "Id of channel.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        },
+        {
+          "name": "skipcount",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "takecount",
+          "in": "query",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Channel"
+        ],
+        "operationId": "getChannel",
+        "description": "Returns channel information.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseChannelInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/message/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "operationId": "createMessage",
+        "description": "Create a new message.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/createworkspaceuser": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "workspaceid",
+          "in": "query",
+          "description": "Workspace global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "addWorkspaceUsers",
+        "description": "Adds a new users to workspace.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "description": "Specific user identifier.",
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/createchanneluser": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "channelid",
+          "in": "query",
+          "description": "Channel global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "post": {
+        "tags": [
+          "Channel"
+        ],
+        "operationId": "addChannelUsers",
+        "description": "Adds a new users to channel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "description": "Specific user identifier.",
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/removeworkspaceuser": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "workspaceid",
+          "in": "query",
+          "description": "workspace global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "delete": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "removeUsers",
+        "description": "Remove users from Workspace.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "description": "Specific user identifier.",
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully removed users from workspace.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
           },
           "404": {
-            "description": "Not Found",
+            "description": "NotFound.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/removechanneluser": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "channelid",
+          "in": "query",
+          "description": "channel global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "delete": {
+        "tags": [
+          "Channel"
+        ],
+        "operationId": "removeUsers",
+        "description": "Remove users from Channel.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "description": "Specific user identifier.",
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully removed users from channel.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -222,55 +723,11 @@
   },
   "components": {
     "schemas": {
-      "EmailTemplateRequest": {
+      "CreateWorkspaceRequest": {
         "type": "object",
         "required": [
           "Name",
-          "AuthorId"
-        ],
-        "properties": {
-          "Name": {
-            "description": "Email template name.",
-            "type": "string"
-          },
-          "Type": {
-            "$ref": "#/components/schemas/EmailTemplateType"
-          },
-          "AuthorId": {
-            "description": "Id of the email template author.",
-            "type": "string",
-            "format": "uuid"
-          },
-          "EmailTemplateTexts": {
-            "$ref": "#/components/schemas/EmailTemplateTextInfo"
-          }
-        }
-      },
-      "EditEmailTemplateRequest": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Subject",
-          "Body"
-        ],
-        "properties": {
-          "Id": {
-            "description": "Template Id.",
-            "type": "string",
-            "format": "uuid"
-          },
-          "Subject": {
-            "type": "string"
-          },
-          "Body": {
-            "type": "string"
-          }
-        }
-      },
-      "Workspace": {
-        "type": "object",
-        "required": [
-          "Name"
+          "Users"
         ],
         "properties": {
           "Name": {
@@ -282,11 +739,82 @@
             "type": "string"
           },
           "Image": {
-            "$ref": "#/components/schemas/ImageInfo"
+            "$ref": "#/components/schemas/ImageConsist"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceUserRequest"
+            }
           }
         }
       },
-      "ImageInfo": {
+      "CreateChannelRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "WorkspaceId",
+          "IsPrivate",
+          "Users"
+        ],
+        "properties": {
+          "Name": {
+            "description": "The channel name.",
+            "type": "string"
+          },
+          "WorkspaceId": {
+            "description": "The workspase unique identifier.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsPrivate": {
+            "type": "boolean"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageConsist"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateChannelUserRequest"
+            }
+          }
+        }
+      },
+      "CreateMessageRequest": {
+        "type": "object",
+        "required": [
+          "Content",
+          "Status",
+          "ChannelId"
+        ],
+        "properties": {
+          "Content": {
+            "description": "The message content.",
+            "type": "string"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/StatusType"
+          },
+          "ChannelId": {
+            "description": "The channel unique identifier.",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "StatusType": {
+        "type": "string",
+        "description": "Message status.\nMay be empty, default value: 'Sent'.",
+        "enum": [
+          "Sent",
+          "Read",
+          "Removed"
+        ],
+        "nullable": false,
+        "example": "Removed"
+      },
+      "CreateImageRequest": {
         "type": "object",
         "required": [
           "Content",
@@ -304,26 +832,190 @@
           }
         }
       },
-      "EmailTemplateTextInfo": {
+      "CreateChannelUserRequest": {
         "type": "object",
-        "required": [
-          "Subject",
-          "Body",
-          "Language"
-        ],
         "properties": {
-          "Subject": {
-            "description": "Template text subject.",
+          "WorkspaceUserId": {
+            "description": "Unique identifier of workspace user.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsAdmin": {
+            "description": "Is user admin of channel.",
+            "type": "boolean"
+          }
+        }
+      },
+      "WorkspaceUserRequest": {
+        "type": "object",
+        "properties": {
+          "UserId": {
+            "description": "Unique user identifier.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "IsAdmin": {
+            "description": "Is user admin of channel.",
+            "type": "boolean"
+          }
+        }
+      },
+      "ImageConsist": {
+        "type": "object",
+        "properties": {
+          "Content": {
+            "type": "string",
+            "nullable": true
+          },
+          "Extension": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ImageInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Content": {
             "type": "string"
           },
-          "Text": {
-            "type": "string"
-          },
-          "Language": {
-            "description": "Template text language",
+          "Extension": {
             "type": "string"
           }
         }
+      },
+      "UserInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FirstName": {
+            "type": "string"
+          },
+          "MiddleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "Avatar": {
+            "$ref": "#/components/schemas/ImageInfo",
+            "nullable": true
+          }
+        }
+      },
+      "MessageInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Status": {
+            "type": "integer"
+          },
+          "ThreadMessagesCount": {
+            "type": "integer"
+          },
+          "CreatedBy": {
+            "$ref": "#/components/schemas/UserInfo",
+            "nullable": true
+          },
+          "CreatedAtUtc": {
+            "type": "string",
+            "example": "2021-01-21T00:00:00.000Z",
+            "format": "date"
+          },
+          "Images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageInfo"
+            },
+            "nullable": true
+          },
+          "FilesIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "ShortChannelInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Avatar": {
+            "$ref": "#/components/schemas/ImageConsist",
+            "nullable": true
+          },
+          "Name": {
+            "type": "string"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "IsPrivate": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ShortWorkspaceInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageConsist"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string",
+            "nullable": true
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
       },
       "OperationResultResponse": {
         "description": "Response object for action operations.",
@@ -343,42 +1035,205 @@
           }
         }
       },
-      "ErrorResponse": {
-        "description": "Error information",
+      "OperationResultResponseWorkspaceInfo": {
         "type": "object",
         "properties": {
-          "UtcTime": {
-            "type": "string"
+          "body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "isActive": {
+                "type": "boolean"
+              },
+              "image": {
+                "$ref": "#/components/schemas/ImageConsist",
+                "nullable": true
+              },
+              "createdBy": {
+                "$ref": "#/components/schemas/UserInfo",
+                "nullable": true
+              },
+              "createdAtUtc": {
+                "type": "string",
+                "example": "2021-01-21T00:00:00.000Z",
+                "format": "date"
+              },
+              "users": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserInfo"
+                },
+                "nullable": true
+              },
+              "channels": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ShortChannelInfo"
+                },
+                "nullable": true
+              }
+            }
           },
-          "Header": {
-            "type": "string"
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
           },
-          "Message": {
-            "description": "A human readable message providing more details about the error.",
-            "type": "string"
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
+      "OperationResultResponseChannelInfo": {
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "avatar": {
+                "$ref": "#/components/schemas/ImageConsist",
+                "nullable": true
+              },
+              "name": {
+                "type": "string"
+              },
+              "isPrivate": {
+                "type": "boolean"
+              },
+              "users": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/UserInfo"
+                },
+                "nullable": true
+              },
+              "Messages": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MessageInfo"
+                },
+                "nullable": true
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
       },
-      "EmailTemplateType": {
-        "type": "string",
-        "description": "Email template type.",
-        "enum": [
-          "Notification",
-          "Warning",
-          "Greeting"
+      "FindResultResponseShortWorkspaceInfo": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter workspaces."
+          },
+          "body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ShortWorkspaceInfo"
+            },
+            "nullable": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EditWorkspaceRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Description",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/IsActive",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Image",
+            "value": {
+              "format": "string"
+            }
+          }
         ],
-        "example": "Notification"
+        "items": {
+          "$ref": "#/components/schemas/PatchWorkspaceDocument"
+        }
+      },
+      "PatchWorkspaceDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Name",
+              "/Description",
+              "/IsActive",
+              "/Image"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
       }
     },
     "parameters": {
