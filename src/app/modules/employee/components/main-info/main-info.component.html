@@ -95,7 +95,7 @@
 					<input
 						matInput
 						autocomplete="off"
-						pattern="^[А-Я-Ё]{1}[а-я-ё]+$"
+						pattern="^([ЁА-Я][ЁёА-Яа-я\s\']{0,44}|[A-Z][A-Za-z\s\']{0,44})$"
 						[formControlName]="EditPath.LAST_NAME"
 						matTooltip="{{ toolTipText.lastName }}"
 						required
@@ -107,7 +107,7 @@
 					<input
 						matInput
 						autocomplete="off"
-						pattern="^[А-Я-Ё]{1}[а-я-ё]+$"
+						pattern="^([ЁА-Я][ЁёА-Яа-я\s\']{0,44}|[A-Z][A-Za-z\s\']{0,44})$"
 						[formControlName]="EditPath.FIRST_NAME"
 						matTooltip="{{ toolTipText.firstName }}"
 						required
@@ -119,7 +119,7 @@
 					<input
 						matInput
 						autocomplete="off"
-						pattern="^[А-Я-Ё]{1}[а-я-ё]+$"
+						pattern="^([ЁА-Я][ЁёА-Яа-я\s\']{0,44}|[A-Z][A-Za-z\s\']{0,44})$"
 						[formControlName]="EditPath.MIDDLE_NAME"
 						matTooltip="{{ toolTipText.middleName }}"
 					/>
