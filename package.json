@@ -10,6 +10,7 @@
     "e2e": "ng e2e",
     "branch": "sh .githooks/pre-commit",
     "prettier": "prettier --write src/**/*.{ts,scss}",
+    "generate.admin":"ng-openapi-gen -c swagger/config/admin.json",
     "generate.education": "ng-openapi-gen -c swagger/config/education.json",
     "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
     "generate.company": "ng-openapi-gen -c swagger/config/company.json",

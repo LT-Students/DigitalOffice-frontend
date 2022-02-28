@@ -33,6 +33,8 @@ import { PositionApiModule } from '@data/api/position-service/position-api.modul
 import { OfficeApiModule } from '@data/api/office-service/office-api.module';
 import { PasswordService } from '@app/services/user/password.service';
 import { EducationApiModule } from '@data/api/education-service/education-api.module';
+import { AdminApiModule } from '@data/api/admin-service/admin-api.module';
+import { AdminService } from '@app/services/admin/admin.service';
 import { environment } from '../../environments/environment';
 
 @NgModule({
@@ -42,6 +44,7 @@ import { environment } from '../../environments/environment';
 		BrowserAnimationsModule,
 		RouterModule,
 		HttpClientModule,
+		AdminApiModule.forRoot({ rootUrl: `https://admin.${environment.apiUrl}` }),
 		EducationApiModule.forRoot({ rootUrl: `https://education.${environment.apiUrl}` }),
 		AuthenticationApiModule.forRoot({ rootUrl: `https://auth.${environment.apiUrl}` }),
 		DepartmentApiModule.forRoot({ rootUrl: `https://department.${environment.apiUrl}` }),
@@ -58,6 +61,7 @@ import { environment } from '../../environments/environment';
 		OfficeApiModule.forRoot({ rootUrl: `https://office.${environment.apiUrl}` }),
 	],
 	providers: [
+		AdminService,
 		AuthService,
 		CompanyService,
 		OfficeService,
