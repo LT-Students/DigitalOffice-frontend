@@ -3,6 +3,12 @@
 @use '~@angular/material' as mat;
 
 .employee-info {
+	margin: 0 auto;
+
+	display: flex;
+
+	max-width: 1240px;
+
 	&__wrapper {
 		display: grid;
 
@@ -59,9 +65,9 @@
 		width: 180px;
 		height: 180px;
 
-		align-self: center;
-
 		border-radius: 50%;
+
+		align-self: center;
 	}
 
 	&__upload-button {

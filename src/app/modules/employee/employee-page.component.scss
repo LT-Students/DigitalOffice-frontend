@@ -16,19 +16,39 @@
 
 .flex {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-end;
 }
 
 .employee-page {
+	&__header {
+		margin: 24px auto 4px auto;
+
+		width: 100%;
+		min-height: 36px;
+	}
+
 	&__button {
-		margin-bottom: 15px;
+		margin: 0;
+		padding: 0;
 
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		width: 186px;
+		min-height: 36px;
+	}
+
+	&__button-icon {
+		margin: 9px 12px 9px 15px;
+		padding: 0;
+
+		color: #9d9d9d;
 	}
 
 	&__button-label {
-		margin-left: 7px;
+		margin: 0 12px 0 0;
+
+		color: #9d9d9d;
 	}
 }
