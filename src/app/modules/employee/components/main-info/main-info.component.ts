@@ -6,10 +6,8 @@ import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model
 import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@data/api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
-import { finalize, map, switchMap, take } from 'rxjs/operators';
-import { UserGender } from '@data/api/user-service/models';
+import { finalize, first, map, switchMap, take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
@@ -31,7 +29,6 @@ export class MainInfoComponent implements OnInit {
 	public EditPath: typeof UserPath = UserPath;
 	public employeeInfoForm: FormGroup;
 	public isEditing: boolean;
-	public genders: IUserGender[];
 	public statuses: IUserStatus[];
 
 	public user$: Observable<User>;
@@ -48,7 +45,6 @@ export class MainInfoComponent implements OnInit {
 	) {
 		this.loading = new BehaviorSubject<boolean>(false);
 		this._initialData = {};
-		this.genders = PersonalInfoManager.getGenderList();
 		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
 		this.employeeInfoForm = this._initEditForm();
@@ -102,9 +98,9 @@ export class MainInfoComponent implements OnInit {
 
 		this._employeeService.selectedUser$
 			.pipe(
-				take(1),
-				map((user) => user.id ?? ''),
-				switchMap((userId) =>
+				first((user) => !!user?.id),
+				map((user) => user.id as string),
+				switchMap((userId: string) =>
 					forkJoin([
 						this._userService.editUser(userId, editRequest),
 						this.employeeInfoForm.get('avatarImage')?.dirty
@@ -130,20 +126,16 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	private _fillForm(user: User): void {
-		if (user) {
-			this._initialData = {
-				[UserPath.FIRST_NAME]: user.firstName,
-				[UserPath.LAST_NAME]: user.lastName,
-				[UserPath.MIDDLE_NAME]: user.middleName,
-				[UserPath.STATUS]: user.statusEmoji?.statusType,
-				[UserPath.ABOUT]: user.about,
-				[UserPath.CITY]: user.city,
-				// [UserPath.START_WORKING_AT]: user.startWorkingAt,
-				[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
-				[UserPath.GENDER]: user.gender?.genderType,
-			};
-			this.employeeInfoForm.patchValue({ ...this._initialData, avatarImage: user.avatarImage });
-		}
+		this._initialData = {
+			[UserPath.FIRST_NAME]: user.firstName,
+			[UserPath.LAST_NAME]: user.lastName,
+			[UserPath.MIDDLE_NAME]: user.middleName,
+			[UserPath.STATUS]: user.status,
+			[UserPath.ABOUT]: user.about,
+			// [UserPath.START_WORKING_AT]: user.startWorkingAt,
+			[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
+		};
+		this.employeeInfoForm.patchValue({ ...this._initialData, avatarImage: user.avatar });
 	}
 
 	private _initEditForm(): FormGroup {
@@ -153,10 +145,9 @@ export class MainInfoComponent implements OnInit {
 			[UserPath.MIDDLE_NAME]: [''],
 			[UserPath.STATUS]: [null],
 			[UserPath.ABOUT]: [''],
-			[UserPath.CITY]: [''],
+			// [UserPath.CITY]: [''],
 			// [UserPath.START_WORKING_AT]: [null],
 			[UserPath.DATE_OF_BIRTH]: [null],
-			[UserPath.GENDER]: [UserGender.NotSelected],
 			avatarImage: [null],
 		});
 	}

@@ -30,6 +30,7 @@ import { EmptyListComponent } from './component/empty-list/empty-list.component'
 import { PhoneInputComponent } from './component/phone-input/phone-input.component';
 import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-bar-routing.module';
 import { ChangeUserPasswordComponent } from './modals/change-user-password/change-user-password.component';
+import { FullNamePipe } from './pipes/full-name.pipe';
 
 @NgModule({
 	declarations: [
@@ -55,6 +56,7 @@ import { ChangeUserPasswordComponent } from './modals/change-user-password/chang
 		PhoneInputComponent,
 		ChangeUserPasswordComponent,
 		BlockPasteDirective,
+		FullNamePipe,
 	],
 	imports: [
 		CommonModule,
@@ -96,6 +98,7 @@ import { ChangeUserPasswordComponent } from './modals/change-user-password/chang
 		PhoneInputComponent,
 		ChangeUserPasswordComponent,
 		BlockPasteDirective,
+		FullNamePipe,
 	],
 })
 export class SharedModule {}

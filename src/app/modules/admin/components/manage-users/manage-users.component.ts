@@ -97,7 +97,11 @@ export class ManageUsersComponent implements AfterViewInit {
 					message: 'Вы действительно хотите удалить этого пользователя?',
 				})
 				.afterClosed()
-				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.disableUser(user?.id), EMPTY)))
+				.pipe(
+					switchMap((confirm) =>
+						iif(() => !!confirm, this._userService.disableUser(user.id as string), EMPTY)
+					)
+				)
 				.subscribe(() => {
 					this._refreshCurrentPage$$.next();
 					this.filters.setValue({ showDeactivatedUsers: false });
@@ -110,7 +114,11 @@ export class ManageUsersComponent implements AfterViewInit {
 					message: 'Вы действительно хотите восстановить этого пользователя?',
 				})
 				.afterClosed()
-				.pipe(switchMap((confirm) => iif(() => !!confirm, this._userService.activateUser(user?.id), EMPTY)))
+				.pipe(
+					switchMap((confirm) =>
+						iif(() => !!confirm, this._userService.activateUser(user.id as string), EMPTY)
+					)
+				)
 				.subscribe(() => {
 					this._refreshCurrentPage$$.next();
 				});
