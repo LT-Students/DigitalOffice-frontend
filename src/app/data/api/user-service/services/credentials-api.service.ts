@@ -10,8 +10,8 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { CreateCredentialsRequest } from '../models/create-credentials-request';
-import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseCredentialsResponse } from '../models/operation-result-response-credentials-response';
+import { ReactivateCredentialsRequest } from '../models/reactivate-credentials-request';
 
 @Injectable({
 	providedIn: 'root',
@@ -77,27 +77,24 @@ export class CredentialsApiService extends BaseService {
 	}
 
 	/**
-	 * Path part for operation checkPendingCredentials
+	 * Path part for operation reactivateCredentials
 	 */
-	static readonly CheckPendingCredentialsPath = '/credentials/checkpending';
+	static readonly ReactivateCredentialsPath = '/credentials/reactivate';
 
 	/**
-	 * This endpoint must be used only for user first time login operation.
+	 * This endpoint must be used only for reactivate user credentials.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `checkPendingCredentials()` instead.
+	 * To access only the response body, use `reactivateCredentials()` instead.
 	 *
-	 * This method doesn't expect any request body.
+	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	checkPendingCredentials$Response(params: {
-		/**
-		 * Unique user identifier.
-		 */
-		userid: string;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, CredentialsApiService.CheckPendingCredentialsPath, 'get');
+	reactivateCredentials$Response(params?: {
+		body?: ReactivateCredentialsRequest;
+	}): Observable<StrictHttpResponse<OperationResultResponseCredentialsResponse>> {
+		const rb = new RequestBuilder(this.rootUrl, CredentialsApiService.ReactivateCredentialsPath, 'put');
 		if (params) {
-			rb.query('userid', params.userid, {});
+			rb.body(params.body, 'application/json');
 		}
 
 		return this.http
@@ -110,27 +107,27 @@ export class CredentialsApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
+					return r as StrictHttpResponse<OperationResultResponseCredentialsResponse>;
 				})
 			);
 	}
 
 	/**
-	 * This endpoint must be used only for user first time login operation.
+	 * This endpoint must be used only for reactivate user credentials.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `checkPendingCredentials$Response()` instead.
+	 * To access the full response (for headers, for example), `reactivateCredentials$Response()` instead.
 	 *
-	 * This method doesn't expect any request body.
+	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	checkPendingCredentials(params: {
-		/**
-		 * Unique user identifier.
-		 */
-		userid: string;
-	}): Observable<OperationResultResponse> {
-		return this.checkPendingCredentials$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+	reactivateCredentials(params?: {
+		body?: ReactivateCredentialsRequest;
+	}): Observable<OperationResultResponseCredentialsResponse> {
+		return this.reactivateCredentials$Response(params).pipe(
+			map(
+				(r: StrictHttpResponse<OperationResultResponseCredentialsResponse>) =>
+					r.body as OperationResultResponseCredentialsResponse
+			)
 		);
 	}
 }

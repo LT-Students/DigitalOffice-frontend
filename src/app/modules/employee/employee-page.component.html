@@ -3,7 +3,7 @@
 		[paths]="[
 			{ title: 'Администрирование', url: 'admin/dashboard' },
 			{ title: 'Управление сотрудниками', url: 'admin/manage-users' },
-			{ title: selectedUser.getFullName }
+			{ title: selectedUser | fullName }
 		]"
 	></do-breadcrumbs>
 	<ng-container *ngIf="userLogged$ | async">

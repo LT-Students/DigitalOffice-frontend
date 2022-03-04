@@ -4,14 +4,14 @@
 			<ng-container *ngIf="!canEdit() || !isEditing; else editForm">
 				<div class="employee-info__main">
 					<div class="employee-info__avatar">
-						<do-profile-image [image]="user?.avatarImage" size="l"></do-profile-image>
+						<do-profile-image [image]="user?.avatar" size="l"></do-profile-image>
 					</div>
 					<h3 class="employee-info__name">
-						{{ user.getFullName }}&nbsp;<span
+						{{ user | fullName }}&nbsp;<span
 							matTooltipClass="tooltip"
-							[matTooltip]="user.firstName + ' ' + (user.statusEmoji?.statusInRussian | lowercase)"
+							[matTooltip]="user.firstName + ' ' + (user.status | lowercase)"
 							[matTooltipPosition]="'above'"
-							>{{ user.statusEmoji?.emojiIcon }}</span
+							>{{ user.status }}</span
 						>
 					</h3>
 					<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
@@ -34,9 +34,9 @@
 								<p class="mat-caption">Департамент</p>
 								<p>{{ user.department?.name }}</p>
 							</div>
-							<div *ngIf="user?.city">
+							<div *ngIf="user?.latitude && user?.longitude">
 								<p class="mat-caption">Местоположение</p>
-								<p>{{ user?.city }}</p>
+								<p>{{ user?.latitude }} {{ user?.longitude }}</p>
 							</div>
 							<div *ngIf="user?.office?.city">
 								<p class="mat-caption">Офис</p>
@@ -50,15 +50,16 @@
 							<!--							</div>-->
 							<div>
 								<p class="mat-caption">Пол</p>
-								<p>{{ user?.gender?.genderInRussian }}</p>
+								<p>{{ user?.genderName }}</p>
 							</div>
 							<div *ngIf="user?.role?.name">
 								<p class="mat-caption">Роль</p>
 								<p>{{ user.role?.name }}</p>
 							</div>
-							<div *ngIf="user?.startWorkingAt">
+							<div>
 								<p class="mat-caption">В компании с</p>
-								<p>{{ user.startWorkingAt | date: dateType.FULL }}</p>
+								<p>Broken</p>
+								<!--								<p>{{ user.startWorkingAt | date: dateType.FULL }}</p>-->
 							</div>
 							<div *ngIf="user?.dateOfBirth">
 								<p class="mat-caption">Дата рождения</p>
@@ -128,10 +129,10 @@
 							<p class="mat-caption">Департамент</p>
 							<p>{{ user.department?.name }}</p>
 						</div>
-						<mat-form-field appearance="fill">
-							<mat-label>Местоположение</mat-label>
-							<input matInput autocomplete="off" [formControlName]="EditPath.CITY" />
-						</mat-form-field>
+						<!--						<mat-form-field appearance="fill">-->
+						<!--							<mat-label>Местоположение</mat-label>-->
+						<!--							<input matInput autocomplete="off" [formControlName]="EditPath.CITY" />-->
+						<!--						</mat-form-field>-->
 						<div *ngIf="user?.office?.city">
 							<p class="mat-caption">Офис</p>
 							<p>{{ user?.office?.city }}, {{ user?.office?.address }}</p>
@@ -160,14 +161,10 @@
 						<!--								<div>{{ user?.rate }}</div>-->
 						<!--							</ng-container>-->
 						<!--						</ng-container>-->
-						<mat-form-field appearance="fill">
-							<mat-label>Пол</mat-label>
-							<mat-select [formControlName]="EditPath.GENDER">
-								<mat-option *ngFor="let gender of genders" [value]="gender.genderType">
-									{{ gender.genderInRussian }}
-								</mat-option>
-							</mat-select>
-						</mat-form-field>
+						<!--						<mat-form-field appearance="fill">-->
+						<!--							<mat-label>Пол</mat-label>-->
+						<!--							<input matInput [formControlName]="EditPath.GENDER_ID" />-->
+						<!--						</mat-form-field>-->
 						<div *ngIf="user?.role?.name">
 							<p class="mat-caption">Роль</p>
 							<p>{{ user.role?.name }}</p>

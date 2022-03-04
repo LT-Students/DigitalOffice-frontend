@@ -2,81 +2,95 @@
 /* eslint-disable */
 import { AddImageRequest } from './add-image-request';
 import { CreateCommunicationRequest } from './create-communication-request';
-import { UserGender } from './user-gender';
 import { UserStatus } from './user-status';
 export interface CreateUserRequest {
-  avatarImage?: AddImageRequest;
+	about?: string;
+	avatarImage?: AddImageRequest;
 
-  /**
-   * User city.
-   */
-  city?: null | string;
+	/**
+	 * Time when the user start work day.
+	 */
+	businessHoursFromUtc?: string;
 
-  /**
-   * Minimum one communication with type Email must be added.
-   */
-  communications: Array<CreateCommunicationRequest>;
+	/**
+	 * Time when the user finish work day.
+	 */
+	businessHoursToUtc?: string;
+	communication: CreateCommunicationRequest;
 
-  /**
-   * Date of user birth.
-   */
-  dayOfBirth?: null | string;
+	/**
+	 * User company ID.
+	 */
+	companyId?: string;
 
-  /**
-   * User department ID.
-   */
-  departmentId?: null | string;
+	/**
+	 * Date of user birth.
+	 */
+	dayOfBirth?: string;
 
-  /**
-   * First name of a user.
-   */
-  firstName: string;
-  gender: UserGender;
+	/**
+	 * User department ID.
+	 */
+	departmentId?: string;
 
-  /**
-   * Mark whether the user is an administrator.
-   */
-  isAdmin?: null | boolean;
+	/**
+	 * First name of a user.
+	 */
+	firstName: string;
 
-  /**
-   * Last name of a user.
-   */
-  lastName: string;
+	/**
+	 * Mark whether the user is an administrator.
+	 */
+	isAdmin?: boolean;
 
-  /**
-   * Middle name of a user.
-   */
-  middleName?: null | string;
+	/**
+	 * Last name of a user.
+	 */
+	lastName: string;
 
-  /**
-   * User office ID.
-   */
-  officeId: string;
+	/**
+	 * User location.
+	 */
+	latitude?: number;
 
-  /**
-   * User password.
-   */
-  password?: null | string;
+	/**
+	 * User location.
+	 */
+	longitude?: number;
 
-  /**
-   * User position ID.
-   */
-  positionId: string;
+	/**
+	 * Middle name of a user.
+	 */
+	middleName?: string;
 
-  /**
-   * User rate
-   */
-  rate: number;
+	/**
+	 * User office ID.
+	 */
+	officeId?: string;
 
-  /**
-   * User role ID.
-   */
-  roleId?: null | string;
+	/**
+	 * User password.
+	 */
+	password?: string;
 
-  /**
-   * Time when the user started working for the company.
-   */
-  startWorkingAt?: null | string;
-  status: UserStatus;
+	/**
+	 * User position ID.
+	 */
+	positionId?: string;
+
+	/**
+	 * User rate
+	 */
+	rate?: number;
+
+	/**
+	 * User role ID.
+	 */
+	roleId?: string;
+
+	/**
+	 * Time when the user started working for the company.
+	 */
+	startWorkingAt?: string;
+	status: UserStatus;
 }
-

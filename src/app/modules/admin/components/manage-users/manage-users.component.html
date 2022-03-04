@@ -82,20 +82,21 @@
 					</td>
 					<td class="cell cell_vertical-middle">
 						<p>{{ user?.firstName }} {{ user?.lastName }}</p>
-						<p>{{ user?.position?.name }}</p>
+						<!--						<p>{{ user?.position?.name }}</p>-->
 					</td>
 					<td class="cell cell_vertical-middle">
-						<ng-container *ngIf="user?.department?.name; else empty">
-							<p>{{ user?.department?.name }}</p>
-						</ng-container>
+						<!--						<ng-container *ngIf="user?.department?.name; else empty">-->
+						<!--							<p>{{ user?.department?.name }}</p>-->
+						<!--						</ng-container>-->
+						<p>BROKEN</p>
 					</td>
 					<td class="cell cell_vertical-middle">
-						<ng-container>
-							<p class="cell__content_breakable">{{ user?.role?.name }}</p>
-						</ng-container>
+						<!--						<p class="cell__content_breakable">{{ user?.role?.name }}</p>-->
+						<p class="cell__content_breakable">Broken</p>
 					</td>
 					<td class="cell">
-						<p>{{ user?.rate }}</p>
+						<!--						<p>{{ user?.rate }}</p>-->
+						<p>Broken</p>
 					</td>
 					<td class="cell cell_vertical-middle">
 						<ng-container *ngIf="user?.isActive; else archived">

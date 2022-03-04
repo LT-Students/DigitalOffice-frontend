@@ -67,7 +67,8 @@ export class AddEditDepartmentComponent {
 			map((response) => response.body ?? []),
 			map((users) => {
 				if (this.isEdit) {
-					return users.filter((user) => user.department?.id === this._departmentInfo?.id);
+					// return users.filter((user) => user.department?.id === this._departmentInfo?.id);
+					return users.filter((user) => user.isActive);
 				}
 				return users;
 			})

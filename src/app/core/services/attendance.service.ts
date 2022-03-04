@@ -19,6 +19,7 @@ import { DatePeriod } from '@app/types/date-period';
 import { DateTime, Interval } from 'luxon';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { User } from '@app/models/user/user.model';
 import { DateService } from './date.service';
 import { TimeDurationService } from './time-duration.service';
 
@@ -82,7 +83,8 @@ export class AttendanceService implements Resolve<Activities> {
 	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Activities> {
 		return this._currentUserService.user$.pipe(
 			take(1),
-			tap((user) => this.setUserIdAndRate(user.id, user.rate)),
+			//TODO set real rate when API is ready
+			tap((user: User) => this.setUserIdAndRate(user.id as string, 1)),
 			switchMap(() => this.getLeaveTimeIntervals()),
 			switchMap(() => this.getMonthNormAndHolidays()),
 			switchMap(() => this.getActivities())

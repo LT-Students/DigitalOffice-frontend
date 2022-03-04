@@ -3,12 +3,20 @@
 		<div class="members-board__title" mat-dialog-title>
 			<h3 [ngSwitch]="data.mode">
 				<ng-container *ngSwitchCase="WorkFlowMode.ADD">Добавить участника</ng-container>
-				<ng-container *ngSwitchCase="WorkFlowMode.EDIT">Редактирование направления<br />"{{ data?.team?.name }}"</ng-container>
+				<ng-container *ngSwitchCase="WorkFlowMode.EDIT"
+					>Редактирование направления<br />"{{ data?.team?.name }}"</ng-container
+				>
 				<ng-container *ngSwitchCase="WorkFlowMode.VIEW">Просмотр команды</ng-container>
 			</h3>
-			<button mat-icon-button class="members-board__close-button" mat-dialog-close><mat-icon>close</mat-icon></button>
+			<button mat-icon-button class="members-board__close-button" mat-dialog-close>
+				<mat-icon>close</mat-icon>
+			</button>
 		</div>
-		<mat-form-field class="select members-form__select-spec" appearance="standard" *ngIf="data.mode === WorkFlowMode.ADD">
+		<mat-form-field
+			class="select members-form__select-spec"
+			appearance="standard"
+			*ngIf="data.mode === WorkFlowMode.ADD"
+		>
 			<mat-select class="text_color_dark-1" placeholder="Выберите направление" disableOptionCentering="true">
 				<mat-option class="text_color_dark-1" *ngFor="let role of roles" [value]="role">
 					{{ role }}
@@ -19,12 +27,19 @@
 			<h4 *ngIf="data.mode === WorkFlowMode.ADD">Поиск сотрудников</h4>
 			<div class="filters-section__content">
 				<div class="name">
-					<do-search placeholder="Введите фамилию и имя сотрудника" (searchClick)="onSearchClick($event)"></do-search>
+					<do-search
+						placeholder="Введите фамилию и имя сотрудника"
+						(searchClick)="onSearchClick($event)"
+					></do-search>
 				</div>
 				<div class="position">
 					<mat-form-field class="select members-form__select-lvl" appearance="standard">
 						<mat-select class="text_color_dark-1" placeholder="Выберите должность">
-							<mat-option class="text_color_dark-1" *ngFor="let position of positions" [value]="position.id">
+							<mat-option
+								class="text_color_dark-1"
+								*ngFor="let position of positions"
+								[value]="position.id"
+							>
 								{{ position.name }}
 							</mat-option>
 						</mat-select>
@@ -48,7 +63,8 @@
 				</div>
 				<div class="user-row__general-info">
 					<div class="name">{{ member.firstName }} {{ member.lastName }}</div>
-					<div class="position">{{ member.position?.name }}</div>
+					<!--					<div class="position">{{ member.position?.name }}</div>-->
+					<div class="position">Broken</div>
 				</div>
 				<!-- <div class="user-row__projects-count"><span>1 проект</span></div> -->
 				<!--				<div class="user-row__lead" *ngIf="data.mode">-->
@@ -58,7 +74,12 @@
 				<!--					>-->
 				<!--				</div>-->
 			</div>
-			<mat-paginator [length]="totalCount" [pageSize]="pageSize" [pageSizeOptions]="[10, 25, 50]" (page)="onPageChange($event)"></mat-paginator>
+			<mat-paginator
+				[length]="totalCount"
+				[pageSize]="pageSize"
+				[pageSizeOptions]="[10, 25, 50]"
+				(page)="onPageChange($event)"
+			></mat-paginator>
 		</div>
 
 		<mat-dialog-actions align="center" *ngIf="data.mode !== WorkFlowMode.VIEW">

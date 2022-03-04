@@ -1,35 +1,73 @@
-import { UserAchievementInfo } from '@data/api/user-service/models/user-achievement-info';
-import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
-import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { ProjectInfo } from '@data/api/user-service/models/project-info';
-import { PersonalInfoManager } from '@app/models/user/personal-info-manager';
 import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
-import { EducationInfo } from '@data/api/user-service/models/education-info';
 import { setProperty } from '@app/utils/utils';
 import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserAdditionInfo } from '@data/api/user-service/models/user-addition-info';
+import { ImageInfo } from '@data/api/user-service/models/image-info';
+import { UserStatus } from '@data/api/user-service/models/user-status';
+import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
+import { CompanyInfo } from '@data/api/user-service/models/company-info';
+import { DepartmentInfo } from '@data/api/user-service/models/department-info';
+import { OfficeInfo } from '@data/api/user-service/models/office-info';
+import { PositionInfo } from '@data/api/user-service/models/position-info';
+import { RoleInfo } from '@data/api/user-service/models/role-info';
+import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
+import { EducationInfo } from '@data/api/user-service/models/education-info';
+import { ProjectInfo } from '@data/api/user-service/models/project-info';
 
-export interface IUser {
-	achievements?: UserAchievementInfo[] | null;
-	certificates?: CertificateInfo[] | null;
-	educations?: EducationInfo[] | null;
-	communications?: CommunicationInfo[] | null;
-	projects?: ProjectInfo[] | null;
-	skills?: string[] | null;
-}
-
-export class User extends PersonalInfoManager implements IUser {
-	achievements: UserAchievementInfo[] | null | undefined;
-	certificates: CertificateInfo[] | null | undefined;
-	communications: CommunicationInfo[] | null | undefined;
-	projects: ProjectInfo[] | null | undefined;
-	skills: string[] | null | undefined;
+export class User implements UserInfo, UserAdditionInfo {
+	avatar?: null | ImageInfo;
+	firstName?: string;
+	id?: string;
+	isActive?: boolean;
+	isAdmin?: boolean;
+	lastName?: string;
+	middleName?: null | string;
+	status?: UserStatus;
+	communications?: null | Array<CommunicationInfo>;
+	about?: null | string;
+	businessHoursFromUtc?: null | string;
+	businessHoursToUtc?: null | string;
+	dateOfBirth?: null | string;
+	genderName?: null | string;
+	latitude?: null | number;
+	longitude?: null | number;
+	company?: CompanyInfo;
+	department?: DepartmentInfo;
+	office?: OfficeInfo;
+	position?: PositionInfo;
+	role?: RoleInfo;
+	images?: Array<ImageInfo>;
+	certificates?: Array<CertificateInfo>;
+	educations?: Array<EducationInfo>;
+	projects?: Array<ProjectInfo>;
+	skills?: Array<string>;
 
 	constructor(data: OperationResultResponseUserResponse) {
-		super(data?.body?.user as UserInfo);
-		this.achievements = setProperty(data?.body?.achievements);
-		this.certificates = setProperty(data?.body?.certificates);
-		this.communications = setProperty(data?.body?.communications);
-		this.projects = setProperty(data?.body?.projects);
-		this.skills = setProperty(data?.body?.skills);
+		this.avatar = data.body?.user?.avatar;
+		this.firstName = data.body?.user?.firstName;
+		this.id = data.body?.user?.id;
+		this.isActive = data.body?.user?.isActive;
+		this.isAdmin = data.body?.user?.isAdmin;
+		this.lastName = data.body?.user?.lastName;
+		this.middleName = data.body?.user?.middleName;
+		this.status = data.body?.user?.status;
+		this.communications = data.body?.user?.communications;
+		this.about = data.body?.userAddition?.about;
+		this.businessHoursFromUtc = data.body?.userAddition?.businessHoursFromUtc;
+		this.businessHoursToUtc = data.body?.userAddition?.businessHoursToUtc;
+		this.dateOfBirth = data.body?.userAddition?.dateOfBirth;
+		this.genderName = data.body?.userAddition?.genderName;
+		this.latitude = data.body?.userAddition?.latitude;
+		this.longitude = data.body?.userAddition?.longitude;
+		this.company = data.body?.company;
+		this.department = data.body?.department;
+		this.office = data.body?.office;
+		this.position = data.body?.position;
+		this.role = data.body?.role;
+		this.images = data.body?.images;
+		this.certificates = data.body?.certificates;
+		this.educations = data.body?.educations;
+		this.projects = data.body?.projects;
+		this.skills = data.body?.skills;
 	}
 }

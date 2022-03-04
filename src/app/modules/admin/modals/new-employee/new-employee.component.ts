@@ -8,7 +8,6 @@ import {
 	CommunicationType,
 	CreateCommunicationRequest,
 	OperationResultResponse,
-	UserGender,
 	UserStatus,
 } from '@data/api/user-service/models';
 import { UserService } from '@app/services/user/user.service';
@@ -117,12 +116,10 @@ export class NewEmployeeComponent implements OnDestroy {
 	}
 
 	private _convertFormDataToCreateUserParams(): CreateUserRequest {
-		const communications: CreateCommunicationRequest[] = [
-			{
-				type: CommunicationType.Email,
-				value: this.userForm.get('email')?.value as string,
-			},
-		];
+		const communications: CreateCommunicationRequest = {
+			type: CommunicationType.BaseEmail,
+			value: this.userForm.get('email')?.value as string,
+		};
 
 		return {
 			firstName: this.userForm.get('firstName')?.value?.trim(),
@@ -132,10 +129,9 @@ export class NewEmployeeComponent implements OnDestroy {
 			departmentId: this.userForm.get('departmentId')?.value as string,
 			rate: this.userForm.get('rate')?.value as number,
 			isAdmin: this.userForm.get('isAdmin')?.value as boolean,
-			communications: communications,
+			communication: communications,
 			startWorkingAt: this.userForm.get('startWorkingAt')?.value as string,
 			status: UserStatus.WorkFromHome,
-			gender: UserGender.NotSelected,
 			officeId: this.userForm.get('officeId')?.value,
 			roleId: this.userForm.get('roleId')?.value,
 		};

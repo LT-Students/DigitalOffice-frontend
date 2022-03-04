@@ -5,9 +5,10 @@
  * Communication type.
  */
 export enum CommunicationType {
-  Skype = 'Skype',
-  Phone = 'Phone',
-  Email = 'Email',
-  Telegram = 'Telegram',
-  Twitter = 'Twitter'
+	Skype = 'Skype',
+	Phone = 'Phone',
+	Email = 'Email',
+	Telegram = 'Telegram',
+	Twitter = 'Twitter',
+	BaseEmail = 'BaseEmail',
 }
