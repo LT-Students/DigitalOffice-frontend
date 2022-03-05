@@ -25,6 +25,7 @@ import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { User } from '@app/models/user/user.model';
 import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
@@ -181,8 +182,8 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	private _createNews(): Observable<OperationResultResponse<any>> {
 		let userId: string;
 		return this._currentUserService.user$.pipe(
-			first(),
-			tap((user) => (userId = user?.id ?? '')),
+			first((user: User) => !!user.id),
+			tap((user: User) => (userId = user.id as string)),
 			switchMap(() => from((this._editor as EditorJS).save())),
 			switchMap((outputData) => {
 				const [newsContent, previewContent] = this._prepareOutputData(outputData);

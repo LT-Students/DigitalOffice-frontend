@@ -1,4 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
-import { CommunicationPatchDocument } from './communication-patch-document';
-export type EditCommunicationRequest = Array<CommunicationPatchDocument>;
+import { CommunicationType } from './communication-type';
+export interface EditCommunicationRequest {
+	/**
+	 * allows to establish the confirmed communication as BaseEmail.
+	 */
+	type?: null | CommunicationType;
+
+	/**
+	 * new the communication value
+	 */
+	value?: null | string;
+}

@@ -59,13 +59,10 @@ export class EditContactComponent {
 
 		const request: IEditCommunicationRequest = {
 			communicationId: this.dialogData.id ?? '',
-			body: [
-				{
-					op: 'replace',
-					path: '/Value',
-					value: type === 'Telegram' || type === 'Twitter' ? `@${this.control.value}` : this.control.value,
-				},
-			],
+			body: {
+				type: type,
+				value: type === 'Telegram' || type === 'Twitter' ? `@${this.control.value}` : this.control.value,
+			},
 		};
 
 		this._communicationService

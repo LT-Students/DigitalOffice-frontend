@@ -7,9 +7,9 @@ import { CreateUserRequest } from '@data/api/user-service/models/create-user-req
 import {
 	CertificateInfo,
 	CommunicationInfo,
+	EditUserActiveRequest,
 	EducationInfo,
 	ProjectInfo,
-	UserAchievementInfo,
 	UserInfo,
 } from '@data/api/user-service/models';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
@@ -28,7 +28,6 @@ export interface IUserResponse {
 	skills?: Array<string>;
 	communications?: Array<CommunicationInfo>;
 	certificates?: Array<CertificateInfo>;
-	achievements?: Array<UserAchievementInfo>;
 	projects?: Array<ProjectInfo>;
 	educations?: Array<EducationInfo>;
 }
@@ -80,33 +79,20 @@ export class UserService {
 		return this._userApiService.editUser(params);
 	}
 
-	public disableUser(userId: string | undefined): Observable<OperationResultResponse<null | {}>> {
-		const params: IEditUserRequest = {
-			userId: userId ?? '',
-			body: [
-				{
-					op: 'replace',
-					path: '/IsActive',
-					value: false,
-				},
-			],
+	public disableUser(userId: string): Observable<OperationResultResponse<null | {}>> {
+		const params: EditUserActiveRequest = {
+			userId: userId,
+			isActive: false,
 		};
-		return this._userApiService.editUser(params);
+		return this._userApiService.editUserActive({ body: params });
 	}
 
-	public activateUser(userId: string | undefined): Observable<OperationResultResponse<null | {}>> {
-		const params: IEditUserRequest = {
-			userId: userId ?? '',
-			body: [
-				{
-					op: 'replace',
-					path: '/IsActive',
-					value: true,
-				},
-			],
+	public activateUser(userId: string): Observable<OperationResultResponse<null | {}>> {
+		const params: EditUserActiveRequest = {
+			userId: userId,
+			isActive: true,
 		};
-
-		return this._userApiService.editUser(params);
+		return this._userApiService.editUserActive({ body: params });
 	}
 
 	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
