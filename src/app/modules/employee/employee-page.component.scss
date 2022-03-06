@@ -1,12 +1,16 @@
 .card_employee {
-	margin-bottom: 45px;
+	margin: 0 0 32px 0;
+	padding: 48px;
+	border-radius: 8px;
 
 	&__info {
 		padding: 0;
 	}
 
 	&__projects {
-		padding: 52px 47px;
+	}
+
+	&__characteristic {
 	}
 }
 
@@ -42,13 +46,11 @@
 	&__button-icon {
 		margin: 9px 12px 9px 15px;
 		padding: 0;
-
 		color: #9d9d9d;
 	}
 
 	&__button-label {
 		margin: 0 12px 0 0;
-
 		color: #9d9d9d;
 	}
 }

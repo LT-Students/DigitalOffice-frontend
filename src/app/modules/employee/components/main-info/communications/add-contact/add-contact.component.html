@@ -1,6 +1,6 @@
 <h3 mat-dialog-title class="title">Создание контакта</h3>
 <div [formGroup]="contactForm">
-	<mat-form-field appearance="fill" class="field">
+	<mat-form-field appearance="outline" class="field">
 		<mat-label>Тип контакта</mat-label>
 		<mat-select formControlName="type">
 			<mat-option
@@ -12,7 +12,7 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<mat-form-field appearance="fill" class="field" floatLabel="always">
+	<mat-form-field appearance="outline" class="field" floatLabel="always">
 		<mat-icon
 			matPrefix
 			*ngIf="

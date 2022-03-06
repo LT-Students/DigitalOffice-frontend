@@ -1,184 +1,214 @@
-<div class="employee-info">
-  <!--  Навыки  -->
-  <div class="section">
-    <div class="section__header">
-      <div class="title">
-        <h2 underlinedSize='sm' doUnderline>Навыки</h2>
-        <do-search magnifierLocation="left" placeholder="поиск"></do-search>
-      </div>
-      <div class="action">
-        <button mat-icon-button (click)='onSkillsEditClicked()'>
-          <img src='../../../../../assets/svg/edit.svg' alt="edit"/>
-        </button>
-      </div>
+<div class="competences">
+    <div  class="competences__container">
+        <div class="title">
+            <h2 underlinedSize='sm' doUnderline>Навыки</h2>
+            <do-search magnifierLocation="left" placeholder="поиск"></do-search>
+        </div>
     </div>
-    <div class="section__content">
-      <do-skills [skills]='user?.skills' [mode]='sectionModes.skills'></do-skills>
+
+    <hr class="competences__separator">
+
+    <div  class="competences__container">
+        <div class="title">
+            <h2 underlinedSize='sm' doUnderline>Образование</h2>
+        </div>
     </div>
-  </div>
-  <!--  Образование  -->
-  <!--<div class="section">
-    <div class="section__header">
-      <div class="title">
-        <h2 underlinedSize='sm' doText underlined>Образование</h2>
-      </div>
-      <div class="action">
-        <button
-          (click)='onEducationAddClicked()'
-          *ngIf='sectionModes.education !== workFlowMode.ADD'
-          class='bg-accent_color_light'
-          color='primary'
-          mat-flat-button
-        >
-          + Добавить образование
-        </button>
-      </div>
+
+    <hr class="competences__separator">
+
+    <div  class="competences__container">
+        <div class="title">
+            <h2 underlinedSize='sm' doUnderline>Сертификатыё</h2>
+            <do-search magnifierLocation="left" placeholder="поиск"></do-search>
+        </div>
     </div>
-    <div class="section__content">
-      <div *ngIf="sectionModes.education === workFlowMode.ADD" class="row">
-        <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>
-      </div>
-      <div *ngFor="let place of insts" class="row">
-        <ng-container *ngIf="!place.isEditing; else editFormTemplate">
-          <div class="row__main-info">
-            &lt;!&ndash;1 column&ndash;&gt;
-            <div class="col">
-              <p class="regular_text text-gray1">
-                {{ place.studyType | titlecase }}
-              </p>
-              <p class="regular_text text-dark_2">
-                {{ place.getEducationalPeriod() }}
-              </p>
-            </div>
-            &lt;!&ndash;2 column&ndash;&gt;
-            <div class="col">
-              <p class="col__header regular_text text-gray1">
-                {{ place.educationInstitution }}
-              </p>
-              <p class="regular_text text-dark_2">{{ place.specialization }}</p>
-            </div>
-          </div>
-          <div class="row__edit text-gray1">
-            <mat-form-field class="mat-form-field_none" appearance="none">
-              <mat-select class="none" #matSelect>
-                <mat-option (click)="onRowEditClicked(place)"><img src='../../../../../assets/svg/edit.svg' alt="edit"
-                />&nbsp;Редактировать</mat-option>
-                <mat-option (click)="onRowDeleteClicked(place)"
-                ><img
-                  src='../../../../../assets/svg/delete.svg'
-                  alt="delete"
-                />&nbsp;Удалить</mat-option
-                >
-              </mat-select>
-            </mat-form-field>
-            <button mat-icon-button (click)="matSelect.open()"><mat-icon>more_horiz</mat-icon></button>
-          </div>
-        </ng-container>
-      </div>
-    </div>
-  </div>-->
-  <!--  Сертификаты  -->
-  <div class="section">
-    <div class="section__header">
-      <div class="title">
-        <h2 underlinedSize='sm' doUnderline>Сертификаты</h2>
-        <do-search magnifierLocation="left" placeholder="поиск"></do-search>
-      </div>
-      <div class="action">
-        <button mat-flat-button color="primary" *ngIf="sectionModes.certificates !== workFlowMode.ADD" (click)='onCertificateAddClicked()'>
-          + Добавить сертификат
-        </button>
-      </div>
-    </div>
-    <div class="section__content">
-      <div *ngIf="sectionModes.certificates === workFlowMode.ADD" class="row">
-        <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>
-      </div>
-      <div *ngFor="let course of this.certificates" class="row">
-<!--        было так <ng-container *ngIf="!course.isEditing; else editFormTemplate">-->
-        <ng-container *ngIf="!course; else editFormTemplate">
-          <div class="row__main-info">
-            <!--1 column-->
-            <div class="col">
-              <p>
-<!--                {{ course?.studyType | titlecase }}-->
-              </p>
-              <p>
-<!--                {{ course?.getEducationalPeriod() }}-->
-              </p>
-            </div>
-            <!--2 column-->
-            <div class="col">
-<!--              <p>{{ course?.institutionName }}</p>-->
-<!--              <p>{{ course?.specializationName }}</p>-->
-            </div>
-            <div class="col">
-              <div class="row__button">
-                <button mat-flat-button>
-                  <span><mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат</span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="row__button text-gray1">
-            <!--    Trick, для работы dropdown. TODO: Сделать нормальную собственную реализацию      -->
-            <mat-form-field class="mat-form-field_none" appearance='standard'>
-              <mat-select class="none" #matSelect>
-                <mat-option (click)="onRowEditClicked(course)">
-                  <img src='../../../../../assets/svg/edit.svg' alt="edit" />&nbsp;Редактировать
-                </mat-option>
-                <mat-option (click)="onRowDeleteClicked(course)">
-                  <img src='../../../../../assets/svg/delete.svg' alt="delete" />&nbsp;Удалить
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <button mat-icon-button (click)="matSelect.open()">
-              <span><mat-icon>more_horiz</mat-icon></span>
-            </button>
-          </div>
-        </ng-container>
-      </div>
-    </div>
-  </div>
+</div>
+
+
+<!--  Навыки  -->
+<div>
+    <!--  <div class="section">-->
+    <!--    <div class="section__header">-->
+    <!--      <div class="title">-->
+    <!--        <h2 underlinedSize='sm' doUnderline>Навыки</h2>-->
+    <!--        <do-search magnifierLocation="left" placeholder="поиск"></do-search>-->
+    <!--      </div>-->
+    <!--      <div class="action">-->
+    <!--        <button mat-icon-button (click)='onSkillsEditClicked()'>-->
+    <!--          <img src='../../../../../assets/svg/edit.svg' alt="edit"/>-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--    <div class="section__content">-->
+    <!--      <do-skills [skills]='user?.skills' [mode]='sectionModes.skills'></do-skills>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <!--  &lt;!&ndash;  Образование  &ndash;&gt;-->
+    <!--  <div class="section">-->
+    <!--      -->
+    <!--    <div class="section__header">-->
+    <!--      <div class="title">-->
+    <!--      <h2 underlinedSize='sm' doText underlined>Образование</h2>-->
+    <!--      </div>-->
+    <!--      <div class="action">-->
+    <!--        <button-->
+    <!--          (click)='onEducationAddClicked()'-->
+    <!--          *ngIf='sectionModes.education !== workFlowMode.ADD'-->
+    <!--          class='bg-accent_color_light'-->
+    <!--          color='primary'-->
+    <!--          mat-flat-button-->
+    <!--        >-->
+    <!--          + Добавить образование-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--      -->
+    <!--    <div class="section__content">-->
+    <!--      <div *ngIf="sectionModes.education === workFlowMode.ADD" class="row">-->
+    <!--        <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>-->
+    <!--      </div>-->
+    <!--      <div *ngFor="let place of insts" class="row">-->
+    <!--        <ng-container *ngIf="!place.isEditing; else editFormTemplate">-->
+    <!--          <div class="row__main-info">-->
+    <!--            &lt;!&ndash;1 column&ndash;&gt;-->
+    <!--            <div class="col">-->
+    <!--              <p class="regular_text text-gray1">-->
+    <!--                {{ place.studyType | titlecase }}-->
+    <!--              </p>-->
+    <!--              <p class="regular_text text-dark_2">-->
+    <!--                {{ place.getEducationalPeriod() }}-->
+    <!--              </p>-->
+    <!--            </div>-->
+    <!--            &lt;!&ndash;2 column&ndash;&gt;-->
+    <!--            <div class="col">-->
+    <!--              <p class="col__header regular_text text-gray1">-->
+    <!--                {{ place.educationInstitution }}-->
+    <!--              </p>-->
+    <!--              <p class="regular_text text-dark_2">{{ place.specialization }}</p>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--          <div class="row__edit text-gray1">-->
+    <!--            <mat-form-field class="mat-form-field_none" appearance="none">-->
+    <!--              <mat-select class="none" #matSelect>-->
+    <!--                <mat-option (click)="onRowEditClicked(place)"><img src='../../../../../assets/svg/edit.svg' alt="edit"-->
+    <!--                />&nbsp;Редактировать</mat-option>-->
+    <!--                <mat-option (click)="onRowDeleteClicked(place)"-->
+    <!--                ><img-->
+    <!--                  src='../../../../../assets/svg/delete.svg'-->
+    <!--                  alt="delete"-->
+    <!--                />&nbsp;Удалить</mat-option-->
+    <!--                >-->
+    <!--              </mat-select>-->
+    <!--            </mat-form-field>-->
+    <!--            <button mat-icon-button (click)="matSelect.open()"><mat-icon>more_horiz</mat-icon></button>-->
+    <!--          </div>-->
+    <!--        </ng-container>-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <!--  </div>- -->
+
+</div>
+
+<!--  Сертификаты  -->
+<div class="section">
+<!--    <div class="section__header">-->
+<!--      <div class="title">-->
+<!--        <h2 underlinedSize='sm' doUnderline>Сертификаты</h2>-->
+<!--        <do-search magnifierLocation="left" placeholder="поиск"></do-search>-->
+<!--      </div>-->
+<!--      <div class="action">-->
+<!--        <button mat-flat-button color="primary" *ngIf="sectionModes.certificates !== workFlowMode.ADD" (click)='onCertificateAddClicked()'>-->
+<!--          + Добавить сертификат-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div class="section__content">-->
+<!--      <div *ngIf="sectionModes.certificates === workFlowMode.ADD" class="row">-->
+<!--        <ng-container *ngTemplateOutlet="editFormTemplate"></ng-container>-->
+<!--      </div>-->
+<!--      <div *ngFor="let course of this.certificates" class="row">-->
+<!--&lt;!&ndash;        было так <ng-container *ngIf="!course.isEditing; else editFormTemplate">&ndash;&gt;-->
+<!--        <ng-container *ngIf="!course; else editFormTemplate">-->
+<!--          <div class="row__main-info">-->
+<!--            &lt;!&ndash;1 column&ndash;&gt;-->
+<!--            <div class="col">-->
+<!--              <p>-->
+<!--&lt;!&ndash;                {{ course?.studyType | titlecase }}&ndash;&gt;-->
+<!--              </p>-->
+<!--              <p>-->
+<!--&lt;!&ndash;                {{ course?.getEducationalPeriod() }}&ndash;&gt;-->
+<!--              </p>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;2 column&ndash;&gt;-->
+<!--            <div class="col">-->
+<!--&lt;!&ndash;              <p>{{ course?.institutionName }}</p>&ndash;&gt;-->
+<!--&lt;!&ndash;              <p>{{ course?.specializationName }}</p>&ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--              <div class="row__button">-->
+<!--                <button mat-flat-button>-->
+<!--                  <span><mat-icon>remove_red_eye</mat-icon>&nbsp;Сертификат</span>-->
+<!--                </button>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="row__button text-gray1">-->
+<!--            &lt;!&ndash;    Trick, для работы dropdown. TODO: Сделать нормальную собственную реализацию      &ndash;&gt;-->
+<!--            <mat-form-field class="mat-form-field_none" appearance='standard'>-->
+<!--              <mat-select class="none" #matSelect>-->
+<!--                <mat-option (click)="onRowEditClicked(course)">-->
+<!--                  <img src='../../../../../assets/svg/edit.svg' alt="edit" />&nbsp;Редактировать-->
+<!--                </mat-option>-->
+<!--                <mat-option (click)="onRowDeleteClicked(course)">-->
+<!--                  <img src='../../../../../assets/svg/delete.svg' alt="delete" />&nbsp;Удалить-->
+<!--                </mat-option>-->
+<!--              </mat-select>-->
+<!--            </mat-form-field>-->
+<!--            <button mat-icon-button (click)="matSelect.open()">-->
+<!--              <span><mat-icon>more_horiz</mat-icon></span>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--        </ng-container>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 </div>
 
 <!-- edit form -->
-<ng-template #editFormTemplate>
-  <form class="row__edit-form edit-form" [formGroup]="editForm" (ngSubmit)="onSubmit()">
-    <mat-form-field class="edit-form__institution" appearance="fill" floatLabel="always">
-      <mat-label>Учебное заведение</mat-label>
-      <input matInput formControlName="schoolName"/>
-    </mat-form-field>
-    <mat-form-field class="edit-form__specialization" appearance="fill" floatLabel="always">
-      <mat-label>Специализация</mat-label>
-      <input matInput formControlName="name"/>
-    </mat-form-field>
-    <mat-form-field appearance='fill'>
-      <mat-label>Формат обучения</mat-label>
-      <mat-select class='select' placeholder='Показать все' formControlName='educationType'>
-        <mat-option *ngFor='let studyType of studyTypes' [value]='studyType'>{{ studyType }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <do-datepicker
-      *ngIf="sectionModes.education !== workFlowMode.VIEW"
-      controlName="startYear"
-      format='year'
-      [isEdit]="true"
-      label="Год начала"
-      required="true"
-    ></do-datepicker>
-    <do-datepicker
-      controlName="receivedAt"
-      format='year'
-      [isEdit]="true"
-      label="Год окончания"
-      required="true"></do-datepicker>
-    <button mat-flat-button *ngIf='sectionModes.certificates !== workFlowMode.VIEW' (click)='onCertificateImageAddClicked()'>
-      <mat-icon>attach_file</mat-icon>&nbsp;Загрузить сертификат
-    </button>
-    <div class="edit-form__action">
-      <button mat-flat-button color="warn" type="button" (click)="onReset()">Отменить</button>
-      <button mat-flat-button color="primary" type="submit">Сохранить</button>
-    </div>
-  </form>
-</ng-template>
+<form class="row__edit-form edit-form" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+<!--                <mat-form-field class="edit-form__institution" appearance="fill" floatLabel="always">-->
+<!--                    <mat-label>Учебное заведение</mat-label>-->
+<!--                    <input matInput formControlName="schoolName"/>-->
+<!--                </mat-form-field>-->
+<!--                <mat-form-field class="edit-form__specialization" appearance="fill" floatLabel="always">-->
+<!--                    <mat-label>Специализация</mat-label>-->
+<!--                    <input matInput formControlName="name"/>-->
+<!--                </mat-form-field>-->
+<!--                <mat-form-field appearance='fill'>-->
+<!--                    <mat-label>Формат обучения</mat-label>-->
+<!--                    <mat-select class='select' placeholder='Показать все' formControlName='educationType'>-->
+<!--                        <mat-option *ngFor='let studyType of studyTypes' [value]='studyType'>{{ studyType }}</mat-option>-->
+<!--                    </mat-select>-->
+<!--                </mat-form-field>-->
+<!--                <do-datepicker-->
+<!--                    *ngIf="sectionModes.education !== workFlowMode.VIEW"-->
+<!--                    controlName="startYear"-->
+<!--                    format='year'-->
+<!--                    [isEdit]="true"-->
+<!--                    label="Год начала"-->
+<!--                    required="true"-->
+<!--                ></do-datepicker>-->
+<!--                <do-datepicker-->
+<!--                    controlName="receivedAt"-->
+<!--                    format='year'-->
+<!--                    [isEdit]="true"-->
+<!--                    label="Год окончания"-->
+<!--                    required="true"></do-datepicker>-->
+<!--                <button mat-flat-button *ngIf='sectionModes.certificates !== workFlowMode.VIEW' (click)='onCertificateImageAddClicked()'>-->
+<!--                    <mat-icon>attach_file</mat-icon>&nbsp;Загрузить сертификат-->
+<!--                </button>-->
+<!--                <div class="edit-form__action">-->
+<!--                    <button mat-flat-button color="warn" type="button" (click)="onReset()">Отменить</button>-->
+<!--                    <button mat-flat-button color="primary" type="submit">Сохранить</button>-->
+<!--                </div>-->
+            </form>

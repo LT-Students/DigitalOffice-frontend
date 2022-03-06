@@ -6,7 +6,9 @@
 			*ngIf="selectedUser?.isActive; else restore"
 			(click)="onActionEmployeeClick(selectedUser.id, 'disable')"
 		>
-			<mat-icon class="employee-page__button-icon">archive</mat-icon>
+			<mat-icon class="employee-page__button-icon">
+                <img class='employee-page__icon' src='../assets/svg/employee-page/archive.svg' alt='иконка архивации' />
+            </mat-icon>
 			<span class="employee-page__button-label">Добавить в архив</span>
 		</button>
 		<ng-template #restore>
@@ -15,10 +17,9 @@
 				class="employee-page__button"
 				(click)="onActionEmployeeClick(selectedUser.id, 'activate')"
 			>
-				<mat-icon class="employee-page__button-icon">restore_from_trash</mat-icon>
-				<!--                <mat-icon class="cell__btn-icon">-->
-				<!--                    <img class="cell__btn-img" src="../assets/svg/delete.svg" alt="иконка удаления" />-->
-				<!--                </mat-icon>-->
+				<mat-icon class="employee-page__button-icon">restore_from_trash
+                    <img class='cell__btn-img' src='../assets/svg/employee-page/unzip.svg' alt='иконка востановления' />
+                </mat-icon>
 				<span class="employee-page__button-label">Восстановить</span>
 			</button>
 		</ng-template>
@@ -29,6 +30,12 @@
 	<do-employee-page-main-info></do-employee-page-main-info>
 </mat-card>
 
+<mat-card class="card card_employee card_employee__characteristic">
+    <do-employee-page-competences></do-employee-page-competences>
+</mat-card>
+
 <mat-card class="card card_employee card_employee__projects">
 	<do-employee-page-projects></do-employee-page-projects>
 </mat-card>
+
+

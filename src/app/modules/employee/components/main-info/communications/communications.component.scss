@@ -4,27 +4,22 @@
 .communications {
 	display: flex;
 	flex-direction: column;
-
 	height: 100%;
-
+	//margin: 48px 36px 0 32px;
 	background-color: mat.get-color-from-palette($do-grey, 50);
 
 	&__contacts {
 		overflow-y: auto;
-
 		height: 100%;
 	}
 
 	&__contact {
-		padding-left: 60px;
-
+		padding: 0 36px 0 32px;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-
 		width: 100%;
 		height: 68px;
-
 		cursor: pointer;
 
 		&:hover {
@@ -32,7 +27,6 @@
 
 			.communications__controls {
 				display: inline-block;
-
 				visibility: visible;
 			}
 		}
@@ -44,18 +38,14 @@
 
 	&__controls {
 		display: inline-block;
-
 		visibility: hidden;
-
 		min-width: 80px;
 	}
 }
 
-.header {
-	padding: 0 46px 0 60px;
-
+.communications-header {
+	padding: 0 36px 0 32px;
 	display: flex;
-
 	justify-content: space-between;
 	align-items: center;
 
@@ -66,9 +56,7 @@
 
 .paragraph {
 	margin: 0;
-
 	overflow: hidden;
-
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
