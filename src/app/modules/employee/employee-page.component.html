@@ -1,36 +1,34 @@
 <div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__header flex">
-	<do-breadcrumbs
-		[paths]="[
-			{ title: 'Администрирование', url: 'admin/dashboard' },
-			{ title: 'Управление сотрудниками', url: 'admin/manage-users' },
-			{ title: selectedUser | fullName }
-		]"
-	></do-breadcrumbs>
 	<ng-container *ngIf="userLogged$ | async">
 		<button
 			mat-button
-			class="employee-page__button mat-body-1 flex"
+			class="employee-page__button"
 			*ngIf="selectedUser?.isActive; else restore"
 			(click)="onActionEmployeeClick(selectedUser.id, 'disable')"
 		>
-			<mat-icon>archive</mat-icon>
+			<mat-icon class="employee-page__button-icon">archive</mat-icon>
 			<span class="employee-page__button-label">Добавить в архив</span>
 		</button>
 		<ng-template #restore>
 			<button
 				mat-button
-				class="employee-page__button mat-body-1"
+				class="employee-page__button"
 				(click)="onActionEmployeeClick(selectedUser.id, 'activate')"
 			>
-				<mat-icon>restore_from_trash</mat-icon>
+				<mat-icon class="employee-page__button-icon">restore_from_trash</mat-icon>
+				<!--                <mat-icon class="cell__btn-icon">-->
+				<!--                    <img class="cell__btn-img" src="../assets/svg/delete.svg" alt="иконка удаления" />-->
+				<!--                </mat-icon>-->
 				<span class="employee-page__button-label">Восстановить</span>
 			</button>
 		</ng-template>
 	</ng-container>
 </div>
+
 <mat-card class="card card_employee card_employee__info">
 	<do-employee-page-main-info></do-employee-page-main-info>
 </mat-card>
+
 <mat-card class="card card_employee card_employee__projects">
 	<do-employee-page-projects></do-employee-page-projects>
 </mat-card>
