@@ -2,38 +2,36 @@
 @use 'base/palettes' as *;
 @use '~@angular/material' as mat;
 
+.reset {
+	padding: 0;
+	border: none;
+	font: inherit;
+	color: inherit;
+	background-color: transparent;
+	cursor: pointer;
+}
+
 .employee-info {
 	margin: 0 auto;
 	display: flex;
 
 	&__wrapper {
-		display: grid;
-
-		min-width: 600px;
-
-		grid-template-columns: 3fr 4fr 3fr;
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		min-height: 520px;
 	}
 
 	&__main {
-		margin: 56px 15px 52px 47px;
-
+		margin: 48px 32px 0 48px;
+		width: 28%;
 		display: flex;
 		flex-direction: column;
-
 		text-align: center;
 	}
 
-	&__general {
-		margin: 52px 32px 52px 15px;
-	}
-
-	&__general-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
 	&__additional {
+		width: 26%;
 		position: relative;
 		background-color: mat.get-color-from-palette($do-grey, 50);
 	}
@@ -50,16 +48,11 @@
 
 	&__avatar {
 		position: relative;
-
-		margin-bottom: 12px;
-
+		margin-bottom: 24px;
 		overflow: hidden;
-
 		width: 180px;
 		height: 180px;
-
 		border-radius: 50%;
-
 		align-self: center;
 	}
 
@@ -67,14 +60,10 @@
 		position: absolute;
 		left: 0;
 		bottom: 0;
-
 		padding-top: 8px;
-
 		width: 180px;
 		height: 60px;
-
 		cursor: pointer;
-
 		background-color: rgba(67, 67, 72, 0.6);
 	}
 
@@ -94,7 +83,6 @@
 
 	&__second-column {
 		margin-left: 32px;
-
 		width: 185px;
 
 		mat-form-field {
@@ -104,12 +92,9 @@
 
 	&__hint {
 		margin-left: 2px;
-
 		width: 16px;
 		height: 16px;
-
 		font-size: 16px;
-
 		vertical-align: -20%;
 	}
 
@@ -118,19 +103,64 @@
 	}
 }
 
+.general-data {
+	display: flex;
+	flex-direction: column;
+	width: 44%;
+	margin: 48px 30px 0 32px;
+
+	&__container {}
+
+	&__container-header{
+		display: flex;
+		align-items: start;
+		justify-content: space-between;
+	}
+
+	&__btn-edit {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__btn-label {
+		$body-2: mat.define-typography-level(13px, 18px, 400);
+		color: mat.get-color-from-palette($do-grey, 300);
+		margin-right: 10px;
+	}
+
+	&__tab-list {
+		display: flex;
+		justify-content: space-between;
+		align-items: start;
+		flex-wrap: wrap;
+		width: 100%
+	}
+
+	&__tab-el {
+		width: 50%
+	}
+
+	&__tab-label {
+		$body-2: mat.define-typography-level(13px, 19px, 400);
+		color: mat.get-color-from-palette($do-grey, 300);
+	}
+
+	&__tab-par {
+		//$body-1: mat.define-typography-level(16px, 24px, 700);
+	}
+}
+
 .controls {
 	position: absolute;
 	bottom: 0;
-
 	padding: 32px 0 52px;
-
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
 	&__button {
 		margin: 0 35px;
-
 		width: 180px;
 	}
 }

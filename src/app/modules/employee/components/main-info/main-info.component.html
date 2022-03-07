@@ -16,60 +16,139 @@
 							>{{ user.status }}</span
 						>
 					</h3>
-					<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
+					<q class="mat-body-1 employee-info__about">
+                        “С удовольствием отвечу на ваши вопросы, но только в рабочее время! Всем хорошего дня!”
+                    </q>
+<!--					<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>-->
 				</div>
 
-				<div class="employee-info__general">
-					<div class="employee-info__general-header">
-						<h4>Общие сведения</h4>
-						<button mat-icon-button (click)="toggleEditMode(user)">
-							<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
-						</button>
-					</div>
+				<div class="general-data">
+                    <div class="general-data__container">
+                        <div class="general-data__container-header">
+                            <h4>Общие сведения</h4>
+                            <button class="general-data__btn-edit reset" (click)="toggleEditMode(user)">
+                                <span class="general-data__btn-label">Редактировать профиль</span>
+                                <mat-icon class="general-data__icon">
+                                    <img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+                                </mat-icon>
+                            </button>
 
-					<div class="employee-info__columns">
-						<div class="employee-info__first-column">
-							<div *ngIf="user?.position">
-								<p class="mat-caption">Должность</p>
-								<p>{{ user?.position?.name }}</p>
-							</div>
-							<div *ngIf="user?.department">
-								<p class="mat-caption">Департамент</p>
-								<p>{{ user.department?.name }}</p>
-							</div>
-							<div *ngIf="user?.latitude && user?.longitude">
-								<p class="mat-caption">Местоположение</p>
-								<p>{{ user?.latitude }} {{ user?.longitude }}</p>
-							</div>
-							<div *ngIf="user?.office?.city">
-								<p class="mat-caption">Офис</p>
-								<p>{{ user?.office?.city }}, {{ user?.office?.address }}</p>
-							</div>
-						</div>
-						<div class="employee-info__second-column">
-							<!--							<div *ngIf="user?.rate">-->
-							<!--								<p class="mat-caption">Ставка</p>-->
-							<!--								<p>{{ user?.rate }}</p>-->
-							<!--							</div>-->
-							<div>
-								<p class="mat-caption">Пол</p>
-								<p>{{ user?.genderName }}</p>
-							</div>
-							<div *ngIf="user?.role?.name">
-								<p class="mat-caption">Роль</p>
-								<p>{{ user.role?.name }}</p>
-							</div>
-							<div>
-								<p class="mat-caption">В компании с</p>
-								<p>Broken</p>
-								<!--								<p>{{ user.startWorkingAt | date: dateType.FULL }}</p>-->
-							</div>
-							<div *ngIf="user?.dateOfBirth">
-								<p class="mat-caption">Дата рождения</p>
-								<p>{{ user?.dateOfBirth | date: dateType.FULL }}</p>
-							</div>
-						</div>
-					</div>
+                        </div>
+
+                        <div class="general-data__tab-list">
+                            <div class="general-data__tab-el">
+                                <p class="general-data__tab-label">Гендер</p>
+                                <p class="general-data__tab-par">Женщина</p>
+                            </div>
+
+                            <div class="general-data__tab-el">
+                                <p class="general-data__tab-label">Местоположение</p>
+                                <p class="general-data__tab-par">Россия, Санкт-Петербург</p>
+                            </div>
+
+                            <div class="general-data__tab-el">
+                                <p class="general-data__tab-label">Дата рождения</p>
+                                <p class="general-data__tab-par">30 сентября</p>
+                            </div>
+
+                            <div class="general-data__tab-el">
+                                <p class="general-data__tab-label">Часы работы</p>
+                                <p class="general-data__tab-par">08:00 - 16:00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="general-data__container">
+                        <div class="general-data__container-header">
+                            <h4>Редактировать профиль</h4>
+                        </div>
+
+                        <div class="general-data__table-list">
+                            <div class="general-data__tab-list">
+                                <div class="general-data__tab-el">
+                                    <p class="general-data__tab-label">Департамент</p>
+                                    <p class="general-data__tab-par">Цифровых Технологий</p>
+                                </div>
+
+                                <div class="general-data__tab-el">
+                                    <p class="general-data__tab-label">Офис</p>
+                                    <p class="general-data__tab-par">м. Чернышевская</p>
+                                </div>
+
+                                <div class="general-data__tab-el">
+                                    <p class="general-data__tab-label">Должность</p>
+                                    <p class="general-data__tab-par">Middle Product Manager</p>
+                                </div>
+
+                                <div class="general-data__tab-el">
+                                    <p class="general-data__tab-label">Роль</p>
+                                    <p class="general-data__tab-par">Администратор</p>
+                                </div>
+
+                                <div class="general-data__tab-el">
+                                    <p class="general-data__tab-label">В компании с</p>
+                                    <p class="general-data__tab-par">30 сентября 2020</p>
+                                </div>
+
+                                <div class="general-data__tab-el">
+                                    <p class="general-data__tab-label">Ставка</p>
+                                    <p class="general-data__tab-par">0,5</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<!--					<div class="employee-info__general">-->
+
+<!--					</div>-->
+
+<!--					<div class='employee-info__job'>-->
+<!--                        <h4>Рабочая информация</h4>-->
+<!--                    </div>-->
+
+<!--                    <div class="employee-info__columns">-->
+<!--                        <div class="employee-info__first-column">-->
+<!--                            <div *ngIf="user?.position">-->
+<!--                                <p class="mat-caption">Должность</p>-->
+<!--                                <p>{{ user?.position?.name }}</p>-->
+<!--                            </div>-->
+<!--                            <div *ngIf="user?.department">-->
+<!--                                <p class="mat-caption">Департамент</p>-->
+<!--                                <p>{{ user.department?.name }}</p>-->
+<!--                            </div>-->
+<!--                            <div *ngIf="user?.latitude && user?.longitude">-->
+<!--                                <p class="mat-caption">Местоположение</p>-->
+<!--                                <p>{{ user?.latitude }} {{ user?.longitude }}</p>-->
+<!--                            </div>-->
+<!--                            <div *ngIf="user?.office?.city">-->
+<!--                                <p class="mat-caption">Офис</p>-->
+<!--                                <p>{{ user?.office?.city }}, {{ user?.office?.address }}</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="employee-info__second-column">-->
+<!--                            &lt;!&ndash;                            <div *ngIf='user?.rate'>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                <p class='mat-caption'>Ставка</p>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                                <p>{{ user?.rate }}</p>&ndash;&gt;-->
+<!--                            &lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--                            <div>-->
+<!--                                <p class="mat-caption">Пол</p>-->
+<!--                                <p>{{ user?.genderName }}</p>-->
+<!--                            </div>-->
+<!--                            <div *ngIf="user?.role?.name">-->
+<!--                                <p class="mat-caption">Роль</p>-->
+<!--                                <p>{{ user.role?.name }}</p>-->
+<!--                            </div>-->
+<!--                            <div>-->
+<!--                                <p class="mat-caption">В компании с</p>-->
+<!--                                <p>Broken</p>-->
+<!--                                &lt;!&ndash;								<p>{{ user.startWorkingAt | date: dateType.FULL }}</p>&ndash;&gt;-->
+<!--                            </div>-->
+<!--                            <div *ngIf="user?.dateOfBirth">-->
+<!--                                <p class="mat-caption">Дата рождения</p>-->
+<!--                                <p>{{ user?.dateOfBirth | date: dateType.FULL }}</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
 				</div>
 			</ng-container>
 
