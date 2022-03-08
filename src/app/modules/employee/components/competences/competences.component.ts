@@ -83,11 +83,13 @@ export class CompetencesComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.certificates = this.user.certificates
+		this.certificates = this.user?.certificates
 			? this.user.certificates.map((certificate: CertificateInfo) => new Certificate(certificate))
 			: null;
 
-		this.institutes = this.certificates.slice();
+		if (this.certificates !== null) {
+			this.institutes = this.certificates.slice();
+		}
 	}
 
 	public onStartYearSelected(selectedDate: any): void {
