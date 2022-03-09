@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
-import { CompanyService } from '@app/services/company/company.service';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { EMPTY, iif } from 'rxjs';
+import { PortalService } from '@app/services/portal.service';
+import { AdminService, PortalInfo } from '@app/services/admin/admin.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -14,7 +15,8 @@ export class AppInitService {
 	constructor(
 		private _currentUserService: CurrentUserService,
 		private _currentCompanyService: CurrentCompanyService,
-		private _companyService: CompanyService,
+		private portalService: PortalService,
+		private adminService: AdminService,
 		private _localStorage: LocalStorageService,
 		private _authService: AuthService
 	) {}
@@ -24,10 +26,12 @@ export class AppInitService {
 
 		const userId: string | undefined = token ? (JSON.parse(atob(token.split('.')[1])).UserId as string) : undefined;
 		return new Promise((resolve) => {
-			this._companyService
-				.getCompany()
+			this.adminService
+				.isPortalExists()
 				.pipe(
-					tap((company) => this._currentCompanyService.setCompany(company)),
+					tap((res) => {
+						this.portalService.setPortal((res.body as PortalInfo) ?? null);
+					}),
 					switchMap(() =>
 						iif(
 							() => token !== null,

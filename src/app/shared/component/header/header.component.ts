@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { AuthService } from '@app/services/auth/auth.service';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { CurrentCompanyService } from '@app/services/current-company.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { PortalService } from '@app/services/portal.service';
+import { PortalInfo } from '@app/services/admin/admin.service';
 import { ChangeUserPasswordComponent } from '../../modals/change-user-password/change-user-password.component';
 
 @Component({
@@ -23,11 +24,11 @@ export class HeaderComponent {
 	constructor(
 		private _authService: AuthService,
 		private _currentUserService: CurrentUserService,
-		private _currentCompanyService: CurrentCompanyService,
+		private portalService: PortalService,
 		private _modalService: ModalService
 	) {
 		this.menuClick = new EventEmitter();
-		this.portalName = this._currentCompanyService.company$.pipe(map((user) => user.portalName));
+		this.portalName = this.portalService.portal$.pipe(map((portal: PortalInfo) => portal.portalName));
 		this.currentUser$ = this._currentUserService.user$;
 	}
 

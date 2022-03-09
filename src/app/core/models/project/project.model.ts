@@ -1,25 +1,6 @@
 //@ts-nocheck
-import { Contributor } from '@data/models/contributor';
-import { Company } from '@app/models/company';
-import { ITask } from '@app/models/task.model';
 import { ProjectInfo } from '@data/api/project-service/models/project-info';
 import { setProperty } from '@app/utils/utils';
-
-/**
- * @deprecated The interface should not be used
- */
-export interface ProjectModel {
-	id: string;
-	name: string;
-	shortName: string;
-	description: string;
-	departmentId: string;
-	isActive: boolean;
-	tasks?: Partial<ITask>[];
-	consumer?: Company;
-	contributors?: Contributor[];
-	historyDetails?: string;
-}
 
 export class Project implements ProjectInfo {
 	public authorId;

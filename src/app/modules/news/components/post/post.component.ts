@@ -8,7 +8,6 @@ import { NewsService } from '@app/services/news/news.service';
 import { OperationResultStatusType } from '@data/api/news-service/models';
 import { ModalService } from '@app/services/modal.service';
 import { NewsFeedService } from '@app/services/news-feed.service';
-import { CurrentCompanyService } from '@app/services/current-company.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
 import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
@@ -21,7 +20,6 @@ import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/conf
 })
 export class PostComponent {
 	public article$: Observable<Article | undefined>;
-	public companyName: Observable<string>;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public postId: string,
@@ -30,11 +28,9 @@ export class PostComponent {
 		private _newsService: NewsService,
 		private _newsFeedService: NewsFeedService,
 		private _modalService: ModalService,
-		private _cdr: ChangeDetectorRef,
-		private _currentCompanyService: CurrentCompanyService
+		private _cdr: ChangeDetectorRef
 	) {
 		this.article$ = this._getNews();
-		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 	}
 
 	private _getNews(): Observable<Article | undefined> {

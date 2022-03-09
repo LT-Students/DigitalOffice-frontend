@@ -32,11 +32,14 @@ export class AdminApiService extends BaseService {
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
 	 * To access only the response body, use `installApp()` instead.
 	 *
-	 * This method doesn't expect any request body.
+	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	installApp$Response(params: {}): Observable<StrictHttpResponse<FindResultResponseServiceConfigurationInfo>> {
+	installApp$Response(params?: {
+		body?: InstallAppRequest;
+	}): Observable<StrictHttpResponse<FindResultResponseServiceConfigurationInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, AdminApiService.InstallAppPath, 'post');
 		if (params) {
+			rb.body(params.body, 'application/json');
 		}
 
 		return this.http
@@ -60,9 +63,9 @@ export class AdminApiService extends BaseService {
 	 * This method provides access to only to the response body.
 	 * To access the full response (for headers, for example), `installApp$Response()` instead.
 	 *
-	 * This method doesn't expect any request body.
+	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	installApp(params: {}): Observable<FindResultResponseServiceConfigurationInfo> {
+	installApp(params?: { body?: InstallAppRequest }): Observable<FindResultResponseServiceConfigurationInfo> {
 		return this.installApp$Response(params).pipe(
 			map(
 				(r: StrictHttpResponse<FindResultResponseServiceConfigurationInfo>) =>
