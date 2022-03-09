@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DatePeriod } from '@app/types/date-period';
-import { DayOfWeek } from '@data/models/day-of-week';
 
 @Injectable({
 	providedIn: 'root',
@@ -32,20 +31,6 @@ export class DateService {
 		} else {
 			return { startDate: datePeriod.startDate };
 		}
-	}
-
-	public getWeek(dateSelected: Date): DayOfWeek[] {
-		const daysOfWeek: DayOfWeek[] = [];
-
-		for (let i = -3; i <= 3; i++) {
-			const dayOfWeek = this.addDays(dateSelected, i);
-			daysOfWeek.push({
-				date: dayOfWeek,
-				isSelected: false,
-			});
-		}
-		daysOfWeek[3].isSelected = true;
-		return daysOfWeek;
 	}
 
 	public getWorkdays(dateSelected: Date): Date[] {

@@ -4,9 +4,10 @@ import { AuthService } from '@app/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { CurrentCompanyService } from '@app/services/current-company.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { PortalService } from '@app/services/portal.service';
+import { PortalInfo } from '@app/services/admin/admin.service';
 
 @Component({
 	selector: 'do-content-container',
@@ -24,12 +25,12 @@ export class ContentContainerComponent {
 	constructor(
 		private _currentUserService: CurrentUserService,
 		private _authService: AuthService,
-		private _currentCompanyService: CurrentCompanyService,
+		private portalService: PortalService,
 		private _snackBar: MatSnackBar,
 		private _router: Router
 	) {
 		this.navOpened = false;
-		this.portalName$ = this._currentCompanyService.company$.pipe(map((company) => company.portalName));
+		this.portalName$ = this.portalService.portal$.pipe(map((portal: PortalInfo) => portal.portalName));
 		this.departmentId$ = this._currentUserService.user$.pipe(map((user) => user.department?.id ?? ''));
 	}
 

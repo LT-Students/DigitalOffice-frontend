@@ -24,7 +24,13 @@
         "operationId": "installApp",
         "description": "Returns true or false.",
         "requestBody": {
-          "$ref": "#/components/schemas/InstallAppRequest"
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstallAppRequest"
+              }
+            }
+          }
         },
         "responses": {
           "200": {

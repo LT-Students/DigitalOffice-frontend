@@ -9,7 +9,7 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import EditorJS from '@editorjs/editorjs';
-import { finalize, first, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { finalize, first, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, from, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
@@ -23,7 +23,6 @@ import { OperationResultResponseNewsResponse } from '@data/api/news-service/mode
 import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
 import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { CurrentCompanyService } from '@app/services/current-company.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { User } from '@app/models/user/user.model';
 import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
@@ -48,7 +47,6 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 
 	public isEditorContentEmpty: BehaviorSubject<boolean>;
 	public isEdit: boolean;
-	public companyName: Observable<string>;
 	private _editor?: EditorJS;
 	private _editorObserver?: MutationObserver;
 	private _destroy$: ReplaySubject<void>;
@@ -62,11 +60,9 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		private _dialogRef: MatDialogRef<NewsEditorComponent>,
 		private _modalService: ModalService,
 		private _elementRef: ElementRef,
-		private _currentCompanyService: CurrentCompanyService,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
-		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 		this._dialogRef.disableClose = true;
 		this.isEdit = Boolean(this.data._newsId);
 		this.isEditorContentEmpty = new BehaviorSubject<boolean>(!this.isEdit);
