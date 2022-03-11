@@ -117,7 +117,7 @@ export class NewEmployeeComponent implements OnDestroy {
 
 	private _convertFormDataToCreateUserParams(): CreateUserRequest {
 		const communications: CreateCommunicationRequest = {
-			type: CommunicationType.BaseEmail,
+			type: CommunicationType.Email,
 			value: this.userForm.get('email')?.value as string,
 		};
 

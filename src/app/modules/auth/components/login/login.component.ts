@@ -1,24 +1,32 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, finalize, tap } from 'rxjs/operators';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
 import { BehaviorSubject, of } from 'rxjs';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+class LoginErrorMatcher implements ErrorStateMatcher {
+	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+		return !!form?.hasError('login');
+	}
+}
 
 @Component({
 	selector: 'do-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [{ provide: ErrorStateMatcher, useClass: LoginErrorMatcher }],
 })
 export class LoginComponent implements OnInit {
 	public loginForm: FormGroup;
-	public loginError: string;
 	public isLoading$$: BehaviorSubject<boolean>;
+	public errorMatcher = new LoginErrorMatcher();
 
 	constructor(
 		private _authService: AuthService,
@@ -27,7 +35,6 @@ export class LoginComponent implements OnInit {
 		private formBuilder: FormBuilder
 	) {
 		this.isLoading$$ = new BehaviorSubject<boolean>(false);
-		this.loginError = '';
 		this.loginForm = this.formBuilder.group({
 			email: ['', Validators.required],
 			password: ['', Validators.required],
@@ -39,7 +46,7 @@ export class LoginComponent implements OnInit {
 			.pipe(
 				tap(() => {
 					if (this.loginForm) {
-						this.loginError = '';
+						this.loginForm.setErrors(null);
 					}
 				})
 			)
@@ -59,8 +66,12 @@ export class LoginComponent implements OnInit {
 			.pipe(
 				finalize(() => this.isLoading$$.next(false)),
 				catchError((error) => {
-					this.loginError = error.message;
-					this.isLoading$$.next(false);
+					this.loginForm.setErrors({
+						login: {
+							message: 'Неверный логин или пароль :(',
+							error: error,
+						},
+					});
 					return of(null);
 				})
 			)
@@ -69,13 +80,5 @@ export class LoginComponent implements OnInit {
 					this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
 				}
 			});
-	}
-
-	public get email() {
-		return this.loginForm.get('email');
-	}
-
-	public get password() {
-		return this.loginForm.get('password');
 	}
 }

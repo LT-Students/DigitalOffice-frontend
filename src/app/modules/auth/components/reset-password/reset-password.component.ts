@@ -1,10 +1,11 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { finalize, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, of } from 'rxjs';
+import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { PasswordService } from '@app/services/user/password.service';
 import { ReconstructPasswordRequest } from '@data/api/user-service/models/reconstruct-password-request';
+import { DoValidators } from '@app/validators/do-validators';
 
 @Component({
 	selector: 'do-reset-password',
@@ -18,11 +19,15 @@ export class ResetPasswordComponent {
 	public isCompleted$$: BehaviorSubject<boolean>;
 
 	constructor(private _fb: FormBuilder, private _passwordService: PasswordService, private _route: ActivatedRoute) {
-		this.resetForm = this._fb.group({
-			login: ['', Validators.required],
-			password: ['', Validators.required],
-			secret: ['', Validators.required],
-		});
+		this.resetForm = this._fb.group(
+			{
+				login: ['', Validators.required],
+				password: ['', Validators.required],
+				repeatPassword: ['', Validators.required],
+				secret: ['', Validators.required],
+			},
+			{ validators: [DoValidators.matchControls('password', 'repeatPassword')] }
+		);
 		this.isLoading$$ = new BehaviorSubject<boolean>(false);
 		this.isCompleted$$ = new BehaviorSubject<boolean>(false);
 	}
@@ -40,11 +45,21 @@ export class ResetPasswordComponent {
 					};
 					return this._passwordService.reconstructPassword(request);
 				}),
-				finalize(() => this.isLoading$$.next(false))
+				finalize(() => this.isLoading$$.next(false)),
+				catchError((error) => {
+					this.resetForm.setErrors({
+						reset: {
+							error: error,
+						},
+					});
+					return of(null);
+				})
 			)
 			.subscribe({
-				next: () => {
-					this.isCompleted$$.next(true);
+				next: (res) => {
+					if (res !== null) {
+						this.isCompleted$$.next(true);
+					}
 				},
 			});
 	}
