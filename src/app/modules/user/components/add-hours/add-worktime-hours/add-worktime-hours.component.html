@@ -1,14 +1,25 @@
 <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 	<div>
 		<mat-form-field class="add-hours__time" appearance="fill">
-			<input
-				matInput
-				matTooltip="{{ tooltip.message }}"
-				[matTooltipDisabled]="tooltip.disabled"
-				formControlName="time"
-				type="text"
-				placeholder="0"
-			/>
+			<input matInput formControlName="time" type="text" placeholder="0" />
+			<mat-error *ngIf="addHoursForm.controls['time']?.errors?.min; else errIntNum">
+				Минимальное значение должно быть больше 0
+			</mat-error>
+			<ng-template #errIntNum>
+				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.intNum; else errMax">
+					Значение может быть только целым числом
+				</mat-error>
+			</ng-template>
+			<ng-template #errMax>
+				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.max; else errRequired">
+					Превышено максимальное значение
+				</mat-error>
+			</ng-template>
+			<ng-template #errRequired>
+				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.required">
+					Поле не может быть пустым
+				</mat-error>
+			</ng-template>
 		</mat-form-field>
 		<span class="mat-h3" *ngIf="selectedDate$ | async as selectedDate"
 			>ч за
