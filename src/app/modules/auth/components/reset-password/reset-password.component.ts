@@ -1,11 +1,18 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { BehaviorSubject, of } from 'rxjs';
 import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { PasswordService } from '@app/services/user/password.service';
 import { ReconstructPasswordRequest } from '@data/api/user-service/models/reconstruct-password-request';
 import { DoValidators } from '@app/validators/do-validators';
+import { ErrorStateMatcher } from '@angular/material/core';
+
+class PasswordErrorMatcher implements ErrorStateMatcher {
+	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+		return !!form?.hasError('noMatch') || !!control?.hasError('password');
+	}
+}
 
 @Component({
 	selector: 'do-reset-password',
@@ -17,14 +24,15 @@ export class ResetPasswordComponent {
 	public resetForm: FormGroup;
 	public isLoading$$: BehaviorSubject<boolean>;
 	public isCompleted$$: BehaviorSubject<boolean>;
+	public errorMatcher = new PasswordErrorMatcher();
 
 	constructor(private _fb: FormBuilder, private _passwordService: PasswordService, private _route: ActivatedRoute) {
 		this.resetForm = this._fb.group(
 			{
-				login: ['', Validators.required],
-				password: ['', Validators.required],
-				repeatPassword: ['', Validators.required],
-				secret: ['', Validators.required],
+				login: ['', [Validators.required]],
+				password: ['', [Validators.required, DoValidators.password]],
+				repeatPassword: ['', [Validators.required, DoValidators.password]],
+				secret: ['', [Validators.required]],
 			},
 			{ validators: [DoValidators.matchControls('password', 'repeatPassword')] }
 		);
@@ -34,11 +42,11 @@ export class ResetPasswordComponent {
 
 	public resetPassword(): void {
 		this.isLoading$$.next(true);
-		this._route.queryParamMap
+		this._route.queryParams
 			.pipe(
 				switchMap((params) => {
 					const request: ReconstructPasswordRequest = {
-						userId: params.get('userId') ?? undefined,
+						userId: params['userId'],
 						login: this.resetForm.get('login')?.value.trim(),
 						newPassword: this.resetForm.get('password')?.value,
 						secret: this.resetForm.get('secret')?.value,
@@ -48,7 +56,7 @@ export class ResetPasswordComponent {
 				finalize(() => this.isLoading$$.next(false)),
 				catchError((error) => {
 					this.resetForm.setErrors({
-						reset: {
+						invalidLoginPassword: {
 							error: error,
 						},
 					});

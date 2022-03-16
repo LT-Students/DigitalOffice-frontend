@@ -23,7 +23,7 @@ const authRoutes: Routes = [
 			{ path: 'login', component: LoginComponent, canActivate: [AuthGuard] },
 			{ path: 'forgotpassword', component: ForgotPasswordComponent },
 			{ path: 'reset', component: ResetPasswordComponent },
-			{ path: 'firstlogin', component: SignupComponent /*, canActivate: [SignupGuard]*/ },
+			{ path: 'firstlogin', component: SignupComponent, canActivate: [SignupGuard] },
 		],
 	},
 	{ path: '**', redirectTo: RouteType.AUTH, pathMatch: 'full' },

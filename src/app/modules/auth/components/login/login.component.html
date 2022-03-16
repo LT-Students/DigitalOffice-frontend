@@ -12,7 +12,7 @@
 		class="form__submit"
 		type="submit"
 		color="primary"
-		[disabled]="loginForm.invalid"
+		[disabled]="loginForm.invalid && loginForm.touched"
 	>
 		Войти
 	</button>
