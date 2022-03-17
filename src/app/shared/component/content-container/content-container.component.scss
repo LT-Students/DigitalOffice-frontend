@@ -2,13 +2,12 @@
 
 .content-container {
 	display: flex;
+	overflow: scroll;
 	justify-content: center;
 	align-items: center;
 
 	.wrapper {
-		z-index: 1;
-
-		padding: 100px;
+		padding: 64px 100px 120px;
 
 		overflow: auto;
 
@@ -42,5 +41,11 @@
 
 	&__group {
 		margin-left: 24px;
+	}
+
+	&__content {
+		display: flex;
+		overflow: hidden;
+		flex-direction: column;
 	}
 }
