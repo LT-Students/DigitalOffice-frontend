@@ -32,7 +32,7 @@
 	<mat-sidenav-content class="sidenav__content">
 		<do-header (menuClick)="onMenuClick($event)"></do-header>
 		<div class="content-container">
-			<div class="wrapper">
+			<div #wrapper class="wrapper">
 				<router-outlet></router-outlet>
 			</div>
 		</div>
