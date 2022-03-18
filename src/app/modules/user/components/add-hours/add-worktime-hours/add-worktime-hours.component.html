@@ -1,14 +1,25 @@
 <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 	<div>
-		<mat-form-field class="add-hours__time" appearance="fill">
-			<input
-				matInput
-				matTooltip="{{ tooltip.message }}"
-				[matTooltipDisabled]="tooltip.disabled"
-				formControlName="time"
-				type="text"
-				placeholder="0"
-			/>
+		<mat-form-field class="add-hours__time">
+			<input matInput formControlName="time" type="text" placeholder="0" />
+			<mat-error *ngIf="addHoursForm.controls['time']?.errors?.min; else errIntNum">
+				Минимальное значение должно быть больше 0
+			</mat-error>
+			<ng-template #errIntNum>
+				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.intNum; else errMax">
+					Значение может быть только целым числом
+				</mat-error>
+			</ng-template>
+			<ng-template #errMax>
+				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.max; else errRequired">
+					Превышено максимальное значение
+				</mat-error>
+			</ng-template>
+			<ng-template #errRequired>
+				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.required">
+					Поле не может быть пустым
+				</mat-error>
+			</ng-template>
 		</mat-form-field>
 		<span class="mat-h3" *ngIf="selectedDate$ | async as selectedDate"
 			>ч за
@@ -28,7 +39,7 @@
 			</button>
 		</mat-menu>
 	</div>
-	<mat-form-field appearance="fill">
+	<mat-form-field>
 		<mat-label>Выберите проект</mat-label>
 		<mat-select formControlName="activity">
 			<mat-option
@@ -40,9 +51,16 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<mat-form-field appearance="fill">
+	<mat-form-field>
 		<mat-label>Комментарий</mat-label>
-		<textarea matInput formControlName="comment" placeholder="Оставьте комментарий для менеджера"></textarea>
+		<textarea
+			#comment
+			matInput
+			formControlName="comment"
+			maxlength="500"
+			placeholder="Оставьте комментарий для менеджера"
+		></textarea>
+		<mat-hint>{{ comment.value.length }}/500</mat-hint>
 	</mat-form-field>
 	<button
 		mat-flat-button

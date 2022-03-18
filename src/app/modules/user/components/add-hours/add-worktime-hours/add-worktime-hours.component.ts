@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { BehaviorSubject, iif, Observable, of, Subscription } from 'rxjs';
 import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { AttendanceService } from '@app/services/attendance.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -11,7 +11,6 @@ import { IEditWorkTimeRequest } from '@app/services/time/time.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work-time-request';
 import { DoValidators } from '@app/validators/do-validators';
-import { ITooltip } from '../add-leave-hours/add-leave-hours.component';
 
 @Component({
 	selector: 'do-add-worktime-hours',
@@ -27,7 +26,6 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	public addHoursForm: FormGroup;
 	public monthOptions: DateTime[];
 	public isAnotherExist: boolean;
-	public tooltip: ITooltip;
 	public monthNorm: number;
 
 	private _canEditSubscription: Subscription;
@@ -64,16 +62,13 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		this._attendanceService.monthNorm$.subscribe({
 			next: (monthNorm) => (this.monthNorm = monthNorm),
 		});
-		this.tooltip = { disabled: true, message: '' };
 
 		this.addHoursForm = this._fb.group({
 			time: ['', [Validators.required, Validators.min(0), Validators.max(this.monthNorm), DoValidators.intNum]],
 			activity: [null, Validators.required],
 			comment: [null],
 		});
-		this.addHoursForm.get('time')?.valueChanges.subscribe(() => {
-			this.makeTooltipMessage();
-		});
+
 		this._canEditSubscription = this._attendanceService.canEdit$.subscribe({
 			next: (canEdit) => {
 				if (canEdit) {
@@ -166,30 +161,6 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 			return [DateTime.now()];
 		}
 		return [];
-	}
-
-	public makeTooltipMessage(): void {
-		this.tooltip = { disabled: true, message: '' };
-		const errors: ValidationErrors | null = this.addHoursForm.controls['time'].errors;
-		if (errors?.required) {
-			this.tooltip = { disabled: false, message: 'Поле обязательно' };
-			return;
-		}
-		if (errors?.max) {
-			this.tooltip = {
-				disabled: false,
-				message: `В этом месяце можно поставить не больше ${this.monthNorm} часов`,
-			};
-			return;
-		}
-		if (errors?.min) {
-			this.tooltip = { disabled: false, message: 'Минимальное значение - 0' };
-			return;
-		}
-		if (errors?.intNum) {
-			this.tooltip = { disabled: false, message: 'Допустим ввод только целых чисел' };
-			return;
-		}
 	}
 
 	private _isGUIDEmpty(id: string): boolean {

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/shared/material.module';
-import { DndDirective } from '@app/directives/dnd.directive';
 
 import { SharedModule } from '../../shared/shared.module';
 import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
@@ -58,6 +57,6 @@ import { EditCompanyComponent } from './modals/edit-company/edit-company.compone
 		EditCompanyComponent,
 	],
 	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
-	exports: [DndDirective, TeamStatisticsComponent, LeaveLabelPipe, EditProjectComponent, ProjectTypePipe],
+	exports: [TeamStatisticsComponent, LeaveLabelPipe, EditProjectComponent, ProjectTypePipe],
 })
 export class AdminModule {}

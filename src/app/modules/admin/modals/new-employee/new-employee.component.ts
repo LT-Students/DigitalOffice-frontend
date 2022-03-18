@@ -101,9 +101,9 @@ export class NewEmployeeComponent implements OnDestroy {
 
 	private _initForm(): FormGroup {
 		return this._formBuilder.group({
-			lastName: ['', [Validators.required, DoValidators.noWhitespaces]],
-			firstName: ['', [Validators.required, DoValidators.noWhitespaces]],
-			middleName: ['', [DoValidators.noWhitespaces]],
+			lastName: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
+			firstName: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
+			middleName: ['', [DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			positionId: ['', [Validators.required]],
 			startWorkingAt: [null],
 			isAdmin: [{ value: true, disabled: true }],

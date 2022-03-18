@@ -1,6 +1,6 @@
 <form [formGroup]="addLeaveForm" autocomplete="off" (ngSubmit)="onSubmit()" class="add-hours__form">
 	<div class="add-hours__time-wrapper">
-		<mat-form-field appearance="fill">
+		<mat-form-field>
 			<mat-label>Выберите диапазон отсутствия</mat-label>
 			<mat-date-range-input [min]="minDate" [dateFilter]="disableWeekends" [rangePicker]="$any(picker)">
 				<input matStartDate formControlName="startDate" readonly />
@@ -14,7 +14,7 @@
 			<h3>{{ recommendedTime$$ | async }} ч</h3>
 		</div>
 	</div>
-	<mat-form-field appearance="fill">
+	<mat-form-field>
 		<mat-label>Выберите тип отсутствия</mat-label>
 		<mat-select formControlName="leaveType">
 			<mat-option *ngFor="let absence of absences" [value]="absence.leaveType">
@@ -22,9 +22,16 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<mat-form-field appearance="fill">
+	<mat-form-field>
 		<mat-label>Комментарий</mat-label>
-		<textarea matInput formControlName="comment" placeholder="Оставьте комментарий для менеджера"></textarea>
+		<textarea
+			#comment
+			matInput
+			formControlName="comment"
+			maxlength="500"
+			placeholder="Оставьте комментарий для менеджера"
+		></textarea>
+		<mat-hint>{{ comment.value.length }}/500</mat-hint>
 	</mat-form-field>
 	<div matTooltip="{{ tooltip.message }}" [matTooltipDisabled]="tooltip.disabled">
 		<button

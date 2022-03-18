@@ -2,12 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TextDirective } from '@app/directives/text.directive';
-import { DndDirective } from '@app/directives/dnd.directive';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
-import { ButtonLoadingDirective } from '@app/directives/buttonLoading.directive';
-import { BlockPasteDirective } from '@app/directives/block-paste.directive';
 import { MdePopoverModule } from '@material-extended/mde';
 import { MaterialModule } from './material.module';
 
@@ -31,6 +27,11 @@ import { PhoneInputComponent } from './component/phone-input/phone-input.compone
 import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-bar-routing.module';
 import { ChangeUserPasswordComponent } from './modals/change-user-password/change-user-password.component';
 import { FullNamePipe } from './pipes/full-name.pipe';
+import { DndDirective } from './directives/dnd.directive';
+import { TextDirective } from './directives/text.directive';
+import { BlockPasteDirective } from './directives/block-paste.directive';
+import { ButtonLoadingDirective } from './directives/buttonLoading.directive';
+import { TransformNameDirective } from './directives/transform-name.directive';
 import { PasswordHintComponent } from './component/password-hint/password-hint.component';
 
 @NgModule({
@@ -58,6 +59,7 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 		ChangeUserPasswordComponent,
 		BlockPasteDirective,
 		FullNamePipe,
+		TransformNameDirective,
 		PasswordHintComponent,
 	],
 	imports: [
@@ -101,6 +103,7 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 		ChangeUserPasswordComponent,
 		BlockPasteDirective,
 		FullNamePipe,
+		TransformNameDirective,
 		PasswordHintComponent,
 	],
 })
