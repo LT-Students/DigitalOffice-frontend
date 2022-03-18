@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { BehaviorSubject } from 'rxjs';
-import { DoValidators } from '@app/validators/do-validators';
 import { finalize } from 'rxjs/operators';
 import { PasswordService } from '@app/services/user/password.service';
 
@@ -22,7 +21,7 @@ export class ForgotPasswordComponent {
 		this.isCompleted$$ = new BehaviorSubject<boolean>(false);
 
 		this.forgotPasswordForm = this._formBuilder.group({
-			email: ['', [Validators.required, DoValidators.email]],
+			email: ['', [Validators.required]],
 		});
 	}
 

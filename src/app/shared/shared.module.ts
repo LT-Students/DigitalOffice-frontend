@@ -32,6 +32,7 @@ import { TextDirective } from './directives/text.directive';
 import { BlockPasteDirective } from './directives/block-paste.directive';
 import { ButtonLoadingDirective } from './directives/buttonLoading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
+import { PasswordHintComponent } from './component/password-hint/password-hint.component';
 
 @NgModule({
 	declarations: [
@@ -59,6 +60,7 @@ import { TransformNameDirective } from './directives/transform-name.directive';
 		BlockPasteDirective,
 		FullNamePipe,
 		TransformNameDirective,
+		PasswordHintComponent,
 	],
 	imports: [
 		CommonModule,
@@ -102,6 +104,7 @@ import { TransformNameDirective } from './directives/transform-name.directive';
 		BlockPasteDirective,
 		FullNamePipe,
 		TransformNameDirective,
+		PasswordHintComponent,
 	],
 })
 export class SharedModule {}

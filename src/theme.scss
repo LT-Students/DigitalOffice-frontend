@@ -8,15 +8,16 @@
 
 $custom-typography: mat.define-typography-config(
 	$font-family: 'Lato, Roboto, "Helvetica Neue", sans-serif',
-	$headline: mat.define-typography-level(35px, 40px, 700, 'Montserrat'),
-	$title: mat.define-typography-level(28px, 32px, 700, 'Montserrat'),
-	$subheading-2: mat.define-typography-level(22px, 33px, 700, 'Montserrat'),
-	$subheading-1: mat.define-typography-level(18px, 27px, 700, 'Montserrat'),
-	$body-1: mat.define-typography-level(16px, 24px, 500),
-	$body-2: mat.define-typography-level(16px, 24px, 700),
+	$display-1: mat.define-typography-level(30px, 36px, 700, 'Montserrat'),
+	$headline: mat.define-typography-level(35px, 1.15, 700, 'Montserrat'),
+	$title: mat.define-typography-level(28px, 1.2, 700, 'Montserrat'),
+	$subheading-2: mat.define-typography-level(22px, 1.45, 700, 'Montserrat'),
+	$subheading-1: mat.define-typography-level(18px, 1.45, 700, 'Montserrat'),
+	$body-1: mat.define-typography-level(15px, 1.45, 500),
+	$body-2: mat.define-typography-level(13px, 1.45, 400),
 	$caption: mat.define-typography-level(14px, 24px, 500),
-	$input: mat.define-typography-level(16px, 1.125, 500),
-	$button: mat.define-typography-level(16px, 24px, 500),
+	$input: mat.define-typography-level(15px, 1.45, 500),
+	$button: mat.define-typography-level(15px, 1.45, 500),
 );
 
 @function create-theme(
@@ -160,6 +161,10 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 
 	.warn {
 		color: mat.get-color-from-palette(mat.$red-palette, 400);
+	}
+
+	.success {
+		color: mat.get-color-from-palette($do-green, 500);
 	}
 
 	@include fab.theme(
