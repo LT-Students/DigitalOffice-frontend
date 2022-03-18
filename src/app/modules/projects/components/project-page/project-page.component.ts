@@ -15,6 +15,7 @@ import { EMPTY } from 'rxjs';
 import { ProjectUserRoleType } from '@api/project-service/models';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
+import { RouteType } from '../../../../app-routing.module';
 
 @Component({
 	selector: 'do-project-page',
@@ -190,7 +191,7 @@ export class ProjectPageComponent implements OnInit {
 	}
 
 	public onUserClick(userId: string | undefined): void {
-		this._router.navigate([`/user/${userId}`]);
+		this._router.navigate([RouteType.USERS, userId]);
 	}
 
 	private _updateProjectInfo(result: OperationResultResponse<IGetProjectResponse>): void {

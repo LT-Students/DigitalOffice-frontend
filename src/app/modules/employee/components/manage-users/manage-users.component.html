@@ -76,7 +76,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="row row_activable" *ngFor="let user of users.body" routerLink="/user/{{ user?.id }}">
+				<tr class="row row_activable" *ngFor="let user of users.body" routerLink="/users/{{ user?.id }}">
 					<td class="cell cell_vertical-middle">
 						<do-profile-image [image]="user?.avatar"></do-profile-image>
 					</td>

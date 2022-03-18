@@ -4,9 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
-import { EmployeePageService } from '@app/services/employee-page.service';
 import { ContentContainerComponent } from '@shared/component/content-container/content-container.component';
-import { EmployeePageComponent } from './modules/employee/employee-page.component';
 import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
 import { DepartmentListComponent } from './modules/admin/components/department-list/department-list.component';
 import { DepartmentCardComponent } from './modules/admin/components/department-card/department-card.component';
@@ -15,7 +13,7 @@ import { DepartmentPageResolver } from './modules/admin/resolvers/department-pag
 
 export const enum RouteType {
 	AUTH = 'auth',
-	USER = 'user',
+	USERS = 'users',
 	ADMIN = 'admin',
 	PROJECTS = 'projects',
 	DEPARTMENTS = 'departments',
@@ -57,21 +55,14 @@ const routes: Routes = [
 						path: RouteType.PROJECTS,
 						loadChildren: () => import('./modules/projects/projects.module').then((m) => m.ProjectsModule),
 					},
-					// {
-					// 	path: RouteType.USER,
-					// 	loadChildren: () => import('./modules/employee/employee.module').then((m) => m.EmployeeModule),
-					// },
+					{
+						path: RouteType.USERS,
+						loadChildren: () => import('./modules/employee/employee.module').then((m) => m.EmployeeModule),
+					},
 					// {
 					// 	path: RouteType.DEPARTMENTS,
 					// 	loadChildren: () => import('./modules/departments/departments.module').then((m) => m.DepartmentsModule),
 					// },
-					{
-						path: `${RouteType.USER}/:id`,
-						component: EmployeePageComponent,
-						resolve: {
-							employee: EmployeePageService,
-						},
-					},
 					{
 						path: RouteType.DEPARTMENTS,
 						component: DepartmentListComponent,

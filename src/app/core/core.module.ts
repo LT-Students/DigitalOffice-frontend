@@ -17,7 +17,6 @@ import { CommunicationService } from '@app/services/user/communication.service';
 import { CredentialsService } from '@app/services/user/credentials.service';
 import { EducationService } from '@app/services/user/education.service';
 import { AuthService } from '@app/services/auth/auth.service';
-import { EmployeePageService } from '@app/services/employee-page.service';
 import { UserApiModule } from '@api/user-service/user-api.module';
 import { AuthenticationApiModule } from '@api/auth-service/authentication-api.module';
 import { CompanyApiModule } from '@api/company-service/company-api.module';
@@ -77,7 +76,6 @@ import { environment } from '../../environments/environment';
 		CredentialsService,
 		PasswordService,
 		EducationService,
-		EmployeePageService,
 	],
 	exports: [],
 })

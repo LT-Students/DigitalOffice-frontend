@@ -7,11 +7,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY, iif, Observable, Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
 import { map, switchMap, takeUntil, skip } from 'rxjs/operators';
-import { EmployeePageService } from '@app/services/employee-page.service';
 import { ModalService } from '@app/services/modal.service';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { ConfirmDialogData } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { EmployeePageService } from './services/employee-page.service';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {

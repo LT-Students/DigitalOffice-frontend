@@ -8,9 +8,9 @@ import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType, ModalService, ModalWidth } from '@app/services/modal.service';
+import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
-import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 import { EditCompanyComponent } from '../../modals/edit-company/edit-company.component';
@@ -23,12 +23,10 @@ import { RouteType } from '../../../../app-routing.module';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
-	public today: Date;
 	public openModalClick: Subject<AdminDashboardModalType>;
 	public modalType: typeof AdminDashboardModalType;
 
 	constructor(private _router: Router, public dialog: MatDialog, public modalService: ModalService) {
-		this.today = new Date();
 		this.openModalClick = new Subject<AdminDashboardModalType>();
 		this.modalType = AdminDashboardModalType;
 	}
@@ -62,7 +60,7 @@ export class DashboardComponent implements OnInit {
 							return fromPromise(this._router.navigate([RouteType.PROJECTS, 'new']));
 						}
 						case this.modalType.MANAGE_USERS: {
-							return fromPromise(this._router.navigate([RouteType.ADMIN, 'manage-users']));
+							return fromPromise(this._router.navigate([RouteType.USERS]));
 						}
 						case this.modalType.DEPARTMENT_LIST: {
 							return fromPromise(this._router.navigate(['departments']));

@@ -9,10 +9,10 @@ import { User } from '@app/models/user/user.model';
 import { finalize, first, map, switchMap, take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
-import { EmployeePageService } from '@app/services/employee-page.service';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
+import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
 @Component({

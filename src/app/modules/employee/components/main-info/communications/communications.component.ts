@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { EmployeePageService } from '@app/services/employee-page.service';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
@@ -9,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, switchMap } from 'rxjs/operators';
 import { EMPTY, iif, throwError } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { EmployeePageService } from '../../../services/employee-page.service';
 import { ConfirmDialogData } from '../../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';

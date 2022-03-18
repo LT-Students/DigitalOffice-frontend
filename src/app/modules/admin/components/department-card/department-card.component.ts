@@ -15,6 +15,7 @@ import {
 	AddEmployeeComponent,
 	OpenAddEmployeeModalFrom,
 } from '../../../../shared/modals/add-employee/add-employee.component';
+import { RouteType } from '../../../../app-routing.module';
 
 @Component({
 	selector: 'do-department-card',
@@ -90,7 +91,7 @@ export class DepartmentCardComponent {
 	}
 
 	public onUserClick(userId: string | undefined): void {
-		this._router.navigate([`/user/${userId}`]);
+		this._router.navigate([RouteType.USERS, userId]);
 	}
 
 	public openAddEmployeeModal(): void {

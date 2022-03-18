@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MdePopoverModule } from '@material-extended/mde';
+import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -65,6 +66,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		PasswordHintComponent,
 		ProjectTypePipe,
 		LeaveLabelPipe,
+		NewEmployeeComponent,
 	],
 	imports: [
 		CommonModule,
@@ -111,6 +113,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		PasswordHintComponent,
 		ProjectTypePipe,
 		LeaveLabelPipe,
+		NewEmployeeComponent,
 	],
 })
 export class SharedModule {}

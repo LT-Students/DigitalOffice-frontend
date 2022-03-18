@@ -6,7 +6,7 @@ import { catchError, concatMap, map, switchMap, tap, toArray } from 'rxjs/operat
 import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { EditorJSParser } from '../../modules/news/parser';
+import { EditorJSParser } from '../parser';
 
 @Injectable({
 	providedIn: 'root',

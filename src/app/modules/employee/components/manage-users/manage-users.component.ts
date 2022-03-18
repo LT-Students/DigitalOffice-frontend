@@ -11,7 +11,7 @@ import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
+import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 
 @Component({
 	selector: 'do-manage-users',
