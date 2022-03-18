@@ -2,8 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
-import { OperationResultStatusType } from '@data/api/user-service/models/operation-result-status-type';
+import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
+import { OperationResultStatusType } from '@api/user-service/models/operation-result-status-type';
 import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';

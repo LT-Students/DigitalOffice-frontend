@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { Sort } from '@angular/material/sort';
-import { DepartmentInfo } from '@data/api/department-service/models/department-info';
+import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { ActivatedRoute } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalService } from '@app/services/modal.service';

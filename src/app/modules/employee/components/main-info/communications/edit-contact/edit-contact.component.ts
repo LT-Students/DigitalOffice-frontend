@@ -3,11 +3,11 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
-import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
+import { CommunicationInfo } from '@api/user-service/models/communication-info';
+import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { CommunicationType } from '@data/api/user-service/models/communication-type';
+import { CommunicationType } from '@api/user-service/models/communication-type';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel } from '@app/models/communication.model';
 

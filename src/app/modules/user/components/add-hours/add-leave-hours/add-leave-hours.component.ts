@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DateTime, Interval } from 'luxon';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AttendanceService } from '@app/services/attendance.service';
-import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
+import { OperationResultResponse } from '@api/time-service/models/operation-result-response';
 import { ICreateLeaveTimeRequest } from '@app/services/time/time.service';
 import { DatePeriod } from '@app/types/date-period';
 import { DateFilterFn } from '@angular/material/datepicker';
@@ -13,7 +13,7 @@ import { ResponseMessageModel } from '@app/models/response/response-message.mode
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
-import { LeaveType } from '@data/api/time-service/models';
+import { LeaveType } from '@api/time-service/models';
 
 export interface ITooltip {
 	disabled: boolean;

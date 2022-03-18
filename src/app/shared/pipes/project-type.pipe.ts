@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { ILeaveType } from '@app/models/time/leave-type.model';
 
 @Pipe({

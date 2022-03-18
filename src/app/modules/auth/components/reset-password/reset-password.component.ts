@@ -4,7 +4,7 @@ import { BehaviorSubject, of } from 'rxjs';
 import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { PasswordService } from '@app/services/user/password.service';
-import { ReconstructPasswordRequest } from '@data/api/user-service/models/reconstruct-password-request';
+import { ReconstructPasswordRequest } from '@api/user-service/models/reconstruct-password-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { ErrorStateMatcher } from '@angular/material/core';
 

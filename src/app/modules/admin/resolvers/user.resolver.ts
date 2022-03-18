@@ -3,7 +3,7 @@ import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UserService } from '@app/services/user/user.service';
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserInfo } from '@api/user-service/models/user-info';
 
 @Injectable({
 	providedIn: 'root',

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OfficeService } from '@app/services/company/office.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DoValidators } from '@app/validators/do-validators';
-import { OfficeInfo } from '@data/api/office-service/models/office-info';
+import { OfficeInfo } from '@api/office-service/models/office-info';
 import { InitialDataEditRequest, OfficePath } from '@app/types/edit-request';
 import { createEditRequest } from '@app/utils/utils';
 import { UUID } from '@app/types/uuid.type';

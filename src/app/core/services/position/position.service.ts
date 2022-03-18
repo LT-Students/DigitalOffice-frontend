@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { PositionApiService } from '@data/api/position-service/services/position-api.service';
+import { PositionApiService } from '@api/position-service/services/position-api.service';
 import { UUID } from '@app/types/uuid.type';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { PositionInfo } from '@api/position-service/models/position-info';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { EditRequest, PositionPath } from '@app/types/edit-request';

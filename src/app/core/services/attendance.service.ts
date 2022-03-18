@@ -9,12 +9,12 @@ import {
 	TimeService,
 } from '@app/services/time/time.service';
 import { map, switchMap, take, tap } from 'rxjs/operators';
-import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
+import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { UserService } from '@app/services/user/user.service';
 import { DateFilterFn } from '@angular/material/datepicker';
-import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
+import { OperationResultResponse } from '@api/time-service/models/operation-result-response';
 import { LeaveTimeModel } from '@app/models/time/leave-time.model';
-import { CreateWorkTimeRequest, LeaveTimeInfo } from '@data/api/time-service/models';
+import { CreateWorkTimeRequest, LeaveTimeInfo } from '@api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { DateTime, Interval } from 'luxon';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';

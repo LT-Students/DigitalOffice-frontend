@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DepartmentInfo } from '@data/api/user-service/models/department-info';
+import { DepartmentInfo } from '@api/user-service/models/department-info';
 import { ProjectService } from '@app/services/project/project.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { InitialDataEditRequest, ProjectPath } from '@app/types/edit-request';

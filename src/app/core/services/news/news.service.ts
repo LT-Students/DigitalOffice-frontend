@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NewsApiService } from '@data/api/news-service/services/news-api.service';
-import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
-import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
+import { NewsApiService } from '@api/news-service/services/news-api.service';
+import { CreateNewsRequest } from '@api/news-service/models/create-news-request';
+import { EditNewsRequest } from '@api/news-service/models/edit-news-request';
 
-import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
+import { NewsPatchOperation } from '@api/news-service/models/news-patch-operation';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { NewsInfo } from '@data/api/news-service/models/news-info';
-import { User } from '@data/api/news-service/models/user';
-import { Department } from '@data/api/news-service/models/department';
+import { NewsInfo } from '@api/news-service/models/news-info';
+import { User } from '@api/news-service/models/user';
+import { Department } from '@api/news-service/models/department';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 

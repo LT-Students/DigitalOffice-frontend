@@ -9,7 +9,7 @@ import {
 	OperationResultStatusType,
 	StatInfo,
 	WorkTimeInfo,
-} from '@data/api/time-service/models';
+} from '@api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

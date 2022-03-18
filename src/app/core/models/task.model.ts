@@ -1,7 +1,7 @@
 //@ts-nocheck
-import { TaskInfo } from '@data/api/project-service/models/task-info';
-import { UserTaskInfo } from '@data/api/project-service/models/user-task-info';
-import { ProjectTaskInfo } from '@data/api/project-service/models/project-task-info';
+import { TaskInfo } from '@api/project-service/models/task-info';
+import { UserTaskInfo } from '@api/project-service/models/user-task-info';
+import { ProjectTaskInfo } from '@api/project-service/models/project-task-info';
 import { setProperty } from '@app/utils/utils';
 
 export interface ITask {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';

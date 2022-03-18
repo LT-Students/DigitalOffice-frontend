@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { CompanyApiService } from '@data/api/company-service/services/company-api.service';
-import { CreateCompanyRequest } from '@data/api/company-service/models/create-company-request';
+import { CompanyApiService } from '@api/company-service/services/company-api.service';
+import { CreateCompanyRequest } from '@api/company-service/models/create-company-request';
 import { IGetCompanyRequest } from '@app/types/get-company-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { switchMap } from 'rxjs/operators';

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { EducationType, OperationResultResponse } from '@data/api/user-service/models';
+import { EducationType, OperationResultResponse } from '@api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
 import { DateType } from '@app/types/date.enum';
-import { UserStatus } from '@data/api/user-service/models/user-status';
+import { UserStatus } from '@api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { finalize, first, map, switchMap, take } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';

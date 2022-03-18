@@ -5,13 +5,13 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
-import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
+import { CertificateInfo } from '@api/user-service/models/certificate-info';
 import { User } from '@app/models/user/user.model';
-import { EducationType } from '@data/api/user-service/models/education-type';
+import { EducationType } from '@api/user-service/models/education-type';
 import { setProperty } from '@app/utils/utils';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
-import { ImageInfo } from '@data/api/user-service/models/image-info';
+import { ImageInfo } from '@api/user-service/models/image-info';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 import { WorkFlowMode } from '../../employee-page.component';
 

@@ -8,7 +8,7 @@ import { UUID } from '@app/types/uuid.type';
 import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { createEditRequest } from '@app/utils/utils';
-import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { PositionInfo } from '@api/position-service/models/position-info';
 import { finalize } from 'rxjs/operators';
 
 @Component({

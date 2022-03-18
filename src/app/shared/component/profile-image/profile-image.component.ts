@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { ImageInfo } from '@data/api/user-service/models/image-info';
+import { ImageInfo } from '@api/user-service/models/image-info';
 
 @Component({
 	selector: 'do-profile-image',

@@ -17,7 +17,7 @@ import {
 	UserInfo,
 	WorkTimeInfo,
 	WorkTimeMonthLimitInfo,
-} from '@data/api/time-service/models';
+} from '@api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { DoValidators } from '@app/validators/do-validators';
 import { DateTime } from 'luxon';

@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
-import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
+import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';

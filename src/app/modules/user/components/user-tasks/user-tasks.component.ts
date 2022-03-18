@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { OperationResultStatusType } from '@data/api/time-service/models';
+import { OperationResultStatusType } from '@api/time-service/models';
 import { Activities, AttendanceService } from '@app/services/attendance.service';
 import { DateTime } from 'luxon';
 

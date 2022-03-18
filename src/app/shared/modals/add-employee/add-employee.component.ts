@@ -1,11 +1,11 @@
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, Inject } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserInfo } from '@api/user-service/models/user-info';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { UserApiService } from '@data/api/project-service/services/user-api.service';
-import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
+import { UserApiService } from '@api/project-service/services/user-api.service';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { DepartmentService } from '@app/services/department/department.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';

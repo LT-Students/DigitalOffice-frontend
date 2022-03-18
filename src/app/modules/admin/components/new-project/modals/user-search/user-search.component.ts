@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserInfo } from '@api/user-service/models/user-info';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '@app/services/user/user.service';
 import { UserSearchModalConfig } from '@app/services/modal.service';
-import { PositionInfo } from '@data/api/company-service/models/position-info';
+import { PositionInfo } from '@api/company-service/models/position-info';
 import { PageEvent } from '@angular/material/paginator';
-import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { PositionService } from '@app/services/position/position.service';
 import { Team, teamCards } from '../../team-cards';

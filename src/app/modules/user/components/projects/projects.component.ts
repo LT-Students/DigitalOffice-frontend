@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { OperationResultStatusType } from '@data/api/time-service/models/operation-result-status-type';
-import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
+import { OperationResultStatusType } from '@api/time-service/models/operation-result-status-type';
+import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
 
@@ -20,25 +20,21 @@ export interface IModalContentConfig {
 	selector: 'do-projects',
 	templateUrl: './projects.component.html',
 	styleUrls: ['./projects.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent {
 	@Input() public projects: Array<WorkTimeInfo | undefined> | undefined | null;
 	@Input() public canEdit: boolean;
 	public selectedDate: Date;
 
-	constructor(
-		private _modalService: ModalService,
-		private _snackBar: MatSnackBar,
-		private _cdr: ChangeDetectorRef
-	) {
+	constructor(private _modalService: ModalService, private _snackBar: MatSnackBar, private _cdr: ChangeDetectorRef) {
 		this.selectedDate = new Date();
 		this.projects = [];
 		this.canEdit = true;
 	}
 
 	public getDate(year: number, month: number) {
-		return new Date(year, month + 1, 0)
+		return new Date(year, month + 1, 0);
 	}
 
 	public openEditModal(project: WorkTimeInfo | undefined) {
@@ -49,11 +45,15 @@ export class ProjectsComponent {
 			managerHours: project?.managerHours ?? 0,
 			description: project?.description,
 			month: project?.month,
-			year: project?.year
-		}
+			year: project?.year,
+		};
 
 		this._modalService
-			.openModal<EditProjectComponent, IModalContentConfig, IDialogResponse>(EditProjectComponent, ModalWidth.L, modalContentConfig)
+			.openModal<EditProjectComponent, IModalContentConfig, IDialogResponse>(
+				EditProjectComponent,
+				ModalWidth.L,
+				modalContentConfig
+			)
 			.afterClosed()
 			.subscribe((res) => {
 				if (project && res?.status === OperationResultStatusType.FullSuccess) {
@@ -64,6 +64,6 @@ export class ProjectsComponent {
 					this._cdr.detectChanges();
 					this._snackBar.open('Project successfully edited', 'Close', { duration: 3000 });
 				}
-			})
+			});
 	}
 }

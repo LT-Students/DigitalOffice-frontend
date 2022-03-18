@@ -3,9 +3,9 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { EMPTY, iif, Observable, Subject, combineLatest } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserInfo } from '@api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
-import { OperationResultStatusType } from '@data/api/user-service/models';
+import { OperationResultStatusType } from '@api/user-service/models';
 import { ModalService } from '@app/services/modal.service';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';

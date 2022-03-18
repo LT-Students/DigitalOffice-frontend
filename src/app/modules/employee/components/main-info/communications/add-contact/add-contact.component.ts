@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { CommunicationType, CreateCommunicationRequest, OperationResultResponse } from '@data/api/user-service/models';
+import { CommunicationType, CreateCommunicationRequest, OperationResultResponse } from '@api/user-service/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommunicationService } from '@app/services/user/communication.service';

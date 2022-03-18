@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
-import { CreateEducationRequest } from '@data/api/education-service/models';
-import { EducationApiService } from '@data/api/education-service/services';
-import { EditEducationRequest } from '@data/api/education-service/models';
+import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
+import { CreateEducationRequest } from '@api/education-service/models';
+import { EducationApiService } from '@api/education-service/services';
+import { EditEducationRequest } from '@api/education-service/models';
 
 export interface IEditEducationRequest {
 	/**

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { IFindStatRequest, TimeService } from '@app/services/time/time.service';
-import { FindResultResponseStatInfo } from '@data/api/time-service/models/find-result-response-stat-info';
+import { FindResultResponseStatInfo } from '@api/time-service/models/find-result-response-stat-info';
 import { DateTime } from 'luxon';
 
 @Injectable({

@@ -1,15 +1,15 @@
 import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { BehaviorSubject, iif, Observable, of, Subscription } from 'rxjs';
-import { WorkTimeInfo } from '@data/api/time-service/models/work-time-info';
+import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { finalize, map, switchMap, tap } from 'rxjs/operators';
 import { AttendanceService } from '@app/services/attendance.service';
 import { MatOptionSelectionChange } from '@angular/material/core';
-import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
+import { OperationResultResponse } from '@api/time-service/models/operation-result-response';
 import { IEditWorkTimeRequest } from '@app/services/time/time.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
-import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work-time-request';
+import { CreateWorkTimeRequest } from '@api/time-service/models/create-work-time-request';
 import { DoValidators } from '@app/validators/do-validators';
 
 @Component({

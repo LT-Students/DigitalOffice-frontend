@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
   "input": "swagger/TimeService.json",
-  "output": "src/app/data/api/time-service",
+  "output": "src/app/api/time-service",
   "templates": "swagger/templates",
   "module": "TimeApiModule",
   "excludeParameters": ["token"],

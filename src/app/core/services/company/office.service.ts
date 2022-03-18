@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CompanyApiService } from '@data/api/office-service/services/company-api.service';
-import { CreateOfficeRequest } from '@data/api/office-service/models/create-office-request';
+import { CompanyApiService } from '@api/office-service/services/company-api.service';
+import { CreateOfficeRequest } from '@api/office-service/models/create-office-request';
 import { IFindRequestEx } from '@app/types/find-request.interface';
-import { OfficeApiService } from '@data/api/office-service/services/office-api.service';
+import { OfficeApiService } from '@api/office-service/services/office-api.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { OfficeInfo } from '@data/api/office-service/models/office-info';
+import { OfficeInfo } from '@api/office-service/models/office-info';
 import { UUID } from '@app/types/uuid.type';
 import { EditRequest, OfficePath } from '@app/types/edit-request';
 

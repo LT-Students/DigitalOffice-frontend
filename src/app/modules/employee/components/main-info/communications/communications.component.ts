@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { EmployeePageService } from '@app/services/employee-page.service';
-import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
+import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
-import { OperationResultStatusType } from '@data/api/user-service/models/operation-result-status-type';
+import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
+import { OperationResultStatusType } from '@api/user-service/models/operation-result-status-type';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError, switchMap } from 'rxjs/operators';

@@ -4,15 +4,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { UserService } from '@app/services/user/user.service';
 import { finalize, map } from 'rxjs/operators';
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserInfo } from '@api/user-service/models/user-info';
 import { DepartmentService, ICreateUserRequest } from '@app/services/department/department.service';
 import { DepartmentPath, InitialDataEditRequest } from '@app/types/edit-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { createEditRequest } from '@app/utils/utils';
-import { DepartmentInfo } from '@data/api/department-service/models/department-info';
+import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { UUID } from '@app/types/uuid.type';
 import { DoValidators } from '@app/validators/do-validators';
-import { DepartmentUserRole } from '@data/api/department-service/models/department-user-role';
+import { DepartmentUserRole } from '@api/department-service/models/department-user-role';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

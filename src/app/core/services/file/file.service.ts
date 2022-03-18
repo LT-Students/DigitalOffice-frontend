@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FileApiService } from '@data/api/file-service/services/file-api.service';
-import { FileInfo } from '@data/api/file-service/models/file-info';
-import { EditFileRequest } from '@data/api/file-service/models/edit-file-request';
-import { OperationResultResponse } from '@data/api/file-service/models/operation-result-response';
+import { FileApiService } from '@api/file-service/services/file-api.service';
+import { FileInfo } from '@api/file-service/models/file-info';
+import { EditFileRequest } from '@api/file-service/models/edit-file-request';
+import { OperationResultResponse } from '@api/file-service/models/operation-result-response';
 
 interface IEditFileRequest {
 	fileId: string;

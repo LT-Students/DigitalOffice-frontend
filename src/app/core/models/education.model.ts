@@ -1,10 +1,10 @@
 //@ts-nocheck
 // eslint-disable-next-line no-shadow
-import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
-import { EducationType } from '@data/api/user-service/models/education-type';
-import { ImageInfo } from '@data/api/user-service/models/image-info';
-import { FormEducation } from '@data/api/user-service/models/form-education';
-import { EducationInfo } from '@data/api/user-service/models/education-info';
+import { CertificateInfo } from '@api/user-service/models/certificate-info';
+import { EducationType } from '@api/user-service/models/education-type';
+import { ImageInfo } from '@api/user-service/models/image-info';
+import { FormEducation } from '@api/user-service/models/form-education';
+import { EducationInfo } from '@api/user-service/models/education-info';
 
 export enum StudyType {
 	/* заочно */
@@ -90,7 +90,9 @@ export class EducationModel {
 	}
 
 	public getEducationalPeriod(): string {
-		return this._startYear ? `${this._startYear.getFullYear()}-${this.endYear.getFullYear()}` : this.endYear.getFullYear().toString();
+		return this._startYear
+			? `${this._startYear.getFullYear()}-${this.endYear.getFullYear()}`
+			: this.endYear.getFullYear().toString();
 	}
 }
 
@@ -111,10 +113,10 @@ export abstract class BaseEducation implements IBaseEducation {
 
 	constructor(data: IBaseEducation) {
 		// TODO: refactor with Object.entries
-		this.id = (data.id) ? data.id : null;
-		this.receivedAt = (this.receivedAt) ? this.receivedAt : null;
-		this.institutionName = (data.institutionName) ? data.institutionName : null;
-		this.specializationName = (data.specializationName) ? data.specializationName : null;
+		this.id = data.id ? data.id : null;
+		this.receivedAt = this.receivedAt ? this.receivedAt : null;
+		this.institutionName = data.institutionName ? data.institutionName : null;
+		this.specializationName = data.specializationName ? data.specializationName : null;
 	}
 
 	abstract getEducationalPeriod(): string;
@@ -129,7 +131,7 @@ export class Certificate extends BaseEducation implements CertificateInfo {
 			receivedAt: data.receivedAt,
 			institutionName: data.schoolName,
 			specializationName: data.name,
-			studyType: data.educationType
+			studyType: data.educationType,
 		});
 		this.image = data.image;
 		this.studyType = data.educationType;
@@ -153,7 +155,7 @@ export class UniversityInfo extends BaseEducation implements EducationInfo {
 			receivedAt: data.issueAt,
 			institutionName: data.universityName,
 			specializationName: data.qualificationName,
-			studyType: data.formEducation
+			studyType: data.formEducation,
 		});
 		this.admissionAt = data.admissionAt;
 	}

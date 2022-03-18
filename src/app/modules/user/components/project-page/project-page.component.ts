@@ -2,17 +2,17 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { IGetProjectResponse, ProjectService } from '@app/services/project/project.service';
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { ProjectInfo } from '@api/project-service/models/project-info';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { UserInfo } from '@data/api/project-service/models/user-info';
+import { UserInfo } from '@api/project-service/models/user-info';
 import { ProjectTypeModel } from '@app/models/project/project-status';
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { EMPTY } from 'rxjs';
-import { ProjectUserRoleType } from '@data/api/project-service/models';
+import { ProjectUserRoleType } from '@api/project-service/models';
 import {
 	AddEmployeeComponent,
 	OpenAddEmployeeModalFrom,

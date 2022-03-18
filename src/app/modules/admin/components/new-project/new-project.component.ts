@@ -1,19 +1,19 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DepartmentInfo } from '@data/api/user-service/models/department-info';
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { DepartmentInfo } from '@api/user-service/models/department-info';
+import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserInfo } from '@api/user-service/models/user-info';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectUserRoleType } from '@data/api/project-service/models/project-user-role-type';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { DepartmentService } from '@app/services/department/department.service';
 import { IProjectStatusType, ProjectTypeModel } from '@app/models/project/project-status';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
-import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
+import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
 import {

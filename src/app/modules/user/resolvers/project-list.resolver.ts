@@ -3,7 +3,7 @@ import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { ProjectInfo } from '@api/project-service/models/project-info';
 
 @Injectable({
 	providedIn: 'root',

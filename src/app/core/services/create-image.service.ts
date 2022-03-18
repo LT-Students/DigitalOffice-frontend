@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
-import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
+import { CreateImageRequest } from '@api/image-service/models/create-image-request';
 
 @Injectable({
 	providedIn: 'root',

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
 
 import { IFindProjects, ProjectService } from '@app/services/project/project.service';
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { ProjectInfo } from '@api/project-service/models/project-info';
 import { iif, Observable, ReplaySubject } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';

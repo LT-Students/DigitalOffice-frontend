@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Valida
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { UserService } from '@app/services/user/user.service';
-import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
+import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
 import { BehaviorSubject, of } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';

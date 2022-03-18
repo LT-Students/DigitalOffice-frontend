@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { OperationResultStatusType } from '@data/api/time-service/models';
+import { OperationResultStatusType } from '@api/time-service/models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY, iif, Observable } from 'rxjs';
 import { AttendanceService } from '@app/services/attendance.service';

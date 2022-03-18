@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CertificateApiService } from '@data/api/education-service/services/certificate-api.service';
-import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
-import { CreateCertificateRequest } from '@data/api/education-service/models/create-certificate-request';
-import { EditCertificateRequest } from '@data/api/education-service/models/edit-certificate-request';
+import { CertificateApiService } from '@api/education-service/services/certificate-api.service';
+import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
+import { CreateCertificateRequest } from '@api/education-service/models/create-certificate-request';
+import { EditCertificateRequest } from '@api/education-service/models/edit-certificate-request';
 
 export interface IEditCertificateRequest {
 	/**

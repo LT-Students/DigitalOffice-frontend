@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
 
-import { RoleInfo } from '@data/api/rights-service/models';
+import { RoleInfo } from '@api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
