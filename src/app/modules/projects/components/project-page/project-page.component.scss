@@ -1,6 +1,6 @@
-@use 'base/variables';
-@use '~@angular/material' as mat;
-@use 'base/palettes' as *;
+@use '../../../../../stylesheets/base/variables';
+@use '../../../../../../node_modules/@angular/material/index' as mat;
+@use '../../../../../stylesheets/base/palettes' as *;
 
 .card {
 	&__header {

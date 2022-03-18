@@ -14,6 +14,7 @@ import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.com
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 import { EditCompanyComponent } from '../../modals/edit-company/edit-company.component';
+import { RouteType } from '../../../../app-routing.module';
 
 @Component({
 	selector: 'do-dashboard',
@@ -58,22 +59,22 @@ export class DashboardComponent implements OnInit {
 							return this.modalService.openModal(EditCompanyComponent, ModalWidth.L).afterClosed();
 						}
 						case this.modalType.NEW_PROJECT: {
-							return fromPromise(this._router.navigate(['admin/new-project']));
+							return fromPromise(this._router.navigate([RouteType.PROJECTS, 'new']));
 						}
 						case this.modalType.MANAGE_USERS: {
-							return fromPromise(this._router.navigate(['admin/manage-users']));
+							return fromPromise(this._router.navigate([RouteType.ADMIN, 'manage-users']));
 						}
 						case this.modalType.DEPARTMENT_LIST: {
 							return fromPromise(this._router.navigate(['departments']));
 						}
 						case this.modalType.MANAGE_ROLES: {
-							return fromPromise(this._router.navigate(['admin/manage-roles']));
+							return fromPromise(this._router.navigate([RouteType.ADMIN, 'manage-roles']));
 						}
 						case this.modalType.OFFICE_LIST: {
-							return fromPromise(this._router.navigate(['admin/offices']));
+							return fromPromise(this._router.navigate([RouteType.ADMIN, 'offices']));
 						}
 						case this.modalType.POSITION_LIST: {
-							return fromPromise(this._router.navigate(['admin/positions']));
+							return fromPromise(this._router.navigate([RouteType.ADMIN, 'positions']));
 						}
 						default: {
 							return of(false);

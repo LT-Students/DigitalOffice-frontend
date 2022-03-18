@@ -13,11 +13,8 @@ import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { EMPTY } from 'rxjs';
 import { ProjectUserRoleType } from '@api/project-service/models';
-import {
-	AddEmployeeComponent,
-	OpenAddEmployeeModalFrom,
-} from '../../../../shared/modals/add-employee/add-employee.component';
-import { EditProjectComponent } from '../../../admin/modals/edit-project/edit-project.component';
+import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
+import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
 
 @Component({
 	selector: 'do-project-page',
@@ -77,7 +74,7 @@ export class ProjectPageComponent implements OnInit {
 			.subscribe((project) => this._updateProjectInfo(project));
 	}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		this.projectId = this._route.snapshot.params.id;
 	}
 
@@ -196,7 +193,7 @@ export class ProjectPageComponent implements OnInit {
 		this._router.navigate([`/user/${userId}`]);
 	}
 
-	private _updateProjectInfo(result: OperationResultResponse<IGetProjectResponse>) {
+	private _updateProjectInfo(result: OperationResultResponse<IGetProjectResponse>): void {
 		this.projectInfo = result.body?.project ?? {};
 		this.status = ProjectTypeModel.getProjectType(this.projectInfo?.status)?.type;
 		this.dataSource = new MatTableDataSource(result?.body?.users?.filter((e) => e.isActive) ?? []);

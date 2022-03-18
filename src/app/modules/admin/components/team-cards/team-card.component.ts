@@ -1,17 +1,30 @@
 //@ts-nocheck
-import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import {
+	AfterViewInit,
+	Component,
+	ElementRef,
+	HostListener,
+	Input,
+	OnInit,
+	ViewChild,
+	ChangeDetectionStrategy,
+} from '@angular/core';
 
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
-import { Team, TeamMember } from '../new-project/team-cards';
-import { DeleteDirectionComponent, ModalApprovalConfig, ModalResult } from '../new-project/modals/delete-direction/delete-direction.component';
+import { Team, TeamMember } from '../../../projects/components/new-project/team-cards';
+import {
+	DeleteDirectionComponent,
+	ModalApprovalConfig,
+	ModalResult,
+} from '../../../projects/components/new-project/modals/delete-direction/delete-direction.component';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
-import { UserSearchComponent } from '../new-project/modals/user-search/user-search.component';
+import { UserSearchComponent } from '../../../projects/components/new-project/modals/user-search/user-search.component';
 
 @Component({
 	selector: 'do-team-card',
 	templateUrl: './team-card.component.html',
 	styleUrls: ['./team-card.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamCardComponent implements OnInit, AfterViewInit {
 	@Input() public users: Team[];

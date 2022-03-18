@@ -22,7 +22,7 @@ export enum ModalResult {
 	selector: 'do-delete-direction',
 	templateUrl: './delete-direction.component.html',
 	styleUrls: ['./delete-direction.component.scss'],
-changeDetection: ChangeDetectionStrategy.OnPush,
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeleteDirectionComponent implements OnInit {
 	constructor(@Inject(MAT_DIALOG_DATA) public data: ModalApprovalConfig) {}

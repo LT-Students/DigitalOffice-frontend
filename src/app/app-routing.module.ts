@@ -5,15 +5,13 @@ import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
 import { EmployeePageService } from '@app/services/employee-page.service';
-import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
-import { ProjectPageComponent } from './modules/time-tracker/components/project-page/project-page.component';
+import { ContentContainerComponent } from '@shared/component/content-container/content-container.component';
 import { EmployeePageComponent } from './modules/employee/employee-page.component';
 import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
 import { DepartmentListComponent } from './modules/admin/components/department-list/department-list.component';
 import { DepartmentCardComponent } from './modules/admin/components/department-card/department-card.component';
 import { DepartmentListResolver } from './modules/admin/resolvers/department-list.resolver';
 import { DepartmentPageResolver } from './modules/admin/resolvers/department-page.resolver';
-import { ProjectPageResolver } from './modules/time-tracker/resolvers/project-page.resolver';
 
 export const enum RouteType {
 	AUTH = 'auth',
@@ -55,10 +53,10 @@ const routes: Routes = [
 						path: RouteType.NEWS,
 						loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
 					},
-					// {
-					// 	path: RouteType.PROJECTS,
-					// 	loadChildren: () => import('./modules/projects/projects.module').then((m) => m.ProjectsModule),
-					// },
+					{
+						path: RouteType.PROJECTS,
+						loadChildren: () => import('./modules/projects/projects.module').then((m) => m.ProjectsModule),
+					},
 					// {
 					// 	path: RouteType.USER,
 					// 	loadChildren: () => import('./modules/employee/employee.module').then((m) => m.EmployeeModule),
@@ -72,13 +70,6 @@ const routes: Routes = [
 						component: EmployeePageComponent,
 						resolve: {
 							employee: EmployeePageService,
-						},
-					},
-					{
-						path: `${RouteType.PROJECTS}/:id`,
-						component: ProjectPageComponent,
-						resolve: {
-							project: ProjectPageResolver,
 						},
 					},
 					{

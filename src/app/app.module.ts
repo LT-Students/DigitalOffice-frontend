@@ -35,20 +35,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [
-		AppRoutingModule,
-		CoreModule,
-		AuthModule,
-		TimeTrackerModule,
-		AdminModule,
-		EmployeeModule,
-		NgbModule,
-		MaterialModule,
-		InstallerModule,
-		FormsModule,
-		NewsModule,
-		MatLuxonDateModule,
-	],
+	imports: [AppRoutingModule, CoreModule, NgbModule, MaterialModule, FormsModule, MatLuxonDateModule],
 	providers: [
 		Title,
 		{

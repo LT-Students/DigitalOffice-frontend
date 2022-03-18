@@ -19,7 +19,8 @@
     ],
     "paths": {
       "@app/*": ["src/app/core/*"],
-      "@api/*": ["src/app/api/*"]
+      "@api/*": ["src/app/api/*"],
+      "@shared/*": ["src/app/shared/*"]
     },
     "lib": [
       "es2018",

@@ -1,5 +1,5 @@
-@use 'base/variables';
-@use '../user-row';
+@use '../../../../../stylesheets/base/variables';
+@use '../../../admin/components/user-row';
 
 .project-info {
 	margin-bottom: 45px;

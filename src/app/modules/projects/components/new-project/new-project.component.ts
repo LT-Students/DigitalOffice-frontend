@@ -14,12 +14,9 @@ import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
+import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { RouteType } from '../../../../app-routing.module';
-import {
-	AddEmployeeComponent,
-	OpenAddEmployeeModalFrom,
-} from '../../../../shared/modals/add-employee/add-employee.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';
 
