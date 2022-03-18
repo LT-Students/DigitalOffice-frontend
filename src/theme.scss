@@ -14,7 +14,7 @@ $custom-typography: mat.define-typography-config(
 	$subheading-2: mat.define-typography-level(22px, 1.45, 700, 'Montserrat'),
 	$subheading-1: mat.define-typography-level(18px, 1.45, 700, 'Montserrat'),
 	$body-1: mat.define-typography-level(15px, 1.45, 500),
-	$body-2: mat.define-typography-level(13px, 1.45, 700),
+	$body-2: mat.define-typography-level(13px, 1.45, 400),
 	$caption: mat.define-typography-level(14px, 24px, 500),
 	$input: mat.define-typography-level(15px, 1.45, 500),
 	$button: mat.define-typography-level(15px, 1.45, 500),
@@ -161,6 +161,10 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 
 	.warn {
 		color: mat.get-color-from-palette(mat.$red-palette, 400);
+	}
+
+	.success {
+		color: mat.get-color-from-palette($do-green, 500);
 	}
 
 	@include fab.theme(

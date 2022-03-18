@@ -8,9 +8,15 @@ import { ReconstructPasswordRequest } from '@data/api/user-service/models/recons
 import { DoValidators } from '@app/validators/do-validators';
 import { ErrorStateMatcher } from '@angular/material/core';
 
-class PasswordErrorMatcher implements ErrorStateMatcher {
+class PasswordErrorMatcher extends ErrorStateMatcher {
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-		return !!form?.hasError('noMatch') || !!control?.hasError('password');
+		return super.isErrorState(control, form) || !!form?.hasError('noMatch');
+	}
+}
+
+class LoginSecretErrorMatcher extends ErrorStateMatcher {
+	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+		return super.isErrorState(control, form) || !!form?.hasError('invalidLoginSecret');
 	}
 }
 
@@ -24,7 +30,8 @@ export class ResetPasswordComponent {
 	public resetForm: FormGroup;
 	public isLoading$$: BehaviorSubject<boolean>;
 	public isCompleted$$: BehaviorSubject<boolean>;
-	public errorMatcher = new PasswordErrorMatcher();
+	public passwordErrorMatcher = new PasswordErrorMatcher();
+	public loginSecretErrorMatcher = new LoginSecretErrorMatcher();
 
 	constructor(private _fb: FormBuilder, private _passwordService: PasswordService, private _route: ActivatedRoute) {
 		this.resetForm = this._fb.group(
@@ -56,7 +63,7 @@ export class ResetPasswordComponent {
 				finalize(() => this.isLoading$$.next(false)),
 				catchError((error) => {
 					this.resetForm.setErrors({
-						invalidLoginPassword: {
+						invalidLoginSecret: {
 							error: error,
 						},
 					});
