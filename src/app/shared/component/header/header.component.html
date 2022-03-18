@@ -9,7 +9,7 @@
 		<h4 mat-tab-link class="logo" [routerLink]="['user', currentUser?.id]" routerLinkActive="active">
 			{{ portalName | async }}
 		</h4>
-		<a mat-tab-link routerLink="/user/attendance" routerLinkActive="active">Учет времени</a>
+		<a mat-tab-link routerLink="/time" routerLinkActive="active">Учет времени</a>
 		<a mat-tab-link routerLink="/user/projects-table" routerLinkActive="active">Доска проектов</a>
 		<a mat-tab-link routerLink="/news" routerLinkActive="active">Новости</a>
 		<a *ngIf="currentUser?.isAdmin" mat-tab-link routerLink="/admin/dashboard" routerLinkActive="active"

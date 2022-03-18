@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { DatePeriod } from '@app/types/date-period';
 import { DateFilterFn } from '@angular/material/datepicker';
 import { DateTime } from 'luxon';
-import { DateService } from './date.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class TimeDurationService {
-	constructor(private _dateService: DateService) {}
+	constructor() {}
 
 	public countMaxMonthDuration(year: number, month: number): number {
 		const currentDatePeriod: DatePeriod = {

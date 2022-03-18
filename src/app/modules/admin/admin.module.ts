@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from 'src/app/shared/material.module';
 
 import { SharedModule } from '../../shared/shared.module';
-import { LeaveLabelPipe } from '../../shared/pipes/leave-label.pipe';
-import { ProjectTypePipe } from '../../shared/pipes/project-type.pipe';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NewEmployeeComponent } from './modals/new-employee/new-employee.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
@@ -25,7 +22,6 @@ import { ManageRolesComponent } from './components/manage-roles/manage-roles.com
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
-import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
 import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 import { EditCompanyComponent } from './modals/edit-company/edit-company.component';
 
@@ -50,13 +46,10 @@ import { EditCompanyComponent } from './modals/edit-company/edit-company.compone
 		OfficeListComponent,
 		PositionListComponent,
 		DirectorsTimelistComponent,
-		TeamStatisticsComponent,
-		LeaveLabelPipe,
-		ProjectTypePipe,
 		EditProjectComponent,
 		EditCompanyComponent,
 	],
-	imports: [FormsModule, ReactiveFormsModule, MaterialModule, SharedModule, AdminRoutingModule],
-	exports: [TeamStatisticsComponent, LeaveLabelPipe, EditProjectComponent, ProjectTypePipe],
+	imports: [SharedModule, AdminRoutingModule],
+	exports: [EditProjectComponent],
 })
 export class AdminModule {}

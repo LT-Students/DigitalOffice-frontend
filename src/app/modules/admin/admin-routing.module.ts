@@ -54,7 +54,7 @@ const adminRoutes: Routes = [
 			timelist: TimelistResolver,
 		},
 	},
-	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
+	{ path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({

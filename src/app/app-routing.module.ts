@@ -6,23 +6,24 @@ import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
-import { ProjectPageComponent } from './modules/user/components/project-page/project-page.component';
+import { ProjectPageComponent } from './modules/time-tracker/components/project-page/project-page.component';
 import { EmployeePageComponent } from './modules/employee/employee-page.component';
 import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
 import { DepartmentListComponent } from './modules/admin/components/department-list/department-list.component';
 import { DepartmentCardComponent } from './modules/admin/components/department-card/department-card.component';
 import { DepartmentListResolver } from './modules/admin/resolvers/department-list.resolver';
 import { DepartmentPageResolver } from './modules/admin/resolvers/department-page.resolver';
-import { ProjectPageResolver } from './modules/user/resolvers/project-page.resolver';
+import { ProjectPageResolver } from './modules/time-tracker/resolvers/project-page.resolver';
 
 export const enum RouteType {
 	AUTH = 'auth',
 	USER = 'user',
 	ADMIN = 'admin',
-	PROJECT = 'project',
+	PROJECTS = 'projects',
 	DEPARTMENTS = 'departments',
 	NEWS = 'news',
 	INSTALLER = 'installer',
+	TIME_TRACK = 'time',
 }
 
 const routes: Routes = [
@@ -38,11 +39,12 @@ const routes: Routes = [
 					{
 						path: '',
 						pathMatch: 'full',
-						redirectTo: RouteType.USER,
+						redirectTo: RouteType.TIME_TRACK,
 					},
 					{
-						path: RouteType.USER,
-						loadChildren: () => import('./modules/user/user.module').then((m) => m.UserModule),
+						path: RouteType.TIME_TRACK,
+						loadChildren: () =>
+							import('./modules/time-tracker/time-tracker.module').then((m) => m.TimeTrackerModule),
 					},
 					{
 						path: RouteType.ADMIN,
@@ -53,6 +55,18 @@ const routes: Routes = [
 						path: RouteType.NEWS,
 						loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
 					},
+					// {
+					// 	path: RouteType.PROJECTS,
+					// 	loadChildren: () => import('./modules/projects/projects.module').then((m) => m.ProjectsModule),
+					// },
+					// {
+					// 	path: RouteType.USER,
+					// 	loadChildren: () => import('./modules/employee/employee.module').then((m) => m.EmployeeModule),
+					// },
+					// {
+					// 	path: RouteType.DEPARTMENTS,
+					// 	loadChildren: () => import('./modules/departments/departments.module').then((m) => m.DepartmentsModule),
+					// },
 					{
 						path: `${RouteType.USER}/:id`,
 						component: EmployeePageComponent,
@@ -61,7 +75,7 @@ const routes: Routes = [
 						},
 					},
 					{
-						path: `${RouteType.PROJECT}/:id`,
+						path: `${RouteType.PROJECTS}/:id`,
 						component: ProjectPageComponent,
 						resolve: {
 							project: ProjectPageResolver,

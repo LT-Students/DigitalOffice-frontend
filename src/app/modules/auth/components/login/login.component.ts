@@ -9,6 +9,7 @@ import { AuthenticationRequest } from '@api/auth-service/models/authentication-r
 import { User } from '@app/models/user/user.model';
 import { BehaviorSubject, of } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { RouteType } from '../../../../app-routing.module';
 
 class LoginErrorMatcher implements ErrorStateMatcher {
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -77,7 +78,7 @@ export class LoginComponent implements OnInit {
 			)
 			.subscribe((user: User | null) => {
 				if (user) {
-					this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
+					this._router.navigate([RouteType.TIME_TRACK]);
 				}
 			});
 	}

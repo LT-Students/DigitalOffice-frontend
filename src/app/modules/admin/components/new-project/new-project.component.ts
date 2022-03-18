@@ -114,7 +114,7 @@ export class NewProjectComponent implements OnInit {
 			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe(
 				(result) => {
-					this._router.navigate([`${RouteType.PROJECT}/${result.body}`]);
+					this._router.navigate([`${RouteType.PROJECTS}/${result.body}`]);
 				},
 				(error) => {
 					throw error;

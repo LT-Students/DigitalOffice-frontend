@@ -18,8 +18,8 @@ import { DATE_FORMAT } from '@app/configs/date-formats';
 import { AuthModule } from './modules/auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminModule } from './modules/admin/admin.module';
-import { MaterialModule } from './shared/material.module';
-import { UserModule } from './modules/user/user.module';
+import { MaterialModule } from './shared/modules/material/material.module';
+import { TimeTrackerModule } from './modules/time-tracker/time-tracker.module';
 import { AppComponent } from './app.component';
 import { EmployeeModule } from './modules/employee/employee.module';
 import { InstallerModule } from './modules/installer/installer.module';
@@ -39,7 +39,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 		AppRoutingModule,
 		CoreModule,
 		AuthModule,
-		UserModule,
+		TimeTrackerModule,
 		AdminModule,
 		EmployeeModule,
 		NgbModule,

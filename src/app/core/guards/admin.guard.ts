@@ -3,6 +3,7 @@ import { CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot
 import { Observable } from 'rxjs';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { map, tap } from 'rxjs/operators';
+import { RouteType } from '../../app-routing.module';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,7 +16,7 @@ export class AdminGuard implements CanLoad {
 			map((user) => user?.isAdmin ?? false),
 			tap((isAdmin) => {
 				if (!isAdmin) {
-					this._router.navigate(['/user/attendance']);
+					this._router.navigate(['']);
 				}
 			})
 		);
@@ -26,7 +27,7 @@ export class AdminGuard implements CanLoad {
 			map((user) => user?.isAdmin ?? false),
 			tap((isAdmin) => {
 				if (!isAdmin) {
-					this._router.navigate(['/user/attendance']);
+					this._router.navigate(['']);
 				}
 			})
 		);
