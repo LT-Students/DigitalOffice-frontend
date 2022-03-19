@@ -1,6 +1,6 @@
-@use 'layouts/table';
-@use '~@angular/material' as mat;
-@use 'base/palettes' as *;
+@use '../../../../../stylesheets/layouts/table';
+@use '../../../../../../node_modules/@angular/material/index' as mat;
+@use '../../../../../stylesheets/base/palettes' as *;
 
 .erasable {
 	//white-space: nowrap;

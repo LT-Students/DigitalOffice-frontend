@@ -6,7 +6,7 @@
 			</button>
 		</div>
 
-		<h4 mat-tab-link class="logo" [routerLink]="['user', currentUser?.id]" routerLinkActive="active">
+		<h4 mat-tab-link class="logo" [routerLink]="['users', currentUser?.id]" routerLinkActive="active">
 			{{ portalName | async }}
 		</h4>
 		<a mat-tab-link routerLink="/time" routerLinkActive="active">Учет времени</a>

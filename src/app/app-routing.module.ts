@@ -5,11 +5,6 @@ import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
 import { ContentContainerComponent } from '@shared/component/content-container/content-container.component';
-import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
-import { DepartmentListComponent } from './modules/admin/components/department-list/department-list.component';
-import { DepartmentCardComponent } from './modules/admin/components/department-card/department-card.component';
-import { DepartmentListResolver } from './modules/admin/resolvers/department-list.resolver';
-import { DepartmentPageResolver } from './modules/admin/resolvers/department-page.resolver';
 
 export const enum RouteType {
 	AUTH = 'auth',
@@ -59,23 +54,10 @@ const routes: Routes = [
 						path: RouteType.USERS,
 						loadChildren: () => import('./modules/employee/employee.module').then((m) => m.EmployeeModule),
 					},
-					// {
-					// 	path: RouteType.DEPARTMENTS,
-					// 	loadChildren: () => import('./modules/departments/departments.module').then((m) => m.DepartmentsModule),
-					// },
 					{
 						path: RouteType.DEPARTMENTS,
-						component: DepartmentListComponent,
-						resolve: {
-							departments: DepartmentListResolver,
-						},
-					},
-					{
-						path: `${RouteType.DEPARTMENTS}/:id`,
-						component: DepartmentCardComponent,
-						resolve: {
-							department: DepartmentPageResolver,
-						},
+						loadChildren: () =>
+							import('./modules/departments/departments.module').then((m) => m.DepartmentsModule),
 					},
 				],
 			},
@@ -87,7 +69,7 @@ const routes: Routes = [
 	},
 	{
 		path: RouteType.INSTALLER,
-		component: WizardComponent,
+		loadChildren: () => import('./modules/installer/installer.module').then((m) => m.InstallerModule),
 		canActivate: [InstallerGuard],
 	},
 ];

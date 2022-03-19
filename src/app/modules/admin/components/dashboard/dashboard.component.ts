@@ -9,7 +9,7 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType, ModalService, ModalWidth } from '@app/services/modal.service';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
-import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
+import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit {
 							return fromPromise(this._router.navigate([RouteType.USERS]));
 						}
 						case this.modalType.DEPARTMENT_LIST: {
-							return fromPromise(this._router.navigate(['departments']));
+							return fromPromise(this._router.navigate([RouteType.DEPARTMENTS]));
 						}
 						case this.modalType.MANAGE_ROLES: {
 							return fromPromise(this._router.navigate([RouteType.ADMIN, 'manage-roles']));

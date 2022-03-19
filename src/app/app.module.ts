@@ -10,20 +10,13 @@ import { AuthInterceptor } from '@app/interceptors/auth.interceptor';
 
 import { CoreModule } from '@app/core.module';
 import { AppInitService } from '@app/services/app-init.service';
-import { FormsModule } from '@angular/forms';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS, MatLuxonDateModule } from '@angular/material-luxon-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { DoDateAdapter } from '@app/services/do-date-adapter';
 import { DATE_FORMAT } from '@app/configs/date-formats';
-import { AuthModule } from './modules/auth/auth.module';
+import { SharedModule } from '@shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
-import { AdminModule } from './modules/admin/admin.module';
-import { MaterialModule } from './shared/modules/material/material.module';
-import { TimeTrackerModule } from './modules/time-tracker/time-tracker.module';
 import { AppComponent } from './app.component';
-import { EmployeeModule } from './modules/employee/employee.module';
-import { InstallerModule } from './modules/installer/installer.module';
-import { NewsModule } from './modules/news/news.module';
 
 registerLocaleData(localeRu);
 
@@ -35,7 +28,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [AppRoutingModule, CoreModule, NgbModule, MaterialModule, FormsModule, MatLuxonDateModule],
+	imports: [AppRoutingModule, CoreModule, NgbModule, MatLuxonDateModule, SharedModule],
 	providers: [
 		Title,
 		{

@@ -6,6 +6,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
+import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -67,6 +68,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
+		AddEditDepartmentComponent,
 	],
 	imports: [
 		CommonModule,
@@ -114,6 +116,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
+		AddEditDepartmentComponent,
 	],
 })
 export class SharedModule {}

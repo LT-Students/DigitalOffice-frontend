@@ -5,17 +5,13 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { TeamCardComponent } from './components/team-cards/team-card.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ProgressComponent } from './components/upload/progress/progress.component';
-import { AddEditDepartmentComponent } from './modals/add-edit-department/add-edit-department.component';
 import { AddEditPositionComponent } from './modals/add-edit-position/add-edit-position.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AddEditRoleComponent } from './modals/add-edit-role/add-edit-role.component';
 import { AddEditOfficeComponent } from './modals/add-edit-office/add-edit-office.component';
-import { DepartmentListComponent } from './components/department-list/department-list.component';
-import { DepartmentCardComponent } from './components/department-card/department-card.component';
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component';
-import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { EditCompanyComponent } from './modals/edit-company/edit-company.component';
 
 @NgModule({
@@ -24,16 +20,12 @@ import { EditCompanyComponent } from './modals/edit-company/edit-company.compone
 		TeamCardComponent,
 		UploadComponent,
 		ProgressComponent,
-		AddEditDepartmentComponent,
 		AddEditPositionComponent,
 		AddEditRoleComponent,
 		AddEditOfficeComponent,
-		DepartmentListComponent,
-		DepartmentCardComponent,
 		ManageRolesComponent,
 		OfficeListComponent,
 		PositionListComponent,
-		DirectorsTimelistComponent,
 		EditCompanyComponent,
 	],
 	imports: [SharedModule, AdminRoutingModule],
