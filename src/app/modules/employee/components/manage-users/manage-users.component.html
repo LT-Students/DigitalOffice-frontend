@@ -76,11 +76,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr
-					class="row row_activable"
-					*ngFor="let user of users.body"
-					[routerLink]="[AppRoutes.Users, user?.id]"
-				>
+				<tr class="row row_activable" *ngFor="let user of users.body" [routerLink]="[user?.id]">
 					<td class="cell cell_vertical-middle">
 						<do-profile-image [image]="user?.avatar"></do-profile-image>
 					</td>

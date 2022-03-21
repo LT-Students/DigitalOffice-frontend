@@ -12,7 +12,6 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
-import { AppRoutes } from '@app/models/app-routes';
 
 @Component({
 	selector: 'do-manage-users',
@@ -23,8 +22,6 @@ import { AppRoutes } from '@app/models/app-routes';
 export class ManageUsersComponent implements AfterViewInit {
 	@ViewChild(MatSort) sort: MatSort | undefined;
 	@ViewChild(MatPaginator) paginator?: MatPaginator;
-
-	public AppRoutes = AppRoutes;
 
 	public users$: Observable<OperationResultResponse<UserInfo[]>>;
 	public filters: FormGroup;

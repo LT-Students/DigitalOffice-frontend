@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { AuthService } from '@app/services/auth/auth.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { Event, NavigationEnd, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { map, takeUntil, tap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { DepartmentsRoutes } from '../../../modules/departments/models/departmen
 })
 export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 	@ViewChild('menu', { read: ElementRef }) menu?: ElementRef;
-	@ViewChild('wrapper') wrapper?: ElementRef<HTMLElement>;
+	@ViewChild('scroll') scroll?: ElementRef<HTMLElement>;
 
 	public AppRoutes = AppRoutes;
 
@@ -44,9 +44,12 @@ export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 	public ngAfterViewInit() {
 		this.router.events
 			.pipe(
-				tap((event) => {
+				tap((event: Event) => {
+					console.log(event);
 					if (event instanceof NavigationEnd) {
-						this.wrapper?.nativeElement.scroll({ top: 0 });
+						console.log('wut?', this.scroll?.nativeElement.getBoundingClientRect().top);
+						// this.scroll?.nativeElement.scroll({ top: 0 });
+						this.scroll?.nativeElement.scrollTo(0, 0);
 					}
 				}),
 				takeUntil(this.destroy$)

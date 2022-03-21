@@ -138,7 +138,7 @@
 			</ng-container>
 
 			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onUserClick(row.id)"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="onUserClick(row.user.id)"></tr>
 		</table>
 		<ng-template #emptyList>
 			<do-empty-list [emptyMessage]="'В данном департаменте нет сотрудников'"></do-empty-list>
