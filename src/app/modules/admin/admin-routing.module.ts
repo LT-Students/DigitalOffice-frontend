@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
@@ -8,32 +8,33 @@ import { PositionListComponent } from './components/position-list/position-list.
 import { PositionResolver } from './resolvers/position.resolver';
 import { OfficeResolver } from './resolvers/office.resolver';
 import { RoleResolver } from './resolvers/role.resolver';
+import { AdminRoutes } from './models/admin-routes';
 
 const adminRoutes: Routes = [
-	{ path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-	{ path: 'dashboard', component: DashboardComponent },
+	{ path: '', pathMatch: 'full', redirectTo: AdminRoutes.Dashboard },
+	{ path: AdminRoutes.Dashboard, component: DashboardComponent },
 	{
-		path: 'manage-roles',
+		path: AdminRoutes.Roles,
 		component: ManageRolesComponent,
 		resolve: {
 			roles: RoleResolver,
 		},
 	},
 	{
-		path: 'offices',
+		path: AdminRoutes.Offices,
 		component: OfficeListComponent,
 		resolve: {
 			offices: OfficeResolver,
 		},
 	},
 	{
-		path: 'positions',
+		path: AdminRoutes.Positions,
 		component: PositionListComponent,
 		resolve: {
 			positions: PositionResolver,
 		},
 	},
-	{ path: '**', redirectTo: '', pathMatch: 'full' },
+	{ path: '**', redirectTo: AdminRoutes.Dashboard, pathMatch: 'full' },
 ];
 
 @NgModule({

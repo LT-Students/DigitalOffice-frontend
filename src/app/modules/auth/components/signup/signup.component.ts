@@ -7,7 +7,7 @@ import { CreateCredentialsRequest } from '@api/user-service/models/create-creden
 import { BehaviorSubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { RouteType } from '../../../../app-routing.module';
+import { AppRoutes } from '@app/models/app-routes';
 
 @Component({
 	selector: 'do-signup',
@@ -64,7 +64,7 @@ export class SignupComponent {
 			)
 			.subscribe({
 				next: (user: User) => {
-					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : RouteType.TIME_TRACK;
+					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : AppRoutes.TimeTrack;
 					this._router.navigate([nextUrl]);
 				},
 			});

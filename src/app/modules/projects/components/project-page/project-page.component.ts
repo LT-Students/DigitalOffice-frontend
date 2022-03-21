@@ -14,8 +14,8 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { EMPTY } from 'rxjs';
 import { ProjectUserRoleType } from '@api/project-service/models';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
+import { AppRoutes } from '@app/models/app-routes';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
-import { RouteType } from '../../../../app-routing.module';
 
 @Component({
 	selector: 'do-project-page',
@@ -191,7 +191,7 @@ export class ProjectPageComponent implements OnInit {
 	}
 
 	public onUserClick(userId: string | undefined): void {
-		this._router.navigate([RouteType.USERS, userId]);
+		this._router.navigate([AppRoutes.Users, userId]);
 	}
 
 	private _updateProjectInfo(result: OperationResultResponse<IGetProjectResponse>): void {

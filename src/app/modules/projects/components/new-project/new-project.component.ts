@@ -15,8 +15,8 @@ import { finalize } from 'rxjs/operators';
 import { MatTableDataSource } from '@angular/material/table';
 import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
+import { AppRoutes } from '@app/models/app-routes';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
-import { RouteType } from '../../../../app-routing.module';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';
 
@@ -111,7 +111,8 @@ export class NewProjectComponent implements OnInit {
 			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe(
 				(result) => {
-					this._router.navigate([`${RouteType.PROJECTS}/${result.body}`]);
+					const projectId = result.body;
+					this._router.navigate([AppRoutes.Projects, projectId]);
 				},
 				(error) => {
 					throw error;

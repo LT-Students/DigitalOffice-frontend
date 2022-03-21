@@ -6,6 +6,7 @@ import { DepartmentCardComponent } from './components/department-card/department
 import { DepartmentPageResolver } from './resolvers/department-page.resolver';
 import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { TimelistResolver } from './resolvers/timelist.resolver';
+import { DepartmentsRoutes } from './models/departments-routes';
 
 const routes: Routes = [
 	{
@@ -23,7 +24,7 @@ const routes: Routes = [
 		},
 		children: [
 			{
-				path: 'timelist',
+				path: DepartmentsRoutes.TimeList,
 				component: DirectorsTimelistComponent,
 				resolve: {
 					timelist: TimelistResolver,

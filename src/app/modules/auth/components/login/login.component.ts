@@ -9,7 +9,8 @@ import { AuthenticationRequest } from '@api/auth-service/models/authentication-r
 import { User } from '@app/models/user/user.model';
 import { BehaviorSubject, of } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { RouteType } from '../../../../app-routing.module';
+import { AppRoutes } from '@app/models/app-routes';
+import { AuthRoutes } from '../../models/auth-routes';
 
 class LoginErrorMatcher implements ErrorStateMatcher {
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -25,6 +26,8 @@ class LoginErrorMatcher implements ErrorStateMatcher {
 	providers: [{ provide: ErrorStateMatcher, useClass: LoginErrorMatcher }],
 })
 export class LoginComponent implements OnInit {
+	public AuthRoutes = AuthRoutes;
+
 	public loginForm: FormGroup;
 	public isLoading$$: BehaviorSubject<boolean>;
 	public errorMatcher = new LoginErrorMatcher();
@@ -78,7 +81,7 @@ export class LoginComponent implements OnInit {
 			)
 			.subscribe((user: User | null) => {
 				if (user) {
-					this._router.navigate([RouteType.TIME_TRACK]);
+					this._router.navigate([AppRoutes.TimeTrack]);
 				}
 			});
 	}

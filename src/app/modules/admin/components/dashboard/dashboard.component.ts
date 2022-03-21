@@ -10,11 +10,13 @@ import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType, ModalService, ModalWidth } from '@app/services/modal.service';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { AppRoutes } from '@app/models/app-routes';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 import { EditCompanyComponent } from '../../modals/edit-company/edit-company.component';
-import { RouteType } from '../../../../app-routing.module';
+import { ProjectsRoutes } from '../../../projects/models/projects-routes';
+import { AdminRoutes } from '../../models/admin-routes';
 
 @Component({
 	selector: 'do-dashboard',
@@ -57,22 +59,22 @@ export class DashboardComponent implements OnInit {
 							return this.modalService.openModal(EditCompanyComponent, ModalWidth.L).afterClosed();
 						}
 						case this.modalType.NEW_PROJECT: {
-							return fromPromise(this._router.navigate([RouteType.PROJECTS, 'new']));
+							return fromPromise(this._router.navigate([AppRoutes.Projects, ProjectsRoutes.NewProject]));
 						}
 						case this.modalType.MANAGE_USERS: {
-							return fromPromise(this._router.navigate([RouteType.USERS]));
+							return fromPromise(this._router.navigate([AppRoutes.Users]));
 						}
 						case this.modalType.DEPARTMENT_LIST: {
-							return fromPromise(this._router.navigate([RouteType.DEPARTMENTS]));
+							return fromPromise(this._router.navigate([AppRoutes.Departments]));
 						}
 						case this.modalType.MANAGE_ROLES: {
-							return fromPromise(this._router.navigate([RouteType.ADMIN, 'manage-roles']));
+							return fromPromise(this._router.navigate([AppRoutes.Admin, AdminRoutes.Roles]));
 						}
 						case this.modalType.OFFICE_LIST: {
-							return fromPromise(this._router.navigate([RouteType.ADMIN, 'offices']));
+							return fromPromise(this._router.navigate([AppRoutes.Admin, AdminRoutes.Offices]));
 						}
 						case this.modalType.POSITION_LIST: {
-							return fromPromise(this._router.navigate([RouteType.ADMIN, 'positions']));
+							return fromPromise(this._router.navigate([AppRoutes.Admin, AdminRoutes.Positions]));
 						}
 						default: {
 							return of(false);

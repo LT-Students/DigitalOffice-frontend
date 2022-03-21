@@ -12,7 +12,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { OperationResultResponseCredentialsResponse } from '@api/user-service/models/operation-result-response-credentials-response';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { AppRoutes } from '@app/models/app-routes';
 import { LocalStorageService } from '../local-storage.service';
+import { AuthRoutes } from '../../../modules/auth/models/auth-routes';
 
 @Injectable({
 	providedIn: 'root',
@@ -38,7 +40,7 @@ export class AuthService {
 
 	public logout(): void {
 		this._removeCredentialsFromLocalStorage();
-		this._router.navigate(['/auth/login']);
+		this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn]);
 	}
 
 	public isAuthenticated(): boolean {

@@ -5,17 +5,7 @@ import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
 import { ContentContainerComponent } from '@shared/component/content-container/content-container.component';
-
-export const enum RouteType {
-	AUTH = 'auth',
-	USERS = 'users',
-	ADMIN = 'admin',
-	PROJECTS = 'projects',
-	DEPARTMENTS = 'departments',
-	NEWS = 'news',
-	INSTALLER = 'installer',
-	TIME_TRACK = 'time',
-}
+import { AppRoutes } from '@app/models/app-routes';
 
 const routes: Routes = [
 	{
@@ -30,45 +20,45 @@ const routes: Routes = [
 					{
 						path: '',
 						pathMatch: 'full',
-						redirectTo: RouteType.TIME_TRACK,
+						redirectTo: AppRoutes.TimeTrack,
 					},
 					{
-						path: RouteType.TIME_TRACK,
+						path: AppRoutes.TimeTrack,
 						loadChildren: () =>
 							import('./modules/time-tracker/time-tracker.module').then((m) => m.TimeTrackerModule),
 					},
 					{
-						path: RouteType.ADMIN,
+						path: AppRoutes.Admin,
 						loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule),
 						canActivate: [AdminGuard],
 					},
 					{
-						path: RouteType.NEWS,
+						path: AppRoutes.News,
 						loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
 					},
 					{
-						path: RouteType.PROJECTS,
+						path: AppRoutes.Projects,
 						loadChildren: () => import('./modules/projects/projects.module').then((m) => m.ProjectsModule),
 					},
 					{
-						path: RouteType.USERS,
+						path: AppRoutes.Users,
 						loadChildren: () => import('./modules/employee/employee.module').then((m) => m.EmployeeModule),
 					},
 					{
-						path: RouteType.DEPARTMENTS,
+						path: AppRoutes.Departments,
 						loadChildren: () =>
 							import('./modules/departments/departments.module').then((m) => m.DepartmentsModule),
 					},
 				],
 			},
 			{
-				path: RouteType.AUTH,
+				path: AppRoutes.Auth,
 				loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
 			},
 		],
 	},
 	{
-		path: RouteType.INSTALLER,
+		path: AppRoutes.Installer,
 		loadChildren: () => import('./modules/installer/installer.module').then((m) => m.InstallerModule),
 		canActivate: [InstallerGuard],
 	},

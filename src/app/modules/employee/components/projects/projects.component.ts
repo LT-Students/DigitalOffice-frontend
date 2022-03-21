@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AppRoutes } from '@app/models/app-routes';
 import { EmployeePageService } from '../../services/employee-page.service';
 
 @Component({
@@ -42,6 +43,6 @@ export class ProjectsComponent implements OnInit {
 	public ngOnInit(): void {}
 
 	public onMoreClicked(projectId: string | undefined) {
-		this.router.navigate(['/project', projectId]);
+		this.router.navigate([AppRoutes.Projects, projectId]);
 	}
 }

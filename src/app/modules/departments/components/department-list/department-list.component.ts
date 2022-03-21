@@ -10,6 +10,7 @@ import { map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { DepartmentService } from '@app/services/department/department.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AppRoutes } from '@app/models/app-routes';
 import { AddEditDepartmentComponent } from '../../../../shared/modals/add-edit-department/add-edit-department.component';
 
 @Component({
@@ -20,6 +21,8 @@ import { AddEditDepartmentComponent } from '../../../../shared/modals/add-edit-d
 })
 export class DepartmentListComponent implements AfterViewInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
+
+	public AppRoutes = AppRoutes;
 
 	private _departmentParams: ReplaySubject<IFindRequest>;
 	public filters: FormGroup;

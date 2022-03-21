@@ -6,13 +6,13 @@
 			</button>
 		</div>
 
-		<h4 mat-tab-link class="logo" [routerLink]="['users', currentUser?.id]" routerLinkActive="active">
+		<h4 mat-tab-link class="logo" [routerLink]="[AppRoutes.Users, currentUser?.id]" routerLinkActive="active">
 			{{ portalName | async }}
 		</h4>
-		<a mat-tab-link routerLink="/time" routerLinkActive="active">Учет времени</a>
-		<a mat-tab-link routerLink="/projects" routerLinkActive="active">Доска проектов</a>
-		<a mat-tab-link routerLink="/news" routerLinkActive="active">Новости</a>
-		<a *ngIf="currentUser?.isAdmin" mat-tab-link routerLink="/admin/dashboard" routerLinkActive="active"
+		<a mat-tab-link [routerLink]="AppRoutes.TimeTrack" routerLinkActive="active">Учет времени</a>
+		<a mat-tab-link [routerLink]="AppRoutes.Projects" routerLinkActive="active">Доска проектов</a>
+		<a mat-tab-link [routerLink]="AppRoutes.News" routerLinkActive="active">Новости</a>
+		<a *ngIf="currentUser?.isAdmin" mat-tab-link [routerLink]="AppRoutes.Admin" routerLinkActive="active"
 			>Администрирование</a
 		>
 		<span class="spacer"></span>
@@ -25,7 +25,7 @@
 		</div>
 
 		<mat-menu #menu="matMenu" xPosition="before">
-			<button mat-menu-item [routerLink]="['user', currentUser?.id]">Карточка сотрудника</button>
+			<button mat-menu-item [routerLink]="[AppRoutes.Users, currentUser?.id]">Карточка сотрудника</button>
 			<button mat-menu-item (click)="onChangePasswordClick()">Сменить пароль</button>
 			<button mat-menu-item (click)="onLogoutClick()">Выход</button>
 		</mat-menu>

@@ -1,7 +1,9 @@
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Доска проектов</h3>
-		<button mat-flat-button color="accent" routerLink="/projects/new">+ Создать проект</button>
+		<button mat-flat-button color="accent" [routerLink]="[AppRoutes.Projects, ProjectsRoutes.NewProject]">
+			+ Создать проект
+		</button>
 	</div>
 	<ng-container *ngIf="projectList$ | async as projectList">
 		<table *ngIf="projectList.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
@@ -28,7 +30,7 @@
 				<tr
 					class="row row_activable"
 					*ngFor="let project of projectList.body"
-					[routerLink]="'/projects/' + project?.id"
+					[routerLink]="[AppRoutes.Projects, project?.id]"
 				>
 					<td class="cell">
 						<p class="cell__content cell__content_breakable">{{ project.name }}</p>

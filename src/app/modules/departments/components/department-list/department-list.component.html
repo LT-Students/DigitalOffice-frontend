@@ -48,7 +48,7 @@
 				<tr
 					*ngFor="let department of departments.body"
 					class="row row_activable"
-					[routerLink]="'/departments/' + department?.id"
+					[routerLink]="[AppRoutes.Departments, department?.id]"
 				>
 					<td class="cell">
 						<ng-container *ngIf="department?.name; else empty">

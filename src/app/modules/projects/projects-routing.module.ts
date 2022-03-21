@@ -5,6 +5,7 @@ import { ProjectListResolver } from './resolvers/project-list.resolver';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { NewProjectComponent } from './components/new-project/new-project.component';
 import { ProjectPageResolver } from './resolvers/project-page.resolver';
+import { ProjectsRoutes } from './models/projects-routes';
 
 const routes: Routes = [
 	{
@@ -14,7 +15,7 @@ const routes: Routes = [
 			projects: ProjectListResolver,
 		},
 	},
-	{ path: 'new', component: NewProjectComponent },
+	{ path: ProjectsRoutes.NewProject, component: NewProjectComponent },
 	{
 		path: ':id',
 		component: ProjectPageComponent,

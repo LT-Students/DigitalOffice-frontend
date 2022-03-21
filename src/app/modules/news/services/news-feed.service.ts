@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, from, Observable } from 'rxjs';
-import { ArticlePreview } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
 import { catchError, concatMap, map, switchMap, tap, toArray } from 'rxjs/operators';
-import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { IOutputBlockData } from '../models/output-data.interface';
+import { ArticlePreview } from '../models/news.model';
 import { EditorJSParser } from '../parser';
 
 @Injectable({

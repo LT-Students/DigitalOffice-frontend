@@ -35,8 +35,8 @@ export class PasswordHintComponent implements OnInit {
 				hasSpecialChar: /[.,:;?!*+%\-<>@\[\]{}/\\_$#]/.test(value),
 				minLength: value.length >= 8,
 				maxLength: value.length <= 14,
-				lowerCase: /\p{Lower}/u.test(value),
-				upperCase: /\p{Upper}/u.test(value),
+				lowerCase: /[a-z]/u.test(value),
+				upperCase: /[A-Z]/u.test(value),
 			}))
 		);
 	}

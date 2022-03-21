@@ -11,8 +11,8 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
 import { EMPTY } from 'rxjs';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
-import { AddEditDepartmentComponent } from '../../../../shared/modals/add-edit-department/add-edit-department.component';
-import { RouteType } from '../../../../app-routing.module';
+import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { AppRoutes } from '@app/models/app-routes';
 
 @Component({
 	selector: 'do-department-card',
@@ -88,7 +88,7 @@ export class DepartmentCardComponent {
 	}
 
 	public onUserClick(userId: string | undefined): void {
-		this._router.navigate([RouteType.USERS, userId]);
+		this._router.navigate([AppRoutes.Users, userId]);
 	}
 
 	public openAddEmployeeModal(): void {

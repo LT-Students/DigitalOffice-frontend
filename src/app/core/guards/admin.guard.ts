@@ -3,7 +3,6 @@ import { CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot
 import { Observable } from 'rxjs';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { map, tap } from 'rxjs/operators';
-import { RouteType } from '../../app-routing.module';
 
 @Injectable({
 	providedIn: 'root',

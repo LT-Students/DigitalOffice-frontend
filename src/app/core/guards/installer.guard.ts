@@ -13,7 +13,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { PortalService } from '@app/services/portal.service';
-import { RouteType } from '../../app-routing.module';
+import { AppRoutes } from '@app/models/app-routes';
 
 @Injectable({
 	providedIn: 'root',
@@ -28,8 +28,8 @@ export class InstallerGuard implements CanActivate, CanLoad {
 		return this.portalService.isPortalExists$.pipe(
 			switchMap((portalExists: boolean) => {
 				if (!portalExists) {
-					if (route.routeConfig?.path !== RouteType.INSTALLER) {
-						return fromPromise(this._router.navigate([RouteType.INSTALLER]));
+					if (route.routeConfig?.path !== AppRoutes.Installer) {
+						return fromPromise(this._router.navigate([AppRoutes.Installer]));
 					} else {
 						return of(true);
 					}

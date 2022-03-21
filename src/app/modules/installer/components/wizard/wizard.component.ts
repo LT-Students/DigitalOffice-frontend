@@ -5,6 +5,8 @@ import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AdminService } from '@app/services/admin/admin.service';
+import { AppRoutes } from '@app/models/app-routes';
+import { AuthRoutes } from '../../../auth/models/auth-routes';
 
 @Component({
 	selector: 'do-wizard',
@@ -98,7 +100,7 @@ export class WizardComponent implements OnInit {
 			})
 			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe(() => {
-				this._router.navigate(['/auth/login']);
+				this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn]);
 			});
 	}
 }

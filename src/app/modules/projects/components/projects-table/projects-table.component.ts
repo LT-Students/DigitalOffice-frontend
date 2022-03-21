@@ -7,6 +7,8 @@ import { ProjectInfo } from '@api/project-service/models/project-info';
 import { iif, Observable, ReplaySubject } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { AppRoutes } from '@app/models/app-routes';
+import { ProjectsRoutes } from '../../models/projects-routes';
 
 @Component({
 	selector: 'do-projects-table',
@@ -15,6 +17,9 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsTableComponent {
+	public AppRoutes = AppRoutes;
+	public ProjectsRoutes = ProjectsRoutes;
+
 	public projectList$: Observable<OperationResultResponse<ProjectInfo[]>>;
 	public _projectListParams: ReplaySubject<IFindProjects>;
 
