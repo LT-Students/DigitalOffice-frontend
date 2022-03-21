@@ -18,11 +18,14 @@ const routes: Routes = [
 	},
 	{
 		path: ':id',
-		component: DepartmentCardComponent,
-		resolve: {
-			department: DepartmentPageResolver,
-		},
 		children: [
+			{
+				path: '',
+				component: DepartmentCardComponent,
+				resolve: {
+					department: DepartmentPageResolver,
+				},
+			},
 			{
 				path: DepartmentsRoutes.TimeList,
 				component: DirectorsTimelistComponent,
