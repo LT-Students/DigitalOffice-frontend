@@ -3,16 +3,18 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
-import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { AuthApiService } from '@data/api/auth-service/services/auth-api.service';
-import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
-import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
+import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
+import { AuthenticationResponse } from '@api/auth-service/models/authentication-response';
+import { AuthApiService } from '@api/auth-service/services/auth-api.service';
+import { CredentialsApiService } from '@api/user-service/services/credentials-api.service';
+import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
 import { HttpErrorResponse } from '@angular/common/http';
-import { OperationResultResponseCredentialsResponse } from '@data/api/user-service/models/operation-result-response-credentials-response';
+import { OperationResultResponseCredentialsResponse } from '@api/user-service/models/operation-result-response-credentials-response';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { AppRoutes } from '@app/models/app-routes';
 import { LocalStorageService } from '../local-storage.service';
+import { AuthRoutes } from '../../../modules/auth/models/auth-routes';
 
 @Injectable({
 	providedIn: 'root',
@@ -38,7 +40,7 @@ export class AuthService {
 
 	public logout(): void {
 		this._removeCredentialsFromLocalStorage();
-		this._router.navigate(['/auth/login']);
+		this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn]);
 	}
 
 	public isAuthenticated(): boolean {

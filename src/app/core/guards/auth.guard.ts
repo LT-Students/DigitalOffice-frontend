@@ -10,7 +10,10 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import { AppRoutes } from '@app/models/app-routes';
 import { AuthService } from '../services/auth/auth.service';
+import { AuthRoutes } from '../../modules/auth/models/auth-routes';
+import { AdminRoutes } from '../../modules/admin/models/admin-routes';
 
 @Injectable({
 	providedIn: 'root',
@@ -22,7 +25,7 @@ export class AuthGuard implements CanLoad, CanActivate {
 		if (this._authenticationService.isAuthenticated()) {
 			return true;
 		} else {
-			this._router.navigate(['/auth/login']);
+			this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn]);
 			return false;
 		}
 	}
@@ -30,7 +33,7 @@ export class AuthGuard implements CanLoad, CanActivate {
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		if (this._authenticationService.isAuthenticated()) {
 			if (route.routeConfig?.path === 'login') {
-				this._router.navigate(['/admin/dashboard']);
+				this._router.navigate([AppRoutes.Admin, AdminRoutes.Dashboard]);
 				return false;
 			}
 			return true;
@@ -38,7 +41,7 @@ export class AuthGuard implements CanLoad, CanActivate {
 			if (route.routeConfig?.path === 'login') {
 				return true;
 			} else {
-				this._router.navigate(['/auth/login'], {
+				this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn], {
 					queryParams: {
 						return: state.url,
 					},

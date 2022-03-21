@@ -1,9 +1,9 @@
 import { setProperty } from '@app/utils/utils';
-import { ImageInfo } from '@data/api/company-service/models/image-info';
-import { SmtpInfo } from '@data/api/company-service/models/smtp-info';
-import { DepartmentInfo } from '@data/api/company-service/models/department-info';
-import { PositionInfo } from '@data/api/company-service/models/position-info';
-import { OfficeInfo } from '@data/api/company-service/models/office-info';
+import { ImageInfo } from '@api/company-service/models/image-info';
+import { SmtpInfo } from '@api/company-service/models/smtp-info';
+import { DepartmentInfo } from '@api/company-service/models/department-info';
+import { PositionInfo } from '@api/company-service/models/position-info';
+import { OfficeInfo } from '@api/company-service/models/office-info';
 
 export interface CompanyInfo {
 	id?: string | null;

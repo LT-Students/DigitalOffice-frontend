@@ -1,18 +1,18 @@
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
+import { OperationResultResponseUserResponse } from '@api/user-service/models/operation-result-response-user-response';
 import { setProperty } from '@app/utils/utils';
-import { UserInfo } from '@data/api/user-service/models/user-info';
-import { UserAdditionInfo } from '@data/api/user-service/models/user-addition-info';
-import { ImageInfo } from '@data/api/user-service/models/image-info';
-import { UserStatus } from '@data/api/user-service/models/user-status';
-import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { CompanyInfo } from '@data/api/user-service/models/company-info';
-import { DepartmentInfo } from '@data/api/user-service/models/department-info';
-import { OfficeInfo } from '@data/api/user-service/models/office-info';
-import { PositionInfo } from '@data/api/user-service/models/position-info';
-import { RoleInfo } from '@data/api/user-service/models/role-info';
-import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
-import { EducationInfo } from '@data/api/user-service/models/education-info';
-import { ProjectInfo } from '@data/api/user-service/models/project-info';
+import { UserInfo } from '@api/user-service/models/user-info';
+import { UserAdditionInfo } from '@api/user-service/models/user-addition-info';
+import { ImageInfo } from '@api/user-service/models/image-info';
+import { UserStatus } from '@api/user-service/models/user-status';
+import { CommunicationInfo } from '@api/user-service/models/communication-info';
+import { CompanyInfo } from '@api/user-service/models/company-info';
+import { DepartmentInfo } from '@api/user-service/models/department-info';
+import { OfficeInfo } from '@api/user-service/models/office-info';
+import { PositionInfo } from '@api/user-service/models/position-info';
+import { RoleInfo } from '@api/user-service/models/role-info';
+import { CertificateInfo } from '@api/user-service/models/certificate-info';
+import { EducationInfo } from '@api/user-service/models/education-info';
+import { ProjectInfo } from '@api/user-service/models/project-info';
 
 export class User implements UserInfo, UserAdditionInfo {
 	avatar?: null | ImageInfo;

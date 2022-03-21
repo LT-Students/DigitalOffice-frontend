@@ -5,7 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MdePopoverModule } from '@material-extended/mde';
-import { MaterialModule } from './material.module';
+import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
+import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
@@ -33,6 +35,8 @@ import { BlockPasteDirective } from './directives/block-paste.directive';
 import { ButtonLoadingDirective } from './directives/buttonLoading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
 import { PasswordHintComponent } from './component/password-hint/password-hint.component';
+import { ProjectTypePipe } from './pipes/project-type.pipe';
+import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 
 @NgModule({
 	declarations: [
@@ -61,6 +65,10 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 		FullNamePipe,
 		TransformNameDirective,
 		PasswordHintComponent,
+		ProjectTypePipe,
+		LeaveLabelPipe,
+		NewEmployeeComponent,
+		AddEditDepartmentComponent,
 	],
 	imports: [
 		CommonModule,
@@ -105,6 +113,10 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 		FullNamePipe,
 		TransformNameDirective,
 		PasswordHintComponent,
+		ProjectTypePipe,
+		LeaveLabelPipe,
+		NewEmployeeComponent,
+		AddEditDepartmentComponent,
 	],
 })
 export class SharedModule {}

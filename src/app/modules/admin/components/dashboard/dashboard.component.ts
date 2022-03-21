@@ -2,18 +2,21 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
-import { OperationResultResponse } from '@data/api/user-service/models/operation-result-response';
-import { OperationResultStatusType } from '@data/api/user-service/models/operation-result-status-type';
+import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
+import { OperationResultStatusType } from '@api/user-service/models/operation-result-status-type';
 import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType, ModalService, ModalWidth } from '@app/services/modal.service';
-import { AddEditDepartmentComponent } from '../../modals/add-edit-department/add-edit-department.component';
+import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
+import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { AppRoutes } from '@app/models/app-routes';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
-import { NewEmployeeComponent } from '../../modals/new-employee/new-employee.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 import { EditCompanyComponent } from '../../modals/edit-company/edit-company.component';
+import { ProjectsRoutes } from '../../../projects/models/projects-routes';
+import { AdminRoutes } from '../../models/admin-routes';
 
 @Component({
 	selector: 'do-dashboard',
@@ -22,12 +25,10 @@ import { EditCompanyComponent } from '../../modals/edit-company/edit-company.com
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
-	public today: Date;
 	public openModalClick: Subject<AdminDashboardModalType>;
 	public modalType: typeof AdminDashboardModalType;
 
 	constructor(private _router: Router, public dialog: MatDialog, public modalService: ModalService) {
-		this.today = new Date();
 		this.openModalClick = new Subject<AdminDashboardModalType>();
 		this.modalType = AdminDashboardModalType;
 	}
@@ -58,22 +59,22 @@ export class DashboardComponent implements OnInit {
 							return this.modalService.openModal(EditCompanyComponent, ModalWidth.L).afterClosed();
 						}
 						case this.modalType.NEW_PROJECT: {
-							return fromPromise(this._router.navigate(['admin/new-project']));
+							return fromPromise(this._router.navigate([AppRoutes.Projects, ProjectsRoutes.NewProject]));
 						}
 						case this.modalType.MANAGE_USERS: {
-							return fromPromise(this._router.navigate(['admin/manage-users']));
+							return fromPromise(this._router.navigate([AppRoutes.Users]));
 						}
 						case this.modalType.DEPARTMENT_LIST: {
-							return fromPromise(this._router.navigate(['departments']));
+							return fromPromise(this._router.navigate([AppRoutes.Departments]));
 						}
 						case this.modalType.MANAGE_ROLES: {
-							return fromPromise(this._router.navigate(['admin/manage-roles']));
+							return fromPromise(this._router.navigate([AppRoutes.Admin, AdminRoutes.Roles]));
 						}
 						case this.modalType.OFFICE_LIST: {
-							return fromPromise(this._router.navigate(['admin/offices']));
+							return fromPromise(this._router.navigate([AppRoutes.Admin, AdminRoutes.Offices]));
 						}
 						case this.modalType.POSITION_LIST: {
-							return fromPromise(this._router.navigate(['admin/positions']));
+							return fromPromise(this._router.navigate([AppRoutes.Admin, AdminRoutes.Positions]));
 						}
 						default: {
 							return of(false);

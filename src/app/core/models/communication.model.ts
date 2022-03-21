@@ -1,4 +1,4 @@
-import { CommunicationType } from '@data/api/user-service/models/communication-type';
+import { CommunicationType } from '@api/user-service/models/communication-type';
 import { ValidatorFn, Validators } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 

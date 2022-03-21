@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
+import { ProjectApiService } from '@api/project-service/services/project-api.service';
 import { Observable } from 'rxjs';
 import {
 	EditProjectRequest,
@@ -10,8 +10,8 @@ import {
 	ProjectStatusType,
 	ProjectUserRoleType,
 	UserInfo,
-} from '@data/api/project-service/models';
-import { UserApiService } from '@data/api/project-service/services/user-api.service';
+} from '@api/project-service/models';
+import { UserApiService } from '@api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';

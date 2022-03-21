@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { UserInfo } from '@api/user-service/models/user-info';
 import { WorkFlowMode } from '../../modules/employee/employee-page.component';
-import { Team } from '../../modules/admin/components/new-project/team-cards';
+import { Team } from '../../modules/projects/components/new-project/team-cards';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../../modules/news/components/post/post.component';
 

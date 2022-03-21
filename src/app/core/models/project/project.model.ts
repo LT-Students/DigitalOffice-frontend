@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { ProjectInfo } from '@data/api/project-service/models/project-info';
+import { ProjectInfo } from '@api/project-service/models/project-info';
 import { setProperty } from '@app/utils/utils';
 
 export class Project implements ProjectInfo {

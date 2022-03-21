@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { OperationResultResponseImageResponse } from '@data/api/image-service/models/operation-result-response-image-response';
+import { OperationResultResponseImageResponse } from '@api/image-service/models/operation-result-response-image-response';
 import { Observable } from 'rxjs';
-import { MessageImageApiService } from '@data/api/image-service/services/message-image-api.service';
+import { MessageImageApiService } from '@api/image-service/services/message-image-api.service';
 
 @Injectable({
 	providedIn: 'root',

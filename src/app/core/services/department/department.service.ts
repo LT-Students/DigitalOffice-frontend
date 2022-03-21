@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { DepartmentApiService } from '@data/api/department-service/services/department-api.service';
+import { DepartmentApiService } from '@api/department-service/services/department-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { Observable } from 'rxjs';
 import { UUID } from '@app/types/uuid.type';
-import { DepartmentInfo } from '@data/api/department-service/models/department-info';
-import { DepartmentUserInfo } from '@data/api/department-service/models/department-user-info';
-import { ProjectInfo } from '@data/api/department-service/models/project-info';
+import { DepartmentInfo } from '@api/department-service/models/department-info';
+import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
+import { ProjectInfo } from '@api/department-service/models/project-info';
 import { IFindRequestEx } from '@app/types/find-request.interface';
-import { DepartmentUserRole } from '@data/api/department-service/models/department-user-role';
+import { DepartmentUserRole } from '@api/department-service/models/department-user-role';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { DepartmentPath, EditRequest } from '@app/types/edit-request';
-import { NewsInfo } from '@data/api/department-service/models/news-info';
+import { NewsInfo } from '@api/department-service/models/news-info';
 
 export interface IGetDepartment {
 	departmentId: string;

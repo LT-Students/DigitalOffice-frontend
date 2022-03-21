@@ -4,10 +4,10 @@ import { EMPTY, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 import { NewsService } from '@app/services/news/news.service';
-import { ArticlePreview } from '@app/models/news.model';
 import { ModalService } from '@app/services/modal.service';
-import { NewsFeedService } from '@app/services/news-feed.service';
 import { PageEvent } from '@angular/material/paginator';
+import { ArticlePreview } from '../../models/news.model';
+import { NewsFeedService } from '../../services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';

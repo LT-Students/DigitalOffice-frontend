@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { EmployeePageService } from '@app/services/employee-page.service';
+import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AppRoutes } from '@app/models/app-routes';
+import { EmployeePageService } from '../../services/employee-page.service';
 
 @Component({
 	selector: 'do-employee-page-projects',
@@ -42,6 +43,6 @@ export class ProjectsComponent implements OnInit {
 	public ngOnInit(): void {}
 
 	public onMoreClicked(projectId: string | undefined) {
-		this.router.navigate(['/project', projectId]);
+		this.router.navigate([AppRoutes.Projects, projectId]);
 	}
 }

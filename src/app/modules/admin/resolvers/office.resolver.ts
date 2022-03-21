@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { OfficeInfo } from '@data/api/company-service/models/office-info';
+import { OfficeInfo } from '@api/company-service/models/office-info';
 import { OfficeService } from '@app/services/company/office.service';
 
 @Injectable({

@@ -5,10 +5,12 @@ import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Valida
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { UserService } from '@app/services/user/user.service';
-import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
+import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
 import { BehaviorSubject, of } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { AppRoutes } from '@app/models/app-routes';
+import { AuthRoutes } from '../../models/auth-routes';
 
 class LoginErrorMatcher implements ErrorStateMatcher {
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -24,6 +26,8 @@ class LoginErrorMatcher implements ErrorStateMatcher {
 	providers: [{ provide: ErrorStateMatcher, useClass: LoginErrorMatcher }],
 })
 export class LoginComponent implements OnInit {
+	public AuthRoutes = AuthRoutes;
+
 	public loginForm: FormGroup;
 	public isLoading$$: BehaviorSubject<boolean>;
 	public errorMatcher = new LoginErrorMatcher();
@@ -77,7 +81,7 @@ export class LoginComponent implements OnInit {
 			)
 			.subscribe((user: User | null) => {
 				if (user) {
-					this._router.navigate([user.isAdmin ? '/admin/dashboard' : '/user/attendance']);
+					this._router.navigate([AppRoutes.TimeTrack]);
 				}
 			});
 	}

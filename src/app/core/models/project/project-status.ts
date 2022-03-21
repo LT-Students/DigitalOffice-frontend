@@ -1,4 +1,4 @@
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
+import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 
 export enum ProjectStatusTypeRu {
 	Active = 'активный',

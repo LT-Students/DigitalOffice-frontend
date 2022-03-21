@@ -3,10 +3,11 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
-import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
+import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
+import { AppRoutes } from '@app/models/app-routes';
 
 @Component({
 	selector: 'do-signup',
@@ -63,7 +64,7 @@ export class SignupComponent {
 			)
 			.subscribe({
 				next: (user: User) => {
-					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : '/user/attendance';
+					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : AppRoutes.TimeTrack;
 					this._router.navigate([nextUrl]);
 				},
 			});

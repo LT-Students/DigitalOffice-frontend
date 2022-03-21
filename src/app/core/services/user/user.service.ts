@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
+import { UserApiService } from '@api/user-service/services/user-api.service';
+import { CreateUserRequest } from '@api/user-service/models/create-user-request';
 import {
 	CertificateInfo,
 	CommunicationInfo,
@@ -11,12 +11,12 @@ import {
 	EducationInfo,
 	ProjectInfo,
 	UserInfo,
-} from '@data/api/user-service/models';
+} from '@api/user-service/models';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { AvatarApiService } from '@data/api/user-service/services/avatar-api.service';
+import { AvatarApiService } from '@api/user-service/services/avatar-api.service';
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';

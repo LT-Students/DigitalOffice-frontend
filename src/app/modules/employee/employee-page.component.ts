@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { EducationType, OperationResultResponse } from '@data/api/user-service/models';
+import { EducationType, OperationResultResponse } from '@api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY, iif, Observable, Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
 import { map, switchMap, takeUntil, skip } from 'rxjs/operators';
-import { EmployeePageService } from '@app/services/employee-page.service';
 import { ModalService } from '@app/services/modal.service';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { ConfirmDialogData } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { EmployeePageService } from './services/employee-page.service';
 
 // eslint-disable-next-line no-shadow
 export enum WorkFlowMode {

@@ -3,11 +3,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EMPTY, Observable } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
-import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
-import { OperationResultStatusType } from '@data/api/news-service/models';
+import { OperationResultStatusType } from '@api/news-service/models';
 import { ModalService } from '@app/services/modal.service';
-import { NewsFeedService } from '@app/services/news-feed.service';
+import { Article } from '../../models/news.model';
+import { NewsFeedService } from '../../services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
 import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';

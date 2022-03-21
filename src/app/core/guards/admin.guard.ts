@@ -15,7 +15,7 @@ export class AdminGuard implements CanLoad {
 			map((user) => user?.isAdmin ?? false),
 			tap((isAdmin) => {
 				if (!isAdmin) {
-					this._router.navigate(['/user/attendance']);
+					this._router.navigate(['']);
 				}
 			})
 		);
@@ -26,7 +26,7 @@ export class AdminGuard implements CanLoad {
 			map((user) => user?.isAdmin ?? false),
 			tap((isAdmin) => {
 				if (!isAdmin) {
-					this._router.navigate(['/user/attendance']);
+					this._router.navigate(['']);
 				}
 			})
 		);

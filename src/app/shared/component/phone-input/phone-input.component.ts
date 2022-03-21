@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, forwardRef, Optional, Self, HostBinding, Input } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
 import { CommunicationTypeModel } from '@app/models/communication.model';
-import { CommunicationType } from '@data/api/user-service/models/communication-type';
+import { CommunicationType } from '@api/user-service/models/communication-type';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';

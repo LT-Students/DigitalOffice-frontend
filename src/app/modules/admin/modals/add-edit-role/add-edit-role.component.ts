@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Inject, OnInit } from '@angular/cor
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { RightInfo, RoleInfo } from '@data/api/rights-service/models';
+import { RightInfo, RoleInfo } from '@api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
 import { DoValidators } from '@app/validators/do-validators';
 import { BehaviorSubject, iif, Observable } from 'rxjs';
