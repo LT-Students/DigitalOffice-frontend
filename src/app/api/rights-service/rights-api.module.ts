@@ -4,7 +4,6 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { UserRightsApiService } from './services/user-rights-api.service';
 import { RightsApiService } from './services/rights-api.service';
 import { RoleApiService } from './services/role-api.service';
 import { RoleLocalizationApiService } from './services/role-localization-api.service';
@@ -16,7 +15,7 @@ import { RoleLocalizationApiService } from './services/role-localization-api.ser
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [UserRightsApiService, RightsApiService, RoleApiService, RoleLocalizationApiService, ApiConfiguration],
+	providers: [RightsApiService, RoleApiService, RoleLocalizationApiService, ApiConfiguration],
 })
 export class RightsApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<RightsApiModule> {

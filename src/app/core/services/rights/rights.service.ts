@@ -7,7 +7,6 @@ import { CreateRoleRequest } from '@api/rights-service/models/create-role-reques
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { RoleInfo } from '@api/rights-service/models/role-info';
 import { UserInfo } from '@api/rights-service/models/user-info';
-import { UserRightsApiService } from '@api/rights-service/services/user-rights-api.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { RightInfo } from '@api/rights-service/models/right-info';
@@ -41,21 +40,12 @@ export class RightsService {
 	constructor(
 		private _rightsService: RightsApiService,
 		private _roleService: RoleApiService,
-		private _userRightsService: UserRightsApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
-
-	public addRightsForUser(params: IAddRightsForUserRequest): Observable<OperationResultResponse<any>> {
-		return this._userRightsService.create(params);
-	}
 
 	//TODO create enum for locales
 	public findRights(): Observable<OperationResultResponse<RightInfo[]>> {
 		return this._rightsService.getRightsList({ locale: 'ru' });
-	}
-
-	public removeRightsFromUser(params: IRemoveRightsFromUserRequest): Observable<OperationResultResponse<any>> {
-		return this._userRightsService.removeRightsFromUser(params);
 	}
 
 	public findRoles(params: IFindRequestEx): Observable<OperationResultResponse<RoleInfo[]>> {
