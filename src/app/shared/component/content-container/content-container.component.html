@@ -31,8 +31,8 @@
 	</mat-sidenav>
 	<mat-sidenav-content class="sidenav__content">
 		<do-header (menuClick)="onMenuClick($event)"></do-header>
-		<div class="content-container">
-			<div #wrapper class="wrapper">
+		<div #scroll class="content-container">
+			<div class="wrapper">
 				<router-outlet></router-outlet>
 			</div>
 		</div>

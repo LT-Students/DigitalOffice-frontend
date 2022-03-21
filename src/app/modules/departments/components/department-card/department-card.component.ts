@@ -87,7 +87,7 @@ export class DepartmentCardComponent {
 			});
 	}
 
-	public onUserClick(userId: string | undefined): void {
+	public onUserClick(userId: string): void {
 		this._router.navigate([AppRoutes.Users, userId]);
 	}
 
