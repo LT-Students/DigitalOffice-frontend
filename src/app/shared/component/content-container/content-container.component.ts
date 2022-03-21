@@ -45,11 +45,8 @@ export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 		this.router.events
 			.pipe(
 				tap((event: Event) => {
-					console.log(event);
 					if (event instanceof NavigationEnd) {
-						console.log('wut?', this.scroll?.nativeElement.getBoundingClientRect().top);
-						// this.scroll?.nativeElement.scroll({ top: 0 });
-						this.scroll?.nativeElement.scrollTo(0, 0);
+						this.scroll?.nativeElement.scroll({ top: 0 });
 					}
 				}),
 				takeUntil(this.destroy$)
