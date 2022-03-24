@@ -23,8 +23,8 @@ import { User } from '@app/models/user/user.model';
 import { TimeDurationService } from '@app/services/time-duration.service';
 
 export interface Activities {
-	projects?: Array<WorkTimeInfo>;
-	leaves?: Array<LeaveTimeModel>;
+	projects: WorkTimeInfo[];
+	leaves: LeaveTimeModel[];
 }
 
 interface MonthHolidays {
@@ -112,15 +112,15 @@ export class AttendanceService implements Resolve<Activities> {
 				.findWorkTimes(workTimesParams)
 				.pipe(
 					map((projects) =>
-						projects.body
-							?.map((project) => project.workTime)
+						(projects.body ?? [])
+							.map((project) => project.workTime)
 							.filter((workTime): workTime is WorkTimeInfo => !!workTime)
 					)
 				),
 			leaves: this._timeService.findLeaveTimes(leaveTimesParams).pipe(
 				map((leaves) =>
-					leaves.body
-						?.map((res) => res.leaveTime)
+					(leaves.body ?? [])
+						.map((res) => res.leaveTime)
 						.filter((leave): leave is LeaveTimeInfo => !!leave)
 						.map((leave) => new LeaveTimeModel(leave))
 				)

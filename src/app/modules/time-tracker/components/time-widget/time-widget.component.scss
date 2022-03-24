@@ -1,6 +1,6 @@
 @use 'base/variables';
 
-.chart {
+.time-widget {
 	padding: 0 50px 32px;
 
 	display: flex;
@@ -8,13 +8,7 @@
 
 	height: 100%;
 
-	&__doughnut {
-		position: relative;
-
-		height: 185px;
-	}
-
-	&__diagram-wrapper {
+	.chart {
 		padding-bottom: 30px;
 
 		display: flex;
@@ -24,17 +18,7 @@
 		width: 100%;
 	}
 
-	&__hidden {
-		visibility: hidden;
-
-		width: 0;
-		height: 0;
-	}
-
-	&__month-picker {
-		display: inline-flex;
-		align-items: center;
-
-		cursor: pointer;
+	.legend {
+		align-self: center;
 	}
 }

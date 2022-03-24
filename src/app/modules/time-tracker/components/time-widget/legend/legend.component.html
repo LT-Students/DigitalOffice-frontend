@@ -1,0 +1,5 @@
+<span *ngIf="!labels.length" class="mat-body-1">Часы ещё не внесены</span>
+<div class="legend-item" *ngFor="let label of labels; index as i">
+	<div class="legend-marker" [style.background-color]="colors[i]"></div>
+	<span>{{ label }}</span>
+</div>

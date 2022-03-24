@@ -1,11 +1,5 @@
 <h3 class="time-info">
-	<span>{{ userHours }}</span>
+	<span [ngClass]="{ success: userHours >= monthNorm }">{{ userHours }}</span>
 	<small>&nbsp;/&nbsp;{{ monthNorm }}</small>
 </h3>
-<canvas #canvas class="chart" width="444" height="185"></canvas>
-<div class="legend">
-	<div class="legend__item" *ngFor="let label of labels; index as i">
-		<div class="legend__item-marker" [style.background-color]="COLORS[i]"></div>
-		<span>{{ label }}</span>
-	</div>
-</div>
+<canvas #canvas class="chart" height="205"></canvas>

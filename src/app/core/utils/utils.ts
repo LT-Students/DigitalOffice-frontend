@@ -11,6 +11,10 @@ export function setProperty<T>(property: T): NonNullable<T> | null {
 	return property ? (property as NonNullable<T>) : null;
 }
 
+export function isGUIDEmpty(id: string): boolean {
+	return id === '00000000-0000-0000-0000-000000000000';
+}
+
 export function createEditRequest<T extends PatchPath>(
 	form: FormDataEditRequest<T>,
 	initialData: InitialDataEditRequest<T>
