@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { AttendanceComponent } from './components/attendance/attendance.component';
 import { TimeWidgetComponent } from './components/time-widget/time-widget.component';
 import { AddHoursComponent } from './components/add-hours/add-hours.component';
@@ -14,6 +14,7 @@ import { EditLeaveComponent } from './modals/edit-leave/edit-leave.component';
 import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/doughnut-chart.component';
 import { AddLeaveHoursComponent } from './components/add-hours/add-leave-hours/add-leave-hours.component';
 import { AddWorktimeHoursComponent } from './components/add-hours/add-worktime-hours/add-worktime-hours.component';
+import { LegendComponent } from './components/time-widget/legend/legend.component';
 
 @NgModule({
 	declarations: [
@@ -29,6 +30,7 @@ import { AddWorktimeHoursComponent } from './components/add-hours/add-worktime-h
 		DoughnutChartComponent,
 		AddLeaveHoursComponent,
 		AddWorktimeHoursComponent,
+		LegendComponent,
 	],
 	imports: [SharedModule, TimeTrackerRoutingModule],
 	providers: [],
