@@ -11,7 +11,7 @@
 			mat-mini-fab
 			[class.mat-elevation-z0]="true"
 		>
-			<mat-icon>chevron_left</mat-icon>
+			<mat-icon fontSet="material-icons-round">chevron_left</mat-icon>
 		</button>
 		<do-doughnut-chart (chartData)="chartData = $event"></do-doughnut-chart>
 		<button
@@ -20,7 +20,7 @@
 			mat-mini-fab
 			[class.mat-elevation-z0]="true"
 		>
-			<mat-icon>chevron_right</mat-icon>
+			<mat-icon fontSet="material-icons-round">chevron_right</mat-icon>
 		</button>
 	</div>
 	<do-legend class="legend" [labels]="chartData.labels" [colors]="chartData.colors"></do-legend>

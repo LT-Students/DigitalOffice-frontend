@@ -6,7 +6,7 @@
 	$primary-palette: map.get($color-config, 'primary');
 
 	.fab-button {
-		color: mat.get-contrast-color-from-palette($primary-palette, 500);
+		color: mat.get-color-from-palette($primary-palette, 400);
 
 		background-color: mat.get-color-from-palette($primary-palette, 100);
 	}
