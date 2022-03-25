@@ -4,12 +4,12 @@ import { catchError, finalize, tap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
-import { UserService } from '@app/services/user/user.service';
 import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
 import { BehaviorSubject, of } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AppRoutes } from '@app/models/app-routes';
+import { AutofillEvent } from '@angular/cdk/text-field';
 import { AuthRoutes } from '../../models/auth-routes';
 
 class LoginErrorMatcher implements ErrorStateMatcher {
@@ -32,15 +32,10 @@ export class LoginComponent implements OnInit {
 	public isLoading$$: BehaviorSubject<boolean>;
 	public errorMatcher = new LoginErrorMatcher();
 
-	constructor(
-		private _authService: AuthService,
-		private _userService: UserService,
-		private _router: Router,
-		private formBuilder: FormBuilder
-	) {
+	constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
 		this.isLoading$$ = new BehaviorSubject<boolean>(false);
 		this.loginForm = this.formBuilder.group({
-			email: ['', Validators.required],
+			username: ['', Validators.required],
 			password: ['', Validators.required],
 		});
 	}
@@ -49,23 +44,28 @@ export class LoginComponent implements OnInit {
 		this.loginForm.valueChanges
 			.pipe(
 				tap(() => {
-					if (this.loginForm) {
-						this.loginForm.setErrors(null);
-					}
+					this.loginForm.setErrors(null);
 				})
 			)
 			.subscribe();
+	}
+
+	public handleAutofill(autofill: AutofillEvent): void {
+		if (autofill.isAutofilled) {
+			this.loginForm.get('username')?.setErrors(null);
+			this.loginForm.get('password')?.setErrors(null);
+		}
 	}
 
 	public login(): void {
 		this.isLoading$$.next(true);
 
 		const authenticationRequest: AuthenticationRequest = {
-			loginData: this.loginForm.get('email')?.value.trim(),
+			loginData: this.loginForm.get('username')?.value.trim(),
 			password: this.loginForm.get('password')?.value,
 		};
 
-		this._authService
+		this.authService
 			.login(authenticationRequest)
 			.pipe(
 				finalize(() => this.isLoading$$.next(false)),
@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
 			)
 			.subscribe((user: User | null) => {
 				if (user) {
-					this._router.navigate([AppRoutes.TimeTrack]);
+					this.router.navigate([AppRoutes.TimeTrack]);
 				}
 			});
 	}
