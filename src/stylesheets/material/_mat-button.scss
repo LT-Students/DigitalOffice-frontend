@@ -1,9 +1,37 @@
-.mat-loading .mat-button-wrapper {
-	visibility: hidden;
-}
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use '../theme' as theme;
 
-.mat-loading .mat-progress-spinner {
-	position: absolute;
-	top: calc(50% - 10px);
-	left: calc(50% - 10px);
+.mat-loading {
+	min-width: 48px !important;
+
+	.mat-button-wrapper {
+		visibility: hidden;
+		float: left;
+
+		width: 0;
+	}
+
+	.mat-progress-spinner {
+		position: absolute;
+		top: calc(50% - 10px);
+		left: calc(50% - 10px);
+	}
+
+	$color-config: mat.get-color-config(theme.$button-theme);
+
+	&.mat-primary.mat-button-disabled {
+		$primary-palette: map.get($color-config, 'primary');
+		background-color: mat.get-color-from-palette($primary-palette) !important;
+	}
+
+	&.mat-accent.mat-button-disabled {
+		$accent-palette: map.get($color-config, 'accent');
+		background-color: mat.get-color-from-palette($accent-palette) !important;
+	}
+
+	&.mat-warn.mat-button-disabled {
+		$warn-palette: map.get($color-config, 'warn');
+		background-color: mat.get-color-from-palette($warn-palette) !important;
+	}
 }
