@@ -3,13 +3,8 @@
 @use '../theme' as theme;
 
 .mat-loading {
-	min-width: 48px !important;
-
 	.mat-button-wrapper {
 		visibility: hidden;
-		float: left;
-
-		width: 0;
 	}
 
 	.mat-progress-spinner {
