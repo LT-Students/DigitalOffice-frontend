@@ -43,7 +43,9 @@ $theme-warn: mat.define-palette(mat.$red-palette, 400);
 $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 
 @include mat.all-component-themes($app-theme);
-@include mat.button-color(create-theme($theme-primary, $theme-accent, mat.define-palette($do-grey, 800)));
+$button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($do-grey, 800));
+
+@include mat.button-color($button-theme);
 @include mat.form-field-color(
 	mat.define-light-theme(
 		(
@@ -90,6 +92,16 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 			color: (
 				primary: mat.define-palette($do-orange),
 				accent: mat.define-palette($do-orange),
+			),
+		)
+	)
+);
+@include mat.progress-spinner-color(
+	mat.define-light-theme(
+		(
+			color: (
+				primary: mat.define-palette($do-grey, 50),
+				accent: mat.define-palette($do-grey, 50),
 			),
 		)
 	)

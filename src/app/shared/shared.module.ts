@@ -32,7 +32,7 @@ import { FullNamePipe } from './pipes/full-name.pipe';
 import { DndDirective } from './directives/dnd.directive';
 import { TextDirective } from './directives/text.directive';
 import { BlockPasteDirective } from './directives/block-paste.directive';
-import { ButtonLoadingDirective } from './directives/buttonLoading.directive';
+import { ButtonLoadingDirective } from './directives/button-loading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
 import { PasswordHintComponent } from './component/password-hint/password-hint.component';
 import { ProjectTypePipe } from './pipes/project-type.pipe';
