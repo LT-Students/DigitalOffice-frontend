@@ -5,6 +5,7 @@
 				<div class="employee-info__main">
 					<div class="employee-info__avatar">
 						<do-profile-image [image]="user?.avatar" size="l"></do-profile-image>
+						<!-- onMouseOver? -->
 					</div>
 					<h3 class="employee-info__name">
 						{{ user | fullName }}&nbsp;<span
@@ -26,44 +27,65 @@
 
 					<div class="employee-info__columns">
 						<div class="employee-info__first-column">
-							<div *ngIf="user?.position">
-								<p class="mat-caption">Должность</p>
-								<p>{{ user?.position?.name }}</p>
+							<div>
+								<p class="mat-caption">Гендер</p>
+								<p>{{ user.genderName }}</p>
 							</div>
-							<div *ngIf="user?.department">
-								<p class="mat-caption">Департамент</p>
-								<p>{{ user.department?.name }}</p>
-							</div>
-							<div *ngIf="user?.latitude && user?.longitude">
-								<p class="mat-caption">Местоположение</p>
-								<p>{{ user?.latitude }} {{ user?.longitude }}</p>
-							</div>
-							<div *ngIf="user?.office?.city">
-								<p class="mat-caption">Офис</p>
-								<p>{{ user?.office?.city }}, {{ user?.office?.address }}</p>
+							<div>
+								<p class="mat-caption">Дата рождения</p>
+								<p>{{ user.dateOfBirth | date: dateType.FULL }}</p>
 							</div>
 						</div>
 						<div class="employee-info__second-column">
-							<!--							<div *ngIf="user?.rate">-->
-							<!--								<p class="mat-caption">Ставка</p>-->
-							<!--								<p>{{ user?.rate }}</p>-->
-							<!--							</div>-->
 							<div>
-								<p class="mat-caption">Пол</p>
-								<p>{{ user?.genderName }}</p>
+								<!-- *ngIf="user?.latitude && user?.longitude" -->
+								<p class="mat-caption">Местоположение</p>
+								<p>{{ user.latitude }} {{ user.longitude }}</p>
 							</div>
-							<div *ngIf="user?.role?.name">
-								<p class="mat-caption">Роль</p>
-								<p>{{ user.role?.name }}</p>
+							<div>
+								<p class="mat-caption">Часы работы</p>
+								<p>{{ user.businessHoursFromUtc }}</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="employee-info__general-header">
+						<h4>Рабочая информация</h4>
+					</div>
+
+					<div class="employee-info__columns">
+						<div class="employee-info__first-column">
+							<div>
+								<!-- *ngIf="user?.department" -->
+								<p class="mat-caption">Департамент</p>
+								<p>{{ user.department.name }}</p>
+							</div>
+							<div>
+								<!-- *ngIf="user?.position" -->
+								<p class="mat-caption">Должность</p>
+								<p>{{ user.position.name }}</p>
 							</div>
 							<div>
 								<p class="mat-caption">В компании с</p>
-								<p>Broken</p>
-								<!--								<p>{{ user.startWorkingAt | date: dateType.FULL }}</p>-->
+								<!--                                <p>{{ user.startWorkingAt | date: dateType.FULL }}</p>-->
 							</div>
-							<div *ngIf="user?.dateOfBirth">
-								<p class="mat-caption">Дата рождения</p>
-								<p>{{ user?.dateOfBirth | date: dateType.FULL }}</p>
+						</div>
+						<div class="employee-info__second-column">
+							<div>
+								<!-- *ngIf="user?.office?.city" -->
+								<p class="mat-caption">Офис</p>
+								<p>{{ user.office.city }}, {{ user.office.address }}</p>
+							</div>
+							<div>
+								<!-- *ngIf="user?.role?.name" -->
+								<p class="mat-caption">Роль</p>
+								<p>{{ user.role.name }}</p>
+							</div>
+
+							<div>
+								<!-- *ngIf="user?.rate" -->
+								<p class="mat-caption">Ставка</p>
+								<!--                            <p>{{ user?.rate }}</p>-->
 							</div>
 						</div>
 					</div>
