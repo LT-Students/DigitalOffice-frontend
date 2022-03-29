@@ -58,12 +58,12 @@
 							<div>
 								<!-- *ngIf="user?.department" -->
 								<p class="mat-caption">Департамент</p>
-								<p>{{ user.department.name }}</p>
+								<p>{{ user.department?.name }}</p>
 							</div>
 							<div>
 								<!-- *ngIf="user?.position" -->
 								<p class="mat-caption">Должность</p>
-								<p>{{ user.position.name }}</p>
+								<p>{{ user?.position?.name }}</p>
 							</div>
 							<div>
 								<p class="mat-caption">В компании с</p>
@@ -74,12 +74,12 @@
 							<div>
 								<!-- *ngIf="user?.office?.city" -->
 								<p class="mat-caption">Офис</p>
-								<p>{{ user.office.city }}, {{ user.office.address }}</p>
+								<p>{{ user?.office?.city }}, {{ user?.office?.address }}</p>
 							</div>
 							<div>
 								<!-- *ngIf="user?.role?.name" -->
 								<p class="mat-caption">Роль</p>
-								<p>{{ user.role.name }}</p>
+								<p>{{ user?.role?.name }}</p>
 							</div>
 
 							<div>
