@@ -8,24 +8,38 @@
 			</h3>
 			<div *ngIf="section.projects.length > 0; else emptyList" class="projects-table__container">
 				<div *ngFor="let project of section.projects" class="projects-table__project">
-					<h4>{{ project.name }}</h4>
-					<!--          <p>project.consumer.name</p>-->
+					<h4 class="projects-table__project-name">{{ project.name }}</h4>
+
+					<p class="mat-caption">project.customer.name</p>
+
+					<p class="projects-table__label">{{ project.status }}</p>
+
 					<p class="projects-table__description">
 						{{ project.shortDescription ? project.shortDescription : 'Описание отсутствует' }}
 					</p>
-					<!--          <p>Направление</p>-->
-					<!--          <p>{{ project.shortName }}</p>-->
-					<!--<p>В проекте</p>
-          <p>
-            С project.startedAt
-            <span>по project.endedAt</span>
-          </p>-->
+
+					<p class="mat-caption">Роль в проекте</p>
+					<p>Product Manager</p>
+
+					<p class="mat-caption">В проекте</p>
+					<p>
+						C <span>{{ project.startedAt }}</span>
+					</p>
+
 					<p class="projects-table__more-button" (click)="onMoreClicked(project?.id)">
 						Подробнее
 						<mat-icon>keyboard_arrow_right</mat-icon>
 					</p>
 				</div>
+
+				<!-- <ng-template>
+                    <p class="projects-table__show-all-button" (click)="onShowAllClicked()">
+                        Показать все
+                        <mat-icon>keyboard_arrow_down</mat-icon>
+                    </p>
+                </ng-template> -->
 			</div>
+
 			<ng-template #emptyList>
 				<do-empty-list [emptyMessage]="'Нет данных о проектах'"></do-empty-list>
 			</ng-template>

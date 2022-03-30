@@ -44,4 +44,8 @@ export class ProjectsComponent implements OnInit {
 	public onMoreClicked(projectId: string | undefined) {
 		this.router.navigate(['/project', projectId]);
 	}
+
+	// onShowAllClicked() {
+
+	// }
 }
