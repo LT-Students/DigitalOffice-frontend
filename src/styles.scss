@@ -77,3 +77,11 @@ textarea {
 		opacity: 0.5;
 	}
 }
+
+.gray-text {
+	color: variables.$gray1;
+}
+
+.light-gray-text {
+	color: rgba(206, 206, 206, 1);
+}
