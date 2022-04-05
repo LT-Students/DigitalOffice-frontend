@@ -16,12 +16,21 @@
 
 		display: flex;
 		flex-direction: column;
-		//flex-flow: column wrap;
+
 		align-items: center;
 
 		box-sizing: content-box;
 
 		text-align: center;
+	}
+
+	&__name {
+		overflow: scroll;
+
+		box-sizing: border-box;
+		width: 250px;
+
+		word-wrap: break-word;
 	}
 
 	&__general {
@@ -145,6 +154,12 @@
 
 	&__required-block {
 		text-align: left;
+	}
+
+	&__field {
+		margin: 0 0 6px;
+
+		display: inline-block;
 	}
 }
 
