@@ -1,5 +1,5 @@
 <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
-	<div class="add-hours__div">
+	<div class="add-hours__dates-container">
 		<mat-form-field class="add-hours__time" floatLabel="always">
 			<input matInput formControlName="time" type="text" placeholder="0" />
 			<mat-label>Количество часов</mat-label>
@@ -23,14 +23,11 @@
 			</ng-template>
 		</mat-form-field>
 
+		<!-- in progress -->
 		<mat-form-field class="add-hours__date" floatLabel="always">
 			<mat-label>Месяц</mat-label>
-			<mat-select placeholder="{{ selectedDate | dateTime: 'LLLL y' | titlecase }}">
-				<mat-option [value]="selectedDate$ | async">
-					{{ selectedDate | dateTime: 'LLLL y' | titlecase }}
-				</mat-option>
-				<mat-option *ngFor="let month of monthOptions" (click)="changeDate(month)">
-					<!--  Можно ли вызывать date picker в mat-select? -->
+			<mat-select formControlName="date">
+				<mat-option *ngFor="let month of monthOptions" (click)="changeDate(month)" [value]="month">
 					{{ month | dateTime: 'LLLL y' | titlecase }}
 				</mat-option>
 			</mat-select>
