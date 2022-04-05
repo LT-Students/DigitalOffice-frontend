@@ -47,7 +47,7 @@
 						<div class="employee-info__second-column">
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Местоположение</span>
-								<p>{{ user.latitude | fieldValue }} {{ user.longitude | fieldValue }}</p>
+								<p>Не указано</p>
 							</div>
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Часы работы</span>
@@ -72,13 +72,13 @@
 							</div>
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">В компании с</span>
-								<!--                                <p>{{ user.startWorkingAt | date: dateType.FULL | fieldValue }}</p>-->
+								<p>Не указано</p>
 							</div>
 						</div>
 						<div class="employee-info__second-column">
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Офис</span>
-								<p>{{ user?.office?.city | fieldValue }}, {{ user?.office?.address | fieldValue }}</p>
+								<p>{{ user?.office?.address | fieldValue }}</p>
 							</div>
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Роль</span>
@@ -87,7 +87,7 @@
 
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Ставка</span>
-								<!--                                <p>{{ user?.rate | fieldValue }}</p>-->
+								<p>Не указано</p>
 							</div>
 						</div>
 					</div>
