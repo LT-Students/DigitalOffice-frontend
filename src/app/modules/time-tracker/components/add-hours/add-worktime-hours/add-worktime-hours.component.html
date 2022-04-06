@@ -23,11 +23,10 @@
 			</ng-template>
 		</mat-form-field>
 
-		<!-- in progress -->
 		<mat-form-field class="add-hours__date" floatLabel="always">
 			<mat-label>Месяц</mat-label>
-			<mat-select formControlName="date">
-				<mat-option *ngFor="let month of monthOptions" (click)="changeDate(month)" [value]="month">
+			<mat-select [formControl]="dateControl" [compareWith]="compareDate">
+				<mat-option *ngFor="let month of monthOptions" [value]="month">
 					{{ month | dateTime: 'LLLL y' | titlecase }}
 				</mat-option>
 			</mat-select>
