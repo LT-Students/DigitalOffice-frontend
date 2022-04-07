@@ -2,21 +2,21 @@
 	<div class="add-hours__time-wrapper">
 		<mat-form-field floatLabel="always">
 			<mat-label>Выберите диапазон отсутствия</mat-label>
-			<mat-date-range-input [min]="minDate" [dateFilter]="disableWeekends" [rangePicker]="$any(picker)">
-				<input matStartDate formControlName="startDate" readonly />
-				<input matEndDate formControlName="endDate" readonly />
+			<mat-date-range-input (click)="picker.open()" [min]="minDate" [dateFilter]="disableWeekends" [rangePicker]="$any(picker)" >
+				<input matStartDate placeholder="Начало" formControlName="startDate" readonly />
+				<input matEndDate placeholder="Окончание" formControlName="endDate" readonly  />
 			</mat-date-range-input>
 			<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
 		</mat-form-field>
 		<div class="add-hours__absence-time">
-			<p>Выбрано</p>
-			<h3 class=".mat-h3">{{ recommendedTime$$ | async }} ч</h3>
+			<span class="text-gray1">Выбрано</span>
+			<h3>{{ recommendedTime$$ | async }}<span class="text-gray1"> ч</span></h3>
 		</div>
 	</div>
 	<mat-form-field floatLabel="always">
 		<mat-label>Выберите тип отсутствия</mat-label>
-		<mat-select formControlName="leaveType">
+		<mat-select formControlName="leaveType" placeholder="Выберите тип отсутствия">
 			<mat-option *ngFor="let absence of absences" [value]="absence.leaveType">
 				{{ absence.leaveInRussian }}
 			</mat-option>

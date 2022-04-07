@@ -2,17 +2,21 @@
 	&__form {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: 0px;
 	}
 
 	&__time-wrapper {
-		display: flex;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
 	}
 
 	&__absence-time {
 		margin-left: 32px;
-
-		display: inline-block;
+		display: flex;
+     	flex-direction: column;
+    	justify-content: space-between;
+		
 	}
 
 	&__absence-submit {
