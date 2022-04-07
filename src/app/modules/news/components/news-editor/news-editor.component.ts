@@ -24,8 +24,8 @@ import { EditNewsRequest } from '@api/news-service/models/edit-news-request';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { User } from '@app/models/user/user.model';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 import { IOutputBlockData, IOutputData } from '../../models/output-data.interface';
-import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
 
@@ -184,10 +184,11 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 			switchMap((outputData) => {
 				const [newsContent, previewContent] = this._prepareOutputData(outputData);
 				const news: CreateNewsRequest = {
-					authorId: userId,
 					subject: this.articleSubject.value.trim(),
 					preview: JSON.stringify(previewContent),
 					content: JSON.stringify(newsContent),
+					tagsIds: [],
+					isActive: true,
 				};
 				return this._newsService.createNews(news);
 			})

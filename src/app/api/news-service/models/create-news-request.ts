@@ -2,9 +2,9 @@
 /* eslint-disable */
 export interface CreateNewsRequest {
 	/**
-	 * Id of the news author.
+	 * Unique identifier of the channel in which the news is published.
 	 */
-	authorId: string;
+	channelId?: string;
 
 	/**
 	 * The news content.
@@ -12,22 +12,22 @@ export interface CreateNewsRequest {
 	content: string;
 
 	/**
-	 * Id of department the news sender.
+	 * Allows you to implement delayed publication.
 	 */
-	departmentId?: string;
+	isActive: boolean;
 
 	/**
-	 * The news' preview.
+	 * The news preview.
 	 */
 	preview: string;
-
-	/**
-	 * The news author name.
-	 */
-	pseudonym?: string;
 
 	/**
 	 * The news subject.
 	 */
 	subject: string;
+
+	/**
+	 * List Ids of news tags.
+	 */
+	tagsIds: Array<string>;
 }

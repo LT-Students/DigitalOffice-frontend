@@ -7,10 +7,11 @@ import { EditNewsRequest } from '@api/news-service/models/edit-news-request';
 import { NewsPatchOperation } from '@api/news-service/models/news-patch-operation';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { NewsInfo } from '@api/news-service/models/news-info';
-import { User } from '@api/news-service/models/user';
-import { Department } from '@api/news-service/models/department';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
+import { UserInfo } from '@api/news-service/models/user-info';
+import { ChannelInfo } from '@api/news-service/models/channel-info';
+import { TagsInfo } from '@api/news-service/models/tags-info';
 
 export interface IFindNewsRequest {
 	skipCount: number;
@@ -21,16 +22,17 @@ export interface IFindNewsRequest {
 }
 
 interface IGetNewsResponse {
-	id?: string;
-	preview?: string;
-	content?: string;
-	subject?: string;
-	pseudonym?: string;
-	author?: User;
-	department?: Department;
-	isactive?: boolean;
-	createdAtUtc?: string;
-	sender?: User;
+	id: string;
+	preview: string;
+	content: string;
+	subject: string;
+	publisher?: UserInfo;
+	creator?: UserInfo;
+	channel?: ChannelInfo;
+	tags?: Array<TagsInfo>;
+	isActive: boolean;
+	publishedAtUtc?: string | null;
+	createdAtUtc: string;
 }
 
 @Injectable()

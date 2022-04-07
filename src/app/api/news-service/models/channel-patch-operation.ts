@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface NewsPatchOperation {
+export interface ChannelPatchOperation {
 	/**
 	 * The operation to be performed.
 	 */
@@ -9,7 +9,7 @@ export interface NewsPatchOperation {
 	/**
 	 * A JSON-Pointer.
 	 */
-	path: '/Preview' | '/Content' | '/Subject' | '/ChannelId' | '/IsActive';
+	path: '/PinnedMessage' | '/PinnedNewsId' | '/Name' | '/IsActive' | '/Image';
 
 	/**
 	 * The value to be used within the operations.

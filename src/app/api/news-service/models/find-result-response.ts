@@ -1,12 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 import { OperationResultStatusType } from './operation-result-status-type';
-
-/**
- * Response object for action operations.
- */
-export interface OperationResultResponse {
+export interface FindResultResponse {
 	body?: {};
 	errors?: Array<string>;
 	status?: OperationResultStatusType;
+
+	/**
+	 * Total number of finded by filter news.
+	 */
+	totalCount?: number;
 }
