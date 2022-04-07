@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CompanyApiService } from '@api/office-service/services/company-api.service';
 import { CreateOfficeRequest } from '@api/office-service/models/create-office-request';
 import { IFindRequestEx } from '@app/types/find-request.interface';
 import { OfficeApiService } from '@api/office-service/services/office-api.service';
@@ -10,29 +9,31 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { OfficeInfo } from '@api/office-service/models/office-info';
 import { UUID } from '@app/types/uuid.type';
 import { EditRequest, OfficePath } from '@app/types/edit-request';
+import { UserOfficeApiService } from '@api/office-service/services/user-office-api.service';
+import { ChangeUserOfficeRequest } from '@api/office-service/models/change-user-office-request';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class OfficeService {
 	constructor(
-		private _companyService: CompanyApiService,
-		private _officeService: OfficeApiService,
+		private officeService: OfficeApiService,
+		private userOfficeApiService: UserOfficeApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
 
 	public createOffice(body: CreateOfficeRequest): Observable<OperationResultResponse<any>> {
-		return this._officeService
+		return this.officeService
 			.createOffice({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Create));
 	}
 
 	public findOffices(params: IFindRequestEx): Observable<OperationResultResponse<OfficeInfo[]>> {
-		return this._companyService.findOffices(params);
+		return this.officeService.findOffices(params);
 	}
 
 	public editOffice(officeId: UUID, editParams: EditRequest<OfficePath>): Observable<OperationResultResponse<any>> {
-		return this._officeService.editOffice({ officeId: officeId, body: editParams });
+		return this.officeService.editOffice({ officeId: officeId, body: editParams });
 	}
 
 	public deleteOffice(officeId: UUID): Observable<OperationResultResponse<any>> {
@@ -45,5 +46,9 @@ export class OfficeService {
 		return this.editOffice(officeId, [{ op: 'replace', path: OfficePath.IS_ACTIVE, value: true }]).pipe(
 			this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Restore)
 		);
+	}
+
+	public changeUserOffice(params: ChangeUserOfficeRequest): Observable<OperationResultResponse<any>> {
+		return this.userOfficeApiService.changeOffice({ body: params });
 	}
 }

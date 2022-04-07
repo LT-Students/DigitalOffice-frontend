@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { OfficeApiService } from './services/office-api.service';
-import { CompanyApiService } from './services/company-api.service';
 import { UserOfficeApiService } from './services/user-office-api.service';
 
 /**
@@ -15,7 +14,7 @@ import { UserOfficeApiService } from './services/user-office-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [OfficeApiService, CompanyApiService, UserOfficeApiService, ApiConfiguration],
+	providers: [OfficeApiService, UserOfficeApiService, ApiConfiguration],
 })
 export class OfficeApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<OfficeApiModule> {

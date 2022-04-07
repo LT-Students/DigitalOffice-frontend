@@ -107,7 +107,7 @@
       ],
       "get": {
         "tags": [
-          "Company"
+          "Office"
         ],
         "operationId": "findOffices",
         "responses": {
@@ -301,6 +301,11 @@
       },
       "OfficeInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "City",
+          "Address"
+        ],
         "properties": {
           "Id": {
             "type": "string",
