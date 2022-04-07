@@ -1,10 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
 import { CreateUserRequest } from './create-user-request';
-import { FileContent } from './file-content';
+import { FileInfo } from './file-info';
 import { ImageContent } from './image-content';
 import { ProjectStatusType } from './project-status-type';
 export interface CreateProjectRequest {
+	/**
+	 * Project customer name.
+	 */
+	customer?: string;
+
 	/**
 	 * Unique department identifier.
 	 */
@@ -14,7 +19,12 @@ export interface CreateProjectRequest {
 	 * Project description.
 	 */
 	description?: string;
-	files?: Array<FileContent>;
+
+	/**
+	 * Date and time finish project.
+	 */
+	endProject?: any;
+	files?: Array<FileInfo>;
 
 	/**
 	 * Project name.
@@ -31,6 +41,11 @@ export interface CreateProjectRequest {
 	 * Project short name.
 	 */
 	shortName?: string;
+
+	/**
+	 * Date and time begin project.
+	 */
+	startProject?: any;
 	status: ProjectStatusType;
 	users?: Array<CreateUserRequest>;
 }

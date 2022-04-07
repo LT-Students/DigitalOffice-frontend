@@ -1,6 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface FileContent {
+import { AccessType } from './access-type';
+export interface FileInfo {
+	access: AccessType;
+
 	/**
 	 * File content.
 	 */

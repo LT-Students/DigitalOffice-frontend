@@ -12,12 +12,22 @@ export interface ProjectInfo {
 	 * Unique project creator identifier.
 	 */
 	createdBy?: string;
+
+	/**
+	 * Project сustomer.
+	 */
+	customer?: null | string;
 	department?: null | DepartmentInfo;
 
 	/**
 	 * Project description.
 	 */
 	description?: null | string;
+
+	/**
+	 * Date and time finished project.
+	 */
+	endProject?: null | any;
 
 	/**
 	 * Unique project identifier.
@@ -38,5 +48,10 @@ export interface ProjectInfo {
 	 * Project short name.
 	 */
 	shortName?: null | string;
+
+	/**
+	 * Date and time begin project.
+	 */
+	startProject?: null | any;
 	status?: ProjectStatusType;
 }

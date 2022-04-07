@@ -16,8 +16,6 @@ export class ProjectPageResolver implements Resolve<OperationResultResponse<IGet
 	): Observable<OperationResultResponse<IGetProjectResponse>> {
 		return this._projectService.getProject({
 			projectId: route.params.id,
-			includeDescription: true,
-			includeShortDescription: true,
 			includeusers: true,
 		});
 	}
