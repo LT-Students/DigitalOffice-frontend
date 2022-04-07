@@ -211,28 +211,36 @@ export class NewsApiService extends BaseService {
 		skipCount: number;
 
 		/**
-		 * Number of users to take.
+		 * Number of news to take.
 		 */
 		takeCount: number;
 
 		/**
-		 * Author global unique identifier.
+		 * Publisher global unique identifier.
 		 */
-		authorId?: string;
+		publisherId?: string;
+		includeDeactivated?: boolean;
+		includeChannel?: boolean;
 
 		/**
-		 * Department global unique identifier.
+		 * Channel global unique identifier.
 		 */
-		departmentId?: string;
-		includeDeactivated?: boolean;
+		channelId?: string;
+
+		/**
+		 * Tag global unique identifier.
+		 */
+		tagId?: string;
 	}): Observable<StrictHttpResponse<FindResultResponseNewsInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, NewsApiService.FindNewsPath, 'get');
 		if (params) {
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
-			rb.query('authorId', params.authorId, {});
-			rb.query('departmentId', params.departmentId, {});
+			rb.query('publisherId', params.publisherId, {});
 			rb.query('includeDeactivated', params.includeDeactivated, {});
+			rb.query('includeChannel', params.includeChannel, {});
+			rb.query('channelId', params.channelId, {});
+			rb.query('tagId', params.tagId, {});
 		}
 
 		return this.http
@@ -265,20 +273,26 @@ export class NewsApiService extends BaseService {
 		skipCount: number;
 
 		/**
-		 * Number of users to take.
+		 * Number of news to take.
 		 */
 		takeCount: number;
 
 		/**
-		 * Author global unique identifier.
+		 * Publisher global unique identifier.
 		 */
-		authorId?: string;
+		publisherId?: string;
+		includeDeactivated?: boolean;
+		includeChannel?: boolean;
 
 		/**
-		 * Department global unique identifier.
+		 * Channel global unique identifier.
 		 */
-		departmentId?: string;
-		includeDeactivated?: boolean;
+		channelId?: string;
+
+		/**
+		 * Tag global unique identifier.
+		 */
+		tagId?: string;
 	}): Observable<FindResultResponseNewsInfo> {
 		return this.findNews$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponseNewsInfo>) => r.body as FindResultResponseNewsInfo)

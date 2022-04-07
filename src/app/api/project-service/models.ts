@@ -1,10 +1,12 @@
 export { DepartmentInfo } from './models/department-info';
 export { PositionInfo } from './models/position-info';
 export { UserStatus } from './models/user-status';
-export { FileContent } from './models/file-content';
+export { FileInfo } from './models/file-info';
+export { FileAccess } from './models/file-access';
 export { ImageContent } from './models/image-content';
 export { ImageInfo } from './models/image-info';
 export { ImageType } from './models/image-type';
+export { AccessType } from './models/access-type';
 export { UserInfo } from './models/user-info';
 export { ProjectInfo } from './models/project-info';
 export { ProjectStatusType } from './models/project-status-type';

@@ -67,7 +67,7 @@ export class AddEditOfficeComponent {
 		return this._officeService.createOffice({
 			city: this.officeForm.get(OfficePath.CITY)?.value?.trim(),
 			address: this.officeForm.get(OfficePath.ADDRESS)?.value?.trim(),
-			name: this.officeForm.get(OfficePath.NAME)?.value?.trim(),
+			name: this.officeForm.get(OfficePath.NAME)?.value?.trim() || undefined,
 		});
 	}
 
