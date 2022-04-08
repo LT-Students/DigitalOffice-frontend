@@ -7,6 +7,8 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { UserStatusPipe } from '@shared/pipes/user-status.pipe';
+import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { User } from '@app/models/user/user.model';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { MaterialModule } from './modules/material/material.module';
@@ -71,6 +73,8 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		LeaveLabelPipe,
 		NewEmployeeComponent,
 		AddEditDepartmentComponent,
+		UserStatusPipe,
+		PlaceholderPipe,
 		UserRecoveryComponent,
 	],
 	imports: [
@@ -120,6 +124,8 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		LeaveLabelPipe,
 		NewEmployeeComponent,
 		AddEditDepartmentComponent,
+		UserStatusPipe,
+		PlaceholderPipe,
 		UserRecoveryComponent,
 	],
 })
