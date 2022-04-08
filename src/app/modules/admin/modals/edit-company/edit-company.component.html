@@ -15,16 +15,11 @@
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Название портала</mat-label>
-					<input
-						matInput
-						[formControlName]="EditPath.PORTAL_NAME"
-						placeholder="Введите название портала"
-						required
-					/>
+					<input matInput placeholder="Введите название портала" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Доменное имя</mat-label>
-					<input matInput [formControlName]="EditPath.SITE_URL" placeholder="Введите доменное имя" required />
+					<input matInput placeholder="Введите доменное имя" required />
 				</mat-form-field>
 			</section>
 			<mat-divider></mat-divider>
@@ -33,17 +28,17 @@
 			<section class="section">
 				<mat-form-field appearance="fill">
 					<mat-label>Хост</mat-label>
-					<input matInput [formControlName]="EditPath.HOST" placeholder="хост" required />
+					<input matInput placeholder="хост" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>Порт</mat-label>
-					<input matInput [formControlName]="EditPath.PORT" placeholder="порт" required />
+					<input matInput placeholder="порт" required />
 				</mat-form-field>
 				<mat-form-field appearance="fill">
 					<mat-label>E-mail</mat-label>
-					<input matInput [formControlName]="EditPath.EMAIL" placeholder="example@mail.com" required />
+					<input matInput placeholder="example@mail.com" required />
 				</mat-form-field>
-				<mat-checkbox [formControlName]="EditPath.ENABLE_SSL" required>Включить SSL</mat-checkbox>
+				<mat-checkbox required>Включить SSL</mat-checkbox>
 			</section>
 		</div>
 	</mat-dialog-content>

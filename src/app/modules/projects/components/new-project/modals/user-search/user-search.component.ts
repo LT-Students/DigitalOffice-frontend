@@ -3,11 +3,11 @@ import { UserInfo } from '@api/user-service/models/user-info';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '@app/services/user/user.service';
 import { UserSearchModalConfig } from '@app/services/modal.service';
-import { PositionInfo } from '@api/company-service/models/position-info';
 import { PageEvent } from '@angular/material/paginator';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { PositionService } from '@app/services/position/position.service';
+import { PositionInfo } from '@api/position-service/models/position-info';
 import { Team, teamCards } from '../../team-cards';
 import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 
