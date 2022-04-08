@@ -19,18 +19,11 @@ export type PatchPath =
 	| CompanyPath;
 
 export enum CompanyPath {
-	PORTAL_NAME = '/portalname',
-	COMPANY_NAME = '/companyname',
-	SITE_URL = '/siteurl',
+	COMPANY_NAME = '/name',
 	TAGLINE = '/tagline',
 	DESCRIPTION = '/description',
 	LOGO = '/logo',
-	HOST = '/host',
-	PORT = '/port',
-	ENABLE_SSL = '/enablessl',
-	EMAIL = '/email',
-	PASSWORD = '/password',
-	DEPARTMENT_MODULE_ENABLED = '/isdepartmentmoduleenabled',
+	CONTACTS = '/contacts',
 }
 
 export enum LeaveTimePath {

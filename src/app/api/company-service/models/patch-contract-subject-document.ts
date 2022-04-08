@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface PatchCompanyUserDocument {
+export interface PatchContractSubjectDocument {
 	/**
 	 * The operation to be performed.
 	 */
@@ -9,7 +9,7 @@ export interface PatchCompanyUserDocument {
 	/**
 	 * A JSON-Pointer.
 	 */
-	path: '/contracttermtype' | '/contractsubjectid' | '/rate' | '/startworkingat' | '/endworkingat' | '/probation';
+	path: '/name' | '/description' | '/isactive';
 
 	/**
 	 * The value to be used within the operations.

@@ -31,29 +31,17 @@ export class EditCompanyComponent implements OnInit {
 	) {
 		this.companyForm = this._fb.group({
 			[CompanyPath.COMPANY_NAME]: [null, Validators.required],
-			[CompanyPath.PORTAL_NAME]: [null, Validators.required],
-			[CompanyPath.SITE_URL]: [null, Validators.required],
-			[CompanyPath.HOST]: [null, Validators.required],
-			[CompanyPath.PORT]: [null, Validators.required],
-			[CompanyPath.EMAIL]: [null, Validators.required],
-			[CompanyPath.ENABLE_SSL]: [null],
 		});
 
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 	}
 
 	public ngOnInit(): void {
-		this.company$ = this._companyService.getCompany({ includesmtpcredentials: true }).pipe(
+		//TODO add company id
+		this.company$ = this._companyService.getCompany('id').pipe(
 			tap((company) => {
 				this._companyInfo = {
-					[CompanyPath.COMPANY_NAME]: company.companyName,
-					[CompanyPath.PORTAL_NAME]: company.portalName,
-					[CompanyPath.COMPANY_NAME]: company.companyName,
-					[CompanyPath.SITE_URL]: company.siteUrl,
-					[CompanyPath.HOST]: company.smtpInfo?.host,
-					[CompanyPath.PORT]: company.smtpInfo?.port,
-					[CompanyPath.EMAIL]: company.smtpInfo?.email,
-					[CompanyPath.ENABLE_SSL]: company.smtpInfo?.enableSsl,
+					[CompanyPath.COMPANY_NAME]: company.name,
 				};
 				this.companyForm.patchValue(this._companyInfo);
 			})
@@ -63,11 +51,12 @@ export class EditCompanyComponent implements OnInit {
 	public onSubmit(): void {
 		this.loading$$.next(true);
 		const editRequest = createEditRequest(this.companyForm.getRawValue(), this._companyInfo);
+		//TODO add company ID
 		this._companyService
-			.editCompany(editRequest)
+			.editCompany('id', editRequest)
 			.pipe(
 				tap(() => this._dialogRef.close()),
-				switchMap(() => this._companyService.getCompany()),
+				switchMap(() => this._companyService.getCompany('id')),
 				tap((company) => this._currentCompany.setCompany(company)),
 				finalize(() => this.loading$$.next(false))
 			)

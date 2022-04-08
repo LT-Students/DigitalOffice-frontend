@@ -5,6 +5,6 @@ export interface PendingUserInfo {
 	/**
 	 * communication to which an invitation with a password was sent.
 	 */
-	invintationCommunicationId?: string;
-	userInfo?: UserInfo;
+	invintationCommunicationId: string;
+	userInfo: UserInfo;
 }
