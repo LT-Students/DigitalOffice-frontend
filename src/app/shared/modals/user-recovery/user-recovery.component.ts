@@ -7,7 +7,7 @@ import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { CommunicationType } from '@api/user-service/models/communication-type';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { BehaviorSubject, iif, of, Subject, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -99,7 +99,6 @@ export class UserRecoveryComponent implements OnInit {
 		)
 			.pipe(
 				switchMap((communicationId: string) => {
-					console.log(communicationId);
 					return this.userService.restoreUser(userId, communicationId);
 				})
 			)
