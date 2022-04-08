@@ -8,7 +8,7 @@ import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { UserStatusPipe } from '@shared/pipes/user-status.pipe';
-import { FieldValuePipe } from '@shared/pipes/field-value.pipe';
+import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -72,7 +72,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		NewEmployeeComponent,
 		AddEditDepartmentComponent,
 		UserStatusPipe,
-		FieldValuePipe,
+		PlaceholderPipe,
 	],
 	imports: [
 		CommonModule,
@@ -122,7 +122,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		NewEmployeeComponent,
 		AddEditDepartmentComponent,
 		UserStatusPipe,
-		FieldValuePipe,
+		PlaceholderPipe,
 	],
 })
 export class SharedModule {}

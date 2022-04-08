@@ -37,11 +37,11 @@
 						<div class="employee-info__first-column">
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Гендер</span>
-								<p>{{ user.genderName | fieldValue }}</p>
+								<p>{{ user.genderName | placeholder }}</p>
 							</div>
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Дата рождения</span>
-								<p>{{ user.dateOfBirth | date: dateType.FULL | fieldValue }}</p>
+								<p>{{ user.dateOfBirth | date: dateType.FULL | placeholder }}</p>
 							</div>
 						</div>
 						<div class="employee-info__second-column">
@@ -51,7 +51,7 @@
 							</div>
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Часы работы</span>
-								<p>{{ user.businessHoursFromUtc | fieldValue }}</p>
+								<p>{{ user.businessHoursFromUtc | placeholder }}</p>
 							</div>
 						</div>
 					</div>
@@ -64,11 +64,11 @@
 						<div class="employee-info__first-column">
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Департамент</span>
-								<p class="mat-body">{{ user.department?.name | fieldValue }}</p>
+								<p class="mat-body">{{ user.department?.name | placeholder }}</p>
 							</div>
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Должность</span>
-								<p>{{ user?.position?.name | fieldValue }}</p>
+								<p>{{ user?.position?.name | placeholder }}</p>
 							</div>
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">В компании с</span>
@@ -78,11 +78,11 @@
 						<div class="employee-info__second-column">
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Офис</span>
-								<p>{{ user?.office?.address | fieldValue }}</p>
+								<p>{{ user?.office?.address | placeholder }}</p>
 							</div>
 							<div>
 								<span class="employee-info__field mat-body-2 gray-text">Роль</span>
-								<p>{{ user?.role?.name | fieldValue }}</p>
+								<p>{{ user?.role?.name | placeholder }}</p>
 							</div>
 
 							<div>
