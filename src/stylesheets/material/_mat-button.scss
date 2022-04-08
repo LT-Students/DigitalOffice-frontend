@@ -2,6 +2,10 @@
 @use '@angular/material' as mat;
 @use '../theme' as theme;
 
+button.mat-button {
+	color: #9e9e9e;
+}
+
 .mat-loading {
 	.mat-button-wrapper {
 		visibility: hidden;

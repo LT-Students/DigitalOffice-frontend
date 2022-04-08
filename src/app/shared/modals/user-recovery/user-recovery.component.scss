@@ -1,0 +1,68 @@
+:host {
+	padding: 24px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.content {
+		margin: 0 auto;
+
+		width: 383px;
+	}
+
+	.message {
+		margin-bottom: 32px;
+	}
+
+	.emails {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.email-option:not(:last-child) {
+		margin-bottom: 16px;
+	}
+
+	.editable-email {
+		position: relative;
+
+		button {
+			position: absolute;
+			bottom: -5px;
+		}
+	}
+
+	.new-email {
+		position: relative;
+
+		width: 100%;
+
+		mat-form-field {
+			width: 100%;
+
+			button {
+				cursor: pointer;
+			}
+		}
+
+		.clear {
+			position: absolute;
+			top: 20px;
+			right: -37px;
+		}
+	}
+
+	.add-email {
+		margin-left: -20px;
+	}
+
+	.controls {
+		margin-top: 16px;
+
+		button {
+			width: 160px;
+		}
+	}
+}

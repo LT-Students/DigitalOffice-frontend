@@ -46,6 +46,17 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($do-grey, 800));
 
 @include mat.button-color($button-theme);
+@include mat.icon-color(
+	mat.define-light-theme(
+		(
+			color: (
+				primary: $theme-primary,
+				accent: mat.define-palette($do-orange, 50),
+				warn: mat.define-palette($do-grey, 500),
+			),
+		)
+	)
+);
 @include mat.form-field-color(
 	mat.define-light-theme(
 		(
@@ -142,11 +153,6 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 	.mat-h4,
 	h4 {
 		color: mat.get-color-from-palette($do-grey, 900);
-	}
-
-	.mat-caption,
-	.mat-body-1 {
-		color: #9e9e9e;
 	}
 
 	th {

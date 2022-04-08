@@ -116,7 +116,7 @@ export class ManageUsersComponent implements AfterViewInit {
 				.afterClosed()
 				.pipe(
 					switchMap((confirm) =>
-						iif(() => !!confirm, this._userService.activateUser(user.id as string), EMPTY)
+						iif(() => !!confirm, this._userService.restoreUser(user.id as string, ''), EMPTY)
 					)
 				)
 				.subscribe(() => {

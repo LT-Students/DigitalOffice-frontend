@@ -7,6 +7,8 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { User } from '@app/models/user/user.model';
+import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -69,6 +71,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		LeaveLabelPipe,
 		NewEmployeeComponent,
 		AddEditDepartmentComponent,
+		UserRecoveryComponent,
 	],
 	imports: [
 		CommonModule,
@@ -117,6 +120,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		LeaveLabelPipe,
 		NewEmployeeComponent,
 		AddEditDepartmentComponent,
+		UserRecoveryComponent,
 	],
 })
 export class SharedModule {}

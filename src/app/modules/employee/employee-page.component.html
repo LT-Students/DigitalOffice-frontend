@@ -1,17 +1,10 @@
 <div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__header flex">
-	<do-breadcrumbs
-		[paths]="[
-			{ title: 'Администрирование', url: 'admin/dashboard' },
-			{ title: 'Управление сотрудниками', url: 'admin/manage-users' },
-			{ title: selectedUser | fullName }
-		]"
-	></do-breadcrumbs>
 	<ng-container *ngIf="userLogged$ | async">
 		<button
 			mat-button
 			class="employee-page__button mat-body-1 flex"
 			*ngIf="selectedUser?.isActive; else restore"
-			(click)="onActionEmployeeClick(selectedUser.id, 'disable')"
+			(click)="archiveUser(selectedUser.id)"
 		>
 			<mat-icon>archive</mat-icon>
 			<span class="employee-page__button-label">Добавить в архив</span>
@@ -20,7 +13,7 @@
 			<button
 				mat-button
 				class="employee-page__button mat-body-1"
-				(click)="onActionEmployeeClick(selectedUser.id, 'activate')"
+				(click)="restoreUser(selectedUser.id, selectedUser.communications)"
 			>
 				<mat-icon>restore_from_trash</mat-icon>
 				<span class="employee-page__button-label">Восстановить</span>
