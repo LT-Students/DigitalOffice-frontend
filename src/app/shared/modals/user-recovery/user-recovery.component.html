@@ -1,6 +1,6 @@
 <h3 mat-dialog-title>Восстановление сотрудника</h3>
 <mat-dialog-content class="content">
-	<ng-container *ngIf="!emailForRecovery; else finish">
+	<ng-container *ngIf="!(emailForRecovery$ | async)?.length; else finish">
 		<div class="message">
 			Выберите e-mail сотрудника, на который будет отправлено приглашение или добавьте новый.
 		</div>
@@ -27,7 +27,7 @@
 					<button mat-icon-button (click)="isEditMode = true" data-test="edit-email">
 						<mat-icon><img src="assets/svg/edit-task.svg" alt="edit" /></mat-icon>
 					</button>
-					<div *ngIf="(emailAlreadyExists | async) === newEmail" class="mat-body-2 warn">
+					<div *ngIf="(emailAlreadyExists$ | async) === newEmail" class="mat-body-2 warn">
 						E-mail уже зарегистрирован в системе!
 					</div>
 				</div>
@@ -76,12 +76,13 @@
 	</ng-container>
 	<ng-template #finish>
 		<div class="message text-align_center">
-			На адрес <span class="text-accent-default">{{ emailForRecovery }}</span> было отправлено приглашение.
+			На адрес <span class="text-accent-default">{{ emailForRecovery$ | async }}</span> было отправлено
+			приглашение.
 		</div>
 	</ng-template>
 </mat-dialog-content>
 <mat-dialog-actions class="controls">
-	<ng-container *ngIf="!emailForRecovery; else finishControl">
+	<ng-container *ngIf="!(emailForRecovery$ | async)?.length; else finishControl">
 		<button mat-button mat-dialog-close data-test="close-dialog">Отмена</button>
 		<button
 			[disabled]="!isFormValid"

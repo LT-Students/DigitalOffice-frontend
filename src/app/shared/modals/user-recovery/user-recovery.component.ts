@@ -23,8 +23,8 @@ export interface UserRecoveryData {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRecoveryComponent implements OnInit {
-	public emailForRecovery = '';
-	public emailAlreadyExists = new BehaviorSubject<string>('');
+	public emailForRecovery$ = new BehaviorSubject<string>('');
+	public emailAlreadyExists$ = new BehaviorSubject<string>('');
 
 	public isEditMode = false;
 	public isEmailAdded = false;
@@ -90,7 +90,7 @@ export class UserRecoveryComponent implements OnInit {
 						map((res: OperationResultResponse) => res.body as string),
 						catchError((err: HttpErrorResponse) => {
 							if (err.error.errors?.some((e: string) => e === 'Communication value already exist.')) {
-								this.emailAlreadyExists.next(this.newEmail);
+								this.emailAlreadyExists$.next(this.newEmail);
 							}
 							return throwError(err);
 						})
@@ -104,7 +104,7 @@ export class UserRecoveryComponent implements OnInit {
 			)
 			.subscribe({
 				next: () => {
-					this.emailForRecovery = this.emails?.[index].value ?? this.newEmail;
+					this.emailForRecovery$.next(this.emails?.[index].value ?? this.newEmail);
 				},
 			});
 	}
