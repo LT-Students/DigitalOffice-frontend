@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { CommunicationApiService } from '@api/user-service/services/communication-api.service';
 import { CreateCommunicationRequest } from '@api/user-service/models/create-communication-request';
 import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
-import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageTriggeredFrom, MessageMethod } from '@app/models/response/response-message';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
 export interface IRemoveCommunicationRequest {
 	/**

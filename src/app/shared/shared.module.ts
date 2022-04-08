@@ -9,6 +9,8 @@ import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.c
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { UserStatusPipe } from '@shared/pipes/user-status.pipe';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
+import { User } from '@app/models/user/user.model';
+import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -34,7 +36,7 @@ import { FullNamePipe } from './pipes/full-name.pipe';
 import { DndDirective } from './directives/dnd.directive';
 import { TextDirective } from './directives/text.directive';
 import { BlockPasteDirective } from './directives/block-paste.directive';
-import { ButtonLoadingDirective } from './directives/buttonLoading.directive';
+import { ButtonLoadingDirective } from './directives/button-loading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
 import { PasswordHintComponent } from './component/password-hint/password-hint.component';
 import { ProjectTypePipe } from './pipes/project-type.pipe';
@@ -73,6 +75,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		AddEditDepartmentComponent,
 		UserStatusPipe,
 		PlaceholderPipe,
+		UserRecoveryComponent,
 	],
 	imports: [
 		CommonModule,
@@ -123,6 +126,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		AddEditDepartmentComponent,
 		UserStatusPipe,
 		PlaceholderPipe,
+		UserRecoveryComponent,
 	],
 })
 export class SharedModule {}

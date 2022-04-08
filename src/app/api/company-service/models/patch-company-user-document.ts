@@ -9,7 +9,7 @@ export interface PatchCompanyUserDocument {
 	/**
 	 * A JSON-Pointer.
 	 */
-	path: '/rate' | '/startworkingat';
+	path: '/contracttermtype' | '/contractsubjectid' | '/rate' | '/startworkingat' | '/endworkingat' | '/probation';
 
 	/**
 	 * The value to be used within the operations.

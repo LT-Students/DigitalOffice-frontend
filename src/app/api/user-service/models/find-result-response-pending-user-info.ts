@@ -7,8 +7,8 @@ import { PendingUserInfo } from './pending-user-info';
  * Response object for action operations.
  */
 export interface FindResultResponsePendingUserInfo {
-	body?: Array<PendingUserInfo>;
-	errors?: Array<string>;
-	status?: OperationResultStatusType;
-	totalCount?: number;
+	body: Array<PendingUserInfo>;
+	errors: Array<string>;
+	status: OperationResultStatusType;
+	totalCount: number;
 }

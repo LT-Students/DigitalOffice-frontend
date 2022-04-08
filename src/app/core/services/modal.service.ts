@@ -63,7 +63,7 @@ export class ModalService {
 		});
 	}
 
-	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent, ConfirmDialogData> {
+	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent, boolean> {
 		return this._matDialog.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.M });
 	}
 

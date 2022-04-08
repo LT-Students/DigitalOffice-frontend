@@ -17,7 +17,7 @@
 				<mat-form-field appearance="fill">
 					<mat-label>Департамент</mat-label>
 					<mat-select formControlName="departmentId" placeholder="Выберите департамент" required>
-						<mat-option *ngFor="let department of departments | async" [value]="department.id">
+						<mat-option *ngFor="let department of departments$ | async" [value]="department.id">
 							{{ department.name }}
 						</mat-option>
 					</mat-select>

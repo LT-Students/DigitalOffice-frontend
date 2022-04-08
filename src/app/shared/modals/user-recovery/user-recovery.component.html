@@ -1,0 +1,100 @@
+<h3 mat-dialog-title>Восстановление сотрудника</h3>
+<mat-dialog-content class="content">
+	<ng-container *ngIf="!(emailForRecovery$ | async)?.length; else finish">
+		<div class="message">
+			Выберите e-mail сотрудника, на который будет отправлено приглашение или добавьте новый.
+		</div>
+		<div class="emails">
+			<mat-checkbox
+				class="email-option"
+				*ngFor="let control of form.controls | slice: 0:(isEmailAdded ? -1 : undefined); index as i"
+				(change)="handleChange(i)"
+				[formControl]="$any(control)"
+				[value]="emails[i].value"
+				color="primary"
+				[attr.data-test]="'email-' + i"
+				>{{ emails[i].value }}
+			</mat-checkbox>
+			<ng-container *ngIf="!isEditMode; else emailInput">
+				<div *ngIf="isEmailAdded" class="email-option editable-email">
+					<mat-checkbox
+						(change)="handleChange(form.controls.length - 1)"
+						[formControl]="$any(form.controls[form.controls.length - 1])"
+						[value]="newEmail"
+						[attr.data-test]="'email-' + (form.controls.length - 1)"
+						>{{ newEmail }}</mat-checkbox
+					>
+					<button mat-icon-button (click)="isEditMode = true" data-test="edit-email">
+						<mat-icon><img src="assets/svg/edit-task.svg" alt="edit" /></mat-icon>
+					</button>
+					<div *ngIf="(emailAlreadyExists$ | async) === newEmail" class="mat-body-2 warn">
+						E-mail уже зарегистрирован в системе!
+					</div>
+				</div>
+				<button
+					class="add-email"
+					*ngIf="!isEmailAdded"
+					mat-button
+					(click)="isEditMode = true"
+					color="primary"
+					data-test="add-email"
+				>
+					<mat-icon>add</mat-icon>
+					Добавить e-mail
+				</button>
+			</ng-container>
+			<ng-template #emailInput>
+				<div class="new-email">
+					<mat-form-field>
+						<input
+							matInput
+							type="text"
+							[formControl]="emailControl"
+							placeholder="Введите e-mail"
+							autocomplete="off"
+							autofocus
+							(keyup.enter)="addEditEmail()"
+							data-test="email-input"
+						/>
+						<mat-error *ngIf="emailControl.errors?.['email']">Некорректный e-mail!</mat-error>
+						<button
+							matSuffix
+							mat-icon-button
+							[disabled]="emailControl.invalid"
+							(click)="addEditEmail()"
+							data-test="save-email"
+						>
+							<mat-icon color="primary">done</mat-icon>
+						</button>
+					</mat-form-field>
+					<button class="clear" mat-icon-button (click)="cancelAddEditEmail()" data-test="close-input">
+						<mat-icon color="warn">clear</mat-icon>
+					</button>
+				</div>
+			</ng-template>
+		</div>
+	</ng-container>
+	<ng-template #finish>
+		<div class="message text-align_center">
+			На адрес <span class="text-accent-default">{{ emailForRecovery$ | async }}</span> было отправлено
+			приглашение.
+		</div>
+	</ng-template>
+</mat-dialog-content>
+<mat-dialog-actions class="controls">
+	<ng-container *ngIf="!(emailForRecovery$ | async)?.length; else finishControl">
+		<button mat-button mat-dialog-close data-test="close-dialog">Отмена</button>
+		<button
+			[disabled]="!isFormValid"
+			mat-flat-button
+			(click)="recoverUser()"
+			color="primary"
+			data-test="submit-dialog"
+		>
+			Отправить
+		</button>
+	</ng-container>
+	<ng-template #finishControl>
+		<button mat-flat-button mat-dialog-close color="primary" data-test="close-dialog">Всё понятно!</button>
+	</ng-template>
+</mat-dialog-actions>

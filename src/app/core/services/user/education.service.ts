@@ -26,15 +26,15 @@ export interface IRemoveEducationRequest {
 export class EducationService {
 	constructor(private _educationService: EducationApiService) {}
 
-	public createEducation(body: CreateEducationRequest): Observable<OperationResultResponse> {
-		return this._educationService.createEducation({ body });
-	}
-
-	public editEducation(params: IEditEducationRequest): Observable<OperationResultResponse> {
-		return this._educationService.editEducation(params);
-	}
-
-	public removeEducation(params: IRemoveEducationRequest): Observable<OperationResultResponse> {
-		return this._educationService.removeEducation(params);
-	}
+	// public createEducation(body: CreateEducationRequest): Observable<OperationResultResponse> {
+	// 	return this._educationService.createEducation({ body });
+	// }
+	//
+	// public editEducation(params: IEditEducationRequest): Observable<OperationResultResponse> {
+	// 	return this._educationService.editEducation(params);
+	// }
+	//
+	// public removeEducation(params: IRemoveEducationRequest): Observable<OperationResultResponse> {
+	// 	return this._educationService.removeEducation(params);
+	// }
 }

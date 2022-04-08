@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { EducationType, OperationResultResponse } from '@api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, iif, Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
-import { map, switchMap, takeUntil, skip } from 'rxjs/operators';
-import { ModalService } from '@app/services/modal.service';
+import { map, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
+import { CommunicationType, CommunicationInfo } from '@api/user-service/models';
+import { ModalService } from '@app/services/modal.service';
 import { EmployeePageService } from './services/employee-page.service';
 
 // eslint-disable-next-line no-shadow
@@ -33,25 +33,22 @@ export interface Modes {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
-	public studyTypes: EducationType[];
-
 	private _unsubscribe$$: Subject<void>;
 	public selectedUser$: Observable<User>;
 	public userLogged$: Observable<boolean | undefined>;
 
 	constructor(
-		private _dialog: MatDialog,
-		private _userService: UserService,
+		private dialog: MatDialog,
+		private modal: ModalService,
+		private userService: UserService,
 		private _projectService: ProjectService,
 		private _employeeService: EmployeePageService,
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _snackBar: MatSnackBar,
 		private _cdr: ChangeDetectorRef,
-		private _modalService: ModalService,
 		private _currentUserService: CurrentUserService
 	) {
-		this.studyTypes = [EducationType.Offline, EducationType.Online];
 		this._unsubscribe$$ = new Subject<void>();
 		this.selectedUser$ = this._employeeService.selectedUser$;
 		this.userLogged$ = this._currentUserService.user$.pipe(map((user) => user.isAdmin));
@@ -67,35 +64,28 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 			.subscribe();
 	}
 
-	public onActionEmployeeClick(userId: string | undefined, action: 'activate' | 'disable'): void {
-		if (!userId) {
-			return;
-		}
-		let actionWithUser$: Observable<OperationResultResponse>;
-		let config: ConfirmDialogData;
-		if (action === 'disable') {
-			actionWithUser$ = this._userService.disableUser(userId);
-			config = {
+	public archiveUser(userId: string): void {
+		this.modal
+			.confirm({
 				confirmText: 'Да, удалить',
 				title: 'Удаление пользователя',
 				message: 'Вы действительно хотите удалить этого пользователя?',
-			};
-		} else {
-			actionWithUser$ = this._userService.activateUser(userId);
-			config = {
-				confirmText: 'Да, восстановить',
-				title: 'Восстановление пользователя',
-				message: 'Вы действительно хотите восстановить этого пользователя?',
-			};
-		}
-		this._modalService
-			.confirm(config)
+			})
 			.afterClosed()
-			.pipe(
-				switchMap((confirm) => iif(() => !!confirm, actionWithUser$, EMPTY)),
-				switchMap(() => this._employeeService.getEmployee(userId))
-			)
+			.pipe(switchMap((confirmed?: boolean) => (confirmed ? this.userService.disableUser(userId) : EMPTY)))
 			.subscribe();
+	}
+
+	public restoreUser(userId: string, communications: CommunicationInfo[] = []): void {
+		const emails = communications.filter(
+			(c: CommunicationInfo) => c.type === CommunicationType.Email || c.type === CommunicationType.BaseEmail
+		);
+
+		this.dialog.open(UserRecoveryComponent, {
+			width: '550px',
+			maxHeight: '100%',
+			data: { userId: userId, emails: emails },
+		});
 	}
 
 	public ngOnDestroy(): void {

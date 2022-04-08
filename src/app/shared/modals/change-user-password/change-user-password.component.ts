@@ -6,9 +6,9 @@ import { ChangePasswordRequest } from '@api/user-service/models/change-password-
 import { DoValidators } from '@app/validators/do-validators';
 import { PasswordService } from '@app/services/user/password.service';
 import { finalize } from 'rxjs/operators';
-import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
 	public isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -61,10 +61,10 @@ export class ChangeUserPasswordComponent {
 			.changePassword(body)
 			.pipe(finalize(() => this.loading$$.next(false)))
 			.subscribe(
-				(result: OperationResultResponse) => {
+				(result: OperationResultResponse<{} | null>) => {
 					this._dialogRef.close(result);
 				},
-				(error: OperationResultResponse | HttpErrorResponse) => {
+				(error: OperationResultResponse<{} | null> | HttpErrorResponse) => {
 					throw error;
 				}
 			);

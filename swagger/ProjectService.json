@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2.1",
+    "version": "1.2.2.2",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -558,7 +558,8 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/parameters/userId"
+                  "type": "string",
+                  "format": "uuid"
                 }
               }
             }
@@ -645,11 +646,12 @@
         "example": "Sick",
         "default": "WorkFromOffice"
       },
-      "FileContent": {
+      "FileInfo": {
         "type": "object",
         "required": [
           "Content",
-          "Extension"
+          "Extension",
+          "Access"
         ],
         "properties": {
           "Name": {
@@ -665,6 +667,25 @@
             "description": "Extension of the file.",
             "type": "string",
             "example": ".txt"
+          },
+          "Access": {
+            "$ref": "#/components/schemas/AccessType"
+          }
+        }
+      },
+      "FileAccess": {
+        "type": "object",
+        "required": [
+          "FileId",
+          "Extension"
+        ],
+        "properties": {
+          "FileId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Access ": {
+            "$ref": "#/components/schemas/AccessType"
           }
         }
       },
@@ -732,6 +753,17 @@
         "nullable": false,
         "example": "Project"
       },
+      "AccessType": {
+        "type": "string",
+        "description": "Type of the access to the file.\n",
+        "enum": [
+          "Manager",
+          "Team",
+          "Public"
+        ],
+        "nullable": false,
+        "example": "Public"
+      },
       "UserInfo": {
         "type": "object",
         "properties": {
@@ -798,23 +830,6 @@
           }
         }
       },
-      "FileInfo": {
-        "type": "object",
-        "properties": {
-          "ProjectId": {
-            "description": "Unique project identifier.",
-            "type": "string",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-          },
-          "FileId": {
-            "description": "Unique file identifier.",
-            "type": "string",
-            "format": "uuid",
-            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
-          }
-        }
-      },
       "ProjectInfo": {
         "type": "object",
         "properties": {
@@ -829,6 +844,10 @@
             "type": "string",
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/ProjectStatusType",
+            "nullable": false
           },
           "Name": {
             "description": "Project name.",
@@ -852,18 +871,31 @@
             "type": "string",
             "nullable": true
           },
-          "Status": {
-            "$ref": "#/components/schemas/ProjectStatusType",
-            "nullable": false
+          "Customer": {
+            "description": "Project сustomer.",
+            "type": "string",
+            "nullable": true
           },
-          "Department": {
-            "$ref": "#/components/schemas/DepartmentInfo",
+          "StartProject": {
+            "description": "Date and time begin project.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13",
+            "nullable": true
+          },
+          "EndProject": {
+            "description": "Date and time finished project.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13",
             "nullable": true
           },
           "CreatedAtUtc": {
             "description": "Data and time created project.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/DepartmentInfo",
+            "nullable": true
           }
         }
       },
@@ -914,6 +946,21 @@
             "type": "string",
             "example": "Work spase"
           },
+          "Customer": {
+            "description": "Project customer name.",
+            "type": "string",
+            "example": "Misha"
+          },
+          "StartProject": {
+            "description": "Date and time begin project.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "EndProject": {
+            "description": "Date and time finish project.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
           "Status": {
             "$ref": "#/components/schemas/ProjectStatusType"
           },
@@ -938,7 +985,7 @@
           "Files": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FileContent"
+              "$ref": "#/components/schemas/FileInfo"
             }
           }
         }
@@ -1010,6 +1057,30 @@
           },
           {
             "op": "replace",
+            "path": "/Customer",
+            "value": {
+              "type": "string",
+              "description": "new customer"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/StartProject",
+            "value": {
+              "pattern": "YYYY-MM-DDTHH:mm",
+              "description": "date and time begin project."
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/EndProject",
+            "value": {
+              "pattern": "YYYY-MM-DDTHH:mm",
+              "description": "date and time finish project."
+            }
+          },
+          {
+            "op": "replace",
             "path": "/Status",
             "value": {
               "type": "string",
@@ -1045,7 +1116,9 @@
               "/ShortName",
               "/Description",
               "/ShortDescription",
-              "/Status"
+              "/Customer",
+              "/StartProject",                            "/ShortDescription",
+              "/EndProject"
             ]
           },
           "value": {
@@ -1111,7 +1184,7 @@
           "Files": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/FileContent"
+              "$ref": "#/components/schemas/FileInfo"
             }
           }
         }
@@ -1218,8 +1291,7 @@
               "files": {
                 "type": "array",
                 "items": {
-                  "type": "string",
-                  "format": "uuid"
+                  "$ref": "#/components/schemas/FileAccess"
                 },
                 "nullable": true
               },

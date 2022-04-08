@@ -3,6 +3,7 @@ import { ProjectApiService } from '@api/project-service/services/project-api.ser
 import { Observable } from 'rxjs';
 import {
 	EditProjectRequest,
+	FileAccess,
 	ImageContent,
 	ImageInfo,
 	// ProjectFileInfo,
@@ -22,15 +23,14 @@ export interface IGetProjectRequest {
 	includeusers?: boolean;
 	shownotactiveusers?: boolean;
 	includefiles?: boolean;
-	includeDescription?: boolean;
-	includeShortDescription?: boolean;
+	includeimages?: boolean;
 }
 
 export interface IGetProjectResponse {
 	project?: ProjectInfo;
-	users?: Array<UserInfo>;
-	// files?: Array<ProjectFileInfo>;
-	images?: Array<ImageInfo>;
+	users?: Array<UserInfo> | null;
+	files?: Array<FileAccess> | null;
+	images?: Array<ImageInfo> | null;
 }
 
 export interface IEditProjectRequest {

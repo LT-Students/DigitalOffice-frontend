@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-import { FileContent } from './file-content';
+import { FileInfo } from './file-info';
 export interface CreateFilesRequest {
-	files: Array<FileContent>;
+	files: Array<FileInfo>;
 	projectId: string;
 }

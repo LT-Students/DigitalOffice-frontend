@@ -9,7 +9,7 @@ export interface NewsPatchOperation {
 	/**
 	 * A JSON-Pointer.
 	 */
-	path: '/Preview' | '/Content' | '/Subject' | '/Pseudonym' | '/AuthorId' | '/DepartmentId' | '/IsActive';
+	path: '/Preview' | '/Content' | '/Subject' | '/ChannelId' | '/IsActive';
 
 	/**
 	 * The value to be used within the operations.

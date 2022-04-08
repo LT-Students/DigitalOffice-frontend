@@ -3,7 +3,7 @@ import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } fro
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 
 import { Router } from '@angular/router';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
 
@@ -15,10 +15,14 @@ export class AuthInterceptor implements HttpInterceptor {
 	private _accessTokenSubject: BehaviorSubject<string | undefined>;
 	private _excludedUrls: string[];
 
-	constructor(private localStorageService: LocalStorageService, private authService: AuthService, private _router: Router) {
+	constructor(
+		private localStorageService: LocalStorageService,
+		private authService: AuthService,
+		private _router: Router
+	) {
 		this._refreshingInProgress = false;
 		this._accessTokenSubject = new BehaviorSubject<string | undefined>(undefined);
-		this._excludedUrls = [ '/auth/refresh', '/company/get' ];
+		this._excludedUrls = ['/auth/refresh', '/company/get', '/graphicaluserinterface/get'];
 	}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
