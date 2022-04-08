@@ -25,8 +25,6 @@
 	}
 
 	&__name {
-		overflow: scroll;
-
 		box-sizing: border-box;
 		width: 250px;
 
@@ -48,6 +46,10 @@
 	&__edit-button {
 		display: inline-flex;
 		align-items: baseline;
+	}
+
+	&__edit {
+		margin-right: 5px;
 	}
 
 	&__additional {
@@ -116,10 +118,6 @@
 
 	&__about {
 		margin: 5px;
-
-		overflow-y: scroll;
-
-		height: 150px;
 
 		line-height: 21px;
 		text-align: center;

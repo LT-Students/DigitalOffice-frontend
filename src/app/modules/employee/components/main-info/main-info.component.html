@@ -19,14 +19,14 @@
 						>{{ user.status | userStatus }}</span
 					>
 				</h3>
-				<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
+				<q *ngIf="user?.about" class="mat-body-2 gray-text employee-info__about">{{ user?.about }}</q>
 			</div>
 			<div class="employee-info__general">
 				<div class="employee-info__general-header">
 					<h4>Общие сведения</h4>
 					<div class="employee-info__edit-button">
-						<p class="mat-body-2 light-gray-text">Редактировать профиль</p>
-						<button mat-icon-button (click)="toggleEditMode(user)">
+						<button mat-button (click)="toggleEditMode(user)">
+							<span class="employee-info__edit mat-body-2 light-gray-text">Редактировать профиль</span>
 							<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
 						</button>
 					</div>
