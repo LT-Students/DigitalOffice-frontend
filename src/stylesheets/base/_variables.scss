@@ -8,6 +8,7 @@ $positive_accent_bright: #cdf4df;
 $light_1: #fcfcfc;
 $light_2: #f6f6f4;
 $light_3: #f1f1ef;
+$light_4: #cecece;
 $gray: #bdbdbd;
 $gray1: #9d9d9d;
 $dark_1: #434348;
@@ -44,6 +45,14 @@ $colors: (
 			color: $color-value;
 		}
 	}
+}
+
+.gray-text {
+	color: $gray1;
+}
+
+.light-gray-text {
+	color: $light_4;
 }
 
 /* background colors */

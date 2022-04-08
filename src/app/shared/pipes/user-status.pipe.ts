@@ -6,11 +6,11 @@ import { UserStatus } from '@api/user-service/models/user-status';
 	name: 'userStatus',
 })
 export class UserStatusPipe implements PipeTransform {
-	transform(userStatus: UserStatus | undefined, emoji: boolean = true, label: boolean = true): string {
+	transform(userStatus: UserStatus | undefined, emoji: boolean = true, label: boolean = false): string {
 		if (!userStatus) return '';
 		else {
 			const userModel: IUserStatus | undefined = UserStatusModel.getUserStatusInfoByType(userStatus);
-			return `${emoji ? userModel?.emojiIcon : ''}`;
+			return `${emoji ? userModel?.emojiIcon : ''} ${label ? userModel?.statusInRussian : ''}`;
 		}
 	}
 }

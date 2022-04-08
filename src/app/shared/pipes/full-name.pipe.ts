@@ -5,7 +5,7 @@ import { User } from '@app/models/user/user.model';
 	name: 'fullName',
 })
 export class FullNamePipe implements PipeTransform {
-	transform(user: User): string {
-		return `${user.firstName} ${user.lastName}`;
+	transform(user: User, middleName: boolean = true): string {
+		return `${user.firstName} ${middleName ? user.middleName : ''} ${user.lastName}`;
 	}
 }

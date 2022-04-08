@@ -1,98 +1,96 @@
 <div class="employee-info">
 	<ng-container *ngIf="user$ | async as user">
 		<div class="employee-info__wrapper">
-			<ng-container *ngIf="!canEdit() || !isEditing">
-				<div class="employee-info__main">
-					<div class="employee-info__avatar">
-						<do-profile-image [image]="user?.avatar" size="l"></do-profile-image>
-						<label class="mat-body-1 employee-info__upload-button" (click)="onAvatarUploadDialog()">
-							<mat-icon class="employee-info__upload-icon">
-								<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
-							</mat-icon>
-							Обновить фото
-						</label>
-					</div>
-					<h3 class="employee-info__name">
-						{{ user | fullName }}&nbsp;<span
-							matTooltipClass="tooltip"
-							[matTooltip]="user.firstName + ' ' + (user.status | lowercase)"
-							[matTooltipPosition]="'above'"
-							>{{ user.status | userStatus }}</span
-						>
-					</h3>
-					<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
+			<div class="employee-info__main">
+				<div class="employee-info__avatar">
+					<do-profile-image [image]="user?.avatar" size="l"></do-profile-image>
+					<label class="mat-body-1 employee-info__upload-button" (click)="onAvatarUploadDialog()">
+						<mat-icon class="employee-info__upload-icon">
+							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
+						</mat-icon>
+						Обновить фото
+					</label>
 				</div>
-				<div class="employee-info__general">
-					<div class="employee-info__general-header">
-						<h4>Общие сведения</h4>
-						<div class="employee-info__edit-button">
-							<p class="mat-body-2 light-gray-text">Редактировать профиль</p>
-							<button mat-icon-button (click)="toggleEditMode(user)">
-								<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
-							</button>
+				<h3 class="employee-info__name">
+					{{ user | fullName }}&nbsp;<span
+						matTooltipClass="tooltip"
+						[matTooltip]="user.firstName + ' ' + (user.status | userStatus: false:true | lowercase)"
+						[matTooltipPosition]="'above'"
+						>{{ user.status | userStatus }}</span
+					>
+				</h3>
+				<q *ngIf="user?.about" class="mat-body-1 employee-info__about">{{ user?.about }}</q>
+			</div>
+			<div class="employee-info__general">
+				<div class="employee-info__general-header">
+					<h4>Общие сведения</h4>
+					<div class="employee-info__edit-button">
+						<p class="mat-body-2 light-gray-text">Редактировать профиль</p>
+						<button mat-icon-button (click)="toggleEditMode(user)">
+							<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+						</button>
+					</div>
+				</div>
+
+				<div class="employee-info__columns">
+					<div class="employee-info__first-column">
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Гендер</span>
+							<p>{{ user.genderName | placeholder }}</p>
+						</div>
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Дата рождения</span>
+							<p>{{ user.dateOfBirth | date: dateType.FULL | placeholder }}</p>
 						</div>
 					</div>
-
-					<div class="employee-info__columns">
-						<div class="employee-info__first-column">
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Гендер</span>
-								<p>{{ user.genderName | placeholder }}</p>
-							</div>
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Дата рождения</span>
-								<p>{{ user.dateOfBirth | date: dateType.FULL | placeholder }}</p>
-							</div>
+					<div class="employee-info__second-column">
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Местоположение</span>
+							<p>Не указано</p>
 						</div>
-						<div class="employee-info__second-column">
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Местоположение</span>
-								<p>Не указано</p>
-							</div>
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Часы работы</span>
-								<p>{{ user.businessHoursFromUtc | placeholder }}</p>
-							</div>
-						</div>
-					</div>
-
-					<div class="employee-info__general-header">
-						<h4>Рабочая информация</h4>
-					</div>
-
-					<div class="employee-info__columns">
-						<div class="employee-info__first-column">
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Департамент</span>
-								<p class="mat-body">{{ user.department?.name | placeholder }}</p>
-							</div>
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Должность</span>
-								<p>{{ user?.position?.name | placeholder }}</p>
-							</div>
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">В компании с</span>
-								<p>Не указано</p>
-							</div>
-						</div>
-						<div class="employee-info__second-column">
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Офис</span>
-								<p>{{ user?.office?.address | placeholder }}</p>
-							</div>
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Роль</span>
-								<p>{{ user?.role?.name | placeholder }}</p>
-							</div>
-
-							<div>
-								<span class="employee-info__field mat-body-2 gray-text">Ставка</span>
-								<p>Не указано</p>
-							</div>
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Часы работы</span>
+							<p>{{ user.businessHoursFromUtc | placeholder }}</p>
 						</div>
 					</div>
 				</div>
-			</ng-container>
+
+				<div class="employee-info__general-header">
+					<h4>Рабочая информация</h4>
+				</div>
+
+				<div class="employee-info__columns">
+					<div class="employee-info__first-column">
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Департамент</span>
+							<p class="mat-body">{{ user.department?.name | placeholder }}</p>
+						</div>
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Должность</span>
+							<p>{{ user?.position?.name | placeholder }}</p>
+						</div>
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">В компании с</span>
+							<p>Не указано</p>
+						</div>
+					</div>
+					<div class="employee-info__second-column">
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Офис</span>
+							<p>{{ user?.office?.address | placeholder }}</p>
+						</div>
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Роль</span>
+							<p>{{ user?.role?.name | placeholder }}</p>
+						</div>
+
+						<div>
+							<span class="employee-info__field mat-body-2 gray-text">Ставка</span>
+							<p>Не указано</p>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div class="employee-info__additional">
 				<do-communications class="employee-info__communications"></do-communications>
 			</div>
