@@ -19,7 +19,7 @@ export interface CreateAvatarRequest {
 	/**
 	 * Image name
 	 */
-	name?: null | string;
+	name?: string;
 
 	/**
 	 * Unique entity user identifier.

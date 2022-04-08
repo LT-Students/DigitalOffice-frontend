@@ -2,6 +2,7 @@
 /* eslint-disable */
 import { AddImageRequest } from './add-image-request';
 import { CreateCommunicationRequest } from './create-communication-request';
+import { CreateUserCompanyRequest } from './create-user-company-request';
 import { UserStatus } from './user-status';
 export interface CreateUserRequest {
 	about?: string;
@@ -17,11 +18,6 @@ export interface CreateUserRequest {
 	 */
 	businessHoursToUtc?: string;
 	communication: CreateCommunicationRequest;
-
-	/**
-	 * User company ID.
-	 */
-	companyId?: string;
 
 	/**
 	 * Date of user birth.
@@ -79,18 +75,9 @@ export interface CreateUserRequest {
 	positionId?: string;
 
 	/**
-	 * User rate
-	 */
-	rate?: number;
-
-	/**
 	 * User role ID.
 	 */
 	roleId?: string;
-
-	/**
-	 * Time when the user started working for the company.
-	 */
-	startWorkingAt?: string;
 	status: UserStatus;
+	userCompany?: CreateUserCompanyRequest;
 }

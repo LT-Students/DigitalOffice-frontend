@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
+import { CredentialsResponse } from './credentials-response';
 import { OperationResultStatusType } from './operation-result-status-type';
 
 /**
  * Response object for action operations.
  */
 export interface OperationResultResponseCredentialsResponse {
-  body?: { 'userId'?: string, 'accessToken'?: string, 'refreshToken'?: string, 'accessTokenExpiresIn'?: number, 'refreshTokenExpiresIn'?: number };
-  errors?: Array<string>;
-  status?: OperationResultStatusType;
+	body?: CredentialsResponse;
+	errors?: Array<string>;
+	status?: OperationResultStatusType;
 }
-

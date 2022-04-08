@@ -1,4 +1,4 @@
-export interface OperationResultResponse<T> {
+export interface OperationResultResponse<T = {} | null> {
 	body?: T;
 	errors?: string[];
 	status?: OperationResultStatusType;

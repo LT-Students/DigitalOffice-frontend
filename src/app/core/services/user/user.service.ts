@@ -4,14 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { UserApiService } from '@api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
-import {
-	CertificateInfo,
-	CommunicationInfo,
-	EditUserActiveRequest,
-	EducationInfo,
-	ProjectInfo,
-	UserInfo,
-} from '@api/user-service/models';
+import { EditUserActiveRequest, UserInfo, UserResponse } from '@api/user-service/models';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
@@ -22,15 +15,6 @@ import { ResponseMessageModel } from '@app/models/response/response-message.mode
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { IImageInfo } from '@app/models/image.model';
 import { EditRequest, UserPath } from '@app/types/edit-request';
-
-export interface IUserResponse {
-	user?: UserInfo;
-	skills?: Array<string>;
-	communications?: Array<CommunicationInfo>;
-	certificates?: Array<CertificateInfo>;
-	projects?: Array<ProjectInfo>;
-	educations?: Array<EducationInfo>;
-}
 
 export interface IFindUsers {
 	skipCount: number;
@@ -57,7 +41,11 @@ export class UserService {
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
 			.getUser(params)
-			.pipe(switchMap((userResponse: OperationResultResponse<IUserResponse>) => of(new User(userResponse))));
+			.pipe(
+				switchMap((userResponse: OperationResultResponse<UserResponse>) =>
+					of(new User(userResponse.body as UserResponse))
+				)
+			);
 	}
 
 	public findUsers(params: IFindUsers): Observable<OperationResultResponse<UserInfo[]>> {

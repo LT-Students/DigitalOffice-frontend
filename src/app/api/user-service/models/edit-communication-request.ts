@@ -5,10 +5,10 @@ export interface EditCommunicationRequest {
 	/**
 	 * allows to establish the confirmed communication as BaseEmail.
 	 */
-	type?: null | CommunicationType;
+	type?: CommunicationType;
 
 	/**
 	 * new the communication value
 	 */
-	value?: null | string;
+	value?: string;
 }

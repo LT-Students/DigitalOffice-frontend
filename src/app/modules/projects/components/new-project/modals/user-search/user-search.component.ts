@@ -19,8 +19,8 @@ import { WorkFlowMode } from '../../../../../employee/employee-page.component';
 })
 export class UserSearchComponent implements OnInit, OnDestroy {
 	@Input() mode: WorkFlowMode | undefined;
-	public members: UserInfo[] | undefined;
-	public membersAll: UserInfo[] | null;
+	public members: UserInfo[];
+	public membersAll: UserInfo[];
 	public visibleMembers: UserInfo[];
 	public checkedMembers: UserInfo[];
 	public selectedSpecialization: any;
@@ -34,8 +34,6 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	public pageSize: number;
 	public pageIndex: number;
 
-	// private getMembersSubscription: Subscription;
-
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: UserSearchModalConfig,
 		private _userService: UserService,
@@ -45,32 +43,14 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 	) {
 		this.checkedMembers = [...(data.members as UserInfo[])];
 		this.searchName = '';
-		this.members = data.members;
+		this.members = data.members as UserInfo[];
 		this.membersAll = [];
 		this.visibleMembers = [];
 		this.positions = [];
-		// TODO: Не показывать, пока не будет применён фильтр
-		switch (data.mode) {
-			case WorkFlowMode.VIEW: {
-				this.membersAll = data.team ? data.team.members : null;
-				break;
-			}
-			case WorkFlowMode.EDIT: {
-				this.members = data.team?.members;
-				this._initSearchMode();
-				break;
-			}
-			case WorkFlowMode.ADD: {
-				break;
-			}
-		}
 
 		this.totalCount = 0;
 		this.pageSize = 10;
 		this.pageIndex = 0;
-		// teamCards.forEach((team: Team) => {
-		//   this.membersAll.push(...team.members)
-		// });
 	}
 
 	public ngOnInit(): void {
@@ -133,11 +113,6 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		// this.getMembersSubscription.unsubscribe();
 	}
 
-	// public assignLead(member: UserInfo): void {
-	// 	const index: number = this.members.findIndex((teamMember: UserInfo) => teamMember === member);
-	// 	this.members[index].lead = this.members[index].lead ? !this.members[index].lead : true;
-	// }
-
 	public onCheckMember($event: MatCheckboxChange, user: UserInfo): void {
 		if ($event.checked) {
 			this.checkedMembers.push(user);
@@ -154,13 +129,5 @@ export class UserSearchComponent implements OnInit, OnDestroy {
 		} else {
 			return false;
 		}
-	}
-
-	private _initSearchMode(): void {
-		// add subscription to fetch Users
-
-		this.membersAll = teamCards
-			.map((team: Team) => team.members)
-			.reduce((prev: UserInfo[], currentValue: UserInfo[]) => prev.concat(currentValue), []);
 	}
 }

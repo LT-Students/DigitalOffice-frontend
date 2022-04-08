@@ -2,10 +2,10 @@ import { Observable, Subscriber } from 'rxjs';
 
 export interface IImageInfo {
 	id?: string;
-	parentId?: string | null;
+	parentId?: string;
 	content: string;
 	extension: string;
-	name?: string | null;
+	name?: string;
 	enablePreview?: boolean;
 }
 

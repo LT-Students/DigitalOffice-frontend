@@ -4,12 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
-import {
-	CommunicationType,
-	CreateCommunicationRequest,
-	OperationResultResponse,
-	UserStatus,
-} from '@api/user-service/models';
+import { CommunicationType, CreateCommunicationRequest, UserStatus } from '@api/user-service/models';
 import { UserService } from '@app/services/user/user.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { finalize, map, takeUntil } from 'rxjs/operators';
@@ -22,6 +17,7 @@ import { DoValidators } from '@app/validators/do-validators';
 import { PositionService } from '@app/services/position/position.service';
 import { DepartmentService } from '@app/services/department/department.service';
 import { OfficeService } from '@app/services/company/office.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
 @Component({
 	selector: 'do-new-employee',
@@ -84,10 +80,10 @@ export class NewEmployeeComponent implements OnDestroy {
 				takeUntil(this._unsubscribe$)
 			)
 			.subscribe(
-				(result: OperationResultResponse) => {
+				(result: OperationResultResponse<{} | null>) => {
 					this._dialogRef.close(result);
 				},
-				(error: OperationResultResponse | HttpErrorResponse) => {
+				(error: OperationResultResponse<{} | null> | HttpErrorResponse) => {
 					throw error;
 				}
 			);
@@ -127,10 +123,8 @@ export class NewEmployeeComponent implements OnDestroy {
 			middleName: this.userForm.get('middleName')?.value?.trim(),
 			positionId: this.userForm.get('positionId')?.value as string,
 			departmentId: this.userForm.get('departmentId')?.value as string,
-			rate: this.userForm.get('rate')?.value as number,
 			isAdmin: this.userForm.get('isAdmin')?.value as boolean,
 			communication: communications,
-			startWorkingAt: this.userForm.get('startWorkingAt')?.value as string,
 			status: UserStatus.WorkFromHome,
 			officeId: this.userForm.get('officeId')?.value,
 			roleId: this.userForm.get('roleId')?.value,
