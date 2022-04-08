@@ -3,13 +3,14 @@ import { UserService } from '@app/services/user/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
 import { map, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { CommunicationType, CommunicationInfo } from '@api/user-service/models';
+import { ModalService } from '@app/services/modal.service';
 import { EmployeePageService } from './services/employee-page.service';
 
 // eslint-disable-next-line no-shadow
@@ -38,7 +39,8 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private dialog: MatDialog,
-		private _userService: UserService,
+		private modal: ModalService,
+		private userService: UserService,
 		private _projectService: ProjectService,
 		private _employeeService: EmployeePageService,
 		private _route: ActivatedRoute,
@@ -53,11 +55,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-		this.dialog.open(UserRecoveryComponent, {
-			width: '550px',
-			maxHeight: '100%',
-			data: { userId: '123', emails: ['hello@world.com', 'bye@world,ru'] },
-		});
 		this._route.paramMap
 			.pipe(
 				skip(1),
@@ -67,9 +64,19 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 			.subscribe();
 	}
 
-	public archiveUser(userId: string) {}
+	public archiveUser(userId: string): void {
+		this.modal
+			.confirm({
+				confirmText: 'Да, удалить',
+				title: 'Удаление пользователя',
+				message: 'Вы действительно хотите удалить этого пользователя?',
+			})
+			.afterClosed()
+			.pipe(switchMap((confirmed?: boolean) => (confirmed ? this.userService.disableUser(userId) : EMPTY)))
+			.subscribe();
+	}
 
-	public restoreUser(userId: string, communications: CommunicationInfo[]): void {
+	public restoreUser(userId: string, communications: CommunicationInfo[] = []): void {
 		const emails = communications.filter(
 			(c: CommunicationInfo) => c.type === CommunicationType.Email || c.type === CommunicationType.BaseEmail
 		);

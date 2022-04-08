@@ -1,9 +1,15 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UserService } from '@app/services/user/user.service';
-import { AbstractControl, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
+import { CommunicationService } from '@app/services/user/communication.service';
+import { CommunicationType } from '@api/user-service/models/communication-type';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, iif, of, Subject, throwError } from 'rxjs';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface UserRecoveryData {
 	userId: string;
@@ -17,7 +23,8 @@ export interface UserRecoveryData {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserRecoveryComponent implements OnInit {
-	public isRecovered = false;
+	public emailForRecovery = '';
+	public emailAlreadyExists = new BehaviorSubject<string>('');
 
 	public isEditMode = false;
 	public isEmailAdded = false;
@@ -25,7 +32,6 @@ export class UserRecoveryComponent implements OnInit {
 
 	public emails = this.data.emails;
 	public newEmail = '';
-	public communicationId = '';
 
 	public emailControl = this.fb.control('', [Validators.required, DoValidators.email]);
 	public form = this.fb.array(this.data.emails.map(() => this.fb.control(false)));
@@ -33,6 +39,7 @@ export class UserRecoveryComponent implements OnInit {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) private data: UserRecoveryData,
 		private userService: UserService,
+		private communicationService: CommunicationService,
 		private fb: FormBuilder
 	) {}
 
@@ -69,7 +76,37 @@ export class UserRecoveryComponent implements OnInit {
 	}
 
 	public recoverUser(): void {
-		// this.userService.restoreUser(this.data.userId, this.communicationId);
-		this.isRecovered = true;
+		const userId = this.data.userId;
+		const index = this.form.controls.findIndex((c: AbstractControl) => c.value);
+
+		(index === this.form.controls.length - 1 && this.emails.length !== 1
+			? this.communicationService
+					.createCommunication({
+						userId: userId,
+						type: CommunicationType.Email,
+						value: this.newEmail,
+					})
+					.pipe(
+						map((res: OperationResultResponse) => res.body as string),
+						catchError((err: HttpErrorResponse) => {
+							if (err.error.errors?.some((e: string) => e === 'Communication value already exist.')) {
+								this.emailAlreadyExists.next(this.newEmail);
+							}
+							return throwError(err);
+						})
+					)
+			: of(this.emails[index].id)
+		)
+			.pipe(
+				switchMap((communicationId: string) => {
+					console.log(communicationId);
+					return this.userService.restoreUser(userId, communicationId);
+				})
+			)
+			.subscribe({
+				next: () => {
+					this.emailForRecovery = this.emails?.[index].value ?? this.newEmail;
+				},
+			});
 	}
 }

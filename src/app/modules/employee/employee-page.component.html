@@ -1,4 +1,4 @@
-<div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__header flex">
+<div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__header flex flex_jc_end">
 	<ng-container *ngIf="userLogged$ | async">
 		<button
 			mat-button
@@ -6,7 +6,7 @@
 			*ngIf="selectedUser?.isActive; else restore"
 			(click)="archiveUser(selectedUser.id)"
 		>
-			<mat-icon>archive</mat-icon>
+			<mat-icon fontSet="material-icons-outlined">archive</mat-icon>
 			<span class="employee-page__button-label">Добавить в архив</span>
 		</button>
 		<ng-template #restore>
@@ -15,8 +15,8 @@
 				class="employee-page__button mat-body-1"
 				(click)="restoreUser(selectedUser.id, selectedUser.communications)"
 			>
-				<mat-icon>restore_from_trash</mat-icon>
-				<span class="employee-page__button-label">Восстановить</span>
+				<mat-icon fontSet="material-icons-outlined">unarchive</mat-icon>
+				<span class="employee-page__button-label">Восстановить из архива</span>
 			</button>
 		</ng-template>
 	</ng-container>
