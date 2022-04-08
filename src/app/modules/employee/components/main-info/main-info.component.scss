@@ -79,17 +79,17 @@
 		width: 180px;
 		height: 180px;
 
-		align-self: center;
+		cursor: pointer;
 
 		border-radius: 50%;
 
-		transition: visibility 1s ease-in;
+		align-self: center;
 	}
 
 	&__upload-button {
 		position: absolute;
 		left: 0;
-		bottom: 0;
+		bottom: -50%;
 
 		padding-top: 8px;
 
@@ -98,15 +98,15 @@
 
 		cursor: pointer;
 
+		color: rgba(255, 255, 255, 0.9);
+
 		background-color: rgba(67, 67, 72, 0.6);
+
+		transition: bottom 0.1s ease-in;
 	}
 
-	&__avatar > &__upload-button {
-		visibility: hidden;
-	}
-
-	&__avatar:hover > &__upload-button {
-		visibility: visible;
+	&__avatar:hover &__upload-button {
+		bottom: 0;
 	}
 
 	&__upload-icon {
