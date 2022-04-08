@@ -7,9 +7,8 @@ import { UserInfo } from './user-info';
  * Response object for action operations.
  */
 export interface FindResultResponseUserInfo {
-  body?: Array<UserInfo>;
-  errors?: Array<string>;
-  status?: OperationResultStatusType;
-  totalCount?: number;
+	body: Array<UserInfo>;
+	errors: Array<string>;
+	status: OperationResultStatusType;
+	totalCount: number;
 }
-

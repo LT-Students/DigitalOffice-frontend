@@ -4,20 +4,20 @@ export interface ReconstructPasswordRequest {
 	/**
 	 * User login.
 	 */
-	login?: string;
+	login: string;
 
 	/**
 	 * New user password.
 	 */
-	newPassword?: string;
+	newPassword: string;
 
 	/**
 	 * Secret from email.
 	 */
-	secret?: string;
+	secret: string;
 
 	/**
 	 * Unique user identifier.
 	 */
-	userId?: string;
+	userId: string;
 }

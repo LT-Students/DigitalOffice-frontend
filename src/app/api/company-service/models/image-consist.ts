@@ -1,13 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface AddImageRequest {
+export interface ImageConsist {
 	/**
 	 * Image file content in base64 encoded string.
 	 */
 	content: string;
-
-	/**
-	 * Extension of the image.
-	 */
 	extension: string;
 }

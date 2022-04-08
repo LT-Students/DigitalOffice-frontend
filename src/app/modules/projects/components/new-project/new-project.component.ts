@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DepartmentInfo } from '@api/user-service/models/department-info';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
@@ -16,6 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { AppRoutes } from '@app/models/app-routes';
+import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';

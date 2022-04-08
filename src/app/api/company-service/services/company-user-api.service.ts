@@ -23,10 +23,10 @@ export class CompanyUserApiService extends BaseService {
 	/**
 	 * Path part for operation editCompanyUser
 	 */
-	static readonly EditCompanyUserPath = '/companyuser/edit';
+	static readonly EditCompanyUserPath = '/companyuser/{userId}';
 
 	/**
-	 * Chage user rate or start working at.
+	 * Chage company user information.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
 	 * To access only the response body, use `editCompanyUser()` instead.
@@ -42,7 +42,7 @@ export class CompanyUserApiService extends BaseService {
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, CompanyUserApiService.EditCompanyUserPath, 'patch');
 		if (params) {
-			rb.query('userId', params.userId, {});
+			rb.path('userId', params.userId, {});
 			rb.body(params.body, 'application/json');
 		}
 
@@ -62,7 +62,7 @@ export class CompanyUserApiService extends BaseService {
 	}
 
 	/**
-	 * Chage user rate or start working at.
+	 * Chage company user information.
 	 *
 	 * This method provides access to only to the response body.
 	 * To access the full response (for headers, for example), `editCompanyUser$Response()` instead.

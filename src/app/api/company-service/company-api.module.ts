@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { CompanyApiService } from './services/company-api.service';
 import { CompanyUserApiService } from './services/company-user-api.service';
+import { ContractSubjectApiService } from './services/contract-subject-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -14,7 +15,7 @@ import { CompanyUserApiService } from './services/company-user-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [CompanyApiService, CompanyUserApiService, ApiConfiguration],
+	providers: [CompanyApiService, CompanyUserApiService, ContractSubjectApiService, ApiConfiguration],
 })
 export class CompanyApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<CompanyApiModule> {

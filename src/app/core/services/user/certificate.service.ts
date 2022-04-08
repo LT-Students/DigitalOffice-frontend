@@ -26,15 +26,15 @@ export interface IRemoveCertificateRequest {
 export class CertificateService {
 	constructor(private _certificateService: CertificateApiService) {}
 
-	public createCertificate(body: CreateCertificateRequest): Observable<OperationResultResponse> {
-		return this._certificateService.createCertificate({ body });
-	}
-
-	public editCertificate(params: IEditCertificateRequest): Observable<OperationResultResponse> {
-		return this._certificateService.editCertificate(params);
-	}
-
-	public removeCertificate(params: IRemoveCertificateRequest): Observable<OperationResultResponse> {
-		return this._certificateService.removeCertificate(params);
-	}
+	// public createCertificate(body: CreateCertificateRequest): Observable<OperationResultResponse> {
+	// 	return this._certificateService.createCertificate({ body });
+	// }
+	//
+	// public editCertificate(params: IEditCertificateRequest): Observable<OperationResultResponse> {
+	// 	return this._certificateService.editCertificate(params);
+	// }
+	//
+	// public removeCertificate(params: IRemoveCertificateRequest): Observable<OperationResultResponse> {
+	// 	return this._certificateService.removeCertificate(params);
+	// }
 }

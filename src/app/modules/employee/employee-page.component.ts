@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { CommunicationInfo, CommunicationType, EducationType } from '@api/user-service/models';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,6 +9,7 @@ import { map, skip, switchMap, takeUntil } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
+import { CommunicationType, CommunicationInfo } from '@api/user-service/models';
 import { EmployeePageService } from './services/employee-page.service';
 
 // eslint-disable-next-line no-shadow
@@ -32,8 +32,6 @@ export interface Modes {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
-	public studyTypes: EducationType[];
-
 	private _unsubscribe$$: Subject<void>;
 	public selectedUser$: Observable<User>;
 	public userLogged$: Observable<boolean | undefined>;
@@ -49,7 +47,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _currentUserService: CurrentUserService
 	) {
-		this.studyTypes = [EducationType.Offline, EducationType.Online];
 		this._unsubscribe$$ = new Subject<void>();
 		this.selectedUser$ = this._employeeService.selectedUser$;
 		this.userLogged$ = this._currentUserService.user$.pipe(map((user) => user.isAdmin));

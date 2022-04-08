@@ -12,7 +12,7 @@ import { map, filter } from 'rxjs/operators';
 import { CreateCompanyRequest } from '../models/create-company-request';
 import { EditCompanyRequest } from '../models/edit-company-request';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { OperationResultResponseCompanyInfo } from '../models/operation-result-response-company-info';
+import { OperationResultResponseCompanyResponse } from '../models/operation-result-response-company-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -25,7 +25,7 @@ export class CompanyApiService extends BaseService {
 	/**
 	 * Path part for operation createCompany
 	 */
-	static readonly CreateCompanyPath = '/company/create';
+	static readonly CreateCompanyPath = '/company';
 
 	/**
 	 * Adds a new company.
@@ -75,7 +75,7 @@ export class CompanyApiService extends BaseService {
 	/**
 	 * Path part for operation getCompany
 	 */
-	static readonly GetCompanyPath = '/company/get';
+	static readonly GetCompanyPath = '/company/{companyId}';
 
 	/**
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -83,33 +83,21 @@ export class CompanyApiService extends BaseService {
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	getCompany$Response(params?: {
+	getCompany$Response(params: {
 		/**
-		 * Include departments info in answer.
+		 * Unique company identifier.
 		 */
-		includedepartments?: boolean;
-
-		/**
-		 * Include positions info in answer.
-		 */
-		includepositions?: boolean;
+		companyId: string;
 
 		/**
 		 * Include offices info in answer.
 		 */
 		includeoffices?: boolean;
-
-		/**
-		 * Include smtp credentials in answer.
-		 */
-		includesmtpcredentials?: boolean;
-	}): Observable<StrictHttpResponse<OperationResultResponseCompanyInfo>> {
+	}): Observable<StrictHttpResponse<OperationResultResponseCompanyResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, CompanyApiService.GetCompanyPath, 'get');
 		if (params) {
-			rb.query('includedepartments', params.includedepartments, {});
-			rb.query('includepositions', params.includepositions, {});
+			rb.path('companyId', params.companyId, {});
 			rb.query('includeoffices', params.includeoffices, {});
-			rb.query('includesmtpcredentials', params.includesmtpcredentials, {});
 		}
 
 		return this.http
@@ -122,7 +110,7 @@ export class CompanyApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponseCompanyInfo>;
+					return r as StrictHttpResponse<OperationResultResponseCompanyResponse>;
 				})
 			);
 	}
@@ -133,31 +121,21 @@ export class CompanyApiService extends BaseService {
 	 *
 	 * This method doesn't expect any request body.
 	 */
-	getCompany(params?: {
+	getCompany(params: {
 		/**
-		 * Include departments info in answer.
+		 * Unique company identifier.
 		 */
-		includedepartments?: boolean;
-
-		/**
-		 * Include positions info in answer.
-		 */
-		includepositions?: boolean;
+		companyId: string;
 
 		/**
 		 * Include offices info in answer.
 		 */
 		includeoffices?: boolean;
-
-		/**
-		 * Include smtp credentials in answer.
-		 */
-		includesmtpcredentials?: boolean;
-	}): Observable<OperationResultResponseCompanyInfo> {
+	}): Observable<OperationResultResponseCompanyResponse> {
 		return this.getCompany$Response(params).pipe(
 			map(
-				(r: StrictHttpResponse<OperationResultResponseCompanyInfo>) =>
-					r.body as OperationResultResponseCompanyInfo
+				(r: StrictHttpResponse<OperationResultResponseCompanyResponse>) =>
+					r.body as OperationResultResponseCompanyResponse
 			)
 		);
 	}
@@ -165,7 +143,7 @@ export class CompanyApiService extends BaseService {
 	/**
 	 * Path part for operation editCompany
 	 */
-	static readonly EditCompanyPath = '/company/edit';
+	static readonly EditCompanyPath = '/company/{companyId}';
 
 	/**
 	 * update Company properties.
@@ -175,11 +153,16 @@ export class CompanyApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editCompany$Response(params?: {
+	editCompany$Response(params: {
+		/**
+		 * Unique company identifier.
+		 */
+		companyId: string;
 		body?: EditCompanyRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, CompanyApiService.EditCompanyPath, 'patch');
 		if (params) {
+			rb.path('companyId', params.companyId, {});
 			rb.body(params.body, 'application/json');
 		}
 
@@ -206,7 +189,13 @@ export class CompanyApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	editCompany(params?: { body?: EditCompanyRequest }): Observable<OperationResultResponse> {
+	editCompany(params: {
+		/**
+		 * Unique company identifier.
+		 */
+		companyId: string;
+		body?: EditCompanyRequest;
+	}): Observable<OperationResultResponse> {
 		return this.editCompany$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);

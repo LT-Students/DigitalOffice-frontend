@@ -1,12 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+import { CompanyResponse } from './company-response';
 import { OperationResultStatusType } from './operation-result-status-type';
-
-/**
- * Response object for action operations.
- */
-export interface OperationResultResponse {
-	body?: null | {};
+export interface OperationResultResponseCompanyResponse {
+	body?: CompanyResponse;
 	errors?: Array<string>;
 	status?: OperationResultStatusType;
 }

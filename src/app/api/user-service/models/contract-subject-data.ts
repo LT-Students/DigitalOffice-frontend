@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface GenderInfo {
+export interface ContractSubjectData {
+	id: string;
 	name: string;
 }

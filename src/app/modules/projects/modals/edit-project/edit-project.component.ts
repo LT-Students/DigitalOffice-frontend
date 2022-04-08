@@ -20,7 +20,7 @@ export class EditProjectComponent {
 	public ProjectPath = ProjectPath;
 
 	public projectForm: FormGroup;
-	public departments: Observable<Array<DepartmentInfo> | undefined>;
+	public departments$: Observable<Array<DepartmentInfo>>;
 	public statuses: IProjectStatusType[];
 	public projectInfo: any;
 	private readonly _initialData: InitialDataEditRequest<ProjectPath>;
@@ -52,9 +52,9 @@ export class EditProjectComponent {
 			departmentId: [{ value: this.projectInfo.department?.id ?? null, disabled: true }, [Validators.required]],
 		});
 
-		this.departments = this._departmentService
+		this.departments$ = this._departmentService
 			.findDepartments({ skipCount: 0, takeCount: 100 })
-			.pipe(map((value) => value.body));
+			.pipe(map((value) => value.body as DepartmentInfo[]));
 	}
 
 	public onClose(): void {
