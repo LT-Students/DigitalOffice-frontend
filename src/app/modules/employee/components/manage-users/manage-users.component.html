@@ -29,7 +29,7 @@
 		<!--            </mat-select>-->
 		<!--        </mat-form-field>-->
 
-		<mat-form-field class="filters__status" appearance="fill">
+		<mat-form-field class="filters__status">
 			<mat-label>Статус</mat-label>
 			<mat-select formControlName="showDeactivatedUsers">
 				<mat-option [value]="false">Активные</mat-option>
@@ -39,12 +39,7 @@
 	</div>
 
 	<ng-container *ngIf="users$ | async as users">
-		<table
-			*ngIf="users.totalCount ?? 0 > 0; else emptyList"
-			class="table"
-			matSort
-			(matSortChange)="sortData($event)"
-		>
+		<table *ngIf="users.totalCount ?? 0 > 0; else emptyList" class="table">
 			<colgroup>
 				<col class="column column_width_little" />
 				<!-- <col class='column column_width_sm'>
@@ -107,9 +102,23 @@
 						</ng-template>
 					</td>
 					<td class="cell table__delete-button cell_vertical-middle">
-						<button mat-mini-fab color="primary" (click)="toggleUserStatus(user, $event)">
-							<mat-icon>{{ user.isActive ? 'delete' : 'unarchive' }}</mat-icon>
+						<button
+							*ngIf="user.isActive; else restore"
+							mat-mini-fab
+							color="primary"
+							(click)="$event.stopPropagation(); archiveUser(user.id)"
+						>
+							<mat-icon>archive</mat-icon>
 						</button>
+						<ng-template #restore>
+							<button
+								mat-mini-fab
+								color="primary"
+								(click)="$event.stopPropagation(); restoreUser(user.id)"
+							>
+								<mat-icon>unarchive</mat-icon>
+							</button>
+						</ng-template>
 					</td>
 				</tr>
 			</tbody>

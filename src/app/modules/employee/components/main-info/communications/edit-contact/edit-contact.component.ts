@@ -4,12 +4,12 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { CommunicationType } from '@api/user-service/models/communication-type';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel } from '@app/models/communication.model';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
 @Component({
 	selector: 'do-edit-contact',

@@ -1,0 +1,5 @@
+@use 'base/variables' as variables;
+
+span.mat-checkbox-frame {
+	border-color: variables.$accent-default;
+}

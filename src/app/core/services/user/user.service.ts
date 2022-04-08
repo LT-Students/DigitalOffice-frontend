@@ -52,22 +52,19 @@ export class UserService {
 		return this._userApiService.findUsers(params);
 	}
 
-	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
+	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
 		return this._userApiService
 			.createUser({ body: params })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.User, MessageMethod.Create));
 	}
 
-	public editUser(
-		userId: string,
-		editRequest: EditRequest<UserPath>
-	): Observable<OperationResultResponse<null | {}>> {
+	public editUser(userId: string, editRequest: EditRequest<UserPath>): Observable<OperationResultResponse> {
 		const params: IEditUserRequest = { userId: userId, body: editRequest };
 
 		return this._userApiService.editUser(params);
 	}
 
-	public disableUser(userId: string): Observable<OperationResultResponse<null | {}>> {
+	public disableUser(userId: string): Observable<OperationResultResponse> {
 		const params: EditUserActiveRequest = {
 			userId: userId,
 			isActive: false,
@@ -75,15 +72,16 @@ export class UserService {
 		return this._userApiService.editUserActive({ body: params });
 	}
 
-	public activateUser(userId: string): Observable<OperationResultResponse<null | {}>> {
+	public restoreUser(userId: string, communicationId: string): Observable<OperationResultResponse> {
 		const params: EditUserActiveRequest = {
 			userId: userId,
+			communicationId: communicationId,
 			isActive: true,
 		};
 		return this._userApiService.editUserActive({ body: params });
 	}
 
-	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
+	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.createAvatar({
 			body: {
 				content: image.content,
@@ -95,7 +93,7 @@ export class UserService {
 		});
 	}
 
-	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse<null | {}>> {
+	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.editAvatar({ userId: userId, imageId: imageId });
 	}
 }

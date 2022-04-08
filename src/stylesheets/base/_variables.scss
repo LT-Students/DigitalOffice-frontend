@@ -1,3 +1,6 @@
+$accent-default: #ff8a65;
+
+//old colors
 //Colors
 $accent_color: #ffb78c;
 $accent_color_bright: #fa7d57;
@@ -17,6 +20,7 @@ $dark_4: #202020;
 $blue_3: #56ccf2;
 
 $colors: (
+	'accent-default': $accent-default,
 	'accent_color': #ffb78c,
 	'accent_color_bright': #fa7d57,
 	'accent_color_light': #fff4ed,

@@ -1,17 +1,20 @@
 import { Component, ViewChild, ChangeDetectionStrategy, AfterViewInit } from '@angular/core';
-import { MatSort, Sort } from '@angular/material/sort';
-import { EMPTY, iif, Observable, Subject, combineLatest } from 'rxjs';
+import { MatSort } from '@angular/material/sort';
+import { EMPTY, Observable, Subject, combineLatest } from 'rxjs';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 import { UserInfo } from '@api/user-service/models/user-info';
 import { UserService } from '@app/services/user/user.service';
-import { OperationResultStatusType } from '@api/user-service/models';
+import { CommunicationInfo, CommunicationType, OperationResultStatusType } from '@api/user-service/models';
 import { ModalService } from '@app/services/modal.service';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
+import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
+import { MatDialog } from '@angular/material/dialog';
+import { User } from '@app/models/user/user.model';
 
 @Component({
 	selector: 'do-manage-users',
@@ -28,8 +31,9 @@ export class ManageUsersComponent implements AfterViewInit {
 	private _refreshCurrentPage$$: Subject<void>;
 
 	constructor(
-		private _userService: UserService,
-		private _modalService: ModalService,
+		private userService: UserService,
+		private modal: ModalService,
+		private dialog: MatDialog,
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder
 	) {
@@ -65,7 +69,7 @@ export class ManageUsersComponent implements AfterViewInit {
 	}
 
 	public getUsers(filters: any, event: PageEvent | null): Observable<OperationResultResponse<UserInfo[]>> {
-		return this._userService.findUsers({
+		return this.userService.findUsers({
 			skipCount: event ? event.pageIndex * event.pageSize : 0,
 			takeCount: event ? event.pageSize : 10,
 			includecurrentavatar: true,
@@ -77,7 +81,7 @@ export class ManageUsersComponent implements AfterViewInit {
 	}
 
 	public onAddEmployeeClick(): void {
-		this._modalService
+		this.modal
 			.openModal<NewEmployeeComponent, null, OperationResultResponse<UserInfo[]>>(NewEmployeeComponent)
 			.afterClosed()
 			.subscribe((result) => {
@@ -87,75 +91,34 @@ export class ManageUsersComponent implements AfterViewInit {
 			});
 	}
 
-	public toggleUserStatus(user: UserInfo, evt: Event): void {
-		evt.stopPropagation();
-		if (user.isActive) {
-			this._modalService
-				.confirm({
-					confirmText: 'Да, удалить',
-					title: 'Удаление пользователя',
-					message: 'Вы действительно хотите удалить этого пользователя?',
-				})
-				.afterClosed()
-				.pipe(
-					switchMap((confirm) =>
-						iif(() => !!confirm, this._userService.disableUser(user.id as string), EMPTY)
-					)
-				)
-				.subscribe(() => {
-					this._refreshCurrentPage$$.next();
-					this.filters.setValue({ showDeactivatedUsers: false });
-				});
-		} else {
-			this._modalService
-				.confirm({
-					confirmText: 'Да, восстановить',
-					title: 'Восстановление пользователя',
-					message: 'Вы действительно хотите восстановить этого пользователя?',
-				})
-				.afterClosed()
-				.pipe(
-					switchMap((confirm) =>
-						iif(() => !!confirm, this._userService.activateUser(user.id as string), EMPTY)
-					)
-				)
-				.subscribe(() => {
-					this._refreshCurrentPage$$.next();
-				});
-		}
+	public archiveUser(userId: string): void {
+		this.modal
+			.confirm({
+				confirmText: 'Да, удалить',
+				title: 'Удаление пользователя',
+				message: 'Вы действительно хотите удалить этого пользователя?',
+			})
+			.afterClosed()
+			.pipe(switchMap((confirmed?: boolean) => (confirmed ? this.userService.disableUser(userId) : EMPTY)))
+			.subscribe();
 	}
 
-	public sortData(sort: Sort): void {
-		// 	const data = this.users$?.slice();
-		// 	if (!sort.active || sort.direction === '') {
-		// 		this.users$ = data;
-		// 		return;
-		// 	}
-		//
-		// 	this.users$ = data?.sort((a: UserInfo, b: UserInfo) => {
-		// 		const isAsc = sort.direction === 'asc';
-		// 		switch (sort.active) {
-		// 			case 'name':
-		// 				return this._compare(a.firstName, b.firstName, isAsc);
-		// 			case 'department':
-		// 				return this._compare(a.department?.name, b.department?.name, isAsc);
-		// 			case 'role':
-		// 				return this._compare(a.position?.name, b.position?.name, isAsc);
-		// 			case 'rate':
-		// 				return this._compare(a.rate, b.rate, isAsc);
-		// 			case 'status':
-		// 				return this._compare(a.status, b.status, isAsc);
-		// 			default:
-		// 				return 0;
-		// 		}
-		// 	});
-	}
+	public restoreUser(userId: string): void {
+		this.userService.getUser({ userId: userId, includecommunications: true }).subscribe({
+			next: (user: User) => {
+				if (!user.communications) return;
 
-	//
-	// private _compare(a: number | string | undefined, b: number | string | undefined, isAsc: boolean) {
-	// 	if (typeof a === 'undefined' || typeof b === 'undefined') {
-	// 		return 0;
-	// 	}
-	// 	return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-	// }
+				const emails = user.communications.filter(
+					(c: CommunicationInfo) =>
+						c.type === CommunicationType.Email || c.type === CommunicationType.BaseEmail
+				);
+
+				this.dialog.open(UserRecoveryComponent, {
+					width: '550px',
+					maxHeight: '100%',
+					data: { userId: userId, emails: emails },
+				});
+			},
+		});
+	}
 }
