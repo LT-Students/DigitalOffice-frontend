@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
 import { EmployeePageService } from '@app/services/employee-page.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+
+import { EXPROJECTS } from './mock-expro';
 
 @Component({
 	selector: 'do-employee-page-projects',
@@ -12,7 +14,11 @@ import { Observable } from 'rxjs';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent implements OnInit {
+	public ProjectStatus = ProjectStatusType;
 	public projects$: Observable<any>;
+
+	public exprojects = EXPROJECTS;
+	public showAllButtonText = 'Показать все';
 
 	constructor(private router: Router, private _employeeService: EmployeePageService) {
 		this.projects$ = this._employeeService.selectedUser$.pipe(
@@ -45,7 +51,8 @@ export class ProjectsComponent implements OnInit {
 		this.router.navigate(['/project', projectId]);
 	}
 
-	// onShowAllClicked() {
-
-	// }
+	onShowAllClicked() {
+		// this.showAllButtonText === 'Показать все' ? this.showAllButtonText = 'Скрыть' : this.showAllButtonText = 'Показать все'
+		// document.getElementById("show-all-button")?.classList.toggle("open");
+	}
 }

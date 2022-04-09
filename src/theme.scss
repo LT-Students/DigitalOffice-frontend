@@ -127,6 +127,12 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 		margin: 0 0 12px;
 	}
 
+	.mat-h1,
+	h5 {
+		font-size: 16px;
+		font-weight: 700;
+	}
+
 	span.mat-h3 {
 		margin: 0;
 	}
