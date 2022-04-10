@@ -44,6 +44,18 @@
 		-webkit-box-orient: vertical;
 	}
 
+	.test-tooltip {
+		width: 150px;
+		height: 60px;
+
+		p {
+			display: -webkit-box;
+			overflow: hidden;
+			-webkit-line-clamp: 3;
+			-webkit-box-orient: vertical;
+		}
+	}
+
 	&__status-label {
 		padding: 0 8px;
 

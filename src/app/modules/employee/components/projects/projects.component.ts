@@ -5,8 +5,6 @@ import { EmployeePageService } from '@app/services/employee-page.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { EXPROJECTS } from './mock-expro';
-
 @Component({
 	selector: 'do-employee-page-projects',
 	templateUrl: './projects.component.html',
@@ -17,8 +15,7 @@ export class ProjectsComponent implements OnInit {
 	public ProjectStatus = ProjectStatusType;
 	public projects$: Observable<any>;
 
-	public exprojects = EXPROJECTS;
-	public showAllButtonText = 'Показать все';
+	public isExpanded = false;
 
 	constructor(private router: Router, private _employeeService: EmployeePageService) {
 		this.projects$ = this._employeeService.selectedUser$.pipe(
@@ -49,10 +46,5 @@ export class ProjectsComponent implements OnInit {
 
 	public onMoreClicked(projectId: string | undefined) {
 		this.router.navigate(['/project', projectId]);
-	}
-
-	onShowAllClicked() {
-		// this.showAllButtonText === 'Показать все' ? this.showAllButtonText = 'Скрыть' : this.showAllButtonText = 'Показать все'
-		// document.getElementById("show-all-button")?.classList.toggle("open");
 	}
 }

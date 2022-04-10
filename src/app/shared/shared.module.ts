@@ -33,6 +33,7 @@ import { BlockPasteDirective } from './directives/block-paste.directive';
 import { ButtonLoadingDirective } from './directives/buttonLoading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
 import { PasswordHintComponent } from './component/password-hint/password-hint.component';
+import { TooltipDirective } from './directives/tooltip.directive';
 
 @NgModule({
 	declarations: [
@@ -61,6 +62,7 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 		FullNamePipe,
 		TransformNameDirective,
 		PasswordHintComponent,
+		TooltipDirective,
 	],
 	imports: [
 		CommonModule,
@@ -105,6 +107,7 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 		FullNamePipe,
 		TransformNameDirective,
 		PasswordHintComponent,
+		TooltipDirective,
 	],
 })
 export class SharedModule {}
