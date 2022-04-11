@@ -6,15 +6,15 @@ import { Injectable } from '@angular/core';
  * Global configuration
  */
 @Injectable({
-  providedIn: 'root',
+	providedIn: 'root',
 })
 export class ApiConfiguration {
-  rootUrl: string = 'https://news.ltdo.xyz';
+	rootUrl: string = 'https://news.ltdo.xyz';
 }
 
 /**
  * Parameters for `NewsApiModule.forRoot()`
  */
 export interface ApiConfigurationParams {
-  rootUrl?: string;
+	rootUrl?: string;
 }

@@ -7,21 +7,13 @@
 				<span class="mat-h4 primary">{{ section.projects.length | i18nPlural: section.plural }}</span>
 			</h4>
 
-			<!--  | slice: 0: (isExpanded ? undefined : 4) -->
-			<div class="test-tooltip">
-				<p doTooltip>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio eum, similique cumque deserunt
-					accusantium possimus quis rem inventore!
-				</p>
-			</div>
-
 			<div *ngIf="section.projects.length > 0; else emptyList" class="projects-table__container">
-				<div *ngFor="let project of section.projects" class="projects-table__project bg-light_3">
-					<h5 class="projects-table__project-name" [matTooltip]="project.name" [matTooltipPosition]="'above'">
+				<div *ngFor="let project of section.projects | slice: 0: (section.isExpanded ? undefined : 4)" class="projects-table__project bg-light_3">
+					<h5 class="projects-table__project-name" [matTooltip]="project.name" [matTooltipPosition]="'above'" doTooltip>
 						{{ project.name }}
 					</h5>
 
-					<p class="text-gray1">project.customer.name</p>
+					<p class="text-gray1" doTooltip>project.customer.name</p>
 
 					<p
 						[ngClass]="{
@@ -43,9 +35,7 @@
 
 					<span class="text-gray1">В проекте</span>
 					<p>
-						C
-						<!-- pipe с датой начала участия?  -->
-						{{ project.createdAtUtc | date: 'd.MM.y' }}
+						not implemented
 					</p>
 
 					<p class="projects-table__more-button text-gray1" (click)="onMoreClicked(project?.id)">
@@ -56,9 +46,9 @@
 			</div>
 
 			<ng-container *ngIf="section.projects.length > 4">
-				<p class="projects-table__show-all-button text-gray1" (click)="isExpanded = !isExpanded">
-					{{ isExpanded ? 'Скрыть все' : 'Показать все' }}
-					<mat-icon [ngStyle]="{ transform: isExpanded ? 'rotate(180deg)' : '' }"
+				<p class="projects-table__show-all-button text-gray1" (click)="section.isExpanded = !section.isExpanded">
+					{{ section.isExpanded ? 'Скрыть все' : 'Показать все' }}
+					<mat-icon [ngStyle]="{ transform: section.isExpanded ? 'rotate(180deg)' : '' }"
 						>keyboard_arrow_down</mat-icon
 					>
 				</p>

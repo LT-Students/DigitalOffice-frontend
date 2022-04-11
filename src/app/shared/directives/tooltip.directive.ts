@@ -1,19 +1,15 @@
-import { Directive, OnInit, ElementRef, Renderer2 } from '@angular/core';
-import { ThisExpression } from 'typescript';
+import { Directive, ElementRef, AfterViewInit } from '@angular/core';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Directive({
-	selector: '[doTooltip]',
+	selector: '[doTooltip][matTooltip]',
 })
-export class TooltipDirective {
-	constructor(private renderer: Renderer2, private el: ElementRef) {
-		// this.el.nativeElement.style.backgroundColor = 'yellow';
+export class TooltipDirective implements AfterViewInit {
+	constructor(private el: ElementRef, private matTooltip: MatTooltip) {}
+
+	public ngAfterViewInit() {
+		let scroll = this.el.nativeElement.scrollHeight;
+		let client = this.el.nativeElement.clientHeight;
+		this.matTooltip.disabled = client >= scroll;
 	}
-
-	// public ngOnInit() {
-	// 	// let scroll = this.el.nativeElement.scrollHeight;
-	// 	// let client = this.el.nativeElement.clientHeight;
-	// 	// console.log(scroll, 'scroll');
-	// 	// console.log(client, 'client');
-
-	// }
 }

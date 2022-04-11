@@ -22,7 +22,6 @@
 		display: grid;
 		grid-template-columns: repeat(4, minmax(256px, 1fr));
 		grid-gap: 32px;
-		// grid-auto-flow: row
 	}
 
 	&__project {
@@ -42,18 +41,6 @@
 		height: 48px;
 		-webkit-line-clamp: 2;
 		-webkit-box-orient: vertical;
-	}
-
-	.test-tooltip {
-		width: 150px;
-		height: 60px;
-
-		p {
-			display: -webkit-box;
-			overflow: hidden;
-			-webkit-line-clamp: 3;
-			-webkit-box-orient: vertical;
-		}
 	}
 
 	&__status-label {

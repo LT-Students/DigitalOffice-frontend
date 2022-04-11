@@ -39,12 +39,9 @@ import { BlockPasteDirective } from './directives/block-paste.directive';
 import { ButtonLoadingDirective } from './directives/button-loading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
 import { PasswordHintComponent } from './component/password-hint/password-hint.component';
-<<<<<<< HEAD
 import { TooltipDirective } from './directives/tooltip.directive';
-=======
 import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
->>>>>>> develop
 
 @NgModule({
 	declarations: [
@@ -73,9 +70,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		FullNamePipe,
 		TransformNameDirective,
 		PasswordHintComponent,
-<<<<<<< HEAD
 		TooltipDirective,
-=======
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
@@ -83,7 +78,6 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		UserStatusPipe,
 		PlaceholderPipe,
 		UserRecoveryComponent,
->>>>>>> develop
 	],
 	imports: [
 		CommonModule,
@@ -128,9 +122,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		FullNamePipe,
 		TransformNameDirective,
 		PasswordHintComponent,
-<<<<<<< HEAD
 		TooltipDirective,
-=======
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
@@ -138,7 +130,6 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		UserStatusPipe,
 		PlaceholderPipe,
 		UserRecoveryComponent,
->>>>>>> develop
 	],
 })
 export class SharedModule {}
