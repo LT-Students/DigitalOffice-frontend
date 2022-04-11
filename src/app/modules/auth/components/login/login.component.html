@@ -1,7 +1,13 @@
 <form class="form" [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
 	<span *ngIf="loginForm.errors?.['login']" class="mat-caption warn">{{ loginForm.errors?.['login'].message }}</span>
 	<mat-form-field appearance="standard" class="form__input-field">
-		<input matInput type="email" placeholder="Корпоративный e-mail или логин" formControlName="email" />
+		<input
+			(cdkAutofill)="handleAutofill($event)"
+			matInput
+			type="email"
+			placeholder="Корпоративный e-mail или логин"
+			formControlName="username"
+		/>
 	</mat-form-field>
 	<mat-form-field appearance="standard" class="form__input-field">
 		<do-password placeholder="Пароль" formControlName="password"></do-password>
@@ -12,9 +18,9 @@
 		class="form__submit"
 		type="submit"
 		color="primary"
-		[disabled]="loginForm.invalid && loginForm.touched"
+		[disabled]="loginForm.invalid"
 	>
 		Войти
 	</button>
-	<a class="forgot-password form__link" routerLink="/auth/forgotpassword">О нет! Я забыл пароль</a>
+	<a class="forgot-password form__link" [routerLink]="['..', AuthRoutes.ForgotPassword]">О нет! Я забыл пароль!</a>
 </form>

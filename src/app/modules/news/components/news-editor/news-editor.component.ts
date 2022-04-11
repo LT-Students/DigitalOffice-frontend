@@ -13,19 +13,19 @@ import { finalize, first, skip, switchMap, takeUntil, tap } from 'rxjs/operators
 import { BehaviorSubject, from, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
-import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
+import { CreateNewsRequest } from '@api/news-service/models/create-news-request';
 import { DoValidators } from '@app/validators/do-validators';
-import { IOutputBlockData, IOutputData } from '@app/models/editorjs/output-data.interface';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ModalService } from '@app/services/modal.service';
-import { OperationResultResponseNewsResponse } from '@data/api/news-service/models/operation-result-response-news-response';
-import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
-import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
+import { OperationResultResponseNewsResponse } from '@api/news-service/models/operation-result-response-news-response';
+import { NewsPatchOperation } from '@api/news-service/models/news-patch-operation';
+import { EditNewsRequest } from '@api/news-service/models/edit-news-request';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { User } from '@app/models/user/user.model';
-import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { IOutputBlockData, IOutputData } from '../../models/output-data.interface';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
 
@@ -184,10 +184,11 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 			switchMap((outputData) => {
 				const [newsContent, previewContent] = this._prepareOutputData(outputData);
 				const news: CreateNewsRequest = {
-					authorId: userId,
 					subject: this.articleSubject.value.trim(),
 					preview: JSON.stringify(previewContent),
 					content: JSON.stringify(newsContent),
+					tagsIds: [],
+					isActive: true,
 				};
 				return this._newsService.createNews(news);
 			})

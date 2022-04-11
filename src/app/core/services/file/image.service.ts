@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserImageApiService } from '@data/api/image-service/services/user-image-api.service';
+import { UserImageApiService } from '@api/image-service/services/user-image-api.service';
 
 @Injectable({
 	providedIn: 'root',

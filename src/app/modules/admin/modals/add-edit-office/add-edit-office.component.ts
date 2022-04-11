@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { OfficeService } from '@app/services/company/office.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DoValidators } from '@app/validators/do-validators';
-import { OfficeInfo } from '@data/api/office-service/models/office-info';
+import { OfficeInfo } from '@api/office-service/models/office-info';
 import { InitialDataEditRequest, OfficePath } from '@app/types/edit-request';
 import { createEditRequest } from '@app/utils/utils';
 import { UUID } from '@app/types/uuid.type';
@@ -67,7 +67,7 @@ export class AddEditOfficeComponent {
 		return this._officeService.createOffice({
 			city: this.officeForm.get(OfficePath.CITY)?.value?.trim(),
 			address: this.officeForm.get(OfficePath.ADDRESS)?.value?.trim(),
-			name: this.officeForm.get(OfficePath.NAME)?.value?.trim(),
+			name: this.officeForm.get(OfficePath.NAME)?.value?.trim() || undefined,
 		});
 	}
 

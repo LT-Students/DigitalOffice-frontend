@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
-import { AdminModule } from '../admin/admin.module';
 import { EmployeePageComponent } from './employee-page.component';
 import { CompetencesComponent } from './components/competences/competences.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
@@ -14,6 +13,7 @@ import { EmployeeRoutingModule } from './employee-routing.module';
 import { CommunicationsComponent } from './components/main-info/communications/communications.component';
 import { EditContactComponent } from './components/main-info/communications/edit-contact/edit-contact.component';
 import { AddContactComponent } from './components/main-info/communications/add-contact/add-contact.component';
+import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 
 @NgModule({
 	declarations: [
@@ -27,8 +27,9 @@ import { AddContactComponent } from './components/main-info/communications/add-c
 		CommunicationsComponent,
 		EditContactComponent,
 		AddContactComponent,
+		ManageUsersComponent,
 	],
-	imports: [SharedModule, AdminModule, EmployeeRoutingModule],
+	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],
 })
 export class EmployeeModule {}

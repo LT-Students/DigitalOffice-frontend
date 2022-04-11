@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
   "input": "swagger/RightsService.json",
-  "output": "src/app/data/api/rights-service",
+  "output": "src/app/api/rights-service",
   "templates": "swagger/templates",
   "module": "RightsApiModule",
   "excludeParameters": ["token"],

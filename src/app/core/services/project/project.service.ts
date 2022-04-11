@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
+import { ProjectApiService } from '@api/project-service/services/project-api.service';
 import { Observable } from 'rxjs';
 import {
 	EditProjectRequest,
+	FileAccess,
 	ImageContent,
 	ImageInfo,
 	// ProjectFileInfo,
@@ -10,8 +11,8 @@ import {
 	ProjectStatusType,
 	ProjectUserRoleType,
 	UserInfo,
-} from '@data/api/project-service/models';
-import { UserApiService } from '@data/api/project-service/services/user-api.service';
+} from '@api/project-service/models';
+import { UserApiService } from '@api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
@@ -22,15 +23,14 @@ export interface IGetProjectRequest {
 	includeusers?: boolean;
 	shownotactiveusers?: boolean;
 	includefiles?: boolean;
-	includeDescription?: boolean;
-	includeShortDescription?: boolean;
+	includeimages?: boolean;
 }
 
 export interface IGetProjectResponse {
 	project?: ProjectInfo;
-	users?: Array<UserInfo>;
-	// files?: Array<ProjectFileInfo>;
-	images?: Array<ImageInfo>;
+	users?: Array<UserInfo> | null;
+	files?: Array<FileAccess> | null;
+	images?: Array<ImageInfo> | null;
 }
 
 export interface IEditProjectRequest {

@@ -1,13 +1,15 @@
 import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { AuthService } from '@app/services/auth/auth.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { Event, NavigationEnd, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { PortalService } from '@app/services/portal.service';
 import { PortalInfo } from '@app/services/admin/admin.service';
+import { AppRoutes } from '@app/models/app-routes';
+import { DepartmentsRoutes } from '../../../modules/departments/models/departments-routes';
 
 @Component({
 	selector: 'do-content-container',
@@ -17,7 +19,9 @@ import { PortalInfo } from '@app/services/admin/admin.service';
 })
 export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 	@ViewChild('menu', { read: ElementRef }) menu?: ElementRef;
-	@ViewChild('wrapper') wrapper?: ElementRef<HTMLElement>;
+	@ViewChild('scroll') scroll?: ElementRef<HTMLElement>;
+
+	public AppRoutes = AppRoutes;
 
 	public navOpened: boolean;
 	public portalName$: Observable<string>;
@@ -40,9 +44,9 @@ export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 	public ngAfterViewInit() {
 		this.router.events
 			.pipe(
-				tap((event) => {
+				tap((event: Event) => {
 					if (event instanceof NavigationEnd) {
-						this.wrapper?.nativeElement.scroll({ top: 0 });
+						this.scroll?.nativeElement.scroll({ top: 0 });
 					}
 				}),
 				takeUntil(this.destroy$)
@@ -53,7 +57,7 @@ export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 	public onStatClick(departmentId: string): void {
 		if (departmentId) {
 			this.closeNav();
-			this.router.navigate([`/admin/departments/${departmentId}/timelist`]);
+			this.router.navigate([AppRoutes.Departments, departmentId, DepartmentsRoutes.TimeList]);
 		} else {
 			this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 });
 		}

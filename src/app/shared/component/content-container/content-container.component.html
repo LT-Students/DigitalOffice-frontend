@@ -7,7 +7,7 @@
 			{{ portalName$ | async }}
 		</h4>
 		<mat-nav-list dense class="sidenav__group">
-			<a (click)="closeNav()" mat-list-item routerLink="/user/attendance">
+			<a (click)="closeNav()" mat-list-item [routerLink]="AppRoutes.TimeTrack">
 				<mat-icon matListIcon>watch_later</mat-icon>
 				<span class="mat-body">Учет времени</span>
 			</a>
@@ -15,15 +15,15 @@
 				<mat-icon matListIcon>poll</mat-icon>
 				<span class="mat-body">Таймлист</span>
 			</a>
-			<a (click)="closeNav()" mat-list-item routerLink="/user/projects-table">
+			<a (click)="closeNav()" mat-list-item [routerLink]="AppRoutes.Projects">
 				<mat-icon matListIcon>desktop_mac</mat-icon>
 				<span class="mat-body">Проекты</span>
 			</a>
-			<a (click)="closeNav()" mat-list-item routerLink="/admin/manage-users">
+			<a (click)="closeNav()" mat-list-item [routerLink]="AppRoutes.Users">
 				<mat-icon matListIcon>group</mat-icon>
 				<span class="mat-body">Сотрудники</span>
 			</a>
-			<a (click)="closeNav()" mat-list-item routerLink="/departments">
+			<a (click)="closeNav()" mat-list-item [routerLink]="AppRoutes.Departments">
 				<mat-icon matListIcon>groups</mat-icon>
 				<span class="mat-body">Департаменты</span>
 			</a>
@@ -31,8 +31,8 @@
 	</mat-sidenav>
 	<mat-sidenav-content class="sidenav__content">
 		<do-header (menuClick)="onMenuClick($event)"></do-header>
-		<div class="content-container">
-			<div #wrapper class="wrapper">
+		<div #scroll class="content-container">
+			<div class="wrapper">
 				<router-outlet></router-outlet>
 			</div>
 		</div>

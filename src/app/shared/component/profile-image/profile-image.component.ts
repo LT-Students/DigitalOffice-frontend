@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { ImageInfo } from '@data/api/user-service/models/image-info';
+import { ImageInfo } from '@api/user-service/models/image-info';
 
 @Component({
 	selector: 'do-profile-image',
@@ -9,15 +9,12 @@ import { ImageInfo } from '@data/api/user-service/models/image-info';
 })
 export class ProfileImageComponent implements OnInit, OnChanges {
 	@Input() image: ImageInfo | null | undefined;
-	@Input() size: 'l' | 'm' | 's';
-	public src: string;
-	public width: number;
+	@Input() size: 'l' | 'm' | 's' = 'm';
+	public src = 'assets/images/IAFOR-Blank-Avatar-Image.jpg';
+	public width = 48;
+	public sizeClass = 'size_m';
 
-	constructor() {
-		this.size = 'm';
-		this.src = 'assets/images/IAFOR-Blank-Avatar-Image.jpg';
-		this.width = 48;
-	}
+	constructor() {}
 
 	ngOnInit(): void {
 		if (this.size === 's') {
@@ -27,6 +24,7 @@ export class ProfileImageComponent implements OnInit, OnChanges {
 		} else {
 			this.width = 48;
 		}
+		this.sizeClass = this.getSizeClass();
 	}
 
 	public ngOnChanges(changes: SimpleChanges): void {
@@ -40,11 +38,13 @@ export class ProfileImageComponent implements OnInit, OnChanges {
 	public getSizeClass(): string {
 		switch (this.size) {
 			case 's':
-				return 'profile-image_size_s';
+				return 'size_s';
+			case 'm':
+				return 'size_m';
 			case 'l':
-				return 'profile-image_size_l';
+				return 'size_l';
 			default:
-				return '';
+				return 'size_m';
 		}
 	}
 }

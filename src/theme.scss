@@ -43,13 +43,16 @@ $theme-warn: mat.define-palette(mat.$red-palette, 400);
 $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 
 @include mat.all-component-themes($app-theme);
-@include mat.button-color(
+$button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($do-grey, 800));
+
+@include mat.button-color($button-theme);
+@include mat.icon-color(
 	mat.define-light-theme(
 		(
 			color: (
-				primary: mat.define-palette($do-orange),
+				primary: $theme-primary,
 				accent: mat.define-palette($do-orange, 50),
-				warn: mat.define-palette($do-grey, 800),
+				warn: mat.define-palette($do-grey, 500),
 			),
 		)
 	)
@@ -104,6 +107,16 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 		)
 	)
 );
+@include mat.progress-spinner-color(
+	mat.define-light-theme(
+		(
+			color: (
+				primary: mat.define-palette($do-grey, 50),
+				accent: mat.define-palette($do-grey, 50),
+			),
+		)
+	)
+);
 @include mat.core($custom-typography);
 
 .do-light {
@@ -146,11 +159,6 @@ $app-theme: create-theme($theme-primary, $theme-accent, $theme-warn);
 	.mat-h4,
 	h4 {
 		color: mat.get-color-from-palette($do-grey, 900);
-	}
-
-	.mat-caption,
-	.mat-body-1 {
-		color: #9d9d9d;
 	}
 
 	th {

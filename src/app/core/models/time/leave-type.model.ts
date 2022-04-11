@@ -1,4 +1,4 @@
-import { LeaveType } from '@data/api/time-service/models/leave-type';
+import { LeaveType } from '@api/time-service/models/leave-type';
 
 export interface ILeaveType {
 	leaveType?: LeaveType;

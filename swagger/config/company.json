@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
   "input": "swagger/CompanyService.json",
-  "output": "src/app/data/api/company-service",
+  "output": "src/app/api/company-service",
   "templates": "swagger/templates",
   "module": "CompanyApiModule",
   "excludeParameters": ["token"],

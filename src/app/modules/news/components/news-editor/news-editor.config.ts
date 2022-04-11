@@ -14,9 +14,9 @@ import { Injectable } from '@angular/core';
 import { ImageNewsService } from '@app/services/image/image-news.service';
 import { EditorConfig, OutputData } from '@editorjs/editorjs';
 import { map, switchMap } from 'rxjs/operators';
-import { OperationResultStatusType } from '@data/api/image-service/models/operation-result-status-type';
+import { OperationResultStatusType } from '@api/image-service/models/operation-result-status-type';
 import { CreateImageService } from '@app/services/create-image.service';
-import { CreateImageRequest } from '@data/api/image-service/models/create-image-request';
+import { CreateImageRequest } from '@api/image-service/models/create-image-request';
 import { LocalStorageService } from '@app/services/local-storage.service';
 //@ts-ignore
 import Image from '../../editorjs-plugins/blocks/image/bundle.js';

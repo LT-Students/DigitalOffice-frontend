@@ -4,9 +4,10 @@ import { BehaviorSubject, of } from 'rxjs';
 import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { PasswordService } from '@app/services/user/password.service';
-import { ReconstructPasswordRequest } from '@data/api/user-service/models/reconstruct-password-request';
+import { ReconstructPasswordRequest } from '@api/user-service/models/reconstruct-password-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { AuthRoutes } from '../../models/auth-routes';
 
 class PasswordErrorMatcher extends ErrorStateMatcher {
 	isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -27,6 +28,8 @@ class LoginSecretErrorMatcher extends ErrorStateMatcher {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResetPasswordComponent {
+	public AuthRoutes = AuthRoutes;
+
 	public resetForm: FormGroup;
 	public isLoading$$: BehaviorSubject<boolean>;
 	public isCompleted$$: BehaviorSubject<boolean>;

@@ -3,7 +3,7 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { ImageNewsService } from '@app/services/image/image-news.service';
-import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
+import { IOutputBlockData } from './models/output-data.interface';
 
 @Injectable({
 	providedIn: 'root',

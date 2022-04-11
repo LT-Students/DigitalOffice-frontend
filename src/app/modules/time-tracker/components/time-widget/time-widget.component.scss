@@ -1,0 +1,24 @@
+@use 'base/variables';
+
+.time-widget {
+	padding: 0 50px 32px;
+
+	display: flex;
+	flex-direction: column;
+
+	height: 100%;
+
+	.chart {
+		padding-bottom: 30px;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		width: 100%;
+	}
+
+	.legend {
+		align-self: center;
+	}
+}

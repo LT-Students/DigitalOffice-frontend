@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
   "input": "swagger/PositionService.json",
-  "output": "src/app/data/api/position-service",
+  "output": "src/app/api/position-service",
   "templates": "swagger/templates",
   "module": "PositionApiModule",
   "excludeParameters": ["token"],

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AdminApiService } from '@data/api/admin-service/services/admin-api.service';
-import { GraphicalUserInterfaceApiService } from '@data/api/admin-service/services/graphical-user-interface-api.service';
-import { ServiceEndpointApiService } from '@data/api/admin-service/services/service-endpoint-api.service';
-import { InstallAppRequest } from '@data/api/admin-service/models/install-app-request';
+import { AdminApiService } from '@api/admin-service/services/admin-api.service';
+import { GraphicalUserInterfaceApiService } from '@api/admin-service/services/graphical-user-interface-api.service';
+import { ServiceEndpointApiService } from '@api/admin-service/services/service-endpoint-api.service';
+import { InstallAppRequest } from '@api/admin-service/models/install-app-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ServiceConfigurationInfo } from '@data/api/admin-service/models/service-configuration-info';
+import { ServiceConfigurationInfo } from '@api/admin-service/models/service-configuration-info';
 import { Observable } from 'rxjs';
 
 export interface PortalInfo {

@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { CommunicationType, CreateCommunicationRequest, OperationResultResponse } from '@data/api/user-service/models';
+import { CommunicationType, CreateCommunicationRequest } from '@api/user-service/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommunicationService } from '@app/services/user/communication.service';
-import { EmployeePageService } from '@app/services/employee-page.service';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel, IContactType } from '@app/models/communication.model';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { EmployeePageService } from '../../../../services/employee-page.service';
 
 @Component({
 	selector: 'do-add-contact',

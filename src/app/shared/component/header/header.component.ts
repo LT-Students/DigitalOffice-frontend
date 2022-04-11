@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { PortalService } from '@app/services/portal.service';
 import { PortalInfo } from '@app/services/admin/admin.service';
+import { AppRoutes } from '@app/models/app-routes';
 import { ChangeUserPasswordComponent } from '../../modals/change-user-password/change-user-password.component';
 
 @Component({
@@ -18,6 +19,9 @@ import { ChangeUserPasswordComponent } from '../../modals/change-user-password/c
 export class HeaderComponent {
 	@Input() magnifierLocation: 'right' | 'left' = 'left';
 	@Output() public menuClick: EventEmitter<MouseEvent>;
+
+	public AppRoutes = AppRoutes;
+
 	public portalName: Observable<string>;
 	public currentUser$: Observable<User>;
 

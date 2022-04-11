@@ -1,5 +1,5 @@
-import { LeaveType } from '@data/api/time-service/models/leave-type';
-import { LeaveTimeInfo } from '@data/api/time-service/models/leave-time-info';
+import { LeaveType } from '@api/time-service/models/leave-type';
+import { LeaveTimeInfo } from '@api/time-service/models/leave-time-info';
 
 interface ILeaveTimeInfo {
 	comment?: string;

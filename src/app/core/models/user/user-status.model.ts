@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-shadow
 
-import { UserStatus } from '@data/api/user-service/models/user-status';
+import { UserStatus } from '@api/user-service/models/user-status';
 
 export interface IUserStatus {
 	emojiIcon: string;

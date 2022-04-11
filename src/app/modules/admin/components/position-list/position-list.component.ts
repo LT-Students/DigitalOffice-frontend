@@ -8,7 +8,7 @@ import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { IPositionInfo, PositionService } from '@app/services/position/position.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { PositionInfo } from '@api/position-service/models/position-info';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 
 @Component({

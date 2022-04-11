@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { PasswordService } from '@app/services/user/password.service';
+import { AuthRoutes } from '../../models/auth-routes';
 
 @Component({
 	selector: 'do-forgot-password',
@@ -12,6 +13,8 @@ import { PasswordService } from '@app/services/user/password.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ForgotPasswordComponent {
+	public AuthRoutes = AuthRoutes;
+
 	public forgotPasswordForm: FormGroup;
 	public isWaiting$$: BehaviorSubject<boolean>;
 	public isCompleted$$: BehaviorSubject<boolean>;

@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { RightsApiService } from '@data/api/rights-service/services/rights-api.service';
-import { RoleApiService } from '@data/api/rights-service/services/role-api.service';
+import { RightsApiService } from '@api/rights-service/services/rights-api.service';
+import { RoleApiService } from '@api/rights-service/services/role-api.service';
 import { Observable } from 'rxjs';
 import { IFindRequestEx } from '@app/types/find-request.interface';
-import { CreateRoleRequest } from '@data/api/rights-service/models/create-role-request';
+import { CreateRoleRequest } from '@api/rights-service/models/create-role-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { RoleInfo } from '@data/api/rights-service/models/role-info';
-import { UserInfo } from '@data/api/rights-service/models/user-info';
-import { UserRightsApiService } from '@data/api/rights-service/services/user-rights-api.service';
+import { RoleInfo } from '@api/rights-service/models/role-info';
+import { UserInfo } from '@api/rights-service/models/user-info';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
-import { RightInfo } from '@data/api/rights-service/models/right-info';
+import { RightInfo } from '@api/rights-service/models/right-info';
 import { UUID } from '@app/types/uuid.type';
 
 export interface IEditRoleStatusRequest {
@@ -41,21 +40,12 @@ export class RightsService {
 	constructor(
 		private _rightsService: RightsApiService,
 		private _roleService: RoleApiService,
-		private _userRightsService: UserRightsApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
-
-	public addRightsForUser(params: IAddRightsForUserRequest): Observable<OperationResultResponse<any>> {
-		return this._userRightsService.create(params);
-	}
 
 	//TODO create enum for locales
 	public findRights(): Observable<OperationResultResponse<RightInfo[]>> {
 		return this._rightsService.getRightsList({ locale: 'ru' });
-	}
-
-	public removeRightsFromUser(params: IRemoveRightsFromUserRequest): Observable<OperationResultResponse<any>> {
-		return this._userRightsService.removeRightsFromUser(params);
 	}
 
 	public findRoles(params: IFindRequestEx): Observable<OperationResultResponse<RoleInfo[]>> {
