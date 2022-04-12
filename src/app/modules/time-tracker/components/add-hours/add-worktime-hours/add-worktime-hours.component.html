@@ -34,8 +34,8 @@
 	</div>
 
 	<mat-form-field floatLabel="always">
-		<mat-label>Выберите проект</mat-label>
-		<mat-select formControlName="activity">
+		<mat-label>Проект</mat-label>
+		<mat-select formControlName="activity" placeholder="Выберите проект">
 			<mat-option
 				*ngFor="let workTime of workTimes$ | async"
 				[value]="workTime?.id"

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, iif, Observable, of, Subject, Subscription } from 'rxjs';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
@@ -18,7 +18,7 @@ import { AttendanceService } from '../../../services/attendance.service';
 	styleUrls: ['./add-worktime-hours.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddWorktimeHoursComponent implements OnDestroy {
+export class AddWorktimeHoursComponent implements OnInit, OnDestroy {
 	public loading$$: BehaviorSubject<boolean>;
 	public workTimes$: Observable<WorkTimeInfo[]>;
 	public selectedDate: DateTime;
@@ -29,13 +29,11 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	public dateControl = new FormControl(DateTime.now());
 	private destroy$ = new Subject();
 	private readonly DAYS_FROM_LASTMONTH: number = 5;
-	
 
 	constructor(
 		private _fb: FormBuilder,
 		private _attendanceService: AttendanceService,
-		private _responseService: ResponseMessageModel,
-		
+		private _responseService: ResponseMessageModel
 	) {
 		this.isAnotherExist = false;
 		this.selectedDate = DateTime.now();
@@ -54,7 +52,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 				);
 			})
 		);
-		
+
 		this._attendanceService.monthNorm$.subscribe({
 			next: (monthNorm) => (this.monthNorm = monthNorm),
 		});
@@ -174,10 +172,16 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	}
 
 	private _setMonthOptions(selectedDate: DateTime): DateTime[] {
-		if (selectedDate.day < this.DAYS_FROM_LASTMONTH && selectedDate.month === DateTime.now().month) {
+		if (
+			selectedDate.day <= this.DAYS_FROM_LASTMONTH &&
+			selectedDate.month === DateTime.now().month &&
+			selectedDate.year === DateTime.now().year
+		) {
 			const currentDate = DateTime.now();
 			return [currentDate, currentDate.minus({ months: 1 })];
-		} else if (selectedDate.month <= DateTime.now().month || selectedDate.year !== DateTime.now().year) {
+		} else if (selectedDate.month === DateTime.now().month) {
+			return [DateTime.now()];
+		} else if (selectedDate.month !== DateTime.now().month || selectedDate.year !== DateTime.now().year) {
 			return [selectedDate, DateTime.now()];
 		}
 		return [];
