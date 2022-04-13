@@ -179,12 +179,10 @@ export class AddWorktimeHoursComponent implements OnInit, OnDestroy {
 		) {
 			const currentDate = DateTime.now();
 			return [currentDate, currentDate.minus({ months: 1 })];
-		} else if (selectedDate.month === DateTime.now().month) {
+		} else if (selectedDate.month === DateTime.now().month && selectedDate.year === DateTime.now().year) {
 			return [DateTime.now()];
-		} else if (selectedDate.month !== DateTime.now().month || selectedDate.year !== DateTime.now().year) {
-			return [selectedDate, DateTime.now()];
 		}
-		return [];
+		return [selectedDate, DateTime.now()];
 	}
 
 	private _isGUIDEmpty(id: string): boolean {
