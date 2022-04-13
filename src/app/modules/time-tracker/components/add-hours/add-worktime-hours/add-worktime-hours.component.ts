@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { BehaviorSubject, iif, Observable, of, Subscription } from 'rxjs';
+import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, iif, Observable, of, Subject, Subscription } from 'rxjs';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { finalize, map, switchMap, tap } from 'rxjs/operators';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { OperationResultResponse } from '@api/time-service/models/operation-result-response';
 import { IEditWorkTimeRequest } from '@app/services/time/time.service';
@@ -18,17 +18,17 @@ import { AttendanceService } from '../../../services/attendance.service';
 	styleUrls: ['./add-worktime-hours.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddWorktimeHoursComponent implements OnDestroy {
+export class AddWorktimeHoursComponent implements OnInit, OnDestroy {
 	public loading$$: BehaviorSubject<boolean>;
 	public workTimes$: Observable<WorkTimeInfo[]>;
 	public selectedDate: DateTime;
-	public selectedDate$: Observable<DateTime>;
 	public addHoursForm: FormGroup;
 	public monthOptions: DateTime[];
 	public isAnotherExist: boolean;
 	public monthNorm: number;
-
-	private _canEditSubscription: Subscription;
+	public dateControl = new FormControl(DateTime.now());
+	private destroy$ = new Subject();
+	private readonly DAYS_FROM_LASTMONTH: number = 5;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -52,12 +52,6 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 				);
 			})
 		);
-		this.selectedDate$ = this._attendanceService.selectedDate$.pipe(
-			tap((date) => {
-				this.selectedDate = date;
-				this.monthOptions = this._setMonthOptions(date);
-			})
-		);
 
 		this._attendanceService.monthNorm$.subscribe({
 			next: (monthNorm) => (this.monthNorm = monthNorm),
@@ -69,7 +63,7 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 			comment: [null],
 		});
 
-		this._canEditSubscription = this._attendanceService.canEdit$.subscribe({
+		this._attendanceService.canEdit$.pipe(takeUntil(this.destroy$)).subscribe({
 			next: (canEdit) => {
 				if (canEdit) {
 					this.addHoursForm.enable();
@@ -80,8 +74,32 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 		});
 	}
 
+	public ngOnInit() {
+		this.dateControl.valueChanges
+			.pipe(takeUntil(this.destroy$))
+			.subscribe((date: DateTime) => this.changeDate(date));
+
+		this._attendanceService.selectedDate$
+			.pipe(
+				tap((date) => {
+					this.selectedDate = date;
+					if (!this.compareDate(date, this.dateControl.value)) {
+						this.dateControl.setValue(date, { emitEvent: false });
+					}
+					this.monthOptions = this._setMonthOptions(date);
+				}),
+				takeUntil(this.destroy$)
+			)
+			.subscribe();
+	}
+
+	public compareDate(d1: DateTime, d2: DateTime): boolean {
+		return d1.year === d2.year && d1.month === d2.month;
+	}
+
 	public ngOnDestroy(): void {
-		this._canEditSubscription.unsubscribe();
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	public changeDate(date: DateTime): void {
@@ -154,13 +172,17 @@ export class AddWorktimeHoursComponent implements OnDestroy {
 	}
 
 	private _setMonthOptions(selectedDate: DateTime): DateTime[] {
-		if (selectedDate.day < 5 && selectedDate.month === DateTime.now().month) {
+		if (
+			selectedDate.day <= this.DAYS_FROM_LASTMONTH &&
+			selectedDate.month === DateTime.now().month &&
+			selectedDate.year === DateTime.now().year
+		) {
 			const currentDate = DateTime.now();
 			return [currentDate, currentDate.minus({ months: 1 })];
-		} else if (selectedDate.month < DateTime.now().month || selectedDate.year !== DateTime.now().year) {
+		} else if (selectedDate.month === DateTime.now().month && selectedDate.year === DateTime.now().year) {
 			return [DateTime.now()];
 		}
-		return [];
+		return [selectedDate, DateTime.now()];
 	}
 
 	private _isGUIDEmpty(id: string): boolean {

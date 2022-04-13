@@ -1,14 +1,17 @@
 .add-hours {
-	padding: 32px 48px;
-
+	
 	&__form {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		grid-gap: 0px;
+		
 	}
-
-	&__time {
-		width: 300px;
+	
+	&__dates-container {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 8px;
+		
 	}
 
 	&__menu {

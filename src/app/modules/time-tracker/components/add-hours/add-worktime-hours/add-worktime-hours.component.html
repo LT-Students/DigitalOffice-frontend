@@ -1,7 +1,8 @@
 <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
-	<div>
-		<mat-form-field class="add-hours__time">
+	<div class="add-hours__dates-container">
+		<mat-form-field class="add-hours__time" floatLabel="always">
 			<input matInput formControlName="time" type="text" placeholder="0" />
+			<mat-label>Количество часов</mat-label>
 			<mat-error *ngIf="addHoursForm.controls['time']?.errors?.min; else errIntNum">
 				Минимальное значение должно быть больше 0
 			</mat-error>
@@ -21,27 +22,20 @@
 				</mat-error>
 			</ng-template>
 		</mat-form-field>
-		<span class="mat-h3" *ngIf="selectedDate$ | async as selectedDate"
-			>ч за
-			<a class="mat-h3" *ngIf="monthOptions.length === 0; else selectMonth">
-				{{ selectedDate | dateTime: 'LLLL y' }}
-			</a>
-			<ng-template #selectMonth>
-				<a class="mat-h3 add-hours__menu" [matMenuTriggerFor]="monthMenu"
-					>{{ selectedDate | dateTime: 'LLLL y' }}
-					<mat-icon>expand_more</mat-icon>
-				</a>
-			</ng-template>
-		</span>
-		<mat-menu #monthMenu="matMenu">
-			<button mat-menu-item *ngFor="let month of monthOptions" (click)="changeDate(month)">
-				{{ month | dateTime: 'LLLL y' | titlecase }}
-			</button>
-		</mat-menu>
+
+		<mat-form-field class="add-hours__date" floatLabel="always">
+			<mat-label>Месяц</mat-label>
+			<mat-select [formControl]="dateControl" [compareWith]="compareDate">
+				<mat-option *ngFor="let month of monthOptions" [value]="month">
+					{{ month | dateTime: 'LLLL y' | titlecase }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
 	</div>
-	<mat-form-field>
-		<mat-label>Выберите проект</mat-label>
-		<mat-select formControlName="activity">
+
+	<mat-form-field floatLabel="always">
+		<mat-label>Проект</mat-label>
+		<mat-select formControlName="activity" placeholder="Выберите проект">
 			<mat-option
 				*ngFor="let workTime of workTimes$ | async"
 				[value]="workTime?.id"
@@ -51,7 +45,7 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<mat-form-field>
+	<mat-form-field floatLabel="always">
 		<mat-label>Комментарий</mat-label>
 		<textarea
 			#comment
