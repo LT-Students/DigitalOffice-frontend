@@ -2,14 +2,6 @@
 @use 'base/palettes' as *;
 
 .projects-table {
-	p {
-		margin-bottom: 16px;
-	}
-
-	span {
-		margin-bottom: 6px;
-	}
-
 	&__section {
 		margin-top: 32px;
 	}
@@ -20,7 +12,7 @@
 
 	&__container {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(256px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(256px, 0.25fr));
 		grid-gap: 32px;
 	}
 
@@ -43,7 +35,20 @@
 		-webkit-box-orient: vertical;
 	}
 
+	&__caption {
+		margin-bottom: 6px;
+
+		display: block;
+	}
+
+	&__value {
+		margin-bottom: 16px;
+
+		display: block;
+	}
+
 	&__status-label {
+		margin-bottom: 16px;
 		padding: 0 8px;
 
 		display: inline-block;
@@ -64,18 +69,18 @@
 	}
 
 	&__description {
+		margin-bottom: 16px;
+
 		display: -webkit-box;
 		overflow: hidden;
-		-webkit-line-clamp: 3;
-		-webkit-box-orient: vertical;
 
 		height: 66px;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
 	}
 
 	&__more-button,
 	&__show-all-button {
-		margin: 0;
-
 		display: flex;
 		align-items: center;
 

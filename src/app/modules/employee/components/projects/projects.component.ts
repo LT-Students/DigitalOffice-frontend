@@ -4,14 +4,14 @@ import { ProjectStatusType } from '@api/project-service/models/project-status-ty
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AppRoutes } from '@app/models/app-routes';
-import { EmployeePageService } from '../../services/employee-page.service';
 import { ProjectInfo } from '@api/user-service/models';
+import { EmployeePageService } from '../../services/employee-page.service';
 
 interface Section {
 	name: string;
 	projects: ProjectInfo[];
 	plural: any;
-	isExpanded?: boolean;
+	isExpanded: boolean;
 }
 
 @Component({
@@ -36,6 +36,7 @@ export class ProjectsComponent implements OnInit {
 						few: '# проекта',
 						other: '# проектов',
 					},
+					isExpanded: false,
 				},
 				{
 					name: 'Участвовал в',
@@ -44,6 +45,7 @@ export class ProjectsComponent implements OnInit {
 						one: '# проекте',
 						other: '# проектах',
 					},
+					isExpanded: false,
 				},
 			])
 		);

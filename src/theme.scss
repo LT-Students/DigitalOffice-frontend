@@ -140,10 +140,13 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 		margin: 0 0 12px;
 	}
 
-	.mat-h1,
+	.mat-h5,
 	h5 {
+		margin-bottom: 16px;
+
 		font-size: 16px;
 		font-weight: 700;
+		line-height: 150%;
 	}
 
 	span.mat-h3 {

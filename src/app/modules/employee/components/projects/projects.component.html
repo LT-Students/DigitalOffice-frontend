@@ -8,14 +8,22 @@
 			</h4>
 
 			<div *ngIf="section.projects.length > 0; else emptyList" class="projects-table__container">
-				<div *ngFor="let project of section.projects | slice: 0: (section.isExpanded ? undefined : 4)" class="projects-table__project bg-light_3">
-					<h5 class="projects-table__project-name" [matTooltip]="project.name" [matTooltipPosition]="'above'" doTooltip>
+				<div
+					*ngFor="let project of section.projects | slice: 0:(section.isExpanded ? undefined : 4)"
+					class="projects-table__project bg-light_3"
+				>
+					<h5
+						class="projects-table__project-name"
+						doTruncateTooltip
+						[matTooltip]="project.name"
+						[matTooltipPosition]="'above'"
+					>
 						{{ project.name }}
 					</h5>
 
-					<p class="text-gray1" doTooltip>project.customer.name</p>
+					<span class="projects-table__value text-gray1">not implemented</span>
 
-					<p
+					<span
 						[ngClass]="{
 							active: project.status === ProjectStatus.Active,
 							suspend: project.status === ProjectStatus.Suspend,
@@ -24,34 +32,35 @@
 						class="projects-table__status-label text-white"
 					>
 						{{ project.status | projectType | titlecase }}
-					</p>
+					</span>
 
-					<p class="projects-table__description">
-						{{ project.shortDescription ? project.shortDescription : 'Описание отсутствует' }}
-					</p>
+					<span class="projects-table__description">
+						{{ project?.shortDescription | placeholder: 'Описание отсутствует' }}
+					</span>
 
-					<span class="text-gray1">Роль в проекте</span>
-					<p>Product Manager</p>
+					<span class="projects-table__caption text-gray1">Роль в проекте</span>
+					<span class="projects-table__value"> not implemented </span>
 
-					<span class="text-gray1">В проекте</span>
-					<p>
-						not implemented
-					</p>
+					<span class="projects-table__caption text-gray1">В проекте</span>
+					<span class="projects-table__value"> not implemented </span>
 
-					<p class="projects-table__more-button text-gray1" (click)="onMoreClicked(project?.id)">
+					<span class="projects-table__more-button text-gray1" (click)="onMoreClicked(project?.id)">
 						Подробнее
 						<mat-icon>keyboard_arrow_right</mat-icon>
-					</p>
+					</span>
 				</div>
 			</div>
 
 			<ng-container *ngIf="section.projects.length > 4">
-				<p class="projects-table__show-all-button text-gray1" (click)="section.isExpanded = !section.isExpanded">
+				<span
+					class="projects-table__show-all-button text-gray1"
+					(click)="section.isExpanded = !section.isExpanded"
+				>
 					{{ section.isExpanded ? 'Скрыть все' : 'Показать все' }}
 					<mat-icon [ngStyle]="{ transform: section.isExpanded ? 'rotate(180deg)' : '' }"
 						>keyboard_arrow_down</mat-icon
 					>
-				</p>
+				</span>
 			</ng-container>
 
 			<ng-template #emptyList>
