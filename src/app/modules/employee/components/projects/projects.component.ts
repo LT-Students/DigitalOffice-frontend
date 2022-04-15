@@ -4,7 +4,15 @@ import { ProjectStatusType } from '@api/project-service/models/project-status-ty
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AppRoutes } from '@app/models/app-routes';
+import { ProjectInfo } from '@api/user-service/models';
 import { EmployeePageService } from '../../services/employee-page.service';
+
+interface Section {
+	name: string;
+	projects: ProjectInfo[];
+	plural: any;
+	isExpanded: boolean;
+}
 
 @Component({
 	selector: 'do-employee-page-projects',
@@ -13,7 +21,8 @@ import { EmployeePageService } from '../../services/employee-page.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent implements OnInit {
-	public projects$: Observable<any>;
+	public ProjectStatus = ProjectStatusType;
+	public projects$: Observable<[Section, Section]>;
 
 	constructor(private router: Router, private _employeeService: EmployeePageService) {
 		this.projects$ = this._employeeService.selectedUser$.pipe(
@@ -27,6 +36,7 @@ export class ProjectsComponent implements OnInit {
 						few: '# проекта',
 						other: '# проектов',
 					},
+					isExpanded: false,
 				},
 				{
 					name: 'Участвовал в',
@@ -35,6 +45,7 @@ export class ProjectsComponent implements OnInit {
 						one: '# проекте',
 						other: '# проектах',
 					},
+					isExpanded: false,
 				},
 			])
 		);

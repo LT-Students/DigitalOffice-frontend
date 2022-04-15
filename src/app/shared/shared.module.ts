@@ -39,6 +39,7 @@ import { BlockPasteDirective } from './directives/block-paste.directive';
 import { ButtonLoadingDirective } from './directives/button-loading.directive';
 import { TransformNameDirective } from './directives/transform-name.directive';
 import { PasswordHintComponent } from './component/password-hint/password-hint.component';
+import { TruncateTooltipDirective } from './directives/truncate-tooltip.directive';
 import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 
@@ -69,6 +70,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		FullNamePipe,
 		TransformNameDirective,
 		PasswordHintComponent,
+		TruncateTooltipDirective,
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
@@ -120,6 +122,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		FullNamePipe,
 		TransformNameDirective,
 		PasswordHintComponent,
+		TruncateTooltipDirective,
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,

@@ -7,7 +7,7 @@ import { ILeaveType } from '@app/models/time/leave-type.model';
 	name: 'projectType',
 })
 export class ProjectTypePipe implements PipeTransform {
-	transform(type: ProjectStatusType | undefined): string {
+	transform(type: ProjectStatusType | string | undefined): string {
 		if (!type) return '';
 		else {
 			const projectTypeModel: IProjectStatusType | undefined = ProjectTypeModel.getProjectType(type);
