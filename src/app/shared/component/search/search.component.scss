@@ -32,7 +32,7 @@ $height: 32px;
 
 		min-height: $height;
 
-		color: variables.$dark_4;
+		color: variables.$main_text;
 		background-color: inherit;
 		border: none;
 		border-radius: 5px;
@@ -44,7 +44,7 @@ $height: 32px;
 		font-size: 14px;
 		text-align: center;
 
-		color: variables.$gray;
+		color: variables.$secondary_default;
 	}
 
 	.mat-icon-button {

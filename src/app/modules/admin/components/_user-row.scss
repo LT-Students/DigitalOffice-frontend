@@ -22,7 +22,7 @@
 
 	height: 74px;
 
-	border-bottom: 1px solid map-get(variables.$colors, 'light_3');
+	border-bottom: 1px solid map-get(variables.$colors, 'bg_borders');
 
 	&:hover {
 		.label_lead_l {
@@ -84,7 +84,8 @@
 	cursor: pointer;
 
 	color: #fff;
-	background-color: variables.$blue_3;
+	// пока не используется и нет новой переменной
+	// background-color: variables.$blue_3;
 	border-radius: 8px;
 
 	&_sm {
