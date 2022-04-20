@@ -15,204 +15,205 @@ import { FindResultResponseContractSubjectInfo } from '../models/find-result-res
 import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
-	providedIn: 'root',
+  providedIn: 'root',
 })
 export class ContractSubjectApiService extends BaseService {
-	constructor(config: ApiConfiguration, http: HttpClient) {
-		super(config, http);
-	}
+  constructor(
+    config: ApiConfiguration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
 
-	/**
-	 * Path part for operation findContractSubjects
-	 */
-	static readonly FindContractSubjectsPath = '/contractsubject';
+  /**
+   * Path part for operation findContractSubjects
+   */
+  static readonly FindContractSubjectsPath = '/contractsubject';
 
-	/**
-	 * Returns all contract subject information with pagination.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `findContractSubjects()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	findContractSubjects$Response(params: {
-		/**
-		 * Number of entries to skip.
-		 */
-		skipCount: number;
+  /**
+   * Returns all contract subject information with pagination.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findContractSubjects()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findContractSubjects$Response(params: {
 
-		/**
-		 * Number of contract subjects to take.
-		 */
-		takeCount: number;
+    /**
+     * Number of entries to skip.
+     */
+    skipCount: number;
 
-		/**
-		 * Get only active or not active contract subjects.
-		 */
-		isactive?: boolean;
-	}): Observable<StrictHttpResponse<FindResultResponseContractSubjectInfo>> {
-		const rb = new RequestBuilder(this.rootUrl, ContractSubjectApiService.FindContractSubjectsPath, 'get');
-		if (params) {
-			rb.query('skipCount', params.skipCount, {});
-			rb.query('takeCount', params.takeCount, {});
-			rb.query('isactive', params.isactive, {});
-		}
+    /**
+     * Number of contract subjects to take.
+     */
+    takeCount: number;
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<FindResultResponseContractSubjectInfo>;
-				})
-			);
-	}
+    /**
+     * Get only active or not active contract subjects.
+     */
+    isactive?: boolean;
+  }): Observable<StrictHttpResponse<FindResultResponseContractSubjectInfo>> {
 
-	/**
-	 * Returns all contract subject information with pagination.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `findContractSubjects$Response()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	findContractSubjects(params: {
-		/**
-		 * Number of entries to skip.
-		 */
-		skipCount: number;
+    const rb = new RequestBuilder(this.rootUrl, ContractSubjectApiService.FindContractSubjectsPath, 'get');
+    if (params) {
+      rb.query('skipCount', params.skipCount, {});
+      rb.query('takeCount', params.takeCount, {});
+      rb.query('isactive', params.isactive, {});
+    }
 
-		/**
-		 * Number of contract subjects to take.
-		 */
-		takeCount: number;
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<FindResultResponseContractSubjectInfo>;
+      })
+    );
+  }
 
-		/**
-		 * Get only active or not active contract subjects.
-		 */
-		isactive?: boolean;
-	}): Observable<FindResultResponseContractSubjectInfo> {
-		return this.findContractSubjects$Response(params).pipe(
-			map(
-				(r: StrictHttpResponse<FindResultResponseContractSubjectInfo>) =>
-					r.body as FindResultResponseContractSubjectInfo
-			)
-		);
-	}
+  /**
+   * Returns all contract subject information with pagination.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `findContractSubjects$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findContractSubjects(params: {
 
-	/**
-	 * Path part for operation createContractSubject
-	 */
-	static readonly CreateContractSubjectPath = '/contractsubject';
+    /**
+     * Number of entries to skip.
+     */
+    skipCount: number;
 
-	/**
-	 * Adds a new contract subject.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `createContractSubject()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	createContractSubject$Response(params: {
-		body: CreateContractSubjectRequest;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, ContractSubjectApiService.CreateContractSubjectPath, 'post');
-		if (params) {
-			rb.body(params.body, 'application/json');
-		}
+    /**
+     * Number of contract subjects to take.
+     */
+    takeCount: number;
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
-				})
-			);
-	}
+    /**
+     * Get only active or not active contract subjects.
+     */
+    isactive?: boolean;
+  }): Observable<FindResultResponseContractSubjectInfo> {
 
-	/**
-	 * Adds a new contract subject.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `createContractSubject$Response()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	createContractSubject(params: { body: CreateContractSubjectRequest }): Observable<OperationResultResponse> {
-		return this.createContractSubject$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-		);
-	}
+    return this.findContractSubjects$Response(params).pipe(
+      map((r: StrictHttpResponse<FindResultResponseContractSubjectInfo>) => r.body as FindResultResponseContractSubjectInfo)
+    );
+  }
 
-	/**
-	 * Path part for operation editContractSubject
-	 */
-	static readonly EditContractSubjectPath = '/contractsubject/{contractsubjectId}';
+  /**
+   * Path part for operation createContractSubject
+   */
+  static readonly CreateContractSubjectPath = '/contractsubject';
 
-	/**
-	 * Chage contract subject's name, description, or active status.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `editContractSubject()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	editContractSubject$Response(params: {
-		/**
-		 * Unique contract subject identifier.
-		 */
-		contractsubjectId: string;
-		body?: EditContractSubjectRequest;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, ContractSubjectApiService.EditContractSubjectPath, 'patch');
-		if (params) {
-			rb.path('contractsubjectId', params.contractsubjectId, {});
-			rb.body(params.body, 'application/json');
-		}
+  /**
+   * Adds a new contract subject.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `createContractSubject()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  createContractSubject$Response(params: {
+    body: CreateContractSubjectRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
-				})
-			);
-	}
+    const rb = new RequestBuilder(this.rootUrl, ContractSubjectApiService.CreateContractSubjectPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
 
-	/**
-	 * Chage contract subject's name, description, or active status.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `editContractSubject$Response()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	editContractSubject(params: {
-		/**
-		 * Unique contract subject identifier.
-		 */
-		contractsubjectId: string;
-		body?: EditContractSubjectRequest;
-	}): Observable<OperationResultResponse> {
-		return this.editContractSubject$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-		);
-	}
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
+
+  /**
+   * Adds a new contract subject.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `createContractSubject$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  createContractSubject(params: {
+    body: CreateContractSubjectRequest
+  }): Observable<OperationResultResponse> {
+
+    return this.createContractSubject$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
+
+  /**
+   * Path part for operation editContractSubject
+   */
+  static readonly EditContractSubjectPath = '/contractsubject/{contractsubjectId}';
+
+  /**
+   * Chage contract subject's name, description, or active status.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `editContractSubject()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editContractSubject$Response(params: {
+
+    /**
+     * Unique contract subject identifier.
+     */
+    contractsubjectId: string;
+    body?: EditContractSubjectRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ContractSubjectApiService.EditContractSubjectPath, 'patch');
+    if (params) {
+      rb.path('contractsubjectId', params.contractsubjectId, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
+
+  /**
+   * Chage contract subject's name, description, or active status.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `editContractSubject$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editContractSubject(params: {
+
+    /**
+     * Unique contract subject identifier.
+     */
+    contractsubjectId: string;
+    body?: EditContractSubjectRequest
+  }): Observable<OperationResultResponse> {
+
+    return this.editContractSubject$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
+
 }
