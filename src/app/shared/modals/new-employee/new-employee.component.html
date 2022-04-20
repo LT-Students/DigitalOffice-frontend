@@ -7,87 +7,118 @@
 				<span class="warn"><sup>*</sup>Обязательные поля</span>
 			</div>
 			<div class="new-employee__inputs">
-				<mat-form-field
-					[matTooltip]="userForm.controls['firstName']?.errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
-					[matTooltipPosition]="'right'"
-				>
-					<mat-label>Имя</mat-label>
-					<input matInput doTransformName placeholder="Введите имя" formControlName="firstName" required />
-					<mat-error *ngIf="userForm.controls['firstName']?.errors?.['required']">Имя обязательно!</mat-error>
-					<mat-error *ngIf="userForm.controls['firstName']?.errors?.['whitespace']"
-						>Имя не может состоять только из пробелов!
-					</mat-error>
-				</mat-form-field>
-				<mat-form-field
-					[matTooltip]="userForm.controls['lastName']?.errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
-					[matTooltipPosition]="'right'"
-				>
-					<mat-label>Фамилия</mat-label>
-					<input matInput doTransformName placeholder="Введите фамилию" formControlName="lastName" required />
-					<mat-error *ngIf="userForm.controls['lastName']?.errors?.['required']"
-						>Фамилия обязательна!</mat-error
+				<do-form-row label="Имя">
+					<mat-form-field
+						[matTooltip]="userForm.controls['firstName']?.errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
+						[matTooltipPosition]="'right'"
 					>
-					<mat-error *ngIf="userForm.controls['lastName']?.errors?.['whitespace']"
-						>Фамилия не может состоять только из пробелов!
-					</mat-error>
-				</mat-form-field>
-				<mat-form-field
-					[matTooltip]="userForm.controls['middleName']?.errors?.['name'] ? 'Отчество может содержать только буквы, -, ` и пробел.\nОтчество не может начинаться и заканчиваться символами - и `' : ''"
-					[matTooltipPosition]="'right'"
-				>
-					<mat-label>Отчество</mat-label>
-					<input matInput doTransformName placeholder="Введите отчество" formControlName="middleName" />
-					<mat-error *ngIf="userForm.controls['middleName']?.errors?.['whitespace']"
-						>Отчество не может состоять только из пробелов!
-					</mat-error>
-				</mat-form-field>
+						<input
+							tabindex="0"
+							matInput
+							doTransformName
+							placeholder="Введите имя"
+							formControlName="firstName"
+							required
+						/>
+						<mat-error *ngIf="userForm.controls['firstName']?.errors?.['required']"
+							>Имя обязательно!
+						</mat-error>
+						<mat-error *ngIf="userForm.controls['firstName']?.errors?.['whitespace']"
+							>Имя не может состоять только из пробелов!
+						</mat-error>
+					</mat-form-field>
+				</do-form-row>
+				<do-form-row label="Фамилия">
+					<mat-form-field
+						[matTooltip]="userForm.controls['lastName']?.errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
+						[matTooltipPosition]="'right'"
+					>
+						<input
+							matInput
+							doTransformName
+							placeholder="Введите фамилию"
+							formControlName="lastName"
+							required
+						/>
+						<mat-error *ngIf="userForm.controls['lastName']?.errors?.['required']"
+							>Фамилия обязательна!
+						</mat-error>
+						<mat-error *ngIf="userForm.controls['lastName']?.errors?.['whitespace']"
+							>Фамилия не может состоять только из пробелов!
+						</mat-error>
+					</mat-form-field>
+				</do-form-row>
+				<do-form-row label="Отчество">
+					<mat-form-field
+						[matTooltip]="userForm.controls['middleName']?.errors?.['name'] ? 'Отчество может содержать только буквы, -, ` и пробел.\nОтчество не может начинаться и заканчиваться символами - и `' : ''"
+						[matTooltipPosition]="'right'"
+					>
+						<input matInput doTransformName placeholder="Введите отчество" formControlName="middleName" />
+						<mat-error *ngIf="userForm.controls['middleName']?.errors?.['whitespace']"
+							>Отчество не может состоять только из пробелов!
+						</mat-error>
+					</mat-form-field>
+				</do-form-row>
 			</div>
 		</div>
 		<div class="section new-employee__working-info">
 			<h3 class="new-employee__heading">Рабочая информация</h3>
 			<div class="new-employee__inputs">
 				<ng-container *ngIf="position$ | async as positionList">
-					<mat-form-field>
-						<mat-label>Должность</mat-label>
-						<mat-select placeholder="Выберите должность" formControlName="positionId" required>
-							<mat-option *ngFor="let position of positionList.body" [value]="position.id">
-								{{ position?.name }}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
+					<do-form-row label="Должность">
+						<mat-form-field>
+							<mat-select placeholder="Выберите должность" formControlName="positionId" required>
+								<mat-option *ngFor="let position of positionList.body" [value]="position.id">
+									{{ position?.name }}
+								</mat-option>
+							</mat-select>
+							<mat-error>Ошибка!</mat-error>
+						</mat-form-field>
+					</do-form-row>
 				</ng-container>
 				<ng-container *ngIf="department$ | async as departmentList">
+					<do-form-row label="Департамент">
+						<mat-form-field>
+							<mat-select placeholder="Выберите департамент" formControlName="departmentId">
+								<mat-option *ngFor="let department of departmentList.body" [value]="department.id">
+									{{ department?.name }}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</do-form-row>
+				</ng-container>
+				<do-form-row label="Ставка">
 					<mat-form-field>
-						<mat-label>Департамент</mat-label>
-						<mat-select placeholder="Выберите департамент" formControlName="departmentId">
-							<mat-option *ngFor="let department of departmentList.body" [value]="department.id">
-								{{ department?.name }}
+						<do-stepper [min]="0.25" [max]="1" [step]="0.25" formControlName="rate"></do-stepper>
+					</mat-form-field>
+				</do-form-row>
+				<do-form-row label="Начало работы">
+					<mat-form-field>
+						<input matInput [matDatepicker]='picker' formControlName="startWorkingAt" />
+						<mat-datepicker-toggle matSuffix [for]="picker">
+							<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+						</mat-datepicker-toggle>
+						<mat-datepicker #picker></mat-datepicker>
+					</mat-form-field>
+				</do-form-row>
+				<do-form-row label="Офис">
+					<mat-form-field>
+						<mat-select placeholder="Выберите офис" formControlName="officeId" required>
+							<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
+								{{ office.city }}, {{ office.address }}
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
-				</ng-container>
-				<mat-form-field>
-					<mat-label>Ставка</mat-label>
-					<do-stepper [min]="0.25" [max]="1" [step]="0.25" formControlName="rate"></do-stepper>
-				</mat-form-field>
-				<do-datepicker controlName="startWorkingAt" label="Начало работы" format="full" [isEdit]="true">
-				</do-datepicker>
-				<mat-form-field>
-					<mat-label>Офис</mat-label>
-					<mat-select placeholder="Выберите офис" formControlName="officeId" required>
-						<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
-							{{ office.city }}, {{ office.address }}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field>
-					<mat-label>Роль</mat-label>
-					<mat-select placeholder="Выберите роль" formControlName="roleId">
-						<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
-							{{ role?.localizations?.[0]?.name }}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
+				</do-form-row>
+				<do-form-row label="Роль">
+					<mat-form-field>
+						<mat-select placeholder="Выберите роль" formControlName="roleId">
+							<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
+								{{ role?.localizations?.[0]?.name }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</do-form-row>
 				<div>
 					<mat-checkbox color="accent" formControlName="isAdmin">Дать права администратора</mat-checkbox>
 				</div>
@@ -96,26 +127,17 @@
 		<div class="section new-employee__auth">
 			<h3 class="new-employee__heading">Аутентификация</h3>
 			<div class="new-employee__inputs">
-				<mat-form-field class="new-employee__form-element_span_2">
-					<mat-label
-						>E-mail
-						<mat-icon
-							class="new-employee__hint"
-							aria-label="Hint"
-							matTooltipClass="tooltip"
-							matTooltip="На эту почту пользователю придет ссылка для регистрации"
-							[matTooltipPosition]="'above'"
-							>help_outline
-						</mat-icon>
-					</mat-label>
-					<input matInput placeholder="Введите E-mail" formControlName="email" required />
-					<mat-error *ngIf="userForm.controls['email']?.errors?.['required']"
-						>Электронная почта обязательна!
-					</mat-error>
-					<mat-error *ngIf="userForm.controls['email']?.errors?.['email']"
-						>Неправильный формат почты!</mat-error
-					>
-				</mat-form-field>
+				<do-form-row label="E-mail" class="new-employee__form-element_span_2">
+					<mat-form-field>
+						<input matInput placeholder="Введите E-mail" formControlName="email" required />
+						<mat-error *ngIf="userForm.controls['email']?.errors?.['required']"
+							>Электронная почта обязательна!
+						</mat-error>
+						<mat-error *ngIf="userForm.controls['email']?.errors?.['email']"
+							>Неправильный формат почты!
+						</mat-error>
+					</mat-form-field>
+				</do-form-row>
 			</div>
 		</div>
 		<div class="new-employee__actions">
