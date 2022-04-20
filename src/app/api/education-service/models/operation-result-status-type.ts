@@ -5,7 +5,7 @@
  * Operation complition result status.
  */
 export enum OperationResultStatusType {
-	FullSuccess = 'FullSuccess',
-	PartialSuccess = 'PartialSuccess',
-	Failed = 'Failed',
+  FullSuccess = 'FullSuccess',
+  PartialSuccess = 'PartialSuccess',
+  Failed = 'Failed'
 }
