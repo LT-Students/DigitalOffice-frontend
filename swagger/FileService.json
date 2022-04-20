@@ -40,6 +40,7 @@
                 "type": "string",
                 "format": "uuid"
               }
+
             },
             "required": true
           }
@@ -50,16 +51,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/FileInfo"
-                  }
+                  "$ref": "#/components/schemas/OperationResultResponseFiles"
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found.\n* File with this id not found.\n"
           }
         }
       }
@@ -129,7 +124,7 @@
       "FileInfo": {
         "type": "object",
         "required": [
-          "Name",
+          "Id",
           "Content",
           "Extension"
         ],
@@ -193,6 +188,30 @@
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseFiles": {
+        "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileInfo"
+            }
           },
           "Errors": {
             "type": "array",
