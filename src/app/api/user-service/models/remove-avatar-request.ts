@@ -1,10 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface RemoveAvatarRequest {
-	imagesIds: Array<string>;
+  imagesIds: Array<string>;
 
-	/**
-	 * Unique user identifier.
-	 */
-	userId: string;
+  /**
+   * Unique user identifier.
+   */
+  userId: string;
 }
+

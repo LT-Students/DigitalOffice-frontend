@@ -1,8 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-export interface RoleInfo {
+export interface EducationFormInfo {
   id: string;
   name: string;
-  rightsIds?: Array<string>;
 }
 

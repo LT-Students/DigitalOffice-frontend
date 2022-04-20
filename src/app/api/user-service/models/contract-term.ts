@@ -5,6 +5,6 @@
  * Contract term type.
  */
 export enum ContractTerm {
-	FixedTerm = 'FixedTerm',
-	Perpetual = 'Perpetual',
+  FixedTerm = 'FixedTerm',
+  Perpetual = 'Perpetual'
 }

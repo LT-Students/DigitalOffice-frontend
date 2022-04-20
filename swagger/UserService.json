@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.5.1",
+    "version": "1.4.5.2",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -501,6 +501,16 @@
           },
           "400": {
             "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1580,11 +1590,15 @@
         "type": "object",
         "required": [
           "User",
+          "IsPending",
           "UserAddition"
         ],
         "properties": {
           "User": {
             "$ref": "#/components/schemas/UserInfo"
+          },
+          "IsPending": {
+            "type": "boolean"
           },
           "UserAddition": {
             "$ref": "#/components/schemas/UserAdditionInfo"
@@ -2280,8 +2294,11 @@
           "Name": {
             "type": "string"
           },
-          "Description": {
-            "type": "string"
+          "RightsIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -2363,9 +2380,89 @@
       "GenderInfo": {
         "type": "object",
         "required": [
+          "Id",
           "Name"
         ],
         "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "EducationInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "UniversityName",
+          "QualificationName"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "UniversityName": {
+            "type": "string"
+          },
+          "QualificationName": {
+            "type": "string"
+          },
+          "EducationForm": {
+            "$ref": "#/components/schemas/EducationFormInfo"
+          },
+          "EducationType": {
+            "$ref": "#/components/schemas/EducationTypeInfo"
+          },
+          "Completeness": {
+            "type": "string"
+          },
+          "AdmissionAt": {
+            "type": "string"
+          },
+          "IssueAt": {
+            "type": "string",
+            "nullable": true
+          },
+          "ImagesIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "EducationTypeInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "EducationFormInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "Name": {
             "type": "string"
           }
@@ -2457,15 +2554,6 @@
         ],
         "example": "Email"
       },
-      "EducationType": {
-        "type": "string",
-        "description": "Education format.",
-        "enum": [
-          "Online",
-          "Offline"
-        ],
-        "example": "Online"
-      },
       "UserStatus": {
         "type": "string",
         "description": "Mode for user status.",
@@ -2489,15 +2577,6 @@
         "example": "FullSuccess",
         "default": "FullSuccess"
       },
-      "FormEducation": {
-        "type": "string",
-        "description": "Education form.",
-        "enum": [
-          "FullTime",
-          "Distance"
-        ],
-        "example": "FullTime"
-      },
       "BadRequest": {
         "type": "object",
         "properties": {
@@ -2517,35 +2596,6 @@
           "traceId": {
             "type": "string",
             "format": "uuid"
-          }
-        }
-      },
-      "EducationInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "UniversityName",
-          "QualificationName"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "UniversityName": {
-            "type": "string"
-          },
-          "QualificationName": {
-            "type": "string"
-          },
-          "FormEducation": {
-            "$ref": "#/components/schemas/FormEducation"
-          },
-          "AdmissionAt": {
-            "type": "string"
-          },
-          "IssueAt": {
-            "type": "string"
           }
         }
       },
@@ -2589,6 +2639,7 @@
             "description": "Unique user identifier. Is null if create with user creating",
             "type": "string",
             "format": "uuid",
+            "nullable": true,
             "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
           },
           "Type": {
@@ -2659,6 +2710,7 @@
           "Name": {
             "type": "string",
             "description": "Image name",
+            "nullable": true,
             "example": "Cat1"
           },
           "Content": {
