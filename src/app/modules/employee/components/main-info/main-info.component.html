@@ -19,14 +19,16 @@
 						>{{ user.status | userStatus }}</span
 					>
 				</h3>
-				<q *ngIf="user?.about" class="mat-body-2 gray-text employee-info__about">{{ user?.about }}</q>
+				<q *ngIf="user?.about" class="mat-body-2 text-secondary_default employee-info__about">{{
+					user?.about
+				}}</q>
 			</div>
 			<div class="employee-info__general">
 				<div class="employee-info__general-header">
 					<h4>Общие сведения</h4>
 					<div class="employee-info__edit-button">
 						<button mat-button (click)="toggleEditMode(user)">
-							<span class="employee-info__edit mat-body-2 light-gray-text">Редактировать профиль</span>
+							<span class="employee-info__edit mat-body-2 text-light_4">Редактировать профиль</span>
 							<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
 						</button>
 					</div>
@@ -35,21 +37,21 @@
 				<div class="employee-info__columns">
 					<div class="employee-info__first-column">
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Гендер</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Гендер</span>
 							<p>{{ user.genderName | placeholder }}</p>
 						</div>
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Дата рождения</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Дата рождения</span>
 							<p>{{ user.dateOfBirth | date: dateType.FULL | placeholder }}</p>
 						</div>
 					</div>
 					<div class="employee-info__second-column">
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Местоположение</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Местоположение</span>
 							<p>Не указано</p>
 						</div>
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Часы работы</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Часы работы</span>
 							<p>{{ user.businessHoursFromUtc | placeholder }}</p>
 						</div>
 					</div>
@@ -62,30 +64,30 @@
 				<div class="employee-info__columns">
 					<div class="employee-info__first-column">
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Департамент</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Департамент</span>
 							<p class="mat-body">{{ user.department?.name | placeholder }}</p>
 						</div>
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Должность</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Должность</span>
 							<p>{{ user?.position?.name | placeholder }}</p>
 						</div>
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">В компании с</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">В компании с</span>
 							<p>Не указано</p>
 						</div>
 					</div>
 					<div class="employee-info__second-column">
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Офис</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Офис</span>
 							<p>{{ user?.office?.address | placeholder }}</p>
 						</div>
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Роль</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Роль</span>
 							<p>{{ user?.role?.name | placeholder }}</p>
 						</div>
 
 						<div>
-							<span class="employee-info__field mat-body-2 gray-text">Ставка</span>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Ставка</span>
 							<p>Не указано</p>
 						</div>
 					</div>

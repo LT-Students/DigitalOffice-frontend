@@ -78,7 +78,7 @@ $select-height: 36px;
 	}
 
 	do-search {
-		background-color: variables.$light_2;
+		background-color: variables.$bg_2;
 	}
 
 	.filters-section {
@@ -134,7 +134,8 @@ $select-height: 36px;
 		width: 36px;
 		height: 36px;
 
-		background-color: variables.$gray;
+		// нет класса в компоненте, как и старой переменной $gray
+		background-color: variables.$secondary_default;
 		border-radius: 50%;
 	}
 }
