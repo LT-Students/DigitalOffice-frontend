@@ -14,6 +14,7 @@ import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
+import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -75,6 +76,13 @@ export class MainInfoComponent implements OnInit {
 	public onReset(): void {
 		this.employeeInfoForm.reset();
 		this.toggleEditMode();
+	}
+
+	public editUser(user?: User): void {
+		this.toggleEditMode(user);
+		const dialogRef = this._dialog.open(EditInfoComponent, {
+			data: user,
+		});
 	}
 
 	public onAvatarUploadDialog(): void {
