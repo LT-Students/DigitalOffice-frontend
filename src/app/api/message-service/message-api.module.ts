@@ -11,38 +11,33 @@ import { WorkspaceApiService } from './services/workspace-api.service';
  * Module that provides all services and configuration.
  */
 @NgModule({
-  imports: [],
-  exports: [],
-  declarations: [],
-  providers: [
-    MessageApiService,
-    WorkspaceApiService,
-    ApiConfiguration
-  ],
+	imports: [],
+	exports: [],
+	declarations: [],
+	providers: [MessageApiService, WorkspaceApiService, ApiConfiguration],
 })
 export class MessageApiModule {
-  static forRoot(params: ApiConfigurationParams): ModuleWithProviders<MessageApiModule> {
-    return {
-      ngModule: MessageApiModule,
-      providers: [
-        {
-          provide: ApiConfiguration,
-          useValue: params
-        }
-      ]
-    }
-  }
+	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<MessageApiModule> {
+		return {
+			ngModule: MessageApiModule,
+			providers: [
+				{
+					provide: ApiConfiguration,
+					useValue: params,
+				},
+			],
+		};
+	}
 
-  constructor( 
-    @Optional() @SkipSelf() parentModule: MessageApiModule,
-    @Optional() http: HttpClient
-  ) {
-    if (parentModule) {
-      throw new Error('MessageApiModule is already loaded. Import in your base AppModule only.');
-    }
-    if (!http) {
-      throw new Error('You need to import the HttpClientModule in your AppModule! \n' +
-      'See also https://github.com/angular/angular/issues/20575');
-    }
-  }
+	constructor(@Optional() @SkipSelf() parentModule: MessageApiModule, @Optional() http: HttpClient) {
+		if (parentModule) {
+			throw new Error('MessageApiModule is already loaded. Import in your base AppModule only.');
+		}
+		if (!http) {
+			throw new Error(
+				'You need to import the HttpClientModule in your AppModule! \n' +
+					'See also https://github.com/angular/angular/issues/20575'
+			);
+		}
+	}
 }

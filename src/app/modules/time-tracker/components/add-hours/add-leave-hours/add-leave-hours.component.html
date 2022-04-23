@@ -2,16 +2,21 @@
 	<div class="add-hours__time-wrapper">
 		<mat-form-field floatLabel="always">
 			<mat-label>Выберите диапазон отсутствия</mat-label>
-			<mat-date-range-input (click)="picker.open()" [min]="minDate" [dateFilter]="disableWeekends" [rangePicker]="$any(picker)" >
+			<mat-date-range-input
+				(click)="picker.open()"
+				[min]="minDate"
+				[dateFilter]="disableWeekends"
+				[rangePicker]="$any(picker)"
+			>
 				<input matStartDate placeholder="Начало" formControlName="startDate" readonly />
-				<input matEndDate placeholder="Окончание" formControlName="endDate" readonly  />
+				<input matEndDate placeholder="Окончание" formControlName="endDate" readonly />
 			</mat-date-range-input>
 			<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
 		</mat-form-field>
 		<div class="add-hours__absence-time">
-			<span class="text-gray1">Выбрано</span>
-			<h3>{{ recommendedTime$$ | async }}<span class="text-gray1"> ч</span></h3>
+			<span class="text-secondary_default">Выбрано</span>
+			<h3>{{ recommendedTime$$ | async }}<span class="text-secondary_default"> ч</span></h3>
 		</div>
 	</div>
 	<mat-form-field floatLabel="always">

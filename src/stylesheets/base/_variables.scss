@@ -1,43 +1,77 @@
-$accent-default: #ff8a65;
+// Typography
 
-//old colors
-//Colors
+$main_text: #424242;
+$heаders: #263238;
+$disabled: #9e9e9e;
+$success: #00e676;
+$success_secondary: #cdf4df;
+$alert: #ef5350;
+$accent_controls_default: #ff8a65;
+$accent_controls_hover: #f66c42;
+$accent_controls_active: #de5228;
+$secondary_default: #9d9d9d;
+$secondary_hover: #808080;
+$secondary_active: #707070;
+$secondary_focus: #fa7d57;
+
+// Bg
+$bg_primary: #fff;
+$bg_secondary: #fff4ed;
+$bg_borders: #f1f1ef;
+
+// Controls
+$accent_default: #fa7d57;
+
+// Control-disabled
+$bg: #f1f1ef;
+$typo: #cecece;
+
+// Uncategorized
 $accent_color: #ffb78c;
-$accent_color_bright: #fa7d57;
-$accent_color_light: #fff4ed;
-$accent_positive: #21d373;
-$accent_positive_dark: #10bc60;
-$positive_accent_bright: #cdf4df;
-$light_1: #fcfcfc;
-$light_2: #f6f6f4;
-$light_3: #f1f1ef;
+$light_1: #fafafa;
+// this is "Bg"
+$bg_2: #f5f5f5;
+$light_3: #eee;
+$overtime: #bc7bfa;
+$ultimate_orange: #c25432;
 $light_4: #cecece;
-$gray: #bdbdbd;
-$gray1: #9d9d9d;
-$dark_1: #434348;
-$dark_2: #323137;
-$dark_3: #2c2c2c;
-$dark_4: #202020;
-$blue_3: #56ccf2;
+$bg_for_modals: #1b1511cc;
+
+// Diagram color
+$diagram_1: #ffb2b2;
+$diagram_2: #9abcdb;
+$diagram_3: #abf5c0;
+$diagram_4: #b9b7de;
+$diagram_5: #d2ecff;
+$diagram_6: #feecaa;
+$diagram_7: #ffbe97;
+$diagram_8: #ffcdcd;
+$diagram_9: #ffd89e;
+$diagram_nz: #ebebeb;
 
 $colors: (
-	'accent-default': $accent-default,
-	'accent_color': #ffb78c,
-	'accent_color_bright': #fa7d57,
-	'accent_color_light': #fff4ed,
-	'accent_positive': #21d373,
-	'accent_positive_dark': #10bc60,
-	'positive_accent_bright': #cdf4df,
-	'light_1': #fcfcfc,
-	'light_2': #f6f6f4,
-	'light_3': #f1f1ef,
-	'light_4': #cecece,
-	'gray': #bdbdbd,
-	'gray1': #9d9d9d,
-	'dark_1': #434348,
-	'dark_2': #323137,
-	'dark_3': #2c2c2c,
-	'dark_4': #202020,
+	'main': $main_text,
+	'heаders': $heаders,
+	'disabled': $disabled,
+	'success': $success,
+	'success_secondary': $success_secondary,
+	'alert': $alert,
+	'accent_controls_default': $accent_controls_default,
+	'accent_controls_hover': $accent_controls_hover,
+	'accent_controls_active': $accent_controls_active,
+	'secondary_default': $secondary_default,
+	'secondary_hover': $secondary_hover,
+	'secondary_active': $secondary_active,
+	'secondary_focus': $secondary_focus,
+	'light_4': $light_4,
+);
+
+$backgrounds: (
+	'primary': $bg_primary,
+	'secondary': $bg_secondary,
+	'borders': $bg_borders,
+	'bg': $bg,
+	'bg_2': $bg_2,
 );
 
 //Colors classes
@@ -51,17 +85,9 @@ $colors: (
 	}
 }
 
-.gray-text {
-	color: $gray1;
-}
-
-.light-gray-text {
-	color: $light_4;
-}
-
-/* background colors */
+// background color
 .bg {
-	@each $color-name, $color-value in $colors {
+	@each $color-name, $color-value in $backgrounds {
 		&-#{$color-name} {
 			background-color: $color-value;
 		}

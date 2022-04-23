@@ -1,12 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface EditEmailTemplateRequest {
-  body: string;
+	body: string;
 
-  /**
-   * Template Id.
-   */
-  id: string;
-  subject: string;
+	/**
+	 * Template Id.
+	 */
+	id: string;
+	subject: string;
 }
-
