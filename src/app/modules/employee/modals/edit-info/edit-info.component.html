@@ -6,7 +6,7 @@
 	<h4>Общие сведения</h4>
 	<div class="edit-info__edit">
 		<button class="edit-info__edit-button" mat-button (click)="onEdit()" *ngIf="!isEditMode">
-			<span class="mat-body-2 light-gray-text">Редактировать </span>
+			<span class="mat-body-2 light-text-secondary_default">Редактировать </span>
 			<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
 		</button>
 		<span class="edit-info__edit mat-body-2 red-text" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
@@ -18,39 +18,39 @@
 		<div class="edit-info__columns">
 			<div class="edit-info__first-column">
 				<div class="edit-info__field">
-					<span class="mat-body-2 gray-text">Фамилия</span>
+					<span class="mat-body-2 text-secondary_default">Фамилия</span>
 					<p>{{ surname | placeholder }}</p>
 				</div>
 				<div class="edit-info__field">
-					<span class="mat-body-2 gray-text">Отчество</span>
+					<span class="mat-body-2 text-secondary_default">Отчество</span>
 					<p>{{ middleName | placeholder }}</p>
 				</div>
 				<div class="edit-info__field">
-					<span class="mat-body-2 gray-text">Местоположение</span>
+					<span class="mat-body-2 text-secondary_default">Местоположение</span>
 					<p>{{ location | placeholder }}</p>
 				</div>
 				<div class="edit-info__field">
-					<span class="mat-body-2 gray-text">Эмодзи-статус</span>
+					<span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
 					<p>{{ _userStatus | userStatus: true:true | placeholder }}</p>
 				</div>
 			</div>
 			<div class="edit-info__second-column">
 				<div class="edit-info__field">
-					<span class="mat-body-2 gray-text">Имя</span>
+					<span class="mat-body-2 text-secondary_default">Имя</span>
 					<p>{{ name | placeholder }}</p>
 				</div>
 				<div class="edit-info__field">
-					<span class="mat-body-2 gray-text">Дата рождения</span>
+					<span class="mat-body-2 text-secondary_default">Дата рождения</span>
 					<p>{{ dateOfBirth | placeholder }}</p>
 				</div>
 				<div class="edit-info__field">
-					<span class="mat-body-2 gray-text">Часы работы</span>
+					<span class="mat-body-2 text-secondary_default">Часы работы</span>
 					<p>{{ hours | placeholder }}</p>
 				</div>
 			</div>
 		</div>
 		<div class="edit-info__field">
-			<span class="mat-body-2 gray-text">О себе</span>
+			<span class="mat-body-2 text-secondary_default">О себе</span>
 			<p>{{ aboutField | placeholder }}</p>
 		</div>
 	</ng-container>
