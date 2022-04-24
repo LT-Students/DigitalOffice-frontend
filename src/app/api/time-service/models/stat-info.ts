@@ -1,13 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
-import { LeaveTimeInfo } from './leave-time-info';
-import { UserInfo } from './user-info';
-import { WorkTimeInfo } from './work-time-info';
-import { WorkTimeMonthLimitInfo } from './work-time-month-limit-info';
+import { DepartmentInfo } from './department-info';
+import { UserStatInfo } from './user-stat-info';
 export interface StatInfo {
-  leaveTimes?: Array<LeaveTimeInfo>;
-  limitInfo?: WorkTimeMonthLimitInfo;
-  user?: UserInfo;
-  workTimes?: Array<WorkTimeInfo>;
+  departmentInfo?: DepartmentInfo;
+  usersStats?: Array<UserStatInfo>;
 }
 

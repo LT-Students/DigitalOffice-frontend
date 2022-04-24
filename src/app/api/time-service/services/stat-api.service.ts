@@ -35,19 +35,25 @@ export class StatApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findStat$Response(params?: {
-    departmentId?: string;
+  findStat$Response(params: {
+    departmentsIds?: Array<string>;
     projectId?: string;
+
+    /**
+     * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A, when null - without sort
+     */
+    ascendingsort?: boolean;
     month?: number;
-    year?: number;
-    takeCount?: number;
-    skipCount?: number;
+    year: number;
+    takeCount: number;
+    skipCount: number;
   }): Observable<StrictHttpResponse<FindResultResponseStatInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, StatApiService.FindStatPath, 'get');
     if (params) {
-      rb.query('departmentId', params.departmentId, {});
+      rb.query('departmentsIds', params.departmentsIds, {});
       rb.query('projectId', params.projectId, {});
+      rb.query('ascendingsort', params.ascendingsort, {});
       rb.query('month', params.month, {});
       rb.query('year', params.year, {});
       rb.query('takeCount', params.takeCount, {});
@@ -73,13 +79,18 @@ export class StatApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  findStat(params?: {
-    departmentId?: string;
+  findStat(params: {
+    departmentsIds?: Array<string>;
     projectId?: string;
+
+    /**
+     * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A, when null - without sort
+     */
+    ascendingsort?: boolean;
     month?: number;
-    year?: number;
-    takeCount?: number;
-    skipCount?: number;
+    year: number;
+    takeCount: number;
+    skipCount: number;
   }): Observable<FindResultResponseStatInfo> {
 
     return this.findStat$Response(params).pipe(
