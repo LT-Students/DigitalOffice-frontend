@@ -1,6 +1,7 @@
 export { CreateCompanyRequest } from './models/create-company-request';
 export { CreateContractSubjectRequest } from './models/create-contract-subject-request';
 export { ImageConsist } from './models/image-consist';
+export { ContractTerm } from './models/contract-term';
 export { CompanyResponse } from './models/company-response';
 export { OfficeInfo } from './models/office-info';
 export { ContractSubjectInfo } from './models/contract-subject-info';
@@ -14,4 +15,5 @@ export { PatchContractSubjectDocument } from './models/patch-contract-subject-do
 export { PatchCompanyUserDocument } from './models/patch-company-user-document';
 export { EditCompanyRequest } from './models/edit-company-request';
 export { EditContractSubjectRequest } from './models/edit-contract-subject-request';
+export { CreateCompanyUserRequest } from './models/create-company-user-request';
 export { EditCompanyUserRequest } from './models/edit-company-user-request';

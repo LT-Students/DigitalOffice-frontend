@@ -1,5 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface GenderInfo {
-	name: string;
+  id: string;
+  name: string;
 }
+

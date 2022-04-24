@@ -11,5 +11,10 @@ export interface UserInfo {
   lastName?: null | string;
   middleName?: null | string;
   rate?: null | number;
+
+  /**
+   * Start user's working date.
+   */
+  startWorkingAt?: null | string;
 }
 

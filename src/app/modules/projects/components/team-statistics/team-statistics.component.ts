@@ -7,7 +7,7 @@ import {
 	LeaveTimeInfo,
 	OperationResultResponse,
 	OperationResultStatusType,
-	StatInfo,
+	UserStatInfo,
 	WorkTimeInfo,
 } from '@api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
@@ -133,12 +133,12 @@ export class TeamStatisticsComponent implements OnInit {
 
 		return this._timeService.findStat(params).pipe(
 			map((result) => {
-				return result.body?.map((statInfo) => this._mapStatInfo(statInfo)) ?? [];
+				return result.body?.[0].usersStats?.map((statInfo: UserStatInfo) => this._mapStatInfo(statInfo)) ?? [];
 			})
 		);
 	}
 
-	private _mapStatInfo(statInfo: StatInfo): EmployeeStats {
+	private _mapStatInfo(statInfo: UserStatInfo): EmployeeStats {
 		const workTimeInfo: WorkTimeInfo | undefined = statInfo.workTimes?.find(
 			(workTime) => workTime.project?.id === this.projectId
 		);

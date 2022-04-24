@@ -13,231 +13,232 @@ import { FindResultResponsePendingUserInfo } from '../models/find-result-respons
 import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
-	providedIn: 'root',
+  providedIn: 'root',
 })
 export class PendingApiService extends BaseService {
-	constructor(config: ApiConfiguration, http: HttpClient) {
-		super(config, http);
-	}
+  constructor(
+    config: ApiConfiguration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
 
-	/**
-	 * Path part for operation checkPending
-	 */
-	static readonly CheckPendingPath = '/pending/check';
+  /**
+   * Path part for operation checkPending
+   */
+  static readonly CheckPendingPath = '/pending/check';
 
-	/**
-	 * This endpoint must be used only for user first time login operation.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `checkPending()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	checkPending$Response(params: {
-		/**
-		 * Unique user identifier.
-		 */
-		userid: string;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, PendingApiService.CheckPendingPath, 'get');
-		if (params) {
-			rb.query('userid', params.userid, {});
-		}
+  /**
+   * This endpoint must be used only for user first time login operation.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `checkPending()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  checkPending$Response(params: {
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
-				})
-			);
-	}
+    /**
+     * Unique user identifier.
+     */
+    userid: string;
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
-	/**
-	 * This endpoint must be used only for user first time login operation.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `checkPending$Response()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	checkPending(params: {
-		/**
-		 * Unique user identifier.
-		 */
-		userid: string;
-	}): Observable<OperationResultResponse> {
-		return this.checkPending$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-		);
-	}
+    const rb = new RequestBuilder(this.rootUrl, PendingApiService.CheckPendingPath, 'get');
+    if (params) {
+      rb.query('userid', params.userid, {});
+    }
 
-	/**
-	 * Path part for operation findPending
-	 */
-	static readonly FindPendingPath = '/pending/find';
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
 
-	/**
-	 * Returns all pending users.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `findPending()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	findPending$Response(params: {
-		/**
-		 * Number of entries to skip.
-		 */
-		skipCount: number;
+  /**
+   * This endpoint must be used only for user first time login operation.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `checkPending$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  checkPending(params: {
 
-		/**
-		 * Number of users to take.
-		 */
-		takeCount: number;
+    /**
+     * Unique user identifier.
+     */
+    userid: string;
+  }): Observable<OperationResultResponse> {
 
-		/**
-		 * includes user communications
-		 */
-		includecommunication?: boolean;
+    return this.checkPending$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
 
-		/**
-		 * includes user avatar
-		 */
-		includecurrentavatar?: boolean;
-	}): Observable<StrictHttpResponse<FindResultResponsePendingUserInfo>> {
-		const rb = new RequestBuilder(this.rootUrl, PendingApiService.FindPendingPath, 'get');
-		if (params) {
-			rb.query('skipCount', params.skipCount, {});
-			rb.query('takeCount', params.takeCount, {});
-			rb.query('includecommunication', params.includecommunication, {});
-			rb.query('includecurrentavatar', params.includecurrentavatar, {});
-		}
+  /**
+   * Path part for operation findPending
+   */
+  static readonly FindPendingPath = '/pending/find';
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<FindResultResponsePendingUserInfo>;
-				})
-			);
-	}
+  /**
+   * Returns all pending users.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findPending()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findPending$Response(params: {
 
-	/**
-	 * Returns all pending users.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `findPending$Response()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	findPending(params: {
-		/**
-		 * Number of entries to skip.
-		 */
-		skipCount: number;
+    /**
+     * Number of entries to skip.
+     */
+    skipCount: number;
 
-		/**
-		 * Number of users to take.
-		 */
-		takeCount: number;
+    /**
+     * Number of users to take.
+     */
+    takeCount: number;
 
-		/**
-		 * includes user communications
-		 */
-		includecommunication?: boolean;
+    /**
+     * includes user communications
+     */
+    includecommunication?: boolean;
 
-		/**
-		 * includes user avatar
-		 */
-		includecurrentavatar?: boolean;
-	}): Observable<FindResultResponsePendingUserInfo> {
-		return this.findPending$Response(params).pipe(
-			map(
-				(r: StrictHttpResponse<FindResultResponsePendingUserInfo>) =>
-					r.body as FindResultResponsePendingUserInfo
-			)
-		);
-	}
+    /**
+     * includes user avatar
+     */
+    includecurrentavatar?: boolean;
+  }): Observable<StrictHttpResponse<FindResultResponsePendingUserInfo>> {
 
-	/**
-	 * Path part for operation resendinvitationPending
-	 */
-	static readonly ResendinvitationPendingPath = '/pending/resendinvitation';
+    const rb = new RequestBuilder(this.rootUrl, PendingApiService.FindPendingPath, 'get');
+    if (params) {
+      rb.query('skipCount', params.skipCount, {});
+      rb.query('takeCount', params.takeCount, {});
+      rb.query('includecommunication', params.includecommunication, {});
+      rb.query('includecurrentavatar', params.includecurrentavatar, {});
+    }
 
-	/**
-	 * Resend invitation email.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `resendinvitationPending()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	resendinvitationPending$Response(params: {
-		/**
-		 * User global unique identifier.
-		 */
-		userId: string;
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<FindResultResponsePendingUserInfo>;
+      })
+    );
+  }
 
-		/**
-		 * Communication global unique identifier.
-		 */
-		communicationId: string;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, PendingApiService.ResendinvitationPendingPath, 'get');
-		if (params) {
-			rb.query('userId', params.userId, {});
-			rb.query('communicationId', params.communicationId, {});
-		}
+  /**
+   * Returns all pending users.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `findPending$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findPending(params: {
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
-				})
-			);
-	}
+    /**
+     * Number of entries to skip.
+     */
+    skipCount: number;
 
-	/**
-	 * Resend invitation email.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `resendinvitationPending$Response()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	resendinvitationPending(params: {
-		/**
-		 * User global unique identifier.
-		 */
-		userId: string;
+    /**
+     * Number of users to take.
+     */
+    takeCount: number;
 
-		/**
-		 * Communication global unique identifier.
-		 */
-		communicationId: string;
-	}): Observable<OperationResultResponse> {
-		return this.resendinvitationPending$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-		);
-	}
+    /**
+     * includes user communications
+     */
+    includecommunication?: boolean;
+
+    /**
+     * includes user avatar
+     */
+    includecurrentavatar?: boolean;
+  }): Observable<FindResultResponsePendingUserInfo> {
+
+    return this.findPending$Response(params).pipe(
+      map((r: StrictHttpResponse<FindResultResponsePendingUserInfo>) => r.body as FindResultResponsePendingUserInfo)
+    );
+  }
+
+  /**
+   * Path part for operation resendinvitationPending
+   */
+  static readonly ResendinvitationPendingPath = '/pending/resendinvitation';
+
+  /**
+   * Resend invitation email.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `resendinvitationPending()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  resendinvitationPending$Response(params: {
+
+    /**
+     * User global unique identifier.
+     */
+    userId: string;
+
+    /**
+     * Communication global unique identifier.
+     */
+    communicationId: string;
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
+
+    const rb = new RequestBuilder(this.rootUrl, PendingApiService.ResendinvitationPendingPath, 'get');
+    if (params) {
+      rb.query('userId', params.userId, {});
+      rb.query('communicationId', params.communicationId, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
+
+  /**
+   * Resend invitation email.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `resendinvitationPending$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  resendinvitationPending(params: {
+
+    /**
+     * User global unique identifier.
+     */
+    userId: string;
+
+    /**
+     * Communication global unique identifier.
+     */
+    communicationId: string;
+  }): Observable<OperationResultResponse> {
+
+    return this.resendinvitationPending$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
+
 }

@@ -15,6 +15,7 @@ export interface PatchLeaveTimeDocument {
   /**
    * The value to be used within the operations.
    */
-  value?: {  };
+  value?: {
+};
 }
 

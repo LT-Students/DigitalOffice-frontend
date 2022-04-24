@@ -8,7 +8,7 @@ export interface FindResultResponseStatInfo {
   status?: OperationResultStatusType;
 
   /**
-   * Total number of finded by filter leave times.
+   * Total number of finded users by filter.
    */
   totalCount?: number;
 }
