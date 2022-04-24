@@ -10,7 +10,7 @@
 			<div *ngIf="section.projects.length > 0; else emptyList" class="projects-table__container">
 				<div
 					*ngFor="let project of section.projects | slice: 0:(section.isExpanded ? undefined : 4)"
-					class="projects-table__project bg-light_3"
+					class="projects-table__project bg-bg"
 				>
 					<h5
 						class="projects-table__project-name"
@@ -21,7 +21,7 @@
 						{{ project.name }}
 					</h5>
 
-					<span class="projects-table__value text-gray1">not implemented</span>
+					<span class="projects-table__value text-secondary_default">not implemented</span>
 
 					<span
 						[ngClass]="{
@@ -29,7 +29,7 @@
 							suspend: project.status === ProjectStatus.Suspend,
 							closed: project.status === ProjectStatus.Closed
 						}"
-						class="projects-table__status-label text-white"
+						class="projects-table__status-label text-primary"
 					>
 						{{ project.status | projectType | titlecase }}
 					</span>
@@ -38,13 +38,16 @@
 						{{ project?.shortDescription | placeholder: 'Описание отсутствует' }}
 					</span>
 
-					<span class="projects-table__caption text-gray1">Роль в проекте</span>
+					<span class="projects-table__caption text-secondary_default">Роль в проекте</span>
 					<span class="projects-table__value"> not implemented </span>
 
-					<span class="projects-table__caption text-gray1">В проекте</span>
+					<span class="projects-table__caption text-secondary_default">В проекте</span>
 					<span class="projects-table__value"> not implemented </span>
 
-					<span class="projects-table__more-button text-gray1" (click)="onMoreClicked(project?.id)">
+					<span
+						class="projects-table__more-button text-secondary_default"
+						(click)="onMoreClicked(project?.id)"
+					>
 						Подробнее
 						<mat-icon>keyboard_arrow_right</mat-icon>
 					</span>
@@ -53,7 +56,7 @@
 
 			<ng-container *ngIf="section.projects.length > 4">
 				<span
-					class="projects-table__show-all-button text-gray1"
+					class="projects-table__show-all-button text-secondary_default"
 					(click)="section.isExpanded = !section.isExpanded"
 				>
 					{{ section.isExpanded ? 'Скрыть все' : 'Показать все' }}
