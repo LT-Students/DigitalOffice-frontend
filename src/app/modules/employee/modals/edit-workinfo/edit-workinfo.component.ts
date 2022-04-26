@@ -34,6 +34,6 @@ export class EditWorkinfoComponent implements OnInit {
 	}
 
 	testClick() {
-		console.log('click');
+		console.log(`click`);
 	}
 }
