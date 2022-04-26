@@ -1,0 +1,106 @@
+<h3 class="edit-workinfo__heading" doUnderline underlinedSize="sm" mat-dialog-title>Редактирования профиля</h3>
+
+<h4>Рабочая информация</h4>
+
+<!-- <div class="edit-workinfo__container">
+    <div class="edit-workinfo__first-column">
+        <div>
+            <span class="mat-body-2 light-gray-text">Департамент</span>
+        </div>
+    </div>
+    <div class="edit-workinfo__second-column">
+        <div>
+            <p class="mat-body">{{ user.department?.name | placeholder }}</p>
+        </div>
+    </div>
+    <div class="edit-workinfo__third-column">
+        <div>
+    <button mat-button (click)="testClick()">
+        <span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Редактировать </span>
+        <img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+    </button>
+        </div>    
+
+        <div class="edit-workinfo__first-column">
+            <div>
+                <span class="mat-body-2 light-gray-text">Департамент</span>
+            </div>
+        </div>
+        <div class="edit-workinfo__second-column">
+            <div>
+                <p class="mat-body">{{ user.department?.name | placeholder }}</p>
+            </div>
+        </div>
+        <div class="edit-workinfo__third-column">
+            <div>
+        <button mat-button (click)="testClick()">
+            <span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Редактировать </span>
+            <img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+        </button>
+            </div>    
+</div> -->
+
+<div class="edit-workinfo__edit-section">
+	<div class="edit-workinfo__container">
+		<div class="edit-workinfo__row">
+			<span class="mat-body-2 light-gray-text">Департамент</span>
+
+			<span class="mat-body-1">{{ user.department?.name | placeholder }}</span>
+			<button mat-button (click)="testClick()">
+				<span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Pедактировать </span>
+				<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+			</button>
+		</div>
+
+		<div class="edit-workinfo__row">
+			<span class="mat-body-2 light-gray-text">Офис</span>
+
+			<span class="mat-body-1">{{ user.office?.name | placeholder }}</span>
+			<button mat-button (click)="testClick()">
+				<span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Pедактировать </span>
+				<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+			</button>
+		</div>
+		<div class="edit-workinfo__row">
+			<span class="mat-body-2 light-gray-text">Должжность</span>
+
+			<span class="mat-body-1">{{ user.position?.name | placeholder }}</span>
+			<button mat-button (click)="testClick()">
+				<span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Pедактировать </span>
+				<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+			</button>
+		</div>
+
+		<div class="edit-workinfo__row">
+			<span class="mat-body-2 light-gray-text">Роль</span>
+
+			<span class="mat-body-1">{{ user.role?.name | placeholder }}</span>
+			<button mat-button (click)="testClick()">
+				<span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Pедактировать </span>
+				<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+			</button>
+		</div>
+
+		<div class="edit-workinfo__row">
+			<span class="mat-body-2 light-gray-text">Ставка</span>
+
+			<span class="mat-body-1">сделать от 0,25 до 1 </span>
+			<button mat-button (click)="testClick()">
+				<span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Pедактировать </span>
+				<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+			</button>
+		</div>
+
+		<div class="edit-workinfo__row">
+			<span class="mat-body-2 light-gray-text">В компании с</span>
+
+			<span class="mat-body-1"> значение дейтпикера</span>
+			<button mat-button (click)="testClick()">
+				<span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Pедактировать </span>
+				<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+			</button>
+		</div>
+	</div>
+</div>
+
+<mat-checkbox class="edit-workinfo__admin-checkbox mat-body-2">Дать права администратора</mat-checkbox>

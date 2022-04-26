@@ -14,6 +14,7 @@ import { CommunicationsComponent } from './components/main-info/communications/c
 import { EditContactComponent } from './components/main-info/communications/edit-contact/edit-contact.component';
 import { AddContactComponent } from './components/main-info/communications/add-contact/add-contact.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { EditWorkinfoComponent } from './modals/edit-workinfo/edit-workinfo.component';
 
 @NgModule({
 	declarations: [
@@ -28,6 +29,7 @@ import { ManageUsersComponent } from './components/manage-users/manage-users.com
 		EditContactComponent,
 		AddContactComponent,
 		ManageUsersComponent,
+		EditWorkinfoComponent,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],

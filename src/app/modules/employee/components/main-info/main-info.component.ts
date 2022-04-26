@@ -14,6 +14,7 @@ import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
+import { EditWorkinfoComponent } from '../../modals/edit-workinfo/edit-workinfo.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -66,6 +67,9 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	public toggleEditMode(user?: User): void {
+		this._dialog.open(EditWorkinfoComponent, {
+			data: user,
+		});
 		if (user) {
 			this._fillForm(user);
 		}
