@@ -2,29 +2,21 @@
 
 .edit-workinfo {
 	&__edit-section {
-		display: grid;
 		align-items: baseline;
 
 		min-width: 672px;
 		gap: 10px;
-		grid-template-columns: 1fr 1fr 1fr;
 	}
 
 	&__heading {
 		margin-bottom: 24px;
 	}
 
-	&__container {
-		display: grid;
-
-		row-gap: 15px;
-	}
-
 	&__row {
-		display: flex;
+		display: grid;
+		grid-template-columns: 1fr 2fr 1fr;
+
 		justify-content: space-between;
-		align-items: center;
-		place-self: center stretch;
 	}
 
 	&__admin-checkbox {

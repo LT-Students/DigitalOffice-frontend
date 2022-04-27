@@ -45,7 +45,10 @@
 		<div class="edit-workinfo__row">
 			<span class="mat-body-2 light-gray-text">Департамент</span>
 
-			<span class="mat-body-1">{{ user.department?.name | placeholder }}</span>
+			<div class="edit-work-info__column">
+				<span class="mat-body-1">{{ user.department?.name | placeholder }}</span>
+			</div>
+
 			<button mat-button (click)="testClick()">
 				<span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Pедактировать </span>
 				<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
@@ -56,13 +59,14 @@
 			<span class="mat-body-2 light-gray-text">Офис</span>
 
 			<span class="mat-body-1">{{ user.office?.name | placeholder }}</span>
+
 			<button mat-button (click)="testClick()">
 				<span class="edit-workinfo__edit-workinfo mat-body-2 light-gray-text">Pедактировать </span>
 				<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
 			</button>
 		</div>
 		<div class="edit-workinfo__row">
-			<span class="mat-body-2 light-gray-text">Должжность</span>
+			<span class="mat-body-2 light-gray-text">Должность</span>
 
 			<span class="mat-body-1">{{ user.position?.name | placeholder }}</span>
 			<button mat-button (click)="testClick()">
