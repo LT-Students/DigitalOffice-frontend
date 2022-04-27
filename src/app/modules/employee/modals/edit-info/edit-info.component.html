@@ -6,10 +6,10 @@
 	<h4>Общие сведения</h4>
 	<div class="edit-info__edit">
 		<button class="edit-info__edit-button" mat-button (click)="onEdit()" *ngIf="!isEditMode">
-			<span class="mat-body-2 light-text-secondary_default">Редактировать </span>
+			<span class="mat-body-2 text-disabled">Редактировать </span>
 			<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
 		</button>
-		<span class="edit-info__edit mat-body-2 red-text" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
+		<span class="edit-info__edit mat-body-2 text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
 	</div>
 </div>
 
