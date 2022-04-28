@@ -1,30 +1,34 @@
 /* tslint:disable */
 /* eslint-disable */
-import { FormEducation } from './form-education';
+import { EducationCompleteness } from './education-completeness';
 export interface CreateEducationRequest {
-	/**
-	 * Date of admission.
-	 */
-	admissionAt: string;
-	formEducation: FormEducation;
 
-	/**
-	 * Date of issuue.
-	 */
-	issueAt?: string;
+  /**
+   * Date of admission.
+   */
+  admissionAt: string;
+  completeness: EducationCompleteness;
+  educationFormId: string;
+  educationTypeId: string;
 
-	/**
-	 * Name of qualification.
-	 */
-	qualificationName: string;
+  /**
+   * Date of issuue.
+   */
+  issueAt?: string;
 
-	/**
-	 * Name of the univerity.
-	 */
-	universityName: string;
+  /**
+   * Name of qualification.
+   */
+  qualificationName: string;
 
-	/**
-	 * Unique user identifier.
-	 */
-	userId: string;
+  /**
+   * Name of the univerity.
+   */
+  universityName: string;
+
+  /**
+   * Unique user identifier.
+   */
+  userId: string;
 }
+

@@ -16,6 +16,7 @@
     "generate.company": "ng-openapi-gen -c swagger/config/company.json",
     "generate.department": "ng-openapi-gen -c swagger/config/department.json",
     "generate.file": "ng-openapi-gen -c swagger/config/file.json",
+    "generate.filter": "ng-openapi-gen -c swagger/config/filter.json",
     "generate.image": "ng-openapi-gen -c swagger/config/image.json",
     "generate.message": "ng-openapi-gen -c swagger/config/message.json",
     "generate.news": "ng-openapi-gen -c swagger/config/news.json",

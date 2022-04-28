@@ -5,79 +5,80 @@ import { CreateCommunicationRequest } from './create-communication-request';
 import { CreateUserCompanyRequest } from './create-user-company-request';
 import { UserStatus } from './user-status';
 export interface CreateUserRequest {
-	about?: string;
-	avatarImage?: AddImageRequest;
+  about?: string;
+  avatarImage?: AddImageRequest;
 
-	/**
-	 * Time when the user start work day.
-	 */
-	businessHoursFromUtc?: string;
+  /**
+   * Time when the user start work day.
+   */
+  businessHoursFromUtc?: string;
 
-	/**
-	 * Time when the user finish work day.
-	 */
-	businessHoursToUtc?: string;
-	communication: CreateCommunicationRequest;
+  /**
+   * Time when the user finish work day.
+   */
+  businessHoursToUtc?: string;
+  communication: CreateCommunicationRequest;
 
-	/**
-	 * Date of user birth.
-	 */
-	dayOfBirth?: string;
+  /**
+   * Date of user birth.
+   */
+  dayOfBirth?: string;
 
-	/**
-	 * User department ID.
-	 */
-	departmentId?: string;
+  /**
+   * User department ID.
+   */
+  departmentId?: string;
 
-	/**
-	 * First name of a user.
-	 */
-	firstName: string;
+  /**
+   * First name of a user.
+   */
+  firstName: string;
 
-	/**
-	 * Mark whether the user is an administrator.
-	 */
-	isAdmin?: boolean;
+  /**
+   * Mark whether the user is an administrator.
+   */
+  isAdmin?: boolean;
 
-	/**
-	 * Last name of a user.
-	 */
-	lastName: string;
+  /**
+   * Last name of a user.
+   */
+  lastName: string;
 
-	/**
-	 * User location.
-	 */
-	latitude?: number;
+  /**
+   * User location.
+   */
+  latitude?: number;
 
-	/**
-	 * User location.
-	 */
-	longitude?: number;
+  /**
+   * User location.
+   */
+  longitude?: number;
 
-	/**
-	 * Middle name of a user.
-	 */
-	middleName?: string;
+  /**
+   * Middle name of a user.
+   */
+  middleName?: string;
 
-	/**
-	 * User office ID.
-	 */
-	officeId?: string;
+  /**
+   * User office ID.
+   */
+  officeId?: string;
 
-	/**
-	 * User password.
-	 */
-	password?: string;
+  /**
+   * User password.
+   */
+  password?: string;
 
-	/**
-	 * User position ID.
-	 */
-	positionId?: string;
+  /**
+   * User position ID.
+   */
+  positionId?: string;
 
-	/**
-	 * User role ID.
-	 */
-	roleId?: string;
-	status: UserStatus;
-	userCompany?: CreateUserCompanyRequest;
+  /**
+   * User role ID.
+   */
+  roleId?: string;
+  status: UserStatus;
+  userCompany?: CreateUserCompanyRequest;
 }
+

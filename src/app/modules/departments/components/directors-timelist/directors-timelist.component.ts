@@ -13,8 +13,7 @@ import {
 	LeaveTimeInfo,
 	OperationResultResponse,
 	OperationResultStatusType,
-	StatInfo,
-	UserInfo,
+	UserInfo, UserStatInfo,
 	WorkTimeInfo,
 	WorkTimeMonthLimitInfo,
 } from '@api/time-service/models';
@@ -47,7 +46,7 @@ interface MappedStatInfo {
 export class DirectorsTimelistComponent implements OnInit {
 	public hoursGroup: FormGroup;
 
-	private _departmentId: string | undefined;
+	private _departmentId!: string;
 
 	public statInfo$: Observable<MappedStatInfo[] | undefined> | undefined;
 
@@ -84,7 +83,7 @@ export class DirectorsTimelistComponent implements OnInit {
 			}),
 			map(
 				(result: FindResultResponseStatInfo) =>
-					result.body?.map((statInfo: StatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
+					result.body?.[0].usersStats?.map((statInfo: UserStatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
 			)
 		);
 	}
@@ -179,7 +178,7 @@ export class DirectorsTimelistComponent implements OnInit {
 			year: this.selectedPeriod.startDate.year,
 			takeCount: this.pageSize,
 			skipCount: this.pageSize * this.pageIndex,
-			departmentId: this._departmentId,
+			departmentsIds: [this._departmentId]
 		};
 
 		return this._timeService.findStat(params).pipe(
@@ -188,12 +187,12 @@ export class DirectorsTimelistComponent implements OnInit {
 			}),
 			map(
 				(result: FindResultResponseStatInfo) =>
-					result.body?.map((statInfo: StatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
+					result.body?.[0].usersStats?.map((statInfo: UserStatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
 			)
 		);
 	}
 
-	private _mapStatInfo(statInfo: StatInfo): MappedStatInfo {
+	private _mapStatInfo(statInfo: UserStatInfo): MappedStatInfo {
 		return {
 			...statInfo,
 			totalHours: this._getTotalHours(statInfo.workTimes ?? []),

@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface PositionInfo {
-	id?: string;
-	name?: string;
+  id?: string;
+  name?: string;
 }
+

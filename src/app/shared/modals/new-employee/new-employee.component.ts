@@ -10,7 +10,6 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { finalize, map, takeUntil } from 'rxjs/operators';
 import { RightsService } from '@app/services/rights/rights.service';
 import { RoleInfo } from '@api/rights-service/models/role-info';
-import { OfficeInfo } from '@api/company-service/models/office-info';
 import { FindResultResponseDepartmentInfo } from '@api/department-service/models/find-result-response-department-info';
 import { FindResultResponsePositionInfo } from '@api/position-service/models/find-result-response-position-info';
 import { DoValidators } from '@app/validators/do-validators';
@@ -18,6 +17,7 @@ import { PositionService } from '@app/services/position/position.service';
 import { DepartmentService } from '@app/services/department/department.service';
 import { OfficeService } from '@app/services/company/office.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { OfficeInfo } from '@api/office-service/models/office-info';
 
 @Component({
 	selector: 'do-new-employee',

@@ -17,481 +17,484 @@ import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseUserResponse } from '../models/operation-result-response-user-response';
 
 @Injectable({
-	providedIn: 'root',
+  providedIn: 'root',
 })
 export class UserApiService extends BaseService {
-	constructor(config: ApiConfiguration, http: HttpClient) {
-		super(config, http);
-	}
+  constructor(
+    config: ApiConfiguration,
+    http: HttpClient
+  ) {
+    super(config, http);
+  }
 
-	/**
-	 * Path part for operation createUser
-	 */
-	static readonly CreateUserPath = '/user/create';
+  /**
+   * Path part for operation createUser
+   */
+  static readonly CreateUserPath = '/user/create';
 
-	/**
-	 * The method attempts to add the user. The user must have right - Add/Edit/Remove users.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `createUser()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	createUser$Response(params: { body: CreateUserRequest }): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.CreateUserPath, 'post');
-		if (params) {
-			rb.body(params.body, 'application/json');
-		}
+  /**
+   * The method attempts to add the user. The user must have right - Add/Edit/Remove users.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `createUser()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  createUser$Response(params: {
+    body: CreateUserRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
-				})
-			);
-	}
+    const rb = new RequestBuilder(this.rootUrl, UserApiService.CreateUserPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
 
-	/**
-	 * The method attempts to add the user. The user must have right - Add/Edit/Remove users.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `createUser$Response()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	createUser(params: { body: CreateUserRequest }): Observable<OperationResultResponse> {
-		return this.createUser$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-		);
-	}
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
 
-	/**
-	 * Path part for operation editUserActive
-	 */
-	static readonly EditUserActivePath = '/user/editactive';
+  /**
+   * The method attempts to add the user. The user must have right - Add/Edit/Remove users.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `createUser$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  createUser(params: {
+    body: CreateUserRequest
+  }): Observable<OperationResultResponse> {
 
-	/**
-	 * Change is active user status. The user must have right - Add/Edit/Remove users.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `editUserActive()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	editUserActive$Response(params?: {
-		body?: EditUserActiveRequest;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserActivePath, 'put');
-		if (params) {
-			rb.body(params.body, 'application/json');
-		}
+    return this.createUser$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
-				})
-			);
-	}
+  /**
+   * Path part for operation editUserActive
+   */
+  static readonly EditUserActivePath = '/user/editactive';
 
-	/**
-	 * Change is active user status. The user must have right - Add/Edit/Remove users.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `editUserActive$Response()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	editUserActive(params?: { body?: EditUserActiveRequest }): Observable<OperationResultResponse> {
-		return this.editUserActive$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-		);
-	}
+  /**
+   * Change is active user status. The user must have right - Add/Edit/Remove users.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `editUserActive()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editUserActive$Response(params?: {
+    body?: EditUserActiveRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
-	/**
-	 * Path part for operation editUser
-	 */
-	static readonly EditUserPath = '/user/edit';
+    const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserActivePath, 'put');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
 
-	/**
-	 * Update user properties. The user must have right - Add/Edit/Remove users.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `editUser()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	editUser$Response(params: {
-		/**
-		 * Specific user id
-		 */
-		userId: string;
-		body?: EditUserRequest;
-	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserPath, 'patch');
-		if (params) {
-			rb.query('userId', params.userId, {});
-			rb.body(params.body, 'application/json');
-		}
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
-				})
-			);
-	}
+  /**
+   * Change is active user status. The user must have right - Add/Edit/Remove users.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `editUserActive$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editUserActive(params?: {
+    body?: EditUserActiveRequest
+  }): Observable<OperationResultResponse> {
 
-	/**
-	 * Update user properties. The user must have right - Add/Edit/Remove users.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `editUser$Response()` instead.
-	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
-	 */
-	editUser(params: {
-		/**
-		 * Specific user id
-		 */
-		userId: string;
-		body?: EditUserRequest;
-	}): Observable<OperationResultResponse> {
-		return this.editUser$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-		);
-	}
+    return this.editUserActive$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
 
-	/**
-	 * Path part for operation getUser
-	 */
-	static readonly GetUserPath = '/user/get';
+  /**
+   * Path part for operation editUser
+   */
+  static readonly EditUserPath = '/user/edit';
 
-	/**
-	 * Returns user information.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `getUser()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	getUser$Response(params?: {
-		/**
-		 * User global unique identifier.
-		 */
-		userId?: string;
+  /**
+   * Update user properties. The user must have right - Add/Edit/Remove users.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `editUser()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editUser$Response(params: {
 
-		/**
-		 * Any of user emails. Can not be used with &#x60;includecommunications&#x60;.
-		 */
-		email?: string;
+    /**
+     * Specific user id
+     */
+    userId: string;
+    body?: EditUserRequest
+  }): Observable<StrictHttpResponse<OperationResultResponse>> {
 
-		/**
-		 * Include user current avatar in answer.
-		 */
-		includecurrentavatar?: boolean;
+    const rb = new RequestBuilder(this.rootUrl, UserApiService.EditUserPath, 'patch');
+    if (params) {
+      rb.query('userId', params.userId, {});
+      rb.body(params.body, 'application/json');
+    }
 
-		/**
-		 * Include all user current avatars in answer.
-		 */
-		includeavatars?: boolean;
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponse>;
+      })
+    );
+  }
 
-		/**
-		 * Include user certificates info in answer.
-		 */
-		includecertificates?: boolean;
+  /**
+   * Update user properties. The user must have right - Add/Edit/Remove users.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `editUser$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  editUser(params: {
 
-		/**
-		 * Include user communications info in answer.
-		 */
-		includecommunications?: boolean;
+    /**
+     * Specific user id
+     */
+    userId: string;
+    body?: EditUserRequest
+  }): Observable<OperationResultResponse> {
 
-		/**
-		 * Include user company info in answer.
-		 */
-		includecompany?: boolean;
+    return this.editUser$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+    );
+  }
 
-		/**
-		 * Include user department info in answer.
-		 */
-		includedepartment?: boolean;
+  /**
+   * Path part for operation getUser
+   */
+  static readonly GetUserPath = '/user/get';
 
-		/**
-		 * Include educations info in answer.
-		 */
-		includeeducations?: boolean;
+  /**
+   * Returns user information.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUser$Response(params?: {
 
-		/**
-		 * Include user office info in answer.
-		 */
-		includeoffice?: boolean;
+    /**
+     * User global unique identifier.
+     */
+    userId?: string;
 
-		/**
-		 * Include user position info in answer.
-		 */
-		includeposition?: boolean;
+    /**
+     * Any of user emails. Can not be used with &#x60;includecommunications&#x60;.
+     */
+    email?: string;
 
-		/**
-		 * Include user projects info in answer.
-		 */
-		includeprojects?: boolean;
+    /**
+     * Include user current avatar in answer.
+     */
+    includecurrentavatar?: boolean;
 
-		/**
-		 * Include user role info in answer.
-		 */
-		includerole?: boolean;
+    /**
+     * Include all user current avatars in answer.
+     */
+    includeavatars?: boolean;
 
-		/**
-		 * Include user skills info in answer.
-		 */
-		includeskills?: boolean;
+    /**
+     * Include user certificates info in answer.
+     */
+    includecertificates?: boolean;
 
-		/**
-		 * Role localization.
-		 */
-		locale?: string;
-	}): Observable<StrictHttpResponse<OperationResultResponseUserResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.GetUserPath, 'get');
-		if (params) {
-			rb.query('userId', params.userId, {});
-			rb.query('email', params.email, {});
-			rb.query('includecurrentavatar', params.includecurrentavatar, {});
-			rb.query('includeavatars', params.includeavatars, {});
-			rb.query('includecertificates', params.includecertificates, {});
-			rb.query('includecommunications', params.includecommunications, {});
-			rb.query('includecompany', params.includecompany, {});
-			rb.query('includedepartment', params.includedepartment, {});
-			rb.query('includeeducations', params.includeeducations, {});
-			rb.query('includeoffice', params.includeoffice, {});
-			rb.query('includeposition', params.includeposition, {});
-			rb.query('includeprojects', params.includeprojects, {});
-			rb.query('includerole', params.includerole, {});
-			rb.query('includeskills', params.includeskills, {});
-			rb.query('locale', params.locale, {});
-		}
+    /**
+     * Include user communications info in answer.
+     */
+    includecommunications?: boolean;
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponseUserResponse>;
-				})
-			);
-	}
+    /**
+     * Include user company info in answer.
+     */
+    includecompany?: boolean;
 
-	/**
-	 * Returns user information.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `getUser$Response()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	getUser(params?: {
-		/**
-		 * User global unique identifier.
-		 */
-		userId?: string;
+    /**
+     * Include user department info in answer.
+     */
+    includedepartment?: boolean;
 
-		/**
-		 * Any of user emails. Can not be used with &#x60;includecommunications&#x60;.
-		 */
-		email?: string;
+    /**
+     * Include educations info in answer.
+     */
+    includeeducations?: boolean;
 
-		/**
-		 * Include user current avatar in answer.
-		 */
-		includecurrentavatar?: boolean;
+    /**
+     * Include user office info in answer.
+     */
+    includeoffice?: boolean;
 
-		/**
-		 * Include all user current avatars in answer.
-		 */
-		includeavatars?: boolean;
+    /**
+     * Include user position info in answer.
+     */
+    includeposition?: boolean;
 
-		/**
-		 * Include user certificates info in answer.
-		 */
-		includecertificates?: boolean;
+    /**
+     * Include user projects info in answer.
+     */
+    includeprojects?: boolean;
 
-		/**
-		 * Include user communications info in answer.
-		 */
-		includecommunications?: boolean;
+    /**
+     * Include user role info in answer.
+     */
+    includerole?: boolean;
 
-		/**
-		 * Include user company info in answer.
-		 */
-		includecompany?: boolean;
+    /**
+     * Include user skills info in answer.
+     */
+    includeskills?: boolean;
 
-		/**
-		 * Include user department info in answer.
-		 */
-		includedepartment?: boolean;
+    /**
+     * Role localization.
+     */
+    locale?: string;
+  }): Observable<StrictHttpResponse<OperationResultResponseUserResponse>> {
 
-		/**
-		 * Include educations info in answer.
-		 */
-		includeeducations?: boolean;
+    const rb = new RequestBuilder(this.rootUrl, UserApiService.GetUserPath, 'get');
+    if (params) {
+      rb.query('userId', params.userId, {});
+      rb.query('email', params.email, {});
+      rb.query('includecurrentavatar', params.includecurrentavatar, {});
+      rb.query('includeavatars', params.includeavatars, {});
+      rb.query('includecertificates', params.includecertificates, {});
+      rb.query('includecommunications', params.includecommunications, {});
+      rb.query('includecompany', params.includecompany, {});
+      rb.query('includedepartment', params.includedepartment, {});
+      rb.query('includeeducations', params.includeeducations, {});
+      rb.query('includeoffice', params.includeoffice, {});
+      rb.query('includeposition', params.includeposition, {});
+      rb.query('includeprojects', params.includeprojects, {});
+      rb.query('includerole', params.includerole, {});
+      rb.query('includeskills', params.includeskills, {});
+      rb.query('locale', params.locale, {});
+    }
 
-		/**
-		 * Include user office info in answer.
-		 */
-		includeoffice?: boolean;
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<OperationResultResponseUserResponse>;
+      })
+    );
+  }
 
-		/**
-		 * Include user position info in answer.
-		 */
-		includeposition?: boolean;
+  /**
+   * Returns user information.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `getUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getUser(params?: {
 
-		/**
-		 * Include user projects info in answer.
-		 */
-		includeprojects?: boolean;
+    /**
+     * User global unique identifier.
+     */
+    userId?: string;
 
-		/**
-		 * Include user role info in answer.
-		 */
-		includerole?: boolean;
+    /**
+     * Any of user emails. Can not be used with &#x60;includecommunications&#x60;.
+     */
+    email?: string;
 
-		/**
-		 * Include user skills info in answer.
-		 */
-		includeskills?: boolean;
+    /**
+     * Include user current avatar in answer.
+     */
+    includecurrentavatar?: boolean;
 
-		/**
-		 * Role localization.
-		 */
-		locale?: string;
-	}): Observable<OperationResultResponseUserResponse> {
-		return this.getUser$Response(params).pipe(
-			map(
-				(r: StrictHttpResponse<OperationResultResponseUserResponse>) =>
-					r.body as OperationResultResponseUserResponse
-			)
-		);
-	}
+    /**
+     * Include all user current avatars in answer.
+     */
+    includeavatars?: boolean;
 
-	/**
-	 * Path part for operation findUsers
-	 */
-	static readonly FindUsersPath = '/user/find';
+    /**
+     * Include user certificates info in answer.
+     */
+    includecertificates?: boolean;
 
-	/**
-	 * Returns all users information with pagination.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `findUsers()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	findUsers$Response(params: {
-		/**
-		 * Number of entries to skip.
-		 */
-		skipCount: number;
+    /**
+     * Include user communications info in answer.
+     */
+    includecommunications?: boolean;
 
-		/**
-		 * Number of users to take.
-		 */
-		takeCount: number;
+    /**
+     * Include user company info in answer.
+     */
+    includecompany?: boolean;
 
-		/**
-		 * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
-		 */
-		ascendingsort?: boolean;
+    /**
+     * Include user department info in answer.
+     */
+    includedepartment?: boolean;
 
-		/**
-		 * Find for users containing a substring in the full name
-		 */
-		fullnameincludesubstring?: string;
-		active?: boolean;
-		includecurrentavatar?: boolean;
-	}): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
-		const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
-		if (params) {
-			rb.query('skipCount', params.skipCount, {});
-			rb.query('takeCount', params.takeCount, {});
-			rb.query('ascendingsort', params.ascendingsort, {});
-			rb.query('fullnameincludesubstring', params.fullnameincludesubstring, {});
-			rb.query('active', params.active, {});
-			rb.query('includecurrentavatar', params.includecurrentavatar, {});
-		}
+    /**
+     * Include educations info in answer.
+     */
+    includeeducations?: boolean;
 
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<FindResultResponseUserInfo>;
-				})
-			);
-	}
+    /**
+     * Include user office info in answer.
+     */
+    includeoffice?: boolean;
 
-	/**
-	 * Returns all users information with pagination.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `findUsers$Response()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	findUsers(params: {
-		/**
-		 * Number of entries to skip.
-		 */
-		skipCount: number;
+    /**
+     * Include user position info in answer.
+     */
+    includeposition?: boolean;
 
-		/**
-		 * Number of users to take.
-		 */
-		takeCount: number;
+    /**
+     * Include user projects info in answer.
+     */
+    includeprojects?: boolean;
 
-		/**
-		 * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
-		 */
-		ascendingsort?: boolean;
+    /**
+     * Include user role info in answer.
+     */
+    includerole?: boolean;
 
-		/**
-		 * Find for users containing a substring in the full name
-		 */
-		fullnameincludesubstring?: string;
-		active?: boolean;
-		includecurrentavatar?: boolean;
-	}): Observable<FindResultResponseUserInfo> {
-		return this.findUsers$Response(params).pipe(
-			map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)
-		);
-	}
+    /**
+     * Include user skills info in answer.
+     */
+    includeskills?: boolean;
+
+    /**
+     * Role localization.
+     */
+    locale?: string;
+  }): Observable<OperationResultResponseUserResponse> {
+
+    return this.getUser$Response(params).pipe(
+      map((r: StrictHttpResponse<OperationResultResponseUserResponse>) => r.body as OperationResultResponseUserResponse)
+    );
+  }
+
+  /**
+   * Path part for operation findUsers
+   */
+  static readonly FindUsersPath = '/user/find';
+
+  /**
+   * Returns all users information with pagination.
+   *
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `findUsers()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findUsers$Response(params: {
+
+    /**
+     * Number of entries to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of users to take.
+     */
+    takeCount: number;
+
+    /**
+     * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
+     */
+    ascendingsort?: boolean;
+
+    /**
+     * Find for users containing a substring in the full name
+     */
+    fullnameincludesubstring?: string;
+    active?: boolean;
+    includecurrentavatar?: boolean;
+  }): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
+    if (params) {
+      rb.query('skipCount', params.skipCount, {});
+      rb.query('takeCount', params.takeCount, {});
+      rb.query('ascendingsort', params.ascendingsort, {});
+      rb.query('fullnameincludesubstring', params.fullnameincludesubstring, {});
+      rb.query('active', params.active, {});
+      rb.query('includecurrentavatar', params.includecurrentavatar, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<FindResultResponseUserInfo>;
+      })
+    );
+  }
+
+  /**
+   * Returns all users information with pagination.
+   *
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `findUsers$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  findUsers(params: {
+
+    /**
+     * Number of entries to skip.
+     */
+    skipCount: number;
+
+    /**
+     * Number of users to take.
+     */
+    takeCount: number;
+
+    /**
+     * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
+     */
+    ascendingsort?: boolean;
+
+    /**
+     * Find for users containing a substring in the full name
+     */
+    fullnameincludesubstring?: string;
+    active?: boolean;
+    includecurrentavatar?: boolean;
+  }): Observable<FindResultResponseUserInfo> {
+
+    return this.findUsers$Response(params).pipe(
+      map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)
+    );
+  }
+
 }

@@ -899,11 +899,14 @@
           "$ref": "#/components/parameters/securityToken"
         },
         {
-          "name": "departmentId",
+          "name": "departmentsIds",
           "in": "query",
           "schema": {
-            "type": "string",
-            "format": "uuid"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           },
           "required": false
         },
@@ -913,6 +916,15 @@
           "schema": {
             "type": "string",
             "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "ascendingsort",
+          "in": "query",
+          "description": "When value is 'true' sorts A-Z, when value is 'false' sorts Z-A, when null - without sort",
+          "schema": {
+            "type": "boolean"
           },
           "required": false
         },
@@ -930,7 +942,7 @@
           "schema": {
             "type": "integer"
           },
-          "required": false
+          "required": true
         },
         {
           "name": "takeCount",
@@ -938,7 +950,7 @@
           "schema": {
             "type": "integer"
           },
-          "required": false
+          "required": true
         },
         {
           "name": "skipCount",
@@ -946,7 +958,7 @@
           "schema": {
             "type": "integer"
           },
-          "required": false
+          "required": true
         }
       ],
       "get": {
@@ -1117,16 +1129,16 @@
           },
           "Year": {
             "type": "integer",
-            "example": "2021"
+            "example":"2021"
           },
           "Month": {
             "type": "integer",
-            "example": "12"
+            "example":"12"
           },
           "Offset": {
             "description": "User's timezone offset. Must be in [-12,12] interval.",
             "type": "integer",
-            "example": "-12"
+            "example":"-12"
           }
         }
       },
@@ -1340,6 +1352,7 @@
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2020-07-18T08:23",
             "nullable": true
+
           },
           "Jobs": {
             "type": "array",
@@ -1528,13 +1541,50 @@
             "type": "number",
             "nullable": true
           },
+          "StartWorkingAt": {
+            "description": "Start user's working date.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23",
+            "nullable": true
+          },
           "IsActive": {
             "type": "boolean",
             "nullable": true
           }
         }
       },
+      "DepartmentInfo": {
+        "type": "object",
+        "description": "Department data.",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string",
+            "example": "Spartak",
+            "nullable": true
+          }
+        }
+      },
       "StatInfo": {
+        "type": "object",
+        "properties": {
+          "DepartmentInfo": {
+            "$ref": "#/components/schemas/DepartmentInfo"
+          },
+          "UsersStats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserStatInfo"
+            }
+          }
+        }
+      },
+      "UserStatInfo": {
         "type": "object",
         "properties": {
           "User": {
@@ -1676,7 +1726,7 @@
           },
           "TotalCount": {
             "type": "integer",
-            "description": "Total number of finded by filter leave times."
+            "description": "Total number of finded users by filter."
           },
           "Body": {
             "type": "array",
