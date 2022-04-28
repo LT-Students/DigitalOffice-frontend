@@ -94,7 +94,12 @@
 				</do-form-row>
 				<do-form-row label="Начало работы">
 					<mat-form-field>
-						<input matInput [matDatepicker]='picker' formControlName="startWorkingAt" />
+						<input
+							matInput
+							[matDatepicker]="picker"
+							formControlName="startWorkingAt"
+							placeholder="Начало работы"
+						/>
 						<mat-datepicker-toggle matSuffix [for]="picker">
 							<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 						</mat-datepicker-toggle>

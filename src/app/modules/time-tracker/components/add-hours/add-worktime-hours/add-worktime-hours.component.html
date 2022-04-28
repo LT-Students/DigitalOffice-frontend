@@ -45,17 +45,21 @@
 			</mat-option>
 		</mat-select>
 	</mat-form-field>
-	<mat-form-field floatLabel="always">
-		<mat-label>Комментарий</mat-label>
-		<textarea
-			#comment
-			matInput
-			formControlName="comment"
-			maxlength="500"
-			placeholder="Оставьте комментарий для менеджера"
-		></textarea>
-		<mat-hint>{{ comment.value.length }}/500</mat-hint>
-	</mat-form-field>
+	<do-form-row label="Комментарий" style="margin-bottom: 50px">
+		<mat-form-field floatLabel="always">
+			<textarea
+				#comment
+				cdkTextareaAutosize
+				cdkAutosizeMinRows="3"
+				cdkAutosizeMaxRows="3"
+				matInput
+				formControlName="comment"
+				maxlength="500"
+				placeholder="Оставьте комментарий для менеджера"
+			></textarea>
+			<mat-hint>{{ comment.value.length }}/500</mat-hint>
+		</mat-form-field>
+	</do-form-row>
 	<button
 		mat-flat-button
 		color="primary"

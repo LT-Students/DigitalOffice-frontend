@@ -14,7 +14,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import {
+	DateAdapter,
+	MAT_DATE_FORMATS,
+	MAT_DATE_LOCALE,
+	MAT_RIPPLE_GLOBAL_OPTIONS,
+	MatNativeDateModule,
+} from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -110,6 +116,10 @@ Settings.defaultLocale = 'ru';
 			deps: [MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS],
 		},
 		{ provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
+		{
+			provide: MAT_RIPPLE_GLOBAL_OPTIONS,
+			useValue: { disabled: true },
+		},
 	],
 })
 export class MaterialModule {}

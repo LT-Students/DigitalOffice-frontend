@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'base/variables' as variables;
 
 /* ======== Angular material custom palette ======== */
 
@@ -167,7 +168,7 @@ $light-theme-background-palette: (
 	status-bar: map.get($do-grey, 300),
 	app-bar: map.get($do-grey, 100),
 	background: map.get($do-grey, 100),
-	hover: rgba(black, 0.04),
+	hover: variables.$bg_2,
 	card: white,
 	dialog: white,
 	disabled-button: map.get($do-grey, 100),

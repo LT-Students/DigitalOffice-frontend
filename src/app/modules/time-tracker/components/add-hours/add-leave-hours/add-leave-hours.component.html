@@ -31,6 +31,9 @@
 		<mat-label>Комментарий</mat-label>
 		<textarea
 			#comment
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="3"
+            cdkAutosizeMaxRows="3"
 			matInput
 			formControlName="comment"
 			maxlength="500"

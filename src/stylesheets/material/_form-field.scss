@@ -1,3 +1,5 @@
+@use 'base/variables' as variables;
+
 do-form-row mat-form-field.mat-form-field-appearance-outline {
 	line-height: 22px;
 
@@ -10,7 +12,7 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 		margin-top: 1px;
 		font-size: 13px;
 		padding: 0 16px;
-		top: 40px;
+		top: 100%;
 		line-height: 21px;
 	}
 
@@ -26,10 +28,23 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 		padding: 0 16px;
 		margin-top: 0;
 		align-items: normal;
+
+		&:hover .mat-form-field-outline-thick {
+			color: variables.$secondary_hover;
+		}
+	}
+
+	&.mat-focused .mat-form-field-flex .mat-form-field-outline-thick {
+		color: variables.$secondary_active;
+	}
+
+	&.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+		color: variables.$alert;
 	}
 
 	.mat-form-field-outline {
 		top: 0;
+		color: variables.$secondary_default;
 	}
 
 	.mat-form-field-outline-start {
@@ -63,5 +78,19 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 
 	.mat-select-arrow-wrapper {
 		transform: none;
+	}
+
+	.mat-select-placeholder,
+	input::placeholder,
+	textarea::placeholder {
+		color: variables.$secondary_default;
+	}
+
+	&.mat-form-field-disabled {
+		.mat-select-placeholder,
+		input::placeholder,
+		textarea::placeholder {
+			color: variables.$typo;
+		}
 	}
 }
