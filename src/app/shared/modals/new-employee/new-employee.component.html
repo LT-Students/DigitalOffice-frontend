@@ -59,6 +59,20 @@
 						</mat-error>
 					</mat-form-field>
 				</do-form-row>
+                <do-form-row label="День рождения">
+                    <mat-form-field>
+                        <input
+                            matInput
+                            [matDatepicker]="dayOfBirth"
+                            formControlName="dayOfBirth"
+                            placeholder="ДД месяц ГГГГ"
+                        />
+                        <mat-datepicker-toggle matSuffix [for]="dayOfBirth">
+                            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #dayOfBirth></mat-datepicker>
+                    </mat-form-field>
+                </do-form-row>
 			</div>
 		</div>
 		<div class="section new-employee__working-info">
@@ -67,7 +81,7 @@
 				<ng-container *ngIf="position$ | async as positionList">
 					<do-form-row label="Должность">
 						<mat-form-field>
-							<mat-select placeholder="Выберите должность" formControlName="positionId" required>
+							<mat-select placeholder="Выберите должность" formControlName="positionId">
 								<mat-option *ngFor="let position of positionList.body" [value]="position.id">
 									{{ position?.name }}
 								</mat-option>
@@ -88,9 +102,13 @@
 					</do-form-row>
 				</ng-container>
 				<do-form-row label="Ставка">
-					<mat-form-field>
-						<do-stepper [min]="0.25" [max]="1" [step]="0.25" formControlName="rate"></do-stepper>
-					</mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Выберите ставку" formControlName="rate" required>
+                            <mat-option *ngFor="let rate of [1, 0.75, 0.5, 0.25]" [value]="rate">
+                                {{ rate }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
 				</do-form-row>
 				<do-form-row label="Начало работы">
 					<mat-form-field>
@@ -99,6 +117,7 @@
 							[matDatepicker]="picker"
 							formControlName="startWorkingAt"
 							placeholder="Начало работы"
+                            required
 						/>
 						<mat-datepicker-toggle matSuffix [for]="picker">
 							<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
@@ -108,7 +127,7 @@
 				</do-form-row>
 				<do-form-row label="Офис">
 					<mat-form-field>
-						<mat-select placeholder="Выберите офис" formControlName="officeId" required>
+						<mat-select placeholder="Выберите офис" formControlName="officeId">
 							<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
 								{{ office.city }}, {{ office.address }}
 							</mat-option>

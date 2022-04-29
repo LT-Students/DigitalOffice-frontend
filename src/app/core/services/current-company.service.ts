@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
-import { Company, CompanyInfo } from '@app/models/company';
+import { Company } from '@app/models/company';
 import { CompanyService } from '@app/services/company/company.service';
+import { CompanyResponse } from '@api/company-service/models/company-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,7 +16,7 @@ export class CurrentCompanyService {
 		this.company$ = this._company.asObservable();
 	}
 
-	public setCompany(companyInfo: CompanyInfo): void {
+	public setCompany(companyInfo: CompanyResponse): void {
 		const company = new Company(companyInfo);
 		this._company.next(company);
 	}

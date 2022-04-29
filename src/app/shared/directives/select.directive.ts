@@ -25,5 +25,6 @@ export class SelectDirective {
 		];
 
 		matSelect._calculateOverlayOffsetY = () => OPTION_PANEL_OFFSET;
+		console.log('yo');
 	}
 }

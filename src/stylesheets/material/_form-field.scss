@@ -38,6 +38,12 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 		color: variables.$secondary_active;
 	}
 
+	&.mat-focused {
+		.mat-select-arrow {
+			color: revert !important;
+		}
+	}
+
 	&.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
 		color: variables.$alert;
 	}

@@ -1,27 +1,17 @@
-import { setProperty } from '@app/utils/utils';
 import { OfficeInfo } from '@api/company-service/models/office-info';
 import { ImageConsist } from '@api/company-service/models/image-consist';
+import { CompanyResponse } from '@api/company-service/models/company-response';
 
-export interface CompanyInfo {
-	id?: string;
-	name?: string;
-	description?: string;
-	tagline?: string;
-	contacts?: string;
-	logo?: ImageConsist;
-	offices?: Array<OfficeInfo>;
-}
-
-export class Company implements CompanyInfo {
-	id?: string;
-	name?: string;
+export class Company implements CompanyResponse {
+	id: string;
+	name: string;
 	description?: string;
 	tagline?: string;
 	contacts?: string;
 	logo?: ImageConsist;
 	offices?: Array<OfficeInfo>;
 
-	constructor(data: CompanyInfo) {
+	constructor(data: CompanyResponse) {
 		this.id = data?.id;
 		this.name = data?.name;
 		this.description = data?.description;

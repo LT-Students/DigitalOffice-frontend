@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType } from '@api/time-service/models/operation-result-status-type';
@@ -51,7 +51,7 @@ export class ProjectsComponent {
 		this._modalService
 			.openModal<EditProjectComponent, IModalContentConfig, IDialogResponse>(
 				EditProjectComponent,
-				ModalWidth.L,
+				ModalWidth.M,
 				modalContentConfig
 			)
 			.afterClosed()

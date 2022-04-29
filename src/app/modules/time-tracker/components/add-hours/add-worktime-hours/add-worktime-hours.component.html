@@ -1,52 +1,53 @@
 <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 	<div class="add-hours__dates-container">
-		<mat-form-field class="add-hours__time" floatLabel="always">
-			<input matInput formControlName="time" type="text" placeholder="0" />
-			<mat-label>Количество часов</mat-label>
-			<mat-error *ngIf="addHoursForm.controls['time']?.errors?.min; else errIntNum">
-				Минимальное значение должно быть больше 0
-			</mat-error>
-			<ng-template #errIntNum>
-				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.intNum; else errMax">
-					Значение может быть только целым числом
+		<do-form-row label="Количество часов">
+			<mat-form-field class="add-hours__time">
+				<input matInput formControlName="time" type="text" placeholder="0" />
+				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.min; else errIntNum">
+					Мин. значение: 0
 				</mat-error>
-			</ng-template>
-			<ng-template #errMax>
-				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.max; else errRequired">
-					Превышено максимальное значение
-				</mat-error>
-			</ng-template>
-			<ng-template #errRequired>
-				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.required">
-					Поле не может быть пустым
-				</mat-error>
-			</ng-template>
-		</mat-form-field>
+				<ng-template #errIntNum>
+					<mat-error *ngIf="addHoursForm.controls['time']?.errors?.intNum; else errMax">
+						Значение может быть только целым числом
+					</mat-error>
+				</ng-template>
+				<ng-template #errMax>
+					<mat-error *ngIf="addHoursForm.controls['time']?.errors?.max; else errRequired">
+						Макс. значение: 744
+					</mat-error>
+				</ng-template>
+				<ng-template #errRequired>
+					<mat-error *ngIf="addHoursForm.controls['time']?.errors?.required"> Поле обязательно! </mat-error>
+				</ng-template>
+			</mat-form-field>
+		</do-form-row>
 
-		<mat-form-field class="add-hours__date" floatLabel="always">
-			<mat-label>Месяц</mat-label>
-			<mat-select [formControl]="dateControl" [compareWith]="compareDate">
-				<mat-option *ngFor="let month of monthOptions" [value]="month">
-					{{ month | dateTime: 'LLLL y' | titlecase }}
+		<do-form-row label="Месяц">
+			<mat-form-field>
+				<mat-select [formControl]="dateControl" [compareWith]="compareDate">
+					<mat-option *ngFor="let month of monthOptions" [value]="month">
+						{{ month | dateTime: 'LLLL y' | titlecase }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-row>
+	</div>
+
+	<do-form-row label="Проект">
+		<mat-form-field>
+			<mat-select formControlName="activity" placeholder="Выберите проект">
+				<mat-option
+					*ngFor="let workTime of workTimes$ | async"
+					[value]="workTime?.id"
+					(onSelectionChange)="patchWorkTimeInfoIntoForm(workTime, $event)"
+				>
+					{{ workTime?.project?.name ?? 'Другое' }}
 				</mat-option>
 			</mat-select>
 		</mat-form-field>
-	</div>
-
-	<mat-form-field floatLabel="always">
-		<mat-label>Проект</mat-label>
-		<mat-select formControlName="activity" placeholder="Выберите проект">
-			<mat-option
-				*ngFor="let workTime of workTimes$ | async"
-				[value]="workTime?.id"
-				(onSelectionChange)="patchWorkTimeInfoIntoForm(workTime, $event)"
-			>
-				{{ workTime?.project?.name ?? 'Другое' }}
-			</mat-option>
-		</mat-select>
-	</mat-form-field>
-	<do-form-row label="Комментарий" style="margin-bottom: 50px">
-		<mat-form-field floatLabel="always">
+	</do-form-row>
+	<do-form-row label="Комментарий">
+		<mat-form-field>
 			<textarea
 				#comment
 				cdkTextareaAutosize
@@ -61,6 +62,7 @@
 		</mat-form-field>
 	</do-form-row>
 	<button
+		class="submit-button"
 		mat-flat-button
 		color="primary"
 		[loading]="(loading$$ | async) ?? false"
