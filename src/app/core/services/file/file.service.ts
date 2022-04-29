@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { FileApiService } from '@api/file-service/services/file-api.service';
 import { FileInfo } from '@api/file-service/models/file-info';
 import { EditFileRequest } from '@api/file-service/models/edit-file-request';
-import { OperationResultResponse } from '@api/file-service/models/operation-result-response';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
 interface IEditFileRequest {
 	fileId: string;
@@ -24,7 +24,7 @@ export class FileService {
 		return this._fileService.editFile(params);
 	}
 
-	public getFile(filesIds: string[]): Observable<FileInfo[]> {
+	public getFile(filesIds: string[]): Observable<OperationResultResponse<FileInfo[]>> {
 		return this._fileService.getFile({ filesIds });
 	}
 

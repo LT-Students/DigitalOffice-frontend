@@ -4,9 +4,12 @@ import { switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
-import { EMPTY, iif } from 'rxjs';
+import { EMPTY, iif, merge } from 'rxjs';
 import { PortalService } from '@app/services/portal.service';
 import { AdminService, PortalInfo } from '@app/services/admin/admin.service';
+import { CompanyService } from '@app/services/company/company.service';
+import { Company } from '@app/models/company';
+import { User } from '@app/models/user/user.model';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,6 +18,7 @@ export class AppInitService {
 	constructor(
 		private _currentUserService: CurrentUserService,
 		private _currentCompanyService: CurrentCompanyService,
+		private companyService: CompanyService,
 		private portalService: PortalService,
 		private adminService: AdminService,
 		private _localStorage: LocalStorageService,
@@ -35,9 +39,14 @@ export class AppInitService {
 					switchMap(() =>
 						iif(
 							() => token !== null,
-							this._currentUserService
-								.getUserOnLogin(userId)
-								.pipe(tap((user) => this._currentUserService.setUser(user))),
+							merge(
+								this._currentUserService
+									.getUserOnLogin(userId)
+									.pipe(tap((user: User) => this._currentUserService.setUser(user))),
+								this.companyService
+									.getCompany()
+									.pipe(tap((company: Company) => this._currentCompanyService.setCompany(company)))
+							),
 							EMPTY
 						)
 					)

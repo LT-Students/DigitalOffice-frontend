@@ -62,12 +62,16 @@ export interface IEditWorkTimeMonthLimitRequest {
 }
 
 export interface IFindStatRequest {
-	departmentId?: string;
+	departmentsIds?: Array<string>;
 	projectId?: string;
+	/**
+	 * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A, when null - without sort
+	 */
+	ascendingsort?: boolean;
 	month?: number;
-	year?: number;
-	takeCount?: number;
-	skipCount?: number;
+	year: number;
+	takeCount: number;
+	skipCount: number;
 }
 
 export interface IGetImport {
@@ -159,7 +163,7 @@ export class TimeService {
 		return this._workTimeService.editWorkTimeMonthLimit(params);
 	}
 
-	public findStat(params?: IFindStatRequest): Observable<FindResultResponseStatInfo> {
+	public findStat(params: IFindStatRequest): Observable<FindResultResponseStatInfo> {
 		return this._statService.findStat(params);
 	}
 

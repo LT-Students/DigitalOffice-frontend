@@ -9,17 +9,13 @@ import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.c
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { UserStatusPipe } from '@shared/pipes/user-status.pipe';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
-import { User } from '@app/models/user/user.model';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
-import { SearchComponent } from './component/search/search.component';
 import { HeaderComponent } from './component/header/header.component';
-import { InputComponent } from './component/input/input.component';
-import { DatepickerComponent } from './component/datepicker/datepicker.component';
 import { StepperComponent } from './component/stepper/stepper.component';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
@@ -43,15 +39,14 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 import { TruncateTooltipDirective } from './directives/truncate-tooltip.directive';
 import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
+import { FormRowComponent } from './component/form-row/form-row.component';
+import { SelectDirective } from './directives/select.directive';
 
 @NgModule({
 	declarations: [
 		ProfileImageComponent,
 		ContentContainerComponent,
-		SearchComponent,
 		HeaderComponent,
-		InputComponent,
-		DatepickerComponent,
 		StepperComponent,
 		TextDirective,
 		DndDirective,
@@ -80,6 +75,8 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		PlaceholderPipe,
 		UserRecoveryComponent,
 		CapitalizePipe,
+		FormRowComponent,
+		SelectDirective,
 	],
 	imports: [
 		CommonModule,
@@ -100,14 +97,11 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		MdePopoverModule,
 		ReactiveFormsModule,
 		FormsModule,
-		InputComponent,
 		ProfileImageComponent,
-		SearchComponent,
 		HeaderComponent,
 		TextDirective,
 		DndDirective,
 		ButtonLoadingDirective,
-		DatepickerComponent,
 		StepperComponent,
 		SafeHtmlPipe,
 		PasswordComponent,
@@ -133,6 +127,8 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		PlaceholderPipe,
 		UserRecoveryComponent,
 		CapitalizePipe,
+		FormRowComponent,
+		SelectDirective
 	],
 })
 export class SharedModule {}

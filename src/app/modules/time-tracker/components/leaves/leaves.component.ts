@@ -10,7 +10,7 @@ import { switchMap, tap } from 'rxjs/operators';
 import { AttendanceService } from '../../services/attendance.service';
 import { EditLeaveComponent } from '../../modals/edit-leave/edit-leave.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
-import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-leaves',
@@ -38,7 +38,7 @@ export class LeavesComponent {
 
 	public openEditModal(leave: LeaveTimeModel): void {
 		this._modalService
-			.openModal<EditLeaveComponent, LeaveTimeModel, IDialogResponse>(EditLeaveComponent, ModalWidth.L, leave)
+			.openModal<EditLeaveComponent, LeaveTimeModel, IDialogResponse>(EditLeaveComponent, ModalWidth.M, leave)
 			.afterClosed()
 			.pipe(tap(() => this._attendanceService.getLeaveTimeIntervals().subscribe()))
 			.subscribe((result) => {

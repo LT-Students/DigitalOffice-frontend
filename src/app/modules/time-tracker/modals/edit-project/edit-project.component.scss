@@ -11,14 +11,11 @@
 		margin-left: 16px;
 	}
 
-	// &__date {
-	// 	padding: 4px 0 12px 0;
-	// }
 	&__hours {
 		margin-right: 5px;
 		padding: 0;
 
-		width: 80px;
+		width: 150px;
 	}
 
 	&__description {
@@ -30,7 +27,18 @@
 	}
 }
 
+.content {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 20px;
+}
+
 .controls {
+	margin-top: 20px;
 	display: flex;
 	justify-content: space-around;
+
+	button {
+		width: 180px;
+	}
 }

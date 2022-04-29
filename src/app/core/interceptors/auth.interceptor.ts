@@ -22,7 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
 	) {
 		this._refreshingInProgress = false;
 		this._accessTokenSubject = new BehaviorSubject<string | undefined>(undefined);
-		this._excludedUrls = ['/auth/refresh', '/company/get', '/graphicaluserinterface/get'];
+		this._excludedUrls = ['/auth/refresh', '/graphicaluserinterface/get'];
 	}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
