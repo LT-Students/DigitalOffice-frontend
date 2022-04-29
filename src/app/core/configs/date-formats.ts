@@ -6,7 +6,7 @@ export const DATE_FORMAT: MatDateFormats = {
 	},
 	display: {
 		dateInput: 'dd MMMM y',
-		monthYearLabel: 'MMM y',
+		monthYearLabel: 'LLLL y',
 		dateA11yLabel: 'dd MMMM y',
 		monthYearA11yLabel: 'YYYY',
 	},
@@ -18,7 +18,7 @@ export const RANGE_DATE_FORMAT: MatDateFormats = {
 	},
 	display: {
 		dateInput: 'dd/MM/y',
-		monthYearLabel: 'MMM y',
+		monthYearLabel: 'LLLL y',
 		dateA11yLabel: 'dd MMMM y',
 		monthYearA11yLabel: 'YYYY',
 	},

@@ -16,7 +16,7 @@
     }
   ],
   "paths": {
-    "/company": {
+    "/company/create": {
       "post": {
         "parameters": [
           {
@@ -72,21 +72,11 @@
         }
       }
     },
-    "/company/{companyId}": {
+    "/company/get": {
       "get": {
         "parameters": [
           {
             "$ref": "#/components/parameters/securityToken"
-          },
-          {
-            "name": "companyId",
-            "in": "path",
-            "description": "Unique company identifier.",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
           },
           {
             "name": "includeoffices",
@@ -134,7 +124,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/company/edit": {
       "patch": {
         "parameters": [
           {
@@ -142,7 +134,7 @@
           },
           {
             "name": "companyId",
-            "in": "path",
+            "in": "query",
             "description": "Unique company identifier.",
             "schema": {
               "type": "string",
@@ -264,7 +256,7 @@
         }
       }
     },
-    "/companyuser/{userId}": {
+    "/companyuser/edit": {
       "patch": {
         "parameters": [
           {
@@ -272,7 +264,7 @@
           },
           {
             "name": "userId",
-            "in": "path",
+            "in": "query",
             "description": "Unique user identifier.",
             "schema": {
               "type": "string",
@@ -329,7 +321,7 @@
         }
       }
     },
-    "/contractsubject": {
+    "/contractsubject/get": {
       "get": {
         "parameters": [
           {
@@ -400,7 +392,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/contractsubject/create": {
       "post":{
         "parameters": [
           {
@@ -456,7 +450,7 @@
         }
       }
     },
-    "/contractsubject/{contractsubjectId}": {
+    "/contractsubject/edit": {
       "patch": {
         "parameters": [
           {
@@ -464,7 +458,7 @@
           },
           {
             "name": "contractsubjectId",
-            "in": "path",
+            "in": "query",
             "description": "Unique contract subject identifier.",
             "schema": {
               "type": "string",

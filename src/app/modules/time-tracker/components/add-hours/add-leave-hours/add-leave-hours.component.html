@@ -1,52 +1,60 @@
 <form [formGroup]="addLeaveForm" autocomplete="off" (ngSubmit)="onSubmit()" class="add-hours__form">
 	<div class="add-hours__time-wrapper">
-		<mat-form-field floatLabel="always">
-			<mat-label>Выберите диапазон отсутствия</mat-label>
-			<mat-date-range-input
-				(click)="picker.open()"
-				[min]="minDate"
-				[dateFilter]="disableWeekends"
-				[rangePicker]="$any(picker)"
-			>
-				<input matStartDate placeholder="Начало" formControlName="startDate" readonly />
-				<input matEndDate placeholder="Окончание" formControlName="endDate" readonly />
-			</mat-date-range-input>
-			<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-			<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
-		</mat-form-field>
+		<do-form-row label="Выберите диапазон отсутствия">
+			<mat-form-field>
+				<mat-date-range-input
+					(click)="picker.open()"
+					[min]="minDate"
+					[dateFilter]="disableWeekends"
+					[rangePicker]="$any(picker)"
+				>
+					<input matStartDate placeholder="Начало" formControlName="startDate" readonly />
+					<input matEndDate placeholder="Окончание" formControlName="endDate" readonly />
+				</mat-date-range-input>
+				<mat-datepicker-toggle matSuffix [for]="picker">
+					<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+				</mat-datepicker-toggle>
+				<mat-date-range-picker #picker (closed)="onClose()"></mat-date-range-picker>
+			</mat-form-field>
+		</do-form-row>
 		<div class="add-hours__absence-time">
 			<span class="text-secondary_default">Выбрано</span>
 			<h3>{{ recommendedTime$$ | async }}<span class="text-secondary_default"> ч</span></h3>
 		</div>
 	</div>
-	<mat-form-field floatLabel="always">
-		<mat-label>Выберите тип отсутствия</mat-label>
-		<mat-select formControlName="leaveType" placeholder="Выберите тип отсутствия">
-			<mat-option *ngFor="let absence of absences" [value]="absence.leaveType">
-				{{ absence.leaveInRussian }}
-			</mat-option>
-		</mat-select>
-	</mat-form-field>
-	<mat-form-field floatLabel="always">
-		<mat-label>Комментарий</mat-label>
-		<textarea
-			#comment
-			matInput
-			formControlName="comment"
-			maxlength="500"
-			placeholder="Оставьте комментарий для менеджера"
-		></textarea>
-		<mat-hint>{{ comment.value.length }}/500</mat-hint>
-	</mat-form-field>
-	<div matTooltip="{{ tooltip.message }}" [matTooltipDisabled]="tooltip.disabled">
-		<button
-			mat-flat-button
-			class="add-hours__absence-submit"
-			color="primary"
-			[loading]="(loading$$ | async) ?? false"
-			[disabled]="addLeaveForm.invalid || addLeaveForm.disabled || !tooltip.disabled"
-		>
-			Добавить часы
-		</button>
-	</div>
+	<do-form-row label="Выберите тип отсутсвтия">
+		<mat-form-field>
+			<mat-select formControlName="leaveType" placeholder="Выберите тип отсутствия">
+				<mat-option *ngFor="let absence of absences" [value]="absence.leaveType">
+					{{ absence.leaveInRussian }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</do-form-row>
+	<do-form-row label="Комментарий">
+		<mat-form-field>
+			<textarea
+				#comment
+				cdkTextareaAutosize
+				cdkAutosizeMinRows="3"
+				cdkAutosizeMaxRows="3"
+				matInput
+				formControlName="comment"
+				maxlength="500"
+				placeholder="Оставьте комментарий для менеджера"
+			></textarea>
+			<mat-hint>{{ comment.value.length }}/500</mat-hint>
+		</mat-form-field>
+	</do-form-row>
+	<button
+		mat-flat-button
+		class="add-hours__absence-submit"
+		color="primary"
+		matTooltip="{{ tooltip.message }}"
+		[matTooltipDisabled]="tooltip.disabled"
+		[loading]="(loading$$ | async) ?? false"
+		[disabled]="addLeaveForm.invalid || addLeaveForm.disabled || !tooltip.disabled"
+	>
+		Добавить часы
+	</button>
 </form>

@@ -1,0 +1,15 @@
+@use 'base/variables' as variables;
+
+.mat-select-panel {
+	mat-option.mat-option {
+		color: variables.$secondary_default;
+
+		&:hover, &.mat-active {
+			color: variables.$main_text;
+		}
+
+		&.mat-selected:not(.mat-option-multiple) {
+			background: transparent;
+		}
+	}
+}

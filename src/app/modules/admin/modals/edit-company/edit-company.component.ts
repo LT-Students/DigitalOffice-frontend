@@ -38,7 +38,7 @@ export class EditCompanyComponent implements OnInit {
 
 	public ngOnInit(): void {
 		//TODO add company id
-		this.company$ = this._companyService.getCompany('id').pipe(
+		this.company$ = this._companyService.getCompany().pipe(
 			tap((company) => {
 				this._companyInfo = {
 					[CompanyPath.COMPANY_NAME]: company.name,
@@ -56,7 +56,7 @@ export class EditCompanyComponent implements OnInit {
 			.editCompany('id', editRequest)
 			.pipe(
 				tap(() => this._dialogRef.close()),
-				switchMap(() => this._companyService.getCompany('id')),
+				switchMap(() => this._companyService.getCompany()),
 				tap((company) => this._currentCompany.setCompany(company)),
 				finalize(() => this.loading$$.next(false))
 			)

@@ -28,7 +28,7 @@ export class ContractSubjectApiService extends BaseService {
   /**
    * Path part for operation findContractSubjects
    */
-  static readonly FindContractSubjectsPath = '/contractsubject';
+  static readonly FindContractSubjectsPath = '/contractsubject/get';
 
   /**
    * Returns all contract subject information with pagination.
@@ -108,7 +108,7 @@ export class ContractSubjectApiService extends BaseService {
   /**
    * Path part for operation createContractSubject
    */
-  static readonly CreateContractSubjectPath = '/contractsubject';
+  static readonly CreateContractSubjectPath = '/contractsubject/create';
 
   /**
    * Adds a new contract subject.
@@ -158,7 +158,7 @@ export class ContractSubjectApiService extends BaseService {
   /**
    * Path part for operation editContractSubject
    */
-  static readonly EditContractSubjectPath = '/contractsubject/{contractsubjectId}';
+  static readonly EditContractSubjectPath = '/contractsubject/edit';
 
   /**
    * Chage contract subject's name, description, or active status.
@@ -179,7 +179,7 @@ export class ContractSubjectApiService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, ContractSubjectApiService.EditContractSubjectPath, 'patch');
     if (params) {
-      rb.path('contractsubjectId', params.contractsubjectId, {});
+      rb.query('contractsubjectId', params.contractsubjectId, {});
       rb.body(params.body, 'application/json');
     }
 
