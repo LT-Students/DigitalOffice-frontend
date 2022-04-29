@@ -12,7 +12,7 @@ import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditInfoComponent implements OnInit {
-	private user: User;
+	public user: User;
 	isEditMode = false;
 	public EditForm: FormGroup;
 	public _userStatus: UserStatus;
@@ -38,37 +38,6 @@ export class EditInfoComponent implements OnInit {
 
 	ngOnInit(): void {}
 
-	public get surname(): FormControl {
-		return this.EditForm.get('surname')?.value;
-	}
-
-	public get userstatus(): UserStatus {
-		return this.user.status;
-	}
-
-	public get dateOfBirth(): FormControl {
-		return this.EditForm.get('dateOfBirth')?.value;
-	}
-
-	public get name(): FormControl {
-		return this.EditForm.get('name')?.value;
-	}
-
-	public get hours(): FormControl {
-		return this.EditForm.get('hours')?.value;
-	}
-
-	public get middleName(): FormControl {
-		return this.EditForm.get('middleName')?.value;
-	}
-
-	public get location(): FormControl {
-		return this.EditForm.get('location')?.value;
-	}
-
-	public get aboutField(): FormControl {
-		return this.EditForm.get('aboutField')?.value;
-	}
 
 	onEdit() {
 		this.isEditMode = !this.isEditMode;
