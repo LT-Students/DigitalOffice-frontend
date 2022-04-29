@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PlaceholderPipe implements PipeTransform {
 	transform(value: any, replaceText: string = 'Не указано'): any {
-		return value === undefined || value.length === 0 ? replaceText : value;
+		return value == null || value.length === 0 ? replaceText : value;
 	}
 }

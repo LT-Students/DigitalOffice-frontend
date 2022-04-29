@@ -27,7 +27,7 @@
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Дата рождения</span>
-            <p class="edit-info__field-value">{{ user.dateOfBirth | placeholder }}</p>
+            <p class="edit-info__field-value">{{ user.dateOfBirth  | date: dateType.FULL | placeholder }}</p>
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Местоположение</span>
@@ -35,7 +35,7 @@
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Часы работы</span>
-            <p class="edit-info__field-value">{{ user.businessHoursToUtc }}</p>
+            <p class="edit-info__field-value">{{ user.businessHoursFromUtc | placeholder }} - {{ user.businessHoursToUtc | placeholder}}</p>
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
@@ -48,38 +48,46 @@
     </ng-container>
 </mat-dialog-content>
 
-<ng-template #editTemplate [formGroup]="EditForm" (ngSubmit)="onSubmit()">
+<ng-template #editTemplate [formGroup]="editForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
         <mat-label>Фамилия</mat-label>
-        <input matInput formControlName="surname" placeholder="Ввести фамилию" required />
+        <input matInput formControlName="surname" placeholder="Ввести фамилию" minlength="1" maxlength="45" required />
+        <mat-error *ngIf="editForm.controls['surname']?.errors?.['whitespace']"
+        >Фамилия не может состоять только из пробелов!
+        </mat-error>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Имя</mat-label>
-        <input matInput formControlName="name" placeholder="Ввести имя" required />
+        <input matInput formControlName="name" placeholder="Ввести имя" minlength="1" maxlength="45" required />
+        <mat-error *ngIf="editForm.controls['name']?.errors?.['whitespace']"
+        >Имя не может состоять только из пробелов!
+        </mat-error>
     </mat-form-field>
-
     <mat-form-field>
         <mat-label>Отчество</mat-label>
-        <input matInput formControlName="middleName" placeholder="Ввести отчество" />
+        <input matInput formControlName="middleName" placeholder="Ввести отчество" minlength="1" maxlength="45" />
     </mat-form-field>
     <mat-form-field>
         <mat-label>Дата рождения</mat-label>
-        <input matInput formControlName="dateOfBirth" placeholder="Ввести дату рождения" />
-    </mat-form-field>
-
+        <input matInput formControlName="dateOfBirth" [matDatepicker]="dayOfBirth" placeholder="ДД месяц ГГГГ" />
+            <mat-datepicker-toggle matSuffix [for]="dayOfBirth">
+                <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #dayOfBirth></mat-datepicker>
+        </mat-form-field>
     <mat-form-field>
         <mat-label>Местоположение</mat-label>
         <input matInput formControlName="location" placeholder="Ввести местоположение" />
     </mat-form-field>
     <mat-form-field>
         <mat-label>Часы работы</mat-label>
-        <input matInput formControlName="hours" type="time" [value]="dateType" placeholder="Ввести часы работы" />
+        <input matInput formControlName="hours" type="time" placeholder="Ввести часы работы" />
     </mat-form-field>
 
     <mat-form-field>
         <mat-label>Эмодзи-статус</mat-label>
-        <mat-select formControlName="status" placeholder="Выбрать статус" [(value)]="_userStatus">
-            <mat-option *ngFor="let status of statuses" [value]="status.statusType" (select)="(_userStatus)">{{
+        <mat-select formControlName="status" placeholder="Выбрать статус">
+            <mat-option *ngFor="let status of statuses" [value]="status.statusType">{{
                 status.statusType | userStatus: true:true | capitalize
             }}</mat-option>
         </mat-select>
@@ -104,7 +112,7 @@
 		<button
 			mat-flat-button
 			type="submit"
-			[disabled]="EditForm.invalid"
+			[disabled]="editForm.invalid"
 			color="primary"
 			(click)="onSubmit()"
 			class="edit-info__button"
