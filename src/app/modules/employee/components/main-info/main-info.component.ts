@@ -12,6 +12,7 @@ import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
+import { ModalWidth } from '@app/services/modal.service';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
@@ -66,10 +67,7 @@ export class MainInfoComponent implements OnInit {
 		return true;
 	}
 
-	public toggleEditMode(user?: User): void {
-		if (user) {
-			this._fillForm(user);
-		}
+	public toggleEditMode(): void {
 		this.isEditing = !this.isEditing;
 	}
 
@@ -78,10 +76,11 @@ export class MainInfoComponent implements OnInit {
 		this.toggleEditMode();
 	}
 
-	public editUser(user?: User): void {
-		this.toggleEditMode(user);
+	public editUser(user: User): void {
+		this.toggleEditMode();
 		const dialogRef = this._dialog.open(EditInfoComponent, {
 			data: user,
+			width: ModalWidth.L,
 		});
 	}
 

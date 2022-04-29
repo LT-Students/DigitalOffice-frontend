@@ -1,7 +1,5 @@
 <h3 mat-dialog-title doUnderline underlinedSize="sm">Редактирование профиля</h3>
-<!--<button mat-icon-button>-->
-<!--    <mat-icon mat-dialog-close>close</mat-icon>-->
-<!--</button>-->
+
 <div class="edit-info__header">
 	<h4>Общие сведения</h4>
 	<div class="edit-info__edit">
@@ -15,117 +13,101 @@
 
 <mat-dialog-content class="edit-info__general">
 	<ng-container *ngIf="!isEditMode; else editTemplate">
-		<div class="edit-info__columns">
-			<div class="edit-info__first-column">
-				<div class="edit-info__field">
-					<span class="mat-body-2 text-secondary_default">Фамилия</span>
-					<p>{{ surname | placeholder }}</p>
-				</div>
-				<div class="edit-info__field">
-					<span class="mat-body-2 text-secondary_default">Отчество</span>
-					<p>{{ middleName | placeholder }}</p>
-				</div>
-				<div class="edit-info__field">
-					<span class="mat-body-2 text-secondary_default">Местоположение</span>
-					<p>{{ location | placeholder }}</p>
-				</div>
-				<div class="edit-info__field">
-					<span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
-					<p>{{ _userStatus | userStatus: true:true | placeholder }}</p>
-				</div>
-			</div>
-			<div class="edit-info__second-column">
-				<div class="edit-info__field">
-					<span class="mat-body-2 text-secondary_default">Имя</span>
-					<p>{{ name | placeholder }}</p>
-				</div>
-				<div class="edit-info__field">
-					<span class="mat-body-2 text-secondary_default">Дата рождения</span>
-					<p>{{ dateOfBirth | placeholder }}</p>
-				</div>
-				<div class="edit-info__field">
-					<span class="mat-body-2 text-secondary_default">Часы работы</span>
-					<p>{{ hours | placeholder }}</p>
-				</div>
-			</div>
-		</div>
-		<div class="edit-info__field">
-			<span class="mat-body-2 text-secondary_default">О себе</span>
-			<p>{{ aboutField | placeholder }}</p>
-		</div>
-	</ng-container>
+        <div class="edit-info__field">
+            <span class="mat-body-2 text-secondary_default">Фамилия</span>
+            <p class="edit-info__field-value">{{ user.lastName | placeholder }}</p>
+        </div>
+        <div class="edit-info__field">
+            <span class="mat-body-2 text-secondary_default">Имя</span>
+            <p class="edit-info__field-value">{{ user.firstName | placeholder }}</p>
+        </div>
+        <div class="edit-info__field">
+            <span class="mat-body-2 text-secondary_default">Отчество</span>
+            <p class="edit-info__field-value">{{ user.middleName | placeholder }}</p>
+        </div>
+        <div class="edit-info__field">
+            <span class="mat-body-2 text-secondary_default">Дата рождения</span>
+            <p class="edit-info__field-value">{{ user.dateOfBirth | placeholder }}</p>
+        </div>
+        <div class="edit-info__field">
+            <span class="mat-body-2 text-secondary_default">Местоположение</span>
+            <p class="edit-info__field-value">{{ '' | placeholder }}</p>
+        </div>
+        <div class="edit-info__field">
+            <span class="mat-body-2 text-secondary_default">Часы работы</span>
+            <p class="edit-info__field-value">{{ user.businessHoursToUtc }}</p>
+        </div>
+        <div class="edit-info__field">
+            <span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
+            <p class="edit-info__field-value">{{ user.status | userStatus: true:true | placeholder }}</p>
+        </div>
+        <div class="edit-info__field edit-info__about">
+            <span class="mat-body-2 text-secondary_default">О себе</span>
+            <p class="edit-info__field-value">{{ user.about | placeholder | capitalize }}</p>
+        </div>
+    </ng-container>
 </mat-dialog-content>
 
 <ng-template #editTemplate [formGroup]="EditForm" (ngSubmit)="onSubmit()">
-	<div class="edit-info__template-row">
-		<mat-form-field>
-			<mat-label>Фамилия</mat-label>
-			<input matInput formControlName="surname" placeholder="Ввести фамилию" required />
-		</mat-form-field>
-		<mat-form-field>
-			<mat-label>Имя</mat-label>
-			<input matInput formControlName="name" placeholder="Ввести имя" required />
-		</mat-form-field>
-	</div>
+    <mat-form-field>
+        <mat-label>Фамилия</mat-label>
+        <input matInput formControlName="surname" placeholder="Ввести фамилию" required />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Имя</mat-label>
+        <input matInput formControlName="name" placeholder="Ввести имя" required />
+    </mat-form-field>
 
-	<div class="edit-info__template-row">
-		<mat-form-field>
-			<mat-label>Отчество</mat-label>
-			<input matInput formControlName="middleName" placeholder="Ввести отчество" />
-		</mat-form-field>
-		<mat-form-field>
-			<mat-label>Дата рождения</mat-label>
-			<input matInput formControlName="dateOfBirth" placeholder="Ввести дату рождения" />
-		</mat-form-field>
-	</div>
+    <mat-form-field>
+        <mat-label>Отчество</mat-label>
+        <input matInput formControlName="middleName" placeholder="Ввести отчество" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Дата рождения</mat-label>
+        <input matInput formControlName="dateOfBirth" placeholder="Ввести дату рождения" />
+    </mat-form-field>
 
-	<div class="edit-info__template-row">
-		<mat-form-field>
-			<mat-label>Местоположение</mat-label>
-			<input matInput formControlName="location" placeholder="Ввести местоположение" />
-		</mat-form-field>
-		<mat-form-field>
-			<mat-label>Часы работы</mat-label>
-			<input matInput formControlName="hours" type="time" [value]="dateType" placeholder="Ввести часы работы" />
-		</mat-form-field>
-	</div>
+    <mat-form-field>
+        <mat-label>Местоположение</mat-label>
+        <input matInput formControlName="location" placeholder="Ввести местоположение" />
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Часы работы</mat-label>
+        <input matInput formControlName="hours" type="time" [value]="dateType" placeholder="Ввести часы работы" />
+    </mat-form-field>
 
-	<div class="edit-info__template-row edit-info__template-field">
-		<mat-form-field>
-			<mat-label>Эмодзи-статус</mat-label>
-			<mat-select formControlName="status" placeholder="Выбрать статус" [(value)]="_userStatus">
-				<mat-option *ngFor="let status of statuses" [value]="status.statusType" (select)="(_userStatus)">{{
-					status.statusType | userStatus: true:true
-				}}</mat-option>
-			</mat-select>
-		</mat-form-field>
-	</div>
+    <mat-form-field>
+        <mat-label>Эмодзи-статус</mat-label>
+        <mat-select formControlName="status" placeholder="Выбрать статус" [(value)]="_userStatus">
+            <mat-option *ngFor="let status of statuses" [value]="status.statusType" (select)="(_userStatus)">{{
+                status.statusType | userStatus: true:true
+            }}</mat-option>
+        </mat-select>
+    </mat-form-field>
 
-	<div class="edit-info__template-row">
-		<mat-form-field appearance="outline">
-			<mat-label>О себе</mat-label>
-			<textarea
-				#about
-				matInput
-				autocomplete="off"
-				placeholder="Напишите немного о себе или оставьте заметку коллегам"
-				maxlength="150"
-				cdkTextareaAutosize="true"
-				formControlName="aboutField"
-			></textarea>
-			<mat-hint align="start">{{ about.value.length }}/150</mat-hint>
-		</mat-form-field>
-	</div>
+    <mat-form-field appearance="outline" class="edit-info__about">
+        <mat-label>О себе</mat-label>
+        <textarea
+            #about
+            matInput
+            autocomplete="off"
+            placeholder="Напишите немного о себе или оставьте заметку коллегам"
+            maxlength="150"
+            cdkTextareaAutosize="true"
+            formControlName="aboutField"
+        ></textarea>
+        <mat-hint align="start">{{ about.value.length }}/150</mat-hint>
+    </mat-form-field>
 
-	<div class="edit-info__buttons">
-		<button mat-button (click)="onClose()" class="edit-info__button mat-body-1">Отменить</button>
+    <div class="edit-info__buttons">
+		<button mat-button (click)="onClose()" class="edit-info__button">Отменить</button>
 		<button
 			mat-flat-button
 			type="submit"
 			[disabled]="EditForm.invalid"
 			color="primary"
 			(click)="onSubmit()"
-			class="edit-info__button mat-body-1"
+			class="edit-info__button"
 		>
 			Сохранить
 		</button>

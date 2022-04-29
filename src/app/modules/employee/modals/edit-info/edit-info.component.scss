@@ -1,13 +1,4 @@
 .edit-info {
-	&__general {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-evenly;
-		align-items: flex-start;
-
-		width: 650px;
-	}
-
 	&__header {
 		display: flex;
 		justify-content: space-between;
@@ -25,63 +16,33 @@
 	&__edit-button {
 		display: inline-flex;
 		justify-content: space-evenly;
-
-		.light-gray-text {
-			padding-right: 3px;
-		}
 	}
-
-	&__columns {
+	
+	&__general {
 		display: grid;
-		grid-template-columns: 3fr 3fr;
-	}
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		column-gap: 25px;
 
-	&__second-column {
-		margin-left: 32px;
-
-		width: 185px;
+		box-sizing: border-box;
 	}
 
 	&__field {
-		box-sizing: border-box;
-		width: 100%;
-
 		word-wrap: break-word;
 	}
 
-	&__template-row {
-		display: inline-flex;
-
-		width: 100%;
-
-		.mat-form-field {
-			padding: 0 0.5em 0;
-			flex-grow: 1;
-		}
-
-		.mat-form-field-wrapper {
-			margin: 0;
-			padding: 0;
-		}
-
-		.mat-form-field-appearance-outline .mat-form-field-wrapper {
-			margin: 0;
-		}
+	&__field-value {
+		padding-top: 6px;
 	}
 
-	&__template-field {
-		display: inline-flex;
-		justify-content: space-between;
-
-		box-sizing: border-box;
-		width: 50%;
+	&__about {
+		grid-column: span 2;
 	}
 
 	&__buttons {
+		grid-column: span 2;
+
 		display: inline-flex;
 		justify-content: center;
-
-		width: 100%;
 	}
 
 	&__button {
@@ -89,10 +50,4 @@
 
 		width: 180px;
 	}
-	//&__emoji-status {
-	//	text-transform: lowercase;
-	//}
-	//&__emoji-status::first-letter {
-	//	text-transform: capitalize;
-	//}
 }
