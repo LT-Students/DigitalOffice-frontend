@@ -7,7 +7,7 @@
             <span class="edit-info__edit-button mat-body-2 text-disabled">Редактировать </span>
 			<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
 		</button>
-		<span class="edit-info__edit mat-body-2 text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
+<!--		<span class="edit-info__edit mat-body-2 text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>-->
 	</div>
 </div>
 
@@ -30,16 +30,12 @@
             <p class="edit-info__field-value">{{ user.dateOfBirth  | date: dateType.FULL | placeholder }}</p>
         </div>
         <div class="edit-info__field">
-            <span class="mat-body-2 text-secondary_default">Местоположение</span>
-            <p class="edit-info__field-value">{{ '' | placeholder }}</p>
-        </div>
-        <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Часы работы</span>
             <p class="edit-info__field-value">{{ user.businessHoursFromUtc | placeholder }} - {{ user.businessHoursToUtc | placeholder}}</p>
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
-            <p class="edit-info__field-value">{{ user.status | userStatus: true:true | capitalize | placeholder }}</p>
+            <p class="edit-info__field-value">{{ user.status | userStatus: true: true | capitalize: 1 | placeholder}}</p>
         </div>
         <div class="edit-info__field edit-info__about">
             <span class="mat-body-2 text-secondary_default">О себе</span>
@@ -49,63 +45,75 @@
 </mat-dialog-content>
 
 <ng-template #editTemplate [formGroup]="editForm" (ngSubmit)="onSubmit()">
-    <mat-form-field>
-        <mat-label>Фамилия</mat-label>
-        <input matInput formControlName="surname" placeholder="Ввести фамилию" minlength="1" maxlength="45" required />
-        <mat-error *ngIf="editForm.controls['surname']?.errors?.['whitespace']"
-        >Фамилия не может состоять только из пробелов!
-        </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Имя</mat-label>
-        <input matInput formControlName="name" placeholder="Ввести имя" minlength="1" maxlength="45" required />
-        <mat-error *ngIf="editForm.controls['name']?.errors?.['whitespace']"
-        >Имя не может состоять только из пробелов!
-        </mat-error>
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Отчество</mat-label>
-        <input matInput formControlName="middleName" placeholder="Ввести отчество" minlength="1" maxlength="45" />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Дата рождения</mat-label>
-        <input matInput formControlName="dateOfBirth" [matDatepicker]="dayOfBirth" placeholder="ДД месяц ГГГГ" />
-            <mat-datepicker-toggle matSuffix [for]="dayOfBirth">
-                <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-            </mat-datepicker-toggle>
-            <mat-datepicker #dayOfBirth></mat-datepicker>
+    <do-form-row class="edit-info__template-field">
+        <mat-form-field
+            [matTooltip]="editForm.controls['surname']?.errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
+            [matTooltipPosition]="'right'"
+        >
+            <input matInput formControlName="surname" placeholder="Фамилия" minlength="1" maxlength="45" required />
+            <mat-error *ngIf="editForm.controls['surname']?.errors?.['whitespace']"
+            >Фамилия не может состоять только из пробелов!
+            </mat-error>
         </mat-form-field>
-    <mat-form-field>
-        <mat-label>Местоположение</mat-label>
-        <input matInput formControlName="location" placeholder="Ввести местоположение" />
-    </mat-form-field>
-    <mat-form-field>
-        <mat-label>Часы работы</mat-label>
-        <input matInput formControlName="hours" type="time" placeholder="Ввести часы работы" />
-    </mat-form-field>
+    </do-form-row>
+    <do-form-row class="edit-info__template-field">
+        <mat-form-field
+            [matTooltip]="editForm.controls['name']?.errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
+            [matTooltipPosition]="'right'"
+        >
+            <input matInput formControlName="name" placeholder="Имя" minlength="1" maxlength="45" required />
+            <mat-error *ngIf="editForm.controls['name']?.errors?.['whitespace']"
+            >Имя не может состоять только из пробелов!
+            </mat-error>
+        </mat-form-field>
+    </do-form-row>
+    <do-form-row class="edit-info__template-field">
+        <mat-form-field>
+            <input matInput formControlName="middleName" placeholder="Отчество" minlength="1" maxlength="45" />
+            <mat-error *ngIf="editForm.controls['middleName']?.errors?.['whitespace']"
+            >Отчество не может состоять только из пробелов!
+            </mat-error>
+        </mat-form-field>
+    </do-form-row>
+    <do-form-row class="edit-info__template-field">
+        <mat-form-field>
+            <input matInput formControlName="dateOfBirth" [matDatepicker]="dayOfBirth" placeholder="Дата рождения" />
+                <mat-datepicker-toggle matSuffix [for]="dayOfBirth">
+                    <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #dayOfBirth></mat-datepicker>
+        </mat-form-field>
+    </do-form-row>
+    <do-form-row class="edit-info__template-field">
+        <mat-form-field>
+            <mat-select formControlName="status" placeholder="Эмодзи-статус">
+                <mat-option *ngFor="let status of statuses" [value]="status.statusType">
+                    {{ status.statusType | userStatus: true: true | capitalize: 1 }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </do-form-row>
 
-    <mat-form-field>
-        <mat-label>Эмодзи-статус</mat-label>
-        <mat-select formControlName="status" placeholder="Выбрать статус">
-            <mat-option *ngFor="let status of statuses" [value]="status.statusType">{{
-                status.statusType | userStatus: true:true | capitalize
-            }}</mat-option>
-        </mat-select>
-    </mat-form-field>
+    <do-form-row label="Время работы" class="edit-info__template-field edit-info__hours">
+        <mat-form-field>
+            <input matInput formControlName="hours" type="time" placeholder="00:00" />
+        </mat-form-field>
+    </do-form-row>
 
-    <mat-form-field appearance="outline" class="edit-info__about">
-        <mat-label>О себе</mat-label>
-        <textarea
-            #about
-            matInput
-            autocomplete="off"
-            placeholder="Напишите немного о себе или оставьте заметку коллегам"
-            maxlength="150"
-            cdkTextareaAutosize="true"
-            formControlName="aboutField"
-        ></textarea>
-        <mat-hint align="start">{{ about.value.length }}/150</mat-hint>
-    </mat-form-field>
+    <do-form-row label="О себе" class="edit-info__template-field edit-info__about">
+        <mat-form-field appearance="outline">
+            <textarea
+                #about
+                matInput
+                autocomplete="off"
+                placeholder="Написать..."
+                maxlength="150"
+                cdkTextareaAutosize="true"
+                formControlName="aboutField"
+            ></textarea>
+            <mat-hint align="start">{{ about.value.length }}/150</mat-hint>
+        </mat-form-field>
+    </do-form-row>
 
     <div class="edit-info__buttons">
 		<button mat-button (click)="onClose()" class="edit-info__button">Отменить</button>

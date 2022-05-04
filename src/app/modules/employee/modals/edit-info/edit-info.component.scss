@@ -33,6 +33,14 @@
 		padding-top: 6px;
 	}
 
+	&__template-field {
+		margin: 10px 0;
+	}
+
+	&__hours {
+		grid-column: 1;
+	}
+
 	&__about {
 		grid-column: span 2;
 	}

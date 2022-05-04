@@ -31,7 +31,7 @@ export class EditInfoComponent implements OnInit {
 
 	private initForm(): FormGroup {
 		 return this._fb.group({
-			surname: [null, [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]], // [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]
+			surname: [null, [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			name: [null, [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			middleName: [null, [DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			dateOfBirth: [null],
@@ -61,7 +61,6 @@ export class EditInfoComponent implements OnInit {
 		this.user.firstName = this.editForm.get('name')?.value;
 		this.user.middleName = this.editForm.get('middleName')?.value;
 		this.user.dateOfBirth = this.editForm.get('dateOfBirth')?.value;
-		// this.user.location = this.editForm.get('location')?.value;
 		this.user.businessHoursToUtc = this.editForm.get('hours')?.value;
 		this.user.status = this.editForm.get('status')?.value as UserStatus;
 		this.user.about = this.editForm.get('aboutField')?.value;
