@@ -6,9 +6,10 @@ import { ImageInfo } from './image-info';
  * User data.
  */
 export interface UserInfo {
-	avatar?: ImageInfo;
-	firstName?: string;
-	id?: string;
-	lastName?: string;
-	middleName?: null | string;
+  avatar?: ImageInfo;
+  firstName: string;
+  id: string;
+  lastName: string;
+  middleName?: string;
 }
+

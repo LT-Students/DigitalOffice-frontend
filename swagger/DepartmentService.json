@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0.1",
+    "version": "1.0.1.1",
     "title": "DepartmentService",
     "description": "DepartmentService, is intended to work with the department."
   },
@@ -68,16 +68,6 @@
                 }
               }
             }
-          },
-          "409": {
-            "description": "Conflict.\n* Department with this name already exists.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -118,15 +108,6 @@
             "name": "includeProjects",
             "in": "query",
             "description": "Response would include department projects.",
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false
-          },
-          {
-            "name": "includeNews",
-            "in": "query",
-            "description": "Response would include department news.",
             "schema": {
               "type": "boolean"
             },
@@ -181,11 +162,29 @@
           "required": true
         },
         {
-          "name": "includeDeactivated",
+          "name": "isAscendingSort",
           "in": "query",
-          "description": "If it is true, response will be have deactivated records.",
+          "description": "If true returns sorted departments from A to Z, false - sorted from Z to A, null - no sorting.",
           "schema": {
             "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "isActive",
+          "in": "query",
+          "description": "If true returns active departmnts, false - not active, null - all departments.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "nameIncludeSubstring",
+          "in": "query",
+          "description": "Returns departments whose names contain a substring.",
+          "schema": {
+            "type": "string"
           },
           "required": false
         }
@@ -212,7 +211,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/FindResultResponseDepartmentInfo"
                 }
               }
             }
@@ -290,16 +289,6 @@
                 }
               }
             }
-          },
-          "409": {
-            "description": "Conflict.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -354,6 +343,62 @@
           },
           "400": {
             "description": "BadRequest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "Role"
+        ],
+        "operationId": "editDepartmentProject",
+        "description": "The method attempts to change depatrment project.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditDepartmentProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -462,6 +507,12 @@
       "DepartmentInfo": {
         "type": "object",
         "description": "Specific department data.",
+        "required": [
+          "Id",
+          "Name",
+          "IsActive",
+          "CountUsers"
+        ],
         "properties": {
           "Id": {
             "description": "Department id.",
@@ -474,8 +525,7 @@
           },
           "Description": {
             "description": "Department description.",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "IsActive": {
             "type": "boolean"
@@ -484,17 +534,21 @@
             "type": "integer"
           },
           "Director": {
-            "$ref": "#/components/schemas/DepartmentUserInfo",
-            "nullable": true
+            "$ref": "#/components/schemas/DepartmentUserInfo"
           }
         }
       },
       "DepartmentUserInfo": {
         "type": "object",
         "description": "User data of specific department.",
+        "required": [
+          "User",
+          "CreatedAtUtc",
+          "IsActive",
+          "Role"
+        ],
         "properties": {
           "User": {
-            "type": "object",
             "$ref": "#/components/schemas/UserInfo"
           },
           "CreatedAtUtc": {
@@ -503,18 +557,15 @@
           },
           "LeftAtUtc": {
             "type": "string",
-            "format": "date",
-            "nullable": true
+            "format": "date"
           },
           "IsActive": {
             "type": "boolean"
           },
           "Role": {
-            "type": "object",
             "$ref": "#/components/schemas/DepartmentUserRole"
           },
           "Position": {
-            "type": "object",
             "$ref": "#/components/schemas/PositionInfo"
           }
         }
@@ -522,6 +573,11 @@
       "UserInfo": {
         "type": "object",
         "description": "User data.",
+        "required": [
+          "Id",
+          "FirstName",
+          "LastName"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -537,8 +593,7 @@
           },
           "MiddleName": {
             "type": "string",
-            "example": "Alexandrovich",
-            "nullable": true
+            "example": "Alexandrovich"
           },
           "Avatar": {
             "$ref": "#/components/schemas/ImageInfo"
@@ -547,6 +602,11 @@
       },
       "ProjectInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "Status"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -568,6 +628,10 @@
       },
       "PositionInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
         "properties": {
           "Id": {
             "description": "Specific position id.",
@@ -578,22 +642,16 @@
             "description": "Position name.",
             "type": "string",
             "example": "IT projects consultant"
-          },
-          "Description": {
-            "description": "Position description.",
-            "type": "string",
-            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
-            "nullable": true
-          },
-          "IsActive": {
-            "description": "Marks whether position is active or not.",
-            "type": "boolean",
-            "example": true
           }
         }
       },
       "ImageInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Content",
+          "Extension"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -603,9 +661,6 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
-          },
-          "Type": {
-            "type": "string"
           },
           "Name": {
             "type": "string",
@@ -620,38 +675,11 @@
           }
         }
       },
-      "NewsInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Preview": {
-            "type": "string"
-          },
-          "Subject": {
-            "type": "string"
-          },
-          "Pseudonym": {
-            "type": "string"
-          },
-          "Author": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
-          "CreatedAtUtc": {
-            "type": "string",
-            "format": "date"
-          },
-          "Sender": {
-            "$ref": "#/components/schemas/UserInfo"
-          }
-        }
-      },
       "CreateDepartmentRequest": {
         "type": "object",
         "required": [
-          "Name"
+          "Name",
+          "Users"
         ],
         "properties": {
           "Name": {
@@ -668,6 +696,22 @@
             "items": {
               "$ref": "#/components/schemas/CreateUserRequest"
             }
+          }
+        }
+      },
+      "EditDepartmentProjectRequest": {
+        "type": "object",
+        "required": [
+          "ProjectId"
+        ],
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "DepartmentId": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
@@ -711,10 +755,13 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "nullable": true
+            "type": "object"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -729,33 +776,13 @@
       },
       "OperationResultResponseDepartmentResponse": {
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "description": "Full departmant information.",
-            "properties": {
-              "department": {
-                "$ref": "#/components/schemas/DepartmentInfo"
-              },
-              "users": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DepartmentUserInfo"
-                }
-              },
-              "projects": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ProjectInfo"
-                }
-              },
-              "news": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/NewsInfo"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/DepartmentResponse"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -768,8 +795,37 @@
           }
         }
       },
+      "DepartmentResponse": {
+        "type": "object",
+        "description": "Full departmant information.",
+        "required": [
+          "Department"
+        ],
+        "properties": {
+          "Department": {
+            "$ref": "#/components/schemas/DepartmentInfo"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentUserInfo"
+            }
+          },
+          "Projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectInfo"
+            }
+          }
+        }
+      },
       "FindResultResponseDepartmentInfo": {
         "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -799,7 +855,6 @@
           "PartialSuccess",
           "Failed"
         ],
-        "example": "FullSuccess",
         "default": "FullSuccess"
       },
       "PatchDepartmentDocument": {
