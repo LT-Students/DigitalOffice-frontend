@@ -21,7 +21,9 @@ export interface IRemoveWorkspaceRequest {
 	workspaceId: string;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class MessageService {
 	constructor(private _messageService: MessageApiService, private _workspaceService: WorkspaceApiService) {}
 

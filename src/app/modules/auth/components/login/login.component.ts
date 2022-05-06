@@ -6,7 +6,7 @@ import { AuthService } from '@app/services/auth/auth.service';
 
 import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AppRoutes } from '@app/models/app-routes';
 import { AutofillEvent } from '@angular/cdk/text-field';
@@ -75,10 +75,10 @@ export class LoginComponent implements OnInit {
 							error: error,
 						},
 					});
-					return of(null);
+					return throwError(error);
 				})
 			)
-			.subscribe((user: User | null) => {
+			.subscribe((user: User) => {
 				if (user) {
 					this.router.navigate([AppRoutes.TimeTrack]);
 				}

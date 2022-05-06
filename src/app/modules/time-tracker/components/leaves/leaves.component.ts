@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
 
 import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultStatusType } from '@api/time-service/models';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY, iif, Observable } from 'rxjs';
 import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { TimeService } from '@app/services/time/time.service';
@@ -27,7 +26,6 @@ export class LeavesComponent {
 	constructor(
 		private _modalService: ModalService,
 		private _cdr: ChangeDetectorRef,
-		private _snackBar: MatSnackBar,
 		private _attendanceService: AttendanceService,
 		private _timeService: TimeService
 	) {

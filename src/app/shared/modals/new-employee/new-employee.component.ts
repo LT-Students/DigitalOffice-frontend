@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { HttpErrorResponse } from '@angular/common/http';
 
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
 import { CommunicationType, ContractTerm, CreateCommunicationRequest, UserStatus } from '@api/user-service/models';
@@ -81,9 +80,6 @@ export class NewEmployeeComponent implements OnDestroy {
 		).subscribe(
 			(result: OperationResultResponse) => {
 				this._dialogRef.close(result);
-			},
-			(error: OperationResultResponse | HttpErrorResponse) => {
-				throw error;
 			}
 		);
 	}

@@ -124,7 +124,6 @@ export class EditLeaveComponent {
 						},
 					});
 				},
-				(err) => console.log(err),
 				() => this._attendanceService.getActivities().subscribe()
 			);
 	}

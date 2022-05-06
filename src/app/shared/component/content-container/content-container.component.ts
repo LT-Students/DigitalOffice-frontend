@@ -2,13 +2,13 @@ import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, AfterViewIni
 
 import { AuthService } from '@app/services/auth/auth.service';
 import { Event, NavigationEnd, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { map, takeUntil, tap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import { PortalService } from '@app/services/portal.service';
 import { PortalInfo } from '@app/services/admin/admin.service';
 import { AppRoutes } from '@app/models/app-routes';
+import { AlertService } from '@app/services/alert.service';
 import { DepartmentsRoutes } from '../../../modules/departments/models/departments-routes';
 
 @Component({
@@ -33,7 +33,7 @@ export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 		private _currentUserService: CurrentUserService,
 		private _authService: AuthService,
 		private portalService: PortalService,
-		private _snackBar: MatSnackBar,
+		private alert: AlertService,
 		private router: Router
 	) {
 		this.navOpened = false;
@@ -59,7 +59,7 @@ export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 			this.closeNav();
 			this.router.navigate([AppRoutes.Departments, departmentId, DepartmentsRoutes.TimeList]);
 		} else {
-			this._snackBar.open('Не удаётся получить данные о департаменте', 'Закрыть', { duration: 3000 });
+			this.alert.open('Не удаётся получить данные о департаменте');
 		}
 	}
 
