@@ -1,9 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
-import { OfficeInfo } from './office-info';
 import { OperationResultStatusType } from './operation-result-status-type';
-export interface FindResultResponseOfficeInfo {
-  body?: Array<OfficeInfo>;
+import { WorkspaceTypeInfo } from './workspace-type-info';
+export interface FindResultResponseWorkspaceTypeInfo {
+  body?: Array<WorkspaceTypeInfo>;
   errors: Array<string>;
   status: OperationResultStatusType;
   totalCount: number;
