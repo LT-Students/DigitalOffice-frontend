@@ -90,7 +90,9 @@ export interface ICreateLeaveTimeRequest {
 	userId: string;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class TimeService {
 	constructor(
 		private _responseModel: ResponseMessageModel,

@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { HttpErrorResponse } from '@angular/common/http';
 
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
 import { CommunicationType, ContractTerm, CreateCommunicationRequest, UserStatus } from '@api/user-service/models';
@@ -10,7 +9,6 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { finalize, first, map, switchMap } from 'rxjs/operators';
 import { RightsService } from '@app/services/rights/rights.service';
 import { RoleInfo } from '@api/rights-service/models/role-info';
-import { FindResultResponseDepartmentInfo } from '@api/department-service/models/find-result-response-department-info';
 import { FindResultResponsePositionInfo } from '@api/position-service/models/find-result-response-position-info';
 import { DoValidators } from '@app/validators/do-validators';
 import { PositionService } from '@app/services/position/position.service';
@@ -20,6 +18,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { OfficeInfo } from '@api/office-service/models/office-info';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { Company } from '@app/models/company';
+import { DepartmentInfo } from '@api/department-service/models/department-info';
 
 @Component({
 	selector: 'do-new-employee',
@@ -30,7 +29,7 @@ import { Company } from '@app/models/company';
 export class NewEmployeeComponent implements OnDestroy {
 	public userForm: FormGroup;
 	public position$: Observable<FindResultResponsePositionInfo>;
-	public department$: Observable<FindResultResponseDepartmentInfo>;
+	public department$: Observable<OperationResultResponse<DepartmentInfo[]>>;
 	public roles$: Observable<RoleInfo[]>;
 	public offices$: Observable<OfficeInfo[]>;
 	public loading$$: BehaviorSubject<boolean>;
@@ -50,7 +49,7 @@ export class NewEmployeeComponent implements OnDestroy {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.userForm = this._initForm();
 		this.position$ = this._positionService.findPositions({ skipcount: 0, takecount: 500 });
-		this.department$ = this.department$ = this._departmentService.findDepartments({
+		this.department$ = this._departmentService.findDepartments({
 			skipCount: 0,
 			takeCount: 500,
 		});
@@ -81,9 +80,6 @@ export class NewEmployeeComponent implements OnDestroy {
 		).subscribe(
 			(result: OperationResultResponse) => {
 				this._dialogRef.close(result);
-			},
-			(error: OperationResultResponse | HttpErrorResponse) => {
-				throw error;
 			}
 		);
 	}

@@ -6,7 +6,6 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { map, tap, withLatestFrom } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UUID } from '@app/types/uuid.type';
 
 @Injectable({
@@ -19,7 +18,6 @@ export class EmployeePageService implements Resolve<User> {
 	constructor(
 		private _userService: UserService,
 		private _currentUserService: CurrentUserService,
-		private _snackBar: MatSnackBar
 	) {
 		this._selectedUser = new ReplaySubject<User>(1);
 		this.selectedUser$ = this._selectedUser.asObservable();

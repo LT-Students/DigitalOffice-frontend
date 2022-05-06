@@ -4,6 +4,7 @@ export { CreateRoleLocalizationRequest } from './models/create-role-localization
 export { EditRoleLocalizationRequest } from './models/edit-role-localization-request';
 export { PatchRoleLocalizationDocument } from './models/patch-role-localization-document';
 export { UpdateRoleRightsRequest } from './models/update-role-rights-request';
+export { EditUserRoleRequest } from './models/edit-user-role-request';
 export { RoleInfo } from './models/role-info';
 export { UserInfo } from './models/user-info';
 export { RoleLocalizationInfo } from './models/role-localization-info';

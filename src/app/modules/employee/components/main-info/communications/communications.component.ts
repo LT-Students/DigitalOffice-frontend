@@ -4,12 +4,12 @@ import { ModalService, ModalWidth } from '@app/services/modal.service';
 import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
 import { OperationResultStatusType } from '@api/user-service/models/operation-result-status-type';
 import { CommunicationService } from '@app/services/user/communication.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, switchMap } from 'rxjs/operators';
-import { EMPTY, iif, throwError } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { EMPTY, iif } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { AlertService } from '@app/services/alert.service';
 import { EmployeePageService } from '../../../services/employee-page.service';
-import { ConfirmDialogData } from '../../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
 
@@ -29,7 +29,7 @@ export class CommunicationsComponent implements OnInit {
 		private _modalService: ModalService,
 		private _cdr: ChangeDetectorRef,
 		private _communicationService: CommunicationService,
-		private _snackBar: MatSnackBar,
+		private alert: AlertService,
 		private _clipboard: Clipboard
 	) {
 		this.communications = [];
@@ -49,7 +49,7 @@ export class CommunicationsComponent implements OnInit {
 	public onCommunicationClick(contact: CommunicationInfo): void {
 		const copied: boolean = this._clipboard.copy(contact.value ?? '');
 		if (copied) {
-			this._snackBar.open('Контакт скопирован в буфер обмена', 'x', { duration: 3000 });
+			this.alert.open('Контакт скопирован в буфер обмена');
 		}
 	}
 
@@ -104,11 +104,6 @@ export class CommunicationsComponent implements OnInit {
 			.confirm(confirmDialogData)
 			.afterClosed()
 			.pipe(
-				catchError((err) => {
-					const errorMessage: string = err.error?.errors ? err.error.errors[0] : 'Что-то пошло не так :(';
-					this._snackBar.open(errorMessage, 'x', { duration: 3000 });
-					return throwError(err);
-				}),
 				switchMap((confirmResult) => {
 					return iif(
 						() => !!confirmResult,

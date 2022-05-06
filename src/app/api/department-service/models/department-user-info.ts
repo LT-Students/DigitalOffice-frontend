@@ -8,10 +8,11 @@ import { UserInfo } from './user-info';
  * User data of specific department.
  */
 export interface DepartmentUserInfo {
-	createdAtUtc?: string;
-	isActive?: boolean;
-	leftAtUtc?: null | string;
-	position?: PositionInfo;
-	role?: DepartmentUserRole;
-	user?: UserInfo;
+  createdAtUtc: string;
+  isActive: boolean;
+  leftAtUtc?: string;
+  position?: PositionInfo;
+  role: DepartmentUserRole;
+  user: UserInfo;
 }
+

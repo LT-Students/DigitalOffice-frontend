@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ChangeUserOfficeRequest {
-	officeId?: null | string;
-	userId: string;
+  officeId?: string;
+  userId: string;
 }
+
