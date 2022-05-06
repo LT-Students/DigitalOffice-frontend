@@ -31,7 +31,7 @@
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Часы работы</span>
-            <p class="edit-info__field-value">{{ user.businessHoursFromUtc | placeholder }} - {{ user.businessHoursToUtc | placeholder}}</p>
+            <p class="edit-info__field-value">{{ user.businessHoursFromUtc | date: 'shortTime' | placeholder }} - {{ user.businessHoursToUtc | date: 'shortTime' | placeholder}}</p>
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
