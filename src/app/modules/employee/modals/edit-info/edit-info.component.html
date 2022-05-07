@@ -84,11 +84,17 @@
         </mat-form-field>
     </do-form-row>
 
-    <do-form-row label="Время работы" class="edit-info__template-field edit-info__hours">
-        <div>С</div>
-        <input matInput [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC" type="time" placeholder="00:00" [valueAsDate]='user.businessHoursFromUtc' />
-        <div>По</div>
-        <input matInput [formControlName]="userPath.BUSINESS_HOURS_TO_UTC" type="time" placeholder="00:00" [valueAsDate]='user.businessHoursToUtc' />
+    <do-form-row label="Время работы" class="edit-info__template-field">
+        <div class="edit-info__hours">
+            <div class="edit-info__hours-input">
+                <label>С</label>
+                <input matInput [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC" type="time" placeholder="00:00" [valueAsDate]='user.businessHoursFromUtc' />
+            </div>
+            <div class="edit-info__hours-input">
+                <label>По</label>
+                <input matInput [formControlName]="userPath.BUSINESS_HOURS_TO_UTC" type="time" placeholder="00:00" [valueAsDate]='user.businessHoursToUtc' />
+            </div>
+        </div>
     </do-form-row>
 
     <do-form-row label="Эмодзи-статус" class="edit-info__template-field">

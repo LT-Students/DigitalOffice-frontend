@@ -39,6 +39,15 @@
 
 	&__hours {
 		grid-column: 1;
+
+		display: inline-flex;
+		justify-content: space-between;
+	}
+
+	&__hours-input {
+		display: inline-flex;
+
+		width: fit-content;
 	}
 
 	&__about {
