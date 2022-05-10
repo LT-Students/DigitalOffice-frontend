@@ -35,7 +35,6 @@ import { EducationApiModule } from '@api/education-service/education-api.module'
 import { AdminApiModule } from '@api/admin-service/admin-api.module';
 import { AdminService } from '@app/services/admin/admin.service';
 import { environment } from '../../environments/environment';
-import { PermissionService } from './services/permission.service';
 
 @NgModule({
 	declarations: [],
@@ -77,7 +76,6 @@ import { PermissionService } from './services/permission.service';
 		CredentialsService,
 		PasswordService,
 		EducationService,
-		PermissionService,
 	],
 	exports: [],
 })

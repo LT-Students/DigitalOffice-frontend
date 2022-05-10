@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, ObservedValuesFromArray, Observer, Subject, Subscriber } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { UserRights } from '@app/types/user-rights.enum';
 import { CurrentUserService } from './current-user.service';
 
@@ -9,31 +9,35 @@ import { CurrentUserService } from './current-user.service';
 })
 export class PermissionService {
 	private assignesRights$: Observable<UserRights[]>;
-	private _doesHaveRight = new BehaviorSubject<boolean>(false);
 
 	constructor(private currentUserService: CurrentUserService) {
-		this.assignesRights$ = this.currentUserService.user$.pipe(map((user) => user?.role?.rightsIds ?? []));
+		this.assignesRights$ = this.currentUserService.user$.pipe(
+			map((user) => user?.role?.rightsIds ?? []),
+			take(1)
+		);
 	}
 
-	public checkPermission(_right: number): boolean {
-		const _isAdmin = this.currentUserService.user$.pipe(map((user) => user.isAdmin));
+	public checkPermission(right: UserRights): boolean {
+		let isAdmin = false;
+		let hasPermission = false;
 
-		if (_isAdmin) {
+		this.currentUserService.user$
+			.pipe(
+				map((user) => user.isAdmin),
+				take(1)
+			)
+			.subscribe({
+				next: (admin) => (isAdmin = admin),
+			});
+
+		if (isAdmin) {
 			return true;
 		} else {
 			this.assignesRights$.subscribe({
-				next: (rights: UserRights[]) => {
-					if (rights.includes(_right)) {
-						this._doesHaveRight.next(true);
-					}
-				},
+				next: (rights: UserRights[]) => (hasPermission = rights.includes(right)),
 			});
 
-			if (this._doesHaveRight.getValue()) {
-				return true;
-			} else {
-				return false;
-			}
+			return hasPermission;
 		}
 	}
 }
