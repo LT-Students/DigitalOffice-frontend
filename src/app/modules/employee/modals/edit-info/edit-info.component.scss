@@ -5,41 +5,22 @@
 		align-items: baseline;
 	}
 
-	&__edit {
-		display: flex;
-
-		justify-content: center;
-
-		align-self: baseline;
-	}
-
 	&__edit-button {
 		margin-right: 7px;
 	}
 	
 	&__general {
 		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		column-gap: 25px;
-
-		box-sizing: border-box;
+		grid-template-columns: repeat(2, 1fr);
+		column-gap: 24px;
+		row-gap: 24px;
 	}
 
 	&__field {
 		word-wrap: break-word;
 	}
 
-	&__field-value {
-		padding-top: 6px;
-	}
-
-	&__template-field {
-		margin: 10px 0;
-	}
-
 	&__hours {
-		grid-column: 1;
-
 		display: inline-flex;
 		justify-content: space-between;
 	}
@@ -56,6 +37,7 @@
 	}
 
 	&__buttons {
+		padding: 30px 0 0;
 		grid-column: span 2;
 
 		display: inline-flex;

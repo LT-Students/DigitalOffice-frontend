@@ -2,54 +2,53 @@
 
 <div class="edit-info__header">
 	<h4>Общие сведения</h4>
-	<div class="edit-info__edit">
-		<button mat-button (click)="onEdit()" *ngIf="!isEditMode">
-            <span class="edit-info__edit-button mat-body-2 text-disabled">Редактировать </span>
-			<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
-		</button>
-	</div>
+    <button mat-button (click)="onEdit()" *ngIf="!isEditMode">
+        <span class="edit-info__edit-button mat-body-2 text-disabled">Редактировать </span>
+        <img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+    </button>
+    <span class="text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
 </div>
 
 <mat-dialog-content class="edit-info__general">
 	<ng-container *ngIf="!isEditMode; else editTemplate">
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Фамилия</span>
-            <p class="edit-info__field-value">{{ user.lastName | placeholder }}</p>
+            <div>{{ user.lastName | placeholder }}</div>
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Имя</span>
-            <p class="edit-info__field-value">{{ user.firstName | placeholder }}</p>
+            <div>{{ user.firstName | placeholder }}</div>
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Отчество</span>
-            <p class="edit-info__field-value">{{ user.middleName | placeholder }}</p>
+            <div>{{ user.middleName | placeholder }}</div>
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Дата рождения</span>
-            <p class="edit-info__field-value">{{ user.dateOfBirth  | date: dateType.FULL | placeholder }}</p>
+            <div>{{ user.dateOfBirth  | date: dateType.FULL | placeholder }}</div>
         </div>
         <div class="edit-info__field">
-            <span class="mat-body-2 text-secondary_default">Часы работы</span>
-            <p class="edit-info__field-value">{{ user.businessHoursFromUtc | date: 'shortTime' | placeholder }} - {{ user.businessHoursToUtc | date: 'shortTime' | placeholder}}</p>
+            <span class="mat-body-2 text-secondary_default">Время работы</span>
+            <div>{{ user.businessHoursFromUtc | date: 'shortTime' | placeholder }} - {{ user.businessHoursToUtc | date: 'shortTime' | placeholder}}</div>
         </div>
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
-            <p class="edit-info__field-value">{{ user.status | userStatus: true: true | capitalize: 1 | placeholder}}</p>
+            <div>{{ user.status | userStatus: true: true | capitalize: 1 | placeholder}}</div>
         </div>
         <div class="edit-info__field edit-info__about">
             <span class="mat-body-2 text-secondary_default">О себе</span>
-            <p class="edit-info__field-value">{{ user.about | placeholder }}</p>
+            <div>{{ user.about | placeholder }}</div>
         </div>
     </ng-container>
 </mat-dialog-content>
 
-<ng-template #editTemplate [formGroup]="editForm" (ngSubmit)="onSubmit()">
+<ng-template #editTemplate [formGroup]="editForm">
     <do-form-row class="edit-info__template-field">
         <mat-form-field
             [matTooltip]="editForm.controls['/LastName']?.errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
             [matTooltipPosition]="'right'"
         >
-            <input matInput [formControlName]="userPath.LAST_NAME" placeholder="Фамилия" minlength="1" maxlength="45" required />
+            <input doTransformName matInput [formControlName]="userPath.LAST_NAME" placeholder="Фамилия" minlength="1" maxlength="45" required />
             <mat-error *ngIf="editForm.controls['/LastName']?.errors?.['whitespace']"
             >Фамилия не может состоять только из пробелов!
             </mat-error>
@@ -60,7 +59,7 @@
             [matTooltip]="editForm.controls['/FirstName']?.errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
             [matTooltipPosition]="'right'"
         >
-            <input matInput [formControlName]="userPath.FIRST_NAME" placeholder="Имя" minlength="1" maxlength="45" required />
+            <input doTransformName matInput [formControlName]="userPath.FIRST_NAME" placeholder="Имя" minlength="1" maxlength="45" required />
             <mat-error *ngIf="editForm.controls['/FirstName']?.errors?.['whitespace']"
             >Имя не может состоять только из пробелов!
             </mat-error>
@@ -68,7 +67,7 @@
     </do-form-row>
     <do-form-row class="edit-info__template-field">
         <mat-form-field>
-            <input matInput [formControlName]="userPath.MIDDLE_NAME" placeholder="Отчество" minlength="1" maxlength="45" />
+            <input doTransformName  matInput [formControlName]="userPath.MIDDLE_NAME" placeholder="Отчество" minlength="1" maxlength="45" />
             <mat-error *ngIf="editForm.controls['/MiddleName'].errors?.['whitespace']"
             >Отчество не может состоять только из пробелов!
             </mat-error>
@@ -114,16 +113,18 @@
                 matInput
                 autocomplete="off"
                 placeholder="Написать..."
-                maxlength="150"
+                maxlength="{{ maxChars }}"
                 cdkTextareaAutosize="true"
                 [formControlName]="userPath.ABOUT"
+                cdkAutosizeMinRows="4"
+                cdkAutosizeMaxRows="4"
             ></textarea>
-            <mat-hint align="start">{{ about.value.length }}/150</mat-hint>
+            <mat-hint align="start">{{ about.value.length }}/{{ maxChars }}</mat-hint>
         </mat-form-field>
     </do-form-row>
 
     <div class="edit-info__buttons">
-		<button mat-button (click)="onClose()" class="edit-info__button">Отменить</button>
+		<button mat-button (click)="toggleEditMode()" class="edit-info__button">Отменить</button>
 		<button
 			mat-flat-button
 			type="submit"

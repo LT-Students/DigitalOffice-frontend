@@ -6,7 +6,7 @@ import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model
 import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
-import { finalize, first, map, switchMap, take } from 'rxjs/operators';
+import { finalize, first, map, switchMap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
@@ -81,6 +81,7 @@ export class MainInfoComponent implements OnInit {
 		const dialogRef = this._dialog.open(EditInfoComponent, {
 			data: user,
 			width: ModalWidth.L,
+			autoFocus: false,
 		});
 	}
 
