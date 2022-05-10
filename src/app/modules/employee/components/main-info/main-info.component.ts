@@ -6,8 +6,7 @@ import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model
 import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
-import { finalize, first, map, switchMap } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { finalize, first, map, switchMap, take } from 'rxjs/operators';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
@@ -42,7 +41,6 @@ export class MainInfoComponent implements OnInit {
 		private _employeeService: EmployeePageService,
 		private _userService: UserService,
 		private _dialog: MatDialog,
-		private _snackBar: MatSnackBar,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.loading = new BehaviorSubject<boolean>(false);

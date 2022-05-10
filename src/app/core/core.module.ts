@@ -3,20 +3,6 @@ import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { CompanyService } from '@app/services/company/company.service';
-import { OfficeService } from '@app/services/company/office.service';
-import { FileService } from '@app/services/file/file.service';
-import { ImageService } from '@app/services/file/image.service';
-import { MessageService } from '@app/services/message/message.service';
-import { NewsService } from '@app/services/news/news.service';
-import { ProjectService } from '@app/services/project/project.service';
-import { RightsService } from '@app/services/rights/rights.service';
-import { TimeService } from '@app/services/time/time.service';
-import { CertificateService } from '@app/services/user/certificate.service';
-import { CommunicationService } from '@app/services/user/communication.service';
-import { CredentialsService } from '@app/services/user/credentials.service';
-import { EducationService } from '@app/services/user/education.service';
-import { AuthService } from '@app/services/auth/auth.service';
 import { UserApiModule } from '@api/user-service/user-api.module';
 import { AuthenticationApiModule } from '@api/auth-service/authentication-api.module';
 import { CompanyApiModule } from '@api/company-service/company-api.module';
@@ -30,10 +16,8 @@ import { TimeApiModule } from '@api/time-service/time-api.module';
 import { DepartmentApiModule } from '@api/department-service/department-api.module';
 import { PositionApiModule } from '@api/position-service/position-api.module';
 import { OfficeApiModule } from '@api/office-service/office-api.module';
-import { PasswordService } from '@app/services/user/password.service';
 import { EducationApiModule } from '@api/education-service/education-api.module';
 import { AdminApiModule } from '@api/admin-service/admin-api.module';
-import { AdminService } from '@app/services/admin/admin.service';
 import { environment } from '../../environments/environment';
 
 @NgModule({
@@ -59,24 +43,5 @@ import { environment } from '../../environments/environment';
 		UserApiModule.forRoot({ rootUrl: `https://user.${environment.apiUrl}` }),
 		OfficeApiModule.forRoot({ rootUrl: `https://office.${environment.apiUrl}` }),
 	],
-	providers: [
-		AdminService,
-		AuthService,
-		CompanyService,
-		OfficeService,
-		FileService,
-		ImageService,
-		MessageService,
-		NewsService,
-		ProjectService,
-		RightsService,
-		TimeService,
-		CertificateService,
-		CommunicationService,
-		CredentialsService,
-		PasswordService,
-		EducationService,
-	],
-	exports: [],
 })
 export class CoreModule {}

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0.0",
+    "version": "1.0.2.0",
     "title": "OfficeService",
     "description": "OfficeService is an API that intended to work with offices."
   },
@@ -96,11 +96,29 @@
           "required": true
         },
         {
-          "name": "includeDeactivated",
+          "name": "isAscendingSort",
           "in": "query",
-          "description": "If it is true, response will be have deactivated records.",
+          "description": "If true returns sorted offices from A to Z, false - sorted from Z to A, null - no sorting.",
           "schema": {
             "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "isActive",
+          "in": "query",
+          "description": "If true returns active offices, false - not active, null - all offices.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "nameIncludeSubstring",
+          "in": "query",
+          "description": "Returns offices whose names contain a substring.",
+          "schema": {
+            "type": "string"
           },
           "required": false
         }
@@ -126,7 +144,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/FindResultResponseOfficeInfo"
                 }
               }
             }
@@ -254,6 +272,233 @@
           }
         }
       }
+    },
+    "/workspace/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "createWorkspace",
+        "description": "Adds a new workspace.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created workspace will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of workspaces to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of workspaces to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "description": "If it is true, response will be have deactivated records.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "findWorkspaces",
+        "responses": {
+          "200": {
+            "description": "Successfully returned all workspaces.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkspaceInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkspaceInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspacetype/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "createWorkspaceType",
+        "description": "Adds a new workspace type.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceTypeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created workspace type will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspacetype/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of workspace types to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of workspace types to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "WorkspaceType"
+        ],
+        "operationId": "findWorkspaceTypes",
+        "responses": {
+          "200": {
+            "description": "Successfully returned all workspace types.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkspaceTypeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkspaceTypeInfo"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -282,6 +527,55 @@
           }
         }
       },
+      "CreateWorkspaceRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "WorkspaceTypeId"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "IsBookable": {
+            "type": "boolean"
+          },
+          "WorkspaceTypeId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": false
+          }
+        }
+      },
+      "CreateWorkspaceTypeRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "BookingRule"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "StartTime": {
+            "type": "string",
+            "format": "date"
+          },
+          "EndTime": {
+            "type": "string",
+            "format": "date"
+          },
+          "BookingRule": {
+            "$ref": "#/components/schemas/BookingRule"
+          }
+        }
+      },
       "ChangeUserOfficeRequest": {
         "type": "object",
         "required": [
@@ -290,8 +584,7 @@
         "properties": {
           "OfficeId": {
             "type": "string",
-            "format": "uuid",
-            "nullable": true
+            "format": "uuid"
           },
           "UserId": {
             "type": "string",
@@ -304,7 +597,8 @@
         "required": [
           "Id",
           "City",
-          "Address"
+          "Address",
+          "IsActive"
         ],
         "properties": {
           "Id": {
@@ -331,6 +625,81 @@
             "type": "boolean"
           }
         }
+      },
+      "WorkspaceInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "WorkspaceType"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "IsBookable": {
+            "type": "boolean"
+          },
+          "WorkspaceType": {
+            "$ref": "#/components/schemas/WorkspaceTypeInfo"
+          }
+        }
+      },
+      "WorkspaceTypeInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "BookingRule"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "StartTime": {
+            "type": "string",
+            "format": "date",
+            "pattern": ""
+          },
+          "EndTime": {
+            "type": "string",
+            "format": "date",
+            "pattern": ""
+          },
+          "BookingRule": {
+            "$ref": "#/components/schemas/BookingRule"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BookingRule": {
+        "type": "string",
+        "description": "Booking rule type",
+        "enum": [
+          "BookingForbidden",
+          "PartialBooking",
+          "FullBooking"
+        ]
       },
       "PatchOfficeDocument": {
         "type": "object",
@@ -428,10 +797,13 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Status",
+          "Error"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "nullable": true
+            "type": "object"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -446,6 +818,11 @@
       },
       "FindResultResponseOfficeInfo": {
         "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -454,6 +831,62 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/OfficeInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseWorkspaceInfo": {
+        "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseWorkspaceTypeInfo": {
+        "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceTypeInfo"
             }
           },
           "TotalCount": {

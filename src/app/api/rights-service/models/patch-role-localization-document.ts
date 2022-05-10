@@ -1,18 +1,21 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface PatchRoleLocalizationDocument {
-	/**
-	 * The operation to be performed.
-	 */
-	op: 'replace';
 
-	/**
-	 * A JSON-Pointer.
-	 */
-	path: '/Name' | '/Description' | '/IsActive';
+  /**
+   * The operation to be performed.
+   */
+  op: 'replace';
 
-	/**
-	 * The value to be used within the operations.
-	 */
-	value?: {};
+  /**
+   * A JSON-Pointer.
+   */
+  path: '/Name' | '/Description' | '/IsActive';
+
+  /**
+   * The value to be used within the operations.
+   */
+  value?: {
+};
 }
+
