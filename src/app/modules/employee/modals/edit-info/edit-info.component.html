@@ -1,15 +1,16 @@
 <h3 mat-dialog-title doUnderline underlinedSize="sm">Редактирование профиля</h3>
 
+<div *ngIf="user | async as user">
 <div class="edit-info__header">
 	<h4>Общие сведения</h4>
-    <button mat-button (click)="onEdit()" *ngIf="!isEditMode">
+    <button mat-button (click)="onEdit(user)" *ngIf="!isEditMode">
         <span class="edit-info__edit-button mat-body-2 text-disabled">Редактировать </span>
         <img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
     </button>
     <span class="text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
 </div>
 
-<mat-dialog-content class="edit-info__general">
+<mat-dialog-content class="edit-info__general" [ngClass]="isEditMode ? 'edit-info__general-template' : 'edit-info__general-page'">
 	<ng-container *ngIf="!isEditMode; else editTemplate">
         <div class="edit-info__field">
             <span class="mat-body-2 text-secondary_default">Фамилия</span>
@@ -41,9 +42,10 @@
         </div>
     </ng-container>
 </mat-dialog-content>
+</div>
 
 <ng-template #editTemplate [formGroup]="editForm">
-    <do-form-row class="edit-info__template-field">
+    <do-form-row>
         <mat-form-field
             [matTooltip]="editForm.controls['/LastName']?.errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
             [matTooltipPosition]="'right'"
@@ -54,7 +56,7 @@
             </mat-error>
         </mat-form-field>
     </do-form-row>
-    <do-form-row class="edit-info__template-field">
+    <do-form-row>
         <mat-form-field
             [matTooltip]="editForm.controls['/FirstName']?.errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
             [matTooltipPosition]="'right'"
@@ -65,7 +67,7 @@
             </mat-error>
         </mat-form-field>
     </do-form-row>
-    <do-form-row class="edit-info__template-field">
+    <do-form-row>
         <mat-form-field>
             <input doTransformName  matInput [formControlName]="userPath.MIDDLE_NAME" placeholder="Отчество" minlength="1" maxlength="45" />
             <mat-error *ngIf="editForm.controls['/MiddleName'].errors?.['whitespace']"
@@ -73,7 +75,7 @@
             </mat-error>
         </mat-form-field>
     </do-form-row>
-    <do-form-row class="edit-info__template-field">
+    <do-form-row>
         <mat-form-field>
             <input matInput [formControlName]="userPath.DATE_OF_BIRTH" [matDatepicker]="dayOfBirth" placeholder="Дата рождения" />
                 <mat-datepicker-toggle matSuffix [for]="dayOfBirth">
@@ -83,20 +85,26 @@
         </mat-form-field>
     </do-form-row>
 
-    <do-form-row label="Время работы" class="edit-info__template-field">
+    <do-form-row label="Время работы" class="edit-info__template-padding">
         <div class="edit-info__hours">
             <div class="edit-info__hours-input">
                 <label>С</label>
-                <input matInput [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC" type="time" placeholder="00:00" [valueAsDate]='user.businessHoursFromUtc' />
+                <mat-form-field class="edit-info__hours-stuff">
+                    <input matInput [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC" type="time" [value]='userPath.BUSINESS_HOURS_FROM_UTC' />
+                    <mat-icon matSuffix>schedule</mat-icon>
+                </mat-form-field>
             </div>
-            <div class="edit-info__hours-input">
+            <div class="edit-info__hours-input edit-info__hours-input-end">
                 <label>По</label>
-                <input matInput [formControlName]="userPath.BUSINESS_HOURS_TO_UTC" type="time" placeholder="00:00" [valueAsDate]='user.businessHoursToUtc' />
+                <mat-form-field class="edit-info__hours-stuff">
+                    <input matInput [formControlName]="userPath.BUSINESS_HOURS_TO_UTC" type="time" [value]='userPath.BUSINESS_HOURS_FROM_UTC' />
+                    <mat-icon matSuffix>schedule</mat-icon>
+                </mat-form-field>
             </div>
         </div>
     </do-form-row>
 
-    <do-form-row label="Эмодзи-статус" class="edit-info__template-field">
+    <do-form-row label="Эмодзи-статус" class="edit-info__template-padding">
         <mat-form-field>
             <mat-select [formControlName]="userPath.STATUS">
                 <mat-option *ngFor="let status of statuses" [value]="status.statusType">
@@ -106,7 +114,7 @@
         </mat-form-field>
     </do-form-row>
 
-    <do-form-row label="О себе" class="edit-info__template-field edit-info__about">
+    <do-form-row label="О себе" class="edit-info__template-column">
         <mat-form-field appearance="outline">
             <textarea
                 #about
@@ -123,7 +131,7 @@
         </mat-form-field>
     </do-form-row>
 
-    <div class="edit-info__buttons">
+    <div class="edit-info__buttons edit-info__template-column">
 		<button mat-button (click)="toggleEditMode()" class="edit-info__button">Отменить</button>
 		<button
 			mat-flat-button

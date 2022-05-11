@@ -8,7 +8,8 @@ import { DateType } from '@app/types/date.enum';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
-import { finalize, first, map, switchMap } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
+import { forkJoin, Observable } from 'rxjs';
 import { EmployeePageService } from '../../services/employee-page.service';
 
 @Component({
@@ -18,7 +19,7 @@ import { EmployeePageService } from '../../services/employee-page.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditInfoComponent implements OnInit {
-	public user: User;
+	public user: Observable<User>;
 	public isEditMode = false;
 	public editForm: FormGroup = this.initForm();
 
@@ -29,7 +30,7 @@ export class EditInfoComponent implements OnInit {
 	public userPath = UserPath;
 	public readonly maxChars = 150;
 
-	constructor(@Inject(MAT_DIALOG_DATA) data: User,
+	constructor(@Inject(MAT_DIALOG_DATA) data: Observable<User>,
 				private fb: FormBuilder,
 				private userService: UserService,
 				private employeeService: EmployeePageService,
@@ -53,36 +54,37 @@ export class EditInfoComponent implements OnInit {
 		});
 	}
 
-	public onEdit(): void {
+	public onEdit(user: User): void {
 		this.isEditMode = !this.isEditMode;
 		this.userInitialInfo = {
-			[UserPath.FIRST_NAME]: this.user.firstName,
-			[UserPath.LAST_NAME]: this.user.lastName,
-			[UserPath.MIDDLE_NAME]: this.user.middleName,
-			[UserPath.DATE_OF_BIRTH]: this.user.dateOfBirth,
-			[UserPath.BUSINESS_HOURS_FROM_UTC]: this.user.businessHoursFromUtc,
-			[UserPath.BUSINESS_HOURS_TO_UTC]: this.user.businessHoursToUtc,
-			[UserPath.STATUS]: this.user.status,
-			[UserPath.ABOUT]: this.user.about
+			[UserPath.FIRST_NAME]: user.firstName,
+			[UserPath.LAST_NAME]: user.lastName,
+			[UserPath.MIDDLE_NAME]: user.middleName,
+			[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
+			[UserPath.BUSINESS_HOURS_FROM_UTC]: user.businessHoursFromUtc,
+			[UserPath.BUSINESS_HOURS_TO_UTC]: user.businessHoursToUtc,
+			[UserPath.STATUS]: user.status,
+			[UserPath.ABOUT]: user.about
 		}
 		this.editForm.patchValue(this.userInitialInfo);
 	}
 
 	public onSubmit(): void {
 		const { ...userInfo } = this.userInitialInfo;
-		const editRequest = createEditRequest(this.editForm.getRawValue(), userInfo);
+		let editRequest = createEditRequest(this.editForm.getRawValue(), userInfo);
 		this.employeeService.selectedUser$.pipe(
 			first(),
 			map((user) => user.id as string),
-			switchMap((userId: string) => this.userService.editUser(userId, editRequest)
-				.pipe(switchMap(() => this.employeeService.getEmployee(userId)))),
-			finalize(() => {
+			switchMap((userId: string) =>
+				forkJoin([
+					this.userService.editUser(userId, editRequest),
+				]).pipe(switchMap(() => this.employeeService.getEmployee(userId)))
+			)
+		).subscribe(
+			() => {
 				this.toggleEditMode();
-			})
-		)
-		.subscribe({
-			next: () => this.toggleEditMode(),
-		});
+			},
+		);
 	}
 
 	public toggleEditMode(): void {

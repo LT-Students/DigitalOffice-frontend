@@ -13,32 +13,60 @@
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		column-gap: 24px;
+	}
+
+	&__general-template {
 		row-gap: 24px;
+	}
+
+	&__general-page {
+		row-gap: 15px;
 	}
 
 	&__field {
 		word-wrap: break-word;
 	}
 
+	&__template-padding {
+		padding-top: 10px;
+	}
+
+	&__template-column {
+		grid-column: span 2;
+	}
+
 	&__hours {
-		display: inline-flex;
+		display: flex;
 		justify-content: space-between;
 	}
 
 	&__hours-input {
 		display: inline-flex;
+		align-items: center;
 
-		width: fit-content;
+		mat-form-field {
+			padding-left: 7px;
+
+			width: 50%;
+		}
 	}
 
-	&__about {
-		padding-top: 10px;
-		grid-column: span 2;
+	&__hours-input-end {
+		margin-left: -250px;
+
+		justify-content: flex-end;
+	}
+
+	input[type='time']::-webkit-calendar-picker-indicator {
+		-webkit-appearance: none;
+		
+		display: none;
+		
+		background: none;
 	}
 
 	&__buttons {
 		padding: 30px 0 0;
-		grid-column: span 2;
 
 		display: inline-flex;
 		justify-content: center;

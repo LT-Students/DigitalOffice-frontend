@@ -65,19 +65,14 @@ export class MainInfoComponent implements OnInit {
 		return true;
 	}
 
-	public toggleEditMode(): void {
-		this.isEditing = !this.isEditing;
-	}
-
 	public onReset(): void {
 		this.employeeInfoForm.reset();
-		this.toggleEditMode();
 	}
 
-	public editUser(user: User): void {
-		this.toggleEditMode();
+	public editUser(): void {
+		this.isEditing = !this.isEditing;
 		const dialogRef = this._dialog.open(EditInfoComponent, {
-			data: user,
+			data: this.user$,
 			width: ModalWidth.L,
 			autoFocus: false,
 		});
@@ -124,7 +119,7 @@ export class MainInfoComponent implements OnInit {
 				})
 			)
 			.subscribe({
-				next: () => this.toggleEditMode(),
+				next: () => console.log(),
 				error: (err) => {
 					throw err;
 				},
