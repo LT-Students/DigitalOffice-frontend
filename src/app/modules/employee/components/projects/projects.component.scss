@@ -1,5 +1,4 @@
-@use '~@angular/material' as mat;
-@use 'base/palettes' as *;
+@use 'base/variables' as variables;
 
 .projects-table {
 	&__section {
@@ -54,6 +53,8 @@
 		display: inline-block;
 
 		border-radius: 10px;
+
+		color: variables.$light_1;
 	}
 
 	.active {

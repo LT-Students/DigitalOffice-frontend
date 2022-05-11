@@ -1,56 +1,10 @@
-<nav class="header" mat-tab-nav-bar>
+<nav class="header">
 	<ng-container *ngIf="currentUser$ | async as currentUser">
-		<div class="header__menu-button">
-			<button mat-icon-button (click)="onMenuClick($event)">
-				<mat-icon>menu</mat-icon>
-			</button>
-		</div>
-
-		<h4
-			mat-tab-link
-			class="logo"
-			[routerLink]="[AppRoutes.Users, currentUser?.id]"
-			routerLinkActive="active"
-			[routerLinkActiveOptions]="{ exact: true }"
-		>
-			{{ portalName | async }}
-		</h4>
-		<a
-			mat-tab-link
-			[routerLink]="AppRoutes.TimeTrack"
-			routerLinkActive="active"
-			[routerLinkActiveOptions]="{ exact: true }"
-			>Учет времени</a
-		>
-		<a
-			mat-tab-link
-			[routerLink]="AppRoutes.Projects"
-			routerLinkActive="active"
-			[routerLinkActiveOptions]="{ exact: true }"
-			>Доска проектов</a
-		>
-		<a
-			mat-tab-link
-			[routerLink]="AppRoutes.News"
-			routerLinkActive="active"
-			[routerLinkActiveOptions]="{ exact: true }"
-			>Новости</a
-		>
-		<a
-			*ngIf="currentUser?.isAdmin"
-			mat-tab-link
-			[routerLink]="AppRoutes.Admin"
-			routerLinkActive="active"
-			[routerLinkActiveOptions]="{ exact: true }"
-			>Администрирование</a
-		>
-		<span class="spacer"></span>
-
 		<div class="avatar" [matMenuTriggerFor]="menu">
 			<do-profile-image [image]="currentUser?.avatar" size="s"></do-profile-image>
-			<p class="avatar__greeting">
+			<span class="avatar__greeting">
 				Привет, <strong>{{ currentUser?.firstName }}</strong>
-			</p>
+			</span>
 		</div>
 
 		<mat-menu #menu="matMenu" xPosition="before">

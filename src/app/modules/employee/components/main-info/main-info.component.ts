@@ -11,6 +11,7 @@ import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
+import { ModalWidth } from '@app/services/modal.service';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 
@@ -76,7 +77,12 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	public onAvatarUploadDialog(): void {
-		const dialogRef = this._dialog.open(UploadPhotoComponent);
+		const dialogRef = this._dialog.open(UploadPhotoComponent, {
+			width: ModalWidth.XL,
+			height: 'auto',
+			autoFocus: false,
+			panelClass: 'upload-image-dialog',
+		});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({

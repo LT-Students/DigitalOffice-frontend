@@ -79,7 +79,7 @@ export class UserRecoveryComponent implements OnInit {
 		const userId = this.data.userId;
 		const index = this.form.controls.findIndex((c: AbstractControl) => c.value);
 
-		(index === this.form.controls.length - 1 && this.emails.length !== 1
+		(index === this.form.controls.length - 1 && this.newEmail
 			? this.communicationService
 					.createCommunication({
 						userId: userId,

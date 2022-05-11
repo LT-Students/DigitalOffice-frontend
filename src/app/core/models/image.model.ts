@@ -20,28 +20,12 @@ export class UploadedImage {
 		return this._image.type.split('/').pop()?.toLowerCase();
 	}
 
-	public getLocalUrl(): Observable<string> {
-		const fileReader = new FileReader();
-		fileReader.readAsDataURL(this._image);
-
-		return new Observable<string>((observer: Subscriber<string>): void => {
-			fileReader.onload = (evt: ProgressEvent<FileReader>): void => {
-				observer.next(evt.target?.result as string);
-				observer.complete();
-			};
-
-			fileReader.onerror = (error: ProgressEvent): void => {
-				observer.error(error);
-			};
-		});
-	}
-
 	public getCreateImageRequest(): Observable<IImageInfo> {
 		const extension = this.extension;
 		const fileReader = new FileReader();
-		fileReader.readAsBinaryString(this._image);
 
 		return new Observable<IImageInfo>((observer: Subscriber<any>): void => {
+			fileReader.readAsBinaryString(this._image);
 			fileReader.onload = (evt: ProgressEvent<FileReader>): void => {
 				const imageContent = btoa(evt.target?.result as string);
 				const imageRequest: IImageInfo = {

@@ -1,23 +1,22 @@
 @use 'base/variables';
 
-$header-height: 56px;
-
 .active {
 	opacity: 1;
 }
 
 :host {
-	//position: fixed;
-	//z-index: 2;
-	//top: 0;
 	width: 100%;
 }
 
 .header {
 	padding: 0 38px;
 
-	//width: 100%;
-	height: $header-height;
+	width: 100%;
+	height: variables.$header-height;
+
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 
 	background-color: variables.$light_1;
 
