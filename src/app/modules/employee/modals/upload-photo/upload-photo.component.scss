@@ -1,73 +1,67 @@
 @use 'base/variables';
 
-.upload-photo {
-	&__dropzone {
-		margin-bottom: 18px;
+.header {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	justify-items: end;
+	align-items: center;
 
-		display: flex;
-		flex-direction: column;
-		justify-content: space-evenly;
-		align-items: center;
-
-		width: 650px;
-		height: 300px;
-
-		text-align: center;
-
-		border: 1px dashed variables.$accent_color;
-		border-radius: 10px;
+	.title {
+		grid-column: 2;
 	}
+}
 
-	&__preview {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: center;
+.dropzone {
+	margin-bottom: 18px;
+	padding: 48px 48px 68px;
 
-		width: 650px;
-		height: 300px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 
-		text-align: center;
+	width: 100%;
+
+	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='#{variables.toRGB(variables.$accent_color)}' stroke-width='1' stroke-dasharray='12%2c8' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+	border-radius: 10px;
+}
+
+.preview {
+	margin-bottom: 48px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	text-align: center;
+}
+
+.miniatures {
+	margin-left: 38px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	& > :first-child {
+		margin-bottom: 14px;
 	}
+}
 
-	&__images {
-		display: flex;
-	}
+.upload-message {
+	margin-bottom: 47px;
 
-	&__miniatures {
-		margin-left: 38px;
-	}
+	text-align: center;
+}
 
-	&__hint {
-		font-size: 14px;
-		text-align: center;
-	}
+.drag-hint {
+	margin-bottom: 20px;
+}
 
-	&__heading {
-		margin-bottom: 24px;
+.actions {
+	display: flex;
+	justify-content: center;
 
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	&__miniature {
-		overflow: hidden;
-
-		border-radius: 50%;
-
-		&_size {
-			&_small {
-				width: 36px;
-				height: 36px;
-			}
-
-			&_medium {
-				margin-bottom: 14px;
-
-				width: 48px;
-				height: 48px;
-			}
-		}
+	button {
+		margin: 0 5px;
 	}
 }

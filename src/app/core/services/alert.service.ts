@@ -6,7 +6,7 @@ import { MatSnackBar, MatSnackBarConfig, MatSnackBarRef } from '@angular/materia
 })
 export class AlertService {
 	private config: MatSnackBarConfig = {
-		duration: 10000
+		// duration: 10000
 	};
 
 	constructor(private snackBar: MatSnackBar) {}

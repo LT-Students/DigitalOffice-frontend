@@ -1,3 +1,7 @@
+@use 'sass:color';
+
+$header-height: 56px;
+
 // Typography
 
 $main_text: #424242;
@@ -24,7 +28,7 @@ $accent_default: #fa7d57;
 
 // Control-disabled
 $bg: #f1f1ef;
-$typo: #cecece;
+$typo: #d6d6d6;
 
 // Uncategorized
 $accent_color: #ffb78c;
@@ -92,4 +96,8 @@ $backgrounds: (
 			background-color: $color-value;
 		}
 	}
+}
+
+@function toRGB($color) {
+	@return 'rgb(#{color.red($color)}, #{color.green($color)}, #{color.blue($color)})';
 }
