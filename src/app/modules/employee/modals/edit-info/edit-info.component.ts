@@ -7,15 +7,15 @@ import { DoValidators } from '@app/validators/do-validators';
 import { DateType } from '@app/types/date.enum';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
-import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
+import { EditRequest, InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { first, map, switchMap } from 'rxjs/operators';
-import { forkJoin, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { EmployeePageService } from '../../services/employee-page.service';
 
 @Component({
 	selector: 'do-edit-info',
 	templateUrl: './edit-info.component.html',
-	styleUrls: ['./edit-info.component.scss'],
+	styleUrls: [ './edit-info.component.scss' ],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditInfoComponent implements OnInit {
@@ -28,7 +28,7 @@ export class EditInfoComponent implements OnInit {
 
 	private userInitialInfo?: InitialDataEditRequest<UserPath>;
 	public userPath = UserPath;
-	public readonly maxChars = 150;
+	public readonly MAX_ABOUT_LENGTH = 150;
 
 	constructor(@Inject(MAT_DIALOG_DATA) data: Observable<User>,
 				private fb: FormBuilder,
@@ -71,20 +71,19 @@ export class EditInfoComponent implements OnInit {
 
 	public onSubmit(): void {
 		const { ...userInfo } = this.userInitialInfo;
-		let editRequest = createEditRequest(this.editForm.getRawValue(), userInfo);
-		this.employeeService.selectedUser$.pipe(
-			first(),
-			map((user) => user.id as string),
-			switchMap((userId: string) =>
-				forkJoin([
-					this.userService.editUser(userId, editRequest),
-				]).pipe(switchMap(() => this.employeeService.getEmployee(userId)))
-			)
-		).subscribe(
-			() => {
-				this.toggleEditMode();
-			},
-		);
+		let editRequest: EditRequest<UserPath>;
+		if (this.userInitialInfo != null) {
+			editRequest = createEditRequest(this.editForm.getRawValue(), userInfo);
+			this.employeeService.selectedUser$.pipe(
+				first(),
+				map((user) => user.id as string),
+				switchMap((userId: string) => this.userService.editUser(userId, editRequest)
+				.pipe(switchMap(() => this.employeeService.getEmployee(userId))))
+			).subscribe({
+					next: () => this.toggleEditMode(),
+				}
+			);
+		}
 	}
 
 	public toggleEditMode(): void {

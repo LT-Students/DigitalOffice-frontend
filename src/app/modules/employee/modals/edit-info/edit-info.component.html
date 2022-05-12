@@ -1,6 +1,7 @@
 <h3 mat-dialog-title doUnderline underlinedSize="sm">Редактирование профиля</h3>
 
-<div *ngIf="user | async as user">
+<ng-container *ngIf="user | async as user">
+
 <div class="edit-info__header">
 	<h4>Общие сведения</h4>
     <button mat-button (click)="onEdit(user)" *ngIf="!isEditMode">
@@ -36,46 +37,47 @@
             <span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
             <div>{{ user.status | userStatus: true: true | capitalize: 1 | placeholder}}</div>
         </div>
-        <div class="edit-info__field edit-info__about">
+        <div class="edit-info__field edit-info__two-columns">
             <span class="mat-body-2 text-secondary_default">О себе</span>
             <div>{{ user.about | placeholder }}</div>
         </div>
     </ng-container>
 </mat-dialog-content>
-</div>
+
+</ng-container>
 
 <ng-template #editTemplate [formGroup]="editForm">
-    <do-form-row>
+    <do-form-row label="Фамилия">
         <mat-form-field
-            [matTooltip]="editForm.controls['/LastName']?.errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
+            [matTooltip]="editForm.controls[userPath.LAST_NAME].errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
             [matTooltipPosition]="'right'"
         >
             <input doTransformName matInput [formControlName]="userPath.LAST_NAME" placeholder="Фамилия" minlength="1" maxlength="45" required />
-            <mat-error *ngIf="editForm.controls['/LastName']?.errors?.['whitespace']"
+            <mat-error *ngIf="editForm.controls[userPath.LAST_NAME].errors?.['whitespace']"
             >Фамилия не может состоять только из пробелов!
             </mat-error>
         </mat-form-field>
     </do-form-row>
-    <do-form-row>
+    <do-form-row label="Имя">
         <mat-form-field
-            [matTooltip]="editForm.controls['/FirstName']?.errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
+            [matTooltip]="editForm.controls[userPath.FIRST_NAME].errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
             [matTooltipPosition]="'right'"
         >
             <input doTransformName matInput [formControlName]="userPath.FIRST_NAME" placeholder="Имя" minlength="1" maxlength="45" required />
-            <mat-error *ngIf="editForm.controls['/FirstName']?.errors?.['whitespace']"
+            <mat-error *ngIf="editForm.controls[userPath.FIRST_NAME].errors?.['whitespace']"
             >Имя не может состоять только из пробелов!
             </mat-error>
         </mat-form-field>
     </do-form-row>
-    <do-form-row>
+    <do-form-row label="Отчество">
         <mat-form-field>
             <input doTransformName  matInput [formControlName]="userPath.MIDDLE_NAME" placeholder="Отчество" minlength="1" maxlength="45" />
-            <mat-error *ngIf="editForm.controls['/MiddleName'].errors?.['whitespace']"
+            <mat-error *ngIf="editForm.controls[userPath.MIDDLE_NAME].errors?.['whitespace']"
             >Отчество не может состоять только из пробелов!
             </mat-error>
         </mat-form-field>
     </do-form-row>
-    <do-form-row>
+    <do-form-row label="Дата рождения">
         <mat-form-field>
             <input matInput [formControlName]="userPath.DATE_OF_BIRTH" [matDatepicker]="dayOfBirth" placeholder="Дата рождения" />
                 <mat-datepicker-toggle matSuffix [for]="dayOfBirth">
@@ -85,26 +87,26 @@
         </mat-form-field>
     </do-form-row>
 
-    <do-form-row label="Время работы" class="edit-info__template-padding">
+    <do-form-row label="Время работы">
         <div class="edit-info__hours">
             <div class="edit-info__hours-input">
                 <label>С</label>
-                <mat-form-field class="edit-info__hours-stuff">
-                    <input matInput [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC" type="time" [value]='userPath.BUSINESS_HOURS_FROM_UTC' />
+                <mat-form-field>
+                    <input matInput autofocus [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC" type="time" [value]=userPath.BUSINESS_HOURS_FROM_UTC />
                     <mat-icon matSuffix>schedule</mat-icon>
                 </mat-form-field>
             </div>
             <div class="edit-info__hours-input edit-info__hours-input-end">
                 <label>По</label>
-                <mat-form-field class="edit-info__hours-stuff">
-                    <input matInput [formControlName]="userPath.BUSINESS_HOURS_TO_UTC" type="time" [value]='userPath.BUSINESS_HOURS_FROM_UTC' />
+                <mat-form-field>
+                    <input matInput autofocus [formControlName]="userPath.BUSINESS_HOURS_TO_UTC" type="time" [value]='userPath.BUSINESS_HOURS_TO_UTC' />
                     <mat-icon matSuffix>schedule</mat-icon>
                 </mat-form-field>
             </div>
         </div>
     </do-form-row>
 
-    <do-form-row label="Эмодзи-статус" class="edit-info__template-padding">
+    <do-form-row label="Эмодзи-статус">
         <mat-form-field>
             <mat-select [formControlName]="userPath.STATUS">
                 <mat-option *ngFor="let status of statuses" [value]="status.statusType">
@@ -114,24 +116,24 @@
         </mat-form-field>
     </do-form-row>
 
-    <do-form-row label="О себе" class="edit-info__template-column">
+    <do-form-row label="О себе" class="edit-info__two-columns">
         <mat-form-field appearance="outline">
             <textarea
                 #about
                 matInput
                 autocomplete="off"
                 placeholder="Написать..."
-                maxlength="{{ maxChars }}"
+                maxlength="{{ MAX_ABOUT_LENGTH }}"
                 cdkTextareaAutosize="true"
                 [formControlName]="userPath.ABOUT"
                 cdkAutosizeMinRows="4"
                 cdkAutosizeMaxRows="4"
             ></textarea>
-            <mat-hint align="start">{{ about.value.length }}/{{ maxChars }}</mat-hint>
+            <mat-hint align="start">{{ about.value.length }}/{{ MAX_ABOUT_LENGTH }}</mat-hint>
         </mat-form-field>
     </do-form-row>
 
-    <div class="edit-info__buttons edit-info__template-column">
+    <div class="edit-info__buttons edit-info__two-columns">
 		<button mat-button (click)="toggleEditMode()" class="edit-info__button">Отменить</button>
 		<button
 			mat-flat-button

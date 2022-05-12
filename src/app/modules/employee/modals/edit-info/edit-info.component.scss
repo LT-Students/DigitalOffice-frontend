@@ -27,11 +27,7 @@
 		word-wrap: break-word;
 	}
 
-	&__template-padding {
-		padding-top: 10px;
-	}
-
-	&__template-column {
+	&__two-columns {
 		grid-column: span 2;
 	}
 
@@ -57,14 +53,6 @@
 		justify-content: flex-end;
 	}
 
-	input[type='time']::-webkit-calendar-picker-indicator {
-		-webkit-appearance: none;
-		
-		display: none;
-		
-		background: none;
-	}
-
 	&__buttons {
 		padding: 30px 0 0;
 
@@ -77,4 +65,12 @@
 
 		width: 180px;
 	}
+}
+
+input[type='time']::-webkit-calendar-picker-indicator {
+	-webkit-appearance: none;
+
+	display: none;
+
+	background: none;
 }

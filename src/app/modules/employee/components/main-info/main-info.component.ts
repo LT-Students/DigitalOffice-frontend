@@ -118,12 +118,7 @@ export class MainInfoComponent implements OnInit {
 					this.loading.next(false);
 				})
 			)
-			.subscribe({
-				next: () => console.log(),
-				error: (err) => {
-					throw err;
-				},
-			});
+			.subscribe();
 	}
 
 	private _fillForm(user: User): void {
