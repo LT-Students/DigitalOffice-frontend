@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { IImageInfo, UploadedImage } from '@app/models/image.model';
+import { ImageInfo, UploadedImage } from '@app/models/image.model';
 import { Observable, Subject } from 'rxjs';
 import { UserService } from '@app/services/user/user.service';
 import { finalize, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { EmployeePageService } from '../../services/employee-page.service';
 })
 export class UploadPhotoComponent {
 	public isImageUploaded = false;
-	public image$?: Observable<IImageInfo>;
+	public image$?: Observable<ImageInfo>;
 	public loading$ = new Subject<boolean>();
 
 	constructor(
@@ -47,7 +47,7 @@ export class UploadPhotoComponent {
 			?.pipe(
 				first(),
 				withLatestFrom(this.employeePageService.selectedUser$.pipe(map((user: User) => user.id))),
-				switchMap(([file, userId]: [IImageInfo, string]) => this.userService.createAvatarImage(file, userId)),
+				switchMap(([file, userId]: [ImageInfo, string]) => this.userService.createAvatarImage(file, userId)),
 				switchMap(() => this.employeePageService.refreshSelectedUser()),
 				finalize(() => this.loading$.next(false))
 			)

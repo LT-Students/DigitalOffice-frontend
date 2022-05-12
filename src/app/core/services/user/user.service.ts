@@ -13,7 +13,7 @@ import { AvatarApiService } from '@api/user-service/services/avatar-api.service'
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
-import { IImageInfo } from '@app/models/image.model';
+import { ImageInfo } from '@app/models/image.model';
 import { EditRequest, UserPath } from '@app/types/edit-request';
 
 export interface IFindUsers {
@@ -81,7 +81,7 @@ export class UserService {
 		return this._userApiService.editUserActive({ body: params });
 	}
 
-	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse> {
+	public createAvatarImage(image: ImageInfo, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.createAvatar({
 			body: {
 				content: image.content,

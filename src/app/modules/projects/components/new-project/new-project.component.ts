@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
-import { UserInfo } from '@api/user-service/models/user-info';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
@@ -16,6 +15,7 @@ import { DepartmentUserInfo } from '@api/department-service/models/department-us
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { AppRoutes } from '@app/models/app-routes';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
+import { UserInfo } from '@api/filter-service/models/user-info';
 import { WorkFlowMode } from '../../../employee/employee-page.component';
 import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';

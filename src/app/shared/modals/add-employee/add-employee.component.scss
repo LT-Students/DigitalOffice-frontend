@@ -11,16 +11,12 @@
 	align-items: center;
 
 	&__name {
-		width: 100%;
+		flex: 0 0 75%;
 	}
 
 	&__position {
-		margin-left: 50px;
-		align-self: flex-end;
-	}
-
-	&__button {
-		margin-right: 15px;
+		margin-left: 16px;
+		flex: 1 0 25%;
 	}
 }
 

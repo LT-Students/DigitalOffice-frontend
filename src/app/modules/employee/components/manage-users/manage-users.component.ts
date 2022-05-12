@@ -23,7 +23,7 @@ import { User } from '@app/models/user/user.model';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageUsersComponent implements AfterViewInit {
-	@ViewChild(MatSort) sort: MatSort | undefined;
+	@ViewChild(MatSort) sort?: MatSort;
 	@ViewChild(MatPaginator) paginator?: MatPaginator;
 
 	public users$: Observable<OperationResultResponse<UserInfo[]>>;

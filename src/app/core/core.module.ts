@@ -19,6 +19,7 @@ import { OfficeApiModule } from '@api/office-service/office-api.module';
 import { EducationApiModule } from '@api/education-service/education-api.module';
 import { AdminApiModule } from '@api/admin-service/admin-api.module';
 import { environment } from '../../environments/environment';
+import { FilterApiModule } from '@api/filter-service/filter-api.module';
 
 @NgModule({
 	declarations: [],
@@ -33,6 +34,7 @@ import { environment } from '../../environments/environment';
 		DepartmentApiModule.forRoot({ rootUrl: `https://department.${environment.apiUrl}` }),
 		CompanyApiModule.forRoot({ rootUrl: `https://company.${environment.apiUrl}` }),
 		FileApiModule.forRoot({ rootUrl: `https://file.${environment.apiUrl}` }),
+		FilterApiModule.forRoot({ rootUrl: `https://filter.${environment.apiUrl}` }),
 		ImageApiModule.forRoot({ rootUrl: `https://image.${environment.apiUrl}` }),
 		MessageApiModule.forRoot({ rootUrl: `https://message.${environment.apiUrl}` }),
 		NewsApiModule.forRoot({ rootUrl: `https://news.${environment.apiUrl}` }),

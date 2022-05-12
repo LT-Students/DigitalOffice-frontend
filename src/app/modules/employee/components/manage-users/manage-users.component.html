@@ -1,34 +1,9 @@
-<do-breadcrumbs
-	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление сотрудниками' }]"
-></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
 		<button mat-flat-button color="accent" (click)="onAddEmployeeClick()">+ Добавить сотрудника</button>
 	</div>
-
 	<div class="filters" [formGroup]="filters">
-		<!--        <mat-form-field class='filters__search' appearance='fill'>-->
-		<!--            <mat-label>Search</mat-label>-->
-		<!--            <input matInput type='text' maxlength='150' placeholder='Поиск по фамилии и имени' />-->
-		<!--        </mat-form-field>-->
-
-		<!--        <mat-form-field class='filters__post' appearance='fill'>-->
-		<!--            <mat-label>Выберите должность</mat-label>-->
-		<!--            <mat-select>-->
-		<!--                <mat-option value='one'>Должность 1</mat-option>-->
-		<!--                <mat-option value='two'>Должность 2</mat-option>-->
-		<!--            </mat-select>-->
-		<!--        </mat-form-field>-->
-
-		<!--        <mat-form-field class='filters__department' appearance='fill'>-->
-		<!--            <mat-label>Выберите департамент</mat-label>-->
-		<!--            <mat-select>-->
-		<!--                <mat-option value='one'>Департамент 1</mat-option>-->
-		<!--                <mat-option value='two'>Департамент 2</mat-option>-->
-		<!--            </mat-select>-->
-		<!--        </mat-form-field>-->
-
 		<mat-form-field class="filters__status">
 			<mat-label>Статус</mat-label>
 			<mat-select formControlName="showDeactivatedUsers">

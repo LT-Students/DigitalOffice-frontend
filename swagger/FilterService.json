@@ -90,6 +90,24 @@
             }
           },
           "required": false
+        },
+        {
+          "name": "isascendingsort",
+          "in": "query",
+          "description": "When value is 'true' sorts A-Z, when value is 'false' sorts Z-A",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "fullnameincludesubstring",
+          "in": "query",
+          "description": "Find users containing a substring in the full name",
+          "schema": {
+            "type": "string"
+          },
+          "required": false
         }
       ],
       "get": {
