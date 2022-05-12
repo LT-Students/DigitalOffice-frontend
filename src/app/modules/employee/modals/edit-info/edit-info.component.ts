@@ -70,10 +70,9 @@ export class EditInfoComponent implements OnInit {
 	}
 
 	public onSubmit(): void {
-		const { ...userInfo } = this.userInitialInfo;
 		let editRequest: EditRequest<UserPath>;
 		if (this.userInitialInfo != null) {
-			editRequest = createEditRequest(this.editForm.getRawValue(), userInfo);
+			editRequest = createEditRequest(this.editForm.getRawValue(), this.userInitialInfo);
 			this.employeeService.selectedUser$.pipe(
 				first(),
 				map((user) => user.id as string),
