@@ -41,6 +41,8 @@ import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 import { FormRowComponent } from './component/form-row/form-row.component';
 import { SelectDirective } from './directives/select.directive';
+import { SidebarComponent } from './component/sidebar/sidebar.component';
+import { ImageUrlPipe } from './pipes/image-url.pipe';
 
 @NgModule({
 	declarations: [
@@ -77,6 +79,8 @@ import { SelectDirective } from './directives/select.directive';
 		CapitalizePipe,
 		FormRowComponent,
 		SelectDirective,
+  SidebarComponent,
+  ImageUrlPipe,
 	],
 	imports: [
 		CommonModule,
@@ -130,5 +134,46 @@ import { SelectDirective } from './directives/select.directive';
 		FormRowComponent,
 		SelectDirective
 	],
+  exports: [
+    CommonModule,
+    RouterModule,
+    MaterialModule,
+    InfiniteScrollModule,
+    MdePopoverModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ProfileImageComponent,
+    HeaderComponent,
+    TextDirective,
+    DndDirective,
+    ButtonLoadingDirective,
+    StepperComponent,
+    SafeHtmlPipe,
+    PasswordComponent,
+    CommentComponent,
+    ConfirmDialogComponent,
+    BreadcrumbsComponent,
+    TitleDatepickerComponent,
+    DateTimePipe,
+    AddEmployeeComponent,
+    EmptyListComponent,
+    PhoneInputComponent,
+    ChangeUserPasswordComponent,
+    BlockPasteDirective,
+    FullNamePipe,
+    TransformNameDirective,
+    PasswordHintComponent,
+    TruncateTooltipDirective,
+    ProjectTypePipe,
+    LeaveLabelPipe,
+    NewEmployeeComponent,
+    AddEditDepartmentComponent,
+    UserStatusPipe,
+    PlaceholderPipe,
+    UserRecoveryComponent,
+    FormRowComponent,
+    SelectDirective,
+    ImageUrlPipe
+  ]
 })
 export class SharedModule {}

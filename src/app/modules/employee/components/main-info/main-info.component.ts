@@ -79,7 +79,12 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	public onAvatarUploadDialog(): void {
-		const dialogRef = this._dialog.open(UploadPhotoComponent);
+		const dialogRef = this._dialog.open(UploadPhotoComponent, {
+			width: ModalWidth.XL,
+			height: 'auto',
+			autoFocus: false,
+			panelClass: 'upload-image-dialog',
+		});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({

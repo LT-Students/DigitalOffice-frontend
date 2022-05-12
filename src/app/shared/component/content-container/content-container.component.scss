@@ -1,47 +1,32 @@
 @use 'base/variables';
 
 .content-container {
-	display: flex;
+	padding: 31px 100px 120px;
+
 	overflow: auto;
-	justify-content: center;
-	align-items: center;
 
 	.wrapper {
-		padding: 31px 100px 120px;
-
 		width: 100%;
 		max-width: 1440px;
-		height: 100%;
 	}
 }
 
-.spacer {
-	flex: 1 1 auto;
-}
-
-.avatar {
-	display: flex;
-}
-
-.sidenav {
+.sidenav-container {
 	height: 100%;
 
-	&__nav {
-		width: 280px;
+	.sidenav {
+		width: 92px;
+
+		box-shadow: 1px (variables.$header-height + 1) 2px variables.$light_4;
 	}
 
-	&__header {
-		margin: 28px 24px 0 39px;
+	.header {
+		z-index: 3;
 
-		display: flex;
-		align-items: baseline;
+		box-shadow: 0 1px 2px variables.$light_4;
 	}
 
-	&__group {
-		margin-left: 24px;
-	}
-
-	&__content {
+	.content {
 		display: flex;
 		overflow: hidden;
 		flex-direction: column;

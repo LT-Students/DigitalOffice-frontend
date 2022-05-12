@@ -1,17 +1,17 @@
-<h3 mat-dialog-title class="upload-photo__heading">
-	Загрузка новой фотографии
-	<button mat-icon-button>
-		<mat-icon mat-dialog-close>close</mat-icon>
+<h3 mat-dialog-title class="header">
+	<span class="title">Загрузка новой фотографии</span>
+	<button mat-icon-button mat-dialog-close>
+		<mat-icon class="text-secondary_default">close</mat-icon>
 	</button>
 </h3>
-<mat-dialog-content class="upload-photo">
+<mat-dialog-content class="text-align_center">
 	<ng-container *ngIf="!isImageUploaded; else preview">
-		<div class="upload-photo__dropzone" doDnd (fileDropped)="onFileDropped($event)">
-			<p>
+		<div class="dropzone" doDnd (fileDropped)="onFileDropped($event)">
+			<span class="upload-message">
 				Коллегам будет проще узнать вас, если вы загрузите свою настоящую фотографию. Вы можете загрузить
 				изображение в формате JPG, GIF или PNG.
-			</p>
-			<p>Перетащите файл сюда или</p>
+			</span>
+			<span class="drag-hint text-secondary_default">Перетащите файл сюда или</span>
 			<button mat-flat-button (click)="uploadFile.click()" color="primary">Выбрать файл</button>
 			<input
 				#uploadFile
@@ -21,33 +21,29 @@
 				(change)="onFileChanged($event)"
 			/>
 		</div>
-		<p class="upload-photo__hint">
+		<span class="mat-body-2 text-secondary_default">
 			Если у вас возникают проблемы с загрузкой, попробуйте выбрать фотографию меньшего размера.
-		</p></ng-container
+		</span></ng-container
 	>
 </mat-dialog-content>
-<mat-dialog-actions *ngIf="isImageUploaded" align="center">
+<div *ngIf="isImageUploaded" class="actions">
 	<button mat-button type="button" (click)="isImageUploaded = false">Вернуться назад</button>
-	<button mat-flat-button [mat-dialog-close]="resultFile$ | async" type="submit" color="primary">
+	<button mat-flat-button (click)="saveImage()" [loading]="loading$ | async" type="submit" color="primary">
 		Сохранить изменения
 	</button>
-</mat-dialog-actions>
+</div>
 
 <ng-template #preview>
-	<div class="upload-photo__preview">
-		<p>
+	<div class="preview">
+		<span class="upload-message">
 			Выбранная область будет показываться на вашей странице и на миниатюрах. Если изображение ориентировано
 			неправильно, фотографию можно повернуть.
-		</p>
-		<div *ngIf="imagePreview$ | async as imagePreview" class="upload-photo__images">
-			<img [src]="imagePreview" alt="User photo" height="180" />
-			<div class="upload-photo__miniatures">
-				<div class="upload-photo__miniature upload-photo__miniature_size_medium">
-					<img [src]="imagePreview" alt="Photo miniature" height="48" />
-				</div>
-				<div class="upload-photo__miniature upload-photo__miniature_size_small">
-					<img [src]="imagePreview" alt="Photo miniature" height="36" />
-				</div>
+		</span>
+		<div *ngIf="image$ | async as image" class="flex">
+			<img [src]="image | imageUrl" alt="User photo" height="180" />
+			<div class="miniatures">
+				<do-profile-image [image]="image" size='m'></do-profile-image>
+				<do-profile-image [image]="image" size='s'></do-profile-image>
 			</div>
 		</div>
 	</div>
