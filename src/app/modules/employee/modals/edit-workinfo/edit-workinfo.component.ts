@@ -16,16 +16,41 @@ import { EmployeePageService } from '../../services/employee-page.service';
 export class EditWorkinfoComponent implements OnInit {
 	public user: User;
 	public EditForm: FormGroup;
-	// public _userStatus: UserStatus;
-	// public statuses: IUserStatus[];
 
-	constructor(@Inject(MAT_DIALOG_DATA) data: User, private _fb: FormBuilder) {
+	public userDates: any;
+
+	constructor(@Inject(MAT_DIALOG_DATA) data: User, private formBuilder: FormBuilder) {
 		this.user = data;
-		this.EditForm = this._fb.group({
+		this.EditForm = this.formBuilder.group({
 			department: [this.user.department],
 		});
-		//  this._userStatus = this.user.status;
-		//  this.statuses = UserStatusModel.getAllStatuses();
+		console.log(this.user);
+		this.userDates = [
+			{
+				name: 'Департамент',
+				value: this.user.department?.name,
+			},
+			{
+				name: 'Офис',
+				value: this.user.office?.name,
+			},
+			{
+				name: 'Должность',
+				value: this.user.position?.name,
+			},
+			{
+				name: 'Роль',
+				value: this.user.role?.name,
+			},
+			{
+				name: 'Ставка',
+				value: this.user.department?.name,
+			},
+			{
+				name: 'В компании с',
+				value: this.user.department?.name,
+			},
+		];
 	}
 	ngOnInit(): void {}
 

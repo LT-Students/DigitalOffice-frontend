@@ -68,7 +68,9 @@ export class MainInfoComponent implements OnInit {
 	public toggleEditMode(user?: User): void {
 		this._dialog.open(EditWorkinfoComponent, {
 			data: user,
+			width: '672px',
 		});
+
 		if (user) {
 			this._fillForm(user);
 		}
