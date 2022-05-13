@@ -1,47 +1,87 @@
-@use '~@angular/material' as mat;
-@use 'base/palettes' as *;
+@use 'base/variables' as variables;
 
 .projects-table {
-	&__card-title {
-		margin-bottom: -10px;
-	}
-
 	&__section {
-		margin-top: 48px;
+		margin-top: 32px;
 	}
 
 	&__group-title {
-		margin-bottom: 26px;
+		margin-bottom: 24px;
 	}
 
 	&__container {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(256px, 1fr));
-		grid-gap: 40px;
+		grid-template-columns: repeat(auto-fill, minmax(256px, 0.25fr));
+		grid-gap: 32px;
 	}
 
 	&__project {
-		padding: 32px 32px 20px;
+		padding: 32px 24px 18px;
 
-		background-color: mat.get-color-from-palette($do-grey, 100);
-
-		border-radius: 5px;
+		border-radius: 4px;
 
 		flex: 0 1 256px;
 	}
 
-	&__description {
+	&__project-name {
+		margin-bottom: 6px;
+
 		display: -webkit-box;
 		overflow: hidden;
-		-webkit-line-clamp: 3;
-		-webkit-box-orient: vertical;
 
-		height: 72px;
+		height: 48px;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
 	}
 
-	&__more-button {
-		margin-top: 30px;
+	&__caption {
+		margin-bottom: 6px;
 
+		display: block;
+	}
+
+	&__value {
+		margin-bottom: 16px;
+
+		display: block;
+	}
+
+	&__status-label {
+		margin-bottom: 16px;
+		padding: 0 8px;
+
+		display: inline-block;
+
+		border-radius: 10px;
+
+		color: variables.$light_1;
+	}
+
+	.active {
+		background-color: #3cc984;
+	}
+
+	.suspend {
+		background-color: #56ccf2;
+	}
+
+	.closed {
+		background-color: #9e9e9e;
+	}
+
+	&__description {
+		margin-bottom: 16px;
+
+		display: -webkit-box;
+		overflow: hidden;
+
+		height: 66px;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+	}
+
+	&__more-button,
+	&__show-all-button {
 		display: flex;
 		align-items: center;
 
@@ -50,5 +90,9 @@
 		&:hover {
 			color: #808080;
 		}
+	}
+
+	&__show-all-button {
+		margin-top: 24px;
 	}
 }

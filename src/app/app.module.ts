@@ -15,6 +15,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { DoDateAdapter } from '@app/services/do-date-adapter';
 import { DATE_FORMAT } from '@app/configs/date-formats';
 import { SharedModule } from '@shared/shared.module';
+import { ErrorInterceptor } from '@app/interceptors/error.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -34,6 +35,11 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 		{
 			provide: HTTP_INTERCEPTORS,
 			useClass: AuthInterceptor,
+			multi: true,
+		},
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: ErrorInterceptor,
 			multi: true,
 		},
 		{

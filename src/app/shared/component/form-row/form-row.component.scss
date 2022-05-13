@@ -1,0 +1,14 @@
+:host {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+
+	.label {
+		margin-bottom: 8px;
+	}
+
+	.required-marker::after {
+		content: '*';
+		color: red;
+	}
+}

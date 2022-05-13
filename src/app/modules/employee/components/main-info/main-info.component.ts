@@ -7,11 +7,11 @@ import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { finalize, first, map, switchMap, take } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
+import { ModalWidth } from '@app/services/modal.service';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 import { EditWorkinfoComponent } from '../../modals/edit-workinfo/edit-workinfo.component';
@@ -41,7 +41,6 @@ export class MainInfoComponent implements OnInit {
 		private _employeeService: EmployeePageService,
 		private _userService: UserService,
 		private _dialog: MatDialog,
-		private _snackBar: MatSnackBar,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.loading = new BehaviorSubject<boolean>(false);
@@ -82,7 +81,12 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	public onAvatarUploadDialog(): void {
-		const dialogRef = this._dialog.open(UploadPhotoComponent);
+		const dialogRef = this._dialog.open(UploadPhotoComponent, {
+			width: ModalWidth.XL,
+			height: 'auto',
+			autoFocus: false,
+			panelClass: 'upload-image-dialog',
+		});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({

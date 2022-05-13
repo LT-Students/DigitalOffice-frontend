@@ -8,7 +8,7 @@ import { ImageInfo } from '@api/user-service/models/image-info';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileImageComponent implements OnInit, OnChanges {
-	@Input() image: ImageInfo | null | undefined;
+	@Input() image: Partial<ImageInfo> | null | undefined;
 	@Input() size: 'l' | 'm' | 's' = 'm';
 	public src = 'assets/images/IAFOR-Blank-Avatar-Image.jpg';
 	public width = 48;

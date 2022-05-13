@@ -17,6 +17,7 @@ export class User implements UserInfo, UserAdditionInfo, Omit<UserResponse, 'use
 	firstName: string;
 	id: string;
 	isActive: boolean;
+	isPending: boolean;
 	isAdmin: boolean;
 	lastName: string;
 	middleName?: string;
@@ -42,7 +43,7 @@ export class User implements UserInfo, UserAdditionInfo, Omit<UserResponse, 'use
 		this.avatar = data.user?.avatar;
 		this.firstName = data.user?.firstName;
 		this.id = data.user?.id;
-		this.isActive = data.user?.isActive;
+		this.isActive = data.user.isActive;
 		this.isAdmin = data.user?.isAdmin;
 		this.lastName = data.user?.lastName;
 		this.middleName = data.user?.middleName;
@@ -55,6 +56,7 @@ export class User implements UserInfo, UserAdditionInfo, Omit<UserResponse, 'use
 		this.genderName = data.userAddition?.genderName;
 		this.latitude = data.userAddition?.latitude;
 		this.longitude = data.userAddition?.longitude;
+		this.isPending = data.isPending;
 		this.department = data.department;
 		this.office = data.office;
 		this.position = data.position;

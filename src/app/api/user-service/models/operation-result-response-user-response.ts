@@ -7,7 +7,8 @@ import { UserResponse } from './user-response';
  * Response object for action operations.
  */
 export interface OperationResultResponseUserResponse {
-	body?: UserResponse;
-	errors: Array<string>;
-	status: OperationResultStatusType;
+  body?: UserResponse;
+  errors: Array<string>;
+  status: OperationResultStatusType;
 }
+

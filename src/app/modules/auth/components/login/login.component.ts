@@ -1,12 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, finalize, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
 import { User } from '@app/models/user/user.model';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AppRoutes } from '@app/models/app-routes';
 import { AutofillEvent } from '@angular/cdk/text-field';
@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit {
 
 	public loginForm: FormGroup;
 	public isLoading$$: BehaviorSubject<boolean>;
-	public errorMatcher = new LoginErrorMatcher();
 
 	constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
 		this.isLoading$$ = new BehaviorSubject<boolean>(false);
@@ -68,18 +67,18 @@ export class LoginComponent implements OnInit {
 		this.authService
 			.login(authenticationRequest)
 			.pipe(
-				finalize(() => this.isLoading$$.next(false)),
 				catchError((error) => {
+					this.isLoading$$.next(false);
 					this.loginForm.setErrors({
 						login: {
 							message: 'Неверный логин или пароль :(',
 							error: error,
 						},
 					});
-					return of(null);
+					return throwError(error);
 				})
 			)
-			.subscribe((user: User | null) => {
+			.subscribe((user: User) => {
 				if (user) {
 					this.router.navigate([AppRoutes.TimeTrack]);
 				}

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { PasswordService } from '@app/services/user/password.service';
@@ -70,7 +70,7 @@ export class ResetPasswordComponent {
 							error: error,
 						},
 					});
-					return of(null);
+					return throwError(error);
 				})
 			)
 			.subscribe({

@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, iif, Observable, of, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, iif, Observable, of, Subject } from 'rxjs';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -58,7 +58,7 @@ export class AddWorktimeHoursComponent implements OnInit, OnDestroy {
 		});
 
 		this.addHoursForm = this._fb.group({
-			time: ['', [Validators.required, Validators.min(0), Validators.max(this.monthNorm), DoValidators.intNum]],
+			time: ['', [Validators.required, Validators.min(0), Validators.max(744), DoValidators.intNum]],
 			activity: [null, Validators.required],
 			comment: [null],
 		});

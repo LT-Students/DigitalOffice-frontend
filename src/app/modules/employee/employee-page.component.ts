@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { UserService } from '@app/services/user/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
 import { map, skip, switchMap, takeUntil } from 'rxjs/operators';
@@ -45,7 +44,6 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		private _employeeService: EmployeePageService,
 		private _route: ActivatedRoute,
 		private _router: Router,
-		private _snackBar: MatSnackBar,
 		private _cdr: ChangeDetectorRef,
 		private _currentUserService: CurrentUserService
 	) {

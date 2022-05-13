@@ -1,0 +1,102 @@
+@use 'base/variables' as variables;
+
+do-form-row mat-form-field.mat-form-field-appearance-outline {
+	line-height: 22px;
+
+	.mat-form-field-wrapper {
+		margin: 0;
+		padding-bottom: 0;
+	}
+
+	.mat-form-field-subscript-wrapper {
+		margin-top: 1px;
+		font-size: 13px;
+		padding: 0 16px;
+		top: 100%;
+		line-height: 21px;
+	}
+
+	.mat-form-field-outline-thick {
+		.mat-form-field-outline-start,
+		.mat-form-field-outline-end,
+		.mat-form-field-outline-gap {
+			border-width: 1px;
+		}
+	}
+
+	.mat-form-field-flex {
+		padding: 0 16px;
+		margin-top: 0;
+		align-items: normal;
+
+		&:hover .mat-form-field-outline-thick {
+			color: variables.$secondary_hover;
+		}
+	}
+
+	&.mat-focused .mat-form-field-flex .mat-form-field-outline-thick {
+		color: variables.$secondary_active;
+	}
+
+	&.mat-focused {
+		.mat-select-arrow {
+			color: revert !important;
+		}
+	}
+
+	&.mat-form-field-invalid.mat-form-field-invalid .mat-form-field-outline-thick {
+		color: variables.$alert;
+	}
+
+	.mat-form-field-outline {
+		top: 0;
+		color: variables.$secondary_default;
+	}
+
+	.mat-form-field-outline-start {
+		border-radius: 4px 0 0 4px;
+	}
+
+	.mat-form-field-outline-end {
+		border-radius: 0 4px 4px 0;
+	}
+
+	.mat-form-field-infix {
+		border: none;
+		padding: 9px 0;
+	}
+
+	.mat-form-field-prefix {
+		margin-right: 10px;
+
+		.mat-icon-button {
+			width: 100% !important;
+		}
+	}
+
+	.mat-form-field-suffix {
+		margin-left: 10px;
+
+		.mat-icon-button {
+			width: 100% !important;
+		}
+	}
+
+	.mat-select-arrow-wrapper {
+		transform: none;
+	}
+
+	.mat-select-placeholder,
+	input::placeholder,
+	textarea::placeholder {
+		color: variables.$secondary_default;
+	}
+
+	&.mat-form-field-disabled {
+		.mat-select-placeholder,
+		input::placeholder,
+		textarea::placeholder {
+			color: variables.$typo;
+		}
+	}
+}

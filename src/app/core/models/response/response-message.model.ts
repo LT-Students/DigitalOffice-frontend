@@ -1,8 +1,8 @@
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { AlertService } from '@app/services/alert.service';
 
 export interface IErrorMessageTypes {
 	triggered?: MessageTriggeredFrom;
@@ -14,7 +14,7 @@ export interface IErrorMessageTypes {
 	providedIn: 'root',
 })
 export class ResponseMessageModel {
-	constructor(private _snackBar: MatSnackBar) {}
+	constructor(private alert: AlertService) {}
 
 	private _responseMessageTypes: IErrorMessageTypes[] = [
 		{ triggered: MessageTriggeredFrom.Project, feminine: false, neuter: false },
@@ -41,32 +41,14 @@ export class ResponseMessageModel {
 		}`;
 	}
 
-	public getErrorMessage(err: any): string {
-		if (err.status === 403) {
-			return 'Недостаточно прав доступа';
-		}
-		if (err.status === 404) {
-			return 'Операция отклонена';
-		}
-		return err.error.errors?.join(' ') ?? 'Что-то пошло не так :(';
-	}
-
 	public message(
 		triggeredFrom: MessageTriggeredFrom,
 		method: MessageMethod
 	): (source: Observable<any>) => Observable<any> {
 		return (source) => {
 			return source.pipe(
-				catchError((err) => {
-					this._snackBar.open(this.getErrorMessage(err), '×', {
-						duration: 3000,
-					});
-					return throwError(err);
-				}),
 				tap((result) => {
-					this._snackBar.open(this.getSuccessMessage(triggeredFrom, method, result.status), '×', {
-						duration: 3000,
-					});
+					this.alert.open(this.getSuccessMessage(triggeredFrom, method, result.status));
 				})
 			);
 		};

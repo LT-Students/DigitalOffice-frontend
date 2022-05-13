@@ -11,7 +11,7 @@
 				<col class="column column_width_sm" />
 				<col class="column column_width_t" />
 			</colgroup>
-			<thead class="text-gray1">
+			<thead class="text-secondary_default">
 				<tr>
 					<th>Имя</th>
 					<th>Часы за проект/Норма</th>
@@ -35,7 +35,7 @@
 								<ng-container *ngIf="!employee?.editMode; else input">
 									<ng-container *ngIf="!employee?.managerHours; else managerHours">
 										<strong
-											>{{ employee?.projectHours }}/<span class="text-gray1">{{
+											>{{ employee?.projectHours }}/<span class="text-secondary_default">{{
 												employee?.normHours ?? 0
 											}}</span></strong
 										>
@@ -43,7 +43,9 @@
 									<ng-template #managerHours>
 										<strong>
 											{{ employee?.managerHours }}/
-											<span class="text-gray1"> {{ employee?.normHours ?? 0 }}&nbsp; </span>
+											<span class="text-secondary_default">
+												{{ employee?.normHours ?? 0 }}&nbsp;
+											</span>
 										</strong>
 										<span class="mat-caption">
 											Изменено
@@ -145,7 +147,7 @@
 								</div>
 							</ng-container>
 							<ng-template #empty>
-								<span class="text-gray1">{{ '-' }}</span>
+								<span class="text-secondary_default">{{ '-' }}</span>
 							</ng-template>
 						</td>
 						<td class="cell">

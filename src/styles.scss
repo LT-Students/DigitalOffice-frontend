@@ -9,6 +9,10 @@
 @use './stylesheets/material/expansion-panel';
 @use './stylesheets/material/mat-button';
 @use './stylesheets/material/mat-checkbox';
+@use './stylesheets/material/mat-select';
+@use './stylesheets/material/mat-sidenav';
+@use './stylesheets/material/form-field';
+@use './stylesheets/material/dialog';
 @use './stylesheets/material/popover';
 @use './stylesheets/news-feed/news-feed';
 
@@ -63,14 +67,14 @@ textarea {
 
 	cursor: pointer;
 
-	color: variables.$dark_4;
+	color: variables.$main_text;
 
 	svg {
 		margin-right: 13px;
 
 		width: 5px;
 		height: 10px;
-		stroke: variables.$dark_2;
+		stroke: variables.$main_text;
 		fill: none;
 	}
 

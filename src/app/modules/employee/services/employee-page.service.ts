@@ -3,10 +3,9 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
-import { map, tap, withLatestFrom } from 'rxjs/operators';
+import { first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UUID } from '@app/types/uuid.type';
 
 @Injectable({
@@ -16,11 +15,7 @@ export class EmployeePageService implements Resolve<User> {
 	private _selectedUser: ReplaySubject<User>;
 	public readonly selectedUser$: Observable<User>;
 
-	constructor(
-		private _userService: UserService,
-		private _currentUserService: CurrentUserService,
-		private _snackBar: MatSnackBar
-	) {
+	constructor(private _userService: UserService, private _currentUserService: CurrentUserService) {
 		this._selectedUser = new ReplaySubject<User>(1);
 		this.selectedUser$ = this._selectedUser.asObservable();
 	}
@@ -51,6 +46,13 @@ export class EmployeePageService implements Resolve<User> {
 				}
 			}),
 			map(([user, _]) => user)
+		);
+	}
+
+	public refreshSelectedUser(): Observable<User> {
+		return this.selectedUser$.pipe(
+			first(),
+			switchMap((user: User) => this.getEmployee(user.id))
 		);
 	}
 }

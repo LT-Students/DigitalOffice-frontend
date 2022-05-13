@@ -35,7 +35,9 @@ interface IGetNewsResponse {
 	createdAtUtc: string;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class NewsService {
 	constructor(private _newsService: NewsApiService, private _responseMessage: ResponseMessageModel) {}
 

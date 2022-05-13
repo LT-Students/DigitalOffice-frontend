@@ -18,7 +18,7 @@ export class ProjectTypeModel {
 		{ type: ProjectStatusType.Suspend, name: ProjectStatusTypeRu.Suspend },
 	];
 
-	public static getProjectType(projectStatusType?: ProjectStatusType | undefined): IProjectStatusType | undefined {
+	public static getProjectType(projectStatusType?: ProjectStatusType | string | undefined): IProjectStatusType | undefined {
 		return this._projectTypes.find((status: IProjectStatusType) => status.type === projectStatusType);
 	}
 

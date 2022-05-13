@@ -1,23 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ReconstructPasswordRequest {
-	/**
-	 * User login.
-	 */
-	login: string;
 
-	/**
-	 * New user password.
-	 */
-	newPassword: string;
+  /**
+   * User login.
+   */
+  login: string;
 
-	/**
-	 * Secret from email.
-	 */
-	secret: string;
+  /**
+   * New user password.
+   */
+  newPassword: string;
 
-	/**
-	 * Unique user identifier.
-	 */
-	userId: string;
+  /**
+   * Secret from email.
+   */
+  secret: string;
+
+  /**
+   * Unique user identifier.
+   */
+  userId: string;
 }
+

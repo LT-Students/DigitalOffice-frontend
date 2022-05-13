@@ -3,10 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
 import { UserInfo } from '@api/user-service/models/user-info';
+import { ConfirmDialogComponent, ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 import { WorkFlowMode } from '../../modules/employee/employee-page.component';
 import { Team } from '../../modules/projects/components/new-project/team-cards';
-import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/modals/confirm-dialog/confirm-dialog.component';
-import { PostComponent } from '../../modules/news/components/post/post.component';
 
 export enum ModalType {
 	CREATE,
@@ -69,9 +68,9 @@ export class ModalService {
 
 	public fullScreen<C, T, R = any>(component: ComponentType<C>, data?: T): MatDialogRef<C, R> {
 		return this._matDialog.open(component, {
-			maxHeight: `100vh`,
+			maxHeight: '100vh',
 			maxWidth: '100vw',
-			height: `100%`,
+			height: '100%',
 			width: '100%',
 			data: data,
 			autoFocus: false,

@@ -17,7 +17,7 @@ export class TimelistResolver implements Resolve<FindResultResponseStatInfo> {
 			year: DateTime.now().year,
 			takeCount: 20,
 			skipCount: 0,
-			departmentId: route.params.id,
+			departmentsIds: [route.params.id],
 		};
 
 		return this._timeService.findStat(params);

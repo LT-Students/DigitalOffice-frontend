@@ -3,18 +3,19 @@
 @use 'material/fab-button' as fab;
 @use 'material/expansion-panel' as expansion;
 @use 'material/datepicker';
+@use 'sass:math';
 
 /* ======== Angular material custom themes ======== */
 
 $custom-typography: mat.define-typography-config(
 	$font-family: 'Lato, Roboto, "Helvetica Neue", sans-serif',
 	$display-1: mat.define-typography-level(30px, 36px, 700, 'Montserrat'),
-	$headline: mat.define-typography-level(35px, 1.15, 700, 'Montserrat'),
-	$title: mat.define-typography-level(28px, 1.2, 700, 'Montserrat'),
-	$subheading-2: mat.define-typography-level(22px, 1.45, 700, 'Montserrat'),
-	$subheading-1: mat.define-typography-level(18px, 1.45, 700, 'Montserrat'),
-	$body-1: mat.define-typography-level(15px, 1.45, 500),
-	$body-2: mat.define-typography-level(13px, 1.45, 400),
+	$headline: mat.define-typography-level(35px, math.round(35px * 1.15), 700, 'Montserrat'),
+	$title: mat.define-typography-level(28px, math.round(28px * 1.2), 700, 'Montserrat'),
+	$subheading-2: mat.define-typography-level(22px, math.round(22px * 1.45), 700, 'Montserrat'),
+	$subheading-1: mat.define-typography-level(18px, math.round(18px * 1.45), 700, 'Montserrat'),
+	$body-1: mat.define-typography-level(15px, math.round(15px * 1.45), 500),
+	$body-2: mat.define-typography-level(13px, math.round(13px * 1.45), 400),
 	$caption: mat.define-typography-level(14px, 24px, 500),
 	$input: mat.define-typography-level(15px, 1.45, 500),
 	$button: mat.define-typography-level(15px, 1.45, 500),
@@ -63,6 +64,7 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 			color: (
 				primary: mat.define-palette($do-grey),
 				accent: mat.define-palette($do-orange, 50),
+				warn: mat.define-palette(mat.$red-palette, 400)
 			),
 		)
 	)
@@ -125,19 +127,28 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 		margin: 0 0 36px;
 	}
 
-	.mat-h1,
+	.mat-h2,
 	h2 {
 		margin: 0 0 32px;
 	}
 
-	.mat-h1,
+	.mat-h3,
 	h3 {
 		margin: 0 0 24px;
 	}
 
-	.mat-h1,
+	.mat-h4,
 	h4 {
 		margin: 0 0 12px;
+	}
+
+	.mat-h5,
+	h5 {
+		margin-bottom: 16px;
+
+		font-size: 16px;
+		font-weight: 700;
+		line-height: 150%;
 	}
 
 	span.mat-h3 {

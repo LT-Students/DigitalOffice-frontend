@@ -85,8 +85,6 @@ export class AddEditDepartmentComponent {
 			  }
 			: undefined;
 
-		console.log(director);
-
 		return this._departmentService.createDepartment({
 			name: this.departmentForm.get(DepartmentPath.NAME)?.value?.trim(),
 			description: this.departmentForm.get(DepartmentPath.DESCRIPTION)?.value?.trim(),

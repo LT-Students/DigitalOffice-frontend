@@ -1,23 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface AddImageRequest {
-	/**
-	 * Image content.
-	 */
-	content: string;
 
-	/**
-	 * Image extension.
-	 */
-	extension: string;
+  /**
+   * Image content.
+   */
+  content: string;
 
-	/**
-	 * shows whether the image is the current avatar or not
-	 */
-	isCurrentAvatar?: any;
+  /**
+   * Image extension.
+   */
+  extension: string;
 
-	/**
-	 * Image name.
-	 */
-	name: string;
+  /**
+   * shows whether the image is the current avatar or not
+   */
+  isCurrentAvatar?: any;
+
+  /**
+   * Image name.
+   */
+  name: string;
 }
+
