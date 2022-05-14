@@ -14,6 +14,7 @@ import { createEditRequest } from '@app/utils/utils';
 import { ModalWidth } from '@app/services/modal.service';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
+import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -64,16 +65,17 @@ export class MainInfoComponent implements OnInit {
 		return true;
 	}
 
-	public toggleEditMode(user?: User): void {
-		if (user) {
-			this._fillForm(user);
-		}
-		this.isEditing = !this.isEditing;
-	}
-
 	public onReset(): void {
 		this.employeeInfoForm.reset();
-		this.toggleEditMode();
+	}
+
+	public editUser(): void {
+		this.isEditing = !this.isEditing;
+		const dialogRef = this._dialog.open(EditInfoComponent, {
+			data: this.user$,
+			width: ModalWidth.L,
+			autoFocus: false,
+		});
 	}
 
 	public onAvatarUploadDialog(): void {
@@ -121,12 +123,7 @@ export class MainInfoComponent implements OnInit {
 					this.loading.next(false);
 				})
 			)
-			.subscribe({
-				next: () => this.toggleEditMode(),
-				error: (err) => {
-					throw err;
-				},
-			});
+			.subscribe();
 	}
 
 	private _fillForm(user: User): void {
