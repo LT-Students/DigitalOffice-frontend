@@ -61,8 +61,8 @@ export class EditInfoComponent implements OnInit {
 			[UserPath.LAST_NAME]: user.lastName,
 			[UserPath.MIDDLE_NAME]: user.middleName,
 			[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
-			[UserPath.BUSINESS_HOURS_FROM_UTC]: user.businessHoursFromUtc,
-			[UserPath.BUSINESS_HOURS_TO_UTC]: user.businessHoursToUtc,
+			[UserPath.BUSINESS_HOURS_FROM_UTC]: this.formatTime(user.businessHoursFromUtc),
+			[UserPath.BUSINESS_HOURS_TO_UTC]: this.formatTime(user.businessHoursToUtc),
 			[UserPath.STATUS]: user.status,
 			[UserPath.ABOUT]: user.about
 		}
@@ -87,5 +87,9 @@ export class EditInfoComponent implements OnInit {
 
 	public toggleEditMode(): void {
 		this.isEditMode = !this.isEditMode;
+	}
+
+	private formatTime(time?: string): string | undefined {
+		return time?.split('T')[1];
 	}
 }
