@@ -17,15 +17,15 @@ export class EditWorkinfoComponent implements OnInit {
 	public user: User;
 	public EditForm: FormGroup;
 
-	public userDates: any;
+	public userData: any;
 
 	constructor(@Inject(MAT_DIALOG_DATA) data: User, private formBuilder: FormBuilder) {
 		this.user = data;
 		this.EditForm = this.formBuilder.group({
 			department: [this.user.department],
 		});
-		console.log(this.user);
-		this.userDates = [
+
+		this.userData = [
 			{
 				name: 'Департамент',
 				value: this.user.department?.name,
@@ -51,7 +51,9 @@ export class EditWorkinfoComponent implements OnInit {
 				value: this.user.department?.name,
 			},
 		];
+		console.log(this.userData);
 	}
+
 	ngOnInit(): void {}
 
 	public get department(): FormControl {
