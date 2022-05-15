@@ -42,6 +42,7 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 import { TruncateTooltipDirective } from './directives/truncate-tooltip.directive';
 import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
+import { PermissionDirective } from './directives/permission.directive';
 
 @NgModule({
 	declarations: [
@@ -78,6 +79,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		UserStatusPipe,
 		PlaceholderPipe,
 		UserRecoveryComponent,
+		PermissionDirective,
 	],
 	imports: [
 		CommonModule,
@@ -130,6 +132,7 @@ import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 		UserStatusPipe,
 		PlaceholderPipe,
 		UserRecoveryComponent,
+		PermissionDirective,
 	],
 })
 export class SharedModule {}
