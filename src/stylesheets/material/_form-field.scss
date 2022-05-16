@@ -9,10 +9,12 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 	}
 
 	.mat-form-field-subscript-wrapper {
-		margin-top: 1px;
-		font-size: 13px;
-		padding: 0 16px;
 		top: 100%;
+
+		margin-top: 1px;
+		padding: 0 16px;
+
+		font-size: 13px;
 		line-height: 21px;
 	}
 
@@ -25,8 +27,9 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 	}
 
 	.mat-form-field-flex {
-		padding: 0 16px;
 		margin-top: 0;
+		padding: 0 16px;
+
 		align-items: normal;
 
 		&:hover .mat-form-field-outline-thick {
@@ -50,6 +53,7 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 
 	.mat-form-field-outline {
 		top: 0;
+
 		color: variables.$secondary_default;
 	}
 
@@ -62,8 +66,11 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 	}
 
 	.mat-form-field-infix {
-		border: none;
 		padding: 9px 0;
+
+		width: 100%;
+
+		border: none;
 	}
 
 	.mat-form-field-prefix {
