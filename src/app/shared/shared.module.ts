@@ -10,6 +10,7 @@ import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/a
 import { UserStatusPipe } from '@shared/pipes/user-status.pipe';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -79,6 +80,7 @@ import { ExecutePipe } from './pipes/execute.pipe';
 		UserStatusPipe,
 		PlaceholderPipe,
 		UserRecoveryComponent,
+		CapitalizePipe,
 		FormRowComponent,
 		SelectDirective,
 		SidebarComponent,
@@ -136,6 +138,7 @@ import { ExecutePipe } from './pipes/execute.pipe';
 		UserStatusPipe,
 		PlaceholderPipe,
 		UserRecoveryComponent,
+		CapitalizePipe,
 		FormRowComponent,
 		SelectDirective,
 		ImageUrlPipe,

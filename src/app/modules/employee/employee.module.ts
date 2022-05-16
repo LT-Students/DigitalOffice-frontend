@@ -12,6 +12,7 @@ import { EditContactComponent } from './components/main-info/communications/edit
 import { AddContactComponent } from './components/main-info/communications/add-contact/add-contact.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { UserListItemComponent } from './components/user-list/user-list-item/user-list-item.component';
+import { EditInfoComponent } from './dialogs/edit-info/edit-info.component';
 
 @NgModule({
 	declarations: [
@@ -24,6 +25,7 @@ import { UserListItemComponent } from './components/user-list/user-list-item/use
 		AddContactComponent,
 		UserListComponent,
 		UserListItemComponent,
+		EditInfoComponent,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],
