@@ -428,13 +428,13 @@ export class UserApiService extends BaseService {
     /**
      * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
      */
-    ascendingsort?: boolean;
+    isascendingsort?: boolean;
 
     /**
      * Find for users containing a substring in the full name
      */
     fullnameincludesubstring?: string;
-    active?: boolean;
+    isactive?: boolean;
     includecurrentavatar?: boolean;
   }): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
 
@@ -442,9 +442,9 @@ export class UserApiService extends BaseService {
     if (params) {
       rb.query('skipCount', params.skipCount, {});
       rb.query('takeCount', params.takeCount, {});
-      rb.query('ascendingsort', params.ascendingsort, {});
+      rb.query('isascendingsort', params.isascendingsort, {});
       rb.query('fullnameincludesubstring', params.fullnameincludesubstring, {});
-      rb.query('active', params.active, {});
+      rb.query('isactive', params.isactive, {});
       rb.query('includecurrentavatar', params.includecurrentavatar, {});
     }
 
@@ -482,13 +482,13 @@ export class UserApiService extends BaseService {
     /**
      * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
      */
-    ascendingsort?: boolean;
+    isascendingsort?: boolean;
 
     /**
      * Find for users containing a substring in the full name
      */
     fullnameincludesubstring?: string;
-    active?: boolean;
+    isactive?: boolean;
     includecurrentavatar?: boolean;
   }): Observable<FindResultResponseUserInfo> {
 

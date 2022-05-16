@@ -13,7 +13,7 @@ import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { ModalWidth } from '@app/services/modal.service';
 import { EmployeePageService } from '../../services/employee-page.service';
-import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
+import { UploadPhotoComponent } from '../../dialogs/upload-photo/upload-photo.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',

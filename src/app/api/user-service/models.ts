@@ -24,6 +24,7 @@ export { RoleInfo } from './models/role-info';
 export { OfficeInfo } from './models/office-info';
 export { CommunicationInfo } from './models/communication-info';
 export { ProjectInfo } from './models/project-info';
+export { ProjectUserInfo } from './models/project-user-info';
 export { GenderInfo } from './models/gender-info';
 export { EducationInfo } from './models/education-info';
 export { EducationTypeInfo } from './models/education-type-info';

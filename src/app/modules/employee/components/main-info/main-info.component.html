@@ -3,7 +3,7 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__avatar" (click)="onAvatarUploadDialog()">
-					<do-profile-image [image]="user?.avatar" size="l"></do-profile-image>
+					<do-profile-image [image]="user?.avatar" size="xl"></do-profile-image>
 					<label class="mat-body-1 employee-info__upload-button">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
@@ -12,7 +12,7 @@
 					</label>
 				</div>
 				<h3 class="employee-info__name">
-					{{ user | fullName }}&nbsp;<span
+					{{ user | fullName: true }}&nbsp;<span
 						matTooltipClass="tooltip"
 						[matTooltip]="user.firstName + ' ' + (user.status | userStatus: false:true | lowercase)"
 						[matTooltipPosition]="'above'"

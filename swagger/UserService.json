@@ -408,7 +408,7 @@
           "required": true
         },
         {
-          "name": "ascendingsort",
+          "name": "isascendingsort",
           "in": "query",
           "description": "When value is 'true' sorts A-Z, when value is 'false' sorts Z-A",
           "schema": {
@@ -426,7 +426,7 @@
           "required": false
         },
         {
-          "name": "active",
+          "name": "isactive",
           "in": "query",
           "schema": {
             "type": "boolean"
@@ -2031,14 +2031,14 @@
       "PendingUserInfo": {
         "type": "object",
         "required": [
-          "UserInfo",
-          "InvintationCommunicationId"
+          "User",
+          "InvitationCommunicationId"
         ],
         "properties": {
-          "UserInfo": {
+          "User": {
             "$ref": "#/components/schemas/UserInfo"
           },
-          "InvintationCommunicationId": {
+          "InvitationCommunicationId": {
             "type": "string",
             "format": "uuid",
             "description": "communication to which an invitation with a password was sent."
@@ -2297,7 +2297,7 @@
           "RightsIds": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "integer"
             }
           }
         }
@@ -2374,6 +2374,25 @@
           },
           "ShortDescription": {
             "type": "string"
+          },
+          "User": {
+            "$ref": "#/components/schemas/ProjectUserInfo"
+          }
+        }
+      },
+      "ProjectUserInfo": {
+        "type": "object",
+        "required": [
+          "IsActive",
+          "CreatedAtUtc"
+        ],
+        "properties": {
+          "IsActive": {
+            "type": "boolean"
+          },
+          "CreatedAtUtc": {
+            "type": "string",
+            "format": "date"
           }
         }
       },

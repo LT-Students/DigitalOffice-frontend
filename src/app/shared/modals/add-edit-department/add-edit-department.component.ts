@@ -63,7 +63,7 @@ export class AddEditDepartmentComponent {
 			this.departmentForm.patchValue(this._departmentInfo);
 		}
 
-		this.directors$ = this._userService.findUsers({ skipCount: 0, takeCount: 500, includedepartment: true }).pipe(
+		this.directors$ = this._userService.findUsers({ skipCount: 0, takeCount: 500 }).pipe(
 			map((response) => response.body ?? []),
 			map((users) => {
 				if (this.isEdit) {
