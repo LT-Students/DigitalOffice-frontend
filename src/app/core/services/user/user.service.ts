@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { UserApiService } from '@api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
-import { EditUserActiveRequest, UserInfo, UserResponse } from '@api/user-service/models';
+import { EditUserActiveRequest, PendingUserInfo, UserInfo, UserResponse } from '@api/user-service/models';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
@@ -15,16 +15,21 @@ import { ResponseMessageModel } from '@app/models/response/response-message.mode
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { ImageInfo } from '@app/models/image.model';
 import { EditRequest, UserPath } from '@app/types/edit-request';
+import { PendingApiService } from '@api/user-service/services/pending-api.service';
 
 export interface IFindUsers {
 	skipCount: number;
 	takeCount: number;
-	departmentid?: string;
-	includedeactivated?: boolean;
-	includedepartment?: boolean;
-	includeposition?: boolean;
-	includeoffice?: boolean;
-	includerole?: boolean;
+	ascendingsort?: boolean;
+	fullnameincludesubstring?: string;
+	isactive?: boolean;
+	includecurrentavatar?: boolean;
+}
+
+export interface IFindPending {
+	skipCount: number;
+	takeCount: number;
+	includecommunication?: boolean;
 	includecurrentavatar?: boolean;
 }
 
@@ -35,6 +40,7 @@ export class UserService {
 	constructor(
 		private _userApiService: UserApiService,
 		private _imageApiService: AvatarApiService,
+		private pendingApiService: PendingApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
 
@@ -50,6 +56,10 @@ export class UserService {
 
 	public findUsers(params: IFindUsers): Observable<OperationResultResponse<UserInfo[]>> {
 		return this._userApiService.findUsers(params);
+	}
+
+	public findPending(params: IFindPending): Observable<OperationResultResponse<PendingUserInfo[]>> {
+		return this.pendingApiService.findPending(params);
 	}
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ButtonToggleGroupComponent } from '@shared/component/button-toggle/button-toggle-group.component';
 
@@ -19,7 +19,7 @@ export class ButtonToggleComponent {
 	}
 	private _checked = false;
 
-	constructor(private buttonToggleGroup: ButtonToggleGroupComponent, private elementRef: ElementRef) {}
+	constructor(private buttonToggleGroup: ButtonToggleGroupComponent) {}
 
 	public onButtonClick(): void {
 		if (!this._checked) {
