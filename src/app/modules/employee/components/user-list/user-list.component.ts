@@ -1,8 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ModalService } from '@app/services/modal.service';
-import { FormControl } from '@angular/forms';
+import { DialogService } from '@app/services/dialog.service';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { UserListService } from './services/user-list.service';
 import { Status, UserInfoLike } from './user-list.types';
@@ -20,25 +19,20 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
 	public contextMenuItems = this.contextMenuService.menuItems;
 	public users$!: Observable<UserInfoLike[]>;
-	public nameSearch = new FormControl('');
+	public nameSearch = this.userList.nameControl;
 
 	constructor(
-		private modal: ModalService,
+		private modal: DialogService,
 		private userList: UserListService,
 		private contextMenuService: ContextMenuService
 	) {}
 
 	public ngOnInit(): void {
-		this.userList.registerOnNameChange(this.nameSearch.valueChanges);
 		this.users$ = this.userList.getUsers$();
 	}
 
 	public ngAfterViewInit(): void {
 		this.contextMenuService.setContextMenu(this.contextMenu);
-	}
-
-	public identify(index: number, user: UserInfoLike): string {
-		return user.id;
 	}
 
 	public appendUsers(): void {

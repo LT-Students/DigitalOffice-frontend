@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
-import { ModalService, ModalWidth, UserSearchModalConfig } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
@@ -16,8 +16,6 @@ import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/a
 import { AppRoutes } from '@app/models/app-routes';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { UserInfo } from '@api/filter-service/models/user-info';
-import { WorkFlowMode } from '../../../employee/employee-page.component';
-import { UserSearchComponent } from './modals/user-search/user-search.component';
 import { Team, TeamMember } from './team-cards';
 
 @Component({
@@ -39,7 +37,7 @@ export class NewProjectComponent implements OnInit {
 	constructor(
 		private _formBuilder: FormBuilder,
 		private _projectService: ProjectService,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _departmentService: DepartmentService,
 		private _location: Location,
 		private _router: Router,
@@ -118,14 +116,6 @@ export class NewProjectComponent implements OnInit {
 					throw error;
 				}
 			);
-	}
-
-	public showProjectTeam(): void {
-		const configData: UserSearchModalConfig = {
-			team: { name: 'all', members: this._getAllMembers() },
-			mode: WorkFlowMode.VIEW,
-		};
-		this._modalService.openModal(UserSearchComponent, ModalWidth.L, configData);
 	}
 
 	public saveDraft(): void {}

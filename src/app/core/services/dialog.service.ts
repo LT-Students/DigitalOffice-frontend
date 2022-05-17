@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
-import { UserInfo } from '@api/user-service/models/user-info';
 import { ConfirmDialogComponent, ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
-import { WorkFlowMode } from '../../modules/employee/employee-page.component';
-import { Team } from '../../modules/projects/components/new-project/team-cards';
+import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
+import { CommunicationInfo } from '@api/user-service/models/communication-info';
 
 export enum ModalType {
 	CREATE,
@@ -30,12 +29,6 @@ export enum AdminDashboardModalType {
 	COMPANY_SETTINGS,
 }
 
-export interface UserSearchModalConfig {
-	team?: Team;
-	members?: UserInfo[];
-	mode: WorkFlowMode;
-}
-
 export const enum ModalWidth {
 	XL = '720px',
 	L = '672px',
@@ -46,9 +39,12 @@ export const enum ModalWidth {
 @Injectable({
 	providedIn: 'root',
 })
-export class ModalService {
+export class DialogService {
 	constructor(private _matDialog: MatDialog) {}
 
+	/**
+	 * @deprecated use 'open' method
+	 */
 	public openModal<C, T = any, R = any>(
 		component: ComponentType<C>,
 		modalWidth?: ModalWidth,
@@ -60,6 +56,18 @@ export class ModalService {
 			width: modalWidth,
 			role: 'alertdialog',
 		});
+	}
+
+	public open<R, C, D>(component: ComponentType<C>, config: MatDialogConfig<D>): MatDialogRef<C, R> {
+		return this._matDialog.open(component, config);
+	}
+
+	public recoverUser(
+		userId: string,
+		emails: CommunicationInfo[],
+		isPending: boolean
+	): MatDialogRef<UserRecoveryComponent> {
+		return this.open(UserRecoveryComponent, { width: ModalWidth.M, data: { userId, emails, isPending } });
 	}
 
 	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent, boolean> {

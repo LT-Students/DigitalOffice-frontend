@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { UserApiService } from '@api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
-import { EditUserActiveRequest, PendingUserInfo, UserInfo, UserResponse } from '@api/user-service/models';
+import { EditUserActiveRequest, UserInfo, UserResponse } from '@api/user-service/models';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
@@ -58,7 +58,7 @@ export class UserService {
 		return this._userApiService.findUsers(params);
 	}
 
-	public findPending(params: IFindPending): Observable<OperationResultResponse<PendingUserInfo[]>> {
+	public findPending(params: IFindPending): Observable<OperationResultResponse<UserInfo[]>> {
 		return this.pendingApiService.findPending(params);
 	}
 
@@ -105,5 +105,9 @@ export class UserService {
 
 	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.editAvatar({ userId: userId, imageId: imageId });
+	}
+
+	public resendInvitation(userId: string, communicationId: string): Observable<OperationResultResponse> {
+		return this.pendingApiService.resendinvitationPending({ userId, communicationId });
 	}
 }

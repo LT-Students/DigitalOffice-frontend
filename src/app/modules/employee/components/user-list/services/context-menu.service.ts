@@ -5,10 +5,8 @@ import { EMPTY } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { CommunicationType } from '@api/user-service/models/communication-type';
-import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { UserService } from '@app/services/user/user.service';
-import { ModalService } from '@app/services/modal.service';
-import { MatDialog } from '@angular/material/dialog';
+import { DialogService } from '@app/services/dialog.service';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { UserInfo as FilterUserInfo } from '@api/filter-service/models/user-info';
 import { UserInfoLike } from '../user-list.types';
@@ -51,12 +49,7 @@ export class ContextMenuService {
 
 	private contextMenu?: ContextMenuComponent;
 
-	constructor(
-		private userService: UserService,
-		private modal: ModalService,
-		private dialog: MatDialog,
-		private userList: UserListService
-	) {}
+	constructor(private userService: UserService, private dialog: DialogService, private userList: UserListService) {}
 
 	public setContextMenu(menuRef: ContextMenuComponent): void {
 		this.contextMenu = menuRef;
@@ -71,7 +64,7 @@ export class ContextMenuService {
 	}
 
 	private archiveUser(userId: string): void {
-		this.modal
+		this.dialog
 			.confirm({
 				confirmText: 'Да, удалить',
 				title: 'Удаление пользователя',
@@ -94,11 +87,7 @@ export class ContextMenuService {
 						c.type === CommunicationType.Email || c.type === CommunicationType.BaseEmail
 				);
 
-				this.dialog.open(UserRecoveryComponent, {
-					width: '550px',
-					maxHeight: '100%',
-					data: { userId: userId, emails: emails },
-				});
+				this.dialog.recoverUser(userId, emails, false);
 			},
 		});
 	}

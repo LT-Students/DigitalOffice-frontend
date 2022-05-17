@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
@@ -25,7 +25,7 @@ export class PositionListComponent implements AfterViewInit {
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _positionService: PositionService,
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder

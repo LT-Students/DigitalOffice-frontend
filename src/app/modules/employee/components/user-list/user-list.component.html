@@ -24,7 +24,7 @@
 		(scrolled)="appendUsers()"
 		class="user-list"
 	>
-		<div *ngFor="let user of users; last as isLast; trackBy: identify">
+		<div *ngFor="let user of users; last as isLast">
 			<do-user-list-item [user]="user"></do-user-list-item>
 			<mat-divider *ngIf="!isLast" inset class="divider"></mat-divider>
 		</div>

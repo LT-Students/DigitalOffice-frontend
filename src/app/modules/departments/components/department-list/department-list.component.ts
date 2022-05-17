@@ -3,14 +3,14 @@ import { Sort } from '@angular/material/sort';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { ActivatedRoute } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { ModalService } from '@app/services/modal.service';
+import { DialogService } from '@app/services/dialog.service';
 import { combineLatest, EMPTY, iif, Observable, ReplaySubject, Subject } from 'rxjs';
 import { IFindRequest } from '@app/types/find-request.interface';
 import { map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { DepartmentService } from '@app/services/department/department.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AddEditDepartmentComponent } from '../../../../shared/modals/add-edit-department/add-edit-department.component';
+import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 
 @Component({
 	selector: 'do-department-list',
@@ -29,7 +29,7 @@ export class DepartmentListComponent implements AfterViewInit {
 
 	constructor(
 		private _departmentService: DepartmentService,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder
 	) {

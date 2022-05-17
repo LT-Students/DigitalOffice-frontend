@@ -5,7 +5,7 @@ import { IGetProjectResponse, ProjectService } from '@app/services/project/proje
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { UserInfo } from '@api/project-service/models/user-info';
 import { ProjectTypeModel } from '@app/models/project/project-status';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
@@ -41,7 +41,7 @@ export class ProjectPageComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private _projectService: ProjectService,
 		private _cdr: ChangeDetectorRef,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _router: Router
 	) {
 		this.projectId = '';

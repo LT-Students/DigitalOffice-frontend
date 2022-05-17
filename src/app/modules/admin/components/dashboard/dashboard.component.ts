@@ -7,7 +7,7 @@ import { OperationResultStatusType } from '@api/user-service/models/operation-re
 import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
-import { AdminDashboardModalType, ModalService, ModalWidth } from '@app/services/modal.service';
+import { AdminDashboardModalType, DialogService, ModalWidth } from '@app/services/dialog.service';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
 	public openModalClick: Subject<AdminDashboardModalType>;
 	public modalType: typeof AdminDashboardModalType;
 
-	constructor(private _router: Router, public dialog: MatDialog, public modalService: ModalService) {
+	constructor(private _router: Router, public dialog: MatDialog, public modalService: DialogService) {
 		this.openModalClick = new Subject<AdminDashboardModalType>();
 		this.modalType = AdminDashboardModalType;
 	}

@@ -17,7 +17,7 @@ import { CreateNewsRequest } from '@api/news-service/models/create-news-request'
 import { DoValidators } from '@app/validators/do-validators';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ModalService } from '@app/services/modal.service';
+import { DialogService } from '@app/services/dialog.service';
 import { OperationResultResponseNewsResponse } from '@api/news-service/models/operation-result-response-news-response';
 import { NewsPatchOperation } from '@api/news-service/models/news-patch-operation';
 import { EditNewsRequest } from '@api/news-service/models/edit-news-request';
@@ -58,7 +58,7 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		private _localStorage: LocalStorageService,
 		private _editorConfig: NewsEditorConfig,
 		private _dialogRef: MatDialogRef<NewsEditorComponent>,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _elementRef: ElementRef,
 		private _cdr: ChangeDetectorRef
 	) {

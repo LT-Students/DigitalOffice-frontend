@@ -47,6 +47,9 @@ import { ContextMenuComponent } from './component/context-menu/context-menu.comp
 import { ButtonToggleGroupComponent } from './component/button-toggle/button-toggle-group.component';
 import { ButtonToggleComponent } from './component/button-toggle/button-toggle.component';
 import { ExecutePipe } from './pipes/execute.pipe';
+import { EmailListComponent } from './modals/user-recovery/email-list/email-list.component';
+import { EmailItemComponent } from './modals/user-recovery/email-item/email-item.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 @NgModule({
 	declarations: [
@@ -89,6 +92,9 @@ import { ExecutePipe } from './pipes/execute.pipe';
 		ButtonToggleGroupComponent,
 		ButtonToggleComponent,
 		ExecutePipe,
+		EmailListComponent,
+		EmailItemComponent,
+		AutofocusDirective,
 	],
 	imports: [
 		CommonModule,
@@ -146,6 +152,7 @@ import { ExecutePipe } from './pipes/execute.pipe';
 		ButtonToggleGroupComponent,
 		ButtonToggleComponent,
 		ExecutePipe,
+		AutofocusDirective
 	],
 })
 export class SharedModule {}

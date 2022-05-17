@@ -11,7 +11,7 @@ import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
-import { ModalWidth } from '@app/services/modal.service';
+import { ModalWidth } from '@app/services/dialog.service';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../dialogs/upload-photo/upload-photo.component';
 import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
