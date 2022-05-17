@@ -24,15 +24,20 @@ export class PermissionService {
 		);
 	}
 
-	public checkPermission(right: UserRights): boolean {
+	public isAdmin(): boolean {
 		let isAdmin = false;
-		let hasPermission = false;
 
 		this.isAdmin$.subscribe({
 			next: (admin) => (isAdmin = admin),
 		});
 
-		if (isAdmin) {
+		return isAdmin;
+	}
+
+	public checkPermission(right: UserRights): boolean {
+		let hasPermission = false;
+
+		if (this.isAdmin()) {
 			return true;
 		} else {
 			this.assignedRights$.subscribe({

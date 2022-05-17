@@ -14,7 +14,7 @@ export class PermissionGuard implements CanActivate {
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): boolean | Observable<boolean> | Promise<boolean> {
-		const permission: UserRights = route.data['permissions'];
+		const permission: UserRights = route.data['permission'];
 		return this.permissionService.checkPermission(permission);
 	}
 }

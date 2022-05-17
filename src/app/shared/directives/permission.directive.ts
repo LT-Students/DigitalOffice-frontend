@@ -3,7 +3,7 @@ import { PermissionService } from '@app/services/permission.service';
 import { UserRights } from '@app/types/user-rights.enum';
 
 @Directive({
-	selector: '[doPermission]',
+	selector: '[hasPermission]',
 })
 export class PermissionDirective {
 	constructor(
@@ -12,7 +12,7 @@ export class PermissionDirective {
 		private viewContainer: ViewContainerRef
 	) {}
 
-	@Input() set doPermission(permission: UserRights) {
+	@Input() set hasPermission(permission: UserRights) {
 		if (this.permissionService.checkPermission(permission)) {
 			this.viewContainer.createEmbeddedView(this.templateRef);
 		}
