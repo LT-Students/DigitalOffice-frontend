@@ -3,7 +3,7 @@ import { Sort } from '@angular/material/sort';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { ActivatedRoute } from '@angular/router';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { DialogService } from '@app/services/dialog.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { combineLatest, EMPTY, iif, Observable, ReplaySubject, Subject } from 'rxjs';
 import { IFindRequest } from '@app/types/find-request.interface';
 import { map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
@@ -62,7 +62,7 @@ export class DepartmentListComponent implements AfterViewInit {
 
 	public onAddDepartmentClick(): void {
 		this._modalService
-			.openModal<AddEditDepartmentComponent, undefined, any>(AddEditDepartmentComponent)
+			.openModal<AddEditDepartmentComponent, undefined, any>(AddEditDepartmentComponent, ModalWidth.M)
 			.afterClosed()
 			.pipe(withLatestFrom(this._departmentParams))
 			.subscribe(([result, params]) => {

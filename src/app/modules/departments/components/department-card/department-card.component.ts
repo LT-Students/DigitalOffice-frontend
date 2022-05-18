@@ -9,7 +9,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
@@ -80,7 +80,10 @@ export class DepartmentCardComponent {
 
 	public onEditDepartmentClick(): void {
 		this._modalService
-			.openModal<AddEditDepartmentComponent>(AddEditDepartmentComponent, ModalWidth.M, this.departmentInfo)
+			.openModal<AddEditDepartmentComponent>(AddEditDepartmentComponent, ModalWidth.M, {
+				departmentInfo: this.departmentInfo,
+				directors$: of(this.dataSource.data.map(u => u.user))
+			})
 			.afterClosed()
 			.subscribe((result) => {
 				if (result?.status === OperationResultStatusType.FullSuccess) this._getDepartment();
