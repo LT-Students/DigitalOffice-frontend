@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
 	debounceTime,
-	distinctUntilChanged,
+	distinctUntilChanged, filter,
+	first,
 	map,
 	scan,
 	startWith,
@@ -19,7 +20,7 @@ import { IFindRequest } from '@app/types/find-request.interface';
 import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
 import { DialogService } from '@app/services/dialog.service';
 import { FormControl } from '@angular/forms';
-import { Status, UpdateUsersAction, UserInfoLike } from '../user-list.types';
+import { EditPayload, Status, UpdateUsersAction, UpdateUsersPayload, UserInfoLike } from '../user-list.types';
 
 interface FindUsersParams extends IFindRequest {
 	fullnameincludesubstring?: string;
@@ -28,15 +29,16 @@ interface FindUsersParams extends IFindRequest {
 @Injectable()
 export class UserListService {
 	private readonly takeCount = 20;
-	private skipCount = 0;
+	private userCount = Number.MAX_VALUE;
 
 	private removeUser$ = new Subject<string>();
+	private editUser$ = new Subject<EditPayload>();
 
 	private statusChange = new BehaviorSubject<Status>('active');
 	public statusChange$ = this.statusChange.asObservable();
 	public nameControl = new FormControl('');
 
-	private shouldAppend$ = new Subject<void>();
+	private skipCount$ = new BehaviorSubject<number>(0);
 
 	constructor(
 		private filterService: FilterService,
@@ -50,8 +52,13 @@ export class UserListService {
 	}
 
 	public appendUsers(): void {
-		this.skipCount += this.takeCount;
-		this.shouldAppend$.next();
+		this.skipCount$.pipe(first()).subscribe({
+			next: (offset: number) => this.skipCount$.next(offset + this.takeCount),
+		});
+	}
+
+	private refreshCount(): void {
+		this.skipCount$.next(0);
 	}
 
 	public createUser(): void {
@@ -61,13 +68,26 @@ export class UserListService {
 			.pipe(withLatestFrom(this.statusChange$))
 			.subscribe(([_, status]: [any, Status]) => {
 				if (status !== 'active') {
-					this.shouldAppend$.next();
+					this.refreshCount();
 				}
 			});
 	}
 
-	public removeFromList(userId: string): void {
-		this.removeUser$.next(userId);
+	public removeFromList(userId: string): boolean {
+		let isRemoved = false;
+		this.statusChange$.pipe(first()).subscribe({
+			next: (status: Status) => {
+				isRemoved = status !== 'archive';
+				if (isRemoved) {
+					this.removeUser$.next(userId);
+				}
+			},
+		});
+		return isRemoved;
+	}
+
+	public editUserInList(userId: string, partialUser: Partial<UserInfoLike>): void {
+		this.editUser$.next({ userId, partialUser });
 	}
 
 	public getUsers$(): Observable<UserInfoLike[]> {
@@ -79,31 +99,42 @@ export class UserListService {
 				tap(() => this.refreshCount())
 			),
 			this.statusChange$.pipe(tap(() => this.refreshCount())),
-			this.shouldAppend$.pipe(startWith(null)),
+			this.skipCount$.pipe(filter((skip: number) => skip < this.userCount)),
 		]).pipe(
-			switchMap(([name, status, _]: [string, Status, null | void], index: number) => {
+			switchMap(([name, status, skipCount]: [string, Status, number], index: number) => {
 				const nameSearch = name
 					? {
 							fullnameincludesubstring: name,
 					  }
 					: null;
 				const params: FindUsersParams = {
-					skipCount: this.skipCount,
+					skipCount: skipCount,
 					takeCount: this.takeCount,
 					...nameSearch,
 				};
 				return this.getFetchCallback(params, index ? status : undefined);
 			}),
+			tap((res: OperationResultResponse<UserInfoLike[]>) => (this.userCount = res.totalCount || 0)),
 			map((res: OperationResultResponse<UserInfoLike[]>) => res.body as UserInfoLike[]),
 			switchMap((users: UserInfoLike[]) =>
-				merge(of(users), this.removeUser$).pipe(map((v: UserInfoLike[] | string) => new UpdateUsersAction(v)))
+				merge(of(users), this.editUser$, this.removeUser$).pipe(
+					map((v: UpdateUsersPayload) => new UpdateUsersAction(v)),
+					withLatestFrom(this.skipCount$)
+				)
 			),
-			scan((acc: UserInfoLike[], update: UpdateUsersAction<UserInfoLike[] | string>) => {
-				console.log(acc, update);
+			scan((acc: UserInfoLike[], [update, skipCount]: [UpdateUsersAction<UpdateUsersPayload>, number]) => {
 				switch (update.action) {
 					case 'add':
 						const newUsers = update.payload as UserInfoLike[];
-						return this.skipCount ? [...acc, ...newUsers] : newUsers;
+						return skipCount ? [...acc, ...newUsers] : newUsers;
+					case 'edit':
+						const { userId, partialUser } = update.payload as EditPayload;
+						return acc.map((u: UserInfoLike) => {
+							if (u.id === userId) {
+								return { ...u, ...partialUser };
+							}
+							return u;
+						});
 					case 'remove':
 						return acc.filter((user: UserInfoLike) => user.id !== update.payload);
 					default:
@@ -111,10 +142,6 @@ export class UserListService {
 				}
 			}, [])
 		);
-	}
-
-	private refreshCount(): void {
-		this.skipCount = 0;
 	}
 
 	private getFetchCallback(
@@ -125,7 +152,12 @@ export class UserListService {
 			case 'active':
 				return this.filterService.filterUsers({ ...params });
 			case 'archive':
-				return this.userService.findUsers({ ...params, isactive: false, includecurrentavatar: true });
+				return this.userService.findUsers({
+					...params,
+					isactive: false,
+					includecurrentavatar: true,
+					includecommunications: true,
+				});
 			case 'pending':
 				return this.userService.findPending({
 					...params,

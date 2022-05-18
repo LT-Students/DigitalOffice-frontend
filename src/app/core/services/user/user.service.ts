@@ -24,6 +24,7 @@ export interface IFindUsers {
 	fullnameincludesubstring?: string;
 	isactive?: boolean;
 	includecurrentavatar?: boolean;
+	includecommunications?: boolean;
 }
 
 export interface IFindPending {
@@ -105,6 +106,10 @@ export class UserService {
 
 	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.editAvatar({ userId: userId, imageId: imageId });
+	}
+
+	public removePending(userId: string): Observable<OperationResultResponse> {
+		return this.pendingApiService.removePending({ userId });
 	}
 
 	public resendInvitation(userId: string, communicationId: string): Observable<OperationResultResponse> {

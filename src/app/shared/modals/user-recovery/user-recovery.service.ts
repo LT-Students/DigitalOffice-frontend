@@ -9,13 +9,14 @@ import { UserService } from '@app/services/user/user.service';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { EmailValue } from '@shared/modals/user-recovery/email-item/email-item.component';
+import { CommunicationVisibleTo } from '@api/user-service/models/communication-visible-to';
 
 @Injectable()
 export class UserRecoveryService {
 	private userId!: string;
 	public form!: FormArray;
 	public isPending = false;
-	public emailForRecovery$ = new BehaviorSubject('');
+	public emailForRecovery$ = new BehaviorSubject<CommunicationInfo | null>(null);
 
 	constructor(
 		private userService: UserService,
@@ -37,7 +38,6 @@ export class UserRecoveryService {
 	public recover$(): Observable<OperationResultResponse> {
 		const selectedControl = this.form.controls.find((c: AbstractControl) => c.value.checked) as FormControl;
 		const recoverEmail = selectedControl.value as EmailValue;
-		console.log(recoverEmail);
 
 		return (
 			recoverEmail?.communicationId
@@ -61,7 +61,15 @@ export class UserRecoveryService {
 			switchMap((communicationId: string) =>
 				this.recoverCallback.call(this.userService, this.userId, communicationId)
 			),
-			tap(() => this.emailForRecovery$.next(recoverEmail.email))
+			tap((id) => {
+				const invitedCommunication: CommunicationInfo = {
+					id: id as string,
+					type: CommunicationType.Email,
+					value: recoverEmail.email,
+					visibleTo: CommunicationVisibleTo.AllUsers,
+				};
+				this.emailForRecovery$.next(invitedCommunication);
+			})
 		);
 	}
 

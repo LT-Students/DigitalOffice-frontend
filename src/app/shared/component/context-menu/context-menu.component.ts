@@ -9,6 +9,8 @@ import { MatMenuTrigger } from '@angular/material/menu';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ContextMenuComponent implements OnInit {
+	private static uniqueId = 0;
+
 	@ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
 	@Input() items: MenuItem[] = [];
 
@@ -17,6 +19,7 @@ export class ContextMenuComponent implements OnInit {
 		x: 0,
 		y: 0,
 	};
+	public readonly itemId = ContextMenuComponent.uniqueId++;
 
 	constructor(private cdr: ChangeDetectorRef) {}
 

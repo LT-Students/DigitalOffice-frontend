@@ -7,7 +7,12 @@
 ></div>
 <mat-menu #contextMenu="matMenu">
 	<ng-container *ngFor="let item of items">
-		<button *ngIf="object | execute: item.visible" mat-menu-item (click)="item.action(object)">
+		<button
+			*ngIf="object | execute: item.visible"
+			mat-menu-item
+			(click)="item.action(object)"
+			[attr.data-test]="'context-menu-item-' + itemId"
+		>
 			<mat-icon *ngIf="item.icon" fontSet="material-icons-outlined">{{ item.icon }}</mat-icon>
 			<span>{{ item.title }}</span>
 		</button>

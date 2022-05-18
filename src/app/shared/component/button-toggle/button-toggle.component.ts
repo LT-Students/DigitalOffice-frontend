@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { ButtonToggleGroupComponent } from '@shared/component/button-toggle/button-toggle-group.component';
 
@@ -9,6 +9,8 @@ import { ButtonToggleGroupComponent } from '@shared/component/button-toggle/butt
 	styleUrls: ['./button-toggle.component.scss'],
 })
 export class ButtonToggleComponent {
+	private static uniqueId = 0;
+
 	@Input() value: any;
 	@Input()
 	public set checked(value: any) {
@@ -18,6 +20,9 @@ export class ButtonToggleComponent {
 		return this._checked;
 	}
 	private _checked = false;
+
+	@HostBinding('attr.data-test')
+	private readonly id = `button-toggle-${ButtonToggleComponent.uniqueId++}`;
 
 	constructor(private buttonToggleGroup: ButtonToggleGroupComponent) {}
 

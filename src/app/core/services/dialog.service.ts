@@ -66,8 +66,11 @@ export class DialogService {
 		userId: string,
 		emails: CommunicationInfo[],
 		isPending: boolean
-	): MatDialogRef<UserRecoveryComponent> {
-		return this.open(UserRecoveryComponent, { width: ModalWidth.M, data: { userId, emails, isPending } });
+	): MatDialogRef<UserRecoveryComponent, CommunicationInfo | undefined> {
+		return this.open(UserRecoveryComponent, {
+			width: ModalWidth.M,
+			data: { userId, emails, isPending },
+		});
 	}
 
 	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent, boolean> {
