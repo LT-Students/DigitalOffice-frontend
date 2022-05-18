@@ -13,6 +13,7 @@ import { EditContactComponent } from './components/main-info/communications/edit
 import { AddContactComponent } from './components/main-info/communications/add-contact/add-contact.component';
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 import { EditWorkinfoComponent } from './modals/edit-workinfo/edit-workinfo.component';
+import { DataManageComponent } from './modals/edit-workinfo/data-manage/data-manage.component';
 
 @NgModule({
 	declarations: [
@@ -26,6 +27,7 @@ import { EditWorkinfoComponent } from './modals/edit-workinfo/edit-workinfo.comp
 		AddContactComponent,
 		ManageUsersComponent,
 		EditWorkinfoComponent,
+		DataManageComponent,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],

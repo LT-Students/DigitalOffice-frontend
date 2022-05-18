@@ -15,6 +15,7 @@ import { ModalWidth } from '@app/services/modal.service';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 import { EditWorkinfoComponent } from '../../modals/edit-workinfo/edit-workinfo.component';
+import { DataManageComponent } from '../../modals/edit-workinfo/data-manage/data-manage.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -66,7 +67,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	public toggleEditMode(user?: User): void {
-		this._dialog.open(EditWorkinfoComponent, {
+		this._dialog.open(DataManageComponent, {
 			data: user,
 			width: '672px',
 		});

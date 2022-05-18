@@ -1,0 +1,15 @@
+@use 'base/variables';
+
+.edit-workinfo {
+	&__container {
+		display: grid;
+		align-items: center;
+
+		border-bottom: 1px solid #eee;
+		grid-template-columns: 1fr 2fr 1fr;
+	}
+
+	&__admin-checkbox {
+		padding-top: 15px;
+	}
+}
