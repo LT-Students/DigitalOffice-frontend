@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@a
 import { RoleInfo } from '@api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
@@ -25,7 +25,7 @@ export class ManageRolesComponent implements AfterViewInit {
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _rightsService: RightsService,
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder

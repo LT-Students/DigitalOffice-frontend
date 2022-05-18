@@ -11,6 +11,8 @@ export interface FilterUsersRequest {
 	positionsIds?: Array<string>;
 	rolesIds?: Array<string>;
 	officesIds?: Array<string>;
+	isascendingsort?: boolean;
+	fullnameincludesubstring?: string;
 }
 
 @Injectable({

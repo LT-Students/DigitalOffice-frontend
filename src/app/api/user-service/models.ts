@@ -1,7 +1,6 @@
 export { OperationResultResponseUserResponse } from './models/operation-result-response-user-response';
 export { UserResponse } from './models/user-response';
 export { FindResultResponseUserInfo } from './models/find-result-response-user-info';
-export { FindResultResponsePendingUserInfo } from './models/find-result-response-pending-user-info';
 export { CreateUserRequest } from './models/create-user-request';
 export { CreateCredentialsRequest } from './models/create-credentials-request';
 export { ReactivateCredentialsRequest } from './models/reactivate-credentials-request';
@@ -24,6 +23,7 @@ export { RoleInfo } from './models/role-info';
 export { OfficeInfo } from './models/office-info';
 export { CommunicationInfo } from './models/communication-info';
 export { ProjectInfo } from './models/project-info';
+export { ProjectUserInfo } from './models/project-user-info';
 export { GenderInfo } from './models/gender-info';
 export { EducationInfo } from './models/education-info';
 export { EducationTypeInfo } from './models/education-type-info';
@@ -33,6 +33,7 @@ export { ReconstructPasswordRequest } from './models/reconstruct-password-reques
 export { OperationResultResponse } from './models/operation-result-response';
 export { CommunicationType } from './models/communication-type';
 export { UserStatus } from './models/user-status';
+export { CommunicationVisibleTo } from './models/communication-visible-to';
 export { OperationResultStatusType } from './models/operation-result-status-type';
 export { AddImageRequest } from './models/add-image-request';
 export { CreateCommunicationRequest } from './models/create-communication-request';

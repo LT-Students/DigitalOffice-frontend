@@ -28,7 +28,7 @@ export class CompanyApiService extends BaseService {
   /**
    * Path part for operation createCompany
    */
-  static readonly CreateCompanyPath = '/company';
+  static readonly CreateCompanyPath = '/company/create';
 
   /**
    * Adds a new company.
@@ -78,7 +78,7 @@ export class CompanyApiService extends BaseService {
   /**
    * Path part for operation getCompany
    */
-  static readonly GetCompanyPath = '/company/{companyId}';
+  static readonly GetCompanyPath = '/company/get';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -86,12 +86,7 @@ export class CompanyApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompany$Response(params: {
-
-    /**
-     * Unique company identifier.
-     */
-    companyId: string;
+  getCompany$Response(params?: {
 
     /**
      * Include offices info in answer.
@@ -101,7 +96,6 @@ export class CompanyApiService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.GetCompanyPath, 'get');
     if (params) {
-      rb.path('companyId', params.companyId, {});
       rb.query('includeoffices', params.includeoffices, {});
     }
 
@@ -122,12 +116,7 @@ export class CompanyApiService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompany(params: {
-
-    /**
-     * Unique company identifier.
-     */
-    companyId: string;
+  getCompany(params?: {
 
     /**
      * Include offices info in answer.
@@ -143,7 +132,7 @@ export class CompanyApiService extends BaseService {
   /**
    * Path part for operation editCompany
    */
-  static readonly EditCompanyPath = '/company/{companyId}';
+  static readonly EditCompanyPath = '/company/edit';
 
   /**
    * update Company properties.
@@ -164,7 +153,7 @@ export class CompanyApiService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyApiService.EditCompanyPath, 'patch');
     if (params) {
-      rb.path('companyId', params.companyId, {});
+      rb.query('companyId', params.companyId, {});
       rb.body(params.body, 'application/json');
     }
 

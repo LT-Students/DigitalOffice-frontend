@@ -31,7 +31,7 @@ export class AdminService {
 		return this.adminApiService.installApp({ body: params });
 	}
 
-	public editApp(params: InstallAppRequest): Observable<OperationResultResponse<{} | null>> {
+	public editApp(params: InstallAppRequest): Observable<OperationResultResponse> {
 		return this.adminApiService.editAdmin({ body: params });
 	}
 

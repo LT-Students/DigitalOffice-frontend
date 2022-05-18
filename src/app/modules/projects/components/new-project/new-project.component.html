@@ -1,5 +1,3 @@
-<do-breadcrumbs [paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Новый проект' }]">
-</do-breadcrumbs>
 <h1>Новый проект</h1>
 <mat-card class="card">
 	<form class="project-info" [formGroup]="projectForm" (ngSubmit)="createProject()" autocomplete="off">
@@ -77,15 +75,13 @@
 				<!--				<do-team-card *ngFor="let team of teams" [teamCard]="team" [users]="teams"></do-team-card>-->
 				<div class="user-row" *ngFor="let member of membersAll">
 					<div class="user-row__image">
-						<do-profile-image [image]="member.avatar"></do-profile-image>
+						<do-profile-image [image]="member?.avatar"></do-profile-image>
 					</div>
 					<div class="user-row__general-info">
 						<div class="name">{{ member.firstName }} {{ member.lastName }}</div>
-						<!--						<div class="position">{{ member.position?.name }}</div>-->
-						<div class="position">Broken</div>
+						<div class="position">{{ member.position?.name | placeholder }}</div>
 					</div>
-					<!--					<div>{{ member.department?.name }}</div>-->
-					<div>Broken</div>
+					<div>{{ member.department?.name | placeholder }}</div>
 				</div>
 				<button mat-flat-button color="accent" type="button" (click)="openAddEmployeeModal()">
 					Добавить сотрудников

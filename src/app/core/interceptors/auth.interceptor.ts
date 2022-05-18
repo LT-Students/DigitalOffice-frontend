@@ -22,11 +22,12 @@ export class AuthInterceptor implements HttpInterceptor {
 	) {
 		this._refreshingInProgress = false;
 		this._accessTokenSubject = new BehaviorSubject<string | undefined>(undefined);
-		this._excludedUrls = ['/auth/refresh', '/company/get', '/graphicaluserinterface/get'];
+		this._excludedUrls = ['/auth/refresh', '/graphicaluserinterface/get'];
 	}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 		const token = this.localStorageService.get('access_token');
+		req = this._addAuthorizationHeader(req, token);
 
 		if (!!this._excludedUrls.find((url) => req.url.indexOf(url) !== -1)) {
 			return next.handle(req);
@@ -40,9 +41,7 @@ export class AuthInterceptor implements HttpInterceptor {
 			return this._refreshToken(req, next);
 		}
 
-		const request = this._addAuthorizationHeader(req, token);
-
-		return next.handle(request);
+		return next.handle(req);
 	}
 
 	private _addAuthorizationHeader(req: HttpRequest<any>, token: string | undefined): HttpRequest<any> {

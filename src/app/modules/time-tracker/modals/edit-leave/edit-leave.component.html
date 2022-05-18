@@ -3,18 +3,28 @@
 		Редактирование часов
 		<span class="mat-h3 primary">за {{ leave.leaveType | leaveLabel: false | lowercase }}</span>
 	</h3>
-	<form [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
-		<div class="modal__range">
-			<mat-form-field class="modal__range-picker" appearance="fill">
-				<mat-label>Выберите диапазон отсутствия</mat-label>
-				<mat-date-range-input [rangePicker]="$any(picker)" [dateFilter]="disableWeekends">
-					<input matStartDate placeholder="Начало" [formControlName]="LeaveTimePath.START_TIME" readonly />
-					<input matEndDate placeholder=" Конец" [formControlName]="LeaveTimePath.END_TIME" readonly />
-				</mat-date-range-input>
-				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-				<mat-date-range-picker #picker (closed)="dateSelected()"></mat-date-range-picker>
-				<mat-error *ngIf="editForm.controls['/EndTime'].errors?.required">Заполните конечную дату</mat-error>
-			</mat-form-field>
+	<form class="content" [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
+		<div class="flex flex-ai-end">
+			<do-form-row class="modal__range-picker" label="Выберите диапазон отсутствия">
+				<mat-form-field>
+					<mat-date-range-input [rangePicker]="$any(picker)" [dateFilter]="disableWeekends">
+						<input
+							matStartDate
+							placeholder="Начало"
+							[formControlName]="LeaveTimePath.START_TIME"
+							readonly
+						/>
+						<input matEndDate placeholder="Конец" [formControlName]="LeaveTimePath.END_TIME" readonly />
+					</mat-date-range-input>
+					<mat-datepicker-toggle matSuffix [for]="picker">
+						<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+					</mat-datepicker-toggle>
+					<mat-date-range-picker #picker (closed)="dateSelected()"></mat-date-range-picker>
+					<mat-error *ngIf="editForm.controls['/EndTime'].errors?.required"
+						>Заполните конечную дату
+					</mat-error>
+				</mat-form-field>
+			</do-form-row>
 			<div class="modal__hours">
 				<p class="mat-body-1">Выбрано</p>
 				<h3 class="modal__selected-hours">
@@ -22,16 +32,21 @@
 				</h3>
 			</div>
 		</div>
-		<div>
-			<mat-form-field appearance="fill" class="modal__description">
-				<mat-label>Комментарий</mat-label>
+		<do-form-row label="Комментарий">
+			<mat-form-field>
 				<textarea
+					#comment
+					cdkTextareaAutosize
+					cdkAutosizeMinRows="3"
+					cdkAutosizeMaxRows="3"
 					matInput
-					class="modal__description-field"
-					[formControlName]="LeaveTimePath.COMMENT"
+					formControlName="comment"
+					maxlength="500"
+					placeholder="Оставьте комментарий для менеджера"
 				></textarea>
+				<mat-hint>{{ comment.value.length }}/500</mat-hint>
 			</mat-form-field>
-		</div>
+		</do-form-row>
 		<div class="controls">
 			<button mat-button class="controls__button" type="button" (click)="onClose()">Отмена</button>
 			<button

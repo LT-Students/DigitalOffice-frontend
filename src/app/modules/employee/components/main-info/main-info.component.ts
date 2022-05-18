@@ -7,13 +7,14 @@ import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { finalize, first, map, switchMap, take } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
+import { ModalWidth } from '@app/services/dialog.service';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
+import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -40,7 +41,6 @@ export class MainInfoComponent implements OnInit {
 		private _employeeService: EmployeePageService,
 		private _userService: UserService,
 		private _dialog: MatDialog,
-		private _snackBar: MatSnackBar,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.loading = new BehaviorSubject<boolean>(false);
@@ -65,20 +65,26 @@ export class MainInfoComponent implements OnInit {
 		return true;
 	}
 
-	public toggleEditMode(user?: User): void {
-		if (user) {
-			this._fillForm(user);
-		}
-		this.isEditing = !this.isEditing;
-	}
-
 	public onReset(): void {
 		this.employeeInfoForm.reset();
-		this.toggleEditMode();
+	}
+
+	public editUser(): void {
+		this.isEditing = !this.isEditing;
+		const dialogRef = this._dialog.open(EditInfoComponent, {
+			data: this.user$,
+			width: ModalWidth.L,
+			autoFocus: false,
+		});
 	}
 
 	public onAvatarUploadDialog(): void {
-		const dialogRef = this._dialog.open(UploadPhotoComponent);
+		const dialogRef = this._dialog.open(UploadPhotoComponent, {
+			width: ModalWidth.XL,
+			height: 'auto',
+			autoFocus: false,
+			panelClass: 'upload-image-dialog',
+		});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.employeeInfoForm.patchValue({
@@ -117,12 +123,7 @@ export class MainInfoComponent implements OnInit {
 					this.loading.next(false);
 				})
 			)
-			.subscribe({
-				next: () => this.toggleEditMode(),
-				error: (err) => {
-					throw err;
-				},
-			});
+			.subscribe();
 	}
 
 	private _fillForm(user: User): void {

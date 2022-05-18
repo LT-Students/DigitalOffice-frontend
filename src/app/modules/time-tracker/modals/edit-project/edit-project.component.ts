@@ -41,10 +41,8 @@ export class EditProjectComponent {
 				[
 					Validators.required,
 					DoValidators.intNum,
-					Validators.max(
-						this._timeDurationService.countMaxMonthDuration(this.project.year, this.project.month)
-					),
-					Validators.min(1),
+					Validators.max(744),
+					Validators.min(0),
 				],
 			],
 			description: [this.project.description],

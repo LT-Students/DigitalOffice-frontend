@@ -3,12 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { UserResolver } from './resolvers/user.resolver';
 import { EmployeePageService } from './services/employee-page.service';
 import { EmployeePageComponent } from './employee-page.component';
-import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 const employeeRoutes: Routes = [
 	{
 		path: '',
-		component: ManageUsersComponent,
+		component: UserListComponent,
 		resolve: {
 			users: UserResolver,
 		},

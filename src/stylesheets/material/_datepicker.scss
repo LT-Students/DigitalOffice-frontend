@@ -1,9 +1,50 @@
-.mat-date-range-input {
-	.mat-start-date {
-		visibility: hidden;
+.mat-datepicker-content {
+	mat-calendar.mat-calendar {
+		width: 306px;
+		height: 308px;
 	}
 
-	.mat-date-range-input-mirror {
-		visibility: visible;
+	.mat-calendar-period-button {
+		text-transform: lowercase;
+
+		&::first-letter {
+			text-transform: uppercase;
+		}
+	}
+
+	.mat-calendar-header {
+		.mat-calendar-controls {
+			margin: 0;
+		}
+	}
+
+	.mat-calendar-table-header-divider {
+		display: none;
+	}
+
+	.mat-calendar-content {
+		padding: 0 24px 30px;
+	}
+
+	.mat-calendar-body-cell-content {
+		border-radius: 7px;
+		height: 30px;
+		width: 30px;
+	}
+
+	.mat-calendar-body-label {
+		visibility: hidden;
+		padding-top: 0 !important;
+		padding-bottom: 0 !important;
+	}
+}
+
+.mat-datepicker-toggle {
+	&.mat-datepicker-toggle-active {
+		color: revert;
+	}
+
+	.mat-button-focus-overlay {
+		opacity: 0 !important;
 	}
 }

@@ -3,7 +3,7 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__avatar" (click)="onAvatarUploadDialog()">
-					<do-profile-image [image]="user?.avatar" size="l"></do-profile-image>
+					<do-profile-image [image]="user?.avatar" size="xl"></do-profile-image>
 					<label class="mat-body-1 employee-info__upload-button">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="../../../../../assets/svg/arrow-upload-file.svg" alt="Upload photo" />
@@ -12,7 +12,7 @@
 					</label>
 				</div>
 				<h3 class="employee-info__name">
-					{{ user | fullName }}&nbsp;<span
+					{{ user | fullName: true }}&nbsp;<span
 						matTooltipClass="tooltip"
 						[matTooltip]="user.firstName + ' ' + (user.status | userStatus: false:true | lowercase)"
 						[matTooltipPosition]="'above'"
@@ -27,7 +27,7 @@
 				<div class="employee-info__general-header">
 					<h4>Общие сведения</h4>
 					<div class="employee-info__edit-button">
-						<button mat-button (click)="toggleEditMode(user)">
+						<button mat-button (click)="editUser()">
 							<span class="employee-info__edit mat-body-2 text-light_4">Редактировать профиль</span>
 							<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
 						</button>
@@ -52,7 +52,7 @@
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Часы работы</span>
-							<p>{{ user.businessHoursFromUtc | placeholder }}</p>
+							<p>{{ user.businessHoursFromUtc | date: 'shortTime' | placeholder }} - {{ user.businessHoursToUtc | date: 'shortTime' | placeholder}}</p>
 						</div>
 					</div>
 				</div>

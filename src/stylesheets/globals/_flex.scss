@@ -5,6 +5,10 @@
 		display: inline-flex;
 	}
 
+	&_column {
+		flex-direction: column;
+	}
+
 	&_ai {
 		&_center {
 			align-items: center;

@@ -77,7 +77,7 @@ export class CompanyUserApiService extends BaseService {
   /**
    * Path part for operation editCompanyUser
    */
-  static readonly EditCompanyUserPath = '/companyuser/{userId}';
+  static readonly EditCompanyUserPath = '/companyuser/edit';
 
   /**
    * Chage company user information.
@@ -98,7 +98,7 @@ export class CompanyUserApiService extends BaseService {
 
     const rb = new RequestBuilder(this.rootUrl, CompanyUserApiService.EditCompanyUserPath, 'patch');
     if (params) {
-      rb.path('userId', params.userId, {});
+      rb.query('userId', params.userId, {});
       rb.body(params.body, 'application/json');
     }
 

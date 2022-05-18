@@ -1,0 +1,27 @@
+.card {
+	padding: 48px;
+
+	.divider {
+		margin: 16px 0;
+	}
+}
+
+.header {
+	margin-bottom: 30px;
+
+	display: flex;
+	align-items: center;
+
+	h3 {
+		margin-right: 10px;
+		margin-bottom: 0;
+	}
+
+	button {
+		margin-left: auto;
+	}
+}
+
+.status-toggle {
+	margin-bottom: 32px;
+}

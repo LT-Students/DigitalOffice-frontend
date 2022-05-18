@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { catchError, switchMap, tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
@@ -8,7 +8,6 @@ import { AuthenticationResponse } from '@api/auth-service/models/authentication-
 import { AuthApiService } from '@api/auth-service/services/auth-api.service';
 import { CredentialsApiService } from '@api/user-service/services/credentials-api.service';
 import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
-import { HttpErrorResponse } from '@angular/common/http';
 import { OperationResultResponseCredentialsResponse } from '@api/user-service/models/operation-result-response-credentials-response';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
@@ -56,18 +55,6 @@ export class AuthService {
 			tap((response) => {
 				if (response.body) {
 					this._setCredentialsToLocalStorage(response.body);
-				}
-			}),
-			catchError((error: HttpErrorResponse) => {
-				switch (error.status) {
-					case 400:
-					case 403:
-					case 404: {
-						return throwError(error.error.Message);
-					}
-					default: {
-						return throwError('Упс! Возникла ошибка');
-					}
 				}
 			})
 		);

@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { OfficeInfo } from '@api/office-service/models';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
@@ -25,7 +25,7 @@ export class OfficeListComponent implements AfterViewInit {
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _officeService: OfficeService,
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder

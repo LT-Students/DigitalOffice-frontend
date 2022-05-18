@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, throwError } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
-import { catchError } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
 import { UserService } from '@app/services/user/user.service';
 
 @Injectable({
@@ -27,7 +25,7 @@ export class CurrentUserService {
 			includecurrentavatar: true,
 		};
 
-		return this._userService.getUser(params).pipe(catchError((error: HttpErrorResponse) => throwError(error)));
+		return this._userService.getUser(params);
 	}
 
 	public setUser(user: User): void {
