@@ -50,6 +50,7 @@ import { ExecutePipe } from './pipes/execute.pipe';
 import { EmailListComponent } from './modals/user-recovery/email-list/email-list.component';
 import { EmailItemComponent } from './modals/user-recovery/email-item/email-item.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
+import { PermissionDirective } from './directives/permission.directive';
 
 @NgModule({
 	declarations: [
@@ -95,6 +96,7 @@ import { AutofocusDirective } from './directives/autofocus.directive';
 		EmailListComponent,
 		EmailItemComponent,
 		AutofocusDirective,
+		PermissionDirective,
 	],
 	imports: [
 		CommonModule,
@@ -152,7 +154,8 @@ import { AutofocusDirective } from './directives/autofocus.directive';
 		ButtonToggleGroupComponent,
 		ButtonToggleComponent,
 		ExecutePipe,
-		AutofocusDirective
+		AutofocusDirective,
+		PermissionDirective,
 	],
 })
 export class SharedModule {}
