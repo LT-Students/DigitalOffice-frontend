@@ -1,0 +1,10 @@
+@use 'base/variables' as variables;
+
+.button {
+	color: variables.$secondary_default;
+	cursor: pointer;
+}
+
+.active {
+	color: variables.$main_text;
+}

@@ -1,2896 +1,2733 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "version": "1.4.5.2",
-    "title": "UserService",
-    "description": "UserService is an API that intended to work with users."
-  },
-  "servers": [
-    {
-      "url": "https://user.ltdo.xyz",
-      "description": "Production server"
-    },
-    {
-      "url": "https://user.dev.ltdo.xyz",
-      "description": "Development server"
-    }
-  ],
-  "paths": {
-    "/user/create": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "User"
-        ],
-        "operationId": "createUser",
-        "description": "The method attempts to add the user. The user must have right - Add/Edit/Remove users.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Ok.\n* Created user Id (uuid) will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.\n* Something went wrong.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.\n* User is not admin and don't has rights.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/editactive": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "put": {
-        "tags": [
-          "User"
-        ],
-        "operationId": "editUserActive",
-        "description": "Change is active user status. The user must have right - Add/Edit/Remove users.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditUserActiveRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Update user operation success (boolean) status will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/edit": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "userId",
-          "in": "query",
-          "description": "Specific user id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "patch": {
-        "tags": [
-          "User"
-        ],
-        "operationId": "editUser",
-        "description": "Update user properties. The user must have right - Add/Edit/Remove users.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditUserRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Update user operation success (boolean) status will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/get": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "userId",
-          "in": "query",
-          "description": "User global unique identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": false
-        },
-        {
-          "name": "email",
-          "in": "query",
-          "description": "Any of user emails. Can not be used with `includecommunications`.",
-          "schema": {
-            "type": "string"
-          },
-          "required": false
-        },
-        {
-          "name": "includecurrentavatar",
-          "in": "query",
-          "description": "Include user current avatar in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeavatars",
-          "in": "query",
-          "description": "Include all user current avatars in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includecertificates",
-          "in": "query",
-          "description": "Include user certificates info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includecommunications",
-          "in": "query",
-          "description": "Include user communications info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includecompany",
-          "in": "query",
-          "description": "Include user company info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includedepartment",
-          "in": "query",
-          "description": "Include user department info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeeducations",
-          "in": "query",
-          "description": "Include educations info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeoffice",
-          "in": "query",
-          "description": "Include user office info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeposition",
-          "in": "query",
-          "description": "Include user position info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeprojects",
-          "in": "query",
-          "description": "Include user projects info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includerole",
-          "in": "query",
-          "description": "Include user role info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeskills",
-          "in": "query",
-          "description": "Include user skills info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "locale",
-          "in": "query",
-          "description": "Role localization.",
-          "schema": {
-            "type": "string"
-          },
-          "required": false
-        }
-      ],
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "operationId": "getUser",
-        "description": "Returns user information.",
-        "responses": {
-          "200": {
-            "description": "Created.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseUserResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/find": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "skipCount",
-          "in": "query",
-          "description": "Number of entries to skip.",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true
-        },
-        {
-          "name": "takeCount",
-          "in": "query",
-          "description": "Number of users to take.",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true
-        },
-        {
-          "name": "ascendingsort",
-          "in": "query",
-          "description": "When value is 'true' sorts A-Z, when value is 'false' sorts Z-A",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "fullnameincludesubstring",
-          "in": "query",
-          "description": "Find for users containing a substring in the full name",
-          "schema": {
-            "type": "string"
-          },
-          "required": false
-        },
-        {
-          "name": "active",
-          "in": "query",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includecurrentavatar",
-          "in": "query",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        }
-      ],
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "operationId": "findUsers",
-        "description": "Returns all users information with pagination.",
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Successfully returned list of users information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseUserInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseUserInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credentials/create": {
-      "post": {
-        "tags": [
-          "Credentials"
-        ],
-        "operationId": "createCredentials",
-        "description": "This endpoint must be used only for user first time login operation.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCredentialsRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Ok. Success create credentials.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseCredentialsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Service Unavailable.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/credentials/reactivate": {
-      "put": {
-        "tags": [
-          "Credentials"
-        ],
-        "operationId": "reactivateCredentials",
-        "description": "This endpoint must be used only for reactivate user credentials.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReactivateCredentialsRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Ok. Success reactivate credentials.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseCredentialsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/pending/check": {
-      "parameters": [
-        {
-          "name": "userid",
-          "in": "query",
-          "description": "Unique user identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "get": {
-        "tags": [
-          "Pending"
-        ],
-        "operationId": "checkPending",
-        "description": "This endpoint must be used only for user first time login operation.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/pending/find": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "skipCount",
-          "in": "query",
-          "description": "Number of entries to skip.",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true
-        },
-        {
-          "name": "takeCount",
-          "in": "query",
-          "description": "Number of users to take.",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true
-        },
-        {
-          "name": "includecommunication",
-          "in": "query",
-          "description": "includes user communications",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includecurrentavatar",
-          "in": "query",
-          "description": "includes user avatar",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        }
-      ],
-      "get": {
-        "tags": [
-          "Pending"
-        ],
-        "operationId": "findPending",
-        "description": "Returns all pending users.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponsePendingUserInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "BadRequest.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponsePendingUserInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/pending/resendinvitation": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "userId",
-          "in": "query",
-          "description": "User global unique identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        },
-        {
-          "name": "communicationId",
-          "in": "query",
-          "description": "Communication global unique identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "get": {
-        "tags": [
-          "Pending"
-        ],
-        "operationId": "resendinvitationPending",
-        "description": "Resend invitation email.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "BadRequest.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NotFound.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/password/generate": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Password"
-        ],
-        "operationId": "generatePassword",
-        "description": "Returns randomly generated password.",
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Successfully returned password string.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "description": "8-12 symbols password string.",
-                  "type": "string",
-                  "example": "!31TKgk_"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/password/change": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Password"
-        ],
-        "operationId": "changePassword",
-        "description": "Change user password.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ChangePasswordRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Change user password operation success (boolean) status will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/password/reconstruct": {
-      "post": {
-        "tags": [
-          "Password"
-        ],
-        "operationId": "reconstructPassword",
-        "description": "Change user password use secret from email.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReconstructPasswordRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Change user password operation success (boolean) status will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/password/forgot": {
-      "parameters": [
-        {
-          "name": "userEmail",
-          "in": "query",
-          "schema": {
-            "type": "string",
-            "example": "la@gmail.com"
-          },
-          "required": true
-        }
-      ],
-      "get": {
-        "tags": [
-          "Password"
-        ],
-        "operationId": "forgotPassword",
-        "description": "Initiates sending a email with instructions on how to change the user's password.",
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Send email operation success (boolean) status will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found. User with this email was not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/communication/create": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Communication"
-        ],
-        "operationId": "createCommunication",
-        "description": "The method attempts to add the communication. The user must have the rights to add education to other users - Add/Edit/Remove users.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCommunicationRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Created.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/communication/edit": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "communicationId",
-          "in": "query",
-          "description": "Specific communication id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "put": {
-        "tags": [
-          "Communication"
-        ],
-        "operationId": "editCommunication",
-        "description": "Update communication properties. The user must have the rights to edit communication to other users - Add/Edit/Remove users.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditCommunicationRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/communication/remove": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "communicationId",
-          "in": "query",
-          "description": "Specific communication id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "delete": {
-        "tags": [
-          "Communication"
-        ],
-        "operationId": "removeCommunication",
-        "description": "Remove the specified communication by id. The user must have the rights to remove communication to other users - Add/Edit/Remove users.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/communication/confirm": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "communicationId",
-          "in": "query",
-          "description": "Specific communication id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        },
-        {
-          "name": "secret",
-          "in": "query",
-          "description": "Specific word from email link",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "put": {
-        "tags": [
-          "Communication"
-        ],
-        "operationId": "confirmCommunication",
-        "description": "Confirm the specified communication by id.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/communication/resendconfirmation": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "communicationId",
-          "in": "query",
-          "description": "Specific communication id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "get": {
-        "tags": [
-          "Communication"
-        ],
-        "operationId": "resendConfirmationCommunication",
-        "description": "Resend email message with secret.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/avatar/create": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Avatar"
-        ],
-        "operationId": "createAvatar",
-        "description": "The method attempts to add image to user.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAvatarRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Ok. Image was added.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/avatar/get": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "userId",
-          "in": "query",
-          "schema": {
-            "type": "string",
-            "format": "uuid",
-            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
-          },
-          "required": true
-        }
-      ],
-      "get": {
-        "tags": [
-          "Avatar"
-        ],
-        "operationId": "GetAvatar",
-        "description": "This method is used to get all user avatars",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseImagesResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/avatar/remove": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "Avatar"
-        ],
-        "operationId": "removeAvatar",
-        "description": "The method attempts to remove avatars from user",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RemoveAvatarRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/avatar/editcurrent": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "userId",
-          "in": "query",
-          "schema": {
-            "type": "string",
-            "format": "uuid",
-            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
-          },
-          "required": true
-        },
-        {
-          "name": "imageId",
-          "in": "query",
-          "schema": {
-            "type": "string",
-            "format": "uuid",
-            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
-          },
-          "required": true
-        }
-      ],
-      "get": {
-        "tags": [
-          "Avatar"
-        ],
-        "operationId": "editAvatar",
-        "description": "This method is used to change user's avatar",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gender/create": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "gender"
-        ],
-        "operationId": "createGender",
-        "description": "The method attempts to add gender.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateGenderRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Ok. Gender was created.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gender/find": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "skipCount",
-          "in": "query",
-          "description": "Number of entries to skip.",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true
-        },
-        {
-          "name": "takeCount",
-          "in": "query",
-          "description": "Number of genders to take.",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true
-        }
-      ],
-      "get": {
-        "tags": [
-          "gender"
-        ],
-        "operationId": "findGender",
-        "description": "Returns all genders with pagination.",
-        "responses": {
-          "200": {
-            "description": "Ok.\n* Successfully returned list of genders.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseGenderInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseGenderInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "OperationResultResponseUserResponse": {
-        "description": "Response object for action operations.",
-        "type": "object",
-        "required": [
-          "Status",
-          "Errors"
-        ],
-        "properties": {
-          "Body": {
-            "$ref": "#/components/schemas/UserResponse"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "UserResponse": {
-        "type": "object",
-        "required": [
-          "User",
-          "IsPending",
-          "UserAddition"
-        ],
-        "properties": {
-          "User": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
-          "IsPending": {
-            "type": "boolean"
-          },
-          "UserAddition": {
-            "$ref": "#/components/schemas/UserAdditionInfo"
-          },
-          "CompanyUser": {
-            "$ref": "#/components/schemas/CompanyUserInfo"
-          },
-          "Department": {
-            "$ref": "#/components/schemas/DepartmentInfo"
-          },
-          "Office": {
-            "$ref": "#/components/schemas/OfficeInfo"
-          },
-          "Position": {
-            "$ref": "#/components/schemas/PositionInfo"
-          },
-          "Role": {
-            "$ref": "#/components/schemas/RoleInfo"
-          },
-          "Images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImageInfo"
-            }
-          },
-          "Educations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EducationInfo"
-            }
-          },
-          "Projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectInfo"
-            }
-          },
-          "Skills": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "FindResultResponseUserInfo": {
-        "description": "Response object for action operations.",
-        "type": "object",
-        "required": [
-          "Body",
-          "TotalCount",
-          "Status",
-          "Errors"
-        ],
-        "properties": {
-          "Body": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserInfo"
-            }
-          },
-          "TotalCount": {
-            "type": "number"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-
-      },
-      "FindResultResponsePendingUserInfo": {
-        "description": "Response object for action operations.",
-        "type": "object",
-        "required": [
-          "Body",
-          "TotalCount",
-          "Status",
-          "Errors"
-        ],
-        "properties": {
-          "Body": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PendingUserInfo"
-            }
-          },
-          "TotalCount": {
-            "type": "number"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "CreateUserRequest": {
-        "type": "object",
-        "required": [
-          "FirstName",
-          "LastName",
-          "Status",
-          "Communication"
-        ],
-        "properties": {
-          "FirstName": {
-            "description": "First name of a user.",
-            "type": "string",
-            "example": "Ivan"
-          },
-          "LastName": {
-            "description": "Last name of a user.",
-            "type": "string",
-            "example": "Ivanov"
-          },
-          "MiddleName": {
-            "description": "Middle name of a user.",
-            "type": "string",
-            "example": "Ivanovich"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/UserStatus"
-          },
-          "IsAdmin": {
-            "description": "Mark whether the user is an administrator.",
-            "type": "boolean",
-            "default": false
-          },
-          "DayOfBirth": {
-            "description": "Date of user birth.",
-            "type": "string",
-            "format": "date",
-            "example": "2021-01-21T00:00:00.000Z"
-          },
-          "About": {
-            "type": "string"
-          },
-          "BusinessHoursFromUtc": {
-            "description": "Time when the user start work day.",
-            "type": "string",
-            "format": "date",
-            "example": "2021-01-21T00:00:00.000Z"
-          },
-          "BusinessHoursToUtc": {
-            "description": "Time when the user finish work day.",
-            "type": "string",
-            "format": "date",
-            "example": "2021-01-21T00:00:00.000Z"
-          },
-          "Latitude": {
-            "description": "User location.",
-            "type": "number",
-            "format": "double",
-            "example": "0.001"
-          },
-          "Longitude": {
-            "description": "User location.",
-            "type": "number",
-            "format": "double",
-            "example": "0.001"
-          },
-          "UserCompany": {
-            "$ref": "#/components/schemas/CreateUserCompanyRequest"
-          },
-          "DepartmentId": {
-            "description": "User department ID.",
-            "type": "string",
-            "format": "uuid",
-            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
-          },
-          "OfficeId": {
-            "description": "User office ID.",
-            "type": "string",
-            "format": "uuid",
-            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
-          },
-          "PositionId": {
-            "description": "User position ID.",
-            "type": "string",
-            "format": "uuid",
-            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
-          },
-          "RoleId": {
-            "description": "User role ID.",
-            "type": "string",
-            "format": "uuid",
-            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
-          },
-          "Password": {
-            "description": "User password.",
-            "type": "string",
-            "example": "MySecretPassword"
-          },
-          "AvatarImage": {
-            "$ref": "#/components/schemas/AddImageRequest"
-          },
-          "Communication": {
-            "$ref": "#/components/schemas/CreateCommunicationRequest"
-          }
-        }
-      },
-      "CreateCredentialsRequest": {
-        "type": "object",
-        "required": [
-          "UserId",
-          "Login",
-          "Password"
-        ],
-        "properties": {
-          "UserId": {
-            "description": "Unique user identifier.",
-            "type": "string",
-            "format": "uuid",
-            "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
-          },
-          "Login": {
-            "description": "User login.",
-            "type": "string",
-            "example": "Mylogin"
-          },
-          "Password": {
-            "description": "User password received by email.",
-            "type": "string",
-            "example": "Sicretpassword"
-          }
-        }
-      },
-      "ReactivateCredentialsRequest": {
-        "type": "object",
-        "required": [
-          "UserId",
-          "Password"
-        ],
-        "properties": {
-          "UserId": {
-            "description": "Unique user identifier.",
-            "type": "string",
-            "format": "uuid",
-            "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
-          },
-          "Password": {
-            "description": "User password received by email.",
-            "type": "string",
-            "example": "Sicretpassword"
-          }
-        }
-      },
-      "EditUserActiveRequest": {
-        "type": "object",
-        "required": [
-          "UserId",
-          "IsActive"
-        ],
-        "properties": {
-          "UserId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "IsActive": {
-            "type": "boolean"
-          },
-          "CommunicationId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "used when restoring a user from an archive"
-          }
-        }
-      },
-      "EditUserRequest": {
-        "type": "array",
-        "minItems": 1,
-        "example": [
-          {
-            "op": "replace",
-            "path": "/FirstName",
-            "value": {
-              "description": "New user first name",
-              "type": "string",
-              "example": "Ivan"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/LastName",
-            "value": {
-              "description": "New user last name",
-              "type": "string",
-              "example": "Ivanov"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/MiddleName",
-            "value": {
-              "description": "New user middle name",
-              "type": "string",
-              "example": "Ivanovich"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/Status",
-            "value": {
-              "$ref": "#/components/schemas/UserStatus"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/DateOfBirth",
-            "value": {
-              "description": "Date of user birth.",
-              "type": "string",
-              "format": "date",
-              "example": "2021-01-21T00:00:00.000Z"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/StartWorkingAt",
-            "value": {
-              "description": "Time when the user started working for the company.",
-              "type": "string",
-              "format": "date",
-              "example": "2021-01-21T00:00:00.000Z"
-            }
-          }
-        ],
-        "items": {
-          "$ref": "#/components/schemas/PatchUserDocument"
-        }
-      },
-      "PatchUserDocument": {
-        "type": "object",
-        "required": [
-          "op",
-          "path"
-        ],
-        "properties": {
-          "op": {
-            "type": "string",
-            "description": "The operation to be performed.",
-            "enum": [
-              "replace"
-            ]
-          },
-          "path": {
-            "type": "string",
-            "description": "A JSON-Pointer.",
-            "enum": [
-              "/FirstName",
-              "/LastName",
-              "/MiddleName",
-              "/Status",
-              "/IsAdmin",
-              "/DateOfBirth",
-              "/GenderId",
-              "/About",
-              "/BusinessHoursFromUtc",
-              "/BusinessHoursToUtc",
-              "/Latitude",
-              "/Longitude"
-            ]
-          },
-          "value": {
-            "type": "object",
-            "description": "The value to be used within the operations."
-          }
-        }
-      },
-      "OperationResultResponseCredentialsResponse": {
-        "description": "Response object for action operations.",
-        "type": "object",
-        "properties": {
-          "Body": {
-            "$ref": "#/components/schemas/CredentialsResponse"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "CredentialsResponse": {
-        "type": "object",
-        "required": [
-          "UserId",
-          "AccessToken",
-          "RefreshToken",
-          "AccessTokenExpiresIn",
-          "RefreshTokenExpiresIn"
-        ],
-        "properties": {
-          "UserId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "AccessToken": {
-            "type": "string"
-          },
-          "RefreshToken": {
-            "type": "string"
-          },
-          "AccessTokenExpiresIn": {
-            "description": "AccessToken life time in minutes",
-            "type": "number",
-            "format": "double"
-          },
-          "RefreshTokenExpiresIn": {
-            "description": "RefreshToken life time in minutes",
-            "type": "number",
-            "format": "double"
-          }
-        }
-      },
-      "PendingUserInfo": {
-        "type": "object",
-        "required": [
-          "UserInfo",
-          "InvintationCommunicationId"
-        ],
-        "properties": {
-          "UserInfo": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
-          "InvintationCommunicationId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "communication to which an invitation with a password was sent."
-          }
-        }
-      },
-      "UserAdditionInfo": {
-        "type": "object",
-        "properties": {
-          "GenderName": {
-            "type": "string"
-          },
-          "About": {
-            "type": "string"
-          },
-          "DateOfBirth": {
-            "type": "string",
-            "format": "date"
-          },
-          "BusinessHoursFromUtc": {
-            "type": "string",
-            "format": "date"
-          },
-          "BusinessHoursToUtc": {
-            "type": "string",
-            "format": "date"
-          },
-          "Latitude": {
-            "type": "number",
-            "format": "double"
-          },
-          "Longitude": {
-            "type": "number",
-            "format": "double"
-          }
-        }
-      },
-      "UserInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "FirstName",
-          "LastName",
-          "Status",
-          "IsAdmin",
-          "IsActive"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "FirstName": {
-            "type": "string"
-          },
-          "LastName": {
-            "type": "string"
-          },
-          "MiddleName": {
-            "type": "string"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/UserStatus"
-          },
-          "IsAdmin": {
-            "type": "boolean"
-          },
-          "IsActive": {
-            "type": "boolean"
-          },
-          "Avatar": {
-            "$ref": "#/components/schemas/ImageInfo"
-          },
-          "Communications": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CommunicationInfo"
-            }
-          }
-        }
-      },
-      "ContractTerm": {
-        "type": "string",
-        "description": "Contract term type.",
-        "enum":[
-          "FixedTerm",
-          "Perpetual"
-        ],
-        "example": "FixedTerm"
-      },
-      "ImageType": {
-        "type": "string",
-        "description": "Type of image.",
-        "enum": [
-          "Full",
-          "Thumb"
-        ],
-        "default": "Full"
-      },
-      "ImageInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ParentId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Content": {
-            "type": "string",
-            "description": "Image file content in base64 encoded string."
-          },
-          "Extension": {
-            "type": "string"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "ImageConsist": {
-        "type": "object",
-        "required": [
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Content": {
-            "type": "string",
-            "description": "Image file content in base64 encoded string."
-          },
-          "Extension": {
-            "type": "string"
-          }
-        }
-      },
-      "CompanyUserInfo": {
-        "type": "object",
-        "required": [
-          "Company",
-          "ContractTermType",
-          "StartWorkingAt"
-        ],
-        "properties": {
-          "Company": {
-            "$ref": "#/components/schemas/CompanyInfo"
-          },
-          "ContractSubject": {
-            "$ref": "#/components/schemas/ContractSubjectData"
-          },
-          "ContractTermType": {
-            "$ref": "#/components/schemas/ContractTerm"
-          },
-          "Rate": {
-            "type": "number"
-          },
-          "StartWorkingAt": {
-            "type": "string",
-            "format": "date"
-          },
-          "EndWorkingAt": {
-            "type": "string",
-            "format": "date"
-          },
-          "Probation": {
-            "type": "string",
-            "format": "date"
-          }
-        }
-      },
-      "ContractSubjectData": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "CompanyInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "DepartmentInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "PositionInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "RoleInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          },
-          "RightsIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "OfficeInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "City",
-          "Address"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          },
-          "City": {
-            "type": "string"
-          },
-          "Address": {
-            "type": "string"
-          },
-          "Longitude": {
-            "type": "number"
-          },
-          "Latitude": {
-            "type": "number"
-          }
-        }
-      },
-      "CommunicationInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Type",
-          "Value"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Type": {
-            "$ref": "#/components/schemas/CommunicationType"
-          },
-          "Value": {
-            "type": "string"
-          }
-        }
-      },
-      "ProjectInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name",
-          "Status"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          },
-          "Status": {
-            "type": "string"
-          },
-          "ShortName": {
-            "type": "string"
-          },
-          "ShortDescription": {
-            "type": "string"
-          }
-        }
-      },
-      "GenderInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "EducationInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "UniversityName",
-          "QualificationName"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "UniversityName": {
-            "type": "string"
-          },
-          "QualificationName": {
-            "type": "string"
-          },
-          "EducationForm": {
-            "$ref": "#/components/schemas/EducationFormInfo"
-          },
-          "EducationType": {
-            "$ref": "#/components/schemas/EducationTypeInfo"
-          },
-          "Completeness": {
-            "type": "string"
-          },
-          "AdmissionAt": {
-            "type": "string"
-          },
-          "IssueAt": {
-            "type": "string",
-            "nullable": true
-          },
-          "ImagesIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        }
-      },
-      "EducationTypeInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "EducationFormInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "ChangePasswordRequest": {
-        "type": "object",
-        "required": [
-          "Password",
-          "NewPassword"
-        ],
-        "properties": {
-          "Password": {
-            "description": "Old user password.",
-            "type": "string",
-            "example": "22cf2f"
-          },
-          "NewPassword": {
-            "description": "New user password.",
-            "type": "string",
-            "example": "Mypassword"
-          }
-        }
-      },
-      "ReconstructPasswordRequest": {
-        "type": "object",
-        "required": [
-          "UserId",
-          "Secret",
-          "Login",
-          "NewPassword"
-        ],
-        "properties": {
-          "UserId": {
-            "description": "Unique user identifier.",
-            "type": "string",
-            "format": "uuid",
-            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
-          },
-          "Secret": {
-            "description": "Secret from email.",
-            "type": "string",
-            "example": "22cf2f"
-          },
-          "Login": {
-            "description": "User login.",
-            "type": "string",
-            "example": "login"
-          },
-          "NewPassword": {
-            "description": "New user password.",
-            "type": "string",
-            "example": "Mypassword"
-          }
-        }
-      },
-      "OperationResultResponse": {
-        "description": "Response object for action operations.",
-        "type": "object",
-        "required": [
-          "Status",
-          "Errors"
-        ],
-        "properties": {
-          "Body": {
-            "type": "object"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "CommunicationType": {
-        "type": "string",
-        "description": "Communication type.",
-        "enum": [
-          "Skype",
-          "Phone",
-          "Email",
-          "Telegram",
-          "Twitter",
-          "BaseEmail"
-        ],
-        "example": "Email"
-      },
-      "UserStatus": {
-        "type": "string",
-        "description": "Mode for user status.",
-        "enum": [
-          "Vacation",
-          "Sick",
-          "WorkFromOffice",
-          "WorkFromHome"
-        ],
-        "example": "Sick",
-        "default": "WorkFromOffice"
-      },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
-      },
-      "BadRequest": {
-        "type": "object",
-        "properties": {
-          "errors": {
-            "type": "object",
-            "description": "contains arrays of error messages (format: strings)"
-          },
-          "type": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "status": {
-            "type": "integer"
-          },
-          "traceId": {
-            "type": "string",
-            "format": "uuid"
-          }
-        }
-      },
-      "AddImageRequest": {
-        "type": "object",
-        "required": [
-          "Name",
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Name": {
-            "description": "Image name.",
-            "type": "string",
-            "example": "Avatar"
-          },
-          "Content": {
-            "description": "Image content.",
-            "type": "string",
-            "format": "base64"
-          },
-          "Extension": {
-            "description": "Image extension.",
-            "type": "string",
-            "example": ".png"
-          },
-          "IsCurrentAvatar": {
-            "description": "shows whether the image is the current avatar or not",
-            "default": false
-          }
-        }
-      },
-      "CreateCommunicationRequest": {
-        "type": "object",
-        "required": [
-          "Type",
-          "Value"
-        ],
-        "properties": {
-          "UserId": {
-            "description": "Unique user identifier. Is null if create with user creating",
-            "type": "string",
-            "format": "uuid",
-            "nullable": true,
-            "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
-          },
-          "Type": {
-            "$ref": "#/components/schemas/CommunicationType"
-          },
-          "Value": {
-            "description": "Communication value",
-            "type": "string",
-            "example": "mail@mail.ru"
-          }
-        }
-      },
-      "EditCommunicationRequest": {
-        "type": "object",
-        "properties": {
-          "Type": {
-            "$ref": "#/components/schemas/CommunicationType",
-            "description": "allows to establish the confirmed communication as BaseEmail."
-          },
-          "Value": {
-            "type": "string",
-            "description": "new the communication value"
-          }
-        }
-      },
-      "CommunicationPatchDocument": {
-        "type": "object",
-        "required": [
-          "op",
-          "path",
-          "value"
-        ],
-        "properties": {
-          "op": {
-            "type": "string",
-            "description": "The operation to be performed.",
-            "enum": [
-              "replace"
-            ]
-          },
-          "path": {
-            "type": "string",
-            "description": "A JSON-Pointer.",
-            "enum": [
-              "/Type",
-              "/Value"
-            ]
-          },
-          "value": {
-            "type": "object",
-            "description": "The value to be used within the operations."
-          }
-        }
-      },
-      "CreateAvatarRequest": {
-        "type": "object",
-        "required": [
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "UserId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Unique entity user identifier.",
-            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
-          },
-          "Name": {
-            "type": "string",
-            "description": "Image name",
-            "nullable": true,
-            "example": "Cat1"
-          },
-          "Content": {
-            "description": "Image content.",
-            "type": "string",
-            "format": "base64"
-          },
-          "Extension": {
-            "description": "Image extension.",
-            "type": "string",
-            "example": ".png"
-          },
-          "IsCurrentAvatar": {
-            "description": "shows whether the image is the current avatar or not",
-            "default": false
-          }
-        }
-      },
-      "RemoveAvatarRequest": {
-        "type": "object",
-        "required": [
-          "UserId",
-          "ImagesIds"
-        ],
-        "properties": {
-          "UserId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Unique user identifier.",
-            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
-          },
-          "ImagesIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        }
-      },
-      "CreateUserCompanyRequest": {
-        "type": "object",
-        "required": [
-          "CompanyId",
-          "ContractTermType",
-          "StartWorkingAt"
-        ],
-        "properties": {
-          "ContractSubjectId": {
-            "description": "User's contract subject ID.",
-            "type": "string",
-            "format": "uuid",
-            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
-          },
-          "ContractTermType": {
-            "$ref": "#/components/schemas/ContractTerm"
-          },
-          "StartWorkingAt": {
-            "description": "Time when the user started working for the company.",
-            "type": "string",
-            "format": "date",
-            "example": "2021-01-21T00:00:00.000Z"
-          },
-          "EndWorkingAt": {
-            "description": "Time when the user will end working for the company.",
-            "type": "string",
-            "format": "date",
-            "example": "2021-01-21T00:00:00.000Z"
-          },
-          "Probation": {
-            "description": "User's probation.",
-            "type": "string",
-            "format": "date",
-            "example": "2021-01-21T00:00:00.000Z"
-          },
-          "Rate": {
-            "description": "User's rate",
-            "type": "number",
-            "example": 0.25,
-            "format": "float"
-          },
-          "CompanyId": {
-            "description": "User company ID.",
-            "type": "string",
-            "format": "uuid",
-            "example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
-          }
-        }
-      },
-      "CreateGenderRequest": {
-        "type": "object",
-        "required": [
-          "Name"
-        ],
-        "properties": {
-          "Name": {
-            "description": "Unique name of the gender.",
-            "type": "string",
-            "example": "Female"
-          }
-        }
-      },
-      "FindResultResponseGenderInfo": {
-        "description": "Response object for action operations.",
-        "type": "object",
-        "required": [
-          "Body",
-          "TotalCount",
-          "Status",
-          "Errors"
-        ],
-        "properties": {
-          "Body": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/GenderInfo"
-            }
-          },
-          "TotalCount": {
-            "type": "number"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "OperationResultResponseImagesResponse": {
-        "description": "Response object for action operations.",
-        "type": "object",
-        "required": [
-          "Body",
-          "Status",
-          "Errors"
-        ],
-        "properties": {
-          "Body": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImageInfo"
-            }
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "parameters": {
-      "securityToken": {
-        "name": "token",
-        "in": "header",
-        "description": "The JWT token.",
-        "schema": {
-          "type": "string",
-          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
-        },
-        "required": true
-      },
-      "achievementId": {
-        "name": "achievmentId",
-        "in": "query",
-        "description": "Achievement global unique identifier.",
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "required": true
-      }
-    }
-  }
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.4.5.2",
+		"title": "UserService",
+		"description": "UserService is an API that intended to work with users."
+	},
+	"servers": [
+		{
+			"url": "https://user.ltdo.xyz",
+			"description": "Production server"
+		},
+		{
+			"url": "https://user.dev.ltdo.xyz",
+			"description": "Development server"
+		}
+	],
+	"paths": {
+		"/user/create": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"post": {
+				"tags": ["User"],
+				"operationId": "createUser",
+				"description": "The method attempts to add the user. The user must have right - Add/Edit/Remove users.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUserRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Ok.\n* Created user Id (uuid) will be in response Body property.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.\n* Something went wrong.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.\n* User is not admin and don't has rights.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/editactive": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"put": {
+				"tags": ["User"],
+				"operationId": "editUserActive",
+				"description": "Change is active user status. The user must have right - Add/Edit/Remove users.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditUserActiveRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Ok.\n* Update user operation success (boolean) status will be in response Body property.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/edit": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "userId",
+					"in": "query",
+					"description": "Specific user id",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				}
+			],
+			"patch": {
+				"tags": ["User"],
+				"operationId": "editUser",
+				"description": "Update user properties. The user must have right - Add/Edit/Remove users.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditUserRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Ok.\n* Update user operation success (boolean) status will be in response Body property.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/get": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "userId",
+					"in": "query",
+					"description": "User global unique identifier.",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": false
+				},
+				{
+					"name": "email",
+					"in": "query",
+					"description": "Any of user emails. Can not be used with `includecommunications`.",
+					"schema": {
+						"type": "string"
+					},
+					"required": false
+				},
+				{
+					"name": "includecurrentavatar",
+					"in": "query",
+					"description": "Include user current avatar in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includeavatars",
+					"in": "query",
+					"description": "Include all user current avatars in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includecertificates",
+					"in": "query",
+					"description": "Include user certificates info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includecommunications",
+					"in": "query",
+					"description": "Include user communications info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includecompany",
+					"in": "query",
+					"description": "Include user company info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includedepartment",
+					"in": "query",
+					"description": "Include user department info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includeeducations",
+					"in": "query",
+					"description": "Include educations info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includeoffice",
+					"in": "query",
+					"description": "Include user office info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includeposition",
+					"in": "query",
+					"description": "Include user position info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includeprojects",
+					"in": "query",
+					"description": "Include user projects info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includerole",
+					"in": "query",
+					"description": "Include user role info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includeskills",
+					"in": "query",
+					"description": "Include user skills info in answer.",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "locale",
+					"in": "query",
+					"description": "Role localization.",
+					"schema": {
+						"type": "string"
+					},
+					"required": false
+				}
+			],
+			"get": {
+				"tags": ["User"],
+				"operationId": "getUser",
+				"description": "Returns user information.",
+				"responses": {
+					"200": {
+						"description": "Created.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponseUserResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/find": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "skipCount",
+					"in": "query",
+					"description": "Number of entries to skip.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": true
+				},
+				{
+					"name": "takeCount",
+					"in": "query",
+					"description": "Number of users to take.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": true
+				},
+				{
+					"name": "isascendingsort",
+					"in": "query",
+					"description": "When value is 'true' sorts A-Z, when value is 'false' sorts Z-A",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "fullnameincludesubstring",
+					"in": "query",
+					"description": "Find for users containing a substring in the full name",
+					"schema": {
+						"type": "string"
+					},
+					"required": false
+				},
+				{
+					"name": "isactive",
+					"in": "query",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includecurrentavatar",
+					"in": "query",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includecommunications",
+					"in": "query",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				}
+			],
+			"get": {
+				"tags": ["User"],
+				"operationId": "findUsers",
+				"description": "Returns all users information with pagination.",
+				"responses": {
+					"200": {
+						"description": "Ok.\n* Successfully returned list of users information.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseUserInfo"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseUserInfo"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/credentials/create": {
+			"post": {
+				"tags": ["Credentials"],
+				"operationId": "createCredentials",
+				"description": "This endpoint must be used only for user first time login operation.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCredentialsRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Ok. Success create credentials.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponseCredentialsResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"503": {
+						"description": "Service Unavailable.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/credentials/reactivate": {
+			"put": {
+				"tags": ["Credentials"],
+				"operationId": "reactivateCredentials",
+				"description": "This endpoint must be used only for reactivate user credentials.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReactivateCredentialsRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Ok. Success reactivate credentials.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponseCredentialsResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/pending/check": {
+			"parameters": [
+				{
+					"name": "userid",
+					"in": "query",
+					"description": "Unique user identifier.",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				}
+			],
+			"get": {
+				"tags": ["Pending"],
+				"operationId": "checkPending",
+				"description": "This endpoint must be used only for user first time login operation.",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/pending/find": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "skipCount",
+					"in": "query",
+					"description": "Number of entries to skip.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": true
+				},
+				{
+					"name": "takeCount",
+					"in": "query",
+					"description": "Number of users to take.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": true
+				},
+				{
+					"name": "includecommunication",
+					"in": "query",
+					"description": "includes user communications",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "includecurrentavatar",
+					"in": "query",
+					"description": "includes user avatar",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				}
+			],
+			"get": {
+				"tags": ["Pending"],
+				"operationId": "findPending",
+				"description": "Returns all pending users.",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseUserInfo"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "BadRequest.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseUserInfo"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/pending/resendinvitation": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "userId",
+					"in": "query",
+					"description": "User global unique identifier.",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				},
+				{
+					"name": "communicationId",
+					"in": "query",
+					"description": "Communication global unique identifier.",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				}
+			],
+			"get": {
+				"tags": ["Pending"],
+				"operationId": "resendinvitationPending",
+				"description": "Resend invitation email.",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "BadRequest.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NotFound.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/pending/remove": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "userId",
+					"in": "query",
+					"description": "User global unique identifier.",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				}
+			],
+			"delete": {
+				"tags": ["Pending"],
+				"operationId": "removePending",
+				"description": "Remove user from pending list.",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "NotFound.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/password/generate": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"get": {
+				"tags": ["Password"],
+				"operationId": "generatePassword",
+				"description": "Returns randomly generated password.",
+				"responses": {
+					"200": {
+						"description": "Ok.\n* Successfully returned password string.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"description": "8-12 symbols password string.",
+									"type": "string",
+									"example": "!31TKgk_"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/password/change": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"post": {
+				"tags": ["Password"],
+				"operationId": "changePassword",
+				"description": "Change user password.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ChangePasswordRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Ok.\n* Change user password operation success (boolean) status will be in response Body property.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/password/reconstruct": {
+			"post": {
+				"tags": ["Password"],
+				"operationId": "reconstructPassword",
+				"description": "Change user password use secret from email.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReconstructPasswordRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Ok.\n* Change user password operation success (boolean) status will be in response Body property.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/password/forgot": {
+			"parameters": [
+				{
+					"name": "userEmail",
+					"in": "query",
+					"schema": {
+						"type": "string",
+						"example": "la@gmail.com"
+					},
+					"required": true
+				}
+			],
+			"get": {
+				"tags": ["Password"],
+				"operationId": "forgotPassword",
+				"description": "Initiates sending a email with instructions on how to change the user's password.",
+				"responses": {
+					"200": {
+						"description": "Ok.\n* Send email operation success (boolean) status will be in response Body property.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found. User with this email was not found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/communication/create": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"post": {
+				"tags": ["Communication"],
+				"operationId": "createCommunication",
+				"description": "The method attempts to add the communication. The user must have the rights to add education to other users - Add/Edit/Remove users.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCommunicationRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Created.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/communication/edit": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "communicationId",
+					"in": "query",
+					"description": "Specific communication id",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				}
+			],
+			"put": {
+				"tags": ["Communication"],
+				"operationId": "editCommunication",
+				"description": "Update communication properties. The user must have the rights to edit communication to other users - Add/Edit/Remove users.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditCommunicationRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/communication/remove": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "communicationId",
+					"in": "query",
+					"description": "Specific communication id",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				}
+			],
+			"delete": {
+				"tags": ["Communication"],
+				"operationId": "removeCommunication",
+				"description": "Remove the specified communication by id. The user must have the rights to remove communication to other users - Add/Edit/Remove users.",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/communication/confirm": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "communicationId",
+					"in": "query",
+					"description": "Specific communication id",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				},
+				{
+					"name": "secret",
+					"in": "query",
+					"description": "Specific word from email link",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				}
+			],
+			"put": {
+				"tags": ["Communication"],
+				"operationId": "confirmCommunication",
+				"description": "Confirm the specified communication by id.",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/communication/resendconfirmation": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "communicationId",
+					"in": "query",
+					"description": "Specific communication id",
+					"schema": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"required": true
+				}
+			],
+			"get": {
+				"tags": ["Communication"],
+				"operationId": "resendConfirmationCommunication",
+				"description": "Resend email message with secret.",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/avatar/create": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"post": {
+				"tags": ["Avatar"],
+				"operationId": "createAvatar",
+				"description": "The method attempts to add image to user.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateAvatarRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Ok. Image was added.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/avatar/get": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "userId",
+					"in": "query",
+					"schema": {
+						"type": "string",
+						"format": "uuid",
+						"example": "49f0e767-4f07-44fe-beff-36d135006fde"
+					},
+					"required": true
+				}
+			],
+			"get": {
+				"tags": ["Avatar"],
+				"operationId": "GetAvatar",
+				"description": "This method is used to get all user avatars",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponseImagesResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/avatar/remove": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"post": {
+				"tags": ["Avatar"],
+				"operationId": "removeAvatar",
+				"description": "The method attempts to remove avatars from user",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/RemoveAvatarRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/avatar/editcurrent": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "userId",
+					"in": "query",
+					"schema": {
+						"type": "string",
+						"format": "uuid",
+						"example": "49f0e767-4f07-44fe-beff-36d135006fde"
+					},
+					"required": true
+				},
+				{
+					"name": "imageId",
+					"in": "query",
+					"schema": {
+						"type": "string",
+						"format": "uuid",
+						"example": "49f0e767-4f07-44fe-beff-36d135006fde"
+					},
+					"required": true
+				}
+			],
+			"get": {
+				"tags": ["Avatar"],
+				"operationId": "editAvatar",
+				"description": "This method is used to change user's avatar",
+				"responses": {
+					"200": {
+						"description": "Ok.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/gender/create": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"post": {
+				"tags": ["gender"],
+				"operationId": "createGender",
+				"description": "The method attempts to add gender.",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateGenderRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"201": {
+						"description": "Ok. Gender was created.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/gender/find": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "skipCount",
+					"in": "query",
+					"description": "Number of entries to skip.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": true
+				},
+				{
+					"name": "takeCount",
+					"in": "query",
+					"description": "Number of genders to take.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": true
+				}
+			],
+			"get": {
+				"tags": ["gender"],
+				"operationId": "findGender",
+				"description": "Returns all genders with pagination.",
+				"responses": {
+					"200": {
+						"description": "Ok.\n* Successfully returned list of genders.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseGenderInfo"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseGenderInfo"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"OperationResultResponseUserResponse": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"required": ["Status", "Errors"],
+				"properties": {
+					"Body": {
+						"$ref": "#/components/schemas/UserResponse"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/OperationResultStatusType"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"UserResponse": {
+				"type": "object",
+				"required": ["User", "UserAddition"],
+				"properties": {
+					"User": {
+						"$ref": "#/components/schemas/UserInfo"
+					},
+					"UserAddition": {
+						"$ref": "#/components/schemas/UserAdditionInfo"
+					},
+					"CompanyUser": {
+						"$ref": "#/components/schemas/CompanyUserInfo"
+					},
+					"Department": {
+						"$ref": "#/components/schemas/DepartmentInfo"
+					},
+					"Office": {
+						"$ref": "#/components/schemas/OfficeInfo"
+					},
+					"Position": {
+						"$ref": "#/components/schemas/PositionInfo"
+					},
+					"Role": {
+						"$ref": "#/components/schemas/RoleInfo"
+					},
+					"Images": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ImageInfo"
+						}
+					},
+					"Educations": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/EducationInfo"
+						}
+					},
+					"Projects": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ProjectInfo"
+						}
+					},
+					"Skills": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"FindResultResponseUserInfo": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"required": ["Body", "TotalCount", "Status", "Errors"],
+				"properties": {
+					"Body": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/UserInfo"
+						}
+					},
+					"TotalCount": {
+						"type": "number"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/OperationResultStatusType"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"CreateUserRequest": {
+				"type": "object",
+				"required": ["FirstName", "LastName", "Status", "Communication"],
+				"properties": {
+					"FirstName": {
+						"description": "First name of a user.",
+						"type": "string",
+						"example": "Ivan"
+					},
+					"LastName": {
+						"description": "Last name of a user.",
+						"type": "string",
+						"example": "Ivanov"
+					},
+					"MiddleName": {
+						"description": "Middle name of a user.",
+						"type": "string",
+						"example": "Ivanovich"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/UserStatus"
+					},
+					"IsAdmin": {
+						"description": "Mark whether the user is an administrator.",
+						"type": "boolean",
+						"default": false
+					},
+					"DayOfBirth": {
+						"description": "Date of user birth.",
+						"type": "string",
+						"format": "date",
+						"example": "2021-01-21T00:00:00.000Z"
+					},
+					"About": {
+						"type": "string"
+					},
+					"BusinessHoursFromUtc": {
+						"description": "Time when the user start work day.",
+						"type": "string",
+						"format": "date",
+						"example": "2021-01-21T00:00:00.000Z"
+					},
+					"BusinessHoursToUtc": {
+						"description": "Time when the user finish work day.",
+						"type": "string",
+						"format": "date",
+						"example": "2021-01-21T00:00:00.000Z"
+					},
+					"Latitude": {
+						"description": "User location.",
+						"type": "number",
+						"format": "double",
+						"example": "0.001"
+					},
+					"Longitude": {
+						"description": "User location.",
+						"type": "number",
+						"format": "double",
+						"example": "0.001"
+					},
+					"UserCompany": {
+						"$ref": "#/components/schemas/CreateUserCompanyRequest"
+					},
+					"DepartmentId": {
+						"description": "User department ID.",
+						"type": "string",
+						"format": "uuid",
+						"example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+					},
+					"OfficeId": {
+						"description": "User office ID.",
+						"type": "string",
+						"format": "uuid",
+						"example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+					},
+					"PositionId": {
+						"description": "User position ID.",
+						"type": "string",
+						"format": "uuid",
+						"example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+					},
+					"RoleId": {
+						"description": "User role ID.",
+						"type": "string",
+						"format": "uuid",
+						"example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+					},
+					"Password": {
+						"description": "User password.",
+						"type": "string",
+						"example": "MySecretPassword"
+					},
+					"AvatarImage": {
+						"$ref": "#/components/schemas/AddImageRequest"
+					},
+					"Communication": {
+						"$ref": "#/components/schemas/CreateCommunicationRequest"
+					}
+				}
+			},
+			"CreateCredentialsRequest": {
+				"type": "object",
+				"required": ["UserId", "Login", "Password"],
+				"properties": {
+					"UserId": {
+						"description": "Unique user identifier.",
+						"type": "string",
+						"format": "uuid",
+						"example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
+					},
+					"Login": {
+						"description": "User login.",
+						"type": "string",
+						"example": "Mylogin"
+					},
+					"Password": {
+						"description": "User password received by email.",
+						"type": "string",
+						"example": "Sicretpassword"
+					}
+				}
+			},
+			"ReactivateCredentialsRequest": {
+				"type": "object",
+				"required": ["UserId", "Password"],
+				"properties": {
+					"UserId": {
+						"description": "Unique user identifier.",
+						"type": "string",
+						"format": "uuid",
+						"example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
+					},
+					"Password": {
+						"description": "User password received by email.",
+						"type": "string",
+						"example": "Sicretpassword"
+					}
+				}
+			},
+			"EditUserActiveRequest": {
+				"type": "object",
+				"required": ["UserId", "IsActive"],
+				"properties": {
+					"UserId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"IsActive": {
+						"type": "boolean"
+					},
+					"CommunicationId": {
+						"type": "string",
+						"format": "uuid",
+						"description": "used when restoring a user from an archive"
+					}
+				}
+			},
+			"EditUserRequest": {
+				"type": "array",
+				"minItems": 1,
+				"example": [
+					{
+						"op": "replace",
+						"path": "/FirstName",
+						"value": {
+							"description": "New user first name",
+							"type": "string",
+							"example": "Ivan"
+						}
+					},
+					{
+						"op": "replace",
+						"path": "/LastName",
+						"value": {
+							"description": "New user last name",
+							"type": "string",
+							"example": "Ivanov"
+						}
+					},
+					{
+						"op": "replace",
+						"path": "/MiddleName",
+						"value": {
+							"description": "New user middle name",
+							"type": "string",
+							"example": "Ivanovich"
+						}
+					},
+					{
+						"op": "replace",
+						"path": "/Status",
+						"value": {
+							"$ref": "#/components/schemas/UserStatus"
+						}
+					},
+					{
+						"op": "replace",
+						"path": "/DateOfBirth",
+						"value": {
+							"description": "Date of user birth.",
+							"type": "string",
+							"format": "date",
+							"example": "2021-01-21T00:00:00.000Z"
+						}
+					},
+					{
+						"op": "replace",
+						"path": "/StartWorkingAt",
+						"value": {
+							"description": "Time when the user started working for the company.",
+							"type": "string",
+							"format": "date",
+							"example": "2021-01-21T00:00:00.000Z"
+						}
+					}
+				],
+				"items": {
+					"$ref": "#/components/schemas/PatchUserDocument"
+				}
+			},
+			"PatchUserDocument": {
+				"type": "object",
+				"required": ["op", "path"],
+				"properties": {
+					"op": {
+						"type": "string",
+						"description": "The operation to be performed.",
+						"enum": ["replace"]
+					},
+					"path": {
+						"type": "string",
+						"description": "A JSON-Pointer.",
+						"enum": [
+							"/FirstName",
+							"/LastName",
+							"/MiddleName",
+							"/Status",
+							"/IsAdmin",
+							"/DateOfBirth",
+							"/GenderId",
+							"/About",
+							"/BusinessHoursFromUtc",
+							"/BusinessHoursToUtc",
+							"/Latitude",
+							"/Longitude"
+						]
+					},
+					"value": {
+						"type": "object",
+						"description": "The value to be used within the operations."
+					}
+				}
+			},
+			"OperationResultResponseCredentialsResponse": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"properties": {
+					"Body": {
+						"$ref": "#/components/schemas/CredentialsResponse"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/OperationResultStatusType"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"CredentialsResponse": {
+				"type": "object",
+				"required": ["UserId", "AccessToken", "RefreshToken", "AccessTokenExpiresIn", "RefreshTokenExpiresIn"],
+				"properties": {
+					"UserId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"AccessToken": {
+						"type": "string"
+					},
+					"RefreshToken": {
+						"type": "string"
+					},
+					"AccessTokenExpiresIn": {
+						"description": "AccessToken life time in minutes",
+						"type": "number",
+						"format": "double"
+					},
+					"RefreshTokenExpiresIn": {
+						"description": "RefreshToken life time in minutes",
+						"type": "number",
+						"format": "double"
+					}
+				}
+			},
+			"PendingUserInfo": {
+				"type": "object",
+				"required": ["InvitationCommunicationId"],
+				"properties": {
+					"InvitationCommunicationId": {
+						"type": "string",
+						"format": "uuid",
+						"description": "communication to which an invitation with a password was sent."
+					}
+				}
+			},
+			"UserAdditionInfo": {
+				"type": "object",
+				"properties": {
+					"GenderName": {
+						"type": "string"
+					},
+					"About": {
+						"type": "string"
+					},
+					"DateOfBirth": {
+						"type": "string",
+						"format": "date"
+					},
+					"BusinessHoursFromUtc": {
+						"type": "string",
+						"format": "date"
+					},
+					"BusinessHoursToUtc": {
+						"type": "string",
+						"format": "date"
+					},
+					"Latitude": {
+						"type": "number",
+						"format": "double"
+					},
+					"Longitude": {
+						"type": "number",
+						"format": "double"
+					}
+				}
+			},
+			"UserInfo": {
+				"type": "object",
+				"required": ["Id", "FirstName", "LastName", "Status", "IsAdmin", "IsActive"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"MiddleName": {
+						"type": "string"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/UserStatus"
+					},
+					"IsAdmin": {
+						"type": "boolean"
+					},
+					"IsActive": {
+						"type": "boolean"
+					},
+					"PendingInfo": {
+						"$ref": "#/components/schemas/PendingUserInfo"
+					},
+					"Avatar": {
+						"$ref": "#/components/schemas/ImageInfo"
+					},
+					"Communications": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/CommunicationInfo"
+						}
+					}
+				}
+			},
+			"ContractTerm": {
+				"type": "string",
+				"description": "Contract term type.",
+				"enum": ["FixedTerm", "Perpetual"],
+				"example": "FixedTerm"
+			},
+			"ImageType": {
+				"type": "string",
+				"description": "Type of image.",
+				"enum": ["Full", "Thumb"],
+				"default": "Full"
+			},
+			"ImageInfo": {
+				"type": "object",
+				"required": ["Id", "Content", "Extension"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"ParentId": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Content": {
+						"type": "string",
+						"description": "Image file content in base64 encoded string."
+					},
+					"Extension": {
+						"type": "string"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"ImageConsist": {
+				"type": "object",
+				"required": ["Content", "Extension"],
+				"properties": {
+					"Content": {
+						"type": "string",
+						"description": "Image file content in base64 encoded string."
+					},
+					"Extension": {
+						"type": "string"
+					}
+				}
+			},
+			"CompanyUserInfo": {
+				"type": "object",
+				"required": ["Company", "ContractTermType", "StartWorkingAt"],
+				"properties": {
+					"Company": {
+						"$ref": "#/components/schemas/CompanyInfo"
+					},
+					"ContractSubject": {
+						"$ref": "#/components/schemas/ContractSubjectData"
+					},
+					"ContractTermType": {
+						"$ref": "#/components/schemas/ContractTerm"
+					},
+					"Rate": {
+						"type": "number"
+					},
+					"StartWorkingAt": {
+						"type": "string",
+						"format": "date"
+					},
+					"EndWorkingAt": {
+						"type": "string",
+						"format": "date"
+					},
+					"Probation": {
+						"type": "string",
+						"format": "date"
+					}
+				}
+			},
+			"ContractSubjectData": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"CompanyInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"DepartmentInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"PositionInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"RoleInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"RightsIds": {
+						"type": "array",
+						"items": {
+							"type": "integer"
+						}
+					}
+				}
+			},
+			"OfficeInfo": {
+				"type": "object",
+				"required": ["Id", "City", "Address"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"City": {
+						"type": "string"
+					},
+					"Address": {
+						"type": "string"
+					},
+					"Longitude": {
+						"type": "number"
+					},
+					"Latitude": {
+						"type": "number"
+					}
+				}
+			},
+			"CommunicationInfo": {
+				"type": "object",
+				"required": ["Id", "Type", "Value", "VisibleTo"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Type": {
+						"$ref": "#/components/schemas/CommunicationType"
+					},
+					"Value": {
+						"type": "string"
+					},
+					"VisibleTo": {
+						"$ref": "#/components/schemas/CommunicationVisibleTo"
+					}
+				}
+			},
+			"ProjectInfo": {
+				"type": "object",
+				"required": ["Id", "Name", "Status"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					},
+					"Status": {
+						"type": "string"
+					},
+					"ShortName": {
+						"type": "string"
+					},
+					"ShortDescription": {
+						"type": "string"
+					},
+					"User": {
+						"$ref": "#/components/schemas/ProjectUserInfo"
+					}
+				}
+			},
+			"ProjectUserInfo": {
+				"type": "object",
+				"required": ["IsActive", "CreatedAtUtc"],
+				"properties": {
+					"IsActive": {
+						"type": "boolean"
+					},
+					"CreatedAtUtc": {
+						"type": "string",
+						"format": "date"
+					}
+				}
+			},
+			"GenderInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"EducationInfo": {
+				"type": "object",
+				"required": ["Id", "UniversityName", "QualificationName"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"UniversityName": {
+						"type": "string"
+					},
+					"QualificationName": {
+						"type": "string"
+					},
+					"EducationForm": {
+						"$ref": "#/components/schemas/EducationFormInfo"
+					},
+					"EducationType": {
+						"$ref": "#/components/schemas/EducationTypeInfo"
+					},
+					"Completeness": {
+						"type": "string"
+					},
+					"AdmissionAt": {
+						"type": "string"
+					},
+					"IssueAt": {
+						"type": "string",
+						"nullable": true
+					},
+					"ImagesIds": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				}
+			},
+			"EducationTypeInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"EducationFormInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"ChangePasswordRequest": {
+				"type": "object",
+				"required": ["Password", "NewPassword"],
+				"properties": {
+					"Password": {
+						"description": "Old user password.",
+						"type": "string",
+						"example": "22cf2f"
+					},
+					"NewPassword": {
+						"description": "New user password.",
+						"type": "string",
+						"example": "Mypassword"
+					}
+				}
+			},
+			"ReconstructPasswordRequest": {
+				"type": "object",
+				"required": ["UserId", "Secret", "Login", "NewPassword"],
+				"properties": {
+					"UserId": {
+						"description": "Unique user identifier.",
+						"type": "string",
+						"format": "uuid",
+						"example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+					},
+					"Secret": {
+						"description": "Secret from email.",
+						"type": "string",
+						"example": "22cf2f"
+					},
+					"Login": {
+						"description": "User login.",
+						"type": "string",
+						"example": "login"
+					},
+					"NewPassword": {
+						"description": "New user password.",
+						"type": "string",
+						"example": "Mypassword"
+					}
+				}
+			},
+			"OperationResultResponse": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"required": ["Status", "Errors"],
+				"properties": {
+					"Body": {
+						"type": "object"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/OperationResultStatusType"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"CommunicationType": {
+				"type": "string",
+				"description": "Communication type.",
+				"enum": ["Skype", "Phone", "Email", "Telegram", "Twitter", "BaseEmail"],
+				"example": "Email"
+			},
+			"UserStatus": {
+				"type": "string",
+				"description": "Mode for user status.",
+				"enum": ["Vacation", "Sick", "WorkFromOffice", "WorkFromHome"],
+				"example": "Sick",
+				"default": "WorkFromOffice"
+			},
+			"CommunicationVisibleTo": {
+				"type": "string",
+				"description": "Mode for user communication visibe to.",
+				"enum": ["AllUsers", "Admin"],
+				"default": "AllUsers"
+			},
+			"OperationResultStatusType": {
+				"type": "string",
+				"description": "Operation complition result status.",
+				"enum": ["FullSuccess", "PartialSuccess", "Failed"],
+				"example": "FullSuccess",
+				"default": "FullSuccess"
+			},
+			"BadRequest": {
+				"type": "object",
+				"properties": {
+					"errors": {
+						"type": "object",
+						"description": "contains arrays of error messages (format: strings)"
+					},
+					"type": {
+						"type": "string"
+					},
+					"title": {
+						"type": "string"
+					},
+					"status": {
+						"type": "integer"
+					},
+					"traceId": {
+						"type": "string",
+						"format": "uuid"
+					}
+				}
+			},
+			"AddImageRequest": {
+				"type": "object",
+				"required": ["Name", "Content", "Extension"],
+				"properties": {
+					"Name": {
+						"description": "Image name.",
+						"type": "string",
+						"example": "Avatar"
+					},
+					"Content": {
+						"description": "Image content.",
+						"type": "string",
+						"format": "base64"
+					},
+					"Extension": {
+						"description": "Image extension.",
+						"type": "string",
+						"example": ".png"
+					},
+					"IsCurrentAvatar": {
+						"description": "shows whether the image is the current avatar or not",
+						"default": false
+					}
+				}
+			},
+			"CreateCommunicationRequest": {
+				"type": "object",
+				"required": ["Type", "Value"],
+				"properties": {
+					"UserId": {
+						"description": "Unique user identifier. Is null if create with user creating",
+						"type": "string",
+						"format": "uuid",
+						"nullable": true,
+						"example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
+					},
+					"Type": {
+						"$ref": "#/components/schemas/CommunicationType"
+					},
+					"Value": {
+						"description": "Communication value",
+						"type": "string",
+						"example": "mail@mail.ru"
+					},
+					"VisibleTo": {
+						"$ref": "#/components/schemas/CommunicationVisibleTo"
+					}
+				}
+			},
+			"EditCommunicationRequest": {
+				"type": "object",
+				"properties": {
+					"Type": {
+						"$ref": "#/components/schemas/CommunicationType",
+						"description": "allows to establish the confirmed communication as BaseEmail."
+					},
+					"Value": {
+						"type": "string",
+						"description": "new the communication value"
+					}
+				}
+			},
+			"CommunicationPatchDocument": {
+				"type": "object",
+				"required": ["op", "path", "value"],
+				"properties": {
+					"op": {
+						"type": "string",
+						"description": "The operation to be performed.",
+						"enum": ["replace"]
+					},
+					"path": {
+						"type": "string",
+						"description": "A JSON-Pointer.",
+						"enum": ["/Type", "/Value"]
+					},
+					"value": {
+						"type": "object",
+						"description": "The value to be used within the operations."
+					}
+				}
+			},
+			"CreateAvatarRequest": {
+				"type": "object",
+				"required": ["Content", "Extension"],
+				"properties": {
+					"UserId": {
+						"type": "string",
+						"format": "uuid",
+						"description": "Unique entity user identifier.",
+						"example": "49f0e767-4f07-44fe-beff-36d135006fde"
+					},
+					"Name": {
+						"type": "string",
+						"description": "Image name",
+						"nullable": true,
+						"example": "Cat1"
+					},
+					"Content": {
+						"description": "Image content.",
+						"type": "string",
+						"format": "base64"
+					},
+					"Extension": {
+						"description": "Image extension.",
+						"type": "string",
+						"example": ".png"
+					},
+					"IsCurrentAvatar": {
+						"description": "shows whether the image is the current avatar or not",
+						"default": false
+					}
+				}
+			},
+			"RemoveAvatarRequest": {
+				"type": "object",
+				"required": ["UserId", "ImagesIds"],
+				"properties": {
+					"UserId": {
+						"type": "string",
+						"format": "uuid",
+						"description": "Unique user identifier.",
+						"example": "49f0e767-4f07-44fe-beff-36d135006fde"
+					},
+					"ImagesIds": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				}
+			},
+			"CreateUserCompanyRequest": {
+				"type": "object",
+				"required": ["CompanyId", "ContractTermType", "StartWorkingAt"],
+				"properties": {
+					"ContractSubjectId": {
+						"description": "User's contract subject ID.",
+						"type": "string",
+						"format": "uuid",
+						"example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+					},
+					"ContractTermType": {
+						"$ref": "#/components/schemas/ContractTerm"
+					},
+					"StartWorkingAt": {
+						"description": "Time when the user started working for the company.",
+						"type": "string",
+						"format": "date",
+						"example": "2021-01-21T00:00:00.000Z"
+					},
+					"EndWorkingAt": {
+						"description": "Time when the user will end working for the company.",
+						"type": "string",
+						"format": "date",
+						"example": "2021-01-21T00:00:00.000Z"
+					},
+					"Probation": {
+						"description": "User's probation.",
+						"type": "string",
+						"format": "date",
+						"example": "2021-01-21T00:00:00.000Z"
+					},
+					"Rate": {
+						"description": "User's rate",
+						"type": "number",
+						"example": 0.25,
+						"format": "float"
+					},
+					"CompanyId": {
+						"description": "User company ID.",
+						"type": "string",
+						"format": "uuid",
+						"example": "22cf2f1e-ebaa-4db1-a0fe-f2b5ff5854f4"
+					}
+				}
+			},
+			"CreateGenderRequest": {
+				"type": "object",
+				"required": ["Name"],
+				"properties": {
+					"Name": {
+						"description": "Unique name of the gender.",
+						"type": "string",
+						"example": "Female"
+					}
+				}
+			},
+			"FindResultResponseGenderInfo": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"required": ["Body", "TotalCount", "Status", "Errors"],
+				"properties": {
+					"Body": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/GenderInfo"
+						}
+					},
+					"TotalCount": {
+						"type": "number"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/OperationResultStatusType"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"OperationResultResponseImagesResponse": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"required": ["Body", "Status", "Errors"],
+				"properties": {
+					"Body": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ImageInfo"
+						}
+					},
+					"Status": {
+						"$ref": "#/components/schemas/OperationResultStatusType"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			}
+		},
+		"parameters": {
+			"securityToken": {
+				"name": "token",
+				"in": "header",
+				"description": "The JWT token.",
+				"schema": {
+					"type": "string",
+					"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
+				},
+				"required": true
+			},
+			"achievementId": {
+				"name": "achievmentId",
+				"in": "query",
+				"description": "Achievement global unique identifier.",
+				"schema": {
+					"type": "string",
+					"format": "uuid"
+				},
+				"required": true
+			}
+		}
+	}
 }

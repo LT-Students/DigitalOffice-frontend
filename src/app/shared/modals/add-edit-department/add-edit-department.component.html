@@ -5,46 +5,49 @@
 	<mat-dialog-content class="new-department">
 		<div class="form__container">
 			<div class="new-department__input-container">
-				<mat-form-field appearance="fill">
-					<mat-label>Название департамента</mat-label>
-					<input matInput type="text" [formControlName]="EditPath.NAME" required />
-					<mat-error
-						*ngIf="
-							departmentForm.controls[EditPath.NAME]?.errors?.required ||
-								departmentForm.controls[EditPath.NAME]?.errors?.whitespace;
-							else validName
-						"
-					>
-						Поле не должно быть пустым
-					</mat-error>
-					<ng-template #validName>
-						<mat-error *ngIf="departmentForm.controls[EditPath.NAME]?.errors?.oneSpaceBetweenWords">
-							Только один пробел допускается между словами
+				<do-form-row label="Название департамента">
+					<mat-form-field>
+						<input matInput type="text" [formControlName]="EditPath.NAME" required />
+						<mat-error
+							*ngIf="
+								departmentForm.controls[EditPath.NAME]?.errors?.required ||
+									departmentForm.controls[EditPath.NAME]?.errors?.whitespace;
+								else validName
+							"
+						>
+							Поле не должно быть пустым
 						</mat-error>
-						<mat-error *ngIf="departmentForm.controls[EditPath.NAME]?.errors?.minlength">
-							Минимум 3 символа
-						</mat-error>
-					</ng-template>
-				</mat-form-field>
-				<mat-form-field appearance="fill">
-					<mat-label>Директор</mat-label>
-					<mat-select [formControlName]="EditPath.DIRECTOR_ID">
-						<mat-option *ngFor="let director of directors$ | async" [value]="director.id">
-							{{ director.lastName + ' ' + director.firstName }}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field appearance="fill">
-					<mat-label>Описание</mat-label>
-					<textarea
-						#description
-						matInput
-						[formControlName]="EditPath.DESCRIPTION"
-						placeholder="Напишите немного о новом департаменте"
-						maxlength="1000"
-					></textarea>
-					<mat-hint align="end">{{ description.value.length }}/1000</mat-hint>
-				</mat-form-field>
+						<ng-template #validName>
+							<mat-error *ngIf="departmentForm.controls[EditPath.NAME]?.errors?.oneSpaceBetweenWords">
+								Только один пробел допускается между словами
+							</mat-error>
+							<mat-error *ngIf="departmentForm.controls[EditPath.NAME]?.errors?.minlength">
+								Минимум 3 символа
+							</mat-error>
+						</ng-template>
+					</mat-form-field>
+				</do-form-row>
+				<do-form-row label="Директор">
+					<mat-form-field>
+						<mat-select [formControlName]="EditPath.DIRECTOR_ID">
+							<mat-option *ngFor="let director of directors$ | async" [value]="director.id">
+								{{ director.lastName + ' ' + director.firstName }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</do-form-row>
+				<do-form-row label="Описание">
+					<mat-form-field>
+						<textarea
+							#description
+							matInput
+							[formControlName]="EditPath.DESCRIPTION"
+							placeholder="Напишите немного о новом департаменте"
+							maxlength="1000"
+						></textarea>
+						<mat-hint align="end">{{ description.value.length }}/1000</mat-hint>
+					</mat-form-field>
+				</do-form-row>
 			</div>
 		</div>
 	</mat-dialog-content>

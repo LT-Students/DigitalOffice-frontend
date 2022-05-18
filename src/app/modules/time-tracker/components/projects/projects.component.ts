@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { OperationResultStatusType } from '@api/time-service/models/operation-result-status-type';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
@@ -26,7 +26,7 @@ export class ProjectsComponent {
 	@Input() public canEdit: boolean;
 	public selectedDate: Date;
 
-	constructor(private _modalService: ModalService, private _cdr: ChangeDetectorRef) {
+	constructor(private _modalService: DialogService, private _cdr: ChangeDetectorRef) {
 		this.selectedDate = new Date();
 		this.projects = [];
 		this.canEdit = true;

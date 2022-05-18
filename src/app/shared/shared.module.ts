@@ -43,6 +43,13 @@ import { FormRowComponent } from './component/form-row/form-row.component';
 import { SelectDirective } from './directives/select.directive';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { ImageUrlPipe } from './pipes/image-url.pipe';
+import { ContextMenuComponent } from './component/context-menu/context-menu.component';
+import { ButtonToggleGroupComponent } from './component/button-toggle/button-toggle-group.component';
+import { ButtonToggleComponent } from './component/button-toggle/button-toggle.component';
+import { ExecutePipe } from './pipes/execute.pipe';
+import { EmailListComponent } from './modals/user-recovery/email-list/email-list.component';
+import { EmailItemComponent } from './modals/user-recovery/email-item/email-item.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 @NgModule({
 	declarations: [
@@ -79,8 +86,15 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
 		CapitalizePipe,
 		FormRowComponent,
 		SelectDirective,
-  SidebarComponent,
-  ImageUrlPipe,
+		SidebarComponent,
+		ImageUrlPipe,
+		ContextMenuComponent,
+		ButtonToggleGroupComponent,
+		ButtonToggleComponent,
+		ExecutePipe,
+		EmailListComponent,
+		EmailItemComponent,
+		AutofocusDirective,
 	],
 	imports: [
 		CommonModule,
@@ -133,7 +147,12 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
 		CapitalizePipe,
 		FormRowComponent,
 		SelectDirective,
-		ImageUrlPipe
+		ImageUrlPipe,
+		ContextMenuComponent,
+		ButtonToggleGroupComponent,
+		ButtonToggleComponent,
+		ExecutePipe,
+		AutofocusDirective
 	],
 })
 export class SharedModule {}

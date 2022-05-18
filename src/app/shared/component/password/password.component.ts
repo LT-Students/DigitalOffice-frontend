@@ -86,7 +86,7 @@ export class PasswordComponent implements OnInit, OnDestroy, ControlValueAccesso
 	}
 
 	@HostBinding()
-	readonly id: string = `password-input-${PasswordComponent.nextId}`;
+	readonly id: string = `password-input-${PasswordComponent.nextId++}`;
 
 	@HostBinding('class.floating')
 	get shouldLabelFloat() {

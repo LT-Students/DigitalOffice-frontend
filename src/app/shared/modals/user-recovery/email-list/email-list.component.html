@@ -1,0 +1,19 @@
+<do-email-item
+	class="email"
+	*ngFor="let control of form.controls; index as i; last as isLast"
+	[formControl]="$any(control)"
+	[canEdit]="isLast && isEmailAdded"
+	(delete)="removeEmail()"
+	(emailChange)="selectionChange.emit(i)"
+></do-email-item>
+<button
+	class="add-email-btn"
+	*ngIf="!isEmailAdded"
+	mat-button
+	(click)="addEmail()"
+	color="primary"
+	data-test="add-email"
+>
+	<mat-icon>add</mat-icon>
+	Добавить e-mail
+</button>
