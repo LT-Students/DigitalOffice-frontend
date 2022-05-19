@@ -19,23 +19,27 @@ export interface IRemoveCommunicationRequest {
 })
 export class CommunicationService {
 	constructor(
-		private _communicationService: CommunicationApiService,
+		private communicationService: CommunicationApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
 
 	public createCommunication(body: CreateCommunicationRequest): Observable<OperationResultResponse> {
-		return this._communicationService
+		return this.communicationService
 			.createCommunication({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Communication, MessageMethod.Create));
 	}
 
 	public editCommunication(params: IEditCommunicationRequest): Observable<OperationResultResponse> {
-		return this._communicationService
+		return this.communicationService
 			.editCommunication(params)
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Communication, MessageMethod.Edit));
 	}
 
 	public removeCommunication(params: IRemoveCommunicationRequest): Observable<OperationResultResponse> {
-		return this._communicationService.removeCommunication(params);
+		return this.communicationService.removeCommunication(params);
+	}
+
+	public resendConfirmation(communicationId: string): Observable<OperationResultResponse> {
+		return this.communicationService.resendConfirmationCommunication({ communicationId });
 	}
 }

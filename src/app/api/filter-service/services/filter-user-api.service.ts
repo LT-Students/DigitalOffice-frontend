@@ -66,6 +66,16 @@ export class FilterUserApiService extends BaseService {
      * find users by offices&#x27; Ids
      */
     officesIds?: Array<string>;
+
+    /**
+     * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
+     */
+    isascendingsort?: boolean;
+
+    /**
+     * Find users containing a substring in the full name
+     */
+    fullnameincludesubstring?: string;
   }): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
 
     const rb = new RequestBuilder(this.rootUrl, FilterUserApiService.FilterUserPath, 'get');
@@ -76,6 +86,8 @@ export class FilterUserApiService extends BaseService {
       rb.query('positionsIds', params.positionsIds, {});
       rb.query('rolesIds', params.rolesIds, {});
       rb.query('officesIds', params.officesIds, {});
+      rb.query('isascendingsort', params.isascendingsort, {});
+      rb.query('fullnameincludesubstring', params.fullnameincludesubstring, {});
     }
 
     return this.http.request(rb.build({
@@ -128,6 +140,16 @@ export class FilterUserApiService extends BaseService {
      * find users by offices&#x27; Ids
      */
     officesIds?: Array<string>;
+
+    /**
+     * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A
+     */
+    isascendingsort?: boolean;
+
+    /**
+     * Find users containing a substring in the full name
+     */
+    fullnameincludesubstring?: string;
   }): Observable<FindResultResponseUserInfo> {
 
     return this.filterUser$Response(params).pipe(

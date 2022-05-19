@@ -1,313 +1,320 @@
 {
-  "openapi": "3.0.0",
-  "info": {
-    "version": "1.0.0.0",
-    "title": "FilterService",
-    "description": "FilterService is an API that intended for filter requests in different services."
-  },
-  "servers": [
-    {
-      "url": "https://filter.ltdo.xyz",
-      "description": "Production server"
-    },
-    {
-      "url": "https://filter.dev.ltdo.xyz",
-      "description": "Development server"
-    }
-  ],
-  "paths": {
-    "/user/filter": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "skipCount",
-          "in": "query",
-          "description": "Number of entries to skip.",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true
-        },
-        {
-          "name": "takeCount",
-          "in": "query",
-          "description": "Number of users to take.",
-          "schema": {
-            "type": "integer"
-          },
-          "required": true
-        },
-        {
-          "name": "departmentsIds",
-          "in": "query",
-          "description": "find users by departments' Ids",
-          "schema": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          "required": false
-        },
-        {
-          "name": "positionsIds",
-          "in": "query",
-          "description": "find users by positions' Ids ",
-          "schema": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          "required": false
-        },
-        {
-          "name": "rolesIds",
-          "in": "query",
-          "description": "find users by roles' Ids ",
-          "schema": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          "required": false
-        },
-        {
-          "name": "officesIds",
-          "in": "query",
-          "description": "find users by offices' Ids ",
-          "schema": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          "required": false
-        }
-      ],
-      "get": {
-        "tags": [
-          "FilterUser"
-        ],
-        "operationId": "filterUser",
-        "description": "Returns all users data with userIds from services by filter.",
-        "responses": {
-          "200": {
-            "description": "Successfully returned list of filtered users.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseUserInfo"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseUserInfo"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "FindResultResponseUserInfo": {
-        "description": "Response object for action operations.",
-        "type": "object",
-        "properties": {
-          "Body": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserInfo"
-            }
-          },
-          "TotalCount": {
-            "type": "number"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "UserInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "FirstName": {
-            "type": "string"
-          },
-          "LastName": {
-            "type": "string"
-          },
-          "MiddleName": {
-            "type": "string",
-            "nullable": true
-          },
-          "Avatar": {
-            "$ref": "#/components/schemas/ImageInfo",
-            "nullable": true
-          },
-          "Department": {
-            "$ref": "#/components/schemas/DepartmentInfo",
-            "nullable": true
-          },
-          "Office": {
-            "$ref": "#/components/schemas/OfficeInfo",
-            "nullable": true
-          },
-          "Position": {
-            "$ref": "#/components/schemas/PositionInfo",
-            "nullable": true
-          },
-          "Role": {
-            "$ref": "#/components/schemas/RoleInfo",
-            "nullable": true
-          }
-        }
-      },
-      "ImageInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "ParentId": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "Content": {
-            "type": "string",
-            "nullable": false,
-            "description": "Image file content in base64 encoded string."
-          },
-          "Extension": {
-            "type": "string",
-            "nullable": false
-          },
-          "Name": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "DepartmentInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "PositionInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": false
-          },
-          "Name": {
-            "type": "string",
-            "nullable": false
-          }
-        }
-      },
-      "RoleInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": false
-          },
-          "Name": {
-            "type": "string",
-            "nullable": false
-          }
-        }
-      },
-      "OfficeInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid",
-            "nullable": false
-          },
-          "Name": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "ErrorResponse": {
-        "description": "Error information",
-        "type": "object",
-        "properties": {
-          "UtcTime": {
-            "type": "string"
-          },
-          "Header": {
-            "type": "string"
-          },
-          "Message": {
-            "description": "A human readable message providing more details about the error.",
-            "type": "string"
-          }
-        }
-      },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
-      }
-    },
-    "parameters": {
-      "securityToken": {
-        "name": "token",
-        "in": "header",
-        "description": "The JWT token.",
-        "schema": {
-          "type": "string",
-          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
-        },
-        "required": true
-      }
-    }
-  }
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.0.0.0",
+		"title": "FilterService",
+		"description": "FilterService is an API that intended for filter requests in different services."
+	},
+	"servers": [
+		{
+			"url": "https://filter.ltdo.xyz",
+			"description": "Production server"
+		},
+		{
+			"url": "https://filter.dev.ltdo.xyz",
+			"description": "Development server"
+		}
+	],
+	"paths": {
+		"/user/filter": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "skipCount",
+					"in": "query",
+					"description": "Number of entries to skip.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": true
+				},
+				{
+					"name": "takeCount",
+					"in": "query",
+					"description": "Number of users to take.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": true
+				},
+				{
+					"name": "departmentsIds",
+					"in": "query",
+					"description": "find users by departments' Ids",
+					"schema": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uuid"
+						}
+					},
+					"required": false
+				},
+				{
+					"name": "positionsIds",
+					"in": "query",
+					"description": "find users by positions' Ids ",
+					"schema": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uuid"
+						}
+					},
+					"required": false
+				},
+				{
+					"name": "rolesIds",
+					"in": "query",
+					"description": "find users by roles' Ids ",
+					"schema": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uuid"
+						}
+					},
+					"required": false
+				},
+				{
+					"name": "officesIds",
+					"in": "query",
+					"description": "find users by offices' Ids ",
+					"schema": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uuid"
+						}
+					},
+					"required": false
+				},
+				{
+					"name": "isascendingsort",
+					"in": "query",
+					"description": "When value is 'true' sorts A-Z, when value is 'false' sorts Z-A",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
+					"name": "fullnameincludesubstring",
+					"in": "query",
+					"description": "Find users containing a substring in the full name",
+					"schema": {
+						"type": "string"
+					},
+					"required": false
+				}
+			],
+			"get": {
+				"tags": ["FilterUser"],
+				"operationId": "filterUser",
+				"description": "Returns all users data with userIds from services by filter.",
+				"responses": {
+					"200": {
+						"description": "Successfully returned list of filtered users.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseUserInfo"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseUserInfo"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"FindResultResponseUserInfo": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"required": ["TotalCount", "Status", "Errors"],
+				"properties": {
+					"Body": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/UserInfo"
+						}
+					},
+					"TotalCount": {
+						"type": "number"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/OperationResultStatusType"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"UserInfo": {
+				"type": "object",
+				"required": ["Id", "FirstName", "LastName"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"FirstName": {
+						"type": "string"
+					},
+					"LastName": {
+						"type": "string"
+					},
+					"MiddleName": {
+						"type": "string"
+					},
+					"Avatar": {
+						"$ref": "#/components/schemas/ImageInfo"
+					},
+					"Department": {
+						"$ref": "#/components/schemas/DepartmentInfo"
+					},
+					"Office": {
+						"$ref": "#/components/schemas/OfficeInfo"
+					},
+					"Position": {
+						"$ref": "#/components/schemas/PositionInfo"
+					},
+					"Role": {
+						"$ref": "#/components/schemas/RoleInfo"
+					}
+				}
+			},
+			"ImageInfo": {
+				"type": "object",
+				"required": ["Id", "Content", "Extension"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"ParentId": {
+						"type": "string",
+						"format": "uuid",
+						"nullable": true
+					},
+					"Content": {
+						"type": "string",
+						"nullable": false,
+						"description": "Image file content in base64 encoded string."
+					},
+					"Extension": {
+						"type": "string",
+						"nullable": false
+					},
+					"Name": {
+						"type": "string",
+						"nullable": true
+					}
+				}
+			},
+			"DepartmentInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"PositionInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"RoleInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"OfficeInfo": {
+				"type": "object",
+				"required": ["Id", "Name"],
+				"properties": {
+					"Id": {
+						"type": "string",
+						"format": "uuid"
+					},
+					"Name": {
+						"type": "string"
+					}
+				}
+			},
+			"ErrorResponse": {
+				"description": "Error information",
+				"type": "object",
+				"properties": {
+					"UtcTime": {
+						"type": "string"
+					},
+					"Header": {
+						"type": "string"
+					},
+					"Message": {
+						"description": "A human readable message providing more details about the error.",
+						"type": "string"
+					}
+				}
+			},
+			"OperationResultStatusType": {
+				"type": "string",
+				"description": "Operation complition result status.",
+				"enum": ["FullSuccess", "PartialSuccess", "Failed"],
+				"example": "FullSuccess",
+				"default": "FullSuccess"
+			}
+		},
+		"parameters": {
+			"securityToken": {
+				"name": "token",
+				"in": "header",
+				"description": "The JWT token.",
+				"schema": {
+					"type": "string",
+					"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
+				},
+				"required": true
+			}
+		}
+	}
 }

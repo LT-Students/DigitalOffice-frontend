@@ -3,6 +3,6 @@
 export interface RoleInfo {
   id: string;
   name: string;
-  rightsIds?: Array<string>;
+  rightsIds?: Array<number>;
 }
 

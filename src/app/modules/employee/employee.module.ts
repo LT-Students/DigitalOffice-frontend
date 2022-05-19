@@ -5,7 +5,6 @@ import { EmployeePageComponent } from './employee-page.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 
-import { AdminRequestComponent } from './modals/admin-request/admin-request.component';
 import { UploadPhotoComponent } from './modals/upload-photo/upload-photo.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { CommunicationsComponent } from './components/main-info/communications/communications.component';
@@ -14,12 +13,14 @@ import { AddContactComponent } from './components/main-info/communications/add-c
 import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 import { EditWorkinfoComponent } from './modals/edit-workinfo/edit-workinfo.component';
 import { DataManageComponent } from './modals/edit-workinfo/data-manage/data-manage.component';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { UserListItemComponent } from './components/user-list/user-list-item/user-list-item.component';
+import { EditInfoComponent } from './modals/edit-info/edit-info.component';
 
 @NgModule({
 	declarations: [
 		EmployeePageComponent,
 		MainInfoComponent,
-		AdminRequestComponent,
 		ProjectsComponent,
 		UploadPhotoComponent,
 		CommunicationsComponent,
@@ -27,9 +28,8 @@ import { DataManageComponent } from './modals/edit-workinfo/data-manage/data-man
 		AddContactComponent,
 		ManageUsersComponent,
 		EditWorkinfoComponent,
-		DataManageComponent,
+
+		UserListItemComponent,
 	],
-	imports: [SharedModule, EmployeeRoutingModule],
-	providers: [],
 })
 export class EmployeeModule {}

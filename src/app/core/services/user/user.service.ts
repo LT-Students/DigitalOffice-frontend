@@ -13,18 +13,24 @@ import { AvatarApiService } from '@api/user-service/services/avatar-api.service'
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
-import { IImageInfo } from '@app/models/image.model';
+import { ImageInfo } from '@app/models/image.model';
 import { EditRequest, UserPath } from '@app/types/edit-request';
+import { PendingApiService } from '@api/user-service/services/pending-api.service';
 
 export interface IFindUsers {
 	skipCount: number;
 	takeCount: number;
-	departmentid?: string;
-	includedeactivated?: boolean;
-	includedepartment?: boolean;
-	includeposition?: boolean;
-	includeoffice?: boolean;
-	includerole?: boolean;
+	ascendingsort?: boolean;
+	fullnameincludesubstring?: string;
+	isactive?: boolean;
+	includecurrentavatar?: boolean;
+	includecommunications?: boolean;
+}
+
+export interface IFindPending {
+	skipCount: number;
+	takeCount: number;
+	includecommunication?: boolean;
 	includecurrentavatar?: boolean;
 }
 
@@ -35,6 +41,7 @@ export class UserService {
 	constructor(
 		private _userApiService: UserApiService,
 		private _imageApiService: AvatarApiService,
+		private pendingApiService: PendingApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
 
@@ -50,6 +57,10 @@ export class UserService {
 
 	public findUsers(params: IFindUsers): Observable<OperationResultResponse<UserInfo[]>> {
 		return this._userApiService.findUsers(params);
+	}
+
+	public findPending(params: IFindPending): Observable<OperationResultResponse<UserInfo[]>> {
+		return this.pendingApiService.findPending(params);
 	}
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
@@ -81,7 +92,7 @@ export class UserService {
 		return this._userApiService.editUserActive({ body: params });
 	}
 
-	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse> {
+	public createAvatarImage(image: ImageInfo, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.createAvatar({
 			body: {
 				content: image.content,
@@ -95,5 +106,13 @@ export class UserService {
 
 	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.editAvatar({ userId: userId, imageId: imageId });
+	}
+
+	public removePending(userId: string): Observable<OperationResultResponse> {
+		return this.pendingApiService.removePending({ userId });
+	}
+
+	public resendInvitation(userId: string, communicationId: string): Observable<OperationResultResponse> {
+		return this.pendingApiService.resendinvitationPending({ userId, communicationId });
 	}
 }

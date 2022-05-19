@@ -11,11 +11,12 @@ import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
-import { ModalWidth } from '@app/services/modal.service';
+import { ModalWidth } from '@app/services/dialog.service';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
 import { EditWorkinfoComponent } from '../../modals/edit-workinfo/edit-workinfo.component';
 import { DataManageComponent } from '../../modals/edit-workinfo/data-manage/data-manage.component';
+import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -80,7 +81,15 @@ export class MainInfoComponent implements OnInit {
 
 	public onReset(): void {
 		this.employeeInfoForm.reset();
-		this.toggleEditMode();
+	}
+
+	public editUser(): void {
+		this.isEditing = !this.isEditing;
+		const dialogRef = this._dialog.open(EditInfoComponent, {
+			data: this.user$,
+			width: ModalWidth.L,
+			autoFocus: false,
+		});
 	}
 
 	public onAvatarUploadDialog(): void {
@@ -128,12 +137,7 @@ export class MainInfoComponent implements OnInit {
 					this.loading.next(false);
 				})
 			)
-			.subscribe({
-				next: () => this.toggleEditMode(),
-				error: (err) => {
-					throw err;
-				},
-			});
+			.subscribe();
 	}
 
 	private _fillForm(user: User): void {

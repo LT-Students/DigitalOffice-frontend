@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
 
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { OperationResultStatusType } from '@api/time-service/models';
 import { EMPTY, iif, Observable } from 'rxjs';
 import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { TimeService } from '@app/services/time/time.service';
 import { switchMap, tap } from 'rxjs/operators';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 import { AttendanceService } from '../../services/attendance.service';
 import { EditLeaveComponent } from '../../modals/edit-leave/edit-leave.component';
 import { IDialogResponse } from '../user-tasks/user-tasks.component';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-leaves',
@@ -24,7 +24,7 @@ export class LeavesComponent {
 	public canEdit$: Observable<boolean>;
 
 	constructor(
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _cdr: ChangeDetectorRef,
 		private _attendanceService: AttendanceService,
 		private _timeService: TimeService

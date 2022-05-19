@@ -10,6 +10,7 @@ import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/a
 import { UserStatusPipe } from '@shared/pipes/user-status.pipe';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
+import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -42,6 +43,14 @@ import { FormRowComponent } from './component/form-row/form-row.component';
 import { SelectDirective } from './directives/select.directive';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { ImageUrlPipe } from './pipes/image-url.pipe';
+import { ContextMenuComponent } from './component/context-menu/context-menu.component';
+import { ButtonToggleGroupComponent } from './component/button-toggle/button-toggle-group.component';
+import { ButtonToggleComponent } from './component/button-toggle/button-toggle.component';
+import { ExecutePipe } from './pipes/execute.pipe';
+import { EmailListComponent } from './modals/user-recovery/email-list/email-list.component';
+import { EmailItemComponent } from './modals/user-recovery/email-item/email-item.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
+import { PermissionDirective } from './directives/permission.directive';
 
 @NgModule({
 	declarations: [
@@ -75,10 +84,19 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
 		UserStatusPipe,
 		PlaceholderPipe,
 		UserRecoveryComponent,
+		CapitalizePipe,
 		FormRowComponent,
 		SelectDirective,
-  SidebarComponent,
-  ImageUrlPipe,
+		SidebarComponent,
+		ImageUrlPipe,
+		ContextMenuComponent,
+		ButtonToggleGroupComponent,
+		ButtonToggleComponent,
+		ExecutePipe,
+		EmailListComponent,
+		EmailItemComponent,
+		AutofocusDirective,
+		PermissionDirective,
 	],
 	imports: [
 		CommonModule,
@@ -91,46 +109,53 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
 		LoadingBarRoutingModule,
 		MdePopoverModule,
 	],
-  exports: [
-    CommonModule,
-    RouterModule,
-    MaterialModule,
-    InfiniteScrollModule,
-    MdePopoverModule,
-    ReactiveFormsModule,
-    FormsModule,
-    ProfileImageComponent,
-    HeaderComponent,
-    TextDirective,
-    DndDirective,
-    ButtonLoadingDirective,
-    StepperComponent,
-    SafeHtmlPipe,
-    PasswordComponent,
-    CommentComponent,
-    ConfirmDialogComponent,
-    BreadcrumbsComponent,
-    TitleDatepickerComponent,
-    DateTimePipe,
-    AddEmployeeComponent,
-    EmptyListComponent,
-    PhoneInputComponent,
-    ChangeUserPasswordComponent,
-    BlockPasteDirective,
-    FullNamePipe,
-    TransformNameDirective,
-    PasswordHintComponent,
-    TruncateTooltipDirective,
-    ProjectTypePipe,
-    LeaveLabelPipe,
-    NewEmployeeComponent,
-    AddEditDepartmentComponent,
-    UserStatusPipe,
-    PlaceholderPipe,
-    UserRecoveryComponent,
-    FormRowComponent,
-    SelectDirective,
-    ImageUrlPipe
-  ]
+	exports: [
+		CommonModule,
+		RouterModule,
+		MaterialModule,
+		InfiniteScrollModule,
+		MdePopoverModule,
+		ReactiveFormsModule,
+		FormsModule,
+		ProfileImageComponent,
+		HeaderComponent,
+		TextDirective,
+		DndDirective,
+		ButtonLoadingDirective,
+		StepperComponent,
+		SafeHtmlPipe,
+		PasswordComponent,
+		CommentComponent,
+		ConfirmDialogComponent,
+		BreadcrumbsComponent,
+		TitleDatepickerComponent,
+		DateTimePipe,
+		AddEmployeeComponent,
+		EmptyListComponent,
+		PhoneInputComponent,
+		ChangeUserPasswordComponent,
+		BlockPasteDirective,
+		FullNamePipe,
+		TransformNameDirective,
+		PasswordHintComponent,
+		TruncateTooltipDirective,
+		ProjectTypePipe,
+		LeaveLabelPipe,
+		NewEmployeeComponent,
+		AddEditDepartmentComponent,
+		UserStatusPipe,
+		PlaceholderPipe,
+		UserRecoveryComponent,
+		CapitalizePipe,
+		FormRowComponent,
+		SelectDirective,
+		ImageUrlPipe,
+		ContextMenuComponent,
+		ButtonToggleGroupComponent,
+		ButtonToggleComponent,
+		ExecutePipe,
+		AutofocusDirective,
+		PermissionDirective,
+	],
 })
 export class SharedModule {}

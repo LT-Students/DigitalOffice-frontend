@@ -166,10 +166,6 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 		color: mat.get-color-from-palette($do-grey, 900);
 	}
 
-	th {
-		@extend .mat-body-1;
-	}
-
 	.mat-card {
 		@include mat.elevation(0);
 	}

@@ -5,12 +5,12 @@ import { map, mergeMap, switchMap } from 'rxjs/operators';
 
 import { NewsService } from '@app/services/news/news.service';
 import { OperationResultStatusType } from '@api/news-service/models';
-import { ModalService } from '@app/services/modal.service';
+import { DialogService } from '@app/services/dialog.service';
 import { Article } from '../../models/news.model';
 import { NewsFeedService } from '../../services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-post',
@@ -27,7 +27,7 @@ export class PostComponent {
 		private _editorJSParser: EditorJSParser,
 		private _newsService: NewsService,
 		private _newsFeedService: NewsFeedService,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.article$ = this._getNews();

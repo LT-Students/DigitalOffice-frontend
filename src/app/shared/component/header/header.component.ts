@@ -3,7 +3,7 @@ import { AuthService } from '@app/services/auth/auth.service';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { Observable } from 'rxjs';
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { AppRoutes } from '@app/models/app-routes';
 import { ChangeUserPasswordComponent } from '../../modals/change-user-password/change-user-password.component';
 
@@ -21,7 +21,7 @@ export class HeaderComponent {
 	constructor(
 		private _authService: AuthService,
 		private _currentUserService: CurrentUserService,
-		private _modalService: ModalService
+		private _modalService: DialogService
 	) {
 		this.currentUser$ = this._currentUserService.user$;
 	}

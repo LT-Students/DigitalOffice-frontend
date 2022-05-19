@@ -1,0 +1,44 @@
+<mat-card class="card">
+	<div class="header">
+		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
+		<do-form-row>
+			<mat-form-field>
+				<input
+					matInput
+					type="search"
+					[formControl]="nameSearch"
+					autocomplete="off"
+					placeholder="Поиск"
+					data-test="user-name-search"
+				/>
+				<mat-icon matPrefix class="text-secondary_default">search</mat-icon>
+			</mat-form-field>
+		</do-form-row>
+		<button mat-flat-button color="accent" (click)="createEmployee()" data-test="add-user-button">
+			+ Добавить сотрудника
+		</button>
+	</div>
+	<div class="status-toggle">
+		<do-button-toggle-group (toggleChange)="handleStatusToggle($event)">
+			<do-button-toggle value="active" checked>Активные</do-button-toggle>
+			<do-button-toggle value="archive">В архиве</do-button-toggle>
+			<do-button-toggle value="pending">Неактивированные</do-button-toggle>
+		</do-button-toggle-group>
+	</div>
+	<div
+		*ngIf="users$ | async as users"
+		infiniteScroll
+		[infiniteScrollContainer]="'.content-container'"
+		[fromRoot]="true"
+		(scrolled)="appendUsers()"
+		[alwaysCallback]="true"
+		class="user-list"
+	>
+		<div *ngFor="let user of users; last as isLast">
+			<do-user-list-item [user]="user"></do-user-list-item>
+			<mat-divider *ngIf="!isLast" inset class="divider"></mat-divider>
+		</div>
+		<do-empty-list *ngIf="users.length === 0" [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
+	</div>
+</mat-card>
+<do-context-menu [items]="contextMenuItems"></do-context-menu>
