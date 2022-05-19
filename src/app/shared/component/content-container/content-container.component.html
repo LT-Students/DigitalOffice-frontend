@@ -1,5 +1,5 @@
 <mat-sidenav-container class="sidenav-container">
-	<mat-sidenav mode="side" opened class="sidenav">
+	<mat-sidenav mode="side" opened class="sidenav" [class.wide]="isWideScreen$ | async">
 		<do-sidebar></do-sidebar>
 	</mat-sidenav>
 	<mat-sidenav-content class="content">

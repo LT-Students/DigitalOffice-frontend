@@ -51,6 +51,9 @@ import { EmailListComponent } from './modals/user-recovery/email-list/email-list
 import { EmailItemComponent } from './modals/user-recovery/email-item/email-item.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { PermissionDirective } from './directives/permission.directive';
+import { ButtonDirective } from './directives/button.directive';
+import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-item.component';
+import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
 
 @NgModule({
 	declarations: [
@@ -97,6 +100,9 @@ import { PermissionDirective } from './directives/permission.directive';
 		EmailItemComponent,
 		AutofocusDirective,
 		PermissionDirective,
+		ButtonDirective,
+		SidebarItemComponent,
+  SidebarHeaderComponent,
 	],
 	imports: [
 		CommonModule,
@@ -156,6 +162,7 @@ import { PermissionDirective } from './directives/permission.directive';
 		ExecutePipe,
 		AutofocusDirective,
 		PermissionDirective,
+		ButtonDirective,
 	],
 })
 export class SharedModule {}
