@@ -210,21 +210,17 @@
 					},
 					"ParentId": {
 						"type": "string",
-						"format": "uuid",
-						"nullable": true
+						"format": "uuid"
 					},
 					"Content": {
 						"type": "string",
-						"nullable": false,
 						"description": "Image file content in base64 encoded string."
 					},
 					"Extension": {
-						"type": "string",
-						"nullable": false
+						"type": "string"
 					},
 					"Name": {
-						"type": "string",
-						"nullable": true
+						"type": "string"
 					}
 				}
 			},

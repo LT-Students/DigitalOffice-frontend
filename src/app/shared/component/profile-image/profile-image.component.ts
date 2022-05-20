@@ -17,7 +17,7 @@ const sizeMap: { [key in Size]: number } = {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfileImageComponent implements OnInit, OnChanges {
-	@Input() image: Partial<ImageInfo> | null | undefined;
+	@Input() image?: Partial<ImageInfo>;
 	@Input() size: Size = 'm';
 	public src = 'assets/images/IAFOR-Blank-Avatar-Image.jpg';
 	public width = 48;
