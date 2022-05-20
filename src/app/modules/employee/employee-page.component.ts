@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EMPTY, Observable, Subject } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
-import { map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CommunicationType, CommunicationInfo } from '@api/user-service/models';
@@ -49,15 +49,7 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		this.userLogged$ = this._currentUserService.user$.pipe(map((user) => user.isAdmin));
 	}
 
-	public ngOnInit(): void {
-		this._route.paramMap
-			.pipe(
-				skip(1),
-				takeUntil(this._unsubscribe$$),
-				switchMap((params: ParamMap) => this._employeeService.getEmployee(params.get('id') as string))
-			)
-			.subscribe();
-	}
+	public ngOnInit(): void {}
 
 	public archiveUser(userId: string): void {
 		this.dialog

@@ -20,6 +20,10 @@
 		width: 92px;
 
 		box-shadow: 1px (variables.$header-height + 1) 2px variables.$light_4;
+
+		&.wide {
+			width: 240px;
+		}
 	}
 
 	.header {

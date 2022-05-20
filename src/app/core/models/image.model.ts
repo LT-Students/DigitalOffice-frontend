@@ -1,11 +1,11 @@
 import { Observable, Subscriber } from 'rxjs';
 
 export interface ImageInfo {
-	id?: string;
-	parentId?: string | null;
+	id: string;
+	parentId?: string;
 	content: string;
 	extension: string;
-	name?: string | null;
+	name?: string;
 	enablePreview?: boolean;
 }
 
@@ -28,7 +28,7 @@ export class UploadedImage {
 			fileReader.readAsBinaryString(this._image);
 			fileReader.onload = (evt: ProgressEvent<FileReader>): void => {
 				const imageContent = btoa(evt.target?.result as string);
-				const imageRequest: ImageInfo = {
+				const imageRequest: Partial<ImageInfo> = {
 					content: imageContent,
 					extension: `.${extension}`,
 					enablePreview: true,

@@ -88,7 +88,10 @@ export class AddEmployeeComponent implements OnInit, OnDestroy {
 	}
 
 	public getPageUsers(filter?: Partial<FilterUsersRequest>): void {
-		if (this.isAllReceived) return;
+		// if (this.isAllReceived) return;
+		if (filter && this.skipUsers === 0) {
+			this.employees = [];
+		}
 
 		this.filterService
 			.filterUsers({

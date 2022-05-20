@@ -76,6 +76,7 @@
 
 			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
 		</table>
+		<do-empty-list *ngIf="dataSource.data.length === 0" emptyMessage="Нет данных о сотрудниках"></do-empty-list>
 		<ng-template #spinner>
 			<mat-spinner></mat-spinner>
 		</ng-template>

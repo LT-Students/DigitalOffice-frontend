@@ -2,9 +2,10 @@
 @use 'globals/flex';
 @use 'globals/utils';
 @use 'layouts/card';
-@use 'layouts/forms';
+@use 'stylesheets/layouts/auth';
 @use 'layouts/table';
 @use 'do/underlined';
+@use 'do/button';
 @use '~@angular/cdk/overlay-prebuilt';
 @use './stylesheets/material/expansion-panel';
 @use './stylesheets/material/mat-button';
