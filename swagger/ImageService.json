@@ -286,20 +286,13 @@
       "OperationResultResponseCreateImageNewsResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "properties": {
-              "imageId": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "previewId": {
-                "type": "string",
-                "format": "uuid",
-                "nullable": true
-              }
-            }
+            "$ref": "#/components/schemas/CreateImageNewsResponse"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -309,31 +302,35 @@
             "items": {
               "type": "string"
             }
+          }
+        }
+      },
+      "CreateImageNewsResponse": {
+        "type": "object",
+        "required": [
+          "ImageId"
+        ],
+        "properties": {
+          "ImageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "PreviewId": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },
       "OperationResultResponseImageResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "content": {
-                "type": "string"
-              },
-              "name": {
-                "type": "string",
-                "nullable": true
-              },
-              "extension": {
-                "type": "string"
-              }
-            }
+            "$ref": "#/components/schemas/ImageResponse"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -346,9 +343,36 @@
           }
         }
       },
+      "ImageResponse":{
+        "type": "object",
+        "required": [
+          "Id",
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "object"

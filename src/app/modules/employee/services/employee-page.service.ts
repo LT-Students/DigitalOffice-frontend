@@ -1,23 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
-import { first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, first, map, pairwise, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { UUID } from '@app/types/uuid.type';
+import { ImageUserService } from '@app/services/image/image-user.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { ImageInfo } from '@app/models/image.model';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class EmployeePageService implements Resolve<User> {
-	private _selectedUser: ReplaySubject<User>;
-	public readonly selectedUser$: Observable<User>;
+	private selectedUser: ReplaySubject<User> = new ReplaySubject<User>(1);
+	public readonly selectedUser$: Observable<User> = this.selectedUser.asObservable();
 
-	constructor(private _userService: UserService, private _currentUserService: CurrentUserService) {
-		this._selectedUser = new ReplaySubject<User>(1);
-		this.selectedUser$ = this._selectedUser.asObservable();
+	private updateImage$ = new Subject<string>();
+
+	constructor(
+		private userService: UserService,
+		private currentUserService: CurrentUserService,
+		private imageService: ImageUserService
+	) {
+		this.updateImage$
+			.pipe(
+				startWith(''),
+				pairwise(),
+				filter(([oldId, newId]: [string, string]) => oldId !== newId),
+				switchMap(([_, newId]: [string, string]) => this.imageService.getImageUser(newId)),
+				map((res: OperationResultResponse<ImageInfo>) => res.body as ImageInfo)
+			)
+			.subscribe({
+				next: (image: ImageInfo) => this.updateUserImage(image),
+			});
 	}
 
 	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User> {
@@ -37,16 +55,26 @@ export class EmployeePageService implements Resolve<User> {
 			includecurrentavatar: true,
 		};
 
-		return this._userService.getUser(params).pipe(
-			withLatestFrom(this._currentUserService.user$),
+		return this.userService.getUser(params).pipe(
+			withLatestFrom(this.currentUserService.user$),
 			tap(([selectedUser, currentUser]) => {
-				this._selectedUser.next(selectedUser);
+				this.selectedUser.next(selectedUser);
 				if (currentUser.id === userId) {
-					this._currentUserService.setUser(selectedUser);
+					this.currentUserService.setUser(selectedUser);
 				}
 			}),
-			map(([user, _]) => user)
+			map(([user, _]) => user),
+			tap((user: User) => {
+				const avatarId = user.avatar?.parentId;
+				if (avatarId) {
+					this.getOriginalImage(avatarId);
+				}
+			})
 		);
+	}
+
+	public getOriginalImage(imageId: string): void {
+		this.updateImage$.next(imageId);
 	}
 
 	public refreshSelectedUser(): Observable<User> {
@@ -54,5 +82,19 @@ export class EmployeePageService implements Resolve<User> {
 			first(),
 			switchMap((user: User) => this.getEmployee(user.id))
 		);
+	}
+
+	private updateUserImage(image: ImageInfo): void {
+		this.selectedUser$.pipe(
+			first(),
+		).subscribe({
+			next: (user: User) => {
+				const updatedUser: User = {
+					...user,
+					avatar: image
+				};
+				this.selectedUser.next(updatedUser);
+			}
+		});
 	}
 }
