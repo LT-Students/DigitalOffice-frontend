@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { ImageInfo } from '@app/models/image.model';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { BaseImageInfo } from '@app/models/image.model';
 
 type Size = 's' | 'm' | 'l' | 'xl';
 
@@ -16,23 +16,37 @@ const sizeMap: { [key in Size]: number } = {
 	styleUrls: ['./profile-image.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProfileImageComponent implements OnInit, OnChanges {
-	@Input() image?: Partial<ImageInfo>;
-	@Input() size: Size = 'm';
-	public src = 'assets/images/IAFOR-Blank-Avatar-Image.jpg';
+export class ProfileImageComponent implements OnInit {
+	@Input()
+	set image(image: BaseImageInfo | undefined) {
+		this._image = image ?? null;
+	}
+	public _image: BaseImageInfo | null = null;
+
+	@Input()
+	set label(value: string) {
+		this.initials = value
+			.split(' ')
+			.map((v: string) => v[0])
+			.join('')
+			.slice(0, 2);
+	}
+	public initials = '';
+
+	@Input()
+	set userInitials({ firstName, lastName }: { firstName: string; lastName: string; }) {
+		this.initials = firstName.trim()[0] + lastName.trim()[0];
+	}
+
+	@Input() textRatio = 2.4;
+
+	@Input()
+	set size(size: Size) {
+		this.width = sizeMap[size];
+	}
 	public width = 48;
 
 	constructor() {}
 
-	ngOnInit(): void {
-		this.width = sizeMap[this.size];
-	}
-
-	public ngOnChanges(changes: SimpleChanges): void {
-		if (this.image?.content && this.image?.extension) {
-			this.src = `data:image/${this.image.extension.slice(1)};base64,${this.image.content}`;
-		} else {
-			this.src = 'assets/images/IAFOR-Blank-Avatar-Image.jpg';
-		}
-	}
+	public ngOnInit(): void {}
 }

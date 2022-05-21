@@ -3,7 +3,7 @@
 		<div class="employee-info__wrapper">
 			<div class="employee-info__main">
 				<div class="employee-info__avatar">
-					<do-profile-image [image]="user?.avatar" size="xl"></do-profile-image>
+					<do-profile-image [image]="user?.avatar" size="xl" [userInitials]="user"></do-profile-image>
 					<label class="mat-body-1 employee-info__upload-button" (click)="onAvatarUploadDialog()">
 						<mat-icon class="employee-info__upload-icon">
 							<img src="assets/svg/arrow-upload-file.svg" alt="Upload photo" />

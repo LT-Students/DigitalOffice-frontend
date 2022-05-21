@@ -1,5 +1,11 @@
 <div class="user">
-	<do-profile-image class="link" [routerLink]="[user.id]" [image]="user.avatar" size="l"></do-profile-image>
+	<do-profile-image
+		class="link"
+		[routerLink]="[user.id]"
+		[image]="user.avatar"
+		[userInitials]="user"
+		size="l"
+	></do-profile-image>
 	<div class="user-info">
 		<span class="name link" [routerLink]="[user.id]">{{ user | fullName }}</span>
 		<ng-container *ngIf="additionalInfo">
