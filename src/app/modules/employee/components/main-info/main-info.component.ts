@@ -6,14 +6,14 @@ import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model
 import { DateType } from '@app/types/date.enum';
 import { UserStatus } from '@api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
-import { finalize, first, map, switchMap, take } from 'rxjs/operators';
-import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
+import { finalize, first, map, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { ModalWidth } from '@app/services/dialog.service';
 import { EmployeePageService } from '../../services/employee-page.service';
-import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
+import { UploadImageComponent } from '../../modals/upload-image/upload-image.component';
 import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
 
 @Component({
@@ -79,7 +79,7 @@ export class MainInfoComponent implements OnInit {
 	}
 
 	public onAvatarUploadDialog(): void {
-		const dialogRef = this._dialog.open(UploadPhotoComponent, {
+		const dialogRef = this._dialog.open(UploadImageComponent, {
 			width: ModalWidth.XL,
 			height: 'auto',
 			autoFocus: false,
@@ -109,14 +109,14 @@ export class MainInfoComponent implements OnInit {
 				switchMap((userId: string) =>
 					forkJoin([
 						this._userService.editUser(userId, editRequest),
-						this.employeeInfoForm.get('avatarImage')?.dirty
-							? this._userService.createAvatarImage(avatarImage, userId)
-							: // .pipe(
-							  // 		switchMap((response) => {
-							  // 			return this._userService.changeAvatar(response.body as string, userId);
-							  // 		})
-							  //   )
-							  of(null),
+						// this.employeeInfoForm.get('avatarImage')?.dirty
+						// 	? this._userService.createAvatarImage(avatarImage, userId)
+						// 	: // .pipe(
+						// 	  // 		switchMap((response) => {
+						// 	  // 			return this._userService.changeAvatar(response.body as string, userId);
+						// 	  // 		})
+						// 	  //   )
+						// 	  of(null),
 					]).pipe(switchMap(() => this._employeeService.getEmployee(userId)))
 				),
 				finalize(() => {

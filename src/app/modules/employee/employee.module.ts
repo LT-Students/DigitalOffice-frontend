@@ -5,7 +5,7 @@ import { EmployeePageComponent } from './employee-page.component';
 import { MainInfoComponent } from './components/main-info/main-info.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 
-import { UploadPhotoComponent } from './modals/upload-photo/upload-photo.component';
+import { UploadImageComponent } from './modals/upload-image/upload-image.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
 import { CommunicationsComponent } from './components/main-info/communications/communications.component';
 import { EditContactComponent } from './components/main-info/communications/edit-contact/edit-contact.component';
@@ -13,19 +13,23 @@ import { AddContactComponent } from './components/main-info/communications/add-c
 import { UserListComponent } from './components/user-list/user-list.component';
 import { UserListItemComponent } from './components/user-list/user-list-item/user-list-item.component';
 import { EditInfoComponent } from './modals/edit-info/edit-info.component';
+import { SelectImageComponent } from './modals/upload-image/select-image/select-image.component';
+import { AdjustImageComponent } from './modals/upload-image/adjust-image/adjust-image.component';
 
 @NgModule({
 	declarations: [
 		EmployeePageComponent,
 		MainInfoComponent,
 		ProjectsComponent,
-		UploadPhotoComponent,
+		UploadImageComponent,
 		CommunicationsComponent,
 		EditContactComponent,
 		AddContactComponent,
 		UserListComponent,
 		UserListItemComponent,
 		EditInfoComponent,
+  SelectImageComponent,
+  AdjustImageComponent,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],
