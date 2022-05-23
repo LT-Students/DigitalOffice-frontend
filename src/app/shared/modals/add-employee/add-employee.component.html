@@ -4,23 +4,29 @@
 		<button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
 	</div>
 
-	<div class="search">
-        <do-form-row label="Введите фамилию и имя сотрудника">
-            <mat-form-field class="search__name">
-                <mat-icon matPrefix class="search__button">search</mat-icon>
-                <input matInput type="search" placeholder="Романов Владислав" />
-            </mat-form-field>
-        </do-form-row>
+	<div class="search" [formGroup]="filter">
+		<do-form-row class="search__name">
+			<mat-form-field>
+				<mat-icon matPrefix>search</mat-icon>
+				<input
+					matInput
+					type="search"
+					formControlName="name"
+					placeholder="Введите фамилию и имя сотрудника"
+					autocomplete="off"
+				/>
+			</mat-form-field>
+		</do-form-row>
 
-        <do-form-row label="Выберите должность">
-            <mat-form-field>
-                <mat-select>
-                    <mat-option *ngFor="let position of positions" [value]="position">
-                        {{ position }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-        </do-form-row>
+		<!--		<do-form-row class="search__position">-->
+		<!--			<mat-form-field>-->
+		<!--				<mat-select placeholder="Выберите должность">-->
+		<!--					<mat-option *ngFor="let position of positions" [value]="position">-->
+		<!--						{{ position }}-->
+		<!--					</mat-option>-->
+		<!--				</mat-select>-->
+		<!--			</mat-form-field>-->
+		<!--		</do-form-row>-->
 	</div>
 
 	<h4>
@@ -34,7 +40,7 @@
 		class="scrolled-content"
 		infiniteScroll
 		[infiniteScrollDistance]="3"
-		[infiniteScrollThrottle]="50"
+		[infiniteScrollThrottle]="100"
 		(scrolled)="getPageUsers()"
 		[scrollWindow]="false"
 	>
@@ -53,10 +59,14 @@
 			<ng-container matColumnDef="name">
 				<td mat-cell *matCellDef="let element">
 					<div class="main-info">
-						<do-profile-image class="profile-photo" [image]="element?.avatar"></do-profile-image>
+						<do-profile-image
+							class="profile-photo"
+							[image]="element?.avatar"
+							[userInitials]="element"
+						></do-profile-image>
 						<div>
 							<div>{{ element.firstName }} {{ element.lastName }}</div>
-							<div class="mat-body-1">{{ element?.position?.name }}</div>
+							<div class="text-secondary_default">{{ element?.position?.name | placeholder }}</div>
 						</div>
 					</div>
 				</td>
@@ -64,19 +74,15 @@
 
 			<ng-container matColumnDef="department">
 				<td mat-cell *matCellDef="let element">
-					<ng-container *ngIf="element?.department?.name; else empty">
-						{{ element?.department?.name }}
-					</ng-container>
+					{{ element?.department?.name | placeholder }}
 				</td>
 			</ng-container>
 
 			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
 		</table>
+		<do-empty-list *ngIf="dataSource.data.length === 0" emptyMessage="Нет данных о сотрудниках"></do-empty-list>
 		<ng-template #spinner>
 			<mat-spinner></mat-spinner>
-		</ng-template>
-		<ng-template #empty>
-			<div>—</div>
 		</ng-template>
 	</mat-dialog-content>
 	<div mat-dialog-actions>

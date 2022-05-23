@@ -1,19 +1,11 @@
-<a [routerLink]="[AppRoutes.Users, (user$ | async)?.id]">
-	<img src="assets/svg/do-logo.svg" alt="Logo" />
-</a>
-<aside class="links">
-	<div
-		*ngFor="let link of links"
-		class="link"
-		routerLinkActive="link_active"
-		[routerLinkActiveOptions]="{ exact: true }"
-	>
-		<a
-			[routerLink]="link.path"
-			[matTooltip]="link.label"
-			matTooltipPosition="right"
-		>
-			<mat-icon class="icon">{{ link.icon }}</mat-icon>
-		</a>
+<aside class="sidebar">
+	<do-sidebar-header [isWideScreen]="isWideScreen$ | async"></do-sidebar-header>
+	<div class="links">
+		<do-sidebar-link
+			class="link"
+			*ngFor="let link of links"
+			[link]="link"
+			[isWideScreen]="isWideScreen$ | async"
+		></do-sidebar-link>
 	</div>
 </aside>

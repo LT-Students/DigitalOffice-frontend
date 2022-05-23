@@ -1,7 +1,7 @@
 <nav class="header">
 	<ng-container *ngIf="currentUser$ | async as currentUser">
 		<div class="avatar" [matMenuTriggerFor]="menu">
-			<do-profile-image [image]="currentUser?.avatar" size="s"></do-profile-image>
+			<do-profile-image [image]="currentUser?.avatar" [userInitials]="currentUser" size="s"></do-profile-image>
 			<span class="avatar__greeting">
 				Привет, <strong>{{ currentUser?.firstName }}</strong>
 			</span>

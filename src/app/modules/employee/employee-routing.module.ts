@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UserResolver } from './resolvers/user.resolver';
-import { EmployeePageService } from './services/employee-page.service';
+import { UserListResolver } from './resolvers/user-list-resolver.service';
 import { EmployeePageComponent } from './employee-page.component';
-import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { EmployeeResolver } from './resolvers/employee.resolver';
 
 const employeeRoutes: Routes = [
 	{
 		path: '',
-		component: ManageUsersComponent,
+		component: UserListComponent,
 		resolve: {
-			users: UserResolver,
+			users: UserListResolver,
 		},
 	},
-	{ path: ':id', component: EmployeePageComponent, resolve: { employee: EmployeePageService } },
+	{ path: ':id', component: EmployeePageComponent, resolve: { employee: EmployeeResolver } },
 	{ path: '**', pathMatch: 'full', redirectTo: '' },
 ];
 

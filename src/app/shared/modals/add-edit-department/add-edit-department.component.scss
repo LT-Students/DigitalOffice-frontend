@@ -10,6 +10,10 @@
 
 		display: flex;
 		flex-direction: column;
+
+		do-form-row:not(:last-child) {
+			margin-bottom: 20px;
+		}
 	}
 
 	&__field {

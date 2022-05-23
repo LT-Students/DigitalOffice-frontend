@@ -11,6 +11,7 @@ import { UserStatusPipe } from '@shared/pipes/user-status.pipe';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -43,6 +44,17 @@ import { FormRowComponent } from './component/form-row/form-row.component';
 import { SelectDirective } from './directives/select.directive';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { ImageUrlPipe } from './pipes/image-url.pipe';
+import { ContextMenuComponent } from './component/context-menu/context-menu.component';
+import { ButtonToggleGroupComponent } from './component/button-toggle/button-toggle-group.component';
+import { ButtonToggleComponent } from './component/button-toggle/button-toggle.component';
+import { ExecutePipe } from './pipes/execute.pipe';
+import { EmailListComponent } from './modals/user-recovery/email-list/email-list.component';
+import { EmailItemComponent } from './modals/user-recovery/email-item/email-item.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
+import { PermissionDirective } from './directives/permission.directive';
+import { ButtonDirective } from './directives/button.directive';
+import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-item.component';
+import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
 
 @NgModule({
 	declarations: [
@@ -79,8 +91,19 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
 		CapitalizePipe,
 		FormRowComponent,
 		SelectDirective,
-  SidebarComponent,
-  ImageUrlPipe,
+		SidebarComponent,
+		ImageUrlPipe,
+		ContextMenuComponent,
+		ButtonToggleGroupComponent,
+		ButtonToggleComponent,
+		ExecutePipe,
+		EmailListComponent,
+		EmailItemComponent,
+		AutofocusDirective,
+		PermissionDirective,
+		ButtonDirective,
+		SidebarItemComponent,
+		SidebarHeaderComponent,
 	],
 	imports: [
 		CommonModule,
@@ -92,6 +115,7 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
 		LoadingBarModule,
 		LoadingBarRoutingModule,
 		MdePopoverModule,
+		ImageCropperModule,
 	],
 	exports: [
 		CommonModule,
@@ -99,6 +123,7 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
 		MaterialModule,
 		InfiniteScrollModule,
 		MdePopoverModule,
+		ImageCropperModule,
 		ReactiveFormsModule,
 		FormsModule,
 		ProfileImageComponent,
@@ -133,7 +158,14 @@ import { ImageUrlPipe } from './pipes/image-url.pipe';
 		CapitalizePipe,
 		FormRowComponent,
 		SelectDirective,
-		ImageUrlPipe
+		ImageUrlPipe,
+		ContextMenuComponent,
+		ButtonToggleGroupComponent,
+		ButtonToggleComponent,
+		ExecutePipe,
+		AutofocusDirective,
+		PermissionDirective,
+		ButtonDirective,
 	],
 })
 export class SharedModule {}

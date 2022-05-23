@@ -3,7 +3,6 @@ import { UserAdditionInfo } from '@api/user-service/models/user-addition-info';
 import { ImageInfo } from '@api/user-service/models/image-info';
 import { UserStatus } from '@api/user-service/models/user-status';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { CompanyInfo } from '@api/user-service/models/company-info';
 import { DepartmentInfo } from '@api/user-service/models/department-info';
 import { OfficeInfo } from '@api/user-service/models/office-info';
 import { PositionInfo } from '@api/user-service/models/position-info';
@@ -17,7 +16,7 @@ export class User implements UserInfo, UserAdditionInfo, Omit<UserResponse, 'use
 	firstName: string;
 	id: string;
 	isActive: boolean;
-	isPending: boolean;
+	pendingCommunicationId?: string;
 	isAdmin: boolean;
 	lastName: string;
 	middleName?: string;
@@ -56,7 +55,7 @@ export class User implements UserInfo, UserAdditionInfo, Omit<UserResponse, 'use
 		this.genderName = data.userAddition?.genderName;
 		this.latitude = data.userAddition?.latitude;
 		this.longitude = data.userAddition?.longitude;
-		this.isPending = data.isPending;
+		this.pendingCommunicationId = data.user.pendingInfo?.invitationCommunicationId;
 		this.department = data.department;
 		this.office = data.office;
 		this.position = data.position;

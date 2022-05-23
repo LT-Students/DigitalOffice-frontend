@@ -1,3 +1,14 @@
-.forgot-password {
-	margin-top: 24px;
+.login {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 306px;
+
+	> :not(:last-child) {
+		margin-bottom: 24px;
+	}
+
+	.submit {
+		margin-top: 20px;
+	}
 }

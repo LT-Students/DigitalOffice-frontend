@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewContainerRef } from '@angular/core';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
 import { OperationResultStatusType } from '@api/user-service/models/operation-result-status-type';
 import { CommunicationService } from '@app/services/user/communication.service';
@@ -26,11 +26,12 @@ export class CommunicationsComponent implements OnInit {
 
 	constructor(
 		private _employeePageService: EmployeePageService,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _cdr: ChangeDetectorRef,
 		private _communicationService: CommunicationService,
 		private alert: AlertService,
-		private _clipboard: Clipboard
+		private _clipboard: Clipboard,
+		private viewContainerRef: ViewContainerRef
 	) {
 		this.communications = [];
 		this.employeeId = '';
@@ -55,11 +56,11 @@ export class CommunicationsComponent implements OnInit {
 
 	public onAddClick(): void {
 		this._modalService
-			.openModal<AddContactComponent, string, OperationResultResponse>(
-				AddContactComponent,
-				ModalWidth.M,
-				this.employeeId
-			)
+			.open<OperationResultResponse>(AddContactComponent, {
+				width: ModalWidth.M,
+				data: this.employeeId,
+				viewContainerRef: this.viewContainerRef
+			})
 			.afterClosed()
 			.subscribe((result) => {
 				if (result?.status === OperationResultStatusType.FullSuccess) {
@@ -77,11 +78,11 @@ export class CommunicationsComponent implements OnInit {
 		};
 
 		this._modalService
-			.openModal<EditContactComponent, CommunicationInfo, { response: OperationResultResponse; value: string }>(
-				EditContactComponent,
-				ModalWidth.M,
-				modalContentConfig
-			)
+			.open<{ response: OperationResultResponse; value: string }>(EditContactComponent, {
+				width: ModalWidth.M,
+				data: modalContentConfig,
+				viewContainerRef: this.viewContainerRef
+			})
 			.afterClosed()
 			.subscribe((result) => {
 				if (result?.response.status === OperationResultStatusType.FullSuccess) {

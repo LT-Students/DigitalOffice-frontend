@@ -1,15 +1,12 @@
-import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, Inject } from '@angular/core';
-import { UserService } from '@app/services/user/user.service';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { UserInfo } from '@api/user-service/models/user-info';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { UserApiService } from '@api/project-service/services/user-api.service';
-import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
-import { ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
-import { DepartmentService } from '@app/services/department/department.service';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { map, tap } from 'rxjs/operators';
+import { debounceTime, map, takeUntil, tap } from 'rxjs/operators';
+import { FilterService, FilterUsersRequest } from '@app/services/filter/filter.service';
+import { UserInfo } from '@api/filter-service/models/user-info';
+import { FormBuilder } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 export enum OpenAddEmployeeModalFrom {
 	Default = '',
@@ -23,7 +20,7 @@ export enum OpenAddEmployeeModalFrom {
 	styleUrls: ['./add-employee.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AddEmployeeComponent implements OnInit {
+export class AddEmployeeComponent implements OnInit, OnDestroy {
 	public positions: string[];
 	public employees: UserInfo[];
 	public displayedColumns: string[];
@@ -35,15 +32,19 @@ export class AddEmployeeComponent implements OnInit {
 	public employeeCountMap: { [k: string]: string };
 	public countToHide: number;
 	public isAllReceived: boolean;
+	public filter = this.fb.group({
+		name: [''],
+	});
 
-	private _takeUsers: number;
-	private _skipUsers: number;
+	private takeUsers = 10;
+	private skipUsers = 0;
+	private destroy$ = new Subject<void>();
 
 	constructor(
-		private _userService: UserService,
-		private _cdr: ChangeDetectorRef,
-		private _dialogRef: MatDialogRef<AddEmployeeComponent>,
-
+		private filterService: FilterService,
+		private cdr: ChangeDetectorRef,
+		private dialogRef: MatDialogRef<AddEmployeeComponent>,
+		private fb: FormBuilder,
 		@Inject(MAT_DIALOG_DATA)
 		private _data: { idToHide: string[]; pageId: string; openFrom: OpenAddEmployeeModalFrom; moduleName: string }
 	) {
@@ -51,8 +52,6 @@ export class AddEmployeeComponent implements OnInit {
 		this.countToHide = 0;
 		this.positions = ['NOT IMPLEMENTED YET']; //[ 'front', 'back', 'manager', 'lead' ];
 		this.employees = [];
-		this._takeUsers = 6;
-		this._skipUsers = 0;
 		this.displayedColumns = ['select', 'name', 'department'];
 		this.selection = new SelectionModel<UserInfo>(true, []);
 		this.dataSource = new MatTableDataSource();
@@ -70,42 +69,55 @@ export class AddEmployeeComponent implements OnInit {
 	public ngOnInit(): void {
 		this.getPageUsers();
 		this.openFromRu = this._data.openFrom;
+
+		this.filter.valueChanges.pipe(debounceTime(500), takeUntil(this.destroy$)).subscribe({
+			next: (form) => {
+				this.skipUsers = 0;
+				this.getPageUsers({ fullnameincludesubstring: form.name });
+			},
+		});
+	}
+
+	public ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	public onClose(result?: UserInfo[]): void {
-		this._dialogRef.close(result);
+		this.dialogRef.close(result);
 	}
 
-	public getPageUsers(): void {
-		if (this.isAllReceived) return;
+	public getPageUsers(filter?: Partial<FilterUsersRequest>): void {
+		// if (this.isAllReceived) return;
+		if (filter && this.skipUsers === 0) {
+			this.employees = [];
+		}
 
-		this._userService
-			.findUsers({
-				skipCount: this._skipUsers,
-				takeCount: this._takeUsers + (this.countToHide || this._data.idToHide.length),
-				includedepartment: true,
-				includeposition: true,
-				includecurrentavatar: true,
+		this.filterService
+			.filterUsers({
+				...filter,
+				skipCount: this.skipUsers,
+				takeCount: this.takeUsers + (this.countToHide || this._data.idToHide.length),
 			})
 			.pipe(
 				tap((result) => {
 					if (result.body) {
 						this.usersFound = true;
-						this._skipUsers += result.body?.length ?? 0;
+						this.skipUsers += result.body?.length ?? 0;
 					}
-					if (this._skipUsers >= (result.totalCount ?? 0)) {
+					if (this.skipUsers >= (result.totalCount ?? 0)) {
 						this.isAllReceived = true;
 					}
 				}),
 				map((result) => result.body ?? ([] as UserInfo[]))
 			)
-			.subscribe((users) => {
+			.subscribe((users: UserInfo[]) => {
 				const viewed = users.filter((e) => this._data.idToHide.indexOf(e.id as string) === -1);
 				this.countToHide = users.length - viewed.length;
 				this.employees.push(...viewed);
 				this.dataSource = new MatTableDataSource(this.employees);
 
-				this._cdr.markForCheck();
+				this.cdr.markForCheck();
 			});
 	}
 }

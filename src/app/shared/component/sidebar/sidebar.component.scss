@@ -1,11 +1,11 @@
 @use 'base/variables' as variables;
 
-:host {
-	padding: 16px 0;
+.sidebar {
+	padding: 16px 26px;
 
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-start;
 
 	height: 100%;
 
@@ -20,33 +20,5 @@
 
 	.link:not(:last-child) {
 		margin-bottom: 10px;
-	}
-
-	.link {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-
-		width: 40px;
-
-		height: 40px;
-
-		border-radius: 10px;
-
-		a {
-			color: variables.$typo;
-		}
-
-		.icon {
-			display: block;
-		}
-
-		&_active {
-			background: variables.$light_3;
-
-			a {
-				color: variables.$disabled;
-			}
-		}
 	}
 }

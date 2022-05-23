@@ -1,3 +1,5 @@
+@use 'base/variables' as variables;
+
 .avatar {
 	overflow: hidden;
 
@@ -8,21 +10,21 @@
 		height: 100%;
 		object-fit: cover;
 	}
-}
 
-.size {
-	&_s {
-		width: 40px;
-		height: 40px;
-	}
+	.initials {
+		user-select: none;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 
-	&_m {
-		width: 48px;
-		height: 48px;
-	}
+		width: 100%;
+		height: 100%;
 
-	&_l {
-		width: 180px;
-		height: 180px;
+		color: #fff;
+		background: variables.$accent_color;
+
+		span {
+			text-transform: uppercase;
+		}
 	}
 }

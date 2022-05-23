@@ -1,15 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { ProjectService } from '@app/services/project/project.service';
-import { map, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { CommunicationType, CommunicationInfo } from '@api/user-service/models';
-import { ModalService } from '@app/services/modal.service';
+import { DialogService } from '@app/services/dialog.service';
 import { EmployeePageService } from './services/employee-page.service';
 
 // eslint-disable-next-line no-shadow
@@ -30,6 +27,7 @@ export interface Modes {
 	templateUrl: './employee-page.component.html',
 	styleUrls: ['./employee-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [EmployeePageService],
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
 	private _unsubscribe$$: Subject<void>;
@@ -37,14 +35,10 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	public userLogged$: Observable<boolean | undefined>;
 
 	constructor(
-		private dialog: MatDialog,
-		private modal: ModalService,
+		private dialog: DialogService,
 		private userService: UserService,
-		private _projectService: ProjectService,
 		private _employeeService: EmployeePageService,
 		private _route: ActivatedRoute,
-		private _router: Router,
-		private _cdr: ChangeDetectorRef,
 		private _currentUserService: CurrentUserService
 	) {
 		this._unsubscribe$$ = new Subject<void>();
@@ -53,17 +47,17 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
-		this._route.paramMap
+		this._route.data
 			.pipe(
-				skip(1),
-				takeUntil(this._unsubscribe$$),
-				switchMap((params: ParamMap) => this._employeeService.getEmployee(params.get('id') as string))
+				map((data) => data['employee'] as User),
+				switchMap((user: User) => this._employeeService.setUser(user)),
+				takeUntil(this._unsubscribe$$)
 			)
 			.subscribe();
 	}
 
 	public archiveUser(userId: string): void {
-		this.modal
+		this.dialog
 			.confirm({
 				confirmText: 'Да, удалить',
 				title: 'Удаление пользователя',
@@ -74,16 +68,12 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 			.subscribe();
 	}
 
-	public restoreUser(userId: string, communications: CommunicationInfo[] = []): void {
+	public restoreUser(user: User, communications: CommunicationInfo[] = []): void {
 		const emails = communications.filter(
 			(c: CommunicationInfo) => c.type === CommunicationType.Email || c.type === CommunicationType.BaseEmail
 		);
 
-		this.dialog.open(UserRecoveryComponent, {
-			width: '550px',
-			maxHeight: '100%',
-			data: { userId: userId, emails: emails },
-		});
+		this.dialog.recoverUser(user.id, emails, !!user.pendingCommunicationId);
 	}
 
 	public ngOnDestroy(): void {

@@ -1,11 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { User } from '@app/models/user/user.model';
+
+interface UserLike {
+	firstName: string;
+	lastName: string;
+	middleName?: string;
+}
 
 @Pipe({
 	name: 'fullName',
 })
 export class FullNamePipe implements PipeTransform {
-	transform(user: User, middleName: boolean = true): string {
-		return `${user.firstName} ${middleName && user?.middleName ? user.middleName + ' ' : ' '}${user.lastName}`;
+	transform(user: UserLike, middleName: boolean = false): string {
+		return [ user.firstName.trim(), middleName ? user.middleName?.trim() : null, user.lastName.trim() ].filter(Boolean).join(' ');
 	}
 }

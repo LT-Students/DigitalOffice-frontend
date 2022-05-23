@@ -1,9 +1,10 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 @use '../theme' as theme;
+@use 'base/variables' as variables;
 
 button.mat-button {
-	color: #9e9e9e;
+	color: variables.$secondary_default;
 }
 
 .mat-loading {

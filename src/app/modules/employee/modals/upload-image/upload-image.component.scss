@@ -1,0 +1,12 @@
+@use 'base/variables';
+
+.header {
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	justify-items: end;
+	align-items: center;
+
+	.title {
+		grid-column: 2;
+	}
+}

@@ -1,8 +1,9 @@
 import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, AfterViewInit, OnDestroy } from '@angular/core';
 
 import { Event, NavigationEnd, Router } from '@angular/router';
-import { takeUntil, tap } from 'rxjs/operators';
+import { map, takeUntil, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 
 @Component({
 	selector: 'do-content-container',
@@ -13,9 +14,12 @@ import { Subject } from 'rxjs';
 export class ContentContainerComponent implements AfterViewInit, OnDestroy {
 	@ViewChild('scroll') scroll?: ElementRef<HTMLElement>;
 
+	public isWideScreen$ = this.responsive
+		.observe(Breakpoints.XLarge)
+		.pipe(map((state: BreakpointState) => state.matches));
 	private destroy$ = new Subject<void>();
 
-	constructor(private router: Router) {}
+	constructor(private router: Router, private responsive: BreakpointObserver) {}
 
 	public ngAfterViewInit(): void {
 		this.router.events

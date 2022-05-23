@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@app/services/user/user.service';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { OperationResultStatusType, UserInfo } from '@api/user-service/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
-import { EMPTY } from 'rxjs';
+import { EMPTY, of } from 'rxjs';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
@@ -35,7 +35,7 @@ export class DepartmentCardComponent {
 		private _departmentService: DepartmentService,
 		private _userService: UserService,
 		private _router: Router,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _route: ActivatedRoute,
 		private _cdr: ChangeDetectorRef
 	) {
@@ -80,7 +80,10 @@ export class DepartmentCardComponent {
 
 	public onEditDepartmentClick(): void {
 		this._modalService
-			.openModal<AddEditDepartmentComponent>(AddEditDepartmentComponent, ModalWidth.M, this.departmentInfo)
+			.openModal<AddEditDepartmentComponent>(AddEditDepartmentComponent, ModalWidth.M, {
+				departmentInfo: this.departmentInfo,
+				directors$: of(this.dataSource.data.map(u => u.user))
+			})
 			.afterClosed()
 			.subscribe((result) => {
 				if (result?.status === OperationResultStatusType.FullSuccess) this._getDepartment();
