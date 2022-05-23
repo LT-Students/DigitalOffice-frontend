@@ -4,19 +4,34 @@
 	</h3>
 	<mat-dialog-content>
 		<div class="form__container">
-			<mat-form-field appearance="fill">
-				<mat-label>Город</mat-label>
-				<input matInput type="text" [formControlName]="EditPath.CITY" required />
-			</mat-form-field>
-			<mat-form-field appearance="fill">
-				<mat-label>Адрес</mat-label>
-				<input matInput type="text" [formControlName]="EditPath.ADDRESS" required />
-			</mat-form-field>
-			<mat-form-field appearance="fill">
-				<mat-label>Название офиса</mat-label>
-				<input matInput type="text" [formControlName]="EditPath.NAME" />
-			</mat-form-field>
-		</div>
+            <do-form-row label="Город" class="form__field" [required]='true'>
+                <mat-form-field>
+                    <input matInput type="text" [formControlName]="EditPath.CITY" maxlength=200 />
+                    <mat-error *ngIf="officeForm.controls[EditPath.CITY].errors?.['required']"
+                    >Название города не должно быть пустым!
+                    </mat-error>
+                    <mat-error *ngIf="officeForm.controls[EditPath.CITY].errors?.['whitespace']"
+                    >Название города не может состоять только из пробелов!
+                    </mat-error>
+                </mat-form-field>
+            </do-form-row>
+			<do-form-row label="Адрес" class="form__field">
+                <mat-form-field>
+                    <input matInput type="text" [formControlName]="EditPath.ADDRESS" required />
+                    <mat-error *ngIf="officeForm.controls[EditPath.ADDRESS].errors?.['required']"
+                    >Адрес не должен быть пустым!
+                    </mat-error>
+                    <mat-error *ngIf="officeForm.controls[EditPath.ADDRESS].errors?.['whitespace']"
+                    >Адрес не может состоять только из пробелов!
+                    </mat-error>
+                </mat-form-field>
+            </do-form-row>
+            <do-form-row label="Название офиса" class="form__field">
+                <mat-form-field>
+				    <input matInput type="text" [formControlName]="EditPath.NAME" />
+                </mat-form-field>
+            </do-form-row>
+        </div>
 	</mat-dialog-content>
 	<mat-dialog-actions class="flex flex_jc_center">
 		<button mat-button mat-dialog-close type="button">Отмена</button>

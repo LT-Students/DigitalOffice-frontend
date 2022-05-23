@@ -5,20 +5,22 @@
 	</div>
 
 	<div class="search">
-		<mat-form-field class="search__name" appearance="fill">
-			<mat-icon matPrefix class="search__button">search</mat-icon>
-			<mat-label>Введите фамилию и имя сотрудника</mat-label>
-			<input matInput type="search" placeholder="Романов Владислав" />
-		</mat-form-field>
+        <do-form-row label="Введите фамилию и имя сотрудника">
+            <mat-form-field class="search__name">
+                <mat-icon matPrefix class="search__button">search</mat-icon>
+                <input matInput type="search" placeholder="Романов Владислав" />
+            </mat-form-field>
+        </do-form-row>
 
-		<mat-form-field appearance="fill" class="search__position">
-			<mat-label>Выберите должность</mat-label>
-			<mat-select>
-				<mat-option *ngFor="let position of positions" [value]="position">
-					{{ position }}
-				</mat-option>
-			</mat-select>
-		</mat-form-field>
+        <do-form-row label="Выберите должность">
+            <mat-form-field>
+                <mat-select>
+                    <mat-option *ngFor="let position of positions" [value]="position">
+                        {{ position }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </do-form-row>
 	</div>
 
 	<h4>
