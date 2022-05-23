@@ -1,6 +1,9 @@
 <div class="avatar" [style.width.px]="width" [style.height.px]="width">
-	<img *ngIf="_image" [src]="_image | imageUrl" alt="Employee image" />
-	<div *ngIf="!_image" class="initials" [style.font-size.px]="width / textRatio">
+	<img *ngIf="image$ | async as image; else textAvatar" [src]="image | imageUrl" alt="Employee image" />
+</div>
+
+<ng-template #textAvatar>
+	<div class="initials" [style.font-size.px]="width / textRatio">
 		<span *ngIf="initials">{{ initials }}</span>
 	</div>
-</div>
+</ng-template>
