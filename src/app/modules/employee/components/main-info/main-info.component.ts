@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -41,7 +41,8 @@ export class MainInfoComponent implements OnInit {
 		private _employeeService: EmployeePageService,
 		private _userService: UserService,
 		private _dialog: MatDialog,
-		private _cdr: ChangeDetectorRef
+		private _cdr: ChangeDetectorRef,
+		private viewContainer: ViewContainerRef
 	) {
 		this.loading = new BehaviorSubject<boolean>(false);
 		this._initialData = {};
@@ -75,6 +76,7 @@ export class MainInfoComponent implements OnInit {
 			data: this.user$,
 			width: ModalWidth.L,
 			autoFocus: false,
+			viewContainerRef: this.viewContainer
 		});
 	}
 
