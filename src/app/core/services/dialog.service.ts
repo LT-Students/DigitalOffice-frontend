@@ -58,7 +58,7 @@ export class DialogService {
 		});
 	}
 
-	public open<R, C, D>(component: ComponentType<C>, config: MatDialogConfig<D>): MatDialogRef<C, R> {
+	public open<R, C = any, D = any>(component: ComponentType<C>, config: MatDialogConfig<D>): MatDialogRef<C, R> {
 		return this._matDialog.open(component, config);
 	}
 

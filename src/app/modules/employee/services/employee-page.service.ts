@@ -1,4 +1,4 @@
-import { Injectable, ViewContainerRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
@@ -12,9 +12,7 @@ export class EmployeePageService {
 	private selectedUser: ReplaySubject<User> = new ReplaySubject<User>(1);
 	public readonly selectedUser$: Observable<User> = this.selectedUser.asObservable();
 
-	constructor(private userService: UserService, private currentUserService: CurrentUserService, private vie: ViewContainerRef) {
-		console.log(this.vie)
-	}
+	constructor(private userService: UserService, private currentUserService: CurrentUserService) {}
 
 	public setUser(user: User): Observable<User> {
 		this.selectedUser.next(user);

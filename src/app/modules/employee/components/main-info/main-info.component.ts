@@ -86,6 +86,7 @@ export class MainInfoComponent implements OnInit {
 			height: 'auto',
 			autoFocus: false,
 			panelClass: 'upload-image-dialog',
+			viewContainerRef: this.viewContainer
 		});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
