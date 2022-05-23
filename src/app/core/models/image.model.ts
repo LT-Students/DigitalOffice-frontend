@@ -1,10 +1,13 @@
 import { Observable, Subscriber } from 'rxjs';
 
-export interface ImageInfo {
-	id: string;
-	parentId?: string;
+export interface BaseImageInfo {
 	content: string;
 	extension: string;
+}
+
+export interface ImageInfo extends BaseImageInfo {
+	id: string;
+	parentId?: string;
 	name?: string;
 	enablePreview?: boolean;
 }
@@ -20,18 +23,17 @@ export class UploadedImage {
 		return this._image.type.split('/').pop()?.toLowerCase();
 	}
 
-	public getCreateImageRequest(): Observable<ImageInfo> {
+	public getBaseImage$(): Observable<BaseImageInfo> {
 		const extension = this.extension;
 		const fileReader = new FileReader();
 
-		return new Observable<ImageInfo>((observer: Subscriber<any>): void => {
+		return new Observable<BaseImageInfo>((observer: Subscriber<any>): void => {
 			fileReader.readAsBinaryString(this._image);
 			fileReader.onload = (evt: ProgressEvent<FileReader>): void => {
 				const imageContent = btoa(evt.target?.result as string);
-				const imageRequest: Partial<ImageInfo> = {
+				const imageRequest: BaseImageInfo = {
 					content: imageContent,
 					extension: `.${extension}`,
-					enablePreview: true,
 				};
 
 				observer.next(imageRequest);

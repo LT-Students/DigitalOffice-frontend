@@ -1,0 +1,14 @@
+<div class="dropzone" doDnd (fileDropped)="onFileDropped($event)">
+	<span class="upload-message">
+		Коллегам будет проще узнать вас, если вы загрузите свою настоящую фотографию. Вы можете загрузить изображение в
+		формате JPG, GIF или PNG.
+	</span>
+	<span class="drag-hint text-secondary_default">Перетащите файл сюда или</span>
+	<button mat-flat-button (click)="uploadFile.click()" color="primary" [loading]="imageLoading$ | async">
+		Выбрать файл
+	</button>
+	<input #uploadFile hidden type="file" [accept]="allowedTypes" (change)="onFileChanged($event)" />
+</div>
+<span class="mat-body-2 text-secondary_default">
+	Если у вас возникают проблемы с загрузкой, попробуйте выбрать фотографию меньшего размера.
+</span>

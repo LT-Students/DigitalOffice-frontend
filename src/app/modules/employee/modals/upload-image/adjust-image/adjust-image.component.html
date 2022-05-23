@@ -1,0 +1,36 @@
+<div class="preview">
+	<span class="adjust-message">
+		Выбранная область будет показываться на вашей странице и на миниатюрах. Если изображение ориентировано
+		неправильно, фотографию можно повернуть.
+	</span>
+	<div *ngIf="image" class="flex">
+		<div *ngIf="image.extension !== '.gif'" class="cropper-container">
+			<image-cropper
+				#cropper
+				class="image-cropper full-image"
+				format="jpeg"
+				[imageBase64]="image | imageUrl"
+				[maintainAspectRatio]="true"
+				(imageCropped)="imageCropped($event)"
+				(cropperReady)="cropper.wrapper.nativeElement.style.visibility = 'visible'"
+			></image-cropper>
+			<img class="full-image" [src]="image | imageUrl" alt="Full image" />
+		</div>
+		<img class="full-image" *ngIf="image.extension === '.gif'" [src]="image | imageUrl" alt="Full image" />
+		<div class="miniatures">
+			<img
+				*ngFor="let size of [40, 30]"
+				[src]="croppedImage ?? (image | imageUrl)"
+				alt="Miniature"
+				[height]="size"
+				[width]="size"
+			/>
+		</div>
+	</div>
+</div>
+<div class="actions">
+	<button mat-button type="button" (click)="cancel.emit()">Вернуться назад</button>
+	<button mat-flat-button (click)="saveImage()" [loading]="saveInProgress" type="submit" color="primary">
+		Сохранить изменения
+	</button>
+</div>

@@ -33,10 +33,6 @@
             <span class="mat-body-2 text-secondary_default">Время работы</span>
             <div>{{ user.businessHoursFromUtc | date: 'shortTime' | placeholder }} - {{ user.businessHoursToUtc | date: 'shortTime' | placeholder}}</div>
         </div>
-        <div class="edit-info__field">
-            <span class="mat-body-2 text-secondary_default">Эмодзи-статус</span>
-            <div>{{ user.status | userStatus: true: true | capitalize: 1 | placeholder}}</div>
-        </div>
         <div class="edit-info__field edit-info__two-columns">
             <span class="mat-body-2 text-secondary_default">О себе</span>
             <div>{{ user.about | placeholder }}</div>
@@ -104,16 +100,6 @@
                 </mat-form-field>
             </div>
         </div>
-    </do-form-row>
-
-    <do-form-row label="Эмодзи-статус">
-        <mat-form-field>
-            <mat-select [formControlName]="userPath.STATUS">
-                <mat-option *ngFor="let status of statuses" [value]="status.statusType">
-                    {{ status.statusType | userStatus: true: true | capitalize: 1 }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
     </do-form-row>
 
     <do-form-row label="О себе" class="edit-info__two-columns">

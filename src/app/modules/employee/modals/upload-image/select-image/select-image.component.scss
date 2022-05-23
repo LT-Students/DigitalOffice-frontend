@@ -1,15 +1,4 @@
-@use 'base/variables';
-
-.header {
-	display: grid;
-	grid-template-columns: 1fr auto 1fr;
-	justify-items: end;
-	align-items: center;
-
-	.title {
-		grid-column: 2;
-	}
-}
+@use 'base/variables' as variables;
 
 .dropzone {
 	margin-bottom: 18px;
@@ -25,43 +14,12 @@
 	border-radius: 10px;
 }
 
-.preview {
-	margin-bottom: 48px;
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-
-	text-align: center;
-}
-
-.miniatures {
-	margin-left: 38px;
-
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-
-	& > :first-child {
-		margin-bottom: 14px;
-	}
+.drag-hint {
+	margin-bottom: 20px;
 }
 
 .upload-message {
 	margin-bottom: 47px;
 
 	text-align: center;
-}
-
-.drag-hint {
-	margin-bottom: 20px;
-}
-
-.actions {
-	display: flex;
-	justify-content: center;
-
-	button {
-		margin: 0 5px;
-	}
 }

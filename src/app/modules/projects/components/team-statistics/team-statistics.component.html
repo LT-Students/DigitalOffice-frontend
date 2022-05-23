@@ -24,7 +24,7 @@
 				<ng-container *ngFor="let employee of employees">
 					<tr [ngClass]="{ row: !employee.editMode }">
 						<td class="cell avatar">
-							<do-profile-image class="avatar__photo"></do-profile-image>
+							<do-profile-image class="avatar__photo" [userInitials]="$any(employee)"></do-profile-image>
 							<div>
 								<div>{{ employee?.firstName }} {{ employee?.lastName }}</div>
 								<div>{{ employee?.position }}</div>

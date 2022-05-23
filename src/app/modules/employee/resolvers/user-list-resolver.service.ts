@@ -8,7 +8,7 @@ import { UserInfo } from '@api/filter-service/models/user-info';
 @Injectable({
 	providedIn: 'root',
 })
-export class UserResolver implements Resolve<OperationResultResponse<UserInfo[]>> {
+export class UserListResolver implements Resolve<OperationResultResponse<UserInfo[]>> {
 	constructor(private filterService: FilterService) {}
 
 	public resolve(

@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { ProjectService } from '@app/services/project/project.service';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CommunicationType, CommunicationInfo } from '@api/user-service/models';
@@ -28,6 +27,7 @@ export interface Modes {
 	templateUrl: './employee-page.component.html',
 	styleUrls: ['./employee-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [EmployeePageService],
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
 	private _unsubscribe$$: Subject<void>;
@@ -37,11 +37,8 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 	constructor(
 		private dialog: DialogService,
 		private userService: UserService,
-		private _projectService: ProjectService,
 		private _employeeService: EmployeePageService,
 		private _route: ActivatedRoute,
-		private _router: Router,
-		private _cdr: ChangeDetectorRef,
 		private _currentUserService: CurrentUserService
 	) {
 		this._unsubscribe$$ = new Subject<void>();
@@ -49,7 +46,15 @@ export class EmployeePageComponent implements OnInit, OnDestroy {
 		this.userLogged$ = this._currentUserService.user$.pipe(map((user) => user.isAdmin));
 	}
 
-	public ngOnInit(): void {}
+	public ngOnInit(): void {
+		this._route.data
+			.pipe(
+				map((data) => data['employee'] as User),
+				switchMap((user: User) => this._employeeService.setUser(user)),
+				takeUntil(this._unsubscribe$$)
+			)
+			.subscribe();
+	}
 
 	public archiveUser(userId: string): void {
 		this.dialog

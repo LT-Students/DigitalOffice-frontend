@@ -13,9 +13,9 @@ import { AvatarApiService } from '@api/user-service/services/avatar-api.service'
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
-import { ImageInfo } from '@app/models/image.model';
 import { EditRequest, UserPath } from '@app/types/edit-request';
 import { PendingApiService } from '@api/user-service/services/pending-api.service';
+import { BaseImageInfo } from '@app/models/image.model';
 
 export interface IFindUsers {
 	skipCount: number;
@@ -92,13 +92,12 @@ export class UserService {
 		return this._userApiService.editUserActive({ body: params });
 	}
 
-	public createAvatarImage(image: ImageInfo, userId: UUID): Observable<OperationResultResponse> {
+	public createAvatarImage(image: BaseImageInfo, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.createAvatar({
 			body: {
-				content: image.content,
 				userId,
+				content: image.content,
 				extension: image.extension,
-				name: image.name,
 				isCurrentAvatar: true,
 			},
 		});

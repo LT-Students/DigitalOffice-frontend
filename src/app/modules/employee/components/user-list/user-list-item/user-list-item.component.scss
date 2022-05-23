@@ -10,7 +10,7 @@
 	.link {
 		cursor: pointer;
 
-		&:hover {
+		&.name:hover {
 			text-decoration: underline;
 		}
 	}

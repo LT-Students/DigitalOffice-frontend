@@ -11,6 +11,7 @@ import { UserStatusPipe } from '@shared/pipes/user-status.pipe';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
+import { ImageCropperModule } from 'ngx-image-cropper';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -102,7 +103,7 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		PermissionDirective,
 		ButtonDirective,
 		SidebarItemComponent,
-  SidebarHeaderComponent,
+		SidebarHeaderComponent,
 	],
 	imports: [
 		CommonModule,
@@ -114,6 +115,7 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		LoadingBarModule,
 		LoadingBarRoutingModule,
 		MdePopoverModule,
+		ImageCropperModule,
 	],
 	exports: [
 		CommonModule,
@@ -121,6 +123,7 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		MaterialModule,
 		InfiniteScrollModule,
 		MdePopoverModule,
+		ImageCropperModule,
 		ReactiveFormsModule,
 		FormsModule,
 		ProfileImageComponent,
