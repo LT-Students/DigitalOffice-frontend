@@ -6,7 +6,8 @@
 		<div class="form__container">
             <do-form-row label="Город" class="form__field" [required]='true'>
                 <mat-form-field>
-                    <input matInput type="text" [formControlName]="EditPath.CITY" maxlength=200 />
+                    <input #city matInput type="text" [formControlName]="EditPath.CITY" maxlength="{{ MAX_CITY_LENGTH }}" />
+                    <mat-hint align="end">{{ city.value.length }}/{{ MAX_CITY_LENGTH }}</mat-hint>
                     <mat-error *ngIf="officeForm.controls[EditPath.CITY].errors?.['required']"
                     >Название города не должно быть пустым!
                     </mat-error>
@@ -29,6 +30,9 @@
             <do-form-row label="Название офиса" class="form__field">
                 <mat-form-field>
 				    <input matInput type="text" [formControlName]="EditPath.NAME" />
+                    <mat-error *ngIf="officeForm.controls[EditPath.NAME].errors?.['whitespace']"
+                    >Название офиса не может состоять только из пробелов!
+                    </mat-error>
                 </mat-form-field>
             </do-form-row>
         </div>

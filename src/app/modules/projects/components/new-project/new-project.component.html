@@ -14,18 +14,26 @@
                 <do-form-row label="Название проекта">
                     <mat-form-field>
                         <input
+                            #name
                             matInput
                             type="text"
                             formControlName="name"
                             placeholder="Введите название проекта"
-                            maxlength="150"
+                            maxlength="{{ MAX_NAME_LENGTH }}"
                             required
                         />
+                        <mat-hint align="end">{{ name.value.length }}/{{ MAX_NAME_LENGTH }}</mat-hint>
+                        <mat-error align='right' *ngIf="projectForm.controls['name'].errors?.['required']"
+                        >Название не должно быть пустым!
+                        </mat-error>
+                        <mat-error align='right' *ngIf="projectForm.controls['name'].errors?.['whitespace']"
+                        >Название не может состоять только из пробелов!
+                        </mat-error>
                     </mat-form-field>
                 </do-form-row>
                 <do-form-row label="Департамент">
                     <mat-form-field>
-                        <mat-select formControlName="departmentId" placeholder="Выберите департамент" required>
+                        <mat-select formControlName="departmentId" placeholder="Выберите департамент">
                             <mat-option *ngFor="let department of departments" [value]="department.id">
                                 {{ department.name }}
                             </mat-option>
@@ -59,7 +67,6 @@
                             matInput
                             formControlName="description"
                             placeholder="Дайте описание проекту"
-                            maxlength="300"
                         ></textarea>
                     </mat-form-field>
                 </do-form-row>

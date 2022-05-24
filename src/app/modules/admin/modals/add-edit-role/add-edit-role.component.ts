@@ -21,6 +21,8 @@ export class AddEditRoleComponent implements OnInit {
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	public readonly roleInfo?: RoleInfo;
+	public readonly MAX_NAME_LENGTH = 80;
+	public readonly MAX_ABOUT_LENGTH = 300;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) roleInfo: RoleInfo,
@@ -32,7 +34,7 @@ export class AddEditRoleComponent implements OnInit {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.roleForm = this._fb.group({
 			name: ['', [Validators.required, DoValidators.noWhitespaces]],
-			description: [''],
+			description: ['', [DoValidators.noWhitespaces]],
 			rights: this._fb.group({}, { validators: DoValidators.atLeastOneChecked }),
 		});
 

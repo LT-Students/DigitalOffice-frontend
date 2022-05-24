@@ -24,6 +24,7 @@ export class AddEditOfficeComponent {
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	private readonly _officeInfo?: InitialDataEditRequest<OfficePath> & { id: UUID };
+	public readonly MAX_CITY_LENGTH = 200;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) officeInfo: Required<OfficeInfo>,
@@ -35,7 +36,7 @@ export class AddEditOfficeComponent {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 
 		this.officeForm = this._fb.group({
-			[OfficePath.CITY]: ['', [Validators.required, DoValidators.noWhitespaces]],
+			[OfficePath.CITY]: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.matchMaxLength(200)]],
 			[OfficePath.ADDRESS]: ['', [Validators.required, DoValidators.noWhitespaces]],
 			[OfficePath.NAME]: ['', [DoValidators.noWhitespaces]],
 		});
