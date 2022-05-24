@@ -75,14 +75,14 @@ export class ContextMenuService {
 			.subscribe({
 				next: (communication?: CommunicationInfo) => {
 					if (communication) {
-						const communicationIndex = user?.communications?.findIndex(
+						const isNewCommunication = !user?.communications?.some(
 							(c: CommunicationInfo) => c.id === communication.id
 						);
 						const partialUser: Partial<UserInfo> = {
 							pendingInfo: {
 								invitationCommunicationId: communication.id,
 							},
-							communications: communicationIndex ? [...user.communications!, communication] : user.communications,
+							communications: isNewCommunication ? [...user.communications!, communication] : user.communications,
 						};
 						this.userList.editUserInList(user.id, partialUser);
 					}

@@ -59,17 +59,18 @@ export class UserRecoveryService {
 						)
 		).pipe(
 			switchMap((communicationId: string) =>
-				this.recoverCallback.call(this.userService, this.userId, communicationId)
-			),
-			tap((id) => {
-				const invitedCommunication: CommunicationInfo = {
-					id: id as string,
-					type: CommunicationType.Email,
-					value: recoverEmail.email,
-					visibleTo: CommunicationVisibleTo.AllUsers,
-				};
-				this.emailForRecovery$.next(invitedCommunication);
-			})
+				this.recoverCallback.call(this.userService, this.userId, communicationId).pipe(
+					tap(() => {
+						const invitedCommunication: CommunicationInfo = {
+							id: communicationId,
+							type: CommunicationType.Email,
+							value: recoverEmail.email,
+							visibleTo: CommunicationVisibleTo.AllUsers,
+						};
+						this.emailForRecovery$.next(invitedCommunication);
+					})
+				)
+			)
 		);
 	}
 
