@@ -12,7 +12,7 @@ export class AdminGuard implements CanLoad {
 
 	canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
 		return this._currentUserService.user$.pipe(
-			map((user) => user?.isAdmin ?? false),
+			map((user) => user.isAdmin),
 			tap((isAdmin) => {
 				if (!isAdmin) {
 					this._router.navigate(['']);
@@ -23,7 +23,7 @@ export class AdminGuard implements CanLoad {
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 		return this._currentUserService.user$.pipe(
-			map((user) => user?.isAdmin ?? false),
+			map((user) => user.isAdmin),
 			tap((isAdmin) => {
 				if (!isAdmin) {
 					this._router.navigate(['']);

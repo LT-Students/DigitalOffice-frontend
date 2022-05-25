@@ -12,6 +12,9 @@ import { OperationResultResponseCredentialsResponse } from '@api/user-service/mo
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { AppRoutes } from '@app/models/app-routes';
+import { UserService } from '@app/services/user/user.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { CredentialsResponse } from '@api/user-service/models/credentials-response';
 import { LocalStorageService } from '../local-storage.service';
 import { AuthRoutes } from '../../../modules/auth/models/auth-routes';
 
@@ -21,6 +24,7 @@ import { AuthRoutes } from '../../../modules/auth/models/auth-routes';
 export class AuthService {
 	constructor(
 		private authApiService: AuthApiService,
+		private userService: UserService,
 		private _currentUserService: CurrentUserService,
 		private credentialsApiService: CredentialsApiService,
 		private localStorageService: LocalStorageService,
@@ -52,7 +56,17 @@ export class AuthService {
 		createCredentialsRequest: CreateCredentialsRequest
 	): Observable<OperationResultResponseCredentialsResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
-			tap((response) => {
+			tap((response: OperationResultResponse<CredentialsResponse>) => {
+				if (response.body) {
+					this._setCredentialsToLocalStorage(response.body);
+				}
+			})
+		);
+	}
+
+	public reactivateUser(userId: string, password: string): Observable<OperationResultResponse<CredentialsResponse>> {
+		return this.userService.reactivateUser(userId, password).pipe(
+			tap((response: OperationResultResponse<CredentialsResponse>) => {
 				if (response.body) {
 					this._setCredentialsToLocalStorage(response.body);
 				}

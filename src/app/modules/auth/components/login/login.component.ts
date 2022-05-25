@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
@@ -39,15 +39,7 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	public ngOnInit(): void {
-		this.loginForm.valueChanges
-			.pipe(
-				tap(() => {
-					this.loginForm.setErrors(null);
-				})
-			)
-			.subscribe();
-	}
+	public ngOnInit(): void {}
 
 	public handleAutofill(autofill: AutofillEvent): void {
 		if (autofill.isAutofilled) {

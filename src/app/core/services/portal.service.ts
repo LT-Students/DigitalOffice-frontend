@@ -23,9 +23,7 @@ export class PortalService {
 	public setPortal(portalInfo: PortalInfo | null): void {
 		if (portalInfo) {
 			this.portal.next(portalInfo);
-			this.isPortalExists.next(true);
-		} else {
-			this.isPortalExists.next(false);
 		}
+		this.isPortalExists.next(!!portalInfo);
 	}
 }
