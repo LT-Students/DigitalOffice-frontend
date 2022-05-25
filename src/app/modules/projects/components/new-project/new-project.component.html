@@ -19,7 +19,7 @@
                             type="text"
                             formControlName="name"
                             placeholder="Введите название проекта"
-                            maxlength="{{ MAX_NAME_LENGTH }}"
+                            [maxlength]="MAX_NAME_LENGTH"
                             required
                         />
                         <mat-hint align="end">{{ name.value.length }}/{{ MAX_NAME_LENGTH }}</mat-hint>

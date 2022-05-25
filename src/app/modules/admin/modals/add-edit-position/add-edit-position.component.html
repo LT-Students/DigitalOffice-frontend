@@ -6,7 +6,7 @@
 		<div class="form__container">
             <do-form-row label="Название должности" class="form__field" [required]='true'>
                 <mat-form-field>
-                    <input #name matInput type="text" [formControlName]="EditPath.NAME" maxlength="{{ MAX_NAME_LENGTH }}" />
+                    <input #name matInput type="text" [formControlName]="EditPath.NAME" [maxlength]="MAX_NAME_LENGTH" />
                     <mat-hint align="end">{{ name.value.length }}/{{ MAX_NAME_LENGTH }}</mat-hint>
                     <mat-error *ngIf="positionForm.controls[EditPath.NAME].errors?.['required']"
                     >Название не должно быть пустым!
@@ -18,8 +18,8 @@
             </do-form-row>
             <do-form-row label="Описание" class="form__field">
                 <mat-form-field>
-				    <input #description matInput type="text" [formControlName]="EditPath.DESCRIPTION" maxlength="{{ MAX_ABOUT_LENGTH }}" />
-                    <mat-hint align="end">{{ description.value.length }}/{{ MAX_ABOUT_LENGTH }}</mat-hint>
+				    <input #description matInput type="text" [formControlName]="EditPath.DESCRIPTION" [maxlength]="MAX_DESCRIPTION_LENGTH" />
+                    <mat-hint align="end">{{ description.value.length }}/{{ MAX_DESCRIPTION_LENGTH }}</mat-hint>
                     <mat-error *ngIf="positionForm.controls[EditPath.DESCRIPTION].errors?.['whitespace']"
                     >Описание не может состоять только из пробелов!
                     </mat-error>

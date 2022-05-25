@@ -22,7 +22,7 @@ export class AddEditRoleComponent implements OnInit {
 	public loading$$: BehaviorSubject<boolean>;
 	public readonly roleInfo?: RoleInfo;
 	public readonly MAX_NAME_LENGTH = 80;
-	public readonly MAX_ABOUT_LENGTH = 300;
+	public readonly MAX_DESCRIPTION_LENGTH = 300;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) roleInfo: RoleInfo,

@@ -6,7 +6,7 @@
 		<div class="form__container">
             <do-form-row label="Город" class="form__field" [required]='true'>
                 <mat-form-field>
-                    <input #city matInput type="text" [formControlName]="EditPath.CITY" maxlength="{{ MAX_CITY_LENGTH }}" />
+                    <input #city matInput type="text" [formControlName]="EditPath.CITY" [maxlength]="MAX_CITY_LENGTH" />
                     <mat-hint align="end">{{ city.value.length }}/{{ MAX_CITY_LENGTH }}</mat-hint>
                     <mat-error *ngIf="officeForm.controls[EditPath.CITY].errors?.['required']"
                     >Название города не должно быть пустым!
