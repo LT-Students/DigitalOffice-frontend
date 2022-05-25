@@ -16,6 +16,7 @@ import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/a
 import { AppRoutes } from '@app/models/app-routes';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { UserInfo } from '@api/filter-service/models/user-info';
+import { DoValidators } from '@app/validators/do-validators';
 import { Team, TeamMember } from './team-cards';
 
 @Component({
@@ -33,6 +34,7 @@ export class NewProjectComponent implements OnInit {
 	public pluralTeamCount: { [k: string]: string };
 	public dataSource: MatTableDataSource<DepartmentUserInfo>;
 	public loading$$: BehaviorSubject<boolean>;
+	public readonly MAX_NAME_LENGTH = 150;
 
 	constructor(
 		private _formBuilder: FormBuilder,
@@ -54,9 +56,9 @@ export class NewProjectComponent implements OnInit {
 		this.departments = [];
 		this.dataSource = new MatTableDataSource();
 		this.projectForm = this._formBuilder.group({
-			name: ['', [Validators.required, Validators.maxLength(150)]],
-			departmentId: ['', [Validators.required]],
-			description: [null, [Validators.maxLength(300)]],
+			name: ['', [Validators.required, Validators.maxLength(150), DoValidators.noWhitespaces]],
+			departmentId: [''],
+			description: [null],
 			shortDescription: [null],
 			status: [ProjectStatusType.Active],
 		});

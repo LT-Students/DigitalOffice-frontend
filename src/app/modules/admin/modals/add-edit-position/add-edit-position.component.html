@@ -4,15 +4,28 @@
 	</h3>
 	<mat-dialog-content>
 		<div class="form__container">
-			<mat-form-field appearance="fill">
-				<mat-label>Название должности</mat-label>
-				<input matInput type="text" [formControlName]="EditPath.NAME" required />
-			</mat-form-field>
-			<mat-form-field appearance="fill">
-				<mat-label>Описание</mat-label>
-				<input matInput type="text" [formControlName]="EditPath.DESCRIPTION" />
-			</mat-form-field>
-		</div>
+            <do-form-row label="Название должности" class="form__field" [required]='true'>
+                <mat-form-field>
+                    <input #name matInput type="text" [formControlName]="EditPath.NAME" [maxlength]="MAX_NAME_LENGTH" />
+                    <mat-hint align="end">{{ name.value.length }}/{{ MAX_NAME_LENGTH }}</mat-hint>
+                    <mat-error *ngIf="positionForm.controls[EditPath.NAME].errors?.['required']"
+                    >Название не должно быть пустым!
+                    </mat-error>
+                    <mat-error *ngIf="positionForm.controls[EditPath.NAME].errors?.['whitespace']"
+                    >Название не может состоять только из пробелов!
+                    </mat-error>
+                </mat-form-field>
+            </do-form-row>
+            <do-form-row label="Описание" class="form__field">
+                <mat-form-field>
+				    <input #description matInput type="text" [formControlName]="EditPath.DESCRIPTION" [maxlength]="MAX_DESCRIPTION_LENGTH" />
+                    <mat-hint align="end">{{ description.value.length }}/{{ MAX_DESCRIPTION_LENGTH }}</mat-hint>
+                    <mat-error *ngIf="positionForm.controls[EditPath.DESCRIPTION].errors?.['whitespace']"
+                    >Описание не может состоять только из пробелов!
+                    </mat-error>
+			    </mat-form-field>
+            </do-form-row>
+        </div>
 	</mat-dialog-content>
 	<mat-dialog-actions class="flex flex_jc_center">
 		<button mat-button mat-dialog-close type="button">Отмена</button>

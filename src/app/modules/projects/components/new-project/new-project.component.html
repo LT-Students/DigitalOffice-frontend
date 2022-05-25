@@ -11,52 +11,65 @@
 				</div>
 			</div>
 			<div class="section__content section__content_general">
-				<mat-form-field appearance="fill">
-					<mat-label>Название проекта</mat-label>
-					<input
-						matInput
-						type="text"
-						formControlName="name"
-						placeholder="Введите название проекта"
-						maxlength="150"
-						required
-					/>
-				</mat-form-field>
-				<mat-form-field appearance="fill">
-					<mat-label>Департамент</mat-label>
-					<mat-select formControlName="departmentId" placeholder="Выберите департамент" required>
-						<mat-option *ngFor="let department of departments" [value]="department.id">
-							{{ department.name }}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field appearance="fill">
-					<mat-label>Короткое описание</mat-label>
-					<input
-						matInput
-						type="text"
-						formControlName="shortDescription"
-						maxlength="100"
-						placeholder="Короткое описание"
-					/>
-				</mat-form-field>
-				<mat-form-field appearance="fill">
-					<mat-label>Статус</mat-label>
-					<mat-select formControlName="status">
-						<mat-option *ngFor="let status of statuses" [value]="status.type">
-							{{ status.type | projectType | titlecase }}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<mat-form-field class="project-info__description" appearance="fill">
-					<mat-label>Описание</mat-label>
-					<textarea
-						matInput
-						formControlName="description"
-						placeholder="Дайте описание проекту"
-						maxlength="300"
-					></textarea>
-				</mat-form-field>
+                <do-form-row label="Название проекта">
+                    <mat-form-field>
+                        <input
+                            #name
+                            matInput
+                            type="text"
+                            formControlName="name"
+                            placeholder="Введите название проекта"
+                            [maxlength]="MAX_NAME_LENGTH"
+                            required
+                        />
+                        <mat-hint align="end">{{ name.value.length }}/{{ MAX_NAME_LENGTH }}</mat-hint>
+                        <mat-error align='right' *ngIf="projectForm.controls['name'].errors?.['required']"
+                        >Название не должно быть пустым!
+                        </mat-error>
+                        <mat-error align='right' *ngIf="projectForm.controls['name'].errors?.['whitespace']"
+                        >Название не может состоять только из пробелов!
+                        </mat-error>
+                    </mat-form-field>
+                </do-form-row>
+                <do-form-row label="Департамент">
+                    <mat-form-field>
+                        <mat-select formControlName="departmentId" placeholder="Выберите департамент">
+                            <mat-option *ngFor="let department of departments" [value]="department.id">
+                                {{ department.name }}
+                            </mat-option>
+                        </mat-select>
+				    </mat-form-field>
+                </do-form-row>
+                <do-form-row label="Короткое описание">
+                    <mat-form-field>
+                        <input
+                            matInput
+                            type="text"
+                            formControlName="shortDescription"
+                            maxlength="100"
+                            placeholder="Короткое описание"
+                        />
+                    </mat-form-field>
+                </do-form-row>
+                <do-form-row label="Статус">
+                    <mat-form-field>
+                        <mat-select formControlName="status">
+                            <mat-option *ngFor="let status of statuses" [value]="status.type">
+                                {{ status.type | projectType | titlecase }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </do-form-row>
+                <do-form-row label="Описание">
+                    <mat-form-field class="project-info__description">
+                        <mat-label></mat-label>
+                        <textarea
+                            matInput
+                            formControlName="description"
+                            placeholder="Дайте описание проекту"
+                        ></textarea>
+                    </mat-form-field>
+                </do-form-row>
 			</div>
 		</div>
 

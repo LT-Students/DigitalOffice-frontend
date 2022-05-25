@@ -24,6 +24,8 @@ export class AddEditPositionComponent {
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	private readonly _positionInfo?: InitialDataEditRequest<PositionPath> & { id: UUID };
+	public readonly MAX_NAME_LENGTH = 80;
+	public readonly MAX_DESCRIPTION_LENGTH = 350;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) positionInfo: Required<PositionInfo>,
