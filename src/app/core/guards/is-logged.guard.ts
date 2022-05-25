@@ -1,26 +1,23 @@
 import { Injectable } from '@angular/core';
 import {
+	ActivatedRouteSnapshot,
 	CanActivate,
 	CanLoad,
 	Route,
-	UrlSegment,
-	ActivatedRouteSnapshot,
-	RouterStateSnapshot,
-	UrlTree,
 	Router,
+	RouterStateSnapshot,
+	UrlSegment,
+	UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
-import { PortalService } from '@app/services/portal.service';
+import { AuthService } from '@app/services/auth/auth.service';
 import { AppRoutes } from '@app/models/app-routes';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class InstallerGuard implements CanActivate, CanLoad {
-	private redirectUrl = this.router.createUrlTree([AppRoutes.Auth]);
-
-	constructor(private portalService: PortalService, private router: Router) {}
+export class IsLoggedGuard implements CanActivate, CanLoad {
+	constructor(private authService: AuthService, private router: Router) {}
 
 	canActivate(
 		route: ActivatedRouteSnapshot,
@@ -36,10 +33,7 @@ export class InstallerGuard implements CanActivate, CanLoad {
 		return this.canAccess();
 	}
 
-	private canAccess(): Observable<boolean | UrlTree> {
-		return this.portalService.isPortalExists$.pipe(
-			first(),
-			map((portalExists: boolean) => (portalExists ? this.redirectUrl : true))
-		);
+	private canAccess(): boolean | UrlTree {
+		return !this.authService.isAuthenticated() ? true : this.router.createUrlTree([AppRoutes.TimeTrack]);
 	}
 }

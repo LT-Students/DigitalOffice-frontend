@@ -8,17 +8,21 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 	providedIn: 'root',
 })
 export class SignupGuard implements CanActivate {
-	constructor(private _credentialsService: CredentialsService, private _router: Router) {}
+	private redirectUrl = this.router.createUrlTree(['/auth/login']);
+
+	constructor(private credentialsService: CredentialsService, private router: Router) {}
 
 	public canActivate(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		const redirectUrl = this._router.createUrlTree(['/auth/login']);
-		return this._credentialsService.checkPendingCredentials(route.queryParamMap.get('userId') ?? '').pipe(
-			map((response) => !!response.body),
-			switchMap((pendingStatus) => iif(() => pendingStatus, of(true), of(redirectUrl))),
-			catchError(() => of(redirectUrl))
-		);
+		const userId = route.queryParamMap.get('userId');
+		return userId
+			? this.credentialsService.checkPendingCredentials(userId).pipe(
+					map((response) => !!response.body),
+					switchMap((pendingStatus) => iif(() => pendingStatus, of(true), of(this.redirectUrl))),
+					catchError(() => of(this.redirectUrl))
+			  )
+			: this.redirectUrl;
 	}
 }

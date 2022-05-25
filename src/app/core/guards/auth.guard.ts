@@ -7,47 +7,42 @@ import {
 	ActivatedRouteSnapshot,
 	RouterStateSnapshot,
 	CanActivate,
+	UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AppRoutes } from '@app/models/app-routes';
 import { AuthService } from '../services/auth/auth.service';
-import { AuthRoutes } from '../../modules/auth/models/auth-routes';
-import { AdminRoutes } from '../../modules/admin/models/admin-routes';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthGuard implements CanLoad, CanActivate {
-	constructor(private _authenticationService: AuthService, private _router: Router) {}
+	constructor(private authService: AuthService, private router: Router) {}
 
-	canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
-		if (this._authenticationService.isAuthenticated()) {
-			return true;
-		} else {
-			this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn]);
-			return false;
-		}
+	canLoad(
+		route: Route,
+		segments: UrlSegment[]
+	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+		const url = this.router.getCurrentNavigation()?.extractedUrl.toString();
+		return this.canAccess(url);
 	}
 
-	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		if (this._authenticationService.isAuthenticated()) {
-			if (route.routeConfig?.path === 'login') {
-				this._router.navigate([AppRoutes.Admin, AdminRoutes.Dashboard]);
-				return false;
-			}
-			return true;
-		} else {
-			if (route.routeConfig?.path === 'login') {
-				return true;
-			} else {
-				this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn], {
+	canActivate(
+		route: ActivatedRouteSnapshot,
+		state: RouterStateSnapshot
+	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+		return this.canAccess(state.url);
+	}
+
+	private canAccess(url?: string): boolean | UrlTree {
+		url = url && url !== '/' ? url : undefined;
+		return this.authService.isAuthenticated()
+			? true
+			: this.router.createUrlTree([AppRoutes.Auth], {
 					queryParams: {
-						return: state.url,
+						return: url,
 					},
-				});
-				return false;
-			}
-		}
+			  });
 	}
 }

@@ -1,11 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, tap } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
-import { User } from '@app/models/user/user.model';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AppRoutes } from '@app/models/app-routes';
@@ -31,7 +30,12 @@ export class LoginComponent implements OnInit {
 	public loginForm: FormGroup;
 	public isLoading$$: BehaviorSubject<boolean>;
 
-	constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) {
+	constructor(
+		private authService: AuthService,
+		private router: Router,
+		private formBuilder: FormBuilder,
+		private route: ActivatedRoute
+	) {
 		this.isLoading$$ = new BehaviorSubject<boolean>(false);
 		this.loginForm = this.formBuilder.group({
 			username: ['', Validators.required],
@@ -39,15 +43,7 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	public ngOnInit(): void {
-		this.loginForm.valueChanges
-			.pipe(
-				tap(() => {
-					this.loginForm.setErrors(null);
-				})
-			)
-			.subscribe();
-	}
+	public ngOnInit(): void {}
 
 	public handleAutofill(autofill: AutofillEvent): void {
 		if (autofill.isAutofilled) {
@@ -78,10 +74,15 @@ export class LoginComponent implements OnInit {
 					return throwError(error);
 				})
 			)
-			.subscribe((user: User) => {
-				if (user) {
-					this.router.navigate([AppRoutes.TimeTrack]);
-				}
+			.subscribe({
+				next: () => {
+					const returnUrl = this.route.snapshot.queryParamMap.get('return');
+					if (returnUrl) {
+						this.router.navigateByUrl(returnUrl);
+					} else {
+						this.router.navigate([AppRoutes.TimeTrack]);
+					}
+				},
 			});
 	}
 }

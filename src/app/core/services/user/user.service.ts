@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { UserApiService } from '@api/user-service/services/user-api.service';
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
-import { EditUserActiveRequest, UserInfo, UserResponse } from '@api/user-service/models';
+import { CredentialsResponse, EditUserActiveRequest, UserInfo, UserResponse } from '@api/user-service/models';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
@@ -16,6 +16,7 @@ import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/respon
 import { EditRequest, UserPath } from '@app/types/edit-request';
 import { PendingApiService } from '@api/user-service/services/pending-api.service';
 import { BaseImageInfo } from '@app/models/image.model';
+import { CredentialsApiService } from '@api/user-service/services/credentials-api.service';
 
 export interface IFindUsers {
 	skipCount: number;
@@ -42,6 +43,7 @@ export class UserService {
 		private _userApiService: UserApiService,
 		private _imageApiService: AvatarApiService,
 		private pendingApiService: PendingApiService,
+		private credentialsApiService: CredentialsApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
 
@@ -113,5 +115,9 @@ export class UserService {
 
 	public resendInvitation(userId: string, communicationId: string): Observable<OperationResultResponse> {
 		return this.pendingApiService.resendinvitationPending({ userId, communicationId });
+	}
+
+	public reactivateUser(userId: string, password: string): Observable<OperationResultResponse<CredentialsResponse>> {
+		return this.credentialsApiService.reactivateCredentials({ body: { userId, password } });
 	}
 }

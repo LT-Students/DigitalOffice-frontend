@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
+	ActivatedRouteSnapshot,
 	CanActivate,
 	CanLoad,
 	Route,
-	UrlSegment,
-	ActivatedRouteSnapshot,
-	RouterStateSnapshot,
-	UrlTree,
 	Router,
+	RouterStateSnapshot,
+	UrlSegment,
+	UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
@@ -17,8 +17,8 @@ import { AppRoutes } from '@app/models/app-routes';
 @Injectable({
 	providedIn: 'root',
 })
-export class InstallerGuard implements CanActivate, CanLoad {
-	private redirectUrl = this.router.createUrlTree([AppRoutes.Auth]);
+export class PortalGuard implements CanActivate, CanLoad {
+	private installerUrl = this.router.createUrlTree([AppRoutes.Installer]);
 
 	constructor(private portalService: PortalService, private router: Router) {}
 
@@ -39,7 +39,9 @@ export class InstallerGuard implements CanActivate, CanLoad {
 	private canAccess(): Observable<boolean | UrlTree> {
 		return this.portalService.isPortalExists$.pipe(
 			first(),
-			map((portalExists: boolean) => (portalExists ? this.redirectUrl : true))
+			map((portalExists: boolean) => {
+				return portalExists ? true : this.installerUrl;
+			})
 		);
 	}
 }
