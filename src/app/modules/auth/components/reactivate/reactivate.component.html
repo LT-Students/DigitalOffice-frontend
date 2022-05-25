@@ -1,0 +1,18 @@
+<form class="auth" [formGroup]="form" (ngSubmit)="reactivate()" autocomplete="off">
+	<div class="text-disabled">Введи пароль из письма.</div>
+	<do-form-row class="auth-input">
+		<mat-form-field>
+			<do-password placeholder="Пароль" formControlName="password"></do-password>
+		</mat-form-field>
+	</do-form-row>
+	<button
+		[loading]="isWaiting$ | async"
+		mat-flat-button
+		color="primary"
+		class="submit"
+		type="submit"
+		[disabled]="form.invalid"
+	>
+		Войти
+	</button>
+</form>
