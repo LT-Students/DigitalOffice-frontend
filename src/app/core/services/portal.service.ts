@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PortalInfo } from '@app/services/admin/admin.service';
 import { Observable, ReplaySubject } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
 	providedIn: 'root',
@@ -12,7 +13,7 @@ export class PortalService {
 	private isPortalExists: ReplaySubject<boolean>;
 	public readonly isPortalExists$: Observable<boolean>;
 
-	constructor() {
+	constructor(private title: Title) {
 		this.portal = new ReplaySubject<PortalInfo>(1);
 		this.portal$ = this.portal.asObservable();
 
@@ -23,6 +24,7 @@ export class PortalService {
 	public setPortal(portalInfo: PortalInfo | null): void {
 		if (portalInfo) {
 			this.portal.next(portalInfo);
+			this.title.setTitle(portalInfo.portalName);
 		}
 		this.isPortalExists.next(!!portalInfo);
 	}
