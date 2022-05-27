@@ -1,7 +1,7 @@
 <ng-container *ngIf="!isEditMode; else emailInput">
 	<mat-checkbox (change)="handleCheck()" [checked]="value.checked" color="primary">{{ value.email }}</mat-checkbox>
 	<button class="email-edit-btn" *ngIf="canEdit" mat-icon-button (click)="isEditMode = true" data-test="edit-email">
-		<mat-icon><img src="assets/svg/edit-task.svg" alt="edit" /></mat-icon>
+		<mat-icon color="warn" [svgIcon]="Icons.Edit"></mat-icon>
 	</button>
 	<div *ngIf="ngControl.errors?.['emailExists']" class="mat-body-2 warn email-error">
 		E-mail уже зарегистрирован в системе!
@@ -23,12 +23,12 @@
 				/>
 				<mat-error>Некорректный e-mail!</mat-error>
 				<button class="email-save" matSuffix mat-icon-button (click)="editEmail()" data-test="save-email">
-					<mat-icon color="primary">done</mat-icon>
+					<mat-icon color="primary" [svgIcon]="Icons.Done"></mat-icon>
 				</button>
 			</mat-form-field>
 		</do-form-row>
-		<button class="clear" mat-icon-button (click)="cancelEdit()" data-test="close-input">
-			<mat-icon color="warn">clear</mat-icon>
+		<button mat-icon-button (click)="cancelEdit()" data-test="close-input">
+			<mat-icon color="warn" [svgIcon]="Icons.Close"></mat-icon>
 		</button>
 	</div>
 </ng-template>

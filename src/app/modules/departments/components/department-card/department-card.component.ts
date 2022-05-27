@@ -13,6 +13,7 @@ import { EMPTY, of } from 'rxjs';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
+import { Icons } from '@shared/modules/icons/icons';
 
 @Component({
 	selector: 'do-department-card',
@@ -21,6 +22,7 @@ import { AppRoutes } from '@app/models/app-routes';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepartmentCardComponent {
+	public readonly Icons = Icons;
 	public departmentInfo: DepartmentInfo | undefined;
 	private _departmentId: string;
 	public positions: string[];
@@ -82,7 +84,7 @@ export class DepartmentCardComponent {
 		this._modalService
 			.openModal<AddEditDepartmentComponent>(AddEditDepartmentComponent, ModalWidth.M, {
 				departmentInfo: this.departmentInfo,
-				directors$: of(this.dataSource.data.map(u => u.user))
+				directors$: of(this.dataSource.data.map((u) => u.user)),
 			})
 			.afterClosed()
 			.subscribe((result) => {

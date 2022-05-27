@@ -5,9 +5,7 @@
 			(dateSelection)="chosenMonthHandler($event)"
 		></do-title-datepicker>
 		<button mat-flat-button color="accent" (click)="onDownload()">
-			<span>
-				<img src="../../../../../assets/svg/download.svg" alt="download" class="header__icon" /> Выгрузить часы
-			</span>
+			<mat-icon [svgIcon]="Icons.Download"></mat-icon><span>Выгрузить часы</span>
 		</button>
 	</div>
 	<ng-container *ngIf="statInfo$ | async as statInfo; else loader">
@@ -15,7 +13,7 @@
 			<mat-form-field appearance="fill" class="timelist__search-form">
 				<mat-label>Поиск по фамилии и имени</mat-label>
 				<input matInput type="search" />
-				<mat-icon matPrefix>search</mat-icon>
+				<mat-icon matPrefix [svgIcon]="Icons.Search"></mat-icon>
 			</mat-form-field>
 			<h3 class="h3">Найдено {{ totalCount | async | i18nPlural: employeeCountMap }}</h3>
 			<table class="table timelist__table">
@@ -170,7 +168,7 @@
 										</td>
 										<td class="cell cell__icon">
 											<button mat-icon-button (click)="toggleEditMode(true, workTime)">
-												<img src="../../../../../assets/svg/edit.svg" alt="edit" />
+												<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 											</button>
 										</td>
 									</tr>

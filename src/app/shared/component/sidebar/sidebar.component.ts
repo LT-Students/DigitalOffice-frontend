@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppRoutes } from '@app/models/app-routes';
 import { Link } from '@shared/component/sidebar/sidebar-types';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
+import { Icons } from '@shared/modules/icons/icons';
 import { AdminRoutes } from '../../../modules/admin/models/admin-routes';
 
 @Component({
@@ -16,32 +17,32 @@ export class SidebarComponent {
 		{
 			title: 'Новости',
 			path: AppRoutes.News,
-			icon: 'newspaper',
+			icon: Icons.News,
 		},
 		{
 			title: 'Учет времени',
 			path: AppRoutes.TimeTrack,
-			icon: 'watch_later',
+			icon: Icons.TimeTrack,
 		},
 		{
 			title: 'Доска проектов',
 			path: AppRoutes.Projects,
-			icon: 'desktop_mac',
+			icon: Icons.Projects,
 		},
 		{
 			title: 'Сотрудники',
 			path: AppRoutes.Users,
-			icon: 'group',
+			icon: Icons.Users,
 		},
 		{
 			title: 'Департаменты',
 			path: AppRoutes.Departments,
-			icon: 'groups',
+			icon: Icons.Departments,
 		},
 		{
 			title: 'Администрирование',
 			path: [AppRoutes.Admin, AdminRoutes.Dashboard],
-			icon: 'settings',
+			icon: Icons.Administration,
 		},
 	];
 	public isWideScreen$ = this.breakpoint

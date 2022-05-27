@@ -10,9 +10,7 @@
 						[progressive]="true"
 					></do-profile-image>
 					<label class="mat-body-1 employee-info__upload-button" (click)="onAvatarUploadDialog()">
-						<mat-icon class="employee-info__upload-icon">
-							<img src="assets/svg/arrow-upload-file.svg" alt="Upload photo" />
-						</mat-icon>
+						<mat-icon class="employee-info__upload-icon">upload</mat-icon>
 						Обновить фото
 					</label>
 				</div>
@@ -27,9 +25,9 @@
 				<div class="employee-info__general-header">
 					<h4>Общие сведения</h4>
 					<div class="employee-info__edit-button">
-						<button mat-button (click)="editUser()">
-							<span class="employee-info__edit mat-body-2 text-light_4">Редактировать профиль</span>
-							<img src="../../../../../assets/svg/edit.svg" alt="edit_info" />
+						<button doButton (click)="editUser()">
+							<span class="employee-info__edit mat-body-2">Редактировать профиль</span>
+							<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 						</button>
 					</div>
 				</div>

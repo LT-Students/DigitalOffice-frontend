@@ -9,6 +9,7 @@ import { EMPTY, iif } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 import { AlertService } from '@app/services/alert.service';
+import { Icons } from '@shared/modules/icons/icons';
 import { EmployeePageService } from '../../../services/employee-page.service';
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';
@@ -20,6 +21,7 @@ import { EditContactComponent } from './edit-contact/edit-contact.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommunicationsComponent implements OnInit {
+	public readonly Icons = Icons;
 	public communications: CommunicationInfo[];
 	public employeeId: string;
 	public emailContactCount: number;
@@ -59,7 +61,7 @@ export class CommunicationsComponent implements OnInit {
 			.open<OperationResultResponse>(AddContactComponent, {
 				width: ModalWidth.M,
 				data: this.employeeId,
-				viewContainerRef: this.viewContainerRef
+				viewContainerRef: this.viewContainerRef,
 			})
 			.afterClosed()
 			.subscribe((result) => {
@@ -81,7 +83,7 @@ export class CommunicationsComponent implements OnInit {
 			.open<{ response: OperationResultResponse; value: string }>(EditContactComponent, {
 				width: ModalWidth.M,
 				data: modalContentConfig,
-				viewContainerRef: this.viewContainerRef
+				viewContainerRef: this.viewContainerRef,
 			})
 			.afterClosed()
 			.subscribe((result) => {

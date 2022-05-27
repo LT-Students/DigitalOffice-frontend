@@ -15,6 +15,7 @@ import { EMPTY } from 'rxjs';
 import { ProjectUserRoleType } from '@api/project-service/models';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { AppRoutes } from '@app/models/app-routes';
+import { Icons } from '@shared/modules/icons/icons';
 import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
 
 @Component({
@@ -24,6 +25,7 @@ import { EditProjectComponent } from '../../modals/edit-project/edit-project.com
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectPageComponent implements OnInit {
+	public readonly Icons = Icons;
 	public projectId: string;
 	public projectInfo: ProjectInfo | undefined;
 	public projectCreatedAt: Date;

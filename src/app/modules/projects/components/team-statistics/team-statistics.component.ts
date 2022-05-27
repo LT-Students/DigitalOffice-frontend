@@ -14,6 +14,7 @@ import { DatePeriod } from '@app/types/date-period';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
+import { Icons } from '@shared/modules/icons/icons';
 
 export interface EmployeeStats {
 	id?: string;
@@ -38,6 +39,7 @@ export interface EmployeeStats {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TeamStatisticsComponent implements OnInit {
+	public readonly Icons = Icons;
 	@Input() projectId: string;
 
 	public hoursGroup: FormGroup;

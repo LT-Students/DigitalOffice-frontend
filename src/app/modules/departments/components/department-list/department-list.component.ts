@@ -11,6 +11,7 @@ import { OperationResultResponse, OperationResultStatusType } from '@app/types/o
 import { DepartmentService } from '@app/services/department/department.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { Icons } from '@shared/modules/icons/icons';
 
 @Component({
 	selector: 'do-department-list',
@@ -19,6 +20,7 @@ import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/a
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DepartmentListComponent implements AfterViewInit {
+	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	private _departmentParams: ReplaySubject<IFindRequest>;

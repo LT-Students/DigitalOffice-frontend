@@ -1,19 +1,17 @@
-<do-breadcrumbs
-	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление должностями' }]"
-></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Должности</h3>
 		<button mat-flat-button color="accent" (click)="onAddEditPosition()">+ Создать должность</button>
 	</div>
 	<div class="filters" [formGroup]="filters">
-		<mat-form-field class="filters__status" appearance="fill">
-			<mat-label>Статус</mat-label>
-			<mat-select formControlName="showDeactivated">
-				<mat-option [value]="false">Активные</mat-option>
-				<mat-option [value]="true">Все</mat-option>
-			</mat-select>
-		</mat-form-field>
+		<do-form-row label="Статус" class="filters__status">
+			<mat-form-field>
+				<mat-select formControlName="showDeactivated">
+					<mat-option [value]="false">Активные</mat-option>
+					<mat-option [value]="true">Все</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-row>
 	</div>
 	<ng-container *ngIf="positions$ | async as positions">
 		<table *ngIf="positions.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
@@ -43,22 +41,18 @@
 					</td>
 					<td class="cell text-align_right">
 						<button mat-icon-button (click)="onAddEditPosition(position)">
-							<mat-icon>
-								<img src="assets/svg/edit.svg" alt="edit" />
-							</mat-icon>
+							<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 						</button>
 						<button
 							*ngIf="position.isActive; else restore"
 							mat-icon-button
 							(click)="onDeletePosition(position)"
 						>
-							<mat-icon>
-								<img src="assets/svg/delete.svg" alt="edit" />
-							</mat-icon>
+							<mat-icon [svgIcon]="Icons.Delete"> </mat-icon>
 						</button>
 						<ng-template #restore>
 							<button mat-icon-button (click)="onRestorePosition(position)">
-								<mat-icon class="restore-icon">restore</mat-icon>
+								<mat-icon [svgIcon]="Icons.Unarchive"></mat-icon>
 							</button>
 						</ng-template>
 					</td>

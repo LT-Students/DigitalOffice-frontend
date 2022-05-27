@@ -77,13 +77,11 @@
 							mat-icon-button
 							(click)="onDeleteDepartment(department, $event)"
 						>
-							<mat-icon>
-								<img src="../../../../../assets/svg/delete.svg" alt="edit" />
-							</mat-icon>
+							<mat-icon [svgIcon]="Icons.Delete"></mat-icon>
 						</button>
 						<ng-template #restore>
 							<button mat-icon-button (click)="onRestoreDepartment(department, $event)">
-								<mat-icon class="restore-icon">restore</mat-icon>
+								<mat-icon [svgIcon]="Icons.Unarchive"></mat-icon>
 							</button>
 						</ng-template>
 					</td>

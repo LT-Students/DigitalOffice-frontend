@@ -2,7 +2,7 @@
 	<div class="header">
 		<h4 class="header__title">Контакты</h4>
 		<button type="button" mat-icon-button (click)="onAddClick()" class="mat-body-1">
-			<mat-icon>add</mat-icon>
+			<mat-icon [svgIcon]="Icons.Add"></mat-icon>
 		</button>
 	</div>
 	<div class="communications__contacts">
@@ -17,7 +17,7 @@
 			</div>
 			<div class="communications__controls">
 				<button type="button" mat-icon-button (click)="onEditClick(communication, $event)">
-					<img src="../../../../../../assets/svg/edit.svg" alt="edit" />
+					<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 				</button>
 				<button
 					*ngIf="!(communication.type === 'Email' && emailContactCount < 2)"
@@ -26,7 +26,7 @@
 					class="mat-body-1"
 					(click)="onDeleteClick(communication, $event)"
 				>
-					<mat-icon> delete_outline</mat-icon>
+					<mat-icon [svgIcon]="Icons.Delete"></mat-icon>
 				</button>
 			</div>
 		</div>

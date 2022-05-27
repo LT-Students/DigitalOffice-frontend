@@ -15,6 +15,7 @@ import { ControlValueAccessor, FormControl, NgControl, Validators } from '@angul
 import { DoValidators } from '@app/validators/do-validators';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Icons } from '@shared/modules/icons/icons';
 
 export class EmailValue {
 	checked: boolean;
@@ -36,6 +37,7 @@ export class EmailValue {
 })
 export class EmailItemComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	public static uniqueId = 0;
+	public readonly Icons = Icons;
 
 	@Input() canEdit = false;
 	@Output() delete = new EventEmitter<void>();

@@ -3,9 +3,7 @@
 		<div class="card__name-edit-project">
 			<h1 class="card__title">{{ projectInfo?.name }}</h1>
 			<button mat-flat-button class="card__button-edit" (click)="openEditProjectModal()">
-				<mat-icon>
-					<img class="card__button-edit__img" src="../../../../../assets/svg/edit.svg" alt="edit" />
-				</mat-icon>
+				<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 			</button>
 		</div>
 		<div class="card__splitter"></div>
@@ -67,7 +65,7 @@
 					<div class="search-actions">
 						<div class="search">
 							<mat-form-field class="search__name" appearance="fill">
-								<mat-icon matPrefix class="search__button">search</mat-icon>
+								<mat-icon matPrefix [svgIcon]="Icons.Search"></mat-icon>
 								<mat-label>Поиск по фамилии и имени</mat-label>
 								<input matInput type="search" placeholder="Романов Владислав" />
 							</mat-form-field>
@@ -86,7 +84,7 @@
 							<div>{{ selection.selected.length | i18nPlural: employeeCountMap }}</div>
 							<div [matMenuTriggerFor]="menu" class="actions__menu">
 								<div>Действия</div>
-								<div><img src="../../../../../assets/svg/arrow-down-grey.svg" alt="arrow-down" /></div>
+								<div><mat-icon [svgIcon]="Icons.ArrowDown"></mat-icon></div>
 							</div>
 							<mat-menu #menu>
 								<button mat-menu-item (click)="removeFromProject()">Удалить сотрудников</button>
@@ -125,7 +123,7 @@
 									<do-profile-image
 										class="profile-photo"
 										[image]="element?.avatarImage"
-                                        [userInitials]="element"
+										[userInitials]="element"
 									></do-profile-image>
 									<div>
 										<div>{{ element.firstName }} {{ element.lastName }}</div>

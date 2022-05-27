@@ -43,7 +43,11 @@ export class AuthService {
 
 	public logout(): void {
 		this._removeCredentialsFromLocalStorage();
-		this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn]);
+		this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn], {
+			queryParams: {
+				return: this._router.url,
+			},
+		});
 	}
 
 	public isAuthenticated(): boolean {
