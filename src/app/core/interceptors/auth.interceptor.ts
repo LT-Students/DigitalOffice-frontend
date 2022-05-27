@@ -3,7 +3,7 @@ import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } fro
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 
 import { Router } from '@angular/router';
-import { switchMap, take } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { LocalStorageService } from '../services/local-storage.service';
 
@@ -75,6 +75,7 @@ export class AuthInterceptor implements HttpInterceptor {
 			);
 		} else {
 			return this._accessTokenSubject.pipe(
+				filter((token: string | undefined) => !!token),
 				take(1),
 				switchMap((token: string | undefined) => {
 					return next.handle(this._addAuthorizationHeader(req, token));
