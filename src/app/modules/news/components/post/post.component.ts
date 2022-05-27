@@ -6,11 +6,12 @@ import { map, mergeMap, switchMap } from 'rxjs/operators';
 import { NewsService } from '@app/services/news/news.service';
 import { OperationResultStatusType } from '@api/news-service/models';
 import { DialogService } from '@app/services/dialog.service';
+import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { Icons } from '@shared/modules/icons/icons';
 import { Article } from '../../models/news.model';
 import { NewsFeedService } from '../../services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-post',
@@ -19,6 +20,7 @@ import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostComponent {
+	public readonly Icons = Icons;
 	public article$: Observable<Article | undefined>;
 
 	constructor(

@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OfficeService } from '@app/services/company/office.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Icons } from '@shared/modules/icons/icons';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 
 @Component({
@@ -18,6 +19,7 @@ import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-of
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfficeListComponent implements AfterViewInit {
+	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public offices$!: Observable<OperationResultResponse<OfficeInfo[]>>;

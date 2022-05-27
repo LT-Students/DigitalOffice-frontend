@@ -12,6 +12,7 @@ import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { IconsModule } from '@shared/modules/icons/icons.module';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -116,11 +117,13 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		LoadingBarRoutingModule,
 		MdePopoverModule,
 		ImageCropperModule,
+		IconsModule,
 	],
 	exports: [
 		CommonModule,
 		RouterModule,
 		MaterialModule,
+		IconsModule,
 		InfiniteScrollModule,
 		MdePopoverModule,
 		ImageCropperModule,

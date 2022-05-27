@@ -9,6 +9,7 @@ import { OperationResultResponse, OperationResultStatusType } from '@app/types/o
 import { IPositionInfo, PositionService } from '@app/services/position/position.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PositionInfo } from '@api/position-service/models/position-info';
+import { Icons } from '@shared/modules/icons/icons';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 
 @Component({
@@ -18,6 +19,7 @@ import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edi
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PositionListComponent implements AfterViewInit {
+	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public positions$!: Observable<OperationResultResponse<IPositionInfo[]>>;

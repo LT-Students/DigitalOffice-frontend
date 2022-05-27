@@ -13,13 +13,15 @@ import {
 	LeaveTimeInfo,
 	OperationResultResponse,
 	OperationResultStatusType,
-	UserInfo, UserStatInfo,
+	UserInfo,
+	UserStatInfo,
 	WorkTimeInfo,
 	WorkTimeMonthLimitInfo,
 } from '@api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { DoValidators } from '@app/validators/do-validators';
 import { DateTime } from 'luxon';
+import { Icons } from '@shared/modules/icons/icons';
 
 interface EditableWorkTime extends WorkTimeInfo {
 	editMode: boolean;
@@ -44,6 +46,7 @@ interface MappedStatInfo {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DirectorsTimelistComponent implements OnInit {
+	public readonly Icons = Icons;
 	public hoursGroup: FormGroup;
 
 	private _departmentId!: string;
@@ -83,7 +86,9 @@ export class DirectorsTimelistComponent implements OnInit {
 			}),
 			map(
 				(result: FindResultResponseStatInfo) =>
-					result.body?.[0].usersStats?.map((statInfo: UserStatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
+					result.body?.[0].usersStats?.map((statInfo: UserStatInfo) =>
+						this._mapStatInfo(statInfo)
+					) as MappedStatInfo[]
 			)
 		);
 	}
@@ -178,7 +183,7 @@ export class DirectorsTimelistComponent implements OnInit {
 			year: this.selectedPeriod.startDate.year,
 			takeCount: this.pageSize,
 			skipCount: this.pageSize * this.pageIndex,
-			departmentsIds: [this._departmentId]
+			departmentsIds: [this._departmentId],
 		};
 
 		return this._timeService.findStat(params).pipe(
@@ -187,7 +192,9 @@ export class DirectorsTimelistComponent implements OnInit {
 			}),
 			map(
 				(result: FindResultResponseStatInfo) =>
-					result.body?.[0].usersStats?.map((statInfo: UserStatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
+					result.body?.[0].usersStats?.map((statInfo: UserStatInfo) =>
+						this._mapStatInfo(statInfo)
+					) as MappedStatInfo[]
 			)
 		);
 	}

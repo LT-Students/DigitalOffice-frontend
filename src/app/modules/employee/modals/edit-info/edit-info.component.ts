@@ -9,6 +9,7 @@ import { createEditRequest } from '@app/utils/utils';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { first, map, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Icons } from '@shared/modules/icons/icons';
 import { EmployeePageService } from '../../services/employee-page.service';
 
 @Component({
@@ -18,6 +19,7 @@ import { EmployeePageService } from '../../services/employee-page.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditInfoComponent implements OnInit {
+	public readonly Icons = Icons;
 	public user: Observable<User>;
 	public isEditMode = false;
 	public editForm: FormGroup = this.initForm();

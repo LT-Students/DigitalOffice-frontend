@@ -8,7 +8,7 @@
 	matTooltipPosition="right"
 >
 	<div class="icon">
-		<mat-icon>{{ link.icon }}</mat-icon>
+		<mat-icon [svgIcon]="link.icon"></mat-icon>
 	</div>
 	<span class="title" *ngIf="_isWideScreen">{{ link.title }}</span>
 </a>

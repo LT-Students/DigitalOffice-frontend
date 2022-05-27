@@ -12,6 +12,7 @@ import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { ModalWidth } from '@app/services/dialog.service';
+import { Icons } from '@shared/modules/icons/icons';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadImageComponent } from '../../modals/upload-image/upload-image.component';
 import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
@@ -23,6 +24,7 @@ import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainInfoComponent implements OnInit {
+	public readonly Icons = Icons;
 	public loading: BehaviorSubject<boolean>;
 
 	public userStatus: typeof UserStatus = UserStatus;
@@ -76,7 +78,7 @@ export class MainInfoComponent implements OnInit {
 			data: this.user$,
 			width: ModalWidth.L,
 			autoFocus: false,
-			viewContainerRef: this.viewContainer
+			viewContainerRef: this.viewContainer,
 		});
 	}
 
@@ -86,7 +88,7 @@ export class MainInfoComponent implements OnInit {
 			height: 'auto',
 			autoFocus: false,
 			panelClass: 'upload-image-dialog',
-			viewContainerRef: this.viewContainer
+			viewContainerRef: this.viewContainer,
 		});
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {

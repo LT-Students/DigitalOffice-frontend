@@ -9,6 +9,7 @@ import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Icons } from '@shared/modules/icons/icons';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 
 @Component({
@@ -18,6 +19,8 @@ import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.c
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageRolesComponent implements AfterViewInit {
+	public readonly Icons = Icons;
+
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public roles$!: Observable<OperationResultResponse<RoleInfo[]>>;
