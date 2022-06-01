@@ -55,7 +55,7 @@ export class AuthInterceptor implements HttpInterceptor {
 	}
 
 	private _logoutAndRedirect(error: string): Observable<HttpEvent<any>> {
-		this.authService.logout();
+		this.authService.logout(true);
 
 		return throwError(error);
 	}
