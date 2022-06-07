@@ -79,7 +79,7 @@ export enum OfficePath {
 
 export enum DepartmentPath {
 	NAME = '/name',
+	SHORT_NAME = '/shortName',
 	DESCRIPTION = '/description',
 	IS_ACTIVE = '/isactive',
-	DIRECTOR_ID = '/directorid',
 }

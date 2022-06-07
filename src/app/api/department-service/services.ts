@@ -1,2 +1,3 @@
 export { DepartmentApiService } from './services/department-api.service';
-export { RoleApiService } from './services/role-api.service';
+export { DepartmentUserApiService } from './services/department-user-api.service';
+export { ProjectApiService } from './services/project-api.service';

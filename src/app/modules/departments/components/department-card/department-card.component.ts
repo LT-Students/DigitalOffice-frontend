@@ -192,7 +192,7 @@ export class DepartmentCardComponent {
 							return newArr;
 						},
 						[]);
-						return this._departmentService.removeUsersFromDepartment(this._departmentId, ids);
+						return this._departmentService.removeUsers(this._departmentId, ids);
 					} else {
 						return EMPTY;
 					}
