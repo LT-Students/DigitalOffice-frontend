@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, ObservedValuesFromArray, Observer, Subject, Subscriber } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { UserRights } from '@app/types/user-rights.enum';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from './current-user.service';
@@ -9,42 +9,18 @@ import { CurrentUserService } from './current-user.service';
 	providedIn: 'root',
 })
 export class PermissionService {
-	private assignedRights$: Observable<UserRights[]>;
-	private isAdmin$: Observable<boolean>;
+	public readonly isAdmin$ = this.currentUserService.user$.pipe(map((user: User) => user.isAdmin));
+	private readonly assignedRights$ = this.currentUserService.user$.pipe(
+		map((user: User) => user.role?.rightsIds ?? [])
+	);
 
-	constructor(private currentUserService: CurrentUserService) {
-		this.assignedRights$ = this.currentUserService.user$.pipe(
-			take(1),
-			map((user) => user?.role?.rightsIds ?? [])
+	constructor(private currentUserService: CurrentUserService) {}
+
+	public checkPermission$(right: UserRights): Observable<boolean> {
+		return this.isAdmin$.pipe(
+			switchMap((isAdmin: boolean) =>
+				isAdmin ? of(isAdmin) : this.assignedRights$.pipe(map((rights: UserRights[]) => rights.includes(right)))
+			)
 		);
-
-		this.isAdmin$ = this.currentUserService.user$.pipe(
-			take(1),
-			map((user) => user.isAdmin)
-		);
-	}
-
-	public isAdmin(): boolean {
-		let isAdmin = false;
-
-		this.isAdmin$.subscribe({
-			next: (admin) => (isAdmin = admin),
-		});
-
-		return isAdmin;
-	}
-
-	public checkPermission(right: UserRights): boolean {
-		let hasPermission = false;
-
-		if (this.isAdmin()) {
-			return true;
-		} else {
-			this.assignedRights$.subscribe({
-				next: (rights: UserRights[]) => (hasPermission = rights.includes(right)),
-			});
-
-			return hasPermission;
-		}
 	}
 }

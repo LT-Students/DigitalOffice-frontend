@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
-import { CommunicationType, ContractTerm, CreateCommunicationRequest, UserStatus } from '@api/user-service/models';
+import { CommunicationType, ContractTerm, CreateCommunicationRequest } from '@api/user-service/models';
 import { UserService } from '@app/services/user/user.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { finalize, first, map, switchMap } from 'rxjs/operators';
@@ -70,18 +70,18 @@ export class NewEmployeeComponent implements OnDestroy {
 	public createEmployee(): void {
 		this.loading$$.next(true);
 
-		this.currentCompany.company$.pipe(
-			first(),
-			switchMap((company: Company) => {
-				const params: CreateUserRequest = this._convertFormDataToCreateUserParams(company.id);
-				return this._userService.createUser(params);
-			}),
-			finalize(() => this.loading$$.next(false))
-		).subscribe(
-			(result: OperationResultResponse) => {
+		this.currentCompany.company$
+			.pipe(
+				first(),
+				switchMap((company: Company) => {
+					const params: CreateUserRequest = this._convertFormDataToCreateUserParams(company.id);
+					return this._userService.createUser(params);
+				}),
+				finalize(() => this.loading$$.next(false))
+			)
+			.subscribe((result: OperationResultResponse) => {
 				this._dialogRef.close(result);
-			}
-		);
+			});
 	}
 
 	private _initForm(): FormGroup {
@@ -115,7 +115,6 @@ export class NewEmployeeComponent implements OnDestroy {
 			departmentId: this.userForm.get('departmentId')?.value as string,
 			isAdmin: this.userForm.get('isAdmin')?.value as boolean,
 			communication: communications,
-			status: UserStatus.WorkFromHome,
 			officeId: this.userForm.get('officeId')?.value,
 			roleId: this.userForm.get('roleId')?.value,
 			dayOfBirth: this.userForm.get('dayOfBirth')?.value,

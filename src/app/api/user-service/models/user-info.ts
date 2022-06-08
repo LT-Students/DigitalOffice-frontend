@@ -3,7 +3,6 @@
 import { CommunicationInfo } from './communication-info';
 import { ImageInfo } from './image-info';
 import { PendingUserInfo } from './pending-user-info';
-import { UserStatus } from './user-status';
 export interface UserInfo {
 	avatar?: ImageInfo;
 	communications?: Array<CommunicationInfo>;
@@ -14,5 +13,4 @@ export interface UserInfo {
 	lastName: string;
 	middleName?: string;
 	pendingInfo?: PendingUserInfo;
-	status: UserStatus;
 }

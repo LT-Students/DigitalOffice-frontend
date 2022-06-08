@@ -29,18 +29,18 @@
 			</div>
 			<div class="edit-info__field">
 				<span class="mat-body-2 text-secondary_default">Дата рождения</span>
-				<div>{{ user.dateOfBirth | date: dateType.FULL | placeholder }}</div>
+				<div>{{ user.additionalInfo.dateOfBirth | date: dateType.FULL | placeholder }}</div>
 			</div>
 			<div class="edit-info__field">
 				<span class="mat-body-2 text-secondary_default">Время работы</span>
 				<div>
-					{{ user.businessHoursFromUtc | date: 'shortTime' | placeholder }} -
-					{{ user.businessHoursToUtc | date: 'shortTime' | placeholder }}
+					{{ user.additionalInfo.businessHoursFromUtc | date: 'shortTime' | placeholder }} -
+					{{ user.additionalInfo.businessHoursToUtc | date: 'shortTime' | placeholder }}
 				</div>
 			</div>
 			<div class="edit-info__field edit-info__two-columns">
 				<span class="mat-body-2 text-secondary_default">О себе</span>
-				<div>{{ user.about | placeholder }}</div>
+				<div>{{ user.additionalInfo.about | placeholder }}</div>
 			</div>
 		</ng-container>
 	</mat-dialog-content>

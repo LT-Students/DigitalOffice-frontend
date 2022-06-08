@@ -57,7 +57,6 @@ export enum UserPath {
 	LAST_NAME = '/LastName',
 	MIDDLE_NAME = '/MiddleName',
 	DATE_OF_BIRTH = '/DateOfBirth',
-	STATUS = '/Status',
 	// START_WORKING_AT = '/StartWorkingAt',
 	ABOUT = '/About',
 	IS_ADMIN = '/IsAdmin',

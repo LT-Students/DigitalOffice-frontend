@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { CompanyUserInfo } from './company-user-info';
-import { DepartmentInfo } from './department-info';
+import { DepartmentUserInfo } from './department-user-info';
 import { EducationInfo } from './education-info';
 import { ImageInfo } from './image-info';
 import { OfficeInfo } from './office-info';
@@ -12,7 +12,7 @@ import { UserAdditionInfo } from './user-addition-info';
 import { UserInfo } from './user-info';
 export interface UserResponse {
 	companyUser?: CompanyUserInfo;
-	department?: DepartmentInfo;
+	department?: DepartmentUserInfo;
 	educations?: Array<EducationInfo>;
 	images?: Array<ImageInfo>;
 	office?: OfficeInfo;

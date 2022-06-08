@@ -6,6 +6,7 @@ import { Icons } from '@shared/modules/icons/icons';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { first, map } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
+import { DepartmentUserRole } from '@api/user-service/models/department-user-role';
 import { AdminRoutes } from '../../../modules/admin/models/admin-routes';
 import { DepartmentsRoutes } from '../../../modules/departments/models/departments-routes';
 
@@ -46,7 +47,7 @@ export class SidebarService {
 					icon: Icons.Departments,
 				},
 				{
-					visible: () => !!user?.department?.id,
+					visible: () => user.department?.role === DepartmentUserRole.Manager,
 					title: 'Таймлист ДД',
 					path: [AppRoutes.Departments, user?.department?.id as string, DepartmentsRoutes.TimeList],
 					icon: Icons.Office,
