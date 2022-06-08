@@ -2,9 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewCont
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
 import { DateType } from '@app/types/date.enum';
-import { UserStatus } from '@api/user-service/models/user-status';
 import { User } from '@app/models/user/user.model';
 import { finalize, first, map, switchMap } from 'rxjs/operators';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
@@ -27,12 +25,9 @@ export class MainInfoComponent implements OnInit {
 	public readonly Icons = Icons;
 	public loading: BehaviorSubject<boolean>;
 
-	public userStatus: typeof UserStatus = UserStatus;
 	public dateType: typeof DateType = DateType;
-	public EditPath: typeof UserPath = UserPath;
 	public employeeInfoForm: FormGroup;
 	public isEditing: boolean;
-	public statuses: IUserStatus[];
 
 	public user$: Observable<User>;
 	private _initialData: InitialDataEditRequest<UserPath>;
@@ -48,7 +43,6 @@ export class MainInfoComponent implements OnInit {
 	) {
 		this.loading = new BehaviorSubject<boolean>(false);
 		this._initialData = {};
-		this.statuses = UserStatusModel.getAllStatuses();
 		this.isEditing = false;
 		this.employeeInfoForm = this._initEditForm();
 		this.user$ = this._employeeService.selectedUser$;
@@ -136,10 +130,9 @@ export class MainInfoComponent implements OnInit {
 			[UserPath.FIRST_NAME]: user.firstName,
 			[UserPath.LAST_NAME]: user.lastName,
 			[UserPath.MIDDLE_NAME]: user.middleName,
-			[UserPath.STATUS]: user.status,
-			[UserPath.ABOUT]: user.about,
+			[UserPath.ABOUT]: user.additionalInfo.about,
 			// [UserPath.START_WORKING_AT]: user.startWorkingAt,
-			[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
+			[UserPath.DATE_OF_BIRTH]: user.additionalInfo.dateOfBirth,
 		};
 		this.employeeInfoForm.patchValue({ ...this._initialData, avatarImage: user.avatar });
 	}
@@ -149,7 +142,6 @@ export class MainInfoComponent implements OnInit {
 			[UserPath.FIRST_NAME]: ['', Validators.required],
 			[UserPath.LAST_NAME]: ['', Validators.required],
 			[UserPath.MIDDLE_NAME]: [''],
-			[UserPath.STATUS]: [null],
 			[UserPath.ABOUT]: [''],
 			// [UserPath.CITY]: [''],
 			// [UserPath.START_WORKING_AT]: [null],

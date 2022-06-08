@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-export enum DepartmentUserRole {
+export enum DepartmentUserAssignment {
 	Employee = 'Employee',
-	Manager = 'Manager',
+	Director = 'Director',
 }

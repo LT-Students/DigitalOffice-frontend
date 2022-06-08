@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { UserInfo } from '@api/filter-service/models/user-info';
-import { DepartmentService, ICreateUserRequest } from '@app/services/department/department.service';
+import { DepartmentService } from '@app/services/department/department.service';
 import { DepartmentPath, InitialDataEditRequest } from '@app/types/edit-request';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { createEditRequest } from '@app/utils/utils';
@@ -14,6 +14,8 @@ import { DoValidators } from '@app/validators/do-validators';
 import { DepartmentUserRole } from '@api/department-service/models/department-user-role';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FilterService } from '@app/services/filter/filter.service';
+import { CreateUserRequest } from '@api/department-service/models/create-user-request';
+import { DepartmentUserAssignment } from '@api/department-service/models/department-user-assignment';
 
 @Component({
 	selector: 'do-new-department',
@@ -49,7 +51,7 @@ export class AddEditDepartmentComponent {
 				],
 			],
 			[DepartmentPath.DESCRIPTION]: [null],
-			[DepartmentPath.DIRECTOR_ID]: [null],
+			// [DepartmentPath.DIRECTOR_ID]: [null],
 		});
 		this.isEdit = !!data?.departmentInfo;
 		this.loading$$ = new BehaviorSubject<boolean>(false);
@@ -59,7 +61,7 @@ export class AddEditDepartmentComponent {
 				id: data.departmentInfo.id,
 				[DepartmentPath.NAME]: data.departmentInfo.name,
 				[DepartmentPath.DESCRIPTION]: data.departmentInfo.description,
-				[DepartmentPath.DIRECTOR_ID]: data.departmentInfo.director?.user?.id,
+				// [DepartmentPath.DIRECTOR_ID]: data.departmentInfo.director?.user?.id,
 			};
 			this.departmentForm.patchValue(this._departmentInfo);
 		}
@@ -72,17 +74,20 @@ export class AddEditDepartmentComponent {
 	}
 
 	public createDepartment(): Observable<OperationResultResponse<any>> {
-		const directorId: string | undefined = this.departmentForm.get(DepartmentPath.DIRECTOR_ID)?.value ?? undefined;
+		// const directorId: string | undefined = this.departmentForm.get(DepartmentPath.DIRECTOR_ID)?.value ?? undefined;
+		const directorId = undefined;
 
-		const director: ICreateUserRequest | undefined = directorId
+		const director: CreateUserRequest | undefined = directorId
 			? {
 					userId: directorId,
-					role: DepartmentUserRole.Director,
+					role: DepartmentUserRole.Manager,
+					assignment: DepartmentUserAssignment.Director,
 			  }
 			: undefined;
 
 		return this._departmentService.createDepartment({
 			name: this.departmentForm.get(DepartmentPath.NAME)?.value?.trim(),
+			shortName: '',
 			description: this.departmentForm.get(DepartmentPath.DESCRIPTION)?.value?.trim(),
 			users: director ? [director] : [],
 		});

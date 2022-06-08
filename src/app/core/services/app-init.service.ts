@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from '@app/services/local-storage.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
-import { EMPTY, iif, merge } from 'rxjs';
+import { EMPTY, iif, merge, of } from 'rxjs';
 import { PortalService } from '@app/services/portal.service';
 import { AdminService, PortalInfo } from '@app/services/admin/admin.service';
 import { CompanyService } from '@app/services/company/company.service';
@@ -40,9 +40,13 @@ export class AppInitService {
 						iif(
 							() => token !== null,
 							merge(
-								this._currentUserService
-									.getUserOnLogin(userId)
-									.pipe(tap((user: User) => this._currentUserService.setUser(user))),
+								this._currentUserService.getUserOnLogin(userId).pipe(
+									tap((user: User) => this._currentUserService.setUser(user)),
+									catchError(() => {
+										this._authService.logout();
+										return of(null);
+									})
+								),
 								this.companyService
 									.getCompany()
 									.pipe(tap((company: Company) => this._currentCompanyService.setCompany(company)))

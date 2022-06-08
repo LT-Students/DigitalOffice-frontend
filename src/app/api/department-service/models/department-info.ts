@@ -6,23 +6,27 @@ import { DepartmentUserInfo } from './department-user-info';
  * Specific department data.
  */
 export interface DepartmentInfo {
-  countUsers: number;
+	countUsers: number;
 
-  /**
-   * Department description.
-   */
-  description?: string;
-  director?: DepartmentUserInfo;
+	/**
+	 * Department description.
+	 */
+	description?: string;
+	director?: DepartmentUserInfo;
 
-  /**
-   * Department id.
-   */
-  id: string;
-  isActive: boolean;
+	/**
+	 * Department id.
+	 */
+	id: string;
+	isActive: boolean;
 
-  /**
-   * Department name.
-   */
-  name: string;
+	/**
+	 * Department name.
+	 */
+	name: string;
+
+	/**
+	 * Department name.
+	 */
+	shortName: string;
 }
-

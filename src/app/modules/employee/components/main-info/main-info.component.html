@@ -17,9 +17,11 @@
 				<h3 class="employee-info__name">
 					{{ user | fullName: true }}
 				</h3>
-				<q *ngIf="user?.about" class="mat-body-2 text-secondary_default employee-info__about">{{
-					user?.about
-				}}</q>
+				<q
+					*ngIf="user.additionalInfo?.about as about"
+					class="mat-body-2 text-secondary_default employee-info__about"
+					>{{ about }}</q
+				>
 			</div>
 			<div class="employee-info__general">
 				<div class="employee-info__general-header">
@@ -36,11 +38,11 @@
 					<div class="employee-info__first-column">
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Гендер</span>
-							<p>{{ user.genderName | placeholder }}</p>
+							<p>{{ user.additionalInfo.genderName | placeholder }}</p>
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Дата рождения</span>
-							<p>{{ user.dateOfBirth | date: dateType.FULL | placeholder }}</p>
+							<p>{{ user.additionalInfo.dateOfBirth | date: dateType.FULL | placeholder }}</p>
 						</div>
 					</div>
 					<div class="employee-info__second-column">
@@ -51,8 +53,8 @@
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Часы работы</span>
 							<p>
-								{{ user.businessHoursFromUtc | date: 'shortTime' | placeholder }} -
-								{{ user.businessHoursToUtc | date: 'shortTime' | placeholder }}
+								{{ user.additionalInfo.businessHoursFromUtc | date: 'shortTime' | placeholder }} -
+								{{ user.additionalInfo.businessHoursToUtc | date: 'shortTime' | placeholder }}
 							</p>
 						</div>
 					</div>

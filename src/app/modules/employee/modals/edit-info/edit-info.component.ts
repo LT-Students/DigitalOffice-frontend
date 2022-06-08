@@ -59,10 +59,10 @@ export class EditInfoComponent implements OnInit {
 			[UserPath.FIRST_NAME]: user.firstName,
 			[UserPath.LAST_NAME]: user.lastName,
 			[UserPath.MIDDLE_NAME]: user.middleName,
-			[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
-			[UserPath.BUSINESS_HOURS_FROM_UTC]: this.formatTime(user.businessHoursFromUtc),
-			[UserPath.BUSINESS_HOURS_TO_UTC]: this.formatTime(user.businessHoursToUtc),
-			[UserPath.ABOUT]: user.about,
+			[UserPath.DATE_OF_BIRTH]: user.additionalInfo.dateOfBirth,
+			[UserPath.BUSINESS_HOURS_FROM_UTC]: this.formatTime(user.additionalInfo.businessHoursFromUtc),
+			[UserPath.BUSINESS_HOURS_TO_UTC]: this.formatTime(user.additionalInfo.businessHoursToUtc),
+			[UserPath.ABOUT]: user.additionalInfo.about,
 		};
 		this.editForm.patchValue(this.userInitialInfo);
 	}

@@ -41,13 +41,20 @@ export class AuthService {
 		);
 	}
 
-	public logout(): void {
+	public logout(isTokenExpired = false): void {
 		this._removeCredentialsFromLocalStorage();
-		this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn], {
-			queryParams: {
-				return: this._router.url,
-			},
-		});
+
+		const returnUrl = this._router.url;
+		this._router.navigate(
+			[AppRoutes.Auth, AuthRoutes.SignIn],
+			isTokenExpired && returnUrl && returnUrl !== '/'
+				? {
+						queryParams: {
+							return: returnUrl,
+						},
+				  }
+				: undefined
+		);
 	}
 
 	public isAuthenticated(): boolean {

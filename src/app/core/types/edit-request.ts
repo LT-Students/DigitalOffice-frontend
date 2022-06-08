@@ -57,7 +57,6 @@ export enum UserPath {
 	LAST_NAME = '/LastName',
 	MIDDLE_NAME = '/MiddleName',
 	DATE_OF_BIRTH = '/DateOfBirth',
-	STATUS = '/Status',
 	// START_WORKING_AT = '/StartWorkingAt',
 	ABOUT = '/About',
 	IS_ADMIN = '/IsAdmin',
@@ -79,7 +78,7 @@ export enum OfficePath {
 
 export enum DepartmentPath {
 	NAME = '/name',
+	SHORT_NAME = '/shortName',
 	DESCRIPTION = '/description',
 	IS_ACTIVE = '/isactive',
-	DIRECTOR_ID = '/directorid',
 }

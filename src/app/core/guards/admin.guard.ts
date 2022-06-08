@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CurrentUserService } from '@app/services/current-user.service';
-import { map, tap } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
+import { PermissionService } from '@app/services/permission.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AdminGuard implements CanLoad {
-	constructor(private _currentUserService: CurrentUserService, private _router: Router) {}
+	constructor(private permissionService: PermissionService, private _router: Router) {}
 
 	canLoad(route: Route, segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
-		return this._currentUserService.user$.pipe(
-			map((user) => user.isAdmin),
-			tap((isAdmin) => {
+		return this.permissionService.isAdmin$.pipe(
+			first(),
+			tap((isAdmin: boolean) => {
 				if (!isAdmin) {
 					this._router.navigate(['']);
 				}
@@ -22,9 +22,9 @@ export class AdminGuard implements CanLoad {
 	}
 
 	canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-		return this._currentUserService.user$.pipe(
-			map((user) => user.isAdmin),
-			tap((isAdmin) => {
+		return this.permissionService.isAdmin$.pipe(
+			first(),
+			tap((isAdmin: boolean) => {
 				if (!isAdmin) {
 					this._router.navigate(['']);
 				}

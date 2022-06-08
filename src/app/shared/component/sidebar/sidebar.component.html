@@ -3,7 +3,7 @@
 	<div class="links">
 		<do-sidebar-link
 			class="link"
-			*ngFor="let link of links"
+			*ngFor="let link of links$ | async"
 			[link]="link"
 			[isWideScreen]="isWideScreen$ | async"
 		></do-sidebar-link>

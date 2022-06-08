@@ -293,38 +293,23 @@
         }
       }
     },
-    "/users/create": {
+    "/user/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "departmentid",
-          "in": "query",
-          "description": "Department global unique identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
         }
       ],
       "post": {
         "tags": [
-          "Department"
+          "DepartmentUser"
         ],
-        "operationId": "addDepartmentUsers",
+        "operationId": "createDepartmentUser",
         "description": "Adds a new users to department.\n* __The user must have access to the right__ -- Add/Edit/Remove departments.\n",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "description": "Specific user identifier.",
-                  "type": "string",
-                  "format": "uuid"
-                }
+                "$ref": "#/components/schemas/CreateDepartmentUsersRequest"
               }
             }
           },
@@ -364,63 +349,7 @@
         }
       }
     },
-    "/project/edit": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "put": {
-        "tags": [
-          "Role"
-        ],
-        "operationId": "editDepartmentProject",
-        "description": "The method attempts to change depatrment project.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditDepartmentProjectRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/remove": {
+    "/user/remove": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -438,9 +367,9 @@
       ],
       "delete": {
         "tags": [
-          "Department"
+          "DepartmentUser"
         ],
-        "operationId": "removeUsers",
+        "operationId": "removeDepartmentUser",
         "description": "Remove users from Department.",
         "requestBody": {
           "content": {
@@ -500,6 +429,214 @@
           }
         }
       }
+    },
+    "/user/editRole": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Department global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "put": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "editDepartmentUserRole",
+        "description": "Edit department users role.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditDepartmentUsersRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully edited users roles.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/editAssignment": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Department global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "put": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "editDepartmentUserAssingment",
+        "description": "Edit department users assignment.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditDepartmentUsersAssignmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully edited users assignments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "editDepartmentProject",
+        "description": "The method attempts to change depatrment project.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditDepartmentProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -510,6 +647,7 @@
         "required": [
           "Id",
           "Name",
+          "ShortName",
           "IsActive",
           "CountUsers"
         ],
@@ -520,6 +658,10 @@
             "format": "guid"
           },
           "Name": {
+            "description": "Department name.",
+            "type": "string"
+          },
+          "ShortName": {
             "description": "Department name.",
             "type": "string"
           },
@@ -543,21 +685,13 @@
         "description": "User data of specific department.",
         "required": [
           "User",
-          "CreatedAtUtc",
           "IsActive",
-          "Role"
+          "Role",
+          "Assignment"
         ],
         "properties": {
           "User": {
             "$ref": "#/components/schemas/UserInfo"
-          },
-          "CreatedAtUtc": {
-            "type": "string",
-            "format": "date"
-          },
-          "LeftAtUtc": {
-            "type": "string",
-            "format": "date"
           },
           "IsActive": {
             "type": "boolean"
@@ -565,8 +699,8 @@
           "Role": {
             "$ref": "#/components/schemas/DepartmentUserRole"
           },
-          "Position": {
-            "$ref": "#/components/schemas/PositionInfo"
+          "Assignment": {
+            "$ref": "#/components/schemas/DepartmentUserAssignment"
           }
         }
       },
@@ -679,11 +813,16 @@
         "type": "object",
         "required": [
           "Name",
+          "ShortName",
           "Users"
         ],
         "properties": {
           "Name": {
             "description": "Department name.",
+            "type": "string"
+          },
+          "ShortName": {
+            "description": "Department short name.",
             "type": "string"
           },
           "Description": {
@@ -715,8 +854,32 @@
           }
         }
       },
+      "CreateDepartmentUsersRequest": {
+        "type": "object",
+        "required": [
+          "DepartmentId",
+          "Users"
+        ],
+        "properties": {
+          "DepartmentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateUserRequest"
+            }
+          }
+        }
+      },
       "CreateUserRequest": {
         "type": "object",
+        "required": [
+          "UserId",
+          "Role",
+          "Assignment"
+        ],
         "properties": {
           "UserId": {
             "type": "string",
@@ -724,10 +887,58 @@
           },
           "Role": {
             "$ref": "#/components/schemas/DepartmentUserRole"
+          },
+          "Assignment": {
+            "$ref": "#/components/schemas/DepartmentUserAssignment"
+          }
+        }
+      },
+      "EditDepartmentUsersRoleRequest": {
+        "type": "object",
+        "required": [
+          "Role",
+          "UsersIds"
+        ],
+        "properties": {
+          "Role": {
+            "$ref": "#/components/schemas/DepartmentUserRole"
+          },
+          "UsersIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "EditDepartmentUsersAssignmentRequest": {
+        "type": "object",
+        "required": [
+          "Assignment",
+          "UsersIds"
+        ],
+        "properties": {
+          "Role": {
+            "$ref": "#/components/schemas/DepartmentUserAssignment"
+          },
+          "UsersIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         }
       },
       "DepartmentUserRole": {
+        "type": "string",
+        "enum": [
+          "Employee",
+          "Manager"
+        ]
+      },
+      "DepartmentUserAssignment": {
         "type": "string",
         "enum": [
           "Employee",
@@ -877,9 +1088,9 @@
             "description": "A JSON-Pointer.",
             "enum": [
               "/name",
+              "/shortName",
               "/description",
-              "/isactive",
-              "/directorid"
+              "/isactive"
             ]
           },
           "value": {
