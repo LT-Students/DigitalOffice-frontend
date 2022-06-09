@@ -1,11 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { ProjectUserRoleType } from './project-user-role-type';
-export interface CreateUserRequest {
+export interface EditProjectUsersRoleRequest {
 	role: ProjectUserRoleType;
-
-	/**
-	 * Unique user identifier.
-	 */
-	userId: string;
+	usersIds: Array<string>;
 }

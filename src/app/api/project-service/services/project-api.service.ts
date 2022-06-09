@@ -14,6 +14,7 @@ import { EditProjectRequest } from '../models/edit-project-request';
 import { FindResultResponseProjectInfo } from '../models/find-result-response-project-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseProjectResponse } from '../models/operation-result-response-project-response';
+import { ProjectStatusType } from '../models/project-status-type';
 
 @Injectable({
 	providedIn: 'root',
@@ -36,6 +37,21 @@ export class ProjectApiService extends BaseService {
 	 */
 	findProjects$Response(params: {
 		/**
+		 * Sorting of the results
+		 */
+		isascendingsort?: boolean;
+
+		/**
+		 * Project type of the results
+		 */
+		projectstatus?: ProjectStatusType;
+
+		/**
+		 * Substring which results must contain
+		 */
+		nameincludesubstring?: string;
+
+		/**
 		 * Number of entries to skip
 		 */
 		skipCount: number;
@@ -47,6 +63,9 @@ export class ProjectApiService extends BaseService {
 	}): Observable<StrictHttpResponse<FindResultResponseProjectInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindProjectsPath, 'get');
 		if (params) {
+			rb.query('isascendingsort', params.isascendingsort, {});
+			rb.query('projectstatus', params.projectstatus, {});
+			rb.query('nameincludesubstring', params.nameincludesubstring, {});
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
 		}
@@ -73,6 +92,21 @@ export class ProjectApiService extends BaseService {
 	 * This method doesn't expect any request body.
 	 */
 	findProjects(params: {
+		/**
+		 * Sorting of the results
+		 */
+		isascendingsort?: boolean;
+
+		/**
+		 * Project type of the results
+		 */
+		projectstatus?: ProjectStatusType;
+
+		/**
+		 * Substring which results must contain
+		 */
+		nameincludesubstring?: string;
+
 		/**
 		 * Number of entries to skip
 		 */

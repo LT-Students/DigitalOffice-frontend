@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@api/project-service/services/project-api.service';
 import { Observable } from 'rxjs';
 import {
+	CreateProjectRequest,
 	EditProjectRequest,
 	FileAccess,
 	ImageContent,
@@ -53,17 +54,6 @@ export interface IRemoveUsersFromProjectRequest {
 	body: UUID[];
 }
 
-export interface ICreateProjectRequest {
-	departmentId?: string;
-	description?: string;
-	name: string;
-	projectImages: Array<ImageContent>;
-	shortDescription?: string;
-	shortName?: string;
-	status: ProjectStatusType;
-	users: Array<ICreateUserRequest>;
-}
-
 export interface IFindProjects {
 	skipCount: number;
 	takeCount: number;
@@ -88,7 +78,7 @@ export class ProjectService {
 		return this._projectService.getProject(params);
 	}
 
-	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
+	public createProject(body: CreateProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService
 			.createProject({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Project, MessageMethod.Create));

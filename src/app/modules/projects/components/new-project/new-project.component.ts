@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
-import { ICreateProjectRequest, ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
+import { ICreateUserRequest, ProjectService } from '@app/services/project/project.service';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { AppRoutes } from '@app/models/app-routes';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { UserInfo } from '@api/filter-service/models/user-info';
 import { DoValidators } from '@app/validators/do-validators';
+import { CreateProjectRequest } from '@api/project-service/models/create-project-request';
 import { Team, TeamMember } from './team-cards';
 
 @Component({
@@ -97,7 +98,7 @@ export class NewProjectComponent implements OnInit {
 			role: ProjectUserRoleType.Manager,
 			userId: user.id ?? '',
 		}));
-		const projectRequest: ICreateProjectRequest = {
+		const projectRequest: CreateProjectRequest = {
 			name: this.projectForm.get('name')?.value?.trim(),
 			departmentId: this.projectForm.get('departmentId')?.value,
 			description: this.projectForm.get('description')?.value?.trim(),
@@ -105,6 +106,7 @@ export class NewProjectComponent implements OnInit {
 			status: this.projectForm.get('status')?.value,
 			users: projectUsers,
 			projectImages: [],
+			files: [],
 		};
 		this._projectService
 			.createProject(projectRequest)

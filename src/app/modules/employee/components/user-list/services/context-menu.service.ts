@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MenuItem } from '@app/models/menu-item';
+import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { map, switchMap } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
@@ -82,7 +82,9 @@ export class ContextMenuService {
 							pendingInfo: {
 								invitationCommunicationId: communication.id,
 							},
-							communications: isNewCommunication ? [...user.communications!, communication] : user.communications,
+							communications: isNewCommunication
+								? [...(user.communications as CommunicationInfo[]), communication]
+								: user.communications,
 						};
 						this.userList.editUserInList(user.id, partialUser);
 					}

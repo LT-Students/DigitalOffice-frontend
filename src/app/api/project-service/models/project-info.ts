@@ -25,9 +25,9 @@ export interface ProjectInfo {
 	description?: null | string;
 
 	/**
-	 * Date and time finished project.
+	 * Date and time finished project in UTC.
 	 */
-	endProject?: null | any;
+	endDateUtc?: null | any;
 
 	/**
 	 * Unique project identifier.
@@ -50,8 +50,8 @@ export interface ProjectInfo {
 	shortName?: null | string;
 
 	/**
-	 * Date and time begin project.
+	 * Date and time begin project in UTC.
 	 */
-	startProject?: null | any;
+	startDateUtc?: any;
 	status?: ProjectStatusType;
 }

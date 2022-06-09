@@ -64,7 +64,7 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 			color: (
 				primary: mat.define-palette($do-grey),
 				accent: mat.define-palette($do-orange, 50),
-				warn: mat.define-palette(mat.$red-palette, 400)
+				warn: mat.define-palette(mat.$red-palette, 400),
 			),
 		)
 	)
@@ -149,10 +149,6 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 		font-size: 16px;
 		font-weight: 700;
 		line-height: 150%;
-	}
-
-	span.mat-h3 {
-		margin: 0;
 	}
 
 	.mat-h1,
