@@ -1,0 +1,32 @@
+<cdk-table [dataSource]="dataSource">
+	<ng-container *ngFor="let column of columns" [cdkColumnDef]="column.field">
+		<cdk-header-cell
+			*cdkHeaderCellDef
+			class="text-secondary_default"
+			[style.flex]="'0 0 ' + column.width + 'px'"
+			[style.min-width.px]="column.minWidth"
+			[style.max-width.px]="column.maxWidth"
+			>{{ column.headerName }}</cdk-header-cell
+		>
+		<cdk-cell
+			*cdkCellDef="let row"
+			[style.flex]="'0 0 ' + column.width + 'px'"
+			[style.min-width.px]="column.minWidth"
+			[style.max-width.px]="column.maxWidth"
+			><do-table-cell
+				[componentType]="column.type"
+				[cellValue]="column.valueGetter ? (row | execute: column.valueGetter) : row[column.field]"
+				[cellParams]="column.params"
+			></do-table-cell
+		></cdk-cell>
+	</ng-container>
+	<cdk-header-row *cdkHeaderRowDef="displayColumns"></cdk-header-row>
+	<div>
+		<cdk-row
+			*cdkRowDef="let row; columns: displayColumns"
+			(click)="rowClick.emit(row)"
+			[style.height.px]="rowHeight || 'auto'"
+		>
+		</cdk-row>
+	</div>
+</cdk-table>
