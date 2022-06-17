@@ -11,8 +11,10 @@ import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { IconsModule } from '@shared/modules/icons/icons.module';
-import { MaterialModule } from './modules/material/material.module';
+import { IconsModule } from '@shared/features/icons/icons.module';
+import { EllipsisModule } from 'ngx-ellipsis';
+import { OptionComponent } from '@shared/component/option/option.component';
+import { MaterialModule } from './features/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
@@ -28,7 +30,7 @@ import { DateTimePipe } from './pipes/date-time';
 import { AddEmployeeComponent } from './modals/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
 import { PhoneInputComponent } from './component/phone-input/phone-input.component';
-import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-bar-routing.module';
+import { LoadingBarRoutingModule } from './features/loading-bar-routing/loading-bar-routing.module';
 import { ChangeUserPasswordComponent } from './modals/change-user-password/change-user-password.component';
 import { FullNamePipe } from './pipes/full-name.pipe';
 import { DndDirective } from './directives/dnd.directive';
@@ -55,6 +57,8 @@ import { PermissionDirective } from './directives/permission.directive';
 import { ButtonDirective } from './directives/button.directive';
 import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-item.component';
 import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
+import { DynamicComponentHostDirective } from './directives/dynamic-component-host.directive';
+import { AutocompleteComponent } from './component/autocomplete/autocomplete.component';
 
 @NgModule({
 	declarations: [
@@ -103,6 +107,9 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		ButtonDirective,
 		SidebarItemComponent,
 		SidebarHeaderComponent,
+		DynamicComponentHostDirective,
+		AutocompleteComponent,
+		OptionComponent,
 	],
 	imports: [
 		CommonModule,
@@ -116,6 +123,7 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		MdePopoverModule,
 		ImageCropperModule,
 		IconsModule,
+		EllipsisModule,
 	],
 	exports: [
 		CommonModule,
@@ -127,6 +135,7 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		ImageCropperModule,
 		ReactiveFormsModule,
 		FormsModule,
+		EllipsisModule,
 		ProfileImageComponent,
 		HeaderComponent,
 		TextDirective,
@@ -166,6 +175,9 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		AutofocusDirective,
 		PermissionDirective,
 		ButtonDirective,
+		DynamicComponentHostDirective,
+		AutocompleteComponent,
+		OptionComponent,
 	],
 })
 export class SharedModule {}

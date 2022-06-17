@@ -21,7 +21,7 @@ import {
 import { DatePeriod } from '@app/types/date-period';
 import { DoValidators } from '@app/validators/do-validators';
 import { DateTime } from 'luxon';
-import { Icons } from '@shared/modules/icons/icons';
+import { Icons } from '@shared/features/icons/icons';
 
 interface EditableWorkTime extends WorkTimeInfo {
 	editMode: boolean;

@@ -11,6 +11,12 @@ export enum Icons {
 	Administration = 'administration',
 
 	/**
+	 * Sort icons
+	 */
+	AlphabetSortAsc = 'alphabet-sort-asc',
+	AlphabetSortDesc = 'alphabet-sort-desc',
+
+	/**
 	 * Regular icons
 	 */
 	Add = 'add',
@@ -70,6 +76,12 @@ export const IconPaths = {
 	[Icons.Departments]: '/assets/icons/sidebar/departments.svg',
 	[Icons.Company]: '/assets/icons/sidebar/company.svg',
 	[Icons.Administration]: '/assets/icons/sidebar/settings.svg',
+
+	/**
+	 * Sort icons
+	 */
+	[Icons.AlphabetSortAsc]: '/assets/icons/alphabet-sort-asc.svg',
+	[Icons.AlphabetSortDesc]: '/assets/icons/alphabet-sort-desc.svg',
 
 	/**
 	 * Regular icons

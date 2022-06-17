@@ -1,4 +1,4 @@
-import { Icons } from '@shared/modules/icons/icons';
+import { Icons } from '@shared/features/icons/icons';
 
 export interface Link {
 	title: string;

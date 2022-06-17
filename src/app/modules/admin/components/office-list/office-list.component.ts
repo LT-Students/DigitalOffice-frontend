@@ -9,7 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OfficeService } from '@app/services/company/office.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Icons } from '@shared/modules/icons/icons';
+import { Icons } from '@shared/features/icons/icons';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 
 @Component({

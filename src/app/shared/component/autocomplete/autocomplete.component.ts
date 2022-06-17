@@ -1,10 +1,24 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Self, Optional, OnDestroy } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	ChangeDetectionStrategy,
+	Input,
+	Self,
+	Optional,
+	OnDestroy,
+	Output,
+	EventEmitter,
+	ContentChildren,
+	QueryList,
+} from '@angular/core';
 import { Icons } from '@shared/features/icons/icons';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { takeUntil } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { IInfiniteScrollEvent } from 'ngx-infinite-scroll';
+import { OptionComponent } from '@shared/component/option/option.component';
 
 @Component({
 	selector: 'do-autocomplete',
@@ -15,7 +29,6 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 					#search
 					matInput
 					[placeholder]="placeholder"
-					[disabled]="disabled"
 					[required]="required"
 					[formControl]="searchControl"
 					type="text"
@@ -25,13 +38,18 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 				<mat-icon class="arrow text-secondary_default" matSuffix [svgIcon]="Icons.ArrowDownV1"></mat-icon>
 				<mat-autocomplete
 					#auto="matAutocomplete"
+					infiniteScroll
+					[infiniteScrollContainer]="auto?.panel?.nativeElement ?? ''"
+					[infiniteScrollThrottle]="0"
+					[alwaysCallback]="true"
+					(scrolled)="scrolled.emit($event)"
 					[displayWith]="displayWith"
 					(optionSelected)="handleOptionSelection($event)"
 					(opened)="handlePanelOpen()"
 					(closed)="handlePanelClose(); search.blur()"
 				>
-					<mat-option *ngFor="let option of options" [value]="option | execute: optionValueGetter">
-						{{ option | execute: optionDisplayValueGetter }}
+					<mat-option *ngFor="let option of options.changes | async" [value]="option.value">
+						<ng-container *ngTemplateOutlet="option.template"></ng-container>
 					</mat-option>
 				</mat-autocomplete>
 			</mat-form-field>
@@ -48,8 +66,10 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 })
 export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	public readonly Icons = Icons;
+	@ContentChildren(OptionComponent) options!: QueryList<OptionComponent>;
 
-	@Input() options: any[] = [];
+	@Output() searchChange = new EventEmitter<string>();
+	@Output() scrolled = new EventEmitter<IInfiniteScrollEvent>();
 	@Input() displayWith: ((value: any) => string) | null = null;
 
 	public searchControl = new FormControl(null);
@@ -70,6 +90,11 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	@Input()
 	set disabled(d: any) {
 		this._disabled = coerceBooleanProperty(d);
+		if (this._disabled) {
+			this.searchControl.disable();
+		} else {
+			this.searchControl.enable();
+		}
 		this.destroy$.next();
 	}
 	get disabled(): boolean {
@@ -87,9 +112,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	}
 	private _required = false;
 
-	@Input() optionValueGetter: (value: any) => any = (value: any) => value;
-	@Input() optionDisplayValueGetter: (value: any) => any = (value: any) => value;
-
 	private onChange = () => {};
 	private onTouched = () => {};
 
@@ -100,14 +122,13 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	}
 
 	public ngOnInit(): void {
-		this.searchControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((v) => {
-			this.hasSearchChanged = true;
-			// FETCH NEW DATA
+		this.searchControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((v: object | string) => {
+			if (typeof v === 'string') {
+				this.hasSearchChanged = true;
+				this.searchChange.emit(v);
+			}
 		});
-		this.valueControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((v: any) => {
-			console.log(v);
-			this.onChange();
-		});
+		this.valueControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(this.onChange);
 	}
 
 	public ngOnDestroy(): void {
@@ -128,7 +149,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	public handlePanelClose(): void {
 		if (!this.wasOptionSelected && this.hasSearchChanged) {
 			this.valueControl.setValue(null);
-			this.searchControl.setValue('');
+			this.searchControl.setValue(null);
 		}
 		this.wasOptionSelected = false;
 		this.hasSearchChanged = false;

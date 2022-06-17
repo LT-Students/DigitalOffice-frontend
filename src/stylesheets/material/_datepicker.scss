@@ -27,15 +27,17 @@
 	}
 
 	.mat-calendar-body-cell-content {
-		border-radius: 7px;
+		min-width: 30px;
 		height: 30px;
-		width: 30px;
+
+		border-radius: 7px;
 	}
 
 	.mat-calendar-body-label {
-		visibility: hidden;
 		padding-top: 0 !important;
 		padding-bottom: 0 !important;
+
+		visibility: hidden;
 	}
 }
 

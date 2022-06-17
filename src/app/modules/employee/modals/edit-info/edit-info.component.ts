@@ -9,7 +9,7 @@ import { createEditRequest } from '@app/utils/utils';
 import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { first, map, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Icons } from '@shared/modules/icons/icons';
+import { Icons } from '@shared/features/icons/icons';
 import { EmployeePageService } from '../../services/employee-page.service';
 
 @Component({

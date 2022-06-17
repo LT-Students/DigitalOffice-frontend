@@ -9,7 +9,7 @@ import { EMPTY, iif } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 import { AlertService } from '@app/services/alert.service';
-import { Icons } from '@shared/modules/icons/icons';
+import { Icons } from '@shared/features/icons/icons';
 import { EmployeePageService } from '../../../services/employee-page.service';
 import { AddContactComponent } from './add-contact/add-contact.component';
 import { EditContactComponent } from './edit-contact/edit-contact.component';

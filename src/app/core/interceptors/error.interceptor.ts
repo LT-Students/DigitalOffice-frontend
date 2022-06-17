@@ -18,7 +18,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 	}
 
 	private handleError(error: HttpErrorResponse): void {
-		const errors = error.error.errors;
+		const errors = error.error?.errors;
 		if (!Array.isArray(errors)) {
 			this.alert.open('Упс! Что-то пошло не так :(');
 			return;
@@ -29,6 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 				this.alert.open(message);
 				break;
 			}
+			case 401:
 			case 403: {
 				this.alert.open('Недостаточно прав доступа');
 				break;

@@ -10,7 +10,7 @@ import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { ModalWidth } from '@app/services/dialog.service';
-import { Icons } from '@shared/modules/icons/icons';
+import { Icons } from '@shared/features/icons/icons';
 import { EmployeePageService } from '../../services/employee-page.service';
 import { UploadImageComponent } from '../../modals/upload-image/upload-image.component';
 import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
