@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Self } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Icons } from '@shared/features/icons/icons';
-import { debounceTime, filter, first, map, scan, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { InfiniteScrollDataProviderService } from '@app/services/infinite-scroll-data-provider.service';
+import { ProjectInfo } from '@api/project-service/models/project-info';
 import { AutocompleteFilterParams, Filter } from '../../models';
 
 @Component({
@@ -23,14 +24,12 @@ import { AutocompleteFilterParams, Filter } from '../../models';
 	`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [InfiniteScrollDataProviderService],
 })
 export class AutocompleteComponent implements OnInit, OnDestroy, Filter<AutocompleteFilterParams<any>> {
 	public Icons = Icons;
 
-	private readonly takeCount = 30;
-	private totalCount = Number.MAX_VALUE;
-	public skipCount$ = new BehaviorSubject<number>(0);
-	public searchName$ = new BehaviorSubject<string>('');
+	public searchName$ = new Subject<string>();
 
 	public control = new FormControl('');
 	public params!: AutocompleteFilterParams<any>;
@@ -40,10 +39,16 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 	private onChange = () => {};
 	private onTouched = () => {};
 
-	constructor() {}
+	constructor(@Self() private infiniteScrollDataProvider: InfiniteScrollDataProviderService<ProjectInfo>) {}
 
 	public ngOnInit(): void {
-		this.options$ = this.loadOptions$();
+		this.options$ = this.infiniteScrollDataProvider.getInfiniteDataSource$(
+			this.params.loadOptions$,
+			this.searchName$.pipe(
+				debounceTime(500),
+				map((name: string) => ({ nameIncludeSubstring: name }))
+			)
+		);
 		this.control.valueChanges
 			.pipe(
 				map((v: any) => this.params.valueGetter(v)),
@@ -57,32 +62,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 	}
 
 	public handleScroll(): void {
-		this.skipCount$.pipe(first()).subscribe({
-			next: (offset: number) => this.skipCount$.next(offset + this.takeCount),
-		});
-	}
-
-	private loadOptions$(): Observable<any[]> {
-		return combineLatest([
-			this.searchName$.pipe(
-				debounceTime(500),
-				tap(() => this.skipCount$.next(0))
-			),
-			this.skipCount$.pipe(filter((offset: number) => offset < this.totalCount)),
-		]).pipe(
-			switchMap(([name, skipCount]: [string, number]) =>
-				this.params.loadOptions$({
-					skipCount: skipCount,
-					takeCount: this.takeCount,
-					...(name && { nameIncludeSubstring: name }),
-				})
-			),
-			tap((res: OperationResultResponse) => (this.totalCount = res.totalCount || 0)),
-			map((res: OperationResultResponse) => res.body as any[]),
-			withLatestFrom(this.skipCount$),
-			scan((acc: any[], [values, skipCount]: [any[], number]) => (skipCount ? [...acc, ...values] : values), []),
-			takeUntil(this.destroy$)
-		);
+		this.infiniteScrollDataProvider.loadOnScroll();
 	}
 
 	public registerOnChange(fn: any): void {
