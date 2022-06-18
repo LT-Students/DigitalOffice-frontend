@@ -19,7 +19,7 @@
 		</button>
 	</div>
 	<div class="status-toggle">
-		<do-button-toggle-group (toggleChange)="handleStatusToggle($event)">
+		<do-button-toggle-group (valueChange)="handleStatusToggle($event)">
 			<do-button-toggle value="active" checked>Активные</do-button-toggle>
 			<do-button-toggle value="archive">В архиве</do-button-toggle>
 			<do-button-toggle value="pending">Неактивированные</do-button-toggle>

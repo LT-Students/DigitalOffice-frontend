@@ -1,41 +1,60 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, ChangeDetectionStrategy, OnInit, Self } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { IFindProjects, ProjectService } from '@app/services/project/project.service';
 import { ProjectInfo } from '@api/project-service/models/project-info';
-import { iif, Observable, ReplaySubject } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { Subject } from 'rxjs';
+import { UserRights } from '@app/types/user-rights.enum';
+import { InfiniteScrollDataProviderService } from '@app/services/infinite-scroll-data-provider.service';
 import { ProjectsRoutes } from '../../models/projects-routes';
+import { ColumnDef } from '../../../table/models';
+import { FilterDef } from '../../../dynamic-filter/models';
+import { FilterEvent } from '../../../dynamic-filter/dynamic-filter.component';
+import { defaultProjectsTakeCount } from '../../helpers';
+import { SimpleDataSource } from '../../../table/table.component';
+import { ProjectTableService } from './project-table.service';
 
 @Component({
 	selector: 'do-projects-table',
 	templateUrl: './projects-table.component.html',
 	styleUrls: ['./projects-table.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [ProjectTableService, InfiniteScrollDataProviderService],
 })
-export class ProjectsTableComponent {
+export class ProjectsTableComponent implements OnInit {
+	public UserRights = UserRights;
 	public ProjectsRoutes = ProjectsRoutes;
 
-	public projectList$: Observable<OperationResultResponse<ProjectInfo[]>>;
-	public _projectListParams: ReplaySubject<IFindProjects>;
+	public tableData!: SimpleDataSource<ProjectInfo>;
+	private filterValue = new Subject<FilterEvent>();
+	public filters: FilterDef[] = this.projectTableService.getFilterData();
+	public columns: ColumnDef[] = this.projectTableService.getTableColumns();
 
-	constructor(private _projectService: ProjectService, private _route: ActivatedRoute) {
-		this._projectListParams = new ReplaySubject<IFindProjects>(1);
-		this.projectList$ = this._projectListParams.pipe(
-			startWith(null),
-			switchMap((params: IFindProjects | null) =>
-				iif(
-					() => !!params,
-					this._projectService.findProjects(params as IFindProjects),
-					this._route.data.pipe(map((response) => response.projects))
-				)
-			)
+	constructor(
+		@Self() private infiniteScrollDataProvider: InfiniteScrollDataProviderService<ProjectInfo>,
+		private projectTableService: ProjectTableService,
+		private route: ActivatedRoute,
+		private router: Router
+	) {}
+
+	public ngOnInit(): void {
+		const loadDataFn = this.projectTableService.loadDataFn;
+		const dataSource$ = this.infiniteScrollDataProvider.getInfiniteDataSource$(
+			loadDataFn,
+			this.filterValue,
+			defaultProjectsTakeCount
 		);
+		this.tableData = new SimpleDataSource(dataSource$);
 	}
 
-	public onPageChange(event: PageEvent): void {
-		this._projectListParams.next({ skipCount: event.pageIndex * event.pageSize, takeCount: event.pageSize });
+	public handleRowClick(project: ProjectInfo): void {
+		this.router.navigate([project.id], { relativeTo: this.route });
+	}
+
+	public handleFilter(event: FilterEvent) {
+		this.filterValue.next(event);
+	}
+
+	public handleScroll(): void {
+		this.infiniteScrollDataProvider.loadOnScroll();
 	}
 }

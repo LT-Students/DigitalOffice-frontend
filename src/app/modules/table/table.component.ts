@@ -1,7 +1,19 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
+import { Observable } from 'rxjs';
 import { ColumnDef } from './models/column-def';
+
+export class SimpleDataSource<T> extends DataSource<T> {
+	constructor(private data$: Observable<T[]>) {
+		super();
+	}
+	public connect(collectionViewer: CollectionViewer): Observable<T[]> {
+		return this.data$;
+	}
+
+	public disconnect(collectionViewer: CollectionViewer): void {}
+}
 
 @Component({
 	selector: 'do-table',
@@ -23,6 +35,7 @@ export class TableComponent<T> implements OnInit {
 	@Input() dataSource!: DataSource<T>;
 	@Input() columns: ColumnDef[] = [];
 	public displayColumns: string[] = [];
+	@Input() message = 'Нет данных';
 
 	constructor() {}
 

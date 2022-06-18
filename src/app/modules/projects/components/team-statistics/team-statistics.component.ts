@@ -14,7 +14,7 @@ import { DatePeriod } from '@app/types/date-period';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DateTime } from 'luxon';
-import { Icons } from '@shared/modules/icons/icons';
+import { Icons } from '@shared/features/icons/icons';
 
 export interface EmployeeStats {
 	id?: string;

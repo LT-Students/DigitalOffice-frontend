@@ -15,8 +15,7 @@ import { EMPTY } from 'rxjs';
 import { ProjectUserRoleType } from '@api/project-service/models';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
 import { AppRoutes } from '@app/models/app-routes';
-import { Icons } from '@shared/modules/icons/icons';
-import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
+import { Icons } from '@shared/features/icons/icons';
 
 @Component({
 	selector: 'do-project-page',
@@ -143,23 +142,23 @@ export class ProjectPageComponent implements OnInit {
 	}
 
 	public openEditProjectModal(): void {
-		const dialogRef = this._modalService.openModal(EditProjectComponent, ModalWidth.L, {
-			projectInfo: this.projectInfo,
-		});
-		dialogRef
-			.afterClosed()
-			.pipe(
-				switchMap(() =>
-					this._projectService.getProject({
-						projectId: this.projectId,
-						includeusers: true,
-						shownotactiveusers: true,
-					})
-				)
-			)
-			.subscribe((result) => {
-				this._updateProjectInfo(result);
-			});
+		// const dialogRef = this._modalService.openModal(EditProjectComponent, ModalWidth.L, {
+		// 	projectInfo: this.projectInfo,
+		// });
+		// dialogRef
+		// 	.afterClosed()
+		// 	.pipe(
+		// 		switchMap(() =>
+		// 			this._projectService.getProject({
+		// 				projectId: this.projectId,
+		// 				includeusers: true,
+		// 				shownotactiveusers: true,
+		// 			})
+		// 		)
+		// 	)
+		// 	.subscribe((result) => {
+		// 		this._updateProjectInfo(result);
+		// 	});
 	}
 
 	public removeFromProject(): void {
@@ -196,7 +195,7 @@ export class ProjectPageComponent implements OnInit {
 	}
 
 	private _updateProjectInfo(result: OperationResultResponse<IGetProjectResponse>): void {
-		this.projectInfo = result.body?.project ?? {};
+		this.projectInfo = result.body?.project;
 		this.status = ProjectTypeModel.getProjectType(this.projectInfo?.status)?.type;
 		this.dataSource = new MatTableDataSource(result?.body?.users?.filter((e) => e.isActive) ?? []);
 		this.projectCreatedAt = new Date(this.projectInfo?.createdAtUtc);

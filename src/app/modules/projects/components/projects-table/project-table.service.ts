@@ -5,17 +5,31 @@ import { DepartmentService } from '@app/services/department/department.service';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { map } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { ProjectService } from '@app/services/project/project.service';
-import { FilterDef } from '../../../dynamic-filter/models/filter-def';
-import { ColumnDef } from '../../../table/models/column-def';
-import { AutocompleteFilterParams } from '../../../dynamic-filter/components/autocomplete/autocomplete';
-import { SelectFilterParams } from '../../../dynamic-filter/components/select/select';
-import { InputFilterParams } from '../../../dynamic-filter/components/input/input';
+import { IFindProjects, ProjectService } from '@app/services/project/project.service';
+import { ActivatedRoute } from '@angular/router';
+import { LoadDataFn } from '@app/services/infinite-scroll-data-provider.service';
+import { ColumnDef } from '../../../table/models';
+import {
+	AutocompleteFilterParams,
+	FilterDef,
+	InputFilterParams,
+	SelectFilterParams,
+} from '../../../dynamic-filter/models';
 import { IProjectStatus, ProjectStatus } from './project-status';
 
 @Injectable()
 export class ProjectTableService {
-	constructor(private projectService: ProjectService, private departmentService: DepartmentService) {}
+	public loadDataFn: LoadDataFn<ProjectInfo> = (params: IFindProjects, isFirst: boolean) => {
+		return isFirst
+			? this.route.data.pipe(map((response) => response.projects))
+			: this.projectService.findProjects(params);
+	};
+
+	constructor(
+		private projectService: ProjectService,
+		private departmentService: DepartmentService,
+		private route: ActivatedRoute
+	) {}
 
 	public getTableColumns(): ColumnDef[] {
 		return [
@@ -53,7 +67,7 @@ export class ProjectTableService {
 				}),
 			},
 			{
-				key: 'status',
+				key: 'projectstatus',
 				type: 'select',
 				width: 177,
 				params: new SelectFilterParams({
@@ -66,8 +80,12 @@ export class ProjectTableService {
 					allowReset: true,
 				}),
 			},
-			{ key: 'name', type: 'input', params: new InputFilterParams({ placeholder: 'Поиск', icon: Icons.Search }) },
-			{ key: 'order', type: 'alphabetSort' },
+			{
+				key: 'nameincludesubstring',
+				type: 'input',
+				params: new InputFilterParams({ placeholder: 'Поиск', icon: Icons.Search }),
+			},
+			{ key: 'isascendingsort', type: 'alphabetSort' },
 		];
 	}
 }

@@ -1,6 +1,15 @@
 .header {
-	margin-bottom: 20px;
+	margin-bottom: 24px;
 
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+
+	h1 {
+		margin: 0;
+	}
+}
+
+.filter {
+	margin-bottom: 24px;
 }

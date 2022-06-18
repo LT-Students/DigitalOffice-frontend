@@ -5,9 +5,7 @@ import {
 	CreateProjectRequest,
 	EditProjectRequest,
 	FileAccess,
-	ImageContent,
 	ImageInfo,
-	// ProjectFileInfo,
 	ProjectInfo,
 	ProjectStatusType,
 	ProjectUserRoleType,
@@ -55,9 +53,11 @@ export interface IRemoveUsersFromProjectRequest {
 }
 
 export interface IFindProjects {
+	isascendingsort?: boolean;
+	projectstatus?: ProjectStatusType;
+	nameincludesubstring?: string;
 	skipCount: number;
 	takeCount: number;
-	departmentId?: string;
 }
 
 @Injectable({

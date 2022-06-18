@@ -4,6 +4,10 @@ import { debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { FilterDef } from './models/filter-def';
 
+export interface FilterEvent {
+	[key: string]: any;
+}
+
 @Component({
 	selector: 'do-dynamic-filter',
 	templateUrl: './dynamic-filter.component.html',
@@ -11,7 +15,7 @@ import { FilterDef } from './models/filter-def';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DynamicFilterComponent implements OnInit, OnDestroy {
-	@Output() filterChange = new EventEmitter();
+	@Output() filterChange = new EventEmitter<FilterEvent>();
 	@Input() filters: FilterDef[] = [];
 	public form!: FormGroup;
 	private filterSubscription!: Subscription;
@@ -25,9 +29,16 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
 		);
 		this.form = this.fb.group(group);
 
-		this.filterSubscription = this.form.valueChanges
-			.pipe(debounceTime(500))
-			.subscribe({ next: (value: string) => this.filterChange.emit(value) });
+		this.filterSubscription = this.form.valueChanges.pipe(debounceTime(500)).subscribe({
+			next: (value: FilterEvent) => {
+				Object.keys(value).forEach((k: string) => {
+					if (value[k] == null || value[k] === '') {
+						value[k] = undefined;
+					}
+				});
+				this.filterChange.emit(value);
+			},
+		});
 	}
 
 	public ngOnDestroy(): void {

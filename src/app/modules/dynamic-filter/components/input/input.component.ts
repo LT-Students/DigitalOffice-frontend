@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Filter } from '../../models/filter';
-import { InputFilterParams } from './input';
+import { InputFilterParams } from '../../models/input';
 
 @Component({
 	selector: 'do-input',

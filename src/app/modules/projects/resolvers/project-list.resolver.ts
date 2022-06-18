@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ProjectService } from '@app/services/project/project.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ProjectInfo } from '@api/project-service/models/project-info';
+import { defaultProjectsTakeCount } from '../helpers';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,6 +16,6 @@ export class ProjectListResolver implements Resolve<OperationResultResponse<Proj
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<OperationResultResponse<ProjectInfo[]>> {
-		return this._projectService.findProjects({ skipCount: 0, takeCount: 10 });
+		return this._projectService.findProjects({ skipCount: 0, takeCount: defaultProjectsTakeCount });
 	}
 }

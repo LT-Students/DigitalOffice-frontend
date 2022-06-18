@@ -53,5 +53,5 @@ export interface ProjectInfo {
 	 * Date and time begin project in UTC.
 	 */
 	startDateUtc?: any;
-	status?: ProjectStatusType;
+	status: ProjectStatusType;
 }

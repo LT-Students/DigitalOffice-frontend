@@ -3,9 +3,9 @@ import { InputComponent } from '../components/input/input.component';
 import { SelectComponent } from '../components/select/select.component';
 import { AlphabetSortComponent } from '../components/alphabet-sort/alphabet-sort.component';
 import { AutocompleteComponent } from '../components/autocomplete/autocomplete.component';
-import { AutocompleteFilterParams } from '../components/autocomplete/autocomplete';
-import { SelectFilterParams } from '../components/select/select';
-import { InputFilterParams } from '../components/input/input';
+import { AutocompleteFilterParams } from './autocomplete';
+import { SelectFilterParams } from './select';
+import { InputFilterParams } from './input';
 
 export const FILTER_TYPES = {
 	input: InputComponent,

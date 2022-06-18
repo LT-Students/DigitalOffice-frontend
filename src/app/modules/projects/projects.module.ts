@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
+import { TableModule } from '../table/table.module';
+import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { ProjectsRoutingModule } from './projects-routing.module';
-import { EditProjectComponent } from './modals/edit-project/edit-project.component';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
@@ -10,13 +11,12 @@ import { DeleteDirectionComponent } from './components/new-project/modals/delete
 
 @NgModule({
 	declarations: [
-		EditProjectComponent,
 		ProjectsTableComponent,
 		ProjectPageComponent,
 		TeamStatisticsComponent,
 		NewProjectComponent,
 		DeleteDirectionComponent,
 	],
-	imports: [SharedModule, ProjectsRoutingModule],
+	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule],
 })
 export class ProjectsModule {}

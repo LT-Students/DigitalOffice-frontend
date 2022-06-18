@@ -4,8 +4,7 @@ import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { Icons } from '@shared/features/icons/icons';
 import { debounceTime, filter, first, map, scan, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { Filter } from '../../models/filter';
-import { AutocompleteFilterParams } from './autocomplete';
+import { AutocompleteFilterParams, Filter } from '../../models';
 
 @Component({
 	selector: 'do-filter-autocomplete',
