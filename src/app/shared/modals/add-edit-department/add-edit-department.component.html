@@ -5,7 +5,7 @@
 	<mat-dialog-content class="new-department">
 		<div class="form__container">
 			<div class="new-department__input-container">
-				<do-form-row label="Название департамента" class="new-department__field">
+				<do-form-field label="Название департамента" class="new-department__field">
 					<mat-form-field>
 						<input matInput type="text" [formControlName]="EditPath.NAME" required />
 						<mat-error
@@ -26,8 +26,8 @@
 							</mat-error>
 						</ng-template>
 					</mat-form-field>
-				</do-form-row>
-				<do-form-row label="Директор" class="new-department__field">
+				</do-form-field>
+				<do-form-field label="Директор" class="new-department__field">
 					<mat-form-field>
 						<mat-select>
 							<mat-option *ngFor="let director of directors$ | async" [value]="director.id">
@@ -35,8 +35,8 @@
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
-				</do-form-row>
-				<do-form-row label="Описание" class="new-department__field">
+				</do-form-field>
+				<do-form-field label="Описание" class="new-department__field">
 					<mat-form-field>
 						<textarea
 							#description
@@ -47,7 +47,7 @@
 						></textarea>
 						<mat-hint align="end">{{ description.value.length }}/1000</mat-hint>
 					</mat-form-field>
-				</do-form-row>
+				</do-form-field>
 			</div>
 		</div>
 	</mat-dialog-content>

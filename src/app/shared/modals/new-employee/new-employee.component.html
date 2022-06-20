@@ -7,7 +7,7 @@
 				<span class="warn"><sup>*</sup>Обязательные поля</span>
 			</div>
 			<div class="new-employee__inputs">
-				<do-form-row label="Имя">
+				<do-form-field label="Имя">
 					<mat-form-field
 						[matTooltip]="userForm.controls['firstName']?.errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
 						[matTooltipPosition]="'right'"
@@ -27,8 +27,8 @@
 							>Имя не может состоять только из пробелов!
 						</mat-error>
 					</mat-form-field>
-				</do-form-row>
-				<do-form-row label="Фамилия">
+				</do-form-field>
+				<do-form-field label="Фамилия">
 					<mat-form-field
 						[matTooltip]="userForm.controls['lastName']?.errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
 						[matTooltipPosition]="'right'"
@@ -47,8 +47,8 @@
 							>Фамилия не может состоять только из пробелов!
 						</mat-error>
 					</mat-form-field>
-				</do-form-row>
-				<do-form-row label="Отчество">
+				</do-form-field>
+				<do-form-field label="Отчество">
 					<mat-form-field
 						[matTooltip]="userForm.controls['middleName']?.errors?.['name'] ? 'Отчество может содержать только буквы, -, ` и пробел.\nОтчество не может начинаться и заканчиваться символами - и `' : ''"
 						[matTooltipPosition]="'right'"
@@ -58,28 +58,28 @@
 							>Отчество не может состоять только из пробелов!
 						</mat-error>
 					</mat-form-field>
-				</do-form-row>
-                <do-form-row label="День рождения">
-                    <mat-form-field>
-                        <input
-                            matInput
-                            [matDatepicker]="dayOfBirth"
-                            formControlName="dayOfBirth"
-                            placeholder="ДД месяц ГГГГ"
-                        />
-                        <mat-datepicker-toggle matSuffix [for]="dayOfBirth">
-                            <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
-                        </mat-datepicker-toggle>
-                        <mat-datepicker #dayOfBirth></mat-datepicker>
-                    </mat-form-field>
-                </do-form-row>
+				</do-form-field>
+				<do-form-field label="День рождения">
+					<mat-form-field>
+						<input
+							matInput
+							[matDatepicker]="dayOfBirth"
+							formControlName="dayOfBirth"
+							placeholder="ДД месяц ГГГГ"
+						/>
+						<mat-datepicker-toggle matSuffix [for]="dayOfBirth">
+							<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+						</mat-datepicker-toggle>
+						<mat-datepicker #dayOfBirth></mat-datepicker>
+					</mat-form-field>
+				</do-form-field>
 			</div>
 		</div>
 		<div class="section new-employee__working-info">
 			<h3 class="new-employee__heading">Рабочая информация</h3>
 			<div class="new-employee__inputs">
 				<ng-container *ngIf="position$ | async as positionList">
-					<do-form-row label="Должность">
+					<do-form-field label="Должность">
 						<mat-form-field>
 							<mat-select placeholder="Выберите должность" formControlName="positionId">
 								<mat-option *ngFor="let position of positionList.body" [value]="position.id">
@@ -88,10 +88,10 @@
 							</mat-select>
 							<mat-error>Ошибка!</mat-error>
 						</mat-form-field>
-					</do-form-row>
+					</do-form-field>
 				</ng-container>
 				<ng-container *ngIf="department$ | async as departmentList">
-					<do-form-row label="Департамент">
+					<do-form-field label="Департамент">
 						<mat-form-field>
 							<mat-select placeholder="Выберите департамент" formControlName="departmentId">
 								<mat-option *ngFor="let department of departmentList.body" [value]="department.id">
@@ -99,33 +99,33 @@
 								</mat-option>
 							</mat-select>
 						</mat-form-field>
-					</do-form-row>
+					</do-form-field>
 				</ng-container>
-				<do-form-row label="Ставка">
-                    <mat-form-field>
-                        <mat-select placeholder="Выберите ставку" formControlName="rate" required>
-                            <mat-option *ngFor="let rate of [1, 0.75, 0.5, 0.25]" [value]="rate">
-                                {{ rate }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-				</do-form-row>
-				<do-form-row label="Начало работы">
+				<do-form-field label="Ставка">
+					<mat-form-field>
+						<mat-select placeholder="Выберите ставку" formControlName="rate" required>
+							<mat-option *ngFor="let rate of [1, 0.75, 0.5, 0.25]" [value]="rate">
+								{{ rate }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</do-form-field>
+				<do-form-field label="Начало работы">
 					<mat-form-field>
 						<input
 							matInput
 							[matDatepicker]="picker"
 							formControlName="startWorkingAt"
 							placeholder="Начало работы"
-                            required
+							required
 						/>
 						<mat-datepicker-toggle matSuffix [for]="picker">
 							<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 						</mat-datepicker-toggle>
 						<mat-datepicker #picker></mat-datepicker>
 					</mat-form-field>
-				</do-form-row>
-				<do-form-row label="Офис">
+				</do-form-field>
+				<do-form-field label="Офис">
 					<mat-form-field>
 						<mat-select placeholder="Выберите офис" formControlName="officeId">
 							<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
@@ -133,8 +133,8 @@
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
-				</do-form-row>
-				<do-form-row label="Роль">
+				</do-form-field>
+				<do-form-field label="Роль">
 					<mat-form-field>
 						<mat-select placeholder="Выберите роль" formControlName="roleId">
 							<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
@@ -142,7 +142,7 @@
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
-				</do-form-row>
+				</do-form-field>
 				<div>
 					<mat-checkbox color="accent" formControlName="isAdmin">Дать права администратора</mat-checkbox>
 				</div>
@@ -151,7 +151,7 @@
 		<div class="section new-employee__auth">
 			<h3 class="new-employee__heading">Аутентификация</h3>
 			<div class="new-employee__inputs">
-				<do-form-row label="E-mail" class="new-employee__form-element_span_2">
+				<do-form-field label="E-mail" class="new-employee__form-element_span_2">
 					<mat-form-field>
 						<input matInput placeholder="Введите E-mail" formControlName="email" required />
 						<mat-error *ngIf="userForm.controls['email']?.errors?.['required']"
@@ -161,7 +161,7 @@
 							>Неправильный формат почты!
 						</mat-error>
 					</mat-form-field>
-				</do-form-row>
+				</do-form-field>
 			</div>
 		</div>
 		<div class="new-employee__actions">

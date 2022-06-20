@@ -7,7 +7,7 @@ import { InputFilterParams } from '../../models/input';
 @Component({
 	selector: 'do-input',
 	template: `
-		<do-form-row>
+		<do-form-field>
 			<mat-form-field>
 				<input
 					matInput
@@ -23,7 +23,7 @@ import { InputFilterParams } from '../../models/input';
 					[svgIcon]="icon"
 				></mat-icon>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,

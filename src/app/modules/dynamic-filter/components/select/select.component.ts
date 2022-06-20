@@ -7,7 +7,7 @@ import { SelectFilterParams } from '../../models/select';
 @Component({
 	selector: 'do-select',
 	template: `
-		<do-form-row>
+		<do-form-field>
 			<mat-form-field>
 				<mat-select [formControl]="control" [placeholder]="params?.placeholder || ''">
 					<mat-option *ngIf="params.allowReset">—</mat-option>
@@ -24,7 +24,7 @@ import { SelectFilterParams } from '../../models/select';
 					>
 				</mat-select>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,

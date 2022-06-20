@@ -1,6 +1,10 @@
 <form class="auth" [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
-	<span *ngIf="loginForm.errors?.['login']" class="mat-body-2 text-alert">{{ loginForm.errors?.['login'].message }}</span>
-	<do-form-row class="auth-input">
+	<span
+		*ngIf="loginForm.errors?.['login']"
+		class="mat-body-2 text-alert"
+		>{{ loginForm.errors?.['login'].message }}</span
+	>
+	<do-form-field class="auth-input">
 		<mat-form-field>
 			<input
 				(cdkAutofill)="handleAutofill($event)"
@@ -11,12 +15,12 @@
 				formControlName="username"
 			/>
 		</mat-form-field>
-	</do-form-row>
-	<do-form-row class="auth-input">
+	</do-form-field>
+	<do-form-field class="auth-input">
 		<mat-form-field>
 			<do-password placeholder="Пароль" formControlName="password"></do-password>
 		</mat-form-field>
-	</do-form-row>
+	</do-form-field>
 	<button
 		[loading]="isLoading$$ | async"
 		mat-flat-button

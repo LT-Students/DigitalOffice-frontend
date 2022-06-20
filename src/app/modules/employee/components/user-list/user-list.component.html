@@ -1,7 +1,7 @@
 <mat-card class="card">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
-		<do-form-row>
+		<do-form-field>
 			<mat-form-field>
 				<input
 					matInput
@@ -13,7 +13,7 @@
 				/>
 				<mat-icon matPrefix class="text-secondary_default">search</mat-icon>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 		<button mat-flat-button color="accent" (click)="createEmployee()" data-test="add-user-button">
 			+ Добавить сотрудника
 		</button>

@@ -1,6 +1,6 @@
 <form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
 	<div class="add-hours__dates-container">
-		<do-form-row label="Количество часов">
+		<do-form-field label="Количество часов">
 			<mat-form-field class="add-hours__time">
 				<input matInput formControlName="time" type="text" placeholder="0" />
 				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.min; else errIntNum">
@@ -20,9 +20,9 @@
 					<mat-error *ngIf="addHoursForm.controls['time']?.errors?.required"> Поле обязательно! </mat-error>
 				</ng-template>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 
-		<do-form-row label="Месяц">
+		<do-form-field label="Месяц">
 			<mat-form-field>
 				<mat-select [formControl]="dateControl" [compareWith]="compareDate">
 					<mat-option *ngFor="let month of monthOptions" [value]="month">
@@ -30,10 +30,10 @@
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	</div>
 
-	<do-form-row label="Проект">
+	<do-form-field label="Проект">
 		<mat-form-field>
 			<mat-select formControlName="activity" placeholder="Выберите проект">
 				<mat-option
@@ -45,8 +45,8 @@
 				</mat-option>
 			</mat-select>
 		</mat-form-field>
-	</do-form-row>
-	<do-form-row label="Комментарий">
+	</do-form-field>
+	<do-form-field label="Комментарий">
 		<mat-form-field>
 			<textarea
 				#comment
@@ -60,7 +60,7 @@
 			></textarea>
 			<mat-hint>{{ comment.value.length }}/500</mat-hint>
 		</mat-form-field>
-	</do-form-row>
+	</do-form-field>
 	<button
 		class="submit-button"
 		mat-flat-button

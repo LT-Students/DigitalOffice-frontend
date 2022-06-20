@@ -42,7 +42,7 @@ import { PasswordHintComponent } from './component/password-hint/password-hint.c
 import { TruncateTooltipDirective } from './directives/truncate-tooltip.directive';
 import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
-import { FormRowComponent } from './component/form-row/form-row.component';
+import { FormFieldComponent } from './component/form-row/form-field.component';
 import { SelectDirective } from './directives/select.directive';
 import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { ImageUrlPipe } from './pipes/image-url.pipe';
@@ -92,7 +92,7 @@ import { AutocompleteComponent } from './component/autocomplete/autocomplete.com
 		PlaceholderPipe,
 		UserRecoveryComponent,
 		CapitalizePipe,
-		FormRowComponent,
+		FormFieldComponent,
 		SelectDirective,
 		SidebarComponent,
 		ImageUrlPipe,
@@ -165,7 +165,7 @@ import { AutocompleteComponent } from './component/autocomplete/autocomplete.com
 		PlaceholderPipe,
 		UserRecoveryComponent,
 		CapitalizePipe,
-		FormRowComponent,
+		FormFieldComponent,
 		SelectDirective,
 		ImageUrlPipe,
 		ContextMenuComponent,

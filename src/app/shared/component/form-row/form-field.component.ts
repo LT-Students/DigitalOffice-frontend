@@ -2,12 +2,12 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, ContentChild } from 
 import { MatFormFieldControl } from '@angular/material/form-field';
 
 @Component({
-	selector: 'do-form-row',
-	templateUrl: './form-row.component.html',
-	styleUrls: ['./form-row.component.scss'],
+	selector: 'do-form-field',
+	templateUrl: './form-field.component.html',
+	styleUrls: ['./form-field.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormRowComponent implements OnInit {
+export class FormFieldComponent implements OnInit {
 	@Input() label = '';
 	@Input() required = false;
 	@ContentChild(MatFormFieldControl) control?: MatFormFieldControl<any>;

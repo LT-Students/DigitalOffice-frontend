@@ -5,7 +5,7 @@
 	</h3>
 	<form class="content" [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
 		<div class="flex flex-ai-end">
-			<do-form-row class="modal__range-picker" label="Выберите диапазон отсутствия">
+			<do-form-field class="modal__range-picker" label="Выберите диапазон отсутствия">
 				<mat-form-field>
 					<mat-date-range-input [rangePicker]="$any(picker)" [dateFilter]="disableWeekends">
 						<input
@@ -24,7 +24,7 @@
 						>Заполните конечную дату
 					</mat-error>
 				</mat-form-field>
-			</do-form-row>
+			</do-form-field>
 			<div class="modal__hours">
 				<p class="mat-body-1">Выбрано</p>
 				<h3 class="modal__selected-hours">
@@ -32,7 +32,7 @@
 				</h3>
 			</div>
 		</div>
-		<do-form-row label="Комментарий">
+		<do-form-field label="Комментарий">
 			<mat-form-field>
 				<textarea
 					#comment
@@ -46,7 +46,7 @@
 				></textarea>
 				<mat-hint>{{ comment.value.length }}/500</mat-hint>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 		<div class="controls">
 			<button mat-button class="controls__button" type="button" (click)="onClose()">Отмена</button>
 			<button

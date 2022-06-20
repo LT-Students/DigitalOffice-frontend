@@ -23,7 +23,7 @@ import { OptionComponent } from '@shared/component/option/option.component';
 @Component({
 	selector: 'do-autocomplete',
 	template: `
-		<do-form-row>
+		<do-form-field>
 			<mat-form-field>
 				<input
 					#search
@@ -53,7 +53,7 @@ import { OptionComponent } from '@shared/component/option/option.component';
 					</mat-option>
 				</mat-autocomplete>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	`,
 	styles: [
 		`

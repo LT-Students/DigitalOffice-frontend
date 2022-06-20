@@ -4,34 +4,42 @@
 		<div class="new-role__form">
 			<div class="new-role__input-container">
 				<ng-container *ngIf="!isEditMode; else editView">
-                    <do-form-row label="Название" class="new-role__field">
-                        <mat-form-field>
-                            <input #name matInput type="text" id="name" formControlName="name" [maxlength]="MAX_NAME_LENGTH" required />
-                            <mat-hint align="end">{{ name.value.length }}/{{ MAX_NAME_LENGTH }}</mat-hint>
-                            <mat-error *ngIf="roleForm.controls['name'].errors?.['required']"
-                            >Название не должно быть пустым!
-                            </mat-error>
-                            <mat-error *ngIf="roleForm.controls['name'].errors?.['whitespace']"
-                            >Название не может состоять только из пробелов!
-                            </mat-error>
-                        </mat-form-field>
-                    </do-form-row>
-                    <do-form-row label="Описание" class="new-role__field">
-                        <mat-form-field>
-                        <textarea
-                            #description
-                            matInput
-                            formControlName="description"
-                            placeholder="Напишите немного о новой роли"
-                            [maxlength]="MAX_DESCRIPTION_LENGTH"
-                        ></textarea>
-                            <mat-hint align="end">{{ description.value.length }}/{{ MAX_DESCRIPTION_LENGTH }}</mat-hint>
-                            <mat-error *ngIf="roleForm.controls['description'].errors?.['whitespace']"
-                            >Описание не может состоять только из пробелов!
-                            </mat-error>
-                        </mat-form-field>
-                    </do-form-row>
-                </ng-container>
+					<do-form-field label="Название" class="new-role__field">
+						<mat-form-field>
+							<input
+								#name
+								matInput
+								type="text"
+								id="name"
+								formControlName="name"
+								[maxlength]="MAX_NAME_LENGTH"
+								required
+							/>
+							<mat-hint align="end">{{ name.value.length }}/{{ MAX_NAME_LENGTH }}</mat-hint>
+							<mat-error *ngIf="roleForm.controls['name'].errors?.['required']"
+								>Название не должно быть пустым!
+							</mat-error>
+							<mat-error *ngIf="roleForm.controls['name'].errors?.['whitespace']"
+								>Название не может состоять только из пробелов!
+							</mat-error>
+						</mat-form-field>
+					</do-form-field>
+					<do-form-field label="Описание" class="new-role__field">
+						<mat-form-field>
+							<textarea
+								#description
+								matInput
+								formControlName="description"
+								placeholder="Напишите немного о новой роли"
+								[maxlength]="MAX_DESCRIPTION_LENGTH"
+							></textarea>
+							<mat-hint align="end">{{ description.value.length }}/{{ MAX_DESCRIPTION_LENGTH }}</mat-hint>
+							<mat-error *ngIf="roleForm.controls['description'].errors?.['whitespace']"
+								>Описание не может состоять только из пробелов!
+							</mat-error>
+						</mat-form-field>
+					</do-form-field>
+				</ng-container>
 				<ng-template #editView>
 					<div>
 						<p class="mat-caption">Название</p>
@@ -43,18 +51,22 @@
 					</div>
 				</ng-template>
 				<mat-divider></mat-divider>
-                <do-form-row label="Выберите права" class="new-role__input" [required]='true'
-                    matTooltip="Выберите хотя бы одно право" matTooltipPosition='below'
-                >
-                    <ng-container formGroupName="rights" *ngIf="rights$ | async as rights; else spinner">
-                        <p *ngFor="let right of rights">
-                            <mat-checkbox [formControlName]="right.rightId!">{{ right?.name }}</mat-checkbox>
-                        </p>
-                    </ng-container>
-                    <ng-template #spinner>
-                        <mat-spinner></mat-spinner>
-                    </ng-template>
-                </do-form-row>
+				<do-form-field
+					label="Выберите права"
+					class="new-role__input"
+					[required]="true"
+					matTooltip="Выберите хотя бы одно право"
+					matTooltipPosition="below"
+				>
+					<ng-container formGroupName="rights" *ngIf="rights$ | async as rights; else spinner">
+						<p *ngFor="let right of rights">
+							<mat-checkbox [formControlName]="right.rightId!">{{ right?.name }}</mat-checkbox>
+						</p>
+					</ng-container>
+					<ng-template #spinner>
+						<mat-spinner></mat-spinner>
+					</ng-template>
+				</do-form-field>
 			</div>
 		</div>
 	</mat-dialog-content>

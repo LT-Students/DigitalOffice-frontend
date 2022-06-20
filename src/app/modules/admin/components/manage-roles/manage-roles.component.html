@@ -4,14 +4,14 @@
 		<button mat-flat-button color="accent" (click)="onAddEditRole()">+ Создать роль</button>
 	</div>
 	<div class="filters" [formGroup]="filters">
-		<do-form-row label="Статус" class="filters__status">
+		<do-form-field label="Статус" class="filters__status">
 			<mat-form-field>
 				<mat-select formControlName="showDeactivated">
 					<mat-option [value]="false">Активные</mat-option>
 					<mat-option [value]="true">Все</mat-option>
 				</mat-select>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	</div>
 	<ng-container *ngIf="roles$ | async as roles">
 		<table *ngIf="roles.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
