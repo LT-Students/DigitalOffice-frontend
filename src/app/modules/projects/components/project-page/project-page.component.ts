@@ -13,7 +13,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { EMPTY } from 'rxjs';
 import { ProjectUserRoleType } from '@api/project-service/models';
-import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
+import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/dialogs/add-employee/add-employee.component';
 import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/features/icons/icons';
 

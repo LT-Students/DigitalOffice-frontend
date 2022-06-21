@@ -24,7 +24,7 @@ import { EditNewsRequest } from '@api/news-service/models/edit-news-request';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { User } from '@app/models/user/user.model';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { IOutputBlockData, IOutputData } from '../../models/output-data.interface';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';

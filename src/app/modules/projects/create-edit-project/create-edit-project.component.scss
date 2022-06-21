@@ -2,9 +2,10 @@
 	display: grid;
 	gap: 12px;
 	grid-template-columns: 0.8fr 1fr;
-	grid-template-rows: 295px 221px 180px 1fr;
+	grid-template-rows: auto auto 180px auto;
 }
 
 .description {
+	align-self: start;
 	grid-area: 1 / 2 / last / 3;
 }

@@ -7,7 +7,7 @@ import { CommunicationService } from '@app/services/user/communication.service';
 import { switchMap } from 'rxjs/operators';
 import { EMPTY, iif } from 'rxjs';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { AlertService } from '@app/services/alert.service';
 import { Icons } from '@shared/features/icons/icons';
 import { EmployeePageService } from '../../../services/employee-page.service';

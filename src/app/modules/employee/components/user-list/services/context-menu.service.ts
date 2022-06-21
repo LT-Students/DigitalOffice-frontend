@@ -9,7 +9,7 @@ import { DialogService } from '@app/services/dialog.service';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { UserInfo } from '@api/user-service/models/user-info';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { UserInfoLike } from '../user-list.types';
 import { isActiveUser, isPendingUser } from '../helpers';
 import { UserListService } from './user-list.service';

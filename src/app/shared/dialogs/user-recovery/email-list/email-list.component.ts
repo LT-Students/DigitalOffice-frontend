@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, ValidatorFn } from '@angular/forms';
-import { EmailValue } from '@shared/modals/user-recovery/email-item/email-item.component';
+import { EmailValue } from '@shared/dialogs/user-recovery/email-item/email-item.component';
 
 const emailExists: ValidatorFn = (control: AbstractControl) => {
 	const errorEmail = control.getError('emailExists');

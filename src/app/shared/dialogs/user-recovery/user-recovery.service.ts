@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { UserService } from '@app/services/user/user.service';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { EmailValue } from '@shared/modals/user-recovery/email-item/email-item.component';
+import { EmailValue } from '@shared/dialogs/user-recovery/email-item/email-item.component';
 import { CommunicationVisibleTo } from '@api/user-service/models/communication-visible-to';
 
 @Injectable()

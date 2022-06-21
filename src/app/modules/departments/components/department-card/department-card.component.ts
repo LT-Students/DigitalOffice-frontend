@@ -10,8 +10,8 @@ import { DepartmentUserInfo } from '@api/department-service/models/department-us
 import { map, switchMap, tap } from 'rxjs/operators';
 import { DepartmentService } from '@app/services/department/department.service';
 import { EMPTY, of } from 'rxjs';
-import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/modals/add-employee/add-employee.component';
-import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/dialogs/add-employee/add-employee.component';
+import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/features/icons/icons';
 

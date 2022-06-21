@@ -6,12 +6,12 @@ import { switchMap, tap } from 'rxjs/operators';
 import { NewsService } from '@app/services/news/news.service';
 import { DialogService } from '@app/services/dialog.service';
 import { PageEvent } from '@angular/material/paginator';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { ArticlePreview } from '../../models/news.model';
 import { NewsFeedService } from '../../services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-news-feed',

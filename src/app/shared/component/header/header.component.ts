@@ -5,7 +5,7 @@ import { CurrentUserService } from '@app/services/current-user.service';
 import { Observable } from 'rxjs';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { AppRoutes } from '@app/models/app-routes';
-import { ChangeUserPasswordComponent } from '../../modals/change-user-password/change-user-password.component';
+import { ChangeUserPasswordComponent } from '../../dialogs/change-user-password/change-user-password.component';
 
 @Component({
 	selector: 'do-header',

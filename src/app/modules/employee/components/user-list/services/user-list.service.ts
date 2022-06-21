@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
 	debounceTime,
-	distinctUntilChanged, filter,
+	distinctUntilChanged,
+	filter,
 	first,
 	map,
 	scan,
@@ -17,7 +18,7 @@ import { UserInfo } from '@api/user-service/models/user-info';
 import { FilterService } from '@app/services/filter/filter.service';
 import { UserService } from '@app/services/user/user.service';
 import { IFindRequest } from '@app/types/find-request.interface';
-import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
+import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { DialogService } from '@app/services/dialog.service';
 import { FormControl } from '@angular/forms';
 import { EditPayload, Status, UpdateUsersAction, UpdateUsersPayload, UserInfoLike } from '../user-list.types';

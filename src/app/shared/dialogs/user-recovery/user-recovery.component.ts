@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/cor
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AbstractControl, FormArray } from '@angular/forms';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { UserRecoveryService } from '@shared/modals/user-recovery/user-recovery.service';
+import { UserRecoveryService } from '@shared/dialogs/user-recovery/user-recovery.service';
 import { Subject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
