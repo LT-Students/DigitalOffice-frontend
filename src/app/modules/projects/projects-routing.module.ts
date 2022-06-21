@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectListResolver } from './resolvers/project-list.resolver';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
-import { NewProjectComponent } from './components/new-project/new-project.component';
 import { ProjectPageResolver } from './resolvers/project-page.resolver';
 import { ProjectsRoutes } from './models/projects-routes';
+import { CreateEditProjectComponent } from './create-edit-project/create-edit-project.component';
 
 const routes: Routes = [
 	{
@@ -15,7 +15,7 @@ const routes: Routes = [
 			projects: ProjectListResolver,
 		},
 	},
-	{ path: ProjectsRoutes.NewProject, component: NewProjectComponent },
+	{ path: ProjectsRoutes.CreateProject, component: CreateEditProjectComponent },
 	{
 		path: ':id',
 		component: ProjectPageComponent,

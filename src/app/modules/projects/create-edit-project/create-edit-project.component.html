@@ -1,0 +1,25 @@
+<div class="flex flex_jc_space-between flex_ai_center">
+	<h3 doUnderline>Создание проекта</h3>
+	<div class="actions">
+		<button doButton>Отменить</button>
+		<button mat-flat-button color="primary">Создать проект</button>
+	</div>
+</div>
+<div class="content">
+	<mat-card>
+		<h5>Информация о проекте</h5>
+		<do-project-info></do-project-info>
+	</mat-card>
+	<mat-card>
+		<h5>Детали проекта</h5>
+		<do-project-details></do-project-details>
+	</mat-card>
+	<mat-card>
+		<h5>Команда</h5>
+		<do-team [style.height.%]="100"></do-team>
+	</mat-card>
+	<mat-card class="description">
+		<h5>Описание проекта</h5>
+		<do-project-description></do-project-description>
+	</mat-card>
+</div>

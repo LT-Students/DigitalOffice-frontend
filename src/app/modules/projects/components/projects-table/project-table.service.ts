@@ -15,7 +15,7 @@ import {
 	InputFilterParams,
 	SelectFilterParams,
 } from '../../../dynamic-filter/models';
-import { IProjectStatus, ProjectStatus } from './project-status';
+import { IProjectStatus, ProjectStatus } from '../../models/project-status';
 
 @Injectable()
 export class ProjectTableService {
@@ -73,7 +73,7 @@ export class ProjectTableService {
 				params: new SelectFilterParams({
 					placeholder: 'Статус',
 					options$: of(ProjectStatus.getAllStatuses()),
-					valueGetter: (s: IProjectStatus) => s.status,
+					valueGetter: (s: IProjectStatus) => s.type,
 					displayValueGetter: (s: IProjectStatus) => s.label,
 					icon: Icons.Status,
 					iconColor: (s: IProjectStatus) => s.color,

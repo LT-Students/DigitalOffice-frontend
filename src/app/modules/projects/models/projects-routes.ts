@@ -1,3 +1,4 @@
 export enum ProjectsRoutes {
-	NewProject = 'create',
+	CreateProject = 'create',
+	EditProject = 'edit',
 }

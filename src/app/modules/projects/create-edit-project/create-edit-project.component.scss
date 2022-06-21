@@ -1,0 +1,10 @@
+.content {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: 0.8fr 1fr;
+	grid-template-rows: 295px 221px 180px 1fr;
+}
+
+.description {
+	grid-area: 1 / 2 / last / 3;
+}

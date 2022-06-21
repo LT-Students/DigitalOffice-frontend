@@ -23,40 +23,42 @@ import { OptionComponent } from '@shared/component/option/option.component';
 @Component({
 	selector: 'do-autocomplete',
 	template: `
-		<do-form-field>
-			<mat-form-field>
-				<input
-					#search
-					matInput
-					[placeholder]="placeholder"
-					[required]="required"
-					[formControl]="searchControl"
-					type="text"
-					autocomplete="off"
-					[matAutocomplete]="auto"
-				/>
-				<mat-icon class="arrow text-secondary_default" matSuffix [svgIcon]="Icons.ArrowDownV1"></mat-icon>
-				<mat-autocomplete
-					#auto="matAutocomplete"
-					infiniteScroll
-					[infiniteScrollContainer]="auto?.panel?.nativeElement ?? ''"
-					[infiniteScrollThrottle]="0"
-					[alwaysCallback]="true"
-					(scrolled)="scrolled.emit($event)"
-					[displayWith]="displayWith"
-					(optionSelected)="handleOptionSelection($event)"
-					(opened)="handlePanelOpen()"
-					(closed)="handlePanelClose(); search.blur()"
-				>
-					<mat-option *ngFor="let option of options.changes | async" [value]="option.value">
-						<ng-container *ngTemplateOutlet="option.template"></ng-container>
-					</mat-option>
-				</mat-autocomplete>
-			</mat-form-field>
-		</do-form-field>
+		<mat-form-field class="form-field">
+			<input
+				#search
+				matInput
+				[placeholder]="placeholder"
+				[required]="required"
+				[formControl]="searchControl"
+				type="text"
+				autocomplete="off"
+				[matAutocomplete]="auto"
+			/>
+			<mat-icon class="arrow text-secondary_default" matSuffix [svgIcon]="Icons.ArrowDownV1"></mat-icon>
+			<mat-autocomplete
+				#auto="matAutocomplete"
+				infiniteScroll
+				[infiniteScrollContainer]="auto?.panel?.nativeElement ?? ''"
+				[infiniteScrollThrottle]="0"
+				[alwaysCallback]="true"
+				(scrolled)="scrolled.emit($event)"
+				[displayWith]="displayWith"
+				(optionSelected)="handleOptionSelection($event)"
+				(opened)="handlePanelOpen()"
+				(closed)="handlePanelClose(); search.blur()"
+			>
+				<mat-option *ngFor="let option of options.changes | async" [value]="option.value">
+					<ng-container *ngTemplateOutlet="option.template"></ng-container>
+				</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
 	`,
 	styles: [
 		`
+			.form-field {
+				width: 100%;
+			}
+
 			.arrow {
 				cursor: pointer;
 			}

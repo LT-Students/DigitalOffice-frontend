@@ -1,0 +1,8 @@
+<button mat-mini-fab color="primary">
+	<mat-icon [svgIcon]="Icons.Add"></mat-icon>
+</button>
+<div class="user-list">
+	<span *ngIf="!users.length" class="text-secondary_default">Необходимо добавить хотя бы менеджера проекта</span>
+	<do-profile-image *ngFor="let user of users" [userInitials]="user" size="s"></do-profile-image>
+	<span *ngIf="users.length === 1" class="text-secondary_default">Пока вы добавили только одного сотрудника</span>
+</div>

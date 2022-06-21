@@ -1,0 +1,20 @@
+<div class="form">
+	<do-form-field label="Дата запуска проекта">
+		<mat-form-field>
+			<input matInput [matDatepicker]="startDate" placeholder="Дата" />
+			<mat-datepicker-toggle matSuffix [for]="startDate">
+				<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+			</mat-datepicker-toggle>
+			<mat-datepicker #startDate></mat-datepicker>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Статус">
+		<mat-form-field>
+			<mat-select [value]="'Active'">
+				<mat-option *ngFor="let status of statuses" [value]="status.type">
+					<mat-icon [svgIcon]="Icons.Status" [style.color]="status.color"></mat-icon>{{ status.label }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</do-form-field>
+</div>

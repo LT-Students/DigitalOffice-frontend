@@ -6,16 +6,22 @@ import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageComponent } from './components/project-page/project-page.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
-import { NewProjectComponent } from './components/new-project/new-project.component';
-import { DeleteDirectionComponent } from './components/new-project/modals/delete-direction/delete-direction.component';
+import { CreateEditProjectComponent } from './create-edit-project/create-edit-project.component';
+import { ProjectInfoComponent } from './create-edit-project/project-info/project-info.component';
+import { ProjectDetailsComponent } from './create-edit-project/project-details/project-details.component';
+import { ProjectDescriptionComponent } from './create-edit-project/project-description/project-description.component';
+import { TeamComponent } from './create-edit-project/team/team.component';
 
 @NgModule({
 	declarations: [
 		ProjectsTableComponent,
 		ProjectPageComponent,
 		TeamStatisticsComponent,
-		NewProjectComponent,
-		DeleteDirectionComponent,
+		CreateEditProjectComponent,
+		ProjectInfoComponent,
+		ProjectDetailsComponent,
+		ProjectDescriptionComponent,
+		TeamComponent,
 	],
 	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule],
 })

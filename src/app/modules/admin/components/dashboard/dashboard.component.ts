@@ -59,7 +59,9 @@ export class DashboardComponent implements OnInit {
 							return this.modalService.openModal(EditCompanyComponent, ModalWidth.L).afterClosed();
 						}
 						case this.modalType.NEW_PROJECT: {
-							return fromPromise(this._router.navigate([AppRoutes.Projects, ProjectsRoutes.NewProject]));
+							return fromPromise(
+								this._router.navigate([AppRoutes.Projects, ProjectsRoutes.CreateProject])
+							);
 						}
 						case this.modalType.MANAGE_USERS: {
 							return fromPromise(this._router.navigate([AppRoutes.Users]));

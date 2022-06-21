@@ -10,17 +10,19 @@ import { AutocompleteFilterParams, Filter } from '../../models';
 @Component({
 	selector: 'do-filter-autocomplete',
 	template: `
-		<do-autocomplete
-			[placeholder]="params?.placeholder"
-			[formControl]="control"
-			[displayWith]="params.displayWithFn || null"
-			(scrolled)="handleScroll()"
-			(searchChange)="searchName$.next($event)"
-		>
-			<do-option *ngFor="let option of options$ | async" [value]="option">
-				{{ option | execute: params.displayValueGetter }}
-			</do-option>
-		</do-autocomplete>
+		<do-form-field>
+			<do-autocomplete
+				[placeholder]="params?.placeholder"
+				[formControl]="control"
+				[displayWith]="params.displayWithFn || null"
+				(scrolled)="handleScroll()"
+				(searchChange)="searchName$.next($event)"
+			>
+				<do-option *ngFor="let option of options$ | async" [value]="option">
+					{{ option | execute: params.displayValueGetter }}
+				</do-option>
+			</do-autocomplete>
+		</do-form-field>
 	`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
