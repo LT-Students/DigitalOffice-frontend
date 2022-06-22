@@ -13,7 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MAT_TABS_CONFIG, MatTabsModule } from '@angular/material/tabs';
 import {
 	DateAdapter,
 	MAT_DATE_FORMATS,
@@ -120,6 +120,7 @@ Settings.defaultLocale = 'ru';
 			provide: MAT_RIPPLE_GLOBAL_OPTIONS,
 			useValue: { disabled: true },
 		},
+		{ provide: MAT_TABS_CONFIG, useValue: { animationDuration: '0ms' } },
 	],
 })
 export class MaterialModule {}

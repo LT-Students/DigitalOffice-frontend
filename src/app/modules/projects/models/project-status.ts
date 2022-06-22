@@ -13,6 +13,10 @@ const projectStatuses: IProjectStatus[] = [
 ];
 
 export class ProjectStatus {
+	public static getStatusByType(status: ProjectStatusType): IProjectStatus {
+		return projectStatuses.find((s: IProjectStatus) => s.type === status) as IProjectStatus;
+	}
+
 	public static getStatusColor(status: ProjectStatusType): string {
 		return (projectStatuses.find((s: IProjectStatus) => s.type === status) as IProjectStatus).color;
 	}

@@ -43,11 +43,11 @@
 				<ng-template #editView>
 					<div>
 						<p class="mat-caption">Название</p>
-						<p class="word-wrap_break-word">{{ roleInfo?.localizations?.[0]?.name }}</p>
+						<p class="break-word">{{ roleInfo?.localizations?.[0]?.name }}</p>
 					</div>
 					<div *ngIf="roleInfo?.localizations?.[0]?.description">
 						<p class="mat-caption">Описание</p>
-						<p class="word-wrap_break-word">{{ roleInfo?.localizations?.[0]?.description }}</p>
+						<p class="break-word">{{ roleInfo?.localizations?.[0]?.description }}</p>
 					</div>
 				</ng-template>
 				<mat-divider></mat-divider>
