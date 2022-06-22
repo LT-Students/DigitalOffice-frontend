@@ -14,5 +14,5 @@ export interface ImageContent {
 	/**
 	 * Name of the image.
 	 */
-	name?: null | string;
+	name?: string;
 }

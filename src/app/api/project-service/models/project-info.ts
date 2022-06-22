@@ -6,52 +6,57 @@ export interface ProjectInfo {
 	/**
 	 * Data and time created project.
 	 */
-	createdAtUtc?: any;
+	createdAtUtc: any;
 
 	/**
 	 * Unique project creator identifier.
 	 */
-	createdBy?: string;
+	createdBy: string;
 
 	/**
 	 * Project сustomer.
 	 */
-	customer?: null | string;
-	department?: null | DepartmentInfo;
+	customer?: string;
+	department?: DepartmentInfo;
 
 	/**
 	 * Project description.
 	 */
-	description?: null | string;
+	description?: string;
 
 	/**
 	 * Date and time finished project in UTC.
 	 */
-	endDateUtc?: null | any;
+	endDateUtc?: any;
 
 	/**
 	 * Unique project identifier.
 	 */
-	id?: string;
+	id: string;
 
 	/**
 	 * Project name.
 	 */
-	name?: string;
+	name: string;
 
 	/**
 	 * Project short description.
 	 */
-	shortDescription?: null | string;
+	shortDescription?: string;
 
 	/**
 	 * Project short name.
 	 */
-	shortName?: null | string;
+	shortName?: string;
 
 	/**
 	 * Date and time begin project in UTC.
 	 */
-	startDateUtc?: any;
+	startDateUtc: any;
 	status: ProjectStatusType;
+
+	/**
+	 * Count of active users in project.
+	 */
+	usersCount: number;
 }

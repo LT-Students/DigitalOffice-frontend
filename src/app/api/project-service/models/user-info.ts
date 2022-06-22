@@ -11,45 +11,45 @@ export interface UserInfo {
 	/**
 	 * Data and time added user to project.
 	 */
-	createdAtUtc?: any;
+	createdAtUtc: any;
 	department?: DepartmentInfo;
 
 	/**
 	 * The user first name
 	 */
-	firstName?: string;
+	firstName: string;
 
 	/**
 	 * Unique project identifier.
 	 */
-	id?: string;
+	id: string;
 
 	/**
 	 * User state.
 	 */
-	isActive?: boolean;
+	isActive: boolean;
 
 	/**
 	 * The user last name.
 	 */
-	lastName?: string;
+	lastName: string;
 
 	/**
 	 * The user middle name.
 	 */
-	middleName?: null | string;
+	middleName?: string;
 
 	/**
 	 * Data and time removed user from project.
 	 */
-	modifiedAtUtc?: null | any;
+	modifiedAtUtc?: any;
 	position?: PositionInfo;
 
 	/**
 	 * Count of project, which user included.
 	 */
-	projectCount?: number;
-	rate?: null | number;
-	role?: ProjectUserRoleType;
-	status?: UserStatus;
+	projectCount: number;
+	rate?: number;
+	role: ProjectUserRoleType;
+	status: UserStatus;
 }

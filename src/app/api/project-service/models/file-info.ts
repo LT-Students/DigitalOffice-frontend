@@ -17,5 +17,5 @@ export interface FileInfo {
 	/**
 	 * Name of the file.
 	 */
-	name?: null | string;
+	name?: string;
 }

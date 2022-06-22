@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2.5",
+    "version": "1.2.2.6",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -691,6 +691,10 @@
     "schemas": {
       "DepartmentInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
         "properties": {
           "Id": {
             "description": "Unique department identifier.",
@@ -701,22 +705,23 @@
           "Name": {
             "description": "The department name.",
             "type": "string",
-            "example": "Department",
-            "nullable": false
+            "example": "Department"
           }
         }
       },
       "PositionInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
         "properties": {
           "Id": {
             "type": "string",
-            "format": "uuid",
-            "nullable": false
+            "format": "uuid"
           },
           "Name": {
-            "type": "string",
-            "nullable": false
+            "type": "string"
           }
         }
       },
@@ -742,8 +747,7 @@
         "properties": {
           "Name": {
             "description": "Name of the file.",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "Content": {
             "description": "File content.",
@@ -763,7 +767,7 @@
         "type": "object",
         "required": [
           "FileId",
-          "Extension"
+          "Access"
         ],
         "properties": {
           "FileId": {
@@ -784,8 +788,7 @@
         "properties": {
           "Name": {
             "description": "Name of the image.",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "Content": {
             "description": "Image file content in base64 encoded string.",
@@ -800,6 +803,11 @@
       },
       "ImageInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Content",
+          "Extension"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -807,25 +815,17 @@
           },
           "ParentId": {
             "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "Type": {
-            "type": "string",
-            "nullable": true
+            "format": "uuid"
           },
           "Content": {
             "type": "string",
-            "description": "Image file content in base64 encoded string.",
-            "nullable": false
+            "description": "Image file content in base64 encoded string."
           },
           "Extension": {
-            "type": "string",
-            "nullable": false
+            "type": "string"
           },
           "Name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -852,6 +852,16 @@
       },
       "UserInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "FirstName",
+          "LastName",
+          "Status",
+          "CreatedAtUtc",
+          "IsActive",
+          "ProjectCount",
+          "Role"
+        ],
         "properties": {
           "Id": {
             "description": "Unique project identifier.",
@@ -867,8 +877,7 @@
           "MiddleName": {
             "description": "The user middle name.",
             "type": "string",
-            "example": "Sergeevith",
-            "nullable": true
+            "example": "Sergeevith"
           },
           "LastName": {
             "description": "The user last name.",
@@ -879,8 +888,7 @@
             "$ref": "#/components/schemas/UserStatus"
           },
           "Rate": {
-            "type": "number",
-            "nullable": true
+            "type": "number"
           },
           "CreatedAtUtc": {
             "description": "Data and time added user to project.",
@@ -890,8 +898,7 @@
           "ModifiedAtUtc": {
             "description": "Data and time removed user from project.",
             "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2020-12-10 04:13",
-            "nullable": true
+            "example": "2020-12-10 04:13"
           },
           "IsActive": {
             "description": "User state.",
@@ -918,6 +925,15 @@
       },
       "ProjectInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "CreatedBy",
+          "Status",
+          "Name",
+          "UsersCount",
+          "StartDateUtc",
+          "CreatedAtUtc"
+        ],
         "properties": {
           "Id": {
             "description": "Unique project identifier.",
@@ -932,47 +948,43 @@
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
           "Status": {
-            "$ref": "#/components/schemas/ProjectStatusType",
-            "nullable": false
+            "$ref": "#/components/schemas/ProjectStatusType"
           },
           "Name": {
             "description": "Project name.",
             "type": "string",
-            "example": "Digital Office",
-            "nullable": false
+            "example": "Digital Office"
           },
           "ShortName": {
             "description": "Project short name.",
             "type": "string",
-            "example": "DO",
-            "nullable": true
+            "example": "DO"
           },
           "Description": {
             "description": "Project description.",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "ShortDescription": {
             "description": "Project short description.",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "Customer": {
             "description": "Project сustomer.",
-            "type": "string",
-            "nullable": true
+            "type": "string"
+          },
+          "UsersCount": {
+            "description": "Count of active users in project.",
+            "type": "integer"
           },
           "StartDateUtc": {
             "description": "Date and time begin project in UTC.",
             "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2021-12-10 03:13",
-            "nullable": false
+            "example": "2021-12-10 03:13"
           },
           "EndDateUtc": {
             "description": "Date and time finished project in UTC.",
             "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2021-12-10 03:13",
-            "nullable": true
+            "example": "2021-12-10 03:13"
           },
           "CreatedAtUtc": {
             "description": "Data and time created project.",
@@ -980,8 +992,7 @@
             "example": "2021-12-10 03:13"
           },
           "Department": {
-            "$ref": "#/components/schemas/DepartmentInfo",
-            "nullable": true
+            "$ref": "#/components/schemas/DepartmentInfo"
           }
         }
       },
