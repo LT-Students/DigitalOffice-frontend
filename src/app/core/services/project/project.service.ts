@@ -7,6 +7,7 @@ import {
 	FileAccess,
 	ImageInfo,
 	ProjectInfo,
+	ProjectResponse,
 	ProjectStatusType,
 	ProjectUserRoleType,
 	UserInfo,
@@ -23,13 +24,6 @@ export interface IGetProjectRequest {
 	shownotactiveusers?: boolean;
 	includefiles?: boolean;
 	includeimages?: boolean;
-}
-
-export interface IGetProjectResponse {
-	project?: ProjectInfo;
-	users?: Array<UserInfo> | null;
-	files?: Array<FileAccess> | null;
-	images?: Array<ImageInfo> | null;
 }
 
 export interface IEditProjectRequest {
@@ -74,7 +68,7 @@ export class ProjectService {
 		return this._projectService.findProjects(params);
 	}
 
-	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<IGetProjectResponse>> {
+	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<ProjectResponse>> {
 		return this._projectService.getProject(params);
 	}
 

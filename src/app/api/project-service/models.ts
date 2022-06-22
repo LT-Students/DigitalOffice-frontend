@@ -24,4 +24,5 @@ export { CreateImageRequest } from './models/create-image-request';
 export { RemoveImageRequest } from './models/remove-image-request';
 export { OperationResultResponse } from './models/operation-result-response';
 export { OperationResultResponseProjectResponse } from './models/operation-result-response-project-response';
+export { ProjectResponse } from './models/project-response';
 export { OperationResultStatusType } from './models/operation-result-status-type';

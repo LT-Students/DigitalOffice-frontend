@@ -1395,35 +1395,14 @@
       "OperationResultResponseProjectResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors",
+          "Status",
+          "TotalCount"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "properties": {
-              "project": {
-                "$ref": "#/components/schemas/ProjectInfo"
-              },
-              "users": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UserInfo"
-                },
-                "nullable": true
-              },
-              "files": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/FileAccess"
-                },
-                "nullable": true
-              },
-              "images": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ImageInfo"
-                },
-                "nullable": true
-              }
-            }
+            "$ref": "#/components/schemas/ProjectResponse"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1432,6 +1411,35 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "ProjectResponse": {
+        "type": "object",
+        "required": [
+          "Project"
+        ],
+        "properties": {
+          "Project": {
+            "$ref": "#/components/schemas/ProjectInfo"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserInfo"
+            }
+          },
+          "Files": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileAccess"
+            }
+          },
+          "Images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageInfo"
             }
           }
         }
