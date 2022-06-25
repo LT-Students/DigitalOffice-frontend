@@ -41,7 +41,12 @@ export class ProjectTableService {
 				headerName: 'Департамент',
 				valueGetter: (project: ProjectInfo) => project.department?.name,
 			},
-			{ field: 'userCount', headerName: 'Количество человек', type: 'textCell' },
+			{
+				field: 'usersCount',
+				headerName: 'Количество человек',
+				type: 'textCell',
+				valueGetter: (project: ProjectInfo) => `${project.usersCount} чел`,
+			},
 			{
 				field: 'status',
 				headerName: 'Статус',
@@ -61,7 +66,7 @@ export class ProjectTableService {
 				params: new AutocompleteFilterParams({
 					placeholder: 'Название департамента',
 					loadOptions$: this.departmentService.findDepartments.bind(this.departmentService),
-					valueGetter: (d: DepartmentInfo) => d.id,
+					valueGetter: (d: DepartmentInfo | null) => d?.id,
 					displayValueGetter: (d: DepartmentInfo) => d.shortName,
 					displayWithFn: (d: DepartmentInfo | null) => d?.shortName || '',
 				}),

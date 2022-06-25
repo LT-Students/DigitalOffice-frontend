@@ -16,6 +16,7 @@ import { DoDateAdapter } from '@app/services/do-date-adapter';
 import { DATE_FORMAT } from '@app/configs/date-formats';
 import { SharedModule } from '@shared/shared.module';
 import { ErrorInterceptor } from '@app/interceptors/error.interceptor';
+import { NavigationService } from '@app/services/navigation.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -59,4 +60,6 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 	bootstrap: [AppComponent],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule {}
+export class AppModule {
+	constructor(private navigation: NavigationService) {}
+}

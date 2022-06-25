@@ -1,0 +1,27 @@
+<div class="form" [formGroup]="form">
+	<do-form-field label="Краткое описание">
+		<mat-form-field>
+			<textarea
+				#shortDescription
+				matInput
+				formControlName="shortDescription"
+				cdkTextareaAutosize
+				[cdkAutosizeMinRows]="2"
+				[cdkAutosizeMaxRows]="2"
+				[maxLength]="MAX_LENGTH_SHORT_DESCRIPTION"
+			></textarea>
+			<mat-hint align="end">{{ shortDescription.value.length }}/{{ MAX_LENGTH_SHORT_DESCRIPTION }}</mat-hint>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Полное описание">
+		<mat-form-field>
+			<textarea
+				matInput
+				formControlName="description"
+				cdkTextareaAutosize
+				[cdkAutosizeMinRows]="10"
+				[cdkAutosizeMaxRows]="10"
+			></textarea>
+		</mat-form-field>
+	</do-form-field>
+</div>

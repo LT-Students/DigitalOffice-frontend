@@ -7,6 +7,7 @@ import { ProjectPageResolver } from './resolvers/project-page.resolver';
 import { ProjectsRoutes } from './models/projects-routes';
 import { CreateEditProjectComponent } from './create-edit-project/create-edit-project.component';
 import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
+import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
 
 const routes: Routes = [
 	{
@@ -19,7 +20,7 @@ const routes: Routes = [
 	{ path: ProjectsRoutes.CreateProject, component: CreateEditProjectComponent },
 	{
 		path: ':id',
-		// component: ProjectPageContainerComponent,
+		component: ProjectIdRouteContainerComponent,
 		resolve: {
 			project: ProjectPageResolver,
 		},

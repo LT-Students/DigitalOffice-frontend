@@ -8,8 +8,8 @@ export interface IProjectStatus {
 
 const projectStatuses: IProjectStatus[] = [
 	{ type: ProjectStatusType.Active, color: '#ABF5C0', label: 'В работе' },
-	{ type: ProjectStatusType.Suspend, color: '#FFD89E', label: 'Завершен' },
-	{ type: ProjectStatusType.Closed, color: '#FFB2B2', label: 'Приостановлен' },
+	{ type: ProjectStatusType.Suspend, color: '#FFD89E', label: 'Приостановлен' },
+	{ type: ProjectStatusType.Closed, color: '#FFB2B2', label: 'Завершен' },
 ];
 
 export class ProjectStatus {

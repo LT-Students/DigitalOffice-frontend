@@ -3,6 +3,11 @@
 	<mat-tab-group>
 		<mat-tab label="Команда"></mat-tab>
 		<mat-tab label="Документы"></mat-tab>
-		<mat-tab label="О проекте"></mat-tab>
+		<mat-tab label="О проекте">
+			<do-project-description
+				class="tab-content"
+				[description]="data.project.description"
+			></do-project-description>
+		</mat-tab>
 	</mat-tab-group>
 </ng-container>

@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Data } from '@angular/router';
 
-import { map } from 'rxjs/operators';
 import { Icons } from '@shared/features/icons/icons';
-import { ProjectResponse } from '@api/project-service/models/project-response';
+import { SelectedProjectService } from '../project-id-route-container/selected-project.service';
 
 @Component({
 	selector: 'do-project-page-container',
@@ -13,9 +11,9 @@ import { ProjectResponse } from '@api/project-service/models/project-response';
 })
 export class ProjectPageContainerComponent implements OnInit {
 	public readonly Icons = Icons;
-	public projectData$ = this.route.data.pipe(map((response: Data) => response.project.body as ProjectResponse));
+	public projectData$ = this.selectedProject.project$;
 
-	constructor(private route: ActivatedRoute) {}
+	constructor(private selectedProject: SelectedProjectService) {}
 
 	public ngOnInit(): void {}
 }

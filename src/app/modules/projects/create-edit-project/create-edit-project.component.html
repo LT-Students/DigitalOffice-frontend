@@ -1,25 +1,35 @@
-<div class="flex flex_jc_space-between flex_ai_center">
-	<h3 doUnderline>Создание проекта</h3>
-	<div class="actions">
-		<button doButton>Отменить</button>
-		<button mat-flat-button color="primary">Создать проект</button>
-	</div>
+<div class="header">
+	<h3 class="page-title" doUnderline>{{ pageTitle }}</h3>
+	<span *ngIf="isEditMode" class="text-secondary_default project-name">{{ projectName }}</span>
+	<do-actions class="actions">
+		<button doButton (click)="onCancel()">Отменить</button>
+		<button
+			mat-flat-button
+			color="primary"
+			(click)="onSubmit()"
+			[loading]="loading$ | async"
+			[disabled]="(invalid$ | async) === true"
+		>
+			{{ submitButton }}
+		</button>
+	</do-actions>
 </div>
-<div class="content">
+<div class="content" [formGroup]="form">
 	<mat-card>
-		<h5>Информация о проекте</h5>
-		<do-project-info></do-project-info>
+		<h5 class="card-heading">Информация о проекте</h5>
+		<do-project-info-form formControlName="info" [isEditMode]="isEditMode"></do-project-info-form>
 	</mat-card>
 	<mat-card>
-		<h5>Детали проекта</h5>
-		<do-project-details></do-project-details>
+		<h5 class="card-heading">Детали проекта</h5>
+		<do-project-details formControlName="details" [isEditMode]="isEditMode"></do-project-details>
 	</mat-card>
-	<mat-card>
-		<h5>Команда</h5>
-		<do-team [style.height.%]="100"></do-team>
+	<mat-card *ngIf="!isEditMode">
+		<h5 class="card-heading">Команда</h5>
+		<do-team></do-team>
 	</mat-card>
 	<mat-card class="description">
-		<h5>Описание проекта</h5>
-		<do-project-description></do-project-description>
+		<h5 class="card-heading">Описание проекта</h5>
+		<do-project-description-form formControlName="description"></do-project-description-form>
+		<do-attach-files *ngIf="!isEditMode"></do-attach-files>
 	</mat-card>
 </div>

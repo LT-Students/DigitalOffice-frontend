@@ -12,8 +12,8 @@ import { UserRecoveryComponent } from '@shared/dialogs/user-recovery/user-recove
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { IconsModule } from '@shared/features/icons/icons.module';
-import { EllipsisModule } from 'ngx-ellipsis';
 import { OptionComponent } from '@shared/component/option/option.component';
+import { InfiniteAutocompleteComponent } from '@shared/component/autocomplete/infinite-autocomplete.component';
 import { MaterialModule } from './features/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -59,6 +59,8 @@ import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-i
 import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
 import { DynamicComponentHostDirective } from './directives/dynamic-component-host.directive';
 import { AutocompleteComponent } from './component/autocomplete/autocomplete.component';
+import { AutocompleteOffDirective } from './directives/autocomplete-off.directive';
+import { ActionsComponent } from './component/actions/actions.component';
 
 @NgModule({
 	declarations: [
@@ -110,6 +112,9 @@ import { AutocompleteComponent } from './component/autocomplete/autocomplete.com
 		DynamicComponentHostDirective,
 		AutocompleteComponent,
 		OptionComponent,
+		AutocompleteOffDirective,
+		InfiniteAutocompleteComponent,
+		ActionsComponent,
 	],
 	imports: [
 		CommonModule,
@@ -123,7 +128,6 @@ import { AutocompleteComponent } from './component/autocomplete/autocomplete.com
 		MdePopoverModule,
 		ImageCropperModule,
 		IconsModule,
-		EllipsisModule,
 	],
 	exports: [
 		CommonModule,
@@ -135,7 +139,6 @@ import { AutocompleteComponent } from './component/autocomplete/autocomplete.com
 		ImageCropperModule,
 		ReactiveFormsModule,
 		FormsModule,
-		EllipsisModule,
 		ProfileImageComponent,
 		HeaderComponent,
 		TextDirective,
@@ -178,6 +181,9 @@ import { AutocompleteComponent } from './component/autocomplete/autocomplete.com
 		DynamicComponentHostDirective,
 		AutocompleteComponent,
 		OptionComponent,
+		AutocompleteOffDirective,
+		InfiniteAutocompleteComponent,
+		ActionsComponent,
 	],
 })
 export class SharedModule {}

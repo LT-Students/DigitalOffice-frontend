@@ -7,7 +7,7 @@ interface IAutocompleteFilterParams<T> {
 		skipCount: number;
 		nameIncludeSubstring?: string;
 	}) => Observable<OperationResultResponse<T[]>>;
-	valueGetter: (o: T) => any;
+	valueGetter: (o: T | null) => any;
 	displayValueGetter: (o: T) => any;
 	displayWithFn?: (o: T | null) => string;
 	placeholder?: string;
@@ -19,7 +19,7 @@ export class AutocompleteFilterParams<T> implements IAutocompleteFilterParams<T>
 		skipCount: number;
 		nameIncludeSubstring?: string;
 	}) => Observable<OperationResultResponse<T[]>>;
-	public valueGetter: (o: T) => any;
+	public valueGetter: (o: T | null) => any;
 	public displayValueGetter: (o: T) => any;
 	public displayWithFn?: (o: T | null) => string;
 	public placeholder?: string;

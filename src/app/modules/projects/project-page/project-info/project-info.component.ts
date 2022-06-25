@@ -35,15 +35,18 @@ export class ProjectInfoComponent implements OnInit {
 			label: () => 'Продолжительность',
 			valueGetter: (project: ProjectInfo) => {
 				const start = DateTime.fromISO(project.startDateUtc);
-				const end = project.endDateUtc ? DateTime.fromISO(project.endDateUtc) : DateTime.now();
+				const end =
+					project.endDateUtc && project.status !== ProjectStatusType.Active
+						? DateTime.fromISO(project.endDateUtc)
+						: DateTime.now();
 				const days = end.diff(start, ['days']).toFormat('d');
 				return `${days} д`;
 			},
 		},
 		{
-			visible: (project: ProjectInfo) => project.status !== ProjectStatusType.Active,
+			visible: (project: ProjectInfo) => !!project.endDateUtc,
 			label: (project: ProjectInfo) =>
-				project.status === ProjectStatusType.Closed ? 'Дата завершения' : 'Приостановлен',
+				project.status === ProjectStatusType.Suspend ? 'Приостановлен' : 'Дата завершения',
 			valueGetter: (project: ProjectInfo) =>
 				this.datePipe.transform(project.endDateUtc, 'dd/MM/y HH:mm') as string,
 		},

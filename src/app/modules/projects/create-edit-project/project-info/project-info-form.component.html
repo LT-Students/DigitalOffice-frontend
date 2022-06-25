@@ -1,20 +1,27 @@
-<div class="form">
-	<do-form-field label="Название проекта" class="long-field">
+<div class="form" [formGroup]="form">
+	<do-form-field label="Название проекта" required class="long-field">
 		<mat-form-field>
-			<input matInput type="text" placeholder="Название проекта" />
+			<input matInput formControlName="name" type="text" placeholder="Название проекта" />
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field label="Сокращенное название">
+	<do-form-field label="Сокращенное название" required>
 		<mat-form-field>
-			<input matInput type="text" placeholder="Сокр. название" />
+			<input matInput formControlName="shortName" type="text" placeholder="Сокр. название" />
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field label="Департамент">
-		<do-autocomplete placeholder="Департамент"></do-autocomplete>
+		<do-infinite-autocomplete
+			formControlName="department"
+			placeholder="Департамент"
+			[loadOptions$]="departmentAutocompleteConfig.loadOptions$"
+			[displayValueGetter]="departmentAutocompleteConfig.displayValueGetter"
+			[displayWithFn]="departmentAutocompleteConfig.displayWithFn"
+			[valueGetter]="departmentAutocompleteConfig.valueGetter"
+		></do-infinite-autocomplete>
 	</do-form-field>
 	<do-form-field label="Заказчик" class="long-field">
 		<mat-form-field>
-			<input matInput type="text" placeholder="Наименование заказчика" />
+			<input matInput formControlName="customer" type="text" placeholder="Наименование заказчика" />
 		</mat-form-field>
 	</do-form-field>
 </div>

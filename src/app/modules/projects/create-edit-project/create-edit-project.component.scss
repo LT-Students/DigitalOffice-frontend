@@ -1,3 +1,29 @@
+.header {
+	margin-bottom: 24px;
+
+	display: flex;
+	align-items: baseline;
+
+	.page-title {
+		margin: 0 8px 0 0;
+		flex-shrink: 0;
+	}
+
+	.project-name {
+		margin-right: 8px;
+
+		overflow: hidden;
+
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.actions {
+		margin-left: auto;
+		flex-shrink: 0;
+	}
+}
+
 .content {
 	display: grid;
 	gap: 12px;
@@ -8,4 +34,12 @@
 .description {
 	align-self: start;
 	grid-area: 1 / 2 / last / 3;
+}
+
+.card-heading {
+	margin-bottom: 8px;
+}
+
+do-project-description {
+	margin-bottom: 16px;
 }

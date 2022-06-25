@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Self } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
-import { Icons } from '@shared/features/icons/icons';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
 import { InfiniteScrollDataProviderService } from '@app/services/infinite-scroll-data-provider.service';
 import { ProjectInfo } from '@api/project-service/models/project-info';
@@ -29,8 +28,6 @@ import { AutocompleteFilterParams, Filter } from '../../models';
 	providers: [InfiniteScrollDataProviderService],
 })
 export class AutocompleteComponent implements OnInit, OnDestroy, Filter<AutocompleteFilterParams<any>> {
-	public Icons = Icons;
-
 	public searchName$ = new Subject<string>();
 
 	public control = new FormControl('');
