@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0.1",
+    "version": "1.0.1.0",
     "title": "ImageService",
     "description": "ImageService, is intended to work with the image."
   },
@@ -16,138 +16,24 @@
     }
   ],
   "paths": {
-    "/message/get": {
+    "/image/get": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
         },
         {
           "$ref": "#/components/parameters/imageId"
-        }
-      ],
-      "get": {
-        "tags": [
-          "MessageImage"
-        ],
-        "operationId": "getMessageImage",
-        "description": "Returns image information of Message.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseImageResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NotFound",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/project/get": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
         },
         {
-          "$ref": "#/components/parameters/imageId"
+          "$ref": "#/components/parameters/imageSource"
         }
       ],
       "get": {
         "tags": [
-          "ProjectImage"
+          "Image"
         ],
-        "operationId": "getProjectImage",
-        "description": "Returns image information of Project.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseImageResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NotFound",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/user/get": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "$ref": "#/components/parameters/imageId"
-        }
-      ],
-      "get": {
-        "tags": [
-          "UserImage"
-        ],
-        "operationId": "getUserImage",
-        "description": "Returns image information of User.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseImageResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "NotFound",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/news/get": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "$ref": "#/components/parameters/imageId"
-        }
-      ],
-      "get": {
-        "tags": [
-          "NewsImage"
-        ],
-        "operationId": "getNewsImage",
-        "description": "Returns image information of News.",
+        "operationId": "getImage",
+        "description": "Returns image by its id.",
         "responses": {
           "200": {
             "description": "Ok.",
@@ -237,19 +123,7 @@
           "$ref": "#/components/parameters/imageId"
         },
         {
-          "name": "source",
-          "in": "query",
-          "description": "Image sourse.",
-          "schema": {
-            "type": "string",
-            "enum": [
-              "User",
-              "Message",
-              "Project",
-              "News"
-            ]
-          },
-          "required": true
+          "$ref": "#/components/parameters/imageSource"
         }
       ]
     }
@@ -418,6 +292,22 @@
         "schema": {
           "type": "string",
           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      },
+      "imageSource":{
+        "name": "source",
+        "in": "query",
+        "description": "Image source.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "User",
+            "Message",
+            "Project",
+            "News",
+            "Education"
+          ]
         },
         "required": true
       }
