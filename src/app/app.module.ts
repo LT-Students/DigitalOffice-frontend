@@ -35,12 +35,12 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 		Title,
 		{
 			provide: HTTP_INTERCEPTORS,
-			useClass: AuthInterceptor,
+			useClass: ErrorInterceptor,
 			multi: true,
 		},
 		{
 			provide: HTTP_INTERCEPTORS,
-			useClass: ErrorInterceptor,
+			useClass: AuthInterceptor,
 			multi: true,
 		},
 		{
