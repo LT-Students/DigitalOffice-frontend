@@ -1,0 +1,13 @@
+<div class="flex">
+	<do-dynamic-filter [filters]="filterData"></do-dynamic-filter>
+	<button doButton (click)="contextMenu.openContextMenu($event)">
+		<mat-icon [svgIcon]="Icons.KebabMenu" [style.transform]="'rotate(90deg)'"></mat-icon>
+	</button>
+	<do-actions>
+		<button mat-flat-button color="primary" (click)="addFiles()">
+			<mat-icon [svgIcon]="Icons.Add"></mat-icon>
+		</button>
+	</do-actions>
+</div>
+<do-table [columns]="tableColumns"></do-table>
+<do-context-menu #contextMenu [items]="contextMenuItems"></do-context-menu>

@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors, Validators } from '@angular/forms';
+import { DepartmentInfo as ProjectDepartmentInfo } from '@api/project-service/models/department-info';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DepartmentService } from '@app/services/department/department.service';
 import { Subject } from 'rxjs';
@@ -11,7 +12,7 @@ export interface InfoControlValue {
 	name: string;
 	shortName: string;
 	customer?: string;
-	department?: string;
+	department?: string | ProjectDepartmentInfo;
 }
 
 @Component({

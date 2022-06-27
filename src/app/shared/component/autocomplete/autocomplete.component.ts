@@ -166,6 +166,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	}
 
 	public writeValue(value: any): void {
-		this.searchControl.setValue(value);
+		this.searchControl.setValue(value, { emitEvent: false });
 	}
 }

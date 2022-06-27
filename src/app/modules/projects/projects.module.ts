@@ -18,6 +18,7 @@ import { AttachFilesComponent } from './create-edit-project/attach-files/attach-
 import { EndDateLabelPipe } from './create-edit-project/project-details/end-date-label.pipe';
 import { ProjectDescriptionComponent } from './project-page/project-description/project-description.component';
 import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
+import { ProjectFilesComponent } from './project-page/project-files/project-files.component';
 
 @NgModule({
 	declarations: [
@@ -36,6 +37,7 @@ import { ProjectIdRouteContainerComponent } from './project-id-route-container/p
 		EndDateLabelPipe,
 		ProjectDescriptionComponent,
 		ProjectIdRouteContainerComponent,
+		ProjectFilesComponent,
 	],
 	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule],
 })

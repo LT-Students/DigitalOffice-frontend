@@ -42,7 +42,7 @@ export class ProjectFormService {
 				name: project.name,
 				shortName: project.shortName,
 				customer: project.customer,
-				department: project.department?.id,
+				department: project.department,
 			},
 			details: {
 				status: project.status,

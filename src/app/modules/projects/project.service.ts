@@ -6,12 +6,14 @@ import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { CreateProjectRequest } from '@api/project-service/models/create-project-request';
 import { EditRequest, ProjectPath } from '@app/types/edit-request';
+import { FileApiService } from '@api/project-service/services/file-api.service';
+import { FileInfo } from '@api/project-service/models/file-info';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ProjectService {
-	constructor(private projectService: ProjectApiService) {}
+	constructor(private projectService: ProjectApiService, private fileService: FileApiService) {}
 
 	public getProject(projectId: string): Observable<ProjectResponse> {
 		return this.projectService
@@ -33,6 +35,12 @@ export class ProjectService {
 	public editProject(projectId: string, editRequest: EditRequest<ProjectPath>): Observable<any> {
 		return this.projectService
 			.editProject({ projectId, body: editRequest })
+			.pipe(map((res: OperationResultResponse) => res.body));
+	}
+
+	public addFiles(projectId: string, files: FileInfo[]): Observable<any> {
+		return this.fileService
+			.createFile({ body: { projectId, files } })
 			.pipe(map((res: OperationResultResponse) => res.body));
 	}
 }

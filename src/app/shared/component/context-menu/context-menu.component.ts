@@ -26,9 +26,9 @@ export class ContextMenuComponent implements OnInit {
 	ngOnInit(): void {}
 
 	public openContextMenu<T>(event: MouseEvent, object?: T): void {
-		const target = (event.target as HTMLElement).getBoundingClientRect();
+		const target = (event.currentTarget as HTMLElement).getBoundingClientRect();
 		this.menuPosition = {
-			x: target.right,
+			x: target.right - target.width / 2,
 			y: target.bottom,
 		};
 		this.cdr.markForCheck();

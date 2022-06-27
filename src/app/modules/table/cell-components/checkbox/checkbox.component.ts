@@ -3,7 +3,7 @@ import { TableCell } from '../../models';
 
 @Component({
 	selector: 'do-checkbox',
-	template: `<mat-checkbox></mat-checkbox>`,
+	template: `<mat-checkbox [checked]="value"></mat-checkbox>`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
