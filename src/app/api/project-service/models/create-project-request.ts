@@ -23,7 +23,7 @@ export interface CreateProjectRequest {
 	/**
 	 * Date and time finish project in UTC.
 	 */
-	endDateUtc?: string;
+	endDateUtc?: any;
 	files: Array<FileInfo>;
 
 	/**
@@ -45,7 +45,7 @@ export interface CreateProjectRequest {
 	/**
 	 * Date and time begin project in UTC.
 	 */
-	startDateUtc?: string;
+	startDateUtc?: any;
 	status: ProjectStatusType;
 	users?: Array<UserRequest>;
 }

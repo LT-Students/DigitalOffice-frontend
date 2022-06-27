@@ -5,7 +5,7 @@ import { DepartmentService } from '@app/services/department/department.service';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { map } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { IFindProjects, ProjectService } from '@app/services/project/project.service';
+import { IFindProjects } from '@app/services/project/project.service';
 import { ActivatedRoute } from '@angular/router';
 import { LoadDataFn } from '@app/services/infinite-scroll-data-provider.service';
 import { ColumnDef } from '../../../table/models';
@@ -16,6 +16,7 @@ import {
 	SelectFilterParams,
 } from '../../../dynamic-filter/models';
 import { IProjectStatus, ProjectStatus } from '../../models/project-status';
+import { ProjectService } from '../../project.service';
 
 @Injectable()
 export class ProjectTableService {
@@ -39,7 +40,7 @@ export class ProjectTableService {
 			{
 				field: 'department',
 				headerName: 'Департамент',
-				valueGetter: (project: ProjectInfo) => project.department?.name,
+				valueGetter: (project: ProjectInfo) => project.department?.shortName,
 			},
 			{
 				field: 'usersCount',

@@ -27,7 +27,7 @@ export interface ProjectInfo {
 	/**
 	 * Date and time finished project in UTC.
 	 */
-	endDateUtc?: string;
+	endDateUtc?: any;
 
 	/**
 	 * Unique project identifier.
@@ -52,7 +52,7 @@ export interface ProjectInfo {
 	/**
 	 * Date and time begin project in UTC.
 	 */
-	startDateUtc: string;
+	startDateUtc: any;
 	status: ProjectStatusType;
 
 	/**

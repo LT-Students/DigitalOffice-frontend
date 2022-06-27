@@ -8,12 +8,19 @@ import { CreateProjectRequest } from '@api/project-service/models/create-project
 import { EditRequest, ProjectPath } from '@app/types/edit-request';
 import { FileApiService } from '@api/project-service/services/file-api.service';
 import { FileInfo } from '@api/project-service/models/file-info';
+import { ProjectInfo } from '@api/project-service/models/project-info';
+import { IFindProjects } from '@app/services/project/project.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ProjectService {
 	constructor(private projectService: ProjectApiService, private fileService: FileApiService) {}
+
+	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
+		params = { ...params, includedepartment: true };
+		return this.projectService.findProjects(params);
+	}
 
 	public getProject(projectId: string): Observable<ProjectResponse> {
 		return this.projectService

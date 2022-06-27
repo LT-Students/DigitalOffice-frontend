@@ -60,6 +60,11 @@ export class ProjectApiService extends BaseService {
 		 * Number of projects to take.
 		 */
 		takeCount: number;
+
+		/**
+		 * Inclede project department info.
+		 */
+		includedepartment?: boolean;
 	}): Observable<StrictHttpResponse<FindResultResponseProjectInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindProjectsPath, 'get');
 		if (params) {
@@ -68,6 +73,7 @@ export class ProjectApiService extends BaseService {
 			rb.query('nameincludesubstring', params.nameincludesubstring, {});
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
+			rb.query('includedepartment', params.includedepartment, {});
 		}
 
 		return this.http
@@ -116,6 +122,11 @@ export class ProjectApiService extends BaseService {
 		 * Number of projects to take.
 		 */
 		takeCount: number;
+
+		/**
+		 * Inclede project department info.
+		 */
+		includedepartment?: boolean;
 	}): Observable<FindResultResponseProjectInfo> {
 		return this.findProjects$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponseProjectInfo>) => r.body as FindResultResponseProjectInfo)

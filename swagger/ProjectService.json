@@ -65,6 +65,15 @@
             "type": "integer"
           },
           "required": true
+        },
+        {
+          "name": "includedepartment",
+          "in": "query",
+          "description": "Inclede project department info.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
         }
       ],
       "get": {
@@ -693,7 +702,8 @@
         "type": "object",
         "required": [
           "Id",
-          "Name"
+          "Name",
+          "ShortName"
         ],
         "properties": {
           "Id": {
@@ -706,6 +716,10 @@
             "description": "The department name.",
             "type": "string",
             "example": "Department"
+          },
+          "ShortName": {
+            "description": "The department short name.",
+            "type": "string"
           }
         }
       },
@@ -930,6 +944,7 @@
           "CreatedBy",
           "Status",
           "Name",
+          "ShortName",
           "UsersCount",
           "StartDateUtc",
           "CreatedAtUtc"
@@ -1268,6 +1283,11 @@
       },
       "FindResultResponseProjectInfo": {
         "type": "object",
+        "required": [
+          "TotalCount",
+          "Errors",
+          "Status"
+        ],
         "properties": {
           "TotalCount": {
             "description": "Total number of finded by filter projects.",

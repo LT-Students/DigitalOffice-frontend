@@ -26,10 +26,6 @@ export class ErrorInterceptor implements HttpInterceptor {
 					this.alert.open(message);
 					break;
 				}
-				case 403: {
-					this.alert.open('Недостаточно прав доступа');
-					break;
-				}
 				case 404: {
 					this.alert.open('Запрашиваемая информация не найдена');
 					break;

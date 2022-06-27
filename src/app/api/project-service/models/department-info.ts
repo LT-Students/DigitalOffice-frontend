@@ -10,4 +10,9 @@ export interface DepartmentInfo {
 	 * The department name.
 	 */
 	name: string;
+
+	/**
+	 * The department short name.
+	 */
+	shortName: string;
 }

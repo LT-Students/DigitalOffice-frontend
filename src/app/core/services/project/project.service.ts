@@ -47,6 +47,7 @@ export interface IRemoveUsersFromProjectRequest {
 }
 
 export interface IFindProjects {
+	includedepartment?: boolean;
 	isascendingsort?: boolean;
 	projectstatus?: ProjectStatusType;
 	nameincludesubstring?: string;
