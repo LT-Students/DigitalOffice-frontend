@@ -3,7 +3,7 @@ import { SharedModule } from '@shared/shared.module';
 import { TableModule } from '../table/table.module';
 import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { ProjectsRoutingModule } from './projects-routing.module';
-import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
+import { ProjectsTableComponent } from './projects-table/projects-table.component';
 import { ProjectPageContainerComponent } from './project-page/project-page-container.component';
 import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
 import { CreateEditProjectComponent } from './create-edit-project/create-edit-project.component';

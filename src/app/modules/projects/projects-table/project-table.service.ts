@@ -8,15 +8,15 @@ import { of } from 'rxjs';
 import { IFindProjects } from '@app/services/project/project.service';
 import { ActivatedRoute } from '@angular/router';
 import { LoadDataFn } from '@app/services/infinite-scroll-data-provider.service';
-import { ColumnDef } from '../../../table/models';
+import { ColumnDef } from '../../table/models';
 import {
 	AutocompleteFilterParams,
 	FilterDef,
 	InputFilterParams,
 	SelectFilterParams,
-} from '../../../dynamic-filter/models';
-import { IProjectStatus, ProjectStatus } from '../../models/project-status';
-import { ProjectService } from '../../project.service';
+} from '../../dynamic-filter/models';
+import { IProjectStatus, ProjectStatus } from '../models/project-status';
+import { ProjectService } from '../project.service';
 
 @Injectable()
 export class ProjectTableService {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
+import { ProjectsTableComponent } from './projects-table/projects-table.component';
 import { ProjectListResolver } from './resolvers/project-list.resolver';
 import { ProjectPageContainerComponent } from './project-page/project-page-container.component';
 import { ProjectPageResolver } from './resolvers/project-page.resolver';

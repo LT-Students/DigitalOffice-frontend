@@ -5,12 +5,12 @@ import { ProjectInfo } from '@api/project-service/models/project-info';
 import { Subject } from 'rxjs';
 import { UserRights } from '@app/types/user-rights.enum';
 import { InfiniteScrollDataProviderService } from '@app/services/infinite-scroll-data-provider.service';
-import { ProjectsRoutes } from '../../models/projects-routes';
-import { ColumnDef } from '../../../table/models';
-import { FilterDef } from '../../../dynamic-filter/models';
-import { FilterEvent } from '../../../dynamic-filter/dynamic-filter.component';
-import { defaultProjectsTakeCount } from '../../helpers';
-import { SimpleDataSource } from '../../../table/table.component';
+import { ProjectsRoutes } from '../models/projects-routes';
+import { ColumnDef } from '../../table/models';
+import { FilterDef } from '../../dynamic-filter/models';
+import { FilterEvent } from '../../dynamic-filter/dynamic-filter.component';
+import { defaultProjectsTakeCount } from '../helpers';
+import { SimpleDataSource } from '../../table/table.component';
 import { ProjectTableService } from './project-table.service';
 
 @Component({
