@@ -1,4 +1,5 @@
-<cdk-table [dataSource]="dataSource">
+<cdk-table [dataSource]="dataSource" multiTemplateDataRows>
+	<!-- Generating columns of table -->
 	<ng-container *ngFor="let column of columns" [cdkColumnDef]="column.field">
 		<cdk-header-cell
 			*cdkHeaderCellDef
@@ -20,13 +21,23 @@
 			></do-table-cell
 		></cdk-cell>
 	</ng-container>
+
+	<!-- Expanded row columns -->
+	<ng-container cdkColumnDef="expandedRow">
+		<cdk-cell *cdkCellDef="let row">
+			<do-table [tableOptions]="expandedRowOptions"></do-table>
+		</cdk-cell>
+	</ng-container>
+
 	<cdk-header-row *cdkHeaderRowDef="displayColumns"></cdk-header-row>
 	<cdk-row
 		*cdkRowDef="let row; columns: displayColumns"
 		(click)="rowClick.emit(row)"
+		[ngStyle]="rowStyle"
 		[style.height.px]="rowHeight || 'auto'"
 	>
 	</cdk-row>
+	<cdk-row *cdkRowDef="let row; columns: ['expandedRow']; when: isRowExpandable"></cdk-row>
 	<ng-template cdkNoDataRow>
 		<div class="flex flex_jc_center">
 			<div class="no-data-row">

@@ -8,6 +8,8 @@ import { StatusComponent } from './cell-components/status/status.component';
 import { CheckboxComponent } from './cell-components/checkbox/checkbox.component';
 import { UserInfoComponent } from './cell-components/user-info/user-info.component';
 import { IconButtonComponent } from './cell-components/icon-button/icon-button.component';
+import { LeaveTimesComponent } from './cell-components/leave-times/leave-times.component';
+import { LeaveItemComponent } from './cell-components/leave-times/leave-item.component';
 
 @NgModule({
 	declarations: [
@@ -18,6 +20,8 @@ import { IconButtonComponent } from './cell-components/icon-button/icon-button.c
 		CheckboxComponent,
 		UserInfoComponent,
 		IconButtonComponent,
+		LeaveTimesComponent,
+		LeaveItemComponent,
 	],
 	imports: [SharedModule, CdkTableModule],
 	exports: [TableComponent],

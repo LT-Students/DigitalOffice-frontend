@@ -2,7 +2,8 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
-import { ColumnDef } from './models/column-def';
+import { ColumnDef } from './models';
+import { TableOptions } from './models/table-options';
 
 export class SimpleDataSource<T> extends DataSource<T> {
 	constructor(private data$: Observable<T[]>) {
@@ -25,6 +26,16 @@ export class TableComponent<T> implements OnInit {
 	@Output() rowClick = new EventEmitter<T>();
 
 	@Input()
+	set tableOptions(options: TableOptions) {
+		this.dataSource = options.dataSource || this.dataSource;
+		this.columns = options.columns || this._columns;
+		this._rowHeight = options.rowHeight || this._rowHeight;
+		this._rowStyle = options.rowStyle || this._rowStyle;
+		this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
+		this.expandedRowOptions = options.expandedRowOptions || this.expandedRowOptions;
+	}
+
+	@Input()
 	set rowHeight(height: any) {
 		this._rowHeight = coerceNumberProperty(height);
 	}
@@ -32,14 +43,34 @@ export class TableComponent<T> implements OnInit {
 		return this._rowHeight;
 	}
 	private _rowHeight = 0;
+
+	@Input()
+	set rowStyle(style: { [key: string]: any }) {
+		this._rowStyle = style;
+	}
+	get rowStyle(): { [key: string]: any } {
+		return this._rowStyle;
+	}
+	private _rowStyle = {};
+
 	@Input() dataSource!: DataSource<T>;
-	@Input() columns: ColumnDef[] = [];
+	@Input()
+	set columns(cols: ColumnDef[]) {
+		this._columns = cols;
+		this.displayColumns = this._columns.map((col: ColumnDef) => col.field);
+	}
+	get columns(): ColumnDef[] {
+		return this._columns;
+	}
+	private _columns: ColumnDef[] = [];
+
 	public displayColumns: string[] = [];
-	@Input() message = 'Нет данных';
+
+	@Input() expandedRowOptions: TableOptions = {};
+
+	@Input() isRowExpandable: (index: number, rowData: T) => boolean = () => false;
 
 	constructor() {}
 
-	public ngOnInit(): void {
-		this.displayColumns = this.columns.map((col: ColumnDef) => col.field);
-	}
+	public ngOnInit(): void {}
 }

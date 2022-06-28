@@ -5,7 +5,7 @@ import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { ProjectPageContainerComponent } from './project-page/project-page-container.component';
-import { TeamStatisticsComponent } from './components/team-statistics/team-statistics.component';
+import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
 import { CreateEditProjectComponent } from './create-edit-project/create-edit-project.component';
 import { ProjectInfoFormComponent } from './create-edit-project/project-info/project-info-form.component';
 import { ProjectDetailsComponent } from './create-edit-project/project-details/project-details.component';

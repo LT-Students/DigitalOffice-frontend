@@ -4,10 +4,10 @@
 		<span class="text-secondary_default">{{ status.label }}</span>
 		<mat-icon [svgIcon]="Icons.Status" [style.color]="status.color"></mat-icon>
 	</div>
-	<div class="controls">
+	<do-actions class="controls">
 		<a doButton [routerLink]="ProjectsRoutes.EditProject">Редактировать</a>
 		<a mat-flat-button color="primary" [routerLink]="ProjectsRoutes.TeamStats">Статистика команды</a>
-	</div>
+	</do-actions>
 </div>
 <h5 class="short-name break-word">{{ project.name }}</h5>
 <div *ngIf="project.department as department" class="horiz-info">
