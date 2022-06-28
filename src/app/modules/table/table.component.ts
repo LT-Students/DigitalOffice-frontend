@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ColumnDef } from './models';
 import { TableOptions } from './models/table-options';
 
@@ -21,9 +22,18 @@ export class SimpleDataSource<T> extends DataSource<T> {
 	templateUrl: './table.component.html',
 	styleUrls: ['./table.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [
+		trigger('detailExpand', [
+			state('collapsed', style({ height: '0px', minHeight: '0' })),
+			state('expanded', style({ height: '*' })),
+			transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+		]),
+	],
 })
 export class TableComponent<T> implements OnInit {
 	@Output() rowClick = new EventEmitter<T>();
+
+	public expandedElement?: T;
 
 	@Input()
 	set tableOptions(options: TableOptions) {
@@ -53,7 +63,7 @@ export class TableComponent<T> implements OnInit {
 	}
 	private _rowStyle = {};
 
-	@Input() dataSource!: DataSource<T>;
+	@Input() dataSource!: T[] | DataSource<T> | Observable<readonly T[]>;
 	@Input()
 	set columns(cols: ColumnDef[]) {
 		this._columns = cols;

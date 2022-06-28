@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Icons } from '@shared/features/icons/icons';
 import { IconButtonParams, TableCell } from '../../models';
 
 @Component({
 	selector: 'do-icon-button',
 	template: `
-		<button mat-icon-button (click)="params.onClickFn()">
-			<mat-icon [svgIcon]="null | execute: params.icon"></mat-icon>
+		<button mat-icon-button (click)="onClick(value)">
+			<mat-icon [svgIcon]="icon"></mat-icon>
 		</button>
 	`,
 	styles: [],
@@ -13,7 +14,12 @@ import { IconButtonParams, TableCell } from '../../models';
 })
 export class IconButtonComponent implements OnInit, TableCell<any> {
 	public value: any;
-	public params!: IconButtonParams;
+	set params(params: IconButtonParams) {
+		this.icon = params.icon();
+		this.onClick = params.onClickFn;
+	}
+	public icon!: Icons;
+	public onClick: Function = () => {};
 
 	constructor() {}
 

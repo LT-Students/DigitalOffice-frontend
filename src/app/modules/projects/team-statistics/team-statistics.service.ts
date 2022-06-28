@@ -4,12 +4,14 @@ import { UserStatInfo } from '@api/time-service/models/user-stat-info';
 import { LeaveTimeInfo } from '@api/time-service/models/leave-time-info';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
+import { Router } from '@angular/router';
+import { AppRoutes } from '@app/models/app-routes';
 import { TableOptions } from '../../table/models/table-options';
 import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 
 @Injectable()
 export class TeamStatisticsService {
-	constructor() {}
+	constructor(private router: Router) {}
 
 	private countUserHours(stats: UserStatInfo): number {
 		const workHours =
@@ -63,7 +65,32 @@ export class TeamStatisticsService {
 				'min-height': '96px',
 			},
 			isRowExpandable: () => true,
-			expandedRowOptions: {},
+			expandedRowOptions: {
+				columns: [
+					{
+						field: 'projectName',
+						type: 'textCell',
+						headerName: 'Название проекта',
+						valueGetter: (wt: WorkTimeInfo) => wt.project?.name || 'Другое',
+					},
+					{
+						field: 'projectHours',
+						headerName: 'Часы за проект',
+						valueGetter: (wt: WorkTimeInfo) => wt.managerHours || wt.userHours,
+					},
+					{
+						field: 'link',
+						type: 'iconButtonCell',
+						valueGetter: (wt: WorkTimeInfo) => wt,
+						params: {
+							icon: () => Icons.Go,
+							onClickFn: (wt: WorkTimeInfo) =>
+								this.router.navigateByUrl(`/${AppRoutes.Projects}/${wt.project?.id}`),
+						},
+					},
+				],
+				dataSourceGetter: (stats: UserStatInfo) => stats.workTimes ?? [],
+			},
 		};
 	}
 

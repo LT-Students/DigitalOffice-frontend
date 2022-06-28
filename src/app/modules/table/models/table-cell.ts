@@ -29,6 +29,6 @@ export interface IconButtonParams {
 export type CellParams = TextCellParams | IconButtonParams;
 
 export interface TableCell<V> {
-	value: V;
+	value?: V;
 	params?: CellParams;
 }
