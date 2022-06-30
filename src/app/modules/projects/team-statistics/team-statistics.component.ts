@@ -4,7 +4,6 @@ import { first, map, switchMap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { TimeService } from '@app/services/time/time.service';
 import { StatInfo } from '@api/time-service/models/stat-info';
-import { UserStatInfo } from '@api/time-service/models/user-stat-info';
 import { SelectedProjectService } from '../project-id-route-container/selected-project.service';
 import { SimpleDataSource } from '../../table/table.component';
 import { TeamStatisticsService } from './team-statistics.service';
@@ -34,8 +33,7 @@ export class TeamStatisticsComponent implements OnInit {
 					month: 6,
 				})
 			),
-			//TODO fix this terrible assertion
-			map((res) => ((res.body as StatInfo[])[0] as StatInfo).usersStats as UserStatInfo[])
+			map((res) => (res.body as StatInfo[])[0].usersStats)
 		)
 	);
 

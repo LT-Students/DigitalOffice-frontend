@@ -5,16 +5,15 @@
  * User data.
  */
 export interface UserInfo {
-  firstName?: null | string;
-  id?: string;
-  isActive?: null | boolean;
-  lastName?: null | string;
-  middleName?: null | string;
-  rate?: null | number;
+	firstName?: string;
+	id: string;
+	isActive?: boolean;
+	lastName?: string;
+	middleName?: string;
+	rate?: number;
 
-  /**
-   * Start user's working date.
-   */
-  startWorkingAt?: null | string;
+	/**
+	 * Start user's working date.
+	 */
+	startWorkingAt?: string;
 }
-

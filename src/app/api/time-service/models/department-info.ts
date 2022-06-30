@@ -5,7 +5,6 @@
  * Department data.
  */
 export interface DepartmentInfo {
-  id?: string;
-  name?: null | string;
+	id: string;
+	name: string;
 }
-

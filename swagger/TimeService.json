@@ -1310,6 +1310,11 @@
       },
       "WorkTimeInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Month",
+          "Year"
+        ],
         "properties": {
           "Id": {
             "description": "The work time Id.",
@@ -1397,6 +1402,13 @@
       },
       "WorkTimeMonthLimitInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Month",
+          "Year",
+          "Holidays",
+          "NormHours"
+        ],
         "properties": {
           "Id": {
             "description": "The work time Id.",
@@ -1421,6 +1433,13 @@
       },
       "LeaveTimeInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "CreatedBy",
+          "Minutes",
+          "LeaveType",
+          "IsActive"
+        ],
         "properties": {
           "Id": {
             "description": "The leave time Id.",
@@ -1481,6 +1500,11 @@
       },
       "ProjectInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "Status"
+        ],
         "properties": {
           "Id": {
             "description": "Unique project identifier.",
@@ -1517,6 +1541,9 @@
       "UserInfo": {
         "type": "object",
         "description": "User data.",
+        "required": [
+          "Id"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -1558,6 +1585,10 @@
       "DepartmentInfo": {
         "type": "object",
         "description": "Department data.",
+        "required": [
+          "Id",
+          "Name"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -1572,6 +1603,9 @@
       },
       "StatInfo": {
         "type": "object",
+        "required": [
+          "UsersStats"
+        ],
         "properties": {
           "DepartmentInfo": {
             "$ref": "#/components/schemas/DepartmentInfo"
@@ -1586,6 +1620,11 @@
       },
       "UserStatInfo": {
         "type": "object",
+        "required": [
+          "LeaveTimes",
+          "WorkTimes",
+          "LimitInfo"
+        ],
         "properties": {
           "User": {
             "$ref": "#/components/schemas/UserInfo"
@@ -1609,6 +1648,10 @@
       },
       "WorkTimeResponse": {
         "type": "object",
+        "required": [
+          "WorkTime",
+          "LimitInfo"
+        ],
         "properties": {
           "WorkTime": {
             "$ref": "#/components/schemas/WorkTimeInfo"
@@ -1626,6 +1669,9 @@
       },
       "LeaveTimeResponse": {
         "type": "object",
+        "required": [
+          "LeaveTime"
+        ],
         "properties": {
           "LeaveTime": {
             "$ref": "#/components/schemas/LeaveTimeInfo"
@@ -1648,6 +1694,11 @@
       },
       "FindResultResponseWorkTimeResponse": {
         "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1672,6 +1723,11 @@
       },
       "FindResultResponseWorkTimeMonthLimitInfo": {
         "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1696,6 +1752,11 @@
       },
       "FindResultResponseLeaveTimeResponse": {
         "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1720,6 +1781,11 @@
       },
       "FindResultResponseStatInfo": {
         "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -1764,6 +1830,10 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "object"
@@ -1794,6 +1864,10 @@
       "OperationResultResponseByteArray": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "string",

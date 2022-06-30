@@ -5,7 +5,7 @@ import { IconButtonParams, TableCell } from '../../models';
 @Component({
 	selector: 'do-icon-button',
 	template: `
-		<button mat-icon-button (click)="onClick(value)">
+		<button doButton (click)="onClick(value)">
 			<mat-icon [svgIcon]="icon"></mat-icon>
 		</button>
 	`,

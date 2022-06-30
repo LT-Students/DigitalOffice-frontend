@@ -138,7 +138,7 @@ export class DirectorsTimelistComponent implements OnInit {
 		this._timeService.editWorkTime(params).subscribe((result: OperationResultResponse) => {
 			if (result.status === OperationResultStatusType.FullSuccess) {
 				workTime.managerHours =
-					type === 'submit' ? Number(this.hoursGroup.get(`hours_${workTime?.id}`)?.value ?? 0) : null;
+					type === 'submit' ? Number(this.hoursGroup.get(`hours_${workTime?.id}`)?.value ?? 0) : 0;
 				statInfo.totalHours = this._getTotalHours(statInfo.workTimes ?? []);
 				this.toggleEditMode(false, workTime);
 

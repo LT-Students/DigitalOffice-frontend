@@ -7,7 +7,7 @@ export interface LeaveTimeInfo {
 	 */
 	comment?: string;
 	createdAt?: string;
-	createdBy?: string;
+	createdBy: string;
 
 	/**
 	 * Task finish deadline.
@@ -17,10 +17,10 @@ export interface LeaveTimeInfo {
 	/**
 	 * The leave time Id.
 	 */
-	id?: string;
-	isActive?: boolean;
+	id: string;
+	isActive: boolean;
 	leaveType: LeaveType;
-	minutes?: number;
+	minutes: number;
 
 	/**
 	 * Start date task execution.

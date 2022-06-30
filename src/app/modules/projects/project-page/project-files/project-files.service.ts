@@ -26,6 +26,29 @@ export class ProjectFilesService {
 			{
 				type: 'checkboxCell',
 				field: 'checkbox',
+				columnStyle: {
+					'flex-grow': 0,
+				},
+			},
+			{
+				type: 'fileInfoCell',
+				field: 'fileInfo',
+				valueGetter: () => ({ name: 'file', extension: 'png' }),
+				columnStyle: {
+					'flex-grow': 2,
+				},
+			},
+			{
+				type: 'iconButtonCell',
+				field: 'download',
+				valueGetter: () => {},
+				params: {
+					icon: () => Icons.Download,
+					onClickFn: () => {},
+				},
+				columnStyle: {
+					'flex-grow': 0,
+				},
 			},
 		];
 	}

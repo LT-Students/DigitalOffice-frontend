@@ -10,6 +10,8 @@ import { UserInfoComponent } from './cell-components/user-info/user-info.compone
 import { IconButtonComponent } from './cell-components/icon-button/icon-button.component';
 import { LeaveTimesComponent } from './cell-components/leave-times/leave-times.component';
 import { LeaveItemComponent } from './cell-components/leave-times/leave-item.component';
+import { FileInfoComponent } from './cell-components/file-info/file-info.component';
+import { FileIconPipe } from './cell-components/file-info/file-icon.pipe';
 
 @NgModule({
 	declarations: [
@@ -22,6 +24,8 @@ import { LeaveItemComponent } from './cell-components/leave-times/leave-item.com
 		IconButtonComponent,
 		LeaveTimesComponent,
 		LeaveItemComponent,
+		FileInfoComponent,
+		FileIconPipe,
 	],
 	imports: [SharedModule, CdkTableModule],
 	exports: [TableComponent],

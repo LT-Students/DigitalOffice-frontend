@@ -14,18 +14,16 @@ export class TeamStatisticsService {
 	constructor(private router: Router) {}
 
 	private countUserHours(stats: UserStatInfo): number {
-		const workHours =
-			stats.workTimes?.reduce((acc: number, wt: WorkTimeInfo) => {
-				const hours = wt.managerHours ?? wt.userHours ?? 0;
-				return acc + hours;
-			}, 0) ?? 0;
-		const leaveHours =
-			stats.leaveTimes?.reduce((acc: number, lt: LeaveTimeInfo) => {
-				const startDate = DateTime.fromISO(lt.startTime);
-				const endDate = DateTime.fromISO(lt.endTime).plus({ day: 1 });
-				const hours = endDate.diff(startDate).as('days') * 8;
-				return acc + Math.floor(hours);
-			}, 0) ?? 0;
+		const workHours = stats.workTimes.reduce((acc: number, wt: WorkTimeInfo) => {
+			const hours = wt.managerHours ?? wt.userHours ?? 0;
+			return acc + hours;
+		}, 0);
+		const leaveHours = stats.leaveTimes.reduce((acc: number, lt: LeaveTimeInfo) => {
+			const startDate = DateTime.fromISO(lt.startTime);
+			const endDate = DateTime.fromISO(lt.endTime).plus({ day: 1 });
+			const hours = endDate.diff(startDate).as('days') * 8;
+			return acc + Math.floor(hours);
+		}, 0);
 
 		return workHours + leaveHours;
 	}
@@ -45,7 +43,7 @@ export class TeamStatisticsService {
 					headerName: 'Часы за проект / Норма',
 					valueGetter: (stats: UserStatInfo) => {
 						const userHours = this.countUserHours(stats);
-						return `${userHours} / ${stats.limitInfo?.normHours}`;
+						return `${userHours} / ${stats.limitInfo.normHours}`;
 					},
 				},
 				{
@@ -58,7 +56,7 @@ export class TeamStatisticsService {
 					field: 'projectCount',
 					type: 'textCell',
 					headerName: 'Кол-во проектов',
-					valueGetter: (stats: UserStatInfo) => `${stats.workTimes?.length} проект(ов)`,
+					valueGetter: (stats: UserStatInfo) => `${stats.workTimes.length} проект(ов)`,
 				},
 			],
 			rowStyle: {
@@ -89,7 +87,7 @@ export class TeamStatisticsService {
 						},
 					},
 				],
-				dataSourceGetter: (stats: UserStatInfo) => stats.workTimes ?? [],
+				dataSourceGetter: (stats: UserStatInfo) => stats.workTimes,
 			},
 		};
 	}

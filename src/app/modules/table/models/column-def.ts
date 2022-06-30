@@ -9,4 +9,5 @@ export interface ColumnDef {
 	width?: number;
 	minWidth?: number;
 	maxWidth?: number;
+	columnStyle?: { [key: string]: any };
 }

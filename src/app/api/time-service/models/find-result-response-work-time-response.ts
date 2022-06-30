@@ -3,13 +3,12 @@
 import { OperationResultStatusType } from './operation-result-status-type';
 import { WorkTimeResponse } from './work-time-response';
 export interface FindResultResponseWorkTimeResponse {
-  body?: Array<WorkTimeResponse>;
-  errors?: Array<string>;
-  status?: OperationResultStatusType;
+	body?: Array<WorkTimeResponse>;
+	errors: Array<string>;
+	status: OperationResultStatusType;
 
-  /**
-   * Total number of finded by filter work times.
-   */
-  totalCount?: number;
+	/**
+	 * Total number of finded by filter work times.
+	 */
+	totalCount: number;
 }
-

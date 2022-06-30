@@ -8,9 +8,8 @@ export class ContextMenuService {
 
 	public getItems(): MenuItem[] {
 		return [
-			{ title: 'Добавить документ', icon: Icons.Add, action: () => {}, visible: () => true },
-			{ title: 'Удалить документ', icon: Icons.Close, action: () => {}, visible: () => true },
 			{ title: 'Скачать', icon: Icons.Download, action: () => {}, visible: () => true },
+			{ title: 'Удалить документ', icon: Icons.Close, action: () => {}, visible: () => true },
 		];
 	}
 }

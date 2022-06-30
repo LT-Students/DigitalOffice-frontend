@@ -5,6 +5,7 @@ import { CheckboxComponent } from '../cell-components/checkbox/checkbox.componen
 import { UserInfoComponent } from '../cell-components/user-info/user-info.component';
 import { IconButtonComponent } from '../cell-components/icon-button/icon-button.component';
 import { LeaveTimesComponent } from '../cell-components/leave-times/leave-times.component';
+import { FileInfoComponent } from '../cell-components/file-info/file-info.component';
 
 export const CELL_TYPES = {
 	textCell: TextComponent,
@@ -12,6 +13,7 @@ export const CELL_TYPES = {
 	iconButtonCell: IconButtonComponent,
 	checkboxCell: CheckboxComponent,
 	userInfoCell: UserInfoComponent,
+	fileInfoCell: FileInfoComponent,
 	leaveTimes: LeaveTimesComponent,
 };
 
