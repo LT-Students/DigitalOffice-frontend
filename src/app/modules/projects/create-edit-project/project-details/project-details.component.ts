@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Optional, Self } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	Input,
+	OnDestroy,
+	OnInit,
+	Optional,
+	Self,
+} from '@angular/core';
 import { Icons } from '@shared/features/icons/icons';
 import {
 	AbstractControl,
@@ -15,7 +24,6 @@ import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ProjectStatus } from '../../models/project-status';
-import { ErrorAccessor } from '../../models/error-accessor';
 
 function validateDuration(startDateField: string, endDateField: string): ValidatorFn {
 	return (group: AbstractControl): ValidationErrors | null => {
@@ -40,7 +48,7 @@ export interface DetailsControlValue {
 	styleUrls: ['./project-details.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectDetailsComponent extends ErrorAccessor implements OnInit, OnDestroy, ControlValueAccessor {
+export class ProjectDetailsComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	public readonly Icons = Icons;
 	public readonly statuses = ProjectStatus.getAllStatuses();
 
@@ -62,8 +70,11 @@ export class ProjectDetailsComponent extends ErrorAccessor implements OnInit, On
 
 	private destroy$ = new Subject<void>();
 
-	constructor(private fb: FormBuilder, @Optional() @Self() private ngControl: NgControl) {
-		super();
+	constructor(
+		private fb: FormBuilder,
+		@Optional() @Self() private ngControl: NgControl,
+		private cdr: ChangeDetectorRef
+	) {
 		if (ngControl) {
 			ngControl.valueAccessor = this;
 		}
@@ -73,6 +84,7 @@ export class ProjectDetailsComponent extends ErrorAccessor implements OnInit, On
 		const control = this.ngControl.control;
 		control?.setValidators([this.validate.bind(this)]);
 		control?.updateValueAndValidity();
+		this.registerMarkAsTouched();
 
 		this.form
 			.get('status')
@@ -87,11 +99,21 @@ export class ProjectDetailsComponent extends ErrorAccessor implements OnInit, On
 		this.destroy$.complete();
 	}
 
+	private registerMarkAsTouched(): void {
+		const control = this.ngControl.control;
+		if (control) {
+			control.markAsTouched = () => {
+				this.form.markAllAsTouched();
+				this.cdr.markForCheck();
+			};
+		}
+	}
+
 	public validate(): ValidationErrors | null {
 		if (this.form.valid) {
 			return null;
 		}
-		return this.getControlErrors(this.form);
+		return { details: true };
 	}
 
 	private handleStatusChange(status: ProjectStatusType): void {

@@ -1,4 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Input, Optional, Self } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	ChangeDetectionStrategy,
+	OnDestroy,
+	Input,
+	Optional,
+	Self,
+	ChangeDetectorRef,
+} from '@angular/core';
 import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors, Validators } from '@angular/forms';
 import { DepartmentInfo as ProjectDepartmentInfo } from '@api/project-service/models/department-info';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
@@ -6,7 +15,6 @@ import { DepartmentService } from '@app/services/department/department.service';
 import { Subject } from 'rxjs';
 import { DoValidators } from '@app/validators/do-validators';
 import { takeUntil } from 'rxjs/operators';
-import { ErrorAccessor } from '../../models/error-accessor';
 
 export interface InfoControlValue {
 	name: string;
@@ -21,7 +29,7 @@ export interface InfoControlValue {
 	styleUrls: ['./project-info-form.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectInfoFormComponent extends ErrorAccessor implements OnInit, OnDestroy, ControlValueAccessor {
+export class ProjectInfoFormComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	@Input() isEditMode = false;
 
 	public form = this.fb.group({
@@ -43,9 +51,9 @@ export class ProjectInfoFormComponent extends ErrorAccessor implements OnInit, O
 	constructor(
 		private fb: FormBuilder,
 		private departmentService: DepartmentService,
-		@Optional() @Self() private ngControl: NgControl
+		@Optional() @Self() private ngControl: NgControl,
+		private cdr: ChangeDetectorRef
 	) {
-		super();
 		if (ngControl) {
 			ngControl.valueAccessor = this;
 		}
@@ -55,6 +63,7 @@ export class ProjectInfoFormComponent extends ErrorAccessor implements OnInit, O
 		const control = this.ngControl.control;
 		control?.setValidators([this.validate.bind(this)]);
 		control?.updateValueAndValidity();
+		this.registerMarkAsTouched();
 	}
 
 	public ngOnDestroy(): void {
@@ -62,11 +71,21 @@ export class ProjectInfoFormComponent extends ErrorAccessor implements OnInit, O
 		this.destroy$.complete();
 	}
 
+	private registerMarkAsTouched(): void {
+		const control = this.ngControl.control;
+		if (control) {
+			control.markAsTouched = () => {
+				this.form.markAllAsTouched();
+				this.cdr.markForCheck();
+			};
+		}
+	}
+
 	public validate(): ValidationErrors | null {
 		if (this.form.valid) {
 			return null;
 		}
-		return this.getControlErrors(this.form);
+		return { info: true };
 	}
 
 	public registerOnChange(fn: any): void {

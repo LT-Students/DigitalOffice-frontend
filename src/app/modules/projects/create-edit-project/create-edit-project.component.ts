@@ -40,7 +40,6 @@ export class CreateEditProjectComponent implements OnInit {
 	public submitButton = this.createEditProject.pageConfig.submitButtonLabel;
 	public projectName?: string;
 	public loading$ = new BehaviorSubject(false);
-	public invalid$ = this.projectForm.getInvalidState$();
 
 	constructor(
 		@Optional() private selectedProject: SelectedProjectService,
@@ -62,7 +61,6 @@ export class CreateEditProjectComponent implements OnInit {
 					next: (project: ProjectInfo) => {
 						this.projectForm.setInitialValue(project);
 						this.projectName = project.name;
-						this.invalid$ = this.projectForm.getInvalidState$();
 					},
 				});
 		}
@@ -73,9 +71,13 @@ export class CreateEditProjectComponent implements OnInit {
 	}
 
 	public onSubmit(): void {
+		if (this.form.invalid) {
+			this.form.markAllAsTouched();
+			return;
+		}
 		this.loading$.next(true);
-		const formValue = this.form.getRawValue();
-		this.createEditProject.submit$(formValue).subscribe({
+		const submitValue = this.projectForm.getSubmitValue();
+		this.createEditProject.submit$(submitValue).subscribe({
 			next: (projectId: string) => {
 				this.router.navigateByUrl(`/${AppRoutes.Projects}/${projectId}`);
 			},

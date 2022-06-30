@@ -11,6 +11,8 @@ interface UserLike {
 })
 export class FullNamePipe implements PipeTransform {
 	transform(user: UserLike, middleName: boolean = false): string {
-		return [ user.firstName.trim(), middleName ? user.middleName?.trim() : null, user.lastName.trim() ].filter(Boolean).join(' ');
+		return [user.firstName.trim(), middleName ? user.middleName?.trim() : null, user.lastName.trim()]
+			.filter(Boolean)
+			.join(' ');
 	}
 }

@@ -1,15 +1,17 @@
 <div class="form" [formGroup]="form">
-	<do-form-field label="Название проекта" required class="long-field">
+	<do-form-field label="Название проекта" class="long-field">
 		<mat-form-field>
 			<input matInput formControlName="name" type="text" placeholder="Название проекта" />
+			<mat-error>{{ form.controls['name'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field label="Сокращенное название" required>
+	<do-form-field label="Сокращенное название">
 		<mat-form-field>
 			<input matInput formControlName="shortName" type="text" placeholder="Сокр. название" />
+			<mat-error>{{ form.controls['shortName'] | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field label="Департамент">
+	<do-form-field *ngIf="!isEditMode" label="Департамент">
 		<do-infinite-autocomplete
 			formControlName="department"
 			placeholder="Департамент"
@@ -22,6 +24,7 @@
 	<do-form-field label="Заказчик" class="long-field">
 		<mat-form-field>
 			<input matInput formControlName="customer" type="text" placeholder="Наименование заказчика" />
+			<mat-error>{{ form.controls['customer'] | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
 </div>

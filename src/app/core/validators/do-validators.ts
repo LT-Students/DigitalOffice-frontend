@@ -111,7 +111,7 @@ export class DoValidators {
 				return null;
 			}
 			const strLength = control.value.trim().length;
-			return strLength > maxLength ? { maxlength: true } : null;
+			return strLength > maxLength ? { maxlength: { message: `Макс. длина: ${maxLength}` } } : null;
 		};
 	}
 

@@ -5,9 +5,7 @@ import { CreateEditProject } from '../create-edit-project';
 import { ProjectService } from '../../project.service';
 import { FormValue } from './project-form.service';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class CreateProjectService implements CreateEditProject {
 	public pageConfig = { title: 'Создание проекта', submitButtonLabel: 'Создать проект' };
 	public readonly isEditMode = false;

@@ -61,6 +61,7 @@ import { DynamicComponentHostDirective } from './directives/dynamic-component-ho
 import { AutocompleteComponent } from './component/autocomplete/autocomplete.component';
 import { AutocompleteOffDirective } from './directives/autocomplete-off.directive';
 import { ActionsComponent } from './component/actions/actions.component';
+import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 
 @NgModule({
 	declarations: [
@@ -115,6 +116,7 @@ import { ActionsComponent } from './component/actions/actions.component';
 		AutocompleteOffDirective,
 		InfiniteAutocompleteComponent,
 		ActionsComponent,
+		ControlErrorsPipe,
 	],
 	imports: [
 		CommonModule,
@@ -184,6 +186,7 @@ import { ActionsComponent } from './component/actions/actions.component';
 		AutocompleteOffDirective,
 		InfiniteAutocompleteComponent,
 		ActionsComponent,
+		ControlErrorsPipe,
 	],
 })
 export class SharedModule {}

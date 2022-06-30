@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { combineLatest, Observable, of } from 'rxjs';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { DateTime } from 'luxon';
-import { map } from 'rxjs/operators';
-import { DirtyFormChecker } from '@app/utils/dirty-form-checker';
+import { EditRequest, PatchDocument, ProjectPath } from '@app/types/edit-request';
 import { InfoControlValue } from '../project-info/project-info-form.component';
 import { DetailsControlValue } from '../project-details/project-details.component';
 import { DescriptionControlValue } from '../project-description/project-description-form.component';
@@ -27,13 +25,9 @@ export class ProjectFormService {
 
 	constructor(private fb: FormBuilder) {}
 
-	public getInvalidState$(): Observable<boolean> {
-		return combineLatest([
-			this.form.statusChanges.pipe(map((status: string) => status === 'INVALID')),
-			this.initialValue
-				? new DirtyFormChecker(this.form, this.initialValue, ProjectComparator.compare).isDirty$
-				: of(false),
-		]).pipe(map((invalid: boolean[]) => invalid.some(Boolean)));
+	public getSubmitValue(): EditRequest<ProjectPath> | FormValue {
+		const formValue = this.form.getRawValue();
+		return this.initialValue ? ProjectEditRequest.getEditRequest(formValue, this.initialValue) : formValue;
 	}
 
 	public setInitialValue(project: ProjectInfo): void {
@@ -56,26 +50,51 @@ export class ProjectFormService {
 		};
 		this.form.setValue(this.initialValue, { emitEvent: false });
 	}
-
-	// public getEditRequest(): EditRequest<ProjectPath> {
-	//
-	// }
 }
 
-class ProjectComparator {
-	public static compare(val1: FormValue, val2: FormValue): boolean {
-		const [v1, v2] = [val1, val2].map(ProjectComparator.flatten);
-		return Object.keys(v1).every((k: string) => {
+class ProjectEditRequest {
+	private static pathMap: { [key: string]: ProjectPath } = {
+		name: ProjectPath.NAME,
+		shortName: ProjectPath.SHORT_NAME,
+		customer: ProjectPath.CUSTOMER,
+		status: ProjectPath.STATUS,
+		startDate: ProjectPath.START_DATE,
+		endDate: ProjectPath.END_DATE,
+		description: ProjectPath.DESCRIPTION,
+		shortDescription: ProjectPath.SHORT_DESCRIPTION,
+	};
+
+	public static getEditRequest(newValue: FormValue, origValue: FormValue): EditRequest<ProjectPath> {
+		const [v1, v2] = [newValue, origValue].map(ProjectEditRequest.flatten);
+		const req: EditRequest<ProjectPath> = [];
+		Object.keys(v1).forEach((k: string) => {
 			const prop1 = v1[k];
 			const prop2 = v2[k];
-			if ((prop1 == null || prop1 === '') && (prop2 == null || prop2 === '')) {
-				return true;
+			if (!ProjectEditRequest.compare(prop1, prop2)) {
+				const patchDocument: PatchDocument<ProjectPath> = {
+					path: this.pathMap[k],
+					op: 'replace',
+					value: ProjectEditRequest.setNewValue(prop1),
+				};
+				req.push(patchDocument);
 			}
-			if (prop1 instanceof DateTime && prop2 instanceof DateTime) {
-				return +prop1.startOf('day') === +prop2.startOf('day');
-			}
-			return prop1 === prop2;
 		});
+
+		return req;
+	}
+
+	private static setNewValue(v: any): string | number {
+		return v instanceof DateTime ? v.setZone('UTC').toSQL() : v;
+	}
+
+	private static compare(v1: any, v2: any): boolean {
+		if ((v1 == null || v1 === '') && (v2 == null || v2 === '')) {
+			return true;
+		}
+		if (v1 instanceof DateTime && v2 instanceof DateTime) {
+			return +v1.startOf('day') === +v2.startOf('day');
+		}
+		return v1 === v2;
 	}
 
 	private static flatten(val: FormValue): { [key: string]: any } {

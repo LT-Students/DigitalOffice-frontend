@@ -2,15 +2,13 @@
 	<do-form-field label="Краткое описание">
 		<mat-form-field>
 			<textarea
-				#shortDescription
 				matInput
 				formControlName="shortDescription"
 				cdkTextareaAutosize
 				[cdkAutosizeMinRows]="2"
 				[cdkAutosizeMaxRows]="2"
-				[maxLength]="MAX_LENGTH_SHORT_DESCRIPTION"
 			></textarea>
-			<mat-hint align="end">{{ shortDescription.value.length }}/{{ MAX_LENGTH_SHORT_DESCRIPTION }}</mat-hint>
+			<mat-error>{{ form.controls['shortDescription'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field label="Полное описание">
@@ -22,6 +20,7 @@
 				[cdkAutosizeMinRows]="10"
 				[cdkAutosizeMaxRows]="10"
 			></textarea>
+			<mat-error>{{ form.controls['description'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
 </div>

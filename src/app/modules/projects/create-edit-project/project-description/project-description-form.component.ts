@@ -1,8 +1,16 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Optional, Self } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	ChangeDetectionStrategy,
+	OnDestroy,
+	Optional,
+	Self,
+	ChangeDetectorRef,
+} from '@angular/core';
 import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { ErrorAccessor } from '../../models/error-accessor';
+import { DoValidators } from '@app/validators/do-validators';
 
 export interface DescriptionControlValue {
 	description?: string;
@@ -15,17 +23,18 @@ export interface DescriptionControlValue {
 	styleUrls: ['./project-description-form.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProjectDescriptionFormComponent extends ErrorAccessor implements OnInit, OnDestroy, ControlValueAccessor {
-	public readonly MAX_LENGTH_SHORT_DESCRIPTION = 100;
-
+export class ProjectDescriptionFormComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	public form = this.fb.group({
-		shortDescription: [''],
+		shortDescription: ['', [DoValidators.matchMaxLength(100)]],
 		description: [''],
 	});
 	private destroy$ = new Subject<void>();
 
-	constructor(private fb: FormBuilder, @Optional() @Self() private ngControl: NgControl) {
-		super();
+	constructor(
+		private fb: FormBuilder,
+		@Optional() @Self() private ngControl: NgControl,
+		private cdr: ChangeDetectorRef
+	) {
 		if (ngControl) {
 			ngControl.valueAccessor = this;
 		}
@@ -35,6 +44,7 @@ export class ProjectDescriptionFormComponent extends ErrorAccessor implements On
 		const control = this.ngControl.control;
 		control?.setValidators([this.validate.bind(this)]);
 		control?.updateValueAndValidity();
+		this.registerMarkAsTouched();
 	}
 
 	public ngOnDestroy(): void {
@@ -42,11 +52,21 @@ export class ProjectDescriptionFormComponent extends ErrorAccessor implements On
 		this.destroy$.complete();
 	}
 
+	private registerMarkAsTouched(): void {
+		const control = this.ngControl.control;
+		if (control) {
+			control.markAsTouched = () => {
+				this.form.markAllAsTouched();
+				this.cdr.markForCheck();
+			};
+		}
+	}
+
 	public validate(): ValidationErrors | null {
 		if (this.form.valid) {
 			return null;
 		}
-		return this.getControlErrors(this.form);
+		return { description: true };
 	}
 
 	public registerOnChange(fn: any): void {

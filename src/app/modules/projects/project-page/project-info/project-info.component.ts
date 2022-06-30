@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { Icons } from '@shared/features/icons/icons';
-import { DatePipe } from '@angular/common';
 import { DateTime } from 'luxon';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { ProjectsRoutes } from '../../models/projects-routes';
@@ -17,7 +16,6 @@ interface ProjectStats {
 	templateUrl: './project-info.component.html',
 	styleUrls: ['./project-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [DatePipe],
 })
 export class ProjectInfoComponent implements OnInit {
 	public readonly Icons = Icons;
@@ -28,8 +26,7 @@ export class ProjectInfoComponent implements OnInit {
 	public stats: ProjectStats[] = [
 		{
 			label: () => 'Дата запуска',
-			valueGetter: (project: ProjectInfo) =>
-				this.datePipe.transform(project.startDateUtc, 'dd/MM/y HH:mm') as string,
+			valueGetter: (project: ProjectInfo) => this.formatDate(project.startDateUtc),
 		},
 		{
 			label: () => 'Продолжительность',
@@ -47,8 +44,7 @@ export class ProjectInfoComponent implements OnInit {
 			visible: (project: ProjectInfo) => !!project.endDateUtc,
 			label: (project: ProjectInfo) =>
 				project.status === ProjectStatusType.Suspend ? 'Приостановлен' : 'Дата завершения',
-			valueGetter: (project: ProjectInfo) =>
-				this.datePipe.transform(project.endDateUtc, 'dd/MM/y HH:mm') as string,
+			valueGetter: (project: ProjectInfo) => this.formatDate(project.endDateUtc),
 		},
 		{
 			label: () => 'Количество сотрудников',
@@ -56,7 +52,11 @@ export class ProjectInfoComponent implements OnInit {
 		},
 	];
 
-	constructor(private datePipe: DatePipe) {}
+	constructor() {}
 
 	ngOnInit(): void {}
+
+	private formatDate(date: string): string {
+		return DateTime.fromISO(date).toFormat('dd/MM/y');
+	}
 }

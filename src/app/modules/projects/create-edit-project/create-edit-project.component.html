@@ -3,13 +3,7 @@
 	<span *ngIf="isEditMode" class="text-secondary_default project-name">{{ projectName }}</span>
 	<do-actions class="actions">
 		<button doButton (click)="onCancel()">Отменить</button>
-		<button
-			mat-flat-button
-			color="primary"
-			(click)="onSubmit()"
-			[loading]="loading$ | async"
-			[disabled]="(invalid$ | async) === true"
-		>
+		<button mat-flat-button color="primary" (click)="onSubmit()" [loading]="loading$ | async">
 			{{ submitButton }}
 		</button>
 	</do-actions>

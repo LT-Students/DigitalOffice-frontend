@@ -6,6 +6,7 @@
 				<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 			</mat-datepicker-toggle>
 			<mat-datepicker #startDate></mat-datepicker>
+			<mat-error>{{ form.controls['startDate'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field label="Статус">
@@ -15,6 +16,7 @@
 					<mat-icon [svgIcon]="Icons.Status" [style.color]="status.color"></mat-icon>{{ status.label }}
 				</mat-option>
 			</mat-select>
+			<mat-error>{{ form.controls['status'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field [label]="form.controls['status'].value | endDateLabel">
@@ -24,6 +26,7 @@
 				<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 			</mat-datepicker-toggle>
 			<mat-datepicker #endDate></mat-datepicker>
+			<mat-error>{{ form.controls['endDate'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
 </div>
