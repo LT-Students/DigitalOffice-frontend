@@ -40,12 +40,12 @@ export interface CreateProjectRequest {
 	/**
 	 * Project short name.
 	 */
-	shortName?: string;
+	shortName: string;
 
 	/**
 	 * Date and time begin project in UTC.
 	 */
 	startDateUtc?: any;
 	status: ProjectStatusType;
-	users?: Array<UserRequest>;
+	users: Array<UserRequest>;
 }

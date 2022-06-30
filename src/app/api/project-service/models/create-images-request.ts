@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { ImageContent } from './image-content';
-export interface CreateImageRequest {
-	entityId: string;
+export interface CreateImagesRequest {
 	images: Array<ImageContent>;
+	projectId: string;
 }

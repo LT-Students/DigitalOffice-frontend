@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2.6",
+    "version": "1.2.2.7",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -421,7 +421,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateImageRequest"
+                "$ref": "#/components/schemas/CreateImagesRequest"
               }
             }
           },
@@ -739,18 +739,6 @@
           }
         }
       },
-      "UserStatus": {
-        "type": "string",
-        "description": "Mode for user status.",
-        "enum": [
-          "Vacation",
-          "Sick",
-          "WorkFromOffice",
-          "WorkFromHome"
-        ],
-        "example": "Sick",
-        "default": "WorkFromOffice"
-      },
       "FileInfo": {
         "type": "object",
         "required": [
@@ -843,16 +831,6 @@
           }
         }
       },
-      "ImageType": {
-        "type": "string",
-        "description": "Type of the entity.\n",
-        "enum": [
-          "Project",
-          "Task"
-        ],
-        "nullable": false,
-        "example": "Project"
-      },
       "AccessType": {
         "type": "string",
         "description": "Type of the access to the file.\n",
@@ -870,10 +848,7 @@
           "Id",
           "FirstName",
           "LastName",
-          "Status",
-          "CreatedAtUtc",
           "IsActive",
-          "ProjectCount",
           "Role"
         ],
         "properties": {
@@ -898,39 +873,16 @@
             "type": "string",
             "example": "Svetlov"
           },
-          "Status": {
-            "$ref": "#/components/schemas/UserStatus"
-          },
-          "Rate": {
-            "type": "number"
-          },
-          "CreatedAtUtc": {
-            "description": "Data and time added user to project.",
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2021-12-10 03:13"
-          },
-          "ModifiedAtUtc": {
-            "description": "Data and time removed user from project.",
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2020-12-10 04:13"
-          },
           "IsActive": {
             "description": "User state.",
             "type": "boolean",
             "example": true
-          },
-          "ProjectCount": {
-            "description": "Count of project, which user included.",
-            "type": "integer"
           },
           "Role": {
             "$ref": "#/components/schemas/ProjectUserRoleType"
           },
           "Position": {
             "$ref": "#/components/schemas/PositionInfo"
-          },
-          "Department": {
-            "$ref": "#/components/schemas/DepartmentInfo"
           },
           "AvatarImage": {
             "$ref": "#/components/schemas/ImageInfo"
@@ -1029,15 +981,18 @@
           "Manager",
           "Employee"
         ],
+        "nullable": false,
         "example": "Manager"
       },
       "CreateProjectRequest": {
         "type": "object",
         "required": [
           "Name",
+          "ShortName",
           "Status",
           "ProjectImages",
-          "Files"
+          "Files",
+          "Users"
         ],
         "properties": {
           "Name": {
@@ -1285,8 +1240,7 @@
         "type": "object",
         "required": [
           "TotalCount",
-          "Errors",
-          "Status"
+          "Errors"
         ],
         "properties": {
           "TotalCount": {
@@ -1305,9 +1259,6 @@
             "items": {
               "type": "string"
             }
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           }
         }
       },
@@ -1350,15 +1301,14 @@
           }
         }
       },
-      "CreateImageRequest": {
+      "CreateImagesRequest": {
         "type": "object",
         "required": [
-          "EntityId",
-          "Images",
-          "ImageType"
+          "ProjectId",
+          "Images"
         ],
         "properties": {
-          "EntityId": {
+          "ProjectId": {
             "type": "string",
             "format": "uuid"
           },
@@ -1373,17 +1323,13 @@
       "RemoveImageRequest": {
         "type": "object",
         "required": [
-          "EntityId",
-          "ImageType",
+          "ProjectId",
           "ImagesIds"
         ],
         "properties": {
           "EntityId": {
             "type": "string",
             "format": "uuid"
-          },
-          "ImageType": {
-            "$ref": "#/components/schemas/ImageType"
           },
           "ImagesIds": {
             "type": "array",
@@ -1397,12 +1343,12 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "object"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -1417,15 +1363,11 @@
         "type": "object",
         "required": [
           "Errors",
-          "Status",
           "TotalCount"
         ],
         "properties": {
           "Body": {
             "$ref": "#/components/schemas/ProjectResponse"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -1463,84 +1405,13 @@
             }
           }
         }
-      },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
       }
     },
     "parameters": {
-      "request": {
-        "name": "request",
-        "in": "query",
-        "description": "Entity id.",
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "required": true
-      },
-      "taskId": {
-        "name": "taskId",
-        "in": "query",
-        "description": "Task global unique identifier.",
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "required": true
-      },
-      "taskPropertyId": {
-        "name": "taskPropertyId",
-        "in": "query",
-        "description": "TaskProperty global unique identifier.",
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "required": true
-      },
       "projectId": {
         "name": "projectId",
         "in": "query",
         "description": "Project global unique identifier.",
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "required": true
-      },
-      "userId": {
-        "name": "userId",
-        "in": "query",
-        "description": "User global unique identifier.",
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "required": true
-      },
-      "fileId": {
-        "name": "fileId",
-        "in": "query",
-        "description": "File global unique identifier.",
-        "schema": {
-          "type": "string",
-          "format": "uuid"
-        },
-        "required": true
-      },
-      "roleId": {
-        "name": "roleId",
-        "in": "query",
-        "description": "Role global unique identifier.",
         "schema": {
           "type": "string",
           "format": "uuid"
