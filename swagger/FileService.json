@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.1.0",
+    "version": "1.1.1.1",
     "title": "FileService",
     "description": "FileService is an API intended to work with files and images."
   },
@@ -152,17 +152,6 @@
           }
         }
       },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
-      },
       "ErrorResponse": {
         "description": "Error information",
         "type": "object",
@@ -182,12 +171,12 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "object"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -200,13 +189,9 @@
       "OperationResultResponseFiles": {
         "type": "object",
         "required": [
-          "Status",
           "Errors"
         ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "Body": {
             "type": "array",
             "items": {
