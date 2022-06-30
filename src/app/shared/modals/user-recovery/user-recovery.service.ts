@@ -66,6 +66,7 @@ export class UserRecoveryService {
 							type: CommunicationType.Email,
 							value: recoverEmail.email,
 							visibleTo: CommunicationVisibleTo.AllUsers,
+							isConfirmed: false,
 						};
 						this.emailForRecovery$.next(invitedCommunication);
 					})

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewCont
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
-import { OperationResultStatusType } from '@api/user-service/models/operation-result-status-type';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { switchMap } from 'rxjs/operators';
 import { EMPTY, iif } from 'rxjs';
@@ -65,9 +64,7 @@ export class CommunicationsComponent implements OnInit {
 			})
 			.afterClosed()
 			.subscribe((result) => {
-				if (result?.status === OperationResultStatusType.FullSuccess) {
-					this._getCommunications();
-				}
+				this._getCommunications();
 			});
 	}
 
@@ -87,7 +84,7 @@ export class CommunicationsComponent implements OnInit {
 			})
 			.afterClosed()
 			.subscribe((result) => {
-				if (result?.response.status === OperationResultStatusType.FullSuccess) {
+				if (result) {
 					contact.value = result.value;
 					this._cdr.markForCheck();
 				}
@@ -116,9 +113,7 @@ export class CommunicationsComponent implements OnInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result?.status === OperationResultStatusType.FullSuccess) {
-					this._getCommunications();
-				}
+				this._getCommunications();
 			});
 	}
 

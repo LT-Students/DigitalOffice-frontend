@@ -7,6 +7,6 @@ import { OperationResultStatusType } from './operation-result-status-type';
  */
 export interface OperationResultResponseGuiInfo {
 	body?: null | { id?: string; portalName?: string; logoContent?: string; logoExtension?: string; siteUrl?: string };
-	errors?: Array<string>;
+	errors: Array<string>;
 	status?: OperationResultStatusType;
 }

@@ -56,22 +56,19 @@ export class PositionService {
 		);
 	}
 
-	public deletePosition(positionId: UUID): Observable<OperationResultResponse<{} | null>> {
+	public deletePosition(positionId: UUID): Observable<OperationResultResponse> {
 		return this._editPosition(positionId, [{ op: 'replace', path: PositionPath.IS_ACTIVE, value: false }]).pipe(
 			this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Remove)
 		);
 	}
 
-	public restorePosition(positionId: UUID): Observable<OperationResultResponse<{} | null>> {
+	public restorePosition(positionId: UUID): Observable<OperationResultResponse> {
 		return this._editPosition(positionId, [{ op: 'replace', path: PositionPath.IS_ACTIVE, value: true }]).pipe(
 			this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Restore)
 		);
 	}
 
-	private _editPosition(
-		positionId: UUID,
-		params: EditRequest<PositionPath>
-	): Observable<OperationResultResponse<{} | null>> {
+	private _editPosition(positionId: UUID, params: EditRequest<PositionPath>): Observable<OperationResultResponse> {
 		return this._positionApiService.editPosition({ positionId: positionId, body: params });
 	}
 }
