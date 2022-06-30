@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-import { OperationResultStatusType } from './operation-result-status-type';
 import { UserInfo } from './user-info';
 
 /**
@@ -9,6 +8,5 @@ import { UserInfo } from './user-info';
 export interface FindResultResponseUserInfo {
 	body?: Array<UserInfo>;
 	errors: Array<string>;
-	status: OperationResultStatusType;
 	totalCount: number;
 }

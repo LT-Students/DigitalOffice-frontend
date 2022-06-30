@@ -82,9 +82,7 @@ export class PostComponent {
 				})
 			)
 			.subscribe((result) => {
-				if (result.status === OperationResultStatusType.FullSuccess) {
-					this.closeModal(newsId);
-				}
+				this.closeModal(newsId);
 			});
 	}
 

@@ -36,25 +36,25 @@ interface IGetNewsResponse {
 }
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class NewsService {
 	constructor(private _newsService: NewsApiService, private _responseMessage: ResponseMessageModel) {}
 
-	public createNews(body: CreateNewsRequest): Observable<OperationResultResponse<{}>> {
+	public createNews(body: CreateNewsRequest): Observable<OperationResultResponse> {
 		return this._newsService
 			.createNews({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Create));
 	}
 
-	public disableNews(newsId: string): Observable<OperationResultResponse<{}>> {
+	public disableNews(newsId: string): Observable<OperationResultResponse> {
 		const disableRequest: NewsPatchOperation = { op: 'replace', path: '/IsActive', value: false };
 		return this._newsService
 			.editNews({ newsId, body: [disableRequest] })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Remove));
 	}
 
-	public editNews(newsId: string, body: EditNewsRequest): Observable<OperationResultResponse<{}>> {
+	public editNews(newsId: string, body: EditNewsRequest): Observable<OperationResultResponse> {
 		return this._newsService
 			.editNews({ newsId, body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.News, MessageMethod.Edit));

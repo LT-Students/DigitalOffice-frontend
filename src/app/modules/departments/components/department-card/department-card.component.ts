@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@app/services/user/user.service';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { OperationResultStatusType, UserInfo } from '@api/user-service/models';
+import { UserInfo } from '@api/user-service/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
@@ -88,7 +88,7 @@ export class DepartmentCardComponent {
 			})
 			.afterClosed()
 			.subscribe((result) => {
-				if (result?.status === OperationResultStatusType.FullSuccess) this._getDepartment();
+				this._getDepartment();
 			});
 	}
 

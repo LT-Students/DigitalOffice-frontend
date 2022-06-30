@@ -35,7 +35,6 @@ export { ReconstructPasswordRequest } from './models/reconstruct-password-reques
 export { OperationResultResponse } from './models/operation-result-response';
 export { CommunicationType } from './models/communication-type';
 export { CommunicationVisibleTo } from './models/communication-visible-to';
-export { OperationResultStatusType } from './models/operation-result-status-type';
 export { AddImageRequest } from './models/add-image-request';
 export { CreateCommunicationRequest } from './models/create-communication-request';
 export { EditCommunicationRequest } from './models/edit-communication-request';

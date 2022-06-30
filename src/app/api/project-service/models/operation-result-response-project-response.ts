@@ -16,6 +16,6 @@ export interface OperationResultResponseProjectResponse {
 		files?: Array<FileAccess> | null;
 		images?: Array<ImageInfo> | null;
 	};
-	errors?: Array<string>;
+	errors: Array<string>;
 	status?: OperationResultStatusType;
 }

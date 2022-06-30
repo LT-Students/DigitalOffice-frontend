@@ -6,7 +6,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
-import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Icons } from '@shared/modules/icons/icons';
@@ -65,9 +65,7 @@ export class ManageRolesComponent implements AfterViewInit {
 			.afterClosed()
 			.subscribe({
 				next: (result) => {
-					if (result?.status !== OperationResultStatusType.Failed) {
-						this._refreshCurrentPage$$.next(true);
-					}
+					this._refreshCurrentPage$$.next(true);
 				},
 			});
 	}
@@ -93,9 +91,7 @@ export class ManageRolesComponent implements AfterViewInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result?.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 
@@ -120,9 +116,7 @@ export class ManageRolesComponent implements AfterViewInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result?.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 

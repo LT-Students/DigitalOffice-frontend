@@ -7,6 +7,6 @@ import { OperationResultStatusType } from './operation-result-status-type';
  */
 export interface OperationResultResponse {
 	body?: null | {};
-	errors?: Array<string>;
+	errors: Array<string>;
 	status?: OperationResultStatusType;
 }

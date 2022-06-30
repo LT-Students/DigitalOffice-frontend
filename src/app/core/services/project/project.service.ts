@@ -88,21 +88,21 @@ export class ProjectService {
 		return this._projectService.getProject(params);
 	}
 
-	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
+	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse> {
 		return this._projectService
 			.createProject({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Project, MessageMethod.Create));
 	}
 
-	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse<{}>> {
+	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse> {
 		return this._projectService.editProject(params);
 	}
 
-	public addUsersToProject(body: IAddUsersToProjectRequest): Observable<OperationResultResponse<{}>> {
+	public addUsersToProject(body: IAddUsersToProjectRequest): Observable<OperationResultResponse> {
 		return this._userService.createProjectUsers({ body });
 	}
 
-	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<OperationResultResponse<{}>> {
+	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<OperationResultResponse> {
 		return this._userService.removeProjectUsers(params);
 	}
 }

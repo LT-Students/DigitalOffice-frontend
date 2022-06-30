@@ -4,7 +4,7 @@ import { OperationResultStatusType } from './operation-result-status-type';
 import { ServiceConfigurationInfo } from './service-configuration-info';
 export interface FindResultResponseServiceConfigurationInfo {
 	body?: null | Array<ServiceConfigurationInfo>;
-	errors?: Array<string>;
+	errors: Array<string>;
 	status?: OperationResultStatusType;
 	totalCount?: number;
 }

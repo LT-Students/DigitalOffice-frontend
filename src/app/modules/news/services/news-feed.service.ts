@@ -102,10 +102,8 @@ export class NewsFeedService implements Resolve<ArticlePreview[]> {
 	public deleteNews(newsId: string): Observable<OperationResultResponse<{}>> {
 		return this._newsService.disableNews(newsId).pipe(
 			tap((result) => {
-				if (result.status === 'FullSuccess') {
-					const splicedNews = this._newsFeed.value.filter((articlePreview) => articlePreview.id !== newsId);
-					this._newsFeed.next(splicedNews);
-				}
+				const splicedNews = this._newsFeed.value.filter((articlePreview) => articlePreview.id !== newsId);
+				this._newsFeed.next(splicedNews);
 			})
 		);
 	}

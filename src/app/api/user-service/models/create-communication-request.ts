@@ -8,7 +8,7 @@ export interface CreateCommunicationRequest {
 	/**
 	 * Unique user identifier. Is null if create with user creating
 	 */
-	userId?: null | string;
+	userId?: string;
 
 	/**
 	 * Communication value
