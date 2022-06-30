@@ -22,7 +22,7 @@ export class OfficeService {
 		private _responseMessage: ResponseMessageModel
 	) {}
 
-	public createOffice(body: CreateOfficeRequest): Observable<OperationResultResponse<any>> {
+	public createOffice(body: CreateOfficeRequest): Observable<OperationResultResponse> {
 		return this.officeService
 			.createOffice({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Create));
@@ -32,23 +32,23 @@ export class OfficeService {
 		return this.officeService.findOffices(params);
 	}
 
-	public editOffice(officeId: UUID, editParams: EditRequest<OfficePath>): Observable<OperationResultResponse<any>> {
+	public editOffice(officeId: UUID, editParams: EditRequest<OfficePath>): Observable<OperationResultResponse> {
 		return this.officeService.editOffice({ officeId: officeId, body: editParams });
 	}
 
-	public deleteOffice(officeId: UUID): Observable<OperationResultResponse<any>> {
+	public deleteOffice(officeId: UUID): Observable<OperationResultResponse> {
 		return this.editOffice(officeId, [{ op: 'replace', path: OfficePath.IS_ACTIVE, value: false }]).pipe(
 			this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Remove)
 		);
 	}
 
-	public restoreOffice(officeId: UUID): Observable<OperationResultResponse<any>> {
+	public restoreOffice(officeId: UUID): Observable<OperationResultResponse> {
 		return this.editOffice(officeId, [{ op: 'replace', path: OfficePath.IS_ACTIVE, value: true }]).pipe(
 			this._responseMessage.message(MessageTriggeredFrom.Office, MessageMethod.Restore)
 		);
 	}
 
-	public changeUserOffice(params: ChangeUserOfficeRequest): Observable<OperationResultResponse<any>> {
+	public changeUserOffice(params: ChangeUserOfficeRequest): Observable<OperationResultResponse> {
 		return this.userOfficeApiService.changeOffice({ body: params });
 	}
 }

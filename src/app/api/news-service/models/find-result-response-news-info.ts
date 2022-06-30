@@ -4,7 +4,7 @@ import { NewsInfo } from './news-info';
 import { OperationResultStatusType } from './operation-result-status-type';
 export interface FindResultResponseNewsInfo {
 	body?: Array<NewsInfo>;
-	errors?: Array<string>;
+	errors: Array<string>;
 	status?: OperationResultStatusType;
 
 	/**

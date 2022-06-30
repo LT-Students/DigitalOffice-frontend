@@ -9,7 +9,7 @@ export { RoleInfo } from './models/role-info';
 export { UserInfo } from './models/user-info';
 export { RoleLocalizationInfo } from './models/role-localization-info';
 export { OperationResultResponse } from './models/operation-result-response';
-export { OperationResultStatusType } from './models/operation-result-status-type';
+export { RoleResponse } from './models/role-response';
 export { OperationResultResponseRoleResponse } from './models/operation-result-response-role-response';
 export { OperationResultResponseRights } from './models/operation-result-response-rights';
 export { FindResultResponseRoleInfo } from './models/find-result-response-role-info';

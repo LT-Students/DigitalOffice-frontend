@@ -7,7 +7,7 @@ import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { combineLatest, EMPTY, iif, Observable, ReplaySubject, Subject } from 'rxjs';
 import { IFindRequest } from '@app/types/find-request.interface';
 import { map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { DepartmentService } from '@app/services/department/department.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
@@ -90,9 +90,7 @@ export class DepartmentListComponent implements AfterViewInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 
@@ -111,9 +109,7 @@ export class DepartmentListComponent implements AfterViewInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 

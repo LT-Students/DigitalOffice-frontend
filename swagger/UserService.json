@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.4.5.2",
+    "version": "1.4.5.5",
     "title": "UserService",
     "description": "UserService is an API that intended to work with users."
   },
@@ -40,7 +40,7 @@
         },
         "responses": {
           "201": {
-            "description": "Ok.\n* Created user Id (uuid) will be in response Body property.",
+            "description": "Created. User Id (uuid) will be in response Body property.",
             "content": {
               "application/json": {
                 "schema": {
@@ -50,7 +50,7 @@
             }
           },
           "400": {
-            "description": "Bad Request.\n* Something went wrong.",
+            "description": "Bad Request.",
             "content": {
               "application/json": {
                 "schema": {
@@ -1632,15 +1632,12 @@
         "description": "Response object for action operations.",
         "type": "object",
         "required": [
-          "Status",
           "Errors"
         ],
         "properties": {
           "Body": {
-            "$ref": "#/components/schemas/UserResponse"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
+            "$ref": "#/components/schemas/UserResponse",
+            "nullable": true
           },
           "Errors": {
             "type": "array",
@@ -1664,43 +1661,52 @@
             "$ref": "#/components/schemas/UserAdditionInfo"
           },
           "CompanyUser": {
-            "$ref": "#/components/schemas/CompanyUserInfo"
+            "$ref": "#/components/schemas/CompanyUserInfo",
+            "nullable": true
           },
           "Department": {
-            "$ref": "#/components/schemas/DepartmentUserInfo"
+            "$ref": "#/components/schemas/DepartmentUserInfo",
+            "nullable": true
           },
           "Office": {
-            "$ref": "#/components/schemas/OfficeInfo"
+            "$ref": "#/components/schemas/OfficeInfo",
+            "nullable": true
           },
           "Position": {
-            "$ref": "#/components/schemas/PositionInfo"
+            "$ref": "#/components/schemas/PositionInfo",
+            "nullable": true
           },
           "Role": {
-            "$ref": "#/components/schemas/RoleInfo"
+            "$ref": "#/components/schemas/RoleInfo",
+            "nullable": true
           },
           "Images": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ImageInfo"
-            }
+            },
+            "nullable": true
           },
           "Educations": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/EducationInfo"
-            }
+            },
+            "nullable": true
           },
           "Projects": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ProjectInfo"
-            }
+            },
+            "nullable": true
           },
           "Skills": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "nullable": true
           }
         }
       },
@@ -1710,21 +1716,18 @@
         "required": [
           "Body",
           "TotalCount",
-          "Status",
           "Errors"
         ],
         "properties": {
           "Body": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserInfo"
+              "$ref": "#/components/schemas/UserInfo",
+              "nullable": true
             }
           },
           "TotalCount": {
             "type": "number"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -1733,7 +1736,6 @@
             }
           }
         }
-
       },
       "CreateUserRequest": {
         "type": "object",
@@ -1767,7 +1769,8 @@
             "description": "Date of user birth.",
             "type": "string",
             "format": "date",
-            "example": "2021-01-21T00:00:00.000Z"
+            "example": "2021-01-21T00:00:00.000Z",
+            "nullable": true
           },
           "About": {
             "type": "string"
@@ -2006,12 +2009,13 @@
       "OperationResultResponseCredentialsResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "$ref": "#/components/schemas/CredentialsResponse"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
+            "$ref": "#/components/schemas/CredentialsResponse",
+            "nullable": true
           },
           "Errors": {
             "type": "array",
@@ -2070,30 +2074,37 @@
         "type": "object",
         "properties": {
           "GenderName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "About": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "DateOfBirth": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "BusinessHoursFromUtc": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "BusinessHoursToUtc": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "Latitude": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "Longitude": {
             "type": "number",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           }
         }
       },
@@ -2118,7 +2129,8 @@
             "type": "string"
           },
           "MiddleName": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "IsAdmin": {
             "type": "boolean"
@@ -2127,10 +2139,12 @@
             "type": "boolean"
           },
           "PendingInfo": {
-            "$ref": "#/components/schemas/PendingUserInfo"
+            "$ref": "#/components/schemas/PendingUserInfo",
+            "nullable": true
           },
           "Avatar": {
-            "$ref": "#/components/schemas/ImageInfo"
+            "$ref": "#/components/schemas/ImageInfo",
+            "nullable": true
           },
           "Communications": {
             "type": "array",
@@ -2172,7 +2186,8 @@
           },
           "ParentId": {
             "type": "string",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
           },
           "Content": {
             "type": "string",
@@ -2182,7 +2197,8 @@
             "type": "string"
           },
           "Name": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -2214,13 +2230,15 @@
             "$ref": "#/components/schemas/CompanyInfo"
           },
           "ContractSubject": {
-            "$ref": "#/components/schemas/ContractSubjectData"
+            "$ref": "#/components/schemas/ContractSubjectData",
+            "nullable": true
           },
           "ContractTermType": {
             "$ref": "#/components/schemas/ContractTerm"
           },
           "Rate": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "StartWorkingAt": {
             "type": "string",
@@ -2228,11 +2246,13 @@
           },
           "EndWorkingAt": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "Probation": {
             "type": "string",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           }
         }
       },
@@ -2323,7 +2343,8 @@
         "type": "object",
         "required": [
           "Id",
-          "Name"
+          "Name",
+          "RightsIds"
         ],
         "properties": {
           "Id": {
@@ -2354,7 +2375,8 @@
             "format": "uuid"
           },
           "Name": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "City": {
             "type": "string"
@@ -2363,10 +2385,12 @@
             "type": "string"
           },
           "Longitude": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           },
           "Latitude": {
-            "type": "number"
+            "type": "number",
+            "nullable": true
           }
         }
       },
@@ -2376,7 +2400,8 @@
           "Id",
           "Type",
           "Value",
-          "VisibleTo"
+          "VisibleTo",
+          "IsConfirmed"
         ],
         "properties": {
           "Id": {
@@ -2385,6 +2410,9 @@
           },
           "Type": {
             "$ref": "#/components/schemas/CommunicationType"
+          },
+          "IsConfirmed": {
+            "type": "boolean"
           },
           "Value": {
             "type": "string"
@@ -2399,7 +2427,8 @@
         "required": [
           "Id",
           "Name",
-          "Status"
+          "Status",
+          "ShortName"
         ],
         "properties": {
           "Id": {
@@ -2416,26 +2445,23 @@
             "type": "string"
           },
           "ShortDescription": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "User": {
-            "$ref": "#/components/schemas/ProjectUserInfo"
+            "$ref": "#/components/schemas/ProjectUserInfo",
+            "nullable": true
           }
         }
       },
       "ProjectUserInfo": {
         "type": "object",
         "required": [
-          "IsActive",
-          "CreatedAtUtc"
+          "IsActive"
         ],
         "properties": {
           "IsActive": {
             "type": "boolean"
-          },
-          "CreatedAtUtc": {
-            "type": "string",
-            "format": "date"
           }
         }
       },
@@ -2474,16 +2500,20 @@
             "type": "string"
           },
           "EducationForm": {
-            "$ref": "#/components/schemas/EducationFormInfo"
+            "$ref": "#/components/schemas/EducationFormInfo",
+            "nullable": true
           },
           "EducationType": {
-            "$ref": "#/components/schemas/EducationTypeInfo"
+            "$ref": "#/components/schemas/EducationTypeInfo",
+            "nullable": true
           },
           "Completeness": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "AdmissionAt": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "IssueAt": {
             "type": "string",
@@ -2494,7 +2524,8 @@
             "items": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "nullable": true
           }
         }
       },
@@ -2585,15 +2616,12 @@
         "description": "Response object for action operations.",
         "type": "object",
         "required": [
-          "Status",
           "Errors"
         ],
         "properties": {
           "Body": {
-            "type": "object"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
+            "type": "object",
+            "nullable": true
           },
           "Errors": {
             "type": "array",
@@ -2624,17 +2652,6 @@
           "Admin"
         ],
         "default": "AllUsers"
-      },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
       },
       "BadRequest": {
         "type": "object",
@@ -2881,21 +2898,18 @@
         "required": [
           "Body",
           "TotalCount",
-          "Status",
           "Errors"
         ],
         "properties": {
           "Body": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/GenderInfo"
+              "$ref": "#/components/schemas/GenderInfo",
+              "nullable": true
             }
           },
           "TotalCount": {
             "type": "number"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -2910,7 +2924,6 @@
         "type": "object",
         "required": [
           "Body",
-          "Status",
           "Errors"
         ],
         "properties": {
@@ -2918,10 +2931,8 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ImageInfo"
-            }
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
+            },
+            "nullable": true
           },
           "Errors": {
             "type": "array",

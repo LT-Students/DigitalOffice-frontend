@@ -4,7 +4,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { OfficeInfo } from '@api/office-service/models';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
-import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OfficeService } from '@app/services/company/office.service';
@@ -64,9 +64,7 @@ export class OfficeListComponent implements AfterViewInit {
 			.afterClosed()
 			.subscribe({
 				next: (result) => {
-					if (result?.status !== OperationResultStatusType.Failed) {
-						this._refreshCurrentPage$$.next(true);
-					}
+					this._refreshCurrentPage$$.next(true);
 				},
 			});
 	}
@@ -85,9 +83,7 @@ export class OfficeListComponent implements AfterViewInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result?.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 
@@ -105,9 +101,7 @@ export class OfficeListComponent implements AfterViewInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result?.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 

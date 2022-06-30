@@ -22,6 +22,6 @@ export interface OperationResultResponseNewsResponse {
 		publishedAtUtc?: string | null;
 		createdAtUtc: string;
 	};
-	errors?: Array<string>;
+	errors: Array<string>;
 	status?: OperationResultStatusType;
 }

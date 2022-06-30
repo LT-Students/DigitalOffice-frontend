@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
 import { OperationResultResponse } from '@api/user-service/models/operation-result-response';
-import { OperationResultStatusType } from '@api/user-service/models/operation-result-status-type';
 import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
@@ -85,13 +84,7 @@ export class DashboardComponent implements OnInit {
 				})
 			)
 			.subscribe((result: boolean | any | OperationResultResponse) => {
-				if (
-					result &&
-					result.status &&
-					!(result.errors && result.errors.length) &&
-					(result.status === OperationResultStatusType.FullSuccess ||
-						result.status === OperationResultStatusType.PartialSuccess)
-				) {
+				if (result && result.status && !(result.errors && result.errors.length)) {
 					// this._matSnackBar.open('Новый пользователь успешно добавлен!', 'Закрыть', { duration: 7000 });
 				}
 			});
