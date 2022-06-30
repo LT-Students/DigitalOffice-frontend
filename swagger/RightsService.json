@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.8.0",
+    "version": "1.3.9.0",
     "title": "RightsService",
     "description": "RightsService, is intended to work with the user rights - create them, assign them to people, remove."
   },
@@ -544,6 +544,12 @@
     "schemas": {
       "RightInfo": {
         "type": "object",
+        "required": [
+          "RightId",
+          "Locale",
+          "Name",
+          "description"
+        ],
         "properties": {
           "RightId": {
             "type": "integer"
@@ -712,6 +718,13 @@
       },
       "RoleInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "IsActive",
+          "CreatedBy",
+          "Rights",
+          "Localizations"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -720,19 +733,9 @@
           "IsActive": {
             "type": "boolean"
           },
-          "CreatedAtUtc": {
-            "type": "string"
-          },
           "CreatedBy": {
             "type": "string",
             "format": "uuid"
-          },
-          "ModifiedAtUtc": {
-            "type": "string",
-            "nullable": true
-          },
-          "ModifiedBy": {
-            "$ref": "#/components/schemas/UserInfo"
           },
           "Rights": {
             "type": "array",
@@ -750,6 +753,11 @@
       },
       "UserInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "FirstName",
+          "LastName"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -768,6 +776,13 @@
       },
       "RoleLocalizationInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "RoleId",
+          "locale",
+          "Name",
+          "IsActive"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -810,12 +825,12 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "object"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -825,36 +840,31 @@
           }
         }
       },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
+      "RoleResponse": {
+        "type": "object",
+        "required": [
+          "Role"
         ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
+        "properties": {
+          "Role": {
+            "$ref": "#/components/schemas/RoleInfo"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserInfo"
+            }
+          }
+        }
       },
       "OperationResultResponseRoleResponse": {
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "Body": {
-            "type": "object",
-            "properties": {
-              "role": {
-                "$ref": "#/components/schemas/RoleInfo"
-              },
-              "users": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UserInfo"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/RoleResponse"
           },
           "Errors": {
             "type": "array",
@@ -866,10 +876,10 @@
       },
       "OperationResultResponseRights": {
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "Body": {
             "type": "array",
             "items": {
@@ -886,10 +896,11 @@
       },
       "FindResultResponseRoleInfo": {
         "type": "object",
+        "required": [
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "TotalCount": {
             "type": "integer",
             "description": "Total number of all roles."
