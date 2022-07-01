@@ -48,7 +48,15 @@ export class AddWorktimeHoursComponent implements OnInit, OnDestroy {
 				return iif(
 					() => this.isAnotherExist,
 					of(projects),
-					of([{ id: 'another', project: { name: undefined } } as WorkTimeInfo, ...projects])
+					of([
+						{
+							id: 'another',
+							// project: { name: undefined },
+							year: this.selectedDate.year,
+							month: this.selectedDate.month,
+						} as WorkTimeInfo,
+						...projects,
+					])
 				);
 			})
 		);
