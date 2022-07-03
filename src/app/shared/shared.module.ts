@@ -55,6 +55,7 @@ import { PermissionDirective } from './directives/permission.directive';
 import { ButtonDirective } from './directives/button.directive';
 import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-item.component';
 import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
+import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 
 @NgModule({
 	declarations: [
@@ -103,6 +104,7 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		ButtonDirective,
 		SidebarItemComponent,
 		SidebarHeaderComponent,
+		ControlErrorsPipe,
 	],
 	imports: [
 		CommonModule,
@@ -166,6 +168,7 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 		AutofocusDirective,
 		PermissionDirective,
 		ButtonDirective,
+		ControlErrorsPipe,
 	],
 })
 export class SharedModule {}
