@@ -3,28 +3,23 @@
 		margin-bottom: 11px;
 	}
 
-	&__error {
-		margin: 10px 0;
-	}
-
-	&__period {
-		margin-left: 16px;
-	}
-
 	&__hours {
 		margin-right: 5px;
 		padding: 0;
 
 		width: 150px;
 	}
+}
 
-	&__description {
-		width: 100%;
-	}
+.project-name {
+	overflow: hidden;
 
-	&__description-field {
-		height: 142px;
-	}
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.date {
+	margin: 0;
 }
 
 .content {
@@ -35,6 +30,7 @@
 
 .controls {
 	margin-top: 20px;
+
 	display: flex;
 	justify-content: space-around;
 

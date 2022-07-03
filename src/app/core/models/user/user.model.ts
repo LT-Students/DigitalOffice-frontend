@@ -8,9 +8,11 @@ import { PersonalInfo } from '@app/models/user/personal-info';
 import { AdditionalInfo } from '@app/models/user/additional-info';
 import { ImageInfo } from '@app/models/image.model';
 import { DepartmentInfo } from '@app/models/user/department-user-info';
+import { CompanyUserInfo } from '@api/user-service/models/company-user-info';
 
 export class User extends PersonalInfo {
 	public additionalInfo: AdditionalInfo;
+	public company?: CompanyUserInfo;
 	public department?: DepartmentInfo;
 	public office?: OfficeInfo;
 	public position?: PositionInfo;
@@ -23,6 +25,7 @@ export class User extends PersonalInfo {
 	constructor(data: UserResponse) {
 		super(data.user);
 		this.additionalInfo = new AdditionalInfo(data.userAddition);
+		this.company = data.companyUser;
 		this.department = data.department && new DepartmentInfo(data.department);
 		this.office = data.office;
 		this.position = data.position;

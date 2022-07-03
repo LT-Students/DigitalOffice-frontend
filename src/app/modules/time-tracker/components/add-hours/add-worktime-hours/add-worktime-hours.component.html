@@ -3,22 +3,9 @@
 		<do-form-row label="Количество часов">
 			<mat-form-field class="add-hours__time">
 				<input matInput formControlName="time" type="text" placeholder="0" />
-				<mat-error *ngIf="addHoursForm.controls['time']?.errors?.min; else errIntNum">
-					Мин. значение: 0
+				<mat-error>
+					{{ addHoursForm.controls['time'].errors | controlErrors }}
 				</mat-error>
-				<ng-template #errIntNum>
-					<mat-error *ngIf="addHoursForm.controls['time']?.errors?.intNum; else errMax">
-						Значение может быть только целым числом
-					</mat-error>
-				</ng-template>
-				<ng-template #errMax>
-					<mat-error *ngIf="addHoursForm.controls['time']?.errors?.max; else errRequired">
-						Макс. значение: 744
-					</mat-error>
-				</ng-template>
-				<ng-template #errRequired>
-					<mat-error *ngIf="addHoursForm.controls['time']?.errors?.required"> Поле обязательно! </mat-error>
-				</ng-template>
 			</mat-form-field>
 		</do-form-row>
 

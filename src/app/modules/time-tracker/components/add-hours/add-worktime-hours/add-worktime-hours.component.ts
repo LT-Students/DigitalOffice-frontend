@@ -1,15 +1,15 @@
-import { Component, ChangeDetectionStrategy, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, iif, Observable, of, Subject } from 'rxjs';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { finalize, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { MatOptionSelectionChange } from '@angular/material/core';
-import { OperationResultResponse } from '@api/time-service/models/operation-result-response';
-import { IEditWorkTimeRequest } from '@app/services/time/time.service';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { CreateWorkTimeRequest } from '@api/time-service/models/create-work-time-request';
 import { DoValidators } from '@app/validators/do-validators';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { EditRequest, WorkTimePath } from '@app/types/edit-request';
 import { AttendanceService } from '../../../services/attendance.service';
 
 @Component({
@@ -42,7 +42,7 @@ export class AddWorktimeHoursComponent implements OnInit, OnDestroy {
 		this.monthNorm = 160;
 
 		this.workTimes$ = this._attendanceService.activities$.pipe(
-			map((activities) => activities.projects ?? []),
+			map((activities) => activities.workTimes),
 			tap((projects) => this._checkIfAnotherExist(projects)),
 			switchMap((projects) => {
 				return iif(
@@ -131,7 +131,6 @@ export class AddWorktimeHoursComponent implements OnInit, OnDestroy {
 
 		action
 			.pipe(
-				switchMap(() => this._attendanceService.getActivities()),
 				finalize(() => {
 					this.loading$$.next(false);
 				})
@@ -168,15 +167,13 @@ export class AddWorktimeHoursComponent implements OnInit, OnDestroy {
 	}
 
 	private _editWorkTime(): Observable<OperationResultResponse> {
-		const workTimeRequest: IEditWorkTimeRequest = {
-			workTimeId: this.addHoursForm.get('activity')?.value,
-			body: [
-				{ op: 'replace', path: '/Hours', value: this.addHoursForm.get('time')?.value },
-				{ op: 'replace', path: '/Description', value: this.addHoursForm.get('comment')?.value },
-			],
-		};
+		const workTimeId = this.addHoursForm.get('activity')?.value;
+		const editRequest = [
+			{ op: 'replace', path: WorkTimePath.Hours, value: this.addHoursForm.get('time')?.value },
+			{ op: 'replace', path: WorkTimePath.Description, value: this.addHoursForm.get('comment')?.value },
+		] as EditRequest<WorkTimePath>;
 
-		return this._attendanceService.editWorkTime(workTimeRequest);
+		return this._attendanceService.editWorkTime(workTimeId, editRequest);
 	}
 
 	private _setMonthOptions(selectedDate: DateTime): DateTime[] {

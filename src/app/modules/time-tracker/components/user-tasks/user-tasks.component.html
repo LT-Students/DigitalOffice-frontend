@@ -1,19 +1,16 @@
 <mat-card class="card_grid activities">
 	<do-title-datepicker
-		text="Записи за"
+		title="Записи за"
 		[selectDate]="selectedDate$ | async"
 		(dateSelection)="chosenMonthHandler($event)"
 	></do-title-datepicker>
 
 	<ng-container *ngIf="activities$ | async as activities">
-		<div *ngIf="activities.projects?.length; else emptyList" class="tasks">
-			<do-projects [projects]="activities.projects"></do-projects>
+		<div class="tasks">
+			<do-projects [workTimes]="activities.workTimes" [canEdit]="canEdit$ | async"></do-projects>
 		</div>
-		<div *ngIf="activities.leaves?.length; else emptyList" class="tasks">
+		<div class="tasks">
 			<do-leaves [leaves]="activities.leaves"></do-leaves>
 		</div>
-		<ng-template #emptyList>
-			<p class="mat-body-1">Нет данных о внесенных часах</p>
-		</ng-template>
 	</ng-container>
 </mat-card>

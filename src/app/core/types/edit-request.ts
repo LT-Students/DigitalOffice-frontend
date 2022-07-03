@@ -13,6 +13,7 @@ export type PatchPath =
 	| UserPath
 	| OfficePath
 	| LeaveTimePath
+	| WorkTimePath
 	| ProjectPath
 	| DepartmentPath
 	| PositionPath
@@ -33,6 +34,11 @@ export enum LeaveTimePath {
 	LEAVE_TYPE = '/LeaveType',
 	COMMENT = '/Comment',
 	IS_ACTIVE = '/IsActive',
+}
+
+export enum WorkTimePath {
+	Hours = '/Hours',
+	Description = '/Description',
 }
 
 export enum ProjectPath {

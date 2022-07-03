@@ -12,12 +12,12 @@ import {
 import { Chart, registerables, TooltipItem } from 'chart.js';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
-import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { LeaveType } from '@api/time-service/models';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { isGUIDEmpty } from '@app/utils/utils';
+import { LeaveTime } from '../../../models/leave-time';
 import { Activities, AttendanceService } from '../../../services/attendance.service';
+import { WorkTime } from '../../../models/work-time';
 
 Chart.register(...registerables);
 
@@ -51,7 +51,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 
 	public activities: Activities = {
 		leaves: [],
-		projects: [],
+		workTimes: [],
 	};
 	public labels: string[] = [];
 	public monthNorm = 160;
@@ -83,12 +83,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	}
 
 	private countUserHours(): number {
-		const projectHours: number = this.activities.projects.reduce(
-			(acc: number, project: WorkTimeInfo) => acc + (project?.userHours ?? 0),
+		const projectHours: number = this.activities.workTimes.reduce(
+			(acc: number, project: WorkTime) => acc + project.userHours,
 			0
 		);
 		const leavesHours: number = this.activities.leaves.reduce(
-			(acc: number, leave: LeaveTimeModel) => acc + leave.hours,
+			(acc: number, leave: LeaveTime) => acc + leave.hours,
 			0
 		);
 
@@ -96,13 +96,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	}
 
 	private getLabels(): string[] {
-		//TODO remove type assertion when API is ready
-		const projectLabels = [...this.activities.projects]
-			.filter((workTime: WorkTimeInfo) => workTime?.userHours && !isGUIDEmpty(workTime?.project?.id as string))
-			.sort((wt1: WorkTimeInfo, wt2: WorkTimeInfo) => (wt2.userHours as number) - (wt1.userHours as number))
-			.map((project: WorkTimeInfo) => (project?.project?.shortName ?? project.project?.name) as string);
-		const hasOtherWorkTime = this.activities.projects.some(
-			(workTime: WorkTimeInfo) => isGUIDEmpty(workTime.project?.id as string) && workTime?.userHours
+		const projectLabels = this.activities.workTimes
+			.filter((workTime: WorkTime) => workTime.userHours && !isGUIDEmpty(workTime.project.id as string))
+			.sort((wt1: WorkTime, wt2: WorkTime) => wt2.userHours - wt1.userHours)
+			.map((project: WorkTime) => project.project.shortName as string);
+		const hasOtherWorkTime = this.activities.workTimes.some(
+			(workTime: WorkTime) => isGUIDEmpty(workTime.project.id) && workTime.userHours
 		);
 		const labels = projectLabels.slice(0, 6);
 		if (projectLabels.length > 6) {
@@ -124,14 +123,14 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private updateChart(): void {
 		if (!this.chart) return;
 
-		const projectsHours = this.activities.projects
-			.filter((project: WorkTimeInfo) => project?.userHours && !isGUIDEmpty(project.project?.id as string))
-			.map((project: WorkTimeInfo) => project?.userHours as number)
+		const projectsHours = this.activities.workTimes
+			.filter((project: WorkTime) => project.userHours && !isGUIDEmpty(project.project.id))
+			.map((project: WorkTime) => project.userHours)
 			.sort((a: number, b: number) => b - a);
-		const otherHours = this.activities.projects.find((workTime: WorkTimeInfo) =>
-			isGUIDEmpty(workTime.project?.id as string)
+		const otherHours = this.activities.workTimes.find((workTime: WorkTime) =>
+			isGUIDEmpty(workTime.project.id)
 		)?.userHours;
-		const leavesHours = this.activities.leaves.reduce((acc: number, leave: LeaveTimeModel) => acc + leave.hours, 0);
+		const leavesHours = this.activities.leaves.reduce((acc: number, leave: LeaveTime) => acc + leave.hours, 0);
 		const timeLeft = this.monthNorm - this.userHours;
 
 		const chartData = projectsHours.slice(0, 6);
@@ -237,8 +236,8 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 									]
 										.map((leaveType: LeaveType) => {
 											const hours = this.activities.leaves
-												.filter((l: LeaveTimeModel) => l.leaveType === leaveType)
-												.reduce((acc: number, l: LeaveTimeModel) => acc + l.hours, 0);
+												.filter((l: LeaveTime) => l.leaveType === leaveType)
+												.reduce((acc: number, l: LeaveTime) => acc + l.hours, 0);
 											return hours
 												? `${
 														LeaveTypeModel.getLeaveInfoByLeaveType(leaveType)

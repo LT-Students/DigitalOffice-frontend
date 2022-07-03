@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TimeService } from '@app/services/time/time.service';
 import { DateFilterFn } from '@angular/material/datepicker';
-import { LeaveTimeModel } from '@app/models/time/leave-time.model';
 import { DatePeriod } from '@app/types/date-period';
 import { LeaveTimePath, InitialDataEditRequest } from '@app/types/edit-request';
 import { DateTime, Interval } from 'luxon';
@@ -12,6 +11,7 @@ import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { createEditRequest } from '@app/utils/utils';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { LeaveTime } from '../../models/leave-time';
 import { AttendanceService } from '../../services/attendance.service';
 import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
 
@@ -33,7 +33,7 @@ export class EditLeaveComponent {
 	public loading$$: BehaviorSubject<boolean>;
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public leave: LeaveTimeModel,
+		@Inject(MAT_DIALOG_DATA) public leave: LeaveTime,
 		private _fb: FormBuilder,
 		private _dialogRef: MatDialogRef<EditLeaveComponent, IDialogResponse>,
 		private _timeService: TimeService,
@@ -95,7 +95,7 @@ export class EditLeaveComponent {
 			endDate: endDateValue,
 		};
 
-		this.periodInHours = this._attendanceService.getLeaveDuration(datePeriod);
+		// this.periodInHours = this._attendanceService.getLeaveDuration(datePeriod);
 		this.editForm.get('/Minutes')?.setValue(this.periodInHours * 60);
 	}
 
@@ -124,7 +124,7 @@ export class EditLeaveComponent {
 						},
 					});
 				},
-				() => this._attendanceService.getActivities().subscribe()
+				() => this._attendanceService.getMonthActivities().subscribe()
 			);
 	}
 }

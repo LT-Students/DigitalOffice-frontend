@@ -1,19 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { OperationResultStatusType } from '@api/time-service/models/operation-result-status-type';
-import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
-import { EditProjectComponent } from '../../modals/edit-project/edit-project.component';
-import { IDialogResponse } from '../user-tasks/user-tasks.component';
-
-export interface IModalContentConfig {
-	id?: string;
-	name?: string;
-	userHours?: number;
-	managerHours?: number;
-	description?: string;
-	month?: number;
-	year?: number;
-}
+import { Icons } from '@shared/modules/icons/icons';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { EditProjectComponent } from '../../dialogs/edit-project/edit-project.component';
+import { WorkTime } from '../../models/work-time';
 
 @Component({
 	selector: 'do-projects',
@@ -22,42 +12,24 @@ export interface IModalContentConfig {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent {
-	@Input() public projects: Array<WorkTimeInfo>;
-	@Input() public canEdit: boolean;
-	public selectedDate: Date;
+	public readonly Icons = Icons;
 
-	constructor(private _modalService: DialogService, private _cdr: ChangeDetectorRef) {
-		this.selectedDate = new Date();
-		this.projects = [];
-		this.canEdit = true;
+	@Input() workTimes: WorkTime[] = [];
+	@Input()
+	set canEdit(canEdit: any) {
+		this._canEdit = coerceBooleanProperty(canEdit);
 	}
+	get canEdit(): boolean {
+		return this._canEdit;
+	}
+	private _canEdit = false;
 
-	public openEditModal(project: WorkTimeInfo | undefined) {
-		let modalContentConfig: IModalContentConfig = {
-			id: project?.id,
-			name: project?.project?.name,
-			userHours: project?.userHours ?? 0,
-			managerHours: project?.managerHours ?? 0,
-			description: project?.description,
-			month: project?.month,
-			year: project?.year,
-		};
+	constructor(private dialogService: DialogService) {}
 
-		this._modalService
-			.openModal<EditProjectComponent, IModalContentConfig, IDialogResponse>(
-				EditProjectComponent,
-				ModalWidth.M,
-				modalContentConfig
-			)
-			.afterClosed()
-			.subscribe((res) => {
-				if (project && res?.status === OperationResultStatusType.FullSuccess) {
-					project.description = res.data.description;
-					project.managerHours = res.data.managerHours;
-					project.userHours = res.data.userHours;
-
-					this._cdr.detectChanges();
-				}
-			});
+	public openEditModal(workTime: WorkTime): void {
+		this.dialogService.open(EditProjectComponent, {
+			width: ModalWidth.M,
+			data: workTime,
+		});
 	}
 }

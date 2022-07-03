@@ -1,7 +1,7 @@
 import { LeaveType } from '@api/time-service/models/leave-type';
 import { LeaveTimeInfo } from '@api/time-service/models/leave-time-info';
 
-interface ILeaveTimeInfo {
+interface ILeaveTime {
 	comment?: string;
 	createdAt: string;
 	createdBy: string;
@@ -13,7 +13,7 @@ interface ILeaveTimeInfo {
 	startTime: string;
 }
 
-export class LeaveTimeModel implements ILeaveTimeInfo {
+export class LeaveTime implements ILeaveTime {
 	public id: string;
 	public createdAt: string;
 	public createdBy: string;
