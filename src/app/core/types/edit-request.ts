@@ -3,10 +3,10 @@ export type InitialDataEditRequest<T extends PatchPath> = FormDataEditRequest<T>
 
 export type EditRequest<T extends PatchPath> = PatchDocument<T>[];
 
-export interface PatchDocument<T extends PatchPath> {
-	op: 'replace';
-	path: T;
-	value: any;
+type PatchOperation = 'replace';
+export class PatchDocument<T extends PatchPath> {
+	public op: PatchOperation = 'replace';
+	constructor(public value: any, public path: T) {}
 }
 
 export type PatchPath =

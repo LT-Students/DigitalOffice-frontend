@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { finalize } from 'rxjs/operators';
 import { DoValidators } from '@app/validators/do-validators';
 import { BehaviorSubject } from 'rxjs';
 import { DateTime } from 'luxon';
@@ -57,16 +56,16 @@ export class EditProjectComponent {
 		}
 
 		this.loading.next(true);
-		this.attendanceService
-			.editWorkTime(this.workTime.id, editRequest)
-			.pipe(
-				finalize(() => {
-					this.loading.next(false);
-				})
-			)
-			.subscribe(() => {
-				this.close();
-			});
+		// this.attendanceService
+		// 	.editWorkTime(this.workTime.id, editRequest)
+		// 	.pipe(
+		// 		finalize(() => {
+		// 			this.loading.next(false);
+		// 		})
+		// 	)
+		// 	.subscribe(() => {
+		// 		this.close();
+		// 	});
 	}
 
 	public close(): void {

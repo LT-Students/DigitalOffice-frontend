@@ -79,7 +79,7 @@ export class AddLeaveHoursComponent extends LoadingState implements OnInit {
 
 	private resetForm(): void {
 		this.addLeaveForm.reset();
-		this.addLeaveForm.markAsPristine();
+		this.selectedIntervalDurationInHours$.next(0);
 	}
 
 	private addLeaveTime(): Observable<OperationResultResponse> {

@@ -1,7 +1,7 @@
-<form [formGroup]="addHoursForm" (ngSubmit)="onSubmit()" autocomplete="off" class="add-hours__form">
-	<div class="add-hours__dates-container">
+<div [formGroup]="addHoursForm" class="form">
+	<div class="dates-container">
 		<do-form-row label="Количество часов">
-			<mat-form-field class="add-hours__time">
+			<mat-form-field>
 				<input matInput formControlName="time" type="text" placeholder="0" />
 				<mat-error>
 					{{ addHoursForm.controls['time'].errors | controlErrors }}
@@ -12,7 +12,7 @@
 		<do-form-row label="Месяц">
 			<mat-form-field>
 				<mat-select [formControl]="dateControl" [compareWith]="compareDate">
-					<mat-option *ngFor="let month of monthOptions" [value]="month">
+					<mat-option *ngFor="let month of monthOptions$ | async" [value]="month">
 						{{ month | dateTime: 'LLLL y' | titlecase }}
 					</mat-option>
 				</mat-select>
@@ -22,13 +22,13 @@
 
 	<do-form-row label="Проект">
 		<mat-form-field>
-			<mat-select formControlName="activity" placeholder="Выберите проект">
-				<mat-option
-					*ngFor="let workTime of workTimes$ | async"
-					[value]="workTime?.id"
-					(onSelectionChange)="patchWorkTimeInfoIntoForm(workTime, $event)"
-				>
-					{{ workTime?.project?.name ?? 'Другое' }}
+			<mat-select
+				formControlName="project"
+				placeholder="Выберите проект"
+				(selectionChange)="patchWorkTimeInfoIntoForm()"
+			>
+				<mat-option *ngFor="let project of projectOptions$ | async" [value]="project">
+					{{ project.name }}
 				</mat-option>
 			</mat-select>
 		</mat-form-field>
@@ -48,13 +48,7 @@
 			<mat-hint>{{ comment.value.length }}/500</mat-hint>
 		</mat-form-field>
 	</do-form-row>
-	<button
-		class="submit-button"
-		mat-flat-button
-		color="primary"
-		[loading]="(loading$$ | async) ?? false"
-		[disabled]="addHoursForm.invalid || addHoursForm.disabled"
-	>
+	<button class="submit-button" mat-flat-button color="primary" [loading]="loading$ | async" (click)="onSubmit()">
 		Сохранить часы
 	</button>
-</form>
+</div>

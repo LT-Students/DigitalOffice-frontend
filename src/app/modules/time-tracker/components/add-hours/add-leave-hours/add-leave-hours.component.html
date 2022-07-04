@@ -1,4 +1,4 @@
-<form [formGroup]="addLeaveForm" autocomplete="off" (ngSubmit)="onSubmit()" class="add-hours__form">
+<div [formGroup]="addLeaveForm" class="add-hours__form">
 	<div class="add-hours__time-wrapper">
 		<do-form-row label="Выберите диапазон отсутствия">
 			<mat-form-field>
@@ -50,7 +50,13 @@
 			<mat-hint>{{ comment.value.length }}/500</mat-hint>
 		</mat-form-field>
 	</do-form-row>
-	<button mat-flat-button class="add-hours__absence-submit" color="primary" [loading]="loading$ | async">
+	<button
+		mat-flat-button
+		class="add-hours__absence-submit"
+		color="primary"
+		[loading]="loading$ | async"
+		(click)="onSubmit()"
+	>
 		Добавить часы
 	</button>
-</form>
+</div>

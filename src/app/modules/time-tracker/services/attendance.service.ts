@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, forkJoin, Observable, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { DateFilterFn, MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { CreateWorkTimeRequest, WorkTimeMonthLimitInfo } from '@api/time-service/models';
@@ -8,8 +8,9 @@ import { DateTime, Interval } from 'luxon';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { TimeDurationService } from '@app/services/time-duration.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { EditRequest, WorkTimePath } from '@app/types/edit-request';
 import { User } from '@app/models/user/user.model';
+import { isGUIDEmpty } from '@app/utils/utils';
+import { EditRequest, PatchDocument, WorkTimePath } from '@app/types/edit-request';
 import { LeaveTime } from '../models/leave-time';
 import { WorkTime } from '../models/work-time';
 import { AddLeaveValue } from '../components/add-hours/add-leave-hours/add-leave-hours.component';
@@ -25,15 +26,22 @@ interface MonthHolidays {
 	holidays: boolean[];
 }
 
+export interface SubmitWorkTimeValue {
+	workTimeId: string;
+	time: number;
+	comment: string | null;
+	initialValue?: WorkTime;
+}
+
 const FULL_WORKDAY_LENGTH_IN_HOURS = 8;
-const LAST_DAY_TO_FILL_HOURS = 5;
+export const LAST_DAY_TO_FILL_HOURS = 5;
 
 @Injectable()
 export class AttendanceService {
-	private readonly workTimes = new ReplaySubject<WorkTime[]>(1);
+	private readonly workTimes = new BehaviorSubject<WorkTime[]>([]);
 	public readonly workTimes$ = this.workTimes.asObservable();
 
-	private readonly leaveTimes = new ReplaySubject<LeaveTime[]>(1);
+	private readonly leaveTimes = new BehaviorSubject<LeaveTime[]>([]);
 	public readonly leaveTimes$ = this.leaveTimes.asObservable();
 
 	private readonly selectedDate = new BehaviorSubject<DateTime>(DateTime.now());
@@ -49,7 +57,9 @@ export class AttendanceService {
 	public readonly canEdit$ = this.canEdit.asObservable();
 
 	public get activities$(): Observable<Activities> {
-		return forkJoin({ workTimes: this.workTimes$, leaves: this.leaveTimes$ });
+		return combineLatest([this.workTimes$, this.leaveTimes$]).pipe(
+			map(([workTimes, leaves]: [WorkTime[], LeaveTime[]]) => ({ workTimes, leaves }))
+		);
 	}
 
 	constructor(
@@ -67,11 +77,45 @@ export class AttendanceService {
 		workTimes: WorkTime[];
 		monthNormAndHolidays: WorkTimeMonthLimitInfo[];
 	}): void {
-		this.workTimes.next(workTimes);
+		this.setWorkTimes(workTimes);
 		this.setLeaveTimeIntervals(reservedLeaveTimeIntervals);
 
 		const { normHours, holidays, month } = monthNormAndHolidays[0];
 		this.setMonthNormAndHolidays(normHours, holidays, month);
+	}
+
+	public submitWorkTime(value: SubmitWorkTimeValue): Observable<any> {
+		const { workTimeId, time, comment } = value;
+		if (isGUIDEmpty(workTimeId)) {
+			return this.selectedDate$.pipe(
+				first(),
+				switchMap(({ month, year, offset }: DateTime) => {
+					const createRequest: CreateWorkTimeRequest = {
+						month,
+						year,
+						offset: offset / 60,
+						hours: time,
+						description: comment || undefined,
+					};
+					return this.timeService.createWorkTime(createRequest);
+				})
+			);
+		} else {
+			const editRequest = this.getWorkTimeEditRequest(value);
+			return editRequest.length ? this.timeService.editWorkTime(workTimeId, editRequest) : of(true);
+		}
+	}
+
+	private getWorkTimeEditRequest(value: SubmitWorkTimeValue): EditRequest<WorkTimePath> {
+		const initialValue = value.initialValue as WorkTime;
+		const editRequest: EditRequest<WorkTimePath> = [];
+		if (value.time !== initialValue.userHours) {
+			editRequest.push(new PatchDocument(value.time, WorkTimePath.Hours));
+		}
+		if (value.comment !== initialValue.description) {
+			editRequest.push(new PatchDocument(value.comment, WorkTimePath.Description));
+		}
+		return editRequest;
 	}
 
 	public getMonthActivities(): Observable<Activities> {
@@ -92,14 +136,6 @@ export class AttendanceService {
 		);
 	}
 
-	public editWorkTime(id: string, editRequest: EditRequest<WorkTimePath>): Observable<OperationResultResponse> {
-		return this.timeService.editWorkTime(id, editRequest);
-	}
-
-	public createWorkTime(body: CreateWorkTimeRequest): Observable<OperationResultResponse> {
-		return this.timeService.createWorkTime(body);
-	}
-
 	public addLeaveTime(value: AddLeaveValue): Observable<OperationResultResponse> {
 		return this.timeService.createLeaveTime(value);
 	}
@@ -116,6 +152,10 @@ export class AttendanceService {
 		);
 	}
 
+	private setWorkTimes(workTimes: WorkTime[]): void {
+		this.workTimes.next(workTimes);
+	}
+
 	private setMonthNormAndHolidays(monthNorm: number, holidays: string, month = 1): void {
 		this.holidays = { month, holidays: holidays.split('').map(Number).map(Boolean) };
 		this.getUserRate().subscribe({
@@ -125,7 +165,7 @@ export class AttendanceService {
 		});
 	}
 
-	public setLeaveTimeIntervals(leaves: LeaveTime[]): void {
+	private setLeaveTimeIntervals(leaves: LeaveTime[]): void {
 		this.reservedLeaveIntervals = leaves.map((leave: LeaveTime) => {
 			return Interval.fromDateTimes(
 				DateTime.fromISO(leave.startTime),
