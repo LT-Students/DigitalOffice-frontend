@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@angular/core';
 
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { EMPTY } from 'rxjs';
@@ -22,10 +22,18 @@ export class LeavesComponent {
 
 	public canEdit$ = this.attendanceService.canEdit$;
 
-	constructor(private dialogService: DialogService, private attendanceService: AttendanceService) {}
+	constructor(
+		private dialogService: DialogService,
+		private attendanceService: AttendanceService,
+		private viewContainerRef: ViewContainerRef
+	) {}
 
 	public openEditDialog(leave: LeaveTime): void {
-		this.dialogService.open(EditLeaveComponent, { width: ModalWidth.M, data: leave });
+		this.dialogService.open(EditLeaveComponent, {
+			width: ModalWidth.M,
+			data: leave,
+			viewContainerRef: this.viewContainerRef,
+		});
 	}
 
 	public openDeleteDialog(leave: LeaveTime): void {

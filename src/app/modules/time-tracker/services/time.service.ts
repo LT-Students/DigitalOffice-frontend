@@ -20,7 +20,7 @@ import { CreateLeaveTimeRequest } from '@api/time-service/models/create-leave-ti
 import { WorkTimeMonthLimitInfo } from '@api/time-service/models/work-time-month-limit-info';
 import { WorkTime } from '../models/work-time';
 import { LeaveTime } from '../models/leave-time';
-import { AddLeaveValue } from '../components/add-hours/add-leave-hours/add-leave-hours.component';
+import { SubmitLeaveTimeValue } from './attendance.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -34,7 +34,7 @@ export class TimeService {
 	) {}
 
 	public getWorkTimes(date: DateTime): Observable<WorkTime[]> {
-		return this.getUserId().pipe(
+		return this.getUserId$().pipe(
 			switchMap((userId: string) => {
 				const params: IFindWorkTimesRequest = {
 					userid: userId,
@@ -51,7 +51,7 @@ export class TimeService {
 	}
 
 	public getLeaveTimes(date: DateTime): Observable<LeaveTime[]> {
-		return this.getUserId().pipe(
+		return this.getUserId$().pipe(
 			switchMap((userId: string) => {
 				const params: IFindLeaveTimesRequest = {
 					userid: userId,
@@ -90,14 +90,14 @@ export class TimeService {
 		return this.workTimeService.createWorkTime({ body });
 	}
 
-	public createLeaveTime(value: AddLeaveValue): Observable<any> {
-		return this.getUserId().pipe(
+	public createLeaveTime(value: SubmitLeaveTimeValue): Observable<any> {
+		return this.getUserId$().pipe(
 			switchMap((userId: string) => {
 				const body: CreateLeaveTimeRequest = {
 					userId,
 					leaveType: value.leaveType,
-					startTime: value.startDate.toSQL(),
-					endTime: value.endDate.toSQL(),
+					startTime: value.startTime.toSQL(),
+					endTime: value.endTime.toSQL(),
 					minutes: value.minutes,
 					comment: value.comment || undefined,
 				};
@@ -121,7 +121,7 @@ export class TimeService {
 		return this.editLeaveTime(id, editRequest);
 	}
 
-	private getUserId(): Observable<string> {
+	private getUserId$(): Observable<string> {
 		return this.currentUser.user$.pipe(
 			first(),
 			map((user: User) => user.id)

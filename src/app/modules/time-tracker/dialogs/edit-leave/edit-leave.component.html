@@ -1,35 +1,37 @@
 <div class="modal">
 	<h3>
 		Редактирование часов
-		<span class="mat-h3 primary">за {{ leave.leaveType | leaveLabel: false | lowercase }}</span>
+		<span class="mat-h3 primary">за {{ leaveTime.leaveType | leaveLabel: false | lowercase }}</span>
 	</h3>
-	<form class="content" [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
+	<form class="content" [formGroup]="form">
 		<div class="flex flex-ai-end">
-			<do-form-row class="modal__range-picker" label="Выберите диапазон отсутствия">
+			<do-form-row label="Выберите диапазон отсутствия">
 				<mat-form-field>
-					<mat-date-range-input [rangePicker]="$any(picker)" [dateFilter]="disableWeekends">
-						<input
-							matStartDate
-							placeholder="Начало"
-							[formControlName]="LeaveTimePath.START_TIME"
-							readonly
-						/>
-						<input matEndDate placeholder="Конец" [formControlName]="LeaveTimePath.END_TIME" readonly />
+					<mat-date-range-input
+						(click)="picker.open()"
+						[min]="minDate"
+						[dateFilter]="disableReservedDays"
+						[rangePicker]="$any(picker)"
+					>
+						<input matStartDate placeholder="ДД/ММ/ГГГГ" formControlName="startTime" />
+						<input matEndDate placeholder="ДД/ММ/ГГГГ" formControlName="endTime" />
 					</mat-date-range-input>
 					<mat-datepicker-toggle matSuffix [for]="picker">
 						<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 					</mat-datepicker-toggle>
-					<mat-date-range-picker #picker (closed)="dateSelected()"></mat-date-range-picker>
-					<mat-error *ngIf="editForm.controls['/EndTime'].errors?.required"
-						>Заполните конечную дату
-					</mat-error>
+					<mat-date-range-picker
+						#picker
+						[dateClass]="dateClass"
+						(closed)="handleDateSelection()"
+					></mat-date-range-picker>
+					<mat-error>{{
+						form.controls['startTime'].errors || form.controls['endTime'].errors | controlErrors
+					}}</mat-error>
 				</mat-form-field>
 			</do-form-row>
 			<div class="modal__hours">
-				<p class="mat-body-1">Выбрано</p>
-				<h3 class="modal__selected-hours">
-					{{ periodInHours }}&nbsp;<span class="mat-h3 text-secondary_default">ч</span>
-				</h3>
+				<span class="text-secondary_default">Выбрано</span>
+				<h3>{{ selectedIntervalDurationInHours$ | async }}<span class="text-secondary_default"> ч</span></h3>
 			</div>
 		</div>
 		<do-form-row label="Комментарий">
@@ -48,14 +50,14 @@
 			</mat-form-field>
 		</do-form-row>
 		<div class="controls">
-			<button mat-button class="controls__button" type="button" (click)="onClose()">Отмена</button>
+			<button mat-button class="controls__button" type="button" (click)="close()">Отмена</button>
 			<button
 				mat-flat-button
 				color="primary"
 				class="controls__button"
 				type="submit"
-				[loading]="(loading$$ | async) ?? false"
-				[disabled]="editForm.invalid || !formHasChanged"
+				[loading]="loading$ | async"
+				(click)="handleSubmit()"
 			>
 				Сохранить
 			</button>

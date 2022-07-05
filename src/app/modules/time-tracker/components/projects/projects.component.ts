@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@angular/core';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -24,12 +24,13 @@ export class ProjectsComponent {
 	}
 	private _canEdit = false;
 
-	constructor(private dialogService: DialogService) {}
+	constructor(private dialogService: DialogService, private viewContainerRef: ViewContainerRef) {}
 
 	public openEditModal(workTime: WorkTime): void {
 		this.dialogService.open(EditProjectComponent, {
 			width: ModalWidth.M,
 			data: workTime,
+			viewContainerRef: this.viewContainerRef,
 		});
 	}
 }

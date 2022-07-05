@@ -1,22 +1,26 @@
-<div [formGroup]="addLeaveForm" class="add-hours__form">
+<div [formGroup]="form" class="add-hours__form">
 	<div class="add-hours__time-wrapper">
 		<do-form-row label="Выберите диапазон отсутствия">
 			<mat-form-field>
 				<mat-date-range-input
 					(click)="picker.open()"
 					[min]="minDate"
-					[dateFilter]="disableWeekends"
+					[dateFilter]="disableReservedDays"
 					[rangePicker]="$any(picker)"
 				>
-					<input matStartDate placeholder="ДД/ММ/ГГГГ" formControlName="startDate" />
-					<input matEndDate placeholder="ДД/ММ/ГГГГ" formControlName="endDate" />
+					<input matStartDate placeholder="ДД/ММ/ГГГГ" formControlName="startTime" />
+					<input matEndDate placeholder="ДД/ММ/ГГГГ" formControlName="endTime" />
 				</mat-date-range-input>
 				<mat-datepicker-toggle matSuffix [for]="picker">
 					<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 				</mat-datepicker-toggle>
-				<mat-date-range-picker #picker [dateClass]="dateClass" (closed)="onClose()"></mat-date-range-picker>
+				<mat-date-range-picker
+					#picker
+					[dateClass]="dateClass"
+					(closed)="handleDateSelection()"
+				></mat-date-range-picker>
 				<mat-error>{{
-					addLeaveForm.controls['startDate'].errors || addLeaveForm.controls['endDate'].errors | controlErrors
+					form.controls['startTime'].errors || form.controls['endTime'].errors | controlErrors
 				}}</mat-error>
 			</mat-form-field>
 		</do-form-row>
@@ -32,7 +36,7 @@
 					{{ leave.leaveInRussian }}
 				</mat-option>
 			</mat-select>
-			<mat-error>{{ addLeaveForm.controls['leaveType'].errors | controlErrors }}</mat-error>
+			<mat-error>{{ form.controls['leaveType'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-row>
 	<do-form-row label="Комментарий">
@@ -55,7 +59,7 @@
 		class="add-hours__absence-submit"
 		color="primary"
 		[loading]="loading$ | async"
-		(click)="onSubmit()"
+		(click)="handleSubmit()"
 	>
 		Добавить часы
 	</button>

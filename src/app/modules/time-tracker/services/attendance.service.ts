@@ -2,18 +2,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { DateFilterFn, MatCalendarCellClassFunction } from '@angular/material/datepicker';
-import { CreateWorkTimeRequest, WorkTimeMonthLimitInfo } from '@api/time-service/models';
+import { CreateWorkTimeRequest, LeaveType, WorkTimeMonthLimitInfo } from '@api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { DateTime, Interval } from 'luxon';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { TimeDurationService } from '@app/services/time-duration.service';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { User } from '@app/models/user/user.model';
 import { isGUIDEmpty } from '@app/utils/utils';
-import { EditRequest, PatchDocument, WorkTimePath } from '@app/types/edit-request';
+import { EditRequest, LeaveTimePath, PatchDocument, WorkTimePath } from '@app/types/edit-request';
 import { LeaveTime } from '../models/leave-time';
 import { WorkTime } from '../models/work-time';
-import { AddLeaveValue } from '../components/add-hours/add-leave-hours/add-leave-hours.component';
 import { TimeService } from './time.service';
 
 export interface Activities {
@@ -31,6 +29,15 @@ export interface SubmitWorkTimeValue {
 	time: number;
 	comment: string | null;
 	initialValue?: WorkTime;
+}
+
+export interface SubmitLeaveTimeValue {
+	leaveType: LeaveType;
+	startTime: DateTime;
+	endTime: DateTime;
+	minutes: number;
+	comment: string | null;
+	leaveTimeId?: string;
 }
 
 const FULL_WORKDAY_LENGTH_IN_HOURS = 8;
@@ -79,9 +86,10 @@ export class AttendanceService {
 	}): void {
 		this.setWorkTimes(workTimes);
 		this.setLeaveTimeIntervals(reservedLeaveTimeIntervals);
+		this.leaveTimes.next(reservedLeaveTimeIntervals);
 
-		const { normHours, holidays, month } = monthNormAndHolidays[0];
-		this.setMonthNormAndHolidays(normHours, holidays, month);
+		const monthLimit = monthNormAndHolidays[0];
+		this.setMonthNormAndHolidays(monthLimit);
 	}
 
 	public submitWorkTime(value: SubmitWorkTimeValue): Observable<any> {
@@ -136,8 +144,39 @@ export class AttendanceService {
 		);
 	}
 
-	public addLeaveTime(value: AddLeaveValue): Observable<OperationResultResponse> {
-		return this.timeService.createLeaveTime(value);
+	public submitLeaveTime(
+		leaveValue: SubmitLeaveTimeValue,
+		initialValue?: Required<SubmitLeaveTimeValue>
+	): Observable<any> {
+		if (initialValue) {
+			const { leaveTimeId, ...compareValue } = initialValue;
+			const editRequest = this.getLeaveTimeEditRequest(leaveValue, compareValue);
+			return this.timeService.editLeaveTime(leaveTimeId, editRequest);
+		}
+		return this.timeService.createLeaveTime(leaveValue);
+	}
+
+	private getLeaveTimeEditRequest(
+		newValue: SubmitLeaveTimeValue,
+		compareValue: SubmitLeaveTimeValue
+	): EditRequest<LeaveTimePath> {
+		return Object.keys(newValue)
+			.filter((key: string) => {
+				const k = key as keyof SubmitLeaveTimeValue;
+				const v1 = newValue[k];
+				if (v1 instanceof DateTime) {
+					const v2 = compareValue[k] as DateTime;
+					return v1.day !== v2.day || v1.month === v2.month || v1.year === v2.year;
+				}
+				return newValue[k] !== compareValue[k];
+			})
+			.map(
+				(key: string) =>
+					new PatchDocument(
+						newValue[key as keyof SubmitLeaveTimeValue],
+						`/${key[0].toUpperCase() + key.slice(1)}` as LeaveTimePath
+					)
+			);
 	}
 
 	public deleteLeaveTime(id: string): Observable<any> {
@@ -148,7 +187,7 @@ export class AttendanceService {
 		return this.selectedDate$.pipe(
 			first(),
 			switchMap((date: DateTime) => this.timeService.getMonthLimit(date)),
-			tap((limit) => this.setMonthNormAndHolidays(limit.normHours, limit.holidays, limit?.month))
+			tap((limit: WorkTimeMonthLimitInfo) => this.setMonthNormAndHolidays(limit))
 		);
 	}
 
@@ -156,11 +195,11 @@ export class AttendanceService {
 		this.workTimes.next(workTimes);
 	}
 
-	private setMonthNormAndHolidays(monthNorm: number, holidays: string, month = 1): void {
+	private setMonthNormAndHolidays({ normHours, holidays, month }: WorkTimeMonthLimitInfo): void {
 		this.holidays = { month, holidays: holidays.split('').map(Number).map(Boolean) };
 		this.getUserRate().subscribe({
 			next: (rate: number) => {
-				this.monthNorm.next(monthNorm * rate);
+				this.monthNorm.next(normHours * rate);
 			},
 		});
 	}
@@ -189,15 +228,9 @@ export class AttendanceService {
 		this.canEdit.next(this.canEditTime());
 	}
 
-	public removeInterval(dateInterval: Interval): void {
-		const leaveIntervals = [...this.reservedLeaveIntervals];
-		const newIntervals = leaveIntervals.filter((interval) => !interval.equals(dateInterval));
-		this.reservedLeaveIntervals = [...newIntervals];
-	}
-
-	public disableWeekends: DateFilterFn<DateTime> = (date: DateTime | null) => {
+	public disableReservedDays: DateFilterFn<DateTime> = (date: DateTime | null) => {
 		const selectedDate = date || DateTime.now();
-		return this.reservedLeaveIntervals.every((interval: Interval) => !interval.contains(selectedDate));
+		return !this.reservedLeaveIntervals.some((interval: Interval) => interval.contains(selectedDate));
 	};
 
 	public colorWeekends: MatCalendarCellClassFunction<DateTime> = (
@@ -213,13 +246,13 @@ export class AttendanceService {
 			: 'datepicker-weekend';
 	};
 
-	public getLeaveDuration(datePeriod: DatePeriod): Observable<number> {
+	public getLeaveDuration(datePeriod: DatePeriod, disableReservedDays: DateFilterFn<DateTime>): Observable<number> {
 		return this.getUserRate().pipe(
 			map((rate: number) =>
 				this.timeDurationService.getDuration(
 					datePeriod,
 					FULL_WORKDAY_LENGTH_IN_HOURS * rate,
-					this.disableWeekends
+					disableReservedDays
 				)
 			)
 		);

@@ -3,11 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { DoValidators } from '@app/validators/do-validators';
-import { BehaviorSubject } from 'rxjs';
 import { DateTime } from 'luxon';
-import { EditRequest, WorkTimePath } from '@app/types/edit-request';
-import { AttendanceService } from '../../services/attendance.service';
-import { IDialogResponse } from '../../components/user-tasks/user-tasks.component';
+import { LoadingState } from '@shared/directives/button-loading.directive';
+import { finalize } from 'rxjs/operators';
+import { AttendanceService, SubmitWorkTimeValue } from '../../services/attendance.service';
 import { WorkTime } from '../../models/work-time';
 
 @Component({
@@ -16,17 +15,18 @@ import { WorkTime } from '../../models/work-time';
 	styleUrls: ['./edit-project.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditProjectComponent {
+export class EditProjectComponent extends LoadingState {
 	public editForm = this.initFormGroup();
 	public workTimeDate = DateTime.fromObject({ year: this.workTime.year, month: this.workTime.month });
-	public loading = new BehaviorSubject(false);
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public workTime: WorkTime,
 		private fb: FormBuilder,
-		private dialogRef: MatDialogRef<EditProjectComponent, IDialogResponse>,
+		private dialogRef: MatDialogRef<EditProjectComponent>,
 		private attendanceService: AttendanceService
-	) {}
+	) {
+		super();
+	}
 
 	private initFormGroup(): FormGroup {
 		return this.fb.group({
@@ -38,34 +38,23 @@ export class EditProjectComponent {
 		});
 	}
 
-	private getEditRequest(): EditRequest<WorkTimePath> {
-		return ['userHours', 'description']
-			.filter((key: string) => this.workTime[key as keyof WorkTime] !== this.editForm.get(key)?.value)
-			.map((key: string) => ({
-				path: key === 'userHours' ? WorkTimePath.Hours : WorkTimePath.Description,
-				op: 'replace',
-				value: this.editForm.get(key)?.value,
-			}));
-	}
-
-	public onSubmitClick(): void {
-		const editRequest = this.getEditRequest();
-		if (!editRequest.length) {
-			this.close();
+	public onSubmit(): void {
+		if (this.editForm.invalid) {
+			this.editForm.markAllAsTouched();
 			return;
 		}
 
-		this.loading.next(true);
-		// this.attendanceService
-		// 	.editWorkTime(this.workTime.id, editRequest)
-		// 	.pipe(
-		// 		finalize(() => {
-		// 			this.loading.next(false);
-		// 		})
-		// 	)
-		// 	.subscribe(() => {
-		// 		this.close();
-		// 	});
+		this.setLoading(true);
+		const submitValue: SubmitWorkTimeValue = {
+			workTimeId: this.workTime.id,
+			initialValue: this.workTime,
+			time: this.editForm.get('userHours')?.value,
+			comment: this.editForm.get('description')?.value,
+		};
+		this.attendanceService
+			.submitWorkTime(submitValue)
+			.pipe(finalize(() => this.setLoading(false)))
+			.subscribe(() => this.close());
 	}
 
 	public close(): void {

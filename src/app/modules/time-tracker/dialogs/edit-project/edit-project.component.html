@@ -5,7 +5,7 @@
 			{{ workTime.project.name }}
 		</div>
 	</h3>
-	<form class="content" [formGroup]="editForm" (ngSubmit)="onSubmitClick()">
+	<div class="content" [formGroup]="editForm">
 		<div class="flex flex_ai_end">
 			<do-form-row class="modal__hours" label="Количество часов">
 				<mat-form-field>
@@ -34,9 +34,16 @@
 		</do-form-row>
 		<div class="controls">
 			<button doButton type="button" class="controls__button" (click)="close()">Отмена</button>
-			<button mat-flat-button color="primary" type="submit" class="controls__button" [loading]="loading | async">
+			<button
+				mat-flat-button
+				color="primary"
+				type="submit"
+				class="controls__button"
+				[loading]="loading$ | async"
+				(click)="onSubmit()"
+			>
 				Сохранить
 			</button>
 		</div>
-	</form>
+	</div>
 </div>

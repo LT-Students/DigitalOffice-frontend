@@ -1,13 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-import { OperationResultStatusType } from '@api/time-service/models';
 import { DateTime } from 'luxon';
 import { AttendanceService } from '../../services/attendance.service';
-
-export interface IDialogResponse {
-	status?: OperationResultStatusType;
-	data?: any;
-}
 
 @Component({
 	selector: 'do-user-tasks',
