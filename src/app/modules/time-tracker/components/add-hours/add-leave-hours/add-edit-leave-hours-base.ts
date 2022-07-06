@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { DatePeriod } from '@app/types/date-period';
 import { finalize, first, mapTo, switchMap, tap } from 'rxjs/operators';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { AttendanceService, SubmitLeaveTimeValue } from '../../../services/attendance.service';
@@ -29,18 +28,17 @@ export class AddEditLeaveHoursBase extends LoadingState {
 
 	public handleDateSelection(): void {
 		const startTimeValue: DateTime = this.form.get('startTime')?.value;
-		const endTimeControl = this.form.get('endTime');
+		const endTimeControl = this.form.get('endTime') as FormControl;
 		if (!startTimeValue) return;
-		if (!endTimeControl?.value) {
-			endTimeControl?.setValue(startTimeValue.endOf('day'));
+		if (!endTimeControl.value) {
+			endTimeControl.setValue(startTimeValue.endOf('day'));
 		}
-		const datePeriod: DatePeriod = {
-			startDate: startTimeValue,
-			endDate: endTimeControl?.value,
-		};
-		this.attendanceService.getLeaveDuration(datePeriod, this.disableReservedDays).subscribe({
-			next: (leaveDuration: number) => this.selectedIntervalDurationInHours$.next(leaveDuration),
-		});
+		const duration = this.attendanceService.getLeaveDuration(
+			startTimeValue,
+			endTimeControl.value,
+			this.disableReservedDays
+		);
+		this.selectedIntervalDurationInHours$.next(duration);
 	}
 
 	public submit$(initialValue?: Required<SubmitLeaveTimeValue>): Observable<boolean> {

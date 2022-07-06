@@ -12,7 +12,7 @@
 		<tr class="row">
 			<th>Название проекта</th>
 			<th>Внесенные часы</th>
-			<th>Дата внесения</th>
+			<th>Дата изменения</th>
 			<th>Комментарий</th>
 			<th></th>
 		</tr>
@@ -42,8 +42,6 @@
 					<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
 						<span class="mat-body-2">Автор изменения</span>
 						<p>{{ workTime.managerInfo ? (workTime.managerInfo | fullName) : '—' }}</p>
-						<span class="mat-body-2">Дата изменения</span>
-						<p>{{ workTime?.modifiedAtUtc | date: 'dd/MM/YYYY' }}</p>
 						<span class="mat-body-2">Часы сотрудника</span>
 						<p>{{ workTime.userHours }}</p>
 					</mde-popover>

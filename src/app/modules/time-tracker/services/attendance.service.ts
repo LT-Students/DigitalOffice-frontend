@@ -3,7 +3,6 @@ import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { DateFilterFn, MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { CreateWorkTimeRequest, LeaveType, WorkTimeMonthLimitInfo } from '@api/time-service/models';
-import { DatePeriod } from '@app/types/date-period';
 import { DateTime, Interval } from 'luxon';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { TimeDurationService } from '@app/services/time-duration.service';
@@ -20,6 +19,7 @@ export interface Activities {
 }
 
 interface MonthHolidays {
+	year: number;
 	month: number;
 	holidays: boolean[];
 }
@@ -57,11 +57,13 @@ export class AttendanceService {
 	private readonly monthNorm = new BehaviorSubject<number>(160);
 	public readonly monthNorm$ = this.monthNorm.asObservable();
 
-	private holidays: MonthHolidays = { month: 1, holidays: [] };
+	private holidays: MonthHolidays = { month: 1, year: 0, holidays: [] };
 	private reservedLeaveIntervals: Interval[] = [];
 
 	private readonly canEdit = new BehaviorSubject<boolean>(this.canEditTime());
 	public readonly canEdit$ = this.canEdit.asObservable();
+
+	private rate = 0;
 
 	public get activities$(): Observable<Activities> {
 		return combineLatest([this.workTimes$, this.leaveTimes$]).pipe(
@@ -84,6 +86,7 @@ export class AttendanceService {
 		workTimes: WorkTime[];
 		monthNormAndHolidays: WorkTimeMonthLimitInfo[];
 	}): void {
+		this.setRate();
 		this.setWorkTimes(workTimes);
 		this.setLeaveTimeIntervals(reservedLeaveTimeIntervals);
 		this.leaveTimes.next(reservedLeaveTimeIntervals);
@@ -195,21 +198,23 @@ export class AttendanceService {
 		this.workTimes.next(workTimes);
 	}
 
-	private setMonthNormAndHolidays({ normHours, holidays, month }: WorkTimeMonthLimitInfo): void {
-		this.holidays = { month, holidays: holidays.split('').map(Number).map(Boolean) };
-		this.getUserRate().subscribe({
-			next: (rate: number) => {
-				this.monthNorm.next(normHours * rate);
-			},
-		});
+	private setMonthNormAndHolidays({ normHours, holidays, month, year }: WorkTimeMonthLimitInfo): void {
+		this.holidays = { month, year, holidays: holidays.split('').map(Number).map(Boolean) };
+		this.monthNorm.next(normHours * this.rate);
+	}
+
+	private setRate(): void {
+		this.currentUser.user$
+			.pipe(
+				first(),
+				map((user: User) => user.company?.rate || 1)
+			)
+			.subscribe({ next: (rate: number) => (this.rate = rate) });
 	}
 
 	private setLeaveTimeIntervals(leaves: LeaveTime[]): void {
 		this.reservedLeaveIntervals = leaves.map((leave: LeaveTime) => {
-			return Interval.fromDateTimes(
-				DateTime.fromISO(leave.startTime),
-				DateTime.fromISO(leave.endTime).plus({ day: 1 })
-			);
+			return Interval.fromDateTimes(leave.startTime, leave.endTime.plus({ day: 1 }));
 		});
 	}
 
@@ -233,35 +238,25 @@ export class AttendanceService {
 		return !this.reservedLeaveIntervals.some((interval: Interval) => interval.contains(selectedDate));
 	};
 
+	public filterWeekends(date: DateTime): boolean {
+		const { month, year, holidays } = this.holidays;
+		return date.month === month && date.year === year
+			? holidays.every((isHoliday: boolean, day: number) => (isHoliday ? date.day !== day + 1 : true))
+			: date.weekday !== 6 && date.weekday !== 7;
+	}
+
 	public colorWeekends: MatCalendarCellClassFunction<DateTime> = (
 		date: DateTime,
 		view: 'month' | 'year' | 'multi-year'
 	) => {
-		const { month, holidays } = this.holidays;
-		return view === 'month' &&
-			(date.month === month
-				? holidays.every((isHoliday: boolean, day: number) => (isHoliday ? date.day !== day + 1 : true))
-				: date.weekday !== 6 && date.weekday !== 7)
-			? ''
-			: 'datepicker-weekend';
+		return view === 'month' && this.filterWeekends(date) ? '' : 'datepicker-weekend';
 	};
 
-	public getLeaveDuration(datePeriod: DatePeriod, disableReservedDays: DateFilterFn<DateTime>): Observable<number> {
-		return this.getUserRate().pipe(
-			map((rate: number) =>
-				this.timeDurationService.getDuration(
-					datePeriod,
-					FULL_WORKDAY_LENGTH_IN_HOURS * rate,
-					disableReservedDays
-				)
-			)
-		);
-	}
-
-	private getUserRate(): Observable<number> {
-		return this.currentUser.user$.pipe(
-			first(),
-			map((user: User) => user.company?.rate || 1)
-		);
+	public getLeaveDuration(startDate: DateTime, endDate: DateTime, dateFilterFn?: DateFilterFn<DateTime>): number {
+		const datePeriod = {
+			startDate,
+			endDate,
+		};
+		return this.timeDurationService.getDuration(datePeriod, FULL_WORKDAY_LENGTH_IN_HOURS * this.rate, dateFilterFn);
 	}
 }

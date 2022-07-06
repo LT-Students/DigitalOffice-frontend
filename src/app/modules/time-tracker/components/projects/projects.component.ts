@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@an
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { isGUIDEmpty } from '@app/utils/utils';
 import { EditProjectComponent } from '../../dialogs/edit-project/edit-project.component';
 import { WorkTime } from '../../models/work-time';
 
@@ -14,7 +15,24 @@ import { WorkTime } from '../../models/work-time';
 export class ProjectsComponent {
 	public readonly Icons = Icons;
 
-	@Input() workTimes: WorkTime[] = [];
+	@Input()
+	set workTimes(wts: WorkTime[]) {
+		this._workTimes = wts.sort((wt1: WorkTime, wt2: WorkTime) => {
+			if (isGUIDEmpty(wt1.project.id)) {
+				return 1;
+			}
+			if (isGUIDEmpty(wt2.project.id)) {
+				return -1;
+			}
+
+			return (wt1.project.shortName as string).localeCompare(wt2.project.shortName as string);
+		});
+	}
+	get workTimes(): WorkTime[] {
+		return this._workTimes;
+	}
+	private _workTimes: WorkTime[] = [];
+
 	@Input()
 	set canEdit(canEdit: any) {
 		this._canEdit = coerceBooleanProperty(canEdit);

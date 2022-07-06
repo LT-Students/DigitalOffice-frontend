@@ -10,14 +10,16 @@ import {
 	ViewChild,
 } from '@angular/core';
 import { Chart, registerables, TooltipItem } from 'chart.js';
-import { Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LeaveType } from '@api/time-service/models';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { isGUIDEmpty } from '@app/utils/utils';
+import { DateTime } from 'luxon';
 import { LeaveTime } from '../../../models/leave-time';
 import { Activities, AttendanceService } from '../../../services/attendance.service';
 import { WorkTime } from '../../../models/work-time';
+import { ChartLeaveTime } from './chart-leave-time';
 
 Chart.register(...registerables);
 
@@ -28,7 +30,7 @@ enum ChartLabels {
 	Left = 'Запланированные часы',
 }
 
-export interface ChartData {
+export interface ChartLegend {
 	colors: string[];
 	labels: string[];
 }
@@ -41,7 +43,7 @@ export interface ChartData {
 })
 export class DoughnutChartComponent implements OnInit, OnDestroy {
 	@ViewChild('canvas', { static: true }) canvas?: ElementRef<HTMLCanvasElement>;
-	@Output() chartData = new EventEmitter<ChartData>();
+	@Output() chartLegend = new EventEmitter<ChartLegend>();
 
 	private readonly COLORS = ['#B9B7DE', '#FFB2B2', '#FFD89E', '#ABF5C0', '#9ECAE2', '#FFCDCD'];
 	private readonly REST_PROJECTS_COLOR = '#FEECAA';
@@ -49,10 +51,8 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private readonly OTHER_COLOR = '#D2ECFF';
 	private readonly EMPTY_COLOR = '#EBEBEB';
 
-	public activities: Activities = {
-		leaves: [],
-		workTimes: [],
-	};
+	public workTimes: WorkTime[] = [];
+	public leaveTimes: ChartLeaveTime[] = [];
 	public labels: string[] = [];
 	public monthNorm = 160;
 	public userHours = 0;
@@ -70,25 +70,33 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			next: (monthNorm: number) => (this.monthNorm = monthNorm),
 		});
 
-		this.attendanceService.activities$.pipe(takeUntil(this.destroy$)).subscribe({
-			next: (activities: Activities) => {
-				this.activities = activities;
-				this.userHours = this.countUserHours();
-				this.labels = this.getLabels();
-				this.updateChart();
+		combineLatest([this.attendanceService.selectedDate$, this.attendanceService.activities$])
+			.pipe(takeUntil(this.destroy$))
+			.subscribe({
+				next: ([selectedDate, { workTimes, leaves }]: [DateTime, Activities]) => {
+					this.workTimes = workTimes;
+					this.leaveTimes = leaves.map(
+						(lt: LeaveTime) =>
+							new ChartLeaveTime(
+								lt,
+								selectedDate,
+								this.attendanceService.getLeaveDuration.bind(this.attendanceService),
+								this.attendanceService.filterWeekends.bind(this.attendanceService)
+							)
+					);
+					this.userHours = this.countUserHours();
+					this.labels = this.getLabels();
+					this.updateChart();
 
-				this.cdr.markForCheck();
-			},
-		});
+					this.cdr.markForCheck();
+				},
+			});
 	}
 
 	private countUserHours(): number {
-		const projectHours: number = this.activities.workTimes.reduce(
-			(acc: number, project: WorkTime) => acc + project.userHours,
-			0
-		);
-		const leavesHours: number = this.activities.leaves.reduce(
-			(acc: number, leave: LeaveTime) => acc + leave.hours,
+		const projectHours: number = this.workTimes.reduce((acc: number, project: WorkTime) => acc + project.hours, 0);
+		const leavesHours: number = this.leaveTimes.reduce(
+			(acc: number, leave: ChartLeaveTime) => acc + leave.hours,
 			0
 		);
 
@@ -96,12 +104,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	}
 
 	private getLabels(): string[] {
-		const projectLabels = this.activities.workTimes
-			.filter((workTime: WorkTime) => workTime.userHours && !isGUIDEmpty(workTime.project.id as string))
-			.sort((wt1: WorkTime, wt2: WorkTime) => wt2.userHours - wt1.userHours)
+		const projectLabels = this.workTimes
+			.filter((workTime: WorkTime) => workTime.hours && !isGUIDEmpty(workTime.project.id))
+			.sort((wt1: WorkTime, wt2: WorkTime) => wt2.hours - wt1.hours)
 			.map((project: WorkTime) => project.project.shortName as string);
-		const hasOtherWorkTime = this.activities.workTimes.some(
-			(workTime: WorkTime) => isGUIDEmpty(workTime.project.id) && workTime.userHours
+		const hasOtherWorkTime = this.workTimes.some(
+			(workTime: WorkTime) => isGUIDEmpty(workTime.project.id) && workTime.hours
 		);
 		const labels = projectLabels.slice(0, 6);
 		if (projectLabels.length > 6) {
@@ -110,7 +118,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		if (hasOtherWorkTime) {
 			labels.push(ChartLabels.Other);
 		}
-		if (this.activities.leaves.length) {
+		if (this.leaveTimes.length) {
 			labels.push(ChartLabels.Leaves);
 		}
 		if (this.monthNorm - this.userHours > 0 && labels.length) {
@@ -123,14 +131,12 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 	private updateChart(): void {
 		if (!this.chart) return;
 
-		const projectsHours = this.activities.workTimes
-			.filter((project: WorkTime) => project.userHours && !isGUIDEmpty(project.project.id))
-			.map((project: WorkTime) => project.userHours)
+		const projectsHours = this.workTimes
+			.filter((project: WorkTime) => project.hours && !isGUIDEmpty(project.project.id))
+			.map((project: WorkTime) => project.hours)
 			.sort((a: number, b: number) => b - a);
-		const otherHours = this.activities.workTimes.find((workTime: WorkTime) =>
-			isGUIDEmpty(workTime.project.id)
-		)?.userHours;
-		const leavesHours = this.activities.leaves.reduce((acc: number, leave: LeaveTime) => acc + leave.hours, 0);
+		const otherHours = this.workTimes.find((workTime: WorkTime) => isGUIDEmpty(workTime.project.id))?.hours;
+		const leavesHours = this.leaveTimes.reduce((acc: number, leave: ChartLeaveTime) => acc + leave.hours, 0);
 		const timeLeft = this.monthNorm - this.userHours;
 
 		const chartData = projectsHours.slice(0, 6);
@@ -159,7 +165,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 		this.chart.data.datasets[0].backgroundColor = colors;
 		this.chart.data.datasets[0].hoverBackgroundColor = colors;
 		this.chart.update();
-		this.chartData.emit({ labels: this.labels, colors: colors });
+		this.chartLegend.emit({ labels: this.labels, colors: colors });
 	}
 
 	private buildChart(context?: CanvasRenderingContext2D | null): Chart<'doughnut'> | undefined {
@@ -235,9 +241,9 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 										LeaveType.Training,
 									]
 										.map((leaveType: LeaveType) => {
-											const hours = this.activities.leaves
-												.filter((l: LeaveTime) => l.leaveType === leaveType)
-												.reduce((acc: number, l: LeaveTime) => acc + l.hours, 0);
+											const hours = this.leaveTimes
+												.filter((l: ChartLeaveTime) => l.leaveType === leaveType)
+												.reduce((acc: number, l: ChartLeaveTime) => acc + l.hours, 0);
 											return hours
 												? `${
 														LeaveTypeModel.getLeaveInfoByLeaveType(leaveType)

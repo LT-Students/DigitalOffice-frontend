@@ -13,7 +13,7 @@
 		>
 			<mat-icon fontSet="material-icons-round">chevron_left</mat-icon>
 		</button>
-		<do-doughnut-chart (chartData)="chartData = $event"></do-doughnut-chart>
+		<do-doughnut-chart (chartLegend)="chartData = $event"></do-doughnut-chart>
 		<button
 			(click)="onNextMonthClicked(selectedDate)"
 			class="fab-button"

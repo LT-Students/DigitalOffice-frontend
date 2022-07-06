@@ -6,7 +6,7 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { LeaveTime } from '../../models/leave-time';
 import { AttendanceService, SubmitLeaveTimeValue } from '../../services/attendance.service';
-import { AddEditLeaveHoursBase } from '../../components/add-hours/add-worktime-hours/add-edit-leave-hours-base';
+import { AddEditLeaveHoursBase } from '../../components/add-hours/add-leave-hours/add-edit-leave-hours-base';
 
 @Component({
 	selector: 'do-edit-leave',
@@ -32,8 +32,8 @@ export class EditLeaveComponent extends AddEditLeaveHoursBase implements OnInit 
 		this.setInitialIntervalDuration();
 		this.initialValue = {
 			leaveType: this.leaveTime.leaveType,
-			startTime: DateTime.fromISO(this.leaveTime.startTime),
-			endTime: DateTime.fromISO(this.leaveTime.endTime),
+			startTime: this.leaveTime.startTime,
+			endTime: this.leaveTime.endTime,
 			comment: this.leaveTime.comment || null,
 			minutes: this.leaveTime.minutes,
 			leaveTimeId: this.leaveTime.id,
@@ -42,10 +42,7 @@ export class EditLeaveComponent extends AddEditLeaveHoursBase implements OnInit 
 	}
 
 	private excludeCurrentInterval(): void {
-		const currentInterval = Interval.fromDateTimes(
-			DateTime.fromISO(this.leaveTime.startTime),
-			DateTime.fromISO(this.leaveTime.endTime)
-		);
+		const currentInterval = Interval.fromDateTimes(this.leaveTime.startTime, this.leaveTime.endTime);
 		const disableReservedDaysFn = this.disableReservedDays;
 		this.disableReservedDays = (date: DateTime | null) => {
 			if (date && currentInterval.contains(date)) {

@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { RANGE_DATE_FORMAT } from '@app/configs/date-formats';
 import { AttendanceService } from '../../../services/attendance.service';
-import { AddEditLeaveHoursBase } from '../add-worktime-hours/add-edit-leave-hours-base';
+import { AddEditLeaveHoursBase } from './add-edit-leave-hours-base';
 
 @Component({
 	selector: 'do-add-leave-hours',

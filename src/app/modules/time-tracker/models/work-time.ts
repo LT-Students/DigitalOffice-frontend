@@ -23,6 +23,10 @@ export class WorkTime implements WorkTimeInfo {
 	public userInfo?: UserInfo;
 	public managerInfo?: UserInfo;
 
+	public get hours(): number {
+		return this.managerHours || this.userHours;
+	}
+
 	constructor({ workTime, limitInfo, user, manager }: WorkTimeResponse) {
 		this.id = workTime.id;
 		this.month = workTime.month;
