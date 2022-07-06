@@ -9,7 +9,13 @@
 		<div class="flex flex_ai_end">
 			<do-form-row class="modal__hours" label="Количество часов">
 				<mat-form-field>
-					<input matInput formControlName="userHours" type="text" placeholder="0" />
+					<input
+						matInput
+						formControlName="userHours"
+						type="text"
+						placeholder="0"
+						data-test="edit-project-time-input"
+					/>
 					<mat-error>
 						{{ editForm.controls['userHours'].errors | controlErrors }}
 					</mat-error>
@@ -28,12 +34,15 @@
 					formControlName="description"
 					maxlength="500"
 					placeholder="Оставьте комментарий для менеджера"
+					data-test="edit-project-comment-input"
 				></textarea>
 				<mat-hint>{{ comment.value.length }}/500</mat-hint>
 			</mat-form-field>
 		</do-form-row>
 		<div class="controls">
-			<button doButton type="button" class="controls__button" (click)="close()">Отмена</button>
+			<button doButton type="button" class="controls__button" (click)="close()" data-test="close-dialog-btn">
+				Отмена
+			</button>
 			<button
 				mat-flat-button
 				color="primary"
@@ -41,6 +50,7 @@
 				class="controls__button"
 				[loading]="loading$ | async"
 				(click)="onSubmit()"
+				data-test="edit-project-save-btn"
 			>
 				Сохранить
 			</button>

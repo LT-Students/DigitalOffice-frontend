@@ -8,10 +8,20 @@
 					[dateFilter]="disableReservedDays"
 					[rangePicker]="$any(picker)"
 				>
-					<input matStartDate placeholder="ДД/ММ/ГГГГ" formControlName="startTime" />
-					<input matEndDate placeholder="ДД/ММ/ГГГГ" formControlName="endTime" />
+					<input
+						matStartDate
+						placeholder="ДД/ММ/ГГГГ"
+						formControlName="startTime"
+						data-test="leave-start-date-input"
+					/>
+					<input
+						matEndDate
+						placeholder="ДД/ММ/ГГГГ"
+						formControlName="endTime"
+						data-test="leave-end-date-input"
+					/>
 				</mat-date-range-input>
-				<mat-datepicker-toggle matSuffix [for]="picker">
+				<mat-datepicker-toggle matSuffix [for]="picker" data-test="leave-interval-datepicker">
 					<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 				</mat-datepicker-toggle>
 				<mat-date-range-picker
@@ -31,7 +41,7 @@
 	</div>
 	<do-form-row label="Тип отсутствия">
 		<mat-form-field>
-			<mat-select formControlName="leaveType" placeholder="Выберите тип отсутствия">
+			<mat-select formControlName="leaveType" placeholder="Выберите тип отсутствия" data-test="leave-type-select">
 				<mat-option *ngFor="let leave of leaveTypes" [value]="leave.leaveType">
 					{{ leave.leaveInRussian }}
 				</mat-option>
@@ -50,6 +60,7 @@
 				formControlName="comment"
 				maxlength="500"
 				placeholder="Оставьте комментарий для менеджера"
+				data-test="leave-comment-input"
 			></textarea>
 			<mat-hint>{{ comment.value.length }}/500</mat-hint>
 		</mat-form-field>
@@ -60,6 +71,7 @@
 		color="primary"
 		[loading]="loading$ | async"
 		(click)="handleSubmit()"
+		data-test="create-leave-btn"
 	>
 		Добавить часы
 	</button>

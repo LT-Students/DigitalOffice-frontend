@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of, throwError } from 'rxjs';
+import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
 import { DateFilterFn, MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { CreateWorkTimeRequest, LeaveType, WorkTimeMonthLimitInfo } from '@api/time-service/models';
 import { DateTime, Interval } from 'luxon';
@@ -89,7 +89,7 @@ export class AttendanceService {
 		this.setRate();
 		this.setWorkTimes(workTimes);
 		this.setLeaveTimeIntervals(reservedLeaveTimeIntervals);
-		this.leaveTimes.next(reservedLeaveTimeIntervals);
+		this.setLeaveTimes(reservedLeaveTimeIntervals);
 
 		const monthLimit = monthNormAndHolidays[0];
 		this.setMonthNormAndHolidays(monthLimit);
@@ -97,8 +97,9 @@ export class AttendanceService {
 
 	public submitWorkTime(value: SubmitWorkTimeValue): Observable<any> {
 		const { workTimeId, time, comment } = value;
+		let action: Observable<any>;
 		if (isGUIDEmpty(workTimeId)) {
-			return this.selectedDate$.pipe(
+			action = this.selectedDate$.pipe(
 				first(),
 				switchMap(({ month, year, offset }: DateTime) => {
 					const createRequest: CreateWorkTimeRequest = {
@@ -113,8 +114,9 @@ export class AttendanceService {
 			);
 		} else {
 			const editRequest = this.getWorkTimeEditRequest(value);
-			return editRequest.length ? this.timeService.editWorkTime(workTimeId, editRequest) : of(true);
+			action = editRequest.length ? this.timeService.editWorkTime(workTimeId, editRequest) : of(null);
 		}
+		return action.pipe(switchMap((response) => (response ? this.getWorkTimes() : of(null))));
 	}
 
 	private getWorkTimeEditRequest(value: SubmitWorkTimeValue): EditRequest<WorkTimePath> {
@@ -134,16 +136,16 @@ export class AttendanceService {
 	}
 
 	public getWorkTimes(): Observable<WorkTime[]> {
-		return this.selectedDate$.pipe(
-			first(),
-			switchMap((date: DateTime) => this.timeService.getWorkTimes(date))
+		return this.getSelectedDate$().pipe(
+			switchMap((date: DateTime) => this.timeService.getWorkTimes(date)),
+			tap(this.setWorkTimes.bind(this))
 		);
 	}
 
 	public getLeaveTimes(): Observable<LeaveTime[]> {
-		return this.selectedDate$.pipe(
-			first(),
-			switchMap((date: DateTime) => this.timeService.getLeaveTimes(date))
+		return this.getSelectedDate$().pipe(
+			switchMap((date: DateTime) => this.timeService.getLeaveTimes(date)),
+			tap(this.setLeaveTimes.bind(this))
 		);
 	}
 
@@ -151,12 +153,15 @@ export class AttendanceService {
 		leaveValue: SubmitLeaveTimeValue,
 		initialValue?: Required<SubmitLeaveTimeValue>
 	): Observable<any> {
+		let action: Observable<any>;
 		if (initialValue) {
 			const { leaveTimeId, ...compareValue } = initialValue;
 			const editRequest = this.getLeaveTimeEditRequest(leaveValue, compareValue);
-			return this.timeService.editLeaveTime(leaveTimeId, editRequest);
+			action = this.timeService.editLeaveTime(leaveTimeId, editRequest);
+		} else {
+			action = this.timeService.createLeaveTime(leaveValue).pipe(switchMap(this.getLeaveTimes.bind(this)));
 		}
-		return this.timeService.createLeaveTime(leaveValue);
+		return action.pipe(switchMap(this.getLeaveTimes.bind(this)));
 	}
 
 	private getLeaveTimeEditRequest(
@@ -183,7 +188,20 @@ export class AttendanceService {
 	}
 
 	public deleteLeaveTime(id: string): Observable<any> {
-		return this.timeService.deleteLeaveTime(id);
+		return this.leaveTimes$.pipe(
+			first(),
+			switchMap((lts: LeaveTime[]) => {
+				const oldLts = lts;
+				const newLts = lts.filter((lt: LeaveTime) => lt.id !== id);
+				this.setLeaveTimes(newLts);
+				return this.timeService.deleteLeaveTime(id).pipe(
+					catchError((err) => {
+						this.setLeaveTimes(oldLts);
+						return throwError(err);
+					})
+				);
+			})
+		);
 	}
 
 	public getMonthNormAndHolidays(): Observable<any> {
@@ -196,6 +214,10 @@ export class AttendanceService {
 
 	private setWorkTimes(workTimes: WorkTime[]): void {
 		this.workTimes.next(workTimes);
+	}
+
+	private setLeaveTimes(leaveTimes: LeaveTime[]): void {
+		this.leaveTimes.next(leaveTimes);
 	}
 
 	private setMonthNormAndHolidays({ normHours, holidays, month, year }: WorkTimeMonthLimitInfo): void {
@@ -258,5 +280,9 @@ export class AttendanceService {
 			endDate,
 		};
 		return this.timeDurationService.getDuration(datePeriod, FULL_WORKDAY_LENGTH_IN_HOURS * this.rate, dateFilterFn);
+	}
+
+	private getSelectedDate$(): Observable<DateTime> {
+		return this.selectedDate$.pipe(first());
 	}
 }

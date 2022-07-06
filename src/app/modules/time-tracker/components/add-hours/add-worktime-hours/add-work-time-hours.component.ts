@@ -154,17 +154,10 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 			commentControl.updateValueAndValidity();
 		}
 		if (project.workTime) {
-			const timeControl = this.addHoursForm.get('time') as FormControl;
-			if (timeControl.value === '' || timeControl.value == null) {
-				this.addHoursForm.patchValue({
-					time: project.workTime.userHours,
-				});
-			}
-			if (!commentControl.value) {
-				this.addHoursForm.patchValue({
-					comment: project.workTime.description,
-				});
-			}
+			this.addHoursForm.patchValue({
+				time: project.workTime.userHours,
+				comment: project.workTime.description,
+			});
 		}
 	}
 

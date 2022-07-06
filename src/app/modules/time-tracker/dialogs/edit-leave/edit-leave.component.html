@@ -13,10 +13,20 @@
 						[dateFilter]="disableReservedDays"
 						[rangePicker]="$any(picker)"
 					>
-						<input matStartDate placeholder="ДД/ММ/ГГГГ" formControlName="startTime" />
-						<input matEndDate placeholder="ДД/ММ/ГГГГ" formControlName="endTime" />
+						<input
+							matStartDate
+							placeholder="ДД/ММ/ГГГГ"
+							formControlName="startTime"
+							data-test="edit-leave-start-input"
+						/>
+						<input
+							matEndDate
+							placeholder="ДД/ММ/ГГГГ"
+							formControlName="endTime"
+							data-test="edit-leave-end-input"
+						/>
 					</mat-date-range-input>
-					<mat-datepicker-toggle matSuffix [for]="picker">
+					<mat-datepicker-toggle matSuffix [for]="picker" data-test="edit-leave-datepicker-btn">
 						<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 					</mat-datepicker-toggle>
 					<mat-date-range-picker
@@ -45,12 +55,15 @@
 					formControlName="comment"
 					maxlength="500"
 					placeholder="Оставьте комментарий для менеджера"
+					data-test="edit-leave-comment-input"
 				></textarea>
 				<mat-hint>{{ comment.value.length }}/500</mat-hint>
 			</mat-form-field>
 		</do-form-row>
 		<div class="controls">
-			<button mat-button class="controls__button" type="button" (click)="close()">Отмена</button>
+			<button mat-button class="controls__button" type="button" (click)="close()" data-test="close-dialog-btn">
+				Отмена
+			</button>
 			<button
 				mat-flat-button
 				color="primary"
@@ -58,6 +71,7 @@
 				type="submit"
 				[loading]="loading$ | async"
 				(click)="handleSubmit()"
+				data-test="edit-leave-save-btn"
 			>
 				Сохранить
 			</button>

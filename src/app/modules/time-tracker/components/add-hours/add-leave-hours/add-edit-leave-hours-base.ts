@@ -55,6 +55,9 @@ export class AddEditLeaveHoursBase extends LoadingState {
 					...this.form.getRawValue(),
 					minutes: durationHours * 60,
 				};
+				const offset = submitValue.startTime.offset;
+				submitValue.startTime = submitValue.startTime.toUTC().plus({ minute: offset });
+				submitValue.endTime = submitValue.endTime.toUTC().plus({ minute: offset });
 				return this.attendanceService.submitLeaveTime(submitValue, initialValue);
 			}),
 			tap(this.resetForm.bind(this)),

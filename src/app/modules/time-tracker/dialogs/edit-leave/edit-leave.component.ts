@@ -42,7 +42,8 @@ export class EditLeaveComponent extends AddEditLeaveHoursBase implements OnInit 
 	}
 
 	private excludeCurrentInterval(): void {
-		const currentInterval = Interval.fromDateTimes(this.leaveTime.startTime, this.leaveTime.endTime);
+		const { startTime, endTime } = this.leaveTime;
+		const currentInterval = Interval.fromDateTimes(startTime, endTime.plus({ day: 1 }));
 		const disableReservedDaysFn = this.disableReservedDays;
 		this.disableReservedDays = (date: DateTime | null) => {
 			if (date && currentInterval.contains(date)) {

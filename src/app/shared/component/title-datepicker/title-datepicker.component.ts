@@ -10,11 +10,13 @@ import { Icons } from '@shared/modules/icons/icons';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TitleDatepickerComponent {
+	private static uniqueId = 0;
 	public readonly Icons = Icons;
 
 	@Input() title = '';
 	@Input() selectDate: DateTime | null = DateTime.now();
 	@Output() dateSelection = new EventEmitter<DateTime>();
+	public readonly id = TitleDatepickerComponent.uniqueId++;
 
 	constructor() {}
 
