@@ -244,9 +244,10 @@ export class AttendanceService {
 		const currentDate = DateTime.now();
 		const selectedDate = this.selectedDate.value;
 		return (
-			currentDate.year === selectedDate.year &&
-			(currentDate.month === selectedDate.month ||
-				(currentDate.day <= LAST_DAY_TO_FILL_HOURS && currentDate.month === selectedDate.month + 1))
+			currentDate.year < selectedDate.year ||
+			(currentDate.year === selectedDate.year &&
+				(currentDate.month <= selectedDate.month ||
+					(currentDate.day <= LAST_DAY_TO_FILL_HOURS && currentDate.month === selectedDate.month + 1)))
 		);
 	}
 
