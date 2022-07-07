@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DatePeriod } from '@app/types/date-period';
-import { DateFilterFn } from '@angular/material/datepicker';
 import { DateTime } from 'luxon';
 
 @Injectable({
@@ -20,7 +19,7 @@ export class TimeDurationService {
 	public getDuration(
 		{ startDate, endDate }: DatePeriod,
 		hoursPerDay: number,
-		dateFilter?: DateFilterFn<DateTime>
+		dateFilter?: (date: DateTime) => boolean
 	): number {
 		endDate = (endDate ? endDate : startDate).plus({ days: 1 });
 

@@ -35,7 +35,7 @@
 				</p>
 			</td>
 			<td class="cell">
-				<p>{{ leave.hours }} ч</p>
+				<p>{{ leave | leaveHours | async }} ч</p>
 			</td>
 			<td class="cell">
 				<p>{{ leave.startTime | dateTime: 'd MMMM' }} - {{ leave.endTime | dateTime: 'd MMMM' }}</p>
