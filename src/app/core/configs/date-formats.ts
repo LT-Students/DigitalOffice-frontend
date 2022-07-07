@@ -14,7 +14,7 @@ export const DATE_FORMAT: MatDateFormats = {
 
 export const RANGE_DATE_FORMAT: MatDateFormats = {
 	parse: {
-		dateInput: 'D',
+		dateInput: 'dd/MM/y',
 	},
 	display: {
 		dateInput: 'dd/MM/y',

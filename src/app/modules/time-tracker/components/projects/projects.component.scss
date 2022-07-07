@@ -1,3 +1,11 @@
+@use 'base/variables' as variables;
+
+th {
+	font-weight: normal;
+
+	color: variables.$secondary_default;
+}
+
 .cell {
 	&__icon {
 		padding-top: 0;

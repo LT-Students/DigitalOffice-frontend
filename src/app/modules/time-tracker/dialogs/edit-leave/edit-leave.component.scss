@@ -5,12 +5,20 @@
 
 	&__range-picker {
 		margin-right: 33px;
+
 		width: 270px;
 	}
 
 	&__hours {
+		margin-left: 32px;
+
 		display: flex;
 		flex-direction: column;
+		justify-content: flex-end;
+
+		h3 {
+			margin-bottom: 0;
+		}
 	}
 
 	&__selected-hours {

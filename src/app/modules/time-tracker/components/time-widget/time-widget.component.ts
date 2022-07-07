@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 
 import { DateTime } from 'luxon';
 import { AttendanceService } from '../../services/attendance.service';
-import { ChartData } from './doughnut-chart/doughnut-chart.component';
+import { ChartLegend } from './doughnut-chart/doughnut-chart.component';
 
 @Component({
 	selector: 'do-time-widget',
@@ -13,7 +13,7 @@ import { ChartData } from './doughnut-chart/doughnut-chart.component';
 })
 export class TimeWidgetComponent {
 	public selectedDate$: Observable<DateTime>;
-	public chartData: ChartData = { colors: [], labels: [] };
+	public chartData: ChartLegend = { colors: [], labels: [] };
 
 	constructor(private _attendanceService: AttendanceService) {
 		this.selectedDate$ = this._attendanceService.selectedDate$;

@@ -2,23 +2,22 @@
 /* eslint-disable */
 import { ProjectStatusType } from './project-status-type';
 export interface ProjectInfo {
-  description?: null | string;
+	description?: string;
 
-  /**
-   * Unique project identifier.
-   */
-  id?: string;
+	/**
+	 * Unique project identifier.
+	 */
+	id: string;
 
-  /**
-   * Project name.
-   */
-  name?: string;
-  shortDescription?: null | string;
+	/**
+	 * Project name.
+	 */
+	name: string;
+	shortDescription?: string;
 
-  /**
-   * Project short name.
-   */
-  shortName?: null | string;
-  status?: ProjectStatusType;
+	/**
+	 * Project short name.
+	 */
+	shortName?: string;
+	status: ProjectStatusType;
 }
-

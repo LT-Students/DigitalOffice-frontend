@@ -3,12 +3,9 @@
 
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-auto-rows: 1fr;
-	grid-column-gap: 32px;
-}
+	grid-gap: 32px;
 
-.tasks {
-	margin-top: 48px;
-
-	display: block;
+	do-user-tasks {
+		grid-column: span 2;
+	}
 }

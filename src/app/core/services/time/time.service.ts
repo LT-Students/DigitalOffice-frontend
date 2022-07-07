@@ -17,8 +17,6 @@ import { ImportApiService } from '@api/time-service/services/import-api.service'
 import { FindResultResponseStatInfo } from '@api/time-service/models/find-result-response-stat-info';
 import { OperationResultResponseByteArray } from '@api/time-service/models/operation-result-response-byte-array';
 import { CreateWorkTimeRequest } from '@api/time-service/models/create-work-time-request';
-import { ResponseMessageModel } from '@app/models/response/response-message.model';
-import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 
 export interface IFindWorkTimesRequest {
 	userid?: string;
@@ -91,11 +89,10 @@ export interface ICreateLeaveTimeRequest {
 }
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class TimeService {
 	constructor(
-		private _responseModel: ResponseMessageModel,
 		private _workTimeService: WorkTimeApiService,
 		private _leaveTimeApiService: LeaveTimeApiService,
 		private _workTimeDayJobApiService: WorkTimeDayJobApiService,
@@ -110,15 +107,11 @@ export class TimeService {
 	}
 
 	public editWorkTime(params: IEditWorkTimeRequest): Observable<OperationResultResponse> {
-		return this._workTimeService
-			.editWorkTime(params)
-			.pipe(this._responseModel.message(MessageTriggeredFrom.WorkTime, MessageMethod.Edit));
+		return this._workTimeService.editWorkTime(params);
 	}
 
 	public createWorkTime(body: CreateWorkTimeRequest): Observable<OperationResultResponse> {
-		return this._workTimeService
-			.createWorkTime({ body })
-			.pipe(this._responseModel.message(MessageTriggeredFrom.WorkTime, MessageMethod.Create));
+		return this._workTimeService.createWorkTime({ body });
 	}
 
 	public addLeaveTime(body: ICreateLeaveTimeRequest): Observable<OperationResultResponse> {
@@ -130,9 +123,7 @@ export class TimeService {
 	}
 
 	public editLeaveTime(params: IEditLeaveTimeRequest): Observable<OperationResultResponse> {
-		return this._editLeaveTime(params).pipe(
-			this._responseModel.message(MessageTriggeredFrom.LeaveTime, MessageMethod.Edit)
-		);
+		return this._editLeaveTime(params);
 	}
 
 	public deleteLeaveTime(leaveTimeId: string): Observable<OperationResultResponse> {
@@ -146,9 +137,7 @@ export class TimeService {
 				},
 			],
 		};
-		return this._editLeaveTime(deleteRequest).pipe(
-			this._responseModel.message(MessageTriggeredFrom.LeaveTime, MessageMethod.Remove)
-		);
+		return this._editLeaveTime(deleteRequest);
 	}
 
 	private _editLeaveTime(params: IEditLeaveTimeRequest): Observable<OperationResultResponse> {
