@@ -9,8 +9,7 @@ export class ChartLeaveTime {
 	constructor(
 		{ startTime, endTime, leaveType }: LeaveTime,
 		selectedDate: DateTime,
-		getDurationFn: (...args: any[]) => number,
-		filterFn: (date: DateTime) => boolean
+		getDurationFn: (...args: any[]) => number
 	) {
 		this.leaveType = leaveType;
 
@@ -21,6 +20,6 @@ export class ChartLeaveTime {
 			endTime = selectedDate.endOf('month');
 		}
 
-		this.hours = getDurationFn(startTime, endTime, filterFn);
+		this.hours = getDurationFn(startTime, endTime);
 	}
 }

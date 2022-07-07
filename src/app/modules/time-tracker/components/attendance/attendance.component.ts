@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { first, skip, switchMap, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { ActivatedRoute, Data } from '@angular/router';
 import { AttendanceService } from '../../services/attendance.service';
 
@@ -24,8 +24,12 @@ export class AttendanceComponent implements OnInit, OnDestroy {
 		this.attendanceService.selectedDate$
 			.pipe(
 				skip(1),
-				switchMap(() => this.attendanceService.getMonthNormAndHolidays()),
-				switchMap(() => this.attendanceService.getMonthActivities()),
+				switchMap(() =>
+					forkJoin([
+						this.attendanceService.getMonthNormAndHolidays(),
+						this.attendanceService.getMonthActivities(),
+					])
+				),
 				takeUntil(this.destroy$)
 			)
 			.subscribe();

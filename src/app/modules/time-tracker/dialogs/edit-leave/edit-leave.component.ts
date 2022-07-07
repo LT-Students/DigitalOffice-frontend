@@ -29,7 +29,6 @@ export class EditLeaveComponent extends AddEditLeaveHoursBase implements OnInit 
 
 	public ngOnInit(): void {
 		this.excludeCurrentInterval();
-		this.setInitialIntervalDuration();
 		this.initialValue = {
 			leaveType: this.leaveTime.leaveType,
 			startTime: this.leaveTime.startTime,
@@ -39,6 +38,7 @@ export class EditLeaveComponent extends AddEditLeaveHoursBase implements OnInit 
 			leaveTimeId: this.leaveTime.id,
 		};
 		this.form.patchValue(this.initialValue);
+		this.setInitialIntervalDuration();
 	}
 
 	private excludeCurrentInterval(): void {
@@ -54,7 +54,7 @@ export class EditLeaveComponent extends AddEditLeaveHoursBase implements OnInit 
 	}
 
 	private setInitialIntervalDuration(): void {
-		this.selectedIntervalDurationInHours$.next(this.leaveTime.minutes / 60);
+		this.handleDateSelection();
 	}
 
 	public close(): void {

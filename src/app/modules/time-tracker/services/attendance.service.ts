@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of, throwError } from 'rxjs';
-import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
+import { auditTime, catchError, first, map, switchMap, tap } from 'rxjs/operators';
 import { DateFilterFn, MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { CreateWorkTimeRequest, LeaveType, WorkTimeMonthLimitInfo } from '@api/time-service/models';
 import { DateTime, Interval } from 'luxon';
@@ -67,6 +67,7 @@ export class AttendanceService {
 
 	public get activities$(): Observable<Activities> {
 		return combineLatest([this.workTimes$, this.leaveTimes$]).pipe(
+			auditTime(50),
 			map(([workTimes, leaves]: [WorkTime[], LeaveTime[]]) => ({ workTimes, leaves }))
 		);
 	}
@@ -89,7 +90,15 @@ export class AttendanceService {
 		this.setRate();
 		this.setWorkTimes(workTimes);
 		this.setLeaveTimeIntervals(reservedLeaveTimeIntervals);
-		this.setLeaveTimes(reservedLeaveTimeIntervals);
+
+		const currentMonthInterval = Interval.fromDateTimes(
+			DateTime.now().startOf('month'),
+			DateTime.now().endOf('month')
+		);
+		const currentLeaveTimes = reservedLeaveTimeIntervals.filter(({ startTime, endTime }: LeaveTime) =>
+			Interval.fromDateTimes(startTime, endTime).overlaps(currentMonthInterval)
+		);
+		this.setLeaveTimes(currentLeaveTimes);
 
 		const monthLimit = monthNormAndHolidays[0];
 		this.setMonthNormAndHolidays(monthLimit);
@@ -159,7 +168,7 @@ export class AttendanceService {
 			const editRequest = this.getLeaveTimeEditRequest(leaveValue, compareValue);
 			action = this.timeService.editLeaveTime(leaveTimeId, editRequest);
 		} else {
-			action = this.timeService.createLeaveTime(leaveValue).pipe(switchMap(this.getLeaveTimes.bind(this)));
+			action = this.timeService.createLeaveTime(leaveValue);
 		}
 		return action.pipe(switchMap(this.getLeaveTimes.bind(this)));
 	}
@@ -244,9 +253,10 @@ export class AttendanceService {
 		const currentDate = DateTime.now();
 		const selectedDate = this.selectedDate.value;
 		return (
-			currentDate.year === selectedDate.year &&
-			(currentDate.month === selectedDate.month ||
-				(currentDate.day <= LAST_DAY_TO_FILL_HOURS && currentDate.month === selectedDate.month + 1))
+			currentDate.year < selectedDate.year ||
+			(currentDate.year === selectedDate.year &&
+				(currentDate.month <= selectedDate.month ||
+					(currentDate.day <= LAST_DAY_TO_FILL_HOURS && currentDate.month === selectedDate.month + 1)))
 		);
 	}
 
@@ -274,12 +284,16 @@ export class AttendanceService {
 		return view === 'month' && this.filterWeekends(date) ? '' : 'datepicker-weekend';
 	};
 
-	public getLeaveDuration(startDate: DateTime, endDate: DateTime, dateFilterFn?: DateFilterFn<DateTime>): number {
+	public getLeaveDuration(startDate: DateTime, endDate: DateTime): number {
 		const datePeriod = {
 			startDate,
 			endDate,
 		};
-		return this.timeDurationService.getDuration(datePeriod, FULL_WORKDAY_LENGTH_IN_HOURS * this.rate, dateFilterFn);
+		return this.timeDurationService.getDuration(
+			datePeriod,
+			FULL_WORKDAY_LENGTH_IN_HOURS * this.rate,
+			this.filterWeekends.bind(this)
+		);
 	}
 
 	private getSelectedDate$(): Observable<DateTime> {

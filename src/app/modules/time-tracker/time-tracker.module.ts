@@ -15,6 +15,7 @@ import { DoughnutChartComponent } from './components/time-widget/doughnut-chart/
 import { AddLeaveHoursComponent } from './components/add-hours/add-leave-hours/add-leave-hours.component';
 import { AddWorkTimeHoursComponent } from './components/add-hours/add-worktime-hours/add-work-time-hours.component';
 import { LegendComponent } from './components/time-widget/legend/legend.component';
+import { LeaveHoursPipe } from './components/leaves/leave-hours.pipe';
 
 @NgModule({
 	declarations: [
@@ -31,6 +32,7 @@ import { LegendComponent } from './components/time-widget/legend/legend.componen
 		AddLeaveHoursComponent,
 		AddWorkTimeHoursComponent,
 		LegendComponent,
+		LeaveHoursPipe,
 	],
 	imports: [SharedModule, TimeTrackerRoutingModule],
 	providers: [],

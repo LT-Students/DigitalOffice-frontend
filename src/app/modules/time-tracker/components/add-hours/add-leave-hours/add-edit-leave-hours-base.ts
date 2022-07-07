@@ -22,7 +22,7 @@ export class AddEditLeaveHoursBase extends LoadingState {
 
 	public selectedIntervalDurationInHours$ = new BehaviorSubject(0);
 
-	constructor(private fb: FormBuilder, private attendanceService: AttendanceService) {
+	constructor(private fb: FormBuilder, protected attendanceService: AttendanceService) {
 		super();
 	}
 
@@ -33,11 +33,7 @@ export class AddEditLeaveHoursBase extends LoadingState {
 		if (!endTimeControl.value) {
 			endTimeControl.setValue(startTimeValue.endOf('day'));
 		}
-		const duration = this.attendanceService.getLeaveDuration(
-			startTimeValue,
-			endTimeControl.value,
-			this.disableReservedDays
-		);
+		const duration = this.attendanceService.getLeaveDuration(startTimeValue, endTimeControl.value);
 		this.selectedIntervalDurationInHours$.next(duration);
 	}
 

@@ -10,8 +10,8 @@ import {
 	ViewChild,
 } from '@angular/core';
 import { Chart, registerables, TooltipItem } from 'chart.js';
-import { combineLatest, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { takeUntil, withLatestFrom } from 'rxjs/operators';
 import { LeaveType } from '@api/time-service/models';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { isGUIDEmpty } from '@app/utils/utils';
@@ -70,18 +70,17 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 			next: (monthNorm: number) => (this.monthNorm = monthNorm),
 		});
 
-		combineLatest([this.attendanceService.selectedDate$, this.attendanceService.activities$])
-			.pipe(takeUntil(this.destroy$))
+		this.attendanceService.activities$
+			.pipe(withLatestFrom(this.attendanceService.selectedDate$), takeUntil(this.destroy$))
 			.subscribe({
-				next: ([selectedDate, { workTimes, leaves }]: [DateTime, Activities]) => {
+				next: ([{ workTimes, leaves }, selectedDate]: [Activities, DateTime]) => {
 					this.workTimes = workTimes;
 					this.leaveTimes = leaves.map(
 						(lt: LeaveTime) =>
 							new ChartLeaveTime(
 								lt,
 								selectedDate,
-								this.attendanceService.getLeaveDuration.bind(this.attendanceService),
-								this.attendanceService.filterWeekends.bind(this.attendanceService)
+								this.attendanceService.getLeaveDuration.bind(this.attendanceService)
 							)
 					);
 					this.userHours = this.countUserHours();
