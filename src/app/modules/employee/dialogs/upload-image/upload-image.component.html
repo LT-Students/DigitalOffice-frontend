@@ -6,7 +6,7 @@
 </h3>
 <do-select-image *ngIf="(image$ | async) === null" (fileSelected)="uploadFile($event)"></do-select-image>
 <do-adjust-image
-	*ngIf="(image$ | async) as image"
+	*ngIf="image$ | async as image"
 	[image]="image"
 	[saveInProgress]="imageSaving$ | async"
 	(save)="saveImage($event)"
