@@ -1,0 +1,5 @@
+<h4>Рабочая информация</h4>
+<div class="item" *ngFor="let config of configs$ | async">
+	<do-work-info-item [config]="config"></do-work-info-item>
+	<mat-divider class="divider"></mat-divider>
+</div>

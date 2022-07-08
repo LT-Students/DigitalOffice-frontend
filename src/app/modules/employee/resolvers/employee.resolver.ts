@@ -23,6 +23,7 @@ export class EmployeeResolver implements Resolve<User> {
 			includeuserimages: true,
 			includeprojects: true,
 			includecurrentavatar: true,
+			includecompany: true,
 		};
 
 		return this.userService.getUser(params);

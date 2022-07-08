@@ -26,7 +26,7 @@ export class User extends PersonalInfo {
 		super(data.user);
 		this.additionalInfo = new AdditionalInfo(data.userAddition);
 		this.company = data.companyUser;
-		this.department = data.department && new DepartmentInfo(data.department);
+		this.department = data.departmentUser && new DepartmentInfo(data.departmentUser);
 		this.office = data.office;
 		this.position = data.position;
 		this.role = data.role;

@@ -1,0 +1,24 @@
+.label {
+	flex-basis: 15%;
+}
+
+.value {
+	flex: 1;
+}
+
+.edit-button {
+	margin-left: auto;
+}
+
+.controls {
+	margin-top: 40px;
+
+	display: flex;
+	justify-content: center;
+
+	button:last-child {
+		margin-left: 20px;
+
+		width: 180px;
+	}
+}

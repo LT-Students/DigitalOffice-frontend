@@ -12,8 +12,8 @@ import { createEditRequest } from '@app/utils/utils';
 import { ModalWidth } from '@app/services/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { EmployeePageService } from '../../services/employee-page.service';
-import { UploadImageComponent } from '../../modals/upload-image/upload-image.component';
-import { EditInfoComponent } from '../../modals/edit-info/edit-info.component';
+import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';
+import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
 
 @Component({
 	selector: 'do-employee-page-main-info',

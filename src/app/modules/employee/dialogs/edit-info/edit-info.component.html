@@ -4,7 +4,7 @@
 	<div class="edit-info__header">
 		<h4>Общие сведения</h4>
 		<button doButton (click)="onEdit(user)" *ngIf="!isEditMode">
-			<span class="edit-info__edit-button mat-body-2">Редактировать </span>
+			<span class="edit-info__edit-button">Редактировать </span>
 			<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 		</button>
 		<span class="text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
@@ -165,3 +165,4 @@
 		</button>
 	</div>
 </ng-template>
+<do-edit-work-info></do-edit-work-info>

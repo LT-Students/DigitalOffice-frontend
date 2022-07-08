@@ -1,0 +1,44 @@
+<div class="flex flex_ai_baseline" *ngIf="!isEditMode">
+	<span class="mat-body-2 text-secondary_default label">{{ config.label }}</span>
+	<span class="value">{{ config.value | execute: config.displayValueGetter | placeholder }}</span>
+	<button class="edit-button" doButton (click)="setEditMode(true)">
+		Редактировать&nbsp;<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
+	</button>
+</div>
+<div *ngIf="isEditMode">
+	<ng-container [ngSwitch]="config.type">
+		<do-form-row *ngSwitchCase="'select'" [label]="config.label">
+			<mat-form-field>
+				<mat-select [formControl]="control" [placeholder]="config.placeholder">
+					<mat-option
+						*ngFor="let option of config.options"
+						[value]="option | execute: config.controlValueGetter"
+					>
+						{{ option | execute: config.displayValueGetter }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-row>
+		<do-form-row *ngSwitchCase="'autocomplete'" [label]="config.label">
+			<do-infinite-autocomplete
+				[placeholder]="config.placeholder"
+				[formControl]="control"
+				[loadOptions$]="config.options$"
+				[displayWithFn]="config.displayValueGetter"
+				[displayValueGetter]="config.displayValueGetter"
+				[valueGetter]="config.controlValueGetter"
+			></do-infinite-autocomplete>
+		</do-form-row>
+		<do-form-row *ngSwitchCase="'date'" [label]="config.label">
+			<mat-form-field>
+				<input matInput [matDatepicker]="picker" [formControl]="control" placeholder="ДД месяц ГГГГ" />
+				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-datepicker #picker></mat-datepicker>
+			</mat-form-field>
+		</do-form-row>
+	</ng-container>
+	<div class="controls">
+		<button doButton (click)="setEditMode(false)">Отменить</button>
+		<button mat-flat-button color="primary" [loading]="loading$ | async" (click)="onSubmit()">Сохранить</button>
+	</div>
+</div>

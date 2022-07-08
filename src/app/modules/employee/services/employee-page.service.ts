@@ -38,6 +38,7 @@ export class EmployeePageService {
 			includeuserimages: true,
 			includeprojects: true,
 			includecurrentavatar: true,
+			includecompany: true,
 		};
 
 		return this.userService.getUser(params).pipe(switchMap((user: User) => this.setUser(user)));

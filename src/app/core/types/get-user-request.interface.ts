@@ -61,4 +61,5 @@ export interface IGetUserRequest {
 	 * Include avatar info in answer.
 	 */
 	includecurrentavatar?: boolean;
+	includecompany?: boolean;
 }

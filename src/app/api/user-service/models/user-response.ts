@@ -12,7 +12,7 @@ import { UserAdditionInfo } from './user-addition-info';
 import { UserInfo } from './user-info';
 export interface UserResponse {
 	companyUser?: CompanyUserInfo;
-	department?: DepartmentUserInfo;
+	departmentUser?: DepartmentUserInfo;
 	educations?: Array<EducationInfo>;
 	images?: Array<ImageInfo>;
 	office?: OfficeInfo;
