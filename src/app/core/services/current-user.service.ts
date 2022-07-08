@@ -21,8 +21,9 @@ export class CurrentUserService {
 			userId: userId,
 			includedepartment: true,
 			includerole: true,
-			includeimages: true,
+			includeavatars: true,
 			includecurrentavatar: true,
+			locale: 'ru',
 		};
 
 		return this._userService.getUser(params);

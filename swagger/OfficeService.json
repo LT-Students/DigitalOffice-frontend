@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.2.0",
+    "version": "1.0.3.0",
     "title": "OfficeService",
     "description": "OfficeService is an API that intended to work with offices."
   },
@@ -217,7 +217,7 @@
         }
       }
     },
-    "/users/change": {
+    "/users/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -225,15 +225,71 @@
       ],
       "post": {
         "tags": [
-          "UserOffice"
+          "OfficeUsers"
         ],
-        "operationId": "changeOffice",
-        "description": "Change office of user.",
+        "operationId": "createOfficeUsers",
+        "description": "Create users in specified office.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ChangeUserOfficeRequest"
+                "$ref": "#/components/schemas/CreateOfficeUsers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success operation will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "delete": {
+        "tags": [
+          "OfficeUsers"
+        ],
+        "operationId": "removeOfficeUsers",
+        "description": "Remove users from specified office.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveOfficeUsers"
               }
             }
           },
@@ -576,19 +632,43 @@
           }
         }
       },
-      "ChangeUserOfficeRequest": {
+      "CreateOfficeUsers": {
         "type": "object",
         "required": [
-          "UserId"
+          "UsersIds",
+          "OfficeId"
         ],
         "properties": {
           "OfficeId": {
             "type": "string",
             "format": "uuid"
           },
-          "UserId": {
+          "UsersIds": {
+            "type": "array",
+            "items":{
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "RemoveOfficeUsers": {
+        "type": "object",
+        "required": [
+          "UsersIds",
+          "OfficeId"
+        ],
+        "properties": {
+          "OfficeId": {
             "type": "string",
             "format": "uuid"
+          },
+          "UsersIds": {
+            "type": "array",
+            "items":{
+              "type": "string",
+              "format": "uuid"
+            }
           }
         }
       },

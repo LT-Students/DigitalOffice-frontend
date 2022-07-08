@@ -6,6 +6,7 @@ export interface IWorkInfoConfig {
 	label: string;
 	value: any;
 	displayValueGetter?: (o: any) => any;
+	optionDisplayValueGetter?: (o: any) => any;
 	controlValueGetter?: (o: any) => any;
 	type: 'select' | 'date' | 'autocomplete';
 	placeholder?: string;
@@ -24,6 +25,7 @@ export class WorkInfoConfig {
 	public label: string;
 	public value: any;
 	public displayValueGetter: (o: any) => any;
+	public optionDisplayValueGetter: (o: any) => any;
 	public controlValueGetter: (o: any) => any;
 	public placeholder: string;
 	public validators: ValidatorFn[];
@@ -40,6 +42,7 @@ export class WorkInfoConfig {
 		this.label = params.label;
 		this.value = params.value;
 		this.displayValueGetter = params.displayValueGetter || ((o: any) => o);
+		this.optionDisplayValueGetter = params.optionDisplayValueGetter || this.displayValueGetter;
 		this.controlValueGetter = params.controlValueGetter || ((o: any) => o);
 		this.placeholder = params.placeholder || '';
 		this.validators = params.validators || [];

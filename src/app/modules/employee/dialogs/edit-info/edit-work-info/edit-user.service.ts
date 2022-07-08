@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DepartmentUserApiService } from '@api/department-service/services/department-user-api.service';
 import { DepartmentApiService } from '@api/department-service/services/department-api.service';
-import { UserOfficeApiService } from '@api/office-service/services/user-office-api.service';
 import { OfficeApiService } from '@api/office-service/services/office-api.service';
+import { OfficeUsersApiService } from '@api/office-service/services/office-users-api.service';
 import { PositionUserApiService } from '@api/position-service/services/position-user-api.service';
 import { PositionApiService } from '@api/position-service/services/position-api.service';
 import { UserRoleApiService } from '@api/rights-service/services/user-role-api.service';
@@ -27,7 +27,7 @@ export class EditUserService {
 	constructor(
 		private departmentUser: DepartmentUserApiService,
 		private department: DepartmentApiService,
-		private officeUser: UserOfficeApiService,
+		private officeUser: OfficeUsersApiService,
 		private office: OfficeApiService,
 		private positionUser: PositionUserApiService,
 		private position: PositionApiService,
@@ -52,7 +52,7 @@ export class EditUserService {
 	}
 
 	public findRoles(params: FindParams) {
-		return this.role.findRoles(params);
+		return this.role.findRoles({ ...params, locale: 'ru' });
 	}
 
 	/**
@@ -77,7 +77,7 @@ export class EditUserService {
 
 	public changeOffice(user: User, officeId: string): Observable<any> {
 		return user.office?.id !== officeId
-			? this.officeUser.changeOffice({ body: { userId: user.id, officeId } })
+			? this.officeUser.createOfficeUsers({ body: { officeId, usersIds: [user.id] } })
 			: EMPTY;
 	}
 

@@ -1,7 +1,7 @@
 <div class="flex flex_ai_baseline" *ngIf="!isEditMode">
 	<span class="mat-body-2 text-secondary_default label">{{ config.label }}</span>
 	<span class="value">{{ config.value | execute: config.displayValueGetter | placeholder }}</span>
-	<button class="edit-button" doButton (click)="setEditMode(true)">
+	<button class="edit-button" doButton (click)="setEditMode(true)" data-test="edit-work-info-btn">
 		Редактировать&nbsp;<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 	</button>
 </div>
@@ -14,7 +14,7 @@
 						*ngFor="let option of config.options"
 						[value]="option | execute: config.controlValueGetter"
 					>
-						{{ option | execute: config.displayValueGetter }}
+						{{ option | execute: config.optionDisplayValueGetter }}
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
@@ -24,8 +24,8 @@
 				[placeholder]="config.placeholder"
 				[formControl]="control"
 				[loadOptions$]="config.options$"
-				[displayWithFn]="config.displayValueGetter"
-				[displayValueGetter]="config.displayValueGetter"
+				[displayWithFn]="config.optionDisplayValueGetter"
+				[displayValueGetter]="config.optionDisplayValueGetter"
 				[valueGetter]="config.controlValueGetter"
 			></do-infinite-autocomplete>
 		</do-form-row>
@@ -38,7 +38,15 @@
 		</do-form-row>
 	</ng-container>
 	<div class="controls">
-		<button doButton (click)="setEditMode(false)">Отменить</button>
-		<button mat-flat-button color="primary" [loading]="loading$ | async" (click)="onSubmit()">Сохранить</button>
+		<button doButton (click)="setEditMode(false)" data-test="edit-work-info-cancel-btn">Отменить</button>
+		<button
+			mat-flat-button
+			color="primary"
+			[loading]="loading$ | async"
+			(click)="onSubmit()"
+			data-test="edit-work-info-save-btn"
+		>
+			Сохранить
+		</button>
 	</div>
 </div>

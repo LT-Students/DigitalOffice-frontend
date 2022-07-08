@@ -35,10 +35,11 @@ export class EmployeePageService {
 			includeoffice: true,
 			includecommunications: true,
 			includerole: true,
-			includeuserimages: true,
+			includeavatars: true,
 			includeprojects: true,
 			includecurrentavatar: true,
 			includecompany: true,
+			locale: 'ru',
 		};
 
 		return this.userService.getUser(params).pipe(switchMap((user: User) => this.setUser(user)));

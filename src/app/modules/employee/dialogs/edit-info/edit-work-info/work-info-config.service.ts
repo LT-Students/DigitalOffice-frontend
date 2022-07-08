@@ -6,7 +6,8 @@ import { User } from '@app/models/user/user.model';
 import { DepartmentInfo } from '@app/models/user/department-user-info';
 import { OfficeInfo } from '@api/user-service/models/office-info';
 import { PositionInfo } from '@api/user-service/models/position-info';
-import { RoleInfo } from '@api/user-service/models/role-info';
+import { RoleInfo as UserRoleInfo } from '@api/user-service/models/role-info';
+import { RoleInfo as FindRoleInfo } from '@api/rights-service/models/role-info';
 import { EmployeePageService } from '../../../services/employee-page.service';
 import { EditUserService } from './edit-user.service';
 import { WorkInfoConfig } from './work-info-item/work-info-item';
@@ -53,8 +54,9 @@ export class WorkInfoConfigService {
 						label: 'Роль',
 						value: user.role,
 						type: 'autocomplete',
-						displayValueGetter: (r?: RoleInfo) => r?.name,
-						controlValueGetter: (r?: RoleInfo) => r?.id,
+						displayValueGetter: (r?: UserRoleInfo) => r?.name,
+						optionDisplayValueGetter: (r?: FindRoleInfo) => r?.localizations?.[0].name,
+						controlValueGetter: (r?: UserRoleInfo) => r?.id,
 						placeholder: 'Выберите роль',
 						submitFn: this.editUser.changeRole.bind(this.editUser, user),
 						options$: this.editUser.findRoles.bind(this.editUser),
