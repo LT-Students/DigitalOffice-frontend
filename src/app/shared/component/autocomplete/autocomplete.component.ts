@@ -16,14 +16,15 @@ import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { takeUntil } from 'rxjs/operators';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatAutocompleteOrigin, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { IInfiniteScrollEvent } from 'ngx-infinite-scroll';
 import { OptionComponent } from '@shared/component/option/option.component';
+import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 
 @Component({
 	selector: 'do-autocomplete',
 	template: `
-		<mat-form-field class="form-field">
+		<div class="container" matAutocompleteOrigin #origin="matAutocompleteOrigin">
 			<input
 				#search
 				matInput
@@ -33,8 +34,14 @@ import { OptionComponent } from '@shared/component/option/option.component';
 				type="text"
 				autocomplete="off"
 				[matAutocomplete]="auto"
+				[matAutocompleteConnectedTo]="parentOrigin || origin"
+				(blur)="handleBlur()"
 			/>
-			<mat-icon class="arrow text-secondary_default" matSuffix [svgIcon]="Icons.ArrowDownV1"></mat-icon>
+			<mat-icon
+				class="arrow text-secondary_default"
+				[svgIcon]="Icons.ArrowDownV1"
+				(click)="search.focus()"
+			></mat-icon>
 			<mat-autocomplete
 				#auto="matAutocomplete"
 				infiniteScroll
@@ -51,21 +58,26 @@ import { OptionComponent } from '@shared/component/option/option.component';
 					<ng-container *ngTemplateOutlet="option.template"></ng-container>
 				</mat-option>
 			</mat-autocomplete>
-		</mat-form-field>
+		</div>
 	`,
 	styles: [
 		`
-			.form-field {
-				width: 100%;
+			.container {
+				display: flex;
+				justify-content: space-between;
 			}
+
 			.arrow {
 				cursor: pointer;
 			}
 		`,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [{ provide: MatFormFieldControl, useExisting: AutocompleteComponent }],
 })
-export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAccessor {
+export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAccessor, MatFormFieldControl<any> {
+	private static uniqueId = 0;
+
 	public readonly Icons = Icons;
 	@ContentChildren(OptionComponent) options!: QueryList<OptionComponent>;
 
@@ -77,15 +89,35 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	public valueControl = new FormControl(null);
 	public wasOptionSelected = false;
 	public hasSearchChanged = false;
+	public stateChanges = new Subject<void>();
 	public destroy$ = new Subject<void>();
+
+	@Input()
+	set value(v: any) {
+		this.valueControl.setValue(v);
+	}
+	get value(): any {
+		return this.valueControl.value;
+	}
+
+	public controlType = 'do-autocomplete';
+	public id = `${this.controlType}-${AutocompleteComponent.uniqueId++}`;
+	public focused = false;
+	get empty(): boolean {
+		return !this.valueControl.value;
+	}
+	public shouldLabelFloat = false;
+	public errorState = false;
 
 	@Input()
 	set placeholder(p: any) {
 		this._placeholder = String(p);
 	}
+
 	get placeholder(): string {
 		return this._placeholder;
 	}
+
 	private _placeholder = '';
 
 	@Input()
@@ -96,45 +128,65 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 		} else {
 			this.searchControl.enable();
 		}
-		this.destroy$.next();
+		this.stateChanges.next();
 	}
+
 	get disabled(): boolean {
 		return this._disabled;
 	}
+
 	private _disabled = false;
 
 	@Input()
 	set required(req: any) {
 		this._required = coerceBooleanProperty(req);
-		this.destroy$.next();
+		this.stateChanges.next();
 	}
+
 	get required(): boolean {
 		return this._required;
 	}
+
 	private _required = false;
+	public parentOrigin?: MatAutocompleteOrigin;
 
 	private onChange = () => {};
 	private onTouched = () => {};
 
-	constructor(@Optional() @Self() public ngControl: NgControl) {
+	constructor(@Optional() @Self() public ngControl: NgControl, @Optional() private parentFormField: MatFormField) {
 		if (this.ngControl != null) {
 			this.ngControl.valueAccessor = this;
 		}
+		this.parentOrigin = new MatAutocompleteOrigin(parentFormField.getConnectedOverlayOrigin());
 	}
+	setDescribedByIds(ids: string[]): void {}
+	onContainerClick(event: MouseEvent): void {}
 
 	public ngOnInit(): void {
 		this.searchControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((v: object | string) => {
 			if (typeof v === 'string') {
 				this.hasSearchChanged = true;
 				this.searchChange.emit(v);
+				this.valueControl.setValue(null);
 			}
 		});
 		this.valueControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(this.onChange);
 	}
 
 	public ngOnDestroy(): void {
+		this.stateChanges.next();
+		this.stateChanges.complete();
 		this.destroy$.next();
 		this.destroy$.complete();
+	}
+
+	public handleBlur(): void {
+		this.onTouched();
+		if (!this.valueControl.value) {
+			this.searchControl.setValue('');
+		}
+		this.errorState = !!this.ngControl.invalid && !!this.ngControl.touched;
+		this.stateChanges.next();
 	}
 
 	public handleOptionSelection(event: MatAutocompleteSelectedEvent): void {
@@ -166,5 +218,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 
 	public writeValue(value: any): void {
 		this.searchControl.setValue(value, { emitEvent: false });
+		this.valueControl.setValue(value, { emitEvent: false });
 	}
 }

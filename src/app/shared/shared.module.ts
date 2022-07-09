@@ -12,7 +12,6 @@ import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recover
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { IconsModule } from '@shared/modules/icons/icons.module';
-import { InfiniteAutocompleteComponent } from '@shared/component/autocomplete/infinite-autocomplete.component';
 import { OptionComponent } from '@shared/component/option/option.component';
 import { AutocompleteComponent } from '@shared/component/autocomplete/autocomplete.component';
 import { MaterialModule } from './modules/material/material.module';
@@ -110,7 +109,6 @@ import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 		ControlErrorsPipe,
 		OptionComponent,
 		AutocompleteComponent,
-		InfiniteAutocompleteComponent,
 	],
 	imports: [
 		CommonModule,
@@ -177,7 +175,6 @@ import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 		ControlErrorsPipe,
 		OptionComponent,
 		AutocompleteComponent,
-		InfiniteAutocompleteComponent,
 	],
 })
 export class SharedModule {}

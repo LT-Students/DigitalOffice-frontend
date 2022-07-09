@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { first, map, scan, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -11,13 +10,19 @@ interface AdditionalParams {
 	[key: string]: any;
 }
 
-@Injectable()
-export class InfiniteScrollDataProviderService<T> {
+export class InfiniteScrollDataProvider<T> {
 	private skipCount$!: BehaviorSubject<number>;
 	private takeCount = 40;
 	private totalCount = Number.MAX_VALUE;
+	public dataSource$: Observable<T[]>;
 
-	constructor() {}
+	constructor(
+		loadDataFn: LoadDataFn<T>,
+		loadTriggers?: Observable<AdditionalParams>[] | Observable<AdditionalParams>,
+		takeCount?: number
+	) {
+		this.dataSource$ = this.createInfiniteDataSource$(loadDataFn, loadTriggers, takeCount);
+	}
 
 	public loadOnScroll(): void {
 		this.skipCount$.pipe(first()).subscribe({
@@ -30,7 +35,7 @@ export class InfiniteScrollDataProviderService<T> {
 		});
 	}
 
-	public getInfiniteDataSource$(
+	private createInfiniteDataSource$(
 		loadDataFn: LoadDataFn<T>,
 		loadTriggers?: Observable<AdditionalParams>[] | Observable<AdditionalParams>,
 		takeCount?: number
