@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { LoadingState } from '@shared/directives/button-loading.directive';
 import { WorkInfoConfigService } from './work-info-config.service';
 
 @Component({
@@ -8,10 +9,13 @@ import { WorkInfoConfigService } from './work-info-config.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [WorkInfoConfigService],
 })
-export class EditWorkInfoComponent implements OnInit {
-	public configs$ = this.editWorkInfo.getConfig$();
+export class EditWorkInfoComponent extends LoadingState implements OnInit {
+	public configs$ = this.workInfoConfig.getConfig$();
+	public adminConfig$ = this.workInfoConfig.adminCheckboxConfig$();
 
-	constructor(private editWorkInfo: WorkInfoConfigService) {}
+	constructor(private workInfoConfig: WorkInfoConfigService) {
+		super();
+	}
 
 	ngOnInit(): void {}
 }

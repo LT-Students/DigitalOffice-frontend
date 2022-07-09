@@ -17,6 +17,7 @@ import { SelectImageComponent } from './dialogs/upload-image/select-image/select
 import { AdjustImageComponent } from './dialogs/upload-image/adjust-image/adjust-image.component';
 import { EditWorkInfoComponent } from './dialogs/edit-info/edit-work-info/edit-work-info.component';
 import { WorkInfoItemComponent } from './dialogs/edit-info/edit-work-info/work-info-item/work-info-item.component';
+import { IsAdminStatusComponent } from './dialogs/edit-info/edit-work-info/is-admin-status/is-admin-status.component';
 
 @NgModule({
 	declarations: [
@@ -34,6 +35,7 @@ import { WorkInfoItemComponent } from './dialogs/edit-info/edit-work-info/work-i
 		AdjustImageComponent,
 		EditWorkInfoComponent,
 		WorkInfoItemComponent,
+		IsAdminStatusComponent,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],

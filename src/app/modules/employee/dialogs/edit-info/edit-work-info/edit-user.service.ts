@@ -17,6 +17,8 @@ import { OfficeInfo } from '@api/office-service/models/office-info';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { PositionInfo } from '@api/position-service/models/position-info';
 import { RoleInfo } from '@api/rights-service/models/role-info';
+import { UserService } from '@app/services/user/user.service';
+import { UserPath } from '@app/types/edit-request';
 
 interface FindParams {
 	takeCount: number;
@@ -37,7 +39,8 @@ export class EditUserService {
 		private position: PositionApiService,
 		private roleUser: UserRoleApiService,
 		private role: RoleApiService,
-		private companyUser: CompanyUserApiService
+		private companyUser: CompanyUserApiService,
+		private userService: UserService
 	) {}
 
 	/**
@@ -116,5 +119,9 @@ export class EditUserService {
 					body: [{ path: '/startworkingat', op: 'replace', value: date.toSQL() }],
 			  })
 			: EMPTY;
+	}
+
+	public changeAdminStatus(userId: string, isAdmin: boolean): Observable<any> {
+		return this.userService.editUser(userId, [{ path: UserPath.IS_ADMIN, op: 'replace', value: isAdmin }]);
 	}
 }

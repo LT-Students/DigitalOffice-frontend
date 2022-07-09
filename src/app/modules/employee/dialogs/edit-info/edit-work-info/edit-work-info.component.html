@@ -3,3 +3,8 @@
 	<do-work-info-item [config]="config"></do-work-info-item>
 	<mat-divider class="divider"></mat-divider>
 </div>
+<do-is-admin-status
+	*ngIf="adminConfig$ | async as adminConfig"
+	class="admin"
+	[config]="adminConfig"
+></do-is-admin-status>

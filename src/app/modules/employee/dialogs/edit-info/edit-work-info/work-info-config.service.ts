@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DateTime } from 'luxon';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { DepartmentInfo } from '@app/models/user/department-user-info';
@@ -9,13 +9,19 @@ import { PositionInfo } from '@api/user-service/models/position-info';
 import { RoleInfo as UserRoleInfo } from '@api/user-service/models/role-info';
 import { RoleInfo as FindRoleInfo } from '@api/rights-service/models/role-info';
 import { DoValidators } from '@app/validators/do-validators';
+import { PermissionService } from '@app/services/permission.service';
 import { EmployeePageService } from '../../../services/employee-page.service';
 import { EditUserService } from './edit-user.service';
 import { WorkInfoConfig } from './work-info-item/work-info-item';
+import { IsAdminStatusConfig } from './is-admin-status/is-admin-status.component';
 
 @Injectable()
 export class WorkInfoConfigService {
-	constructor(private employeePage: EmployeePageService, private editUser: EditUserService) {}
+	constructor(
+		private employeePage: EmployeePageService,
+		private editUser: EditUserService,
+		private permission: PermissionService
+	) {}
 
 	public getConfig$(): Observable<WorkInfoConfig[]> {
 		return this.employeePage.selectedUser$.pipe(
@@ -79,6 +85,16 @@ export class WorkInfoConfigService {
 					}),
 				];
 			})
+		);
+	}
+
+	public adminCheckboxConfig$(): Observable<IsAdminStatusConfig> {
+		return combineLatest([this.employeePage.selectedUser$, this.permission.isAdmin$]).pipe(
+			map(([user, isCurrentUserAdmin]: [User, boolean]) => ({
+				isAdmin: user.isAdmin,
+				disabled: !isCurrentUserAdmin,
+				submitFn: this.editUser.changeAdminStatus.bind(this.editUser, user.id),
+			}))
 		);
 	}
 
