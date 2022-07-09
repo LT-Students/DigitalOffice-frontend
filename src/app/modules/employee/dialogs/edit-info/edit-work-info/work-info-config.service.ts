@@ -8,6 +8,7 @@ import { OfficeInfo } from '@api/user-service/models/office-info';
 import { PositionInfo } from '@api/user-service/models/position-info';
 import { RoleInfo as UserRoleInfo } from '@api/user-service/models/role-info';
 import { RoleInfo as FindRoleInfo } from '@api/rights-service/models/role-info';
+import { DoValidators } from '@app/validators/do-validators';
 import { EmployeePageService } from '../../../services/employee-page.service';
 import { EditUserService } from './edit-user.service';
 import { WorkInfoConfig } from './work-info-item/work-info-item';
@@ -25,7 +26,7 @@ export class WorkInfoConfigService {
 						value: user.department,
 						type: 'autocomplete',
 						displayValueGetter: (d?: DepartmentInfo) => d?.shortName,
-						controlValueGetter: (d?: DepartmentInfo) => d?.id,
+						validators: [DoValidators.required],
 						placeholder: 'Выберите департамент',
 						submitFn: this.editUser.changeDepartment.bind(this.editUser, user),
 						options$: this.editUser.findDepartments.bind(this.editUser),
@@ -35,7 +36,6 @@ export class WorkInfoConfigService {
 						value: user.office,
 						type: 'autocomplete',
 						displayValueGetter: (o?: OfficeInfo) => o?.address,
-						controlValueGetter: (o?: OfficeInfo) => o?.id,
 						placeholder: 'Выберите офис',
 						submitFn: this.editUser.changeOffice.bind(this.editUser, user),
 						options$: this.editUser.findOffices.bind(this.editUser),
@@ -45,7 +45,6 @@ export class WorkInfoConfigService {
 						value: user.position,
 						type: 'autocomplete',
 						displayValueGetter: (p?: PositionInfo) => p?.name,
-						controlValueGetter: (p?: PositionInfo) => p?.id,
 						placeholder: 'Выберите должность',
 						submitFn: this.editUser.changePosition.bind(this.editUser, user),
 						options$: this.editUser.findPositions.bind(this.editUser),
@@ -54,9 +53,9 @@ export class WorkInfoConfigService {
 						label: 'Роль',
 						value: user.role,
 						type: 'autocomplete',
-						displayValueGetter: (r?: UserRoleInfo) => r?.name,
+						displayValueGetter: (r?: UserRoleInfo | FindRoleInfo) =>
+							r && 'name' in r ? r.name : r?.localizations[0].name,
 						optionDisplayValueGetter: (r?: FindRoleInfo) => r?.localizations?.[0].name,
-						controlValueGetter: (r?: UserRoleInfo) => r?.id,
 						placeholder: 'Выберите роль',
 						submitFn: this.editUser.changeRole.bind(this.editUser, user),
 						options$: this.editUser.findRoles.bind(this.editUser),
@@ -72,6 +71,7 @@ export class WorkInfoConfigService {
 					new WorkInfoConfig({
 						label: 'В компании с',
 						value: user.company?.startWorkingAt && DateTime.fromISO(user.company.startWorkingAt),
+						validators: [DoValidators.required],
 						displayValueGetter: (date?: string) =>
 							date ? DateTime.fromISO(date).toFormat('dd MMMM y') : null,
 						type: 'date',

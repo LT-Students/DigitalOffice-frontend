@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 
 function isEmptyInputValue(value: any): boolean {
@@ -19,6 +19,11 @@ const PASSWORD_REGEXP =
 	/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\])[\w<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\]{8,14}$/;
 
 export class DoValidators {
+	static required(control: AbstractControl): ValidationErrors | null {
+		const error = Validators.required(control);
+		return error ? { required: { message: 'Обязательное поле!' } } : null;
+	}
+
 	static email(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;

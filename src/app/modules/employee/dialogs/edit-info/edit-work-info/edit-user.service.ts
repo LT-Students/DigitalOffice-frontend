@@ -13,6 +13,10 @@ import { DepartmentUserRole } from '@api/department-service/models/department-us
 import { EMPTY, Observable } from 'rxjs';
 import { DateTime } from 'luxon';
 import { User } from '@app/models/user/user.model';
+import { OfficeInfo } from '@api/office-service/models/office-info';
+import { DepartmentInfo } from '@api/department-service/models/department-info';
+import { PositionInfo } from '@api/position-service/models/position-info';
+import { RoleInfo } from '@api/rights-service/models/role-info';
 
 interface FindParams {
 	takeCount: number;
@@ -58,11 +62,11 @@ export class EditUserService {
 	/**
 	 * Submit methods
 	 */
-	public changeDepartment(user: User, departmentId: string): Observable<any> {
-		return user.department?.id !== departmentId
+	public changeDepartment(user: User, department: DepartmentInfo): Observable<any> {
+		return user.department?.id !== department.id
 			? this.departmentUser.createDepartmentUser({
 					body: {
-						departmentId,
+						departmentId: department.id,
 						users: [
 							{
 								userId: user.id,
@@ -75,20 +79,22 @@ export class EditUserService {
 			: EMPTY;
 	}
 
-	public changeOffice(user: User, officeId: string): Observable<any> {
-		return user.office?.id !== officeId
-			? this.officeUser.createOfficeUsers({ body: { officeId, usersIds: [user.id] } })
+	public changeOffice(user: User, office: OfficeInfo): Observable<any> {
+		return user.office?.id !== office.id
+			? this.officeUser.createOfficeUsers({ body: { officeId: office.id, usersIds: [user.id] } })
 			: EMPTY;
 	}
 
-	public changePosition(user: User, positionId: string): Observable<any> {
-		return user.position?.id !== positionId
-			? this.positionUser.editPositionUser({ body: { userId: user.id, positionId } })
+	public changePosition(user: User, position: PositionInfo): Observable<any> {
+		return user.position?.id !== position.id
+			? this.positionUser.editPositionUser({ body: { userId: user.id, positionId: position.id } })
 			: EMPTY;
 	}
 
-	public changeRole(user: User, roleId: string): Observable<any> {
-		return user.role?.id !== roleId ? this.roleUser.editUserRole({ body: { userId: user.id, roleId } }) : EMPTY;
+	public changeRole(user: User, role: RoleInfo): Observable<any> {
+		return user.role?.id !== role.id
+			? this.roleUser.editUserRole({ body: { userId: user.id, roleId: role.id } })
+			: EMPTY;
 	}
 
 	public changeRate(user: User, rate: number): Observable<any> {
