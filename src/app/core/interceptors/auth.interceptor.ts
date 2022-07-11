@@ -7,7 +7,7 @@ import {
 	HttpInterceptor,
 	HttpRequest,
 } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, throwError } from 'rxjs';
 
 import { catchError, filter, first, switchMap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
@@ -34,7 +34,8 @@ export class AuthInterceptor implements HttpInterceptor {
 						if (accessToken && refreshToken) {
 							return this.refreshToken(req, next);
 						}
-						return this.logoutAndRedirect(error);
+						this.logoutAndRedirect();
+						return throwError(error);
 					}
 				}
 
@@ -53,10 +54,8 @@ export class AuthInterceptor implements HttpInterceptor {
 		return req.clone({ headers });
 	}
 
-	private logoutAndRedirect(error: any): Observable<HttpEvent<any>> {
+	private logoutAndRedirect(): void {
 		this.authService.logout(true);
-
-		return throwError(error);
 	}
 
 	private refreshToken(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -69,9 +68,15 @@ export class AuthInterceptor implements HttpInterceptor {
 					this.refreshingInProgress = false;
 					this.accessTokenSubject.next(result.accessToken);
 
-					return next
-						.handle(this.addAuthorizationHeader(req, result.accessToken))
-						.pipe(catchError((error: any) => this.logoutAndRedirect(error)));
+					return next.handle(this.addAuthorizationHeader(req, result.accessToken)).pipe(
+						catchError((error: any) => {
+							this.logoutAndRedirect();
+							if (error instanceof HttpErrorResponse && error.status === 403) {
+								return EMPTY;
+							}
+							return throwError(error);
+						})
+					);
 				})
 			);
 		} else {
