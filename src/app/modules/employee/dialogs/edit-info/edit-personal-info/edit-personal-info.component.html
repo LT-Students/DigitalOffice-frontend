@@ -1,0 +1,181 @@
+<ng-container *ngIf="user$ | async as user">
+	<div class="edit-info__header">
+		<h4>Общие сведения</h4>
+		<button doButton (click)="onEdit(user)" *ngIf="(canEdit$ | async) && !isEditMode">
+			<span class="edit-info__edit-button">Редактировать </span>
+			<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
+		</button>
+		<span class="text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
+	</div>
+
+	<div class="edit-info__general" [ngClass]="isEditMode ? 'edit-info__general-template' : 'edit-info__general-page'">
+		<ng-container *ngIf="!isEditMode; else editTemplate">
+			<div class="edit-info__field">
+				<span class="mat-body-2 text-secondary_default">Фамилия</span>
+				<div>{{ user.lastName | placeholder }}</div>
+			</div>
+			<div class="edit-info__field">
+				<span class="mat-body-2 text-secondary_default">Имя</span>
+				<div>{{ user.firstName | placeholder }}</div>
+			</div>
+			<div class="edit-info__field">
+				<span class="mat-body-2 text-secondary_default">Отчество</span>
+				<div>{{ user.middleName | placeholder }}</div>
+			</div>
+			<div class="edit-info__field">
+				<span class="mat-body-2 text-secondary_default">Дата рождения</span>
+				<div>{{ user.additionalInfo.dateOfBirth | date: DateFormat.FULL | placeholder }}</div>
+			</div>
+			<div class="edit-info__field">
+				<span class="mat-body-2 text-secondary_default">Время работы</span>
+				<div>
+					{{
+						[user.additionalInfo.businessHoursFromUtc, user.additionalInfo.businessHoursToUtc]
+							| workingHours
+							| placeholder
+					}}
+				</div>
+			</div>
+			<div class="edit-info__field">
+				<span class="mat-body-2 text-secondary_default">Гендер</span>
+				<div>
+					{{ user.additionalInfo.genderName | placeholder }}
+				</div>
+			</div>
+			<div class="edit-info__field edit-info__two-columns">
+				<span class="mat-body-2 text-secondary_default">О себе</span>
+				<div>{{ user.additionalInfo.about | placeholder }}</div>
+			</div>
+		</ng-container>
+	</div>
+</ng-container>
+
+<ng-template #editTemplate [formGroup]="editForm">
+	<do-form-row label="Фамилия">
+		<mat-form-field
+			[matTooltip]="editForm.controls[userPath.LAST_NAME].errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
+			[matTooltipPosition]="'right'"
+		>
+			<input
+				doTransformName
+				matInput
+				[formControlName]="userPath.LAST_NAME"
+				placeholder="Фамилия"
+				minlength="1"
+				maxlength="45"
+				required
+			/>
+			<mat-error *ngIf="editForm.controls[userPath.LAST_NAME].errors?.['whitespace']"
+				>Фамилия не может состоять только из пробелов!
+			</mat-error>
+		</mat-form-field>
+	</do-form-row>
+	<do-form-row label="Имя">
+		<mat-form-field
+			[matTooltip]="editForm.controls[userPath.FIRST_NAME].errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
+			[matTooltipPosition]="'right'"
+		>
+			<input
+				doTransformName
+				matInput
+				[formControlName]="userPath.FIRST_NAME"
+				placeholder="Имя"
+				minlength="1"
+				maxlength="45"
+				required
+			/>
+			<mat-error *ngIf="editForm.controls[userPath.FIRST_NAME].errors?.['whitespace']"
+				>Имя не может состоять только из пробелов!
+			</mat-error>
+		</mat-form-field>
+	</do-form-row>
+	<do-form-row label="Отчество">
+		<mat-form-field>
+			<input
+				doTransformName
+				matInput
+				[formControlName]="userPath.MIDDLE_NAME"
+				placeholder="Отчество"
+				minlength="1"
+				maxlength="45"
+			/>
+			<mat-error *ngIf="editForm.controls[userPath.MIDDLE_NAME].errors?.['whitespace']"
+				>Отчество не может состоять только из пробелов!
+			</mat-error>
+		</mat-form-field>
+	</do-form-row>
+	<do-form-row label="Дата рождения">
+		<mat-form-field>
+			<input
+				matInput
+				[formControlName]="userPath.DATE_OF_BIRTH"
+				[matDatepicker]="dayOfBirth"
+				placeholder="Дата рождения"
+			/>
+			<mat-datepicker-toggle matSuffix [for]="dayOfBirth">
+				<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+			</mat-datepicker-toggle>
+			<mat-datepicker #dayOfBirth></mat-datepicker>
+		</mat-form-field>
+	</do-form-row>
+
+	<do-form-row label="Время работы">
+		<div class="edit-info__hours">
+			<div class="edit-info__hours-input">
+				<label>С</label>
+				<mat-form-field>
+					<input matInput [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC" type="time" />
+					<mat-icon matSuffix [svgIcon]="Icons.Clock"></mat-icon>
+				</mat-form-field>
+			</div>
+			<div class="edit-info__hours-input">
+				<label>По</label>
+				<mat-form-field>
+					<input matInput [formControlName]="userPath.BUSINESS_HOURS_TO_UTC" type="time" />
+					<mat-icon matSuffix [svgIcon]="Icons.Clock"></mat-icon>
+				</mat-form-field>
+			</div>
+		</div>
+	</do-form-row>
+
+	<do-form-row label="Гендер">
+		<mat-form-field>
+			<input matInput placeholder="Гендер" [matAutocomplete]="gender" />
+			<mat-autocomplete #gender="matAutocomplete">
+				<mat-option *ngFor="let gender of genders$ | async">{{ gender.name }}</mat-option>
+			</mat-autocomplete>
+		</mat-form-field>
+	</do-form-row>
+
+	<do-form-row label="О себе" class="edit-info__two-columns">
+		<mat-form-field appearance="outline">
+			<textarea
+				#about
+				matInput
+				autocomplete="off"
+				placeholder="Написать..."
+				maxlength="{{ MAX_ABOUT_LENGTH }}"
+				cdkTextareaAutosize="true"
+				[formControlName]="userPath.ABOUT"
+				cdkAutosizeMinRows="4"
+				cdkAutosizeMaxRows="4"
+			></textarea>
+			<mat-hint align="start">{{ about.value.length }}/{{ MAX_ABOUT_LENGTH }}</mat-hint>
+		</mat-form-field>
+	</do-form-row>
+
+	<div class="edit-info__buttons edit-info__two-columns">
+		<button mat-button (click)="toggleEditMode()" class="edit-info__button">Отменить</button>
+		<button
+			mat-flat-button
+			type="submit"
+			color="primary"
+			[disabled]="editForm.invalid"
+			[loading]="loading$ | async"
+			(click)="onSubmit()"
+			class="edit-info__button"
+		>
+			Сохранить
+		</button>
+	</div>
+</ng-template>

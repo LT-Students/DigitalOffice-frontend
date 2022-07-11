@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { DateTime } from 'luxon';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { RoleInfo as FindRoleInfo } from '@api/rights-service/models/role-info';
 import { DoValidators } from '@app/validators/do-validators';
 import { PermissionService } from '@app/services/permission.service';
 import { UserRights } from '@app/types/user-rights.enum';
+import { formatNumber } from '@angular/common';
 import { EmployeePageService } from '../../../services/employee-page.service';
 import { EditUserService } from './edit-user.service';
 import { WorkInfoConfig } from './work-info-item/work-info-item';
@@ -18,6 +19,7 @@ import { IsAdminStatusConfig } from './is-admin-status/is-admin-status.component
 @Injectable()
 export class WorkInfoConfigService {
 	constructor(
+		@Inject(LOCALE_ID) private locale: string,
 		private employeePage: EmployeePageService,
 		private editUser: EditUserService,
 		private permission: PermissionService
@@ -64,6 +66,7 @@ export class WorkInfoConfigService {
 						value: user.company?.rate,
 						type: 'select',
 						canEdit$: this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
+						displayValueGetter: (rate?: number) => rate && formatNumber(rate, this.locale),
 						placeholder: 'Выберите ставку',
 						submitFn: this.editUser.changeRate.bind(this.editUser, user),
 						options: [1, 0.75, 0.5, 0.25],

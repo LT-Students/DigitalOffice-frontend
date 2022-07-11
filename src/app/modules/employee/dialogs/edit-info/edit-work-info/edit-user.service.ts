@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { DepartmentUserApiService } from '@api/department-service/services/department-user-api.service';
-import { DepartmentApiService } from '@api/department-service/services/department-api.service';
 import { OfficeApiService } from '@api/office-service/services/office-api.service';
 import { OfficeUsersApiService } from '@api/office-service/services/office-users-api.service';
 import { PositionUserApiService } from '@api/position-service/services/position-user-api.service';
@@ -8,13 +6,10 @@ import { PositionApiService } from '@api/position-service/services/position-api.
 import { UserRoleApiService } from '@api/rights-service/services/user-role-api.service';
 import { RoleApiService } from '@api/rights-service/services/role-api.service';
 import { CompanyUserApiService } from '@api/company-service/services/company-user-api.service';
-import { DepartmentUserAssignment } from '@api/department-service/models/department-user-assignment';
-import { DepartmentUserRole } from '@api/department-service/models/department-user-role';
 import { EMPTY, Observable } from 'rxjs';
 import { DateTime } from 'luxon';
 import { User } from '@app/models/user/user.model';
 import { OfficeInfo } from '@api/office-service/models/office-info';
-import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { PositionInfo } from '@api/position-service/models/position-info';
 import { RoleInfo } from '@api/rights-service/models/role-info';
 import { UserService } from '@app/services/user/user.service';
@@ -31,8 +26,6 @@ interface FindParams {
 })
 export class EditUserService {
 	constructor(
-		private departmentUser: DepartmentUserApiService,
-		private department: DepartmentApiService,
 		private officeUser: OfficeUsersApiService,
 		private office: OfficeApiService,
 		private positionUser: PositionUserApiService,
@@ -46,9 +39,6 @@ export class EditUserService {
 	/**
 	 * find methods
 	 */
-	public findDepartments(params: FindParams) {
-		return this.department.findDepartments(params);
-	}
 
 	public findOffices(params: FindParams) {
 		return this.office.findOffices(params);
@@ -65,23 +55,6 @@ export class EditUserService {
 	/**
 	 * Submit methods
 	 */
-	public changeDepartment(user: User, department: DepartmentInfo): Observable<any> {
-		return user.department?.id !== department.id
-			? this.departmentUser.createDepartmentUser({
-					body: {
-						departmentId: department.id,
-						users: [
-							{
-								userId: user.id,
-								assignment: DepartmentUserAssignment.Employee,
-								role: DepartmentUserRole.Employee,
-							},
-						],
-					},
-			  })
-			: EMPTY;
-	}
-
 	public changeOffice(user: User, office: OfficeInfo): Observable<any> {
 		return user.office?.id !== office.id
 			? this.officeUser.createOfficeUsers({ body: { officeId: office.id, usersIds: [user.id] } })

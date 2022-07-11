@@ -15,10 +15,10 @@ export class AdditionalInfo {
 
 	constructor(additionInfo: UserAdditionInfo) {
 		this.about = additionInfo.about;
-		this.businessHoursFromUtc = additionInfo.about;
-		this.businessHoursToUtc = additionInfo.about;
-		this.dateOfBirth = additionInfo.about;
-		this.genderName = additionInfo.about;
+		this.businessHoursFromUtc = additionInfo.businessHoursFromUtc;
+		this.businessHoursToUtc = additionInfo.businessHoursToUtc;
+		this.dateOfBirth = additionInfo.dateOfBirth;
+		this.genderName = additionInfo.genderName;
 
 		if (additionInfo.latitude && additionInfo.longitude) {
 			this.location = {

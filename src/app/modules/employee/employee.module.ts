@@ -18,6 +18,8 @@ import { AdjustImageComponent } from './dialogs/upload-image/adjust-image/adjust
 import { EditWorkInfoComponent } from './dialogs/edit-info/edit-work-info/edit-work-info.component';
 import { WorkInfoItemComponent } from './dialogs/edit-info/edit-work-info/work-info-item/work-info-item.component';
 import { IsAdminStatusComponent } from './dialogs/edit-info/edit-work-info/is-admin-status/is-admin-status.component';
+import { EditPersonalInfoComponent } from './dialogs/edit-info/edit-personal-info/edit-personal-info.component';
+import { WorkingHoursPipe } from './working-hours.pipe';
 
 @NgModule({
 	declarations: [
@@ -36,6 +38,8 @@ import { IsAdminStatusComponent } from './dialogs/edit-info/edit-work-info/is-ad
 		EditWorkInfoComponent,
 		WorkInfoItemComponent,
 		IsAdminStatusComponent,
+		EditPersonalInfoComponent,
+		WorkingHoursPipe,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],

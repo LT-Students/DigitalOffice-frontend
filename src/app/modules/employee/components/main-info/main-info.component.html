@@ -42,19 +42,22 @@
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Дата рождения</span>
-							<p>{{ user.additionalInfo.dateOfBirth | date: dateType.FULL | placeholder }}</p>
+							<p>{{ user.additionalInfo.dateOfBirth | date: DateFormat.FULL | placeholder }}</p>
 						</div>
 					</div>
 					<div class="employee-info__second-column">
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Местоположение</span>
-							<p>Не указано</p>
+							<p>В разработке</p>
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Часы работы</span>
 							<p>
-								{{ user.additionalInfo.businessHoursFromUtc | date: 'shortTime' | placeholder }} -
-								{{ user.additionalInfo.businessHoursToUtc | date: 'shortTime' | placeholder }}
+								{{
+									[user.additionalInfo.businessHoursFromUtc, user.additionalInfo.businessHoursToUtc]
+										| workingHours
+										| placeholder
+								}}
 							</p>
 						</div>
 					</div>
@@ -76,7 +79,7 @@
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">В компании с</span>
-							<p>{{ user.company?.startWorkingAt | date: 'dd MMMM y' | placeholder }}</p>
+							<p>{{ user.company?.startWorkingAt | date: DateFormat.FULL | placeholder }}</p>
 						</div>
 					</div>
 					<div class="employee-info__second-column">
@@ -91,7 +94,7 @@
 
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Ставка</span>
-							<p>{{ user.company?.rate | placeholder }}</p>
+							<p>{{ user.company?.rate | placeholder | number }}</p>
 						</div>
 					</div>
 				</div>

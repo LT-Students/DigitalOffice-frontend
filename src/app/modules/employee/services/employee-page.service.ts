@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject } from 'rxjs';
+import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
@@ -49,6 +49,12 @@ export class EmployeePageService {
 		return this.selectedUser$.pipe(
 			first(),
 			switchMap((user: User) => this.getEmployee(user.id))
+		);
+	}
+
+	public isOwner$(): Observable<boolean> {
+		return combineLatest([this.selectedUser$, this.currentUserService.user$]).pipe(
+			map(([u1, u2]: [User, User]) => u1.id === u2.id)
 		);
 	}
 }
