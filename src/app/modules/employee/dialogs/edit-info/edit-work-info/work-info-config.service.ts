@@ -3,13 +3,13 @@ import { DateTime } from 'luxon';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
-import { DepartmentInfo } from '@app/models/user/department-user-info';
 import { OfficeInfo } from '@api/user-service/models/office-info';
 import { PositionInfo } from '@api/user-service/models/position-info';
 import { RoleInfo as UserRoleInfo } from '@api/user-service/models/role-info';
 import { RoleInfo as FindRoleInfo } from '@api/rights-service/models/role-info';
 import { DoValidators } from '@app/validators/do-validators';
 import { PermissionService } from '@app/services/permission.service';
+import { UserRights } from '@app/types/user-rights.enum';
 import { EmployeePageService } from '../../../services/employee-page.service';
 import { EditUserService } from './edit-user.service';
 import { WorkInfoConfig } from './work-info-item/work-info-item';
@@ -28,19 +28,10 @@ export class WorkInfoConfigService {
 			map((user: User) => {
 				return [
 					new WorkInfoConfig({
-						label: 'Департамент',
-						value: user.department,
-						type: 'autocomplete',
-						displayValueGetter: (d?: DepartmentInfo) => d?.shortName,
-						validators: [DoValidators.required],
-						placeholder: 'Выберите департамент',
-						submitFn: this.editUser.changeDepartment.bind(this.editUser, user),
-						options$: this.editUser.findDepartments.bind(this.editUser),
-					}),
-					new WorkInfoConfig({
 						label: 'Офис',
 						value: user.office,
 						type: 'autocomplete',
+						canEdit$: this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
 						displayValueGetter: (o?: OfficeInfo) => o?.address,
 						placeholder: 'Выберите офис',
 						submitFn: this.editUser.changeOffice.bind(this.editUser, user),
@@ -50,6 +41,7 @@ export class WorkInfoConfigService {
 						label: 'Должность',
 						value: user.position,
 						type: 'autocomplete',
+						canEdit$: this.permission.checkPermission$(UserRights.AddEditRemovePositions),
 						displayValueGetter: (p?: PositionInfo) => p?.name,
 						placeholder: 'Выберите должность',
 						submitFn: this.editUser.changePosition.bind(this.editUser, user),
@@ -59,6 +51,7 @@ export class WorkInfoConfigService {
 						label: 'Роль',
 						value: user.role,
 						type: 'autocomplete',
+						canEdit$: this.permission.checkPermission$(UserRights.AddRemoveUsersRoles),
 						displayValueGetter: (r?: UserRoleInfo | FindRoleInfo) =>
 							r && 'name' in r ? r.name : r?.localizations[0].name,
 						optionDisplayValueGetter: (r?: FindRoleInfo) => r?.localizations?.[0].name,
@@ -70,17 +63,19 @@ export class WorkInfoConfigService {
 						label: 'Ставка',
 						value: user.company?.rate,
 						type: 'select',
+						canEdit$: this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
 						placeholder: 'Выберите ставку',
 						submitFn: this.editUser.changeRate.bind(this.editUser, user),
 						options: [1, 0.75, 0.5, 0.25],
 					}),
 					new WorkInfoConfig({
 						label: 'В компании с',
+						type: 'date',
 						value: user.company?.startWorkingAt && DateTime.fromISO(user.company.startWorkingAt),
+						canEdit$: this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
 						validators: [DoValidators.required],
 						displayValueGetter: (date?: string) =>
 							date ? DateTime.fromISO(date).toFormat('dd MMMM y') : null,
-						type: 'date',
 						submitFn: this.editUser.changeStartWorkingAt.bind(this.editUser, user),
 					}),
 				];

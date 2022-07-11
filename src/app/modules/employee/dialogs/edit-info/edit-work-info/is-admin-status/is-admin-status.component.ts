@@ -13,7 +13,12 @@ export interface IsAdminStatusConfig {
 @Component({
 	selector: 'do-is-admin-status',
 	template: `
-		<mat-checkbox #checkbox [disabled]="config.disabled" [checked]="config.isAdmin">
+		<mat-checkbox
+			#checkbox
+			[disabled]="config.disabled"
+			[checked]="config.isAdmin"
+			data-test="admin-status-checkbox"
+		>
 			<span class="mat-body-2">Дать права администратора</span>
 		</mat-checkbox>
 		<button
@@ -23,6 +28,7 @@ export interface IsAdminStatusConfig {
 			color="warn"
 			[loading]="loading$ | async"
 			(click)="changeAdminStatus(checkbox.checked)"
+			data-test="save-admin-status"
 		>
 			Сохранить
 		</button>

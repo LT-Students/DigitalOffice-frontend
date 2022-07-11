@@ -5,6 +5,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 export interface IWorkInfoConfig {
 	label: string;
 	value: any;
+	canEdit$?: Observable<boolean>;
 	displayValueGetter?: (o: any) => any;
 	optionDisplayValueGetter?: (o: any) => any;
 	controlValueGetter?: (o: any) => any;
@@ -24,6 +25,7 @@ export class WorkInfoConfig {
 	public type: 'select' | 'date' | 'autocomplete';
 	public label: string;
 	public value: any;
+	public canEdit$: Observable<boolean>;
 	public displayValueGetter: (o: any) => any;
 	public optionDisplayValueGetter: (o: any) => any;
 	public controlValueGetter: (o: any) => any;
@@ -41,6 +43,7 @@ export class WorkInfoConfig {
 		this.type = params.type;
 		this.label = params.label;
 		this.value = params.value;
+		this.canEdit$ = params.canEdit$ || of(true);
 		this.displayValueGetter = params.displayValueGetter || ((o: any) => o);
 		this.optionDisplayValueGetter = params.optionDisplayValueGetter || this.displayValueGetter;
 		this.controlValueGetter = params.controlValueGetter || ((o: any) => o);
