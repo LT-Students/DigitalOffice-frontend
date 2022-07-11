@@ -36,10 +36,6 @@ export class AuthInterceptor implements HttpInterceptor {
 						}
 						return this.logoutAndRedirect(error);
 					}
-
-					if (error.status === 403) {
-						return this.logoutAndRedirect(error);
-					}
 				}
 
 				return throwError(error);
@@ -73,7 +69,9 @@ export class AuthInterceptor implements HttpInterceptor {
 					this.refreshingInProgress = false;
 					this.accessTokenSubject.next(result.accessToken);
 
-					return next.handle(this.addAuthorizationHeader(req, result.accessToken));
+					return next
+						.handle(this.addAuthorizationHeader(req, result.accessToken))
+						.pipe(catchError((error: any) => this.logoutAndRedirect(error)));
 				})
 			);
 		} else {
