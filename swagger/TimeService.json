@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.7.4",
+    "version": "1.1.7.6",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -1218,6 +1218,40 @@
           }
         }
       },
+      "PositionInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "guid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "CompanyUserInfo": {
+        "type": "object",
+        "required": [
+          "StartWorkingAt"
+        ],
+        "properties": {
+          "Rate": {
+            "type": "number"
+          },
+          "StartWorkingAt": {
+            "description": "Start user's working date.",
+            "type": "string",
+            "format": "date-time",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2020-07-18T08:23"
+          }
+        }
+      },
       "EditWorkTimeRequest": {
         "type": "array",
         "minItems": 1,
@@ -1326,8 +1360,7 @@
             "$ref": "#/components/schemas/ProjectInfo"
           },
           "Day": {
-            "type": "integer",
-            "nullable": true
+            "type": "integer"
           },
           "Month": {
             "type": "integer"
@@ -1336,12 +1369,10 @@
             "type": "integer"
           },
           "UserHours": {
-            "type": "number",
-            "nullable": true
+            "type": "number"
           },
           "ManagerHours": {
-            "type": "number",
-            "nullable": true
+            "type": "number"
           },
           "Description": {
             "description": "Description for alloted time.",
@@ -1355,16 +1386,13 @@
             "type": "string",
             "format": "date-time",
             "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2020-07-18T08:23",
-            "nullable": true
-
+            "example": "2020-07-18T08:23"
           },
           "Jobs": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/WorkTimeJobInfoInfo"
-            },
-            "nullable": true
+            }
           }
         }
       },
@@ -1542,7 +1570,10 @@
         "type": "object",
         "description": "User data.",
         "required": [
-          "Id"
+          "Id",
+          "FirstName",
+          "LastName",
+          "IsActive"
         ],
         "properties": {
           "Id": {
@@ -1551,34 +1582,50 @@
           },
           "FirstName": {
             "type": "string",
-            "example": "Spartak",
-            "nullable": true
+            "example": "Spartak"
           },
           "LastName": {
             "type": "string",
-            "example": "Ryabtsev",
-            "nullable": true
+            "example": "Ryabtsev"
           },
           "MiddleName": {
             "type": "string",
-            "example": "Alexandrovich",
-            "nullable": true
-          },
-          "Rate": {
-            "type": "number",
-            "nullable": true
-          },
-          "StartWorkingAt": {
-            "description": "Start user's working date.",
-            "type": "string",
-            "format": "date-time",
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2020-07-18T08:23",
-            "nullable": true
+            "example": "Alexandrovich"
           },
           "IsActive": {
-            "type": "boolean",
+            "type": "boolean"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageInfo"
+          }
+        }
+      },
+      "ImageInfo": {
+        "type": "object",
+        "description": "Image data",
+        "required": [
+          "Id",
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Id":{
+            "type": "string",
+            "format": "guid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "guid",
             "nullable": true
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
           }
         }
       },
@@ -1595,9 +1642,7 @@
             "format": "guid"
           },
           "Name": {
-            "type": "string",
-            "example": "Spartak",
-            "nullable": true
+            "type": "string"
           }
         }
       },
@@ -1628,6 +1673,12 @@
         "properties": {
           "User": {
             "$ref": "#/components/schemas/UserInfo"
+          },
+          "Position": {
+            "$ref": "#/components/schemas/PositionInfo"
+          },
+          "CompanyUser": {
+            "$ref": "#/components/schemas/CompanyUserInfo"
           },
           "LeaveTimes": {
             "type": "array",
@@ -1695,14 +1746,10 @@
       "FindResultResponseWorkTimeResponse": {
         "type": "object",
         "required": [
-          "Status",
           "TotalCount",
           "Errors"
         ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "TotalCount": {
             "type": "integer",
             "description": "Total number of finded by filter work times."
@@ -1724,14 +1771,10 @@
       "FindResultResponseWorkTimeMonthLimitInfo": {
         "type": "object",
         "required": [
-          "Status",
           "TotalCount",
           "Errors"
         ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "TotalCount": {
             "type": "integer",
             "description": "Total number of finded by filter work times."
@@ -1753,14 +1796,10 @@
       "FindResultResponseLeaveTimeResponse": {
         "type": "object",
         "required": [
-          "Status",
           "TotalCount",
           "Errors"
         ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "TotalCount": {
             "type": "integer",
             "description": "Total number of finded by filter leave times."
@@ -1782,14 +1821,10 @@
       "FindResultResponseStatInfo": {
         "type": "object",
         "required": [
-          "Status",
           "TotalCount",
           "Errors"
         ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "TotalCount": {
             "type": "integer",
             "description": "Total number of finded users by filter."
@@ -1831,15 +1866,11 @@
         "description": "Response object for action operations.",
         "type": "object",
         "required": [
-          "Status",
           "Errors"
         ],
         "properties": {
           "Body": {
             "type": "object"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -1849,32 +1880,16 @@
           }
         }
       },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed",
-          "Conflict"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
-      },
       "OperationResultResponseByteArray": {
         "description": "Response object for action operations.",
         "type": "object",
         "required": [
-          "Status",
           "Errors"
         ],
         "properties": {
           "Body": {
             "type": "string",
             "format": "byte"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",

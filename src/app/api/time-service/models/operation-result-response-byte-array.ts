@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-import { OperationResultStatusType } from './operation-result-status-type';
 
 /**
  * Response object for action operations.
@@ -8,5 +7,4 @@ import { OperationResultStatusType } from './operation-result-status-type';
 export interface OperationResultResponseByteArray {
 	body?: string;
 	errors: Array<string>;
-	status: OperationResultStatusType;
 }

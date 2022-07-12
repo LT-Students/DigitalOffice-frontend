@@ -3,13 +3,7 @@ import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms'
 import { TimeDurationService } from '@app/services/time-duration.service';
 import { IEditWorkTimeRequest, IFindStatRequest, TimeService } from '@app/services/time/time.service';
 import { DoValidators } from '@app/validators/do-validators';
-import {
-	LeaveTimeInfo,
-	OperationResultResponse,
-	OperationResultStatusType,
-	UserStatInfo,
-	WorkTimeInfo,
-} from '@api/time-service/models';
+import { LeaveTimeInfo, OperationResultResponse, UserStatInfo, WorkTimeInfo } from '@api/time-service/models';
 import { DatePeriod } from '@app/types/date-period';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -114,13 +108,11 @@ export class TeamStatisticsComponent implements OnInit {
 		};
 
 		this._timeService.editWorkTime(params).subscribe((result: OperationResultResponse) => {
-			if (result.status === OperationResultStatusType.FullSuccess) {
-				employee.managerHours =
-					type === 'submit' ? Number(this.hoursGroup.get(`hours_${employee.id}`)?.value ?? 0) : null;
-				this.toggleEditMode(false, employee);
+			employee.managerHours =
+				type === 'submit' ? Number(this.hoursGroup.get(`hours_${employee.id}`)?.value ?? 0) : null;
+			this.toggleEditMode(false, employee);
 
-				this._cdr.markForCheck();
-			}
+			this._cdr.markForCheck();
 		});
 	}
 
@@ -160,7 +152,7 @@ export class TeamStatisticsComponent implements OnInit {
 			leaves: statInfo.leaveTimes?.filter((leaveTime) => leaveTime.isActive) ?? [],
 			position: '-',
 			projectsCount: 0,
-			normHours: (statInfo.limitInfo?.normHours ?? 0) * (statInfo.user?.rate ?? 0),
+			normHours: (statInfo.limitInfo?.normHours ?? 0) * (statInfo.companyUser?.rate ?? 1),
 			modifiedAtUtc: statInfo.workTimes?.[0].modifiedAtUtc ?? '',
 		};
 	}
