@@ -1,7 +1,8 @@
 export { CreateOfficeRequest } from './models/create-office-request';
 export { CreateWorkspaceRequest } from './models/create-workspace-request';
 export { CreateWorkspaceTypeRequest } from './models/create-workspace-type-request';
-export { ChangeUserOfficeRequest } from './models/change-user-office-request';
+export { CreateOfficeUsers } from './models/create-office-users';
+export { RemoveOfficeUsers } from './models/remove-office-users';
 export { OfficeInfo } from './models/office-info';
 export { WorkspaceInfo } from './models/workspace-info';
 export { WorkspaceTypeInfo } from './models/workspace-type-info';

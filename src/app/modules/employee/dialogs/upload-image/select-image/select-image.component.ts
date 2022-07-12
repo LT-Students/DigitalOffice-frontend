@@ -35,11 +35,11 @@ export class SelectImageComponent implements OnInit {
 	private handleFile(file: File): void {
 		if (!ALLOWED_TYPES.includes(file.type)) {
 			this.alert.open('Недопустимое расширение файла');
-			return
+			return;
 		}
 		if (file.size > IMAGE_MAX_SIZE) {
 			this.alert.open('Размер файла слишком большой. Максимальный размер 10 МБ.');
-			return
+			return;
 		}
 
 		this.imageLoading$.next(true);

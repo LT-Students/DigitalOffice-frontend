@@ -1,19 +1,14 @@
-<h3 mat-dialog-title doUnderline underlinedSize="sm">Редактирование профиля</h3>
-
-<ng-container *ngIf="user | async as user">
+<ng-container *ngIf="user$ | async as user">
 	<div class="edit-info__header">
 		<h4>Общие сведения</h4>
-		<button doButton (click)="onEdit(user)" *ngIf="!isEditMode">
-			<span class="edit-info__edit-button mat-body-2">Редактировать </span>
+		<button doButton (click)="onEdit(user)" *ngIf="(canEdit$ | async) && !isEditMode">
+			<span>Редактировать&nbsp;</span>
 			<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 		</button>
 		<span class="text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
 	</div>
 
-	<mat-dialog-content
-		class="edit-info__general"
-		[ngClass]="isEditMode ? 'edit-info__general-template' : 'edit-info__general-page'"
-	>
+	<div class="edit-info__general" [ngClass]="isEditMode ? 'edit-info__general-template' : 'edit-info__general-page'">
 		<ng-container *ngIf="!isEditMode; else editTemplate">
 			<div class="edit-info__field">
 				<span class="mat-body-2 text-secondary_default">Фамилия</span>
@@ -29,13 +24,22 @@
 			</div>
 			<div class="edit-info__field">
 				<span class="mat-body-2 text-secondary_default">Дата рождения</span>
-				<div>{{ user.additionalInfo.dateOfBirth | date: dateType.FULL | placeholder }}</div>
+				<div>{{ user.additionalInfo.dateOfBirth | date: DateFormat.FULL | placeholder }}</div>
 			</div>
 			<div class="edit-info__field">
 				<span class="mat-body-2 text-secondary_default">Время работы</span>
 				<div>
-					{{ user.additionalInfo.businessHoursFromUtc | date: 'shortTime' | placeholder }} -
-					{{ user.additionalInfo.businessHoursToUtc | date: 'shortTime' | placeholder }}
+					{{
+						[user.additionalInfo.businessHoursFromUtc, user.additionalInfo.businessHoursToUtc]
+							| workingHours
+							| placeholder
+					}}
+				</div>
+			</div>
+			<div class="edit-info__field">
+				<span class="mat-body-2 text-secondary_default">Гендер</span>
+				<div>
+					{{ user.additionalInfo.genderName | placeholder }}
 				</div>
 			</div>
 			<div class="edit-info__field edit-info__two-columns">
@@ -43,7 +47,7 @@
 				<div>{{ user.additionalInfo.about | placeholder }}</div>
 			</div>
 		</ng-container>
-	</mat-dialog-content>
+	</div>
 </ng-container>
 
 <ng-template #editTemplate [formGroup]="editForm">
@@ -134,6 +138,8 @@
 		</div>
 	</do-form-row>
 
+	<do-gender-select [formControl]="genderControl" ngDefaultControl></do-gender-select>
+
 	<do-form-row label="О себе" class="edit-info__two-columns">
 		<mat-form-field appearance="outline">
 			<textarea
@@ -156,8 +162,9 @@
 		<button
 			mat-flat-button
 			type="submit"
-			[disabled]="editForm.invalid"
 			color="primary"
+			[disabled]="editForm.invalid"
+			[loading]="loading$ | async"
 			(click)="onSubmit()"
 			class="edit-info__button"
 		>

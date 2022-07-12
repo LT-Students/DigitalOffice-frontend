@@ -40,7 +40,7 @@ export class AdjustImageComponent implements OnInit {
 		} else if (this.croppedImage) {
 			const croppedImage: BaseImageInfo = {
 				content: this.croppedImage.split(',')[1],
-				extension: '.jpeg'
+				extension: '.jpeg',
 			};
 			this.save.emit(croppedImage);
 		}

@@ -48,7 +48,7 @@ export class NewEmployeeComponent implements OnDestroy {
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.userForm = this._initForm();
-		this.position$ = this._positionService.findPositions({ skipcount: 0, takecount: 500 });
+		this.position$ = this._positionService.findPositions({ skipCount: 0, takeCount: 500 });
 		this.department$ = this._departmentService.findDepartments({
 			skipCount: 0,
 			takeCount: 500,

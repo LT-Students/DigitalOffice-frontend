@@ -12,6 +12,8 @@ import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recover
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { IconsModule } from '@shared/modules/icons/icons.module';
+import { OptionComponent } from '@shared/component/option/option.component';
+import { AutocompleteComponent } from '@shared/component/autocomplete/autocomplete.component';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -105,6 +107,8 @@ import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 		SidebarItemComponent,
 		SidebarHeaderComponent,
 		ControlErrorsPipe,
+		OptionComponent,
+		AutocompleteComponent,
 	],
 	imports: [
 		CommonModule,
@@ -169,6 +173,8 @@ import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 		PermissionDirective,
 		ButtonDirective,
 		ControlErrorsPipe,
+		OptionComponent,
+		AutocompleteComponent,
 	],
 })
 export class SharedModule {}

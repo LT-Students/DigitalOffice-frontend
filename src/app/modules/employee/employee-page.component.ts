@@ -1,26 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { UserService } from '@app/services/user/user.service';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
-import { CurrentUserService } from '@app/services/current-user.service';
-import { CommunicationType, CommunicationInfo } from '@api/user-service/models';
-import { DialogService } from '@app/services/dialog.service';
+import { UserRights } from '@app/types/user-rights.enum';
+import { UserArchiveRecoveryService } from '@app/services/user-archive-recovery.service';
 import { EmployeePageService } from './services/employee-page.service';
-
-// eslint-disable-next-line no-shadow
-export enum WorkFlowMode {
-	EDIT = 'EDIT',
-	VIEW = 'VIEW',
-	ADD = 'ADD',
-}
-
-export interface Modes {
-	skills: WorkFlowMode;
-	education: WorkFlowMode;
-	certificates: WorkFlowMode;
-}
 
 @Component({
 	selector: 'do-employee-page',
@@ -30,54 +16,37 @@ export interface Modes {
 	providers: [EmployeePageService],
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
-	private _unsubscribe$$: Subject<void>;
-	public selectedUser$: Observable<User>;
-	public userLogged$: Observable<boolean | undefined>;
+	public readonly UserRights = UserRights;
+	public selectedUser$ = this.employeeService.selectedUser$;
+	private destroy$ = new Subject<void>();
 
 	constructor(
-		private dialog: DialogService,
+		private archiveRecovery: UserArchiveRecoveryService,
 		private userService: UserService,
-		private _employeeService: EmployeePageService,
-		private _route: ActivatedRoute,
-		private _currentUserService: CurrentUserService
-	) {
-		this._unsubscribe$$ = new Subject<void>();
-		this.selectedUser$ = this._employeeService.selectedUser$;
-		this.userLogged$ = this._currentUserService.user$.pipe(map((user) => user.isAdmin));
-	}
+		private employeeService: EmployeePageService,
+		private route: ActivatedRoute
+	) {}
 
 	public ngOnInit(): void {
-		this._route.data
+		this.route.data
 			.pipe(
 				map((data) => data['employee'] as User),
-				switchMap((user: User) => this._employeeService.setUser(user)),
-				takeUntil(this._unsubscribe$$)
+				switchMap((user: User) => this.employeeService.setUser(user)),
+				takeUntil(this.destroy$)
 			)
 			.subscribe();
 	}
 
 	public archiveUser(userId: string): void {
-		this.dialog
-			.confirm({
-				confirmText: 'Да, удалить',
-				title: 'Удаление пользователя',
-				message: 'Вы действительно хотите удалить этого пользователя?',
-			})
-			.afterClosed()
-			.pipe(switchMap((confirmed?: boolean) => (confirmed ? this.userService.disableUser(userId) : EMPTY)))
-			.subscribe();
+		this.archiveRecovery.archiveUser(userId).subscribe();
 	}
 
-	public restoreUser(user: User, communications: CommunicationInfo[] = []): void {
-		const emails = communications.filter(
-			(c: CommunicationInfo) => c.type === CommunicationType.Email || c.type === CommunicationType.BaseEmail
-		);
-
-		this.dialog.recoverUser(user.id, emails, !!user.pendingCommunicationId);
+	public restoreUser(user: User): void {
+		this.archiveRecovery.restoreUser(user.id, user.communications, !!user.pendingCommunicationId).subscribe();
 	}
 
 	public ngOnDestroy(): void {
-		this._unsubscribe$$.next();
-		this._unsubscribe$$.complete();
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 }

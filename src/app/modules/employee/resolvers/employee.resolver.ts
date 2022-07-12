@@ -20,9 +20,11 @@ export class EmployeeResolver implements Resolve<User> {
 			includeoffice: true,
 			includecommunications: true,
 			includerole: true,
-			includeuserimages: true,
+			includeavatars: true,
 			includeprojects: true,
 			includecurrentavatar: true,
+			includecompany: true,
+			locale: 'ru',
 		};
 
 		return this.userService.getUser(params);

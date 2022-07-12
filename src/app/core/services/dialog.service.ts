@@ -3,8 +3,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
 import { ConfirmDialogComponent, ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
-import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
-import { CommunicationInfo } from '@api/user-service/models/communication-info';
 
 export enum ModalType {
 	CREATE,
@@ -60,17 +58,6 @@ export class DialogService {
 
 	public open<R, C = any, D = any>(component: ComponentType<C>, config: MatDialogConfig<D>): MatDialogRef<C, R> {
 		return this._matDialog.open(component, config);
-	}
-
-	public recoverUser(
-		userId: string,
-		emails: CommunicationInfo[],
-		isPending: boolean
-	): MatDialogRef<UserRecoveryComponent, CommunicationInfo | undefined> {
-		return this.open(UserRecoveryComponent, {
-			width: ModalWidth.M,
-			data: { userId, emails, isPending },
-		});
 	}
 
 	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent, boolean> {
