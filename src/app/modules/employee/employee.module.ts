@@ -20,6 +20,7 @@ import { WorkInfoItemComponent } from './dialogs/edit-info/edit-work-info/work-i
 import { IsAdminStatusComponent } from './dialogs/edit-info/edit-work-info/is-admin-status/is-admin-status.component';
 import { EditPersonalInfoComponent } from './dialogs/edit-info/edit-personal-info/edit-personal-info.component';
 import { WorkingHoursPipe } from './working-hours.pipe';
+import { GenderSelectComponent } from './components/gender-select/gender-select.component';
 
 @NgModule({
 	declarations: [
@@ -40,6 +41,7 @@ import { WorkingHoursPipe } from './working-hours.pipe';
 		IsAdminStatusComponent,
 		EditPersonalInfoComponent,
 		WorkingHoursPipe,
+		GenderSelectComponent,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],

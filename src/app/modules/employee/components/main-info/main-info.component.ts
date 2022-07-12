@@ -3,9 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { DateFormat } from '@app/types/date.enum';
 import { ModalWidth } from '@app/services/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
-import { EmployeePageService } from '../../services/employee-page.service';
-import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';
+import { combineLatest, Observable } from 'rxjs';
+import { UserRights } from '@app/types/user-rights.enum';
+import { map } from 'rxjs/operators';
+import { PermissionService } from '@app/services/permission.service';
 import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
+import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';
+import { EmployeePageService } from '../../services/employee-page.service';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -19,14 +23,23 @@ export class MainInfoComponent implements OnInit {
 	public DateFormat = DateFormat;
 
 	public user$ = this.employeePage.selectedUser$;
+	public canEdit$ = this.getCanEdit$();
 
 	constructor(
 		private employeePage: EmployeePageService,
+		private permission: PermissionService,
 		private dialog: MatDialog,
 		private viewContainer: ViewContainerRef
 	) {}
 
 	public ngOnInit(): void {}
+
+	private getCanEdit$(): Observable<boolean> {
+		return combineLatest([
+			this.permission.checkPermission$(UserRights.AddEditRemoveUsers),
+			this.employeePage.isOwner$(),
+		]).pipe(map(([hasPermission, isOwner]: [boolean, boolean]) => hasPermission || isOwner));
+	}
 
 	public editUser(): void {
 		this.dialog.open(EditInfoComponent, {

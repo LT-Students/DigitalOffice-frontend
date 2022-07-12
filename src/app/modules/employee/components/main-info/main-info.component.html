@@ -9,7 +9,11 @@
 						[userInitials]="user"
 						[progressive]="true"
 					></do-profile-image>
-					<label class="mat-body-1 employee-info__upload-button" (click)="onAvatarUploadDialog()">
+					<label
+						*ngIf="canEdit$ | async"
+						class="mat-body-1 employee-info__upload-button"
+						(click)="onAvatarUploadDialog()"
+					>
 						<mat-icon class="employee-info__upload-icon">upload</mat-icon>
 						Обновить фото
 					</label>

@@ -6,9 +6,9 @@ import { DoValidators } from '@app/validators/do-validators';
 import { DateFormat } from '@app/types/date.enum';
 import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
-import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
+import { InitialDataEditRequest, PatchDocument, UserPath } from '@app/types/edit-request';
 import { finalize, first, map, switchMap } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { Icons } from '@shared/modules/icons/icons';
 import { PermissionService } from '@app/services/permission.service';
 import { UserRights } from '@app/types/user-rights.enum';
@@ -28,14 +28,13 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 	public isEditMode = false;
 	public editForm = this.initForm();
 	public canEdit$ = this.getCanEdit$();
+	public genderControl = this.fb.control(null);
 
 	public DateFormat = DateFormat;
 
 	private userInitialInfo?: InitialDataEditRequest<UserPath>;
 	public userPath = UserPath;
 	public readonly MAX_ABOUT_LENGTH = 150;
-
-	public genders$ = this.genderApi.findGender({ skipCount: 0, takeCount: 300 }).pipe(map((res) => res.body));
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) data: Observable<User>,
@@ -80,7 +79,9 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 			[UserPath.BUSINESS_HOURS_FROM_UTC]: this.formatTime(user.additionalInfo.businessHoursFromUtc),
 			[UserPath.BUSINESS_HOURS_TO_UTC]: this.formatTime(user.additionalInfo.businessHoursToUtc),
 			[UserPath.ABOUT]: user.additionalInfo.about,
+			[UserPath.GENDER_ID]: user.additionalInfo.genderName,
 		};
+		this.genderControl.setValue(user.additionalInfo.genderName);
 		this.editForm.patchValue(this.userInitialInfo);
 	}
 
@@ -88,14 +89,23 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 		if (this.userInitialInfo != null) {
 			this.setLoading(true);
 			const editRequest = createEditRequest(this.editForm.getRawValue(), this.userInitialInfo);
+			const isNewGender = this.compareGenders();
 			this.employeePage.selectedUser$
 				.pipe(
 					first(),
 					map((user) => user.id as string),
 					switchMap((userId: string) =>
-						this.userService
-							.editUser(userId, editRequest)
-							.pipe(switchMap(() => this.employeePage.refreshSelectedUser()))
+						this.getGenderChangeRequest(isNewGender).pipe(
+							switchMap((genderId: string | null) => {
+								if (genderId) {
+									const genderEditRequest = new PatchDocument(genderId, UserPath.GENDER_ID);
+									editRequest.push(genderEditRequest);
+								}
+								return this.userService
+									.editUser(userId, editRequest)
+									.pipe(switchMap(() => this.employeePage.refreshSelectedUser()));
+							})
+						)
 					),
 					finalize(() => this.setLoading(false))
 				)
@@ -103,6 +113,25 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 					next: () => this.toggleEditMode(),
 				});
 		}
+	}
+
+	private compareGenders(): boolean {
+		return (
+			this.userInitialInfo?.[UserPath.GENDER_ID]?.toLowerCase() !== this.genderControl.value.name.toLowerCase()
+		);
+	}
+
+	private getGenderChangeRequest(isNewGender: boolean): Observable<string | null> {
+		const newGender = this.genderControl.value;
+		if (isNewGender) {
+			if (newGender.id) {
+				return of(newGender.id);
+			}
+			return this.genderApi
+				.createGender({ body: { name: newGender.name } })
+				.pipe(map((res) => res.body as string));
+		}
+		return of(null);
 	}
 
 	public toggleEditMode(): void {

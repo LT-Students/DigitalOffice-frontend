@@ -2,7 +2,7 @@
 	<div class="edit-info__header">
 		<h4>Общие сведения</h4>
 		<button doButton (click)="onEdit(user)" *ngIf="(canEdit$ | async) && !isEditMode">
-			<span class="edit-info__edit-button">Редактировать </span>
+			<span>Редактировать&nbsp;</span>
 			<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 		</button>
 		<span class="text-alert" *ngIf="isEditMode"><sup>*</sup>&nbsp;Обязательные поля</span>
@@ -138,14 +138,7 @@
 		</div>
 	</do-form-row>
 
-	<do-form-row label="Гендер">
-		<mat-form-field>
-			<input matInput placeholder="Гендер" [matAutocomplete]="gender" />
-			<mat-autocomplete #gender="matAutocomplete">
-				<mat-option *ngFor="let gender of genders$ | async">{{ gender.name }}</mat-option>
-			</mat-autocomplete>
-		</mat-form-field>
-	</do-form-row>
+	<do-gender-select [formControl]="genderControl" ngDefaultControl></do-gender-select>
 
 	<do-form-row label="О себе" class="edit-info__two-columns">
 		<mat-form-field appearance="outline">
