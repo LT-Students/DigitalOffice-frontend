@@ -105,7 +105,7 @@ export class EditorJSParser {
 						return `<li class='${itemClasses}'>${item.content} ${sublist}</li>`;
 					});
 
-					return `<${listStyle} class='list ${listClasses}'>${list.join('')}</${listStyle}>`;
+					return `<${listStyle} class='ce-list ${listClasses}'>${list.join('')}</${listStyle}>`;
 				};
 
 				return of(`<div class='ce-block'>
