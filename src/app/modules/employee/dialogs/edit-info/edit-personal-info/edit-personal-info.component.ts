@@ -8,7 +8,7 @@ import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { InitialDataEditRequest, PatchDocument, UserPath } from '@app/types/edit-request';
 import { finalize, first, map, switchMap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { Icons } from '@shared/modules/icons/icons';
 import { PermissionService } from '@app/services/permission.service';
 import { LoadingState } from '@shared/directives/button-loading.directive';
@@ -68,12 +68,12 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 			[UserPath.LAST_NAME]: user.lastName,
 			[UserPath.MIDDLE_NAME]: user.middleName,
 			[UserPath.DATE_OF_BIRTH]: user.additionalInfo.dateOfBirth,
-			[UserPath.BUSINESS_HOURS_FROM_UTC]: this.formatTime(user.additionalInfo.businessHoursFromUtc),
-			[UserPath.BUSINESS_HOURS_TO_UTC]: this.formatTime(user.additionalInfo.businessHoursToUtc),
+			[UserPath.BUSINESS_HOURS_FROM_UTC]: user.additionalInfo.businessHoursFromUtc,
+			[UserPath.BUSINESS_HOURS_TO_UTC]: user.additionalInfo.businessHoursToUtc,
 			[UserPath.ABOUT]: user.additionalInfo.about,
 			[UserPath.GENDER_ID]: user.additionalInfo.genderName,
 		};
-		this.genderControl.setValue(user.additionalInfo.genderName);
+		this.genderControl.setValue({ id: 'old', name: user.additionalInfo.genderName });
 		this.editForm.patchValue(this.userInitialInfo);
 	}
 
@@ -93,28 +93,32 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 									const genderEditRequest = new PatchDocument(genderId, UserPath.GENDER_ID);
 									editRequest.push(genderEditRequest);
 								}
-								return this.userService
-									.editUser(userId, editRequest)
-									.pipe(switchMap(() => this.employeePage.refreshSelectedUser()));
+								return editRequest.length
+									? this.userService
+											.editUser(userId, editRequest)
+											.pipe(switchMap(() => this.employeePage.refreshSelectedUser()))
+									: EMPTY;
 							})
 						)
 					),
 					finalize(() => this.setLoading(false))
 				)
 				.subscribe({
-					next: () => this.toggleEditMode(),
+					complete: () => this.toggleEditMode(),
 				});
 		}
 	}
 
 	private compareGenders(): boolean {
 		return (
+			this.genderControl.value.name &&
 			this.userInitialInfo?.[UserPath.GENDER_ID]?.toLowerCase() !== this.genderControl.value.name.toLowerCase()
 		);
 	}
 
 	private getGenderChangeRequest(isNewGender: boolean): Observable<string | null> {
 		const newGender = this.genderControl.value;
+		console.log(isNewGender, newGender);
 		if (isNewGender) {
 			if (newGender.id) {
 				return of(newGender.id);
@@ -128,9 +132,5 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 
 	public toggleEditMode(): void {
 		this.isEditMode = !this.isEditMode;
-	}
-
-	private formatTime(time?: string): string | undefined {
-		return time?.split('T')[1];
 	}
 }

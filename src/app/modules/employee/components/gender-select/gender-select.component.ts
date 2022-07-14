@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Optional, Self } from '@angular/core';
 import { GenderApiService } from '@api/user-service/services/gender-api.service';
-import { debounceTime, map, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { debounceTime, filter, map, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { GenderInfo } from '@api/user-service/models/gender-info';
 import { Subject } from 'rxjs';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
 @Component({
 	selector: 'do-gender-select',
@@ -14,6 +15,7 @@ import { Subject } from 'rxjs';
 				<mat-autocomplete
 					#gender="matAutocomplete"
 					(optionSelected)="handleOptionSelection($event.option.value)"
+					[displayWith]="displayWithFn"
 				>
 					<mat-option *ngFor="let gender of genders$ | async" [value]="gender">{{ gender.name }}</mat-option>
 				</mat-autocomplete>
@@ -30,10 +32,17 @@ export class GenderSelectComponent implements OnInit, OnDestroy, ControlValueAcc
 	public genders$ = this.searchControl.valueChanges.pipe(
 		debounceTime(500),
 		startWith(''),
-		switchMap((str: string) => {
-			return this.genderApi.findGender({ skipCount: 0, takeCount: 10 /* includeNameSubstring: str */ }).pipe(
-				map((res) => res.body as GenderInfo[]),
-				tap((genders: GenderInfo[]) => this.setValue(str, genders))
+		filter((search: GenderInfo | string): search is string => typeof search === 'string'),
+		switchMap((str: string, index: number) => {
+			const param = str ? { nameincludesubstring: str } : null;
+			return this.genderApi.findGender({ skipCount: 0, takeCount: 10, ...param }).pipe(
+				map((res: OperationResultResponse) => {
+					const genders = res.body as GenderInfo[];
+					if (index) {
+						this.setValue(str, genders);
+					}
+					return genders;
+				})
 			);
 		})
 	);
@@ -56,6 +65,11 @@ export class GenderSelectComponent implements OnInit, OnDestroy, ControlValueAcc
 	public setValue(name: string, options: GenderInfo[]): void {
 		const gender = options.find((g: GenderInfo) => g.name === name);
 		this.valueControl.setValue(gender || { id: null, name });
+		console.log(name, gender, this.valueControl.value);
+	}
+
+	public displayWithFn(option: GenderInfo): string {
+		return option.name;
 	}
 
 	public handleOptionSelection(option: GenderInfo): void {

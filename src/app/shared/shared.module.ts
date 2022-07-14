@@ -59,6 +59,7 @@ import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-i
 import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
 import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 import { InfoDialogComponent } from './modals/info-dialog/info-dialog.component';
+import { TimeInputComponent } from './component/time-input/time-input.component';
 
 @NgModule({
 	declarations: [
@@ -111,6 +112,7 @@ import { InfoDialogComponent } from './modals/info-dialog/info-dialog.component'
 		OptionComponent,
 		AutocompleteComponent,
 		InfoDialogComponent,
+		TimeInputComponent,
 	],
 	imports: [
 		CommonModule,
@@ -177,6 +179,7 @@ import { InfoDialogComponent } from './modals/info-dialog/info-dialog.component'
 		ControlErrorsPipe,
 		OptionComponent,
 		AutocompleteComponent,
+		TimeInputComponent,
 	],
 })
 export class SharedModule {}
