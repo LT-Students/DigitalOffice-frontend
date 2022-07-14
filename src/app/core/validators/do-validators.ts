@@ -126,7 +126,7 @@ export class DoValidators {
 				return null;
 			}
 			const strLength = control.value.trim().length;
-			return strLength < minLength ? { minlength: true } : null;
+			return strLength < minLength ? { minlength: { message: `Мин. длина: ${minLength}` } } : null;
 		};
 	}
 
@@ -136,7 +136,7 @@ export class DoValidators {
 				return null;
 			}
 			const strLength = control.value.trim().length;
-			return strLength > maxLength ? { maxlength: true } : null;
+			return strLength > maxLength ? { maxlength: { message: `Макс. длина: ${maxLength}` } } : null;
 		};
 	}
 

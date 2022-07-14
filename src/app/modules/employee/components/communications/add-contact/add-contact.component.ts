@@ -31,6 +31,10 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 		return this.contactForm.get('type') as FormControl;
 	}
 
+	private get valueControl(): FormControl {
+		return this.contactForm.get('value') as FormControl;
+	}
+
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public employeeId: string,
 		private fb: FormBuilder,
@@ -43,7 +47,7 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 	public ngOnInit(): void {
 		this.setValueValidators(this.typeControl.value);
 
-		this.subscription = this.typeControl.valueChanges.subscribe({ next: this.setValueValidators });
+		this.subscription = this.typeControl.valueChanges.subscribe({ next: this.setValueValidators.bind(this) });
 	}
 
 	public ngOnDestroy(): void {
@@ -65,10 +69,10 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 		const type = this.typeControl.value;
 		let value: string;
 		if (type === CommunicationType.Phone) {
-			const phoneNum = parsePhoneNumber(this.contactForm.value);
+			const phoneNum = parsePhoneNumber(this.valueControl.value);
 			value = phoneNum.countryCallingCode.toString() + phoneNum.nationalNumber;
 		} else {
-			value = this.contactForm.get('value')?.value;
+			value = this.valueControl.value;
 			if (type === CommunicationType.Telegram || type === CommunicationType.Twitter) {
 				value = `@${value}`;
 			}
@@ -82,7 +86,7 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 
 	private setValueValidators(type: CommunicationType): void {
 		const validators = CommunicationTypeModel.getValidatorsByType(type);
-		(this.contactForm.get('value') as FormControl).setValidators(validators);
-		this.contactForm.updateValueAndValidity();
+		this.valueControl.setValidators(validators);
+		this.valueControl.updateValueAndValidity();
 	}
 }

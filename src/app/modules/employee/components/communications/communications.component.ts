@@ -86,7 +86,10 @@ export class CommunicationsComponent implements OnInit {
 
 	private transformPhone(communication: CommunicationInfo): CommunicationInfo {
 		if (communication.type === CommunicationType.Phone) {
-			communication.value = '+' + communication.value;
+			const phone = communication.value.match(/^(\d{1})(\d{3})(\d{3})(\d{2})(\d{2})$/);
+			if (phone) {
+				communication.value = `+${phone[1]} (${phone[2]}) ${phone[3]}-${phone[4]}-${phone[5]}`;
+			}
 		}
 		return communication;
 	}
