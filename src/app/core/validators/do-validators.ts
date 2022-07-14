@@ -28,7 +28,7 @@ export class DoValidators {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return EMAIL_REGEXP.test(control.value) ? null : { email: true };
+		return EMAIL_REGEXP.test(control.value) ? null : { email: { message: 'Введите корректный email' } };
 	}
 
 	static telegram(control: AbstractControl): ValidationErrors | null {
@@ -36,7 +36,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return TELEGRAM_REGEXP.test(control.value) ? null : { telegram: true };
+		return TELEGRAM_REGEXP.test(control.value)
+			? null
+			: {
+					telegram: {
+						message: `Имя пользователя telegram может содержать символы a-z, 0-9 и нижнее подчёркивание. Имя не может начинаться с цифры, а также начинаться и заканчиваться нижним подчёркиванием.`,
+					},
+			  };
 	}
 
 	static phone(control: AbstractControl): ValidationErrors | null {
@@ -44,7 +50,9 @@ export class DoValidators {
 			return null;
 		}
 
-		return isValidPhoneNumber(control.value) ? null : { phone: true };
+		return isValidPhoneNumber(control.value)
+			? null
+			: { phone: { message: `Введите корректный номер телефона в международном формате.` } };
 	}
 
 	static skype(control: AbstractControl): ValidationErrors | null {
@@ -52,7 +60,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return SKYPE_REGEXP.test(control.value) ? null : { skype: true };
+		return SKYPE_REGEXP.test(control.value)
+			? null
+			: {
+					skype: {
+						message: `Имя пользователя skype может содержать символы a-z, 0-9, а также запятую, тире, точку и нижнее подчёркивание.`,
+					},
+			  };
 	}
 
 	static twitter(control: AbstractControl): ValidationErrors | null {
@@ -60,7 +74,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return TWITTER_REGEXP.test(control.value) ? null : { twitter: true };
+		return TWITTER_REGEXP.test(control.value)
+			? null
+			: {
+					twitter: {
+						message: `Имя пользователя twitter может содержать символы a-z, 0-9 и нижнее подчёркивание.`,
+					},
+			  };
 	}
 
 	static floatNumber(control: AbstractControl): ValidationErrors | null {

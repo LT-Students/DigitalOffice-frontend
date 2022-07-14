@@ -23,6 +23,7 @@ export class CurrentUserService {
 			includerole: true,
 			includeavatars: true,
 			includecurrentavatar: true,
+			includecompany: true,
 			locale: 'ru',
 		};
 

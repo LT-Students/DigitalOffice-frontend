@@ -21,7 +21,7 @@ export class CommunicationTypeModel {
 	}
 
 	public static getValidatorsByType(contactType: CommunicationType | undefined): ValidatorFn[] {
-		const validators: ValidatorFn[] = [Validators.required];
+		const validators: ValidatorFn[] = [DoValidators.required];
 
 		switch (contactType) {
 			case CommunicationType.Email: {

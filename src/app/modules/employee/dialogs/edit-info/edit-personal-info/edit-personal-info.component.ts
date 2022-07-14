@@ -8,10 +8,9 @@ import { UserService } from '@app/services/user/user.service';
 import { createEditRequest } from '@app/utils/utils';
 import { InitialDataEditRequest, PatchDocument, UserPath } from '@app/types/edit-request';
 import { finalize, first, map, switchMap } from 'rxjs/operators';
-import { combineLatest, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Icons } from '@shared/modules/icons/icons';
 import { PermissionService } from '@app/services/permission.service';
-import { UserRights } from '@app/types/user-rights.enum';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { GenderApiService } from '@api/user-service/services/gender-api.service';
 import { EmployeePageService } from '../../../services/employee-page.service';
@@ -27,7 +26,7 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 	public user$: Observable<User>;
 	public isEditMode = false;
 	public editForm = this.initForm();
-	public canEdit$ = this.getCanEdit$();
+	public canEdit$ = this.employeePage.canManagePersonalInfo$();
 	public genderControl = this.fb.control(null);
 
 	public DateFormat = DateFormat;
@@ -49,13 +48,6 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 	}
 
 	ngOnInit(): void {}
-
-	private getCanEdit$(): Observable<boolean> {
-		return combineLatest([
-			this.permission.checkPermission$(UserRights.AddEditRemoveUsers),
-			this.employeePage.isOwner$(),
-		]).pipe(map(([hasPermission, isOwner]: [boolean, boolean]) => hasPermission || isOwner));
-	}
 
 	private initForm(): FormGroup {
 		return this.fb.group({

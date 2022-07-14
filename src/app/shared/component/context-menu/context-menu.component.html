@@ -1,11 +1,12 @@
 <div
 	class="menu"
-	[style.left.px]="menuPosition.x"
 	[style.top.px]="menuPosition.y"
+	[style.left.px]="menuPosition.x"
+	[style.width.px]="menuPosition.width"
 	[matMenuTriggerFor]="contextMenu"
 	(menuClosed)="onMenuClose()"
 ></div>
-<mat-menu #contextMenu="matMenu">
+<mat-menu #contextMenu="matMenu" [xPosition]="xPosition" [yPosition]="yPosition">
 	<ng-container *ngFor="let item of items">
 		<button
 			*ngIf="object && (object | execute: item.visible)"

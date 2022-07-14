@@ -3,6 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ComponentType } from '@angular/cdk/overlay';
 import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
 import { ConfirmDialogComponent, ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { InfoDialogComponent, InfoDialogData } from '@shared/modals/info-dialog/info-dialog.component';
 
 export enum ModalType {
 	CREATE,
@@ -38,7 +39,7 @@ export const enum ModalWidth {
 	providedIn: 'root',
 })
 export class DialogService {
-	constructor(private _matDialog: MatDialog) {}
+	constructor(private matDialog: MatDialog) {}
 
 	/**
 	 * @deprecated use 'open' method
@@ -49,23 +50,27 @@ export class DialogService {
 		modalContentConfig?: T,
 		result?: R
 	): MatDialogRef<C, R> {
-		return this._matDialog.open<C, T, R>(component, {
+		return this.matDialog.open<C, T, R>(component, {
 			data: modalContentConfig,
 			width: modalWidth,
 			role: 'alertdialog',
 		});
 	}
 
-	public open<R, C = any, D = any>(component: ComponentType<C>, config: MatDialogConfig<D>): MatDialogRef<C, R> {
-		return this._matDialog.open(component, config);
+	public open<R, C = any, D = any>(component: ComponentType<C>, config?: MatDialogConfig<D>): MatDialogRef<C, R> {
+		return this.matDialog.open(component, config);
 	}
 
-	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent, boolean> {
-		return this._matDialog.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.M });
+	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent> {
+		return this.matDialog.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.M });
+	}
+
+	public info(infoData: InfoDialogData): MatDialogRef<InfoDialogComponent> {
+		return this.matDialog.open(InfoDialogComponent, { data: infoData, width: ModalWidth.M });
 	}
 
 	public fullScreen<C, T, R = any>(component: ComponentType<C>, data?: T): MatDialogRef<C, R> {
-		return this._matDialog.open(component, {
+		return this.matDialog.open(component, {
 			maxHeight: '100vh',
 			maxWidth: '100vw',
 			height: '100%',
@@ -74,5 +79,9 @@ export class DialogService {
 			autoFocus: false,
 			panelClass: 'dialog-border-radius-none',
 		});
+	}
+
+	public closeAll(): void {
+		this.matDialog.closeAll();
 	}
 }

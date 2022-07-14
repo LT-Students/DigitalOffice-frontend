@@ -6,13 +6,19 @@ import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { UUID } from '@app/types/uuid.type';
+import { UserRights } from '@app/types/user-rights.enum';
+import { PermissionService } from '@app/services/permission.service';
 
 @Injectable()
 export class EmployeePageService {
 	private selectedUser: ReplaySubject<User> = new ReplaySubject<User>(1);
 	public readonly selectedUser$: Observable<User> = this.selectedUser.asObservable();
 
-	constructor(private userService: UserService, private currentUserService: CurrentUserService) {}
+	constructor(
+		private userService: UserService,
+		private currentUserService: CurrentUserService,
+		private permission: PermissionService
+	) {}
 
 	public setUser(user: User): Observable<User> {
 		this.selectedUser.next(user);
@@ -55,6 +61,12 @@ export class EmployeePageService {
 	public isOwner$(): Observable<boolean> {
 		return combineLatest([this.selectedUser$, this.currentUserService.user$]).pipe(
 			map(([u1, u2]: [User, User]) => u1.id === u2.id)
+		);
+	}
+
+	public canManagePersonalInfo$(): Observable<boolean> {
+		return combineLatest([this.permission.checkPermission$(UserRights.AddEditRemoveUsers), this.isOwner$()]).pipe(
+			map(([hasPermission, isOwner]: [boolean, boolean]) => hasPermission || isOwner)
 		);
 	}
 }

@@ -58,6 +58,7 @@ import { ButtonDirective } from './directives/button.directive';
 import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-item.component';
 import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
 import { ControlErrorsPipe } from './pipes/control-errors.pipe';
+import { InfoDialogComponent } from './modals/info-dialog/info-dialog.component';
 
 @NgModule({
 	declarations: [
@@ -109,6 +110,7 @@ import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 		ControlErrorsPipe,
 		OptionComponent,
 		AutocompleteComponent,
+		InfoDialogComponent,
 	],
 	imports: [
 		CommonModule,

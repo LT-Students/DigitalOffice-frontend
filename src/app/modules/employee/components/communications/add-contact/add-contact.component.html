@@ -1,0 +1,41 @@
+<h3 mat-dialog-title class="title">Создание контакта</h3>
+<div [formGroup]="contactForm">
+	<do-form-row label="Тип контакта">
+		<mat-form-field>
+			<mat-select formControlName="type">
+				<mat-option *ngFor="let type of contactTypes" [value]="type.type">
+					{{ type.contactName }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</do-form-row>
+	<do-form-row [label]="contactForm.controls['type'].value | communicationType">
+		<mat-form-field>
+			<mat-icon
+				matPrefix
+				*ngIf="
+					contactForm.controls['type'].value === Type.Telegram ||
+					contactForm.controls['type'].value === Type.Twitter
+				"
+			>
+				alternate_email
+			</mat-icon>
+			<input
+				matInput
+				formControlName="value"
+				*ngIf="contactForm.controls['type'].value !== Type.Phone; else phoneInput"
+				[placeholder]="'Введите новый ' + (contactForm.controls['type'].value | communicationType)"
+			/>
+			<ng-template #phoneInput>
+				<do-phone-input formControlName="value" placeholder="+7 (___)___-__-__"></do-phone-input>
+			</ng-template>
+			<mat-error>{{ contactForm.controls['value'].errors | controlErrors }}</mat-error>
+		</mat-form-field>
+	</do-form-row>
+</div>
+<div class="controls">
+	<button doButton (click)="onClose()" class="button">Отменить</button>
+	<button class="button" mat-flat-button color="primary" [loading]="loading$ | async" (click)="onSubmit()">
+		Создать контакт
+	</button>
+</div>

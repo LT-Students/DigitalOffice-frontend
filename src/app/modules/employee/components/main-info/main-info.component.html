@@ -104,7 +104,10 @@
 				</div>
 			</div>
 			<div class="employee-info__additional">
-				<do-communications class="employee-info__communications"></do-communications>
+				<do-communications
+					class="employee-info__communications"
+					[communications]="user.communications || []"
+				></do-communications>
 			</div>
 		</div>
 	</ng-container>

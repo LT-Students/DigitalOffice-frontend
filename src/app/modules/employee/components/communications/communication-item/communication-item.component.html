@@ -1,0 +1,27 @@
+<div class="communication">
+	<div class="info">
+		<div class="label text-secondary_default">
+			<span class="mat-body-2">{{ communication.type | communicationType }}</span>
+			<mat-icon
+				*ngIf="communication.type === CommunicationType.BaseEmail"
+				class="icon"
+				[svgIcon]="Icons.StarBorder"
+				inline
+				matTooltip="Основной e-mail"
+				matTooltipPosition="above"
+				[matTooltipShowDelay]="400"
+			></mat-icon>
+		</div>
+		<span class="value">{{ communication.value }}</span>
+		<span
+			*ngIf="communication.type === CommunicationType.Email && !communication.isConfirmed"
+			class="mat-body-2 text-alert"
+			>Требует подтверждения</span
+		>
+	</div>
+	<div *ngIf="(canEdit$ | async) && communication.type !== CommunicationType.BaseEmail" class="controls">
+		<button type="button" doButton (click)="openContextMenu($event)">
+			<mat-icon [svgIcon]="Icons.KebabMenu"></mat-icon>
+		</button>
+	</div>
+</div>

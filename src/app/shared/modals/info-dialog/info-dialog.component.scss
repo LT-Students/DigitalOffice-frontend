@@ -6,11 +6,10 @@
 	text-align: center;
 }
 
+.message {
+	white-space: pre-line;
+}
+
 .dialog-actions {
 	margin-top: 48px;
-	padding: 0;
-
-	.submit {
-		margin-left: 24px;
-	}
 }
