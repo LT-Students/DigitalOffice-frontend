@@ -1,0 +1,36 @@
+:host {
+	display: block;
+}
+
+.communication {
+	padding: 8px 0 10px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.info {
+	display: flex;
+	overflow: hidden;
+	flex-direction: column;
+}
+
+.label {
+	margin-bottom: 6px;
+
+	display: flex;
+
+	.icon {
+		margin-left: 4px;
+
+		width: 16px;
+		height: 16px;
+	}
+}
+
+.value {
+	overflow: hidden;
+
+	text-overflow: ellipsis;
+}

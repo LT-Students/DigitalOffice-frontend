@@ -7,9 +7,9 @@ import { ProjectsComponent } from './components/projects/projects.component';
 
 import { UploadImageComponent } from './dialogs/upload-image/upload-image.component';
 import { EmployeeRoutingModule } from './employee-routing.module';
-import { CommunicationsComponent } from './components/main-info/communications/communications.component';
-import { EditContactComponent } from './components/main-info/communications/edit-contact/edit-contact.component';
-import { AddContactComponent } from './components/main-info/communications/add-contact/add-contact.component';
+import { CommunicationsComponent } from './components/communications/communications.component';
+import { EditContactComponent } from './components/communications/edit-contact/edit-contact.component';
+import { AddContactComponent } from './components/communications/add-contact/add-contact.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { UserListItemComponent } from './components/user-list/user-list-item/user-list-item.component';
 import { EditInfoComponent } from './dialogs/edit-info/edit-info.component';
@@ -21,6 +21,8 @@ import { IsAdminStatusComponent } from './dialogs/edit-info/edit-work-info/is-ad
 import { EditPersonalInfoComponent } from './dialogs/edit-info/edit-personal-info/edit-personal-info.component';
 import { WorkingHoursPipe } from './working-hours.pipe';
 import { GenderSelectComponent } from './components/gender-select/gender-select.component';
+import { CommunicationItemComponent } from './components/communications/communication-item/communication-item.component';
+import { CommunicationTypePipe } from './components/communications/communication-item/communication-type.pipe';
 
 @NgModule({
 	declarations: [
@@ -42,6 +44,8 @@ import { GenderSelectComponent } from './components/gender-select/gender-select.
 		EditPersonalInfoComponent,
 		WorkingHoursPipe,
 		GenderSelectComponent,
+		CommunicationItemComponent,
+		CommunicationTypePipe,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],

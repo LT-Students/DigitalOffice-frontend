@@ -98,13 +98,16 @@
 
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Ставка</span>
-							<p>{{ user.company?.rate | placeholder | number }}</p>
+							<p>{{ user.company?.rate | number | placeholder }}</p>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="employee-info__additional">
-				<do-communications class="employee-info__communications"></do-communications>
+				<do-communications
+					class="employee-info__communications"
+					[communications]="user.communications || []"
+				></do-communications>
 			</div>
 		</div>
 	</ng-container>

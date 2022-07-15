@@ -19,34 +19,28 @@ type RemoveFrom = 'active' | 'pending';
 @Injectable()
 export class ContextMenuService {
 	public readonly menuItems: MenuItem[] = [
-		// {
-		// 	title: 'Редактировать',
-		// 	action: () => {},
-		// 	visible: (user: UserInfoLike) => user && this.isActiveUser(user),
-		// 	icon: 'edit',
-		// },
 		{
 			title: 'Добавить в архив',
 			action: (user: UserInfoLike) => this.archiveUser(user),
-			visible: (user: UserInfoLike) => user && isActiveUser(user),
+			visible: (user: UserInfoLike) => isActiveUser(user),
 			icon: 'archive',
 		},
 		{
 			title: 'Восстановить из архива',
 			action: (user: UserInfoLike) => this.restoreUser(user as UserInfo),
-			visible: (user: UserInfoLike) => user && !isActiveUser(user) && !isPendingUser(user),
+			visible: (user: UserInfoLike) => !isActiveUser(user) && !isPendingUser(user),
 			icon: 'unarchive',
 		},
 		{
 			title: 'Отменить приглашение',
 			action: (user: UserInfoLike) => this.removePending(user as UserInfo),
-			visible: (user: UserInfoLike) => user && isPendingUser(user),
+			visible: (user: UserInfoLike) => isPendingUser(user),
 			icon: 'unsubscribe',
 		},
 		{
 			title: 'Отправить приглашение',
 			action: (user: UserInfoLike) => this.restoreUser(user as UserInfo),
-			visible: (user: UserInfoLike) => user && isPendingUser(user),
+			visible: (user: UserInfoLike) => isPendingUser(user),
 			icon: 'mark_email_read',
 		},
 	];

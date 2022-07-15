@@ -3,9 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { DateFormat } from '@app/types/date.enum';
 import { ModalWidth } from '@app/services/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
-import { combineLatest, Observable } from 'rxjs';
-import { UserRights } from '@app/types/user-rights.enum';
-import { map } from 'rxjs/operators';
 import { PermissionService } from '@app/services/permission.service';
 import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
 import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';
@@ -23,7 +20,7 @@ export class MainInfoComponent implements OnInit {
 	public DateFormat = DateFormat;
 
 	public user$ = this.employeePage.selectedUser$;
-	public canEdit$ = this.getCanEdit$();
+	public canEdit$ = this.employeePage.canManagePersonalInfo$();
 
 	constructor(
 		private employeePage: EmployeePageService,
@@ -33,13 +30,6 @@ export class MainInfoComponent implements OnInit {
 	) {}
 
 	public ngOnInit(): void {}
-
-	private getCanEdit$(): Observable<boolean> {
-		return combineLatest([
-			this.permission.checkPermission$(UserRights.AddEditRemoveUsers),
-			this.employeePage.isOwner$(),
-		]).pipe(map(([hasPermission, isOwner]: [boolean, boolean]) => hasPermission || isOwner));
-	}
 
 	public editUser(): void {
 		this.dialog.open(EditInfoComponent, {

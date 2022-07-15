@@ -7,13 +7,14 @@ import { User } from '@app/models/user/user.model';
 import { UserRights } from '@app/types/user-rights.enum';
 import { UserArchiveRecoveryService } from '@app/services/user-archive-recovery.service';
 import { EmployeePageService } from './services/employee-page.service';
+import { ManageCommunicationsService } from './components/communications/services/manage-communications.service';
 
 @Component({
 	selector: 'do-employee-page',
 	templateUrl: './employee-page.component.html',
 	styleUrls: ['./employee-page.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [EmployeePageService],
+	providers: [EmployeePageService, ManageCommunicationsService],
 })
 export class EmployeePageComponent implements OnInit, OnDestroy {
 	public readonly UserRights = UserRights;

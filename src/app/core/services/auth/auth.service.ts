@@ -19,6 +19,7 @@ import { Company } from '@app/models/company';
 import { CompanyService } from '@app/services/company/company.service';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { AuthTokenService } from '@app/services/auth-token.service';
+import { DialogService } from '@app/services/dialog.service';
 import { AuthRoutes } from '../../../modules/auth/models/auth-routes';
 
 @Injectable({
@@ -33,7 +34,8 @@ export class AuthService {
 		private currentCompanyService: CurrentCompanyService,
 		private credentialsApiService: CredentialsApiService,
 		private authToken: AuthTokenService,
-		private router: Router
+		private router: Router,
+		private dialog: DialogService
 	) {}
 
 	public login(authenticationRequest: AuthenticationRequest): Observable<[User, Company]> {
@@ -59,6 +61,7 @@ export class AuthService {
 	}
 
 	public logout(isTokenExpired = false): void {
+		this.dialog.closeAll();
 		this.removeTokens();
 
 		const returnUrl = this.router.url;

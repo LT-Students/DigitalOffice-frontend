@@ -4,8 +4,8 @@
 	text-align: center;
 }
 
-.field {
-	display: block;
+do-form-row:not(:last-child) {
+	margin-bottom: 16px;
 }
 
 .controls {
@@ -15,9 +15,7 @@
 	display: flex;
 	justify-content: center;
 
-	&__button {
-		margin: 0 35px;
-
+	.button {
 		width: 180px;
 	}
 }

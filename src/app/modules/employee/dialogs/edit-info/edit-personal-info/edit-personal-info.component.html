@@ -122,17 +122,15 @@
 	<do-form-row label="Время работы">
 		<div class="edit-info__hours">
 			<div class="edit-info__hours-input">
-				<label>С</label>
+				<span>С</span>
 				<mat-form-field>
-					<input matInput [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC" type="time" />
-					<mat-icon matSuffix [svgIcon]="Icons.Clock"></mat-icon>
+					<do-time-input [formControlName]="userPath.BUSINESS_HOURS_FROM_UTC"></do-time-input>
 				</mat-form-field>
 			</div>
 			<div class="edit-info__hours-input">
-				<label>По</label>
+				<span>По</span>
 				<mat-form-field>
-					<input matInput [formControlName]="userPath.BUSINESS_HOURS_TO_UTC" type="time" />
-					<mat-icon matSuffix [svgIcon]="Icons.Clock"></mat-icon>
+					<do-time-input [formControlName]="userPath.BUSINESS_HOURS_TO_UTC"></do-time-input>
 				</mat-form-field>
 			</div>
 		</div>

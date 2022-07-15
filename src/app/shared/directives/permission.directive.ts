@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 export class PermissionDirective implements OnInit, OnDestroy {
 	@Input() hasPermission!: UserRights;
 	private readonly destroy$ = new Subject<void>();
+	private hasView = false;
 
 	constructor(
 		private permissionService: PermissionService,
@@ -23,10 +24,12 @@ export class PermissionDirective implements OnInit, OnDestroy {
 			.pipe(takeUntil(this.destroy$))
 			.subscribe({
 				next: (hasPermission: boolean) => {
-					if (hasPermission) {
+					if (hasPermission && !this.hasView) {
 						this.viewContainer.createEmbeddedView(this.templateRef);
-					} else {
+						this.hasView = true;
+					} else if (!hasPermission && this.hasView) {
 						this.viewContainer.clear();
+						this.hasView = false;
 					}
 				},
 			});

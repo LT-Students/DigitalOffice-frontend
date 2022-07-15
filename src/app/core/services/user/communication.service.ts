@@ -3,8 +3,6 @@ import { Observable } from 'rxjs';
 import { CommunicationApiService } from '@api/user-service/services/communication-api.service';
 import { CreateCommunicationRequest } from '@api/user-service/models/create-communication-request';
 import { IEditCommunicationRequest } from '@app/types/edit-communication-request.interface';
-import { ResponseMessageModel } from '@app/models/response/response-message.model';
-import { MessageTriggeredFrom, MessageMethod } from '@app/models/response/response-message';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 
 export interface IRemoveCommunicationRequest {
@@ -18,21 +16,14 @@ export interface IRemoveCommunicationRequest {
 	providedIn: 'root',
 })
 export class CommunicationService {
-	constructor(
-		private communicationService: CommunicationApiService,
-		private _responseMessage: ResponseMessageModel
-	) {}
+	constructor(private communicationService: CommunicationApiService) {}
 
 	public createCommunication(body: CreateCommunicationRequest): Observable<OperationResultResponse> {
-		return this.communicationService
-			.createCommunication({ body })
-			.pipe(this._responseMessage.message(MessageTriggeredFrom.Communication, MessageMethod.Create));
+		return this.communicationService.createCommunication({ body });
 	}
 
 	public editCommunication(params: IEditCommunicationRequest): Observable<OperationResultResponse> {
-		return this.communicationService
-			.editCommunication(params)
-			.pipe(this._responseMessage.message(MessageTriggeredFrom.Communication, MessageMethod.Edit));
+		return this.communicationService.editCommunication(params);
 	}
 
 	public removeCommunication(params: IRemoveCommunicationRequest): Observable<OperationResultResponse> {

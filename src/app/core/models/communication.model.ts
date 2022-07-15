@@ -21,7 +21,7 @@ export class CommunicationTypeModel {
 	}
 
 	public static getValidatorsByType(contactType: CommunicationType | undefined): ValidatorFn[] {
-		const validators: ValidatorFn[] = [Validators.required];
+		const validators: ValidatorFn[] = [DoValidators.required];
 
 		switch (contactType) {
 			case CommunicationType.Email: {
@@ -33,7 +33,7 @@ export class CommunicationTypeModel {
 				break;
 			}
 			case CommunicationType.Telegram: {
-				validators.push(DoValidators.telegram, Validators.maxLength(32), Validators.minLength(5));
+				validators.push(DoValidators.telegram, DoValidators.matchMaxLength(32), DoValidators.matchMinLength(5));
 				break;
 			}
 			case CommunicationType.Twitter: {
