@@ -37,35 +37,6 @@
 		justify-content: space-between;
 	}
 
-	&__hint {
-		margin-left: 2px;
-
-		width: 16px;
-		height: 16px;
-
-		font-size: 16px;
-
-		vertical-align: -20%;
-
-		pointer-events: auto;
-	}
-
-	&__rate {
-		text-align: center;
-	}
-
-	&__rate-button {
-		padding: 0 40px;
-
-		// в компоненте нет этого класса, переменная с цветом устарела
-		// background-color: variables.$light-2;
-		&:disabled {
-			min-width: 0;
-
-			background-color: transparent;
-		}
-	}
-
 	&__actions {
 		margin-top: 35px;
 

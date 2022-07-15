@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ElementRef } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { FormControl } from '@angular/forms';
 import { LoadingState } from '@shared/directives/button-loading.directive';
@@ -17,6 +17,7 @@ import { WorkInfoConfig } from './work-info-item';
 export class WorkInfoItemComponent extends LoadingState implements OnInit {
 	public readonly Icons = Icons;
 
+	@ViewChild('edit') editTemplate?: ElementRef;
 	@Input() config!: WorkInfoConfig;
 	public control = new FormControl(null);
 
@@ -49,6 +50,12 @@ export class WorkInfoItemComponent extends LoadingState implements OnInit {
 		if (state) {
 			const value = this.config.controlValueGetter(this.config.value);
 			this.control.setValue(value);
+
+			setTimeout(() => {
+				if (this.editTemplate) {
+					this.editTemplate.nativeElement.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+				}
+			});
 		}
 	}
 
