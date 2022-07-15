@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { combineLatest, Observable, ReplaySubject } from 'rxjs';
 import { User } from '@app/models/user/user.model';
-import { UserService } from '@app/services/user/user.service';
-import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { UUID } from '@app/types/uuid.type';
 import { UserRights } from '@app/types/user-rights.enum';
 import { PermissionService } from '@app/services/permission.service';
+import { UsersService } from './users.service';
 
 @Injectable()
 export class EmployeePageService {
@@ -15,7 +13,7 @@ export class EmployeePageService {
 	public readonly selectedUser$: Observable<User> = this.selectedUser.asObservable();
 
 	constructor(
-		private userService: UserService,
+		private usersService: UsersService,
 		private currentUserService: CurrentUserService,
 		private permission: PermissionService
 	) {}
@@ -33,22 +31,8 @@ export class EmployeePageService {
 		);
 	}
 
-	public getEmployee(userId: UUID): Observable<User> {
-		const params: IGetUserRequest = {
-			userId: userId,
-			includedepartment: true,
-			includeposition: true,
-			includeoffice: true,
-			includecommunications: true,
-			includerole: true,
-			includeavatars: true,
-			includeprojects: true,
-			includecurrentavatar: true,
-			includecompany: true,
-			locale: 'ru',
-		};
-
-		return this.userService.getUser(params).pipe(switchMap((user: User) => this.setUser(user)));
+	public getEmployee(userId: string): Observable<User> {
+		return this.usersService.getUser(userId).pipe(switchMap((user: User) => this.setUser(user)));
 	}
 
 	public refreshSelectedUser(): Observable<User> {

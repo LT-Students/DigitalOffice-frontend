@@ -46,8 +46,8 @@ export class ManageCommunicationsService {
 	public transformToBaseEmail(communication: CommunicationInfo): void {
 		const data = {
 			title: 'Сделать почту основной',
-			message: `Базовая электронная почта используется для уведомлений от системы, а также для восстановления доступа и смены пароля.\n\nСделать ${communication.value} базовой?`,
-			confirmText: 'Всё понятно!',
+			message: `Базовая электронная почта используется для уведомлений от системы, а также для восстановления доступа и смены пароля.\n\nСделать <span class="text-accent_controls_default">${communication.value}</span> базовой?`,
+			confirmText: 'Да!!!',
 			action$: this.communicationApi.editCommunication({
 				communicationId: communication.id,
 				body: { type: CommunicationType.BaseEmail },
