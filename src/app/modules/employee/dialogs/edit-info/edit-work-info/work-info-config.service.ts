@@ -11,6 +11,7 @@ import { DoValidators } from '@app/validators/do-validators';
 import { PermissionService } from '@app/services/permission.service';
 import { UserRights } from '@app/types/user-rights.enum';
 import { formatNumber } from '@angular/common';
+import { ContractSubjectData } from '@api/user-service/models/contract-subject-data';
 import { EmployeePageService } from '../../../services/employee-page.service';
 import { EditUserService } from './edit-user.service';
 import { WorkInfoConfig } from './work-info-item/work-info-item';
@@ -60,6 +61,16 @@ export class WorkInfoConfigService {
 						placeholder: 'Выберите роль',
 						submitFn: this.editUser.changeRole.bind(this.editUser, user),
 						options$: this.editUser.findRoles.bind(this.editUser),
+					}),
+					new WorkInfoConfig({
+						label: 'Тип договора',
+						value: user.company?.contractSubject,
+						type: 'select',
+						canEdit$: this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
+						displayValueGetter: (c?: ContractSubjectData) => c?.name,
+						placeholder: 'Выберите тип договора',
+						submitFn: this.editUser.changeContract.bind(this.editUser, user),
+						selectOption$: this.editUser.findContracts({ skipCount: 0, takeCount: 100 }),
 					}),
 					new WorkInfoConfig({
 						label: 'Ставка',

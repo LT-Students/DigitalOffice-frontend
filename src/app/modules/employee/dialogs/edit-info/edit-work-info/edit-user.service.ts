@@ -14,6 +14,9 @@ import { PositionInfo } from '@api/position-service/models/position-info';
 import { RoleInfo } from '@api/rights-service/models/role-info';
 import { UserService } from '@app/services/user/user.service';
 import { UserPath } from '@app/types/edit-request';
+import { ContractSubjectInfo } from '@api/company-service/models/contract-subject-info';
+import { ContractSubjectApiService } from '@api/company-service/services/contract-subject-api.service';
+import { map } from 'rxjs/operators';
 
 interface FindParams {
 	takeCount: number;
@@ -33,6 +36,7 @@ export class EditUserService {
 		private roleUser: UserRoleApiService,
 		private role: RoleApiService,
 		private companyUser: CompanyUserApiService,
+		private contractService: ContractSubjectApiService,
 		private userService: UserService
 	) {}
 
@@ -50,6 +54,10 @@ export class EditUserService {
 
 	public findRoles(params: FindParams) {
 		return this.role.findRoles({ ...params, locale: 'ru' });
+	}
+
+	public findContracts(params: FindParams) {
+		return this.contractService.findContractSubjects({ ...params }).pipe(map((res) => res.body ?? []));
 	}
 
 	/**
@@ -70,6 +78,15 @@ export class EditUserService {
 	public changeRole(user: User, role: RoleInfo): Observable<any> {
 		return user.role?.id !== role.id
 			? this.roleUser.editUserRole({ body: { userId: user.id, roleId: role.id } })
+			: EMPTY;
+	}
+
+	public changeContract(user: User, contract: ContractSubjectInfo): Observable<any> {
+		return user.company?.contractSubject?.id !== contract.id
+			? this.companyUser.editCompanyUser({
+					userId: user.id,
+					body: [{ path: '/contractsubjectid', op: 'replace', value: contract.id }],
+			  })
 			: EMPTY;
 	}
 

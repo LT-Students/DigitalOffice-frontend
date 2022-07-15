@@ -11,13 +11,13 @@
 		Редактировать&nbsp;<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 	</button>
 </div>
-<div *ngIf="isEditMode">
+<div #edit class="edit-template" *ngIf="isEditMode">
 	<ng-container [ngSwitch]="config.type">
 		<do-form-row *ngSwitchCase="'select'" [label]="config.label">
 			<mat-form-field>
 				<mat-select [formControl]="control" [placeholder]="config.placeholder">
 					<mat-option
-						*ngFor="let option of config.options"
+						*ngFor="let option of config.selectOption$ ? (config.selectOption$ | async) : config.options"
 						[value]="option | execute: config.controlValueGetter"
 					>
 						{{ option | execute: config.optionDisplayValueGetter }}

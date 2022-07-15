@@ -14,6 +14,7 @@ export interface IWorkInfoConfig {
 	validators?: ValidatorFn[];
 	submitFn: (...args: any[]) => Observable<any>;
 	options?: any[];
+	selectOption$?: Observable<any[]>;
 	options$?: (params: {
 		takeCount: number;
 		skipCount: number;
@@ -33,6 +34,7 @@ export class WorkInfoConfig {
 	public validators: ValidatorFn[];
 	public submitFn: (...args: any[]) => Observable<any>;
 	public options: any[];
+	public selectOption$?: Observable<any[]>;
 	public options$: (params: {
 		takeCount: number;
 		skipCount: number;
@@ -51,6 +53,7 @@ export class WorkInfoConfig {
 		this.validators = params.validators || [];
 		this.submitFn = params.submitFn;
 		this.options = params.options || [];
+		this.selectOption$ = params.selectOption$;
 		this.options$ = params.options$ || ((_: any) => of({ errors: [] }));
 	}
 }
