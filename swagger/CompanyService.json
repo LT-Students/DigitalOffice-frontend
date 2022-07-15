@@ -201,7 +201,7 @@
         }
       }
     },
-    "/companyuser": {
+    "/companyuser/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -321,7 +321,7 @@
         }
       }
     },
-    "/contractsubject/get": {
+    "/contractsubject/find": {
       "get": {
         "parameters": [
           {
@@ -711,31 +711,16 @@
           }
         }
       },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
-      },
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
         "required": [
-          "Status",
           "Errors"
         ],
         "properties": {
           "Body": {
             "type": "object",
             "nullable": true
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -748,15 +733,11 @@
       "OperationResultResponseCompanyResponse": {
         "type": "object",
         "required": [
-          "Status",
           "Errors"
         ],
         "properties": {
           "Body": {
             "$ref": "#/components/schemas/CompanyResponse"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -770,9 +751,7 @@
         "description": "Response object for action operations.",
         "type": "object",
         "required": [
-          "Body",
           "TotalCount",
-          "Status",
           "Errors"
         ],
         "properties": {
@@ -784,9 +763,6 @@
           },
           "TotalCount": {
             "type": "number"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
