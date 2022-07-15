@@ -68,6 +68,7 @@ export class WorkInfoConfigService {
 						type: 'select',
 						canEdit$: this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
 						displayValueGetter: (c?: ContractSubjectData) => c?.name,
+						controlValueGetter: (c?: ContractSubjectData) => c?.id,
 						placeholder: 'Выберите тип договора',
 						submitFn: this.editUser.changeContract.bind(this.editUser, user),
 						selectOption$: this.editUser.findContracts({ skipCount: 0, takeCount: 100 }),

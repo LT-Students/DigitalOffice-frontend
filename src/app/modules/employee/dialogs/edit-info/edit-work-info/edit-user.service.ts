@@ -14,7 +14,6 @@ import { PositionInfo } from '@api/position-service/models/position-info';
 import { RoleInfo } from '@api/rights-service/models/role-info';
 import { UserService } from '@app/services/user/user.service';
 import { UserPath } from '@app/types/edit-request';
-import { ContractSubjectInfo } from '@api/company-service/models/contract-subject-info';
 import { ContractSubjectApiService } from '@api/company-service/services/contract-subject-api.service';
 import { map } from 'rxjs/operators';
 
@@ -81,11 +80,11 @@ export class EditUserService {
 			: EMPTY;
 	}
 
-	public changeContract(user: User, contract: ContractSubjectInfo): Observable<any> {
-		return user.company?.contractSubject?.id !== contract.id
+	public changeContract(user: User, contractId: string): Observable<any> {
+		return user.company?.contractSubject?.id !== contractId
 			? this.companyUser.editCompanyUser({
 					userId: user.id,
-					body: [{ path: '/contractsubjectid', op: 'replace', value: contract.id }],
+					body: [{ path: '/contractsubjectid', op: 'replace', value: contractId }],
 			  })
 			: EMPTY;
 	}
