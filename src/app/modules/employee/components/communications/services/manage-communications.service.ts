@@ -4,7 +4,7 @@ import { CommunicationType } from '@api/user-service/models/communication-type';
 import { pipe } from 'rxjs';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { first, switchMap } from 'rxjs/operators';
+import { first, switchMap, tap } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { EditContactComponent } from '../edit-contact/edit-contact.component';
 import { AddContactComponent } from '../add-contact/add-contact.component';
@@ -24,12 +24,17 @@ export class ManageCommunicationsService {
 				first(),
 				switchMap((user: User) =>
 					this.dialog
-						.open(AddContactComponent, {
+						.open<Pick<CommunicationInfo, 'type' | 'value'>>(AddContactComponent, {
 							width: ModalWidth.M,
 							data: user.id,
 						})
 						.afterClosed()
 				),
+				tap((communication?: Pick<CommunicationInfo, 'type' | 'value'>) => {
+					if (communication?.type === CommunicationType.Email) {
+						this.openEmailConfirmationInfoDialog(communication.value);
+					}
+				}),
 				this.updateCommunications()
 			)
 			.subscribe();
@@ -58,13 +63,7 @@ export class ManageCommunicationsService {
 	}
 
 	public resendBaseConfirmation(communication: CommunicationInfo): void {
-		const data = {
-			title: 'Подтверждение почты',
-			message: `На адрес <span class="text-accent_controls_default">${communication.value}</span> выслана ссылка для подтверждения почты.\n\nОна будет действительна в течение 30 минут.`,
-			buttonText: 'Всё понятно!',
-		};
-
-		this.dialog.info(data);
+		this.openEmailConfirmationInfoDialog(communication.value);
 		this.communicationApi.resendConfirmationCommunication({ communicationId: communication.id }).subscribe();
 	}
 
@@ -83,5 +82,15 @@ export class ManageCommunicationsService {
 
 	private updateCommunications() {
 		return pipe(switchMap(() => this.employeePage.refreshSelectedUser()));
+	}
+
+	private openEmailConfirmationInfoDialog(communicationValue: string): void {
+		const data = {
+			title: 'Подтверждение почты',
+			message: `На адрес <span class="text-accent_controls_default">${communicationValue}</span> выслана ссылка для подтверждения почты.\n\nОна будет действительна в течение 30 минут.`,
+			buttonText: 'Всё понятно!',
+		};
+
+		this.dialog.info(data);
 	}
 }

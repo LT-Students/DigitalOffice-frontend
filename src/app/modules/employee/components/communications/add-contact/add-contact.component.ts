@@ -6,7 +6,6 @@ import { CommunicationService } from '@app/services/user/communication.service';
 import { finalize } from 'rxjs/operators';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel } from '@app/models/communication.model';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { Subscription } from 'rxjs';
 
@@ -54,7 +53,7 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 		this.subscription.unsubscribe();
 	}
 
-	public onClose(result?: OperationResultResponse): void {
+	public onClose(result?: any): void {
 		this.dialogRef.close(result);
 	}
 
@@ -66,7 +65,7 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 
 		this.setLoading(true);
 
-		const type = this.typeControl.value;
+		const type = this.typeControl.value as CommunicationType;
 		let value: string;
 		if (type === CommunicationType.Phone) {
 			const phoneNum = parsePhoneNumber(this.valueControl.value);
@@ -81,7 +80,9 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 		this.communicationService
 			.createCommunication({ type, value, userId: this.employeeId, visibleTo: CommunicationVisibleTo.AllUsers })
 			.pipe(finalize(() => this.setLoading(false)))
-			.subscribe((result) => this.onClose(result));
+			.subscribe(() => {
+				this.onClose({ type, value });
+			});
 	}
 
 	private setValueValidators(type: CommunicationType): void {

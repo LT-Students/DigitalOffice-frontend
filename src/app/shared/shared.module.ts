@@ -60,6 +60,7 @@ import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sideb
 import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 import { InfoDialogComponent } from './modals/info-dialog/info-dialog.component';
 import { TimeInputComponent } from './component/time-input/time-input.component';
+import { SnackbarComponent } from './component/snackbar/snackbar.component';
 
 @NgModule({
 	declarations: [
@@ -113,6 +114,7 @@ import { TimeInputComponent } from './component/time-input/time-input.component'
 		AutocompleteComponent,
 		InfoDialogComponent,
 		TimeInputComponent,
+		SnackbarComponent,
 	],
 	imports: [
 		CommonModule,
