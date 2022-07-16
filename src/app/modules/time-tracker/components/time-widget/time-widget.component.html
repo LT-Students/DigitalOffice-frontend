@@ -1,7 +1,8 @@
 <mat-card class="time-widget" *ngIf="selectedDate$ | async as selectedDate">
 	<do-title-datepicker
 		title="Часы за"
-		[selectDate]="selectedDate$ | async"
+		[selectDate]="selectedDate"
+		[maxDate]="maxDate"
 		(dateSelection)="chosenMonthHandler($event)"
 	></do-title-datepicker>
 	<div class="chart">
@@ -19,6 +20,7 @@
 			(click)="onNextMonthClicked(selectedDate)"
 			class="fab-button"
 			mat-mini-fab
+			[disabled]="nextMonthButtonDisabled"
 			[class.mat-elevation-z0]="true"
 			data-test="next-month-btn"
 		>

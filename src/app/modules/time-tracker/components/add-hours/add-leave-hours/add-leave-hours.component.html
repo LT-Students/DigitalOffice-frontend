@@ -5,6 +5,7 @@
 				<mat-date-range-input
 					(click)="picker.open()"
 					[min]="minDate"
+					[max]="maxDate"
 					[dateFilter]="disableReservedDays"
 					[rangePicker]="$any(picker)"
 				>

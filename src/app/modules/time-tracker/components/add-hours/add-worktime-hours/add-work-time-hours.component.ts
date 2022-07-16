@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DateTime } from 'luxon';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { finalize, map, takeUntil } from 'rxjs/operators';
 import { DoValidators } from '@app/validators/do-validators';
 import { EMPTY_GUID, isGUIDEmpty } from '@app/utils/utils';
@@ -24,7 +24,7 @@ interface ProjectOption {
 })
 export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, OnDestroy {
 	public projectOptions$ = this.getProjectOptions$();
-	public monthOptions$ = this.getMonthOptions$();
+	public monthOptions = this.getMonthOptions();
 	public addHoursForm = this.initForm();
 	public dateControl = new FormControl(DateTime.now());
 	private destroy$ = new Subject();
@@ -38,9 +38,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 	}
 
 	public ngOnInit(): void {
-		this.toggleDisabledStateOnMonthChange();
 		this.setNewDateOnMonthChange();
-		this.updateDateOnExternalChange();
 	}
 
 	public ngOnDestroy(): void {
@@ -48,34 +46,11 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 		this.destroy$.complete();
 	}
 
-	private toggleDisabledStateOnMonthChange(): void {
-		this.attendanceService.canEdit$.pipe(takeUntil(this.destroy$)).subscribe({
-			next: (canEdit: boolean) => {
-				if (canEdit) {
-					this.addHoursForm.enable();
-				} else {
-					this.addHoursForm.disable();
-				}
-			},
-		});
-	}
-
 	//update page date when dateControl value changes
 	private setNewDateOnMonthChange(): void {
 		this.dateControl.valueChanges
 			.pipe(takeUntil(this.destroy$))
 			.subscribe((date: DateTime) => this.changeDate(date));
-	}
-
-	//update dateControl value when page date changes
-	private updateDateOnExternalChange(): void {
-		this.attendanceService.selectedDate$.pipe(takeUntil(this.destroy$)).subscribe({
-			next: (date: DateTime) => {
-				if (!this.compareDate(date, this.dateControl.value)) {
-					this.dateControl.setValue(date, { emitEvent: false });
-				}
-			},
-		});
 	}
 
 	private getProjectOptions$(): Observable<ProjectOption[]> {
@@ -108,8 +83,8 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 
 	private initForm(): FormGroup {
 		return this.fb.group({
-			time: ['', [Validators.required, Validators.min(0), Validators.max(744), DoValidators.intNum]],
-			project: [null, Validators.required],
+			time: ['', [DoValidators.required, DoValidators.min(1), DoValidators.max(744), DoValidators.intNum]],
+			project: [null, DoValidators.required],
 			comment: [null],
 		});
 	}
@@ -147,35 +122,28 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 		const commentControl = this.addHoursForm.get('comment') as FormControl;
 
 		if (isOtherOptionSelected) {
-			commentControl.addValidators(Validators.required);
+			commentControl.addValidators(DoValidators.required);
 			commentControl.updateValueAndValidity();
-		} else if (commentControl.hasValidator(Validators.required)) {
+		} else if (commentControl.hasValidator(DoValidators.required)) {
 			commentControl.clearValidators();
 			commentControl.updateValueAndValidity();
 		}
 		if (project.workTime) {
-			this.addHoursForm.patchValue({
-				time: project.workTime.userHours,
-				comment: project.workTime.description,
-			});
+			this.addHoursForm.patchValue(
+				{
+					time: project.workTime.userHours,
+					comment: project.workTime.description,
+				},
+				{ emitEvent: false }
+			);
 		}
 	}
 
-	private getMonthOptions$(): Observable<DateTime[]> {
-		return this.attendanceService.selectedDate$.pipe(
-			map((date: DateTime) => {
-				if (
-					date.day <= LAST_DAY_TO_FILL_HOURS &&
-					date.month === DateTime.now().month &&
-					date.year === DateTime.now().year
-				) {
-					const currentDate = DateTime.now();
-					return [currentDate, currentDate.minus({ months: 1 })];
-				} else if (date.month === DateTime.now().month && date.year === DateTime.now().year) {
-					return [DateTime.now()];
-				}
-				return [date, DateTime.now()];
-			})
-		);
+	private getMonthOptions(): DateTime[] {
+		const currentDate = DateTime.now();
+		if (currentDate.day <= LAST_DAY_TO_FILL_HOURS) {
+			return [currentDate, currentDate.minus({ months: 1 })];
+		}
+		return [currentDate];
 	}
 }

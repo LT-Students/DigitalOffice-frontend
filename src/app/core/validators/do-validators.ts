@@ -140,6 +140,26 @@ export class DoValidators {
 		};
 	}
 
+	static min(min: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (isEmptyInputValue(control.value)) {
+				return null;
+			}
+			const value = parseFloat(control.value);
+			return !isNaN(value) && value < min ? { min: { message: `Минимальное значение: ${min}` } } : null;
+		};
+	}
+
+	static max(max: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (isEmptyInputValue(control.value)) {
+				return null;
+			}
+			const value = parseFloat(control.value);
+			return !isNaN(value) && value > max ? { max: { message: `Максимальное значение: ${max}` } } : null;
+		};
+	}
+
 	static intNum(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;

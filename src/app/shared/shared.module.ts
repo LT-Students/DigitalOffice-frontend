@@ -61,6 +61,7 @@ import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 import { InfoDialogComponent } from './modals/info-dialog/info-dialog.component';
 import { TimeInputComponent } from './component/time-input/time-input.component';
 import { SnackbarComponent } from './component/snackbar/snackbar.component';
+import { NumberInputDirective } from './directives/number-input.directive';
 
 @NgModule({
 	declarations: [
@@ -115,6 +116,7 @@ import { SnackbarComponent } from './component/snackbar/snackbar.component';
 		InfoDialogComponent,
 		TimeInputComponent,
 		SnackbarComponent,
+		NumberInputDirective,
 	],
 	imports: [
 		CommonModule,
@@ -182,6 +184,7 @@ import { SnackbarComponent } from './component/snackbar/snackbar.component';
 		OptionComponent,
 		AutocompleteComponent,
 		TimeInputComponent,
+		NumberInputDirective,
 	],
 })
 export class SharedModule {}
