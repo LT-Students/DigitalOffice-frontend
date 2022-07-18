@@ -59,9 +59,10 @@ export class AttendanceService {
 	public readonly monthNorm$ = this.monthNorm.asObservable();
 
 	private holidays: MonthHolidays = { month: 1, year: 0, holidays: [] };
+	private datepickerHolidays: MonthHolidays[] = [];
 	private reservedLeaveIntervals: Interval[] = [];
 
-	private readonly canEdit = new BehaviorSubject<boolean>(this.canEditTime());
+	private readonly canEdit = new BehaviorSubject(this.canEditTime());
 	public readonly canEdit$ = this.canEdit.asObservable();
 
 	private rate = 0;
@@ -86,7 +87,7 @@ export class AttendanceService {
 	}: {
 		reservedLeaveTimeIntervals: LeaveTime[];
 		workTimes: WorkTime[];
-		monthNormAndHolidays: WorkTimeMonthLimitInfo[];
+		monthNormAndHolidays: [WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo];
 	}): void {
 		this.setRate();
 		this.setWorkTimes(workTimes);
@@ -101,8 +102,8 @@ export class AttendanceService {
 		);
 		this.setLeaveTimes(currentLeaveTimes);
 
-		const monthLimit = monthNormAndHolidays[0];
-		this.setMonthNormAndHolidays(monthLimit);
+		this.setMonthAndHolidaysForSelectedMonth(monthNormAndHolidays[0]);
+		this.setDatepickerHolidays(monthNormAndHolidays);
 	}
 
 	public submitWorkTime(value: SubmitWorkTimeValue): Observable<any> {
@@ -218,7 +219,7 @@ export class AttendanceService {
 		return this.selectedDate$.pipe(
 			first(),
 			switchMap((date: DateTime) => this.timeService.getMonthLimit(date)),
-			tap((limit: WorkTimeMonthLimitInfo) => this.setMonthNormAndHolidays(limit))
+			tap((limit: WorkTimeMonthLimitInfo) => this.setMonthAndHolidaysForSelectedMonth(limit))
 		);
 	}
 
@@ -230,9 +231,18 @@ export class AttendanceService {
 		this.leaveTimes.next(leaveTimes);
 	}
 
-	private setMonthNormAndHolidays({ normHours, holidays, month, year }: WorkTimeMonthLimitInfo): void {
+	private setMonthAndHolidaysForSelectedMonth({ normHours, holidays, month, year }: WorkTimeMonthLimitInfo): void {
 		this.holidays = { month, year, holidays: holidays.split('').map(Number).map(Boolean) };
 		this.monthNorm.next(normHours * this.rate);
+	}
+
+	private setDatepickerHolidays(
+		holidays: [WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo]
+	): void {
+		this.datepickerHolidays = holidays.map((l: WorkTimeMonthLimitInfo) => ({
+			...l,
+			holidays: l.holidays.split('').map(Number).map(Boolean),
+		}));
 	}
 
 	private setRate(): void {
@@ -272,9 +282,13 @@ export class AttendanceService {
 	};
 
 	public filterWeekends(date: DateTime): boolean {
-		const { month, year, holidays } = this.holidays;
-		return date.month === month && date.year === year
-			? holidays.every((isHoliday: boolean, day: number) => (isHoliday ? date.day !== day + 1 : true))
+		const monthHolidays = this.datepickerHolidays.find(
+			(m: MonthHolidays) => m.month === date.month && m.year === date.year
+		);
+		return monthHolidays
+			? monthHolidays.holidays.every((isHoliday: boolean, day: number) =>
+					isHoliday ? date.day !== day + 1 : true
+			  )
 			: date.weekday !== 6 && date.weekday !== 7;
 	}
 
