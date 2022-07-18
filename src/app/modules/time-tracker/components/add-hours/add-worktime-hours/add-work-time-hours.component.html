@@ -2,7 +2,14 @@
 	<div class="dates-container">
 		<do-form-row label="Количество часов">
 			<mat-form-field>
-				<input matInput formControlName="time" type="text" placeholder="0" data-test="work-hours-input" />
+				<input
+					matInput
+					doNumberInput
+					formControlName="time"
+					type="text"
+					placeholder="0"
+					data-test="work-hours-input"
+				/>
 				<mat-error>
 					{{ addHoursForm.controls['time'].errors | controlErrors }}
 				</mat-error>
@@ -12,7 +19,7 @@
 		<do-form-row label="Месяц">
 			<mat-form-field>
 				<mat-select [formControl]="dateControl" [compareWith]="compareDate" data-test="month-select">
-					<mat-option *ngFor="let month of monthOptions$ | async" [value]="month">
+					<mat-option *ngFor="let month of monthOptions" [value]="month">
 						{{ month | dateTime: 'LLLL y' | titlecase }}
 					</mat-option>
 				</mat-select>
@@ -32,6 +39,9 @@
 					{{ project.name }}
 				</mat-option>
 			</mat-select>
+			<mat-error>
+				{{ addHoursForm.controls['project'].errors | controlErrors }}
+			</mat-error>
 		</mat-form-field>
 	</do-form-row>
 	<do-form-row label="Комментарий">

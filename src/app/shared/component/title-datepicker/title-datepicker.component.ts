@@ -15,6 +15,8 @@ export class TitleDatepickerComponent {
 
 	@Input() title = '';
 	@Input() selectDate: DateTime | null = DateTime.now();
+	@Input() minDate: DateTime | null = null;
+	@Input() maxDate: DateTime | null = null;
 	@Output() dateSelection = new EventEmitter<DateTime>();
 	public readonly id = TitleDatepickerComponent.uniqueId++;
 

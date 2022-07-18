@@ -4,10 +4,16 @@ import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize, first, mapTo, switchMap, tap } from 'rxjs/operators';
 import { LoadingState } from '@shared/directives/button-loading.directive';
-import { AttendanceService, SubmitLeaveTimeValue } from '../../../services/attendance.service';
+import {
+	AttendanceService,
+	LAST_DAY_TO_FILL_HOURS,
+	MAX_FUTURE_DATE,
+	SubmitLeaveTimeValue,
+} from '../../../services/attendance.service';
 
 export class AddEditLeaveHoursBase extends LoadingState {
-	public readonly minDate = DateTime.now().startOf('month');
+	public readonly minDate = this.getMinDate();
+	public readonly maxDate = MAX_FUTURE_DATE;
 
 	public form = this.fb.group({
 		leaveType: [null, [Validators.required]],
@@ -60,6 +66,11 @@ export class AddEditLeaveHoursBase extends LoadingState {
 			mapTo(true),
 			finalize(() => this.setLoading(false))
 		);
+	}
+
+	private getMinDate(): DateTime {
+		const date = DateTime.now();
+		return (date.day <= LAST_DAY_TO_FILL_HOURS ? date.minus({ month: 1 }) : date).startOf('month');
 	}
 
 	private resetForm(): void {

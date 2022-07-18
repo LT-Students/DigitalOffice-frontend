@@ -32,10 +32,12 @@ export class AttendanceResolver implements Resolve<boolean> {
 	}
 
 	private getReservedLeaveTimeIntervals(userId: string): Observable<LeaveTime[]> {
+		const date = DateTime.now();
 		return this.timeService
 			.findLeaveTimes({
 				userid: userId,
-				starttime: DateTime.now().startOf('month').setZone('UTC').toSQL(),
+				starttime: date.minus({ month: 1 }).startOf('month').toSQL(),
+				endtime: date.plus({ month: 1 }).endOf('month').toSQL(),
 				skipCount: 0,
 				takeCount: 30,
 			})
@@ -53,10 +55,20 @@ export class AttendanceResolver implements Resolve<boolean> {
 			.pipe(map((res) => (res.body as WorkTimeResponse[]).map((wt: WorkTimeResponse) => new WorkTime(wt))));
 	}
 
-	private getMonthNormAndHolidays(): Observable<WorkTimeMonthLimitInfo[]> {
-		const { month, year } = DateTime.now();
+	private getMonthNormAndHolidays(): Observable<
+		[WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo]
+	> {
+		const date = DateTime.now();
+		return forkJoin([
+			this.findMonthLimit(date),
+			this.findMonthLimit(date.plus({ month: 1 })),
+			this.findMonthLimit(date.minus({ month: 1 })),
+		]);
+	}
+
+	private findMonthLimit({ month, year }: DateTime): Observable<WorkTimeMonthLimitInfo> {
 		return this.timeService
 			.findWorkTimeMonthLimit({ month, year, skipCount: 0, takeCount: 1 })
-			.pipe(map((res) => res.body as WorkTimeMonthLimitInfo[]));
+			.pipe(map((res) => (res.body as WorkTimeMonthLimitInfo[])[0]));
 	}
 }
