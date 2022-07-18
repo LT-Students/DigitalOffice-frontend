@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ContextMenu } from '@shared/component/context-menu/context-menu';
-import { MenuItem } from '@app/models/menu-item';
 import { Icons } from '@shared/modules/icons/icons';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { CommunicationType } from '@api/user-service/models/communication-type';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
+import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { ManageCommunicationsService } from './manage-communications.service';
 
 @Injectable()

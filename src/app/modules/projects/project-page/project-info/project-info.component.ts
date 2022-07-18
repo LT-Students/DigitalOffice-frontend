@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ProjectInfo } from '@api/project-service/models/project-info';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { DateTime } from 'luxon';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { ProjectsRoutes } from '../../models/projects-routes';

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewContainerRef } from '@a
 import { MatDialog } from '@angular/material/dialog';
 import { DateFormat } from '@app/types/date.enum';
 import { ModalWidth } from '@app/services/dialog.service';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { PermissionService } from '@app/services/permission.service';
 import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
 import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';

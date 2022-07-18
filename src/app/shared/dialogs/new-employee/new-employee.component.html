@@ -97,7 +97,7 @@
 						</mat-select>
 					</mat-form-field>
 				</do-form-field>
-				<do-form-row label="Офис">
+				<do-form-field label="Офис">
 					<mat-form-field>
 						<mat-select placeholder="Выберите офис" formControlName="officeId">
 							<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
@@ -105,8 +105,8 @@
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
-				</do-form-row>
-				<do-form-row label="Роль">
+				</do-form-field>
+				<do-form-field label="Роль">
 					<mat-form-field>
 						<mat-select placeholder="Выберите роль" formControlName="roleId">
 							<mat-option *ngFor="let role of roles$ | async" [value]="role.id">
@@ -114,7 +114,7 @@
 							</mat-option>
 						</mat-select>
 					</mat-form-field>
-				</do-form-row>
+				</do-form-field>
 				<do-form-field label="Ставка">
 					<mat-form-field>
 						<mat-select placeholder="Выберите ставку" formControlName="rate" required>

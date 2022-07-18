@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Link } from '@shared/component/sidebar/sidebar-types';
 import { AppRoutes } from '@app/models/app-routes';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { first, map } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';

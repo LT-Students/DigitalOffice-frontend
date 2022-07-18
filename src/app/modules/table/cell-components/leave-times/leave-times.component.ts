@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LeaveTimeInfo } from '@api/time-service/models/leave-time-info';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { LeaveType } from '@api/time-service/models/leave-type';
 import { TableCell } from '../../models';
 

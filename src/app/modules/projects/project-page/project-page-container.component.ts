@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { SelectedProjectService } from '../project-id-route-container/selected-project.service';
 
 @Component({

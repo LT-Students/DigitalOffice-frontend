@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { UserStatInfo } from '@api/time-service/models/user-stat-info';
 import { LeaveTimeInfo } from '@api/time-service/models/leave-time-info';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';

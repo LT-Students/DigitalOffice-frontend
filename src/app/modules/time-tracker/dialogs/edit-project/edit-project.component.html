@@ -7,7 +7,7 @@
 	</h3>
 	<div class="content" [formGroup]="editForm">
 		<div class="flex flex_ai_end">
-			<do-form-row class="modal__hours" label="Количество часов">
+			<do-form-field class="modal__hours" label="Количество часов">
 				<mat-form-field>
 					<input
 						matInput
@@ -20,10 +20,10 @@
 						{{ editForm.controls['userHours'].errors | controlErrors }}
 					</mat-error>
 				</mat-form-field>
-			</do-form-row>
+			</do-form-field>
 			<span class="mat-h3 date">&nbsp;за {{ workTimeDate | dateTime: 'LLLL yyyy' }}</span>
 		</div>
-		<do-form-row label="Комментарий">
+		<do-form-field label="Комментарий">
 			<mat-form-field>
 				<textarea
 					#comment
@@ -38,7 +38,7 @@
 				></textarea>
 				<mat-hint>{{ comment.value.length }}/500</mat-hint>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 		<div class="controls">
 			<button doButton type="button" class="controls__button" (click)="close()" data-test="close-dialog-btn">
 				Отмена

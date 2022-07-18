@@ -13,7 +13,7 @@
 </div>
 <div #edit class="edit-template" *ngIf="isEditMode">
 	<ng-container [ngSwitch]="config.type">
-		<do-form-row *ngSwitchCase="'select'" [label]="config.label">
+		<do-form-field *ngSwitchCase="'select'" [label]="config.label">
 			<mat-form-field>
 				<mat-select [formControl]="control" [placeholder]="config.placeholder">
 					<mat-option
@@ -24,8 +24,8 @@
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
-		</do-form-row>
-		<do-form-row *ngSwitchCase="'autocomplete'" [label]="config.label">
+		</do-form-field>
+		<do-form-field *ngSwitchCase="'autocomplete'" [label]="config.label">
 			<mat-form-field>
 				<do-autocomplete
 					[formControl]="control"
@@ -40,15 +40,15 @@
 				</do-autocomplete>
 				<mat-error>{{ control.errors | controlErrors }}</mat-error>
 			</mat-form-field>
-		</do-form-row>
-		<do-form-row *ngSwitchCase="'date'" [label]="config.label">
+		</do-form-field>
+		<do-form-field *ngSwitchCase="'date'" [label]="config.label">
 			<mat-form-field>
 				<input matInput [matDatepicker]="picker" [formControl]="control" placeholder="ДД месяц ГГГГ" />
 				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 				<mat-datepicker #picker></mat-datepicker>
 				<mat-error>{{ control.errors | controlErrors }}</mat-error>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	</ng-container>
 	<div class="controls">
 		<button doButton (click)="setEditMode(false)" data-test="edit-work-info-cancel-btn">Отменить</button>

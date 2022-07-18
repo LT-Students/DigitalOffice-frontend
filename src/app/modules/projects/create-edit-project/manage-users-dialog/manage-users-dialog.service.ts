@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DepartmentService } from '@app/services/department/department.service';
 import { UserInfo } from '@api/filter-service/models/user-info';
@@ -16,9 +16,8 @@ import { SimpleDataSource } from '../../../table/table.component';
 export class ManageUsersDialogService {
 	constructor(
 		private filterService: FilterService,
-		private departmentService: DepartmentService
-	) // private infiniteScroll: InfiniteScrollDataProviderService<UserInfo>
-	{}
+		private departmentService: DepartmentService // private infiniteScroll: InfiniteScrollDataProviderService<UserInfo>
+	) {}
 
 	public loadUsers$() {
 		return new SimpleDataSource(

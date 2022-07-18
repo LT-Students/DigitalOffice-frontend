@@ -9,7 +9,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 @Component({
 	selector: 'do-gender-select',
 	template: `
-		<do-form-row label="Гендер">
+		<do-form-field label="Гендер">
 			<mat-form-field>
 				<input matInput placeholder="Гендер" [formControl]="searchControl" [matAutocomplete]="gender" />
 				<mat-autocomplete
@@ -20,7 +20,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 					<mat-option *ngFor="let gender of genders$ | async" [value]="gender">{{ gender.name }}</mat-option>
 				</mat-autocomplete>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,

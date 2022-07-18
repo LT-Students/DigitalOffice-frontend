@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { forkJoin, fromEvent, Observable, of } from 'rxjs';
 import { finalize, first, switchMap, withLatestFrom } from 'rxjs/operators';
 import { FileInfo } from '@api/project-service/models/file-info';

@@ -11,10 +11,9 @@ import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/dialogs/user-recovery/user-recovery.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
-import { IconsModule } from '@shared/features/icons/icons.module';
+import { IconsModule } from '@shared/modules/icons/icons.module';
 import { OptionComponent } from '@shared/component/option/option.component';
-import { AutocompleteComponent } from '@shared/component/autocomplete/autocomplete.component';
-import { MaterialModule } from './features/material/material.module';
+import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
 import { ContentContainerComponent } from './component/content-container/content-container.component';
@@ -30,7 +29,7 @@ import { DateTimePipe } from './pipes/date-time';
 import { AddEmployeeComponent } from './dialogs/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
 import { PhoneInputComponent } from './component/phone-input/phone-input.component';
-import { LoadingBarRoutingModule } from './features/loading-bar-routing/loading-bar-routing.module';
+import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-bar-routing.module';
 import { ChangeUserPasswordComponent } from './dialogs/change-user-password/change-user-password.component';
 import { FullNamePipe } from './pipes/full-name.pipe';
 import { DndDirective } from './directives/dnd.directive';
@@ -62,7 +61,7 @@ import { AutocompleteComponent } from './component/autocomplete/autocomplete.com
 import { AutocompleteOffDirective } from './directives/autocomplete-off.directive';
 import { ActionsComponent } from './component/actions/actions.component';
 import { ControlErrorsPipe } from './pipes/control-errors.pipe';
-import { InfoDialogComponent } from './modals/info-dialog/info-dialog.component';
+import { InfoDialogComponent } from './dialogs/info-dialog/info-dialog.component';
 import { TimeInputComponent } from './component/time-input/time-input.component';
 import { SnackbarComponent } from './component/snackbar/snackbar.component';
 import { NumberInputDirective } from './directives/number-input.directive';
@@ -118,7 +117,6 @@ import { NumberInputDirective } from './directives/number-input.directive';
 		AutocompleteComponent,
 		OptionComponent,
 		AutocompleteOffDirective,
-		InfiniteAutocompleteComponent,
 		ActionsComponent,
 		ControlErrorsPipe,
 		OptionComponent,
@@ -194,7 +192,6 @@ import { NumberInputDirective } from './directives/number-input.directive';
 		AutocompleteComponent,
 		OptionComponent,
 		AutocompleteOffDirective,
-		InfiniteAutocompleteComponent,
 		ActionsComponent,
 		ControlErrorsPipe,
 		OptionComponent,

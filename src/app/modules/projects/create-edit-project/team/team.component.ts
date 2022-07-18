@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { ManageUsersDialogComponent } from '../manage-users-dialog/manage-users-dialog.component';
 

@@ -1,6 +1,6 @@
 <div [formGroup]="addHoursForm" class="form">
 	<div class="dates-container">
-		<do-form-row label="Количество часов">
+		<do-form-field label="Количество часов">
 			<mat-form-field>
 				<input
 					matInput
@@ -14,9 +14,9 @@
 					{{ addHoursForm.controls['time'].errors | controlErrors }}
 				</mat-error>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 
-		<do-form-row label="Месяц">
+		<do-form-field label="Месяц">
 			<mat-form-field>
 				<mat-select [formControl]="dateControl" [compareWith]="compareDate" data-test="month-select">
 					<mat-option *ngFor="let month of monthOptions" [value]="month">
@@ -24,10 +24,10 @@
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	</div>
 
-	<do-form-row label="Проект">
+	<do-form-field label="Проект">
 		<mat-form-field>
 			<mat-select
 				formControlName="project"
@@ -43,8 +43,8 @@
 				{{ addHoursForm.controls['project'].errors | controlErrors }}
 			</mat-error>
 		</mat-form-field>
-	</do-form-row>
-	<do-form-row label="Комментарий">
+	</do-form-field>
+	<do-form-field label="Комментарий">
 		<mat-form-field>
 			<textarea
 				#comment
@@ -59,7 +59,7 @@
 			></textarea>
 			<mat-hint>{{ comment.value.length }}/500</mat-hint>
 		</mat-form-field>
-	</do-form-row>
+	</do-form-field>
 	<button
 		class="submit-button"
 		mat-flat-button

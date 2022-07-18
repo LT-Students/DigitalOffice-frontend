@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MenuItem } from '@shared/component/context-menu/menu-item';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 
 @Injectable()
 export class ContextMenuService {

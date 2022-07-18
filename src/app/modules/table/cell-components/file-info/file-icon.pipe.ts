@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { FileInfo } from '@api/file-service/models/file-info';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 
 @Pipe({
 	name: 'fileIcon',

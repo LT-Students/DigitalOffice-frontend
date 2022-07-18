@@ -11,16 +11,16 @@
 			<mat-error>{{ form.controls['shortName'] | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field *ngIf="!isEditMode" label="Департамент">
-		<do-infinite-autocomplete
-			formControlName="department"
-			placeholder="Департамент"
-			[loadOptions$]="departmentAutocompleteConfig.loadOptions$"
-			[displayValueGetter]="departmentAutocompleteConfig.displayValueGetter"
-			[displayWithFn]="departmentAutocompleteConfig.displayWithFn"
-			[valueGetter]="departmentAutocompleteConfig.valueGetter"
-		></do-infinite-autocomplete>
-	</do-form-field>
+	<!--	<do-form-field *ngIf="!isEditMode" label="Департамент">-->
+	<!--		<do-infinite-autocomplete-->
+	<!--			formControlName="department"-->
+	<!--			placeholder="Департамент"-->
+	<!--			[loadOptions$]="departmentAutocompleteConfig.loadOptions$"-->
+	<!--			[displayValueGetter]="departmentAutocompleteConfig.displayValueGetter"-->
+	<!--			[displayWithFn]="departmentAutocompleteConfig.displayWithFn"-->
+	<!--			[valueGetter]="departmentAutocompleteConfig.valueGetter"-->
+	<!--		></do-infinite-autocomplete>-->
+	<!--	</do-form-field>-->
 	<do-form-field label="Заказчик" class="long-field">
 		<mat-form-field>
 			<input matInput formControlName="customer" type="text" placeholder="Наименование заказчика" />

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { first, map, switchMap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { TimeService } from '@app/services/time/time.service';

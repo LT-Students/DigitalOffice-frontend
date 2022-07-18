@@ -1,4 +1,4 @@
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 
 interface IInputFilterParams {
 	placeholder?: string;

@@ -13,7 +13,7 @@ import { EMPTY, of } from 'rxjs';
 import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/dialogs/add-employee/add-employee.component';
 import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 
 @Component({
 	selector: 'do-department-card',

@@ -1,4 +1,4 @@
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { TextComponent } from '../cell-components/text/text.component';
 import { StatusComponent } from '../cell-components/status/status.component';
 import { CheckboxComponent } from '../cell-components/checkbox/checkbox.component';

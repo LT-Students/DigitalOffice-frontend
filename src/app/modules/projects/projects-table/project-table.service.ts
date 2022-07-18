@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProjectInfo } from '@api/project-service/models/project-info';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { DepartmentService } from '@app/services/department/department.service';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { map } from 'rxjs/operators';

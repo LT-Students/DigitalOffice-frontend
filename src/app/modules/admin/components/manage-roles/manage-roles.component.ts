@@ -9,7 +9,7 @@ import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 
 @Component({

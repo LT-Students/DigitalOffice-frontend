@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { Observable } from 'rxjs';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';

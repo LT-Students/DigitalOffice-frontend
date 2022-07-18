@@ -7,7 +7,7 @@ import { NewsService } from '@app/services/news/news.service';
 import { OperationResultStatusType } from '@api/news-service/models';
 import { DialogService } from '@app/services/dialog.service';
 import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { Article } from '../../models/news.model';
 import { NewsFeedService } from '../../services/news-feed.service';
 import { EditorJSParser } from '../../parser';

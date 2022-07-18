@@ -1,5 +1,5 @@
 import { LeaveType } from '@api/time-service/models/leave-type';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 
 export interface ILeaveType {
 	leaveType: LeaveType;

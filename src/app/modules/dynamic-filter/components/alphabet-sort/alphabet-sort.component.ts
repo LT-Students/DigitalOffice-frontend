@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import { ButtonToggleChange, ButtonToggleComponent } from '@shared/component/button-toggle/button-toggle.component';
 import { Filter } from '../../models/filter';
 

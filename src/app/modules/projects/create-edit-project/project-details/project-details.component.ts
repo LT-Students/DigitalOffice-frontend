@@ -8,7 +8,7 @@ import {
 	Optional,
 	Self,
 } from '@angular/core';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 import {
 	AbstractControl,
 	ControlValueAccessor,

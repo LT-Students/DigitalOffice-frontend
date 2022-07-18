@@ -11,7 +11,7 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { DepartmentService } from '@app/services/department/department.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 
 @Component({
 	selector: 'do-department-list',

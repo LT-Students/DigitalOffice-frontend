@@ -15,7 +15,7 @@ import { ControlValueAccessor, FormControl, NgControl, Validators } from '@angul
 import { DoValidators } from '@app/validators/do-validators';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Icons } from '@shared/features/icons/icons';
+import { Icons } from '@shared/modules/icons/icons';
 
 export class EmailValue {
 	checked: boolean;
