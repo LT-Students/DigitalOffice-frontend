@@ -1,9 +1,11 @@
-<cdk-table [dataSource]="dataSource" multiTemplateDataRows>
+<cdk-table matSort [dataSource]="dataSource" multiTemplateDataRows (matSortChange)="sortChange.emit($event)">
 	<!-- Generating columns of table -->
 	<ng-container *ngFor="let column of columns" [cdkColumnDef]="column.field">
 		<cdk-header-cell
 			*cdkHeaderCellDef
 			class="text-secondary_default"
+			[mat-sort-header]="column.field"
+			[disabled]="!column.sortEnabled"
 			[ngStyle]="column.columnStyle || null"
 			[style.flex]="'0 0 ' + column.width + 'px'"
 			[style.min-width.px]="column.minWidth"

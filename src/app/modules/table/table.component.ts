@@ -3,6 +3,7 @@ import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Sort } from '@angular/material/sort';
 import { ColumnDef } from './models';
 import { TableOptions } from './models/table-options';
 
@@ -32,6 +33,7 @@ export class SimpleDataSource<T> extends DataSource<T> {
 })
 export class TableComponent<T> implements OnInit {
 	@Output() rowClick = new EventEmitter<T>();
+	@Output() sortChange = new EventEmitter<Sort>();
 
 	public expandedElement?: T;
 
