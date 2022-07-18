@@ -1,3 +1,5 @@
+@use 'base/variables' as variables;
+
 .mat-datepicker-content {
 	mat-calendar.mat-calendar {
 		width: 306px;
@@ -48,5 +50,11 @@
 
 	.mat-button-focus-overlay {
 		opacity: 0 !important;
+	}
+}
+
+.datepicker-weekend {
+	.mat-calendar-body-cell-content {
+		color: variables.$alert;
 	}
 }

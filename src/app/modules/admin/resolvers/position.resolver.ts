@@ -15,6 +15,6 @@ export class PositionResolver implements Resolve<OperationResultResponse<Positio
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<OperationResultResponse<PositionInfo[]>> {
-		return this._positionService.findPositions({ skipcount: 0, takecount: 10 });
+		return this._positionService.findPositions({ skipCount: 0, takeCount: 10 });
 	}
 }

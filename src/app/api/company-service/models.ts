@@ -6,7 +6,6 @@ export { CompanyResponse } from './models/company-response';
 export { OfficeInfo } from './models/office-info';
 export { ContractSubjectInfo } from './models/contract-subject-info';
 export { ErrorResponse } from './models/error-response';
-export { OperationResultStatusType } from './models/operation-result-status-type';
 export { OperationResultResponse } from './models/operation-result-response';
 export { OperationResultResponseCompanyResponse } from './models/operation-result-response-company-response';
 export { FindResultResponseContractSubjectInfo } from './models/find-result-response-contract-subject-info';

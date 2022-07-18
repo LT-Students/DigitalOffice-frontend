@@ -9,7 +9,11 @@
 						[userInitials]="user"
 						[progressive]="true"
 					></do-profile-image>
-					<label class="mat-body-1 employee-info__upload-button" (click)="onAvatarUploadDialog()">
+					<label
+						*ngIf="canEdit$ | async"
+						class="mat-body-1 employee-info__upload-button"
+						(click)="onAvatarUploadDialog()"
+					>
 						<mat-icon class="employee-info__upload-icon">upload</mat-icon>
 						Обновить фото
 					</label>
@@ -28,7 +32,7 @@
 					<h4>Общие сведения</h4>
 					<div class="employee-info__edit-button">
 						<button doButton (click)="editUser()">
-							<span class="employee-info__edit mat-body-2">Редактировать профиль</span>
+							<span class="employee-info__edit">Редактировать профиль</span>
 							<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 						</button>
 					</div>
@@ -42,19 +46,22 @@
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Дата рождения</span>
-							<p>{{ user.additionalInfo.dateOfBirth | date: dateType.FULL | placeholder }}</p>
+							<p>{{ user.additionalInfo.dateOfBirth | date: DateFormat.FULL | placeholder }}</p>
 						</div>
 					</div>
 					<div class="employee-info__second-column">
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Местоположение</span>
-							<p>Не указано</p>
+							<p>В разработке</p>
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Часы работы</span>
 							<p>
-								{{ user.additionalInfo.businessHoursFromUtc | date: 'shortTime' | placeholder }} -
-								{{ user.additionalInfo.businessHoursToUtc | date: 'shortTime' | placeholder }}
+								{{
+									[user.additionalInfo.businessHoursFromUtc, user.additionalInfo.businessHoursToUtc]
+										| workingHours
+										| placeholder
+								}}
 							</p>
 						</div>
 					</div>
@@ -76,7 +83,7 @@
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">В компании с</span>
-							<p>Не указано</p>
+							<p>{{ user.company?.startWorkingAt | date: DateFormat.FULL | placeholder }}</p>
 						</div>
 					</div>
 					<div class="employee-info__second-column">
@@ -88,16 +95,22 @@
 							<span class="employee-info__field mat-body-2 text-secondary_default">Роль</span>
 							<p>{{ user?.role?.name | placeholder }}</p>
 						</div>
-
+						<div>
+							<span class="employee-info__field mat-body-2 text-secondary_default">Трудовой договор</span>
+							<p>{{ user.company?.contractSubject?.name | placeholder }}</p>
+						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Ставка</span>
-							<p>Не указано</p>
+							<p>{{ user.company?.rate | number | placeholder }}</p>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="employee-info__additional">
-				<do-communications class="employee-info__communications"></do-communications>
+				<do-communications
+					class="employee-info__communications"
+					[communications]="user.communications || []"
+				></do-communications>
 			</div>
 		</div>
 	</ng-container>

@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { DateTime } from 'luxon';
-import { AttendanceService } from '../../services/attendance.service';
-import { ChartData } from './doughnut-chart/doughnut-chart.component';
+import { AttendanceService, MAX_FUTURE_DATE } from '../../services/attendance.service';
+import { ChartLegend } from './doughnut-chart/doughnut-chart.component';
 
 @Component({
 	selector: 'do-time-widget',
@@ -12,26 +11,28 @@ import { ChartData } from './doughnut-chart/doughnut-chart.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeWidgetComponent {
-	public selectedDate$: Observable<DateTime>;
-	public chartData: ChartData = { colors: [], labels: [] };
+	public readonly maxDate = MAX_FUTURE_DATE;
 
-	constructor(private _attendanceService: AttendanceService) {
-		this.selectedDate$ = this._attendanceService.selectedDate$;
-	}
+	public selectedDate$ = this.attendanceService.selectedDate$;
+	public chartData: ChartLegend = { colors: [], labels: [] };
+	public nextMonthButtonDisabled = false;
 
-	private _changeMonth(date: DateTime): void {
-		this._attendanceService.setNewDate(date);
+	constructor(private attendanceService: AttendanceService) {}
+
+	private changeMonth(date: DateTime): void {
+		this.attendanceService.setNewDate(date);
+		this.nextMonthButtonDisabled = date.plus({ month: 1 }) > this.maxDate;
 	}
 
 	public chosenMonthHandler(date: DateTime): void {
-		this._changeMonth(date);
+		this.changeMonth(date);
 	}
 
 	public onPreviousMonthClicked(date: DateTime): void {
-		this._changeMonth(date.minus({ months: 1 }));
+		this.changeMonth(date.minus({ months: 1 }));
 	}
 
 	public onNextMonthClicked(date: DateTime): void {
-		this._changeMonth(date.plus({ months: 1 }));
+		this.changeMonth(date.plus({ months: 1 }));
 	}
 }

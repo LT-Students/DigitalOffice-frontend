@@ -1,19 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ImageInfo } from './image-info';
 
 /**
  * User data.
  */
 export interface UserInfo {
-	firstName?: string;
+	firstName: string;
 	id: string;
-	isActive?: boolean;
-	lastName?: string;
+	image?: ImageInfo;
+	isActive: boolean;
+	lastName: string;
 	middleName?: string;
-	rate?: number;
-
-	/**
-	 * Start user's working date.
-	 */
-	startWorkingAt?: string;
 }

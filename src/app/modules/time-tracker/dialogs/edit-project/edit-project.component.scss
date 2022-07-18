@@ -1,0 +1,40 @@
+.modal {
+	&__title {
+		margin-bottom: 11px;
+	}
+
+	&__hours {
+		margin-right: 5px;
+		padding: 0;
+
+		width: 150px;
+	}
+}
+
+.project-name {
+	overflow: hidden;
+
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.date {
+	margin: 0;
+}
+
+.content {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 20px;
+}
+
+.controls {
+	margin-top: 20px;
+
+	display: flex;
+	justify-content: space-around;
+
+	button {
+		width: 180px;
+	}
+}

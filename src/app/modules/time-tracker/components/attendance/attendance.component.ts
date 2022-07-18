@@ -1,8 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { skip, switchMap, takeUntil } from 'rxjs/operators';
-import { ReplaySubject } from 'rxjs';
-import { CurrentUserService } from '@app/services/current-user.service';
-import { ActivatedRoute } from '@angular/router';
+import { first, skip, switchMap, takeUntil } from 'rxjs/operators';
+import { forkJoin, Subject } from 'rxjs';
+import { ActivatedRoute, Data } from '@angular/router';
 import { AttendanceService } from '../../services/attendance.service';
 
 @Component({
@@ -10,31 +9,34 @@ import { AttendanceService } from '../../services/attendance.service';
 	templateUrl: './attendance.component.html',
 	styleUrls: ['./attendance.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [AttendanceService],
 })
 export class AttendanceComponent implements OnInit, OnDestroy {
-	private onDestroy$$: ReplaySubject<void>;
+	private destroy$ = new Subject();
 
-	constructor(
-		private _attendanceService: AttendanceService,
-		private _currentUserService: CurrentUserService,
-		private _activatedRoute: ActivatedRoute
-	) {
-		this.onDestroy$$ = new ReplaySubject<void>(1);
-	}
+	constructor(private attendanceService: AttendanceService, private route: ActivatedRoute) {}
 
 	public ngOnInit(): void {
-		this._attendanceService.selectedDate$
+		this.route.data
+			.pipe(first())
+			.subscribe({ next: (data: Data) => this.attendanceService.setInitialData(data.attendance) });
+
+		this.attendanceService.selectedDate$
 			.pipe(
 				skip(1),
-				takeUntil(this.onDestroy$$),
-				switchMap(() => this._attendanceService.getMonthNormAndHolidays()),
-				switchMap(() => this._attendanceService.getActivities())
+				switchMap(() =>
+					forkJoin([
+						this.attendanceService.getMonthNormAndHolidays(),
+						this.attendanceService.getMonthActivities(),
+					])
+				),
+				takeUntil(this.destroy$)
 			)
 			.subscribe();
 	}
 
 	public ngOnDestroy() {
-		this.onDestroy$$.next();
-		this.onDestroy$$.complete();
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 }

@@ -101,12 +101,12 @@ export class PositionApiService extends BaseService {
 		/**
 		 * Number of positions to skip.
 		 */
-		skipcount: number;
+		skipCount: number;
 
 		/**
 		 * Number of positions to take.
 		 */
-		takecount: number;
+		takeCount: number;
 
 		/**
 		 * If it is true, response will be have deactivated records.
@@ -115,8 +115,8 @@ export class PositionApiService extends BaseService {
 	}): Observable<StrictHttpResponse<FindResultResponsePositionInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, PositionApiService.FindPositionsPath, 'get');
 		if (params) {
-			rb.query('skipcount', params.skipcount, {});
-			rb.query('takecount', params.takecount, {});
+			rb.query('skipcount', params.skipCount, {});
+			rb.query('takecount', params.takeCount, {});
 			rb.query('includedeactivated', params.includedeactivated, {});
 		}
 
@@ -147,12 +147,12 @@ export class PositionApiService extends BaseService {
 		/**
 		 * Number of positions to skip.
 		 */
-		skipcount: number;
+		skipCount: number;
 
 		/**
 		 * Number of positions to take.
 		 */
-		takecount: number;
+		takeCount: number;
 
 		/**
 		 * If it is true, response will be have deactivated records.

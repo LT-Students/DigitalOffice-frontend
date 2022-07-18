@@ -1,14 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
 
-import { OperationResultStatusType } from '@api/time-service/models';
 import { DateTime } from 'luxon';
-import { Activities, AttendanceService } from '../../services/attendance.service';
-
-export interface IDialogResponse {
-	status?: OperationResultStatusType;
-	data?: any;
-}
+import { AttendanceService, MAX_FUTURE_DATE } from '../../services/attendance.service';
 
 @Component({
 	selector: 'do-user-tasks',
@@ -17,15 +10,14 @@ export interface IDialogResponse {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserTasksComponent {
-	public selectedDate$: Observable<DateTime>;
-	public activities$: Observable<Activities>;
+	public readonly maxDate = MAX_FUTURE_DATE;
+	public selectedDate$ = this.attendanceService.selectedDate$;
+	public activities$ = this.attendanceService.activities$;
+	public canEdit$ = this.attendanceService.canEdit$;
 
-	constructor(private _attendanceService: AttendanceService) {
-		this.selectedDate$ = this._attendanceService.selectedDate$;
-		this.activities$ = this._attendanceService.activities$;
-	}
+	constructor(private attendanceService: AttendanceService) {}
 
-	public chosenMonthHandler(date: DateTime) {
-		this._attendanceService.setNewDate(date);
+	public chosenMonthHandler(date: DateTime): void {
+		this.attendanceService.setNewDate(date);
 	}
 }

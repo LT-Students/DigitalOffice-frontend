@@ -13,7 +13,7 @@ import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { IconsModule } from '@shared/features/icons/icons.module';
 import { OptionComponent } from '@shared/component/option/option.component';
-import { InfiniteAutocompleteComponent } from '@shared/component/autocomplete/infinite-autocomplete.component';
+import { AutocompleteComponent } from '@shared/component/autocomplete/autocomplete.component';
 import { MaterialModule } from './features/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
@@ -62,6 +62,10 @@ import { AutocompleteComponent } from './component/autocomplete/autocomplete.com
 import { AutocompleteOffDirective } from './directives/autocomplete-off.directive';
 import { ActionsComponent } from './component/actions/actions.component';
 import { ControlErrorsPipe } from './pipes/control-errors.pipe';
+import { InfoDialogComponent } from './modals/info-dialog/info-dialog.component';
+import { TimeInputComponent } from './component/time-input/time-input.component';
+import { SnackbarComponent } from './component/snackbar/snackbar.component';
+import { NumberInputDirective } from './directives/number-input.directive';
 
 @NgModule({
 	declarations: [
@@ -117,6 +121,12 @@ import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 		InfiniteAutocompleteComponent,
 		ActionsComponent,
 		ControlErrorsPipe,
+		OptionComponent,
+		AutocompleteComponent,
+		InfoDialogComponent,
+		TimeInputComponent,
+		SnackbarComponent,
+		NumberInputDirective,
 	],
 	imports: [
 		CommonModule,
@@ -187,6 +197,10 @@ import { ControlErrorsPipe } from './pipes/control-errors.pipe';
 		InfiniteAutocompleteComponent,
 		ActionsComponent,
 		ControlErrorsPipe,
+		OptionComponent,
+		AutocompleteComponent,
+		TimeInputComponent,
+		NumberInputDirective,
 	],
 })
 export class SharedModule {}

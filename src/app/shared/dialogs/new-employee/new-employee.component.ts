@@ -5,11 +5,10 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { CreateUserRequest } from '@api/user-service/models/create-user-request';
 import { CommunicationType, ContractTerm, CreateCommunicationRequest } from '@api/user-service/models';
 import { UserService } from '@app/services/user/user.service';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { finalize, first, map, switchMap } from 'rxjs/operators';
 import { RightsService } from '@app/services/rights/rights.service';
 import { RoleInfo } from '@api/rights-service/models/role-info';
-import { FindResultResponsePositionInfo } from '@api/position-service/models/find-result-response-position-info';
 import { DoValidators } from '@app/validators/do-validators';
 import { PositionService } from '@app/services/position/position.service';
 import { DepartmentService } from '@app/services/department/department.service';
@@ -19,6 +18,10 @@ import { OfficeInfo } from '@api/office-service/models/office-info';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { Company } from '@app/models/company';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
+import { PositionInfo } from '@api/position-service/models/position-info';
+import { LoadingState } from '@shared/directives/button-loading.directive';
+import { ContractSubjectApiService } from '@api/company-service/services/contract-subject-api.service';
+import { ContractSubjectInfo } from '@api/company-service/models/contract-subject-info';
 
 @Component({
 	selector: 'do-new-employee',
@@ -26,13 +29,13 @@ import { DepartmentInfo } from '@api/department-service/models/department-info';
 	styleUrls: ['./new-employee.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewEmployeeComponent implements OnDestroy {
+export class NewEmployeeComponent extends LoadingState implements OnDestroy {
 	public userForm: FormGroup;
-	public position$: Observable<FindResultResponsePositionInfo>;
-	public department$: Observable<OperationResultResponse<DepartmentInfo[]>>;
+	public position$: Observable<PositionInfo[]>;
+	public department$: Observable<DepartmentInfo[]>;
 	public roles$: Observable<RoleInfo[]>;
 	public offices$: Observable<OfficeInfo[]>;
-	public loading$$: BehaviorSubject<boolean>;
+	public contractTypes$: Observable<ContractSubjectInfo[]>;
 
 	private _unsubscribe$: Subject<void>;
 
@@ -44,20 +47,28 @@ export class NewEmployeeComponent implements OnDestroy {
 		private _positionService: PositionService,
 		private _departmentService: DepartmentService,
 		private _officeService: OfficeService,
+		private contractService: ContractSubjectApiService,
 		private currentCompany: CurrentCompanyService
 	) {
-		this.loading$$ = new BehaviorSubject<boolean>(false);
+		super();
 		this.userForm = this._initForm();
-		this.position$ = this._positionService.findPositions({ skipcount: 0, takecount: 500 });
-		this.department$ = this._departmentService.findDepartments({
-			skipCount: 0,
-			takeCount: 500,
-		});
+		this.position$ = this._positionService
+			.findPositions({ skipCount: 0, takeCount: 500 })
+			.pipe(map((res) => res.body ?? []));
+		this.department$ = this._departmentService
+			.findDepartments({
+				skipCount: 0,
+				takeCount: 500,
+			})
+			.pipe(map((res) => res.body ?? []));
 		this.roles$ = this._rightsService
 			.findRoles({ skipCount: 0, takeCount: 500 })
 			.pipe(map((res) => res.body ?? []));
 		this.offices$ = this._officeService
 			.findOffices({ skipCount: 0, takeCount: 500 })
+			.pipe(map((res) => res.body ?? []));
+		this.contractTypes$ = this.contractService
+			.findContractSubjects({ skipCount: 0, takeCount: 500 })
 			.pipe(map((res) => res.body ?? []));
 		this._unsubscribe$ = new Subject<void>();
 	}
@@ -68,7 +79,7 @@ export class NewEmployeeComponent implements OnDestroy {
 	}
 
 	public createEmployee(): void {
-		this.loading$$.next(true);
+		this.setLoading(true);
 
 		this.currentCompany.company$
 			.pipe(
@@ -77,7 +88,7 @@ export class NewEmployeeComponent implements OnDestroy {
 					const params: CreateUserRequest = this._convertFormDataToCreateUserParams(company.id);
 					return this._userService.createUser(params);
 				}),
-				finalize(() => this.loading$$.next(false))
+				finalize(() => this.setLoading(false))
 			)
 			.subscribe((result: OperationResultResponse) => {
 				this._dialogRef.close(result);
@@ -96,6 +107,7 @@ export class NewEmployeeComponent implements OnDestroy {
 			rate: [null, [Validators.required]],
 			departmentId: [null],
 			officeId: [null],
+			contractId: [null, [DoValidators.required]],
 			email: ['', [Validators.required, DoValidators.email]],
 			roleId: [null],
 		});
@@ -123,6 +135,7 @@ export class NewEmployeeComponent implements OnDestroy {
 				contractTermType: ContractTerm.Perpetual,
 				startWorkingAt: this.userForm.get('startWorkingAt')?.value,
 				rate: this.userForm.get('rate')?.value,
+				contractSubjectId: this.userForm.get('contractId')?.value,
 			},
 		};
 	}

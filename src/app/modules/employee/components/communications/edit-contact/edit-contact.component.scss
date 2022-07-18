@@ -1,0 +1,17 @@
+.title {
+	margin-top: 24px;
+
+	text-align: center;
+}
+
+.controls {
+	margin-top: 36px;
+	margin-bottom: 12px;
+
+	display: flex;
+	justify-content: center;
+
+	.button {
+		width: 180px;
+	}
+}

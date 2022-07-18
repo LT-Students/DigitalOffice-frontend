@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 
 function isEmptyInputValue(value: any): boolean {
@@ -19,11 +19,16 @@ const PASSWORD_REGEXP =
 	/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\])[\w<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\]{8,14}$/;
 
 export class DoValidators {
+	static required(control: AbstractControl): ValidationErrors | null {
+		const error = Validators.required(control);
+		return error ? { required: { message: 'Обязательное поле!' } } : null;
+	}
+
 	static email(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return EMAIL_REGEXP.test(control.value) ? null : { email: true };
+		return EMAIL_REGEXP.test(control.value) ? null : { email: { message: 'Введите корректный email' } };
 	}
 
 	static telegram(control: AbstractControl): ValidationErrors | null {
@@ -31,7 +36,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return TELEGRAM_REGEXP.test(control.value) ? null : { telegram: true };
+		return TELEGRAM_REGEXP.test(control.value)
+			? null
+			: {
+					telegram: {
+						message: `Имя пользователя telegram может содержать символы a-z, 0-9 и нижнее подчёркивание. Имя не может начинаться с цифры, а также начинаться и заканчиваться нижним подчёркиванием.`,
+					},
+			  };
 	}
 
 	static phone(control: AbstractControl): ValidationErrors | null {
@@ -39,7 +50,9 @@ export class DoValidators {
 			return null;
 		}
 
-		return isValidPhoneNumber(control.value) ? null : { phone: true };
+		return isValidPhoneNumber(control.value)
+			? null
+			: { phone: { message: `Введите корректный номер телефона в международном формате.` } };
 	}
 
 	static skype(control: AbstractControl): ValidationErrors | null {
@@ -47,7 +60,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return SKYPE_REGEXP.test(control.value) ? null : { skype: true };
+		return SKYPE_REGEXP.test(control.value)
+			? null
+			: {
+					skype: {
+						message: `Имя пользователя skype может содержать символы a-z, 0-9, а также запятую, тире, точку и нижнее подчёркивание.`,
+					},
+			  };
 	}
 
 	static twitter(control: AbstractControl): ValidationErrors | null {
@@ -55,7 +74,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return TWITTER_REGEXP.test(control.value) ? null : { twitter: true };
+		return TWITTER_REGEXP.test(control.value)
+			? null
+			: {
+					twitter: {
+						message: `Имя пользователя twitter может содержать символы a-z, 0-9 и нижнее подчёркивание.`,
+					},
+			  };
 	}
 
 	static floatNumber(control: AbstractControl): ValidationErrors | null {
@@ -101,7 +126,7 @@ export class DoValidators {
 				return null;
 			}
 			const strLength = control.value.trim().length;
-			return strLength < minLength ? { minlength: true } : null;
+			return strLength < minLength ? { minlength: { message: `Мин. длина: ${minLength}` } } : null;
 		};
 	}
 
@@ -112,6 +137,26 @@ export class DoValidators {
 			}
 			const strLength = control.value.trim().length;
 			return strLength > maxLength ? { maxlength: { message: `Макс. длина: ${maxLength}` } } : null;
+		};
+	}
+
+	static min(min: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (isEmptyInputValue(control.value)) {
+				return null;
+			}
+			const value = parseFloat(control.value);
+			return !isNaN(value) && value < min ? { min: { message: `Минимальное значение: ${min}` } } : null;
+		};
+	}
+
+	static max(max: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (isEmptyInputValue(control.value)) {
+				return null;
+			}
+			const value = parseFloat(control.value);
+			return !isNaN(value) && value > max ? { max: { message: `Максимальное значение: ${max}` } } : null;
 		};
 	}
 

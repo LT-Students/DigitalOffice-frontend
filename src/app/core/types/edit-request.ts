@@ -3,16 +3,17 @@ export type InitialDataEditRequest<T extends PatchPath> = FormDataEditRequest<T>
 
 export type EditRequest<T extends PatchPath> = PatchDocument<T>[];
 
-export interface PatchDocument<T extends PatchPath> {
-	op: 'replace';
-	path: T;
-	value: any;
+type PatchOperation = 'replace';
+export class PatchDocument<T extends PatchPath> {
+	public op: PatchOperation = 'replace';
+	constructor(public value: any, public path: T) {}
 }
 
 export type PatchPath =
 	| UserPath
 	| OfficePath
 	| LeaveTimePath
+	| WorkTimePath
 	| ProjectPath
 	| DepartmentPath
 	| PositionPath
@@ -33,6 +34,11 @@ export enum LeaveTimePath {
 	LEAVE_TYPE = '/LeaveType',
 	COMMENT = '/Comment',
 	IS_ACTIVE = '/IsActive',
+}
+
+export enum WorkTimePath {
+	Hours = '/Hours',
+	Description = '/Description',
 }
 
 export enum ProjectPath {

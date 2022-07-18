@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MenuItem } from '@shared/component/context-menu/menu-item';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuTrigger, MenuPositionX, MenuPositionY } from '@angular/material/menu';
 
 @Component({
 	selector: 'do-context-menu',
@@ -13,11 +13,14 @@ export class ContextMenuComponent implements OnInit {
 
 	@ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
 	@Input() items: MenuItem[] = [];
+	@Input() xPosition: MenuPositionX = 'after';
+	@Input() yPosition: MenuPositionY = 'below';
 
 	public object: any;
 	public menuPosition = {
 		x: 0,
 		y: 0,
+		width: 0,
 	};
 	public readonly itemId = ContextMenuComponent.uniqueId++;
 
@@ -28,8 +31,9 @@ export class ContextMenuComponent implements OnInit {
 	public openContextMenu<T>(event: MouseEvent, object?: T): void {
 		const target = (event.currentTarget as HTMLElement).getBoundingClientRect();
 		this.menuPosition = {
-			x: target.right - target.width / 2,
+			x: target.left,
 			y: target.bottom,
+			width: target.width,
 		};
 		this.cdr.markForCheck();
 

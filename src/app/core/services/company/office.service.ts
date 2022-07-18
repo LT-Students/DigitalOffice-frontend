@@ -9,8 +9,8 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { OfficeInfo } from '@api/office-service/models/office-info';
 import { UUID } from '@app/types/uuid.type';
 import { EditRequest, OfficePath } from '@app/types/edit-request';
-import { UserOfficeApiService } from '@api/office-service/services/user-office-api.service';
-import { ChangeUserOfficeRequest } from '@api/office-service/models/change-user-office-request';
+import { OfficeUsersApiService } from '@api/office-service/services/office-users-api.service';
+import { CreateOfficeUsers } from '@api/office-service/models/create-office-users';
 
 @Injectable({
 	providedIn: 'root',
@@ -18,7 +18,7 @@ import { ChangeUserOfficeRequest } from '@api/office-service/models/change-user-
 export class OfficeService {
 	constructor(
 		private officeService: OfficeApiService,
-		private userOfficeApiService: UserOfficeApiService,
+		private userOfficeApiService: OfficeUsersApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
 
@@ -48,7 +48,7 @@ export class OfficeService {
 		);
 	}
 
-	public changeUserOffice(params: ChangeUserOfficeRequest): Observable<OperationResultResponse> {
-		return this.userOfficeApiService.changeOffice({ body: params });
+	public changeUserOffice(params: CreateOfficeUsers): Observable<OperationResultResponse> {
+		return this.userOfficeApiService.createOfficeUsers({ body: params });
 	}
 }

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AttendanceService } from './services/attendance.service';
 import { AttendanceComponent } from './components/attendance/attendance.component';
+import { AttendanceResolver } from './attendance.resolver';
 
 const timeTrackerRoutes: Routes = [
 	{
 		path: '',
 		component: AttendanceComponent,
 		resolve: {
-			attendance: AttendanceService,
+			attendance: AttendanceResolver,
 		},
 	},
 	{ path: '**', redirectTo: '', pathMatch: 'full' },

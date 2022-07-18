@@ -7,5 +7,10 @@
 }
 
 .dialog-actions {
-	margin-top: 60px;
+	margin-top: 48px;
+	padding: 0;
+
+	.submit {
+		margin-left: 24px;
+	}
 }

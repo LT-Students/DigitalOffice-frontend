@@ -1,7 +1,7 @@
 <mat-card class="add-hours__matcard">
 	<h3 doUnderline underlinedSize="sm">
 		Внести часы в
-		<span class="mat-h3 add-hours__menu primary" [matMenuTriggerFor]="formTypeMenu"
+		<span class="mat-h3 add-hours__menu primary" [matMenuTriggerFor]="formTypeMenu" data-test="add-time-for-btn"
 			>{{ isWorktimeForm ? 'проект' : 'отсутствие' }}
 			<mat-icon>expand_more</mat-icon>
 		</span>
@@ -10,11 +10,6 @@
 			<button mat-menu-item (click)="toggleFormType(false)">Отсутствие</button>
 		</mat-menu>
 	</h3>
-	<ng-container *ngIf="isWorktimeForm; else leaveTimeForm">
-		<do-add-worktime-hours></do-add-worktime-hours>
-	</ng-container>
+	<do-add-work-time-hours *ngIf="isWorktimeForm"></do-add-work-time-hours>
+	<do-add-leave-hours *ngIf="!isWorktimeForm"></do-add-leave-hours>
 </mat-card>
-
-<ng-template #leaveTimeForm>
-	<do-add-leave-hours></do-add-leave-hours>
-</ng-template>

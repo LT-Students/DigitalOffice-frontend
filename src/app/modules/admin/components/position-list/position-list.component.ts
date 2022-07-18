@@ -63,7 +63,7 @@ export class PositionListComponent implements AfterViewInit {
 			.openModal<AddEditPositionComponent>(AddEditPositionComponent, ModalWidth.M, positionInfo)
 			.afterClosed()
 			.subscribe({
-				next: (result) => {
+				next: () => {
 					this._refreshCurrentPage$$.next(true);
 				},
 			});
@@ -82,7 +82,7 @@ export class PositionListComponent implements AfterViewInit {
 					iif(() => !!confirm, this._positionService.deletePosition(positionInfo.id ?? ''), EMPTY)
 				)
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}
@@ -100,15 +100,15 @@ export class PositionListComponent implements AfterViewInit {
 					iif(() => !!confirm, this._positionService.restorePosition(positionInfo.id ?? ''), EMPTY)
 				)
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}
 
 	public getPositions(filters: any, event: PageEvent | null): Observable<OperationResultResponse<PositionInfo[]>> {
 		return this._positionService.findPositions({
-			skipcount: event ? event.pageIndex * event.pageSize : 0,
-			takecount: event ? event.pageSize : 10,
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
 			includedeactivated: filters.showDeactivated,
 		});
 	}

@@ -1,0 +1,73 @@
+<div [formGroup]="addHoursForm" class="form">
+	<div class="dates-container">
+		<do-form-row label="Количество часов">
+			<mat-form-field>
+				<input
+					matInput
+					doNumberInput
+					formControlName="time"
+					type="text"
+					placeholder="0"
+					data-test="work-hours-input"
+				/>
+				<mat-error>
+					{{ addHoursForm.controls['time'].errors | controlErrors }}
+				</mat-error>
+			</mat-form-field>
+		</do-form-row>
+
+		<do-form-row label="Месяц">
+			<mat-form-field>
+				<mat-select [formControl]="dateControl" [compareWith]="compareDate" data-test="month-select">
+					<mat-option *ngFor="let month of monthOptions" [value]="month">
+						{{ month | dateTime: 'LLLL y' | titlecase }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-row>
+	</div>
+
+	<do-form-row label="Проект">
+		<mat-form-field>
+			<mat-select
+				formControlName="project"
+				placeholder="Выберите проект"
+				(selectionChange)="patchWorkTimeInfoIntoForm()"
+				data-test="project-select"
+			>
+				<mat-option *ngFor="let project of projectOptions$ | async" [value]="project">
+					{{ project.name }}
+				</mat-option>
+			</mat-select>
+			<mat-error>
+				{{ addHoursForm.controls['project'].errors | controlErrors }}
+			</mat-error>
+		</mat-form-field>
+	</do-form-row>
+	<do-form-row label="Комментарий">
+		<mat-form-field>
+			<textarea
+				#comment
+				cdkTextareaAutosize
+				cdkAutosizeMinRows="3"
+				cdkAutosizeMaxRows="3"
+				matInput
+				formControlName="comment"
+				maxlength="500"
+				placeholder="Оставьте комментарий для менеджера"
+				data-test="work-comment-input"
+			></textarea>
+			<mat-hint>{{ comment.value.length }}/500</mat-hint>
+		</mat-form-field>
+	</do-form-row>
+	<button
+		class="submit-button"
+		mat-flat-button
+		color="primary"
+		[loading]="loading$ | async"
+		(click)="onSubmit()"
+		data-test="save-work-hours-btn"
+	>
+		Сохранить часы
+	</button>
+</div>

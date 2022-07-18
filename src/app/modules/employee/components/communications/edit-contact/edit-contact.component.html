@@ -1,0 +1,26 @@
+<h3 mat-dialog-title class="title">Редактирование контакта</h3>
+<do-form-row [label]="contactType | communicationType">
+	<mat-form-field>
+		<mat-icon matPrefix *ngIf="communication.type === Type.Telegram || communication.type === Type.Twitter"
+			>alternate_email
+		</mat-icon>
+		<input
+			matInput
+			*ngIf="communication.type !== Type.Phone"
+			[formControl]="control"
+			[placeholder]="'Введите ' + (contactType | lowercase)"
+		/>
+		<do-phone-input
+			*ngIf="communication.type === Type.Phone"
+			[formControl]="control"
+			placeholder="+7 (___)___-__-__"
+		></do-phone-input>
+		<mat-error>{{ control.errors | controlErrors }}</mat-error>
+	</mat-form-field>
+</do-form-row>
+<div class="controls">
+	<button doButton class="button" (click)="onClose()">Отменить</button>
+	<button mat-flat-button color="primary" class="button" [loading]="loading$ | async" (click)="onSubmit()">
+		Сохранить
+	</button>
+</div>

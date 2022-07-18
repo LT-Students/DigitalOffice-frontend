@@ -1,0 +1,65 @@
+<div class="flex flex_ai_baseline" *ngIf="!isEditMode">
+	<span class="mat-body-2 text-secondary_default label">{{ config.label }}</span>
+	<span class="value">{{ config.value | execute: config.displayValueGetter | placeholder }}</span>
+	<button
+		*ngIf="config.canEdit$ | async"
+		class="edit-button"
+		doButton
+		(click)="setEditMode(true)"
+		data-test="edit-work-info-btn"
+	>
+		Редактировать&nbsp;<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
+	</button>
+</div>
+<div #edit class="edit-template" *ngIf="isEditMode">
+	<ng-container [ngSwitch]="config.type">
+		<do-form-row *ngSwitchCase="'select'" [label]="config.label">
+			<mat-form-field>
+				<mat-select [formControl]="control" [placeholder]="config.placeholder">
+					<mat-option
+						*ngFor="let option of config.selectOption$ ? (config.selectOption$ | async) : config.options"
+						[value]="option | execute: config.controlValueGetter"
+					>
+						{{ option | execute: config.optionDisplayValueGetter }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-row>
+		<do-form-row *ngSwitchCase="'autocomplete'" [label]="config.label">
+			<mat-form-field>
+				<do-autocomplete
+					[formControl]="control"
+					[placeholder]="config.placeholder"
+					[displayWith]="config.displayValueGetter"
+					(scrolled)="handleScroll()"
+					(searchChange)="searchName$.next($event)"
+				>
+					<do-option *ngFor="let option of optionsProvider.dataSource$ | async" [value]="option">
+						{{ option | execute: config.optionDisplayValueGetter }}
+					</do-option>
+				</do-autocomplete>
+				<mat-error>{{ control.errors | controlErrors }}</mat-error>
+			</mat-form-field>
+		</do-form-row>
+		<do-form-row *ngSwitchCase="'date'" [label]="config.label">
+			<mat-form-field>
+				<input matInput [matDatepicker]="picker" [formControl]="control" placeholder="ДД месяц ГГГГ" />
+				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-datepicker #picker></mat-datepicker>
+				<mat-error>{{ control.errors | controlErrors }}</mat-error>
+			</mat-form-field>
+		</do-form-row>
+	</ng-container>
+	<div class="controls">
+		<button doButton (click)="setEditMode(false)" data-test="edit-work-info-cancel-btn">Отменить</button>
+		<button
+			mat-flat-button
+			color="primary"
+			[loading]="loading$ | async"
+			(click)="onSubmit()"
+			data-test="edit-work-info-save-btn"
+		>
+			Сохранить
+		</button>
+	</div>
+</div>

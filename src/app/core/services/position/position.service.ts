@@ -21,8 +21,8 @@ export interface IPositionInfo {
 }
 
 export interface IFindRequest {
-	skipcount: number;
-	takecount: number;
+	skipCount: number;
+	takeCount: number;
 	includedeactivated?: boolean;
 }
 
