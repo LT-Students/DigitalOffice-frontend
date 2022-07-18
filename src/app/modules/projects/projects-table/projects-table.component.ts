@@ -1,10 +1,10 @@
-import { Component, ChangeDetectionStrategy, OnInit, Self } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { Subject } from 'rxjs';
 import { UserRights } from '@app/types/user-rights.enum';
-import { InfiniteScrollDataProviderService } from '@app/services/infinite-scroll-data-provider.service';
+import { InfiniteScrollDataProvider } from '@app/utils/infinite-scroll-data-provider';
 import { ProjectsRoutes } from '../models/projects-routes';
 import { ColumnDef } from '../../table/models';
 import { FilterDef } from '../../dynamic-filter/models';
@@ -18,19 +18,19 @@ import { ProjectTableService } from './project-table.service';
 	templateUrl: './projects-table.component.html',
 	styleUrls: ['./projects-table.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [ProjectTableService, InfiniteScrollDataProviderService],
+	providers: [ProjectTableService],
 })
 export class ProjectsTableComponent implements OnInit {
 	public UserRights = UserRights;
 	public ProjectsRoutes = ProjectsRoutes;
 
 	public tableData!: SimpleDataSource<ProjectInfo>;
+	public dataProvider!: InfiniteScrollDataProvider<ProjectInfo>;
 	private filterValue = new Subject<FilterEvent>();
 	public filters: FilterDef[] = this.projectTableService.getFilterData();
 	public columns: ColumnDef[] = this.projectTableService.getTableColumns();
 
 	constructor(
-		@Self() private infiniteScrollDataProvider: InfiniteScrollDataProviderService<ProjectInfo>,
 		private projectTableService: ProjectTableService,
 		private route: ActivatedRoute,
 		private router: Router
@@ -38,12 +38,12 @@ export class ProjectsTableComponent implements OnInit {
 
 	public ngOnInit(): void {
 		const loadDataFn = this.projectTableService.loadDataFn;
-		const dataSource$ = this.infiniteScrollDataProvider.getInfiniteDataSource$(
+		this.dataProvider = new InfiniteScrollDataProvider<ProjectInfo>(
 			loadDataFn,
 			this.filterValue,
 			defaultProjectsTakeCount
 		);
-		this.tableData = new SimpleDataSource(dataSource$);
+		this.tableData = new SimpleDataSource(this.dataProvider.dataSource$);
 	}
 
 	public handleRowClick(project: ProjectInfo): void {
@@ -55,6 +55,6 @@ export class ProjectsTableComponent implements OnInit {
 	}
 
 	public handleScroll(): void {
-		this.infiniteScrollDataProvider.loadOnScroll();
+		this.dataProvider.loadOnScroll();
 	}
 }

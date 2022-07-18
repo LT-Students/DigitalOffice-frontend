@@ -1,35 +1,36 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, Self } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, map, takeUntil } from 'rxjs/operators';
-import { InfiniteScrollDataProviderService } from '@app/services/infinite-scroll-data-provider.service';
-import { ProjectInfo } from '@api/project-service/models/project-info';
+import { InfiniteScrollDataProvider } from '@app/utils/infinite-scroll-data-provider';
 import { AutocompleteFilterParams, Filter } from '../../models';
 
 @Component({
 	selector: 'do-filter-autocomplete',
 	template: `
 		<do-form-field>
-			<do-autocomplete
-				[placeholder]="params?.placeholder"
-				[formControl]="control"
-				[displayWith]="params.displayWithFn || null"
-				(scrolled)="handleScroll()"
-				(searchChange)="searchName$.next($event)"
-			>
-				<do-option *ngFor="let option of options$ | async" [value]="option">
-					{{ option | execute: params.displayValueGetter }}
-				</do-option>
-			</do-autocomplete>
+			<mat-form-field>
+				<do-autocomplete
+					[placeholder]="params?.placeholder"
+					[formControl]="control"
+					[displayWith]="params.displayWithFn || null"
+					(scrolled)="handleScroll()"
+					(searchChange)="searchName$.next($event)"
+				>
+					<do-option *ngFor="let option of options$ | async" [value]="option">
+						{{ option | execute: params.displayValueGetter }}
+					</do-option>
+				</do-autocomplete>
+			</mat-form-field>
 		</do-form-field>
 	`,
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [InfiniteScrollDataProviderService],
 })
 export class AutocompleteComponent implements OnInit, OnDestroy, Filter<AutocompleteFilterParams<any>> {
 	public searchName$ = new Subject<string>();
 
+	public dataProvider!: InfiniteScrollDataProvider<any>;
 	public control = new FormControl('');
 	public params!: AutocompleteFilterParams<any>;
 	public options$!: Observable<any[]>;
@@ -38,16 +39,18 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 	private onChange = () => {};
 	private onTouched = () => {};
 
-	constructor(@Self() private infiniteScrollDataProvider: InfiniteScrollDataProviderService<ProjectInfo>) {}
+	constructor() {}
 
 	public ngOnInit(): void {
-		this.options$ = this.infiniteScrollDataProvider.getInfiniteDataSource$(
+		this.dataProvider = new InfiniteScrollDataProvider(
 			this.params.loadOptions$,
 			this.searchName$.pipe(
 				debounceTime(500),
 				map((name: string) => ({ nameIncludeSubstring: name }))
 			)
 		);
+		this.options$ = this.dataProvider.dataSource$;
+
 		this.control.valueChanges
 			.pipe(
 				map((v: any) => this.params.valueGetter(v)),
@@ -61,7 +64,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 	}
 
 	public handleScroll(): void {
-		this.infiniteScrollDataProvider.loadOnScroll();
+		this.dataProvider.loadOnScroll();
 	}
 
 	public registerOnChange(fn: any): void {

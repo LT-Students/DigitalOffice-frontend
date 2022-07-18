@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { IFindProjects } from '@app/services/project/project.service';
 import { ActivatedRoute } from '@angular/router';
-import { LoadDataFn } from '@app/services/infinite-scroll-data-provider.service';
+import { LoadDataFn } from '@app/utils/infinite-scroll-data-provider';
 import { ColumnDef } from '../../table/models';
 import {
 	AutocompleteFilterParams,

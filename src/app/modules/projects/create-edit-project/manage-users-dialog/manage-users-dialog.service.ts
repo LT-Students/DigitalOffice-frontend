@@ -3,7 +3,6 @@ import { Icons } from '@shared/modules/icons/icons';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DepartmentService } from '@app/services/department/department.service';
 import { UserInfo } from '@api/filter-service/models/user-info';
-import { InfiniteScrollDataProviderService } from '@app/services/infinite-scroll-data-provider.service';
 import { FilterService } from '@app/services/filter/filter.service';
 import { map } from 'rxjs/operators';
 import { ColumnDef } from '../../../table/models';
@@ -14,10 +13,7 @@ import { SimpleDataSource } from '../../../table/table.component';
 	providedIn: 'root',
 })
 export class ManageUsersDialogService {
-	constructor(
-		private filterService: FilterService,
-		private departmentService: DepartmentService // private infiniteScroll: InfiniteScrollDataProviderService<UserInfo>
-	) {}
+	constructor(private filterService: FilterService, private departmentService: DepartmentService) {}
 
 	public loadUsers$() {
 		return new SimpleDataSource(

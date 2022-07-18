@@ -3,7 +3,7 @@ import { Icons } from '@shared/modules/icons/icons';
 import { FormControl } from '@angular/forms';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { debounceTime, finalize, map, switchMap } from 'rxjs/operators';
-import { InfiniteScrollDataProvider } from '@app/utils/infinite-scroll-data.provider';
+import { InfiniteScrollDataProvider } from '@app/utils/infinite-scroll-data-provider';
 import { Subject } from 'rxjs';
 import { WorkInfoConfigService } from '../work-info-config.service';
 import { WorkInfoConfig } from './work-info-item';

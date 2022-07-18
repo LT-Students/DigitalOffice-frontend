@@ -195,7 +195,6 @@ import { NumberInputDirective } from './directives/number-input.directive';
 		ActionsComponent,
 		ControlErrorsPipe,
 		OptionComponent,
-		AutocompleteComponent,
 		TimeInputComponent,
 		NumberInputDirective,
 	],
