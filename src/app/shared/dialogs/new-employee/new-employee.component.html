@@ -141,7 +141,7 @@
 				</do-form-field>
 				<do-form-field label="Тип договора">
 					<mat-form-field>
-						<mat-select placeholder="Выберите офис" formControlName="contractId">
+						<mat-select placeholder="Выберите тип договора" formControlName="contractId" required>
 							<mat-option *ngFor="let contract of contractTypes$ | async" [value]="contract.id">
 								{{ contract.name }}
 							</mat-option>
