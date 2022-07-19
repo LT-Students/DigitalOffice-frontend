@@ -1,0 +1,26 @@
+<div class="flex flex_column flex_ai_center">
+	<div class="pages text-secondary_default">
+		<button doButton (click)="previousPage()">
+			<mat-icon [svgIcon]="Icons.KeyboardArrowLeft"></mat-icon>
+		</button>
+		<div
+			*ngFor="let i of pages"
+			class="page-link"
+			[ngClass]="{ active: i === pageIndex, ellipsis: i === -1 }"
+			(click)="navigateToPage(i)"
+		>
+			{{ i === -1 ? '...' : i + 1 }}
+		</div>
+		<button doButton (click)="nextPage()">
+			<mat-icon [svgIcon]="Icons.KeyboardArrowRight"></mat-icon>
+		</button>
+	</div>
+	<div class="page-size">
+		<span class="text-secondary_default">Отображать по&nbsp;&nbsp;</span>
+		<do-button-toggle-group color="accent" (valueChange)="handlePageSizeChange($event)">
+			<do-button-toggle *ngFor="let size of pageSizeOptions" [checked]="pageSize === size" [value]="size">{{
+				size
+			}}</do-button-toggle>
+		</do-button-toggle-group>
+	</div>
+</div>

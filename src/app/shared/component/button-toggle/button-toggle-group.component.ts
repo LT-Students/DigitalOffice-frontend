@@ -4,6 +4,8 @@ import {
 	Component,
 	ContentChildren,
 	EventEmitter,
+	HostBinding,
+	Input,
 	OnInit,
 	Output,
 	QueryList,
@@ -23,11 +25,13 @@ export class ButtonToggleGroupComponent implements OnInit, AfterContentInit {
 	@ContentChildren(ButtonToggleComponent) buttons!: QueryList<ButtonToggleComponent>;
 	@Output() valueChange = new EventEmitter<any>();
 
-	private selectionModel = new SelectionModel<ButtonToggleComponent | undefined>(false, undefined);
+	private selectionModel = new SelectionModel<ButtonToggleComponent>(false);
 
 	private get selected(): ButtonToggleComponent | undefined {
 		return this.selectionModel.selected[0];
 	}
+
+	@HostBinding('class') @Input() color: 'primary' | 'accent' = 'primary';
 
 	constructor() {}
 

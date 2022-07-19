@@ -57,4 +57,8 @@ export class ProjectsTableComponent implements OnInit {
 	public handleScroll(): void {
 		this.dataProvider.loadOnScroll();
 	}
+
+	public handlePage(event: any): void {
+		console.log(event);
+	}
 }

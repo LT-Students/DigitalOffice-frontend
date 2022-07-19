@@ -11,18 +11,5 @@
 	</button>
 </div>
 <do-dynamic-filter class="filter" [filters]="filters" (filterChange)="handleFilter($event)"></do-dynamic-filter>
-<div
-	infiniteScroll
-	[fromRoot]="true"
-	[infiniteScrollContainer]="'.content-container'"
-	[infiniteScrollThrottle]="0"
-	[alwaysCallback]="true"
-	(scrolled)="handleScroll()"
->
-	<do-table
-		[dataSource]="tableData"
-		[columns]="columns"
-		rowHeight="96"
-		(rowClick)="handleRowClick($event)"
-	></do-table>
-</div>
+<do-table [dataSource]="tableData" [columns]="columns" rowHeight="96" (rowClick)="handleRowClick($event)"></do-table>
+<do-paginator [length]="277" (page)="handlePage($event)"></do-paginator>

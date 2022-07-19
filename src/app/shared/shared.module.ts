@@ -65,6 +65,7 @@ import { InfoDialogComponent } from './dialogs/info-dialog/info-dialog.component
 import { TimeInputComponent } from './component/time-input/time-input.component';
 import { SnackbarComponent } from './component/snackbar/snackbar.component';
 import { NumberInputDirective } from './directives/number-input.directive';
+import { PaginatorComponent } from './component/paginator/paginator.component';
 
 @NgModule({
 	declarations: [
@@ -125,6 +126,7 @@ import { NumberInputDirective } from './directives/number-input.directive';
 		TimeInputComponent,
 		SnackbarComponent,
 		NumberInputDirective,
+		PaginatorComponent,
 	],
 	imports: [
 		CommonModule,
@@ -197,6 +199,7 @@ import { NumberInputDirective } from './directives/number-input.directive';
 		OptionComponent,
 		TimeInputComponent,
 		NumberInputDirective,
+		PaginatorComponent,
 	],
 })
 export class SharedModule {}
