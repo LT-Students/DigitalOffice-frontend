@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2.7",
+    "version": "1.2.2.8",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -102,8 +102,18 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n"
+            "description": "Forbidden. Invalid token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -115,22 +125,6 @@
         },
         {
           "$ref": "#/components/parameters/projectId"
-        },
-        {
-          "name": "includeusers",
-          "in": "query",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "shownotactiveusers",
-          "in": "query",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
         },
         {
           "name": "includefiles",
@@ -167,6 +161,29 @@
           },
           "400": {
             "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
+          "403": {
+            "description": "Forbidden.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project was not found.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -221,8 +238,11 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -280,8 +300,11 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -336,8 +359,11 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -392,8 +418,11 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -448,8 +477,11 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -504,8 +536,11 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -560,8 +595,96 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n*Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/projectId"
+        },
+        {
+          "name": "isActive",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "description": "true - only active users, false - only not-active, null(default) - all users.",
+          "required": false
+        },
+        {
+          "name": "ascendingSort",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "description": "true - ascending sort user, false - descending sort, null(default) - without sort.",
+          "required": false
+        },
+        {
+          "name": "includeAvatars",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includePositions",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "operationId": "find users",
+        "responses": {
+          "200": {
+            "description": "Successfully returned users information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseUserInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
+          "403": {
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -619,8 +742,11 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -672,8 +798,8 @@
               }
             }
           },
-          "204": {
-            "description": "No Content.",
+          "400": {
+            "description": "Bad request.\n* Error in the field.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -682,8 +808,11 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
-            "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
+            "description": "Forbidden.\n* Invalid token.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -1262,6 +1391,32 @@
           }
         }
       },
+      "FindResultResponseUserInfo": {
+        "type": "object",
+        "required": [
+          "TotalCount",
+          "Errors"
+        ],
+        "properties": {
+          "TotalCount": {
+            "description": "Total number of finded by filter users.",
+            "type": "integer",
+            "example": 10
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "CreateFilesRequest": {
         "type": "object",
         "required": [
@@ -1362,8 +1517,7 @@
         "description": "Response object for action operations.",
         "type": "object",
         "required": [
-          "Errors",
-          "TotalCount"
+          "Errors"
         ],
         "properties": {
           "Body": {
@@ -1386,10 +1540,11 @@
           "Project": {
             "$ref": "#/components/schemas/ProjectInfo"
           },
-          "Users": {
+          "UsersIds": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserInfo"
+              "type": "string",
+              "format": "uuid"
             }
           },
           "Files": {

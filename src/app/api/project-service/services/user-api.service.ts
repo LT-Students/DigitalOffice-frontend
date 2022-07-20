@@ -11,6 +11,7 @@ import { map, filter } from 'rxjs/operators';
 
 import { CreateProjectUsersRequest } from '../models/create-project-users-request';
 import { EditProjectUsersRoleRequest } from '../models/edit-project-users-role-request';
+import { FindResultResponseUserInfo } from '../models/find-result-response-user-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
@@ -70,6 +71,88 @@ export class UserApiService extends BaseService {
 	createProjectUsers(params: { body: CreateProjectUsersRequest }): Observable<OperationResultResponse> {
 		return this.createProjectUsers$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
+
+	/**
+	 * Path part for operation findUsers
+	 */
+	static readonly FindUsersPath = '/user/find';
+
+	/**
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `findUsers()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	findUsers$Response(params: {
+		/**
+		 * Project global unique identifier.
+		 */
+		projectId: string;
+
+		/**
+		 * true - only active users, false - only not-active, null(default) - all users.
+		 */
+		isActive?: boolean;
+
+		/**
+		 * true - ascending sort user, false - descending sort, null(default) - without sort.
+		 */
+		ascendingSort?: boolean;
+		includeAvatars?: boolean;
+		includePositions?: boolean;
+	}): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
+		const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
+		if (params) {
+			rb.query('projectId', params.projectId, {});
+			rb.query('isActive', params.isActive, {});
+			rb.query('ascendingSort', params.ascendingSort, {});
+			rb.query('includeAvatars', params.includeAvatars, {});
+			rb.query('includePositions', params.includePositions, {});
+		}
+
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<FindResultResponseUserInfo>;
+				})
+			);
+	}
+
+	/**
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `findUsers$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	findUsers(params: {
+		/**
+		 * Project global unique identifier.
+		 */
+		projectId: string;
+
+		/**
+		 * true - only active users, false - only not-active, null(default) - all users.
+		 */
+		isActive?: boolean;
+
+		/**
+		 * true - ascending sort user, false - descending sort, null(default) - without sort.
+		 */
+		ascendingSort?: boolean;
+		includeAvatars?: boolean;
+		includePositions?: boolean;
+	}): Observable<FindResultResponseUserInfo> {
+		return this.findUsers$Response(params).pipe(
+			map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)
 		);
 	}
 

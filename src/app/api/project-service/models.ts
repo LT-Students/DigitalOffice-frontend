@@ -16,6 +16,7 @@ export { EditProjectRequest } from './models/edit-project-request';
 export { ProjectPatchDocument } from './models/project-patch-document';
 export { UserRequest } from './models/user-request';
 export { FindResultResponseProjectInfo } from './models/find-result-response-project-info';
+export { FindResultResponseUserInfo } from './models/find-result-response-user-info';
 export { CreateFilesRequest } from './models/create-files-request';
 export { RemoveFilesRequest } from './models/remove-files-request';
 export { CreateImagesRequest } from './models/create-images-request';

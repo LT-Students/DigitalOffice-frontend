@@ -149,16 +149,12 @@ export class ProjectApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
-		includeusers?: boolean;
-		shownotactiveusers?: boolean;
 		includefiles?: boolean;
 		includeimages?: boolean;
 	}): Observable<StrictHttpResponse<OperationResultResponseProjectResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectPath, 'get');
 		if (params) {
 			rb.query('projectId', params.projectId, {});
-			rb.query('includeusers', params.includeusers, {});
-			rb.query('shownotactiveusers', params.shownotactiveusers, {});
 			rb.query('includefiles', params.includefiles, {});
 			rb.query('includeimages', params.includeimages, {});
 		}
@@ -189,8 +185,6 @@ export class ProjectApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
-		includeusers?: boolean;
-		shownotactiveusers?: boolean;
 		includefiles?: boolean;
 		includeimages?: boolean;
 	}): Observable<OperationResultResponseProjectResponse> {

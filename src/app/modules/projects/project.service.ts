@@ -26,7 +26,6 @@ export class ProjectService {
 		return this.projectService
 			.getProject({
 				projectId: projectId,
-				includeusers: true,
 				includefiles: true,
 				includeimages: true,
 			})
