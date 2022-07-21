@@ -69,6 +69,7 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 
 			.arrow {
 				cursor: pointer;
+				height: 22px;
 			}
 		`,
 	],
