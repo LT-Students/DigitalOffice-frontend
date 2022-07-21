@@ -3,6 +3,7 @@ import { ProjectInfo } from '@api/project-service/models/project-info';
 import { Icons } from '@shared/modules/icons/icons';
 import { DateTime } from 'luxon';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
+import { I18nPluralPipe } from '@angular/common';
 import { ProjectsRoutes } from '../../models/projects-routes';
 import { ProjectStatus } from '../../models/project-status';
 
@@ -19,6 +20,7 @@ interface ProjectStats {
 	templateUrl: './project-info.component.html',
 	styleUrls: ['./project-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [I18nPluralPipe],
 })
 export class ProjectInfoComponent implements OnInit {
 	public readonly Icons = Icons;
@@ -55,7 +57,11 @@ export class ProjectInfoComponent implements OnInit {
 			gridArea: 'users',
 			label: () => 'Сотрудники',
 			icon: Icons.PermIdentity,
-			valueGetter: (project: ProjectInfo) => `${project.usersCount} человек`,
+			valueGetter: (project: ProjectInfo) =>
+				this.pluralPipe.transform(project.usersCount, {
+					few: '# человека',
+					other: '# человек',
+				}),
 		},
 		{
 			gridArea: 'start-date',
@@ -81,12 +87,12 @@ export class ProjectInfoComponent implements OnInit {
 						? DateTime.fromISO(project.endDateUtc)
 						: DateTime.now();
 				const days = end.diff(start, ['days']).toFormat('d');
-				return `${days} дней`;
+				return this.pluralPipe.transform(+days, { one: '# день', few: '# дня', other: '# дней' });
 			},
 		},
 	];
 
-	constructor() {}
+	constructor(private pluralPipe: I18nPluralPipe) {}
 
 	ngOnInit(): void {}
 
