@@ -1,28 +1,21 @@
 <div class="header">
 	<h1 doUnderline class="break-word">{{ project.shortName }}</h1>
-	<div *ngIf="project.status | status as status" class="status">
-		<span class="text-secondary_default">{{ status.label }}</span>
-		<mat-icon [svgIcon]="Icons.Status" [style.color]="status.color"></mat-icon>
-	</div>
 	<do-actions class="controls">
 		<a doButton [routerLink]="ProjectsRoutes.EditProject">Редактировать</a>
 		<a mat-flat-button color="primary" [routerLink]="ProjectsRoutes.TeamStats">Статистика команды</a>
 	</do-actions>
 </div>
 <h5 class="short-name break-word">{{ project.name }}</h5>
-<div *ngIf="project.department as department" class="horiz-info">
-	<span class="text-secondary_default label">Департамент</span>
-	<span>{{ department.name }}</span>
-</div>
-<div *ngIf="project.customer as customer" class="horiz-info">
-	<span class="text-secondary_default label">Заказчик</span>
-	<span>{{ customer }}</span>
-</div>
 <div class="stats">
 	<ng-container *ngFor="let stat of stats">
-		<div *ngIf="!stat.visible || (project | execute: stat.visible)" class="vertical-info">
-			<span class="text-secondary_default label">{{ project | execute: stat.label }}</span>
-			<h5>{{ project | execute: stat.valueGetter | placeholder: '-' }}</h5>
+		<div class="stat" [style.grid-area]="stat.gridArea">
+			<mat-icon class="text-secondary_hover" [svgIcon]="stat.icon"></mat-icon>
+			<span class="text-secondary_hover label">{{ project | execute: stat.label }}</span>
+		</div>
+		<div class="stat" [style.grid-area]="stat.gridArea + '-v'">
+			<span class="value" [ngStyle]="stat.style ? (project | execute: stat.style) : null">{{
+				project | execute: stat.valueGetter | placeholder: '-'
+			}}</span>
 		</div>
 	</ng-container>
 </div>

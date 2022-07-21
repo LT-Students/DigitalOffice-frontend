@@ -19,6 +19,8 @@ export enum Icons {
 	/**
 	 * Regular icons
 	 */
+	AccessAlarm = 'access-alarm',
+	AccountBalance = 'account-balance',
 	Add = 'add',
 	Archive = 'archive',
 	ArrowDown = 'arrow-down',
@@ -44,11 +46,14 @@ export enum Icons {
 	Folder = 'folder',
 	Go = 'go',
 	HelpOutline = 'help-outline',
+	History = 'history',
 	InfoOutline = 'info-outline',
 	KebabMenu = 'kebab-menu',
 	KeyboardArrowLeft = 'keyboard-arrow-left',
 	KeyboardArrowRight = 'keyboard-arrow-right',
+	Loyalty = 'loyalty',
 	Office = 'office',
+	PermIdentity = 'perm-identity',
 	Photo = 'photo',
 	Search = 'search',
 	SelfImprovement = 'self-improvement',
@@ -57,6 +62,7 @@ export enum Icons {
 	StarBorder = 'star-border',
 	StarFill = 'star-fill',
 	Status = 'status',
+	SupervisorAccount = 'supervisor-account',
 	TextDoc = 'text-doc',
 	Unarchive = 'unarchive',
 	Vacation = 'vacation',
@@ -88,6 +94,8 @@ export const IconPaths = {
 	/**
 	 * Regular icons
 	 */
+	[Icons.AccessAlarm]: '/assets/icons/access-alarm.svg',
+	[Icons.AccountBalance]: '/assets/icons/account-balance.svg',
 	[Icons.Add]: '/assets/icons/add.svg',
 	[Icons.Archive]: '/assets/icons/archive.svg',
 	[Icons.ArrowDown]: '/assets/icons/arrow-down.svg',
@@ -113,11 +121,14 @@ export const IconPaths = {
 	[Icons.Folder]: '/assets/icons/folder.svg',
 	[Icons.Go]: '/assets/icons/go.svg',
 	[Icons.HelpOutline]: '/assets/icons/help-outline.svg',
+	[Icons.History]: '/assets/icons/history.svg',
 	[Icons.InfoOutline]: '/assets/icons/info-outline.svg',
 	[Icons.KebabMenu]: '/assets/icons/kebab-menu.svg',
 	[Icons.KeyboardArrowLeft]: '/assets/icons/keyboard-arrow-left.svg',
 	[Icons.KeyboardArrowRight]: '/assets/icons/keyboard-arrow-right.svg',
+	[Icons.Loyalty]: '/assets/icons/loyalty.svg',
 	[Icons.Office]: '/assets/icons/office.svg',
+	[Icons.PermIdentity]: '/assets/icons/perm-identity.svg',
 	[Icons.Photo]: '/assets/icons/photo.svg',
 	[Icons.Search]: '/assets/icons/search.svg',
 	[Icons.SelfImprovement]: '/assets/icons/self-improvement.svg',
@@ -126,6 +137,7 @@ export const IconPaths = {
 	[Icons.StarBorder]: '/assets/icons/star-border.svg',
 	[Icons.StarFill]: '/assets/icons/star-fill.svg',
 	[Icons.Status]: '/assets/icons/status.svg',
+	[Icons.SupervisorAccount]: '/assets/icons/supervisor-account.svg',
 	[Icons.TextDoc]: '/assets/icons/text-doc.svg',
 	[Icons.Unarchive]: '/assets/icons/unarchive.svg',
 	[Icons.Vacation]: '/assets/icons/vacation.svg',
