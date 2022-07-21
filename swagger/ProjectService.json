@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2.8",
+    "version": "1.2.2.9",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -69,9 +69,19 @@
         {
           "name": "includedepartment",
           "in": "query",
-          "description": "Inclede project department info.",
+          "description": "Include project department info.",
           "schema": {
             "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "userid",
+          "in": "query",
+          "description": "Return only projects with specified user",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
           },
           "required": false
         }

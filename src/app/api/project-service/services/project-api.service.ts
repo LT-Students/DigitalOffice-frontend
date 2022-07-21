@@ -62,9 +62,14 @@ export class ProjectApiService extends BaseService {
 		takeCount: number;
 
 		/**
-		 * Inclede project department info.
+		 * Include project department info.
 		 */
 		includedepartment?: boolean;
+
+		/**
+		 * Return only projects with specified user
+		 */
+		userid?: string;
 	}): Observable<StrictHttpResponse<FindResultResponseProjectInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindProjectsPath, 'get');
 		if (params) {
@@ -74,6 +79,7 @@ export class ProjectApiService extends BaseService {
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
 			rb.query('includedepartment', params.includedepartment, {});
+			rb.query('userid', params.userid, {});
 		}
 
 		return this.http
@@ -124,9 +130,14 @@ export class ProjectApiService extends BaseService {
 		takeCount: number;
 
 		/**
-		 * Inclede project department info.
+		 * Include project department info.
 		 */
 		includedepartment?: boolean;
+
+		/**
+		 * Return only projects with specified user
+		 */
+		userid?: string;
 	}): Observable<FindResultResponseProjectInfo> {
 		return this.findProjects$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponseProjectInfo>) => r.body as FindResultResponseProjectInfo)
