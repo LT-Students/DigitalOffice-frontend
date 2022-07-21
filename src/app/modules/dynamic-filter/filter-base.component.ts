@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { DynamicComponentHostDirective } from '@shared/directives/dynamic-component-host.directive';
 import { NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { FilterParams, FilterTypes } from './models/filter';
+import { FilterParams, FilterTypes } from './models';
 import { FilterFactoryService } from './filter-factory.service';
 
 @Component({

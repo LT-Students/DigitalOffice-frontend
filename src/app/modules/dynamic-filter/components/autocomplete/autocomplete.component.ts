@@ -31,7 +31,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 	public searchName$ = new Subject<string>();
 
 	public dataProvider!: InfiniteScrollDataProvider<any>;
-	public control = new FormControl('');
+	public control = new FormControl(null);
 	public params!: AutocompleteFilterParams<any>;
 	public options$!: Observable<any[]>;
 	private destroy$ = new Subject<void>();
@@ -46,7 +46,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 			this.params.loadOptions$,
 			this.searchName$.pipe(
 				debounceTime(500),
-				map((name: string) => ({ nameIncludeSubstring: name }))
+				map((name: string) => ({ nameIncludeSubstring: name || null }))
 			)
 		);
 		this.options$ = this.dataProvider.dataSource$;
@@ -75,7 +75,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 		this.onTouched = fn;
 	}
 
-	public writeValue(value: string): void {
+	public writeValue(value: any): void {
 		this.control.setValue(value);
 	}
 }

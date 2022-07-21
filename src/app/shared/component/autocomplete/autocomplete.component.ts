@@ -15,7 +15,7 @@ import { Icons } from '@shared/modules/icons/icons';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { MatAutocompleteOrigin, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { IInfiniteScrollEvent } from 'ngx-infinite-scroll';
 import { OptionComponent } from '@shared/component/option/option.component';
@@ -150,7 +150,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	private _required = false;
 	public parentOrigin?: MatAutocompleteOrigin;
 
-	private onChange = () => {};
+	private onChange = (v: any) => {};
 	private onTouched = () => {};
 
 	constructor(@Optional() @Self() public ngControl: NgControl, @Optional() private parentFormField: MatFormField) {
@@ -167,10 +167,10 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 			if (typeof v === 'string') {
 				this.hasSearchChanged = true;
 				this.searchChange.emit(v);
-				this.valueControl.setValue(null);
+				this.valueControl.setValue(null, { emitEvent: false });
 			}
 		});
-		this.valueControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(this.onChange);
+		this.valueControl.valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$)).subscribe(this.onChange);
 	}
 
 	public ngOnDestroy(): void {

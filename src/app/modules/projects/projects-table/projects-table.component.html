@@ -1,15 +1,30 @@
 <div class="header">
 	<h1>Доска проектов</h1>
+	<h5 class="text-accent_controls_default total-count">Всего {{ tableData.totalCount$ | async }} проекта(ов)</h5>
 	<button
 		*hasPermission="UserRights.AddEditRemoveProjects"
+		class="add-project-button"
 		mat-flat-button
 		color="primary"
 		[routerLink]="[ProjectsRoutes.CreateProject]"
-		data-test="create-project"
+		data-test="add-project-button"
 	>
 		Добавить проект
 	</button>
 </div>
-<do-dynamic-filter class="filter" [filters]="filters" (filterChange)="handleFilter($event)"></do-dynamic-filter>
-<do-table [dataSource]="tableData" [columns]="columns" rowHeight="96" (rowClick)="handleRowClick($event)"></do-table>
-<do-paginator [length]="277" (page)="handlePage($event)"></do-paginator>
+<do-dynamic-filter class="filter" [filters]="filters" (filterChange)="handleParamsChange()"></do-dynamic-filter>
+<do-table
+	[dataSource]="tableData"
+	[columns]="columns"
+	[sortActive]="initialSort.active"
+	[sortDirection]="initialSort.direction"
+	rowHeight="96"
+	(sortChange)="handleParamsChange()"
+	(rowClick)="handleRowClick($event)"
+></do-table>
+<do-paginator
+	[pageIndex]="initialQueryParams['pageIndex']"
+	[pageSize]="initialQueryParams['pageSize']"
+	[total]="tableData.totalCount$ | async"
+	(page)="handleParamsChange()"
+></do-paginator>

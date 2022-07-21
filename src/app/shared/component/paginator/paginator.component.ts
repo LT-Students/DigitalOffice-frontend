@@ -1,10 +1,28 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	ChangeDetectionStrategy,
+	Input,
+	Output,
+	EventEmitter,
+	InjectionToken,
+	Optional,
+	Inject,
+} from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
+import { coerceNumberProperty } from '@angular/cdk/coercion';
 
 export interface PageEvent {
 	pageIndex: number;
 	pageSize: number;
 }
+
+export interface PaginatorDefaultOptions {
+	pageSize: number;
+	pageSizeOptions: number[];
+}
+
+export const PAGINATOR_DEFAULT_OPTIONS = new InjectionToken<PaginatorDefaultOptions>('PAGINATOR_DEFAULT_OPTIONS');
 
 @Component({
 	selector: 'do-paginator',
@@ -16,21 +34,50 @@ export class PaginatorComponent implements OnInit {
 	public readonly Icons = Icons;
 
 	@Output() page = new EventEmitter<PageEvent>();
-	@Input() length = 0;
-	@Input() pageIndex = 0;
-	@Input() pageSize = 10;
-	@Input() pageSizeOptions = [10, 20, 30];
+
+	@Input()
+	set total(total: any) {
+		this._total = coerceNumberProperty(total);
+	}
+	get total(): number {
+		return this._total;
+	}
+	private _total = 0;
+
+	@Input()
+	set pageIndex(index: any) {
+		this._pageIndex = coerceNumberProperty(index);
+	}
+	get pageIndex(): number {
+		return this._pageIndex;
+	}
+	private _pageIndex = 0;
+
+	@Input()
+	set pageSize(size: any) {
+		const pageSize = coerceNumberProperty(size);
+		this._pageSize = pageSize || this.pageSizeOptions[0];
+	}
+	get pageSize(): number {
+		return this._pageSize;
+	}
+	private _pageSize: number;
+
+	@Input() pageSizeOptions: number[];
 
 	public pages: number[] = [];
 
-	constructor() {}
+	constructor(@Optional() @Inject(PAGINATOR_DEFAULT_OPTIONS) defaults: PaginatorDefaultOptions) {
+		this._pageSize = defaults.pageSize;
+		this.pageSizeOptions = defaults.pageSizeOptions;
+	}
 
 	public ngOnInit(): void {
-		this.pages = this.generatePages(this.pageIndex, this.getLastIndex());
+		this.pages = this.generatePages(this._pageIndex, this.getLastIndex());
 	}
 
 	public handlePageSizeChange(pageSize: number): void {
-		this.pageSize = pageSize;
+		this._pageSize = pageSize;
 		this.navigateToPage(0);
 	}
 
@@ -38,36 +85,40 @@ export class PaginatorComponent implements OnInit {
 		if (!this.hasPreviousPage()) {
 			return;
 		}
-		this.navigateToPage(this.pageIndex - 1);
+		this.navigateToPage(this._pageIndex - 1);
 	}
 
 	public hasPreviousPage(): boolean {
-		return this.pageIndex >= 1 && this.pageSize !== 0;
+		return this._pageIndex >= 1 && this._pageSize !== 0;
 	}
 
 	public nextPage(): void {
 		if (!this.hasNextPage()) {
 			return;
 		}
-		this.navigateToPage(this.pageIndex + 1);
+		this.navigateToPage(this._pageIndex + 1);
 	}
 
 	public hasNextPage(): boolean {
 		const lastPageIndex = this.getLastIndex();
-		return this.pageIndex < lastPageIndex && this.pageSize !== 0;
+		return this._pageIndex < lastPageIndex && this._pageSize !== 0;
 	}
 
 	public navigateToPage(pageIndex: number): void {
-		this.pageIndex = pageIndex;
+		this._pageIndex = pageIndex;
 		this.pages = this.generatePages(pageIndex, this.getLastIndex());
 		this.emitPageEvent();
 	}
 
 	private getLastIndex(): number {
-		return Math.ceil(this.length / this.pageSize) - 1;
+		return Math.ceil(this._total / this._pageSize) - 1;
 	}
 
 	private generatePages(currentIndex: number, lastIndex: number): number[] {
+		if (this._total <= this._pageSize) {
+			return [0];
+		}
+
 		const delta = 2;
 		const range: number[] = [];
 
@@ -98,6 +149,6 @@ export class PaginatorComponent implements OnInit {
 	}
 
 	private emitPageEvent(): void {
-		this.page.emit({ pageIndex: this.pageIndex, pageSize: this.pageSize });
+		this.page.emit({ pageIndex: this._pageIndex, pageSize: this._pageSize });
 	}
 }

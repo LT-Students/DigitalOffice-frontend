@@ -1,6 +1,6 @@
 <div class="flex flex_column flex_ai_center">
 	<div class="pages text-secondary_default">
-		<button doButton (click)="previousPage()">
+		<button doButton [disabled]="!hasPreviousPage()" (click)="previousPage()">
 			<mat-icon [svgIcon]="Icons.KeyboardArrowLeft"></mat-icon>
 		</button>
 		<div
@@ -8,10 +8,11 @@
 			class="page-link"
 			[ngClass]="{ active: i === pageIndex, ellipsis: i === -1 }"
 			(click)="navigateToPage(i)"
+			[attr.data-test]="'page-link-' + i"
 		>
 			{{ i === -1 ? '...' : i + 1 }}
 		</div>
-		<button doButton (click)="nextPage()">
+		<button doButton [disabled]="!hasNextPage()" (click)="nextPage()">
 			<mat-icon [svgIcon]="Icons.KeyboardArrowRight"></mat-icon>
 		</button>
 	</div>

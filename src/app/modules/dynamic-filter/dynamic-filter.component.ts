@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-import { FilterDef } from './models/filter-def';
+import { FilterDef } from './models';
 
 export interface FilterEvent {
 	[key: string]: any;
@@ -20,6 +20,10 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
 	public form!: FormGroup;
 	private filterSubscription!: Subscription;
 
+	public get value(): FilterEvent {
+		return this.filterBlankProps(this.form.getRawValue());
+	}
+
 	constructor(private fb: FormBuilder) {}
 
 	public ngOnInit(): void {
@@ -31,11 +35,7 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
 
 		this.filterSubscription = this.form.valueChanges.pipe(debounceTime(500)).subscribe({
 			next: (value: FilterEvent) => {
-				Object.keys(value).forEach((k: string) => {
-					if (value[k] == null || value[k] === '') {
-						value[k] = undefined;
-					}
-				});
+				value = this.filterBlankProps(value);
 				this.filterChange.emit(value);
 			},
 		});
@@ -43,5 +43,14 @@ export class DynamicFilterComponent implements OnInit, OnDestroy {
 
 	public ngOnDestroy(): void {
 		this.filterSubscription.unsubscribe();
+	}
+
+	private filterBlankProps(value: FilterEvent): FilterEvent {
+		Object.keys(value).forEach((k: string) => {
+			if (value[k] == null || value[k] === '') {
+				value[k] = undefined;
+			}
+		});
+		return value;
 	}
 }

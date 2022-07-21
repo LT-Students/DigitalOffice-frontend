@@ -1,4 +1,11 @@
-<cdk-table matSort [dataSource]="dataSource" multiTemplateDataRows (matSortChange)="sortChange.emit($event)">
+<cdk-table
+	matSort
+	[dataSource]="dataSource"
+	[matSortActive]="sortActive"
+	[matSortDirection]="sortDirection"
+	multiTemplateDataRows
+	(matSortChange)="sortChange.emit($event)"
+>
 	<!-- Generating columns of table -->
 	<ng-container *ngFor="let column of columns" [cdkColumnDef]="column.field">
 		<cdk-header-cell

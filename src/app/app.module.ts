@@ -17,6 +17,8 @@ import { DATE_FORMAT } from '@app/configs/date-formats';
 import { SharedModule } from '@shared/shared.module';
 import { ErrorInterceptor } from '@app/interceptors/error.interceptor';
 import { NavigationService } from '@app/services/navigation.service';
+import { PAGINATOR_DEFAULT_OPTIONS } from '@shared/component/paginator/paginator.component';
+import { LOADING_BAR_CONFIG } from '@ngx-loading-bar/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -56,6 +58,8 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 			deps: [MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS],
 		},
 		{ provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
+		{ provide: PAGINATOR_DEFAULT_OPTIONS, useValue: { pageSize: 20, pageSizeOptions: [20, 50, 100] } },
+		{ provide: LOADING_BAR_CONFIG, useValue: { latencyThreshold: 100 } },
 	],
 	bootstrap: [AppComponent],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],

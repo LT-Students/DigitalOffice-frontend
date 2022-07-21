@@ -3,11 +3,7 @@ import { ProjectInfo } from '@api/project-service/models/project-info';
 import { Icons } from '@shared/modules/icons/icons';
 import { DepartmentService } from '@app/services/department/department.service';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { map } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { IFindProjects } from '@app/services/project/project.service';
-import { ActivatedRoute } from '@angular/router';
-import { LoadDataFn } from '@app/utils/infinite-scroll-data-provider';
 import { ColumnDef } from '../../table/models';
 import {
 	AutocompleteFilterParams,
@@ -17,24 +13,16 @@ import {
 } from '../../dynamic-filter/models';
 import { IProjectStatus, ProjectStatus } from '../models/project-status';
 import { ProjectService } from '../project.service';
+import { FilterEvent } from '../../dynamic-filter/dynamic-filter.component';
+import { ClientQueryParam } from './project-table-queries.service';
 
 @Injectable()
 export class ProjectTableService {
-	public loadDataFn: LoadDataFn<ProjectInfo> = (params: IFindProjects, isFirst: boolean) => {
-		return isFirst
-			? this.route.data.pipe(map((response) => response.projects))
-			: this.projectService.findProjects(params);
-	};
-
-	constructor(
-		private projectService: ProjectService,
-		private departmentService: DepartmentService,
-		private route: ActivatedRoute
-	) {}
+	constructor(private projectService: ProjectService, private departmentService: DepartmentService) {}
 
 	public getTableColumns(): ColumnDef[] {
 		return [
-			{ field: 'name', headerName: 'Название', params: { lineClamp: 3 } },
+			{ field: 'name', headerName: 'Название', sortEnabled: true, params: { lineClamp: 3 } },
 			{ field: 'shortName', headerName: 'Сокращенное название', params: { lineClamp: 3 } },
 			{ field: 'customer', headerName: 'Заказчик', params: { lineClamp: 3 } },
 			{
@@ -58,11 +46,12 @@ export class ProjectTableService {
 		];
 	}
 
-	public getFilterData(): FilterDef[] {
+	public getFilterData(initialValue: FilterEvent): FilterDef[] {
 		return [
 			{
 				key: 'department',
 				type: 'autocomplete',
+				initialValue: initialValue[ClientQueryParam.Department],
 				width: 247,
 				params: new AutocompleteFilterParams({
 					placeholder: 'Название департамента',
@@ -73,8 +62,9 @@ export class ProjectTableService {
 				}),
 			},
 			{
-				key: 'projectstatus',
+				key: 'status',
 				type: 'select',
+				initialValue: initialValue[ClientQueryParam.Status],
 				width: 177,
 				params: new SelectFilterParams({
 					placeholder: 'Статус',
@@ -87,11 +77,11 @@ export class ProjectTableService {
 				}),
 			},
 			{
-				key: 'nameincludesubstring',
+				key: 'search',
 				type: 'input',
+				initialValue: initialValue[ClientQueryParam.Search],
 				params: new InputFilterParams({ placeholder: 'Поиск', icon: Icons.Search }),
 			},
-			{ key: 'isascendingsort', type: 'alphabetSort' },
 		];
 	}
 }

@@ -2,8 +2,15 @@
 	margin-bottom: 24px;
 
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	align-items: baseline;
+
+	.total-count {
+		margin-left: 24px;
+	}
+
+	.add-project-button {
+		margin-left: auto;
+	}
 
 	h1 {
 		margin: 0;
