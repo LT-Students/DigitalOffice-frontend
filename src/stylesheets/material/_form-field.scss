@@ -1,6 +1,6 @@
 @use 'base/variables' as variables;
 
-do-form-row mat-form-field.mat-form-field-appearance-outline {
+do-form-field mat-form-field.mat-form-field-appearance-outline {
 	line-height: 22px;
 
 	.mat-form-field-wrapper {
@@ -69,6 +69,7 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 		padding: 9px 0;
 
 		width: 100%;
+		min-width: 50px;
 
 		border: none;
 	}
@@ -79,6 +80,10 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 		.mat-icon-button {
 			width: 100% !important;
 		}
+
+		mat-icon {
+			height: 32px;
+		}
 	}
 
 	.mat-form-field-suffix {
@@ -86,6 +91,10 @@ do-form-row mat-form-field.mat-form-field-appearance-outline {
 
 		.mat-icon-button {
 			width: 100% !important;
+		}
+
+		mat-icon {
+			height: 32px;
 		}
 	}
 

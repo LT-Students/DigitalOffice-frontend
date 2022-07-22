@@ -4,10 +4,15 @@ export interface DepartmentInfo {
 	/**
 	 * Unique department identifier.
 	 */
-	id?: string;
+	id: string;
 
 	/**
 	 * The department name.
 	 */
-	name?: string;
+	name: string;
+
+	/**
+	 * The department short name.
+	 */
+	shortName: string;
 }

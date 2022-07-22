@@ -1,0 +1,24 @@
+<div class="header">
+	<h3 class="page-title" doUnderline>{{ pageTitle }}</h3>
+	<span *ngIf="isEditMode" class="text-secondary_default project-name">{{ projectName }}</span>
+	<do-actions class="actions">
+		<button doButton (click)="onCancel()">Отменить</button>
+		<button mat-flat-button color="primary" (click)="onSubmit()" [loading]="loading$ | async">
+			{{ submitButton }}
+		</button>
+	</do-actions>
+</div>
+<div class="content" [formGroup]="form">
+	<mat-card>
+		<h5 class="card-heading">Информация о проекте</h5>
+		<do-project-info-form formControlName="info" [isEditMode]="isEditMode"></do-project-info-form>
+	</mat-card>
+	<mat-card>
+		<h5 class="card-heading">Детали проекта</h5>
+		<do-project-details formControlName="details" [isEditMode]="isEditMode"></do-project-details>
+	</mat-card>
+	<mat-card class="description">
+		<h5 class="card-heading">Описание проекта</h5>
+		<do-project-description-form formControlName="description"></do-project-description-form>
+	</mat-card>
+</div>

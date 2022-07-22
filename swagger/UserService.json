@@ -2409,7 +2409,6 @@
           "Id",
           "Type",
           "Value",
-          "VisibleTo",
           "IsConfirmed"
         ],
         "properties": {
@@ -2425,9 +2424,6 @@
           },
           "Value": {
             "type": "string"
-          },
-          "VisibleTo": {
-            "$ref": "#/components/schemas/CommunicationVisibleTo"
           }
         }
       },
@@ -2653,15 +2649,6 @@
         ],
         "example": "Email"
       },
-      "CommunicationVisibleTo": {
-        "type": "string",
-        "description": "Mode for user communication visibe to.",
-        "enum": [
-          "AllUsers",
-          "Admin"
-        ],
-        "default": "AllUsers"
-      },
       "BadRequest": {
         "type": "object",
         "properties": {
@@ -2734,9 +2721,6 @@
             "description": "Communication value",
             "type": "string",
             "example": "mail@mail.ru"
-          },
-          "VisibleTo": {
-            "$ref": "#/components/schemas/CommunicationVisibleTo"
           }
         }
       },

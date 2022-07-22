@@ -1,0 +1,19 @@
+:host {
+	display: flex;
+	align-items: center;
+
+	height: 100%;
+}
+
+.button {
+	cursor: pointer;
+
+	&:not(:last-child) {
+		margin-right: 4px;
+	}
+
+	.icon {
+		width: 32px;
+		height: 32px;
+	}
+}

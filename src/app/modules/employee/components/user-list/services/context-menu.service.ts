@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MenuItem } from '@app/models/menu-item';
+import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { map, switchMap } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
@@ -8,7 +8,7 @@ import { DialogService } from '@app/services/dialog.service';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { UserInfo } from '@api/user-service/models/user-info';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { UserArchiveRecoveryService } from '@app/services/user-archive-recovery.service';
 import { UserInfoLike } from '../user-list.types';
 import { isActiveUser, isPendingUser } from '../helpers';

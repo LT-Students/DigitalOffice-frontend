@@ -1,6 +1,6 @@
 <div [formGroup]="form" class="add-hours__form">
 	<div class="add-hours__time-wrapper">
-		<do-form-row label="Выберите диапазон отсутствия">
+		<do-form-field label="Выберите диапазон отсутствия">
 			<mat-form-field>
 				<mat-date-range-input
 					(click)="picker.open()"
@@ -34,13 +34,13 @@
 					form.controls['startTime'].errors || form.controls['endTime'].errors | controlErrors
 				}}</mat-error>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 		<div class="add-hours__absence-time">
 			<span class="text-secondary_default">Выбрано</span>
 			<h3>{{ selectedIntervalDurationInHours$ | async }}<span class="text-secondary_default"> ч</span></h3>
 		</div>
 	</div>
-	<do-form-row label="Тип отсутствия">
+	<do-form-field label="Тип отсутствия">
 		<mat-form-field>
 			<mat-select formControlName="leaveType" placeholder="Выберите тип отсутствия" data-test="leave-type-select">
 				<mat-option *ngFor="let leave of leaveTypes" [value]="leave.leaveType">
@@ -49,8 +49,8 @@
 			</mat-select>
 			<mat-error>{{ form.controls['leaveType'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
-	</do-form-row>
-	<do-form-row label="Комментарий">
+	</do-form-field>
+	<do-form-field label="Комментарий">
 		<mat-form-field>
 			<textarea
 				#comment
@@ -65,7 +65,7 @@
 			></textarea>
 			<mat-hint>{{ comment.value.length }}/500</mat-hint>
 		</mat-form-field>
-	</do-form-row>
+	</do-form-field>
 	<button
 		mat-flat-button
 		class="add-hours__absence-submit"

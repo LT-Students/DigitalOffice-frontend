@@ -2,10 +2,10 @@ import { MatDateFormats } from '@angular/material/core';
 
 export const DATE_FORMAT: MatDateFormats = {
 	parse: {
-		dateInput: 'D',
+		dateInput: ['d MMMM y', 'd LLLL y'],
 	},
 	display: {
-		dateInput: 'dd MMMM y',
+		dateInput: 'd MMMM y',
 		monthYearLabel: 'LLLL y',
 		dateA11yLabel: 'dd MMMM y',
 		monthYearA11yLabel: 'YYYY',

@@ -19,5 +19,5 @@ export interface PositionInfo {
 	/**
 	 * Position name.
 	 */
-	name?: string;
+	name: string;
 }

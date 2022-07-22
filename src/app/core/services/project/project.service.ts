@@ -2,15 +2,12 @@ import { Injectable } from '@angular/core';
 import { ProjectApiService } from '@api/project-service/services/project-api.service';
 import { Observable } from 'rxjs';
 import {
+	CreateProjectRequest,
 	EditProjectRequest,
-	FileAccess,
-	ImageContent,
-	ImageInfo,
-	// ProjectFileInfo,
 	ProjectInfo,
+	ProjectResponse,
 	ProjectStatusType,
 	ProjectUserRoleType,
-	UserInfo,
 } from '@api/project-service/models';
 import { UserApiService } from '@api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -24,13 +21,6 @@ export interface IGetProjectRequest {
 	shownotactiveusers?: boolean;
 	includefiles?: boolean;
 	includeimages?: boolean;
-}
-
-export interface IGetProjectResponse {
-	project?: ProjectInfo;
-	users?: Array<UserInfo> | null;
-	files?: Array<FileAccess> | null;
-	images?: Array<ImageInfo> | null;
 }
 
 export interface IEditProjectRequest {
@@ -53,21 +43,14 @@ export interface IRemoveUsersFromProjectRequest {
 	body: UUID[];
 }
 
-export interface ICreateProjectRequest {
-	departmentId?: string;
-	description?: string;
-	name: string;
-	projectImages: Array<ImageContent>;
-	shortDescription?: string;
-	shortName?: string;
-	status: ProjectStatusType;
-	users: Array<ICreateUserRequest>;
-}
-
 export interface IFindProjects {
+	includedepartment?: boolean;
+	isascendingsort?: boolean;
+	projectstatus?: ProjectStatusType;
+	nameincludesubstring?: string;
 	skipCount: number;
 	takeCount: number;
-	departmentId?: string;
+	userid?: string;
 }
 
 @Injectable({
@@ -84,25 +67,25 @@ export class ProjectService {
 		return this._projectService.findProjects(params);
 	}
 
-	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<IGetProjectResponse>> {
+	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<ProjectResponse>> {
 		return this._projectService.getProject(params);
 	}
 
-	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse> {
+	public createProject(body: CreateProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService
 			.createProject({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Project, MessageMethod.Create));
 	}
 
-	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse> {
+	public editProject(params: IEditProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService.editProject(params);
 	}
 
-	public addUsersToProject(body: IAddUsersToProjectRequest): Observable<OperationResultResponse> {
+	public addUsersToProject(body: IAddUsersToProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._userService.createProjectUsers({ body });
 	}
 
-	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<OperationResultResponse> {
+	public removeUsersFromProject(params: IRemoveUsersFromProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._userService.removeProjectUsers(params);
 	}
 }

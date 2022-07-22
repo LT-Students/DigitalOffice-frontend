@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@an
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { ConfirmDialogData } from '@shared/modals/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
 import { Icons } from '@shared/modules/icons/icons';
 import { LeaveTime } from '../../models/leave-time';
 import { AttendanceService } from '../../services/attendance.service';

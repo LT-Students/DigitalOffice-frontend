@@ -1,6 +1,9 @@
 @use 'base/variables' as variables;
 
-do-button-toggle:not(:last-child)::after {
-	content: ' / ';
-	color: variables.$secondary_default;
+do-button-toggle-group {
+	do-button-toggle:not(:last-child)::after {
+		content: ' / ';
+
+		color: variables.$secondary_default;
+	}
 }

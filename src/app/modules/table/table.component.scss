@@ -1,0 +1,66 @@
+:host {
+	display: block;
+}
+
+cdk-row,
+cdk-header-row,
+cdk-footer-row {
+	display: flex;
+
+	cursor: default;
+
+	&:not(:last-child) {
+		margin-bottom: 8px;
+	}
+}
+
+cdk-header-row {
+	padding: 0 34px;
+}
+
+cdk-row {
+	padding: 0 34px;
+
+	overflow: hidden;
+
+	align-items: center;
+
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+
+	transition: box-shadow 300ms;
+
+	&:hover {
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+	}
+}
+
+cdk-cell,
+cdk-header-cell,
+cdk-footer-cell {
+	flex: 1;
+
+	&:not(:last-child) {
+		margin-right: 20px;
+	}
+}
+
+.no-data-row {
+	margin-top: 20px;
+	padding: 20px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	text-align: center;
+
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 1px 6px rgb(0 0 0 / 8%);
+
+	.message {
+		margin-top: 20px;
+	}
+}

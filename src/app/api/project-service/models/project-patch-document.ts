@@ -13,10 +13,10 @@ export interface ProjectPatchDocument {
 		| '/Name'
 		| '/ShortName'
 		| '/Description'
-		| '/Customer'
-		| '/StartProject'
 		| '/ShortDescription'
-		| '/EndProject'
+		| '/Customer'
+		| '/StartDateUtc'
+		| '/EndDateUtc'
 		| '/Status';
 
 	/**

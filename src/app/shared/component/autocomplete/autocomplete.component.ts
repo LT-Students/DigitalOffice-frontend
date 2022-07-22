@@ -8,17 +8,14 @@ import {
 	OnDestroy,
 	Output,
 	EventEmitter,
-	ContentChildren,
-	QueryList,
 } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { takeUntil } from 'rxjs/operators';
-import { MatAutocompleteOrigin, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { map, startWith, takeUntil } from 'rxjs/operators';
+import { MatAutocompleteOrigin } from '@angular/material/autocomplete';
 import { IInfiniteScrollEvent } from 'ngx-infinite-scroll';
-import { OptionComponent } from '@shared/component/option/option.component';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 
 @Component({
@@ -35,7 +32,6 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 				autocomplete="off"
 				[matAutocomplete]="auto"
 				[matAutocompleteConnectedTo]="parentOrigin || origin"
-				(blur)="handleBlur()"
 			/>
 			<mat-icon
 				class="arrow text-secondary_default"
@@ -44,19 +40,16 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 			></mat-icon>
 			<mat-autocomplete
 				#auto="matAutocomplete"
-				infiniteScroll
-				[infiniteScrollContainer]="auto?.panel?.nativeElement ?? ''"
-				[infiniteScrollThrottle]="0"
-				[alwaysCallback]="true"
-				(scrolled)="scrolled.emit($event)"
 				[displayWith]="displayWith"
-				(optionSelected)="handleOptionSelection($event)"
-				(opened)="handlePanelOpen()"
-				(closed)="handlePanelClose(); search.blur()"
+				(optionSelected)="handleOptionSelection($event.option.value)"
+				(closed)="handleClose(); search.blur()"
 			>
-				<mat-option *ngFor="let option of options.changes | async" [value]="option.value">
-					<ng-container *ngTemplateOutlet="option.template"></ng-container>
-				</mat-option>
+				<ng-container *ngIf="filteredOptions$ | async as filteredOptions">
+					<mat-option *ngFor="let option of filteredOptions" [value]="option">{{
+						displayWith ? (option | execute: displayWith) : option
+					}}</mat-option>
+					<mat-option *ngIf="!filteredOptions.length">Не найдено</mat-option>
+				</ng-container>
 			</mat-autocomplete>
 		</div>
 	`,
@@ -69,26 +62,35 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 
 			.arrow {
 				cursor: pointer;
+				height: 22px;
 			}
 		`,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [{ provide: MatFormFieldControl, useExisting: AutocompleteComponent }],
 })
-export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAccessor, MatFormFieldControl<any> {
+export class AutocompleteComponent<T> implements OnInit, OnDestroy, ControlValueAccessor, MatFormFieldControl<T> {
 	private static uniqueId = 0;
 
 	public readonly Icons = Icons;
-	@ContentChildren(OptionComponent) options!: QueryList<OptionComponent>;
 
 	@Output() searchChange = new EventEmitter<string>();
 	@Output() scrolled = new EventEmitter<IInfiniteScrollEvent>();
-	@Input() displayWith: ((value: any) => string) | null = null;
+	@Input() displayWith: ((value?: T) => string) | null = null;
+	@Input() valueGetter: ((value?: T) => any) | null = null;
+	@Input() filterFn: ((value: string, options: T[]) => T[]) | null = null;
+
+	@Input()
+	set options(options: T[] | null) {
+		this._options = options || [];
+		this.setInitialSearchValue();
+	}
+	private _options: T[] = [];
+
+	public filteredOptions$!: Observable<T[]>;
 
 	public searchControl = new FormControl(null);
 	public valueControl = new FormControl(null);
-	public wasOptionSelected = false;
-	public hasSearchChanged = false;
 	public stateChanges = new Subject<void>();
 	public destroy$ = new Subject<void>();
 
@@ -113,11 +115,9 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	set placeholder(p: any) {
 		this._placeholder = String(p);
 	}
-
 	get placeholder(): string {
 		return this._placeholder;
 	}
-
 	private _placeholder = '';
 
 	@Input()
@@ -130,11 +130,9 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 		}
 		this.stateChanges.next();
 	}
-
 	get disabled(): boolean {
 		return this._disabled;
 	}
-
 	private _disabled = false;
 
 	@Input()
@@ -142,35 +140,38 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 		this._required = coerceBooleanProperty(req);
 		this.stateChanges.next();
 	}
-
 	get required(): boolean {
 		return this._required;
 	}
-
 	private _required = false;
+
 	public parentOrigin?: MatAutocompleteOrigin;
 
-	private onChange = () => {};
+	private onChange = (v: any) => {};
 	private onTouched = () => {};
 
-	constructor(@Optional() @Self() public ngControl: NgControl, @Optional() private parentFormField: MatFormField) {
+	constructor(@Optional() @Self() public ngControl: NgControl, @Optional() parentFormField: MatFormField) {
 		if (this.ngControl != null) {
 			this.ngControl.valueAccessor = this;
 		}
-		this.parentOrigin = new MatAutocompleteOrigin(parentFormField.getConnectedOverlayOrigin());
+		this.parentOrigin = parentFormField && new MatAutocompleteOrigin(parentFormField.getConnectedOverlayOrigin());
 	}
 	setDescribedByIds(ids: string[]): void {}
 	onContainerClick(event: MouseEvent): void {}
 
 	public ngOnInit(): void {
-		this.searchControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((v: object | string) => {
-			if (typeof v === 'string') {
-				this.hasSearchChanged = true;
-				this.searchChange.emit(v);
-				this.valueControl.setValue(null);
-			}
-		});
-		this.valueControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(this.onChange);
+		this.filteredOptions$ = this.searchControl.valueChanges.pipe(
+			startWith(null),
+			map((v: string | object) => {
+				if (typeof v === 'string' && this.filterFn) {
+					this.valueControl.setValue(null);
+					return this.filterFn(v, this._options);
+				}
+				return this._options;
+			})
+		);
+
+		this.valueControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({ next: this.onChange });
 	}
 
 	public ngOnDestroy(): void {
@@ -180,32 +181,20 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 		this.destroy$.complete();
 	}
 
-	public handleBlur(): void {
-		this.onTouched();
-		if (!this.valueControl.value) {
-			this.searchControl.setValue('');
-		}
-		this.errorState = !!this.ngControl.invalid && !!this.ngControl.touched;
-		this.stateChanges.next();
+	public handleOptionSelection(value: T): void {
+		const newValue = this.valueGetter ? this.valueGetter(value) : value;
+		this.valueControl.setValue(newValue);
 	}
 
-	public handleOptionSelection(event: MatAutocompleteSelectedEvent): void {
-		const value = event.option.value;
-		this.valueControl.setValue(value);
-		this.wasOptionSelected = true;
-	}
-
-	public handlePanelOpen(): void {
-		this.hasSearchChanged = false;
-	}
-
-	public handlePanelClose(): void {
-		if (!this.wasOptionSelected && this.hasSearchChanged) {
-			this.valueControl.setValue(null);
+	public handleClose(): void {
+		if (!this.value) {
 			this.searchControl.setValue(null);
 		}
-		this.wasOptionSelected = false;
-		this.hasSearchChanged = false;
+	}
+
+	private setInitialSearchValue(): void {
+		const initialValue = this._options.find((o: T) => this.value === this.valueGetter?.call(this, o));
+		this.searchControl.setValue(initialValue);
 	}
 
 	public registerOnChange(fn: any): void {
@@ -217,7 +206,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, ControlValueAcc
 	}
 
 	public writeValue(value: any): void {
-		this.searchControl.setValue(value, { emitEvent: false });
 		this.valueControl.setValue(value, { emitEvent: false });
+		this.setInitialSearchValue();
 	}
 }

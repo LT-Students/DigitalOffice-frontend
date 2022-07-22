@@ -4,6 +4,8 @@ import {
 	Component,
 	ContentChildren,
 	EventEmitter,
+	HostBinding,
+	Input,
 	OnInit,
 	Output,
 	QueryList,
@@ -21,13 +23,15 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class ButtonToggleGroupComponent implements OnInit, AfterContentInit {
 	@ContentChildren(ButtonToggleComponent) buttons!: QueryList<ButtonToggleComponent>;
-	@Output() toggleChange = new EventEmitter<any>();
+	@Output() valueChange = new EventEmitter<any>();
 
-	private selectionModel = new SelectionModel<ButtonToggleComponent | undefined>(false, undefined);
+	private selectionModel = new SelectionModel<ButtonToggleComponent>(false);
 
 	private get selected(): ButtonToggleComponent | undefined {
 		return this.selectionModel.selected[0];
 	}
+
+	@HostBinding('class') @Input() color: 'primary' | 'accent' = 'primary';
 
 	constructor() {}
 
@@ -37,11 +41,18 @@ export class ButtonToggleGroupComponent implements OnInit, AfterContentInit {
 		this.selectionModel.select(...this.buttons.filter((toggle: ButtonToggleComponent) => toggle.checked));
 	}
 
-	public changeSelection(toggle: ButtonToggleComponent): void {
-		if (this.selected) {
+	public changeSelection(toggle: ButtonToggleComponent, select: boolean): void {
+		if (this.selected && toggle.checked) {
 			this.selected.checked = false;
 		}
-		this.selectionModel.select(toggle);
-		this.toggleChange.emit(toggle.value);
+
+		if (this.selectionModel) {
+			if (select) {
+				this.selectionModel.select(toggle);
+			} else {
+				this.selectionModel.deselect(toggle);
+			}
+		}
+		this.valueChange.emit(toggle.value);
 	}
 }

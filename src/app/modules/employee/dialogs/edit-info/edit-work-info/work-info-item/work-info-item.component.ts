@@ -2,9 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ElementRe
 import { Icons } from '@shared/modules/icons/icons';
 import { FormControl } from '@angular/forms';
 import { LoadingState } from '@shared/directives/button-loading.directive';
-import { debounceTime, finalize, map, switchMap } from 'rxjs/operators';
-import { InfiniteScrollDataProvider } from '@app/utils/infinite-scroll-data.provider';
-import { Subject } from 'rxjs';
+import { finalize, switchMap } from 'rxjs/operators';
 import { WorkInfoConfigService } from '../work-info-config.service';
 import { WorkInfoConfig } from './work-info-item';
 
@@ -21,12 +19,6 @@ export class WorkInfoItemComponent extends LoadingState implements OnInit {
 	@Input() config!: WorkInfoConfig;
 	public control = new FormControl(null);
 
-	/**
-	 * these variables are used for infinite autocomplete only
-	 */
-	public optionsProvider!: InfiniteScrollDataProvider<any>;
-	public searchName$ = new Subject<string>();
-
 	public isEditMode = false;
 
 	constructor(private workInfoConfig: WorkInfoConfigService) {
@@ -35,20 +27,13 @@ export class WorkInfoItemComponent extends LoadingState implements OnInit {
 
 	public ngOnInit(): void {
 		this.control.setValidators(this.config.validators || null);
-		this.optionsProvider = new InfiniteScrollDataProvider(
-			this.config.options$,
-			this.searchName$.pipe(
-				debounceTime(500),
-				map((name: string) => ({ nameIncludeSubstring: name }))
-			)
-		);
 	}
 
 	public setEditMode(state: boolean): void {
 		this.isEditMode = state;
 
 		if (state) {
-			const value = this.config.controlValueGetter(this.config.value);
+			const value = this.config.valueGetter(this.config.value);
 			this.control.setValue(value);
 
 			setTimeout(() => {
@@ -57,10 +42,6 @@ export class WorkInfoItemComponent extends LoadingState implements OnInit {
 				}
 			});
 		}
-	}
-
-	public handleScroll(): void {
-		this.optionsProvider.loadOnScroll();
 	}
 
 	public onSubmit(): void {

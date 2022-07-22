@@ -13,7 +13,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MAT_TABS_CONFIG, MatTabsModule } from '@angular/material/tabs';
 import {
 	DateAdapter,
 	MAT_DATE_FORMATS,
@@ -39,6 +39,7 @@ import { DoDateAdapter } from '@app/services/do-date-adapter';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { DATE_FORMAT } from '@app/configs/date-formats';
 import { Settings } from 'luxon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 Settings.defaultLocale = 'ru';
 
@@ -74,6 +75,7 @@ Settings.defaultLocale = 'ru';
 		MatSidenavModule,
 		MatProgressSpinnerModule,
 		MatDividerModule,
+		MatSlideToggleModule,
 	],
 	exports: [
 		MatButtonModule,
@@ -105,6 +107,7 @@ Settings.defaultLocale = 'ru';
 		MatSidenavModule,
 		MatProgressSpinnerModule,
 		MatDividerModule,
+		MatSlideToggleModule,
 	],
 	providers: [
 		{ provide: MatDialogRef, useValue: {} },
@@ -120,6 +123,7 @@ Settings.defaultLocale = 'ru';
 			provide: MAT_RIPPLE_GLOBAL_OPTIONS,
 			useValue: { disabled: true },
 		},
+		{ provide: MAT_TABS_CONFIG, useValue: { animationDuration: '0ms' } },
 	],
 })
 export class MaterialModule {}

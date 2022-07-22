@@ -7,14 +7,14 @@
 		<button mat-flat-button color="accent" (click)="onAddDepartmentClick()">+ Создать департамент</button>
 	</div>
 	<div class="filters" [formGroup]="filters">
-		<do-form-row label="Статус" [style.width.%]="20">
+		<do-form-field label="Статус" [style.width.%]="20">
 			<mat-form-field class="filters__status">
 				<mat-select formControlName="showDeactivated">
 					<mat-option [value]="false">Активные</mat-option>
 					<mat-option [value]="true">Все</mat-option>
 				</mat-select>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 	</div>
 	<ng-container *ngIf="departments$ | async as departments">
 		<table

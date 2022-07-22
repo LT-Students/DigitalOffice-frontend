@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
+import { ProjectsTableComponent } from './projects-table/projects-table.component';
 import { ProjectListResolver } from './resolvers/project-list.resolver';
-import { ProjectPageComponent } from './components/project-page/project-page.component';
-import { NewProjectComponent } from './components/new-project/new-project.component';
+import { ProjectPageContainerComponent } from './project-page/project-page-container.component';
 import { ProjectPageResolver } from './resolvers/project-page.resolver';
 import { ProjectsRoutes } from './models/projects-routes';
+import { CreateEditProjectComponent } from './create-edit-project/create-edit-project.component';
+import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
+import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
+import { DepartmentFilterResolver } from './resolvers/department-filter.resolver';
 
 const routes: Routes = [
 	{
@@ -13,15 +16,30 @@ const routes: Routes = [
 		component: ProjectsTableComponent,
 		resolve: {
 			projects: ProjectListResolver,
+			departments: DepartmentFilterResolver,
 		},
 	},
-	{ path: ProjectsRoutes.NewProject, component: NewProjectComponent },
+	{ path: ProjectsRoutes.CreateProject, component: CreateEditProjectComponent },
 	{
 		path: ':id',
-		component: ProjectPageComponent,
+		component: ProjectIdRouteContainerComponent,
 		resolve: {
 			project: ProjectPageResolver,
 		},
+		children: [
+			{
+				path: '',
+				component: ProjectPageContainerComponent,
+			},
+			{
+				path: ProjectsRoutes.EditProject,
+				component: CreateEditProjectComponent,
+			},
+			{
+				path: ProjectsRoutes.TeamStats,
+				component: TeamStatisticsComponent,
+			},
+		],
 	},
 	{ path: '**', pathMatch: 'full', redirectTo: '' },
 ];

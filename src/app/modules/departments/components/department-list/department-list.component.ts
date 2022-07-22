@@ -10,7 +10,7 @@ import { map, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { DepartmentService } from '@app/services/department/department.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
 import { Icons } from '@shared/modules/icons/icons';
 
 @Component({

@@ -12,7 +12,7 @@ export interface LeaveTimeInfo {
 	/**
 	 * Task finish deadline.
 	 */
-	endTime?: string;
+	endTime: string;
 
 	/**
 	 * The leave time Id.
@@ -25,5 +25,5 @@ export interface LeaveTimeInfo {
 	/**
 	 * Start date task execution.
 	 */
-	startTime?: string;
+	startTime: string;
 }

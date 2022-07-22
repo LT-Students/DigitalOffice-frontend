@@ -5,7 +5,7 @@ import { EMPTY, Observable } from 'rxjs';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { CommunicationType } from '@api/user-service/models/communication-type';
 import { UserService } from '@app/services/user/user.service';
-import { UserRecoveryComponent } from '@shared/modals/user-recovery/user-recovery.component';
+import { UserRecoveryComponent } from '@shared/dialogs/user-recovery/user-recovery.component';
 
 @Injectable({
 	providedIn: 'root',

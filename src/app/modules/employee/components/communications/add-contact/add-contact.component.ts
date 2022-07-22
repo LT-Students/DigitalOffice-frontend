@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { CommunicationType, CommunicationVisibleTo } from '@api/user-service/models';
+import { CommunicationType } from '@api/user-service/models';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommunicationService } from '@app/services/user/communication.service';
@@ -78,7 +78,7 @@ export class AddContactComponent extends LoadingState implements OnInit, OnDestr
 		}
 
 		this.communicationService
-			.createCommunication({ type, value, userId: this.employeeId, visibleTo: CommunicationVisibleTo.AllUsers })
+			.createCommunication({ type, value, userId: this.employeeId })
 			.pipe(finalize(() => this.setLoading(false)))
 			.subscribe(() => {
 				this.onClose({ type, value });

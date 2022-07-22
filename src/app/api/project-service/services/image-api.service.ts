@@ -9,7 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { CreateImageRequest } from '../models/create-image-request';
+import { CreateImagesRequest } from '../models/create-images-request';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { RemoveImageRequest } from '../models/remove-image-request';
 
@@ -35,7 +35,7 @@ export class ImageApiService extends BaseService {
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
 	createImage$Response(params: {
-		body: CreateImageRequest;
+		body: CreateImagesRequest;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, ImageApiService.CreateImagePath, 'post');
 		if (params) {
@@ -65,7 +65,7 @@ export class ImageApiService extends BaseService {
 	 *
 	 * This method sends `application/json` and handles request body of type `application/json`.
 	 */
-	createImage(params: { body: CreateImageRequest }): Observable<OperationResultResponse> {
+	createImage(params: { body: CreateImagesRequest }): Observable<OperationResultResponse> {
 		return this.createImage$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
 		);

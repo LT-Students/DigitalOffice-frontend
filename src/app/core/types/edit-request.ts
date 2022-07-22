@@ -48,8 +48,8 @@ export enum ProjectPath {
 	SHORT_DESCRIPTION = '/ShortDescription',
 	STATUS = '/Status',
 	CUSTOMER = '/Customer',
-	START_PROJECT = '/StartProject',
-	END_PROJECT = '/EndProject',
+	START_DATE = '/StartDateUtc',
+	END_DATE = '/EndDateUtc',
 }
 
 export enum PositionPath {

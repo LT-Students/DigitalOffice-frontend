@@ -1,7 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 import { CommunicationType } from './communication-type';
-import { CommunicationVisibleTo } from './communication-visible-to';
 export interface CreateCommunicationRequest {
 	type: CommunicationType;
 
@@ -14,5 +13,4 @@ export interface CreateCommunicationRequest {
 	 * Communication value
 	 */
 	value: string;
-	visibleTo?: CommunicationVisibleTo;
 }

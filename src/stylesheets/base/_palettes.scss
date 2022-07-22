@@ -151,7 +151,7 @@ $light-theme-foreground-palette: (
 	divider: $dark-dividers,
 	dividers: $dark-dividers,
 	disabled: $dark-disabled-text,
-	disabled-button: map.get($do-grey, 400),
+	disabled-button: variables.$typo,
 	disabled-text: $dark-disabled-text,
 	elevation: black,
 	hint-text: $dark-disabled-text,

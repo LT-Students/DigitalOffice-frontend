@@ -144,7 +144,9 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 
 	.mat-h5,
 	h5 {
-		margin-bottom: 16px;
+		margin-bottom: 2px;
+
+		font-family: 'Montserrat', sans-serif;
 
 		font-size: 16px;
 		font-weight: 700;
@@ -164,6 +166,7 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 
 	.mat-card {
 		@include mat.elevation(0);
+		box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
 	}
 
 	.primary {

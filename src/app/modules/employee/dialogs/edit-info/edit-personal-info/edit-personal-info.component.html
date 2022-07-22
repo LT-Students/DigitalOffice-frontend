@@ -51,7 +51,7 @@
 </ng-container>
 
 <ng-template #editTemplate [formGroup]="editForm">
-	<do-form-row label="Фамилия">
+	<do-form-field label="Фамилия">
 		<mat-form-field
 			[matTooltip]="editForm.controls[userPath.LAST_NAME].errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
 			[matTooltipPosition]="'right'"
@@ -69,8 +69,8 @@
 				>Фамилия не может состоять только из пробелов!
 			</mat-error>
 		</mat-form-field>
-	</do-form-row>
-	<do-form-row label="Имя">
+	</do-form-field>
+	<do-form-field label="Имя">
 		<mat-form-field
 			[matTooltip]="editForm.controls[userPath.FIRST_NAME].errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
 			[matTooltipPosition]="'right'"
@@ -88,8 +88,8 @@
 				>Имя не может состоять только из пробелов!
 			</mat-error>
 		</mat-form-field>
-	</do-form-row>
-	<do-form-row label="Отчество">
+	</do-form-field>
+	<do-form-field label="Отчество">
 		<mat-form-field>
 			<input
 				doTransformName
@@ -103,8 +103,8 @@
 				>Отчество не может состоять только из пробелов!
 			</mat-error>
 		</mat-form-field>
-	</do-form-row>
-	<do-form-row label="Дата рождения">
+	</do-form-field>
+	<do-form-field label="Дата рождения">
 		<mat-form-field>
 			<input
 				matInput
@@ -117,9 +117,9 @@
 			</mat-datepicker-toggle>
 			<mat-datepicker #dayOfBirth></mat-datepicker>
 		</mat-form-field>
-	</do-form-row>
+	</do-form-field>
 
-	<do-form-row label="Время работы">
+	<do-form-field label="Время работы">
 		<div class="edit-info__hours">
 			<div class="edit-info__hours-input">
 				<span>С</span>
@@ -134,11 +134,11 @@
 				</mat-form-field>
 			</div>
 		</div>
-	</do-form-row>
+	</do-form-field>
 
 	<do-gender-select [formControl]="genderControl" ngDefaultControl></do-gender-select>
 
-	<do-form-row label="О себе" class="edit-info__two-columns">
+	<do-form-field label="О себе" class="edit-info__two-columns">
 		<mat-form-field appearance="outline">
 			<textarea
 				#about
@@ -153,7 +153,7 @@
 			></textarea>
 			<mat-hint align="start">{{ about.value.length }}/{{ MAX_ABOUT_LENGTH }}</mat-hint>
 		</mat-form-field>
-	</do-form-row>
+	</do-form-field>
 
 	<div class="edit-info__buttons edit-info__two-columns">
 		<button mat-button (click)="toggleEditMode()" class="edit-info__button">Отменить</button>

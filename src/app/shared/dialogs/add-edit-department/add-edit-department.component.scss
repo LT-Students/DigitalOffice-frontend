@@ -1,0 +1,22 @@
+.form__container {
+	padding: 20px;
+
+	background: #fff;
+}
+
+.new-department {
+	&__input-container {
+		margin-bottom: 20px;
+
+		display: flex;
+		flex-direction: column;
+
+		do-form-field:not(:last-child) {
+			margin-bottom: 20px;
+		}
+	}
+
+	&__field {
+		margin-bottom: 17px;
+	}
+}

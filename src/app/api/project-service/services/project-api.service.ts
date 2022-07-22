@@ -14,6 +14,7 @@ import { EditProjectRequest } from '../models/edit-project-request';
 import { FindResultResponseProjectInfo } from '../models/find-result-response-project-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseProjectResponse } from '../models/operation-result-response-project-response';
+import { ProjectStatusType } from '../models/project-status-type';
 
 @Injectable({
 	providedIn: 'root',
@@ -36,6 +37,21 @@ export class ProjectApiService extends BaseService {
 	 */
 	findProjects$Response(params: {
 		/**
+		 * Sorting of the results
+		 */
+		isascendingsort?: boolean;
+
+		/**
+		 * Project type of the results
+		 */
+		projectstatus?: ProjectStatusType;
+
+		/**
+		 * Substring which results must contain
+		 */
+		nameincludesubstring?: string;
+
+		/**
 		 * Number of entries to skip
 		 */
 		skipCount: number;
@@ -44,11 +60,26 @@ export class ProjectApiService extends BaseService {
 		 * Number of projects to take.
 		 */
 		takeCount: number;
+
+		/**
+		 * Include project department info.
+		 */
+		includedepartment?: boolean;
+
+		/**
+		 * Return only projects with specified user
+		 */
+		userid?: string;
 	}): Observable<StrictHttpResponse<FindResultResponseProjectInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindProjectsPath, 'get');
 		if (params) {
+			rb.query('isascendingsort', params.isascendingsort, {});
+			rb.query('projectstatus', params.projectstatus, {});
+			rb.query('nameincludesubstring', params.nameincludesubstring, {});
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
+			rb.query('includedepartment', params.includedepartment, {});
+			rb.query('userid', params.userid, {});
 		}
 
 		return this.http
@@ -74,6 +105,21 @@ export class ProjectApiService extends BaseService {
 	 */
 	findProjects(params: {
 		/**
+		 * Sorting of the results
+		 */
+		isascendingsort?: boolean;
+
+		/**
+		 * Project type of the results
+		 */
+		projectstatus?: ProjectStatusType;
+
+		/**
+		 * Substring which results must contain
+		 */
+		nameincludesubstring?: string;
+
+		/**
 		 * Number of entries to skip
 		 */
 		skipCount: number;
@@ -82,6 +128,16 @@ export class ProjectApiService extends BaseService {
 		 * Number of projects to take.
 		 */
 		takeCount: number;
+
+		/**
+		 * Include project department info.
+		 */
+		includedepartment?: boolean;
+
+		/**
+		 * Return only projects with specified user
+		 */
+		userid?: string;
 	}): Observable<FindResultResponseProjectInfo> {
 		return this.findProjects$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponseProjectInfo>) => r.body as FindResultResponseProjectInfo)
@@ -104,16 +160,12 @@ export class ProjectApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
-		includeusers?: boolean;
-		shownotactiveusers?: boolean;
 		includefiles?: boolean;
 		includeimages?: boolean;
 	}): Observable<StrictHttpResponse<OperationResultResponseProjectResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectPath, 'get');
 		if (params) {
 			rb.query('projectId', params.projectId, {});
-			rb.query('includeusers', params.includeusers, {});
-			rb.query('shownotactiveusers', params.shownotactiveusers, {});
 			rb.query('includefiles', params.includefiles, {});
 			rb.query('includeimages', params.includeimages, {});
 		}
@@ -144,8 +196,6 @@ export class ProjectApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
-		includeusers?: boolean;
-		shownotactiveusers?: boolean;
 		includefiles?: boolean;
 		includeimages?: boolean;
 	}): Observable<OperationResultResponseProjectResponse> {

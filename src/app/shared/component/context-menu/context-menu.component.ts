@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MenuItem } from '@app/models/menu-item';
+import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { MatMenuTrigger, MenuPositionX, MenuPositionY } from '@angular/material/menu';
 
 @Component({

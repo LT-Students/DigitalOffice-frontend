@@ -1,22 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { IGetProjectResponse, ProjectService } from '@app/services/project/project.service';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { ProjectResponse } from '@api/project-service/models';
+import { ProjectService } from '../project.service';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class ProjectPageResolver implements Resolve<OperationResultResponse<IGetProjectResponse>> {
-	constructor(private _projectService: ProjectService) {}
+export class ProjectPageResolver implements Resolve<ProjectResponse> {
+	constructor(private projectService: ProjectService) {}
 
-	public resolve(
-		route: ActivatedRouteSnapshot,
-		state: RouterStateSnapshot
-	): Observable<OperationResultResponse<IGetProjectResponse>> {
-		return this._projectService.getProject({
-			projectId: route.params.id,
-			includeusers: true,
-		});
+	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ProjectResponse> {
+		return this.projectService.getProject(route.params.id);
 	}
 }

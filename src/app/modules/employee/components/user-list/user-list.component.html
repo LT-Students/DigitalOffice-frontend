@@ -1,7 +1,7 @@
 <mat-card class="card">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Сотрудники</h3>
-		<do-form-row>
+		<do-form-field>
 			<mat-form-field>
 				<input
 					matInput
@@ -13,13 +13,13 @@
 				/>
 				<mat-icon matPrefix class="text-secondary_default">search</mat-icon>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 		<button mat-flat-button color="accent" (click)="createEmployee()" data-test="add-user-button">
 			+ Добавить сотрудника
 		</button>
 	</div>
 	<div class="status-toggle">
-		<do-button-toggle-group (toggleChange)="handleStatusToggle($event)">
+		<do-button-toggle-group (valueChange)="handleStatusToggle($event)">
 			<do-button-toggle value="active" checked>Активные</do-button-toggle>
 			<do-button-toggle value="archive">В архиве</do-button-toggle>
 			<do-button-toggle value="pending">Неактивированные</do-button-toggle>

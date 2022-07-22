@@ -1,0 +1,10 @@
+<div class="filters" [formGroup]="form">
+	<do-filter
+		*ngFor="let filter of filters"
+		ngDefaultControl
+		[formControlName]="filter.key"
+		[type]="filter.type"
+		[params]="filter.params"
+		[style.width.px]="filter.width || 'auto'"
+	></do-filter>
+</div>

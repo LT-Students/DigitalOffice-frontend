@@ -9,7 +9,7 @@
 		<span *ngIf="loginForm.controls['login'].errors?.['loginExists']" class="mat-body-2 text-alert"
 			>Введённый логин уже занят :(</span
 		>
-		<do-form-row class="auth-input">
+		<do-form-field class="auth-input">
 			<mat-form-field>
 				<input
 					matInput
@@ -20,12 +20,12 @@
 					autocomplete="off"
 				/>
 			</mat-form-field>
-		</do-form-row>
-		<do-form-row class="auth-input">
+		</do-form-field>
+		<do-form-field class="auth-input">
 			<mat-form-field>
 				<do-password placeholder="Пароль" formControlName="password"></do-password>
 			</mat-form-field>
-		</do-form-row>
+		</do-form-field>
 		<button
 			[loading]="isWaiting$ | async"
 			mat-flat-button

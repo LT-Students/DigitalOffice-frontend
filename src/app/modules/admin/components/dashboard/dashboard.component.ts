@@ -7,8 +7,8 @@ import { of, Subject } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType, DialogService, ModalWidth } from '@app/services/dialog.service';
-import { NewEmployeeComponent } from '@shared/modals/new-employee/new-employee.component';
-import { AddEditDepartmentComponent } from '@shared/modals/add-edit-department/add-edit-department.component';
+import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
+import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
@@ -58,7 +58,9 @@ export class DashboardComponent implements OnInit {
 							return this.modalService.openModal(EditCompanyComponent, ModalWidth.L).afterClosed();
 						}
 						case this.modalType.NEW_PROJECT: {
-							return fromPromise(this._router.navigate([AppRoutes.Projects, ProjectsRoutes.NewProject]));
+							return fromPromise(
+								this._router.navigate([AppRoutes.Projects, ProjectsRoutes.CreateProject])
+							);
 						}
 						case this.modalType.MANAGE_USERS: {
 							return fromPromise(this._router.navigate([AppRoutes.Users]));
