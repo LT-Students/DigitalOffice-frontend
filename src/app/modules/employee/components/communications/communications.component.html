@@ -12,6 +12,7 @@
 			[communication]="communication"
 			(click)="onCommunicationClick(communication)"
 		></do-communication-item>
+		<do-empty-list *ngIf="!communications.length" emptyMessage="У вас нет контактов" [width]="80"></do-empty-list>
 	</div>
 	<do-context-menu [items]="menuItems" xPosition="before"></do-context-menu>
 </div>
