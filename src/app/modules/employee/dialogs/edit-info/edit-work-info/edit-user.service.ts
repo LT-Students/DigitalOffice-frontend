@@ -9,19 +9,9 @@ import { CompanyUserApiService } from '@api/company-service/services/company-use
 import { EMPTY, Observable } from 'rxjs';
 import { DateTime } from 'luxon';
 import { User } from '@app/models/user/user.model';
-import { OfficeInfo } from '@api/office-service/models/office-info';
-import { PositionInfo } from '@api/position-service/models/position-info';
-import { RoleInfo } from '@api/rights-service/models/role-info';
 import { UserService } from '@app/services/user/user.service';
 import { UserPath } from '@app/types/edit-request';
 import { ContractSubjectApiService } from '@api/company-service/services/contract-subject-api.service';
-import { map } from 'rxjs/operators';
-
-interface FindParams {
-	takeCount: number;
-	skipCount: number;
-	nameIncludeSubstring?: string;
-}
 
 @Injectable({
 	providedIn: 'root',
@@ -40,44 +30,22 @@ export class EditUserService {
 	) {}
 
 	/**
-	 * find methods
-	 */
-
-	public findOffices(params: FindParams) {
-		return this.office.findOffices(params);
-	}
-
-	public findPositions(params: FindParams) {
-		return this.position.findPositions(params);
-	}
-
-	public findRoles(params: FindParams) {
-		return this.role.findRoles({ ...params, locale: 'ru' });
-	}
-
-	public findContracts(params: FindParams) {
-		return this.contractService.findContractSubjects({ ...params }).pipe(map((res) => res.body ?? []));
-	}
-
-	/**
 	 * Submit methods
 	 */
-	public changeOffice(user: User, office: OfficeInfo): Observable<any> {
-		return user.office?.id !== office.id
-			? this.officeUser.createOfficeUsers({ body: { officeId: office.id, usersIds: [user.id] } })
+	public changeOffice(user: User, officeId: string): Observable<any> {
+		return user.office?.id !== officeId
+			? this.officeUser.createOfficeUsers({ body: { officeId, usersIds: [user.id] } })
 			: EMPTY;
 	}
 
-	public changePosition(user: User, position: PositionInfo): Observable<any> {
-		return user.position?.id !== position.id
-			? this.positionUser.editPositionUser({ body: { userId: user.id, positionId: position.id } })
+	public changePosition(user: User, positionId: string): Observable<any> {
+		return user.position?.id !== positionId
+			? this.positionUser.editPositionUser({ body: { userId: user.id, positionId } })
 			: EMPTY;
 	}
 
-	public changeRole(user: User, role: RoleInfo): Observable<any> {
-		return user.role?.id !== role.id
-			? this.roleUser.editUserRole({ body: { userId: user.id, roleId: role.id } })
-			: EMPTY;
+	public changeRole(user: User, roleId: string): Observable<any> {
+		return user.role?.id !== roleId ? this.roleUser.editUserRole({ body: { userId: user.id, roleId } }) : EMPTY;
 	}
 
 	public changeContract(user: User, contractId: string): Observable<any> {

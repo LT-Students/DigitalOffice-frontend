@@ -15,7 +15,7 @@ export interface ICreatePositionRequest {
 
 export interface IPositionInfo {
 	id?: string;
-	name?: string;
+	name: string;
 	description?: string;
 	isActive?: boolean;
 }
@@ -38,9 +38,9 @@ export class PositionService {
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Position, MessageMethod.Create));
 	}
 
-	public getPosition(positionId: UUID): Observable<OperationResultResponse<IPositionInfo>> {
-		return this._positionApiService.getPosition({ positionId: positionId });
-	}
+	// public getPosition(positionId: UUID): Observable<OperationResultResponse<IPositionInfo>> {
+	// 	return this._positionApiService.getPosition({ positionId: positionId });
+	// }
 
 	//TODO merge PositionInfo and IPositionInfo into one interface
 	public findPositions(params: IFindRequest): Observable<OperationResultResponse<PositionInfo[]>> {

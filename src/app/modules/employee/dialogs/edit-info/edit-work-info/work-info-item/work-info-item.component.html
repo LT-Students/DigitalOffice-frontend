@@ -1,6 +1,6 @@
 <div class="flex flex_ai_baseline" *ngIf="!isEditMode">
 	<span class="mat-body-2 text-secondary_default label">{{ config.label }}</span>
-	<span class="value">{{ config.value | execute: config.displayValueGetter | placeholder }}</span>
+	<span class="value">{{ config.value | execute: config.displayWithFn | placeholder }}</span>
 	<button
 		*ngIf="config.canEdit$ | async"
 		class="edit-button"
@@ -17,27 +17,25 @@
 			<mat-form-field>
 				<mat-select [formControl]="control" [placeholder]="config.placeholder">
 					<mat-option
-						*ngFor="let option of config.selectOption$ ? (config.selectOption$ | async) : config.options"
-						[value]="option | execute: config.controlValueGetter"
+						*ngFor="let option of config.options$ ? (config.options$ | async) : config.options"
+						[value]="option | execute: config.valueGetter"
 					>
-						{{ option | execute: config.optionDisplayValueGetter }}
+						{{ option | execute: config.displayWithFn }}
 					</mat-option>
 				</mat-select>
 			</mat-form-field>
 		</do-form-field>
 		<do-form-field *ngSwitchCase="'autocomplete'" [label]="config.label">
 			<mat-form-field>
-				<!--				<do-autocomplete-->
-				<!--					[formControl]="control"-->
-				<!--					[placeholder]="config.placeholder"-->
-				<!--					[displayWith]="config.displayValueGetter"-->
-				<!--					(scrolled)="handleScroll()"-->
-				<!--					(searchChange)="searchName$.next($event)"-->
-				<!--				>-->
-				<!--					<do-option *ngFor="let option of optionsProvider.dataSource$ | async" [value]="option">-->
-				<!--						{{ option | execute: config.optionDisplayValueGetter }}-->
-				<!--					</do-option>-->
-				<!--				</do-autocomplete>-->
+				<do-autocomplete
+					[formControl]="control"
+					[placeholder]="config.placeholder"
+					[options]="config.options$ | async"
+					[displayWith]="config.displayWithFn"
+					[valueGetter]="config.valueGetter"
+					[filterFn]="config.filterFn || null"
+				>
+				</do-autocomplete>
 				<mat-error>{{ control.errors | controlErrors }}</mat-error>
 			</mat-form-field>
 		</do-form-field>
