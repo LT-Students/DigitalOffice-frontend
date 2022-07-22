@@ -39,6 +39,7 @@ import { DoDateAdapter } from '@app/services/do-date-adapter';
 import { MAT_LUXON_DATE_ADAPTER_OPTIONS } from '@angular/material-luxon-adapter';
 import { DATE_FORMAT } from '@app/configs/date-formats';
 import { Settings } from 'luxon';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 Settings.defaultLocale = 'ru';
 
@@ -74,6 +75,7 @@ Settings.defaultLocale = 'ru';
 		MatSidenavModule,
 		MatProgressSpinnerModule,
 		MatDividerModule,
+		MatSlideToggleModule,
 	],
 	exports: [
 		MatButtonModule,
@@ -105,6 +107,7 @@ Settings.defaultLocale = 'ru';
 		MatSidenavModule,
 		MatProgressSpinnerModule,
 		MatDividerModule,
+		MatSlideToggleModule,
 	],
 	providers: [
 		{ provide: MatDialogRef, useValue: {} },

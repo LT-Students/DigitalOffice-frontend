@@ -12,19 +12,19 @@
 		Добавить проект
 	</button>
 </div>
-<do-dynamic-filter class="filter" [filters]="filters" (filterChange)="handleParamsChange()"></do-dynamic-filter>
+<do-dynamic-filter class="filter" [filters]="filters" (filterChange)="handleParamsChange(true)"></do-dynamic-filter>
 <do-table
 	[dataSource]="tableData"
 	[columns]="columns"
 	[sortActive]="initialSort.active"
 	[sortDirection]="initialSort.direction"
 	rowHeight="96"
-	(sortChange)="handleParamsChange()"
+	(sortChange)="handleParamsChange(true)"
 	(rowClick)="handleRowClick($event)"
 ></do-table>
 <do-paginator
 	[pageIndex]="initialQueryParams['pageIndex']"
 	[pageSize]="initialQueryParams['pageSize']"
 	[total]="tableData.totalCount$ | async"
-	(page)="handleParamsChange()"
+	(page)="handleParamsChange(false)"
 ></do-paginator>

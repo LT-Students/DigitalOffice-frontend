@@ -4,13 +4,10 @@ import { Observable } from 'rxjs';
 import {
 	CreateProjectRequest,
 	EditProjectRequest,
-	FileAccess,
-	ImageInfo,
 	ProjectInfo,
 	ProjectResponse,
 	ProjectStatusType,
 	ProjectUserRoleType,
-	UserInfo,
 } from '@api/project-service/models';
 import { UserApiService } from '@api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
@@ -53,6 +50,7 @@ export interface IFindProjects {
 	nameincludesubstring?: string;
 	skipCount: number;
 	takeCount: number;
+	userid?: string;
 }
 
 @Injectable({

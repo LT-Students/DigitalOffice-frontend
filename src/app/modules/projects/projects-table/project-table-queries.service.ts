@@ -13,6 +13,7 @@ export enum ClientQueryParam {
 	Status = 'status',
 	Search = 'search',
 	Sort = 'sort',
+	AllProjects = 'projects',
 }
 
 export interface SortParam {
@@ -40,11 +41,14 @@ export class ProjectTableQueriesService {
 		if (sort && !sort.split('_')[1]) {
 			filteredParams[ClientQueryParam.Sort] = null;
 		}
+		if (filteredParams[ClientQueryParam.AllProjects] !== 'all') {
+			filteredParams[ClientQueryParam.AllProjects] = null;
+		}
 
 		return filteredParams;
 	}
 
-	public parseQueryParams(params: Params): IFindProjects {
+	public parseQueryParams(params: Params, userId: string): IFindProjects {
 		const pageIndex = Number(params['pageIndex'] || 0);
 		const pageSize = Number(params['pageSize'] || this.paginatorDefaults.pageSize);
 
@@ -54,6 +58,7 @@ export class ProjectTableQueriesService {
 			nameincludesubstring: params[ClientQueryParam.Search],
 			projectstatus: params[ClientQueryParam.Status],
 			isascendingsort: params[ClientQueryParam.Sort] && params[ClientQueryParam.Sort].split('_')[1] === 'asc',
+			userid: params[ClientQueryParam.AllProjects] === 'all' ? undefined : userId,
 		};
 	}
 }

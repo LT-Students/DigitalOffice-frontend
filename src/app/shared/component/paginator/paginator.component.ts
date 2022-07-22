@@ -8,6 +8,7 @@ import {
 	InjectionToken,
 	Optional,
 	Inject,
+	ChangeDetectorRef,
 } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
@@ -38,6 +39,7 @@ export class PaginatorComponent implements OnInit {
 	@Input()
 	set total(total: any) {
 		this._total = coerceNumberProperty(total);
+		this.updateDisplayedPages(this._pageIndex, this.getLastIndex());
 	}
 	get total(): number {
 		return this._total;
@@ -47,6 +49,7 @@ export class PaginatorComponent implements OnInit {
 	@Input()
 	set pageIndex(index: any) {
 		this._pageIndex = coerceNumberProperty(index);
+		this.updateDisplayedPages(index, this.getLastIndex());
 	}
 	get pageIndex(): number {
 		return this._pageIndex;
@@ -67,13 +70,16 @@ export class PaginatorComponent implements OnInit {
 
 	public pages: number[] = [];
 
-	constructor(@Optional() @Inject(PAGINATOR_DEFAULT_OPTIONS) defaults: PaginatorDefaultOptions) {
+	constructor(
+		@Optional() @Inject(PAGINATOR_DEFAULT_OPTIONS) defaults: PaginatorDefaultOptions,
+		private cdr: ChangeDetectorRef
+	) {
 		this._pageSize = defaults.pageSize;
 		this.pageSizeOptions = defaults.pageSizeOptions;
 	}
 
 	public ngOnInit(): void {
-		this.pages = this.generatePages(this._pageIndex, this.getLastIndex());
+		this.updateDisplayedPages(this._pageIndex, this.getLastIndex());
 	}
 
 	public handlePageSizeChange(pageSize: number): void {
@@ -106,7 +112,7 @@ export class PaginatorComponent implements OnInit {
 
 	public navigateToPage(pageIndex: number): void {
 		this._pageIndex = pageIndex;
-		this.pages = this.generatePages(pageIndex, this.getLastIndex());
+		this.updateDisplayedPages(pageIndex, this.getLastIndex());
 		this.emitPageEvent();
 	}
 
@@ -114,9 +120,10 @@ export class PaginatorComponent implements OnInit {
 		return Math.ceil(this._total / this._pageSize) - 1;
 	}
 
-	private generatePages(currentIndex: number, lastIndex: number): number[] {
+	private updateDisplayedPages(currentIndex: number, lastIndex: number): void {
 		if (this._total <= this._pageSize) {
-			return [0];
+			this.pages = [0];
+			return;
 		}
 
 		const delta = 2;
@@ -145,7 +152,8 @@ export class PaginatorComponent implements OnInit {
 			l = i;
 		});
 
-		return rangeWithDots;
+		this.pages = rangeWithDots;
+		this.cdr.markForCheck();
 	}
 
 	private emitPageEvent(): void {

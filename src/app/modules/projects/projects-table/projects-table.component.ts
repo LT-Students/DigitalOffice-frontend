@@ -6,10 +6,12 @@ import { BehaviorSubject, Observable, PartialObserver, Subject } from 'rxjs';
 import { UserRights } from '@app/types/user-rights.enum';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { PaginatorComponent } from '@shared/component/paginator/paginator.component';
-import { first, map, takeUntil } from 'rxjs/operators';
+import { first, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { IFindProjects } from '@app/services/project/project.service';
+import { User } from '@app/models/user/user.model';
+import { CurrentUserService } from '@app/services/current-user.service';
 import { ProjectsRoutes } from '../models/projects-routes';
 import { ColumnDef } from '../../table/models';
 import { FilterDef } from '../../dynamic-filter/models';
@@ -38,7 +40,7 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 	public initialQueryParams = this.route.snapshot.queryParams;
 	public initialSort = this.getInitialSort(this.initialQueryParams[ClientQueryParam.Sort]);
 
-	private paramsChange$ = new Subject();
+	private paramsChange$ = new Subject<boolean>();
 
 	public filters: FilterDef[] = [];
 	public columns: ColumnDef[] = [];
@@ -50,7 +52,8 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 		private projectService: ProjectService,
 		private tableQueries: ProjectTableQueriesService,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private currentUser: CurrentUserService
 	) {}
 
 	public ngOnInit(): void {
@@ -78,8 +81,8 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 		this.router.navigate([project.id], { relativeTo: this.route });
 	}
 
-	public handleParamsChange(): void {
-		this.paramsChange$.next();
+	public handleParamsChange(resetPaginator: boolean): void {
+		this.paramsChange$.next(resetPaginator);
 	}
 
 	private getInitialSort(sortValue?: string): Sort {
@@ -93,12 +96,14 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 		};
 	}
 
-	public updateTableData(): void {
+	public updateTableData(resetPaginator: boolean): void {
 		const { active, direction } = this.table.sort;
+		const { [ClientQueryParam.AllProjects]: projects, ...rest } = this.filter.value;
 		const params = {
-			...this.filter.value,
-			sort: direction && `${active}_${direction}`,
-			pageIndex: this.paginator.pageIndex,
+			...rest,
+			[ClientQueryParam.Sort]: direction && `${active}_${direction}`,
+			[ClientQueryParam.AllProjects]: !projects && 'all',
+			pageIndex: resetPaginator ? 0 : this.paginator.pageIndex,
 			pageSize: this.paginator.pageSize,
 		};
 		const queryParams = this.tableQueries.filterQueries(params);
@@ -107,8 +112,21 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 			queryParams,
 			queryParamsHandling: 'merge',
 		});
-		const requestParams = this.tableQueries.parseQueryParams(params);
-		this.tableData.loadProjects(requestParams);
+		this.currentUser.user$
+			.pipe(
+				first(),
+				switchMap((u: User) => {
+					const requestParams = this.tableQueries.parseQueryParams(params, u.id);
+					return this.tableData.loadProjects(requestParams);
+				})
+			)
+			.subscribe({
+				next: () => {
+					if (resetPaginator) {
+						this.paginator.pageIndex = 0;
+					}
+				},
+			});
 	}
 }
 
@@ -137,7 +155,7 @@ class ProjectsDataSource implements DataSource<ProjectInfo> {
 
 	public disconnect(collectionViewer: CollectionViewer): void {}
 
-	public loadProjects(params: IFindProjects): void {
-		this.projectService.findProjects(params).subscribe(this.projectsObserver);
+	public loadProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
+		return this.projectService.findProjects(params).pipe(tap(this.projectsObserver));
 	}
 }

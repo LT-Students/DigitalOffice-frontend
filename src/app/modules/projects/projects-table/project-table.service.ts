@@ -15,6 +15,7 @@ import {
 import { IProjectStatus, ProjectStatus } from '../models/project-status';
 import { ProjectService } from '../project.service';
 import { FilterEvent } from '../../dynamic-filter/dynamic-filter.component';
+import { SlideToggleParams } from '../../dynamic-filter/components/slide-toggle/slide-toggle.component';
 import { ClientQueryParam } from './project-table-queries.service';
 
 @Injectable()
@@ -54,18 +55,18 @@ export class ProjectTableService {
 	public getFilterData(initialValue: FilterEvent, departments$: Observable<DepartmentInfo[]>): FilterDef[] {
 		return [
 			{
-				key: 'department',
+				key: ClientQueryParam.Department,
 				type: 'autocomplete',
 				initialValue: initialValue[ClientQueryParam.Department],
 				width: 247,
 				params: new AutocompleteFilterParams({
 					placeholder: 'Название департамента',
 					...this.autocompleteConfigs.getDepartmentsConfig(),
-					// options$: departments$
+					options$: departments$,
 				}),
 			},
 			{
-				key: 'status',
+				key: ClientQueryParam.Status,
 				type: 'select',
 				initialValue: initialValue[ClientQueryParam.Status],
 				width: 177,
@@ -80,10 +81,16 @@ export class ProjectTableService {
 				}),
 			},
 			{
-				key: 'search',
+				key: ClientQueryParam.Search,
 				type: 'input',
 				initialValue: initialValue[ClientQueryParam.Search],
 				params: new InputFilterParams({ placeholder: 'Поиск', icon: Icons.Search }),
+			},
+			{
+				key: ClientQueryParam.AllProjects,
+				type: 'buttonToggle',
+				initialValue: !initialValue[ClientQueryParam.AllProjects],
+				params: new SlideToggleParams({ placeholder: 'Мои проекты' }),
 			},
 		];
 	}
