@@ -9,7 +9,6 @@ import { UserService } from '@app/services/user/user.service';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { EmailValue } from '@shared/dialogs/user-recovery/email-item/email-item.component';
-import { CommunicationVisibleTo } from '@api/user-service/models/communication-visible-to';
 
 @Injectable()
 export class UserRecoveryService {
@@ -65,7 +64,6 @@ export class UserRecoveryService {
 							id: communicationId,
 							type: CommunicationType.Email,
 							value: recoverEmail.email,
-							visibleTo: CommunicationVisibleTo.AllUsers,
 							isConfirmed: false,
 						};
 						this.emailForRecovery$.next(invitedCommunication);
