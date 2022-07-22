@@ -16,6 +16,7 @@ import { EndDateLabelPipe } from './create-edit-project/project-details/end-date
 import { ProjectDescriptionComponent } from './project-page/project-description/project-description.component';
 import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
 import { ProjectFilesComponent } from './project-page/project-files/project-files.component';
+import { ProjectUsersComponent } from './project-page/project-users/project-users.component';
 
 @NgModule({
 	declarations: [
@@ -32,6 +33,7 @@ import { ProjectFilesComponent } from './project-page/project-files/project-file
 		ProjectDescriptionComponent,
 		ProjectIdRouteContainerComponent,
 		ProjectFilesComponent,
+		ProjectUsersComponent,
 	],
 	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule],
 })

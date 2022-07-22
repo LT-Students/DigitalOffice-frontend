@@ -1,10 +1,12 @@
 <ng-container *ngIf="projectData$ | async as data">
 	<do-project-info [project]="data.project"></do-project-info>
 	<mat-tab-group>
+		<mat-tab label="Команда">
+			<do-project-users></do-project-users>
+		</mat-tab>
 		<mat-tab label="Документы">
 			<do-project-files class="tab-content"></do-project-files>
 		</mat-tab>
-		<mat-tab label="Команда"></mat-tab>
 		<mat-tab label="О проекте">
 			<do-project-description
 				class="tab-content"
