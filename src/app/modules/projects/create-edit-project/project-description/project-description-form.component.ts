@@ -71,6 +71,7 @@ export class ProjectDescriptionFormComponent implements OnInit, OnDestroy, Contr
 
 	public registerOnChange(fn: any): void {
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({ next: fn });
+		this.form.updateValueAndValidity();
 	}
 
 	public registerOnTouched(fn: any): void {}

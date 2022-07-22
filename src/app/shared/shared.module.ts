@@ -57,7 +57,7 @@ import { ButtonDirective } from './directives/button.directive';
 import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-item.component';
 import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
 import { DynamicComponentHostDirective } from './directives/dynamic-component-host.directive';
-import { AutocompleteComponent } from './component/autocomplete/autocomplete.component';
+import { FilterAutocompleteComponent } from './component/autocomplete/filter-autocomplete.component';
 import { AutocompleteOffDirective } from './directives/autocomplete-off.directive';
 import { ActionsComponent } from './component/actions/actions.component';
 import { ControlErrorsPipe } from './pipes/control-errors.pipe';
@@ -115,13 +115,11 @@ import { PaginatorComponent } from './component/paginator/paginator.component';
 		SidebarItemComponent,
 		SidebarHeaderComponent,
 		DynamicComponentHostDirective,
-		AutocompleteComponent,
+		FilterAutocompleteComponent,
 		OptionComponent,
 		AutocompleteOffDirective,
 		ActionsComponent,
 		ControlErrorsPipe,
-		OptionComponent,
-		AutocompleteComponent,
 		InfoDialogComponent,
 		TimeInputComponent,
 		SnackbarComponent,
@@ -191,12 +189,11 @@ import { PaginatorComponent } from './component/paginator/paginator.component';
 		PermissionDirective,
 		ButtonDirective,
 		DynamicComponentHostDirective,
-		AutocompleteComponent,
+		FilterAutocompleteComponent,
 		OptionComponent,
 		AutocompleteOffDirective,
 		ActionsComponent,
 		ControlErrorsPipe,
-		OptionComponent,
 		TimeInputComponent,
 		NumberInputDirective,
 		PaginatorComponent,

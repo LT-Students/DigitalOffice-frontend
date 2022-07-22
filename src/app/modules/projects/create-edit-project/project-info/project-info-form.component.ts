@@ -8,13 +8,15 @@ import {
 	Self,
 	ChangeDetectorRef,
 } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors, Validators } from '@angular/forms';
+import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors } from '@angular/forms';
 import { DepartmentInfo as ProjectDepartmentInfo } from '@api/project-service/models/department-info';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DepartmentService } from '@app/services/department/department.service';
 import { Subject } from 'rxjs';
 import { DoValidators } from '@app/validators/do-validators';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
+import { MAX_INT32 } from '@app/utils/utils';
+import { Icons } from '@shared/modules/icons/icons';
 
 export interface InfoControlValue {
 	name: string;
@@ -30,11 +32,13 @@ export interface InfoControlValue {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectInfoFormComponent implements OnInit, OnDestroy, ControlValueAccessor {
+	public readonly Icons = Icons;
+
 	@Input() isEditMode = false;
 
 	public form = this.fb.group({
-		name: [null, [Validators.required, DoValidators.matchMaxLength(150)]],
-		shortName: [null, [Validators.required, DoValidators.matchMaxLength(40)]],
+		name: [null, [DoValidators.required, DoValidators.matchMaxLength(150)]],
+		shortName: [null, [DoValidators.required, DoValidators.matchMaxLength(40)]],
 		customer: [null, [DoValidators.matchMaxLength(150)]],
 		department: [null],
 	});
@@ -42,10 +46,17 @@ export class ProjectInfoFormComponent implements OnInit, OnDestroy, ControlValue
 	private destroy$ = new Subject<void>();
 
 	public departmentAutocompleteConfig = {
-		loadOptions$: this.departmentService.findDepartments.bind(this.departmentService),
-		valueGetter: (d?: DepartmentInfo) => d?.id,
-		displayValueGetter: (d: DepartmentInfo) => d.shortName,
+		departments$: this.departmentService
+			.findDepartments({ skipCount: 0, takeCount: MAX_INT32 })
+			.pipe(map((res) => res.body as DepartmentInfo[])),
+		valueGetter: (d?: DepartmentInfo) => d?.id || null,
 		displayWithFn: (d?: DepartmentInfo) => d?.shortName || '',
+		filterFn: (v: string, options: DepartmentInfo[]) => {
+			v = v.toLowerCase();
+			return options.filter(
+				(d: DepartmentInfo) => d.shortName.toLowerCase().includes(v) || d.name.toLowerCase().includes(v)
+			);
+		},
 	};
 
 	constructor(

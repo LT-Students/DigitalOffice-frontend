@@ -27,17 +27,17 @@
 		</do-form-field>
 		<do-form-field *ngSwitchCase="'autocomplete'" [label]="config.label">
 			<mat-form-field>
-				<do-autocomplete
-					[formControl]="control"
-					[placeholder]="config.placeholder"
-					[displayWith]="config.displayValueGetter"
-					(scrolled)="handleScroll()"
-					(searchChange)="searchName$.next($event)"
-				>
-					<do-option *ngFor="let option of optionsProvider.dataSource$ | async" [value]="option">
-						{{ option | execute: config.optionDisplayValueGetter }}
-					</do-option>
-				</do-autocomplete>
+				<!--				<do-autocomplete-->
+				<!--					[formControl]="control"-->
+				<!--					[placeholder]="config.placeholder"-->
+				<!--					[displayWith]="config.displayValueGetter"-->
+				<!--					(scrolled)="handleScroll()"-->
+				<!--					(searchChange)="searchName$.next($event)"-->
+				<!--				>-->
+				<!--					<do-option *ngFor="let option of optionsProvider.dataSource$ | async" [value]="option">-->
+				<!--						{{ option | execute: config.optionDisplayValueGetter }}-->
+				<!--					</do-option>-->
+				<!--				</do-autocomplete>-->
 				<mat-error>{{ control.errors | controlErrors }}</mat-error>
 			</mat-form-field>
 		</do-form-field>

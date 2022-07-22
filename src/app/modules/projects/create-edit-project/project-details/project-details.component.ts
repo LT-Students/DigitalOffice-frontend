@@ -17,12 +17,12 @@ import {
 	NgControl,
 	ValidationErrors,
 	ValidatorFn,
-	Validators,
 } from '@angular/forms';
 import { ProjectStatusType } from '@api/project-service/models';
 import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DoValidators } from '@app/validators/do-validators';
 import { ProjectStatus } from '../../models/project-status';
 
 function validateDuration(startDateField: string, endDateField: string): ValidatorFn {
@@ -56,7 +56,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy, ControlValueA
 
 	public form = this.fb.group(
 		{
-			startDate: [DateTime.now().startOf('day'), Validators.required],
+			startDate: [DateTime.now().startOf('day'), DoValidators.required],
 			endDate: [null],
 			status: [ProjectStatusType.Active],
 		},
@@ -118,9 +118,10 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy, ControlValueA
 
 	private handleStatusChange(status: ProjectStatusType): void {
 		if (status === ProjectStatusType.Active) {
+			this.endDateControl.clearValidators();
 			this.endDateControl.setValue(this.isEditMode ? this.initialEndDate : null);
 		} else {
-			this.endDateControl.setValidators(Validators.required);
+			this.endDateControl.setValidators(DoValidators.required);
 			this.endDateControl.setValue(DateTime.now().startOf('day'));
 			this.endDateControl.updateValueAndValidity();
 		}
@@ -128,6 +129,7 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy, ControlValueA
 
 	public registerOnChange(fn: any): void {
 		this.form.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({ next: fn });
+		this.form.updateValueAndValidity();
 	}
 
 	public registerOnTouched(fn: any): void {}

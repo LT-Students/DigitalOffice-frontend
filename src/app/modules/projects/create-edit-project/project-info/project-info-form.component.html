@@ -1,30 +1,32 @@
 <div class="form" [formGroup]="form">
-	<do-form-field label="Название проекта" class="long-field">
+	<do-form-field label="Название проекта" class="wide-field">
 		<mat-form-field>
-			<input matInput formControlName="name" type="text" placeholder="Название проекта" />
+			<input matInput formControlName="name" type="text" placeholder="Введите название проекта" />
 			<mat-error>{{ form.controls['name'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field label="Сокращенное название">
+	<do-form-field label="Сокращенное название" [class.wide-field]="isEditMode">
 		<mat-form-field>
-			<input matInput formControlName="shortName" type="text" placeholder="Сокр. название" />
-			<mat-error>{{ form.controls['shortName'] | controlErrors }}</mat-error>
+			<input matInput formControlName="shortName" type="text" placeholder="Введите сокр. название" />
+			<mat-error>{{ form.controls['shortName'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
-	<!--	<do-form-field *ngIf="!isEditMode" label="Департамент">-->
-	<!--		<do-infinite-autocomplete-->
-	<!--			formControlName="department"-->
-	<!--			placeholder="Департамент"-->
-	<!--			[loadOptions$]="departmentAutocompleteConfig.loadOptions$"-->
-	<!--			[displayValueGetter]="departmentAutocompleteConfig.displayValueGetter"-->
-	<!--			[displayWithFn]="departmentAutocompleteConfig.displayWithFn"-->
-	<!--			[valueGetter]="departmentAutocompleteConfig.valueGetter"-->
-	<!--		></do-infinite-autocomplete>-->
-	<!--	</do-form-field>-->
-	<do-form-field label="Заказчик" class="long-field">
+	<do-form-field *ngIf="!isEditMode" label="Департамент">
 		<mat-form-field>
-			<input matInput formControlName="customer" type="text" placeholder="Наименование заказчика" />
-			<mat-error>{{ form.controls['customer'] | controlErrors }}</mat-error>
+			<do-filter-autocomplete
+				formControlName="department"
+				placeholder="Департамент"
+				[options]="departmentAutocompleteConfig.departments$ | async"
+				[displayWith]="departmentAutocompleteConfig.displayWithFn"
+				[valueGetter]="departmentAutocompleteConfig.valueGetter"
+				[filterFn]="departmentAutocompleteConfig.filterFn"
+			></do-filter-autocomplete>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Заказчик" class="wide-field">
+		<mat-form-field>
+			<input matInput formControlName="customer" type="text" placeholder="Введите наименование заказчика" />
+			<mat-error>{{ form.controls['customer'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
 </div>

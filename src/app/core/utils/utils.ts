@@ -11,6 +11,8 @@ export function setProperty<T>(property: T): NonNullable<T> | null {
 	return property ? (property as NonNullable<T>) : null;
 }
 
+export const MAX_INT32 = 2 ** 31 - 1;
+
 export const EMPTY_GUID = '00000000-0000-0000-0000-000000000000';
 
 export function isGUIDEmpty(id: string): boolean {

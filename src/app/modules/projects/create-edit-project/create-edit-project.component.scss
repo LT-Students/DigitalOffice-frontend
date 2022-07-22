@@ -28,18 +28,15 @@
 	display: grid;
 	gap: 12px;
 	grid-template-columns: 0.8fr 1fr;
-	grid-template-rows: auto auto 180px auto;
+	grid-template-areas:
+		'none description'
+		'none description';
 }
 
 .description {
-	align-self: start;
-	grid-area: 1 / 2 / last / 3;
+	grid-area: description;
 }
 
 .card-heading {
 	margin-bottom: 8px;
-}
-
-do-project-description {
-	margin-bottom: 16px;
 }

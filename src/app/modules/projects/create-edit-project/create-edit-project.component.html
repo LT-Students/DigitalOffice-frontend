@@ -17,13 +17,8 @@
 		<h5 class="card-heading">Детали проекта</h5>
 		<do-project-details formControlName="details" [isEditMode]="isEditMode"></do-project-details>
 	</mat-card>
-	<mat-card *ngIf="!isEditMode">
-		<h5 class="card-heading">Команда</h5>
-		<do-team></do-team>
-	</mat-card>
 	<mat-card class="description">
 		<h5 class="card-heading">Описание проекта</h5>
 		<do-project-description-form formControlName="description"></do-project-description-form>
-		<do-attach-files *ngIf="!isEditMode"></do-attach-files>
 	</mat-card>
 </div>
