@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { Icons } from '@shared/modules/icons/icons';
 import { DepartmentService } from '@app/services/department/department.service';
+import { Observable, of } from 'rxjs';
+import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { of } from 'rxjs';
 import { ColumnDef } from '../../table/models';
 import {
 	AutocompleteFilterParams,
@@ -18,7 +19,11 @@ import { ClientQueryParam } from './project-table-queries.service';
 
 @Injectable()
 export class ProjectTableService {
-	constructor(private projectService: ProjectService, private departmentService: DepartmentService) {}
+	constructor(
+		private projectService: ProjectService,
+		private departmentService: DepartmentService,
+		private autocompleteConfigs: AutocompleteConfigsService
+	) {}
 
 	public getTableColumns(): ColumnDef[] {
 		return [
@@ -46,7 +51,7 @@ export class ProjectTableService {
 		];
 	}
 
-	public getFilterData(initialValue: FilterEvent): FilterDef[] {
+	public getFilterData(initialValue: FilterEvent, departments$: Observable<DepartmentInfo[]>): FilterDef[] {
 		return [
 			{
 				key: 'department',
@@ -55,10 +60,8 @@ export class ProjectTableService {
 				width: 247,
 				params: new AutocompleteFilterParams({
 					placeholder: 'Название департамента',
-					loadOptions$: this.departmentService.findDepartments.bind(this.departmentService),
-					valueGetter: (d: DepartmentInfo | null) => d?.id,
-					displayValueGetter: (d: DepartmentInfo) => d.shortName,
-					displayWithFn: (d: DepartmentInfo | null) => d?.shortName || '',
+					...this.autocompleteConfigs.getDepartmentsConfig(),
+					// options$: departments$
 				}),
 			},
 			{

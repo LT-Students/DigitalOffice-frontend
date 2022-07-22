@@ -13,14 +13,14 @@
 	</do-form-field>
 	<do-form-field *ngIf="!isEditMode" label="Департамент">
 		<mat-form-field>
-			<do-filter-autocomplete
+			<do-autocomplete
 				formControlName="department"
 				placeholder="Департамент"
-				[options]="departmentAutocompleteConfig.departments$ | async"
+				[options]="departmentAutocompleteConfig.options$ | async"
 				[displayWith]="departmentAutocompleteConfig.displayWithFn"
 				[valueGetter]="departmentAutocompleteConfig.valueGetter"
 				[filterFn]="departmentAutocompleteConfig.filterFn"
-			></do-filter-autocomplete>
+			></do-autocomplete>
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field label="Заказчик" class="wide-field">

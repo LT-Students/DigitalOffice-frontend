@@ -55,7 +55,11 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 
 	public ngOnInit(): void {
 		this.tableData = new ProjectsDataSource(this.projectService, this.route);
-		this.filters = this.projectTableService.getFilterData(this.initialQueryParams);
+		const departments$ = this.route.data.pipe(
+			first(),
+			map((data) => data.departments)
+		);
+		this.filters = this.projectTableService.getFilterData(this.initialQueryParams, departments$);
 		this.columns = this.projectTableService.getTableColumns();
 	}
 

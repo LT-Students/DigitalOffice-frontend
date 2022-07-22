@@ -19,7 +19,7 @@ import { IInfiniteScrollEvent } from 'ngx-infinite-scroll';
 import { MatFormField, MatFormFieldControl } from '@angular/material/form-field';
 
 @Component({
-	selector: 'do-filter-autocomplete',
+	selector: 'do-autocomplete',
 	template: `
 		<div class="container" matAutocompleteOrigin #origin="matAutocompleteOrigin">
 			<input
@@ -67,9 +67,9 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 		`,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [{ provide: MatFormFieldControl, useExisting: FilterAutocompleteComponent }],
+	providers: [{ provide: MatFormFieldControl, useExisting: AutocompleteComponent }],
 })
-export class FilterAutocompleteComponent<T> implements OnInit, OnDestroy, ControlValueAccessor, MatFormFieldControl<T> {
+export class AutocompleteComponent<T> implements OnInit, OnDestroy, ControlValueAccessor, MatFormFieldControl<T> {
 	private static uniqueId = 0;
 
 	public readonly Icons = Icons;
@@ -77,13 +77,13 @@ export class FilterAutocompleteComponent<T> implements OnInit, OnDestroy, Contro
 	@Output() searchChange = new EventEmitter<string>();
 	@Output() scrolled = new EventEmitter<IInfiniteScrollEvent>();
 	@Input() displayWith: ((value?: T) => string) | null = null;
-	@Input() valueGetter: ((value?: T) => string | null) | null = null;
+	@Input() valueGetter: ((value?: T) => any) | null = null;
 	@Input() filterFn: ((value: string, options: T[]) => T[]) | null = null;
 
 	@Input()
 	set options(options: T[] | null) {
 		this._options = options || [];
-		this.searchControl.setValue('');
+		this.setInitialSearchValue();
 	}
 	private _options: T[] = [];
 
@@ -103,7 +103,7 @@ export class FilterAutocompleteComponent<T> implements OnInit, OnDestroy, Contro
 	}
 
 	public controlType = 'do-autocomplete';
-	public id = `${this.controlType}-${FilterAutocompleteComponent.uniqueId++}`;
+	public id = `${this.controlType}-${AutocompleteComponent.uniqueId++}`;
 	public focused = false;
 	get empty(): boolean {
 		return !this.valueControl.value;
@@ -161,7 +161,7 @@ export class FilterAutocompleteComponent<T> implements OnInit, OnDestroy, Contro
 
 	public ngOnInit(): void {
 		this.filteredOptions$ = this.searchControl.valueChanges.pipe(
-			startWith(''),
+			startWith(null),
 			map((v: string | object) => {
 				if (typeof v === 'string' && this.filterFn) {
 					this.valueControl.setValue(null);
@@ -192,6 +192,11 @@ export class FilterAutocompleteComponent<T> implements OnInit, OnDestroy, Contro
 		}
 	}
 
+	private setInitialSearchValue(): void {
+		const initialValue = this._options.find((o: T) => this.value === this.valueGetter?.call(this, o));
+		this.searchControl.setValue(initialValue);
+	}
+
 	public registerOnChange(fn: any): void {
 		this.onChange = fn;
 	}
@@ -201,7 +206,7 @@ export class FilterAutocompleteComponent<T> implements OnInit, OnDestroy, Contro
 	}
 
 	public writeValue(value: any): void {
-		this.searchControl.setValue(value, { emitEvent: false });
 		this.valueControl.setValue(value, { emitEvent: false });
+		this.setInitialSearchValue();
 	}
 }

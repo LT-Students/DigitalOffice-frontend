@@ -1,34 +1,22 @@
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { AutocompleteConfig } from '@shared/component/autocomplete/autocomplete-configs.service';
 
-interface IAutocompleteFilterParams<T> {
-	loadOptions$: (params: {
-		takeCount: number;
-		skipCount: number;
-		nameIncludeSubstring?: string;
-	}) => Observable<OperationResultResponse<T[]>>;
-	valueGetter: (o: T | null) => any;
-	displayValueGetter: (o: T) => any;
-	displayWithFn?: (o: T | null) => string;
+interface IAutocompleteFilterParams<T> extends AutocompleteConfig<T> {
 	placeholder?: string;
 }
 
-export class AutocompleteFilterParams<T> implements IAutocompleteFilterParams<T> {
-	public loadOptions$: (params: {
-		takeCount: number;
-		skipCount: number;
-		nameIncludeSubstring?: string;
-	}) => Observable<OperationResultResponse<T[]>>;
-	public valueGetter: (o: T | null) => any;
-	public displayValueGetter: (o: T) => any;
-	public displayWithFn?: (o: T | null) => string;
+export class AutocompleteFilterParams<T> {
+	public options$: Observable<T[]>;
+	public valueGetter: (o?: T) => any;
+	public displayWithFn: (o?: T) => string;
+	public filterFn: (filterValue: string, options: T[]) => T[];
 	public placeholder?: string;
 
 	constructor(params: IAutocompleteFilterParams<T>) {
-		this.loadOptions$ = params.loadOptions$;
+		this.options$ = params.options$;
 		this.valueGetter = params.valueGetter;
-		this.displayValueGetter = params.displayValueGetter;
 		this.displayWithFn = params.displayWithFn;
+		this.filterFn = params.filterFn;
 		this.placeholder = params.placeholder;
 	}
 }

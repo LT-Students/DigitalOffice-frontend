@@ -8,6 +8,7 @@ import { ProjectsRoutes } from './models/projects-routes';
 import { CreateEditProjectComponent } from './create-edit-project/create-edit-project.component';
 import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
 import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
+import { DepartmentFilterResolver } from './resolvers/department-filter.resolver';
 
 const routes: Routes = [
 	{
@@ -15,6 +16,7 @@ const routes: Routes = [
 		component: ProjectsTableComponent,
 		resolve: {
 			projects: ProjectListResolver,
+			departments: DepartmentFilterResolver,
 		},
 	},
 	{ path: ProjectsRoutes.CreateProject, component: CreateEditProjectComponent },

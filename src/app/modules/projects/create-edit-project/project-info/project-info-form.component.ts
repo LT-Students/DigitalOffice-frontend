@@ -10,13 +10,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, NgControl, ValidationErrors } from '@angular/forms';
 import { DepartmentInfo as ProjectDepartmentInfo } from '@api/project-service/models/department-info';
-import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DepartmentService } from '@app/services/department/department.service';
 import { Subject } from 'rxjs';
 import { DoValidators } from '@app/validators/do-validators';
-import { map, takeUntil } from 'rxjs/operators';
-import { MAX_INT32 } from '@app/utils/utils';
+import { takeUntil } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
+import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 
 export interface InfoControlValue {
 	name: string;
@@ -45,25 +44,14 @@ export class ProjectInfoFormComponent implements OnInit, OnDestroy, ControlValue
 
 	private destroy$ = new Subject<void>();
 
-	public departmentAutocompleteConfig = {
-		departments$: this.departmentService
-			.findDepartments({ skipCount: 0, takeCount: MAX_INT32 })
-			.pipe(map((res) => res.body as DepartmentInfo[])),
-		valueGetter: (d?: DepartmentInfo) => d?.id || null,
-		displayWithFn: (d?: DepartmentInfo) => d?.shortName || '',
-		filterFn: (v: string, options: DepartmentInfo[]) => {
-			v = v.toLowerCase();
-			return options.filter(
-				(d: DepartmentInfo) => d.shortName.toLowerCase().includes(v) || d.name.toLowerCase().includes(v)
-			);
-		},
-	};
+	public departmentAutocompleteConfig = this.autocompleteConfigs.getDepartmentsConfig();
 
 	constructor(
 		private fb: FormBuilder,
 		private departmentService: DepartmentService,
 		@Optional() @Self() private ngControl: NgControl,
-		private cdr: ChangeDetectorRef
+		private cdr: ChangeDetectorRef,
+		private autocompleteConfigs: AutocompleteConfigsService
 	) {
 		if (ngControl) {
 			ngControl.valueAccessor = this;
