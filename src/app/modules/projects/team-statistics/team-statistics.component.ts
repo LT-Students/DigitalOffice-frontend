@@ -5,7 +5,6 @@ import { ProjectResponse } from '@api/project-service/models/project-response';
 import { TimeService } from '@app/services/time/time.service';
 import { StatInfo } from '@api/time-service/models/stat-info';
 import { SelectedProjectService } from '../project-id-route-container/selected-project.service';
-import { SimpleDataSource } from '../../table/table.component';
 import { TeamStatisticsService } from './team-statistics.service';
 
 @Component({
@@ -21,20 +20,18 @@ export class TeamStatisticsComponent implements OnInit {
 		map((projectResponse: ProjectResponse) => projectResponse.project.name)
 	);
 	public tableData = this.teamStatistics.getTableData();
-	public dataSource$ = new SimpleDataSource(
-		this.selectedProject.project$.pipe(
-			first(),
-			switchMap((proj: ProjectResponse) =>
-				this.timeService.findStat({
-					projectId: proj.project.id,
-					skipCount: 0,
-					takeCount: 20,
-					year: 2022,
-					month: 6,
-				})
-			),
-			map((res) => (res.body as StatInfo[])[0].usersStats)
-		)
+	public dataSource$ = this.selectedProject.project$.pipe(
+		first(),
+		switchMap((proj: ProjectResponse) =>
+			this.timeService.findStat({
+				projectId: proj.project.id,
+				skipCount: 0,
+				takeCount: 20,
+				year: 2022,
+				month: 6,
+			})
+		),
+		map((res) => (res.body as StatInfo[])[0].usersStats)
 	);
 
 	constructor(

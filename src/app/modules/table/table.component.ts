@@ -1,22 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { ColumnDef } from './models';
 import { TableOptions } from './models/table-options';
-
-export class SimpleDataSource<T> extends DataSource<T> {
-	constructor(private data$: Observable<T[]>) {
-		super();
-	}
-	public connect(collectionViewer: CollectionViewer): Observable<T[]> {
-		return this.data$;
-	}
-
-	public disconnect(collectionViewer: CollectionViewer): void {}
-}
 
 @Component({
 	selector: 'do-table',
