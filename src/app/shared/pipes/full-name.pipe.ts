@@ -10,9 +10,13 @@ interface UserLike {
 	name: 'fullName',
 })
 export class FullNamePipe implements PipeTransform {
-	transform(user: UserLike, middleName: boolean = false): string {
-		return [user.firstName.trim(), middleName ? user.middleName?.trim() : null, user.lastName.trim()]
-			.filter(Boolean)
-			.join(' ');
+	transform(user: UserLike, middleName = false, startWithLastName = false): string {
+		const names = [
+			startWithLastName && user.lastName,
+			user.firstName,
+			middleName ? user.middleName : null,
+			!startWithLastName && user.lastName,
+		];
+		return names.filter(Boolean).join(' ');
 	}
 }

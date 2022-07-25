@@ -10,12 +10,18 @@ import { FileApiService } from '@api/project-service/services/file-api.service';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { IFindProjects } from '@app/services/project/project.service';
+import { UserApiService } from '@api/project-service/services/user-api.service';
+import { UserInfo } from '@api/project-service/models/user-info';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ProjectService {
-	constructor(private projectService: ProjectApiService, private fileService: FileApiService) {}
+	constructor(
+		private projectService: ProjectApiService,
+		private fileService: FileApiService,
+		private projectUsersService: UserApiService
+	) {}
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
 		params = { ...params, includedepartment: true };
@@ -47,6 +53,17 @@ export class ProjectService {
 	public addFiles(projectId: string, files: FileInfo[]): Observable<any> {
 		return this.fileService
 			.createFile({ body: { projectId, files } })
+			.pipe(map((res: OperationResultResponse) => res.body));
+	}
+
+	public getProjectUsers(projectId: string): Observable<UserInfo[]> {
+		return this.projectUsersService
+			.findUsers({
+				projectId,
+				includeAvatars: true,
+				includePositions: true,
+				isActive: true,
+			})
 			.pipe(map((res: OperationResultResponse) => res.body));
 	}
 }

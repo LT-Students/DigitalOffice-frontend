@@ -9,6 +9,7 @@ import { CreateEditProjectComponent } from './create-edit-project/create-edit-pr
 import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
 import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
 import { DepartmentFilterResolver } from './resolvers/department-filter.resolver';
+import { ProjectUsersResolver } from './resolvers/project-users.resolver';
 
 const routes: Routes = [
 	{
@@ -25,6 +26,7 @@ const routes: Routes = [
 		component: ProjectIdRouteContainerComponent,
 		resolve: {
 			project: ProjectPageResolver,
+			users: ProjectUsersResolver,
 		},
 		children: [
 			{

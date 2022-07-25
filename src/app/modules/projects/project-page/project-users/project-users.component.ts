@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 import { ProjectUsersService } from './project-users.service';
 
 @Component({
@@ -15,9 +17,9 @@ export class ProjectUsersComponent implements OnInit {
 	public filterData = this.usersService.getFilterData();
 	public tableColumns = this.usersService.getTableColumns();
 
-	public dataSource = [{}, {}, {}];
+	public dataSource = this.route.data.pipe(map((data) => data.users));
 
-	constructor(private usersService: ProjectUsersService) {}
+	constructor(private usersService: ProjectUsersService, private route: ActivatedRoute) {}
 
 	ngOnInit(): void {}
 

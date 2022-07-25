@@ -1,5 +1,5 @@
-<do-profile-image [userInitials]="user"></do-profile-image>
+<do-profile-image [image]="user.avatar" [userInitials]="user"></do-profile-image>
 <div class="info">
-	<span>{{ user | fullName }}</span>
+	<span>{{ user | fullName: true:true }}</span>
 	<span class="text-secondary_default">{{ user.position }}</span>
 </div>

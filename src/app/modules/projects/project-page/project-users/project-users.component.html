@@ -1,4 +1,4 @@
-<div class="flex">
+<div class="flex header">
 	<do-dynamic-filter [filters]="filterData"></do-dynamic-filter>
 	<do-actions>
 		<button mat-flat-button color="primary" (click)="addUsers()">
@@ -6,6 +6,4 @@
 		</button>
 	</do-actions>
 </div>
-<div class="file-table">
-	<do-table [dataSource]="dataSource" rowHeight="64" [columns]="tableColumns"></do-table>
-</div>
+<do-table [dataSource]="dataSource" rowHeight="64" [columns]="tableColumns"></do-table>

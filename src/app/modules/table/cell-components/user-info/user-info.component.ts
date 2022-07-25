@@ -5,8 +5,9 @@ import { TableCell } from '../../models';
 interface UserInfo {
 	firstName: string;
 	lastName: string;
+	middleName?: string;
 	avatar?: ImageInfo;
-	position?: string;
+	position?: { name: string };
 }
 
 @Component({
@@ -15,7 +16,7 @@ interface UserInfo {
 	styleUrls: ['./user-info.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserInfoComponent implements OnInit, TableCell<any> {
+export class UserInfoComponent implements OnInit, TableCell<UserInfo> {
 	public set value(user: UserInfo) {
 		this.user = user;
 	}

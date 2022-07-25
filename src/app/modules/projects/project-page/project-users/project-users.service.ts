@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { Observable } from 'rxjs';
+import { UserInfo } from '@api/project-service/models/user-info';
 import { ProjectService } from '../../project.service';
 import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
@@ -13,10 +14,16 @@ export class ProjectUsersService {
 	public getFilterData(): FilterDef[] {
 		return [
 			{
+				key: 'position',
+				type: 'input',
+				width: 176,
+				params: new InputFilterParams({ placeholder: 'Должность', icon: Icons.ArrowDownV1 }),
+			},
+			{
 				key: 'nameincludesubstring',
 				type: 'input',
-				width: 267,
-				params: new InputFilterParams({ placeholder: 'Поиск документа', icon: Icons.Search }),
+				width: 324,
+				params: new InputFilterParams({ placeholder: 'поиск', icon: Icons.Search }),
 			},
 		];
 	}
@@ -24,26 +31,31 @@ export class ProjectUsersService {
 	public getTableColumns(): ColumnDef[] {
 		return [
 			{
-				type: 'checkboxCell',
-				field: 'checkbox',
+				type: 'userInfoCell',
+				field: 'userInfo',
+				headerName: 'Фио',
+				sortEnabled: true,
+				valueGetter: (user: UserInfo) => ({ ...user, avatar: user.avatarImage }),
 				columnStyle: {
-					'flex-grow': 0,
+					'flex-grow': 2,
 				},
 			},
 			{
-				type: 'fileInfoCell',
-				field: 'fileInfo',
-				valueGetter: () => ({ name: 'file', extension: 'png' }),
+				type: 'textCell',
+				field: 'role',
+				headerName: 'Статус',
+				sortEnabled: true,
+				valueGetter: () => 'Участник проекта',
 				columnStyle: {
 					'flex-grow': 2,
 				},
 			},
 			{
 				type: 'iconButtonCell',
-				field: 'download',
+				field: 'delete-button',
 				valueGetter: () => {},
 				params: {
-					icon: () => Icons.Download,
+					icon: () => Icons.Delete,
 					onClickFn: () => {},
 				},
 				columnStyle: {
@@ -53,7 +65,7 @@ export class ProjectUsersService {
 		];
 	}
 
-	public addFiles(projectId: string, files: FileInfo[]): Observable<any> {
+	public addUsers(projectId: string, files: FileInfo[]): Observable<any> {
 		return this.projectService.addFiles(projectId, files);
 	}
 }
