@@ -12,6 +12,7 @@ import { ProjectInfo } from '@api/project-service/models/project-info';
 import { IFindProjects } from '@app/services/project/project.service';
 import { UserApiService } from '@api/project-service/services/user-api.service';
 import { UserInfo } from '@api/project-service/models/user-info';
+import { MAX_INT32 } from '@app/utils/utils';
 
 @Injectable({
 	providedIn: 'root',
@@ -63,6 +64,8 @@ export class ProjectService {
 				includeAvatars: true,
 				includePositions: true,
 				isActive: true,
+				skipCount: 0,
+				takeCount: MAX_INT32,
 			})
 			.pipe(map((res: OperationResultResponse) => res.body));
 	}

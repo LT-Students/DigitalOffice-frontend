@@ -92,6 +92,16 @@ export class UserApiService extends BaseService {
 		projectId: string;
 
 		/**
+		 * Number of entries to skip
+		 */
+		skipCount: number;
+
+		/**
+		 * Number of projects to take.
+		 */
+		takeCount: number;
+
+		/**
 		 * true - only active users, false - only not-active, null(default) - all users.
 		 */
 		isActive?: boolean;
@@ -106,6 +116,8 @@ export class UserApiService extends BaseService {
 		const rb = new RequestBuilder(this.rootUrl, UserApiService.FindUsersPath, 'get');
 		if (params) {
 			rb.query('projectId', params.projectId, {});
+			rb.query('skipCount', params.skipCount, {});
+			rb.query('takeCount', params.takeCount, {});
 			rb.query('isActive', params.isActive, {});
 			rb.query('ascendingSort', params.ascendingSort, {});
 			rb.query('includeAvatars', params.includeAvatars, {});
@@ -138,6 +150,16 @@ export class UserApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
+
+		/**
+		 * Number of entries to skip
+		 */
+		skipCount: number;
+
+		/**
+		 * Number of projects to take.
+		 */
+		takeCount: number;
 
 		/**
 		 * true - only active users, false - only not-active, null(default) - all users.
