@@ -16,14 +16,14 @@ export class EditProjectService implements CreateEditProject {
 	constructor(private projectService: ProjectService, private selectedProject: SelectedProjectService) {}
 
 	public submit$(editRequest: EditRequest<ProjectPath>): Observable<string> {
-		return this.selectedProject.project$.pipe(
+		return this.selectedProject.info$.pipe(
 			first(),
 			map((projectRes: ProjectResponse) => projectRes.project),
 			switchMap((project: ProjectInfo) => {
 				return editRequest.length
 					? this.projectService.editProject(project.id, editRequest).pipe(
 							switchMap(() => this.projectService.getProject(project.id)),
-							tap((project: ProjectResponse) => this.selectedProject.setProject(project)),
+							tap((project: ProjectResponse) => this.selectedProject.setProject({ info: project })),
 							mapTo(project.id)
 					  )
 					: of(project.id);

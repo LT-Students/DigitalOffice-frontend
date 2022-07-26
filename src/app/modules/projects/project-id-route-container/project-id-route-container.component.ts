@@ -1,7 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { ProjectResponse } from '@api/project-service/models/project-response';
 import { Subscription } from 'rxjs';
 import { SelectedProjectService } from './selected-project.service';
 
@@ -17,9 +15,12 @@ export class ProjectIdRouteContainerComponent implements OnInit, OnDestroy {
 	constructor(private currentProject: SelectedProjectService, private route: ActivatedRoute) {}
 
 	ngOnInit(): void {
-		this.subscription = this.route.data
-			.pipe(map((data: Data) => data.project as ProjectResponse))
-			.subscribe({ next: this.currentProject.setProject.bind(this.currentProject) });
+		this.subscription = this.route.data.subscribe({
+			next: (data: Data) => {
+				const { project, users } = data;
+				this.currentProject.setProject({ info: project, users });
+			},
+		});
 	}
 
 	public ngOnDestroy(): void {

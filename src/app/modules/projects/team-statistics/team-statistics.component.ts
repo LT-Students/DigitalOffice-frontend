@@ -16,11 +16,11 @@ import { TeamStatisticsService } from './team-statistics.service';
 })
 export class TeamStatisticsComponent implements OnInit {
 	public readonly Icons = Icons;
-	public projectName$ = this.selectedProject.project$.pipe(
+	public projectName$ = this.selectedProject.info$.pipe(
 		map((projectResponse: ProjectResponse) => projectResponse.project.name)
 	);
 	public tableData = this.teamStatistics.getTableData();
-	public dataSource$ = this.selectedProject.project$.pipe(
+	public dataSource$ = this.selectedProject.info$.pipe(
 		first(),
 		switchMap((proj: ProjectResponse) =>
 			this.timeService.findStat({
