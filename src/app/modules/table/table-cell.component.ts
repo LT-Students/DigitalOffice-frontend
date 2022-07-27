@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, Input, OnDestroy } from '@angular/core';
 import { DynamicComponentHostDirective } from '@shared/directives/dynamic-component-host.directive';
-import { CellTypes } from './models/table-cell';
+import { CellTypes } from './models';
 import { CellFactoryService } from './cell-factory.service';
 
 @Component({
@@ -20,6 +20,7 @@ export class TableCellComponent implements OnInit, OnDestroy {
 
 	@Input() cellValue: any;
 	@Input() cellParams: any;
+	@Input() row: any;
 
 	constructor(private cellFactory: CellFactoryService) {}
 

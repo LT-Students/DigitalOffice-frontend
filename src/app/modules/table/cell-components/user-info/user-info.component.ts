@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ImageInfo } from '@app/models/image.model';
+import { Icons } from '@shared/modules/icons/icons';
 import { TableCell } from '../../models';
 
 interface UserInfo {
@@ -8,6 +9,11 @@ interface UserInfo {
 	middleName?: string;
 	avatar?: ImageInfo;
 	position?: { name: string };
+}
+
+export interface UserInfoParams {
+	statusIconGetter?: (o: any) => Icons | null;
+	iconColor?: string;
 }
 
 @Component({
@@ -21,6 +27,8 @@ export class UserInfoComponent implements OnInit, TableCell<UserInfo> {
 		this.user = user;
 	}
 	public user!: UserInfo;
+
+	public params?: UserInfoParams;
 
 	constructor() {}
 

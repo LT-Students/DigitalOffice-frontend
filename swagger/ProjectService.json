@@ -630,6 +630,24 @@
           "$ref": "#/components/parameters/projectId"
         },
         {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of projects to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
           "name": "isActive",
           "in": "query",
           "schema": {

@@ -27,6 +27,7 @@
 			[style.max-width.px]="column.maxWidth"
 			><do-table-cell
 				[componentType]="column.type"
+				[row]="row"
 				[cellValue]="column.valueGetter ? (row | execute: column.valueGetter) : row[column.field]"
 				[cellParams]="column.params"
 			></do-table-cell

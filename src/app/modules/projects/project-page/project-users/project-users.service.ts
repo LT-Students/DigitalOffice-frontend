@@ -3,6 +3,7 @@ import { Icons } from '@shared/modules/icons/icons';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { Observable } from 'rxjs';
 import { UserInfo } from '@api/project-service/models/user-info';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { ProjectService } from '../../project.service';
 import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
@@ -39,15 +40,24 @@ export class ProjectUsersService {
 				columnStyle: {
 					'flex-grow': 2,
 				},
+				params: {
+					statusIconGetter: (user: UserInfo) =>
+						user.role !== ProjectUserRoleType.Manager ? Icons.StarBorder : null,
+					iconColor: '#FFD89E',
+				},
 			},
 			{
-				type: 'textCell',
+				type: 'selectCell',
 				field: 'role',
-				headerName: 'Статус',
-				sortEnabled: true,
-				valueGetter: () => 'Участник проекта',
-				columnStyle: {
-					'flex-grow': 2,
+				headerName: 'Роль',
+				valueGetter: (user: UserInfo) => user.role,
+				params: {
+					options: [ProjectUserRoleType.Employee, ProjectUserRoleType.Manager],
+					displayValueGetter: (role: ProjectUserRoleType) =>
+						role === ProjectUserRoleType.Manager ? 'Менеджер проект' : 'Участник проекта',
+					iconGetter: (role: ProjectUserRoleType) =>
+						role === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
+					iconColor: '#FFD89E',
 				},
 			},
 			{
@@ -63,9 +73,5 @@ export class ProjectUsersService {
 				},
 			},
 		];
-	}
-
-	public addUsers(projectId: string, files: FileInfo[]): Observable<any> {
-		return this.projectService.addFiles(projectId, files);
 	}
 }

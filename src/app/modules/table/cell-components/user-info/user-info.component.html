@@ -1,5 +1,15 @@
 <do-profile-image [image]="user.avatar" [userInitials]="user"></do-profile-image>
 <div class="info">
-	<span>{{ user | fullName: true:true }}</span>
-	<span class="text-secondary_default">{{ user.position }}</span>
+	<span class="flex flex_ai_center">
+		<span class="no-overflow">{{ user | fullName: true:true }}</span>
+		<mat-icon
+			class="icon"
+			*ngIf="params?.statusIconGetter as iconGetter"
+			[svgIcon]="user | execute: iconGetter"
+			[style.color]="params?.iconColor"
+			[style.height.px]="16"
+			[style.width.px]="16"
+		></mat-icon>
+	</span>
+	<span class="no-overflow text-secondary_default">{{ user.position?.name }}</span>
 </div>

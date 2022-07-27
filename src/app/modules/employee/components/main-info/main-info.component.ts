@@ -42,7 +42,7 @@ export class MainInfoComponent implements OnInit {
 
 	public onAvatarUploadDialog(): void {
 		this.dialog.open(UploadImageComponent, {
-			width: ModalWidth.XL,
+			width: ModalWidth.M,
 			height: 'auto',
 			autoFocus: false,
 			panelClass: 'upload-image-dialog',

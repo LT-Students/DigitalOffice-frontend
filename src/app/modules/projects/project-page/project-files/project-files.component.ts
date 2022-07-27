@@ -33,26 +33,26 @@ export class ProjectFilesComponent implements OnInit {
 	ngOnInit(): void {}
 
 	public addFiles(): void {
-		let input: HTMLInputElement | null = document.createElement('input');
-		input.type = 'file';
-		input.multiple = true;
-
-		fromEvent(input, 'change')
-			.pipe(
-				first(),
-				finalize(() => (input = null)),
-				switchMap((event: Event) => {
-					const files = Array.from((event.target as HTMLInputElement).files || []);
-
-					return forkJoin(files.map((f: File) => of(f).pipe(switchMap((file) => this.readFile(file)))));
-				}),
-				withLatestFrom(this.selectedProject.project$),
-				switchMap(([files, project]: [FileInfo[], ProjectResponse]) =>
-					this.filesService.addFiles(project.project.id, files)
-				)
-			)
-			.subscribe();
-		input.click();
+		// let input: HTMLInputElement | null = document.createElement('input');
+		// input.type = 'file';
+		// input.multiple = true;
+		//
+		// fromEvent(input, 'change')
+		// 	.pipe(
+		// 		first(),
+		// 		finalize(() => (input = null)),
+		// 		switchMap((event: Event) => {
+		// 			const files = Array.from((event.target as HTMLInputElement).files || []);
+		//
+		// 			return forkJoin(files.map((f: File) => of(f).pipe(switchMap((file) => this.readFile(file)))));
+		// 		}),
+		// 		withLatestFrom(this.selectedProject.project$),
+		// 		switchMap(([files, project]: [FileInfo[], ProjectResponse]) =>
+		// 			this.filesService.addFiles(project.project.id, files)
+		// 		)
+		// 	)
+		// 	.subscribe();
+		// input.click();
 	}
 	private readFile(file: File): Observable<FileInfo> {
 		return new Observable<FileInfo>((subscriber) => {

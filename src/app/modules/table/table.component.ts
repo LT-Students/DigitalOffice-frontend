@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -27,6 +27,8 @@ export class TableComponent<T> implements OnInit {
 	@Output() sortChange = new EventEmitter<Sort>();
 
 	public expandedElement?: T;
+	public selection = new SelectionModel<T>(true, []);
+	@Input() selectionCompareWith?: (o1: T, o2: T) => boolean;
 
 	@Input()
 	set tableOptions(options: TableOptions) {

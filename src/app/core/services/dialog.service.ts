@@ -29,10 +29,9 @@ export enum AdminDashboardModalType {
 }
 
 export const enum ModalWidth {
-	XL = '720px',
-	L = '672px',
-	M = '550px',
-	S = '440px',
+	L = '1240px',
+	M = '848px',
+	S = '552px',
 }
 
 @Injectable({
