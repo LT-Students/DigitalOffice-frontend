@@ -13,7 +13,7 @@
 			class="text-secondary_default"
 			[mat-sort-header]="column.field"
 			[disabled]="!column.sortEnabled"
-			[ngStyle]="column.columnStyle || null"
+			[ngStyle]="column.headerStyle || column.columnStyle || null"
 			[style.flex]="'0 0 ' + column.width + 'px'"
 			[style.min-width.px]="column.minWidth"
 			[style.max-width.px]="column.maxWidth"

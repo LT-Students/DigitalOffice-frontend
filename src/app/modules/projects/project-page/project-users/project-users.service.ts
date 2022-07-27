@@ -6,8 +6,9 @@ import { ProjectResponse } from '@api/project-service/models/project-response';
 import { first, map, switchMap, tap } from 'rxjs/operators';
 import { DialogService } from '@app/services/dialog.service';
 import { Observable } from 'rxjs';
+import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { ProjectService } from '../../project.service';
-import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
+import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
 import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
 
@@ -16,16 +17,20 @@ export class ProjectUsersService {
 	constructor(
 		private selectedProject: SelectedProjectService,
 		private projectService: ProjectService,
-		private dialog: DialogService
+		private dialog: DialogService,
+		private autocompleteConfigs: AutocompleteConfigsService
 	) {}
 
 	public getFilterData(): FilterDef[] {
 		return [
 			{
 				key: 'position',
-				type: 'input',
+				type: 'autocomplete',
 				width: 176,
-				params: new InputFilterParams({ placeholder: 'Должность', icon: Icons.ArrowDownV1 }),
+				params: new AutocompleteFilterParams({
+					...this.autocompleteConfigs.getPositionsConfig(),
+					placeholder: 'Должность',
+				}),
 			},
 			{
 				key: 'nameincludesubstring',
@@ -45,6 +50,7 @@ export class ProjectUsersService {
 				sortEnabled: true,
 				valueGetter: (user: UserInfo) => ({ ...user, avatar: user.avatarImage }),
 				columnStyle: { overflow: 'hidden' },
+				headerStyle: { 'margin-left': '60px' },
 				params: {
 					statusIconGetter: (user: UserInfo) =>
 						user.role !== ProjectUserRoleType.Manager ? Icons.StarBorder : null,
@@ -56,7 +62,8 @@ export class ProjectUsersService {
 				field: 'role',
 				headerName: 'Роль',
 				valueGetter: (user: UserInfo) => user.role,
-				columnStyle: { flex: '0 0 auto' },
+				headerStyle: { 'padding-left': '20px', flex: '0 0 15%' },
+				columnStyle: { flex: '0 0 15%' },
 				params: {
 					options: [ProjectUserRoleType.Employee, ProjectUserRoleType.Manager],
 					displayValueGetter: (role: ProjectUserRoleType) =>
@@ -73,7 +80,6 @@ export class ProjectUsersService {
 				params: {
 					icon: () => Icons.Delete,
 					onClickFn: (user: UserInfo) => {
-						console.log('lol');
 						this.selectedProject.info$
 							.pipe(
 								first(),
@@ -91,9 +97,8 @@ export class ProjectUsersService {
 							});
 					},
 				},
-				columnStyle: {
-					'flex-grow': 0,
-				},
+				headerStyle: { flex: '0 0 48px' },
+				columnStyle: { flex: '0' },
 			},
 		];
 	}
