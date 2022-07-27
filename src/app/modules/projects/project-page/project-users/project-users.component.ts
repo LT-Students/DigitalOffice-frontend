@@ -1,8 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { first } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
+import { UserInfo } from '@api/project-service/models/user-info';
 import { AddEmployeeDialogData, AddProjectUsersComponent } from '../../add-project-users/add-project-users.component';
 import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
 import { ProjectUsersService } from './project-users.service';
@@ -30,15 +31,26 @@ export class ProjectUsersComponent implements OnInit {
 	ngOnInit(): void {}
 
 	public addUsers(): void {
-		this.selectedProject.info$.pipe(first()).subscribe({
-			next: (p: ProjectResponse) => {
-				const data: AddEmployeeDialogData = {
-					entityId: p.project.id,
-					entityName: p.project.name,
-					idsToHide: p.usersIds || [],
-				};
-				this.dialog.open(AddProjectUsersComponent, { width: ModalWidth.M, data });
-			},
-		});
+		this.selectedProject.info$
+			.pipe(
+				first(),
+				switchMap((p: ProjectResponse) => {
+					const data: AddEmployeeDialogData = {
+						entityId: p.project.id,
+						entityName: p.project.name,
+						idsToHide: p.usersIds || [],
+					};
+					return this.dialog
+						.open<UserInfo[]>(AddProjectUsersComponent, { width: ModalWidth.M, data })
+						.afterClosed();
+				})
+			)
+			.subscribe({
+				next: (users?: UserInfo[]) => {
+					if (users) {
+						this.selectedProject.setProject({ users });
+					}
+				},
+			});
 	}
 }

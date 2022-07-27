@@ -5,9 +5,10 @@ import { FormControl } from '@angular/forms';
 import { debounce, finalize, map, startWith, takeUntil } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
 import { LoadingState } from '@shared/directives/button-loading.directive';
-import { CollectionViewer, DataSource, SelectionModel } from '@angular/cdk/collections';
+import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import { SelectionModel } from '@app/utils/selection-model';
 import { TableComponent } from '../../table/table.component';
-import { ColumnDef } from '../../table/models';
+import { TableOptions } from '../../table/models/table-options';
 import { AddProjectUsersService, ProjectUserInfo } from './add-project-users.service';
 
 export interface AddEmployeeDialogData {
@@ -28,7 +29,7 @@ export class AddProjectUsersComponent extends LoadingState implements OnInit, On
 
 	@ViewChild(TableComponent, { static: true }) table!: TableComponent<any>;
 	public dataSource!: AddUsersDataSource;
-	public tableData: ColumnDef[] = [];
+	public tableData!: TableOptions;
 
 	public searchControl = new FormControl(null);
 	public toggleControl = new FormControl(false);
@@ -75,11 +76,11 @@ export class AddProjectUsersComponent extends LoadingState implements OnInit, On
 		this.addUsersService
 			.addUsers(this.data.entityId, users)
 			.pipe(finalize(() => this.setLoading(false)))
-			.subscribe({ next: () => this.close() });
+			.subscribe({ next: (users?: ProjectUserInfo[]) => this.close(users) });
 	}
 
-	public close(): void {
-		this.dialogRef.close();
+	public close(users?: ProjectUserInfo[]): void {
+		this.dialogRef.close(users);
 	}
 }
 
@@ -104,8 +105,12 @@ export class AddUsersDataSource implements DataSource<ProjectUserInfo> {
 		users$.subscribe({ next: (users) => this.data.next(users) });
 	}
 
-	public refresh(): void {
-		const users = this.mapUsersToSelected(this.data.value);
+	public updateRow(id: string, newValue: ProjectUserInfo): void {
+		const users = this.data.value.map((u: ProjectUserInfo) => (u.id === id ? newValue : u));
+		const index = this.selection.selected.findIndex((u: ProjectUserInfo) => u.id === id);
+		if (index != null) {
+			this.selection.selected[index] = newValue;
+		}
 		this.data.next(users);
 	}
 

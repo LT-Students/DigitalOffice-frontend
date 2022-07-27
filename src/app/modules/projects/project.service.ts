@@ -13,6 +13,7 @@ import { IFindProjects } from '@app/services/project/project.service';
 import { UserApiService } from '@api/project-service/services/user-api.service';
 import { UserInfo } from '@api/project-service/models/user-info';
 import { MAX_INT32 } from '@app/utils/utils';
+import { UserRequest } from '@api/project-service/models/user-request';
 
 @Injectable({
 	providedIn: 'root',
@@ -68,5 +69,9 @@ export class ProjectService {
 				takeCount: MAX_INT32,
 			})
 			.pipe(map((res: OperationResultResponse) => res.body));
+	}
+
+	public addUsers(projectId: string, users: UserRequest[]): Observable<any> {
+		return this.projectUsersService.createProjectUsers({ body: { projectId, users } });
 	}
 }

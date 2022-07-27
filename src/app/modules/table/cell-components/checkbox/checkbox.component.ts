@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { SelectionModel } from '@angular/cdk/collections';
+import { SelectionModel } from '@app/utils/selection-model';
 import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
 import { TableComponent } from '../../table.component';

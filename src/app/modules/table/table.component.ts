@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { DataSource, SelectionModel } from '@angular/cdk/collections';
+import { DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
+import { SelectionModel } from '@app/utils/selection-model';
 import { ColumnDef } from './models';
 import { TableOptions } from './models/table-options';
 
@@ -27,7 +28,7 @@ export class TableComponent<T> implements OnInit {
 	@Output() sortChange = new EventEmitter<Sort>();
 
 	public expandedElement?: T;
-	public selection = new SelectionModel<T>(true, []);
+	public selection = new SelectionModel<T>(true, [], true);
 	@Input() selectionCompareWith?: (o1: T, o2: T) => boolean;
 
 	@Input()
@@ -38,6 +39,7 @@ export class TableComponent<T> implements OnInit {
 		this._rowStyle = options.rowStyle || this._rowStyle;
 		this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
 		this.expandedRowOptions = options.expandedRowOptions || this.expandedRowOptions;
+		this.selectionCompareWith = options.selectionCompareWith || this.selectionCompareWith;
 	}
 
 	@Input()
@@ -80,5 +82,7 @@ export class TableComponent<T> implements OnInit {
 
 	constructor() {}
 
-	public ngOnInit(): void {}
+	public ngOnInit(): void {
+		this.selection.compareWith = this.selectionCompareWith;
+	}
 }

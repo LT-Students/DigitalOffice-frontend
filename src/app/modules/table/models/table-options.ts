@@ -10,4 +10,5 @@ export interface TableOptions {
 	rowStyle?: { [key: string]: any };
 	isRowExpandable?: (index: number, rowData: any) => boolean;
 	expandedRowOptions?: TableOptions;
+	selectionCompareWith?: (o1: any, o2: any) => boolean;
 }
