@@ -10,5 +10,6 @@ export interface ColumnDef {
 	minWidth?: number;
 	maxWidth?: number;
 	columnStyle?: { [key: string]: any };
+	headerStyle?: { [key: string]: any };
 	sortEnabled?: boolean;
 }
