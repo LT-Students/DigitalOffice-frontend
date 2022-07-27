@@ -74,4 +74,8 @@ export class ProjectService {
 	public addUsers(projectId: string, users: UserRequest[]): Observable<any> {
 		return this.projectUsersService.createProjectUsers({ body: { projectId, users } });
 	}
+
+	public removeUsers(projectId: string, userIds: string[]): Observable<any> {
+		return this.projectUsersService.removeProjectUsers({ projectId, body: userIds });
+	}
 }

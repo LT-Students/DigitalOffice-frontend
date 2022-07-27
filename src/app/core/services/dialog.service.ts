@@ -61,7 +61,7 @@ export class DialogService {
 	}
 
 	public confirm(confirmData: ConfirmDialogData): MatDialogRef<ConfirmDialogComponent> {
-		return this.matDialog.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.M });
+		return this.matDialog.open(ConfirmDialogComponent, { data: confirmData, width: ModalWidth.S });
 	}
 
 	public info(infoData: InfoDialogData): MatDialogRef<InfoDialogComponent> {
