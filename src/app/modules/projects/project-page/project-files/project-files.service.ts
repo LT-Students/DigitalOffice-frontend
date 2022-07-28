@@ -31,7 +31,7 @@ export class ProjectFilesService {
 				},
 			},
 			{
-				type: 'fileInfoCell',
+				type: 'textCell',
 				field: 'fileInfo',
 				valueGetter: () => ({ name: 'file', extension: 'png' }),
 				columnStyle: {

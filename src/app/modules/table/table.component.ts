@@ -1,4 +1,13 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	ViewChild,
+	ViewEncapsulation,
+} from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
@@ -37,6 +46,7 @@ export class TableComponent<T> implements OnInit {
 		this.columns = options.columns || this._columns;
 		this._rowHeight = options.rowHeight || this._rowHeight;
 		this._rowStyle = options.rowStyle || this._rowStyle;
+		this._rowClass = options.rowClass || this._rowClass;
 		this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
 		this.expandedRowOptions = options.expandedRowOptions || this.expandedRowOptions;
 		this.selectionCompareWith = options.selectionCompareWith || this.selectionCompareWith;
@@ -59,6 +69,15 @@ export class TableComponent<T> implements OnInit {
 		return this._rowStyle;
 	}
 	private _rowStyle = {};
+
+	@Input()
+	set rowClass(className: string) {
+		this._rowClass = className;
+	}
+	get rowClass(): string {
+		return this._rowClass;
+	}
+	private _rowClass = '';
 
 	@Input() dataSource!: T[] | DataSource<T> | Observable<readonly T[]>;
 	@Input()

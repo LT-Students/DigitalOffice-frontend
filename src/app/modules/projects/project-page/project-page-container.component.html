@@ -1,6 +1,6 @@
 <ng-container *ngIf="projectData$ | async as data">
 	<do-project-info [project]="data.info.project"></do-project-info>
-	<mat-tab-group>
+	<mat-tab-group [selectedIndex]="1">
 		<mat-tab label="Команда">
 			<do-project-users class="tab-content"></do-project-users>
 		</mat-tab>

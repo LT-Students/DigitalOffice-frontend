@@ -8,6 +8,7 @@ export interface TableOptions {
 	columns?: ColumnDef[];
 	rowHeight?: number;
 	rowStyle?: { [key: string]: any };
+	rowClass?: string;
 	isRowExpandable?: (index: number, rowData: any) => boolean;
 	expandedRowOptions?: TableOptions;
 	selectionCompareWith?: (o1: any, o2: any) => boolean;

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TableModule } from '../table/table.module';
 import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { ProjectsRoutingModule } from './projects-routing.module';
@@ -18,6 +19,9 @@ import { ProjectIdRouteContainerComponent } from './project-id-route-container/p
 import { ProjectFilesComponent } from './project-page/project-files/project-files.component';
 import { ProjectUsersComponent } from './project-page/project-users/project-users.component';
 import { AddProjectUsersComponent } from './add-project-users/add-project-users.component';
+import { AddFilesComponent } from './add-files/add-files.component';
+import { UploadProgressComponent } from './add-files/upload-progress/upload-progress.component';
+import { UploadItemComponent } from './add-files/upload-progress/upload-item.component';
 
 @NgModule({
 	declarations: [
@@ -36,7 +40,10 @@ import { AddProjectUsersComponent } from './add-project-users/add-project-users.
 		ProjectFilesComponent,
 		ProjectUsersComponent,
 		AddProjectUsersComponent,
+		AddFilesComponent,
+		UploadProgressComponent,
+		UploadItemComponent,
 	],
-	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule],
+	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule, MatProgressBarModule],
 })
 export class ProjectsModule {}

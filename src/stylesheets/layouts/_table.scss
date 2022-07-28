@@ -97,3 +97,16 @@
 		background-color: mat.get-color-from-palette($do-grey, 100);
 	}
 }
+
+do-table {
+	cdk-row.file-row,
+	cdk-header-row.file-row {
+		padding: 0;
+
+		box-shadow: none;
+
+		&:hover {
+			box-shadow: none;
+		}
+	}
+}

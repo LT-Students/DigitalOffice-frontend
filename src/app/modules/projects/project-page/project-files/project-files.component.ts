@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { forkJoin, fromEvent, Observable, of } from 'rxjs';
-import { finalize, first, switchMap, withLatestFrom } from 'rxjs/operators';
-import { FileInfo } from '@api/project-service/models/file-info';
-import { AccessType } from '@api/project-service/models/access-type';
+import { map } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
+import { AddFilesComponent } from '../../add-files/add-files.component';
 import { ContextMenuService } from './context-menu.service';
 import { ProjectFilesService } from './project-files.service';
 
@@ -22,55 +21,18 @@ export class ProjectFilesComponent implements OnInit {
 	public filterData = this.filesService.getFilterData();
 	public tableColumns = this.filesService.getTableColumns();
 	public contextMenuItems = this.contextMenu.getItems();
-	public dataSource = [{}, {}, {}];
+	public dataSource = this.selectedProject.info$.pipe(map((p: ProjectResponse) => p.files || []));
 
 	constructor(
 		private filesService: ProjectFilesService,
 		private selectedProject: SelectedProjectService,
-		private contextMenu: ContextMenuService
+		private contextMenu: ContextMenuService,
+		private dialog: DialogService
 	) {}
 
 	ngOnInit(): void {}
 
 	public addFiles(): void {
-		// let input: HTMLInputElement | null = document.createElement('input');
-		// input.type = 'file';
-		// input.multiple = true;
-		//
-		// fromEvent(input, 'change')
-		// 	.pipe(
-		// 		first(),
-		// 		finalize(() => (input = null)),
-		// 		switchMap((event: Event) => {
-		// 			const files = Array.from((event.target as HTMLInputElement).files || []);
-		//
-		// 			return forkJoin(files.map((f: File) => of(f).pipe(switchMap((file) => this.readFile(file)))));
-		// 		}),
-		// 		withLatestFrom(this.selectedProject.project$),
-		// 		switchMap(([files, project]: [FileInfo[], ProjectResponse]) =>
-		// 			this.filesService.addFiles(project.project.id, files)
-		// 		)
-		// 	)
-		// 	.subscribe();
-		// input.click();
-	}
-	private readFile(file: File): Observable<FileInfo> {
-		return new Observable<FileInfo>((subscriber) => {
-			const fileReader = new FileReader();
-
-			fileReader.onloadend = () => {
-				const newFile: FileInfo = {
-					access: AccessType.Public,
-					name: file.name,
-					content: fileReader.result as string,
-					extension: file.type,
-				};
-				subscriber.next(newFile);
-				subscriber.complete();
-			};
-			fileReader.onerror = () => subscriber.error();
-
-			fileReader.readAsDataURL(file);
-		});
+		this.dialog.open(AddFilesComponent, { width: ModalWidth.M, autoFocus: false });
 	}
 }

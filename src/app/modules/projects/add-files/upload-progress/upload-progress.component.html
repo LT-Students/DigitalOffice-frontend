@@ -1,0 +1,11 @@
+<h3 class="text-align_center" mat-dialog-title>Загрузка документов</h3>
+<mat-dialog-content>
+	<do-upload-item class="item" *ngFor="let file of files" [file]="file"></do-upload-item>
+</mat-dialog-content>
+<mat-dialog-actions class="actions">
+	<div class="hint">
+		<mat-icon class="icon" [svgIcon]="Icons.InfoOutline"></mat-icon>
+		<span class="text-secondary_hover">Не обновляйте страничку, пока идет загрузка файла</span>
+	</div>
+	<button class="cancel" mat-flat-button color="warn">Отменить</button>
+</mat-dialog-actions>

@@ -48,10 +48,11 @@
 		</cdk-cell>
 	</ng-container>
 
-	<cdk-header-row *cdkHeaderRowDef="displayColumns"></cdk-header-row>
+	<cdk-header-row *cdkHeaderRowDef="displayColumns" [ngClass]="rowClass"></cdk-header-row>
 	<cdk-row
 		*cdkRowDef="let row; columns: displayColumns"
 		(click)="rowClick.emit(row); expandedElement = expandedElement === row ? null : row"
+		[ngClass]="rowClass"
 		[ngStyle]="rowStyle"
 		[style.height.px]="rowHeight || 'auto'"
 	>

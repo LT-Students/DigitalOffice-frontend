@@ -10,9 +10,9 @@ import { UserInfoComponent } from './cell-components/user-info/user-info.compone
 import { IconButtonComponent } from './cell-components/icon-button/icon-button.component';
 import { LeaveTimesComponent } from './cell-components/leave-times/leave-times.component';
 import { LeaveItemComponent } from './cell-components/leave-times/leave-item.component';
-import { FileInfoComponent } from './cell-components/file-info/file-info.component';
-import { FileIconPipe } from './cell-components/file-info/file-icon.pipe';
 import { SelectComponent } from './cell-components/select/select.component';
+import { IconComponent } from './cell-components/icon/icon.component';
+import { EditableTextFieldComponent } from './cell-components/editable-text-field/editable-text-field.component';
 
 @NgModule({
 	declarations: [
@@ -25,9 +25,9 @@ import { SelectComponent } from './cell-components/select/select.component';
 		IconButtonComponent,
 		LeaveTimesComponent,
 		LeaveItemComponent,
-		FileInfoComponent,
-		FileIconPipe,
 		SelectComponent,
+		IconComponent,
+		EditableTextFieldComponent,
 	],
 	imports: [SharedModule, CdkTableModule],
 	exports: [TableComponent],
