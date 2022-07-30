@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { map } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
@@ -33,6 +33,14 @@ export class ProjectFilesComponent implements OnInit {
 	ngOnInit(): void {}
 
 	public addFiles(): void {
-		this.dialog.open(AddFilesComponent, { width: ModalWidth.M, autoFocus: false });
+		this.selectedProject.info$
+			.pipe(
+				first(),
+				map((p: ProjectResponse) => p.project.id)
+			)
+			.subscribe({
+				next: (projectId: string) =>
+					this.dialog.open(AddFilesComponent, { width: ModalWidth.M, autoFocus: false, data: projectId }),
+			});
 	}
 }

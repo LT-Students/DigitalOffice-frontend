@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { FileApiService } from '@api/file-service/services/file-api.service';
-import { BehaviorSubject } from 'rxjs';
-import { HttpEventType } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { FileService } from '@app/services/file/file.service';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { UploadFile } from '../add-files.service';
 
 @Component({
@@ -9,12 +9,15 @@ import { UploadFile } from '../add-files.service';
 	template: `
 		<div class="upload-item">
 			<div class="file text-secondary_active">
-				<mat-icon [svgIcon]="'folder'"></mat-icon>
+				<mat-icon [svgIcon]="file.file | fileIcon"></mat-icon>
 				<span class="name">{{ file.name }}</span>
 			</div>
 			<mat-progress-bar class="progress-bar" color="primary" [value]="uploadProgress | async"></mat-progress-bar>
 			<div class="progress text-secondary_active">
-				<span>{{ file.file.size | formatBytes }}</span>
+				<span
+					>{{ (((uploadProgress | async) || 0) * file.file.size) / 100 | formatBytes: 2:true }} из
+					{{ file.file.size | formatBytes }}</span
+				>
 				<span>{{ uploadProgress | async }}%</span>
 			</div>
 		</div>
@@ -59,27 +62,37 @@ import { UploadFile } from '../add-files.service';
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploadItemComponent implements OnInit {
+export class UploadItemComponent implements OnInit, OnDestroy {
+	@Output() fileUploaded = new EventEmitter();
 	@Input() file!: UploadFile;
 	@Input() entityId!: string;
 
-	public uploadProgress = new BehaviorSubject(50);
+	public uploadProgress = new BehaviorSubject(0);
+	private subscription!: Subscription;
 
-	constructor(private fileApi: FileApiService) {}
+	constructor(private fileApi: FileService) {}
 
 	ngOnInit(): void {
-		// this.fileApi
-		// 	.createFile$Response({
-		// 		uploadedFiles: this.file.file,
-		// 		access: this.file.accessType,
-		// 		entityId: this.entityId,
-		// 		body: [],
-		// 	})
-		// 	.subscribe({
-		// 		next: (res) => {
-		// 			if (res.type === HttpEventType.UploadProgress) {
-		// 			}
-		// 		},
-		// 	});
+		const { file, accessType, name } = this.file;
+		this.subscription = this.fileApi
+			.createFile({ file, access: accessType, entityId: this.entityId, fileName: name })
+			.subscribe({
+				next: (event: HttpEvent<any>) => {
+					switch (event.type) {
+						case HttpEventType.UploadProgress:
+							this.uploadProgress.next(Math.round((event.loaded / (event.total || 0)) * 100));
+							break;
+						case HttpEventType.Response:
+							this.fileUploaded.emit();
+							break;
+						default:
+							break;
+					}
+				},
+			});
+	}
+
+	public ngOnDestroy(): void {
+		this.subscription.unsubscribe();
 	}
 }

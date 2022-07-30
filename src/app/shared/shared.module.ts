@@ -67,6 +67,7 @@ import { SnackbarComponent } from './component/snackbar/snackbar.component';
 import { NumberInputDirective } from './directives/number-input.directive';
 import { PaginatorComponent } from './component/paginator/paginator.component';
 import { FormatBytesPipe } from './pipes/format-bytes.pipe';
+import { FileIconPipe } from './pipes/file-icon.pipe';
 
 @NgModule({
 	declarations: [
@@ -127,6 +128,7 @@ import { FormatBytesPipe } from './pipes/format-bytes.pipe';
 		NumberInputDirective,
 		PaginatorComponent,
 		FormatBytesPipe,
+		FileIconPipe,
 	],
 	imports: [
 		CommonModule,
@@ -200,6 +202,7 @@ import { FormatBytesPipe } from './pipes/format-bytes.pipe';
 		NumberInputDirective,
 		PaginatorComponent,
 		FormatBytesPipe,
+		FileIconPipe,
 	],
 })
 export class SharedModule {}

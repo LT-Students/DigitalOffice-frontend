@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { FormatBytesPipe } from '@shared/pipes/format-bytes.pipe';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { FileAccessType } from '@api/file-service/models/file-access-type';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { getFileIcon } from '@shared/pipes/file-icon.pipe';
+import { formatBytes } from '@shared/pipes/format-bytes.pipe';
 import { TableOptions } from '../../table/models/table-options';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 import { UploadProgressComponent } from './upload-progress/upload-progress.component';
@@ -34,7 +36,11 @@ export class AddFilesService {
 
 	private dataSource = new FilesDataSource();
 
-	constructor(private formatBytes: FormatBytesPipe, private dialog: DialogService) {}
+	constructor(
+		@Inject(LOCALE_ID) private locale: string,
+		@Inject(MAT_DIALOG_DATA) private entityId: string,
+		private dialog: DialogService
+	) {}
 
 	public getDataSource(): FilesDataSource {
 		return this.dataSource;
@@ -47,7 +53,7 @@ export class AddFilesService {
 				{
 					type: 'iconCell',
 					field: 'type-icon',
-					valueGetter: () => Icons.Folder,
+					valueGetter: (file: UploadFile) => getFileIcon(file.file),
 					headerStyle: { flex: '0 0 24px', 'margin-right': '12px' },
 					columnStyle: { flex: 0, 'margin-right': '12px' },
 				},
@@ -65,7 +71,7 @@ export class AddFilesService {
 					type: 'textCell',
 					field: 'size',
 					headerName: 'Размер',
-					valueGetter: (file: UploadFile) => this.formatBytes.transform(file.file.size),
+					valueGetter: (file: UploadFile) => formatBytes(file.file.size, this.locale),
 				},
 				{
 					type: 'selectCell',
@@ -94,7 +100,7 @@ export class AddFilesService {
 	}
 
 	public uploadFiles(): void {
-		const data = this.dataSource.files;
+		const data = { files: this.dataSource.files, entityId: this.entityId };
 		this.dialog.open(UploadProgressComponent, { width: ModalWidth.S, data });
 	}
 }

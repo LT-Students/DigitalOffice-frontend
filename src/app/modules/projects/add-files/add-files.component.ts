@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormatBytesPipe } from '@shared/pipes/format-bytes.pipe';
 import { AddFilesService } from './add-files.service';
 
 @Component({
@@ -7,7 +6,7 @@ import { AddFilesService } from './add-files.service';
 	templateUrl: './add-files.component.html',
 	styleUrls: ['./add-files.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [AddFilesService, FormatBytesPipe],
+	providers: [AddFilesService],
 })
 export class AddFilesComponent implements OnInit {
 	public filesDataSource = this.addFilesService.getDataSource();
