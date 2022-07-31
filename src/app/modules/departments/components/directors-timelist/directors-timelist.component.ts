@@ -9,7 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 import { TimeDurationService } from '@app/services/time-duration.service';
 import { IEditWorkTimeRequest, IFindStatRequest, IGetImport, TimeService } from '@app/services/time/time.service';
 import {
-	FindResultResponseStatInfo,
+	FindResultResponseUserStatInfo,
 	LeaveTimeInfo,
 	OperationResultResponse,
 	UserInfo,
@@ -80,14 +80,12 @@ export class DirectorsTimelistComponent implements OnInit {
 
 		this.statInfo$ = this._route.data.pipe(
 			map((response) => response.timelist),
-			tap((result: FindResultResponseStatInfo) => {
+			tap((result: FindResultResponseUserStatInfo) => {
 				this.totalCount.next(result.totalCount ?? 0);
 			}),
 			map(
-				(result: FindResultResponseStatInfo) =>
-					result.body?.[0].usersStats?.map((statInfo: UserStatInfo) =>
-						this._mapStatInfo(statInfo)
-					) as MappedStatInfo[]
+				(result: FindResultResponseUserStatInfo) =>
+					result.body?.map((statInfo: UserStatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
 			)
 		);
 	}
@@ -184,14 +182,12 @@ export class DirectorsTimelistComponent implements OnInit {
 		};
 
 		return this._timeService.findStat(params).pipe(
-			tap((result: FindResultResponseStatInfo) => {
+			tap((result: FindResultResponseUserStatInfo) => {
 				this.totalCount.next(result.totalCount ?? 0);
 			}),
 			map(
-				(result: FindResultResponseStatInfo) =>
-					result.body?.[0].usersStats?.map((statInfo: UserStatInfo) =>
-						this._mapStatInfo(statInfo)
-					) as MappedStatInfo[]
+				(result: FindResultResponseUserStatInfo) =>
+					result.body?.map((statInfo: UserStatInfo) => this._mapStatInfo(statInfo)) as MappedStatInfo[]
 			)
 		);
 	}
