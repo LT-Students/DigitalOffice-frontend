@@ -37,14 +37,9 @@
 	<!-- Expanded row columns -->
 	<ng-container cdkColumnDef="expandedRow">
 		<cdk-cell *cdkCellDef="let row">
-			<do-table
-				class="example-element-detail"
-				[@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'"
-				[dataSource]="
-					expandedRowOptions.dataSourceGetter ? (row | execute: expandedRowOptions.dataSourceGetter) : []
-				"
-				[tableOptions]="expandedRowOptions"
-			></do-table>
+			<div [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+				<ng-container *ngTemplateOutlet="expandedRowTemplate; context: row"></ng-container>
+			</div>
 		</cdk-cell>
 	</ng-container>
 
@@ -57,7 +52,7 @@
 		[style.height.px]="rowHeight || 'auto'"
 	>
 	</cdk-row>
-	<cdk-row *cdkRowDef="let row; columns: ['expandedRow']; when: isRowExpandable"></cdk-row>
+	<cdk-row class="expanded-row" *cdkRowDef="let row; columns: ['expandedRow']; when: isRowExpandable"></cdk-row>
 	<ng-template cdkNoDataRow>
 		<div class="flex flex_jc_center">
 			<div class="no-data-row">

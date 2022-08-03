@@ -3,7 +3,8 @@ import { Icons } from '@shared/modules/icons/icons';
 import { first, map, switchMap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { TimeService } from '@app/services/time/time.service';
-import { StatInfo } from '@api/time-service/models/stat-info';
+import { DateTime } from 'luxon';
+import { UserStatInfo } from '@api/time-service/models/user-stat-info';
 import { SelectedProjectService } from '../project-id-route-container/selected-project.service';
 import { TeamStatisticsService } from './team-statistics.service';
 
@@ -16,10 +17,14 @@ import { TeamStatisticsService } from './team-statistics.service';
 })
 export class TeamStatisticsComponent implements OnInit {
 	public readonly Icons = Icons;
+	public readonly maxDate = DateTime.now().plus({ month: 1 });
+
 	public projectName$ = this.selectedProject.info$.pipe(
 		map((projectResponse: ProjectResponse) => projectResponse.project.name)
 	);
 	public tableData = this.teamStatistics.getTableData();
+	public expandedRow = this.teamStatistics.getExpandedRowData();
+	public filterConfig = this.teamStatistics.getFilters();
 	public dataSource$ = this.selectedProject.info$.pipe(
 		first(),
 		switchMap((proj: ProjectResponse) =>
@@ -31,7 +36,7 @@ export class TeamStatisticsComponent implements OnInit {
 				month: 6,
 			})
 		),
-		map((res) => (res.body as StatInfo[])[0].usersStats)
+		map((res) => res.body as UserStatInfo[])
 	);
 
 	constructor(

@@ -9,10 +9,10 @@ export interface ILeaveType {
 
 export class LeaveTimeType {
 	private static leaveTypes: ILeaveType[] = [
-		{ leaveType: LeaveType.SickLeave, label: 'На больничном', icon: Icons.Sick },
+		{ leaveType: LeaveType.SickLeave, label: 'Больничный', icon: Icons.Sick },
 		{ leaveType: LeaveType.Idle, label: 'Отгул', icon: Icons.Smile },
 		{ leaveType: LeaveType.Training, label: 'Обучение', icon: Icons.SelfImprovement },
-		{ leaveType: LeaveType.Vacation, label: 'В отпуске', icon: Icons.Vacation },
+		{ leaveType: LeaveType.Vacation, label: 'Отпуск', icon: Icons.Vacation },
 	];
 
 	public static getLeaveInfoByLeaveType(leaveType: LeaveType): ILeaveType {

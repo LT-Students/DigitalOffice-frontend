@@ -10,9 +10,11 @@ export class NumberInputDirective implements OnInit, OnDestroy {
 	constructor(private ngControl: NgControl) {}
 
 	public ngOnInit(): void {
-		this.subscription = this.ngControl.control?.valueChanges.subscribe((value: string) => {
-			const newValue = value.replace(/[^0-9]/g, '');
-			this.ngControl.control?.setValue(newValue, { emitEvent: false });
+		this.subscription = this.ngControl.control?.valueChanges.subscribe((value: string | null) => {
+			if (value != null) {
+				const newValue = String(value).replace(/[^0-9]/g, '');
+				this.ngControl.control?.setValue(newValue, { emitEvent: false });
+			}
 		});
 	}
 

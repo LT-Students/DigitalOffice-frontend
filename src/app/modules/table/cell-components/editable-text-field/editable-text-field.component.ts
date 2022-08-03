@@ -13,7 +13,7 @@ export class EditableTextFieldParams {
 @Component({
 	selector: 'do-editable-text-field',
 	template: `
-		<span *ngIf="!isEditMode" class="no-overflow" (click)="toggleEdit(true)">{{ value }}</span>
+		<span *ngIf="!isEditMode" class="editable" (click)="toggleEdit(true)">{{ value }}</span>
 		<do-form-field *ngIf="isEditMode" class="input">
 			<mat-form-field>
 				<input
@@ -33,7 +33,8 @@ export class EditableTextFieldParams {
 				display: flex;
 			}
 
-			.no-overflow {
+			.editable {
+				cursor: pointer;
 				text-overflow: ellipsis;
 				overflow: hidden;
 				white-space: nowrap;

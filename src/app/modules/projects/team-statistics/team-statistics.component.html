@@ -1,3 +1,19 @@
 <h1 doUnderline class="page-title">Статистика команды</h1>
 <h5 class="project-name">{{ projectName$ | async }}</h5>
-<do-table [dataSource]="dataSource$" [tableOptions]="tableData"></do-table>
+<div class="period flex flex_jc_space-between flex_ai_center">
+	<do-title-datepicker-v2 [maxDate]="maxDate" [dateStyle]="{ 'text-transform': 'capitalize' }">
+		<h4 [style.margin]="0">Период:&nbsp;</h4>
+	</do-title-datepicker-v2>
+	<button mat-flat-button color="primary">Выгрузить часы</button>
+</div>
+<do-dynamic-filter [filters]="filterConfig"></do-dynamic-filter>
+<do-table [dataSource]="dataSource$" [tableOptions]="tableData" [expandedRowTemplate]="details">
+	<ng-template #details let-workTimes="workTimes" let-leaveTimes="leaveTimes">
+		<div class="additional-info">
+			<h5 class="heading">Детализация по проектам</h5>
+			<do-table [dataSource]="workTimes" [tableOptions]="expandedRow.workTimes"></do-table>
+			<h5 class="heading">Детализация по отсутствиям</h5>
+			<do-table [dataSource]="leaveTimes" [tableOptions]="expandedRow.leaveTimes"></do-table>
+		</div>
+	</ng-template>
+</do-table>

@@ -1,5 +1,6 @@
 @use '~@angular/material' as mat;
 @use 'base/palettes' as *;
+@use 'base/variables' as variables;
 
 // Styles for table
 .table {
@@ -107,6 +108,24 @@ do-table {
 
 		&:hover {
 			box-shadow: none;
+		}
+	}
+
+	cdk-row.timelist,
+	cdk-header-row.timelist {
+		margin-bottom: 0 !important;
+		padding: 8px 34px;
+
+		border-radius: 0;
+
+		box-shadow: none;
+
+		&:hover {
+			box-shadow: none;
+		}
+
+		&:nth-child(2n) {
+			background: variables.$light_1;
 		}
 	}
 }

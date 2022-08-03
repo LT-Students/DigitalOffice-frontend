@@ -5,8 +5,8 @@ import {
 	Input,
 	OnInit,
 	Output,
+	TemplateRef,
 	ViewChild,
-	ViewEncapsulation,
 } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
@@ -97,6 +97,7 @@ export class TableComponent<T> implements OnInit {
 
 	@Input() expandedRowOptions: TableOptions = {};
 
+	@Input() expandedRowTemplate: TemplateRef<any> | null = null;
 	@Input() isRowExpandable: (index: number, rowData: T) => boolean = () => false;
 
 	constructor() {}
