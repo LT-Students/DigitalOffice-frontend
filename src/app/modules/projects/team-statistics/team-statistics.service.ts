@@ -11,10 +11,12 @@ import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
 import { LeaveTimeType } from './leave-time-type';
+import { TimeService } from './time.service';
+import { TimeListDataSource } from './team-statistics.component';
 
 @Injectable()
 export class TeamStatisticsService {
-	constructor(private router: Router) {}
+	constructor(private router: Router, private timeService: TimeService) {}
 
 	private countUserHours(stats: UserStatInfo): number {
 		const workHours = stats.workTimes.reduce((acc: number, wt: WorkTimeInfo) => {
@@ -87,10 +89,12 @@ export class TeamStatisticsService {
 				'min-height': '64px',
 			},
 			isRowExpandable: () => true,
+			expandedRowComparator: ([expandedRow, row]: [UserStatInfo | null, UserStatInfo]) =>
+				expandedRow?.user.id === row.user.id,
 		};
 	}
 
-	public getExpandedRowData(): { workTimes: TableOptions; leaveTimes: TableOptions } {
+	public getExpandedRowData(dataSource: TimeListDataSource): { workTimes: TableOptions; leaveTimes: TableOptions } {
 		return {
 			workTimes: {
 				rowClass: 'timelist',
@@ -107,8 +111,10 @@ export class TeamStatisticsService {
 						field: 'projectHours',
 						type: 'editableTimeCell',
 						headerName: 'Внесённые часы',
-						valueGetter: (wt: WorkTimeInfo) => wt.managerHours || wt.userHours,
-						params: new EditableTextFieldParams({ updateRow: (wt: WorkTimeInfo, h: string) => {} }),
+						valueGetter: (wt: WorkTimeInfo) => wt.managerHours || wt.userHours || 0,
+						params: new EditableTextFieldParams({
+							updateRow: (wt: WorkTimeInfo, h: string) => dataSource.updateWorkTime(wt, +h),
+						}),
 					},
 					{
 						field: 'comment',
@@ -162,11 +168,26 @@ export class TeamStatisticsService {
 	public getFilters(): FilterDef[] {
 		return [
 			{
-				key: 'nameincludesubstring',
+				key: 'name',
 				type: 'input',
 				width: 267,
 				params: new InputFilterParams({ icon: Icons.Search, placeholder: 'Поиск по имени и фамилии' }),
 			},
 		];
+	}
+
+	public downloadStatistics(projectId: string, month: number, year: number): void {
+		this.timeService.importStats({ projectId, month, year }).subscribe({
+			next: (content: string) => {
+				const filename = `Statistic_${year}_${month}`;
+				const mediaType = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+				const downloadLink = document.createElement('a');
+				downloadLink.href = mediaType + content;
+				downloadLink.download = filename;
+				// document.body.appendChild(downloadLink);
+				downloadLink.click();
+				downloadLink.remove();
+			},
+		});
 	}
 }

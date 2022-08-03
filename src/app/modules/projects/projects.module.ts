@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CdkTableModule } from '@angular/cdk/table';
 import { TableModule } from '../table/table.module';
 import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { ProjectsRoutingModule } from './projects-routing.module';
@@ -44,6 +45,13 @@ import { UploadItemComponent } from './add-files/upload-progress/upload-item.com
 		UploadProgressComponent,
 		UploadItemComponent,
 	],
-	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule, MatProgressBarModule],
+	imports: [
+		SharedModule,
+		ProjectsRoutingModule,
+		TableModule,
+		DynamicFilterModule,
+		MatProgressBarModule,
+		CdkTableModule,
+	],
 })
 export class ProjectsModule {}

@@ -10,6 +10,7 @@ import { TeamStatisticsComponent } from './team-statistics/team-statistics.compo
 import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
 import { DepartmentFilterResolver } from './resolvers/department-filter.resolver';
 import { ProjectUsersResolver } from './resolvers/project-users.resolver';
+import { TeamStatisticsResolver } from './resolvers/team-statistics.resolver';
 
 const routes: Routes = [
 	{
@@ -40,6 +41,9 @@ const routes: Routes = [
 			{
 				path: ProjectsRoutes.TeamStats,
 				component: TeamStatisticsComponent,
+				resolve: {
+					stats: TeamStatisticsResolver,
+				},
 			},
 		],
 	},

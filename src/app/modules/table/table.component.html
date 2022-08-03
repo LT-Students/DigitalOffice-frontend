@@ -37,7 +37,7 @@
 	<!-- Expanded row columns -->
 	<ng-container cdkColumnDef="expandedRow">
 		<cdk-cell *cdkCellDef="let row">
-			<div [@detailExpand]="row == expandedElement ? 'expanded' : 'collapsed'">
+			<div [@detailExpand]="([expandedElement, row] | execute: expandedRowComparator) ? 'expanded' : 'collapsed'">
 				<ng-container *ngTemplateOutlet="expandedRowTemplate; context: row"></ng-container>
 			</div>
 		</cdk-cell>
@@ -46,7 +46,7 @@
 	<cdk-header-row *cdkHeaderRowDef="displayColumns" [ngClass]="rowClass"></cdk-header-row>
 	<cdk-row
 		*cdkRowDef="let row; columns: displayColumns"
-		(click)="rowClick.emit(row); expandedElement = expandedElement === row ? null : row"
+		(click)="handleRowClick(row)"
 		[ngClass]="rowClass"
 		[ngStyle]="rowStyle"
 		[style.height.px]="rowHeight || 'auto'"

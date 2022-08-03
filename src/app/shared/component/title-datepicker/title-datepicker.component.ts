@@ -14,7 +14,15 @@ export class TitleDatepickerComponent {
 	public readonly Icons = Icons;
 
 	@Input() title = '';
-	@Input() selectDate: DateTime | null = DateTime.now();
+	@Input()
+	set selectDate(date: DateTime | null) {
+		this._selectedDate = date || DateTime.now();
+	}
+	get selectDate(): DateTime {
+		return this._selectedDate;
+	}
+	private _selectedDate = DateTime.now();
+
 	@Input() minDate: DateTime | null = null;
 	@Input() maxDate: DateTime | null = null;
 	@Output() dateSelection = new EventEmitter<DateTime>();

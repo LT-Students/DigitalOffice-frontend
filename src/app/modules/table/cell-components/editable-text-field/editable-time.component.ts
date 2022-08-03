@@ -37,7 +37,7 @@ import { EditableTextFieldParams } from './editable-text-field.component';
 				<!--				<span class="mat-body-2">Автор изменения</span>-->
 				<!--			<p>{{ workTime.managerInfo ? (workTime.managerInfo | fullName) : '—' }}</p>-->
 				<span class="mat-body-2">Часы сотрудника</span>
-				<p>{{ row.userHours }}</p>
+				<p>{{ row.userHours || 0 }}</p>
 			</mde-popover>
 		</div>
 	`,
