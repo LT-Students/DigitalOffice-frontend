@@ -9,7 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { EditFileRequest } from '../models/edit-file-request';
 import { FileAccessType } from '../models/file-access-type';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { OperationResultResponseFiles } from '../models/operation-result-response-files';
@@ -33,7 +32,7 @@ export class FileApiService extends BaseService {
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
 	 * To access only the response body, use `createFile()` instead.
 	 *
-	 * This method sends `application` and handles request body of type `application`.
+	 * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
 	 */
 	createFile$Response(params: {
 		/**
@@ -41,15 +40,15 @@ export class FileApiService extends BaseService {
 		 */
 		entityId: string;
 		access: FileAccessType;
-		uploadedFiles: any;
-		body: EditFileRequest;
+		body?: {
+			uploadedFiles?: Blob;
+		};
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, FileApiService.CreateFilePath, 'post');
 		if (params) {
 			rb.query('entityId', params.entityId, {});
 			rb.query('access', params.access, {});
-			rb.query('uploadedFiles', params.uploadedFiles, {});
-			rb.body(params.body, 'application');
+			rb.body(params.body, 'multipart/form-data');
 		}
 
 		return this.http
@@ -73,7 +72,7 @@ export class FileApiService extends BaseService {
 	 * This method provides access to only to the response body.
 	 * To access the full response (for headers, for example), `createFile$Response()` instead.
 	 *
-	 * This method sends `application` and handles request body of type `application`.
+	 * This method sends `multipart/form-data` and handles request body of type `multipart/form-data`.
 	 */
 	createFile(params: {
 		/**
@@ -81,8 +80,9 @@ export class FileApiService extends BaseService {
 		 */
 		entityId: string;
 		access: FileAccessType;
-		uploadedFiles: any;
-		body: EditFileRequest;
+		body?: {
+			uploadedFiles?: Blob;
+		};
 	}): Observable<OperationResultResponse> {
 		return this.createFile$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)

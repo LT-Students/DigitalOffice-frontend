@@ -26,9 +26,6 @@
         },
         {
           "$ref": "#/components/parameters/access"
-        },
-        {
-          "$ref": "#/components/parameters/uploadedFiles"
         }
       ],
       "post": {
@@ -39,13 +36,18 @@
         "description": "Create files.",
         "requestBody": {
           "content": {
-            "application": {
+            "multipart/form-data": {
               "schema": {
-                "$ref": "#/components/schemas/EditFileRequest"
+                "type": "object",
+                "properties": {
+                  "uploadedFiles": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -105,7 +107,6 @@
                 "type": "string",
                 "format": "uuid"
               }
-
             },
             "required": true
           }
@@ -359,14 +360,6 @@
         "in": "query",
         "schema": {
           "$ref": "#/components/schemas/FileAccessType"
-        },
-        "required": true
-      },
-      "uploadedFiles": {
-        "name": "uploadedFiles",
-        "in": "query",
-        "schema": {
-          "format": "file"
         },
         "required": true
       }
