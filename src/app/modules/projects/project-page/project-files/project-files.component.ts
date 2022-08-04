@@ -21,7 +21,7 @@ export class ProjectFilesComponent implements OnInit {
 	public filterData = this.filesService.getFilterData();
 	public tableColumns = this.filesService.getTableColumns();
 	public contextMenuItems = this.contextMenu.getItems();
-	public dataSource = this.selectedProject.info$.pipe(map((p: ProjectResponse) => p.files || []));
+	public dataSource = this.selectedProject.files$;
 
 	constructor(
 		private filesService: ProjectFilesService,

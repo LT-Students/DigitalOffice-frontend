@@ -3,10 +3,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { UserInfo } from '@api/project-service/models/user-info';
 import { filter, first, map } from 'rxjs/operators';
+import { FileInfo } from '@api/project-service/models/file-info';
 
 export interface Project {
 	info: ProjectResponse;
 	users: UserInfo[];
+	files: FileInfo[];
 }
 
 @Injectable()
@@ -24,6 +26,12 @@ export class SelectedProjectService {
 		return this.project$.pipe(
 			filter((p: Project | null): p is Project => !!p),
 			map((project: Project) => project.users)
+		);
+	}
+	public get files$(): Observable<FileInfo[]> {
+		return this.project$.pipe(
+			filter((p: Project | null): p is Project => !!p),
+			map((project: Project) => project.files)
 		);
 	}
 

@@ -13,6 +13,7 @@ import { UserApiService } from '@api/project-service/services/user-api.service';
 import { UserInfo } from '@api/project-service/models/user-info';
 import { MAX_INT32 } from '@app/utils/utils';
 import { UserRequest } from '@api/project-service/models/user-request';
+import { FileInfo } from '@api/project-service/models/file-info';
 
 @Injectable({
 	providedIn: 'root',
@@ -70,5 +71,11 @@ export class ProjectService {
 
 	public removeUsers(projectId: string, userIds: string[]): Observable<any> {
 		return this.projectUsersService.removeProjectUsers({ projectId, body: userIds });
+	}
+
+	public findFiles(projectId: string): Observable<FileInfo[]> {
+		return this.fileService
+			.findFiles({ projectid: projectId, skipCount: 0, takeCount: MAX_INT32 })
+			.pipe(map((res) => res.body as FileInfo[]));
 	}
 }

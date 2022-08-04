@@ -53,7 +53,7 @@ export class AddFilesService {
 				{
 					type: 'iconCell',
 					field: 'type-icon',
-					valueGetter: (file: UploadFile) => getFileIcon(file.file),
+					valueGetter: (file: UploadFile) => getFileIcon(file.file.type),
 					headerStyle: { flex: '0 0 24px', 'margin-right': '12px' },
 					columnStyle: { flex: 0, 'margin-right': '12px' },
 				},

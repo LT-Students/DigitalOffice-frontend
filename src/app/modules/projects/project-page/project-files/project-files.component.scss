@@ -3,13 +3,5 @@ do-actions {
 }
 
 .file-table {
-	display: flex;
-
-	> do-table {
-		flex: 1;
-	}
-
-	> do-table:not(:last-child) {
-		margin-right: 12px;
-	}
+	margin-top: 14px;
 }

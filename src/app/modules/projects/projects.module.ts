@@ -23,6 +23,7 @@ import { AddProjectUsersComponent } from './add-project-users/add-project-users.
 import { AddFilesComponent } from './add-files/add-files.component';
 import { UploadProgressComponent } from './add-files/upload-progress/upload-progress.component';
 import { UploadItemComponent } from './add-files/upload-progress/upload-item.component';
+import { EditFileComponent } from './project-page/project-files/edit-file/edit-file.component';
 
 @NgModule({
 	declarations: [
@@ -44,6 +45,7 @@ import { UploadItemComponent } from './add-files/upload-progress/upload-item.com
 		AddFilesComponent,
 		UploadProgressComponent,
 		UploadItemComponent,
+		EditFileComponent,
 	],
 	imports: [
 		SharedModule,

@@ -17,8 +17,8 @@ export class ProjectIdRouteContainerComponent implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.subscription = this.route.data.subscribe({
 			next: (data: Data) => {
-				const { project, users } = data;
-				this.currentProject.setProject({ info: project, users });
+				const { project, users, files } = data;
+				this.currentProject.setProject({ info: project, users, files });
 			},
 		});
 	}
