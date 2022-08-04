@@ -11,6 +11,7 @@ import {
 	EditableTextFieldParams,
 } from '../cell-components/editable-text-field/editable-text-field.component';
 import { EditableTimeComponent } from '../cell-components/editable-text-field/editable-time.component';
+import { ShowMoreTextComponent, ShowMoreTextParams } from '../cell-components/show-more-text/show-more-text.component';
 
 export const CELL_TYPES = {
 	textCell: TextComponent,
@@ -22,6 +23,7 @@ export const CELL_TYPES = {
 	selectCell: SelectComponent,
 	editableTextFieldCell: EditableTextFieldComponent,
 	editableTimeCell: EditableTimeComponent,
+	showMoreTextCell: ShowMoreTextComponent,
 };
 
 export type CellTypes = keyof typeof CELL_TYPES;
@@ -37,7 +39,8 @@ export type CellParams =
 	| SelectCellParams
 	| UserInfoParams
 	| CheckboxParams
-	| EditableTextFieldParams;
+	| EditableTextFieldParams
+	| ShowMoreTextParams;
 
 export interface TableCell<V> {
 	value?: V;

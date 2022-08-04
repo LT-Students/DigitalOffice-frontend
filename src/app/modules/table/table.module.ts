@@ -12,6 +12,7 @@ import { SelectComponent } from './cell-components/select/select.component';
 import { IconComponent } from './cell-components/icon/icon.component';
 import { EditableTextFieldComponent } from './cell-components/editable-text-field/editable-text-field.component';
 import { EditableTimeComponent } from './cell-components/editable-text-field/editable-time.component';
+import { ShowMoreTextComponent } from './cell-components/show-more-text/show-more-text.component';
 
 @NgModule({
 	declarations: [
@@ -26,6 +27,7 @@ import { EditableTimeComponent } from './cell-components/editable-text-field/edi
 		IconComponent,
 		EditableTextFieldComponent,
 		EditableTimeComponent,
+		ShowMoreTextComponent,
 	],
 	imports: [SharedModule, CdkTableModule],
 	exports: [TableComponent],

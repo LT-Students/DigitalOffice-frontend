@@ -120,6 +120,7 @@ export class TeamStatisticsService {
 					},
 					{
 						field: 'comment',
+						type: 'showMoreTextCell',
 						headerName: 'Комментарий сотрудника',
 						valueGetter: (wt: WorkTimeInfo) => wt.description || '--',
 					},
@@ -158,6 +159,7 @@ export class TeamStatisticsService {
 					},
 					{
 						field: 'comment',
+						type: 'showMoreTextCell',
 						headerName: 'Комментарий сотрудника',
 						valueGetter: (lt: LeaveTime) => lt.comment || '--',
 					},
