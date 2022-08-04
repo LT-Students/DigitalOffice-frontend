@@ -11,6 +11,7 @@ import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { MAX_INT32 } from '@app/utils/utils';
 import { SortDirection } from '@angular/material/sort';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
+import { I18nPluralPipe } from '@angular/common';
 import { SelectedProjectService } from '../project-id-route-container/selected-project.service';
 import { TableComponent } from '../../table/table.component';
 import { DynamicFilterComponent } from '../../dynamic-filter/dynamic-filter.component';
@@ -22,7 +23,7 @@ import { TimeService } from './time.service';
 	templateUrl: './team-statistics.component.html',
 	styleUrls: ['./team-statistics.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [TeamStatisticsService],
+	providers: [TeamStatisticsService, I18nPluralPipe],
 })
 export class TeamStatisticsComponent implements OnInit, AfterViewInit {
 	public readonly Icons = Icons;

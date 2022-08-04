@@ -6,6 +6,7 @@ import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { DateTime } from 'luxon';
 import { Router } from '@angular/router';
 import { AppRoutes } from '@app/models/app-routes';
+import { I18nPluralPipe } from '@angular/common';
 import { TableOptions } from '../../table/models/table-options';
 import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
@@ -16,7 +17,7 @@ import { TimeListDataSource } from './team-statistics.component';
 
 @Injectable()
 export class TeamStatisticsService {
-	constructor(private router: Router, private timeService: TimeService) {}
+	constructor(private router: Router, private timeService: TimeService, private pluralPipe: I18nPluralPipe) {}
 
 	private countUserHours(stats: UserStatInfo): number {
 		const workHours = stats.workTimes.reduce((acc: number, wt: WorkTimeInfo) => {
@@ -36,7 +37,12 @@ export class TeamStatisticsService {
 	private getLeavePeriodString(lt: LeaveTimeInfo): string {
 		const startDate = DateTime.fromISO(lt.startTime).toFormat('d.MM.yy');
 		const endDate = DateTime.fromISO(lt.endTime).toFormat('d.MM.yy');
-		return `${startDate} - ${endDate}\n(${lt.minutes / 60} часов)`;
+		const hoursPlural = this.pluralPipe.transform(lt.minutes / 60, {
+			one: '# час',
+			few: '# часа',
+			other: '# часов',
+		});
+		return `${startDate} - ${endDate}\n(${hoursPlural})`;
 	}
 
 	public getTableData(): TableOptions {
