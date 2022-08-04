@@ -9,6 +9,18 @@ export class TimeDurationService {
 	constructor() {}
 
 	public countMaxMonthDuration(year: number, month: number): number {
+		return TimeDuration.countMaxMonthDuration(year, month);
+	}
+
+	public getDuration(datePeriod: DatePeriod, hoursPerDay: number, dateFilter?: (date: DateTime) => boolean): number {
+		return TimeDuration.getDuration(datePeriod, hoursPerDay, dateFilter);
+	}
+}
+
+export class TimeDuration {
+	constructor() {}
+
+	public static countMaxMonthDuration(year: number, month: number): number {
 		const currentDatePeriod: DatePeriod = {
 			startDate: DateTime.local(year, month, 1),
 			endDate: DateTime.local(year, month).endOf('month'),
@@ -16,7 +28,7 @@ export class TimeDurationService {
 		return this.getDuration(currentDatePeriod, 24);
 	}
 
-	public getDuration(
+	public static getDuration(
 		{ startDate, endDate }: DatePeriod,
 		hoursPerDay: number,
 		dateFilter?: (date: DateTime) => boolean

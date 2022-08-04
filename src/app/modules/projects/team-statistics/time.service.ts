@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { UserStatInfo } from '@api/time-service/models/user-stat-info';
 import { Observable } from 'rxjs';
 import { WorkTimeApiService } from '@api/time-service/services/work-time-api.service';
+import { UserStat } from './user-stat';
 
 @Injectable({
 	providedIn: 'root',
@@ -25,8 +26,10 @@ export class TimeService {
 		year: number;
 		takeCount: number;
 		skipCount: number;
-	}): Observable<UserStatInfo[]> {
-		return this.statService.findStat(params).pipe(map((res) => res.body as UserStatInfo[]));
+	}): Observable<UserStat[]> {
+		return this.statService
+			.findStat(params)
+			.pipe(map((res) => (res.body as UserStatInfo[]).map((s: UserStatInfo) => new UserStat(s))));
 	}
 
 	public editWorkTime(workTimeId: string, hours: number): Observable<any> {

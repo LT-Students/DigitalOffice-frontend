@@ -6,7 +6,6 @@ import { DateTime } from 'luxon';
 import { TitleDatepickerV2Component } from '@shared/component/title-datepicker/title-datepicker-v2.component';
 import { ActivatedRoute } from '@angular/router';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { UserStatInfo } from '@api/time-service/models/user-stat-info';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { MAX_INT32 } from '@app/utils/utils';
 import { SortDirection } from '@angular/material/sort';
@@ -17,6 +16,7 @@ import { TableComponent } from '../../table/table.component';
 import { DynamicFilterComponent } from '../../dynamic-filter/dynamic-filter.component';
 import { TeamStatisticsService } from './team-statistics.service';
 import { TimeService } from './time.service';
+import { UserStat } from './user-stat';
 
 @Component({
 	selector: 'do-team-statistics',
@@ -30,7 +30,7 @@ export class TeamStatisticsComponent implements OnInit, AfterViewInit {
 	public readonly maxDate = DateTime.now().plus({ month: 1 });
 
 	@ViewChild(TitleDatepickerV2Component) datepicker!: TitleDatepickerV2Component;
-	@ViewChild(TableComponent) table!: TableComponent<UserStatInfo>;
+	@ViewChild(TableComponent) table!: TableComponent<UserStat>;
 	@ViewChild(DynamicFilterComponent) filter!: DynamicFilterComponent;
 
 	public projectId = this.route.snapshot.params.id;
@@ -79,15 +79,15 @@ export class TeamStatisticsComponent implements OnInit, AfterViewInit {
 	}
 }
 
-export class TimeListDataSource extends DataSource<UserStatInfo> {
-	private data = new BehaviorSubject<UserStatInfo[]>([]);
+export class TimeListDataSource extends DataSource<UserStat> {
+	private data = new BehaviorSubject<UserStat[]>([]);
 
-	constructor(data: UserStatInfo[], private timeService: TimeService) {
+	constructor(data: UserStat[], private timeService: TimeService) {
 		super();
 		this.data.next(data);
 	}
 
-	connect(collectionViewer: CollectionViewer): Observable<UserStatInfo[]> {
+	connect(collectionViewer: CollectionViewer): Observable<UserStat[]> {
 		return this.data.asObservable();
 	}
 
@@ -99,7 +99,7 @@ export class TimeListDataSource extends DataSource<UserStatInfo> {
 		year: number,
 		sort: SortDirection,
 		name: string
-	): Observable<UserStatInfo[]> {
+	): Observable<UserStat[]> {
 		const sortOrder = this.getSortOrder(sort);
 		return this.timeService
 			.findStats({
@@ -111,12 +111,12 @@ export class TimeListDataSource extends DataSource<UserStatInfo> {
 				ascendingsort: sortOrder,
 				nameincludesubstring: name || undefined,
 			})
-			.pipe(tap((data: UserStatInfo[]) => this.data.next(data)));
+			.pipe(tap((data: UserStat[]) => this.data.next(data)));
 	}
 
 	public updateWorkTime(workTime: WorkTimeInfo, hours: number): void {
 		const oldData = this.data.value;
-		const newData = oldData.map((s: UserStatInfo) => {
+		const newData = oldData.map((s: UserStat) => {
 			let wt = s.workTimes.find((wt: WorkTimeInfo) => wt.id === workTime.id);
 			if (wt) {
 				return {
