@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { Observable } from 'rxjs';
-import { FileInfo } from '@api/project-service/models/file-info';
 import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
 import { ProjectService } from '../../project.service';
@@ -51,9 +49,5 @@ export class ProjectFilesService {
 				},
 			},
 		];
-	}
-
-	public addFiles(projectId: string, files: FileInfo[]): Observable<any> {
-		return this.projectService.addFiles(projectId, files);
 	}
 }

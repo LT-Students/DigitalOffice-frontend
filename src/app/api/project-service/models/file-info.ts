@@ -1,21 +1,28 @@
 /* tslint:disable */
 /* eslint-disable */
-import { AccessType } from './access-type';
 export interface FileInfo {
-	access: AccessType;
-
 	/**
-	 * File content.
-	 */
-	content: string;
-
-	/**
-	 * Extension of the file.
+	 * The file extension.
 	 */
 	extension: string;
 
 	/**
-	 * Name of the file.
+	 * Unique project identifier.
 	 */
-	name?: string;
+	id: string;
+
+	/**
+	 * The file name
+	 */
+	name: string;
+
+	/**
+	 * Date and time begin file in UTC.
+	 */
+	role?: any;
+
+	/**
+	 * The file size.
+	 */
+	size: number;
 }

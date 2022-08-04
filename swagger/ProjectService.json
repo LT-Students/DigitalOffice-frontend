@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2.9",
+    "version": "1.2.3.1",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -93,7 +93,7 @@
         "operationId": "findProjects",
         "responses": {
           "200": {
-            "description": "Successfully returned a projects informations.",
+            "description": "Successfully returned projects informations.",
             "content": {
               "application/json": {
                 "schema": {
@@ -326,35 +326,53 @@
         }
       }
     },
-    "/file/create": {
+    "/file/find": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "File"
-        ],
-        "operationId": "createFile",
-        "description": "Add files to Project.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateFilesRequest"
-              }
-            }
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip",
+          "schema": {
+            "type": "integer"
           },
           "required": true
         },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of projects to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "projectid",
+          "in": "query",
+          "description": "Return only files with specified project",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "findFiles",
+        "description": "Find files from Project.",
         "responses": {
-          "201": {
-            "description": "Successfully add files to the project.",
+          "200": {
+            "description": "Successfully returned files information from project.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/FindResultResponseFileInfo"
                 }
               }
             }
@@ -364,23 +382,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/FindResultResponseFileInfo"
                 }
               }
             }
           },
           "401":{
             "description": "Unauthorized - Token was not entered"
-          },
-          "403": {
-            "description": "Forbidden.\n* Invalid token.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -896,32 +904,6 @@
           }
         }
       },
-      "FileInfo": {
-        "type": "object",
-        "required": [
-          "Content",
-          "Extension",
-          "Access"
-        ],
-        "properties": {
-          "Name": {
-            "description": "Name of the file.",
-            "type": "string"
-          },
-          "Content": {
-            "description": "File content.",
-            "type": "string"
-          },
-          "Extension": {
-            "description": "Extension of the file.",
-            "type": "string",
-            "example": ".txt"
-          },
-          "Access": {
-            "$ref": "#/components/schemas/AccessType"
-          }
-        }
-      },
       "FileAccess": {
         "type": "object",
         "required": [
@@ -934,7 +916,7 @@
             "format": "uuid"
           },
           "Access ": {
-            "$ref": "#/components/schemas/AccessType"
+            "$ref": "#/components/schemas/FileAccessType"
           }
         }
       },
@@ -988,7 +970,7 @@
           }
         }
       },
-      "AccessType": {
+      "FileAccessType": {
         "type": "string",
         "description": "Type of the access to the file.\n",
         "enum": [
@@ -1043,6 +1025,44 @@
           },
           "AvatarImage": {
             "$ref": "#/components/schemas/ImageInfo"
+          }
+        }
+      },
+      "FileInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "Extension",
+          "Size",
+          "CreatedAtUtc"
+        ],
+        "properties": {
+          "Id": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Name": {
+            "description": "The file name",
+            "type": "string",
+            "example": "Image"
+          },
+          "Extension": {
+            "description": "The file extension.",
+            "type": "string",
+            "example": ".odt"
+          },
+          "Size": {
+            "description": "The file size.",
+            "type": "integer",
+            "example": 19211
+          },
+          "Role": {
+            "description": "Date and time begin file in UTC.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
           }
         }
       },
@@ -1147,8 +1167,8 @@
           "Name",
           "ShortName",
           "Status",
+          "StartDateUtc",
           "ProjectImages",
-          "Files",
           "Users"
         ],
         "properties": {
@@ -1206,12 +1226,6 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ImageContent"
-            }
-          },
-          "Files": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileInfo"
             }
           }
         }
@@ -1419,6 +1433,32 @@
           }
         }
       },
+      "FindResultResponseFileInfo": {
+        "type": "object",
+        "required": [
+          "TotalCount",
+          "Errors"
+        ],
+        "properties": {
+          "TotalCount": {
+            "description": "Total number of finded by filter files.",
+            "type": "integer",
+            "example": 10
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "FindResultResponseUserInfo": {
         "type": "object",
         "required": [
@@ -1441,25 +1481,6 @@
             "type": "array",
             "items": {
               "type": "string"
-            }
-          }
-        }
-      },
-      "CreateFilesRequest": {
-        "type": "object",
-        "required": [
-          "ProjectId",
-          "Files"
-        ],
-        "properties": {
-          "ProjectId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Files": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileInfo"
             }
           }
         }

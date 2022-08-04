@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-import { AccessType } from './access-type';
+import { FileAccessType } from './file-access-type';
 export interface FileAccess {
-	'Access '?: AccessType;
+	'Access '?: FileAccessType;
 	fileId: string;
 }

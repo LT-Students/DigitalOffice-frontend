@@ -9,7 +9,7 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { CreateFilesRequest } from '../models/create-files-request';
+import { FindResultResponseFileInfo } from '../models/find-result-response-file-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 import { RemoveFilesRequest } from '../models/remove-files-request';
 
@@ -22,22 +22,39 @@ export class FileApiService extends BaseService {
 	}
 
 	/**
-	 * Path part for operation createFile
+	 * Path part for operation findFiles
 	 */
-	static readonly CreateFilePath = '/file/create';
+	static readonly FindFilesPath = '/file/find';
 
 	/**
-	 * Add files to Project.
+	 * Find files from Project.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `createFile()` instead.
+	 * To access only the response body, use `findFiles()` instead.
 	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
+	 * This method doesn't expect any request body.
 	 */
-	createFile$Response(params: { body: CreateFilesRequest }): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, FileApiService.CreateFilePath, 'post');
+	findFiles$Response(params: {
+		/**
+		 * Number of entries to skip
+		 */
+		skipCount: number;
+
+		/**
+		 * Number of projects to take.
+		 */
+		takeCount: number;
+
+		/**
+		 * Return only files with specified project
+		 */
+		projectid?: string;
+	}): Observable<StrictHttpResponse<FindResultResponseFileInfo>> {
+		const rb = new RequestBuilder(this.rootUrl, FileApiService.FindFilesPath, 'get');
 		if (params) {
-			rb.body(params.body, 'application/json');
+			rb.query('skipCount', params.skipCount, {});
+			rb.query('takeCount', params.takeCount, {});
+			rb.query('projectid', params.projectid, {});
 		}
 
 		return this.http
@@ -50,22 +67,37 @@ export class FileApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponse>;
+					return r as StrictHttpResponse<FindResultResponseFileInfo>;
 				})
 			);
 	}
 
 	/**
-	 * Add files to Project.
+	 * Find files from Project.
 	 *
 	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `createFile$Response()` instead.
+	 * To access the full response (for headers, for example), `findFiles$Response()` instead.
 	 *
-	 * This method sends `application/json` and handles request body of type `application/json`.
+	 * This method doesn't expect any request body.
 	 */
-	createFile(params: { body: CreateFilesRequest }): Observable<OperationResultResponse> {
-		return this.createFile$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+	findFiles(params: {
+		/**
+		 * Number of entries to skip
+		 */
+		skipCount: number;
+
+		/**
+		 * Number of projects to take.
+		 */
+		takeCount: number;
+
+		/**
+		 * Return only files with specified project
+		 */
+		projectid?: string;
+	}): Observable<FindResultResponseFileInfo> {
+		return this.findFiles$Response(params).pipe(
+			map((r: StrictHttpResponse<FindResultResponseFileInfo>) => r.body as FindResultResponseFileInfo)
 		);
 	}
 
