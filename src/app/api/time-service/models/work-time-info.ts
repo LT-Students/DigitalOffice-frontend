@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { ProjectInfo } from './project-info';
+import { UserInfo } from './user-info';
 import { WorkTimeJobInfoInfo } from './work-time-job-info-info';
 export interface WorkTimeInfo {
 	day?: number;
@@ -15,6 +16,7 @@ export interface WorkTimeInfo {
 	 */
 	id: string;
 	jobs?: Array<WorkTimeJobInfoInfo>;
+	manager?: UserInfo;
 
 	/**
 	 * Description for alloted time.

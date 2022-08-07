@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.7.7",
+    "version": "1.1.7.8",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -1457,6 +1457,9 @@
             "items": {
               "$ref": "#/components/schemas/WorkTimeJobInfoInfo"
             }
+          },
+          "Manager": {
+            "$ref": "#/components/schemas/UserInfo"
           }
         }
       },
@@ -1752,9 +1755,6 @@
             "$ref": "#/components/schemas/WorkTimeInfo"
           },
           "User": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
-          "Manager": {
             "$ref": "#/components/schemas/UserInfo"
           },
           "LimitInfo": {

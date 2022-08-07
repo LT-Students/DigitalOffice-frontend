@@ -34,8 +34,8 @@ export class LeaveTime {
 		this.id = lt.id;
 		this.leaveType = lt.leaveType;
 		this.comment = lt.comment;
-		this.startDate = DateTime.fromISO(lt.startTime);
-		this.endDate = DateTime.fromISO(lt.endTime);
+		this.startDate = DateTime.fromISO(lt.startTime as string);
+		this.endDate = DateTime.fromISO(lt.endTime as string);
 		this.hours = this.countHours(monthLimit, rate);
 	}
 
@@ -72,7 +72,7 @@ export class UserStat {
 			rate: data.companyUser?.rate || 1,
 			contractName: data.companyUser?.contractSubjectData?.name,
 		};
-		this.limitInfo = data.limitInfo;
+		this.limitInfo = data.limitInfo as WorkTimeMonthLimitInfo;
 		this.workTimes = data.workTimes;
 		this.leaveTimes = data.leaveTimes
 			.filter((lt: LeaveTimeInfo) => lt.isActive)

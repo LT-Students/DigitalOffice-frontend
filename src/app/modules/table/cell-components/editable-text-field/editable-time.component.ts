@@ -34,8 +34,8 @@ import { EditableTextFieldParams } from './editable-text-field.component';
 				mdePopoverPositionY="below"
 			></mat-icon>
 			<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
-				<!--				<span class="mat-body-2">Автор изменения</span>-->
-				<!--			<p>{{ workTime.managerInfo ? (workTime.managerInfo | fullName) : '—' }}</p>-->
+				<span class="mat-body-2">Автор изменения</span>
+				<p>{{ row.manager ? (row.manager | fullName) : '—' }}</p>
 				<span class="mat-body-2">Часы сотрудника</span>
 				<p>{{ row.userHours || 0 }}</p>
 			</mde-popover>

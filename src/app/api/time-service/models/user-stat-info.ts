@@ -11,7 +11,7 @@ export interface UserStatInfo {
 	companyUser?: CompanyUserInfo;
 	department?: DepartmentInfo;
 	leaveTimes: Array<LeaveTimeInfo>;
-	limitInfo: WorkTimeMonthLimitInfo;
+	limitInfo?: WorkTimeMonthLimitInfo;
 	position?: PositionInfo;
 	user: UserInfo;
 	workTimes: Array<WorkTimeInfo>;
