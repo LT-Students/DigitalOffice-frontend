@@ -84,6 +84,16 @@
             "format": "uuid"
           },
           "required": false
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Return only projects with specified department",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
         }
       ],
       "get": {
@@ -137,7 +147,7 @@
           "$ref": "#/components/parameters/projectId"
         },
         {
-          "name": "includefiles",
+          "name": "includeprojectusers",
           "in": "query",
           "schema": {
             "type": "boolean"
@@ -145,7 +155,7 @@
           "required": false
         },
         {
-          "name": "includeimages",
+          "name": "includedepartment",
           "in": "query",
           "schema": {
             "type": "boolean"
@@ -859,6 +869,62 @@
           }
         }
       }
+    },
+    "/department/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "editProjectDepartment",
+        "description": "The method attempts to change project department.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditProjectDepartmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -901,22 +967,6 @@
           },
           "Name": {
             "type": "string"
-          }
-        }
-      },
-      "FileAccess": {
-        "type": "object",
-        "required": [
-          "FileId",
-          "Access"
-        ],
-        "properties": {
-          "FileId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Access ": {
-            "$ref": "#/components/schemas/FileAccessType"
           }
         }
       },
@@ -1035,17 +1085,18 @@
           "Name",
           "Extension",
           "Size",
-          "CreatedAtUtc"
+          "CreatedAtUtc",
+          "Access"
         ],
         "properties": {
           "Id": {
-            "description": "Unique project identifier.",
+            "description": "Unique file identifier.",
             "type": "string",
             "format": "uuid",
             "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
           },
           "Name": {
-            "description": "The file name",
+            "description": "The file name.",
             "type": "string",
             "example": "Image"
           },
@@ -1059,10 +1110,13 @@
             "type": "integer",
             "example": 19211
           },
-          "Role": {
+          "CreatedAtUtc": {
             "description": "Date and time begin file in UTC.",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2021-12-10 03:13"
+          },
+          "Access ": {
+            "$ref": "#/components/schemas/FileAccessType"
           }
         }
       },
@@ -1407,6 +1461,22 @@
           }
         }
       },
+      "ProjectUserInfo": {
+        "type": "object",
+        "required": [
+          "UserId",
+          "Role"
+        ],
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Role": {
+            "$ref": "#/components/schemas/ProjectUserRoleType"
+          }
+        }
+      },
       "FindResultResponseProjectInfo": {
         "type": "object",
         "required": [
@@ -1544,6 +1614,22 @@
           }
         }
       },
+      "EditProjectDepartmentRequest": {
+        "type": "object",
+        "required": [
+          "ProjectId"
+        ],
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "DepartmentId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
@@ -1589,23 +1675,10 @@
           "Project": {
             "$ref": "#/components/schemas/ProjectInfo"
           },
-          "UsersIds": {
+          "Users": {
             "type": "array",
             "items": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          "Files": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileAccess"
-            }
-          },
-          "Images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImageInfo"
+              "$ref": "#/components/schemas/ProjectUserInfo"
             }
           }
         }

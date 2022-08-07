@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { getFileIcon } from '@shared/pipes/file-icon.pipe';
 import { FileInfo } from '@api/project-service/models/file-info';
+import { DateTime } from 'luxon';
+import { formatBytes } from '@shared/pipes/format-bytes.pipe';
 import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
 import { ProjectService } from '../../project.service';
 
 @Injectable()
 export class ProjectFilesService {
-	constructor(private projectService: ProjectService) {}
+	constructor(@Inject(LOCALE_ID) private locale: string, private projectService: ProjectService) {}
 
 	public getFilterData(): FilterDef[] {
 		return [
@@ -59,7 +61,10 @@ export class ProjectFilesService {
 				type: 'textCell',
 				field: 'uploadDate',
 				headerName: 'Дата загрузки',
-				valueGetter: (file: FileInfo) => file.role,
+				valueGetter: (file: FileInfo) => {
+					const date = DateTime.fromISO(file.createdAtUtc).toFormat('dd.MM.yy');
+					return `добавлено ${date}`;
+				},
 				columnStyle: {
 					'flex-grow': 2,
 				},
@@ -68,7 +73,7 @@ export class ProjectFilesService {
 				type: 'textCell',
 				field: 'size',
 				headerName: 'Размер',
-				valueGetter: (file: FileInfo) => file.size,
+				valueGetter: (file: FileInfo) => formatBytes(file.size, this.locale),
 				columnStyle: {
 					'flex-grow': 2,
 				},

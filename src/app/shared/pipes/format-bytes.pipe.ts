@@ -13,7 +13,7 @@ export class FormatBytesPipe implements PipeTransform {
 	}
 }
 
-export function formatBytes(bytes: number, locale: string, precision = 2): string {
+export function formatBytes(bytes: number, locale: string, precision = 0): string {
 	if (bytes === 0) return '0 байт';
 
 	const k = 1024;

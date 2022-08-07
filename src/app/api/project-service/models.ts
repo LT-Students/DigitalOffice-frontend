@@ -1,6 +1,5 @@
 export { DepartmentInfo } from './models/department-info';
 export { PositionInfo } from './models/position-info';
-export { FileAccess } from './models/file-access';
 export { ImageContent } from './models/image-content';
 export { ImageInfo } from './models/image-info';
 export { FileAccessType } from './models/file-access-type';
@@ -15,12 +14,14 @@ export { EditProjectUsersRoleRequest } from './models/edit-project-users-role-re
 export { EditProjectRequest } from './models/edit-project-request';
 export { ProjectPatchDocument } from './models/project-patch-document';
 export { UserRequest } from './models/user-request';
+export { ProjectUserInfo } from './models/project-user-info';
 export { FindResultResponseProjectInfo } from './models/find-result-response-project-info';
 export { FindResultResponseFileInfo } from './models/find-result-response-file-info';
 export { FindResultResponseUserInfo } from './models/find-result-response-user-info';
 export { RemoveFilesRequest } from './models/remove-files-request';
 export { CreateImagesRequest } from './models/create-images-request';
 export { RemoveImageRequest } from './models/remove-image-request';
+export { EditProjectDepartmentRequest } from './models/edit-project-department-request';
 export { OperationResultResponse } from './models/operation-result-response';
 export { OperationResultResponseProjectResponse } from './models/operation-result-response-project-response';
 export { ProjectResponse } from './models/project-response';

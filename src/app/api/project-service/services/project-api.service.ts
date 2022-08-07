@@ -70,6 +70,11 @@ export class ProjectApiService extends BaseService {
 		 * Return only projects with specified user
 		 */
 		userid?: string;
+
+		/**
+		 * Return only projects with specified department
+		 */
+		departmentid?: string;
 	}): Observable<StrictHttpResponse<FindResultResponseProjectInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.FindProjectsPath, 'get');
 		if (params) {
@@ -80,6 +85,7 @@ export class ProjectApiService extends BaseService {
 			rb.query('takeCount', params.takeCount, {});
 			rb.query('includedepartment', params.includedepartment, {});
 			rb.query('userid', params.userid, {});
+			rb.query('departmentid', params.departmentid, {});
 		}
 
 		return this.http
@@ -138,6 +144,11 @@ export class ProjectApiService extends BaseService {
 		 * Return only projects with specified user
 		 */
 		userid?: string;
+
+		/**
+		 * Return only projects with specified department
+		 */
+		departmentid?: string;
 	}): Observable<FindResultResponseProjectInfo> {
 		return this.findProjects$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponseProjectInfo>) => r.body as FindResultResponseProjectInfo)
@@ -160,14 +171,14 @@ export class ProjectApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
-		includefiles?: boolean;
-		includeimages?: boolean;
+		includeprojectusers?: boolean;
+		includedepartment?: boolean;
 	}): Observable<StrictHttpResponse<OperationResultResponseProjectResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, ProjectApiService.GetProjectPath, 'get');
 		if (params) {
 			rb.query('projectId', params.projectId, {});
-			rb.query('includefiles', params.includefiles, {});
-			rb.query('includeimages', params.includeimages, {});
+			rb.query('includeprojectusers', params.includeprojectusers, {});
+			rb.query('includedepartment', params.includedepartment, {});
 		}
 
 		return this.http
@@ -196,8 +207,8 @@ export class ProjectApiService extends BaseService {
 		 * Project global unique identifier.
 		 */
 		projectId: string;
-		includefiles?: boolean;
-		includeimages?: boolean;
+		includeprojectusers?: boolean;
+		includedepartment?: boolean;
 	}): Observable<OperationResultResponseProjectResponse> {
 		return this.getProject$Response(params).pipe(
 			map(

@@ -14,6 +14,7 @@ import { UserInfo } from '@api/project-service/models/user-info';
 import { MAX_INT32 } from '@app/utils/utils';
 import { UserRequest } from '@api/project-service/models/user-request';
 import { FileInfo } from '@api/project-service/models/file-info';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 
 @Injectable({
 	providedIn: 'root',
@@ -34,8 +35,6 @@ export class ProjectService {
 		return this.projectService
 			.getProject({
 				projectId: projectId,
-				includefiles: true,
-				includeimages: true,
 			})
 			.pipe(map((res: OperationResultResponse) => res.body as ProjectResponse));
 	}
@@ -71,6 +70,10 @@ export class ProjectService {
 
 	public removeUsers(projectId: string, userIds: string[]): Observable<any> {
 		return this.projectUsersService.removeProjectUsers({ projectId, body: userIds });
+	}
+
+	public changeUserRole(projectId: string, userId: string, role: ProjectUserRoleType) {
+		return this.projectUsersService.editProjectUsers({ projectId, body: { usersIds: [userId], role } });
 	}
 
 	public findFiles(projectId: string): Observable<FileInfo[]> {
