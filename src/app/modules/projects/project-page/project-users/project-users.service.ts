@@ -1,22 +1,42 @@
 import { Injectable } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { FileInfo } from '@api/project-service/models/file-info';
+import { UserInfo } from '@api/project-service/models/user-info';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
+import { ProjectResponse } from '@api/project-service/models/project-response';
+import { first, map, switchMap, tap } from 'rxjs/operators';
+import { DialogService } from '@app/services/dialog.service';
 import { Observable } from 'rxjs';
+import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { ProjectService } from '../../project.service';
-import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
+import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
+import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
 
 @Injectable()
 export class ProjectUsersService {
-	constructor(private projectService: ProjectService) {}
+	constructor(
+		private selectedProject: SelectedProjectService,
+		private projectService: ProjectService,
+		private dialog: DialogService,
+		private autocompleteConfigs: AutocompleteConfigsService
+	) {}
 
 	public getFilterData(): FilterDef[] {
 		return [
 			{
+				key: 'position',
+				type: 'autocomplete',
+				width: 176,
+				params: new AutocompleteFilterParams({
+					...this.autocompleteConfigs.getPositionsConfig(),
+					placeholder: 'Должность',
+				}),
+			},
+			{
 				key: 'nameincludesubstring',
 				type: 'input',
-				width: 267,
-				params: new InputFilterParams({ placeholder: 'Поиск документа', icon: Icons.Search }),
+				width: 324,
+				params: new InputFilterParams({ placeholder: 'поиск', icon: Icons.Search }),
 			},
 		];
 	}
@@ -24,36 +44,85 @@ export class ProjectUsersService {
 	public getTableColumns(): ColumnDef[] {
 		return [
 			{
-				type: 'checkboxCell',
-				field: 'checkbox',
-				columnStyle: {
-					'flex-grow': 0,
+				type: 'userInfoCell',
+				field: 'userInfo',
+				headerName: 'Фио',
+				sortEnabled: true,
+				valueGetter: (user: UserInfo) => ({ ...user, avatar: user.avatarImage }),
+				columnStyle: { overflow: 'hidden' },
+				headerStyle: { 'margin-left': '60px' },
+				params: {
+					statusIconGetter: (user: UserInfo) =>
+						user.role === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
+					iconColor: '#FFD89E',
 				},
 			},
 			{
-				type: 'fileInfoCell',
-				field: 'fileInfo',
-				valueGetter: () => ({ name: 'file', extension: 'png' }),
-				columnStyle: {
-					'flex-grow': 2,
+				type: 'selectCell',
+				field: 'role',
+				headerName: 'Роль',
+				valueGetter: (user: UserInfo) => user.role,
+				headerStyle: { 'padding-left': '20px', flex: '0 0 20%' },
+				columnStyle: { flex: '0 0 20%' },
+				params: {
+					options: [ProjectUserRoleType.Employee, ProjectUserRoleType.Manager],
+					displayValueGetter: (role: ProjectUserRoleType) =>
+						role === ProjectUserRoleType.Manager ? 'Менеджер проект' : 'Участник проекта',
+					iconGetter: (role: ProjectUserRoleType) =>
+						role === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
+					iconColor: '#FFD89E',
+					updateRow: (user: UserInfo, role: ProjectUserRoleType) => {
+						this.selectedProject.info$
+							.pipe(
+								first(),
+								map((p: ProjectResponse) => p.project.id),
+								switchMap((projectId: string) => this.changeUserRole(projectId, user.id, role))
+							)
+							.subscribe();
+					},
 				},
 			},
 			{
 				type: 'iconButtonCell',
-				field: 'download',
-				valueGetter: () => {},
+				field: 'delete-button',
+				valueGetter: (user: UserInfo) => user,
 				params: {
-					icon: () => Icons.Download,
-					onClickFn: () => {},
+					icon: () => Icons.Delete,
+					onClickFn: (user: UserInfo) => {
+						this.selectedProject.info$
+							.pipe(
+								first(),
+								map((p: ProjectResponse) => p.project.id)
+							)
+							.subscribe({
+								next: (projectId: string) => {
+									this.dialog.confirm({
+										title: 'Удаление сотрудника из проекта',
+										message: 'Вы действительно хотите удалить этого сотрудника из проекта?',
+										confirmText: 'Да, удалить',
+										action$: this.removeUsers(projectId, [user.id]),
+									});
+								},
+							});
+					},
 				},
-				columnStyle: {
-					'flex-grow': 0,
-				},
+				headerStyle: { flex: '0 0 48px' },
+				columnStyle: { flex: '0' },
 			},
 		];
 	}
 
-	public addFiles(projectId: string, files: FileInfo[]): Observable<any> {
-		return this.projectService.addFiles(projectId, files);
+	private removeUsers(projectId: string, userIds: string[]): Observable<any> {
+		return this.projectService.removeUsers(projectId, userIds).pipe(
+			switchMap(() => this.projectService.getProjectUsers(projectId)),
+			tap((users: UserInfo[]) => this.selectedProject.setProject({ users }))
+		);
+	}
+
+	private changeUserRole(projectId: string, userId: string, role: ProjectUserRoleType): Observable<any> {
+		return this.projectService.changeUserRole(projectId, userId, role).pipe(
+			switchMap(() => this.projectService.getProjectUsers(projectId)),
+			tap((users: UserInfo[]) => this.selectedProject.setProject({ users }))
+		);
 	}
 }

@@ -52,7 +52,7 @@ export class CreateEditProjectComponent implements OnInit {
 
 	public ngOnInit(): void {
 		if (this.isEditMode) {
-			this.selectedProject.project$
+			this.selectedProject.info$
 				.pipe(
 					first(),
 					map((projectRes: ProjectResponse) => projectRes.project)

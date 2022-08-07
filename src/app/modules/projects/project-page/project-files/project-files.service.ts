@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { Observable } from 'rxjs';
+import { getFileIcon } from '@shared/pipes/file-icon.pipe';
 import { FileInfo } from '@api/project-service/models/file-info';
+import { DateTime } from 'luxon';
+import { formatBytes } from '@shared/pipes/format-bytes.pipe';
 import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
 import { ProjectService } from '../../project.service';
 
 @Injectable()
 export class ProjectFilesService {
-	constructor(private projectService: ProjectService) {}
+	constructor(@Inject(LOCALE_ID) private locale: string, private projectService: ProjectService) {}
 
 	public getFilterData(): FilterDef[] {
 		return [
@@ -31,9 +33,47 @@ export class ProjectFilesService {
 				},
 			},
 			{
-				type: 'fileInfoCell',
-				field: 'fileInfo',
-				valueGetter: () => ({ name: 'file', extension: 'png' }),
+				type: 'iconCell',
+				field: 'type-icon',
+				valueGetter: (file: FileInfo) => getFileIcon(file.extension),
+				headerStyle: { flex: '0 0 24px', 'margin-right': '12px' },
+				columnStyle: { flex: 0, 'margin-right': '12px' },
+			},
+			{
+				type: 'textCell',
+				field: 'name',
+				headerName: 'Название',
+				valueGetter: (file: FileInfo) => file.name,
+				columnStyle: {
+					'flex-grow': 2,
+				},
+			},
+			{
+				type: 'textCell',
+				field: 'extension',
+				headerName: 'Тип',
+				valueGetter: (file: FileInfo) => file.extension.toUpperCase(),
+				columnStyle: {
+					'flex-grow': 2,
+				},
+			},
+			{
+				type: 'textCell',
+				field: 'uploadDate',
+				headerName: 'Дата загрузки',
+				valueGetter: (file: FileInfo) => {
+					const date = DateTime.fromISO(file.createdAtUtc).toFormat('dd.MM.yy');
+					return `добавлено ${date}`;
+				},
+				columnStyle: {
+					'flex-grow': 2,
+				},
+			},
+			{
+				type: 'textCell',
+				field: 'size',
+				headerName: 'Размер',
+				valueGetter: (file: FileInfo) => formatBytes(file.size, this.locale),
 				columnStyle: {
 					'flex-grow': 2,
 				},
@@ -41,6 +81,7 @@ export class ProjectFilesService {
 			{
 				type: 'iconButtonCell',
 				field: 'download',
+				headerName: 'Скачать',
 				valueGetter: () => {},
 				params: {
 					icon: () => Icons.Download,
@@ -51,9 +92,5 @@ export class ProjectFilesService {
 				},
 			},
 		];
-	}
-
-	public addFiles(projectId: string, files: FileInfo[]): Observable<any> {
-		return this.projectService.addFiles(projectId, files);
 	}
 }

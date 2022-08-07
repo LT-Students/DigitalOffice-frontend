@@ -14,9 +14,9 @@ import { FindResultResponseWorkTimeResponse } from '@api/time-service/models/fin
 import { FindResultResponseLeaveTimeResponse } from '@api/time-service/models/find-result-response-leave-time-response';
 import { StatApiService } from '@api/time-service/services/stat-api.service';
 import { ImportApiService } from '@api/time-service/services/import-api.service';
-import { FindResultResponseStatInfo } from '@api/time-service/models/find-result-response-stat-info';
 import { OperationResultResponseByteArray } from '@api/time-service/models/operation-result-response-byte-array';
 import { CreateWorkTimeRequest } from '@api/time-service/models/create-work-time-request';
+import { FindResultResponseUserStatInfo } from '@api/time-service/models/find-result-response-user-stat-info';
 
 export interface IFindWorkTimesRequest {
 	userid?: string;
@@ -62,10 +62,8 @@ export interface IEditWorkTimeMonthLimitRequest {
 export interface IFindStatRequest {
 	departmentsIds?: Array<string>;
 	projectId?: string;
-	/**
-	 * When value is &#x27;true&#x27; sorts A-Z, when value is &#x27;false&#x27; sorts Z-A, when null - without sort
-	 */
 	ascendingsort?: boolean;
+	nameincludesubstring?: string;
 	month?: number;
 	year: number;
 	takeCount: number;
@@ -154,7 +152,7 @@ export class TimeService {
 		return this._workTimeService.editWorkTimeMonthLimit(params);
 	}
 
-	public findStat(params: IFindStatRequest): Observable<FindResultResponseStatInfo> {
+	public findStat(params: IFindStatRequest): Observable<FindResultResponseUserStatInfo> {
 		return this._statService.findStat(params);
 	}
 

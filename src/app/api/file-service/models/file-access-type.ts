@@ -4,7 +4,7 @@
 /**
  * Type of the access to the file.
  */
-export enum AccessType {
+export enum FileAccessType {
 	Manager = 'Manager',
 	Team = 'Team',
 	Public = 'Public',

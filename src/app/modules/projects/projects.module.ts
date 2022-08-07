@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CdkTableModule } from '@angular/cdk/table';
 import { TableModule } from '../table/table.module';
 import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { ProjectsRoutingModule } from './projects-routing.module';
@@ -17,6 +19,11 @@ import { ProjectDescriptionComponent } from './project-page/project-description/
 import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
 import { ProjectFilesComponent } from './project-page/project-files/project-files.component';
 import { ProjectUsersComponent } from './project-page/project-users/project-users.component';
+import { AddProjectUsersComponent } from './add-project-users/add-project-users.component';
+import { AddFilesComponent } from './add-files/add-files.component';
+import { UploadProgressComponent } from './add-files/upload-progress/upload-progress.component';
+import { UploadItemComponent } from './add-files/upload-progress/upload-item.component';
+import { EditFileComponent } from './project-page/project-files/edit-file/edit-file.component';
 
 @NgModule({
 	declarations: [
@@ -34,7 +41,19 @@ import { ProjectUsersComponent } from './project-page/project-users/project-user
 		ProjectIdRouteContainerComponent,
 		ProjectFilesComponent,
 		ProjectUsersComponent,
+		AddProjectUsersComponent,
+		AddFilesComponent,
+		UploadProgressComponent,
+		UploadItemComponent,
+		EditFileComponent,
 	],
-	imports: [SharedModule, ProjectsRoutingModule, TableModule, DynamicFilterModule],
+	imports: [
+		SharedModule,
+		ProjectsRoutingModule,
+		TableModule,
+		DynamicFilterModule,
+		MatProgressBarModule,
+		CdkTableModule,
+	],
 })
 export class ProjectsModule {}

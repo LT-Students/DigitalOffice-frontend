@@ -1,6 +1,6 @@
 <div class="flex">
 	<do-dynamic-filter [filters]="filterData"></do-dynamic-filter>
-	<button doButton (click)="contextMenu.openContextMenu($event)">
+	<button doButton (click)="contextMenu.openContextMenu($event, {})">
 		<mat-icon [svgIcon]="Icons.KebabMenu" [style.transform]="'rotate(90deg)'"></mat-icon>
 	</button>
 	<do-actions>

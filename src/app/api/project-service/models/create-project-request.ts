@@ -1,6 +1,5 @@
 /* tslint:disable */
 /* eslint-disable */
-import { FileInfo } from './file-info';
 import { ImageContent } from './image-content';
 import { ProjectStatusType } from './project-status-type';
 import { UserRequest } from './user-request';
@@ -24,7 +23,6 @@ export interface CreateProjectRequest {
 	 * Date and time finish project in UTC.
 	 */
 	endDateUtc?: any;
-	files: Array<FileInfo>;
 
 	/**
 	 * Project name.
@@ -45,7 +43,7 @@ export interface CreateProjectRequest {
 	/**
 	 * Date and time begin project in UTC.
 	 */
-	startDateUtc?: any;
+	startDateUtc: any;
 	status: ProjectStatusType;
 	users: Array<UserRequest>;
 }

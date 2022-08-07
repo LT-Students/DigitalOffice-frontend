@@ -3,7 +3,7 @@
 	<ng-container *ngIf="buttonShowed">
 		<button
 			*ngIf="commentCollapsed; else collapseButton"
-			mat-flat-button
+			doButton
 			class="comment__button"
 			(click)="expandComment()"
 		>
@@ -11,7 +11,7 @@
 			<mat-icon>keyboard_arrow_down</mat-icon>
 		</button>
 		<ng-template #collapseButton>
-			<button mat-flat-button class="comment__button" (click)="collapseComment()">
+			<button doButton class="comment__button" (click)="collapseComment()">
 				<span>Свернуть</span>
 				<mat-icon>keyboard_arrow_up</mat-icon>
 			</button>

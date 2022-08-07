@@ -1,0 +1,22 @@
+.search,
+.user-count {
+	margin-bottom: 18px;
+}
+
+.toggle {
+	margin-left: 22px;
+}
+
+.list {
+	height: 50vh;
+
+	.table {
+		padding: 0 0 12px;
+	}
+}
+
+mat-dialog-actions {
+	button:last-child {
+		margin-left: 32px;
+	}
+}

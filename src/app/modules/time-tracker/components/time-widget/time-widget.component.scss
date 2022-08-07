@@ -1,12 +1,16 @@
 @use 'base/variables';
 
 .time-widget {
-	padding: 0 50px 32px;
+	padding: 32px 48px;
 
 	display: flex;
 	flex-direction: column;
 
 	height: 100%;
+
+	do-title-datepicker {
+		margin-bottom: 24px;
+	}
 
 	.chart {
 		padding-bottom: 30px;

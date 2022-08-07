@@ -8,10 +8,11 @@ import { StatusComponent } from './cell-components/status/status.component';
 import { CheckboxComponent } from './cell-components/checkbox/checkbox.component';
 import { UserInfoComponent } from './cell-components/user-info/user-info.component';
 import { IconButtonComponent } from './cell-components/icon-button/icon-button.component';
-import { LeaveTimesComponent } from './cell-components/leave-times/leave-times.component';
-import { LeaveItemComponent } from './cell-components/leave-times/leave-item.component';
-import { FileInfoComponent } from './cell-components/file-info/file-info.component';
-import { FileIconPipe } from './cell-components/file-info/file-icon.pipe';
+import { SelectComponent } from './cell-components/select/select.component';
+import { IconComponent } from './cell-components/icon/icon.component';
+import { EditableTextFieldComponent } from './cell-components/editable-text-field/editable-text-field.component';
+import { EditableTimeComponent } from './cell-components/editable-text-field/editable-time.component';
+import { ShowMoreTextComponent } from './cell-components/show-more-text/show-more-text.component';
 
 @NgModule({
 	declarations: [
@@ -22,10 +23,11 @@ import { FileIconPipe } from './cell-components/file-info/file-icon.pipe';
 		CheckboxComponent,
 		UserInfoComponent,
 		IconButtonComponent,
-		LeaveTimesComponent,
-		LeaveItemComponent,
-		FileInfoComponent,
-		FileIconPipe,
+		SelectComponent,
+		IconComponent,
+		EditableTextFieldComponent,
+		EditableTimeComponent,
+		ShowMoreTextComponent,
 	],
 	imports: [SharedModule, CdkTableModule],
 	exports: [TableComponent],

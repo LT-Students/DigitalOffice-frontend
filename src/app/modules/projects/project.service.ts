@@ -7,15 +7,24 @@ import { OperationResultResponse } from '@app/types/operation-result-response.in
 import { CreateProjectRequest } from '@api/project-service/models/create-project-request';
 import { EditRequest, ProjectPath } from '@app/types/edit-request';
 import { FileApiService } from '@api/project-service/services/file-api.service';
-import { FileInfo } from '@api/project-service/models/file-info';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { IFindProjects } from '@app/services/project/project.service';
+import { UserApiService } from '@api/project-service/services/user-api.service';
+import { UserInfo } from '@api/project-service/models/user-info';
+import { MAX_INT32 } from '@app/utils/utils';
+import { UserRequest } from '@api/project-service/models/user-request';
+import { FileInfo } from '@api/project-service/models/file-info';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ProjectService {
-	constructor(private projectService: ProjectApiService, private fileService: FileApiService) {}
+	constructor(
+		private projectService: ProjectApiService,
+		private fileService: FileApiService,
+		private projectUsersService: UserApiService
+	) {}
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
 		params = { ...params, includedepartment: true };
@@ -26,8 +35,8 @@ export class ProjectService {
 		return this.projectService
 			.getProject({
 				projectId: projectId,
-				includefiles: true,
-				includeimages: true,
+				includeprojectusers: true,
+				includedepartment: true,
 			})
 			.pipe(map((res: OperationResultResponse) => res.body as ProjectResponse));
 	}
@@ -44,9 +53,34 @@ export class ProjectService {
 			.pipe(map((res: OperationResultResponse) => res.body));
 	}
 
-	public addFiles(projectId: string, files: FileInfo[]): Observable<any> {
-		return this.fileService
-			.createFile({ body: { projectId, files } })
+	public getProjectUsers(projectId: string): Observable<UserInfo[]> {
+		return this.projectUsersService
+			.findUsers({
+				projectId,
+				includeAvatars: true,
+				includePositions: true,
+				isActive: true,
+				skipCount: 0,
+				takeCount: MAX_INT32,
+			})
 			.pipe(map((res: OperationResultResponse) => res.body));
+	}
+
+	public addUsers(projectId: string, users: UserRequest[]): Observable<any> {
+		return this.projectUsersService.createProjectUsers({ body: { projectId, users } });
+	}
+
+	public removeUsers(projectId: string, userIds: string[]): Observable<any> {
+		return this.projectUsersService.removeProjectUsers({ projectId, body: userIds });
+	}
+
+	public changeUserRole(projectId: string, userId: string, role: ProjectUserRoleType) {
+		return this.projectUsersService.editProjectUsers({ projectId, body: { usersIds: [userId], role } });
+	}
+
+	public findFiles(projectId: string): Observable<FileInfo[]> {
+		return this.fileService
+			.findFiles({ projectid: projectId, skipCount: 0, takeCount: MAX_INT32 })
+			.pipe(map((res) => res.body as FileInfo[]));
 	}
 }

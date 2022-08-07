@@ -2,14 +2,6 @@ do-actions {
 	margin-left: auto;
 }
 
-.file-table {
-	display: flex;
-
-	> do-table {
-		flex: 1;
-	}
-
-	> do-table:not(:last-child) {
-		margin-right: 12px;
-	}
+.header {
+	margin-bottom: 16px;
 }

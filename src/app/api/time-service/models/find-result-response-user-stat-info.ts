@@ -1,8 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
-import { StatInfo } from './stat-info';
-export interface FindResultResponseStatInfo {
-	body?: Array<StatInfo>;
+import { UserStatInfo } from './user-stat-info';
+export interface FindResultResponseUserStatInfo {
+	body?: Array<UserStatInfo>;
 	errors: Array<string>;
 
 	/**

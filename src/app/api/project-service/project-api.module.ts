@@ -8,6 +8,7 @@ import { ProjectApiService } from './services/project-api.service';
 import { FileApiService } from './services/file-api.service';
 import { ImageApiService } from './services/image-api.service';
 import { UserApiService } from './services/user-api.service';
+import { DepartmentApiService } from './services/department-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -16,7 +17,14 @@ import { UserApiService } from './services/user-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [ProjectApiService, FileApiService, ImageApiService, UserApiService, ApiConfiguration],
+	providers: [
+		ProjectApiService,
+		FileApiService,
+		ImageApiService,
+		UserApiService,
+		DepartmentApiService,
+		ApiConfiguration,
+	],
 })
 export class ProjectApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<ProjectApiModule> {

@@ -1,22 +1,24 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { CollectionViewer, DataSource } from '@angular/cdk/collections';
+import {
+	AfterContentInit,
+	ChangeDetectionStrategy,
+	Component,
+	ContentChild,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	TemplateRef,
+	ViewChild,
+} from '@angular/core';
+import { DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import { Observable } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
+import { SelectionModel } from '@app/utils/selection-model';
+import { CdkNoDataRow, CdkTable } from '@angular/cdk/table';
 import { ColumnDef } from './models';
 import { TableOptions } from './models/table-options';
-
-export class SimpleDataSource<T> extends DataSource<T> {
-	constructor(private data$: Observable<T[]>) {
-		super();
-	}
-	public connect(collectionViewer: CollectionViewer): Observable<T[]> {
-		return this.data$;
-	}
-
-	public disconnect(collectionViewer: CollectionViewer): void {}
-}
 
 @Component({
 	selector: 'do-table',
@@ -31,13 +33,17 @@ export class SimpleDataSource<T> extends DataSource<T> {
 		]),
 	],
 })
-export class TableComponent<T> implements OnInit {
+export class TableComponent<T> implements OnInit, AfterContentInit {
+	@ContentChild(CdkNoDataRow) noDataRow?: CdkNoDataRow;
+	@ViewChild(CdkTable, { static: true }) table!: CdkTable<T>;
 	@ViewChild(MatSort, { static: true }) sort!: MatSort;
 
 	@Output() rowClick = new EventEmitter<T>();
 	@Output() sortChange = new EventEmitter<Sort>();
 
-	public expandedElement?: T;
+	public expandedElement: T | null = null;
+	public selection = new SelectionModel<T>(true, [], true);
+	@Input() selectionCompareWith?: (o1: T, o2: T) => boolean;
 
 	@Input()
 	set tableOptions(options: TableOptions) {
@@ -45,8 +51,10 @@ export class TableComponent<T> implements OnInit {
 		this.columns = options.columns || this._columns;
 		this._rowHeight = options.rowHeight || this._rowHeight;
 		this._rowStyle = options.rowStyle || this._rowStyle;
+		this._rowClass = options.rowClass || this._rowClass;
 		this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
-		this.expandedRowOptions = options.expandedRowOptions || this.expandedRowOptions;
+		this.expandedRowComparator = options.expandedRowComparator || this.expandedRowComparator;
+		this.selectionCompareWith = options.selectionCompareWith || this.selectionCompareWith;
 	}
 
 	@Input()
@@ -67,6 +75,15 @@ export class TableComponent<T> implements OnInit {
 	}
 	private _rowStyle = {};
 
+	@Input()
+	set rowClass(className: string) {
+		this._rowClass = className;
+	}
+	get rowClass(): string {
+		return this._rowClass;
+	}
+	private _rowClass = '';
+
 	@Input() dataSource!: T[] | DataSource<T> | Observable<readonly T[]>;
 	@Input()
 	set columns(cols: ColumnDef[]) {
@@ -83,11 +100,27 @@ export class TableComponent<T> implements OnInit {
 
 	public displayColumns: string[] = [];
 
-	@Input() expandedRowOptions: TableOptions = {};
-
+	@Input() expandedRowTemplate: TemplateRef<any> | null = null;
 	@Input() isRowExpandable: (index: number, rowData: T) => boolean = () => false;
+	@Input() expandedRowComparator: ([expandedRow, row]: [T | null, T]) => boolean = ([expandedRow, row]) =>
+		expandedRow === row;
 
 	constructor() {}
 
-	public ngOnInit(): void {}
+	public ngOnInit(): void {
+		this.selection.compareWith = this.selectionCompareWith;
+	}
+
+	public ngAfterContentInit(): void {
+		if (this.noDataRow) {
+			this.table.setNoDataRow(this.noDataRow);
+		}
+	}
+
+	public handleRowClick(row: T): void {
+		this.rowClick.emit(row);
+		if (this.expandedRowTemplate) {
+			this.expandedElement = this.expandedRowComparator([this.expandedElement, row]) ? null : row;
+		}
+	}
 }

@@ -2,8 +2,6 @@
 /* eslint-disable */
 import { ProjectStatusType } from './project-status-type';
 export interface ProjectInfo {
-	description?: string;
-
 	/**
 	 * Unique project identifier.
 	 */
@@ -12,12 +10,12 @@ export interface ProjectInfo {
 	/**
 	 * Project name.
 	 */
-	name: string;
+	name?: string;
 	shortDescription?: string;
 
 	/**
 	 * Project short name.
 	 */
 	shortName?: string;
-	status: ProjectStatusType;
+	status?: ProjectStatusType;
 }

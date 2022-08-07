@@ -27,7 +27,7 @@ export class WorkTime implements WorkTimeInfo {
 		return this.managerHours || this.userHours;
 	}
 
-	constructor({ workTime, limitInfo, user, manager }: WorkTimeResponse) {
+	constructor({ workTime, limitInfo, user }: WorkTimeResponse) {
 		this.id = workTime.id;
 		this.month = workTime.month;
 		this.year = workTime.year;
@@ -40,7 +40,7 @@ export class WorkTime implements WorkTimeInfo {
 		this.managerDescription = workTime.managerDescription;
 		this.limitInfo = limitInfo;
 		this.userInfo = user;
-		this.managerInfo = manager;
+		this.managerInfo = workTime.manager;
 
 		const project = workTime.project as ProjectInfo;
 		this.project = isGUIDEmpty(project.id)

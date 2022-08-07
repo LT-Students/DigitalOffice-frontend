@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.7.6",
+    "version": "1.1.7.8",
     "title": "TimeService",
     "description": "TimeService is an API intended to work with the WorkTime and LeaveTime."
   },
@@ -55,17 +55,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -75,7 +78,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -167,17 +170,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/FindResultResponseLeaveTimeResponse"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/FindResultResponseLeaveTimeResponse"
                 }
               }
             }
@@ -187,7 +193,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/FindResultResponseLeaveTimeResponse"
                 }
               }
             }
@@ -243,17 +249,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -263,7 +272,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -313,6 +322,9 @@
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           }
         }
       }
@@ -403,17 +415,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -423,7 +438,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -479,17 +494,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -499,7 +517,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -567,17 +585,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/FindResultResponseWorkTimeMonthLimitInfo"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/FindResultResponseWorkTimeMonthLimitInfo"
                 }
               }
             }
@@ -587,7 +608,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/FindResultResponseWorkTimeMonthLimitInfo"
                 }
               }
             }
@@ -643,17 +664,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -663,7 +687,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -709,17 +733,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -729,7 +756,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -785,17 +812,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -805,7 +835,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -875,17 +905,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/OperationResultResponseByteArray"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/OperationResultResponseByteArray"
                 }
               }
             }
@@ -925,6 +958,15 @@
           "description": "When value is 'true' sorts A-Z, when value is 'false' sorts Z-A, when null - without sort",
           "schema": {
             "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "nameincludesubstring",
+          "in": "query",
+          "description": "filter by user's name",
+          "schema": {
+            "type": "string"
           },
           "required": false
         },
@@ -973,7 +1015,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/FindResultResponseStatInfo"
+                  "$ref": "#/components/schemas/FindResultResponseUserStatInfo"
                 }
               }
             }
@@ -983,17 +1025,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/FindResultResponseUserStatInfo"
                 }
               }
             }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
           },
           "403": {
             "description": "Forbidden.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/FindResultResponseUserStatInfo"
                 }
               }
             }
@@ -1249,6 +1294,25 @@
             "format": "date-time",
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2020-07-18T08:23"
+          },
+          "ContractSubjectData": {
+            "$ref": "#/components/schemas/ContractSubjectData"
+          }
+        }
+      },
+      "ContractSubjectData": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
           }
         }
       },
@@ -1393,6 +1457,9 @@
             "items": {
               "$ref": "#/components/schemas/WorkTimeJobInfoInfo"
             }
+          },
+          "Manager": {
+            "$ref": "#/components/schemas/UserInfo"
           }
         }
       },
@@ -1529,9 +1596,7 @@
       "ProjectInfo": {
         "type": "object",
         "required": [
-          "Id",
-          "Name",
-          "Status"
+          "Id"
         ],
         "properties": {
           "Id": {
@@ -1555,10 +1620,6 @@
           "Status": {
             "$ref": "#/components/schemas/ProjectStatusType",
             "nullable": false
-          },
-          "Description": {
-            "type": "string",
-            "nullable": true
           },
           "ShortDescription": {
             "type": "string",
@@ -1646,29 +1707,12 @@
           }
         }
       },
-      "StatInfo": {
-        "type": "object",
-        "required": [
-          "UsersStats"
-        ],
-        "properties": {
-          "DepartmentInfo": {
-            "$ref": "#/components/schemas/DepartmentInfo"
-          },
-          "UsersStats": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserStatInfo"
-            }
-          }
-        }
-      },
       "UserStatInfo": {
         "type": "object",
         "required": [
-          "LeaveTimes",
+          "User",
           "WorkTimes",
-          "LimitInfo"
+          "LeaveTimes"
         ],
         "properties": {
           "User": {
@@ -1679,6 +1723,9 @@
           },
           "CompanyUser": {
             "$ref": "#/components/schemas/CompanyUserInfo"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/DepartmentInfo"
           },
           "LeaveTimes": {
             "type": "array",
@@ -1708,9 +1755,6 @@
             "$ref": "#/components/schemas/WorkTimeInfo"
           },
           "User": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
-          "Manager": {
             "$ref": "#/components/schemas/UserInfo"
           },
           "LimitInfo": {
@@ -1818,7 +1862,7 @@
           }
         }
       },
-      "FindResultResponseStatInfo": {
+      "FindResultResponseUserStatInfo": {
         "type": "object",
         "required": [
           "TotalCount",
@@ -1832,7 +1876,7 @@
           "Body": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/StatInfo"
+              "$ref": "#/components/schemas/UserStatInfo"
             }
           },
           "Errors": {
@@ -1840,25 +1884,6 @@
             "items": {
               "type": "string"
             }
-          }
-        }
-      },
-      "ErrorResponse": {
-        "description": "Error information",
-        "type": "object",
-        "properties": {
-          "UtcTime": {
-            "type": "string",
-            "format": "date-time",
-            "pattern": "YYYY-MM-DDTHH:mm",
-            "example": "2021-06-18T08:23"
-          },
-          "Header": {
-            "type": "string"
-          },
-          "Message": {
-            "description": "A human readable message providing more details about the error.",
-            "type": "string"
           }
         }
       },

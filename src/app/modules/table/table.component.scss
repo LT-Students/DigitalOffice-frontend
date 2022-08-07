@@ -19,6 +19,9 @@ cdk-header-row {
 }
 
 cdk-row {
+	position: relative;
+	z-index: 10;
+
 	padding: 0 34px;
 
 	overflow: hidden;
@@ -62,5 +65,20 @@ cdk-footer-cell {
 
 	.message {
 		margin-top: 20px;
+	}
+}
+
+cdk-row.expanded-row {
+	position: relative;
+	z-index: 5;
+	top: -16px;
+
+	padding: 0;
+
+	border-radius: 0;
+	box-shadow: none;
+
+	&:hover {
+		box-shadow: none;
 	}
 }

@@ -1,0 +1,27 @@
+@use 'base/variables' as variables;
+
+.item:not(:last-child) {
+	margin-bottom: 8px;
+}
+
+.actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.hint {
+		margin-bottom: 32px;
+
+		display: flex;
+	}
+
+	.icon {
+		margin-right: 16px;
+
+		color: variables.$diagram_7;
+	}
+
+	.cancel {
+		width: 130px;
+	}
+}

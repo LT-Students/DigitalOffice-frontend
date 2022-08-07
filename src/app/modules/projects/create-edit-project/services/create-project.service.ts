@@ -23,7 +23,6 @@ export class CreateProjectService implements CreateEditProject {
 			description: formValue.description.description,
 			shortDescription: formValue.description.shortDescription,
 			departmentId: formValue.info.department as string,
-			files: [],
 			projectImages: [],
 			users: [],
 		};

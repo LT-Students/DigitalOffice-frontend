@@ -66,6 +66,9 @@ import { TimeInputComponent } from './component/time-input/time-input.component'
 import { SnackbarComponent } from './component/snackbar/snackbar.component';
 import { NumberInputDirective } from './directives/number-input.directive';
 import { PaginatorComponent } from './component/paginator/paginator.component';
+import { FormatBytesPipe } from './pipes/format-bytes.pipe';
+import { FileIconPipe } from './pipes/file-icon.pipe';
+import { TitleDatepickerV2Component } from './component/title-datepicker/title-datepicker-v2.component';
 
 @NgModule({
 	declarations: [
@@ -125,6 +128,9 @@ import { PaginatorComponent } from './component/paginator/paginator.component';
 		SnackbarComponent,
 		NumberInputDirective,
 		PaginatorComponent,
+		FormatBytesPipe,
+		FileIconPipe,
+		TitleDatepickerV2Component,
 	],
 	imports: [
 		CommonModule,
@@ -197,6 +203,9 @@ import { PaginatorComponent } from './component/paginator/paginator.component';
 		TimeInputComponent,
 		NumberInputDirective,
 		PaginatorComponent,
+		FormatBytesPipe,
+		FileIconPipe,
+		TitleDatepickerV2Component,
 	],
 })
 export class SharedModule {}

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.1.1",
+    "version": "1.1.1.2",
     "title": "FileService",
     "description": "FileService is an API intended to work with files and images."
   },
@@ -16,6 +16,73 @@
     }
   ],
   "paths": {
+    "/file/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/entityId"
+        },
+        {
+          "$ref": "#/components/parameters/access"
+        }
+      ],
+      "post": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "createFile",
+        "description": "Create files.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uploadedFiles": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully add files.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/file/get": {
       "parameters": [
         {
@@ -40,7 +107,6 @@
                 "type": "string",
                 "format": "uuid"
               }
-
             },
             "required": true
           }
@@ -74,16 +140,6 @@
         ],
         "operationId": "editFile",
         "description": "Editing file by Id.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditFileRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "File respose.",
@@ -151,6 +207,17 @@
             "example": "txt"
           }
         }
+      },
+      "FileAccessType": {
+        "type": "string",
+        "description": "Type of the access to the file.\n",
+        "enum": [
+          "Manager",
+          "Team",
+          "Public"
+        ],
+        "nullable": false,
+        "example": "Public"
       },
       "ErrorResponse": {
         "description": "Error information",
@@ -275,6 +342,24 @@
         "schema": {
           "type": "string",
           "format": "uuid"
+        },
+        "required": true
+      },
+      "entityId": {
+        "name": "entityId",
+        "in": "query",
+        "description": "Entity global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "access": {
+        "name": "access",
+        "in": "query",
+        "schema": {
+          "$ref": "#/components/schemas/FileAccessType"
         },
         "required": true
       }
