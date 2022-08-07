@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@app/guards/permission.guard';
+import { UserRights } from '@app/types/user-rights.enum';
 import { ProjectsTableComponent } from './projects-table/projects-table.component';
 import { ProjectListResolver } from './resolvers/project-list.resolver';
 import { ProjectPageContainerComponent } from './project-page/project-page-container.component';
@@ -11,6 +13,9 @@ import { ProjectIdRouteContainerComponent } from './project-id-route-container/p
 import { DepartmentFilterResolver } from './resolvers/department-filter.resolver';
 import { ProjectUsersResolver } from './resolvers/project-users.resolver';
 import { TeamStatisticsResolver } from './resolvers/team-statistics.resolver';
+import { ProjectFilesResolver } from './resolvers/project-files.resolver';
+import { TeamStatisticsGuard } from './guards/team-statistics.guard';
+import { EditProjectGuard } from './guards/edit-project.guard';
 
 const routes: Routes = [
 	{
@@ -21,13 +26,19 @@ const routes: Routes = [
 			departments: DepartmentFilterResolver,
 		},
 	},
-	{ path: ProjectsRoutes.CreateProject, component: CreateEditProjectComponent },
+	{
+		path: ProjectsRoutes.CreateProject,
+		component: CreateEditProjectComponent,
+		canActivate: [PermissionGuard],
+		data: { permission: UserRights.AddEditRemoveProjects },
+	},
 	{
 		path: ':id',
 		component: ProjectIdRouteContainerComponent,
 		resolve: {
 			project: ProjectPageResolver,
 			users: ProjectUsersResolver,
+			files: ProjectFilesResolver,
 		},
 		children: [
 			{
@@ -37,10 +48,12 @@ const routes: Routes = [
 			{
 				path: ProjectsRoutes.EditProject,
 				component: CreateEditProjectComponent,
+				canActivate: [EditProjectGuard],
 			},
 			{
 				path: ProjectsRoutes.TeamStats,
 				component: TeamStatisticsComponent,
+				canActivate: [TeamStatisticsGuard],
 				resolve: {
 					stats: TeamStatisticsResolver,
 				},

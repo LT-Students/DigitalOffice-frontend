@@ -88,7 +88,7 @@ export class ProjectUsersComponent implements OnInit {
 					const data: AddEmployeeDialogData = {
 						entityId: p.project.id,
 						entityName: p.project.name,
-						idsToHide: p.usersIds || [],
+						idsToHide: p.users?.map((u) => u.userId) || [],
 					};
 					return this.dialog
 						.open<UserInfo[]>(AddProjectUsersComponent, { width: ModalWidth.M, data })

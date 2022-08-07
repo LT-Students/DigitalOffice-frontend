@@ -4,7 +4,17 @@ import { Icons } from '@shared/modules/icons/icons';
 import { DateTime } from 'luxon';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { I18nPluralPipe } from '@angular/common';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { combineLatest, Observable, of } from 'rxjs';
+import { first, map, switchMap } from 'rxjs/operators';
+import { User } from '@app/models/user/user.model';
+import { ProjectResponse } from '@api/project-service/models/project-response';
+import { ProjectUserInfo } from '@api/project-service/models/project-user-info';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
+import { PermissionService } from '@app/services/permission.service';
+import { UserRights } from '@app/types/user-rights.enum';
 import { ProjectsRoutes } from '../../models/projects-routes';
+import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
 import { ProjectStatus } from '../../models/project-status';
 
 interface ProjectStats {
@@ -27,6 +37,9 @@ export class ProjectInfoComponent implements OnInit {
 	public readonly ProjectsRoutes = ProjectsRoutes;
 
 	@Input() project!: ProjectInfo;
+
+	public canAccessTeamStatistics$ = this.canAccessTeamStatistics();
+	public canEditProject$ = this.canEditProject();
 
 	public stats: ProjectStats[] = [
 		{
@@ -92,11 +105,49 @@ export class ProjectInfoComponent implements OnInit {
 		},
 	];
 
-	constructor(private pluralPipe: I18nPluralPipe) {}
+	constructor(
+		private pluralPipe: I18nPluralPipe,
+		private selectedProject: SelectedProjectService,
+		private currentUser: CurrentUserService,
+		private permission: PermissionService
+	) {}
 
 	ngOnInit(): void {}
 
 	private formatDate(date: string): string {
 		return date && DateTime.fromISO(date).toFormat('dd.MM.y');
+	}
+
+	private canAccessTeamStatistics(): Observable<boolean> {
+		return combineLatest([this.currentUser.user$, this.selectedProject.info$]).pipe(
+			map(([user, project]: [User, ProjectResponse]) => {
+				if (user.isAdmin) {
+					return true;
+				} else {
+					const projectUsers = project.users;
+					const currUser = projectUsers?.find((u: ProjectUserInfo) => u.userId === user.id);
+					return !!currUser && currUser.role === ProjectUserRoleType.Manager;
+				}
+			})
+		);
+	}
+
+	private canEditProject(): Observable<boolean> {
+		return this.permission.checkPermission$(UserRights.AddEditRemoveProjects).pipe(
+			first(),
+			switchMap((hasPermission: boolean) => {
+				if (hasPermission) {
+					return of(true);
+				} else {
+					return combineLatest([this.currentUser.user$, this.selectedProject.info$]).pipe(
+						map(([user, project]: [User, ProjectResponse]) => {
+							const projectUsers = project.users;
+							const currUser = projectUsers?.find((u: ProjectUserInfo) => u.userId === user.id);
+							return !!currUser && currUser.role === ProjectUserRoleType.Manager;
+						})
+					);
+				}
+			})
+		);
 	}
 }

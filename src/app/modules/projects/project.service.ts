@@ -35,6 +35,8 @@ export class ProjectService {
 		return this.projectService
 			.getProject({
 				projectId: projectId,
+				includeprojectusers: true,
+				includedepartment: true,
 			})
 			.pipe(map((res: OperationResultResponse) => res.body as ProjectResponse));
 	}

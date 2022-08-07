@@ -53,7 +53,7 @@ export class ProjectUsersService {
 				headerStyle: { 'margin-left': '60px' },
 				params: {
 					statusIconGetter: (user: UserInfo) =>
-						user.role !== ProjectUserRoleType.Manager ? Icons.StarBorder : null,
+						user.role === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
 					iconColor: '#FFD89E',
 				},
 			},
@@ -62,8 +62,8 @@ export class ProjectUsersService {
 				field: 'role',
 				headerName: 'Роль',
 				valueGetter: (user: UserInfo) => user.role,
-				headerStyle: { 'padding-left': '20px', flex: '0 0 15%' },
-				columnStyle: { flex: '0 0 15%' },
+				headerStyle: { 'padding-left': '20px', flex: '0 0 20%' },
+				columnStyle: { flex: '0 0 20%' },
 				params: {
 					options: [ProjectUserRoleType.Employee, ProjectUserRoleType.Manager],
 					displayValueGetter: (role: ProjectUserRoleType) =>
@@ -71,6 +71,15 @@ export class ProjectUsersService {
 					iconGetter: (role: ProjectUserRoleType) =>
 						role === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
 					iconColor: '#FFD89E',
+					updateRow: (user: UserInfo, role: ProjectUserRoleType) => {
+						this.selectedProject.info$
+							.pipe(
+								first(),
+								map((p: ProjectResponse) => p.project.id),
+								switchMap((projectId: string) => this.changeUserRole(projectId, user.id, role))
+							)
+							.subscribe();
+					},
 				},
 			},
 			{
@@ -89,7 +98,7 @@ export class ProjectUsersService {
 								next: (projectId: string) => {
 									this.dialog.confirm({
 										title: 'Удаление сотрудника из проекта',
-										message: 'Вы действитеьлно хотите удалить этого сотрудника из проекта?',
+										message: 'Вы действительно хотите удалить этого сотрудника из проекта?',
 										confirmText: 'Да, удалить',
 										action$: this.removeUsers(projectId, [user.id]),
 									});
@@ -105,6 +114,13 @@ export class ProjectUsersService {
 
 	private removeUsers(projectId: string, userIds: string[]): Observable<any> {
 		return this.projectService.removeUsers(projectId, userIds).pipe(
+			switchMap(() => this.projectService.getProjectUsers(projectId)),
+			tap((users: UserInfo[]) => this.selectedProject.setProject({ users }))
+		);
+	}
+
+	private changeUserRole(projectId: string, userId: string, role: ProjectUserRoleType): Observable<any> {
+		return this.projectService.changeUserRole(projectId, userId, role).pipe(
 			switchMap(() => this.projectService.getProjectUsers(projectId)),
 			tap((users: UserInfo[]) => this.selectedProject.setProject({ users }))
 		);

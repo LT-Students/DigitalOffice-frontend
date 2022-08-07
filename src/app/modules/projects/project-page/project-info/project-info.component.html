@@ -1,8 +1,14 @@
 <div class="header">
 	<h1 doUnderline class="break-word">{{ project.shortName }}</h1>
 	<do-actions class="controls">
-		<a doButton [routerLink]="ProjectsRoutes.EditProject">Редактировать</a>
-		<a mat-flat-button color="primary" [routerLink]="ProjectsRoutes.TeamStats">Статистика команды</a>
+		<a *ngIf="canEditProject$ | async" doButton [routerLink]="ProjectsRoutes.EditProject">Редактировать</a>
+		<a
+			*ngIf="canAccessTeamStatistics$ | async"
+			mat-flat-button
+			color="primary"
+			[routerLink]="ProjectsRoutes.TeamStats"
+			>Статистика команды</a
+		>
 	</do-actions>
 </div>
 <h5 class="short-name break-word">{{ project.name }}</h5>
