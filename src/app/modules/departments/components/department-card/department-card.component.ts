@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@app/services/user/user.service';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
-import { UserInfo } from '@api/user-service/models';
+import { DepartmentUserRole, UserInfo } from '@api/user-service/models';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
@@ -14,6 +14,9 @@ import { AddEmployeeComponent, OpenAddEmployeeModalFrom } from '@shared/dialogs/
 import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/modules/icons/icons';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { User } from '@app/models/user/user.model';
+import { UserRights } from '@app/types/user-rights.enum';
 
 @Component({
 	selector: 'do-department-card',
@@ -32,8 +35,17 @@ export class DepartmentCardComponent {
 	public dataSource: MatTableDataSource<DepartmentUserInfo>;
 	public selection: SelectionModel<DepartmentUserInfo>;
 	public employeeCountMap: { [k: string]: string };
+	public canAccessTimelist$ = this.currentUser.user$.pipe(
+		map(
+			(u: User) =>
+				u.isAdmin ||
+				u.department?.role === DepartmentUserRole.Manager ||
+				u.role?.rightsIds.includes(UserRights.AddEditRemoveTime)
+		)
+	);
 
 	constructor(
+		private currentUser: CurrentUserService,
 		private _departmentService: DepartmentService,
 		private _userService: UserService,
 		private _router: Router,

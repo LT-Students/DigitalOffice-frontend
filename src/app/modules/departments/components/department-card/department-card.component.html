@@ -3,9 +3,20 @@
 	<div class="department__info">
 		<div class="department__header">
 			<h3 doUnderline underlinedSize="sm">Общая информация</h3>
-			<button mat-flat-button (click)="onEditDepartmentClick()">
-				<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
-			</button>
+			<div>
+				<button
+					*ngIf="canAccessTimelist$ | async"
+					mat-flat-button
+					color="primary"
+					routerLink="timelist"
+					[style.margin-right.px]="16"
+				>
+					Таймлист ДД
+				</button>
+				<button mat-icon-button (click)="onEditDepartmentClick()">
+					<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
+				</button>
+			</div>
 		</div>
 		<div class="department__label">
 			<p class="mat-body-1">Директор</p>
