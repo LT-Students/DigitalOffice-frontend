@@ -27,6 +27,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 	public monthOptions = this.getMonthOptions();
 	public addHoursForm = this.initForm();
 	public dateControl = new FormControl(DateTime.now());
+	private wasProjectPreviouslySelected = false;
 	private destroy$ = new Subject();
 
 	private get project(): ProjectOption {
@@ -128,15 +129,28 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 			commentControl.clearValidators();
 			commentControl.updateValueAndValidity();
 		}
-		if (project.workTime) {
+		if (!this.wasProjectPreviouslySelected) {
+			const hours = this.addHoursForm.get('time')?.value;
+			if (hours) {
+				this.addHoursForm.patchValue(
+					{
+						time: hours,
+						comment: project.workTime?.description,
+					},
+					{ emitEvent: false }
+				);
+			}
+		} else {
 			this.addHoursForm.patchValue(
 				{
-					time: project.workTime.userHours,
-					comment: project.workTime.description,
+					time: project.workTime?.userHours,
+					comment: project.workTime?.description,
 				},
 				{ emitEvent: false }
 			);
 		}
+
+		this.wasProjectPreviouslySelected = true;
 	}
 
 	private getMonthOptions(): DateTime[] {
