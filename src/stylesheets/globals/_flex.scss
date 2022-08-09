@@ -9,6 +9,10 @@
 		flex-direction: column;
 	}
 
+	&_wrap {
+		flex-wrap: wrap;
+	}
+
 	&_ai {
 		&_baseline {
 			align-items: baseline;
