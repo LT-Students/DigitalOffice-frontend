@@ -82,11 +82,11 @@ const MIME_TYPES_MAP = new Map([
 	name: 'fileIcon',
 })
 export class FileIconPipe implements PipeTransform {
-	transform(file: File): Icons {
-		return getFileIcon(file.type);
+	transform(type: string): Icons {
+		return getFileIcon(type);
 	}
 }
 
-export function getFileIcon(extension: string): Icons {
-	return MIME_TYPES_MAP.get(extension) || Icons.TextDoc;
+export function getFileIcon(type: string): Icons {
+	return MIME_TYPES_MAP.get(type) || Icons.TextDoc;
 }

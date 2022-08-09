@@ -9,7 +9,7 @@ import { UploadFile } from '../add-files.service';
 	template: `
 		<div class="upload-item">
 			<div class="file text-secondary_active">
-				<mat-icon [svgIcon]="file.file | fileIcon"></mat-icon>
+				<mat-icon [svgIcon]="file.file.type | fileIcon"></mat-icon>
 				<span class="name">{{ file.name }}</span>
 			</div>
 			<mat-progress-bar class="progress-bar" color="primary" [value]="uploadProgress | async"></mat-progress-bar>

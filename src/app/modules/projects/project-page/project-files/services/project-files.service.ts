@@ -4,18 +4,14 @@ import { getFileIcon } from '@shared/pipes/file-icon.pipe';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { DateTime } from 'luxon';
 import { formatBytes } from '@shared/pipes/format-bytes.pipe';
-import { FileService } from '@app/services/file/file.service';
+import { getTypeFromExtension } from '@shared/pipes/type-from-extension.pipe';
 import { FilterDef, InputFilterParams } from '../../../../dynamic-filter/models';
 import { ColumnDef } from '../../../../table/models';
 import { ProjectService } from '../../../project.service';
 
 @Injectable()
 export class ProjectFilesService {
-	constructor(
-		@Inject(LOCALE_ID) private locale: string,
-		private projectService: ProjectService,
-		private fileService: FileService
-	) {}
+	constructor(@Inject(LOCALE_ID) private locale: string, private projectService: ProjectService) {}
 
 	public getFilterData(): FilterDef[] {
 		return [
@@ -41,7 +37,7 @@ export class ProjectFilesService {
 			{
 				type: 'iconCell',
 				field: 'type-icon',
-				valueGetter: (file: FileInfo) => getFileIcon(file.extension),
+				valueGetter: (file: FileInfo) => getFileIcon(getTypeFromExtension(file.extension.slice(1))),
 				headerStyle: { flex: '0 0 24px', 'margin-right': '12px' },
 				columnStyle: { flex: 0, 'margin-right': '12px' },
 			},
@@ -91,9 +87,7 @@ export class ProjectFilesService {
 				valueGetter: (file: FileInfo) => file,
 				params: {
 					icon: () => Icons.Download,
-					onClickFn: (file: FileInfo) => {
-						this.fileService.downloadFile(file.id).subscribe(console.log);
-					},
+					onClickFn: (file: FileInfo) => this.projectService.downloadFile(file),
 				},
 				columnStyle: {
 					'flex-grow': 0,

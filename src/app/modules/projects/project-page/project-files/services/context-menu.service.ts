@@ -36,7 +36,8 @@ export class ContextMenuService {
 				title: 'Редактировать документ',
 				icon: Icons.Edit,
 				action: (file: FileInfo) => this.editFile(file),
-				visible: (file: FileInfo | FileInfo[]) => !Array.isArray(file),
+				// visible: (file: FileInfo | FileInfo[]) => !Array.isArray(file),
+				visible: (file: FileInfo | FileInfo[]) => false,
 			},
 			{
 				title: 'Удалить документ',
@@ -44,7 +45,12 @@ export class ContextMenuService {
 				action: (files: FileInfo | FileInfo[]) => this.removeFiles(files),
 				visible: () => true,
 			},
-			{ title: 'Скачать', icon: Icons.Download, action: () => {}, visible: () => true },
+			{
+				title: 'Скачать',
+				icon: Icons.Download,
+				action: (files: FileInfo | FileInfo[]) => this.projectService.downloadFile(files),
+				visible: () => true,
+			},
 		];
 	}
 
@@ -68,7 +74,7 @@ export class ContextMenuService {
 			.subscribe();
 	}
 
-	public removeFiles(files: FileInfo | FileInfo[]) {
+	public removeFiles(files: FileInfo | FileInfo[]): void {
 		const fileIds = (!Array.isArray(files) ? [files] : files).map((f: FileInfo) => f.id);
 		const deleteMessage =
 			Array.isArray(files) && files.length > 1
@@ -108,6 +114,4 @@ export class ContextMenuService {
 			)
 			.subscribe();
 	}
-
-	public downloadFile() {}
 }

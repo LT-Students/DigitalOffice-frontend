@@ -2,7 +2,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FileApiService } from '@api/file-service/services/file-api.service';
 import { FileAccessType } from '@api/file-service/models/file-access-type';
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
+export interface FileDownload {
+	contentType: string;
+	fileContents: string;
+	fileDownloadName: string;
+}
 
 @Injectable({
 	providedIn: 'root',
@@ -29,14 +36,21 @@ export class FileService {
 		});
 	}
 
-	public downloadFile(fileId: string): Observable<HttpEvent<any>> {
-		return this.http.get(this.fileService.rootUrl + FileApiService.GetFilePath, {
-			reportProgress: true,
-			observe: 'events',
-			responseType: 'blob',
-			params: {
-				filesIds: [fileId],
-			},
-		});
+	public downloadFile(fileId: string): Observable<HttpEvent<FileDownload>> {
+		return this.http
+			.get(this.fileService.rootUrl + FileApiService.GetFilePath, {
+				reportProgress: true,
+				observe: 'events',
+				params: {
+					filesIds: [fileId],
+				},
+			})
+			.pipe(
+				map((res) =>
+					res.type === HttpEventType.Response
+						? ({ ...res, body: (res.body as FileDownload[])[0] } as HttpEvent<FileDownload>)
+						: res
+				)
+			);
 	}
 }
