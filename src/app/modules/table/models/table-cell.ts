@@ -12,6 +12,7 @@ import {
 } from '../cell-components/editable-text-field/editable-text-field.component';
 import { EditableTimeComponent } from '../cell-components/editable-text-field/editable-time.component';
 import { ShowMoreTextComponent, ShowMoreTextParams } from '../cell-components/show-more-text/show-more-text.component';
+import { ContextMenuCellComponent } from '../cell-components/context-menu/context-menu-cell.component';
 
 export const CELL_TYPES = {
 	textCell: TextComponent,
@@ -24,6 +25,7 @@ export const CELL_TYPES = {
 	editableTextFieldCell: EditableTextFieldComponent,
 	editableTimeCell: EditableTimeComponent,
 	showMoreTextCell: ShowMoreTextComponent,
+	contextMenuCell: ContextMenuCellComponent,
 };
 
 export type CellTypes = keyof typeof CELL_TYPES;

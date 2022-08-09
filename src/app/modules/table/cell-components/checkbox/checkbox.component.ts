@@ -1,5 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { SelectionModel } from '@app/utils/selection-model';
+import { Subscription } from 'rxjs';
 import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
 import { TableComponent } from '../../table.component';
@@ -25,7 +26,7 @@ export class CheckboxParams {
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckboxComponent implements OnInit, TableCell<boolean> {
+export class CheckboxComponent implements OnInit, OnDestroy, TableCell<boolean> {
 	public value = false;
 	public set params(params: CheckboxParams | undefined) {
 		params = params || new CheckboxParams();
@@ -37,11 +38,18 @@ export class CheckboxComponent implements OnInit, TableCell<boolean> {
 
 	public row: any;
 	public selection: SelectionModel<any>;
+	private subscription!: Subscription;
 
-	constructor(tableCell: TableCellComponent, table: TableComponent<any>) {
+	constructor(tableCell: TableCellComponent, table: TableComponent<any>, private cdr: ChangeDetectorRef) {
 		this.row = tableCell.row;
 		this.selection = table.selection;
 	}
 
-	ngOnInit(): void {}
+	public ngOnInit(): void {
+		this.subscription = this.selection.changed.subscribe(() => this.cdr.markForCheck());
+	}
+
+	public ngOnDestroy(): void {
+		this.subscription.unsubscribe();
+	}
 }

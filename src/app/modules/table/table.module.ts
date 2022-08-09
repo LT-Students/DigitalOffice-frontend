@@ -13,6 +13,7 @@ import { IconComponent } from './cell-components/icon/icon.component';
 import { EditableTextFieldComponent } from './cell-components/editable-text-field/editable-text-field.component';
 import { EditableTimeComponent } from './cell-components/editable-text-field/editable-time.component';
 import { ShowMoreTextComponent } from './cell-components/show-more-text/show-more-text.component';
+import { ContextMenuCellComponent } from './cell-components/context-menu/context-menu-cell.component';
 
 @NgModule({
 	declarations: [
@@ -28,6 +29,7 @@ import { ShowMoreTextComponent } from './cell-components/show-more-text/show-mor
 		EditableTextFieldComponent,
 		EditableTimeComponent,
 		ShowMoreTextComponent,
+		ContextMenuCellComponent,
 	],
 	imports: [SharedModule, CdkTableModule],
 	exports: [TableComponent],

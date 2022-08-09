@@ -17,6 +17,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatSort, Sort, SortDirection } from '@angular/material/sort';
 import { SelectionModel } from '@app/utils/selection-model';
 import { CdkNoDataRow, CdkTable } from '@angular/cdk/table';
+import { MenuItem } from '@shared/component/context-menu/menu-item';
+import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { ColumnDef } from './models';
 import { TableOptions } from './models/table-options';
 
@@ -37,6 +39,7 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 	@ContentChild(CdkNoDataRow) noDataRow?: CdkNoDataRow;
 	@ViewChild(CdkTable, { static: true }) table!: CdkTable<T>;
 	@ViewChild(MatSort, { static: true }) sort!: MatSort;
+	@ViewChild(ContextMenuComponent, { static: true }) contextMenu!: ContextMenuComponent;
 
 	@Output() rowClick = new EventEmitter<T>();
 	@Output() sortChange = new EventEmitter<Sort>();
@@ -52,6 +55,7 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 		this._rowHeight = options.rowHeight || this._rowHeight;
 		this._rowStyle = options.rowStyle || this._rowStyle;
 		this._rowClass = options.rowClass || this._rowClass;
+		this.contextMenuItems = options.contextMenuItems || this.contextMenuItems;
 		this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
 		this.expandedRowComparator = options.expandedRowComparator || this.expandedRowComparator;
 		this.selectionCompareWith = options.selectionCompareWith || this.selectionCompareWith;
@@ -99,6 +103,8 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 	@Input() sortDirection: SortDirection = '';
 
 	public displayColumns: string[] = [];
+
+	@Input() contextMenuItems: MenuItem[] = [];
 
 	@Input() expandedRowTemplate: TemplateRef<any> | null = null;
 	@Input() isRowExpandable: (index: number, rowData: T) => boolean = () => false;

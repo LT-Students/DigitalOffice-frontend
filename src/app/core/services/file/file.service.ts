@@ -28,4 +28,15 @@ export class FileService {
 			},
 		});
 	}
+
+	public downloadFile(fileId: string): Observable<HttpEvent<any>> {
+		return this.http.get(this.fileService.rootUrl + FileApiService.GetFilePath, {
+			reportProgress: true,
+			observe: 'events',
+			responseType: 'blob',
+			params: {
+				filesIds: [fileId],
+			},
+		});
+	}
 }

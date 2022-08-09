@@ -74,7 +74,11 @@ export class ProjectService {
 		return this.projectUsersService.removeProjectUsers({ projectId, body: userIds });
 	}
 
-	public changeUserRole(projectId: string, userId: string, role: ProjectUserRoleType) {
+	public changeUserRole(
+		projectId: string,
+		userId: string,
+		role: ProjectUserRoleType
+	): Observable<OperationResultResponse> {
 		return this.projectUsersService.editProjectUsers({ projectId, body: { usersIds: [userId], role } });
 	}
 
@@ -82,5 +86,9 @@ export class ProjectService {
 		return this.fileService
 			.findFiles({ projectid: projectId, skipCount: 0, takeCount: MAX_INT32 })
 			.pipe(map((res) => res.body as FileInfo[]));
+	}
+
+	public removeFiles(projectId: string, fileIds: string[]): Observable<OperationResultResponse> {
+		return this.fileService.removeFile({ body: { projectId, filesIds: fileIds } });
 	}
 }

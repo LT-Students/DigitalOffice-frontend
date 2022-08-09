@@ -69,6 +69,7 @@ import { PaginatorComponent } from './component/paginator/paginator.component';
 import { FormatBytesPipe } from './pipes/format-bytes.pipe';
 import { FileIconPipe } from './pipes/file-icon.pipe';
 import { TitleDatepickerV2Component } from './component/title-datepicker/title-datepicker-v2.component';
+import { DeselectAllCheckboxComponent } from './component/deselect-all-checkbox/deselect-all-checkbox.component';
 
 @NgModule({
 	declarations: [
@@ -131,6 +132,7 @@ import { TitleDatepickerV2Component } from './component/title-datepicker/title-d
 		FormatBytesPipe,
 		FileIconPipe,
 		TitleDatepickerV2Component,
+		DeselectAllCheckboxComponent,
 	],
 	imports: [
 		CommonModule,
@@ -206,6 +208,7 @@ import { TitleDatepickerV2Component } from './component/title-datepicker/title-d
 		FormatBytesPipe,
 		FileIconPipe,
 		TitleDatepickerV2Component,
+		DeselectAllCheckboxComponent,
 	],
 })
 export class SharedModule {}

@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { UserInfo } from '@api/project-service/models/user-info';
-import { filter, first, map } from 'rxjs/operators';
+import { filter, first, map, switchMap } from 'rxjs/operators';
 import { FileInfo } from '@api/project-service/models/file-info';
+import { ProjectService } from '../project.service';
 
 export interface Project {
 	info: ProjectResponse;
@@ -35,7 +36,7 @@ export class SelectedProjectService {
 		);
 	}
 
-	constructor() {}
+	constructor(private projectService: ProjectService) {}
 
 	public setProject(partialProject: Partial<Project>): void {
 		this.project$.pipe(first()).subscribe({
@@ -48,5 +49,16 @@ export class SelectedProjectService {
 				}
 			},
 		});
+	}
+
+	public refreshFiles(): void {
+		this.info$
+			.pipe(
+				first(),
+				switchMap((p: ProjectResponse) => this.projectService.findFiles(p.project.id))
+			)
+			.subscribe({
+				next: (files: FileInfo[]) => this.setProject({ files }),
+			});
 	}
 }
