@@ -16,12 +16,12 @@ export class SidebarService {
 		first(),
 		map((user: User) => {
 			return [
-				{
-					visible: () => true,
-					title: 'Новости',
-					path: AppRoutes.News,
-					icon: Icons.News,
-				},
+				// {
+				// 	visible: () => true,
+				// 	title: 'Новости',
+				// 	path: AppRoutes.News,
+				// 	icon: Icons.News,
+				// },
 				{
 					visible: () => true,
 					title: 'Учет времени',
@@ -40,12 +40,12 @@ export class SidebarService {
 					path: AppRoutes.Users,
 					icon: Icons.Users,
 				},
-				{
-					visible: () => true,
-					title: 'Департаменты',
-					path: AppRoutes.Departments,
-					icon: Icons.Departments,
-				},
+				// {
+				// 	visible: () => true,
+				// 	title: 'Департаменты',
+				// 	path: AppRoutes.Departments,
+				// 	icon: Icons.Departments,
+				// },
 				{
 					visible: () => user.department?.role === DepartmentUserRole.Manager,
 					title: 'Таймлист ДД',
@@ -53,7 +53,7 @@ export class SidebarService {
 					icon: Icons.Office,
 				},
 				{
-					visible: () => true,
+					visible: () => user.isAdmin,
 					title: 'Администрирование',
 					path: [AppRoutes.Admin, AdminRoutes.Dashboard],
 					icon: Icons.Administration,
