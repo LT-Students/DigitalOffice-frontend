@@ -131,15 +131,13 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 		}
 		if (!this.wasProjectPreviouslySelected) {
 			const hours = this.addHoursForm.get('time')?.value;
-			if (hours) {
-				this.addHoursForm.patchValue(
-					{
-						time: hours,
-						comment: project.workTime?.description,
-					},
-					{ emitEvent: false }
-				);
-			}
+			this.addHoursForm.patchValue(
+				{
+					time: hours || project.workTime?.userHours,
+					comment: project.workTime?.description,
+				},
+				{ emitEvent: false }
+			);
 		} else {
 			this.addHoursForm.patchValue(
 				{

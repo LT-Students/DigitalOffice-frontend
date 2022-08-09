@@ -4,9 +4,10 @@ import { getFileIcon } from '@shared/pipes/file-icon.pipe';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { DateTime } from 'luxon';
 import { formatBytes } from '@shared/pipes/format-bytes.pipe';
-import { FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
-import { ColumnDef } from '../../../table/models';
-import { ProjectService } from '../../project.service';
+import { getTypeFromExtension } from '@shared/pipes/type-from-extension.pipe';
+import { FilterDef, InputFilterParams } from '../../../../dynamic-filter/models';
+import { ColumnDef } from '../../../../table/models';
+import { ProjectService } from '../../../project.service';
 
 @Injectable()
 export class ProjectFilesService {
@@ -15,7 +16,7 @@ export class ProjectFilesService {
 	public getFilterData(): FilterDef[] {
 		return [
 			{
-				key: 'nameincludesubstring',
+				key: 'name',
 				type: 'input',
 				width: 267,
 				params: new InputFilterParams({ placeholder: 'Поиск документа', icon: Icons.Search }),
@@ -28,6 +29,7 @@ export class ProjectFilesService {
 			{
 				type: 'checkboxCell',
 				field: 'checkbox',
+				headerStyle: { flex: '0 0 18px' },
 				columnStyle: {
 					'flex-grow': 0,
 				},
@@ -35,7 +37,7 @@ export class ProjectFilesService {
 			{
 				type: 'iconCell',
 				field: 'type-icon',
-				valueGetter: (file: FileInfo) => getFileIcon(file.extension),
+				valueGetter: (file: FileInfo) => getFileIcon(getTypeFromExtension(file.extension.slice(1))),
 				headerStyle: { flex: '0 0 24px', 'margin-right': '12px' },
 				columnStyle: { flex: 0, 'margin-right': '12px' },
 			},
@@ -45,14 +47,15 @@ export class ProjectFilesService {
 				headerName: 'Название',
 				valueGetter: (file: FileInfo) => file.name,
 				columnStyle: {
-					'flex-grow': 2,
+					flex: '0 0 25%',
 				},
 			},
 			{
 				type: 'textCell',
 				field: 'extension',
 				headerName: 'Тип',
-				valueGetter: (file: FileInfo) => file.extension.toUpperCase(),
+				valueGetter: (file: FileInfo) => file.extension.slice(1).toUpperCase() || '–',
+				columnClass: 'text-secondary_default',
 				columnStyle: {
 					'flex-grow': 2,
 				},
@@ -65,6 +68,7 @@ export class ProjectFilesService {
 					const date = DateTime.fromISO(file.createdAtUtc).toFormat('dd.MM.yy');
 					return `добавлено ${date}`;
 				},
+				columnClass: 'text-secondary_default',
 				columnStyle: {
 					'flex-grow': 2,
 				},
@@ -74,18 +78,27 @@ export class ProjectFilesService {
 				field: 'size',
 				headerName: 'Размер',
 				valueGetter: (file: FileInfo) => formatBytes(file.size, this.locale),
-				columnStyle: {
-					'flex-grow': 2,
-				},
+				columnClass: 'text-secondary_default',
 			},
 			{
 				type: 'iconButtonCell',
 				field: 'download',
 				headerName: 'Скачать',
-				valueGetter: () => {},
+				valueGetter: (file: FileInfo) => file,
 				params: {
 					icon: () => Icons.Download,
-					onClickFn: () => {},
+					onClickFn: (file: FileInfo) => this.projectService.downloadFile(file),
+				},
+				columnStyle: {
+					'flex-grow': 0,
+				},
+			},
+			{
+				type: 'contextMenuCell',
+				field: 'context-menu',
+				valueGetter: (file: FileInfo) => file,
+				headerStyle: {
+					flex: '0 0 48px',
 				},
 				columnStyle: {
 					'flex-grow': 0,

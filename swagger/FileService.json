@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.1.2",
+    "version": "1.1.1.3",
     "title": "FileService",
     "description": "FileService is an API intended to work with files and images."
   },
@@ -94,8 +94,8 @@
           "File"
         ],
         "operationId": "getFile",
-        "summary": "Returns the file by Id.",
-        "description": "The method attempts to get the file by id.",
+        "summary": "Returns the files by Ids.",
+        "description": "The method attempts to get the files by ids.",
         "parameters": [
           {
             "name": "filesIds",
@@ -113,11 +113,11 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully returned file.",
+            "description": "Successfully returned files.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseFiles"
+                  "type": "object"
                 }
               }
             }
@@ -177,37 +177,6 @@
   },
   "components": {
     "schemas": {
-      "FileInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Id": {
-            "description": "File global unique identifier.",
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "Name": {
-            "description": "File name.",
-            "type": "string",
-            "example": "Avatar"
-          },
-          "Content": {
-            "description": "File content.",
-            "type": "string",
-            "format": "byte"
-          },
-          "Extension": {
-            "description": "File extension.",
-            "type": "string",
-            "example": "txt"
-          }
-        }
-      },
       "FileAccessType": {
         "type": "string",
         "description": "Type of the access to the file.\n",
@@ -244,26 +213,6 @@
         "properties": {
           "Body": {
             "type": "object"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        }
-      },
-      "OperationResultResponseFiles": {
-        "type": "object",
-        "required": [
-          "Errors"
-        ],
-        "properties": {
-          "Body": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileInfo"
-            }
           },
           "Errors": {
             "type": "array",

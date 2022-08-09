@@ -21,6 +21,7 @@
 		>
 		<cdk-cell
 			*cdkCellDef="let row"
+			[ngClass]="column.columnClass || ''"
 			[ngStyle]="column.columnStyle || null"
 			[style.flex]="'0 0 ' + column.width + 'px'"
 			[style.min-width.px]="column.minWidth"
@@ -62,3 +63,4 @@
 		</div>
 	</ng-template>
 </cdk-table>
+<do-context-menu [items]="contextMenuItems"></do-context-menu>

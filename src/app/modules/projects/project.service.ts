@@ -15,6 +15,8 @@ import { MAX_INT32 } from '@app/utils/utils';
 import { UserRequest } from '@api/project-service/models/user-request';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { DownloadFilesComponent } from './download-files/download-files.component';
 
 @Injectable({
 	providedIn: 'root',
@@ -23,7 +25,8 @@ export class ProjectService {
 	constructor(
 		private projectService: ProjectApiService,
 		private fileService: FileApiService,
-		private projectUsersService: UserApiService
+		private projectUsersService: UserApiService,
+		private dialog: DialogService
 	) {}
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
@@ -74,7 +77,11 @@ export class ProjectService {
 		return this.projectUsersService.removeProjectUsers({ projectId, body: userIds });
 	}
 
-	public changeUserRole(projectId: string, userId: string, role: ProjectUserRoleType) {
+	public changeUserRole(
+		projectId: string,
+		userId: string,
+		role: ProjectUserRoleType
+	): Observable<OperationResultResponse> {
 		return this.projectUsersService.editProjectUsers({ projectId, body: { usersIds: [userId], role } });
 	}
 
@@ -82,5 +89,14 @@ export class ProjectService {
 		return this.fileService
 			.findFiles({ projectid: projectId, skipCount: 0, takeCount: MAX_INT32 })
 			.pipe(map((res) => res.body as FileInfo[]));
+	}
+
+	public removeFiles(projectId: string, fileIds: string[]): Observable<OperationResultResponse> {
+		return this.fileService.removeFile({ body: { projectId, filesIds: fileIds } });
+	}
+
+	public downloadFile(files: FileInfo | FileInfo[]): void {
+		const filesArr = Array.isArray(files) ? files : [files];
+		this.dialog.open(DownloadFilesComponent, { width: ModalWidth.S, data: filesArr });
 	}
 }

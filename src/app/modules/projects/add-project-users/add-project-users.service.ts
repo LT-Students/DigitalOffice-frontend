@@ -8,7 +8,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { CheckboxParams } from '../../table/cell-components/checkbox/checkbox.component';
 import { TableOptions } from '../../table/models/table-options';
 import { ProjectService } from '../project.service';
-import { AddUsersDataSource } from './add-project-users.component';
+import { AddUsersDataSource, HiddenUser } from './add-project-users.component';
 
 export interface ProjectUserInfo extends UserInfo {
 	projectRole: ProjectUserRoleType;
@@ -18,7 +18,7 @@ export interface ProjectUserInfo extends UserInfo {
 export class AddProjectUsersService {
 	constructor(private filterService: FilterService, private projectService: ProjectService) {}
 
-	public getTableData(idsToHide: string[], dataSource: AddUsersDataSource): TableOptions {
+	public getTableData(idsToHide: HiddenUser<ProjectUserRoleType>[], dataSource: AddUsersDataSource): TableOptions {
 		return {
 			selectionCompareWith: (u1: ProjectUserInfo, u2: ProjectUserInfo) => u1.id === u2.id,
 			rowHeight: 64,
@@ -89,7 +89,7 @@ export class AddProjectUsersService {
 			.pipe(switchMap(() => this.projectService.getProjectUsers(projectId)));
 	}
 
-	private alreadyInProject(userId: string, idsToHide: string[]): boolean {
-		return idsToHide.includes(userId);
+	private alreadyInProject(userId: string, usersToHide: HiddenUser<ProjectUserRoleType>[]): boolean {
+		return usersToHide.map((u) => u.id).includes(userId);
 	}
 }

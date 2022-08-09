@@ -11,7 +11,6 @@ import { map, filter } from 'rxjs/operators';
 
 import { FileAccessType } from '../models/file-access-type';
 import { OperationResultResponse } from '../models/operation-result-response';
-import { OperationResultResponseFiles } from '../models/operation-result-response-files';
 
 @Injectable({
 	providedIn: 'root',
@@ -95,9 +94,9 @@ export class FileApiService extends BaseService {
 	static readonly GetFilePath = '/file/get';
 
 	/**
-	 * Returns the file by Id.
+	 * Returns the files by Ids.
 	 *
-	 * The method attempts to get the file by id.
+	 * The method attempts to get the files by ids.
 	 *
 	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
 	 * To access only the response body, use `getFile()` instead.
@@ -109,7 +108,7 @@ export class FileApiService extends BaseService {
 		 * Files global unique identifiers.
 		 */
 		filesIds: Array<string>;
-	}): Observable<StrictHttpResponse<OperationResultResponseFiles>> {
+	}): Observable<StrictHttpResponse<{}>> {
 		const rb = new RequestBuilder(this.rootUrl, FileApiService.GetFilePath, 'get');
 		if (params) {
 			rb.query('filesIds', params.filesIds, {});
@@ -125,15 +124,15 @@ export class FileApiService extends BaseService {
 			.pipe(
 				filter((r: any) => r instanceof HttpResponse),
 				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<OperationResultResponseFiles>;
+					return r as StrictHttpResponse<{}>;
 				})
 			);
 	}
 
 	/**
-	 * Returns the file by Id.
+	 * Returns the files by Ids.
 	 *
-	 * The method attempts to get the file by id.
+	 * The method attempts to get the files by ids.
 	 *
 	 * This method provides access to only to the response body.
 	 * To access the full response (for headers, for example), `getFile$Response()` instead.
@@ -145,10 +144,8 @@ export class FileApiService extends BaseService {
 		 * Files global unique identifiers.
 		 */
 		filesIds: Array<string>;
-	}): Observable<OperationResultResponseFiles> {
-		return this.getFile$Response(params).pipe(
-			map((r: StrictHttpResponse<OperationResultResponseFiles>) => r.body as OperationResultResponseFiles)
-		);
+	}): Observable<{}> {
+		return this.getFile$Response(params).pipe(map((r: StrictHttpResponse<{}>) => r.body as {}));
 	}
 
 	/**

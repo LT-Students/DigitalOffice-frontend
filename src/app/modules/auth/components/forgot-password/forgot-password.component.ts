@@ -37,6 +37,11 @@ export class ForgotPasswordComponent {
 					this.isWaiting$$.next(false);
 				})
 			)
-			.subscribe({ next: () => this.isCompleted$$.next(true) });
+			.subscribe({
+				next: (res) => {
+					this.forgotPasswordForm.patchValue({ email: res.body });
+					this.isCompleted$$.next(true);
+				},
+			});
 	}
 }

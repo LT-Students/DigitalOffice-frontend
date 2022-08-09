@@ -188,7 +188,6 @@ export class TeamStatisticsService {
 				const downloadLink = document.createElement('a');
 				downloadLink.href = mediaType + content;
 				downloadLink.download = filename;
-				// document.body.appendChild(downloadLink);
 				downloadLink.click();
 				downloadLink.remove();
 			},

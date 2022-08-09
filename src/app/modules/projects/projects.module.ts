@@ -24,6 +24,8 @@ import { AddFilesComponent } from './add-files/add-files.component';
 import { UploadProgressComponent } from './add-files/upload-progress/upload-progress.component';
 import { UploadItemComponent } from './add-files/upload-progress/upload-item.component';
 import { EditFileComponent } from './project-page/project-files/edit-file/edit-file.component';
+import { DownloadFilesComponent } from './download-files/download-files.component';
+import { DownloadItemComponent } from './download-files/download-item.component';
 
 @NgModule({
 	declarations: [
@@ -46,6 +48,8 @@ import { EditFileComponent } from './project-page/project-files/edit-file/edit-f
 		UploadProgressComponent,
 		UploadItemComponent,
 		EditFileComponent,
+		DownloadFilesComponent,
+		DownloadItemComponent,
 	],
 	imports: [
 		SharedModule,

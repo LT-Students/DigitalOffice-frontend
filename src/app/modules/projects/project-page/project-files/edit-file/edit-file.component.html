@@ -27,5 +27,7 @@
 </div>
 <mat-dialog-actions align="center">
 	<button class="button" doButton mat-dialog-close>Отменить</button>
-	<button class="button" mat-flat-button color="primary" [loading]="loading$ | async">Сохранить</button>
+	<button class="button" mat-flat-button color="primary" [loading]="loading$ | async" (click)="submit()">
+		Сохранить
+	</button>
 </mat-dialog-actions>

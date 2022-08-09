@@ -1,5 +1,6 @@
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs';
+import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { ColumnDef } from './column-def';
 
 export interface TableOptions<T = any> {
@@ -12,4 +13,5 @@ export interface TableOptions<T = any> {
 	isRowExpandable?: (index: number, rowData: T) => boolean;
 	expandedRowComparator?: ([expandedRow, row]: [T | null, T]) => boolean;
 	selectionCompareWith?: (o1: T, o2: T) => boolean;
+	contextMenuItems?: MenuItem[];
 }
