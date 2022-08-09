@@ -7,12 +7,18 @@ import { Icons } from '@shared/modules/icons/icons';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { SelectionModel } from '@app/utils/selection-model';
+import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { TableComponent } from '../../table/table.component';
 import { TableOptions } from '../../table/models/table-options';
 import { AddProjectUsersService, ProjectUserInfo } from './add-project-users.service';
 
+export interface HiddenUser<T> {
+	id: string;
+	role: T;
+}
+
 export interface AddEmployeeDialogData {
-	idsToHide: string[];
+	usersToHide: HiddenUser<ProjectUserRoleType>[];
 	entityId: string;
 	entityName: string;
 }
@@ -44,8 +50,8 @@ export class AddProjectUsersComponent extends LoadingState implements OnInit, On
 	}
 
 	public ngOnInit(): void {
-		this.dataSource = new AddUsersDataSource(this.addUsersService, this.table.selection);
-		this.tableData = this.addUsersService.getTableData(this.data.idsToHide, this.dataSource);
+		this.dataSource = new AddUsersDataSource(this.addUsersService, this.table.selection, this.data.usersToHide);
+		this.tableData = this.addUsersService.getTableData(this.data.usersToHide, this.dataSource);
 		this.searchControl.valueChanges
 			.pipe(
 				startWith(''),
@@ -87,7 +93,11 @@ export class AddProjectUsersComponent extends LoadingState implements OnInit, On
 export class AddUsersDataSource implements DataSource<ProjectUserInfo> {
 	private data = new BehaviorSubject<ProjectUserInfo[]>([]);
 
-	constructor(private addUsersService: AddProjectUsersService, private selection: SelectionModel<ProjectUserInfo>) {}
+	constructor(
+		private addUsersService: AddProjectUsersService,
+		private selection: SelectionModel<ProjectUserInfo>,
+		private usersToHide: HiddenUser<ProjectUserRoleType>[]
+	) {}
 
 	connect(collectionViewer: CollectionViewer): Observable<ProjectUserInfo[]> {
 		return this.data.asObservable();
@@ -98,7 +108,15 @@ export class AddUsersDataSource implements DataSource<ProjectUserInfo> {
 	public loadUsers(search: string): void {
 		let users$: Observable<ProjectUserInfo[]>;
 		if (search) {
-			users$ = this.addUsersService.findUsers(search).pipe(map(this.mapUsersToSelected.bind(this)));
+			users$ = this.addUsersService.findUsers(search).pipe(
+				map((users: ProjectUserInfo[]) => {
+					return users.map((u: ProjectUserInfo) => {
+						const hu = this.usersToHide.find((hu: HiddenUser<ProjectUserRoleType>) => hu.id === u.id);
+						return hu && hu.role !== u.projectRole ? { ...u, projectRole: hu.role } : u;
+					});
+				}),
+				map(this.mapUsersToSelected.bind(this))
+			);
 		} else {
 			users$ = of(this.selection.selected);
 		}
