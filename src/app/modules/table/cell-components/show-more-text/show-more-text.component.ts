@@ -85,11 +85,8 @@ export class ShowMoreTextComponent implements OnInit, AfterViewChecked, TableCel
 
 	private checkHeight(): void {
 		this.collapsedHeight = this.lineHeight * this.numberOfLines;
-		const prev = this.buttonShowed;
 		this.buttonShowed = this.text.nativeElement.scrollHeight > this.collapsedHeight;
 
-		if (prev !== this.buttonShowed) {
-			this.cdr.detectChanges();
-		}
+		this.cdr.detectChanges();
 	}
 }
