@@ -12,6 +12,7 @@ import { DepartmentPath, EditRequest } from '@app/types/edit-request';
 import { CreateDepartmentRequest } from '@api/department-service/models/create-department-request';
 import { DepartmentResponse } from '@api/department-service/models/department-response';
 import { DepartmentUserApiService } from '@api/department-service/services/department-user-api.service';
+import { DepartmentUserAssignment } from '@api/department-service/models/department-user-assignment';
 
 export interface IGetDepartment {
 	departmentId: string;
@@ -82,8 +83,11 @@ export class DepartmentService {
 		return this.departmentUserApiService.createDepartmentUser({
 			body: {
 				departmentId: departmentId,
-				users: [],
-				// users: [ ...userIds ],
+				users: userIds.map((id: string) => ({
+					userId: id,
+					role: DepartmentUserRole.Employee,
+					assignment: DepartmentUserAssignment.Employee,
+				})),
 			},
 		});
 	}
