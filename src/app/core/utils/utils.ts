@@ -57,3 +57,8 @@ export function b64toBlob(b64Data: string, contentType = '', sliceSize = 512): B
 	const blob = new Blob(byteArrays, { type: contentType });
 	return blob;
 }
+
+export function getUTCWithOffset(date: DateTime): string {
+	const offset = date.offset;
+	return date.setZone('UTC').plus({ minutes: offset }).toSQL();
+}

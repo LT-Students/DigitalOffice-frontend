@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { DateTime } from 'luxon';
 import { EditRequest, PatchDocument, ProjectPath } from '@app/types/edit-request';
+import { getUTCWithOffset } from '@app/utils/utils';
 import { InfoControlValue } from '../project-info/project-info-form.component';
 import { DetailsControlValue } from '../project-details/project-details.component';
 import { DescriptionControlValue } from '../project-description/project-description-form.component';
@@ -84,7 +85,7 @@ class ProjectEditRequest {
 	}
 
 	private static setNewValue(v: any): string | number {
-		return v instanceof DateTime ? v.setZone('UTC').toSQL() : v;
+		return v instanceof DateTime ? getUTCWithOffset(v) : v;
 	}
 
 	private static compare(v1: any, v2: any): boolean {
