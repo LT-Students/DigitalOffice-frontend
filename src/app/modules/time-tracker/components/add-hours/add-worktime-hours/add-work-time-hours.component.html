@@ -1,6 +1,6 @@
 <div [formGroup]="addHoursForm" class="form">
 	<div class="dates-container">
-		<do-form-field label="Количество часов">
+		<do-form-field label="Количество часов" labelClass="text-main">
 			<mat-form-field>
 				<input
 					matInput
@@ -16,7 +16,7 @@
 			</mat-form-field>
 		</do-form-field>
 
-		<do-form-field label="Месяц">
+		<do-form-field label="Месяц" labelClass="text-main">
 			<mat-form-field>
 				<mat-select [formControl]="dateControl" [compareWith]="compareDate" data-test="month-select">
 					<mat-option *ngFor="let month of monthOptions" [value]="month">
@@ -27,7 +27,7 @@
 		</do-form-field>
 	</div>
 
-	<do-form-field label="Проект">
+	<do-form-field label="Проект" labelClass="text-main">
 		<mat-form-field>
 			<mat-select
 				formControlName="project"
@@ -44,13 +44,13 @@
 			</mat-error>
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field label="Комментарий">
+	<do-form-field label="Комментарий" labelClass="text-main">
 		<mat-form-field>
 			<textarea
 				#comment
 				cdkTextareaAutosize
-				cdkAutosizeMinRows="3"
-				cdkAutosizeMaxRows="3"
+				cdkAutosizeMinRows="4"
+				cdkAutosizeMaxRows="4"
 				matInput
 				formControlName="comment"
 				maxlength="500"

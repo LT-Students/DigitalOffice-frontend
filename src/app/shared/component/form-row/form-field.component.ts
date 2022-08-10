@@ -12,6 +12,7 @@ export class FormFieldComponent implements OnInit {
 	@ContentChild(MatFormFieldControl) control?: MatFormFieldControl<any>;
 
 	@Input() label = '';
+	@Input() labelClass = 'text-secondary_default';
 	@Input()
 	set required(required: any) {
 		this._required = coerceBooleanProperty(required);

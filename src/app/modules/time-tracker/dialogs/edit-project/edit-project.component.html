@@ -1,13 +1,13 @@
 <div class="modal">
 	<h3 class="modal__title">
 		Редактирование часов за проект
-		<div class="text-accent_controls_default project-name">
+		<span class="text-accent_controls_default project-name">
 			{{ workTime.project.name }}
-		</div>
+		</span>
 	</h3>
 	<div class="content" [formGroup]="editForm">
 		<div class="flex flex_ai_end">
-			<do-form-field class="modal__hours" label="Количество часов">
+			<do-form-field class="modal__hours" label="Количество часов" labelClass="text-main">
 				<mat-form-field>
 					<input
 						matInput
@@ -23,13 +23,13 @@
 			</do-form-field>
 			<span class="mat-h3 date">&nbsp;за {{ workTimeDate | dateTime: 'LLLL yyyy' }}</span>
 		</div>
-		<do-form-field label="Комментарий">
+		<do-form-field label="Комментарий" labelClass="text-main">
 			<mat-form-field>
 				<textarea
 					#comment
 					cdkTextareaAutosize
-					cdkAutosizeMinRows="3"
-					cdkAutosizeMaxRows="3"
+					cdkAutosizeMinRows="5"
+					cdkAutosizeMaxRows="5"
 					matInput
 					formControlName="description"
 					maxlength="500"
@@ -40,14 +40,11 @@
 			</mat-form-field>
 		</do-form-field>
 		<div class="controls">
-			<button doButton type="button" class="controls__button" (click)="close()" data-test="close-dialog-btn">
-				Отмена
-			</button>
+			<button doButton type="button" (click)="close()" data-test="close-dialog-btn">Отмена</button>
 			<button
 				mat-flat-button
 				color="primary"
 				type="submit"
-				class="controls__button"
 				[loading]="loading$ | async"
 				(click)="onSubmit()"
 				data-test="edit-project-save-btn"

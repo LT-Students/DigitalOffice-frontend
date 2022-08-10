@@ -5,7 +5,7 @@
 	</h3>
 	<form class="content" [formGroup]="form">
 		<div class="flex flex-ai-end">
-			<do-form-field label="Выберите диапазон отсутствия">
+			<do-form-field label="Диапазон отсутствия" labelClass="text-main">
 				<mat-form-field>
 					<mat-date-range-input
 						(click)="picker.open()"
@@ -40,17 +40,17 @@
 				</mat-form-field>
 			</do-form-field>
 			<div class="modal__hours">
-				<span class="text-secondary_default">Выбрано</span>
+				<span>Выбрано</span>
 				<h3>{{ selectedIntervalDurationInHours$ | async }}<span class="text-secondary_default"> ч</span></h3>
 			</div>
 		</div>
-		<do-form-field label="Комментарий">
+		<do-form-field label="Комментарий" labelClass="text-main">
 			<mat-form-field>
 				<textarea
 					#comment
 					cdkTextareaAutosize
-					cdkAutosizeMinRows="3"
-					cdkAutosizeMaxRows="3"
+					cdkAutosizeMinRows="5"
+					cdkAutosizeMaxRows="5"
 					matInput
 					formControlName="comment"
 					maxlength="500"
@@ -61,13 +61,10 @@
 			</mat-form-field>
 		</do-form-field>
 		<div class="controls">
-			<button mat-button class="controls__button" type="button" (click)="close()" data-test="close-dialog-btn">
-				Отмена
-			</button>
+			<button doButton type="button" (click)="close()" data-test="close-dialog-btn">Отменить</button>
 			<button
 				mat-flat-button
 				color="primary"
-				class="controls__button"
 				type="submit"
 				[loading]="loading$ | async"
 				(click)="handleSubmit()"
