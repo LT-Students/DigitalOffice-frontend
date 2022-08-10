@@ -52,7 +52,7 @@ export class EditProjectComponent extends LoadingState {
 			comment: this.editForm.get('description')?.value,
 		};
 		this.attendanceService
-			.submitWorkTime(submitValue)
+			.submitWorkTime(submitValue, this.workTimeDate)
 			.pipe(finalize(() => this.setLoading(false)))
 			.subscribe(() => this.close());
 	}

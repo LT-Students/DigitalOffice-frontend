@@ -120,7 +120,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 			comment: this.addHoursForm.get('comment')?.value,
 		};
 		this.attendanceService
-			.submitWorkTime(submitValue)
+			.submitWorkTime(submitValue, this.dateControl.value)
 			.pipe(finalize(() => this.setLoading(false)))
 			.subscribe(() => this.addHoursForm.reset());
 	}
