@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
 							return this.modalService.openModal(AddEditPositionComponent, ModalWidth.M).afterClosed();
 						}
 						case this.modalType.NEW_EMPLOYEE: {
-							return this.modalService.openModal(NewEmployeeComponent, ModalWidth.L).afterClosed();
+							return this.modalService.open(NewEmployeeComponent, { width: ModalWidth.M }).afterClosed();
 						}
 						case this.modalType.NEW_ROLE: {
 							return this.modalService.openModal(AddEditRoleComponent, ModalWidth.M).afterClosed();

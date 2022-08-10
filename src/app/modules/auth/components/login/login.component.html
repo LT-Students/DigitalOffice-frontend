@@ -4,25 +4,25 @@
 		class="mat-body-2 text-alert"
 		>{{ loginForm.errors?.['login'].message }}</span
 	>
-	<do-form-field class="auth-input">
+	<do-form-field class="auth-input" label="Введи логин или корпоративный e-mail">
 		<mat-form-field>
 			<input
 				(cdkAutofill)="handleAutofill($event)"
 				doAutofocus
 				matInput
 				type="email"
-				placeholder="Корпоративный e-mail или логин"
+				placeholder="Логин или e-mail"
 				formControlName="username"
 			/>
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field class="auth-input">
+	<do-form-field class="auth-input" label="Введи пароль">
 		<mat-form-field>
 			<do-password placeholder="Пароль" formControlName="password"></do-password>
 		</mat-form-field>
 	</do-form-field>
 	<button
-		[loading]="isLoading$$ | async"
+		[loading]="loading$ | async"
 		mat-flat-button
 		class="submit"
 		type="submit"
