@@ -7,6 +7,7 @@ import { PasswordService } from '@app/services/user/password.service';
 import { ReconstructPasswordRequest } from '@api/user-service/models/reconstruct-password-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { LoadingState } from '@shared/directives/button-loading.directive';
 import { AuthRoutes } from '../../models/auth-routes';
 
 class PasswordErrorMatcher extends ErrorStateMatcher {
@@ -27,16 +28,16 @@ class LoginSecretErrorMatcher extends ErrorStateMatcher {
 	styleUrls: ['./reset-password.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ResetPasswordComponent {
+export class ResetPasswordComponent extends LoadingState {
 	public AuthRoutes = AuthRoutes;
 
 	public resetForm: FormGroup;
-	public isLoading$$: BehaviorSubject<boolean>;
-	public isCompleted$$: BehaviorSubject<boolean>;
+	public isCompleted$: BehaviorSubject<boolean>;
 	public passwordErrorMatcher = new PasswordErrorMatcher();
 	public loginSecretErrorMatcher = new LoginSecretErrorMatcher();
 
 	constructor(private _fb: FormBuilder, private _passwordService: PasswordService, private _route: ActivatedRoute) {
+		super();
 		this.resetForm = this._fb.group(
 			{
 				login: ['', [Validators.required]],
@@ -46,12 +47,11 @@ export class ResetPasswordComponent {
 			},
 			{ validators: [DoValidators.matchControls('password', 'repeatPassword')] }
 		);
-		this.isLoading$$ = new BehaviorSubject<boolean>(false);
-		this.isCompleted$$ = new BehaviorSubject<boolean>(false);
+		this.isCompleted$ = new BehaviorSubject<boolean>(false);
 	}
 
 	public resetPassword(): void {
-		this.isLoading$$.next(true);
+		this.setLoading(true);
 		this._route.queryParams
 			.pipe(
 				switchMap((params) => {
@@ -63,7 +63,7 @@ export class ResetPasswordComponent {
 					};
 					return this._passwordService.reconstructPassword(request);
 				}),
-				finalize(() => this.isLoading$$.next(false)),
+				finalize(() => this.setLoading(false)),
 				catchError((error) => {
 					this.resetForm.setErrors({
 						invalidLoginSecret: {
@@ -76,7 +76,7 @@ export class ResetPasswordComponent {
 			.subscribe({
 				next: (res) => {
 					if (res !== null) {
-						this.isCompleted$$.next(true);
+						this.isCompleted$.next(true);
 					}
 				},
 			});

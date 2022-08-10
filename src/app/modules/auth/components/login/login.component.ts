@@ -5,10 +5,11 @@ import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Valida
 import { AuthService } from '@app/services/auth/auth.service';
 
 import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AppRoutes } from '@app/models/app-routes';
 import { AutofillEvent } from '@angular/cdk/text-field';
+import { LoadingState } from '@shared/directives/button-loading.directive';
 import { AuthRoutes } from '../../models/auth-routes';
 
 class LoginErrorMatcher implements ErrorStateMatcher {
@@ -24,11 +25,10 @@ class LoginErrorMatcher implements ErrorStateMatcher {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [{ provide: ErrorStateMatcher, useClass: LoginErrorMatcher }],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends LoadingState implements OnInit {
 	public AuthRoutes = AuthRoutes;
 
 	public loginForm: FormGroup;
-	public isLoading$$: BehaviorSubject<boolean>;
 
 	constructor(
 		private authService: AuthService,
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
 		private formBuilder: FormBuilder,
 		private route: ActivatedRoute
 	) {
-		this.isLoading$$ = new BehaviorSubject<boolean>(false);
+		super();
 		this.loginForm = this.formBuilder.group({
 			username: ['', Validators.required],
 			password: ['', Validators.required],
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	public login(): void {
-		this.isLoading$$.next(true);
+		this.setLoading(true);
 
 		const authenticationRequest: AuthenticationRequest = {
 			loginData: this.loginForm.get('username')?.value.trim(),
@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
 			.login(authenticationRequest)
 			.pipe(
 				catchError((error) => {
-					this.isLoading$$.next(false);
+					this.setLoading(false);
 					this.loginForm.setErrors({
 						login: {
 							message: 'Неверный логин или пароль :(',

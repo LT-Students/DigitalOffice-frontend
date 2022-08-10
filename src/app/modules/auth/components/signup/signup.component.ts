@@ -4,10 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
 import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
 import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { AppRoutes } from '@app/models/app-routes';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingState } from '@shared/directives/button-loading.directive';
 
 @Component({
 	selector: 'do-signup',
@@ -15,10 +17,8 @@ import { AppRoutes } from '@app/models/app-routes';
 	styleUrls: ['./signup.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignupComponent {
+export class SignupComponent extends LoadingState {
 	public loginForm: FormGroup;
-	public isWaiting$: BehaviorSubject<boolean>;
-	public isFormVisible = false;
 
 	constructor(
 		private _authService: AuthService,
@@ -27,7 +27,7 @@ export class SignupComponent {
 		private _router: Router,
 		private _fb: FormBuilder
 	) {
-		this.isWaiting$ = new BehaviorSubject<boolean>(false);
+		super();
 		this.loginForm = this._fb.group({
 			login: ['', Validators.required],
 			password: ['', Validators.required],
@@ -35,7 +35,7 @@ export class SignupComponent {
 	}
 
 	public signUp(): void {
-		this.isWaiting$.next(true);
+		this.setLoading(true);
 		this._activatedRoute.queryParams
 			.pipe(
 				switchMap((params: Params) => {
@@ -52,15 +52,17 @@ export class SignupComponent {
 					this._currentUserService.getUserOnLogin(credentialResponse?.userId)
 				),
 				tap((user) => this._currentUserService.setUser(user)),
-				catchError((error: string) => {
-					this.loginForm.get('login')?.setErrors({
-						loginExists: {
-							error: error,
-						},
-					});
+				catchError((error: HttpErrorResponse) => {
+					if (error.error.errors.includes('The login already exist.')) {
+						this.loginForm.get('login')?.setErrors({
+							loginExists: {
+								message: 'Такой логин уже существует',
+							},
+						});
+					}
 					return throwError(error);
 				}),
-				finalize(() => this.isWaiting$.next(false))
+				finalize(() => this.setLoading(false))
 			)
 			.subscribe({
 				next: (user: User) => {

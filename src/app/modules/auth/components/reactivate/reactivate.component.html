@@ -1,12 +1,11 @@
 <form class="auth" [formGroup]="form" (ngSubmit)="reactivate()" autocomplete="off">
-	<div class="text-disabled">Введи пароль из письма.</div>
-	<do-form-field class="auth-input">
+	<do-form-field class="auth-input" label="Введи пароль из письма">
 		<mat-form-field>
 			<do-password placeholder="Пароль" formControlName="password"></do-password>
 		</mat-form-field>
 	</do-form-field>
 	<button
-		[loading]="isWaiting$ | async"
+		[loading]="loading$ | async"
 		mat-flat-button
 		color="primary"
 		class="submit"

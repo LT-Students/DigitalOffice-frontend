@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { AuthService } from '@app/services/auth/auth.service';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { AppRoutes } from '@app/models/app-routes';
 import { UserService } from '@app/services/user/user.service';
+import { LoadingState } from '@shared/directives/button-loading.directive';
 import { AdminRoutes } from '../../../admin/models/admin-routes';
 
 @Component({
@@ -16,11 +17,10 @@ import { AdminRoutes } from '../../../admin/models/admin-routes';
 	styleUrls: ['./reactivate.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReactivateComponent {
+export class ReactivateComponent extends LoadingState {
 	public form = this.fb.group({
 		password: ['', Validators.required],
 	});
-	public isWaiting$ = new BehaviorSubject<boolean>(false);
 
 	constructor(
 		private authService: AuthService,
@@ -29,10 +29,12 @@ export class ReactivateComponent {
 		private activatedRoute: ActivatedRoute,
 		private _router: Router,
 		private fb: FormBuilder
-	) {}
+	) {
+		super();
+	}
 
 	public reactivate(): void {
-		this.isWaiting$.next(true);
+		this.setLoading(true);
 		this.activatedRoute.queryParams
 			.pipe(
 				switchMap((params: Params) => {
@@ -61,7 +63,7 @@ export class ReactivateComponent {
 						: [AppRoutes.TimeTrack];
 					this._router.navigate(nextUrl, {});
 				},
-				error: () => this.isWaiting$.next(false),
+				error: () => this.setLoading(false),
 			});
 	}
 }

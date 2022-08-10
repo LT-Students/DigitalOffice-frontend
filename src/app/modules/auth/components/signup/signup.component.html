@@ -1,40 +1,30 @@
 <form class="auth" [formGroup]="loginForm" (ngSubmit)="signUp()" autocomplete="off">
-	<ng-container *ngIf="!isFormVisible; else form">
-		<div class="text-disabled">
-			Придумай логин.<br />Он в будущем понадобится для входа. Затем введи пароль из письма.
-		</div>
-		<button mat-flat-button color="primary" class="submit" (click)="isFormVisible = true">Всё понятно!</button>
-	</ng-container>
-	<ng-template #form>
-		<span *ngIf="loginForm.controls['login'].errors?.['loginExists']" class="mat-body-2 text-alert"
-			>Введённый логин уже занят :(</span
-		>
-		<do-form-field class="auth-input">
-			<mat-form-field>
-				<input
-					matInput
-					name="login"
-					type="text"
-					placeholder="Новый логин"
-					formControlName="login"
-					autocomplete="off"
-				/>
-			</mat-form-field>
-		</do-form-field>
-		<do-form-field class="auth-input">
-			<mat-form-field>
-				<do-password placeholder="Пароль" formControlName="password"></do-password>
-			</mat-form-field>
-		</do-form-field>
-		<button
-			[loading]="isWaiting$ | async"
-			mat-flat-button
-			color="primary"
-			class="submit"
-			type="submit"
-			[disabled]="loginForm.invalid"
-		>
-			Войти
-		</button>
-	</ng-template>
+	<do-form-field class="auth-input" label="Придумай логин">
+		<mat-form-field>
+			<input
+				matInput
+				name="login"
+				type="text"
+				placeholder="Новый логин"
+				formControlName="login"
+				autocomplete="off"
+			/>
+			<mat-error>{{ loginForm.controls['login'].errors | controlErrors }}</mat-error>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field class="auth-input" label="Введи пароль из письма">
+		<mat-form-field>
+			<do-password placeholder="Пароль" formControlName="password"></do-password>
+		</mat-form-field>
+	</do-form-field>
+	<button
+		[loading]="loading$ | async"
+		mat-flat-button
+		color="primary"
+		class="submit"
+		type="submit"
+		[disabled]="loginForm.invalid"
+	>
+		Войти
+	</button>
 </form>
