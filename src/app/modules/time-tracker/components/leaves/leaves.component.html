@@ -28,7 +28,10 @@
 				<p>{{ leave | leaveHours | async }} ч</p>
 			</td>
 			<td class="cell">
-				<p>{{ leave.startTime | dateTime: 'd MMMM' }} - {{ leave.endTime | dateTime: 'd MMMM' }}</p>
+				<p>
+					{{ leave.startTime | dateTime: (leave.startTime.month === leave.endTime.month ? 'd' : 'd MMMM') }} -
+					{{ leave.endTime | dateTime: 'd MMMM' }}
+				</p>
 			</td>
 			<td class="cell">
 				<do-comment [text]="leave?.comment"></do-comment>
