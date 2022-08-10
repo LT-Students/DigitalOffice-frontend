@@ -7,7 +7,7 @@
 		margin-right: 5px;
 		padding: 0;
 
-		width: 150px;
+		width: 45%;
 	}
 }
 
@@ -32,9 +32,10 @@
 	margin-top: 20px;
 
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
+	gap: 16px;
 
 	button {
-		width: 180px;
+		width: 192px;
 	}
 }

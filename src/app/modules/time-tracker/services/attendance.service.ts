@@ -106,28 +106,24 @@ export class AttendanceService {
 		this.setDatepickerHolidays(monthNormAndHolidays);
 	}
 
-	public submitWorkTime(value: SubmitWorkTimeValue): Observable<any> {
+	public submitWorkTime(value: SubmitWorkTimeValue, date: DateTime): Observable<any> {
 		const { workTimeId, time, comment } = value;
 		let action: Observable<any>;
 		if (isGUIDEmpty(workTimeId)) {
-			action = this.selectedDate$.pipe(
-				first(),
-				switchMap(({ month, year, offset }: DateTime) => {
-					const createRequest: CreateWorkTimeRequest = {
-						month,
-						year,
-						offset: offset / 60,
-						hours: time,
-						description: comment || undefined,
-					};
-					return this.timeService.createWorkTime(createRequest);
-				})
-			);
+			const { month, year, offset } = date;
+			const createRequest: CreateWorkTimeRequest = {
+				month,
+				year,
+				offset: offset / 60,
+				hours: time,
+				description: comment || undefined,
+			};
+			action = this.timeService.createWorkTime(createRequest);
 		} else {
 			const editRequest = this.getWorkTimeEditRequest(value);
 			action = editRequest.length ? this.timeService.editWorkTime(workTimeId, editRequest) : of(null);
 		}
-		return action.pipe(switchMap((response) => (response ? this.getWorkTimes() : of(null))));
+		return action.pipe(tap(() => this.setNewDate(date)));
 	}
 
 	private getWorkTimeEditRequest(value: SubmitWorkTimeValue): EditRequest<WorkTimePath> {

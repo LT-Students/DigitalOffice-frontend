@@ -1,6 +1,6 @@
 <div [formGroup]="form" class="add-hours__form">
 	<div class="add-hours__time-wrapper">
-		<do-form-field label="Выберите диапазон отсутствия">
+		<do-form-field label="Диапазон отсутствия" labelClass="text-main">
 			<mat-form-field>
 				<mat-date-range-input
 					(click)="picker.open()"
@@ -23,7 +23,7 @@
 					/>
 				</mat-date-range-input>
 				<mat-datepicker-toggle matSuffix [for]="picker" data-test="leave-interval-datepicker">
-					<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+					<mat-icon matDatepickerToggleIcon fontSet="material-icons-outlined">date_range</mat-icon>
 				</mat-datepicker-toggle>
 				<mat-date-range-picker
 					#picker
@@ -36,11 +36,11 @@
 			</mat-form-field>
 		</do-form-field>
 		<div class="add-hours__absence-time">
-			<span class="text-secondary_default">Выбрано</span>
+			<span>Выбрано</span>
 			<h3>{{ selectedIntervalDurationInHours$ | async }}<span class="text-secondary_default"> ч</span></h3>
 		</div>
 	</div>
-	<do-form-field label="Тип отсутствия">
+	<do-form-field label="Тип отсутствия" labelClass="text-main">
 		<mat-form-field>
 			<mat-select formControlName="leaveType" placeholder="Выберите тип отсутствия" data-test="leave-type-select">
 				<mat-option *ngFor="let leave of leaveTypes" [value]="leave.leaveType">
@@ -50,13 +50,13 @@
 			<mat-error>{{ form.controls['leaveType'].errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
-	<do-form-field label="Комментарий">
+	<do-form-field label="Комментарий" labelClass="text-main">
 		<mat-form-field>
 			<textarea
 				#comment
 				cdkTextareaAutosize
-				cdkAutosizeMinRows="3"
-				cdkAutosizeMaxRows="3"
+				cdkAutosizeMinRows="4"
+				cdkAutosizeMaxRows="4"
 				matInput
 				formControlName="comment"
 				maxlength="500"

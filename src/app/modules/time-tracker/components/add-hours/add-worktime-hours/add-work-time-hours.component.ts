@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/
 import { Observable, Subject } from 'rxjs';
 import { DateTime } from 'luxon';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { finalize, map, takeUntil } from 'rxjs/operators';
+import { filter, finalize, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DoValidators } from '@app/validators/do-validators';
 import { EMPTY_GUID, isGUIDEmpty } from '@app/utils/utils';
 import { LoadingState } from '@shared/directives/button-loading.directive';
@@ -56,6 +56,9 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 
 	private getProjectOptions$(): Observable<ProjectOption[]> {
 		return this.attendanceService.workTimes$.pipe(
+			withLatestFrom(this.attendanceService.selectedDate$),
+			filter(([_, selectedDate]: [WorkTime[], DateTime]) => this.canEditWorkTime(selectedDate)),
+			map(([workTimes, _]: [WorkTime[], DateTime]) => workTimes),
 			map((workTimes: WorkTime[]) => {
 				const isOtherExists = workTimes.some((wt: WorkTime) => isGUIDEmpty(wt.project.id));
 				const projects = workTimes
@@ -80,6 +83,11 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 					: [...projects, { id: EMPTY_GUID, projectId: EMPTY_GUID, name: 'Другое' }];
 			})
 		);
+	}
+
+	private canEditWorkTime(date: DateTime): boolean {
+		const now = this.dateControl.value as DateTime;
+		return now.year === date.year && now.month === date.month;
 	}
 
 	private initForm(): FormGroup {
@@ -112,7 +120,7 @@ export class AddWorkTimeHoursComponent extends LoadingState implements OnInit, O
 			comment: this.addHoursForm.get('comment')?.value,
 		};
 		this.attendanceService
-			.submitWorkTime(submitValue)
+			.submitWorkTime(submitValue, this.dateControl.value)
 			.pipe(finalize(() => this.setLoading(false)))
 			.subscribe(() => this.addHoursForm.reset());
 	}
