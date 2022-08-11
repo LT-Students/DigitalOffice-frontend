@@ -5,6 +5,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 import { FileInfo } from '@api/project-service/models/file-info';
+import { forkJoin, of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { FileService } from './file.service';
 
 @Component({
 	selector: 'do-edit-file',
@@ -24,7 +28,9 @@ export class EditFileComponent extends LoadingState implements OnInit {
 	constructor(
 		@Inject(MAT_DIALOG_DATA) private file: FileInfo,
 		private fb: FormBuilder,
-		private dialogRef: MatDialogRef<EditFileComponent>
+		private fileService: FileService,
+		private dialogRef: MatDialogRef<EditFileComponent>,
+		private route: ActivatedRoute
 	) {
 		super();
 	}
@@ -45,5 +51,19 @@ export class EditFileComponent extends LoadingState implements OnInit {
 			return;
 		}
 		this.setLoading(true);
+		const { name, accessType } = this.form.getRawValue();
+		forkJoin([
+			name !== this.file.name
+				? this.fileService.editFileName(this.route.snapshot.params['id'], this.file.id, name)
+				: of(null),
+			accessType !== this.file.access ? this.fileService.editFileAccess(this.file.id, accessType) : of(null),
+		])
+			.pipe(finalize(() => this.setLoading(false)))
+			.subscribe({
+				next: () => {
+					const newFile: FileInfo = { ...this.file, name, access: accessType };
+					this.dialogRef.close(newFile);
+				},
+			});
 	}
 }

@@ -16,6 +16,7 @@ import { UserRequest } from '@api/project-service/models/user-request';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { FileAccessType } from '@api/project-service/models/file-access-type';
 import { DownloadFilesComponent } from './download-files/download-files.component';
 
 @Injectable({
@@ -98,5 +99,9 @@ export class ProjectService {
 	public downloadFile(files: FileInfo | FileInfo[]): void {
 		const filesArr = Array.isArray(files) ? files : [files];
 		this.dialog.open(DownloadFilesComponent, { width: ModalWidth.S, data: filesArr });
+	}
+
+	public editFileAccess(fileId: string, newAccessType: FileAccessType): Observable<OperationResultResponse> {
+		return this.fileService.editFile({ fileId, newAccessType });
 	}
 }

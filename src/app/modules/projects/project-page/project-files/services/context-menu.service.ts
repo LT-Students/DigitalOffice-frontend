@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ViewContainerRef } from '@angular/core';
 import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { Icons } from '@shared/modules/icons/icons';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
@@ -19,7 +19,8 @@ export class ContextMenuService {
 		private dialog: DialogService,
 		private selectedProject: SelectedProjectService,
 		private projectService: ProjectService,
-		private pluralPipe: I18nPluralPipe
+		private pluralPipe: I18nPluralPipe,
+		private viewContainerRef: ViewContainerRef
 	) {}
 
 	public setContextMenu(contextMenu: ContextMenuComponent): void {
@@ -36,8 +37,7 @@ export class ContextMenuService {
 				title: 'Редактировать документ',
 				icon: Icons.Edit,
 				action: (file: FileInfo) => this.editFile(file),
-				// visible: (file: FileInfo | FileInfo[]) => !Array.isArray(file),
-				visible: (file: FileInfo | FileInfo[]) => false,
+				visible: (file: FileInfo | FileInfo[]) => !Array.isArray(file),
 			},
 			{
 				title: 'Удалить документ',
@@ -56,7 +56,11 @@ export class ContextMenuService {
 
 	private editFile(file: FileInfo): void {
 		this.dialog
-			.open<FileInfo>(EditFileComponent, { width: ModalWidth.M, data: file })
+			.open<FileInfo>(EditFileComponent, {
+				width: ModalWidth.M,
+				data: file,
+				viewContainerRef: this.viewContainerRef,
+			})
 			.afterClosed()
 			.pipe(
 				switchMap((newFile?: FileInfo) =>
