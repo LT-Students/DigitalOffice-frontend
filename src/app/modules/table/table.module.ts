@@ -32,6 +32,6 @@ import { ContextMenuCellComponent } from './cell-components/context-menu/context
 		ContextMenuCellComponent,
 	],
 	imports: [SharedModule, CdkTableModule],
-	exports: [TableComponent],
+	exports: [TableComponent, CdkTableModule],
 })
 export class TableModule {}
