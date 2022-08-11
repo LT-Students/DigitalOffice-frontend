@@ -48,7 +48,7 @@
 				</ng-template>
 			</td>
 			<td class="cell">
-				<span>{{ workTime.modifiedAtUtc ? (workTime.modifiedAtUtc | date: 'd MMMM') : '—' }}</span>
+				<span>{{ workTime.modifiedAtUtc ? (workTime.modifiedAt | dateTime: 'd MMMM') : '—' }}</span>
 			</td>
 			<td class="cell">
 				<do-comment [text]="workTime.description | placeholder: '—'"></do-comment>
