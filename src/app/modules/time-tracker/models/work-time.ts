@@ -6,6 +6,7 @@ import { WorkTimeMonthLimitInfo } from '@api/time-service/models/work-time-month
 import { UserInfo } from '@api/time-service/models/user-info';
 import { isGUIDEmpty } from '@app/utils/utils';
 import { ProjectStatusType } from '@api/time-service/models/project-status-type';
+import { DateTime } from 'luxon';
 
 export class WorkTime implements WorkTimeInfo {
 	public id: string;
@@ -16,6 +17,7 @@ export class WorkTime implements WorkTimeInfo {
 	public managerHours?: number;
 	public description?: string;
 	public modifiedAtUtc?: string;
+	public modifiedAt?: DateTime;
 	public jobs?: Array<WorkTimeJobInfoInfo>;
 	public managerDescription?: string;
 	public project: ProjectInfo;
@@ -36,6 +38,9 @@ export class WorkTime implements WorkTimeInfo {
 		this.managerHours = workTime.managerHours;
 		this.description = workTime.description;
 		this.modifiedAtUtc = workTime.modifiedAtUtc;
+		if (workTime.modifiedAtUtc != null) {
+			this.modifiedAt = DateTime.fromISO(workTime.modifiedAtUtc, { zone: 'utc' }).setZone('local');
+		}
 		this.jobs = workTime.jobs;
 		this.managerDescription = workTime.managerDescription;
 		this.limitInfo = limitInfo;

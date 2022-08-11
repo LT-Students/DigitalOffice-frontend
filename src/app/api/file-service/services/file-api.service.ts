@@ -163,13 +163,25 @@ export class FileApiService extends BaseService {
 	 */
 	editFile$Response(params: {
 		/**
+		 * Entity global unique identifier.
+		 */
+		entityId: string;
+
+		/**
 		 * File global unique identifier.
 		 */
 		fileId: string;
+
+		/**
+		 * New name of the file.
+		 */
+		newName: string;
 	}): Observable<StrictHttpResponse<OperationResultResponse>> {
-		const rb = new RequestBuilder(this.rootUrl, FileApiService.EditFilePath, 'patch');
+		const rb = new RequestBuilder(this.rootUrl, FileApiService.EditFilePath, 'put');
 		if (params) {
+			rb.query('entityId', params.entityId, {});
 			rb.query('fileId', params.fileId, {});
+			rb.query('newName', params.newName, {});
 		}
 
 		return this.http
@@ -197,9 +209,19 @@ export class FileApiService extends BaseService {
 	 */
 	editFile(params: {
 		/**
+		 * Entity global unique identifier.
+		 */
+		entityId: string;
+
+		/**
 		 * File global unique identifier.
 		 */
 		fileId: string;
+
+		/**
+		 * New name of the file.
+		 */
+		newName: string;
 	}): Observable<OperationResultResponse> {
 		return this.editFile$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
