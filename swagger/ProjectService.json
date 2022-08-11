@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.3.1",
+    "version": "1.2.3.2",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -427,7 +427,7 @@
         },
         "responses": {
           "200": {
-            "description": "Successfully removed images from project.",
+            "description": "Successfully removed files from project.",
             "content": {
               "application/json": {
                 "schema": {
@@ -451,6 +451,61 @@
           },
           "403": {
             "description": "Forbidden.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/file/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/fileId"
+        },
+        {
+          "$ref": "#/components/parameters/accessType"
+        }
+      ],
+      "put": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "editFile",
+        "description": "Edit files from Project.",
+        "responses": {
+          "200": {
+            "description": "Successfully edited files in project.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
+          "403": {
+            "description": "Forbidden.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File was not found.\n",
             "content": {
               "application/json": {
                 "schema": {
@@ -1695,6 +1750,16 @@
         },
         "required": true
       },
+      "fileId": {
+        "name": "fileId",
+        "in": "query",
+        "description": "Id of the projectFile to take.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
       "securityToken": {
         "name": "token",
         "in": "header",
@@ -1702,6 +1767,20 @@
         "schema": {
           "type": "string",
           "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      },
+      "accessType":{
+        "name": "newAccessType",
+        "in": "query",
+        "description": "New file access type.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "Manager",
+            "Team",
+            "Public"
+          ]
         },
         "required": true
       }
