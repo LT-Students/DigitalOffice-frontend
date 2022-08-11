@@ -4,6 +4,7 @@ import { UserListResolver } from './resolvers/user-list-resolver.service';
 import { EmployeePageComponent } from './employee-page.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { EmployeeResolver } from './resolvers/employee.resolver';
+import { PersonalProjectsResolver } from './resolvers/personal-projects.resolver';
 
 const employeeRoutes: Routes = [
 	{
@@ -13,7 +14,11 @@ const employeeRoutes: Routes = [
 			users: UserListResolver,
 		},
 	},
-	{ path: ':id', component: EmployeePageComponent, resolve: { employee: EmployeeResolver } },
+	{
+		path: ':id',
+		component: EmployeePageComponent,
+		resolve: { employee: EmployeeResolver, projects: PersonalProjectsResolver },
+	},
 	{ path: '**', pathMatch: 'full', redirectTo: '' },
 ];
 
