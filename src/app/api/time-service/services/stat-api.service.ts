@@ -45,7 +45,7 @@ export class StatApiService extends BaseService {
 		 * filter by user&#x27;s name
 		 */
 		nameincludesubstring?: string;
-		month?: number;
+		month: number;
 		year: number;
 		takeCount: number;
 		skipCount: number;
@@ -98,7 +98,7 @@ export class StatApiService extends BaseService {
 		 * filter by user&#x27;s name
 		 */
 		nameincludesubstring?: string;
-		month?: number;
+		month: number;
 		year: number;
 		takeCount: number;
 		skipCount: number;
