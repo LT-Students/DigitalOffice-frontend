@@ -16,6 +16,10 @@ do-form-field mat-form-field.mat-form-field-appearance-outline {
 
 		font-size: 13px;
 		line-height: 21px;
+
+		.mat-hint {
+			color: variables.$secondary_default;
+		}
 	}
 
 	.mat-form-field-outline-thick {

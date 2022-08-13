@@ -1,0 +1,39 @@
+<div
+	*ngIf="images$ | async as images"
+	class="dropzone"
+	[class.has-files]="images.length"
+	doDnd
+	(fileDropped)="onFileDropped($event)"
+>
+	<ng-container *ngIf="!images.length">
+		<mat-icon class="upload-icon text-light_4" [svgIcon]="Icons.Photo"></mat-icon>
+		<span class="text-secondary_default">Перетащите файлы сюда, чтобы загрузить</span>
+		<span class="mat-caption text-light_4">Поддерживаемые форматы: JPEG, PNG, BMP, GIF</span>
+	</ng-container>
+	<div *ngIf="images.length" class="images">
+		<do-image *ngFor="let image of images; index as i" [image]="image" (imageRemoved)="removeImage(i)"></do-image>
+	</div>
+	<button
+		*ngIf="images.length < MAX_IMAGES_COUNT"
+		class="upload-button"
+		mat-flat-button
+		color="accent"
+		(click)="uploadFile.click()"
+	>
+		Загрузить
+	</button>
+	<input
+		#uploadFile
+		hidden
+		type="file"
+		[accept]="ACCEPTABLE_TYPES | join"
+		multiple
+		(change)="onFileChanged($event)"
+	/>
+	<span *ngIf="images.length < MAX_IMAGES_COUNT" class="image-count mat-caption text-secondary_default"
+		>{{ images.length }}/{{ MAX_IMAGES_COUNT }}</span
+	>
+	<span *ngIf="images.length === MAX_IMAGES_COUNT" class="image-count mat-caption text-alert"
+		>Упс! Добавлено максимальное количество фотографий</span
+	>
+</div>

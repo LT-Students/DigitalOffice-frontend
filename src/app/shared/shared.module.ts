@@ -64,6 +64,7 @@ import { FileIconPipe } from './pipes/file-icon.pipe';
 import { TitleDatepickerV2Component } from './component/title-datepicker/title-datepicker-v2.component';
 import { DeselectAllCheckboxComponent } from './component/deselect-all-checkbox/deselect-all-checkbox.component';
 import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
+import { JoinPipe } from './pipes/join.pipe';
 
 @NgModule({
 	declarations: [
@@ -123,6 +124,7 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 		TitleDatepickerV2Component,
 		DeselectAllCheckboxComponent,
 		TypeFromExtensionPipe,
+		JoinPipe,
 	],
 	imports: [
 		CommonModule,
@@ -197,6 +199,7 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 		TitleDatepickerV2Component,
 		DeselectAllCheckboxComponent,
 		TypeFromExtensionPipe,
+		JoinPipe,
 	],
 })
 export class SharedModule {}
