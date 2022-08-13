@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { ContractSubjectData } from './contract-subject-data';
 export interface CompanyUserInfo {
-	contractSubjectData?: ContractSubjectData;
+	contractSubject?: ContractSubjectData;
 	rate?: number;
 
 	/**

@@ -1,21 +1,27 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { Router } from '@angular/router';
 import { AppRoutes } from '@app/models/app-routes';
 import { I18nPluralPipe } from '@angular/common';
-import { TableOptions } from '../table/models/table-options';
-import { FilterDef, InputFilterParams } from '../dynamic-filter/models';
-import { EditableTextFieldParams } from '../table/cell-components/editable-text-field/editable-text-field.component';
-import { TextCellParams } from '../table/cell-components/text/text.component';
-import { LeaveTimeType } from './models/leave-time-type';
+import { TableOptions } from '../../table/models/table-options';
+import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
+import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
+import { TextCellParams } from '../../table/cell-components/text/text.component';
+import { LeaveTimeType } from '../models/leave-time-type';
+import { TimeListDataSource } from '../manager-timelist.component';
+import { LeaveTime, UserStat } from '../models/user-stat';
+import { TIMELIST_ENTITY_INFO, TimelistEntityInfo } from '../models/timelist-entity';
 import { TimeService } from './time.service';
-import { TimeListDataSource } from './manager-timelist.component';
-import { LeaveTime, UserStat } from './models/user-stat';
 
 @Injectable()
 export class ManagerTimelistService {
-	constructor(private router: Router, private timeService: TimeService, private pluralPipe: I18nPluralPipe) {}
+	constructor(
+		@Inject(TIMELIST_ENTITY_INFO) public entityInfo: TimelistEntityInfo,
+		private router: Router,
+		private timeService: TimeService,
+		private pluralPipe: I18nPluralPipe
+	) {}
 
 	private countUserHours(stats: UserStat): number {
 		const workHours = stats.workTimes.reduce((acc: number, wt: WorkTimeInfo) => {
@@ -181,7 +187,7 @@ export class ManagerTimelistService {
 	}
 
 	public downloadStatistics(entityId: string, month: number, year: number): void {
-		this.timeService.importStats({ projectId: entityId, month, year }).subscribe({
+		this.timeService.importStats(this.entityInfo.entityType, entityId, { month, year }).subscribe({
 			next: (content: string) => {
 				const filename = `Statistic_${year}_${month}`;
 				const mediaType = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';

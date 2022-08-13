@@ -12,10 +12,10 @@ import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { I18nPluralPipe } from '@angular/common';
 import { TableComponent } from '../table/table.component';
 import { DynamicFilterComponent } from '../dynamic-filter/dynamic-filter.component';
-import { ManagerTimelistService } from './manager-timelist.service';
-import { TimeService } from './time.service';
+import { ManagerTimelistService } from './services/manager-timelist.service';
+import { TimeService } from './services/time.service';
 import { UserStat } from './models/user-stat';
-import { TIMELIST_ENTITY_INFO, TimelistEntityInfo } from './models/timelist-entity-info';
+import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType } from './models/timelist-entity';
 
 @Component({
 	selector: 'do-team-statistics',
@@ -45,8 +45,8 @@ export class ManagerTimelistComponent implements OnInit, AfterViewInit {
 	) {}
 
 	public ngOnInit(): void {
-		const data = this.route.snapshot.data.stats;
-		this.dataSource = new TimeListDataSource(data, this.timeService);
+		const data = this.route.snapshot.data['stats'];
+		this.dataSource = new TimeListDataSource(data, this.timeService, this.entityInfo.entityType);
 		this.expandedRow = this.timelistService.getExpandedRowData(this.dataSource);
 	}
 
@@ -73,7 +73,7 @@ export class ManagerTimelistComponent implements OnInit, AfterViewInit {
 export class TimeListDataSource extends DataSource<UserStat> {
 	private data = new BehaviorSubject<UserStat[]>([]);
 
-	constructor(data: UserStat[], private timeService: TimeService) {
+	constructor(data: UserStat[], private timeService: TimeService, private entityType: TimelistEntityType) {
 		super();
 		this.data.next(data);
 	}
@@ -85,7 +85,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 	disconnect(collectionViewer: CollectionViewer): void {}
 
 	public loadStats(
-		projectId: string,
+		entityId: string,
 		month: number,
 		year: number,
 		sort: SortDirection,
@@ -93,8 +93,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 	): Observable<UserStat[]> {
 		const sortOrder = this.getSortOrder(sort);
 		return this.timeService
-			.findStats({
-				projectId,
+			.findStats(this.entityType, entityId, {
 				month,
 				year,
 				skipCount: 0,

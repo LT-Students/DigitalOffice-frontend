@@ -1295,7 +1295,7 @@
             "pattern": "YYYY-MM-DDTHH:mm",
             "example": "2020-07-18T08:23"
           },
-          "ContractSubjectData": {
+          "ContractSubject": {
             "$ref": "#/components/schemas/ContractSubjectData"
           }
         }

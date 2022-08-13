@@ -22,14 +22,14 @@ export class TimeService {
 		projectId?: string;
 		ascendingsort?: boolean;
 		nameincludesubstring?: string;
-		month?: number;
+		month: number;
 		year: number;
 		takeCount: number;
 		skipCount: number;
 	}): Observable<UserStat[]> {
 		return this.statService
 			.findStat(params)
-			.pipe(map((res) => (res.body as UserStatInfo[]).map((s: UserStatInfo) => new UserStat(s))));
+			.pipe(map((res) => (res.body || []).map((s: UserStatInfo) => new UserStat(s))));
 	}
 
 	public editWorkTime(workTimeId: string, hours: number): Observable<any> {
