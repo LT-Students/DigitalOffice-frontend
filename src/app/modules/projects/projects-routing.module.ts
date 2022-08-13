@@ -8,7 +8,6 @@ import { ProjectPageContainerComponent } from './project-page/project-page-conta
 import { ProjectPageResolver } from './resolvers/project-page.resolver';
 import { ProjectsRoutes } from './models/projects-routes';
 import { CreateEditProjectComponent } from './create-edit-project/create-edit-project.component';
-import { TeamStatisticsComponent } from './team-statistics/team-statistics.component';
 import { ProjectIdRouteContainerComponent } from './project-id-route-container/project-id-route-container.component';
 import { DepartmentFilterResolver } from './resolvers/department-filter.resolver';
 import { ProjectUsersResolver } from './resolvers/project-users.resolver';
@@ -52,7 +51,8 @@ const routes: Routes = [
 			},
 			{
 				path: ProjectsRoutes.TeamStats,
-				component: TeamStatisticsComponent,
+				loadChildren: () =>
+					import('../manager-timelist/manager-timelist.module').then((m) => m.ManagerTimelistModule),
 				canActivate: [TeamStatisticsGuard],
 				resolve: {
 					stats: TeamStatisticsResolver,
