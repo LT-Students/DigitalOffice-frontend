@@ -64,6 +64,11 @@ const routes: Routes = [
 				canLoad: [AuthGuard, PortalGuard],
 				loadChildren: () => import('./modules/departments/departments.module').then((m) => m.DepartmentsModule),
 			},
+			{
+				path: AppRoutes.Reports,
+				canLoad: [AuthGuard, PortalGuard],
+				loadChildren: () => import('./modules/feedback/feedback.module').then((m) => m.FeedbackModule),
+			},
 		],
 	},
 	{

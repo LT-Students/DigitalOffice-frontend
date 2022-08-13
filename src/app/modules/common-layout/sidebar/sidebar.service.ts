@@ -8,6 +8,7 @@ import { User } from '@app/models/user/user.model';
 import { DepartmentUserRole } from '@api/user-service/models/department-user-role';
 import { AdminRoutes } from '../../admin/models/admin-routes';
 import { DepartmentsRoutes } from '../../departments/models/departments-routes';
+import { environment } from '../../../../environments/environment';
 import { Link } from './sidebar-types';
 
 @Injectable()
@@ -57,6 +58,12 @@ export class SidebarService {
 					title: 'Администрирование',
 					path: [AppRoutes.Admin, AdminRoutes.Dashboard],
 					icon: Icons.Administration,
+				},
+				{
+					visible: () => !environment.production && user.isAdmin,
+					title: 'Обратная связь',
+					path: [AppRoutes.Reports],
+					icon: Icons.Bug,
 				},
 			].filter((l: Link) => l.visible());
 		})

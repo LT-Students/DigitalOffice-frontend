@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
+import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
+import { TableModule } from '../table/table.module';
 import { FeedbackFormComponent } from './feedback-form/feedback-form.component';
 import { UploadImagesComponent } from './feedback-form/upload-images/upload-images.component';
 import { ImageComponent } from './feedback-form/upload-images/image.component';
+import { ReportListComponent } from './report-list/report-list.component';
+import { FeedbackRoutingModule } from './feedback-routing.module';
 
 @NgModule({
-	declarations: [FeedbackFormComponent, UploadImagesComponent, ImageComponent],
-	imports: [SharedModule],
-	exports: [FeedbackFormComponent],
+	declarations: [FeedbackFormComponent, UploadImagesComponent, ImageComponent, ReportListComponent],
+	imports: [SharedModule, TableModule, DynamicFilterModule, FeedbackRoutingModule],
+	exports: [FeedbackFormComponent, ReportListComponent],
 })
 export class FeedbackModule {}
