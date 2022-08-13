@@ -70,7 +70,7 @@ export class UserStat {
 		this.user = { ...data.user, avatar: data.user.image, position: data.position };
 		this.companyInfo = {
 			rate: data.companyUser?.rate || 1,
-			contractName: data.companyUser?.contractSubjectData?.name,
+			contractName: data.companyUser?.contractSubject?.name,
 		};
 		this.limitInfo = data.limitInfo as WorkTimeMonthLimitInfo;
 		this.workTimes = data.workTimes;

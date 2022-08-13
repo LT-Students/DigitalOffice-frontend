@@ -4,9 +4,9 @@ import { DepartmentListComponent } from './components/department-list/department
 import { DepartmentListResolver } from './resolvers/department-list.resolver';
 import { DepartmentCardComponent } from './components/department-card/department-card.component';
 import { DepartmentPageResolver } from './resolvers/department-page.resolver';
-import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { TimelistResolver } from './resolvers/timelist.resolver';
 import { DepartmentsRoutes } from './models/departments-routes';
+import { DepartmentIdRouteContainerComponent } from './components/department-id-route-container/department-id-route-container.component';
 
 const routes: Routes = [
 	{
@@ -18,19 +18,21 @@ const routes: Routes = [
 	},
 	{
 		path: ':id',
+		component: DepartmentIdRouteContainerComponent,
+		resolve: {
+			department: DepartmentPageResolver,
+		},
 		children: [
 			{
 				path: '',
 				component: DepartmentCardComponent,
-				resolve: {
-					department: DepartmentPageResolver,
-				},
 			},
 			{
 				path: DepartmentsRoutes.TimeList,
-				component: DirectorsTimelistComponent,
+				loadChildren: () =>
+					import('../manager-timelist/manager-timelist.module').then((m) => m.ManagerTimelistModule),
 				resolve: {
-					timelist: TimelistResolver,
+					stats: TimelistResolver,
 				},
 			},
 		],

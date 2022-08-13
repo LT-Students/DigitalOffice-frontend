@@ -64,7 +64,7 @@ export interface IFindStatRequest {
 	projectId?: string;
 	ascendingsort?: boolean;
 	nameincludesubstring?: string;
-	month?: number;
+	month: number;
 	year: number;
 	takeCount: number;
 	skipCount: number;

@@ -1,7 +1,6 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { first, map, switchMap, tap } from 'rxjs/operators';
-import { ProjectResponse } from '@api/project-service/models/project-response';
+import { switchMap, tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { TitleDatepickerV2Component } from '@shared/component/title-datepicker/title-datepicker-v2.component';
 import { ActivatedRoute } from '@angular/router';
@@ -11,21 +10,21 @@ import { MAX_INT32 } from '@app/utils/utils';
 import { SortDirection } from '@angular/material/sort';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { I18nPluralPipe } from '@angular/common';
-import { SelectedProjectService } from '../project-id-route-container/selected-project.service';
-import { TableComponent } from '../../table/table.component';
-import { DynamicFilterComponent } from '../../dynamic-filter/dynamic-filter.component';
-import { TeamStatisticsService } from './team-statistics.service';
-import { TimeService } from './time.service';
-import { UserStat } from './user-stat';
+import { TableComponent } from '../table/table.component';
+import { DynamicFilterComponent } from '../dynamic-filter/dynamic-filter.component';
+import { ManagerTimelistService } from './services/manager-timelist.service';
+import { TimeService } from './services/time.service';
+import { UserStat } from './models/user-stat';
+import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType } from './models/timelist-entity';
 
 @Component({
 	selector: 'do-team-statistics',
-	templateUrl: './team-statistics.component.html',
-	styleUrls: ['./team-statistics.component.scss'],
+	templateUrl: './manager-timelist.component.html',
+	styleUrls: ['./manager-timelist.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [TeamStatisticsService, I18nPluralPipe],
+	providers: [ManagerTimelistService, I18nPluralPipe],
 })
-export class TeamStatisticsComponent implements OnInit, AfterViewInit {
+export class ManagerTimelistComponent implements OnInit, AfterViewInit {
 	public readonly Icons = Icons;
 	public readonly maxDate = DateTime.now().plus({ month: 1 });
 
@@ -33,26 +32,22 @@ export class TeamStatisticsComponent implements OnInit, AfterViewInit {
 	@ViewChild(TableComponent) table!: TableComponent<UserStat>;
 	@ViewChild(DynamicFilterComponent) filter!: DynamicFilterComponent;
 
-	public projectId = this.route.snapshot.params.id;
-	public projectName$ = this.selectedProject.info$.pipe(
-		map((projectResponse: ProjectResponse) => projectResponse.project.name)
-	);
-	public tableData = this.teamStatistics.getTableData();
-	public filterConfig = this.teamStatistics.getFilters();
-	public expandedRow!: ReturnType<TeamStatisticsService['getExpandedRowData']>;
+	public tableData = this.timelistService.getTableData();
+	public filterConfig = this.timelistService.getFilters();
+	public expandedRow!: ReturnType<ManagerTimelistService['getExpandedRowData']>;
 	public dataSource!: TimeListDataSource;
 
 	constructor(
-		private teamStatistics: TeamStatisticsService,
-		private selectedProject: SelectedProjectService,
+		@Inject(TIMELIST_ENTITY_INFO) public entityInfo: TimelistEntityInfo,
+		private timelistService: ManagerTimelistService,
 		private route: ActivatedRoute,
 		private timeService: TimeService
 	) {}
 
 	public ngOnInit(): void {
-		const data = this.route.snapshot.data.stats;
-		this.dataSource = new TimeListDataSource(data, this.timeService);
-		this.expandedRow = this.teamStatistics.getExpandedRowData(this.dataSource);
+		const data = this.route.snapshot.data['stats'];
+		this.dataSource = new TimeListDataSource(data, this.timeService, this.entityInfo.entityType);
+		this.expandedRow = this.timelistService.getExpandedRowData(this.dataSource);
 	}
 
 	public ngAfterViewInit(): void {
@@ -62,27 +57,23 @@ export class TeamStatisticsComponent implements OnInit, AfterViewInit {
 				switchMap(() => {
 					const { year, month } = this.datepicker.selectDate;
 					const name = this.filter.value['name'] || '';
-					return this.dataSource.loadStats(this.projectId, month, year, sort.direction, name);
+					return this.dataSource.loadStats(this.entityInfo.entityId, month, year, sort.direction, name);
 				})
 			)
 			.subscribe();
 	}
 
 	public handleDownload(): void {
-		this.selectedProject.info$.pipe(first()).subscribe({
-			next: (project: ProjectResponse) => {
-				const projectId = project.project.id;
-				const { year, month } = this.datepicker.selectDate;
-				this.teamStatistics.downloadStatistics(projectId, month, year);
-			},
-		});
+		const entityId = this.entityInfo.entityId;
+		const { year, month } = this.datepicker.selectDate;
+		this.timelistService.downloadStatistics(entityId, month, year);
 	}
 }
 
 export class TimeListDataSource extends DataSource<UserStat> {
 	private data = new BehaviorSubject<UserStat[]>([]);
 
-	constructor(data: UserStat[], private timeService: TimeService) {
+	constructor(data: UserStat[], private timeService: TimeService, private entityType: TimelistEntityType) {
 		super();
 		this.data.next(data);
 	}
@@ -94,7 +85,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 	disconnect(collectionViewer: CollectionViewer): void {}
 
 	public loadStats(
-		projectId: string,
+		entityId: string,
 		month: number,
 		year: number,
 		sort: SortDirection,
@@ -102,8 +93,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 	): Observable<UserStat[]> {
 		const sortOrder = this.getSortOrder(sort);
 		return this.timeService
-			.findStats({
-				projectId,
+			.findStats(this.entityType, entityId, {
 				month,
 				year,
 				skipCount: 0,
@@ -117,7 +107,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 	public updateWorkTime(workTime: WorkTimeInfo, hours: number): void {
 		const oldData = this.data.value;
 		const newData = oldData.map((s: UserStat) => {
-			let wt = s.workTimes.find((wt: WorkTimeInfo) => wt.id === workTime.id);
+			const wt = s.workTimes.find((wt: WorkTimeInfo) => wt.id === workTime.id);
 			if (wt) {
 				return {
 					...s,

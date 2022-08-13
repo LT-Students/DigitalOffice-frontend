@@ -72,10 +72,10 @@ export class DepartmentCardComponent {
 		};
 
 		this._route.data.pipe(map((result) => result.department)).subscribe((department) => {
-			this.departmentInfo = department.body?.department;
+			this.departmentInfo = department.department;
 
-			this.totalCount = department.body?.users?.length ?? 0;
-			this.dataSource = new MatTableDataSource(department.body?.users?.slice() ?? []);
+			this.totalCount = department.users?.length ?? 0;
+			this.dataSource = new MatTableDataSource(department.users?.slice() ?? []);
 			this._cdr.markForCheck();
 		});
 	}

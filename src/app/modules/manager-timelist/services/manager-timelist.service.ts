@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { Router } from '@angular/router';
@@ -8,14 +8,20 @@ import { TableOptions } from '../../table/models/table-options';
 import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
-import { LeaveTimeType } from './leave-time-type';
+import { LeaveTimeType } from '../models/leave-time-type';
+import { TimeListDataSource } from '../manager-timelist.component';
+import { LeaveTime, UserStat } from '../models/user-stat';
+import { TIMELIST_ENTITY_INFO, TimelistEntityInfo } from '../models/timelist-entity';
 import { TimeService } from './time.service';
-import { TimeListDataSource } from './team-statistics.component';
-import { LeaveTime, UserStat } from './user-stat';
 
 @Injectable()
-export class TeamStatisticsService {
-	constructor(private router: Router, private timeService: TimeService, private pluralPipe: I18nPluralPipe) {}
+export class ManagerTimelistService {
+	constructor(
+		@Inject(TIMELIST_ENTITY_INFO) public entityInfo: TimelistEntityInfo,
+		private router: Router,
+		private timeService: TimeService,
+		private pluralPipe: I18nPluralPipe
+	) {}
 
 	private countUserHours(stats: UserStat): number {
 		const workHours = stats.workTimes.reduce((acc: number, wt: WorkTimeInfo) => {
@@ -103,14 +109,14 @@ export class TeamStatisticsService {
 				rowStyle: { 'min-height': '38px' },
 				columns: [
 					{
-						field: 'projectName',
+						field: 'entityName',
 						type: 'textCell',
 						headerName: 'Название проекта',
 						columnStyle: { flex: '0 0 40%', overflow: 'hidden' },
 						valueGetter: (wt: WorkTimeInfo) => wt.project?.name || 'Другое',
 					},
 					{
-						field: 'projectHours',
+						field: 'entityHours',
 						type: 'editableTimeCell',
 						headerName: 'Внесённые часы',
 						valueGetter: (wt: WorkTimeInfo) => wt.managerHours || wt.userHours || 0,
@@ -180,8 +186,8 @@ export class TeamStatisticsService {
 		];
 	}
 
-	public downloadStatistics(projectId: string, month: number, year: number): void {
-		this.timeService.importStats({ projectId, month, year }).subscribe({
+	public downloadStatistics(entityId: string, month: number, year: number): void {
+		this.timeService.importStats(this.entityInfo.entityType, entityId, { month, year }).subscribe({
 			next: (content: string) => {
 				const filename = `Statistic_${year}_${month}`;
 				const mediaType = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
