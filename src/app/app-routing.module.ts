@@ -4,10 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
-import { ContentContainerComponent } from '@shared/component/content-container/content-container.component';
 import { AppRoutes } from '@app/models/app-routes';
 import { IsLoggedGuard } from '@app/guards/is-logged.guard';
 import { PortalGuard } from '@app/guards/portal.guard';
+import { ContentContainerComponent } from './modules/common-layout/content-container/content-container.component';
 
 const routes: Routes = [
 	{
@@ -68,8 +68,8 @@ const routes: Routes = [
 	},
 	{
 		path: '**',
-		redirectTo: ''
-	}
+		redirectTo: '',
+	},
 ];
 
 @NgModule({

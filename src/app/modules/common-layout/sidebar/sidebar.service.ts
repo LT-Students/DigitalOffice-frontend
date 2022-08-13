@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Link } from '@shared/component/sidebar/sidebar-types';
 import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/modules/icons/icons';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { first, map } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { DepartmentUserRole } from '@api/user-service/models/department-user-role';
-import { AdminRoutes } from '../../../modules/admin/models/admin-routes';
-import { DepartmentsRoutes } from '../../../modules/departments/models/departments-routes';
+import { AdminRoutes } from '../../admin/models/admin-routes';
+import { DepartmentsRoutes } from '../../departments/models/departments-routes';
+import { Link } from './sidebar-types';
 
 @Injectable()
 export class SidebarService {

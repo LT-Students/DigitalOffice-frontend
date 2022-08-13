@@ -1,4 +1,4 @@
 <a class="flex flex_ai_center" [routerLink]="[AppRoutes.Users, (user$ | async)?.id]">
-	<img class="logo" [class.small]="_isWideScreen" src="assets/svg/do-logo.svg" alt="Logo" />
+	<img class="logo" [class.small]="_isWideScreen" src="../../../../../assets/svg/do-logo.svg" alt="Logo" />
 	<span *ngIf="_isWideScreen" class="mat-h4 portal-name">{{ portalName$ | async }}</span>
 </a>

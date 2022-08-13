@@ -1,4 +1,4 @@
-@use 'base/variables';
+@use '../../../../stylesheets/base/variables';
 
 .active {
 	opacity: 1;
@@ -11,12 +11,12 @@
 .header {
 	padding: 0 38px;
 
-	width: 100%;
-	height: variables.$header-height;
-
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+
+	width: 100%;
+	height: variables.$header-height;
 
 	background-color: variables.$light_1;
 
@@ -28,8 +28,8 @@
 	}
 }
 
-.spacer {
-	flex: 1 1 auto;
+.feedback-dialog {
+	margin-right: auto;
 }
 
 .avatar {

@@ -1,4 +1,8 @@
 <nav class="header">
+	<button doButton class="feedback-dialog" (click)="openFeedbackForm()">
+		<mat-icon [svgIcon]="Icons.Bug"></mat-icon>
+		&nbsp;Сообщить об ошибке
+	</button>
 	<ng-container *ngIf="currentUser$ | async as currentUser">
 		<div class="avatar" [matMenuTriggerFor]="menu">
 			<do-profile-image [image]="currentUser?.avatar" [userInitials]="currentUser" size="s"></do-profile-image>

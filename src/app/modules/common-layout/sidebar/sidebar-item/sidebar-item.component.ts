@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { Link } from '@shared/component/sidebar/sidebar-types';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 import { IsActiveMatchOptions } from '@angular/router';
+import { Link } from '../sidebar-types';
 
 @Component({
 	selector: 'do-sidebar-link',

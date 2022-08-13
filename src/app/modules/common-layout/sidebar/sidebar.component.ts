@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
-import { SidebarService } from '@shared/component/sidebar/sidebar.service';
+import { SidebarService } from './sidebar.service';
 
 @Component({
 	selector: 'do-sidebar',
