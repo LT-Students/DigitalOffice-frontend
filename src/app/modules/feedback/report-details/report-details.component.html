@@ -1,0 +1,20 @@
+<mat-dialog-content>
+	<h2 class="title">Обратная связь</h2>
+	<div class="flex flex_jc_space-between">
+		<h4 class="name">{{ report.userInfo | fullName: true:true }}</h4>
+		<span>{{ report.createdAt | dateTime: 'dd.MM.yyyy HH:mm' }}</span>
+	</div>
+	<div class="info">
+		<div>
+			<h5 class="field-title">Категория запроса</h5>
+			<span>{{ report.category }}</span>
+		</div>
+		<div>
+			<h5 class="field-title">Комментарий</h5>
+			<span>{{ report.comment }}</span>
+		</div>
+		<div>
+			<h5 class="field-title">Материалы</h5>
+		</div>
+	</div>
+</mat-dialog-content>

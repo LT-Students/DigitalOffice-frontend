@@ -12,6 +12,7 @@
 			*cdkHeaderCellDef
 			class="text-secondary_default"
 			[mat-sort-header]="column.field"
+			[disableClear]="column.disableClearSort"
 			[disabled]="!column.sortEnabled"
 			[ngStyle]="column.headerStyle || column.columnStyle || null"
 			[style.flex]="'0 0 ' + column.width + 'px'"

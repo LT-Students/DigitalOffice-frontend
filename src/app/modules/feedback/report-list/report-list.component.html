@@ -1,2 +1,2 @@
 <h1>Обратная связь</h1>
-<do-table [dataSource]="dataSource" [tableOptions]="tableOptions"></do-table>
+<do-table [dataSource]="dataSource" [tableOptions]="tableOptions" (rowClick)="handleRowClick($event)"></do-table>

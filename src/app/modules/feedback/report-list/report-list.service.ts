@@ -44,7 +44,7 @@ export const reports: Report[] = [
 		userInfo: { firstName: 'Роман', lastName: 'Циневич' },
 		category: 'Сломалось',
 		createdAt: DateTime.now(),
-		attachments: [1, 2, 3, 4],
+		attachments: [1, 2, 3, 4, 4, 4, 4, 4, 4, 4],
 		comment:
 			'Опенспейс находится на четвертом этаже и разделен на 3 зоны. Располагается недалеко от лифта. Помещение имеет общую площадь зоны. Располагается недалеко от лифта. Помещение имеет общую...',
 	},
@@ -56,9 +56,11 @@ export class ReportListService {
 
 	public getTableOptions(): TableOptions {
 		return {
+			sortActive: 'createdAt',
+			sortDirection: 'asc',
 			rowStyle: {
 				padding: '12px 32px',
-				'align-items': 'flex-start',
+				'align-items': 'baseline',
 			},
 			columns: [
 				{
@@ -84,18 +86,23 @@ export class ReportListService {
 				},
 				{
 					type: 'textCell',
-					field: 'date',
+					field: 'createdAt',
 					headerName: 'Дата и время',
 					valueGetter: (r: Report) => r.createdAt.toFormat('dd.MM.yyyy HH:mm'),
 					sortEnabled: true,
+					disableClearSort: true,
+				},
+				{
+					type: 'iconCell',
+					field: 'icon',
+					valueGetter: (r: Report) => (r.attachments.length ? Icons.PaperclipTilt : ''),
+					columnStyle: { flex: '0 0 24px', margin: '2px' },
 				},
 				{
 					type: 'textCell',
 					field: 'attachments',
 					valueGetter: (r: Report) => r.attachments.length || ' ',
-					headerStyle: { flex: '0 0 42px' },
-					columnStyle: { flex: '0 0 42px' },
-					params: new TextCellParams({ prefixIcon: () => Icons.Attachment }),
+					columnStyle: { flex: '0 0 18px' },
 				},
 				{
 					type: 'textCell',

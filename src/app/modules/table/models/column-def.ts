@@ -13,4 +13,5 @@ export interface ColumnDef {
 	columnClass?: string | string[];
 	headerStyle?: { [key: string]: any };
 	sortEnabled?: boolean;
+	disableClearSort?: boolean;
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ReportListService, reports } from './report-list.service';
+import { FeedbackDialogService } from '../feedback-dialog.service';
+import { Report, ReportListService, reports } from './report-list.service';
 
 @Component({
 	selector: 'do-report-list',
@@ -12,7 +13,11 @@ export class ReportListComponent implements OnInit {
 	public tableOptions = this.reportList.getTableOptions();
 	public dataSource = reports;
 
-	constructor(private reportList: ReportListService) {}
+	constructor(private reportList: ReportListService, private feedbackDialog: FeedbackDialogService) {}
 
 	ngOnInit(): void {}
+
+	public handleRowClick(report: Report): void {
+		this.feedbackDialog.openReportDetails(report);
+	}
 }
