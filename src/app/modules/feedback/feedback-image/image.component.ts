@@ -8,8 +8,8 @@ import { Icons } from '@shared/modules/icons/icons';
 		<div class="image-container">
 			<img [src]="imageSrc" alt="Image preview" />
 			<div class="overlay">
-				<button class="remove-button" doButton (click)="imageRemoved.emit()">
-					<mat-icon [svgIcon]="Icons.Close"></mat-icon>
+				<button class="image-action" doButton (click)="imageActionClicked.emit()">
+					<mat-icon [svgIcon]="isPreview ? Icons.Visibility : Icons.Close"></mat-icon>
 				</button>
 				<span class="mat-caption name">{{ imageName }}</span>
 			</div>
@@ -57,7 +57,7 @@ import { Icons } from '@shared/modules/icons/icons';
 						text-overflow: ellipsis;
 					}
 
-					.remove-button {
+					.image-action {
 						color: #fff;
 
 						&:hover {
@@ -79,7 +79,7 @@ import { Icons } from '@shared/modules/icons/icons';
 export class ImageComponent implements OnInit {
 	public readonly Icons = Icons;
 
-	@Output() imageRemoved = new EventEmitter();
+	@Output() imageActionClicked = new EventEmitter();
 	@Input()
 	set image(image: File) {
 		this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(image));
@@ -87,6 +87,8 @@ export class ImageComponent implements OnInit {
 	}
 	public imageSrc?: SafeUrl;
 	public imageName = '';
+
+	@Input() isPreview = false;
 
 	constructor(private sanitizer: DomSanitizer) {}
 

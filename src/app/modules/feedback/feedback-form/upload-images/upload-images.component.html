@@ -11,7 +11,11 @@
 		<span class="mat-caption text-light_4">Поддерживаемые форматы: JPEG, PNG, BMP, GIF</span>
 	</ng-container>
 	<div *ngIf="images.length" class="images">
-		<do-image *ngFor="let image of images; index as i" [image]="image" (imageRemoved)="removeImage(i)"></do-image>
+		<do-image
+			*ngFor="let image of images; index as i"
+			[image]="image"
+			(imageActionClicked)="removeImage(i)"
+		></do-image>
 	</div>
 	<button
 		*ngIf="images.length < MAX_IMAGES_COUNT"
