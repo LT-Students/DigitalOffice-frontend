@@ -58,7 +58,7 @@ export class EditProjectComponent extends LoadingState implements OnInit {
 			workTimeId: this.workTime.id,
 			initialValue: this.workTime,
 			time: this.editForm.get('userHours')?.value,
-			comment: this.editForm.get('description')?.value,
+			comment: this.editForm.get('description')?.value.trim(),
 		};
 		this.attendanceService
 			.submitWorkTime(submitValue, this.workTimeDate)
