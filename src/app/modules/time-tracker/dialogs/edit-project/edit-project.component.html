@@ -37,6 +37,9 @@
 					data-test="edit-project-comment-input"
 				></textarea>
 				<mat-hint>{{ comment.value.length }}/500</mat-hint>
+				<mat-error>
+					{{ editForm.controls['description'].errors | controlErrors }}
+				</mat-error>
 			</mat-form-field>
 		</do-form-field>
 		<div class="controls">

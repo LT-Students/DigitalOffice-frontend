@@ -1,15 +1,16 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '@app/services/auth/auth.service';
-import { catchError, finalize, switchMap, tap } from 'rxjs/operators';
+import { catchError, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { AppRoutes } from '@app/models/app-routes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoadingState } from '@shared/directives/button-loading.directive';
+import { HintValidation } from '@shared/component/validation-hint/validation-hint.component';
 
 @Component({
 	selector: 'do-signup',
@@ -17,26 +18,47 @@ import { LoadingState } from '@shared/directives/button-loading.directive';
 	styleUrls: ['./signup.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignupComponent extends LoadingState {
-	public loginForm: FormGroup;
+export class SignupComponent extends LoadingState implements OnInit {
+	public loginForm = this.fb.group({
+		login: ['', Validators.required],
+		password: ['', Validators.required],
+	});
+	public hintValidations$!: Observable<HintValidation[]>;
 
 	constructor(
-		private _authService: AuthService,
-		private _currentUserService: CurrentUserService,
-		private _activatedRoute: ActivatedRoute,
-		private _router: Router,
-		private _fb: FormBuilder
+		private authService: AuthService,
+		private currentUserService: CurrentUserService,
+		private activatedRoute: ActivatedRoute,
+		private router: Router,
+		private fb: FormBuilder
 	) {
 		super();
-		this.loginForm = this._fb.group({
-			login: ['', Validators.required],
-			password: ['', Validators.required],
-		});
+	}
+
+	public ngOnInit(): void {
+		this.hintValidations$ = (this.loginForm.get('login') as FormControl).valueChanges.pipe(
+			startWith(''),
+			map((value: string) => [
+				{ label: 'не менее 5 символов', valid: value.length >= 5 },
+				{ label: 'не более 15 символов', valid: !!value && value.length <= 15 },
+				{
+					label: 'латинские буквы',
+					valid: !!value && !/(?=\p{L})(?![a-zA-Z])/u.test(value) && /[a-zA-Z]/.test(value),
+				},
+				{ label: 'цифры', valid: /\d/.test(value) },
+			]),
+			tap((validations: HintValidation[]) => {
+				const invalid = validations.some((v: HintValidation) => !v.valid);
+				if (invalid) {
+					this.loginForm.get('login')?.setErrors({ invalidLogin: true });
+				}
+			})
+		);
 	}
 
 	public signUp(): void {
 		this.setLoading(true);
-		this._activatedRoute.queryParams
+		this.activatedRoute.queryParams
 			.pipe(
 				switchMap((params: Params) => {
 					const { login, password } = this.loginForm.getRawValue();
@@ -46,12 +68,12 @@ export class SignupComponent extends LoadingState {
 						userId: params['userId'],
 					};
 
-					return this._authService.signUp$(createCredentialsRequest);
+					return this.authService.signUp$(createCredentialsRequest);
 				}),
 				switchMap(({ body: credentialResponse }) =>
-					this._currentUserService.getUserOnLogin(credentialResponse?.userId)
+					this.currentUserService.getUserOnLogin(credentialResponse?.userId)
 				),
-				tap((user) => this._currentUserService.setUser(user)),
+				tap((user) => this.currentUserService.setUser(user)),
 				catchError((error: HttpErrorResponse) => {
 					if (error.error.errors.includes('The login already exist.')) {
 						this.loginForm.get('login')?.setErrors({
@@ -67,7 +89,7 @@ export class SignupComponent extends LoadingState {
 			.subscribe({
 				next: (user: User) => {
 					const nextUrl: string = user.isAdmin ? '/admin/dashboard' : AppRoutes.TimeTrack;
-					this._router.navigate([nextUrl]);
+					this.router.navigate([nextUrl]);
 				},
 			});
 	}

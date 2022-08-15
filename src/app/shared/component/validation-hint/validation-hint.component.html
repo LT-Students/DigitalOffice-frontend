@@ -1,0 +1,6 @@
+<div *ngFor="let validation of validations" class="mat-body-2 validation">
+	<mat-icon class="validation-icon" [ngClass]="validation.valid ? 'success' : 'warn'" inline>{{
+		validation.valid ? 'done' : 'clear'
+	}}</mat-icon>
+	<span>{{ validation.label }}</span>
+</div>
