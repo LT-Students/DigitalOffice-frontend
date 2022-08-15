@@ -6,6 +6,17 @@
 
 .name {
 	margin-bottom: 16px;
+
+	overflow: hidden;
+
+	white-space: pre;
+	text-overflow: ellipsis;
+}
+
+.date {
+	margin-left: 30px;
+
+	white-space: pre;
 }
 
 .field-title {
