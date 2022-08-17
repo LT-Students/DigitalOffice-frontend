@@ -18,6 +18,7 @@
     "generate.feedback": "ng-openapi-gen -c swagger/config/feedback.json",
     "generate.file": "ng-openapi-gen -c swagger/config/file.json",
     "generate.filter": "ng-openapi-gen -c swagger/config/filter.json",
+    "generate.gateway": "ng-openapi-gen -c swagger/config/gateway.json",
     "generate.image": "ng-openapi-gen -c swagger/config/image.json",
     "generate.message": "ng-openapi-gen -c swagger/config/message.json",
     "generate.news": "ng-openapi-gen -c swagger/config/news.json",

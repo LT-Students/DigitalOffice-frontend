@@ -1,0 +1,1278 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Gateway",
+    "version": "1.0.0.0",
+    "description": "Gateway is a pattern for a single entry point to the program."
+  },
+  "servers": [
+    {
+      "url": "https://gateway.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://gateway.dev.ltdo.xyz",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/Admin/find": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "findServiceConfiguration",
+        "description": "Returns current configuration of all services.",
+        "parameters": [
+          {
+            "name": "skipcount",
+            "in": "query",
+            "description": "Number of entries to skip",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          },
+          {
+            "name": "takecount",
+            "in": "query",
+            "description": "Number of entries to take.",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseServiceConfigurationInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Admin/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "editAdmin",
+        "description": "The method attempts to disable or enable services by changing the state to the opposite. The user must be admin.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Admin/install": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "installApp",
+        "description": "Returns true or false.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstallAppRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindOperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "login",
+        "description": "User authentication.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Auth/refresh": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "refresh",
+        "description": "Get new tokens by refresh token.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GraphicalUserInterface/get": {
+      "get": {
+        "tags": [
+          "GraphicalUserInterface"
+        ],
+        "operationId": "getGraphicalUserInterface",
+        "description": "Returns GUI info.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseGuiInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GraphicalUserInterface/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "GraphicalUserInterface"
+        ],
+        "operationId": "getGraphicalUserInterface",
+        "description": "Edit Graphical User Interface",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EditGraphicalUserInterfaceSettingRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ModuleSetting/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "moduleSettingId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "patch": {
+        "tags": [
+          "ModuleSetting"
+        ],
+        "operationId": "editModuleSetting",
+        "description": "Changes module setting.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EditModuleSettingRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Modulesetting/check": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "ModuleSetting"
+        ],
+        "operationId": "checkSmtp",
+        "description": "Sends email message from SMTP; returns true or false",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckSmtpRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Check module setting operation success (boolean) status will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UnsentEmail/resend": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "unsentEmailId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "delete": {
+        "tags": [
+          "UnsentEmail"
+        ],
+        "operationId": "resendUnsentEmail",
+        "description": "Removes unsent email if email was successfully resent.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/UnsentEmail/find": {
+      "parameters": [
+        {
+          "name": "skipcount",
+          "in": "query",
+          "description": "Number of entries to skip",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takecount",
+          "in": "query",
+          "description": "Number of entries to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "UnsentEmail"
+        ],
+        "operationId": "findUnsentEmail",
+        "description": "Returns all unsent emails information with pagination.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseUnsentEmailInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseUnsentEmailInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseUnsentEmailInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Feedback/create": {
+      "post": {
+        "tags": [
+          "Feedback"
+        ],
+        "operationId": "createFeedback",
+        "description": "Adds a new feedback.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeedbackRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created feedback will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdminInfo": {
+        "type": "object",
+        "required": [
+          "FirstName",
+          "LastName",
+          "Email",
+          "Login",
+          "Password"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string"
+          },
+          "login": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "FindOperationResultResponse": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "boolean"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EmailInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "receiver": {
+            "type": "string",
+            "nullable": true
+          },
+          "subject": {
+            "type": "string",
+            "nullable": true
+          },
+          "body": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GuiInfo": {
+        "type": "object",
+        "required": [
+          "SiteUrl"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "portalName": {
+            "type": "string"
+          },
+          "siteUrl": {
+            "type": "string"
+          },
+          "logo": {
+            "$ref": "#/components/schemas/ImageConsist"
+          },
+          "favicon": {
+            "$ref": "#/components/schemas/ImageConsist"
+          }
+        }
+      },
+      "OperationResultResponseGuiInfo": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "$ref": "#/components/schemas/GuiInfo"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ImageConsist": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          }
+        }
+      },
+      "InstallAppRequest": {
+        "type": "object",
+        "required": [
+          "SmtpInfo",
+          "AdminInfo",
+          "GuiInfo",
+          "ServicesToDisable"
+        ],
+        "properties": {
+          "smtpInfo": {
+            "$ref": "#/components/schemas/SmtpInfo"
+          },
+          "adminInfo": {
+            "$ref": "#/components/schemas/AdminInfo"
+          },
+          "guiInfo": {
+            "$ref": "#/components/schemas/GuiInfo"
+          },
+          "servicesToDisable": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "AuthenticationRequest": {
+        "type": "object",
+        "required": [
+          "LoginData",
+          "Password"
+        ],
+        "properties": {
+          "LoginData": {
+            "description": "User email or login.",
+            "type": "string",
+            "example": "ivan_ivanov123@mail.ru or ivan123"
+          },
+          "Password": {
+            "description": "User password.",
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationResponse": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "description": "User global unique identifier.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "accessToken": {
+            "description": "User access JWT.",
+            "type": "string",
+            "nullable": true
+          },
+          "refreshToken": {
+            "description": "User refresh JWT.",
+            "type": "string",
+            "nullable": true
+          },
+          "accessTokenExpiresIn": {
+            "description": "AccessToken life time in minutes",
+            "type": "number",
+            "format": "double"
+          },
+          "refreshTokenExpiresIn": {
+            "description": "RefreshToken life time in minutes",
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "EditGraphicalUserInterfaceSettingRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/PortalName",
+            "value": {
+              "description": "New portal name",
+              "type": "string",
+              "example": "Digital office"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/SiteUrl",
+            "value": {
+              "description": "New portal url",
+              "type": "string"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/GUIPatchUserDocument"
+        }
+      },
+      "GUIPatchUserDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/PortalName",
+              "/SiteUrl",
+              "/Logo",
+              "/Favicon"
+            ]
+          },
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        },
+        "additionalProperties": false
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "type": "string",
+        "description": "Operation complition result status.",
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      },
+      "OperationType": {
+        "enum": [
+          "Add",
+          "Remove",
+          "Replace",
+          "Move",
+          "Copy",
+          "Test",
+          "Invalid"
+        ],
+        "type": "string"
+      },
+      "RefreshRequest": {
+        "type": "object",
+        "required": [
+          "RefreshToken"
+        ],
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ServiceConfigurationInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "serviceName": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "FindResultResponseServiceConfigurationInfo": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceConfigurationInfo"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "SmtpInfo": {
+        "type": "object",
+        "required": [
+          "Host",
+          "Port",
+          "EnableSsl",
+          "Email",
+          "Password"
+        ],
+        "properties": {
+          "host": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer"
+          },
+          "enableSsl": {
+            "type": "boolean"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UnsentEmailInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "email": {
+            "$ref": "#/components/schemas/EmailInfo"
+          },
+          "createdAtUtc": {
+            "type": "string",
+            "example": "2021-01-21T00:00:00.000Z",
+            "format": "date"
+          },
+          "lastSendAtUtc": {
+            "type": "string",
+            "example": "2021-01-21T00:00:00.000Z",
+            "format": "date"
+          },
+          "totalSendingCount": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FindResultResponseUnsentEmailInfo": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnsentEmailInfo"
+            },
+            "nullable": true
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "EditModuleSettingRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Host",
+            "value": {
+              "description": "New host",
+              "type": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Port",
+            "value": {
+              "description": "New port.",
+              "type": "number",
+              "format": "integer"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/EnableSsl",
+            "value": {
+              "description": "SSL is used.",
+              "type": "bool"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Email",
+            "value": {
+              "description": "New email address",
+              "type": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Password",
+            "value": {
+              "description": "New password",
+              "type": "string"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/ModuleSettingPatchDocument"
+        }
+      },
+      "ModuleSettingPatchDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Host",
+              "/Port",
+              "/EnableSsl",
+              "/Email",
+              "/Password"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "CheckSmtpRequest": {
+        "type": "object",
+        "required": [
+          "SmtpInfo",
+          "AdminEmail"
+        ],
+        "properties": {
+          "SmtpInfo": {
+            "type": "object",
+            "required": [
+              "Host",
+              "Port",
+              "EnableSsl",
+              "Email",
+              "Password"
+            ],
+            "properties": {
+              "Host": {
+                "type": "string"
+              },
+              "Port": {
+                "type": "integer"
+              },
+              "EnableSsl": {
+                "type": "boolean"
+              },
+              "Email": {
+                "type": "string"
+              },
+              "Password": {
+                "type": "string"
+              }
+            }
+          },
+          "AdminEmail": {
+            "type": "string"
+          }
+        }
+      },
+      "CreateFeedbackRequest": {
+        "type": "object",
+        "required": [
+          "Type",
+          "Content",
+          "FeedbackImages"
+        ],
+        "properties": {
+          "Type": {
+            "$ref": "#/components/schemas/FeedbackType"
+          },
+          "Content": {
+            "type": "string",
+            "maxLength": 1000,
+            "nullable": false
+          },
+          "FeedbackImages": {
+            "type": "array",
+            "items":{
+              "$ref": "#/components/schemas/ImageContent"
+            }
+          }
+        }
+      },
+      "FeedbackType": {
+        "type": "string",
+        "description": "Feedback type.",
+        "enum": [
+          "Bug",
+          "Wishes",
+          "Other"
+        ],
+        "nullable": false,
+        "example": "Bug"
+      },
+      "ImageContent": {
+        "type": "object",
+        "description": "Content of an image.",
+        "required": [
+          "Name",
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Name": {
+            "type":"string",
+            "nullable": false
+          },
+          "Content": {
+            "type": "string",
+            "nullable": false
+          },
+          "Extension": {
+            "type": "string",
+            "nullable": false
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

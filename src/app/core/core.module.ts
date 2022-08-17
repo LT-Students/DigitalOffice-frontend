@@ -20,6 +20,7 @@ import { EducationApiModule } from '@api/education-service/education-api.module'
 import { AdminApiModule } from '@api/admin-service/admin-api.module';
 import { FilterApiModule } from '@api/filter-service/filter-api.module';
 import { FeedbackApiModule } from '@api/feedback-service/feedback-api.module';
+import { GatewayApiModule } from '@api/gateway-service/gateway-api.module';
 import { environment } from '../../environments/environment';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { environment } from '../../environments/environment';
 		FeedbackApiModule.forRoot({ rootUrl: `https://feedback.${environment.apiUrl}` }),
 		FileApiModule.forRoot({ rootUrl: `https://file.${environment.apiUrl}` }),
 		FilterApiModule.forRoot({ rootUrl: `https://filter.${environment.apiUrl}` }),
+		GatewayApiModule.forRoot({ rootUrl: `https://gateway.${environment.apiUrl}` }),
 		ImageApiModule.forRoot({ rootUrl: `https://image.${environment.apiUrl}` }),
 		MessageApiModule.forRoot({ rootUrl: `https://message.${environment.apiUrl}` }),
 		NewsApiModule.forRoot({ rootUrl: `https://news.${environment.apiUrl}` }),
