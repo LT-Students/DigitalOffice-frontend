@@ -23,7 +23,7 @@ const authRoutes: Routes = [
 			{ path: AuthRoutes.SignIn, component: LoginComponent },
 			{ path: AuthRoutes.ForgotPassword, component: ForgotPasswordComponent },
 			{ path: AuthRoutes.ResetPassword, component: ResetPasswordComponent },
-			{ path: AuthRoutes.SignUp, component: SignupComponent, canActivate: [] },
+			{ path: AuthRoutes.SignUp, component: SignupComponent, canActivate: [SignupGuard] },
 			{ path: AuthRoutes.Reactivate, component: ReactivateComponent, canActivate: [SignupGuard] },
 		],
 	},

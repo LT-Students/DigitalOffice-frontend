@@ -118,7 +118,6 @@ export class EditPersonalInfoComponent extends LoadingState implements OnInit {
 
 	private getGenderChangeRequest(isNewGender: boolean): Observable<string | null> {
 		const newGender = this.genderControl.value;
-		console.log(isNewGender, newGender);
 		if (isNewGender) {
 			if (newGender.id) {
 				return of(newGender.id);
