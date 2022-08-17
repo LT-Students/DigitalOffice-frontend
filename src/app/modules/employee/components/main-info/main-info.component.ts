@@ -34,7 +34,7 @@ export class MainInfoComponent implements OnInit {
 	public editUser(): void {
 		this.dialog.open(EditInfoComponent, {
 			data: this.user$,
-			width: ModalWidth.L,
+			width: ModalWidth.M,
 			autoFocus: false,
 			viewContainerRef: this.viewContainer,
 		});
