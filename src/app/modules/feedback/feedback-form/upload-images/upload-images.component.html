@@ -14,11 +14,9 @@
 		<do-image
 			*ngFor="let image of images; index as i"
 			[image]="image"
-			(imageActionClicked)="viewer.selectedIndex = i; viewer.openImage()"
+			(imageActionClicked)="removeImage(i)"
 		></do-image>
-		<!--			(imageActionClicked)="removeImage(i)"-->
 	</div>
-	<do-image-viewer #viewer [images]="images"></do-image-viewer>
 	<button
 		*ngIf="images.length < MAX_IMAGES_COUNT"
 		class="upload-button"

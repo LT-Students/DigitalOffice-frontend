@@ -15,6 +15,7 @@
     "generate.auth": "ng-openapi-gen -c swagger/config/auth.json",
     "generate.company": "ng-openapi-gen -c swagger/config/company.json",
     "generate.department": "ng-openapi-gen -c swagger/config/department.json",
+    "generate.feedback": "ng-openapi-gen -c swagger/config/feedback.json",
     "generate.file": "ng-openapi-gen -c swagger/config/file.json",
     "generate.filter": "ng-openapi-gen -c swagger/config/filter.json",
     "generate.image": "ng-openapi-gen -c swagger/config/image.json",
