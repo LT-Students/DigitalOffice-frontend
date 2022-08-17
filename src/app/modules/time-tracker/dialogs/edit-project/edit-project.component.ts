@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { DoValidators } from '@app/validators/do-validators';
 import { DateTime } from 'luxon';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { finalize } from 'rxjs/operators';
+import { isGUIDEmpty } from '@app/utils/utils';
 import { AttendanceService, SubmitWorkTimeValue } from '../../services/attendance.service';
 import { WorkTime } from '../../models/work-time';
 
@@ -15,7 +16,7 @@ import { WorkTime } from '../../models/work-time';
 	styleUrls: ['./edit-project.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditProjectComponent extends LoadingState {
+export class EditProjectComponent extends LoadingState implements OnInit {
 	public editForm = this.initFormGroup();
 	public workTimeDate = DateTime.fromObject({ year: this.workTime.year, month: this.workTime.month });
 
@@ -28,11 +29,19 @@ export class EditProjectComponent extends LoadingState {
 		super();
 	}
 
+	public ngOnInit(): void {
+		if (isGUIDEmpty(this.workTime.project.id)) {
+			const description = this.editForm.get('description') as FormControl;
+			description.setValidators([DoValidators.required]);
+			description.updateValueAndValidity();
+		}
+	}
+
 	private initFormGroup(): FormGroup {
 		return this.fb.group({
 			userHours: [
 				this.workTime.userHours,
-				[Validators.required, DoValidators.intNum, Validators.max(744), Validators.min(0)],
+				[DoValidators.required, DoValidators.intNum, DoValidators.max(744), DoValidators.min(0)],
 			],
 			description: [this.workTime.description],
 		});
@@ -49,7 +58,7 @@ export class EditProjectComponent extends LoadingState {
 			workTimeId: this.workTime.id,
 			initialValue: this.workTime,
 			time: this.editForm.get('userHours')?.value,
-			comment: this.editForm.get('description')?.value,
+			comment: this.editForm.get('description')?.value.trim(),
 		};
 		this.attendanceService
 			.submitWorkTime(submitValue, this.workTimeDate)

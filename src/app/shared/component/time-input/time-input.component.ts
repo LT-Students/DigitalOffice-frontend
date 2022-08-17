@@ -19,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 			(focusin)="focused = true"
 			(focusout)="focused = false"
 		/>
-		<mat-icon class="text-secondary_default" [svgIcon]="Icons.Clock" (click)="time.focus()"></mat-icon>
+		<mat-icon class="text-secondary_default clock" [svgIcon]="Icons.Clock" (click)="time.focus()"></mat-icon>
 	`,
 	styles: [
 		`
@@ -30,6 +30,11 @@ import { takeUntil } from 'rxjs/operators';
 
 			.input {
 				max-width: fit-content;
+			}
+
+			.clock {
+				margin-left: 10px;
+				height: 22px;
 			}
 
 			input[type='time']::-webkit-calendar-picker-indicator {
@@ -118,6 +123,8 @@ export class TimeInputComponent implements OnInit, OnDestroy, ControlValueAccess
 	public registerOnTouched(fn: any): void {}
 
 	public writeValue(time: string): void {
-		this.control.setValue(time.split('T')[1], { emitEvent: false });
+		if (time) {
+			this.control.setValue(time.split('T')[1], { emitEvent: false });
+		}
 	}
 }

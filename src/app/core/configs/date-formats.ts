@@ -2,7 +2,7 @@ import { MatDateFormats } from '@angular/material/core';
 
 export const DATE_FORMAT: MatDateFormats = {
 	parse: {
-		dateInput: ['d MMMM y', 'd LLLL y'],
+		dateInput: ['d MMMM y', 'd LLLL y', 'd.MM.y'],
 	},
 	display: {
 		dateInput: 'd MMMM y',

@@ -42,7 +42,9 @@
 		<do-form-field *ngSwitchCase="'date'" [label]="config.label">
 			<mat-form-field>
 				<input matInput [matDatepicker]="picker" [formControl]="control" placeholder="ДД месяц ГГГГ" />
-				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<mat-datepicker-toggle matSuffix [for]="picker">
+					<mat-icon matDatepickerToggleIcon fontSet="material-icons-outlined">date_range</mat-icon>
+				</mat-datepicker-toggle>
 				<mat-datepicker #picker></mat-datepicker>
 				<mat-error>{{ control.errors | controlErrors }}</mat-error>
 			</mat-form-field>
