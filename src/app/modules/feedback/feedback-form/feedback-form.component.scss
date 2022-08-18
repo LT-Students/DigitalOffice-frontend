@@ -16,12 +16,13 @@
 	max-width: 257px;
 }
 
-mat-dialog-actions {
+.actions {
+	margin-top: 32px;
+
+	display: flex;
+	justify-content: center;
+
 	button {
 		width: 176px;
-
-		&:not(:last-child) {
-			margin-right: 20px;
-		}
 	}
 }

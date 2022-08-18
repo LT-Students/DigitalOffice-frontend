@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { BehaviorSubject } from 'rxjs';
 import { AlertService } from '@app/services/alert.service';
@@ -9,16 +9,24 @@ import { AlertService } from '@app/services/alert.service';
 	styleUrls: ['./upload-images.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploadImagesComponent implements OnInit {
+export class UploadImagesComponent implements OnInit, OnDestroy {
 	public readonly Icons = Icons;
 	public readonly MAX_IMAGES_COUNT = 10;
 	public readonly ACCEPTABLE_TYPES = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
+
+	@Output() imagesChange = new EventEmitter();
 
 	public images$ = new BehaviorSubject<File[]>([]);
 
 	constructor(private alert: AlertService) {}
 
-	ngOnInit(): void {}
+	public ngOnInit(): void {
+		this.images$.subscribe({ next: (images: File[]) => this.imagesChange.emit(images) });
+	}
+
+	public ngOnDestroy(): void {
+		this.images$.unsubscribe();
+	}
 
 	public onFileDropped(event: FileList): void {
 		this.handleFiles(event);

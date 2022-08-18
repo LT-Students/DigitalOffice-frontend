@@ -7,7 +7,7 @@ import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { AppRoutes } from '@app/models/app-routes';
 import { ChangeUserPasswordComponent } from '@shared/dialogs/change-user-password/change-user-password.component';
 import { Icons } from '@shared/modules/icons/icons';
-import { FeedbackDialogService } from '../../feedback/feedback-dialog.service';
+import { FeedbackDialogService } from '../../feedback/services/feedback-dialog.service';
 
 @Component({
 	selector: 'do-header',

@@ -5,9 +5,9 @@
 		<do-form-field class="category" label="Категория запроса" labelClass="text-main">
 			<mat-form-field>
 				<mat-select formControlName="category">
-					<mat-option *ngFor="let op of ['Сломалось', 'Пожелание', 'Другое']" [value]="op">{{
-						op
-					}}</mat-option>
+					<mat-option *ngFor="let typeInfo of feedbackTypes" [value]="typeInfo.type">
+						{{ typeInfo.label }}
+					</mat-option>
 				</mat-select>
 			</mat-form-field>
 		</do-form-field>
@@ -27,10 +27,10 @@
 				<mat-error>{{ form.controls['comment'].errors | controlErrors }}</mat-error>
 			</mat-form-field>
 		</do-form-field>
-		<do-upload-images></do-upload-images>
+		<do-upload-images (imagesChange)="handleImagesChange($event)"></do-upload-images>
 	</div>
-	<mat-dialog-actions align="center">
+	<do-actions class="actions">
 		<button doButton mat-dialog-close>Отменить</button>
-		<button mat-flat-button color="primary">Отправить</button>
-	</mat-dialog-actions>
+		<button mat-flat-button color="primary" [loading]="loading$ | async" (click)="submitReport()">Отправить</button>
+	</do-actions>
 </mat-dialog-content>

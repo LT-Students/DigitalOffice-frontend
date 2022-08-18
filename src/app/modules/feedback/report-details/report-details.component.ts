@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Report } from '../report-list/report-list.service';
+import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
 
 @Component({
 	selector: 'do-report-details',
@@ -9,7 +9,7 @@ import { Report } from '../report-list/report-list.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReportDetailsComponent implements OnInit {
-	constructor(@Inject(MAT_DIALOG_DATA) public report: Report) {}
+	constructor(@Inject(MAT_DIALOG_DATA) public report: FeedbackInfo) {}
 
 	ngOnInit(): void {}
 }
