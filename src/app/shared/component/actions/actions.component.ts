@@ -7,6 +7,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 		`
 			do-actions {
 				display: flex;
+				justify-content: center;
 				align-items: center;
 				flex-wrap: wrap;
 

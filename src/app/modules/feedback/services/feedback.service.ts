@@ -17,7 +17,7 @@ export class FeedbackService {
 	public createReport(
 		type: FeedbackType,
 		comment: string,
-		images: ImageContent[]
+		images: ImageContent[] = []
 	): Observable<OperationResultResponse> {
 		return this.feedbackGatewayApi.createFeedback({ body: { type, content: comment, feedbackImages: images } });
 	}

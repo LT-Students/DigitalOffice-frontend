@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
+import { DateTime } from 'luxon';
 import { TableOptions } from '../../table/models/table-options';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
+import { FeedbackType } from '../models/feedback-type';
 
 @Injectable()
 export class ReportListService {
@@ -36,13 +38,13 @@ export class ReportListService {
 					type: 'textCell',
 					field: 'category',
 					headerName: 'Категория',
-					valueGetter: (f: FeedbackInfo) => f.type,
+					valueGetter: (f: FeedbackInfo) => FeedbackType.getFeedbackInfoByFeedbackType(f.type).label,
 				},
 				{
 					type: 'textCell',
 					field: 'createdAt',
 					headerName: 'Дата и время',
-					valueGetter: (f: FeedbackInfo) => f.createdAtUtc.toFormat('dd.MM.yyyy HH:mm'),
+					valueGetter: (f: FeedbackInfo) => DateTime.fromISO(f.createdAtUtc).toFormat('dd.MM.yyyy HH:mm'),
 					sortEnabled: true,
 					disableClearSort: true,
 				},

@@ -1,7 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { BehaviorSubject } from 'rxjs';
 import { AlertService } from '@app/services/alert.service';
+import { ImageComponent } from '../../feedback-image/image.component';
 
 @Component({
 	selector: 'do-upload-images',
@@ -14,15 +15,12 @@ export class UploadImagesComponent implements OnInit, OnDestroy {
 	public readonly MAX_IMAGES_COUNT = 10;
 	public readonly ACCEPTABLE_TYPES = ['image/jpeg', 'image/png', 'image/bmp', 'image/gif'];
 
-	@Output() imagesChange = new EventEmitter();
-
+	@ViewChildren(ImageComponent) compressedImages!: QueryList<ImageComponent>;
 	public images$ = new BehaviorSubject<File[]>([]);
 
 	constructor(private alert: AlertService) {}
 
-	public ngOnInit(): void {
-		this.images$.subscribe({ next: (images: File[]) => this.imagesChange.emit(images) });
-	}
+	public ngOnInit(): void {}
 
 	public ngOnDestroy(): void {
 		this.images$.unsubscribe();

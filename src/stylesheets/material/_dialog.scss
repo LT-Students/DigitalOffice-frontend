@@ -4,13 +4,15 @@
 
 mat-dialog-container.mat-dialog-container {
 	padding: 48px;
+
+	border-radius: 10px;
 }
 
 mat-dialog-content.mat-dialog-content {
 	margin: 0 -48px;
 	padding: 0 48px;
 
-	max-height: calc(100vh - 60px);
+	max-height: 80vh;
 }
 
 mat-dialog-actions.mat-dialog-actions {

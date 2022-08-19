@@ -1,13 +1,14 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 import { MatDialogRef } from '@angular/material/dialog';
-import { merge, Observable, Subject } from 'rxjs';
-import { filter, finalize } from 'rxjs/operators';
+import { forkJoin, merge, Observable, Subject } from 'rxjs';
+import { filter, finalize, first, switchMap } from 'rxjs/operators';
 import { DialogService } from '@app/services/dialog.service';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { FeedbackType } from '../models/feedback-type';
 import { FeedbackService } from '../services/feedback.service';
+import { UploadImagesComponent } from './upload-images/upload-images.component';
 
 @Component({
 	selector: 'do-feedback-form',
@@ -16,11 +17,12 @@ import { FeedbackService } from '../services/feedback.service';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeedbackFormComponent extends LoadingState implements OnInit {
+	@ViewChild(UploadImagesComponent) uploadImages!: UploadImagesComponent;
+
 	public readonly feedbackTypes = FeedbackType.getAllFeedbackTypeInfos();
 	public form = this.fb.group({
 		category: [this.feedbackTypes[0].type, [DoValidators.required]],
 		comment: ['', [DoValidators.required]],
-		images: [[]],
 	});
 	public readonly destroy$ = new Subject();
 
@@ -67,10 +69,12 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 			return;
 		}
 		this.setLoading(true);
-		const { category, comment, images } = this.form.getRawValue();
-		this.feedbackService
-			.createReport(category, comment, images)
-			.pipe(finalize(() => this.setLoading(false)))
+		const { category, comment } = this.form.getRawValue();
+		forkJoin(this.uploadImages.compressedImages.map((img) => img.loadedImage.pipe(first())))
+			.pipe(
+				switchMap((images) => this.feedbackService.createReport(category, comment, images)),
+				finalize(() => this.setLoading(false))
+			)
 			.subscribe({
 				next: () => {
 					this.close();
@@ -83,13 +87,9 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 			});
 	}
 
-	public handleImagesChange(images: File[]): void {
-		this.form.patchValue({ images });
-	}
-
 	private isFormDirty(): boolean {
-		const { comment, images } = this.form.getRawValue();
-		return comment.length || images.length;
+		const { comment } = this.form.getRawValue();
+		return comment.length || this.uploadImages.compressedImages.length;
 	}
 
 	private close(): void {

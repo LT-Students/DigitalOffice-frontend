@@ -8,9 +8,13 @@
 
 .dialog-actions {
 	margin-top: 48px;
-	padding: 0;
 
-	.submit {
-		margin-left: 24px;
+	justify-content: center;
+
+	width: 100%;
+
+	button {
+		width: 100%;
+		max-width: 176px;
 	}
 }

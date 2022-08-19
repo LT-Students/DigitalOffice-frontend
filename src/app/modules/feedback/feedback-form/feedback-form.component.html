@@ -27,7 +27,7 @@
 				<mat-error>{{ form.controls['comment'].errors | controlErrors }}</mat-error>
 			</mat-form-field>
 		</do-form-field>
-		<do-upload-images (imagesChange)="handleImagesChange($event)"></do-upload-images>
+		<do-upload-images></do-upload-images>
 	</div>
 	<do-actions class="actions">
 		<button doButton mat-dialog-close>Отменить</button>

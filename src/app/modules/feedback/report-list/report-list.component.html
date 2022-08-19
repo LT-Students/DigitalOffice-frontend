@@ -1,3 +1,9 @@
 <h1>Обратная связь</h1>
-<do-table [dataSource]="dataSource" [tableOptions]="tableOptions" (rowClick)="handleRowClick($event)"></do-table>
-<do-paginator class="paginator" [total]="dataSource.length"></do-paginator>
+<ng-container *ngIf="dataSource | async as data">
+	<do-table
+		[dataSource]="data.body || []"
+		[tableOptions]="tableOptions"
+		(rowClick)="handleRowClick($event)"
+	></do-table>
+	<do-paginator class="paginator" [total]="data.totalCount"></do-paginator>
+</ng-container>

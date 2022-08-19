@@ -1,8 +1,8 @@
 <h3 mat-dialog-title>{{ data.title }}</h3>
 <mat-dialog-content [innerHTML]="data.message"></mat-dialog-content>
-<mat-dialog-actions class="dialog-actions">
+<do-actions class="dialog-actions">
 	<button doButton (click)="onClose(false)">Отменить</button>
-	<button class="submit" mat-flat-button color="warn" [loading]="loading$ | async" (click)="onConfirm()">
+	<button class="submit" mat-flat-button color="primary" [loading]="loading$ | async" (click)="onConfirm()">
 		{{ data.confirmText }}
 	</button>
-</mat-dialog-actions>
+</do-actions>
