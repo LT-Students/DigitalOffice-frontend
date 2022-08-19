@@ -51,6 +51,7 @@ export interface IFindProjects {
 	skipCount: number;
 	takeCount: number;
 	userid?: string;
+	departmentid?: string;
 }
 
 @Injectable({

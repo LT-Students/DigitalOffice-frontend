@@ -57,6 +57,7 @@ export class ProjectTableQueriesService {
 			takeCount: pageSize,
 			nameincludesubstring: params[ClientQueryParam.Search],
 			projectstatus: params[ClientQueryParam.Status],
+			departmentid: params[ClientQueryParam.Department],
 			isascendingsort: params[ClientQueryParam.Sort] && params[ClientQueryParam.Sort].split('_')[1] === 'asc',
 			userid: params[ClientQueryParam.AllProjects] === 'all' ? undefined : userId,
 		};
