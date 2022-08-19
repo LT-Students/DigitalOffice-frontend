@@ -67,7 +67,7 @@
     "editorjs-text-alignment-blocktune": "^1.0.3",
     "libphonenumber-js": "^1.9.49",
     "luxon": "^2.3.1",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "ngx-image-cropper": "^5.0.0",
     "ngx-infinite-scroll": "^10.0.1",
     "rxjs": "~6.6.3",
