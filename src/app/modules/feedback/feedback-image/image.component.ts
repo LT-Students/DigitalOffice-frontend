@@ -1,17 +1,27 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
+import { fromPromise } from 'rxjs/internal-compatibility';
+import imageCompression from 'browser-image-compression';
+import { finalize, switchMap } from 'rxjs/operators';
+import { ImageContent } from '@api/gateway-service/models/image-content';
+import { ReplaySubject, Subscription } from 'rxjs';
+import { LoadingState } from '@shared/directives/button-loading.directive';
 
 @Component({
 	selector: 'do-image',
 	template: `
 		<div class="image-container">
-			<img [src]="imageSrc" alt="Image preview" />
-			<div class="overlay">
-				<button class="image-action" doButton (click)="imageActionClicked.emit()">
+			<img [src]="image | safeImageUrl" alt="Image preview" />
+			<div
+				*ngIf="{ isLoading: loading$ | async } as loadState"
+				class="overlay"
+				[class.loading]="loadState.isLoading"
+			>
+				<mat-spinner *ngIf="loadState.isLoading" [diameter]="24"></mat-spinner>
+				<button *ngIf="!loadState.isLoading" class="image-action" doButton (click)="imageActionClicked.emit()">
 					<mat-icon [svgIcon]="isPreview ? Icons.Visibility : Icons.Close"></mat-icon>
 				</button>
-				<span class="mat-caption name">{{ imageName }}</span>
+				<span class="mat-caption name">{{ image.name }}</span>
 			</div>
 		</div>
 	`,
@@ -42,6 +52,10 @@ import { Icons } from '@shared/modules/icons/icons';
 					opacity: 0;
 
 					transition: opacity 0.2s ease;
+
+					&.loading {
+						opacity: 1;
+					}
 
 					&:hover {
 						opacity: 1;
@@ -76,21 +90,39 @@ import { Icons } from '@shared/modules/icons/icons';
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ImageComponent implements OnInit {
+export class ImageComponent extends LoadingState implements OnInit, OnDestroy {
 	public readonly Icons = Icons;
 
 	@Output() imageActionClicked = new EventEmitter();
-	@Input()
-	set image(image: File) {
-		this.imageSrc = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(image));
-		this.imageName = image.name;
-	}
-	public imageSrc?: SafeUrl;
-	public imageName = '';
-
+	@Input() image!: File;
 	@Input() isPreview = false;
 
-	constructor(private sanitizer: DomSanitizer) {}
+	public loadedImage = new ReplaySubject<ImageContent>(1);
+	private subscription!: Subscription;
 
-	public ngOnInit(): void {}
+	constructor() {
+		super();
+	}
+
+	public ngOnInit(): void {
+		this.setLoading(true);
+		this.subscription = fromPromise(imageCompression(this.image, { maxSizeMB: 1, useWebWorker: true }))
+			.pipe(
+				switchMap((image: File) => fromPromise(imageCompression.getDataUrlFromFile(image))),
+				finalize(() => this.setLoading(false))
+			)
+			.subscribe({
+				next: (b64: string) => {
+					this.loadedImage.next({
+						name: this.image.name,
+						content: b64,
+						extension: `.${this.image.type.split('/')[1]}`,
+					});
+				},
+			});
+	}
+
+	public ngOnDestroy(): void {
+		this.subscription.unsubscribe();
+	}
 }
