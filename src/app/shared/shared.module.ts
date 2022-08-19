@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
@@ -16,8 +15,6 @@ import { OptionComponent } from '@shared/component/option/option.component';
 import { MaterialModule } from './modules/material/material.module';
 
 import { ProfileImageComponent } from './component/profile-image/profile-image.component';
-import { ContentContainerComponent } from './component/content-container/content-container.component';
-import { HeaderComponent } from './component/header/header.component';
 import { StepperComponent } from './component/stepper/stepper.component';
 import { PasswordComponent } from './component/password/password.component';
 import { CommentComponent } from './component/comment/comment.component';
@@ -29,7 +26,6 @@ import { DateTimePipe } from './pipes/date-time';
 import { AddEmployeeComponent } from './dialogs/add-employee/add-employee.component';
 import { EmptyListComponent } from './component/empty-list/empty-list.component';
 import { PhoneInputComponent } from './component/phone-input/phone-input.component';
-import { LoadingBarRoutingModule } from './modules/loading-bar-routing/loading-bar-routing.module';
 import { ChangeUserPasswordComponent } from './dialogs/change-user-password/change-user-password.component';
 import { FullNamePipe } from './pipes/full-name.pipe';
 import { DndDirective } from './directives/dnd.directive';
@@ -43,7 +39,6 @@ import { ProjectTypePipe } from './pipes/project-type.pipe';
 import { LeaveLabelPipe } from './pipes/leave-label.pipe';
 import { FormFieldComponent } from './component/form-row/form-field.component';
 import { SelectDirective } from './directives/select.directive';
-import { SidebarComponent } from './component/sidebar/sidebar.component';
 import { ImageUrlPipe } from './pipes/image-url.pipe';
 import { ContextMenuComponent } from './component/context-menu/context-menu.component';
 import { ButtonToggleGroupComponent } from './component/button-toggle/button-toggle-group.component';
@@ -54,8 +49,6 @@ import { EmailItemComponent } from './dialogs/user-recovery/email-item/email-ite
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { PermissionDirective } from './directives/permission.directive';
 import { ButtonDirective } from './directives/button.directive';
-import { SidebarItemComponent } from './component/sidebar/sidebar-link/sidebar-item.component';
-import { SidebarHeaderComponent } from './component/sidebar/sidebar-header/sidebar-header.component';
 import { DynamicComponentHostDirective } from './directives/dynamic-component-host.directive';
 import { AutocompleteComponent } from './component/autocomplete/autocomplete.component';
 import { AutocompleteOffDirective } from './directives/autocomplete-off.directive';
@@ -71,12 +64,13 @@ import { FileIconPipe } from './pipes/file-icon.pipe';
 import { TitleDatepickerV2Component } from './component/title-datepicker/title-datepicker-v2.component';
 import { DeselectAllCheckboxComponent } from './component/deselect-all-checkbox/deselect-all-checkbox.component';
 import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
+import { JoinPipe } from './pipes/join.pipe';
+import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
+import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 
 @NgModule({
 	declarations: [
 		ProfileImageComponent,
-		ContentContainerComponent,
-		HeaderComponent,
 		StepperComponent,
 		TextDirective,
 		DndDirective,
@@ -106,7 +100,6 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 		CapitalizePipe,
 		FormFieldComponent,
 		SelectDirective,
-		SidebarComponent,
 		ImageUrlPipe,
 		ContextMenuComponent,
 		ButtonToggleGroupComponent,
@@ -117,8 +110,6 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 		AutofocusDirective,
 		PermissionDirective,
 		ButtonDirective,
-		SidebarItemComponent,
-		SidebarHeaderComponent,
 		DynamicComponentHostDirective,
 		AutocompleteComponent,
 		OptionComponent,
@@ -135,6 +126,9 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 		TitleDatepickerV2Component,
 		DeselectAllCheckboxComponent,
 		TypeFromExtensionPipe,
+		JoinPipe,
+		ImageViewerComponent,
+		SafeImageUrlPipe,
 	],
 	imports: [
 		CommonModule,
@@ -143,8 +137,6 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 		ReactiveFormsModule,
 		MaterialModule,
 		InfiniteScrollModule,
-		LoadingBarModule,
-		LoadingBarRoutingModule,
 		MdePopoverModule,
 		ImageCropperModule,
 		IconsModule,
@@ -160,7 +152,6 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 		ReactiveFormsModule,
 		FormsModule,
 		ProfileImageComponent,
-		HeaderComponent,
 		TextDirective,
 		DndDirective,
 		ButtonLoadingDirective,
@@ -212,6 +203,9 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 		TitleDatepickerV2Component,
 		DeselectAllCheckboxComponent,
 		TypeFromExtensionPipe,
+		JoinPipe,
+		ImageViewerComponent,
+		SafeImageUrlPipe,
 	],
 })
 export class SharedModule {}

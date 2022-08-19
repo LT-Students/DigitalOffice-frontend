@@ -65,7 +65,7 @@ export class DialogService {
 	}
 
 	public info(infoData: InfoDialogData): MatDialogRef<InfoDialogComponent> {
-		return this.matDialog.open(InfoDialogComponent, { data: infoData, width: ModalWidth.M });
+		return this.matDialog.open(InfoDialogComponent, { data: infoData, width: ModalWidth.S });
 	}
 
 	public fullScreen<C, T, R = any>(component: ComponentType<C>, data?: T): MatDialogRef<C, R> {

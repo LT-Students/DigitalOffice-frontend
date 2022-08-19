@@ -21,6 +21,7 @@ import { PAGINATOR_DEFAULT_OPTIONS } from '@shared/component/paginator/paginator
 import { LOADING_BAR_CONFIG } from '@ngx-loading-bar/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CommonLayoutModule } from './modules/common-layout/common-layout.module';
 
 registerLocaleData(localeRu);
 
@@ -32,7 +33,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [AppRoutingModule, CoreModule, NgbModule, MatLuxonDateModule, SharedModule],
+	imports: [AppRoutingModule, CoreModule, NgbModule, MatLuxonDateModule, SharedModule, CommonLayoutModule],
 	providers: [
 		Title,
 		{

@@ -1,0 +1,49 @@
+@use '../../../../stylesheets/base/variables';
+
+.active {
+	opacity: 1;
+}
+
+:host {
+	width: 100%;
+}
+
+.header {
+	padding: 0 38px;
+
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+
+	width: 100%;
+	height: variables.$header-height;
+
+	background-color: variables.$light_1;
+
+	&__menu-button {
+		display: flex;
+		align-items: center;
+
+		height: 48px;
+	}
+}
+
+.feedback-dialog {
+	margin-right: auto;
+}
+
+.avatar {
+	display: flex;
+	align-items: center;
+
+	cursor: pointer;
+
+	&__greeting {
+		padding: 0 25px;
+	}
+}
+
+.logo {
+	font-size: 1rem;
+	font-weight: bold;
+}

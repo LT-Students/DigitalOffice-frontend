@@ -1,0 +1,6 @@
+<ng-template #imageContent>
+	<div class="position-relative">
+		<img class="image" [src]="images[(selectedImage | async) || 0] | safeImageUrl" alt="Report image" />
+		<span class="name text-white">{{ images[(selectedImage | async) || 0].name }}</span>
+	</div>
+</ng-template>

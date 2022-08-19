@@ -1,3 +1,20 @@
 .upload-image-dialog {
 	padding: 48px 32px 32px;
 }
+
+mat-dialog-container.mat-dialog-container {
+	padding: 48px;
+
+	border-radius: 10px;
+}
+
+mat-dialog-content.mat-dialog-content {
+	margin: 0 -48px;
+	padding: 0 48px;
+
+	max-height: 80vh;
+}
+
+mat-dialog-actions.mat-dialog-actions {
+	margin: 0;
+}

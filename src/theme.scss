@@ -16,7 +16,7 @@ $custom-typography: mat.define-typography-config(
 	$subheading-1: mat.define-typography-level(18px, math.round(18px * 1.45), 700, 'Montserrat'),
 	$body-1: mat.define-typography-level(15px, math.round(15px * 1.45), 500),
 	$body-2: mat.define-typography-level(13px, math.round(13px * 1.45), 400),
-	$caption: mat.define-typography-level(14px, 24px, 500),
+	$caption: mat.define-typography-level(13px, 19px, 400),
 	$input: mat.define-typography-level(15px, 1.45, 500),
 	$button: mat.define-typography-level(15px, 1.45, 500),
 );

@@ -59,6 +59,8 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 		this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
 		this.expandedRowComparator = options.expandedRowComparator || this.expandedRowComparator;
 		this.selectionCompareWith = options.selectionCompareWith || this.selectionCompareWith;
+		this.sortActive = options.sortActive || this.sortActive;
+		this.sortDirection = options.sortDirection || this.sortDirection;
 	}
 
 	@Input()

@@ -67,7 +67,7 @@ export class ProjectUsersService {
 				params: {
 					options: [ProjectUserRoleType.Employee, ProjectUserRoleType.Manager],
 					displayValueGetter: (role: ProjectUserRoleType) =>
-						role === ProjectUserRoleType.Manager ? 'Менеджер проект' : 'Участник проекта',
+						role === ProjectUserRoleType.Manager ? 'Менеджер проекта' : 'Участник проекта',
 					iconGetter: (role: ProjectUserRoleType) =>
 						role === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
 					iconColor: '#FFD89E',

@@ -1,0 +1,21 @@
+<mat-dialog-content>
+	<h2 class="title">Обратная связь</h2>
+	<div class="flex flex_jc_space-between">
+		<h4 class="name">{{ report.senderFullName }}</h4>
+		<span class="date">{{ report.createdAtUtc | dateTime: 'dd.MM.yyyy HH:mm' }}</span>
+	</div>
+	<div class="info">
+		<div>
+			<h5 class="field-title">Категория запроса</h5>
+			<span>{{ report.type }}</span>
+		</div>
+		<div>
+			<h5 class="field-title">Комментарий</h5>
+			<span>{{ report.content }}</span>
+		</div>
+		<div>
+			<h5 class="field-title">Материалы</h5>
+			<span *ngIf="!report.type.length">Не приложены</span>
+		</div>
+	</div>
+</mat-dialog-content>

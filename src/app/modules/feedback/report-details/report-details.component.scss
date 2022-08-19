@@ -1,0 +1,38 @@
+.info {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.name {
+	margin-bottom: 16px;
+
+	overflow: hidden;
+
+	white-space: pre;
+	text-overflow: ellipsis;
+}
+
+.date {
+	margin-left: 30px;
+
+	white-space: pre;
+}
+
+.field-title {
+	margin-bottom: 8px;
+}
+
+.category {
+	max-width: 257px;
+}
+
+mat-dialog-actions {
+	button {
+		width: 176px;
+
+		&:not(:last-child) {
+			margin-right: 20px;
+		}
+	}
+}
