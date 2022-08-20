@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { DialogService } from '@app/services/dialog.service';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
+import { UserRights } from '@app/types/user-rights.enum';
 import { UserListService } from './services/user-list.service';
 import { Status, UserInfoLike } from './user-list.types';
 import { ContextMenuService } from './services/context-menu.service';
@@ -15,6 +16,8 @@ import { ContextMenuService } from './services/context-menu.service';
 	providers: [UserListService, ContextMenuService],
 })
 export class UserListComponent implements OnInit, AfterViewInit {
+	public readonly UserRights = UserRights;
+
 	@ViewChild(ContextMenuComponent) contextMenu!: ContextMenuComponent;
 
 	public contextMenuItems = this.contextMenuService.menuItems;

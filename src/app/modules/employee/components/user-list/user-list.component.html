@@ -18,7 +18,7 @@
 			+ Добавить сотрудника
 		</button>
 	</div>
-	<div class="status-toggle">
+	<div *hasPermission="UserRights.AddEditRemoveUsers" class="status-toggle">
 		<do-button-toggle-group (valueChange)="handleStatusToggle($event)">
 			<do-button-toggle value="active" checked>Активные</do-button-toggle>
 			<do-button-toggle value="archive">В архиве</do-button-toggle>
@@ -41,4 +41,4 @@
 		<do-empty-list *ngIf="users.length === 0" [emptyMessage]="'Нет данных о сотрудниках'"></do-empty-list>
 	</div>
 </mat-card>
-<do-context-menu [items]="contextMenuItems"></do-context-menu>
+<do-context-menu *hasPermission="UserRights.AddEditRemoveUsers" [items]="contextMenuItems"></do-context-menu>
