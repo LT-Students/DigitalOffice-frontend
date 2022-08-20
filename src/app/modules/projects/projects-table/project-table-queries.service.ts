@@ -48,7 +48,7 @@ export class ProjectTableQueriesService {
 		return filteredParams;
 	}
 
-	public parseQueryParams(params: Params, userId: string): IFindProjects {
+	public convertQueryURLParamsToEndpointParams(params: Params, userId: string): IFindProjects {
 		const pageIndex = Number(params['pageIndex'] || 0);
 		const pageSize = Number(params['pageSize'] || this.paginatorDefaults.pageSize);
 
@@ -58,8 +58,23 @@ export class ProjectTableQueriesService {
 			nameincludesubstring: params[ClientQueryParam.Search],
 			projectstatus: params[ClientQueryParam.Status],
 			departmentid: params[ClientQueryParam.Department],
-			isascendingsort: params[ClientQueryParam.Sort] && params[ClientQueryParam.Sort].split('_')[1] === 'asc',
+			isascendingsort: this.getSortParamValue(params[ClientQueryParam.Sort]),
 			userid: params[ClientQueryParam.AllProjects] === 'all' ? undefined : userId,
 		};
+	}
+
+	private getSortParamValue(sort?: string): boolean | undefined {
+		try {
+			if (!sort) {
+				return true;
+			}
+			const direction = sort.split('_')[1];
+			if (direction === 'rand') {
+				return;
+			}
+			return direction === 'asc';
+		} catch (e) {
+			return true;
+		}
 	}
 }

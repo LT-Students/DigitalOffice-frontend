@@ -26,8 +26,8 @@ export class ProjectListResolver implements Resolve<OperationResultResponse<Proj
 		return this.currentUser.user$.pipe(
 			first(),
 			switchMap((user: User) => {
-				const params = this.tableQueries.parseQueryParams(route.queryParams, user.id);
-				return this.projectService.findProjects({ ...params, includedepartment: true });
+				const params = this.tableQueries.convertQueryURLParamsToEndpointParams(route.queryParams, user.id);
+				return this.projectService.findProjects(params);
 			})
 		);
 	}
