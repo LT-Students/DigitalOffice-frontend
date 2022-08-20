@@ -1,7 +1,7 @@
 <do-profile-image [image]="user.avatar" [userInitials]="user"></do-profile-image>
 <div class="info">
 	<span class="flex flex_ai_center">
-		<span class="no-overflow">{{ user | fullName: true:true }}</span>
+		<a class="link no-overflow" [routerLink]="[AppRoutes.Users, user.id]">{{ user | fullName: true:true }}</a>
 		<mat-icon
 			class="icon"
 			*ngIf="params?.statusIconGetter as iconGetter"

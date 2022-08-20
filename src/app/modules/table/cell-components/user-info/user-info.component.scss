@@ -22,3 +22,13 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+
+.link {
+	&:hover {
+		text-decoration: underline;
+	}
+
+	&:visited {
+		color: unset;
+	}
+}
