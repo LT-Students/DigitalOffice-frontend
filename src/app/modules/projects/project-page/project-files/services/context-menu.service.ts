@@ -96,7 +96,7 @@ export class ContextMenuService {
 				filter((p: Project | null): p is Project => !!p),
 				first(),
 				switchMap((p: Project) => {
-					const projectId = p.info.project.id;
+					const projectId = p.info.id;
 					const oldFiles = p.files;
 					const newFiles = p.files.filter((f: FileInfo) => !fileIds.includes(f.id));
 

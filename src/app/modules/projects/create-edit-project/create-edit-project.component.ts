@@ -3,7 +3,6 @@ import { NavigationService } from '@app/services/navigation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { first, map } from 'rxjs/operators';
-import { ProjectInfo } from '@api/project-service/models/project-info';
 import { BehaviorSubject } from 'rxjs';
 import { AppRoutes } from '@app/models/app-routes';
 import { SelectedProjectService } from '../project-id-route-container/selected-project.service';
@@ -55,10 +54,10 @@ export class CreateEditProjectComponent implements OnInit {
 			this.selectedProject.info$
 				.pipe(
 					first(),
-					map((projectRes: ProjectResponse) => projectRes.project)
+					map((projectRes: ProjectResponse) => projectRes)
 				)
 				.subscribe({
-					next: (project: ProjectInfo) => {
+					next: (project: ProjectResponse) => {
 						this.projectForm.setInitialValue(project);
 						this.projectName = project.name;
 					},

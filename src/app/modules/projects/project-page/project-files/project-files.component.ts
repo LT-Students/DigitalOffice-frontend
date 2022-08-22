@@ -65,7 +65,7 @@ export class ProjectFilesComponent implements OnInit {
 		this.selectedProject.info$
 			.pipe(
 				first(),
-				map((p: ProjectResponse) => p.project.id),
+				map((p: ProjectResponse) => p.id),
 				switchMap((projectId: string) => {
 					return this.dialog
 						.open(AddFilesComponent, {

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { ProjectInfo } from '@api/project-service/models/project-info';
 import { Icons } from '@shared/modules/icons/icons';
 import { DateTime } from 'luxon';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
@@ -19,10 +18,10 @@ import { ProjectStatus } from '../../models/project-status';
 
 interface ProjectStats {
 	gridArea: string;
-	label: (project: ProjectInfo) => string;
+	label: (project: ProjectResponse) => string;
 	icon: Icons;
-	valueGetter: (project: ProjectInfo) => string;
-	style?: (project: ProjectInfo) => { [key: string]: any };
+	valueGetter: (project: ProjectResponse) => string;
+	style?: (project: ProjectResponse) => { [key: string]: any };
 }
 
 @Component({
@@ -36,7 +35,7 @@ export class ProjectInfoComponent implements OnInit {
 	public readonly Icons = Icons;
 	public readonly ProjectsRoutes = ProjectsRoutes;
 
-	@Input() project!: ProjectInfo;
+	@Input() project!: ProjectResponse;
 
 	public canAccessTeamStatistics$ = this.canAccessTeamStatistics();
 	public canEditProject$ = this.canEditProject();
@@ -46,20 +45,20 @@ export class ProjectInfoComponent implements OnInit {
 			gridArea: 'department',
 			label: () => 'Департамент',
 			icon: Icons.AccountBalance,
-			valueGetter: (project: ProjectInfo) => project.department?.name || '',
+			valueGetter: (project: ProjectResponse) => project.department?.name || '',
 		},
 		{
 			gridArea: 'customer',
 			label: () => 'Заказчик',
 			icon: Icons.SupervisorAccount,
-			valueGetter: (project: ProjectInfo) => project.customer || '',
+			valueGetter: (project: ProjectResponse) => project.customer || '',
 		},
 		{
 			gridArea: 'status',
 			label: () => 'Статус',
 			icon: Icons.Loyalty,
-			valueGetter: (project: ProjectInfo) => ProjectStatus.getStatusByType(project.status).label,
-			style: (project: ProjectInfo) => ({
+			valueGetter: (project: ProjectResponse) => ProjectStatus.getStatusByType(project.status).label,
+			style: (project: ProjectResponse) => ({
 				padding: '1px 24px',
 				color: '#fcfcfc',
 				background: ProjectStatus.getStatusByType(project.status).color,
@@ -70,8 +69,8 @@ export class ProjectInfoComponent implements OnInit {
 			gridArea: 'users',
 			label: () => 'Сотрудники',
 			icon: Icons.PermIdentity,
-			valueGetter: (project: ProjectInfo) =>
-				this.pluralPipe.transform(project.usersCount, {
+			valueGetter: (project: ProjectResponse) =>
+				this.pluralPipe.transform(project.users?.length, {
 					few: '# человека',
 					other: '# человек',
 				}),
@@ -80,20 +79,20 @@ export class ProjectInfoComponent implements OnInit {
 			gridArea: 'start-date',
 			label: () => 'Дата запуска',
 			icon: Icons.Clock,
-			valueGetter: (project: ProjectInfo) => this.formatDate(project.startDateUtc),
+			valueGetter: (project: ProjectResponse) => this.formatDate(project.startDateUtc),
 		},
 		{
 			gridArea: 'end-date',
-			label: (project: ProjectInfo) =>
+			label: (project: ProjectResponse) =>
 				project.status === ProjectStatusType.Suspend ? 'Дата приостановки' : 'Дата завершения',
 			icon: Icons.AccessAlarm,
-			valueGetter: (project: ProjectInfo) => this.formatDate(project.endDateUtc),
+			valueGetter: (project: ProjectResponse) => this.formatDate(project.endDateUtc),
 		},
 		{
 			gridArea: 'duration',
 			label: () => 'Продолжительность',
 			icon: Icons.History,
-			valueGetter: (project: ProjectInfo) => {
+			valueGetter: (project: ProjectResponse) => {
 				const start = DateTime.fromISO(project.startDateUtc);
 				const end =
 					project.endDateUtc && project.status !== ProjectStatusType.Active

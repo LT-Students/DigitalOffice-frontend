@@ -10,7 +10,7 @@ import {
 import { SelectedProjectService } from './selected-project.service';
 
 function resolveTimelistEntityInfo(route: ActivatedRoute): TimelistEntityInfo {
-	const { id, name } = (route.snapshot.data['project'] as ProjectResponse).project;
+	const { id, name } = route.snapshot.data['project'] as ProjectResponse;
 	return { entityId: id, name, entityType: TimelistEntityType.Project };
 }
 

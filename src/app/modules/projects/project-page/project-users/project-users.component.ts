@@ -89,8 +89,8 @@ export class ProjectUsersComponent implements OnInit {
 				first(),
 				switchMap((p: ProjectResponse) => {
 					const data: AddEmployeeDialogData = {
-						entityId: p.project.id,
-						entityName: p.project.name,
+						entityId: p.id,
+						entityName: p.name,
 						usersToHide: p.users?.map((u) => ({ id: u.userId, role: u.role })) || [],
 					};
 					return this.dialog
