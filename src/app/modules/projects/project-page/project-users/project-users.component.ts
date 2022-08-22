@@ -5,6 +5,7 @@ import { first, map, mapTo, startWith, switchMap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { UserInfo } from '@api/project-service/models/user-info';
 import { Observable, Subject } from 'rxjs';
+import { UserRights } from '@app/types/user-rights.enum';
 import { AddEmployeeDialogData, AddProjectUsersComponent } from '../../add-project-users/add-project-users.component';
 import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
 import { DynamicFilterComponent } from '../../../dynamic-filter/dynamic-filter.component';
@@ -20,9 +21,11 @@ import { ProjectUsersService } from './project-users.service';
 })
 export class ProjectUsersComponent implements OnInit {
 	public readonly Icons = Icons;
+	public readonly UserRights = UserRights;
 	@ViewChild(TableComponent, { static: true }) table!: TableComponent<UserInfo>;
 	@ViewChild(DynamicFilterComponent, { static: true }) filter!: DynamicFilterComponent;
 
+	public canManageUsers$ = this.usersService.canManageUsers$();
 	public filterData = this.usersService.getFilterData();
 	public tableColumns = this.usersService.getTableColumns();
 	public tableChanged = new Subject();

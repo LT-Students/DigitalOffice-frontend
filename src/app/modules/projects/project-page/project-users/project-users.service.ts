@@ -3,14 +3,22 @@ import { Icons } from '@shared/modules/icons/icons';
 import { UserInfo } from '@api/project-service/models/user-info';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
 import { ProjectResponse } from '@api/project-service/models/project-response';
-import { first, map, switchMap, tap } from 'rxjs/operators';
+import { first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from '@app/services/dialog.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
+import { Router } from '@angular/router';
+import { AppRoutes } from '@app/models/app-routes';
+import { PermissionService } from '@app/services/permission.service';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { User } from '@app/models/user/user.model';
+import { UserRights } from '@app/types/user-rights.enum';
+import { ProjectUserInfo } from '@api/project-service/models/project-user-info';
 import { ProjectService } from '../../project.service';
 import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
 import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
+import { UserInfoParams } from '../../../table/cell-components/user-info/user-info.component';
 
 @Injectable()
 export class ProjectUsersService {
@@ -18,8 +26,31 @@ export class ProjectUsersService {
 		private selectedProject: SelectedProjectService,
 		private projectService: ProjectService,
 		private dialog: DialogService,
-		private autocompleteConfigs: AutocompleteConfigsService
+		private autocompleteConfigs: AutocompleteConfigsService,
+		private router: Router,
+		private permission: PermissionService,
+		private currentUser: CurrentUserService
 	) {}
+
+	public canManageUsers$(): Observable<boolean> {
+		return this.permission.checkPermission$(UserRights.AddEditRemoveProjects).pipe(
+			switchMap((hasPermission: boolean) => {
+				if (hasPermission) {
+					return of(true);
+				} else {
+					return this.currentUser.user$.pipe(
+						first(),
+						withLatestFrom(this.selectedProject.info$),
+						map(([user, p]: [User, ProjectResponse]) => {
+							const projectUsers = p.users;
+							const currUser = projectUsers?.find((u: ProjectUserInfo) => u.userId === user.id);
+							return !!currUser && currUser.role === ProjectUserRoleType.Manager;
+						})
+					);
+				}
+			})
+		);
+	}
 
 	public getFilterData(): FilterDef[] {
 		return [
@@ -51,11 +82,17 @@ export class ProjectUsersService {
 				valueGetter: (user: UserInfo) => ({ ...user, avatar: user.avatarImage }),
 				columnStyle: { overflow: 'hidden' },
 				headerStyle: { 'margin-left': '60px' },
-				params: {
+				params: new UserInfoParams({
 					statusIconGetter: (user: UserInfo) =>
 						user.role === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
 					iconColor: '#FFD89E',
-				},
+					onAvatarClick: (user: UserInfo) => {
+						this.router.navigate([AppRoutes.Users, user.id]);
+					},
+					onNameClick: (user: UserInfo) => {
+						this.router.navigate([AppRoutes.Users, user.id]);
+					},
+				}),
 			},
 			{
 				type: 'selectCell',

@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { UserInfo as FilterUserInfo } from '@api/filter-service/models/user-info';
+import { UserRights } from '@app/types/user-rights.enum';
 import { ContextMenuService } from '../services/context-menu.service';
 import { UserInfoLike } from '../user-list.types';
 import { isActiveUser, isPendingUser } from '../helpers';
@@ -12,6 +13,8 @@ import { isActiveUser, isPendingUser } from '../helpers';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListItemComponent implements OnInit {
+	public readonly UserRights = UserRights;
+
 	@Input() user!: UserInfoLike;
 
 	public email?: CommunicationInfo;

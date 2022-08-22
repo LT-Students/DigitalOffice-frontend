@@ -87,12 +87,12 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 
 	private getInitialSort(sortValue?: string): Sort {
 		if (!sortValue) {
-			return { active: '', direction: '' };
+			return { active: 'name', direction: 'asc' };
 		}
 		const [active, direction] = sortValue.split('_');
 		return {
 			active,
-			direction: direction as SortDirection,
+			direction: (direction === 'rand' ? '' : direction) as SortDirection,
 		};
 	}
 
@@ -101,7 +101,7 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 		const { [ClientQueryParam.AllProjects]: projects, ...rest } = this.filter.value;
 		const params = {
 			...rest,
-			[ClientQueryParam.Sort]: direction && `${active}_${direction}`,
+			[ClientQueryParam.Sort]: `${active}_${direction || 'rand'}`,
 			[ClientQueryParam.AllProjects]: !projects && 'all',
 			pageIndex: resetPaginator ? 0 : this.paginator.pageIndex,
 			pageSize: this.paginator.pageSize,
@@ -116,7 +116,7 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 			.pipe(
 				first(),
 				switchMap((u: User) => {
-					const requestParams = this.tableQueries.parseQueryParams(params, u.id);
+					const requestParams = this.tableQueries.convertQueryURLParamsToEndpointParams(params, u.id);
 					return this.tableData.loadProjects(requestParams);
 				})
 			)

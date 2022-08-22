@@ -22,3 +22,9 @@
 	white-space: nowrap;
 	text-overflow: ellipsis;
 }
+
+.link {
+	&:visited {
+		color: unset;
+	}
+}

@@ -18,8 +18,8 @@
 	</div>
 </div>
 <button
-	mat-icon-button
-	class="text-secondary_default"
+	*hasPermission="UserRights.AddEditRemoveUsers"
+	doButton
 	(click)="openContextMenu($event)"
 	data-test="user-item-context-menu"
 >
