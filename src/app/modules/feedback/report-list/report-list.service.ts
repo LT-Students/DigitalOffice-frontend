@@ -51,13 +51,13 @@ export class ReportListService {
 				{
 					type: 'iconCell',
 					field: 'icon',
-					valueGetter: (f: FeedbackInfo) => (f.type.length ? Icons.PaperclipTilt : ''),
+					valueGetter: (f: FeedbackInfo) => (f.imagesCount ? Icons.PaperclipTilt : ''),
 					columnStyle: { flex: '0 0 24px', margin: '2px' },
 				},
 				{
 					type: 'textCell',
 					field: 'attachments',
-					valueGetter: (f: FeedbackInfo) => f.type.length || ' ',
+					valueGetter: (f: FeedbackInfo) => f.imagesCount || ' ',
 					columnStyle: { flex: '0 0 18px' },
 				},
 				{
