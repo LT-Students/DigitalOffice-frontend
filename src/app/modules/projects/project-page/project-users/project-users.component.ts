@@ -25,6 +25,7 @@ export class ProjectUsersComponent implements OnInit {
 	@ViewChild(TableComponent, { static: true }) table!: TableComponent<UserInfo>;
 	@ViewChild(DynamicFilterComponent, { static: true }) filter!: DynamicFilterComponent;
 
+	public canManageUsers$ = this.usersService.canManageUsers$();
 	public filterData = this.usersService.getFilterData();
 	public tableColumns = this.usersService.getTableColumns();
 	public tableChanged = new Subject();
