@@ -34,7 +34,7 @@ export class UserArchiveRecoveryService {
 		);
 		return this.dialog
 			.open<CommunicationInfo>(UserRecoveryComponent, {
-				width: ModalWidth.M,
+				width: ModalWidth.S,
 				data: { userId, emails, isPending },
 			})
 			.afterClosed();
