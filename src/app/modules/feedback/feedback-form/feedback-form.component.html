@@ -1,0 +1,36 @@
+<mat-dialog-content>
+	<h2 class="title">Обратная связь</h2>
+	<p class="hint">Будет здорово, если ты оставишь свое мнение о работе сервиса, это поможет нам стать лучше</p>
+	<div class="form" [formGroup]="form">
+		<do-form-field class="category" label="Категория запроса" labelClass="text-main">
+			<mat-form-field>
+				<mat-select formControlName="category">
+					<mat-option *ngFor="let typeInfo of feedbackTypes" [value]="typeInfo.type">
+						{{ typeInfo.label }}
+					</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-field>
+		<do-form-field class="has-hint" label="Комментарий" labelClass="text-main">
+			<mat-form-field>
+				<textarea
+					#comment
+					matInput
+					formControlName="comment"
+					placeholder="Написать..."
+					maxlength="1000"
+					cdkTextareaAutosize
+					[cdkAutosizeMinRows]="6"
+					[cdkAutosizeMaxRows]="6"
+				></textarea>
+				<mat-hint>{{ comment.value.length }}/1000</mat-hint>
+				<mat-error>{{ form.controls['comment'].errors | controlErrors }}</mat-error>
+			</mat-form-field>
+		</do-form-field>
+		<do-upload-images></do-upload-images>
+	</div>
+	<do-actions class="actions">
+		<button doButton mat-dialog-close>Отменить</button>
+		<button mat-flat-button color="primary" [loading]="loading$ | async" (click)="submitReport()">Отправить</button>
+	</do-actions>
+</mat-dialog-content>

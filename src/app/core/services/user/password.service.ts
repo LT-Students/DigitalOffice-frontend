@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ChangePasswordRequest } from '@data/api/user-service/models/change-password-request';
+import { ChangePasswordRequest } from '@api/user-service/models/change-password-request';
 import { IForgotPasswordRequest } from '@app/services/user/credentials.service';
-import { PasswordApiService } from '@data/api/user-service/services/password-api.service';
-import { ReconstructPasswordRequest } from '@data/api/user-service/models/reconstruct-password-request';
+import { PasswordApiService } from '@api/user-service/services/password-api.service';
+import { ReconstructPasswordRequest } from '@api/user-service/models/reconstruct-password-request';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 

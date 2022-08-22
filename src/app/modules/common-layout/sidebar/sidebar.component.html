@@ -1,0 +1,11 @@
+<aside class="sidebar">
+	<do-sidebar-header [isWideScreen]="isWideScreen$ | async"></do-sidebar-header>
+	<div class="links">
+		<do-sidebar-link
+			class="link"
+			*ngFor="let link of links$ | async"
+			[link]="link"
+			[isWideScreen]="isWideScreen$ | async"
+		></do-sidebar-link>
+	</div>
+</aside>

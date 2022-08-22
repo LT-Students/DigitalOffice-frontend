@@ -1,0 +1,63 @@
+<h4>Таблица проектов</h4>
+<div *ngIf="!workTimes.length">Нет данных о внесенных часах</div>
+<table *ngIf="workTimes.length" class="table">
+	<colgroup>
+		<col class="column column_width_m" />
+		<col class="column column_width_sm" />
+		<col class="column column_width_sm" />
+		<col class="column column_width_l" />
+		<col class="column column_width_t" />
+	</colgroup>
+	<thead>
+		<tr class="row">
+			<th>Название проекта</th>
+			<th>Внесенные часы</th>
+			<th>Дата изменения</th>
+			<th>Комментарий</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let workTime of workTimes" class="row">
+			<td class="cell">
+				<span>{{ workTime.project.name }}</span>
+			</td>
+			<td class="cell">
+				<span *ngIf="workTime?.managerHours == null; else managerHours">{{ workTime.userHours }}</span>
+				<ng-template #managerHours>
+					<div class="flex flex_ai_center">
+						<span>{{ workTime?.managerHours }}&nbsp;&nbsp;</span>
+						<span class="mat-body-2 text-secondary_default flex flex_ai_center">
+							Изменено&nbsp;
+							<mat-icon
+								[style.width.px]="16"
+								[style.height.px]="16"
+								[svgIcon]="Icons.InfoOutline"
+								[mdePopoverTriggerFor]="popover"
+								mdePopoverPositionY="above"
+								[mdePopoverOffsetX]="-12"
+							></mat-icon>
+						</span>
+					</div>
+					<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+						<span class="mat-body-2">Автор изменения</span>
+						<p>{{ workTime.managerInfo ? (workTime.managerInfo | fullName) : '—' }}</p>
+						<span class="mat-body-2">Часы сотрудника</span>
+						<p>{{ workTime.userHours }}</p>
+					</mde-popover>
+				</ng-template>
+			</td>
+			<td class="cell">
+				<span>{{ workTime.modifiedAtUtc ? (workTime.modifiedAt | dateTime: 'd MMMM') : '—' }}</span>
+			</td>
+			<td class="cell">
+				<do-comment [text]="workTime.description | placeholder: '—'"></do-comment>
+			</td>
+			<td class="cell cell__icon">
+				<button *ngIf="canEdit" doButton (click)="openEditModal(workTime)">
+					<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
+				</button>
+			</td>
+		</tr>
+	</tbody>
+</table>

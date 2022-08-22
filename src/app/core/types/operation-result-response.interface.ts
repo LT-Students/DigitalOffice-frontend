@@ -1,12 +1,5 @@
-export interface OperationResultResponse<T> {
+export interface OperationResultResponse<T = any> {
 	body?: T;
-	errors?: string[];
-	status?: OperationResultStatusType;
+	errors: string[];
 	totalCount?: number;
-}
-
-export enum OperationResultStatusType {
-	FullSuccess = 'FullSuccess',
-	PartialSuccess = 'PartialSuccess',
-	Failed = 'Failed',
 }

@@ -1,0 +1,49 @@
+:host {
+	display: block;
+}
+
+.header {
+	display: flex;
+	align-items: baseline;
+
+	h1 {
+		margin: 0;
+	}
+
+	.controls {
+		margin-left: auto;
+	}
+}
+
+.short-name {
+	margin-top: 4px;
+}
+
+.stats {
+	margin-top: 30px;
+
+	display: grid;
+	grid-gap: 16px 28px;
+	grid-template: repeat(4, 1fr) / max-content minmax(0, 1fr) max-content minmax(0, 1fr);
+	grid-template-areas:
+		'department department-v department-v department-v'
+		'customer customer-v start-date start-date-v'
+		'status status-v end-date end-date-v'
+		'users users-v duration duration-v';
+
+	.stat {
+		display: flex;
+		align-items: center;
+
+		.label {
+			margin-left: 8px;
+		}
+
+		.value {
+			overflow: hidden;
+
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+	}
+}

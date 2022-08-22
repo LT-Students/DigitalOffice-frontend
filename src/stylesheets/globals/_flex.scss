@@ -5,7 +5,19 @@
 		display: inline-flex;
 	}
 
+	&_column {
+		flex-direction: column;
+	}
+
+	&_wrap {
+		flex-wrap: wrap;
+	}
+
 	&_ai {
+		&_baseline {
+			align-items: baseline;
+		}
+
 		&_center {
 			align-items: center;
 		}

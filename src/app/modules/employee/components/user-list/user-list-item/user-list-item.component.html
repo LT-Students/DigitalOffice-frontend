@@ -1,0 +1,27 @@
+<div class="user">
+	<do-profile-image
+		class="link"
+		[routerLink]="[user.id]"
+		[image]="user.avatar"
+		[userInitials]="user"
+		size="l"
+	></do-profile-image>
+	<div class="user-info">
+		<span class="name link" [routerLink]="[user.id]">{{ user | fullName }}</span>
+		<ng-container *ngIf="additionalInfo">
+			<span class="mat-body-2 text-secondary_default">{{ additionalInfo.position?.name | placeholder }}</span>
+			<span class="mat-body-2 text-secondary_default">{{ additionalInfo.department?.name | placeholder }}</span>
+		</ng-container>
+		<ng-container *ngIf="email">
+			<span class="mat-body-2 text-secondary_default">{{ email?.value }}</span>
+		</ng-container>
+	</div>
+</div>
+<button
+	*hasPermission="UserRights.AddEditRemoveUsers"
+	doButton
+	(click)="openContextMenu($event)"
+	data-test="user-item-context-menu"
+>
+	<mat-icon>more_horiz</mat-icon>
+</button>

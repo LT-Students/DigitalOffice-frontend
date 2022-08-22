@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { CompanyService } from '@app/services/company/company.service';
+import { AdminService } from '@app/services/admin/admin.service';
+import { AppRoutes } from '@app/models/app-routes';
+import { AuthRoutes } from '../../../auth/models/auth-routes';
 
 @Component({
 	selector: 'do-wizard',
@@ -21,14 +23,13 @@ export class WizardComponent implements OnInit {
 
 	constructor(
 		private _formBuilder: FormBuilder,
-		private _companyService: CompanyService,
+		private adminService: AdminService,
 		private _router: Router,
 		private _titleService: Title
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this._titleService.setTitle('Installer');
 		this.companyForm = this._formBuilder.group({
-			companyName: ['', Validators.required],
 			portalName: ['', Validators.required],
 			siteUrl: ['', Validators.required],
 		});
@@ -48,7 +49,6 @@ export class WizardComponent implements OnInit {
 			{
 				host: ['', Validators.required],
 				port: ['', Validators.required],
-				workDaysApiUrl: ['', Validators.required],
 				enableSsl: ['', Validators.required],
 				email: ['', Validators.required],
 				password: ['', Validators.required],
@@ -75,34 +75,32 @@ export class WizardComponent implements OnInit {
 
 	public submitForm(): void {
 		this.loading$$.next(true);
-		this._companyService
-			.createCompany({
-				workDaysApiUrl: this.smtpForm.get('workDaysApiUrl')?.value,
-				companyName: this.companyForm.get('companyName')?.value,
-				portalName: this.companyForm.get('portalName')?.value,
-				siteUrl: this.companyForm.get('siteUrl')?.value,
+		this.adminService
+			.installApp({
+				guiInfo: {
+					PortalName: this.companyForm.get('portalName')?.value,
+					SiteUrl: this.companyForm.get('siteUrl')?.value,
+				},
 				adminInfo: {
-					firstName: this.adminForm.get('firstName')?.value,
-					lastName: this.adminForm.get('lastName')?.value,
-					middleName: this.adminForm.get('middleName')?.value,
-					email: this.adminForm.get('email')?.value,
-					login: this.adminForm.get('login')?.value,
-					password: this.adminForm.get('password')?.value,
+					FirstName: this.adminForm.get('firstName')?.value,
+					LastName: this.adminForm.get('lastName')?.value,
+					MiddleName: this.adminForm.get('middleName')?.value,
+					Email: this.adminForm.get('email')?.value,
+					Login: this.adminForm.get('login')?.value,
+					Password: this.adminForm.get('password')?.value,
 				},
 				smtpInfo: {
-					host: this.smtpForm.get('host')?.value,
-					port: this.smtpForm.get('port')?.value,
-					email: this.smtpForm.get('email')?.value,
-					password: this.smtpForm.get('password')?.value,
-					enableSsl: this.smtpForm.get('enableSsl')?.value,
+					Host: this.smtpForm.get('host')?.value,
+					Port: this.smtpForm.get('port')?.value,
+					Email: this.smtpForm.get('email')?.value,
+					Password: this.smtpForm.get('password')?.value,
+					EnableSsl: this.smtpForm.get('enableSsl')?.value,
 				},
+				servicesToDisable: [],
 			})
 			.pipe(finalize(() => this.loading$$.next(false)))
-			.subscribe(
-				() => {
-					this._router.navigate(['/auth/login']);
-				},
-				(error) => console.log(error)
-			);
+			.subscribe(() => {
+				this._router.navigate([AppRoutes.Auth, AuthRoutes.SignIn]);
+			});
 	}
 }

@@ -1,12 +1,17 @@
 <div class="comment__content">
-	<p class="comment__text" #comment>{{ text ? text : '-' }}</p>
+	<p class="comment__text" #comment>{{ text | placeholder: '—' }}</p>
 	<ng-container *ngIf="buttonShowed">
-		<button *ngIf="commentCollapsed; else collapseButton" mat-flat-button class="comment__button" (click)="expandComment()">
+		<button
+			*ngIf="commentCollapsed; else collapseButton"
+			doButton
+			class="comment__button"
+			(click)="expandComment()"
+		>
 			<span>Раскрыть полностью</span>
 			<mat-icon>keyboard_arrow_down</mat-icon>
 		</button>
 		<ng-template #collapseButton>
-			<button mat-flat-button class="comment__button" (click)="collapseComment()">
+			<button doButton class="comment__button" (click)="collapseComment()">
 				<span>Свернуть</span>
 				<mat-icon>keyboard_arrow_up</mat-icon>
 			</button>

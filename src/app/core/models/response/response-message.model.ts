@@ -1,31 +1,34 @@
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError, tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { AlertService } from '@app/services/alert.service';
 
 export interface IErrorMessageTypes {
 	triggered?: MessageTriggeredFrom;
 	feminine: boolean;
+	neuter: boolean;
 }
 
 @Injectable({
 	providedIn: 'root',
 })
 export class ResponseMessageModel {
-	constructor(private _snackBar: MatSnackBar) {}
+	constructor(private alert: AlertService) {}
 
 	private _responseMessageTypes: IErrorMessageTypes[] = [
-		{ triggered: MessageTriggeredFrom.Project, feminine: false },
-		{ triggered: MessageTriggeredFrom.Department, feminine: false },
-		{ triggered: MessageTriggeredFrom.Office, feminine: false },
-		{ triggered: MessageTriggeredFrom.Position, feminine: true },
-		{ triggered: MessageTriggeredFrom.Rights, feminine: true },
-		{ triggered: MessageTriggeredFrom.Communication, feminine: false },
-		{ triggered: MessageTriggeredFrom.User, feminine: false },
-		{ triggered: MessageTriggeredFrom.EmployeePage, feminine: true },
-		{ triggered: MessageTriggeredFrom.News, feminine: true },
-		{ triggered: MessageTriggeredFrom.WorkTime, feminine: true },
+		{ triggered: MessageTriggeredFrom.Project, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.Department, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.Office, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.Position, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.Rights, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.Communication, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.User, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.EmployeePage, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.News, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.WorkTime, feminine: true, neuter: false },
+		{ triggered: MessageTriggeredFrom.Password, feminine: false, neuter: false },
+		{ triggered: MessageTriggeredFrom.LeaveTime, feminine: false, neuter: true },
 	];
 
 	public getSuccessMessage(triggeredFrom: MessageTriggeredFrom, method: MessageMethod, status: string): string {
@@ -33,17 +36,9 @@ export class ResponseMessageModel {
 			return 'Выполнено частично';
 		}
 		const result = this._responseMessageTypes.find((item) => item.triggered === triggeredFrom);
-		return `${triggeredFrom} успешно ${method}${result?.feminine === true ? 'а' : ''}`;
-	}
-
-	public getErrorMessage(err: any): string {
-		if (err.status === 403) {
-			return 'Недостаточно прав доступа';
-		}
-		if (err.status === 404) {
-			return 'Операция отклонена';
-		}
-		return err.error.errors?.join(' ') ?? 'Что-то пошло не так :(';
+		return `${triggeredFrom} успешно ${method}${
+			result?.feminine === true ? 'а' : result?.neuter === true ? 'о' : ''
+		}`;
 	}
 
 	public message(
@@ -52,16 +47,8 @@ export class ResponseMessageModel {
 	): (source: Observable<any>) => Observable<any> {
 		return (source) => {
 			return source.pipe(
-				catchError((err) => {
-					this._snackBar.open(this.getErrorMessage(err), '×', {
-						duration: 3000,
-					});
-					return throwError(err);
-				}),
 				tap((result) => {
-					this._snackBar.open(this.getSuccessMessage(triggeredFrom, method, result.status), '×', {
-						duration: 3000,
-					});
+					this.alert.open(this.getSuccessMessage(triggeredFrom, method, result.status));
 				})
 			);
 		};

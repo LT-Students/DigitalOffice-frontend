@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, EventEmitter, Output } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { DateTime } from 'luxon';
+import { Icons } from '@shared/modules/icons/icons';
 
 @Component({
 	selector: 'do-title-datepicker',
@@ -9,14 +10,25 @@ import { DateTime } from 'luxon';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TitleDatepickerComponent {
-	@Input() text: string | undefined;
-	@Input() selectDate?: DateTime | null;
-	@Output() dateSelection: EventEmitter<DateTime>;
+	private static uniqueId = 0;
+	public readonly Icons = Icons;
 
-	constructor() {
-		this.selectDate = DateTime.now();
-		this.dateSelection = new EventEmitter<DateTime>();
+	@Input() title = '';
+	@Input()
+	set selectDate(date: DateTime | null) {
+		this._selectedDate = date || DateTime.now();
 	}
+	get selectDate(): DateTime {
+		return this._selectedDate;
+	}
+	private _selectedDate = DateTime.now();
+
+	@Input() minDate: DateTime | null = null;
+	@Input() maxDate: DateTime | null = null;
+	@Output() dateSelection = new EventEmitter<DateTime>();
+	public readonly id = TitleDatepickerComponent.uniqueId++;
+
+	constructor() {}
 
 	public chosenMonthHandler(date: DateTime, picker: MatDatepicker<any>): void {
 		this.selectDate = date;

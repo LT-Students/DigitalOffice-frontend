@@ -1,0 +1,21 @@
+:host {
+	position: relative;
+}
+
+.chart {
+	position: relative;
+}
+
+.time-info {
+	position: absolute;
+
+	top: 50%;
+
+	width: 100%;
+
+	text-align: center;
+
+	pointer-events: none;
+
+	transform: translateY(-50%);
+}

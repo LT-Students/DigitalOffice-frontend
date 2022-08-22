@@ -1,24 +1,22 @@
 import { Injectable } from '@angular/core';
-import { WorkTimeApiService } from '@data/api/time-service/services/work-time-api.service';
-import { LeaveTimeApiService } from '@data/api/time-service/services/leave-time-api.service';
+import { WorkTimeApiService } from '@api/time-service/services/work-time-api.service';
+import { LeaveTimeApiService } from '@api/time-service/services/leave-time-api.service';
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@data/api/time-service/models/operation-result-response';
-import { EditWorkTimeRequest } from '@data/api/time-service/models/edit-work-time-request';
-import { WorkTimeDayJobApiService } from '@data/api/time-service/services/work-time-day-job-api.service';
-import { WorkTimeDayJobIdApiService } from '@data/api/time-service/services/work-time-day-job-id-api.service';
-import { WorkTimeMonthLimitApiService } from '@data/api/time-service/services/work-time-month-limit-api.service';
-import { EditLeaveTimeRequest } from '@data/api/time-service/models/edit-leave-time-request';
-import { FindResultResponseWorkTimeMonthLimitInfo } from '@data/api/time-service/models/find-result-response-work-time-month-limit-info';
-import { EditWorkTimeMonthLimitRequest } from '@data/api/time-service/models/edit-work-time-month-limit-request';
-import { FindResultResponseWorkTimeResponse } from '@data/api/time-service/models/find-result-response-work-time-response';
-import { FindResultResponseLeaveTimeResponse } from '@data/api/time-service/models/find-result-response-leave-time-response';
-import { StatApiService } from '@data/api/time-service/services/stat-api.service';
-import { ImportApiService } from '@data/api/time-service/services/import-api.service';
-import { FindResultResponseStatInfo } from '@data/api/time-service/models/find-result-response-stat-info';
-import { OperationResultResponseByteArray } from '@data/api/time-service/models/operation-result-response-byte-array';
-import { CreateWorkTimeRequest } from '@data/api/time-service/models/create-work-time-request';
-import { ResponseMessageModel } from '@app/models/response/response-message.model';
-import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
+import { OperationResultResponse } from '@api/time-service/models/operation-result-response';
+import { EditWorkTimeRequest } from '@api/time-service/models/edit-work-time-request';
+import { WorkTimeDayJobApiService } from '@api/time-service/services/work-time-day-job-api.service';
+import { WorkTimeDayJobIdApiService } from '@api/time-service/services/work-time-day-job-id-api.service';
+import { WorkTimeMonthLimitApiService } from '@api/time-service/services/work-time-month-limit-api.service';
+import { EditLeaveTimeRequest } from '@api/time-service/models/edit-leave-time-request';
+import { FindResultResponseWorkTimeMonthLimitInfo } from '@api/time-service/models/find-result-response-work-time-month-limit-info';
+import { EditWorkTimeMonthLimitRequest } from '@api/time-service/models/edit-work-time-month-limit-request';
+import { FindResultResponseWorkTimeResponse } from '@api/time-service/models/find-result-response-work-time-response';
+import { FindResultResponseLeaveTimeResponse } from '@api/time-service/models/find-result-response-leave-time-response';
+import { StatApiService } from '@api/time-service/services/stat-api.service';
+import { ImportApiService } from '@api/time-service/services/import-api.service';
+import { OperationResultResponseByteArray } from '@api/time-service/models/operation-result-response-byte-array';
+import { CreateWorkTimeRequest } from '@api/time-service/models/create-work-time-request';
+import { FindResultResponseUserStatInfo } from '@api/time-service/models/find-result-response-user-stat-info';
 
 export interface IFindWorkTimesRequest {
 	userid?: string;
@@ -62,12 +60,14 @@ export interface IEditWorkTimeMonthLimitRequest {
 }
 
 export interface IFindStatRequest {
-	departmentId?: string;
+	departmentsIds?: Array<string>;
 	projectId?: string;
-	month?: number;
-	year?: number;
-	takeCount?: number;
-	skipCount?: number;
+	ascendingsort?: boolean;
+	nameincludesubstring?: string;
+	month: number;
+	year: number;
+	takeCount: number;
+	skipCount: number;
 }
 
 export interface IGetImport {
@@ -86,10 +86,11 @@ export interface ICreateLeaveTimeRequest {
 	userId: string;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class TimeService {
 	constructor(
-		private _responseModel: ResponseMessageModel,
 		private _workTimeService: WorkTimeApiService,
 		private _leaveTimeApiService: LeaveTimeApiService,
 		private _workTimeDayJobApiService: WorkTimeDayJobApiService,
@@ -104,19 +105,15 @@ export class TimeService {
 	}
 
 	public editWorkTime(params: IEditWorkTimeRequest): Observable<OperationResultResponse> {
-		return this._workTimeService
-			.editWorkTime(params)
-			.pipe(this._responseModel.message(MessageTriggeredFrom.WorkTime, MessageMethod.Edit));
+		return this._workTimeService.editWorkTime(params);
 	}
 
 	public createWorkTime(body: CreateWorkTimeRequest): Observable<OperationResultResponse> {
-		return this._workTimeService
-			.createWorkTime({ body })
-			.pipe(this._responseModel.message(MessageTriggeredFrom.WorkTime, MessageMethod.Create));
+		return this._workTimeService.createWorkTime({ body });
 	}
 
 	public addLeaveTime(body: ICreateLeaveTimeRequest): Observable<OperationResultResponse> {
-		return this._leaveTimeApiService.addLeaveTime({ body });
+		return this._leaveTimeApiService.createLeaveTime({ body });
 	}
 
 	public findLeaveTimes(params?: IFindLeaveTimesRequest): Observable<FindResultResponseLeaveTimeResponse> {
@@ -124,6 +121,24 @@ export class TimeService {
 	}
 
 	public editLeaveTime(params: IEditLeaveTimeRequest): Observable<OperationResultResponse> {
+		return this._editLeaveTime(params);
+	}
+
+	public deleteLeaveTime(leaveTimeId: string): Observable<OperationResultResponse> {
+		const deleteRequest: IEditLeaveTimeRequest = {
+			leaveTimeId,
+			body: [
+				{
+					op: 'replace',
+					path: '/IsActive',
+					value: false,
+				},
+			],
+		};
+		return this._editLeaveTime(deleteRequest);
+	}
+
+	private _editLeaveTime(params: IEditLeaveTimeRequest): Observable<OperationResultResponse> {
 		return this._leaveTimeApiService.editLeaveTime(params);
 	}
 
@@ -137,7 +152,7 @@ export class TimeService {
 		return this._workTimeService.editWorkTimeMonthLimit(params);
 	}
 
-	public findStat(params?: IFindStatRequest): Observable<FindResultResponseStatInfo> {
+	public findStat(params: IFindStatRequest): Observable<FindResultResponseUserStatInfo> {
 		return this._statService.findStat(params);
 	}
 

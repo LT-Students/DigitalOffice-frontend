@@ -1,0 +1,19 @@
+@use 'base/variables' as variables;
+
+:host {
+	display: block;
+}
+
+.item {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	min-height: 53px;
+
+	border-bottom: 1px solid variables.$light_3;
+}
+
+.admin {
+	margin-top: 32px;
+}

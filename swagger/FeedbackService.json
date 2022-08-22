@@ -1,0 +1,320 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.0.0.0",
+		"title": "FeedbackService",
+		"description": "FeedbackService is an API that intended to work with feedbacks."
+	},
+	"servers": [
+		{
+			"url": "https://feedback.ltdo.xyz",
+			"description": "Production server"
+		},
+		{
+			"url": "https://feedback.dev.ltdo.xyz",
+			"description": "Development server"
+		}
+	],
+	"paths": {
+		"/feedback/find": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"name": "feedbackstatus",
+					"in": "query",
+					"description": "Feedback status of the results",
+					"schema": {
+						"$ref": "#/components/schemas/FeedbackStatusType"
+					},
+					"required": false
+				},
+				{
+					"name": "feedbacktype",
+					"in": "query",
+					"description": "Feedback type of the results",
+					"schema": {
+						"$ref": "#/components/schemas/FeedbackType"
+					},
+					"required": false
+				},
+				{
+					"name": "skipCount",
+					"in": "query",
+					"description": "Number of entries to skip",
+					"schema": {
+						"type": "integer"
+					},
+					"required": false
+				},
+				{
+					"name": "takeCount",
+					"in": "query",
+					"description": "Number of feedbacks to take.",
+					"schema": {
+						"type": "integer"
+					},
+					"required": false
+				}
+			],
+			"get": {
+				"tags": ["Feedback"],
+				"operationId": "findFeedbacks",
+				"responses": {
+					"200": {
+						"description": "Successfully returned feedbacks informations.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseFeedbackInfo"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request.\n",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FindResultResponseFeedbackInfo"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - Token was not entered"
+					},
+					"403": {
+						"description": "Forbidden. Invalid token.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/feedback/get": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				},
+				{
+					"$ref": "#/components/parameters/feedbackId"
+				}
+			],
+			"get": {
+				"tags": ["Feedback"],
+				"operationId": "getFeedback",
+				"responses": {
+					"200": {
+						"description": "Successfully returned a feedback information.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponseFeedbackResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request.\n",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - Token was not entered"
+					},
+					"403": {
+						"description": "Forbidden.\n* Invalid token.\n",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Feedback was not found.\n",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"FindResultResponseFeedbackInfo": {
+				"type": "object",
+				"required": ["TotalCount", "Errors"],
+				"properties": {
+					"TotalCount": {
+						"description": "Total number of finded by filter projects.",
+						"type": "integer",
+						"example": 10
+					},
+					"Body": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/FeedbackInfo"
+						}
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"OperationResultResponse": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"required": ["Errors"],
+				"properties": {
+					"Body": {
+						"type": "object"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"OperationResultResponseFeedbackResponse": {
+				"description": "Response object for action operations.",
+				"type": "object",
+				"required": ["Errors"],
+				"properties": {
+					"Body": {
+						"$ref": "#/components/schemas/FeedbackResponse"
+					},
+					"Errors": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"FeedbackResponse": {
+				"type": "object",
+				"required": ["Feedback"],
+				"properties": {
+					"Feedback": {
+						"$ref": "#/components/schemas/FeedbackInfo"
+					}
+				}
+			},
+			"FeedbackInfo": {
+				"type": "object",
+				"required": [
+					"Id",
+					"Type",
+					"Content",
+					"Status",
+					"SenderFullName",
+					"SenderId",
+					"CreatedAtUtc",
+					"ChangedBy",
+					"ChangedAtUtc"
+				],
+				"properties": {
+					"Id": {
+						"description": "Unique feedback identifier.",
+						"type": "string",
+						"format": "uuid",
+						"example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+					},
+					"Type": {
+						"$ref": "#/components/schemas/FeedbackType"
+					},
+					"Content": {
+						"description": "Feedback content.",
+						"type": "string"
+					},
+					"Status": {
+						"$ref": "#/components/schemas/FeedbackStatusType"
+					},
+					"SenderFullName": {
+						"description": "Full name of feedback creator",
+						"type": "string"
+					},
+					"SenderId": {
+						"description": "Unique feedback creator identifier.",
+						"type": "string",
+						"format": "uuid",
+						"example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+					},
+					"CreatedAtUtc": {
+						"description": "Data and time created feedback.",
+						"pattern": "YYYY-MM-DDTHH:mm",
+						"example": "2021-12-10 03:13"
+					},
+					"ChangedBy": {
+						"description": "Unique identifier of person changed feedback."
+					},
+					"ChangedAtUtc": {
+						"description": "Data and time changed feedback.",
+						"pattern": "YYYY-MM-DDTHH:mm",
+						"example": "2021-12-10 03:13"
+					}
+				}
+			},
+			"FeedbackStatusType": {
+				"type": "string",
+				"description": "Feedback status.\nMay be empty, default value: 'New'.",
+				"enum": ["New", "Archived"],
+				"nullable": false,
+				"example": "New"
+			},
+			"FeedbackType": {
+				"type": "string",
+				"description": "Feedback type.",
+				"enum": ["Bug", "Wishes", "Other"],
+				"nullable": false,
+				"example": "Bug"
+			}
+		},
+		"parameters": {
+			"securityToken": {
+				"name": "token",
+				"in": "header",
+				"description": "The JWT token.",
+				"schema": {
+					"type": "string",
+					"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+				},
+				"required": true
+			},
+			"feedbackId": {
+				"name": "feedbackId",
+				"in": "query",
+				"description": "Feedback global unique identifier.",
+				"schema": {
+					"type": "string",
+					"format": "uuid"
+				},
+				"required": true
+			}
+		}
+	}
+}

@@ -1,0 +1,18 @@
+<div class="communications">
+	<div class="header">
+		<h4 class="title">Контакты</h4>
+		<button *ngIf="canAdd$ | async" type="button" doButton (click)="onAddCommunication()">
+			<mat-icon [svgIcon]="Icons.Add"></mat-icon>
+		</button>
+	</div>
+	<div class="list">
+		<do-communication-item
+			*ngFor="let communication of communications"
+			class="item"
+			[communication]="communication"
+			(click)="onCommunicationClick(communication)"
+		></do-communication-item>
+		<do-empty-list *ngIf="!communications.length" emptyMessage="У вас нет контактов" [width]="80"></do-empty-list>
+	</div>
+	<do-context-menu [items]="menuItems" xPosition="before"></do-context-menu>
+</div>

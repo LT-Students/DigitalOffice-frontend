@@ -1,9 +1,17 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProjectStatusType } from '@data/api/project-service/models/project-status-type';
-import { EmployeePageService } from '@app/services/employee-page.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectStatusType } from '@api/project-service/models/project-status-type';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { AppRoutes } from '@app/models/app-routes';
+import { ProjectInfo } from '@api/project-service/models/project-info';
+
+interface Section {
+	name: string;
+	projects: ProjectInfo[];
+	plural: any;
+	isExpanded: boolean;
+}
 
 @Component({
 	selector: 'do-employee-page-projects',
@@ -12,28 +20,31 @@ import { Observable } from 'rxjs';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent implements OnInit {
-	public projects$: Observable<any>;
+	public ProjectStatus = ProjectStatusType;
+	public projects$: Observable<[Section, Section]>;
 
-	constructor(private router: Router, private _employeeService: EmployeePageService) {
-		this.projects$ = this._employeeService.selectedUser$.pipe(
-			map((user) => user?.projects),
-			map((projects) => [
+	constructor(private router: Router, private route: ActivatedRoute) {
+		this.projects$ = this.route.data.pipe(
+			map((data) => data.projects as ProjectInfo[]),
+			map((projects: ProjectInfo[]) => [
 				{
 					name: 'В работе',
-					projects: projects?.filter((project) => project.status === ProjectStatusType.Active) ?? [],
+					projects: projects.filter((project: ProjectInfo) => project.status === ProjectStatusType.Active),
 					plural: {
 						one: '# проект',
 						few: '# проекта',
 						other: '# проектов',
 					},
+					isExpanded: false,
 				},
 				{
 					name: 'Участвовал в',
-					projects: projects?.filter((project) => project.status !== ProjectStatusType.Active) ?? [],
+					projects: projects.filter((project: ProjectInfo) => project.status !== ProjectStatusType.Active),
 					plural: {
 						one: '# проекте',
 						other: '# проектах',
 					},
+					isExpanded: false,
 				},
 			])
 		);
@@ -41,7 +52,7 @@ export class ProjectsComponent implements OnInit {
 
 	public ngOnInit(): void {}
 
-	public onMoreClicked(projectId: string | undefined) {
-		this.router.navigate(['/project', projectId]);
+	public onMoreClicked(projectId: string) {
+		this.router.navigate([AppRoutes.Projects, projectId]);
 	}
 }

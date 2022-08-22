@@ -1,6 +1,8 @@
 @use 'base/variables';
 
 .hidden-field {
+	position: absolute;
+
 	visibility: hidden;
 
 	width: 0;
@@ -12,4 +14,8 @@
 	align-items: center;
 
 	cursor: pointer;
+}
+
+.no-margin {
+	margin: 0;
 }

@@ -8,7 +8,7 @@ import { UUID } from '@app/types/uuid.type';
 import { BehaviorSubject, EMPTY, iif, Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { createEditRequest } from '@app/utils/utils';
-import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { PositionInfo } from '@api/position-service/models/position-info';
 import { finalize } from 'rxjs/operators';
 
 @Component({
@@ -24,6 +24,8 @@ export class AddEditPositionComponent {
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	private readonly _positionInfo?: InitialDataEditRequest<PositionPath> & { id: UUID };
+	public readonly MAX_NAME_LENGTH = 80;
+	public readonly MAX_DESCRIPTION_LENGTH = 350;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) positionInfo: Required<PositionInfo>,

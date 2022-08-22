@@ -1,0 +1,13 @@
+<mat-sidenav-container class="sidenav-container">
+	<mat-sidenav mode="side" opened class="sidenav" [class.wide]="isWideScreen$ | async">
+		<do-sidebar></do-sidebar>
+	</mat-sidenav>
+	<mat-sidenav-content class="content">
+		<do-header class="header"></do-header>
+		<div #scroll class="content-container">
+			<div class="wrapper">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+	</mat-sidenav-content>
+</mat-sidenav-container>

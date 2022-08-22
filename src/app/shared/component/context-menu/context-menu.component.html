@@ -1,0 +1,23 @@
+<div
+	class="menu"
+	[style.top.px]="menuPosition.y"
+	[style.left.px]="menuPosition.x"
+	[style.width.px]="menuPosition.width"
+	[matMenuTriggerFor]="contextMenu"
+	(menuClosed)="onMenuClose()"
+></div>
+<mat-menu #contextMenu="matMenu" [xPosition]="xPosition" [yPosition]="yPosition">
+	<ng-container *ngFor="let item of items">
+		<button
+			*ngIf="object && (object | execute: item.visible)"
+			mat-menu-item
+			(click)="item.action(object)"
+			[attr.data-test]="'context-menu-item-' + itemId"
+		>
+			<mat-icon *ngIf="item.icon" fontSet="material-icons-outlined" [svgIcon]="item.icon">{{
+				item.icon
+			}}</mat-icon>
+			<span>{{ item.title }}</span>
+		</button>
+	</ng-container>
+</mat-menu>

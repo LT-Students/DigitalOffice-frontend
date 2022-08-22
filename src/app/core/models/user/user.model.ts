@@ -1,35 +1,38 @@
-import { UserAchievementInfo } from '@data/api/user-service/models/user-achievement-info';
-import { CertificateInfo } from '@data/api/user-service/models/certificate-info';
-import { CommunicationInfo } from '@data/api/user-service/models/communication-info';
-import { ProjectInfo } from '@data/api/user-service/models/project-info';
-import { PersonalInfoManager } from '@app/models/user/personal-info-manager';
-import { OperationResultResponseUserResponse } from '@data/api/user-service/models/operation-result-response-user-response';
-import { EducationInfo } from '@data/api/user-service/models/education-info';
-import { setProperty } from '@app/utils/utils';
-import { UserInfo } from '@data/api/user-service/models/user-info';
+import { OfficeInfo } from '@api/user-service/models/office-info';
+import { PositionInfo } from '@api/user-service/models/position-info';
+import { RoleInfo } from '@api/user-service/models/role-info';
+import { EducationInfo } from '@api/user-service/models/education-info';
+import { ProjectInfo } from '@api/user-service/models/project-info';
+import { UserResponse } from '@api/user-service/models/user-response';
+import { PersonalInfo } from '@app/models/user/personal-info';
+import { AdditionalInfo } from '@app/models/user/additional-info';
+import { ImageInfo } from '@app/models/image.model';
+import { DepartmentInfo } from '@app/models/user/department-user-info';
+import { CompanyUserInfo } from '@api/user-service/models/company-user-info';
 
-export interface IUser {
-	achievements?: UserAchievementInfo[] | null;
-	certificates?: CertificateInfo[] | null;
-	educations?: EducationInfo[] | null;
-	communications?: CommunicationInfo[] | null;
-	projects?: ProjectInfo[] | null;
-	skills?: string[] | null;
-}
+export class User extends PersonalInfo {
+	public additionalInfo: AdditionalInfo;
+	public company?: CompanyUserInfo;
+	public department?: DepartmentInfo;
+	public office?: OfficeInfo;
+	public position?: PositionInfo;
+	public role?: RoleInfo;
+	public images?: Array<ImageInfo>;
+	public educations?: Array<EducationInfo>;
+	public projects?: Array<ProjectInfo>;
+	public skills?: Array<string>;
 
-export class User extends PersonalInfoManager implements IUser {
-	achievements: UserAchievementInfo[] | null | undefined;
-	certificates: CertificateInfo[] | null | undefined;
-	communications: CommunicationInfo[] | null | undefined;
-	projects: ProjectInfo[] | null | undefined;
-	skills: string[] | null | undefined;
-
-	constructor(data: OperationResultResponseUserResponse) {
-		super(data?.body?.user as UserInfo);
-		this.achievements = setProperty(data?.body?.achievements);
-		this.certificates = setProperty(data?.body?.certificates);
-		this.communications = setProperty(data?.body?.communications);
-		this.projects = setProperty(data?.body?.projects);
-		this.skills = setProperty(data?.body?.skills);
+	constructor(data: UserResponse) {
+		super(data.user);
+		this.additionalInfo = new AdditionalInfo(data.userAddition);
+		this.company = data.companyUser;
+		this.department = data.departmentUser && new DepartmentInfo(data.departmentUser);
+		this.office = data.office;
+		this.position = data.position;
+		this.role = data.role;
+		this.images = data.images;
+		this.educations = data.educations;
+		this.projects = data.projects;
+		this.skills = data.skills;
 	}
 }

@@ -1,21 +1,15 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit, ViewContainerRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { IUserStatus, UserStatusModel } from '@app/models/user/user-status.model';
-import { DateType } from '@app/types/date.enum';
-import { UserStatus } from '@data/api/user-service/models/user-status';
-import { User } from '@app/models/user/user.model';
-import { finalize, map, switchMap, take } from 'rxjs/operators';
-import { UserGender } from '@data/api/user-service/models';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { IUserGender, PersonalInfoManager } from '@app/models/user/personal-info-manager';
-import { BehaviorSubject, forkJoin, Observable, of } from 'rxjs';
-import { EmployeePageService } from '@app/services/employee-page.service';
-import { InitialDataEditRequest, UserPath } from '@app/types/edit-request';
-import { UserService } from '@app/services/user/user.service';
-import { createEditRequest } from '@app/utils/utils';
-import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.component';
+import { DateFormat } from '@app/types/date.enum';
+import { ModalWidth } from '@app/services/dialog.service';
+import { Icons } from '@shared/modules/icons/icons';
+import { PermissionService } from '@app/services/permission.service';
+import { UserRights } from '@app/types/user-rights.enum';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
+import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';
+import { EmployeePageService } from '../../services/employee-page.service';
 
 @Component({
 	selector: 'do-employee-page-main-info',
@@ -24,141 +18,43 @@ import { UploadPhotoComponent } from '../../modals/upload-photo/upload-photo.com
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainInfoComponent implements OnInit {
-	public loading: BehaviorSubject<boolean>;
+	public readonly Icons = Icons;
 
-	public userStatus: typeof UserStatus = UserStatus;
-	public dateType: typeof DateType = DateType;
-	public EditPath: typeof UserPath = UserPath;
-	public employeeInfoForm: FormGroup;
-	public isEditing: boolean;
-	public genders: IUserGender[];
-	public statuses: IUserStatus[];
+	public DateFormat = DateFormat;
 
-	public user$: Observable<User>;
-	private _initialData: InitialDataEditRequest<UserPath>;
+	public user$ = this.employeePage.selectedUser$;
+	public canEdit$ = this.employeePage.canManagePersonalInfo$();
+	public canEditWorkInfo$ = combineLatest([
+		this.permission.checkPermission$(UserRights.AddEditRemovePositions),
+		this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
+		this.permission.checkPermission$(UserRights.AddRemoveUsersRoles),
+	]).pipe(map((permissions: boolean[]) => permissions.some(Boolean)));
 
 	constructor(
-		private _fb: FormBuilder,
-		private _route: ActivatedRoute,
-		private _employeeService: EmployeePageService,
-		private _userService: UserService,
-		private _dialog: MatDialog,
-		private _snackBar: MatSnackBar,
-		private _cdr: ChangeDetectorRef
-	) {
-		this.loading = new BehaviorSubject<boolean>(false);
-		this._initialData = {};
-		this.genders = PersonalInfoManager.getGenderList();
-		this.statuses = UserStatusModel.getAllStatuses();
-		this.isEditing = false;
-		this.employeeInfoForm = this._initEditForm();
-		this.user$ = this._employeeService.selectedUser$;
-	}
+		private employeePage: EmployeePageService,
+		private permission: PermissionService,
+		private dialog: MatDialog,
+		private viewContainer: ViewContainerRef
+	) {}
 
-	public ngOnInit(): void {
-		this._route.params.subscribe(() => (this.isEditing = false));
-	}
+	public ngOnInit(): void {}
 
-	public isOwner(): boolean {
-		// return this.user.id === this.pageId;
-		return true;
-	}
-
-	public canEdit(): boolean {
-		// return this.user.isAdmin || this.isOwner();
-		return true;
-	}
-
-	public toggleEditMode(user?: User): void {
-		if (user) {
-			this._fillForm(user);
-		}
-		this.isEditing = !this.isEditing;
-	}
-
-	public onReset(): void {
-		this.employeeInfoForm.reset();
-		this.toggleEditMode();
-	}
-
-	public onAvatarUploadDialog(): void {
-		const dialogRef = this._dialog.open(UploadPhotoComponent);
-		dialogRef.afterClosed().subscribe((result) => {
-			if (result) {
-				this.employeeInfoForm.patchValue({
-					avatarImage: result,
-				});
-				this.employeeInfoForm.get('avatarImage')?.markAsDirty();
-				this._cdr.markForCheck();
-			}
+	public editUser(): void {
+		this.dialog.open(EditInfoComponent, {
+			data: this.user$,
+			width: ModalWidth.M,
+			autoFocus: false,
+			viewContainerRef: this.viewContainer,
 		});
 	}
 
-	public onSubmit(): void {
-		this.loading.next(true);
-
-		const { avatarImage, ...userInfo } = this.employeeInfoForm.getRawValue();
-		const editRequest = createEditRequest(userInfo, this._initialData);
-
-		this._employeeService.selectedUser$
-			.pipe(
-				take(1),
-				map((user) => user.id ?? ''),
-				switchMap((userId) =>
-					forkJoin([
-						this._userService.editUser(userId, editRequest),
-						this.employeeInfoForm.get('avatarImage')?.dirty
-							? this._userService.createAvatarImage(avatarImage, userId)
-							: // .pipe(
-							  // 		switchMap((response) => {
-							  // 			console.log('response', response);
-							  // 			return this._userService.changeAvatar(response.body as string, userId);
-							  // 		})
-							  //   )
-							  of(null),
-					]).pipe(switchMap(() => this._employeeService.getEmployee(userId)))
-				),
-				finalize(() => {
-					this.loading.next(false);
-				})
-			)
-			.subscribe({
-				next: () => this.toggleEditMode(),
-				error: (err) => {
-					throw err;
-				},
-			});
-	}
-
-	private _fillForm(user: User): void {
-		if (user) {
-			this._initialData = {
-				[UserPath.FIRST_NAME]: user.firstName,
-				[UserPath.LAST_NAME]: user.lastName,
-				[UserPath.MIDDLE_NAME]: user.middleName,
-				[UserPath.STATUS]: user.statusEmoji?.statusType,
-				[UserPath.ABOUT]: user.about,
-				[UserPath.CITY]: user.city,
-				// [UserPath.START_WORKING_AT]: user.startWorkingAt,
-				[UserPath.DATE_OF_BIRTH]: user.dateOfBirth,
-				[UserPath.GENDER]: user.gender?.genderType,
-			};
-			this.employeeInfoForm.patchValue({ ...this._initialData, avatarImage: user.avatarImage });
-		}
-	}
-
-	private _initEditForm(): FormGroup {
-		return this._fb.group({
-			[UserPath.FIRST_NAME]: ['', Validators.required],
-			[UserPath.LAST_NAME]: ['', Validators.required],
-			[UserPath.MIDDLE_NAME]: [''],
-			[UserPath.STATUS]: [null],
-			[UserPath.ABOUT]: [''],
-			[UserPath.CITY]: [''],
-			// [UserPath.START_WORKING_AT]: [null],
-			[UserPath.DATE_OF_BIRTH]: [null],
-			[UserPath.GENDER]: [UserGender.NotSelected],
-			avatarImage: [null],
+	public onAvatarUploadDialog(): void {
+		this.dialog.open(UploadImageComponent, {
+			width: ModalWidth.M,
+			height: 'auto',
+			autoFocus: false,
+			panelClass: 'upload-image-dialog',
+			viewContainerRef: this.viewContainer,
 		});
 	}
 }

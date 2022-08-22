@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/AdminService.json",
+  "output": "src/app/api/admin-service",
+  "templates": "swagger/templates",
+  "module": "AdminApiModule",
+  "excludeParameters": ["token"],
+  "serviceSuffix": "ApiService"
+}

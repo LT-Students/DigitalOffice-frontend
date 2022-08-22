@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0.0",
+    "version": "1.0.1.0",
     "title": "EducationService",
     "description": "EducationService is an API that intended to work with users educations."
   },
@@ -203,7 +203,7 @@
         }
       }
     },
-    "/certificate/create": {
+    "/educationform/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -211,23 +211,23 @@
       ],
       "post": {
         "tags": [
-          "Certificate"
+          "EducationForm"
         ],
-        "operationId": "createCertificate",
-        "description": "The method attempts to add the certificate.",
+        "operationId": "createEducationForm",
+        "description": "The method attempts to add education's form.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCertificateRequest"
+                "$ref": "#/components/schemas/CreateEducationFormRequest"
               }
             }
           },
           "required": true
         },
         "responses": {
-          "200": {
-            "description": "Ok.",
+          "201": {
+            "description": "Ok. Form was created.",
             "content": {
               "application/json": {
                 "schema": {
@@ -259,40 +259,31 @@
         }
       }
     },
-    "/certificate/edit": {
+    "/educationtype/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "certificateId",
-          "in": "query",
-          "description": "Specific certificate id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
         }
       ],
-      "patch": {
+      "post": {
         "tags": [
-          "Certificate"
+          "EducationType"
         ],
-        "operationId": "editCertificate",
-        "description": "Update certificate properties. The user must have the rights to edit certificate to other users - Add/Edit/Remove users.",
+        "operationId": "createEducationType",
+        "description": "The method attempts to add education's type.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EditCertificateRequest"
+                "$ref": "#/components/schemas/CreateEducationTypeRequest"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
-          "200": {
-            "description": "Ok.",
+          "201": {
+            "description": "Ok. Type was created.",
             "content": {
               "application/json": {
                 "schema": {
@@ -313,72 +304,6 @@
           },
           "403": {
             "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/certificate/remove": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "certificateId",
-          "in": "query",
-          "description": "Specific certificate id",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
-        }
-      ],
-      "delete": {
-        "tags": [
-          "Certificate"
-        ],
-        "operationId": "removeCertificate",
-        "description": "Remove the specified certificate by id.",
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found.",
             "content": {
               "application/json": {
                 "schema": {
@@ -414,7 +339,7 @@
         },
         "responses": {
           "201": {
-            "description": "Ok. Image was added to entity.",
+            "description": "Ok. Images was added to entity.",
             "content": {
               "application/json": {
                 "schema": {
@@ -502,6 +427,7 @@
         }
       }
     }
+
   },
   "components": {
     "schemas": {
@@ -572,14 +498,14 @@
           }
         }
       },
-      "EducationType": {
+      "EducationCompleteness": {
         "type": "string",
-        "description": "Education format.",
+        "description": "Education completeness.",
         "enum": [
-          "Online",
-          "Offline"
+          "Completed",
+          "Uncompleted"
         ],
-        "example": "Online"
+        "example": "Completed"
       },
       "OperationResultStatusType": {
         "type": "string",
@@ -591,15 +517,6 @@
         ],
         "example": "FullSuccess",
         "default": "FullSuccess"
-      },
-      "FormEducation": {
-        "type": "string",
-        "description": "Education form.",
-        "enum": [
-          "FullTime",
-          "Distance"
-        ],
-        "example": "FullTime"
       },
       "EditEducationRequest": {
         "type": "array",
@@ -625,9 +542,25 @@
           },
           {
             "op": "replace",
-            "path": "/FormEducation",
+            "path": "/EducationFormId",
             "value": {
-              "$ref": "#/components/schemas/FormEducation"
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/EducationTypeId",
+            "value": {
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Completeness",
+            "value": {
+              "$ref": "#/components/schemas/EducationCompleteness"
             }
           },
           {
@@ -685,7 +618,9 @@
             "enum": [
               "/UniversityName",
               "/QualificationName",
-              "/FormEducation",
+              "/EducationFormId",
+              "/EducationTypeId",
+              "/Completeness",
               "/AdmissiomAt",
               "/IssueAt",
               "/IsActive"
@@ -703,7 +638,9 @@
           "UserId",
           "UniversityName",
           "QualificationName",
-          "FormEducation",
+          "EducationFormId",
+          "EducationTypeId",
+          "Completeness",
           "AdmissionAt"
         ],
         "properties": {
@@ -715,17 +652,23 @@
           "UniversityName": {
             "description": "Name of the univerity.",
             "type": "string",
-            "example": "Orel State University",
-            "maxLength": 100
+            "example": "Orel State University"
           },
           "QualificationName": {
             "description": "Name of qualification.",
             "type": "string",
-            "example": "Computer Programmer",
-            "maxLength": 100
+            "example": "Computer Programmer"
           },
-          "FormEducation": {
-            "$ref": "#/components/schemas/FormEducation"
+          "EducationFormId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "EducationTypeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Completeness": {
+            "$ref": "#/components/schemas/EducationCompleteness"
           },
           "AdmissionAt": {
             "description": "Date of admission.",
@@ -766,132 +709,29 @@
           }
         }
       },
-      "CreateCertificateRequest": {
+      "CreateEducationFormRequest": {
         "type": "object",
         "required": [
-          "UserId",
-          "EducationType",
-          "Name",
-          "SchoolName",
-          "ReceivedAt"
+          "Name"
         ],
         "properties": {
-          "UserId": {
-            "description": "Unique user identifier.",
-            "type": "string",
-            "format": "uuid",
-            "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
-          },
           "Name": {
-            "description": "Certificate name.",
+            "description": "Educations form name.",
             "type": "string",
-            "example": "Frontend developer."
-          },
-          "EducationType": {
-            "$ref": "#/components/schemas/EducationType"
-          },
-          "SchoolName": {
-            "description": "Name of school.",
-            "type": "string",
-            "example": "Summer school."
-          },
-          "ReceivedAt": {
-            "description": "Date of issue of the certificate.",
-            "type": "string",
-            "format": "date",
-            "example": "2021-01-21T00:00:00.000Z"
-          },
-          "Images": {
-            "description": "Array of certificate images.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ImageContent"
-            }
+            "example": "Online."
           }
         }
       },
-      "EditCertificateRequest": {
-        "type": "array",
-        "minItems": 1,
-        "example": [
-          {
-            "op": "replace",
-            "path": "/EducationType",
-            "value": {
-              "$ref": "#/components/schemas/EducationType"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/Name",
-            "value": {
-              "description": "New name",
-              "type": "string",
-              "example": "Frontend developer"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/SchoolName",
-            "value": {
-              "description": "New school name.",
-              "type": "string",
-              "example": "Semmer school"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/ReceivedAt",
-            "value": {
-              "description": "Date of issue of the certificate.",
-              "type": "string",
-              "format": "date",
-              "example": "2021-01-21T00:00:00.000Z"
-            }
-          },
-          {
-            "op": "replace",
-            "path": "/IsActive",
-            "value": {
-              "description": "Is active certificate.",
-              "type": "bool",
-              "example": "false"
-            }
-          }
-        ],
-        "items": {
-          "$ref": "#/components/schemas/PatchCertificateDocument"
-        }
-      },
-      "PatchCertificateDocument": {
+      "CreateEducationTypeRequest": {
         "type": "object",
         "required": [
-          "op",
-          "path",
-          "value"
+          "Name"
         ],
         "properties": {
-          "op": {
+          "Name": {
+            "description": "Educations type name.",
             "type": "string",
-            "description": "The operation to be performed.",
-            "enum": [
-              "replace"
-            ]
-          },
-          "path": {
-            "type": "string",
-            "description": "A JSON-Pointer.",
-            "enum": [
-              "/Name",
-              "/SchoolName",
-              "/EducationType",
-              "/ReceivedAt",
-              "/IsActive"
-            ]
-          },
-          "value": {
-            "type": "object",
-            "description": "The value to be used within the operations."
+            "example": "Higher Education."
           }
         }
       },

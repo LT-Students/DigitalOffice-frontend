@@ -1,0 +1,41 @@
+@use 'base/variables' as variables;
+
+:host {
+	display: block;
+}
+
+.pages {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+}
+
+.page-link {
+	width: 24px;
+	height: 24px;
+
+	text-align: center;
+
+	cursor: pointer;
+
+	border-radius: 4px;
+
+	&:hover:not(.active) {
+		background: variables.$bg_2;
+	}
+}
+
+.ellipsis {
+	pointer-events: none;
+}
+
+.active {
+	pointer-events: none;
+
+	color: variables.$light_1;
+	background: variables.$accent-controls-default;
+}
+
+.page-size {
+	margin-top: 12px;
+}

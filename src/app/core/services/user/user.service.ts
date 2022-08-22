@@ -2,47 +2,37 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { UserApiService } from '@data/api/user-service/services/user-api.service';
-import { CreateUserRequest } from '@data/api/user-service/models/create-user-request';
-import {
-	CertificateInfo,
-	CommunicationInfo,
-	EducationInfo,
-	ProjectInfo,
-	UserAchievementInfo,
-	UserInfo,
-} from '@data/api/user-service/models';
+import { UserApiService } from '@api/user-service/services/user-api.service';
+import { CreateUserRequest } from '@api/user-service/models/create-user-request';
+import { CredentialsResponse, EditUserActiveRequest, UserInfo, UserResponse } from '@api/user-service/models';
 import { IGetUserRequest } from '@app/types/get-user-request.interface';
 import { User } from '@app/models/user/user.model';
 import { IEditUserRequest } from '@app/types/edit-user-request.interface';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { AvatarApiService } from '@data/api/user-service/services/avatar-api.service';
+import { AvatarApiService } from '@api/user-service/services/avatar-api.service';
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
 import { MessageMethod, MessageTriggeredFrom } from '@app/models/response/response-message';
-import { IImageInfo } from '@app/models/image.model';
 import { EditRequest, UserPath } from '@app/types/edit-request';
-
-export interface IUserResponse {
-	user?: UserInfo;
-	skills?: Array<string>;
-	communications?: Array<CommunicationInfo>;
-	certificates?: Array<CertificateInfo>;
-	achievements?: Array<UserAchievementInfo>;
-	projects?: Array<ProjectInfo>;
-	educations?: Array<EducationInfo>;
-}
+import { PendingApiService } from '@api/user-service/services/pending-api.service';
+import { BaseImageInfo } from '@app/models/image.model';
+import { CredentialsApiService } from '@api/user-service/services/credentials-api.service';
 
 export interface IFindUsers {
 	skipCount: number;
 	takeCount: number;
-	departmentid?: string;
-	includedeactivated?: boolean;
-	includedepartment?: boolean;
-	includeposition?: boolean;
-	includeoffice?: boolean;
-	includerole?: boolean;
-	includeavatar?: boolean;
+	ascendingsort?: boolean;
+	fullnameincludesubstring?: string;
+	isactive?: boolean;
+	includecurrentavatar?: boolean;
+	includecommunications?: boolean;
+}
+
+export interface IFindPending {
+	skipCount: number;
+	takeCount: number;
+	includecommunication?: boolean;
+	includecurrentavatar?: boolean;
 }
 
 @Injectable({
@@ -52,77 +42,82 @@ export class UserService {
 	constructor(
 		private _userApiService: UserApiService,
 		private _imageApiService: AvatarApiService,
+		private pendingApiService: PendingApiService,
+		private credentialsApiService: CredentialsApiService,
 		private _responseMessage: ResponseMessageModel
 	) {}
 
 	public getUser(params: IGetUserRequest): Observable<User> {
 		return this._userApiService
 			.getUser(params)
-			.pipe(switchMap((userResponse: OperationResultResponse<IUserResponse>) => of(new User(userResponse))));
+			.pipe(
+				switchMap((userResponse: OperationResultResponse<UserResponse>) =>
+					of(new User(userResponse.body as UserResponse))
+				)
+			);
 	}
 
 	public findUsers(params: IFindUsers): Observable<OperationResultResponse<UserInfo[]>> {
 		return this._userApiService.findUsers(params);
 	}
 
-	public createUser(params: CreateUserRequest): Observable<OperationResultResponse<null | {}>> {
+	public findPending(params: IFindPending): Observable<OperationResultResponse<UserInfo[]>> {
+		return this.pendingApiService.findPending(params);
+	}
+
+	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {
 		return this._userApiService
 			.createUser({ body: params })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.User, MessageMethod.Create));
 	}
 
-	public editUser(
-		userId: string,
-		editRequest: EditRequest<UserPath>
-	): Observable<OperationResultResponse<null | {}>> {
+	public editUser(userId: string, editRequest: EditRequest<UserPath>): Observable<OperationResultResponse> {
 		const params: IEditUserRequest = { userId: userId, body: editRequest };
 
 		return this._userApiService.editUser(params);
 	}
 
-	public disableUser(userId: string | undefined): Observable<OperationResultResponse<null | {}>> {
-		const params: IEditUserRequest = {
-			userId: userId ?? '',
-			body: [
-				{
-					op: 'replace',
-					path: '/IsActive',
-					value: false,
-				},
-			],
+	public disableUser(userId: string): Observable<OperationResultResponse> {
+		const params: EditUserActiveRequest = {
+			userId: userId,
+			isActive: false,
 		};
-		return this._userApiService.editUser(params);
+		return this._userApiService.editUserActive({ body: params });
 	}
 
-	public activateUser(userId: string | undefined): Observable<OperationResultResponse<null | {}>> {
-		const params: IEditUserRequest = {
-			userId: userId ?? '',
-			body: [
-				{
-					op: 'replace',
-					path: '/IsActive',
-					value: true,
-				},
-			],
+	public restoreUser(userId: string, communicationId: string): Observable<OperationResultResponse> {
+		const params: EditUserActiveRequest = {
+			userId: userId,
+			communicationId: communicationId,
+			isActive: true,
 		};
-
-		return this._userApiService.editUser(params);
+		return this._userApiService.editUserActive({ body: params });
 	}
 
-	public createAvatarImage(image: IImageInfo, userId: UUID): Observable<OperationResultResponse<null | {}>> {
-		console.log('Загружаю и делаю');
+	public createAvatarImage(image: BaseImageInfo, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.createAvatar({
 			body: {
-				content: image.content,
 				userId,
+				content: image.content,
 				extension: image.extension,
-				name: image.name,
 				isCurrentAvatar: true,
 			},
 		});
 	}
 
-	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse<null | {}>> {
+	public changeAvatar(imageId: UUID, userId: UUID): Observable<OperationResultResponse> {
 		return this._imageApiService.editAvatar({ userId: userId, imageId: imageId });
+	}
+
+	public removePending(userId: string): Observable<OperationResultResponse> {
+		return this.pendingApiService.removePending({ userId });
+	}
+
+	public resendInvitation(userId: string, communicationId: string): Observable<OperationResultResponse> {
+		return this.pendingApiService.resendinvitationPending({ userId, communicationId });
+	}
+
+	public reactivateUser(userId: string, password: string): Observable<OperationResultResponse<CredentialsResponse>> {
+		return this.credentialsApiService.reactivateCredentials({ body: { userId, password } });
 	}
 }

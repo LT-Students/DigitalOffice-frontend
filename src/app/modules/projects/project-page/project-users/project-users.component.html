@@ -1,0 +1,14 @@
+<div class="flex header">
+	<do-dynamic-filter [filters]="filterData" (filterChange)="tableChanged.next()"></do-dynamic-filter>
+	<do-actions *ngIf="canManageUsers$ | async">
+		<button mat-flat-button color="primary" (click)="addUsers()">
+			<mat-icon [svgIcon]="Icons.Add"></mat-icon>
+		</button>
+	</do-actions>
+</div>
+<do-table
+	[dataSource]="dataSource"
+	rowHeight="64"
+	[columns]="tableColumns"
+	(sortChange)="tableChanged.next()"
+></do-table>

@@ -3,34 +3,28 @@ export type InitialDataEditRequest<T extends PatchPath> = FormDataEditRequest<T>
 
 export type EditRequest<T extends PatchPath> = PatchDocument<T>[];
 
-export interface PatchDocument<T extends PatchPath> {
-	op: 'replace';
-	path: T;
-	value: any;
+type PatchOperation = 'replace';
+export class PatchDocument<T extends PatchPath> {
+	public op: PatchOperation = 'replace';
+	constructor(public value: any, public path: T) {}
 }
 
 export type PatchPath =
 	| UserPath
 	| OfficePath
 	| LeaveTimePath
+	| WorkTimePath
 	| ProjectPath
 	| DepartmentPath
 	| PositionPath
 	| CompanyPath;
 
 export enum CompanyPath {
-	PORTAL_NAME = '/portalname',
-	COMPANY_NAME = '/companyname',
-	SITE_URL = '/siteurl',
+	COMPANY_NAME = '/name',
 	TAGLINE = '/tagline',
 	DESCRIPTION = '/description',
 	LOGO = '/logo',
-	HOST = '/host',
-	PORT = '/port',
-	ENABLE_SSL = '/enablessl',
-	EMAIL = '/email',
-	PASSWORD = '/password',
-	DEPARTMENT_MODULE_ENABLED = '/isdepartmentmoduleenabled',
+	CONTACTS = '/contacts',
 }
 
 export enum LeaveTimePath {
@@ -42,13 +36,20 @@ export enum LeaveTimePath {
 	IS_ACTIVE = '/IsActive',
 }
 
+export enum WorkTimePath {
+	Hours = '/Hours',
+	Description = '/Description',
+}
+
 export enum ProjectPath {
 	NAME = '/Name',
 	SHORT_NAME = '/ShortName',
 	DESCRIPTION = '/Description',
 	SHORT_DESCRIPTION = '/ShortDescription',
 	STATUS = '/Status',
-	// DEPARTMENT_ID = '/DepartmentId',
+	CUSTOMER = '/Customer',
+	START_DATE = '/StartDateUtc',
+	END_DATE = '/EndDateUtc',
 }
 
 export enum PositionPath {
@@ -61,13 +62,15 @@ export enum UserPath {
 	FIRST_NAME = '/FirstName',
 	LAST_NAME = '/LastName',
 	MIDDLE_NAME = '/MiddleName',
-	GENDER = '/Gender',
 	DATE_OF_BIRTH = '/DateOfBirth',
-	CITY = '/City',
-	STATUS = '/Status',
-	START_WORKING_AT = '/StartWorkingAt',
+	// START_WORKING_AT = '/StartWorkingAt',
 	ABOUT = '/About',
-	IS_ACTIVE = '/IsActive',
+	IS_ADMIN = '/IsAdmin',
+	GENDER_ID = '/GenderId',
+	BUSINESS_HOURS_FROM_UTC = '/BusinessHoursFromUtc',
+	BUSINESS_HOURS_TO_UTC = '/BusinessHoursToUtc',
+	LATITUDE = '/Latitude',
+	LONGITUDE = '/Longitude',
 }
 
 export enum OfficePath {
@@ -81,7 +84,7 @@ export enum OfficePath {
 
 export enum DepartmentPath {
 	NAME = '/name',
+	SHORT_NAME = '/shortName',
 	DESCRIPTION = '/description',
 	IS_ACTIVE = '/isactive',
-	DIRECTOR_ID = '/directorid',
 }

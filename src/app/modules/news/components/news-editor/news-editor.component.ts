@@ -9,23 +9,23 @@ import {
 	ViewEncapsulation,
 } from '@angular/core';
 import EditorJS from '@editorjs/editorjs';
-import { finalize, map, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { finalize, first, skip, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { BehaviorSubject, from, iif, Observable, of, ReplaySubject } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
 import { NewsService } from '@app/services/news/news.service';
-import { CreateNewsRequest } from '@data/api/news-service/models/create-news-request';
+import { CreateNewsRequest } from '@api/news-service/models/create-news-request';
 import { DoValidators } from '@app/validators/do-validators';
-import { IOutputBlockData, IOutputData } from '@app/models/editorjs/output-data.interface';
 import { LocalStorageService } from '@app/services/local-storage.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ModalService } from '@app/services/modal.service';
-import { OperationResultResponseNewsResponse } from '@data/api/news-service/models/operation-result-response-news-response';
-import { NewsPatchOperation } from '@data/api/news-service/models/news-patch-operation';
-import { EditNewsRequest } from '@data/api/news-service/models/edit-news-request';
+import { DialogService } from '@app/services/dialog.service';
+import { OperationResultResponseNewsResponse } from '@api/news-service/models/operation-result-response-news-response';
+import { NewsPatchOperation } from '@api/news-service/models/news-patch-operation';
+import { EditNewsRequest } from '@api/news-service/models/edit-news-request';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { CurrentCompanyService } from '@app/services/current-company.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
+import { User } from '@app/models/user/user.model';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { IOutputBlockData, IOutputData } from '../../models/output-data.interface';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorConfig } from './news-editor.config';
 
@@ -47,7 +47,6 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 
 	public isEditorContentEmpty: BehaviorSubject<boolean>;
 	public isEdit: boolean;
-	public companyName: Observable<string>;
 	private _editor?: EditorJS;
 	private _editorObserver?: MutationObserver;
 	private _destroy$: ReplaySubject<void>;
@@ -59,13 +58,11 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		private _localStorage: LocalStorageService,
 		private _editorConfig: NewsEditorConfig,
 		private _dialogRef: MatDialogRef<NewsEditorComponent>,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _elementRef: ElementRef,
-		private _currentCompanyService: CurrentCompanyService,
 		private _cdr: ChangeDetectorRef
 	) {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
-		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 		this._dialogRef.disableClose = true;
 		this.isEdit = Boolean(this.data._newsId);
 		this.isEditorContentEmpty = new BehaviorSubject<boolean>(!this.isEdit);
@@ -111,7 +108,6 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 		if (this.data._newsId) {
 			return this._newsService.getNews(this.data._newsId).pipe(
 				tap((response) => {
-					console.log(response);
 					this.articleSubject.setValue(response.body?.subject);
 					const newsContent: IOutputData = { blocks: JSON.parse(response.body?.content as string) };
 					this._editor = new EditorJS(this._editorConfig.createConfig(newsContent));
@@ -182,15 +178,17 @@ export class NewsEditorComponent implements OnInit, OnDestroy {
 	private _createNews(): Observable<OperationResultResponse<any>> {
 		let userId: string;
 		return this._currentUserService.user$.pipe(
-			tap((user) => (userId = user?.id ?? '')),
+			first((user: User) => !!user.id),
+			tap((user: User) => (userId = user.id as string)),
 			switchMap(() => from((this._editor as EditorJS).save())),
 			switchMap((outputData) => {
 				const [newsContent, previewContent] = this._prepareOutputData(outputData);
 				const news: CreateNewsRequest = {
-					authorId: userId,
 					subject: this.articleSubject.value.trim(),
 					preview: JSON.stringify(previewContent),
 					content: JSON.stringify(newsContent),
+					tagsIds: [],
+					isActive: true,
 				};
 				return this._newsService.createNews(news);
 			})

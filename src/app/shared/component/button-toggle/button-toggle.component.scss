@@ -1,0 +1,19 @@
+@use 'base/variables' as variables;
+
+.button {
+	cursor: pointer;
+
+	color: variables.$secondary_default;
+}
+
+:host-context(.primary) {
+	.active {
+		color: variables.$main_text;
+	}
+}
+
+:host-context(.accent) {
+	.active {
+		color: variables.$accent_controls_default;
+	}
+}

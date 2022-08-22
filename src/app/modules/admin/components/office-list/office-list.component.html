@@ -1,19 +1,17 @@
-<do-breadcrumbs
-	[paths]="[{ title: 'Администрирование', url: 'admin/dashboard' }, { title: 'Управление офисами' }]"
-></do-breadcrumbs>
 <mat-card class="card card_standard">
 	<div class="header">
 		<h3 doUnderline underlinedSize="sm">Офисы</h3>
 		<button mat-flat-button color="accent" (click)="onAddEditOffice()">+ Добавить офис</button>
 	</div>
 	<div class="filters" [formGroup]="filters">
-		<mat-form-field class="filters__status" appearance="fill">
-			<mat-label>Статус</mat-label>
-			<mat-select formControlName="showDeactivated">
-				<mat-option [value]="false">Активные</mat-option>
-				<mat-option [value]="true">Все</mat-option>
-			</mat-select>
-		</mat-form-field>
+		<do-form-field label="Статус" class="filters__status">
+			<mat-form-field>
+				<mat-select formControlName="showDeactivated">
+					<mat-option [value]="false">Активные</mat-option>
+					<mat-option [value]="true">Все</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-field>
 	</div>
 	<ng-container *ngIf="offices$ | async as offices">
 		<table *ngIf="offices.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
@@ -24,13 +22,13 @@
 			</colgroup>
 			<thead>
 				<tr class="row">
-					<th mat-sort-header="city" class="cell">
+					<th mat-header-row="city" class="cell">
 						<p>Город</p>
 					</th>
-					<th mat-sort-header="address" class="cell">
+					<th mat-header-row="address" class="cell">
 						<p>Адрес</p>
 					</th>
-					<th mat-sort-header="name" class="cell">
+					<th mat-header-row="name" class="cell">
 						<p>Название</p>
 					</th>
 					<th></th>
@@ -49,15 +47,16 @@
 					</td>
 					<td class="cell text-align_right">
 						<button mat-icon-button (click)="onAddEditOffice(office)">
-							<mat-icon>
-								<img src="assets/svg/edit.svg" alt="edit" />
-							</mat-icon>
+							<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 						</button>
-						<button mat-icon-button (click)="onDeleteOffice(office)">
-							<mat-icon>
-								<img src="assets/svg/delete.svg" alt="edit" />
-							</mat-icon>
+						<button *ngIf="office.isActive; else restore" mat-icon-button (click)="onDeleteOffice(office)">
+							<mat-icon [svgIcon]="Icons.Delete"></mat-icon>
 						</button>
+						<ng-template #restore>
+							<button mat-icon-button (click)="onRestoreOffice(office)">
+								<mat-icon [svgIcon]="Icons.Unarchive"></mat-icon>
+							</button>
+						</ng-template>
 					</td>
 				</tr>
 			</tbody>

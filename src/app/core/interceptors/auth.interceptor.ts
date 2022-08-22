@@ -1,47 +1,54 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import {
+	HttpErrorResponse,
+	HttpEvent,
+	HttpHandler,
+	HttpHeaders,
+	HttpInterceptor,
+	HttpRequest,
+} from '@angular/common/http';
+import { BehaviorSubject, EMPTY, Observable, throwError } from 'rxjs';
 
-import { Router } from '@angular/router';
-import { filter, switchMap, take } from 'rxjs/operators';
+import { catchError, filter, first, switchMap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
-import { LocalStorageService } from '../services/local-storage.service';
+import { AuthenticationResponse } from '@api/auth-service/models/authentication-response';
+import { AuthTokenService } from '@app/services/auth-token.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthInterceptor implements HttpInterceptor {
-	private _refreshingInProgress: boolean;
-	private _accessTokenSubject: BehaviorSubject<string | undefined>;
-	private _excludedUrls: string[];
+	private refreshingInProgress = false;
+	private accessTokenSubject = new BehaviorSubject<string | null>(null);
 
-	constructor(private localStorageService: LocalStorageService, private authService: AuthService, private _router: Router) {
-		this._refreshingInProgress = false;
-		this._accessTokenSubject = new BehaviorSubject<string | undefined>(undefined);
-		this._excludedUrls = [ '/auth/refresh', '/company/get' ];
-	}
+	constructor(private authToken: AuthTokenService, private authService: AuthService) {}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		const token = this.localStorageService.get('access_token');
+		const accessToken = this.authToken.getAccessToken();
 
-		if (!!this._excludedUrls.find((url) => req.url.indexOf(url) !== -1)) {
-			return next.handle(req);
-		}
+		return next.handle(this.addAuthorizationHeader(req, accessToken)).pipe(
+			catchError((error: any) => {
+				if (error instanceof HttpErrorResponse) {
+					if (error.status === 401) {
+						const refreshToken = this.authToken.getRefreshToken();
+						if (accessToken && refreshToken) {
+							return this.refreshToken(req, next);
+						}
+						this.logoutAndRedirect();
+						return throwError(error);
+					}
+				}
 
-		if (token && this._isTokenExpired(token)) {
-			const refreshToken = this.localStorageService.get('refresh_token');
-			if (!refreshToken || this._isTokenExpired(refreshToken)) {
-				return this._logoutAndRedirect('Refresh token is expired');
-			}
-			return this._refreshToken(req, next);
-		}
-
-		const request = this._addAuthorizationHeader(req, token);
-
-		return next.handle(request);
+				if (this.refreshingInProgress && error?.status === 403) {
+					this.logoutAndRedirect();
+					return EMPTY;
+				}
+				return throwError(error);
+			})
+		);
 	}
 
-	private _addAuthorizationHeader(req: HttpRequest<any>, token: string | undefined): HttpRequest<any> {
+	private addAuthorizationHeader(req: HttpRequest<any>, token: string | null): HttpRequest<any> {
 		let headers: HttpHeaders = req.headers.set('Access-Control-Allow-Origin', '*');
 
 		if (token) {
@@ -51,39 +58,31 @@ export class AuthInterceptor implements HttpInterceptor {
 		return req.clone({ headers });
 	}
 
-	private _logoutAndRedirect(error: string): Observable<HttpEvent<any>> {
-		this.authService.logout();
-
-		return throwError(error);
+	private logoutAndRedirect(): void {
+		this.authService.logout(true);
 	}
 
-	private _refreshToken(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-		if (!this._refreshingInProgress) {
-			this._refreshingInProgress = true;
-			this._accessTokenSubject.next(undefined);
+	private refreshToken(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		if (!this.refreshingInProgress) {
+			this.refreshingInProgress = true;
+			this.accessTokenSubject.next(null);
 
 			return this.authService.refreshToken().pipe(
-				switchMap((result) => {
-					this._refreshingInProgress = false;
-					this._accessTokenSubject.next(result.accessToken);
+				switchMap((result: AuthenticationResponse) => {
+					this.refreshingInProgress = false;
+					this.accessTokenSubject.next(result.accessToken);
 
-					return next.handle(this._addAuthorizationHeader(req, result.accessToken));
+					return next.handle(this.addAuthorizationHeader(req, result.accessToken));
 				})
 			);
 		} else {
-			return this._accessTokenSubject.pipe(
-				take(1),
-				switchMap((token: string | undefined) => {
-					return next.handle(this._addAuthorizationHeader(req, token));
+			return this.accessTokenSubject.pipe(
+				filter((token: string | null): token is string => !!token),
+				first(),
+				switchMap((token) => {
+					return next.handle(this.addAuthorizationHeader(req, token));
 				})
 			);
 		}
-	}
-
-	private _isTokenExpired(token: string): boolean {
-		const parsedToken = JSON.parse(atob(token.split('.')[1]));
-		const tokenExpiresAt = parsedToken.exp * 1000;
-
-		return tokenExpiresAt < Date.now() - 1000 * 60 * 2;
 	}
 }

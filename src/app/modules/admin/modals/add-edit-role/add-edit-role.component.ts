@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Inject, OnInit } from '@angular/cor
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { RightInfo, RoleInfo } from '@data/api/rights-service/models';
+import { RightInfo, RoleInfo } from '@api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
 import { DoValidators } from '@app/validators/do-validators';
 import { BehaviorSubject, iif, Observable } from 'rxjs';
@@ -21,6 +21,8 @@ export class AddEditRoleComponent implements OnInit {
 	public isEditMode: boolean;
 	public loading$$: BehaviorSubject<boolean>;
 	public readonly roleInfo?: RoleInfo;
+	public readonly MAX_NAME_LENGTH = 80;
+	public readonly MAX_DESCRIPTION_LENGTH = 300;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) roleInfo: RoleInfo,
@@ -32,7 +34,7 @@ export class AddEditRoleComponent implements OnInit {
 		this.loading$$ = new BehaviorSubject<boolean>(false);
 		this.roleForm = this._fb.group({
 			name: ['', [Validators.required, DoValidators.noWhitespaces]],
-			description: [''],
+			description: ['', [DoValidators.noWhitespaces]],
 			rights: this._fb.group({}, { validators: DoValidators.atLeastOneChecked }),
 		});
 

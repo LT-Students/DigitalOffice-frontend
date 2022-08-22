@@ -3,15 +3,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EMPTY, Observable } from 'rxjs';
 import { map, mergeMap, switchMap } from 'rxjs/operators';
 
-import { Article } from '@app/models/news.model';
 import { NewsService } from '@app/services/news/news.service';
-import { OperationResultStatusType } from '@data/api/news-service/models';
-import { ModalService } from '@app/services/modal.service';
-import { NewsFeedService } from '@app/services/news-feed.service';
-import { CurrentCompanyService } from '@app/services/current-company.service';
+import { OperationResultStatusType } from '@api/news-service/models';
+import { DialogService } from '@app/services/dialog.service';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { Icons } from '@shared/modules/icons/icons';
+import { Article } from '../../models/news.model';
+import { NewsFeedService } from '../../services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-post',
@@ -20,8 +20,8 @@ import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/conf
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostComponent {
+	public readonly Icons = Icons;
 	public article$: Observable<Article | undefined>;
-	public companyName: Observable<string>;
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public postId: string,
@@ -29,12 +29,10 @@ export class PostComponent {
 		private _editorJSParser: EditorJSParser,
 		private _newsService: NewsService,
 		private _newsFeedService: NewsFeedService,
-		private _modalService: ModalService,
-		private _cdr: ChangeDetectorRef,
-		private _currentCompanyService: CurrentCompanyService
+		private _modalService: DialogService,
+		private _cdr: ChangeDetectorRef
 	) {
 		this.article$ = this._getNews();
-		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 	}
 
 	private _getNews(): Observable<Article | undefined> {
@@ -84,9 +82,7 @@ export class PostComponent {
 				})
 			)
 			.subscribe((result) => {
-				if (result.status === OperationResultStatusType.FullSuccess) {
-					this.closeModal(newsId);
-				}
+				this.closeModal(newsId);
 			});
 	}
 

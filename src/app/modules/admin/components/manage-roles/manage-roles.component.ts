@@ -1,14 +1,15 @@
 import { Component, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
 
-import { RoleInfo } from '@data/api/rights-service/models';
+import { RoleInfo } from '@api/rights-service/models';
 import { RightsService } from '@app/services/rights/rights.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
-import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Icons } from '@shared/modules/icons/icons';
 import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.component';
 
 @Component({
@@ -18,6 +19,8 @@ import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.c
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageRolesComponent implements AfterViewInit {
+	public readonly Icons = Icons;
+
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public roles$!: Observable<OperationResultResponse<RoleInfo[]>>;
@@ -25,7 +28,7 @@ export class ManageRolesComponent implements AfterViewInit {
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _rightsService: RightsService,
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder
@@ -62,9 +65,7 @@ export class ManageRolesComponent implements AfterViewInit {
 			.afterClosed()
 			.subscribe({
 				next: (result) => {
-					if (result?.status !== OperationResultStatusType.Failed) {
-						this._refreshCurrentPage$$.next(true);
-					}
+					this._refreshCurrentPage$$.next(true);
 				},
 			});
 	}
@@ -90,9 +91,32 @@ export class ManageRolesComponent implements AfterViewInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result?.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+				this._refreshCurrentPage$$.next(true);
+			});
+	}
+
+	public onRestoreRole(roleInfo: RoleInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: 'Да, восстановить роль',
+				title: `Восстановление роли ${roleInfo.localizations?.[0]?.name}`,
+				message: `Вы действительно хотите восстановить роль ${roleInfo.localizations?.[0]?.name}?`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) => {
+					return iif(
+						() => !!confirm,
+						this._rightsService.restoreRole({
+							roleId: roleInfo.id ?? '',
+							isActive: true,
+						}),
+						EMPTY
+					);
+				})
+			)
+			.subscribe((result) => {
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 

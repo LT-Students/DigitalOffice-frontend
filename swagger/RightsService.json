@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.3.6.0",
+    "version": "1.3.9.0",
     "title": "RightsService",
     "description": "RightsService, is intended to work with the user rights - create them, assign them to people, remove."
   },
@@ -16,149 +16,6 @@
     }
   ],
   "paths": {
-    "/userrights/create": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "post": {
-        "tags": [
-          "UserRights"
-        ],
-        "operationId": "create",
-        "description": "Add rights for user.",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "User global unique identifier.",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "description": "List of rights ids.",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "integer"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Ok.\n* true will be in response Body property.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/userrights/remove": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
-      "delete": {
-        "tags": [
-          "UserRights"
-        ],
-        "operationId": "removeRightsFromUser",
-        "description": "Remove rights from user.",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "description": "User global unique identifier.",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
-                  "type": "integer"
-                }
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Ok.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/rights/get": {
       "parameters": [
         {
@@ -625,13 +482,74 @@
           }
         }
       }
+    },
+    "/user/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "UserRole"
+        ],
+        "operationId": "editUserRole",
+        "description": "Chage user role.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditUserRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success of operation will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
-
   },
   "components": {
     "schemas": {
       "RightInfo": {
         "type": "object",
+        "required": [
+          "RightId",
+          "Locale",
+          "Name",
+          "description"
+        ],
         "properties": {
           "RightId": {
             "type": "integer"
@@ -780,8 +698,33 @@
           }
         }
       },
+      "EditUserRoleRequest": {
+        "type": "object",
+        "required": [
+          "UserId"
+        ],
+        "properties": {
+          "UserId": {
+            "description": "User id",
+            "type": "string",
+            "format": "uuid"
+          },
+          "RoleId": {
+            "description": "Role id.",
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
       "RoleInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "IsActive",
+          "CreatedBy",
+          "Rights",
+          "Localizations"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -790,19 +733,9 @@
           "IsActive": {
             "type": "boolean"
           },
-          "CreatedAtUtc": {
-            "type": "string"
-          },
           "CreatedBy": {
             "type": "string",
             "format": "uuid"
-          },
-          "ModifiedAtUtc": {
-            "type": "string",
-            "nullable": true
-          },
-          "ModifiedBy": {
-            "$ref": "#/components/schemas/UserInfo"
           },
           "Rights": {
             "type": "array",
@@ -820,6 +753,11 @@
       },
       "UserInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "FirstName",
+          "LastName"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -838,6 +776,13 @@
       },
       "RoleLocalizationInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "RoleId",
+          "locale",
+          "Name",
+          "IsActive"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -880,12 +825,12 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "object"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -895,36 +840,31 @@
           }
         }
       },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
+      "RoleResponse": {
+        "type": "object",
+        "required": [
+          "Role"
         ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
+        "properties": {
+          "Role": {
+            "$ref": "#/components/schemas/RoleInfo"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserInfo"
+            }
+          }
+        }
       },
       "OperationResultResponseRoleResponse": {
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "Body": {
-            "type": "object",
-            "properties": {
-              "role": {
-                "$ref": "#/components/schemas/RoleInfo"
-              },
-              "users": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/UserInfo"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/RoleResponse"
           },
           "Errors": {
             "type": "array",
@@ -936,10 +876,10 @@
       },
       "OperationResultResponseRights": {
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "Body": {
             "type": "array",
             "items": {
@@ -956,10 +896,11 @@
       },
       "FindResultResponseRoleInfo": {
         "type": "object",
+        "required": [
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
-          },
           "TotalCount": {
             "type": "integer",
             "description": "Total number of all roles."

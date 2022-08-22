@@ -1,0 +1,15 @@
+:host {
+	display: none;
+}
+
+.image {
+	max-width: 85vw;
+	max-height: 85vh;
+	object-fit: contain;
+}
+
+.name {
+	position: absolute;
+	left: 0;
+	bottom: -20px;
+}

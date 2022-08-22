@@ -7,10 +7,10 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmptyListComponent implements OnInit {
-	@Input() emptyMessage: string;
-	constructor() {
-		this.emptyMessage = 'Нет данных';
-	}
+	@Input() emptyMessage = 'Нет данных';
+	@Input() width?: number;
+
+	constructor() {}
 
 	ngOnInit(): void {}
 }

@@ -1,3 +1,9 @@
-<div class="profile-image" [ngClass]="getSizeClass()">
-	<img [src]="src" alt="Employee image" [width]="width" />
+<div class="avatar" [style.width.px]="width" [style.height.px]="width">
+	<img *ngIf="image$ | async as image; else textAvatar" [src]="image | imageUrl" alt="Employee image" />
 </div>
+
+<ng-template #textAvatar>
+	<div class="initials" [style.font-size.px]="width / textRatio">
+		<span *ngIf="initials">{{ initials }}</span>
+	</div>
+</ng-template>

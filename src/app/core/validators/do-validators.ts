@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 
 function isEmptyInputValue(value: any): boolean {
@@ -12,18 +12,23 @@ const TELEGRAM_REGEXP = /^[A-Za-z]+(_?[A-Za-z0-9])*$/;
 // Не уверен за этот regex, но пока пусть будет, если кто умный - подайте идею.
 const SKYPE_REGEXP = /^[A-Za-z][A-Za-z0-9.,\-_]+$/;
 const TWITTER_REGEXP = /^\w+$/;
-const TRIMMED_NAME_REGEXP = /(^\s+|\s+$)/;
+const NAME_REGEXP = /^\p{L}[\p{L}`\- ]*$/u;
 const ONE_SPACE_BETWEEN_WORDS_REGEXP = /(\S\s{2,}\S)/;
 const INTEGER_NUMBER_REGEXP = /^-?\d+$/;
 const PASSWORD_REGEXP =
 	/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\])[\w<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\]{8,14}$/;
 
 export class DoValidators {
+	static required(control: AbstractControl): ValidationErrors | null {
+		const error = Validators.required(control);
+		return error ? { required: { message: 'Обязательное для заполнения' } } : null;
+	}
+
 	static email(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return EMAIL_REGEXP.test(control.value) ? null : { email: true };
+		return EMAIL_REGEXP.test(control.value) ? null : { email: { message: 'Введите корректный email' } };
 	}
 
 	static telegram(control: AbstractControl): ValidationErrors | null {
@@ -31,7 +36,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return TELEGRAM_REGEXP.test(control.value) ? null : { telegram: true };
+		return TELEGRAM_REGEXP.test(control.value)
+			? null
+			: {
+					telegram: {
+						message: `Имя пользователя telegram может содержать символы a-z, 0-9 и нижнее подчёркивание. Имя не может начинаться с цифры, а также начинаться и заканчиваться нижним подчёркиванием.`,
+					},
+			  };
 	}
 
 	static phone(control: AbstractControl): ValidationErrors | null {
@@ -39,7 +50,9 @@ export class DoValidators {
 			return null;
 		}
 
-		return isValidPhoneNumber(control.value) ? null : { phone: true };
+		return isValidPhoneNumber(control.value)
+			? null
+			: { phone: { message: `Введите корректный номер телефона в международном формате.` } };
 	}
 
 	static skype(control: AbstractControl): ValidationErrors | null {
@@ -47,7 +60,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return SKYPE_REGEXP.test(control.value) ? null : { skype: true };
+		return SKYPE_REGEXP.test(control.value)
+			? null
+			: {
+					skype: {
+						message: `Имя пользователя skype может содержать символы a-z, 0-9, а также запятую, тире, точку и нижнее подчёркивание.`,
+					},
+			  };
 	}
 
 	static twitter(control: AbstractControl): ValidationErrors | null {
@@ -55,7 +74,13 @@ export class DoValidators {
 			return null;
 		}
 
-		return TWITTER_REGEXP.test(control.value) ? null : { twitter: true };
+		return TWITTER_REGEXP.test(control.value)
+			? null
+			: {
+					twitter: {
+						message: `Имя пользователя twitter может содержать символы a-z, 0-9 и нижнее подчёркивание.`,
+					},
+			  };
 	}
 
 	static floatNumber(control: AbstractControl): ValidationErrors | null {
@@ -74,11 +99,11 @@ export class DoValidators {
 		return isValid ? null : { whitespace: true };
 	}
 
-	static trimmedName(control: AbstractControl): ValidationErrors | null {
+	static isNameValid(control: AbstractControl): ValidationErrors | null {
 		if (isEmptyInputValue(control.value)) {
 			return null;
 		}
-		return TRIMMED_NAME_REGEXP.test(control.value) ? { name: true } : null;
+		return NAME_REGEXP.test(control.value) ? null : { name: true };
 	}
 
 	static oneSpaceBetweenWords(control: AbstractControl): ValidationErrors | null {
@@ -101,7 +126,7 @@ export class DoValidators {
 				return null;
 			}
 			const strLength = control.value.trim().length;
-			return strLength < minLength ? { minlength: true } : null;
+			return strLength < minLength ? { minlength: { message: `Мин. длина: ${minLength}` } } : null;
 		};
 	}
 
@@ -111,7 +136,27 @@ export class DoValidators {
 				return null;
 			}
 			const strLength = control.value.trim().length;
-			return strLength > maxLength ? { maxlength: true } : null;
+			return strLength > maxLength ? { maxlength: { message: `Макс. длина: ${maxLength}` } } : null;
+		};
+	}
+
+	static min(min: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (isEmptyInputValue(control.value)) {
+				return null;
+			}
+			const value = parseFloat(control.value);
+			return !isNaN(value) && value < min ? { min: { message: `Минимальное значение: ${min}` } } : null;
+		};
+	}
+
+	static max(max: number): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			if (isEmptyInputValue(control.value)) {
+				return null;
+			}
+			const value = parseFloat(control.value);
+			return !isNaN(value) && value > max ? { max: { message: `Максимальное значение: ${max}` } } : null;
 		};
 	}
 
@@ -127,5 +172,15 @@ export class DoValidators {
 			return null;
 		}
 		return PASSWORD_REGEXP.test(control.value) ? null : { password: true };
+	}
+
+	static matchControls(field1: string, field2: string): ValidatorFn | null {
+		return (group: AbstractControl): ValidationErrors | null => {
+			const control1 = group.get(field1);
+			const control2 = group.get(field2);
+			return control1 && control2 && control1.value && control2.value && control1.value !== control2.value
+				? { noMatch: true }
+				: null;
+		};
 	}
 }

@@ -1,0 +1,29 @@
+<div class="flex flex_ai_center">
+	<do-deselect-all-checkbox
+		class="deselect"
+		[disabled]="!table.selection.selected.length"
+		(click)="clearSelection()"
+	></do-deselect-all-checkbox>
+	<do-dynamic-filter [filters]="filterData" (filterChange)="nameFilter.next($event)"></do-dynamic-filter>
+	<button
+		*ngIf="table.selection.selected.length"
+		doButton
+		(click)="contextMenu.openContextMenu($event, table.selection.selected)"
+	>
+		<mat-icon [svgIcon]="Icons.KebabMenu" [style.transform]="'rotate(90deg)'"></mat-icon>
+	</button>
+	<do-actions>
+		<button mat-flat-button color="primary" (click)="addFiles()">
+			<mat-icon [svgIcon]="Icons.Add"></mat-icon>
+		</button>
+	</do-actions>
+</div>
+<div class="file-table">
+	<do-table
+		[dataSource]="dataSource"
+		rowHeight="64"
+		[columns]="tableColumns"
+		[contextMenuItems]="contextMenuItems"
+	></do-table>
+</div>
+<do-context-menu #contextMenu [items]="contextMenuItems"></do-context-menu>

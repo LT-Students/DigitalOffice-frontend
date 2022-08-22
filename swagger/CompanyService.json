@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.6.4.0",
+    "version": "1.6.5.0",
     "title": "CompanyService",
     "description": "CompanyService is an API that intended to work with positions and departments."
   },
@@ -18,6 +18,11 @@
   "paths": {
     "/company/create": {
       "post": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/securityToken"
+          }
+        ],
         "tags": [
           "Company"
         ],
@@ -53,6 +58,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
           }
         }
       }
@@ -61,36 +76,12 @@
       "get": {
         "parameters": [
           {
-            "name": "includedepartments",
-            "in": "query",
-            "description": "Include departments info in answer.",
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false
-          },
-          {
-            "name": "includepositions",
-            "in": "query",
-            "description": "Include positions info in answer.",
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false
+            "$ref": "#/components/parameters/securityToken"
           },
           {
             "name": "includeoffices",
             "in": "query",
             "description": "Include offices info in answer.",
-            "schema": {
-              "type": "boolean"
-            },
-            "required": false
-          },
-          {
-            "name": "includesmtpcredentials",
-            "in": "query",
-            "description": "Include smtp credentials in answer.",
             "schema": {
               "type": "boolean"
             },
@@ -107,7 +98,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseCompanyInfo"
+                  "$ref": "#/components/schemas/OperationResultResponseCompanyResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -126,12 +127,22 @@
       }
     },
     "/company/edit": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/securityToken"
-        }
-      ],
       "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/securityToken"
+          },
+          {
+            "name": "companyId",
+            "in": "query",
+            "description": "Unique company identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
         "tags": [
           "Company"
         ],
@@ -190,28 +201,83 @@
         }
       }
     },
-    "/companyuser/edit": {
+    "/companyuser/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "userId",
-          "in": "query",
-          "description": "Unique user identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
         }
       ],
+      "post": {
+        "tags": [
+          "CompanyUser"
+        ],
+        "operationId": "createCompanyUser",
+        "description": "Create company user information.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCompanyUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success of operation will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companyuser/edit": {
       "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/securityToken"
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "Unique user identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
         "tags": [
           "CompanyUser"
         ],
         "operationId": "editCompanyUser",
-        "description": "Chage user rate or start working at.",
+        "description": "Chage company user information.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -254,11 +320,242 @@
           }
         }
       }
+    },
+    "/contractsubject/find": {
+      "get": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/securityToken"
+          },
+          {
+            "name": "skipCount",
+            "in": "query",
+            "description": "Number of entries to skip.",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          },
+          {
+            "name": "takeCount",
+            "in": "query",
+            "description": "Number of contract subjects to take.",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          },
+          {
+            "name": "isactive",
+            "in": "query",
+            "description": "Get only active or not active contract subjects.",
+            "schema": {
+              "type": "boolean"
+            },
+            "required": false
+          }
+        ],
+        "tags": [
+          "ContractSubject"
+        ],
+        "operationId": "findContractSubjects",
+        "description": "Returns all contract subject information with pagination.",
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Successfully returned list of contract subject information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseContractSubjectInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseContractSubjectInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contractsubject/create": {
+      "post":{
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/securityToken"
+          }
+        ],
+        "tags": [
+          "ContractSubject"
+        ],
+        "operationId": "createContractSubject",
+        "description": "Adds a new contract subject.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateContractSubjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created contract subject will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contractsubject/edit": {
+      "patch": {
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/securityToken"
+          },
+          {
+            "name": "contractsubjectId",
+            "in": "query",
+            "description": "Unique contract subject identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "tags": [
+          "ContractSubject"
+        ],
+        "operationId": "editContractSubject",
+        "description": "Chage contract subject's name, description, or active status.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditContractSubjectRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success of operation will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
-      "AddImageRequest": {
+      "CreateCompanyRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "Contacts": {
+            "type": "string"
+          },
+          "Tagline": {
+            "type": "string"
+          },
+          "Logo": {
+            "$ref": "#/components/schemas/ImageConsist"
+          }
+        }
+      },
+      "CreateContractSubjectRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          }
+        }
+      },
+      "ImageConsist": {
         "type": "object",
         "required": [
           "Content",
@@ -266,123 +563,71 @@
         ],
         "properties": {
           "Content": {
-            "description": "Image file content in base64 encoded string.",
-            "type": "string"
+            "type": "string",
+            "description": "Image file content in base64 encoded string."
           },
           "Extension": {
-            "description": "Extension of the image.",
-            "type": "string",
-            "example": ".jpg"
+            "type": "string"
           }
         }
       },
-      "CreateCompanyRequest": {
+      "ContractTerm": {
+        "type": "string",
+        "description": "Contract term type.",
+        "enum":[
+          "FixedTerm",
+          "Perpetual"
+        ],
+        "example": "FixedTerm"
+      },
+      "CompanyResponse": {
         "type": "object",
         "required": [
-          "PortalName",
-          "CompanyName",
-          "SiteUrl",
-          "SmtpInfo",
-          "AdminInfo"
+          "Id",
+          "Name"
         ],
-        "properties": {
-          "PortalName": {
-            "type": "string"
-          },
-          "CompanyName": {
-            "type": "string"
-          },
-          "SiteUrl": {
-            "type": "string"
-          },
-          "SmtpInfo": {
-            "$ref": "#/components/schemas/SmtpInfo"
-          },
-          "AdminInfo": {
-            "$ref": "#/components/schemas/AdminInfo"
-          },
-          "IsDepartmentModuleEnabled": {
-            "type": "boolean"
-          },
-          "WorkDaysApiUrl": {
-            "type": "string"
-          },
-          "Logo": {
-            "$ref": "#/components/schemas/AddImageRequest"
-          }
-        }
-      },
-      "CompanyInfo": {
-        "type": "object",
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "PortalName": {
-            "type": "string"
-          },
-          "CompanyName": {
-            "type": "string"
-          },
-          "Description": {
-            "type": "string",
-            "nullable": true
-          },
-          "Tagline": {
-            "type": "string",
-            "nullable": true
-          },
-          "SiteUrl": {
-            "type": "string"
-          },
-          "IsDepartmentModuleEnabled": {
-            "type": "boolean"
-          },
-          "LogoContent": {
-            "type": "string",
-            "nullable": true
-          },
-          "LogoExtension": {
-            "type": "string",
-            "nullable": true
-          },
-          "SmtpInfo": {
-            "$ref": "#/components/schemas/SmtpInfo"
-          },
-          "Departments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/DepartmentInfo"
-            },
-            "nullable": true
-          },
-          "Positions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/PositionInfo"
-            },
-            "nullable": true
-          },
-          "Offices": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OfficeInfo"
-            },
-            "nullable": true
-          }
-        }
-      },
-      "OfficeInfo": {
-        "type": "object",
         "properties": {
           "Id": {
             "type": "string",
             "format": "uuid"
           },
           "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "Tagline": {
+            "type": "string"
+          },
+          "Contacts": {
+            "type": "string"
+          },
+          "Logo": {
+            "$ref": "#/components/schemas/ImageConsist"
+          },
+          "Offices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfficeInfo"
+            }
+          }
+        }
+      },
+      "OfficeInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "City",
+          "Address"
+        ],
+        "properties": {
+          "Id": {
             "type": "string",
-            "nullable": true
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
           },
           "City": {
             "type": "string"
@@ -400,6 +645,12 @@
       },
       "ImageInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Type",
+          "Content",
+          "Extension"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -407,15 +658,13 @@
           },
           "ParentId": {
             "type": "string",
-            "format": "uuid",
-            "nullable": true
+            "format": "uuid"
           },
           "Type": {
             "type": "string"
           },
           "Name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "Content": {
             "type": "string",
@@ -426,113 +675,23 @@
           }
         }
       },
-      "SmtpInfo": {
+      "ContractSubjectInfo": {
         "type": "object",
         "required": [
-          "Host",
-          "Port",
-          "EnableSsl",
-          "Email",
-          "Password"
+          "Id",
+          "Name",
+          "IsActive"
         ],
-        "properties": {
-          "Host": {
-            "type": "string"
-          },
-          "Port": {
-            "type": "integer"
-          },
-          "EnableSsl": {
-            "type": "boolean"
-          },
-          "Email": {
-            "type": "string"
-          },
-          "Password": {
-            "type": "string"
-          }
-        }
-      },
-      "AdminInfo": {
-        "type": "object",
-        "required": [
-          "FirstName",
-          "LastName",
-          "Email",
-          "Login",
-          "Password"
-        ],
-        "properties": {
-          "FirstName": {
-            "type": "string"
-          },
-          "MiddleName": {
-            "type": "integer"
-          },
-          "LastName": {
-            "type": "boolean"
-          },
-          "Email": {
-            "type": "string"
-          },
-          "Login": {
-            "type": "string"
-          },
-          "Password": {
-            "type": "string"
-          }
-        }
-      },
-      "PositionInfo": {
-        "type": "object",
         "properties": {
           "Id": {
-            "description": "Specific position id.",
             "type": "string",
             "format": "uuid"
           },
           "Name": {
-            "description": "Position name.",
-            "type": "string",
-            "example": "IT projects consultant"
-          }
-        }
-      },
-      "DepartmentInfo": {
-        "type": "object",
-        "description": "Specific department data.",
-        "properties": {
-          "Id": {
-            "description": "Department id.",
-            "type": "string",
-            "format": "guid"
-          },
-          "Name": {
-            "description": "Department name.",
             "type": "string"
-          }
-        }
-      },
-      "FindResultResponseOfficeInfo": {
-        "type": "object",
-        "properties": {
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
-          "Body": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OfficeInfo"
-            }
-          },
-          "TotalCount": {
-            "type": "integer"
-          },
-          "Errors": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "IsActive": {
+            "type": "boolean"
           }
         }
       },
@@ -552,27 +711,33 @@
           }
         }
       },
-      "OperationResultStatusType": {
-        "type": "string",
-        "description": "Operation complition result status.",
-        "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
-        ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
-      },
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "object",
             "nullable": true
           },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseCompanyResponse": {
+        "type": "object",
+        "required": [
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/CompanyResponse"
           },
           "Errors": {
             "type": "array",
@@ -582,67 +747,22 @@
           }
         }
       },
-      "OperationResultResponseCompanyInfo": {
+      "FindResultResponseContractSubjectInfo": {
+        "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "portalName": {
-                "type": "string"
-              },
-              "companyName": {
-                "type": "string"
-              },
-              "description": {
-                "type": "string",
-                "nullable": true
-              },
-              "tagline": {
-                "type": "string",
-                "nullable": true
-              },
-              "siteUrl": {
-                "type": "string"
-              },
-              "IsDepartmentModuleEnabled": {
-                "type": "boolean"
-              },
-              "logo": {
-                "$ref": "#/components/schemas/ImageInfo"
-              },
-              "smtpInfo": {
-                "$ref": "#/components/schemas/SmtpInfo"
-              },
-              "departments": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DepartmentInfo"
-                },
-                "nullable": true
-              },
-              "positions": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/PositionInfo"
-                },
-                "nullable": true
-              },
-              "offices": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/OfficeInfo"
-                },
-                "nullable": true
-              }
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContractSubjectInfo"
             }
           },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
+          "TotalCount": {
+            "type": "number"
           },
           "Errors": {
             "type": "array",
@@ -651,6 +771,7 @@
             }
           }
         }
+
       },
       "PatchCompanyDocument": {
         "type": "object",
@@ -670,18 +791,40 @@
             "type": "string",
             "description": "A JSON-Pointer.",
             "enum": [
-              "/portalname",
-              "/companyname",
-              "/siteurl",
+              "/name",
               "/tagline",
               "/description",
               "/logo",
-              "/host",
-              "/port",
-              "/enablessl",
-              "/email",
-              "/password",
-              "/isdepartmentmoduleenabled"
+              "/contacts"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "PatchContractSubjectDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/name",
+              "/description",
+              "/isactive"
             ]
           },
           "value": {
@@ -708,8 +851,12 @@
             "type": "string",
             "description": "A JSON-Pointer.",
             "enum": [
+              "/contracttermtype",
+              "/contractsubjectid",
               "/rate",
-              "/startworkingat"
+              "/startworkingat",
+              "/endworkingat",
+              "/probation"
             ]
           },
           "value": {
@@ -724,16 +871,75 @@
         "example": [
           {
             "op": "replace",
-            "path": "/portalname",
+            "path": "/name",
             "value": {
-              "description": "New portal name",
+              "description": "New company name",
               "type": "string",
-              "example": "portal"
+              "example": "My Company"
             }
           }
         ],
         "items": {
           "$ref": "#/components/schemas/PatchCompanyDocument"
+        }
+      },
+      "EditContractSubjectRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": {
+              "description": "New contract subject's name",
+              "type": "string",
+              "example": "Employment contract"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchContractSubjectDocument"
+        }
+      },
+      "CreateCompanyUserRequest": {
+        "type": "object",
+        "required": [
+          "UserId",
+          "CompanyId",
+          "ContractTermType",
+          "StartWorkingAt"
+        ],
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "CompanyId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ContractSubjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ContractTermType": {
+            "$ref": "#/components/schemas/ContractTerm"
+          },
+          "Rate": {
+            "type": "number"
+          },
+          "StartWorkingAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "EndWorkingAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "Probation": {
+            "type": "string",
+            "format": "date"
+          }
         }
       },
       "EditCompanyUserRequest": {
@@ -747,8 +953,7 @@
               "description": "New portal name",
               "type": "string",
               "format": "date",
-              "example": "2021-01-21T00:00:00.000Z",
-              "nullable": true
+              "example": "2021-01-21T00:00:00.000Z"
             }
           }
         ],

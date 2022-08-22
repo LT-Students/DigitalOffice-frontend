@@ -1,0 +1,14 @@
+.add-hours {
+	&__matcard {
+		padding: 32px 48px;
+	}
+
+	&__menu {
+		margin: 0;
+
+		display: inline-flex;
+		align-items: center;
+
+		cursor: pointer;
+	}
+}

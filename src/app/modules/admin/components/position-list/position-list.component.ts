@@ -1,14 +1,15 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { ModalService, ModalWidth } from '@app/services/modal.service';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
-import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { IPositionInfo, PositionService } from '@app/services/position/position.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { PositionInfo } from '@api/position-service/models/position-info';
+import { Icons } from '@shared/modules/icons/icons';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 
 @Component({
@@ -18,6 +19,7 @@ import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edi
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PositionListComponent implements AfterViewInit {
+	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public positions$!: Observable<OperationResultResponse<IPositionInfo[]>>;
@@ -25,7 +27,7 @@ export class PositionListComponent implements AfterViewInit {
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _positionService: PositionService,
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder
@@ -61,10 +63,8 @@ export class PositionListComponent implements AfterViewInit {
 			.openModal<AddEditPositionComponent>(AddEditPositionComponent, ModalWidth.M, positionInfo)
 			.afterClosed()
 			.subscribe({
-				next: (result) => {
-					if (result?.status !== OperationResultStatusType.Failed) {
-						this._refreshCurrentPage$$.next(true);
-					}
+				next: () => {
+					this._refreshCurrentPage$$.next(true);
 				},
 			});
 	}
@@ -82,17 +82,33 @@ export class PositionListComponent implements AfterViewInit {
 					iif(() => !!confirm, this._positionService.deletePosition(positionInfo.id ?? ''), EMPTY)
 				)
 			)
-			.subscribe((result) => {
-				if (result.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+			.subscribe(() => {
+				this._refreshCurrentPage$$.next(true);
+			});
+	}
+
+	public onRestorePosition(positionInfo: PositionInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: 'Да, восстановить',
+				title: `Восстановление должности ${positionInfo.name}`,
+				message: `Вы действительно хотите восстановить должность ${positionInfo.name}`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) =>
+					iif(() => !!confirm, this._positionService.restorePosition(positionInfo.id ?? ''), EMPTY)
+				)
+			)
+			.subscribe(() => {
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 
 	public getPositions(filters: any, event: PageEvent | null): Observable<OperationResultResponse<PositionInfo[]>> {
 		return this._positionService.findPositions({
-			skipcount: event ? event.pageIndex * event.pageSize : 0,
-			takecount: event ? event.pageSize : 10,
+			skipCount: event ? event.pageIndex * event.pageSize : 0,
+			takeCount: event ? event.pageSize : 10,
 			includedeactivated: filters.showDeactivated,
 		});
 	}

@@ -3,7 +3,7 @@ import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { PositionService } from '@app/services/position/position.service';
-import { PositionInfo } from '@data/api/position-service/models/position-info';
+import { PositionInfo } from '@api/position-service/models/position-info';
 
 @Injectable({
 	providedIn: 'root',
@@ -15,6 +15,6 @@ export class PositionResolver implements Resolve<OperationResultResponse<Positio
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<OperationResultResponse<PositionInfo[]>> {
-		return this._positionService.findPositions({ skipcount: 0, takecount: 10 });
+		return this._positionService.findPositions({ skipCount: 0, takeCount: 10 });
 	}
 }

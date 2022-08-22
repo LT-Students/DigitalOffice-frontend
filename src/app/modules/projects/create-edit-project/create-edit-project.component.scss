@@ -1,0 +1,42 @@
+.header {
+	margin-bottom: 24px;
+
+	display: flex;
+	align-items: baseline;
+
+	.page-title {
+		margin: 0 8px 0 0;
+		flex-shrink: 0;
+	}
+
+	.project-name {
+		margin-right: 8px;
+
+		overflow: hidden;
+
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+
+	.actions {
+		margin-left: auto;
+		flex-shrink: 0;
+	}
+}
+
+.content {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: 0.8fr 1fr;
+	grid-template-areas:
+		'none description'
+		'none description';
+}
+
+.description {
+	grid-area: description;
+}
+
+.card-heading {
+	margin-bottom: 8px;
+}

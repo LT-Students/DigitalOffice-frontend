@@ -2,11 +2,11 @@ import { MatDateFormats } from '@angular/material/core';
 
 export const DATE_FORMAT: MatDateFormats = {
 	parse: {
-		dateInput: 'D',
+		dateInput: ['d MMMM y', 'd LLLL y', 'd.MM.y'],
 	},
 	display: {
-		dateInput: 'dd MMMM y',
-		monthYearLabel: 'MMM y',
+		dateInput: 'd MMMM y',
+		monthYearLabel: 'LLLL y',
 		dateA11yLabel: 'dd MMMM y',
 		monthYearA11yLabel: 'YYYY',
 	},
@@ -14,11 +14,11 @@ export const DATE_FORMAT: MatDateFormats = {
 
 export const RANGE_DATE_FORMAT: MatDateFormats = {
 	parse: {
-		dateInput: 'D',
+		dateInput: 'dd/MM/y',
 	},
 	display: {
 		dateInput: 'dd/MM/y',
-		monthYearLabel: 'MMM y',
+		monthYearLabel: 'LLLL y',
 		dateA11yLabel: 'dd MMMM y',
 		monthYearA11yLabel: 'YYYY',
 	},

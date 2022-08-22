@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ProjectApiService } from '@data/api/project-service/services/project-api.service';
+import { ProjectApiService } from '@api/project-service/services/project-api.service';
 import { Observable } from 'rxjs';
 import {
+	CreateProjectRequest,
 	EditProjectRequest,
-	ImageContent,
-	ImageInfo,
-	// ProjectFileInfo,
 	ProjectInfo,
+	ProjectResponse,
 	ProjectStatusType,
 	ProjectUserRoleType,
-	UserInfo,
-} from '@data/api/project-service/models';
-import { UserApiService } from '@data/api/project-service/services/user-api.service';
+} from '@api/project-service/models';
+import { UserApiService } from '@api/project-service/services/user-api.service';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { UUID } from '@app/types/uuid.type';
 import { ResponseMessageModel } from '@app/models/response/response-message.model';
@@ -22,15 +20,7 @@ export interface IGetProjectRequest {
 	includeusers?: boolean;
 	shownotactiveusers?: boolean;
 	includefiles?: boolean;
-	includeDescription?: boolean;
-	includeShortDescription?: boolean;
-}
-
-export interface IGetProjectResponse {
-	project?: ProjectInfo;
-	users?: Array<UserInfo>;
-	// files?: Array<ProjectFileInfo>;
-	images?: Array<ImageInfo>;
+	includeimages?: boolean;
 }
 
 export interface IEditProjectRequest {
@@ -53,21 +43,15 @@ export interface IRemoveUsersFromProjectRequest {
 	body: UUID[];
 }
 
-export interface ICreateProjectRequest {
-	departmentId?: string;
-	description?: string;
-	name: string;
-	projectImages: Array<ImageContent>;
-	shortDescription?: string;
-	shortName?: string;
-	status: ProjectStatusType;
-	users: Array<ICreateUserRequest>;
-}
-
 export interface IFindProjects {
+	includedepartment?: boolean;
+	isascendingsort?: boolean;
+	projectstatus?: ProjectStatusType;
+	nameincludesubstring?: string;
 	skipCount: number;
 	takeCount: number;
-	departmentId?: string;
+	userid?: string;
+	departmentid?: string;
 }
 
 @Injectable({
@@ -84,11 +68,11 @@ export class ProjectService {
 		return this._projectService.findProjects(params);
 	}
 
-	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<IGetProjectResponse>> {
+	public getProject(params: IGetProjectRequest): Observable<OperationResultResponse<ProjectResponse>> {
 		return this._projectService.getProject(params);
 	}
 
-	public createProject(body: ICreateProjectRequest): Observable<OperationResultResponse<{}>> {
+	public createProject(body: CreateProjectRequest): Observable<OperationResultResponse<{}>> {
 		return this._projectService
 			.createProject({ body })
 			.pipe(this._responseMessage.message(MessageTriggeredFrom.Project, MessageMethod.Create));

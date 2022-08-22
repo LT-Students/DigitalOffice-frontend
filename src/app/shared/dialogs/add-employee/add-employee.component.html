@@ -1,0 +1,99 @@
+<div class="modal">
+	<div class="modal__header">
+		<h3>Добавление сотрудников в {{ openFromRu | lowercase }} {{ moduleName }}</h3>
+		<button mat-icon-button mat-dialog-close><mat-icon>close</mat-icon></button>
+	</div>
+
+	<div class="search" [formGroup]="filter">
+		<do-form-field class="search__name">
+			<mat-form-field>
+				<mat-icon matPrefix>search</mat-icon>
+				<input
+					matInput
+					type="search"
+					formControlName="name"
+					placeholder="Введите фамилию и имя сотрудника"
+					autocomplete="off"
+				/>
+			</mat-form-field>
+		</do-form-field>
+
+		<!--		<do-form-field class="search__position">-->
+		<!--			<mat-form-field>-->
+		<!--				<mat-select placeholder="Выберите должность">-->
+		<!--					<mat-option *ngFor="let position of positions" [value]="position">-->
+		<!--						{{ position }}-->
+		<!--					</mat-option>-->
+		<!--				</mat-select>-->
+		<!--			</mat-form-field>-->
+		<!--		</do-form-field>-->
+	</div>
+
+	<h4>
+		{{
+			selection.selected.length < 1
+				? 'Выберите сотрудников для добавления'
+				: (selection.selected.length | i18nPlural: employeeCountMap)
+		}}
+	</h4>
+	<mat-dialog-content
+		class="scrolled-content"
+		infiniteScroll
+		[infiniteScrollDistance]="3"
+		[infiniteScrollThrottle]="100"
+		(scrolled)="getPageUsers()"
+		[scrollWindow]="false"
+	>
+		<table mat-table *ngIf="usersFound; else spinner" [dataSource]="dataSource" class="table">
+			<ng-container matColumnDef="select">
+				<td mat-cell *matCellDef="let row">
+					<mat-checkbox
+						(click)="$event.stopPropagation()"
+						(change)="$event ? selection.toggle(row) : null"
+						[checked]="selection.isSelected(row)"
+					>
+					</mat-checkbox>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="name">
+				<td mat-cell *matCellDef="let element">
+					<div class="main-info">
+						<do-profile-image
+							class="profile-photo"
+							[image]="element?.avatar"
+							[userInitials]="element"
+						></do-profile-image>
+						<div>
+							<div>{{ element.firstName }} {{ element.lastName }}</div>
+							<div class="text-secondary_default">{{ element?.position?.name | placeholder }}</div>
+						</div>
+					</div>
+				</td>
+			</ng-container>
+
+			<ng-container matColumnDef="department">
+				<td mat-cell *matCellDef="let element">
+					{{ element?.department?.name | placeholder }}
+				</td>
+			</ng-container>
+
+			<tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+		</table>
+		<do-empty-list *ngIf="dataSource.data.length === 0" emptyMessage="Нет данных о сотрудниках"></do-empty-list>
+		<ng-template #spinner>
+			<mat-spinner></mat-spinner>
+		</ng-template>
+	</mat-dialog-content>
+	<div mat-dialog-actions>
+		<button mat-button (click)="onClose()">Отмена</button>
+		<button
+			mat-flat-button
+			color="primary"
+			(click)="onClose(this.selection.selected)"
+			[disabled]="selection.selected.length < 1"
+		>
+			Сохранить
+		</button>
+	</div>
+</div>

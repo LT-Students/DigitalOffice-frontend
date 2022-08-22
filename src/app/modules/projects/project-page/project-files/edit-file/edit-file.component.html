@@ -1,0 +1,33 @@
+<h2 doUnderline>Редактировать документ</h2>
+<div class="grid" [formGroup]="form">
+	<do-form-field class="name" label="Название документа">
+		<mat-form-field>
+			<input matInput type="text" formControlName="name" />
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Тип">
+		<mat-form-field>
+			<input matInput type="text" formControlName="extension" />
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Размер">
+		<mat-form-field>
+			<input matInput type="text" formControlName="size" />
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Приватность">
+		<mat-form-field>
+			<mat-select placeholder="Выберите из списка" formControlName="accessType">
+				<mat-option *ngFor="let type of fileAccessType" [value]="type.value">
+					{{ type.label }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</do-form-field>
+</div>
+<mat-dialog-actions align="center">
+	<button class="button" doButton mat-dialog-close>Отменить</button>
+	<button class="button" mat-flat-button color="primary" [loading]="loading$ | async" (click)="submit()">
+		Сохранить
+	</button>
+</mat-dialog-actions>

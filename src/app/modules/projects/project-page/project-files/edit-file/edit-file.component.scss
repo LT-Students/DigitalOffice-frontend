@@ -1,0 +1,19 @@
+.grid {
+	margin-bottom: 24px;
+
+	display: grid;
+	grid-template-columns: 100px 144px 1fr;
+	gap: 18px 12px;
+}
+
+.name {
+	grid-column: span 3;
+}
+
+.button {
+	width: 137px;
+
+	&:last-child {
+		margin-left: 12px;
+	}
+}

@@ -4,100 +4,81 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from '@app/guards/auth.guard';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { InstallerGuard } from '@app/guards/installer.guard';
-import { EmployeePageService } from '@app/services/employee-page.service';
-import { ContentContainerComponent } from './shared/component/content-container/content-container.component';
-import { ProjectPageComponent } from './modules/user/components/project-page/project-page.component';
-import { EmployeePageComponent } from './modules/employee/employee-page.component';
-import { WizardComponent } from './modules/installer/components/wizard/wizard.component';
-import { DepartmentListComponent } from './modules/admin/components/department-list/department-list.component';
-import { DepartmentCardComponent } from './modules/admin/components/department-card/department-card.component';
-import { DepartmentListResolver } from './modules/admin/resolvers/department-list.resolver';
-import { DepartmentPageResolver } from './modules/admin/resolvers/department-page.resolver';
-import { ProjectPageResolver } from './modules/user/resolvers/project-page.resolver';
-
-export const enum RouteType {
-	AUTH = 'auth',
-	USER = 'user',
-	ADMIN = 'admin',
-	PROJECT = 'project',
-	DEPARTMENTS = 'departments',
-	NEWS = 'news',
-	INSTALLER = 'installer',
-}
+import { AppRoutes } from '@app/models/app-routes';
+import { IsLoggedGuard } from '@app/guards/is-logged.guard';
+import { PortalGuard } from '@app/guards/portal.guard';
+import { ContentContainerComponent } from './modules/common-layout/content-container/content-container.component';
 
 const routes: Routes = [
 	{
-		path: '',
+		path: AppRoutes.Installer,
+		loadChildren: () => import('./modules/installer/installer.module').then((m) => m.InstallerModule),
+		canLoad: [InstallerGuard],
 		canActivate: [InstallerGuard],
+	},
+	{
+		path: AppRoutes.Auth,
+		loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
+		canLoad: [IsLoggedGuard, PortalGuard],
+		canActivate: [IsLoggedGuard, PortalGuard],
+	},
+	{
+		path: '',
+		component: ContentContainerComponent,
+		canActivate: [AuthGuard, PortalGuard],
 		children: [
 			{
 				path: '',
-				component: ContentContainerComponent,
-				canActivate: [AuthGuard],
-				children: [
-					{
-						path: '',
-						pathMatch: 'full',
-						redirectTo: RouteType.USER,
-					},
-					{
-						path: RouteType.USER,
-						loadChildren: () => import('./modules/user/user.module').then((m) => m.UserModule),
-					},
-					{
-						path: RouteType.ADMIN,
-						loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule),
-						canActivate: [AdminGuard],
-					},
-					{
-						path: RouteType.NEWS,
-						loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
-					},
-					{
-						path: `${RouteType.USER}/:id`,
-						component: EmployeePageComponent,
-						resolve: {
-							employee: EmployeePageService,
-						},
-					},
-					{
-						path: `${RouteType.PROJECT}/:id`,
-						component: ProjectPageComponent,
-						resolve: {
-							project: ProjectPageResolver,
-						},
-					},
-					{
-						path: RouteType.DEPARTMENTS,
-						component: DepartmentListComponent,
-						resolve: {
-							departments: DepartmentListResolver,
-						},
-					},
-					{
-						path: `${RouteType.DEPARTMENTS}/:id`,
-						component: DepartmentCardComponent,
-						resolve: {
-							department: DepartmentPageResolver,
-						},
-					},
-				],
+				pathMatch: 'full',
+				redirectTo: AppRoutes.TimeTrack,
 			},
 			{
-				path: RouteType.AUTH,
-				loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
+				path: AppRoutes.TimeTrack,
+				canLoad: [AuthGuard, PortalGuard],
+				loadChildren: () =>
+					import('./modules/time-tracker/time-tracker.module').then((m) => m.TimeTrackerModule),
+			},
+			{
+				path: AppRoutes.Admin,
+				canLoad: [AuthGuard, PortalGuard],
+				canActivate: [AdminGuard],
+				loadChildren: () => import('./modules/admin/admin.module').then((m) => m.AdminModule),
+			},
+			{
+				path: AppRoutes.News,
+				canLoad: [AuthGuard, PortalGuard],
+				loadChildren: () => import('./modules/news/news.module').then((m) => m.NewsModule),
+			},
+			{
+				path: AppRoutes.Projects,
+				canLoad: [AuthGuard, PortalGuard],
+				loadChildren: () => import('./modules/projects/projects.module').then((m) => m.ProjectsModule),
+			},
+			{
+				path: AppRoutes.Users,
+				canLoad: [AuthGuard, PortalGuard],
+				loadChildren: () => import('./modules/employee/employee.module').then((m) => m.EmployeeModule),
+			},
+			{
+				path: AppRoutes.Departments,
+				canLoad: [AuthGuard, PortalGuard],
+				loadChildren: () => import('./modules/departments/departments.module').then((m) => m.DepartmentsModule),
+			},
+			{
+				path: AppRoutes.Reports,
+				canLoad: [AuthGuard, PortalGuard],
+				loadChildren: () => import('./modules/feedback/feedback.module').then((m) => m.FeedbackModule),
 			},
 		],
 	},
 	{
-		path: RouteType.INSTALLER,
-		component: WizardComponent,
-		canActivate: [InstallerGuard],
+		path: '**',
+		redirectTo: '',
 	},
 ];
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes)],
+	imports: [RouterModule.forRoot(routes, { paramsInheritanceStrategy: 'always' })],
 	exports: [RouterModule],
 })
 export class AppRoutingModule {}

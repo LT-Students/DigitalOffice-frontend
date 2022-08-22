@@ -18,8 +18,14 @@
 	}
 }
 
-.word-wrap {
-	&_break-word {
-		word-wrap: break-word;
-	}
+.break-word {
+	word-break: break-word;
+}
+
+.position-relative {
+	position: relative;
+}
+
+.pointer {
+	cursor: pointer;
 }

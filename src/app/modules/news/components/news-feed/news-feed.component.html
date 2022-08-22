@@ -13,10 +13,10 @@
 			<mat-card *ngFor="let post of news" (click)="openPost(post.id)" class="post news__post">
 				<div class="post__info">
 					<div class="post__tag">
-						<do-profile-image class="post__image"></do-profile-image>
+						<do-profile-image class="post__image" label="Lanit Tercom"></do-profile-image>
 						<div>
 							<div>
-								<b>{{ companyName | async }}</b>
+								<b>Общий канал</b>
 							</div>
 							<div class="mat-body-1">{{ post.createdAtUtc | date: 'dd.MM.YYYY' }}</div>
 						</div>

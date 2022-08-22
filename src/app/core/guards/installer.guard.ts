@@ -9,62 +9,37 @@ import {
 	UrlTree,
 	Router,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { CurrentCompanyService } from '@app/services/current-company.service';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { fromPromise } from 'rxjs/internal-compatibility';
-import { Company } from '@app/models/company';
-import { RouteType } from '../../app-routing.module';
+import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
+import { PortalService } from '@app/services/portal.service';
+import { AppRoutes } from '@app/models/app-routes';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class InstallerGuard implements CanActivate, CanLoad {
-	constructor(private _currentCompanyService: CurrentCompanyService, private _router: Router) {}
+	private redirectUrl = this.router.createUrlTree([AppRoutes.Auth]);
+
+	constructor(private portalService: PortalService, private router: Router) {}
 
 	canActivate(
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		return this._currentCompanyService.company$.pipe(
-			// map((company) => !!company),
-			// tap((companyExists) => {
-			// 	if (!companyExists) {
-			// 		if (route.routeConfig?.path !== RouteType.INSTALLER) {
-			// 			this._router.navigate([RouteType.INSTALLER]);
-			// 		}
-			// 	} else {
-			// 		if (route.routeConfig?.path !== '') {
-			// 			this._router.navigate(['']);
-			// 		}
-			// 	}
-			// })
-			map((company: Company) => !!company.id),
-			switchMap((companyExists: boolean) => {
-				if (!companyExists) {
-					if (route.routeConfig?.path !== RouteType.INSTALLER) {
-						return fromPromise(this._router.navigate([RouteType.INSTALLER]));
-					} else return of(true);
-				} else {
-					if (route.routeConfig?.path !== '') {
-						return fromPromise(this._router.navigate(['']));
-					} else return of(true);
-				}
-			})
-		);
+		return this.canAccess();
 	}
 
 	canLoad(
 		route: Route,
 		segments: UrlSegment[]
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-		return this._currentCompanyService.company$.pipe(
-			map((company) => !!company),
-			tap((companyExists) => {
-				if (!companyExists) {
-					this._router.navigate([RouteType.INSTALLER]);
-				}
-			})
+		return this.canAccess();
+	}
+
+	private canAccess(): Observable<boolean | UrlTree> {
+		return this.portalService.isPortalExists$.pipe(
+			first(),
+			map((portalExists: boolean) => (portalExists ? this.redirectUrl : true))
 		);
 	}
 }

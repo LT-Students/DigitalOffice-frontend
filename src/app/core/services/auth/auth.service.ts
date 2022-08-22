@@ -1,18 +1,26 @@
 import { Injectable } from '@angular/core';
-import { catchError, switchMap, tap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { forkJoin, Observable, timer } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { AuthenticationRequest } from '@data/api/auth-service/models/authentication-request';
-import { AuthenticationResponse } from '@data/api/auth-service/models/authentication-response';
-import { AuthApiService } from '@data/api/auth-service/services/auth-api.service';
-import { CredentialsApiService } from '@data/api/user-service/services/credentials-api.service';
-import { CreateCredentialsRequest } from '@data/api/user-service/models/create-credentials-request';
-import { HttpErrorResponse } from '@angular/common/http';
-import { OperationResultResponseCredentialsResponse } from '@data/api/user-service/models/operation-result-response-credentials-response';
+import { AuthenticationRequest } from '@api/auth-service/models/authentication-request';
+import { AuthenticationResponse } from '@api/auth-service/models/authentication-response';
+import { AuthApiService } from '@api/auth-service/services/auth-api.service';
+import { CredentialsApiService } from '@api/user-service/services/credentials-api.service';
+import { CreateCredentialsRequest } from '@api/user-service/models/create-credentials-request';
+import { OperationResultResponseCredentialsResponse } from '@api/user-service/models/operation-result-response-credentials-response';
 import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
-import { LocalStorageService } from '../local-storage.service';
+import { AppRoutes } from '@app/models/app-routes';
+import { UserService } from '@app/services/user/user.service';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { CredentialsResponse } from '@api/user-service/models/credentials-response';
+import { Company } from '@app/models/company';
+import { CompanyService } from '@app/services/company/company.service';
+import { CurrentCompanyService } from '@app/services/current-company.service';
+import { AuthTokenService } from '@app/services/auth-token.service';
+import { DialogService } from '@app/services/dialog.service';
+import { AuthRoutes } from '../../../modules/auth/models/auth-routes';
 
 @Injectable({
 	providedIn: 'root',
@@ -20,29 +28,57 @@ import { LocalStorageService } from '../local-storage.service';
 export class AuthService {
 	constructor(
 		private authApiService: AuthApiService,
-		private _currentUserService: CurrentUserService,
+		private userService: UserService,
+		private currentUserService: CurrentUserService,
+		private companyService: CompanyService,
+		private currentCompanyService: CurrentCompanyService,
 		private credentialsApiService: CredentialsApiService,
-		private localStorageService: LocalStorageService,
-		private _router: Router
+		private authToken: AuthTokenService,
+		private router: Router,
+		private dialog: DialogService
 	) {}
 
-	public login(authenticationRequest: AuthenticationRequest): Observable<User> {
+	public login(authenticationRequest: AuthenticationRequest): Observable<[User, Company]> {
 		return this.authApiService.login({ body: authenticationRequest }).pipe(
-			tap((authResponse) => this._setCredentialsToLocalStorage(authResponse)),
-			switchMap((authResponse: AuthenticationResponse) =>
-				this._currentUserService.getUserOnLogin(authResponse.userId)
-			),
-			tap((user) => this._currentUserService.setUser(user))
+			tap((authResponse: AuthenticationResponse) => this.setTokens(authResponse)),
+			switchMap((authResponse: AuthenticationResponse) => this.getUserAndCompany(authResponse.userId))
 		);
 	}
 
-	public logout(): void {
-		this._removeCredentialsFromLocalStorage();
-		this._router.navigate(['/auth/login']);
+	public getUserAndCompany(userId: string): Observable<[User, Company]> {
+		return forkJoin([
+			this.currentUserService
+				.getUserOnLogin(userId)
+				.pipe(tap((user: User) => this.currentUserService.setUser(user))),
+			timer(100).pipe(
+				switchMap(() =>
+					this.companyService
+						.getCompany()
+						.pipe(tap((company: Company) => this.currentCompanyService.setCompany(company)))
+				)
+			),
+		]);
+	}
+
+	public logout(isTokenExpired = false): void {
+		this.dialog.closeAll();
+		this.removeTokens();
+
+		const returnUrl = this.router.url;
+		this.router.navigate(
+			[AppRoutes.Auth, AuthRoutes.SignIn],
+			isTokenExpired && returnUrl && returnUrl !== '/'
+				? {
+						queryParams: {
+							return: returnUrl,
+						},
+				  }
+				: undefined
+		);
 	}
 
 	public isAuthenticated(): boolean {
-		const token = this.localStorageService.get('access_token');
+		const token = this.authToken.getAccessToken();
 
 		return token != null;
 	}
@@ -51,44 +87,39 @@ export class AuthService {
 		createCredentialsRequest: CreateCredentialsRequest
 	): Observable<OperationResultResponseCredentialsResponse> {
 		return this.credentialsApiService.createCredentials({ body: createCredentialsRequest }).pipe(
-			tap((response) => {
+			tap((response: OperationResultResponse<CredentialsResponse>) => {
 				if (response.body) {
-					this._setCredentialsToLocalStorage(response.body);
+					this.setTokens(response.body);
 				}
-			}),
-			catchError((error: HttpErrorResponse) => {
-				switch (error.status) {
-					case 400:
-					case 403:
-					case 404: {
-						return throwError(error.error.Message);
-					}
-					default: {
-						return throwError('Упс! Возникла ошибка');
-					}
+			})
+		);
+	}
+
+	public reactivateUser(userId: string, password: string): Observable<OperationResultResponse<CredentialsResponse>> {
+		return this.userService.reactivateUser(userId, password).pipe(
+			tap((response: OperationResultResponse<CredentialsResponse>) => {
+				if (response.body) {
+					this.setTokens(response.body);
 				}
 			})
 		);
 	}
 
 	public refreshToken(): Observable<AuthenticationResponse> {
-		const refreshToken: string = this.localStorageService.get('refresh_token');
+		const refreshToken = this.authToken.getRefreshToken() as string;
 
-		return this.authApiService.refresh({ body: { refreshToken: refreshToken } }).pipe(
+		return this.authApiService.refresh({ body: { refreshToken } }).pipe(
 			tap((authResponse: AuthenticationResponse) => {
-				this._setCredentialsToLocalStorage(authResponse);
+				this.setTokens(authResponse);
 			})
 		);
 	}
 
-	private _setCredentialsToLocalStorage(authenticationInfo: AuthenticationResponse): void {
-		this.localStorageService.set('access_token', authenticationInfo.accessToken);
-		this.localStorageService.set('refresh_token', authenticationInfo.refreshToken);
+	private setTokens({ accessToken, refreshToken }: AuthenticationResponse): void {
+		this.authToken.setTokens(accessToken, refreshToken);
 	}
 
-	private _removeCredentialsFromLocalStorage(): void {
-		this.localStorageService.remove('access_token');
-		this.localStorageService.remove('refresh_token');
-		this.localStorageService.remove('user');
+	private removeTokens(): void {
+		this.authToken.removeTokens();
 	}
 }

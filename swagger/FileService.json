@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.1.1.0",
+    "version": "1.1.1.4",
     "title": "FileService",
     "description": "FileService is an API intended to work with files and images."
   },
@@ -16,6 +16,73 @@
     }
   ],
   "paths": {
+    "/file/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/entityId"
+        },
+        {
+          "$ref": "#/components/parameters/access"
+        }
+      ],
+      "post": {
+        "tags": [
+          "File"
+        ],
+        "operationId": "createFile",
+        "description": "Create files.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "uploadedFiles": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successfully add files.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.\n* Invalid token.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/file/get": {
       "parameters": [
         {
@@ -27,8 +94,8 @@
           "File"
         ],
         "operationId": "getFile",
-        "summary": "Returns the file by Id.",
-        "description": "The method attempts to get the file by id.",
+        "summary": "Returns the files by Ids.",
+        "description": "The method attempts to get the files by ids.",
         "parameters": [
           {
             "name": "filesIds",
@@ -46,20 +113,14 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully returned file.",
+            "description": "Successfully returned files.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "items": {
-                    "$ref": "#/components/schemas/FileInfo"
-                  }
+                  "type": "object"
                 }
               }
             }
-          },
-          "404": {
-            "description": "Not Found.\n* File with this id not found.\n"
           }
         }
       }
@@ -70,25 +131,21 @@
           "$ref": "#/components/parameters/securityToken"
         },
         {
+          "$ref": "#/components/parameters/entityId"
+        },
+        {
           "$ref": "#/components/parameters/fileId"
+        },
+        {
+          "$ref": "#/components/parameters/newName"
         }
       ],
-      "patch": {
+      "put": {
         "tags": [
           "File"
         ],
         "operationId": "editFile",
         "description": "Editing file by Id.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/EditFileRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "File respose.",
@@ -110,6 +167,9 @@
               }
             }
           },
+          "401":{
+            "description": "Unauthorized - Token was not entered"
+          },
           "403": {
             "description": "Forbidden.\n* Token was not entered.\n* Invalid token.\n",
             "content": {
@@ -126,47 +186,16 @@
   },
   "components": {
     "schemas": {
-      "FileInfo": {
-        "type": "object",
-        "required": [
-          "Name",
-          "Content",
-          "Extension"
-        ],
-        "properties": {
-          "Id": {
-            "description": "File global unique identifier.",
-            "type": "string",
-            "format": "uuid",
-            "nullable": true
-          },
-          "Name": {
-            "description": "File name.",
-            "type": "string",
-            "example": "Avatar"
-          },
-          "Content": {
-            "description": "File content.",
-            "type": "string",
-            "format": "byte"
-          },
-          "Extension": {
-            "description": "File extension.",
-            "type": "string",
-            "example": "txt"
-          }
-        }
-      },
-      "OperationResultStatusType": {
+      "FileAccessType": {
         "type": "string",
-        "description": "Operation complition result status.",
+        "description": "Type of the access to the file.\n",
         "enum": [
-          "FullSuccess",
-          "PartialSuccess",
-          "Failed"
+          "Manager",
+          "Team",
+          "Public"
         ],
-        "example": "FullSuccess",
-        "default": "FullSuccess"
+        "nullable": false,
+        "example": "Public"
       },
       "ErrorResponse": {
         "description": "Error information",
@@ -187,12 +216,12 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Errors"
+        ],
         "properties": {
           "Body": {
             "type": "object"
-          },
-          "Status": {
-            "$ref": "#/components/schemas/OperationResultStatusType"
           },
           "Errors": {
             "type": "array",
@@ -264,6 +293,16 @@
         },
         "required": true
       },
+      "entityId": {
+        "name": "entityId",
+        "in": "query",
+        "description": "Entity global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
       "fileId": {
         "name": "fileId",
         "in": "query",
@@ -271,6 +310,23 @@
         "schema": {
           "type": "string",
           "format": "uuid"
+        },
+        "required": true
+      },
+      "newName": {
+        "name": "newName",
+        "in": "query",
+        "description": "New name of the file.",
+        "schema": {
+          "type": "string"
+        },
+        "required": true
+      },
+      "access": {
+        "name": "access",
+        "in": "query",
+        "schema": {
+          "$ref": "#/components/schemas/FileAccessType"
         },
         "required": true
       }

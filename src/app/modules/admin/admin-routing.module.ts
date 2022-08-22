@@ -1,60 +1,40 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
-import { RouteType } from '../../app-routing.module';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { NewProjectComponent } from './components/new-project/new-project.component';
-import { ManageUsersComponent } from './components/manage-users/manage-users.component';
 import { ManageRolesComponent } from './components/manage-roles/manage-roles.component';
 import { OfficeListComponent } from './components/office-list/office-list.component';
 import { PositionListComponent } from './components/position-list/position-list.component';
-import { DirectorsTimelistComponent } from './components/directors-timelist/directors-timelist.component';
 import { PositionResolver } from './resolvers/position.resolver';
 import { OfficeResolver } from './resolvers/office.resolver';
-import { UserResolver } from './resolvers/user.resolver';
 import { RoleResolver } from './resolvers/role.resolver';
-import { TimelistResolver } from './resolvers/timelist.resolver';
+import { AdminRoutes } from './models/admin-routes';
 
 const adminRoutes: Routes = [
-	{ path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-	{ path: 'dashboard', component: DashboardComponent },
-	{ path: 'new-project', component: NewProjectComponent },
+	{ path: '', pathMatch: 'full', redirectTo: AdminRoutes.Dashboard },
+	{ path: AdminRoutes.Dashboard, component: DashboardComponent },
 	{
-		path: 'manage-users',
-		component: ManageUsersComponent,
-		resolve: {
-			users: UserResolver,
-		},
-	},
-	{
-		path: 'manage-roles',
+		path: AdminRoutes.Roles,
 		component: ManageRolesComponent,
 		resolve: {
 			roles: RoleResolver,
 		},
 	},
 	{
-		path: 'offices',
+		path: AdminRoutes.Offices,
 		component: OfficeListComponent,
 		resolve: {
 			offices: OfficeResolver,
 		},
 	},
 	{
-		path: 'positions',
+		path: AdminRoutes.Positions,
 		component: PositionListComponent,
 		resolve: {
 			positions: PositionResolver,
 		},
 	},
-	{
-		path: `${RouteType.DEPARTMENTS}/:id/timelist`,
-		component: DirectorsTimelistComponent,
-		resolve: {
-			timelist: TimelistResolver,
-		},
-	},
-	{ path: '**', redirectTo: RouteType.ADMIN, pathMatch: 'full' },
+	{ path: '**', redirectTo: AdminRoutes.Dashboard, pathMatch: 'full' },
 ];
 
 @NgModule({

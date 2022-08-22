@@ -31,6 +31,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "inlineStyleLanguage": "scss",
             "styles": [
               "src/styles.scss",
               "src/theme.scss"
@@ -75,6 +76,16 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
@@ -107,6 +118,7 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "inlineStyleLanguage": "scss",
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"

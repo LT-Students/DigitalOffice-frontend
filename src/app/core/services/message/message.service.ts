@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MessageApiService } from '@data/api/message-service/services/message-api.service';
-import { WorkspaceApiService } from '@data/api/message-service/services/workspace-api.service';
-import { Workspace } from '@data/api/message-service/models/workspace';
-import { OperationResultResponse } from '@data/api/message-service/models/operation-result-response';
-import { EditEmailTemplateRequest } from '@data/api/message-service/models/edit-email-template-request';
-import { EmailTemplateRequest } from '@data/api/message-service/models/email-template-request';
+import { MessageApiService } from '@api/message-service/services/message-api.service';
+import { WorkspaceApiService } from '@api/message-service/services/workspace-api.service';
+import { Workspace } from '@api/message-service/models/workspace';
+import { OperationResultResponse } from '@api/message-service/models/operation-result-response';
+import { EditEmailTemplateRequest } from '@api/message-service/models/edit-email-template-request';
+import { EmailTemplateRequest } from '@api/message-service/models/email-template-request';
 
 export interface IRemoveEmailTemplateRequest {
 	/**
@@ -21,7 +21,9 @@ export interface IRemoveWorkspaceRequest {
 	workspaceId: string;
 }
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class MessageService {
 	constructor(private _messageService: MessageApiService, private _workspaceService: WorkspaceApiService) {}
 

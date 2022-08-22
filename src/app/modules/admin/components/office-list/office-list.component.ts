@@ -1,14 +1,15 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
-import { ModalService, ModalWidth } from '@app/services/modal.service';
-import { OfficeInfo } from '@data/api/company-service/models';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { OfficeInfo } from '@api/office-service/models';
 import { combineLatest, EMPTY, iif, Observable, Subject } from 'rxjs';
-import { OperationResultResponse, OperationResultStatusType } from '@app/types/operation-result-response.interface';
+import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { ActivatedRoute } from '@angular/router';
 import { map, startWith, switchMap, tap } from 'rxjs/operators';
 import { OfficeService } from '@app/services/company/office.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Icons } from '@shared/modules/icons/icons';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
 
 @Component({
@@ -18,6 +19,7 @@ import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-of
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfficeListComponent implements AfterViewInit {
+	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 
 	public offices$!: Observable<OperationResultResponse<OfficeInfo[]>>;
@@ -25,7 +27,7 @@ export class OfficeListComponent implements AfterViewInit {
 	private _refreshCurrentPage$$: Subject<boolean>;
 
 	constructor(
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _officeService: OfficeService,
 		private _route: ActivatedRoute,
 		private _fb: FormBuilder
@@ -62,9 +64,7 @@ export class OfficeListComponent implements AfterViewInit {
 			.afterClosed()
 			.subscribe({
 				next: (result) => {
-					if (result?.status !== OperationResultStatusType.Failed) {
-						this._refreshCurrentPage$$.next(true);
-					}
+					this._refreshCurrentPage$$.next(true);
 				},
 			});
 	}
@@ -83,9 +83,25 @@ export class OfficeListComponent implements AfterViewInit {
 				})
 			)
 			.subscribe((result) => {
-				if (result?.status !== OperationResultStatusType.Failed) {
-					this._refreshCurrentPage$$.next(true);
-				}
+				this._refreshCurrentPage$$.next(true);
+			});
+	}
+
+	public onRestoreOffice(officeInfo: OfficeInfo): void {
+		this._modalService
+			.confirm({
+				confirmText: `Да, восстановить`,
+				message: `Вы действительно хотите восстановить офис ${officeInfo.name}?`,
+				title: `Восстановление офиса ${officeInfo.name}`,
+			})
+			.afterClosed()
+			.pipe(
+				switchMap((confirm) => {
+					return iif(() => !!confirm, this._officeService.restoreOffice(officeInfo.id ?? ''), EMPTY);
+				})
+			)
+			.subscribe((result) => {
+				this._refreshCurrentPage$$.next(true);
 			});
 	}
 

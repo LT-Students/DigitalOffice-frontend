@@ -1,0 +1,48 @@
+@use 'base/variables' as variables;
+
+.dropzone {
+	position: relative;
+
+	padding: 12px 36px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+
+	align-items: center;
+
+	border: 2px dashed variables.$secondary_default;
+	border-radius: 5px;
+
+	&.has-files {
+		background: variables.$light_1;
+
+		.upload-button {
+			margin-top: 4px;
+		}
+	}
+
+	.upload-icon {
+		margin-bottom: 4px;
+
+		width: 32px;
+		height: 32px;
+	}
+}
+
+.images {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 10px;
+}
+
+.image-count {
+	position: absolute;
+
+	left: 16px;
+	bottom: -22px;
+}
+
+.upload-button {
+	width: 176px;
+}

@@ -1,18 +1,17 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, ChangeDetectionStrategy, HostListener, Inject, ChangeDetectorRef } from '@angular/core';
 import { EMPTY, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { NewsService } from '@app/services/news/news.service';
-import { ArticlePreview } from '@app/models/news.model';
-import { ModalService } from '@app/services/modal.service';
-import { NewsFeedService } from '@app/services/news-feed.service';
-import { CurrentCompanyService } from '@app/services/current-company.service';
+import { DialogService } from '@app/services/dialog.service';
 import { PageEvent } from '@angular/material/paginator';
+import { ConfirmDialogData } from '@shared/dialogs/confirm-dialog/confirm-dialog.component';
+import { ArticlePreview } from '../../models/news.model';
+import { NewsFeedService } from '../../services/news-feed.service';
 import { EditorJSParser } from '../../parser';
 import { PostComponent } from '../post/post.component';
 import { NewsEditorComponent } from '../news-editor/news-editor.component';
-import { ConfirmDialogData } from '../../../../shared/modals/confirm-dialog/confirm-dialog.component';
 
 @Component({
 	selector: 'do-news-feed',
@@ -25,17 +24,14 @@ export class NewsFeedComponent {
 
 	public fixedTags: boolean;
 
-	public companyName: Observable<string>;
-
 	public pageIndex: number;
 	public pageSize: number;
 	public totalCount: number;
 
 	constructor(
 		@Inject(DOCUMENT) private _document: Document,
-		private _modalService: ModalService,
+		private _modalService: DialogService,
 		private _newsService: NewsService,
-		private _currentCompanyService: CurrentCompanyService,
 		private _cdr: ChangeDetectorRef,
 		private _editorJSParser: EditorJSParser,
 		private _newsFeedService: NewsFeedService
@@ -45,7 +41,6 @@ export class NewsFeedComponent {
 		this.pageSize = 10;
 		this.fixedTags = false;
 		this.newsFeed$ = this._newsFeedService.newsFeed$;
-		this.companyName = this._currentCompanyService.company$.pipe(map((company) => company.companyName));
 		this.getData({ takeCount: 10, skipCount: 0 });
 	}
 
@@ -105,15 +100,19 @@ export class NewsFeedComponent {
 					return EMPTY;
 				})
 			)
-			.subscribe();
+			.subscribe(() => {
+				this.getData({
+					takeCount: this.pageSize,
+					skipCount: this.pageIndex * this.pageSize,
+				});
+			});
 	}
 
 	public openPost(postId: string | undefined): void {
 		this._modalService
 			.fullScreen(PostComponent, postId)
 			.afterClosed()
-			.subscribe((result) => {
-				console.log(result);
+			.subscribe(() => {
 				this.getData({
 					takeCount: this.pageSize,
 					skipCount: this.pageIndex * this.pageSize,

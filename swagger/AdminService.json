@@ -1,0 +1,509 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.1.1",
+    "title": "AdminService",
+    "description": "AdminService is an API that intended to work with app installation."
+  },
+  "servers": [
+    {
+      "url": "https://admin.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://admin.dev.ltdo.xyz",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/admin/install" : {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "installApp",
+        "description": "Returns true or false.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstallAppRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseServiceConfigurationInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseServiceConfigurationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+
+    },
+    "/admin/find" : {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipcount",
+          "in": "query",
+          "description": "Number of entries to skip",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takecount",
+          "in": "query",
+          "description": "Number of entries to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "findServiceConfiguration",
+        "description": "Returns current configuration of all services.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseServiceConfigurationInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseServiceConfigurationInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+
+    },
+    "/admin/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "operationId": "editAdmin",
+        "description": "The method attempts to disable or enable services by changing the state to the opposite. The user must be admin.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstallAppRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/graphicaluserinterface/get" : {
+      "get": {
+        "tags": [
+          "GraphicalUserInterface"
+        ],
+        "operationId": "getGraphicalUserInterface",
+        "description": "Returns GUI info.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseGuiInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/serviceendpoint/get" : {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "serviceId",
+          "in": "query",
+          "schema": {
+            "type": "string",
+            "format": "uuid",
+            "example": "c8f46f5b-bc3a-48c6-bd65-36faa783379d"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "ServiceEndpoint"
+        ],
+        "operationId": "getServiceEndpoint",
+        "description": "Returns ids of endpoints of service.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseServiceEndpointsInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "InstallAppRequest": {
+        "type": "object",
+        "required": [
+          "SmtpInfo",
+          "AdminInfo",
+          "GuiInfo",
+          "ServicesToDisable"
+        ],
+        "properties": {
+          "SmtpInfo": {
+            "type": "object",
+            "required": [
+              "Host",
+              "Port",
+              "EnableSsl",
+              "Email",
+              "Password"
+            ],
+            "properties": {
+              "Host": {
+                "type": "string"
+              },
+              "Port": {
+                "type": "integer"
+              },
+              "EnableSsl": {
+                "type": "boolean"
+              },
+              "Email": {
+                "type": "string"
+              },
+              "Password": {
+                "type": "string"
+              }
+            }
+          },
+          "AdminInfo": {
+            "type": "object",
+            "required": [
+              "FirstName",
+              "LastName",
+              "Email",
+              "Login",
+              "Password"
+            ],
+            "properties": {
+              "FirstName": {
+                "type": "string"
+              },
+              "LastName": {
+                "type": "string"
+              },
+              "MiddleName": {
+                "type": "string"
+              },
+              "Email": {
+                "type": "string"
+              },
+              "Login": {
+                "type": "string"
+              },
+              "Password": {
+                "type": "string"
+              }
+            }
+          },
+          "GuiInfo": {
+            "type": "object",
+            "required": [
+              "SiteUrl"
+            ],
+            "properties": {
+              "PortalName": {
+                "type": "string"
+              },
+              "LogoContent": {
+                "type": "string"
+              },
+              "LogoExtension": {
+                "type": "string"
+              },
+              "SiteUrl": {
+                "type": "string"
+              }
+            }
+          },
+          "ServicesToDisable": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "ServiceConfigurationInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ServiceName": {
+            "type": "string"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "EndpointInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "ServiceEndpointsInfo": {
+        "type": "object",
+        "properties": {
+          "ServiceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ServiceName": {
+            "type": "string"
+          },
+          "Endpoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EndpointInfo"
+            }
+          }
+        }
+      },
+      "FindResultResponseServiceConfigurationInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ServiceConfigurationInfo"
+            },
+            "nullable": true
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseServiceEndpointsInfo": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "properties": {
+              "serviceId": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "serviceName": {
+                "type": "string"
+              },
+              "endpoints": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EndpointInfo"
+                }
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseGuiInfo": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "portalName": {
+                "type": "string"
+              },
+              "logoContent": {
+                "type": "string"
+              },
+              "logoExtension": {
+                "type": "string"
+              },
+              "siteUrl": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

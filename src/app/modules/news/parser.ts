@@ -3,7 +3,7 @@ import { forkJoin, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { ImageNewsService } from '@app/services/image/image-news.service';
-import { IOutputBlockData } from '@app/models/editorjs/output-data.interface';
+import { IOutputBlockData } from './models/output-data.interface';
 
 @Injectable({
 	providedIn: 'root',
@@ -105,7 +105,7 @@ export class EditorJSParser {
 						return `<li class='${itemClasses}'>${item.content} ${sublist}</li>`;
 					});
 
-					return `<${listStyle} class='list ${listClasses}'>${list.join('')}</${listStyle}>`;
+					return `<${listStyle} class='ce-list ${listClasses}'>${list.join('')}</${listStyle}>`;
 				};
 
 				return of(`<div class='ce-block'>

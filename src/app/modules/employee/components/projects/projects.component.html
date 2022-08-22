@@ -2,30 +2,70 @@
 	<h3 class="projects-table__card-title" doUnderline underlinedSize="sm">Проекты</h3>
 	<ng-container *ngFor="let section of projects$ | async">
 		<section class="projects-table__section">
-			<h3 class="projects-table__group-title">
+			<h4 class="projects-table__group-title">
 				{{ section.name }}
-				<span class="mat-h3 primary">{{ section.projects.length | i18nPlural: section.plural }}</span>
-			</h3>
+				<span class="mat-h4 primary">{{ section.projects.length | i18nPlural: section.plural }}</span>
+			</h4>
+
 			<div *ngIf="section.projects.length > 0; else emptyList" class="projects-table__container">
-				<div *ngFor="let project of section.projects" class="projects-table__project">
-					<h4>{{ project.name }}</h4>
-					<!--          <p>project.consumer.name</p>-->
-					<p class="projects-table__description">
-						{{ project.shortDescription ? project.shortDescription : 'Описание отсутствует' }}
-					</p>
-					<!--          <p>Направление</p>-->
-					<!--          <p>{{ project.shortName }}</p>-->
-					<!--<p>В проекте</p>
-          <p>
-            С project.startedAt
-            <span>по project.endedAt</span>
-          </p>-->
-					<p class="projects-table__more-button" (click)="onMoreClicked(project?.id)">
+				<div
+					*ngFor="let project of section.projects | slice: 0:(section.isExpanded ? undefined : 4)"
+					class="projects-table__project bg-bg"
+				>
+					<h5
+						class="projects-table__project-name"
+						doTruncateTooltip
+						[matTooltip]="project.name"
+						[matTooltipPosition]="'above'"
+					>
+						{{ project.name }}
+					</h5>
+
+					<span class="projects-table__value text-secondary_default">{{ project.customer }}</span>
+
+					<span
+						[ngClass]="{
+							active: project.status === ProjectStatus.Active,
+							suspend: project.status === ProjectStatus.Suspend,
+							closed: project.status === ProjectStatus.Closed
+						}"
+						class="projects-table__status-label text-primary"
+					>
+						{{ project.status | projectType | titlecase }}
+					</span>
+
+					<span class="projects-table__description">
+						{{ project?.shortDescription | placeholder: 'Описание отсутствует' }}
+					</span>
+
+					<span class="projects-table__caption text-secondary_default">Роль в проекте</span>
+					<span class="projects-table__value"> not implemented </span>
+
+					<span class="projects-table__caption text-secondary_default">Старт проекта</span>
+					<span class="projects-table__value">{{ project.startDateUtc | date: 'dd.MM.yyyy' }}</span>
+
+					<span
+						class="projects-table__more-button text-secondary_default"
+						(click)="onMoreClicked(project.id)"
+					>
 						Подробнее
 						<mat-icon>keyboard_arrow_right</mat-icon>
-					</p>
+					</span>
 				</div>
 			</div>
+
+			<ng-container *ngIf="section.projects.length > 4">
+				<span
+					class="projects-table__show-all-button text-secondary_default"
+					(click)="section.isExpanded = !section.isExpanded"
+				>
+					{{ section.isExpanded ? 'Скрыть все' : 'Показать все' }}
+					<mat-icon [ngStyle]="{ transform: section.isExpanded ? 'rotate(180deg)' : '' }"
+						>keyboard_arrow_down</mat-icon
+					>
+				</span>
+			</ng-container>
+
 			<ng-template #emptyList>
 				<do-empty-list [emptyMessage]="'Нет данных о проектах'"></do-empty-list>
 			</ng-template>

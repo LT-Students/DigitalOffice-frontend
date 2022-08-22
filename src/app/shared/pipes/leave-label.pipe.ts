@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ILeaveType, LeaveTypeModel } from '@app/models/time/leave-type.model';
-import { LeaveType } from '@data/api/time-service/models';
+import { LeaveType } from '@api/time-service/models';
 
 @Pipe({
 	name: 'leaveLabel',

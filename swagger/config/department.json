@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
   "input": "swagger/DepartmentService.json",
-  "output": "src/app/data/api/department-service",
+  "output": "src/app/api/department-service",
   "templates": "swagger/templates",
   "module": "DepartmentApiModule",
   "excludeParameters": ["token"],

@@ -1,0 +1,79 @@
+<div [formGroup]="form" class="add-hours__form">
+	<div class="add-hours__time-wrapper">
+		<do-form-field label="Диапазон отсутствия" labelClass="text-main">
+			<mat-form-field>
+				<mat-date-range-input
+					(click)="picker.open()"
+					[min]="minDate"
+					[max]="maxDate"
+					[dateFilter]="disableReservedDays"
+					[rangePicker]="$any(picker)"
+				>
+					<input
+						matStartDate
+						placeholder="ДД/ММ/ГГГГ"
+						formControlName="startTime"
+						data-test="leave-start-date-input"
+					/>
+					<input
+						matEndDate
+						placeholder="ДД/ММ/ГГГГ"
+						formControlName="endTime"
+						data-test="leave-end-date-input"
+					/>
+				</mat-date-range-input>
+				<mat-datepicker-toggle matSuffix [for]="picker" data-test="leave-interval-datepicker">
+					<mat-icon matDatepickerToggleIcon fontSet="material-icons-outlined">date_range</mat-icon>
+				</mat-datepicker-toggle>
+				<mat-date-range-picker
+					#picker
+					[dateClass]="dateClass"
+					(closed)="handleDateSelection()"
+				></mat-date-range-picker>
+				<mat-error>{{
+					form.controls['startTime'].errors || form.controls['endTime'].errors | controlErrors
+				}}</mat-error>
+			</mat-form-field>
+		</do-form-field>
+		<div class="add-hours__absence-time">
+			<span>Выбрано</span>
+			<h3>{{ selectedIntervalDurationInHours$ | async }}<span class="text-secondary_default"> ч</span></h3>
+		</div>
+	</div>
+	<do-form-field label="Тип отсутствия" labelClass="text-main">
+		<mat-form-field>
+			<mat-select formControlName="leaveType" placeholder="Выберите тип отсутствия" data-test="leave-type-select">
+				<mat-option *ngFor="let leave of leaveTypes" [value]="leave.leaveType">
+					{{ leave.leaveInRussian }}
+				</mat-option>
+			</mat-select>
+			<mat-error>{{ form.controls['leaveType'].errors | controlErrors }}</mat-error>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Комментарий" labelClass="text-main">
+		<mat-form-field>
+			<textarea
+				#comment
+				cdkTextareaAutosize
+				cdkAutosizeMinRows="4"
+				cdkAutosizeMaxRows="4"
+				matInput
+				formControlName="comment"
+				maxlength="500"
+				placeholder="Оставьте комментарий для менеджера"
+				data-test="leave-comment-input"
+			></textarea>
+			<mat-hint>{{ comment.value.length }}/500</mat-hint>
+		</mat-form-field>
+	</do-form-field>
+	<button
+		mat-flat-button
+		class="add-hours__absence-submit"
+		color="primary"
+		[loading]="loading$ | async"
+		(click)="handleSubmit()"
+		data-test="create-leave-btn"
+	>
+		Добавить часы
+	</button>
+</div>

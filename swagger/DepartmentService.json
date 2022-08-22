@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.0.0",
+    "version": "1.0.1.1",
     "title": "DepartmentService",
     "description": "DepartmentService, is intended to work with the department."
   },
@@ -68,16 +68,6 @@
                 }
               }
             }
-          },
-          "409": {
-            "description": "Conflict.\n* Department with this name already exists.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
           }
         }
       }
@@ -96,7 +86,7 @@
         "description": "Returns department by id.",
         "parameters": [
           {
-            "name": "departmentid",
+            "name": "departmentId",
             "in": "query",
             "description": "Department global unique identifier.",
             "schema": {
@@ -106,7 +96,7 @@
             "required": true
           },
           {
-            "name": "includeusers",
+            "name": "includeUsers",
             "in": "query",
             "description": "Response would include department users.",
             "schema": {
@@ -115,7 +105,7 @@
             "required": false
           },
           {
-            "name": "includeprojects",
+            "name": "includeProjects",
             "in": "query",
             "description": "Response would include department projects.",
             "schema": {
@@ -130,7 +120,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponseDepartmentInfo"
+                  "$ref": "#/components/schemas/OperationResultResponseDepartmentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
                 }
               }
             }
@@ -162,11 +162,29 @@
           "required": true
         },
         {
-          "name": "includeDeactivated",
+          "name": "isAscendingSort",
           "in": "query",
-          "description": "If it is true, response will be have deactivated records.",
+          "description": "If true returns sorted departments from A to Z, false - sorted from Z to A, null - no sorting.",
           "schema": {
             "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "isActive",
+          "in": "query",
+          "description": "If true returns active departmnts, false - not active, null - all departments.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "nameIncludeSubstring",
+          "in": "query",
+          "description": "Returns departments whose names contain a substring.",
+          "schema": {
+            "type": "string"
           },
           "required": false
         }
@@ -193,7 +211,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
+                  "$ref": "#/components/schemas/FindResultResponseDepartmentInfo"
                 }
               }
             }
@@ -271,52 +289,27 @@
                 }
               }
             }
-          },
-          "409": {
-            "description": "Conflict.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OperationResultResponse"
-                }
-              }
-            }
           }
         }
       }
     },
-    "/users/create": {
+    "/user/create": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
-        },
-        {
-          "name": "departmentid",
-          "in": "query",
-          "description": "Department global unique identifier.",
-          "schema": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "required": true
         }
       ],
       "post": {
         "tags": [
-          "Department"
+          "DepartmentUser"
         ],
-        "operationId": "addDepartmentUsers",
+        "operationId": "createDepartmentUser",
         "description": "Adds a new users to department.\n* __The user must have access to the right__ -- Add/Edit/Remove departments.\n",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "description": "Specific user identifier.",
-                  "type": "string",
-                  "format": "uuid"
-                }
+                "$ref": "#/components/schemas/CreateDepartmentUsersRequest"
               }
             }
           },
@@ -356,7 +349,7 @@
         }
       }
     },
-    "/users/remove": {
+    "/user/remove": {
       "parameters": [
         {
           "$ref": "#/components/parameters/securityToken"
@@ -374,9 +367,9 @@
       ],
       "delete": {
         "tags": [
-          "Department"
+          "DepartmentUser"
         ],
-        "operationId": "removeUsers",
+        "operationId": "removeDepartmentUser",
         "description": "Remove users from Department.",
         "requestBody": {
           "content": {
@@ -436,6 +429,214 @@
           }
         }
       }
+    },
+    "/user/editRole": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Department global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "put": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "editDepartmentUserRole",
+        "description": "Edit department users role.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditDepartmentUsersRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully edited users roles.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/editAssignment": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "departmentid",
+          "in": "query",
+          "description": "Department global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "put": {
+        "tags": [
+          "Department"
+        ],
+        "operationId": "editDepartmentUserAssingment",
+        "description": "Edit department users assignment.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditDepartmentUsersAssignmentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successfully edited users assignments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/project/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "Project"
+        ],
+        "operationId": "editDepartmentProject",
+        "description": "The method attempts to change depatrment project.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditDepartmentProjectRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -443,6 +644,13 @@
       "DepartmentInfo": {
         "type": "object",
         "description": "Specific department data.",
+        "required": [
+          "Id",
+          "Name",
+          "ShortName",
+          "IsActive",
+          "CountUsers"
+        ],
         "properties": {
           "Id": {
             "description": "Department id.",
@@ -453,10 +661,13 @@
             "description": "Department name.",
             "type": "string"
           },
+          "ShortName": {
+            "description": "Department name.",
+            "type": "string"
+          },
           "Description": {
             "description": "Department description.",
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "IsActive": {
             "type": "boolean"
@@ -465,51 +676,42 @@
             "type": "integer"
           },
           "Director": {
-            "$ref": "#/components/schemas/UserInfo",
-            "nullable": true
+            "$ref": "#/components/schemas/DepartmentUserInfo"
           }
         }
       },
       "DepartmentUserInfo": {
         "type": "object",
         "description": "User data of specific department.",
+        "required": [
+          "User",
+          "IsActive",
+          "Role",
+          "Assignment"
+        ],
         "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "FirstName": {
-            "type": "string"
-          },
-          "LastName": {
-            "type": "string"
-          },
-          "MiddleName": {
-            "type": "string",
-            "nullable": true
-          },
-          "Rate": {
-            "type": "number",
-            "format": "float"
+          "User": {
+            "$ref": "#/components/schemas/UserInfo"
           },
           "IsActive": {
-            "type": "boolean",
-            "example": true
+            "type": "boolean"
           },
-          "Image": {
-            "type": "object",
-            "$ref": "#/components/schemas/ImageInfo",
-            "nullable": true
+          "Role": {
+            "$ref": "#/components/schemas/DepartmentUserRole"
           },
-          "Position": {
-            "type": "object",
-            "$ref": "#/components/schemas/PositionInfo"
+          "Assignment": {
+            "$ref": "#/components/schemas/DepartmentUserAssignment"
           }
         }
       },
       "UserInfo": {
         "type": "object",
         "description": "User data.",
+        "required": [
+          "Id",
+          "FirstName",
+          "LastName"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -525,25 +727,20 @@
           },
           "MiddleName": {
             "type": "string",
-            "example": "Alexandrovich",
-            "nullable": true
+            "example": "Alexandrovich"
           },
-          "Rate": {
-            "type": "number"
-          },
-          "IsActive": {
-            "type": "boolean"
-          },
-          "Image": {
+          "Avatar": {
             "$ref": "#/components/schemas/ImageInfo"
-          },
-          "Position": {
-            "$ref": "#/components/schemas/PositionInfo"
           }
         }
       },
       "ProjectInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "Status"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -552,22 +749,23 @@
           "Name": {
             "type": "string"
           },
+          "Status": {
+            "type": "string"
+          },
           "ShortName": {
             "type": "string"
           },
-          "Description": {
-            "type": "string"
-          },
           "ShortDescription": {
-            "type": "string"
-          },
-          "Status": {
             "type": "string"
           }
         }
       },
       "PositionInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
         "properties": {
           "Id": {
             "description": "Specific position id.",
@@ -578,22 +776,16 @@
             "description": "Position name.",
             "type": "string",
             "example": "IT projects consultant"
-          },
-          "Description": {
-            "description": "Position description.",
-            "type": "string",
-            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
-            "nullable": true
-          },
-          "IsActive": {
-            "description": "Marks whether position is active or not.",
-            "type": "boolean",
-            "example": true
           }
         }
       },
       "ImageInfo": {
         "type": "object",
+        "required": [
+          "Id",
+          "Content",
+          "Extension"
+        ],
         "properties": {
           "Id": {
             "type": "string",
@@ -603,9 +795,6 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
-          },
-          "Type": {
-            "type": "string"
           },
           "Name": {
             "type": "string",
@@ -623,11 +812,17 @@
       "CreateDepartmentRequest": {
         "type": "object",
         "required": [
-          "Name"
+          "Name",
+          "ShortName",
+          "Users"
         ],
         "properties": {
           "Name": {
             "description": "Department name.",
+            "type": "string"
+          },
+          "ShortName": {
+            "description": "Department short name.",
             "type": "string"
           },
           "Description": {
@@ -643,8 +838,48 @@
           }
         }
       },
+      "EditDepartmentProjectRequest": {
+        "type": "object",
+        "required": [
+          "ProjectId"
+        ],
+        "properties": {
+          "ProjectId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "DepartmentId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "CreateDepartmentUsersRequest": {
+        "type": "object",
+        "required": [
+          "DepartmentId",
+          "Users"
+        ],
+        "properties": {
+          "DepartmentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateUserRequest"
+            }
+          }
+        }
+      },
       "CreateUserRequest": {
         "type": "object",
+        "required": [
+          "UserId",
+          "Role",
+          "Assignment"
+        ],
         "properties": {
           "UserId": {
             "type": "string",
@@ -652,10 +887,58 @@
           },
           "Role": {
             "$ref": "#/components/schemas/DepartmentUserRole"
+          },
+          "Assignment": {
+            "$ref": "#/components/schemas/DepartmentUserAssignment"
+          }
+        }
+      },
+      "EditDepartmentUsersRoleRequest": {
+        "type": "object",
+        "required": [
+          "Role",
+          "UsersIds"
+        ],
+        "properties": {
+          "Role": {
+            "$ref": "#/components/schemas/DepartmentUserRole"
+          },
+          "UsersIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "EditDepartmentUsersAssignmentRequest": {
+        "type": "object",
+        "required": [
+          "Assignment",
+          "UsersIds"
+        ],
+        "properties": {
+          "Role": {
+            "$ref": "#/components/schemas/DepartmentUserAssignment"
+          },
+          "UsersIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
           }
         }
       },
       "DepartmentUserRole": {
+        "type": "string",
+        "enum": [
+          "Employee",
+          "Manager"
+        ]
+      },
+      "DepartmentUserAssignment": {
         "type": "string",
         "enum": [
           "Employee",
@@ -683,10 +966,13 @@
       "OperationResultResponse": {
         "description": "Response object for action operations.",
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "nullable": true
+            "type": "object"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -699,28 +985,15 @@
           }
         }
       },
-      "OperationResultResponseDepartmentInfo": {
+      "OperationResultResponseDepartmentResponse": {
         "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
         "properties": {
           "Body": {
-            "type": "object",
-            "description": "Full departmant information.",
-            "properties": {
-              "department": {
-                "type": "object",
-                "$ref": "#/components/schemas/DepartmentInfo"
-              },
-              "users": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/DepartmentUserInfo"
-                }
-              },
-              "projects": {
-                "type": "object",
-                "$ref": "#/components/schemas/ProjectInfo"
-              }
-            }
+            "$ref": "#/components/schemas/DepartmentResponse"
           },
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -729,12 +1002,41 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "DepartmentResponse": {
+        "type": "object",
+        "description": "Full departmant information.",
+        "required": [
+          "Department"
+        ],
+        "properties": {
+          "Department": {
+            "$ref": "#/components/schemas/DepartmentInfo"
+          },
+          "Users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentUserInfo"
+            }
+          },
+          "Projects": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProjectInfo"
             }
           }
         }
       },
       "FindResultResponseDepartmentInfo": {
         "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
         "properties": {
           "Status": {
             "$ref": "#/components/schemas/OperationResultStatusType"
@@ -764,7 +1066,6 @@
           "PartialSuccess",
           "Failed"
         ],
-        "example": "FullSuccess",
         "default": "FullSuccess"
       },
       "PatchDepartmentDocument": {
@@ -787,9 +1088,9 @@
             "description": "A JSON-Pointer.",
             "enum": [
               "/name",
+              "/shortName",
               "/description",
-              "/isactive",
-              "/directorid"
+              "/isactive"
             ]
           },
           "value": {

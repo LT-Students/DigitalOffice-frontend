@@ -1,0 +1,67 @@
+<cdk-table
+	matSort
+	[dataSource]="dataSource"
+	[matSortActive]="sortActive"
+	[matSortDirection]="sortDirection"
+	multiTemplateDataRows
+	(matSortChange)="sortChange.emit($event)"
+>
+	<!-- Generating columns of table -->
+	<ng-container *ngFor="let column of columns" [cdkColumnDef]="column.field">
+		<cdk-header-cell
+			*cdkHeaderCellDef
+			class="text-secondary_default"
+			[mat-sort-header]="column.field"
+			[disableClear]="column.disableClearSort"
+			[disabled]="!column.sortEnabled"
+			[ngStyle]="column.headerStyle || column.columnStyle || null"
+			[style.flex]="'0 0 ' + column.width + 'px'"
+			[style.min-width.px]="column.minWidth"
+			[style.max-width.px]="column.maxWidth"
+			>{{ column.headerName }}</cdk-header-cell
+		>
+		<cdk-cell
+			*cdkCellDef="let row"
+			[ngClass]="column.columnClass || ''"
+			[ngStyle]="column.columnStyle || null"
+			[style.flex]="'0 0 ' + column.width + 'px'"
+			[style.min-width.px]="column.minWidth"
+			[style.max-width.px]="column.maxWidth"
+			><do-table-cell
+				[componentType]="column.type"
+				[row]="row"
+				[cellValue]="column.valueGetter ? (row | execute: column.valueGetter) : row[column.field]"
+				[cellParams]="column.params"
+			></do-table-cell
+		></cdk-cell>
+	</ng-container>
+
+	<!-- Expanded row columns -->
+	<ng-container cdkColumnDef="expandedRow">
+		<cdk-cell *cdkCellDef="let row">
+			<div [@detailExpand]="([expandedElement, row] | execute: expandedRowComparator) ? 'expanded' : 'collapsed'">
+				<ng-container *ngTemplateOutlet="expandedRowTemplate; context: row"></ng-container>
+			</div>
+		</cdk-cell>
+	</ng-container>
+
+	<cdk-header-row *cdkHeaderRowDef="displayColumns" [ngClass]="rowClass"></cdk-header-row>
+	<cdk-row
+		*cdkRowDef="let row; columns: displayColumns"
+		(click)="handleRowClick(row)"
+		[ngClass]="rowClass"
+		[ngStyle]="rowStyle"
+		[style.height.px]="rowHeight || 'auto'"
+	>
+	</cdk-row>
+	<cdk-row class="expanded-row" *cdkRowDef="let row; columns: ['expandedRow']; when: isRowExpandable"></cdk-row>
+	<ng-template cdkNoDataRow>
+		<div class="flex flex_jc_center">
+			<div class="no-data-row">
+				<img src="assets/svg/tumbleweed.svg" height="200" alt="empty-list" />
+				<div class="message">Нет данных</div>
+			</div>
+		</div>
+	</ng-template>
+</cdk-table>
+<do-context-menu [items]="contextMenuItems"></do-context-menu>
