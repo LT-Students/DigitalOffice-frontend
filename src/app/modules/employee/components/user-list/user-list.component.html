@@ -14,7 +14,13 @@
 				<mat-icon matPrefix class="text-secondary_default">search</mat-icon>
 			</mat-form-field>
 		</do-form-field>
-		<button mat-flat-button color="accent" (click)="createEmployee()" data-test="add-user-button">
+		<button
+			*hasPermission="UserRights.AddEditRemoveUsers"
+			mat-flat-button
+			color="accent"
+			(click)="createEmployee()"
+			data-test="add-user-button"
+		>
 			+ Добавить сотрудника
 		</button>
 	</div>
