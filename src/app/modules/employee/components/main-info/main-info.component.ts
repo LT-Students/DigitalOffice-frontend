@@ -4,6 +4,9 @@ import { DateFormat } from '@app/types/date.enum';
 import { ModalWidth } from '@app/services/dialog.service';
 import { Icons } from '@shared/modules/icons/icons';
 import { PermissionService } from '@app/services/permission.service';
+import { UserRights } from '@app/types/user-rights.enum';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
 import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';
 import { EmployeePageService } from '../../services/employee-page.service';
@@ -21,6 +24,11 @@ export class MainInfoComponent implements OnInit {
 
 	public user$ = this.employeePage.selectedUser$;
 	public canEdit$ = this.employeePage.canManagePersonalInfo$();
+	public canEditWorkInfo$ = combineLatest([
+		this.permission.checkPermission$(UserRights.AddEditRemovePositions),
+		this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
+		this.permission.checkPermission$(UserRights.AddRemoveUsersRoles),
+	]).pipe(map((permissions: boolean[]) => permissions.some(Boolean)));
 
 	constructor(
 		private employeePage: EmployeePageService,
