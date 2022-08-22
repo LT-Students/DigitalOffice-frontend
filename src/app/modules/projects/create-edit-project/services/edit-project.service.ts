@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { first, map, mapTo, switchMap, tap } from 'rxjs/operators';
 import { ProjectResponse } from '@api/project-service/models/project-response';
-import { ProjectInfo } from '@api/project-service/models/project-info';
 import { EditRequest, ProjectPath } from '@app/types/edit-request';
 import { CreateEditProject } from '../create-edit-project';
 import { ProjectService } from '../../project.service';
@@ -18,8 +17,8 @@ export class EditProjectService implements CreateEditProject {
 	public submit$(editRequest: EditRequest<ProjectPath>): Observable<string> {
 		return this.selectedProject.info$.pipe(
 			first(),
-			map((projectRes: ProjectResponse) => projectRes.project),
-			switchMap((project: ProjectInfo) => {
+			map((projectRes: ProjectResponse) => projectRes),
+			switchMap((project: ProjectResponse) => {
 				return editRequest.length
 					? this.projectService.editProject(project.id, editRequest).pipe(
 							switchMap(() => this.projectService.getProject(project.id)),

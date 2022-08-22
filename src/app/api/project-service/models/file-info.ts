@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { FileAccessType } from './file-access-type';
 export interface FileInfo {
-	access: FileAccessType;
+	access?: FileAccessType;
 
 	/**
 	 * Date and time begin file in UTC.

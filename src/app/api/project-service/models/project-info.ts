@@ -20,11 +20,6 @@ export interface ProjectInfo {
 	department?: DepartmentInfo;
 
 	/**
-	 * Project description.
-	 */
-	description?: string;
-
-	/**
 	 * Date and time finished project in UTC.
 	 */
 	endDateUtc?: any;

@@ -112,7 +112,7 @@ export class ProjectUsersService {
 						this.selectedProject.info$
 							.pipe(
 								first(),
-								map((p: ProjectResponse) => p.project.id),
+								map((p: ProjectResponse) => p.id),
 								switchMap((projectId: string) => this.changeUserRole(projectId, user.id, role))
 							)
 							.subscribe();
@@ -129,7 +129,7 @@ export class ProjectUsersService {
 						this.selectedProject.info$
 							.pipe(
 								first(),
-								map((p: ProjectResponse) => p.project.id)
+								map((p: ProjectResponse) => p.id)
 							)
 							.subscribe({
 								next: (projectId: string) => {

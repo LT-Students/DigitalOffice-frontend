@@ -55,7 +55,7 @@ export class SelectedProjectService {
 		this.info$
 			.pipe(
 				first(),
-				switchMap((p: ProjectResponse) => this.projectService.findFiles(p.project.id))
+				switchMap((p: ProjectResponse) => this.projectService.findFiles(p.id))
 			)
 			.subscribe({
 				next: (files: FileInfo[]) => this.setProject({ files }),

@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.3.2",
+    "version": "1.2.3.3",
     "title": "ProjectService",
     "description": "ProjectService, is intended to work with the projects - create them, assign people to them, update info."
   },
@@ -1213,10 +1213,6 @@
             "type": "string",
             "example": "DO"
           },
-          "Description": {
-            "description": "Project description.",
-            "type": "string"
-          },
           "ShortDescription": {
             "description": "Project short description.",
             "type": "string"
@@ -1724,11 +1720,69 @@
       "ProjectResponse": {
         "type": "object",
         "required": [
-          "Project"
+          "Id",
+          "CreatedBy",
+          "Status",
+          "Name",
+          "ShortName",
+          "StartDateUtc",
+          "CreatedAtUtc"
         ],
         "properties": {
-          "Project": {
-            "$ref": "#/components/schemas/ProjectInfo"
+          "Id": {
+            "description": "Unique project identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "CreatedBy": {
+            "description": "Unique project creator identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "80d13a19-872e-45bc-b1ed-a01d6fac3c0f"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/ProjectStatusType"
+          },
+          "Name": {
+            "description": "Project name.",
+            "type": "string",
+            "example": "Digital Office"
+          },
+          "ShortName": {
+            "description": "Project short name.",
+            "type": "string",
+            "example": "DO"
+          },
+          "Description": {
+            "description": "Project description.",
+            "type": "string"
+          },
+          "ShortDescription": {
+            "description": "Project short description.",
+            "type": "string"
+          },
+          "Customer": {
+            "description": "Project сustomer.",
+            "type": "string"
+          },
+          "StartDateUtc": {
+            "description": "Date and time begin project in UTC.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "EndDateUtc": {
+            "description": "Date and time finished project in UTC.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "CreatedAtUtc": {
+            "description": "Data and time created project.",
+            "pattern": "YYYY-MM-DDTHH:mm",
+            "example": "2021-12-10 03:13"
+          },
+          "Department": {
+            "$ref": "#/components/schemas/DepartmentInfo"
           },
           "Users": {
             "type": "array",

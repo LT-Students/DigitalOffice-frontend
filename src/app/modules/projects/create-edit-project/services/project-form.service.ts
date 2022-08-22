@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ProjectInfo } from '@api/project-service/models/project-info';
 import { DateTime } from 'luxon';
 import { EditRequest, PatchDocument, ProjectPath } from '@app/types/edit-request';
 import { getUTCWithOffset } from '@app/utils/utils';
+import { ProjectResponse } from '@api/project-service/models/project-response';
 import { InfoControlValue } from '../project-info/project-info-form.component';
 import { DetailsControlValue } from '../project-details/project-details.component';
 import { DescriptionControlValue } from '../project-description/project-description-form.component';
@@ -31,7 +31,7 @@ export class ProjectFormService {
 		return this.initialValue ? ProjectEditRequest.getEditRequest(formValue, this.initialValue) : formValue;
 	}
 
-	public setInitialValue(project: ProjectInfo): void {
+	public setInitialValue(project: ProjectResponse): void {
 		this.initialValue = {
 			info: {
 				name: project.name,
