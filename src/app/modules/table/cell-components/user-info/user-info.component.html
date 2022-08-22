@@ -1,7 +1,18 @@
-<do-profile-image [image]="user.avatar" [userInitials]="user"></do-profile-image>
+<do-profile-image
+	[class.pointer]="params?.onAvatarClick"
+	(click)="params?.onAvatarClick?.call(this, user)"
+	[image]="user.avatar"
+	[userInitials]="user"
+></do-profile-image>
 <div class="info">
 	<span class="flex flex_ai_center">
-		<a class="link no-overflow" [routerLink]="[AppRoutes.Users, user.id]">{{ user | fullName: true:true }}</a>
+		<span
+			class="no-overflow"
+			[class.pointer]="params?.onNameClick"
+			[routerLink]="null"
+			(click)="params?.onNameClick?.call(this, user)"
+			>{{ user | fullName: true:true }}</span
+		>
 		<mat-icon
 			class="icon"
 			*ngIf="params?.statusIconGetter as iconGetter"

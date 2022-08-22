@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ImageInfo } from '@app/models/image.model';
 import { Icons } from '@shared/modules/icons/icons';
-import { AppRoutes } from '@app/models/app-routes';
 import { TableCell } from '../../models';
 
 interface UserInfo {
@@ -13,9 +12,23 @@ interface UserInfo {
 	position?: { name: string };
 }
 
-export interface UserInfoParams {
-	statusIconGetter?: (o: any) => Icons | null;
+export class UserInfoParams {
 	iconColor?: string;
+	statusIconGetter?: (o: any) => Icons | null;
+	onAvatarClick?: (o: any) => void;
+	onNameClick?: (o: any) => void;
+
+	constructor(params: {
+		statusIconGetter?: (o: any) => Icons | null;
+		iconColor?: string;
+		onAvatarClick?: (o: any) => void;
+		onNameClick?: (o: any) => void;
+	}) {
+		this.iconColor = params.iconColor;
+		this.statusIconGetter = params.statusIconGetter;
+		this.onAvatarClick = params.onAvatarClick;
+		this.onNameClick = params.onNameClick;
+	}
 }
 
 @Component({
@@ -25,8 +38,6 @@ export interface UserInfoParams {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserInfoComponent implements OnInit, TableCell<UserInfo> {
-	public readonly AppRoutes = AppRoutes;
-
 	public set value(user: UserInfo) {
 		this.user = user;
 	}

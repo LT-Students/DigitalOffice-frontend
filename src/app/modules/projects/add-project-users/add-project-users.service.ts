@@ -8,6 +8,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { CheckboxParams } from '../../table/cell-components/checkbox/checkbox.component';
 import { TableOptions } from '../../table/models/table-options';
 import { ProjectService } from '../project.service';
+import { UserInfoParams } from '../../table/cell-components/user-info/user-info.component';
 import { AddUsersDataSource, HiddenUser } from './add-project-users.component';
 
 export interface ProjectUserInfo extends UserInfo {
@@ -38,11 +39,11 @@ export class AddProjectUsersService {
 					field: 'userInfo',
 					valueGetter: (user: ProjectUserInfo) => user,
 					columnStyle: { flex: '1 1 10%', overflow: 'hidden' },
-					params: {
+					params: new UserInfoParams({
 						statusIconGetter: (user: ProjectUserInfo) =>
 							user.projectRole === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
 						iconColor: '#FFD89E',
-					},
+					}),
 				},
 				{
 					type: 'textCell',

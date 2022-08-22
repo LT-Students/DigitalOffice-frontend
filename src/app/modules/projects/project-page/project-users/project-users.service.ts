@@ -7,10 +7,13 @@ import { first, map, switchMap, tap } from 'rxjs/operators';
 import { DialogService } from '@app/services/dialog.service';
 import { Observable } from 'rxjs';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
+import { Router } from '@angular/router';
+import { AppRoutes } from '@app/models/app-routes';
 import { ProjectService } from '../../project.service';
 import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../dynamic-filter/models';
 import { ColumnDef } from '../../../table/models';
 import { SelectedProjectService } from '../../project-id-route-container/selected-project.service';
+import { UserInfoParams } from '../../../table/cell-components/user-info/user-info.component';
 
 @Injectable()
 export class ProjectUsersService {
@@ -18,7 +21,8 @@ export class ProjectUsersService {
 		private selectedProject: SelectedProjectService,
 		private projectService: ProjectService,
 		private dialog: DialogService,
-		private autocompleteConfigs: AutocompleteConfigsService
+		private autocompleteConfigs: AutocompleteConfigsService,
+		private router: Router
 	) {}
 
 	public getFilterData(): FilterDef[] {
@@ -51,11 +55,17 @@ export class ProjectUsersService {
 				valueGetter: (user: UserInfo) => ({ ...user, avatar: user.avatarImage }),
 				columnStyle: { overflow: 'hidden' },
 				headerStyle: { 'margin-left': '60px' },
-				params: {
+				params: new UserInfoParams({
 					statusIconGetter: (user: UserInfo) =>
 						user.role === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
 					iconColor: '#FFD89E',
-				},
+					onAvatarClick: (user: UserInfo) => {
+						this.router.navigate([AppRoutes.Users, user.id]);
+					},
+					onNameClick: (user: UserInfo) => {
+						this.router.navigate([AppRoutes.Users, user.id]);
+					},
+				}),
 			},
 			{
 				type: 'selectCell',
