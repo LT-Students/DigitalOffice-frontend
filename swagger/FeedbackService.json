@@ -221,6 +221,12 @@
 				"properties": {
 					"Feedback": {
 						"$ref": "#/components/schemas/FeedbackInfo"
+					},
+					"Images": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ImageContent"
+						}
 					}
 				}
 			},
@@ -234,8 +240,7 @@
 					"SenderFullName",
 					"SenderId",
 					"CreatedAtUtc",
-					"ChangedBy",
-					"ChangedAtUtc"
+					"ImagesCount"
 				],
 				"properties": {
 					"Id": {
@@ -269,13 +274,23 @@
 						"pattern": "YYYY-MM-DDTHH:mm",
 						"example": "2021-12-10 03:13"
 					},
-					"ChangedBy": {
-						"description": "Unique identifier of person changed feedback."
+					"ImagesCount": {
+						"type": "integer"
+					}
+				}
+			},
+			"ImageContent": {
+				"type": "object",
+				"required": ["Content", "Extension"],
+				"properties": {
+					"Content": {
+						"type": "string"
 					},
-					"ChangedAtUtc": {
-						"description": "Data and time changed feedback.",
-						"pattern": "YYYY-MM-DDTHH:mm",
-						"example": "2021-12-10 03:13"
+					"Extension": {
+						"type": "string"
+					},
+					"Name": {
+						"type": "string"
 					}
 				}
 			},

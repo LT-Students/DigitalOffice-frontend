@@ -4,16 +4,6 @@ import { FeedbackStatusType } from './feedback-status-type';
 import { FeedbackType } from './feedback-type';
 export interface FeedbackInfo {
 	/**
-	 * Data and time changed feedback.
-	 */
-	changedAtUtc: any;
-
-	/**
-	 * Unique identifier of person changed feedback.
-	 */
-	changedBy: any;
-
-	/**
 	 * Feedback content.
 	 */
 	content: string;
@@ -27,6 +17,7 @@ export interface FeedbackInfo {
 	 * Unique feedback identifier.
 	 */
 	id: string;
+	imagesCount: number;
 
 	/**
 	 * Full name of feedback creator
