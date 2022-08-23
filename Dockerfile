@@ -16,7 +16,7 @@ COPY . .
 #RUN grep -rl "http://ltdo.xyz:9802" . | xargs sed -i 's#http://ltdo.xyz:9802#https://user.ltdo.xyz#g'
 #RUN grep -rl "http://ltdo.xyz:9816" . | xargs sed -i 's#http://ltdo.xyz:9816#https://company.ltdo.xyz#g'
 
-RUN npm run build
+RUN ng build --configuration production
 
 FROM nginx:alpine
 COPY --from=builder /app/dist/DigitalOffice-frontend /usr/share/nginx/html
