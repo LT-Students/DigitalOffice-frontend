@@ -60,6 +60,7 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "extractCss": false,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
