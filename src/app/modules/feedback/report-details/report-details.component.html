@@ -2,7 +2,7 @@
 	<h2 class="title">Обратная связь</h2>
 	<div class="flex flex_jc_space-between">
 		<h4 class="name">{{ report.senderFullName }}</h4>
-		<span class="date">{{ report.createdAtUtc | dateTime: 'dd.MM.yyyy HH:mm' }}</span>
+		<span class="date">{{ report.createdAtUtc | date: 'dd.MM.yyyy HH:mm' }}</span>
 	</div>
 	<div class="info">
 		<div>
@@ -16,6 +16,20 @@
 		<div>
 			<h5 class="field-title">Материалы</h5>
 			<span *ngIf="!report.imagesCount">Не приложены</span>
+			<ng-container *ngIf="report.imagesCount">
+				<div class="flex flex_jc_center">
+					<mat-spinner *ngIf="loading$ | async" color="accent"></mat-spinner>
+				</div>
+				<div *ngIf="images$ | async as images" class="images">
+					<do-feedback-image
+						*ngFor="let image of images; index as i"
+						[isPreview]="true"
+						[image]="image"
+						(imageActionClicked)="viewer.selectedIndex = i; viewer.openImage()"
+					></do-feedback-image>
+					<do-image-viewer #viewer [images]="images"></do-image-viewer>
+				</div>
+			</ng-container>
 		</div>
 	</div>
 </mat-dialog-content>

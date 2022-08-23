@@ -8,7 +8,7 @@ import { ReplaySubject, Subscription } from 'rxjs';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 
 @Component({
-	selector: 'do-image',
+	selector: 'do-feedback-image',
 	template: `
 		<div class="image-container">
 			<img [src]="image | safeImageUrl" alt="Image preview" />
@@ -98,31 +98,33 @@ export class ImageComponent extends LoadingState implements OnInit, OnDestroy {
 	@Input() isPreview = false;
 
 	public loadedImage = new ReplaySubject<ImageContent>(1);
-	private subscription!: Subscription;
+	private subscription?: Subscription;
 
 	constructor() {
 		super();
 	}
 
 	public ngOnInit(): void {
-		this.setLoading(true);
-		this.subscription = fromPromise(imageCompression(this.image, { maxSizeMB: 1, useWebWorker: true }))
-			.pipe(
-				switchMap((image: File) => fromPromise(imageCompression.getDataUrlFromFile(image))),
-				finalize(() => this.setLoading(false))
-			)
-			.subscribe({
-				next: (b64: string) => {
-					this.loadedImage.next({
-						name: this.image.name,
-						content: b64,
-						extension: `.${this.image.type.split('/')[1]}`,
-					});
-				},
-			});
+		if (!this.isPreview) {
+			this.setLoading(true);
+			this.subscription = fromPromise(imageCompression(this.image, { maxSizeMB: 1, useWebWorker: true }))
+				.pipe(
+					switchMap((image: File) => fromPromise(imageCompression.getDataUrlFromFile(image))),
+					finalize(() => this.setLoading(false))
+				)
+				.subscribe({
+					next: (b64: string) => {
+						this.loadedImage.next({
+							name: this.image.name,
+							content: b64,
+							extension: `.${this.image.type.split('/')[1]}`,
+						});
+					},
+				});
+		}
 	}
 
 	public ngOnDestroy(): void {
-		this.subscription.unsubscribe();
+		this.subscription?.unsubscribe();
 	}
 }

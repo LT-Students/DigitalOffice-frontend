@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { MAX_INT32 } from '@app/utils/utils';
 import { FindResultResponseFeedbackInfo } from '@api/feedback-service/models/find-result-response-feedback-info';
+import { map } from 'rxjs/operators';
+import { FeedbackResponse } from '@api/feedback-service/models/feedback-response';
 
 @Injectable({
 	providedIn: 'root',
@@ -26,7 +28,7 @@ export class FeedbackService {
 		return this.feedbackApi.findFeedbacks({ skipCount: 0, takeCount: MAX_INT32 });
 	}
 
-	public getReport(feedbackId: string) {
-		return this.feedbackApi.getFeedback({ feedbackId });
+	public getReport(feedbackId: string): Observable<FeedbackResponse> {
+		return this.feedbackApi.getFeedback({ feedbackId }).pipe(map((res) => res.body as FeedbackResponse));
 	}
 }
