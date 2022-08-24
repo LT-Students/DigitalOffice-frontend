@@ -45,7 +45,7 @@ export class SignupComponent extends LoadingState implements OnInit {
 					label: 'латинские буквы',
 					valid: !!value && !/(?=\p{L})(?![a-zA-Z])/u.test(value) && /[a-zA-Z]/.test(value),
 				},
-				{ label: 'цифры', valid: /\d/.test(value) },
+				{ label: 'допускаются цифры' },
 			]),
 			tap((validations: HintValidation[]) => {
 				const invalid = validations.some((v: HintValidation) => !v.valid);
