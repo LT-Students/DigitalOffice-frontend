@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core
 
 export interface HintValidation {
 	label: string;
-	valid: boolean;
+	valid?: boolean;
 }
 
 //This component should be used inside mde-popover.

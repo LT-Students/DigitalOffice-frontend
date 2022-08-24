@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/
 import { FormBuilder } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 import { MatDialogRef } from '@angular/material/dialog';
-import { forkJoin, merge, Observable, Subject } from 'rxjs';
+import { forkJoin, merge, Observable, of, Subject } from 'rxjs';
 import { filter, finalize, first, switchMap } from 'rxjs/operators';
 import { DialogService } from '@app/services/dialog.service';
 import { LoadingState } from '@shared/directives/button-loading.directive';
@@ -70,7 +70,10 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 		}
 		this.setLoading(true);
 		const { category, comment } = this.form.getRawValue();
-		forkJoin(this.uploadImages.compressedImages.map((img) => img.loadedImage.pipe(first())))
+		const imagesAction = this.uploadImages.compressedImages.length
+			? forkJoin(this.uploadImages.compressedImages.map((img) => img.loadedImage.pipe(first())))
+			: of([]);
+		imagesAction
 			.pipe(
 				switchMap((images) => this.feedbackService.createReport(category, comment, images)),
 				finalize(() => this.setLoading(false))

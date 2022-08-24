@@ -9,7 +9,7 @@ export interface PatchDepartmentDocument {
 	/**
 	 * A JSON-Pointer.
 	 */
-	path: '/name' | '/shortName' | '/description' | '/isactive';
+	path: '/name' | '/shortName' | '/description' | '/isactive' | '/categoryId';
 
 	/**
 	 * The value to be used within the operations.

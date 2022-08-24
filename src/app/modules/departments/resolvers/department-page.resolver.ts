@@ -16,9 +16,8 @@ export class DepartmentPageResolver implements Resolve<DepartmentResponse> {
 		return this.departmentService
 			.getDepartment({
 				departmentId: route.params.id,
-				includeProjects: false,
+				includeCategory: true,
 				includeUsers: true,
-				includeNews: false,
 			})
 			.pipe(map((res: OperationResultResponse<DepartmentResponse>) => res.body as DepartmentResponse));
 	}

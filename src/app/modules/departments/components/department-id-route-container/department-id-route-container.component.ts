@@ -8,7 +8,7 @@ import {
 } from '../../../manager-timelist/models/timelist-entity';
 
 function resolveTimelistEntityInfo(route: ActivatedRoute): TimelistEntityInfo {
-	const { id, name } = (route.snapshot.data['department'] as DepartmentResponse).department;
+	const { id, name } = route.snapshot.data['department'] as DepartmentResponse;
 	return { entityId: id, name, entityType: TimelistEntityType.Department };
 }
 

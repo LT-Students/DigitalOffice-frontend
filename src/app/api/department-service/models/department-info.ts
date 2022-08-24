@@ -1,18 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
-import { DepartmentUserInfo } from './department-user-info';
+import { CategoryInfo } from './category-info';
+import { UserInfo } from './user-info';
 
 /**
  * Specific department data.
  */
 export interface DepartmentInfo {
+	category?: CategoryInfo;
 	countUsers: number;
-
-	/**
-	 * Department description.
-	 */
-	description?: string;
-	director?: DepartmentUserInfo;
+	director?: UserInfo;
 
 	/**
 	 * Department id.
@@ -24,6 +21,11 @@ export interface DepartmentInfo {
 	 * Department name.
 	 */
 	name: string;
+
+	/**
+	 * Department parentId.
+	 */
+	parentId?: string;
 
 	/**
 	 * Department name.

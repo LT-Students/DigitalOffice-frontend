@@ -102,15 +102,15 @@ export class DepartmentApiService extends BaseService {
 		includeUsers?: boolean;
 
 		/**
-		 * Response would include department projects.
+		 * Response would include department category.
 		 */
-		includeProjects?: boolean;
+		includeCategory: boolean;
 	}): Observable<StrictHttpResponse<OperationResultResponseDepartmentResponse>> {
 		const rb = new RequestBuilder(this.rootUrl, DepartmentApiService.GetDepartmentPath, 'get');
 		if (params) {
 			rb.query('departmentId', params.departmentId, {});
 			rb.query('includeUsers', params.includeUsers, {});
-			rb.query('includeProjects', params.includeProjects, {});
+			rb.query('includeCategory', params.includeCategory, {});
 		}
 
 		return this.http
@@ -148,9 +148,9 @@ export class DepartmentApiService extends BaseService {
 		includeUsers?: boolean;
 
 		/**
-		 * Response would include department projects.
+		 * Response would include department category.
 		 */
-		includeProjects?: boolean;
+		includeCategory: boolean;
 	}): Observable<OperationResultResponseDepartmentResponse> {
 		return this.getDepartment$Response(params).pipe(
 			map(
