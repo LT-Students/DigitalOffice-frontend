@@ -11,6 +11,7 @@
 	>
 		<mat-form-field>
 			<input
+				#login
 				matInput
 				name="login"
 				type="text"
@@ -18,7 +19,7 @@
 				formControlName="login"
 				autocomplete="off"
 				(focusin)="trigger.openPopover()"
-				(focusout)="trigger.closePopover()"
+				(focusout)="trigger.closePopover(); login.blur()"
 			/>
 		</mat-form-field>
 	</do-form-field>
