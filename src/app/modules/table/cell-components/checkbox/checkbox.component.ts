@@ -20,6 +20,7 @@ export class CheckboxParams {
 		[checked]="value || selection.isSelected(row)"
 		[disabled]="disabled"
 		(change)="selection.toggle(row)"
+		(click)="$event.stopPropagation()"
 		[matTooltip]="disabledTooltip"
 		[matTooltipDisabled]="!disabled"
 	></mat-checkbox>`,

@@ -5,10 +5,16 @@ import { FeedbackType } from '@api/gateway-service/models/feedback-type';
 import { ImageContent } from '@api/gateway-service/models/image-content';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { MAX_INT32 } from '@app/utils/utils';
 import { FindResultResponseFeedbackInfo } from '@api/feedback-service/models/find-result-response-feedback-info';
 import { map } from 'rxjs/operators';
 import { FeedbackResponse } from '@api/feedback-service/models/feedback-response';
+import { FeedbackStatusType } from '@api/feedback-service/models/feedback-status-type';
+
+export interface FindFeedbackParams {
+	skipCount: number;
+	takeCount: number;
+	feedbacktype?: FeedbackType;
+}
 
 @Injectable({
 	providedIn: 'root',
@@ -24,8 +30,11 @@ export class FeedbackService {
 		return this.feedbackGatewayApi.createFeedback({ body: { type, content: comment, feedbackImages: images } });
 	}
 
-	public findReports(): Observable<FindResultResponseFeedbackInfo> {
-		return this.feedbackApi.findFeedbacks({ skipCount: 0, takeCount: MAX_INT32 });
+	public findReports(params: FindFeedbackParams): Observable<FindResultResponseFeedbackInfo> {
+		return this.feedbackApi.findFeedbacks({
+			...params,
+			feedbackstatus: FeedbackStatusType.New,
+		});
 	}
 
 	public getReport(feedbackId: string): Observable<FeedbackResponse> {

@@ -10,11 +10,11 @@ import { FeedbackService } from '../services/feedback.service';
 
 @Component({
 	selector: 'do-report-details',
-	templateUrl: './report-details.component.html',
-	styleUrls: ['./report-details.component.scss'],
+	templateUrl: './feedback-details.component.html',
+	styleUrls: ['./feedback-details.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReportDetailsComponent extends LoadingState implements OnInit {
+export class FeedbackDetailsComponent extends LoadingState implements OnInit {
 	public images$?: Observable<File[]>;
 
 	constructor(@Inject(MAT_DIALOG_DATA) public report: FeedbackInfo, private feedbackService: FeedbackService) {

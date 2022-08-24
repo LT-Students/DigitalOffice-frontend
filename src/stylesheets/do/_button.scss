@@ -15,6 +15,10 @@ $typography: mat.get-typography-config(theme.$custom-typography);
 	min-width: 32px;
 	height: 36px;
 
+	font-family: mat.font-family($typography);
+
+	font-size: mat.font-size($typography, 'button');
+
 	line-height: 36px;
 	text-align: center;
 	vertical-align: baseline;
@@ -24,8 +28,6 @@ $typography: mat.get-typography-config(theme.$custom-typography);
 	cursor: pointer;
 	user-select: none;
 
-	font-size: mat.font-size($typography, 'button');
-	font-family: mat.font-family($typography);
 	color: variables.$secondary_default;
 	background: none;
 	border: none;
@@ -43,7 +45,7 @@ $typography: mat.get-typography-config(theme.$custom-typography);
 
 	&:active,
 	&:focus:active {
-		:not(:disabled, [disabled]) {
+		&:not(:disabled, [disabled]) {
 			color: variables.$secondary_active;
 		}
 	}
@@ -51,6 +53,8 @@ $typography: mat.get-typography-config(theme.$custom-typography);
 	&:disabled,
 	&[disabled] {
 		cursor: default;
+
+		color: variables.$typo;
 
 		background: variables.$bg_2;
 	}

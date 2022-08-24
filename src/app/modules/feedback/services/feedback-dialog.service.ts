@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
 import { FeedbackFormComponent } from '../feedback-form/feedback-form.component';
-import { ReportDetailsComponent } from '../report-details/report-details.component';
+import { FeedbackDetailsComponent } from '../feedback-details/feedback-details.component';
 
 @Injectable({
 	providedIn: 'root',
@@ -18,6 +18,6 @@ export class FeedbackDialogService {
 	}
 
 	public openReportDetails(report: FeedbackInfo): void {
-		this.dialog.open(ReportDetailsComponent, { width: ModalWidth.M, data: report });
+		this.dialog.open(FeedbackDetailsComponent, { width: ModalWidth.M, data: report });
 	}
 }
