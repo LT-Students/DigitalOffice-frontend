@@ -94,14 +94,15 @@ export class ProjectUsersComponent implements OnInit {
 						usersToHide: p.users?.map((u) => ({ id: u.userId, role: u.role })) || [],
 					};
 					return this.dialog
-						.open<UserInfo[]>(AddProjectUsersComponent, { width: ModalWidth.M, data })
+						.open<[UserInfo[], ProjectResponse]>(AddProjectUsersComponent, { width: ModalWidth.M, data })
 						.afterClosed();
 				})
 			)
 			.subscribe({
-				next: (users?: UserInfo[]) => {
-					if (users) {
-						this.selectedProject.setProject({ users });
+				next: (result?: [UserInfo[], ProjectResponse]) => {
+					if (result) {
+						const [users, info] = result;
+						this.selectedProject.setProject({ users, info });
 					}
 				},
 			});

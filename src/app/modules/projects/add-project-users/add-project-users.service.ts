@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { UserInfo } from '@api/filter-service/models/user-info';
-import { ProjectUserRoleType, UserRequest } from '@api/project-service/models';
+import {
+	ProjectResponse,
+	ProjectUserRoleType,
+	UserRequest,
+	UserInfo as ProjectUserInfoApi,
+} from '@api/project-service/models';
 import { Icons } from '@shared/modules/icons/icons';
 import { FilterService } from '@app/services/filter/filter.service';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { CheckboxParams } from '../../table/cell-components/checkbox/checkbox.component';
 import { TableOptions } from '../../table/models/table-options';
@@ -83,11 +88,19 @@ export class AddProjectUsersService {
 			);
 	}
 
-	public addUsers(projectId: string, users: ProjectUserInfo[]): Observable<any> {
+	// get project to display correct users count value in project page header
+	public addUsers(projectId: string, users: ProjectUserInfo[]): Observable<[ProjectUserInfoApi[], ProjectResponse]> {
 		const newUsers: UserRequest[] = users.map((u: ProjectUserInfo) => ({ userId: u.id, role: u.projectRole }));
 		return this.projectService
 			.addUsers(projectId, newUsers)
-			.pipe(switchMap(() => this.projectService.getProjectUsers(projectId)));
+			.pipe(
+				switchMap(() =>
+					forkJoin([
+						this.projectService.getProjectUsers(projectId),
+						this.projectService.getProject(projectId),
+					])
+				)
+			);
 	}
 
 	private alreadyInProject(userId: string, usersToHide: HiddenUser<ProjectUserRoleType>[]): boolean {
