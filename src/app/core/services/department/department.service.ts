@@ -17,8 +17,7 @@ import { DepartmentUserAssignment } from '@api/department-service/models/departm
 export interface IGetDepartment {
 	departmentId: string;
 	includeUsers?: boolean;
-	includeProjects?: boolean;
-	includeNews?: boolean;
+	includeCategory: boolean;
 }
 
 export interface ICreateUserRequest {

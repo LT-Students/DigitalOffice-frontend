@@ -60,7 +60,7 @@ export class AddEditDepartmentComponent {
 			this._departmentInfo = {
 				id: data.departmentInfo.id,
 				[DepartmentPath.NAME]: data.departmentInfo.name,
-				[DepartmentPath.DESCRIPTION]: data.departmentInfo.description,
+				// [DepartmentPath.DESCRIPTION]: data.departmentInfo.description,
 				// [DepartmentPath.DIRECTOR_ID]: data.departmentInfo.director?.user?.id,
 			};
 			this.departmentForm.patchValue(this._departmentInfo);

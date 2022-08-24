@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@app/services/user/user.service';
-import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { DepartmentUserRole, UserInfo } from '@api/user-service/models';
 import { MatTableDataSource } from '@angular/material/table';
@@ -17,6 +16,7 @@ import { Icons } from '@shared/modules/icons/icons';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { User } from '@app/models/user/user.model';
 import { UserRights } from '@app/types/user-rights.enum';
+import { DepartmentResponse } from '@api/department-service/models/department-response';
 
 @Component({
 	selector: 'do-department-card',
@@ -26,7 +26,7 @@ import { UserRights } from '@app/types/user-rights.enum';
 })
 export class DepartmentCardComponent {
 	public readonly Icons = Icons;
-	public departmentInfo: DepartmentInfo | undefined;
+	public departmentInfo?: DepartmentResponse;
 	private _departmentId: string;
 	public positions: string[];
 	public totalCount: number;
@@ -82,9 +82,9 @@ export class DepartmentCardComponent {
 
 	private _getDepartment(): void {
 		this._departmentService
-			.getDepartment({ departmentId: this._departmentId, includeUsers: true })
+			.getDepartment({ departmentId: this._departmentId, includeUsers: true, includeCategory: true })
 			.subscribe(({ body }) => {
-				this.departmentInfo = body?.department;
+				this.departmentInfo = body;
 
 				this.totalCount = body?.users?.length ?? 0;
 				this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
@@ -96,10 +96,10 @@ export class DepartmentCardComponent {
 		this._modalService
 			.openModal<AddEditDepartmentComponent>(AddEditDepartmentComponent, ModalWidth.M, {
 				departmentInfo: this.departmentInfo,
-				directors$: of(this.dataSource.data.map((u) => u.user)),
+				directors$: of(this.dataSource.data.map((u) => u.userId)),
 			})
 			.afterClosed()
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._getDepartment();
 			});
 	}
@@ -110,7 +110,7 @@ export class DepartmentCardComponent {
 
 	public openAddEmployeeModal(): void {
 		const modal = this._modalService.openModal(AddEmployeeComponent, ModalWidth.L, {
-			idToHide: this.dataSource.data.map((departmentUser) => departmentUser.user?.id),
+			idToHide: this.dataSource.data.map((departmentUser) => departmentUser.userId),
 			openFrom: OpenAddEmployeeModalFrom.Department,
 			moduleName: this.departmentInfo?.name,
 		});
@@ -133,11 +133,12 @@ export class DepartmentCardComponent {
 					return this._departmentService.getDepartment({
 						departmentId: this._departmentId,
 						includeUsers: true,
+						includeCategory: true,
 					});
 				}),
 				tap(({ body }) => {
 					this.selection.clear();
-					this.departmentInfo = body?.department;
+					this.departmentInfo = body;
 
 					this.totalCount = body?.users?.length ?? 0;
 					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
@@ -199,7 +200,7 @@ export class DepartmentCardComponent {
 							newArr: string[],
 							departmentUser
 						) {
-							newArr.push(departmentUser.user?.id ?? '');
+							newArr.push(departmentUser.userId);
 
 							return newArr;
 						},
@@ -213,11 +214,12 @@ export class DepartmentCardComponent {
 					return this._departmentService.getDepartment({
 						departmentId: this._departmentId,
 						includeUsers: true,
+						includeCategory: true,
 					});
 				}),
 				tap(({ body }) => {
 					this.selection.clear();
-					this.departmentInfo = body?.department;
+					this.departmentInfo = body;
 
 					this.totalCount = body?.users?.length ?? 0;
 					this.dataSource = new MatTableDataSource(body?.users?.slice() ?? []);
