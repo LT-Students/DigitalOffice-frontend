@@ -5,7 +5,7 @@ import { ProjectUserRoleType } from '@api/project-service/models/project-user-ro
 import { ProjectResponse } from '@api/project-service/models/project-response';
 import { first, map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { DialogService } from '@app/services/dialog.service';
-import { Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 import { Router } from '@angular/router';
 import { AppRoutes } from '@app/models/app-routes';
@@ -151,8 +151,12 @@ export class ProjectUsersService {
 
 	private removeUsers(projectId: string, userIds: string[]): Observable<any> {
 		return this.projectService.removeUsers(projectId, userIds).pipe(
-			switchMap(() => this.projectService.getProjectUsers(projectId)),
-			tap((users: UserInfo[]) => this.selectedProject.setProject({ users }))
+			switchMap(() =>
+				forkJoin([this.projectService.getProjectUsers(projectId), this.projectService.getProject(projectId)])
+			),
+			tap(([users, project]: [UserInfo[], ProjectResponse]) =>
+				this.selectedProject.setProject({ users, info: project })
+			)
 		);
 	}
 

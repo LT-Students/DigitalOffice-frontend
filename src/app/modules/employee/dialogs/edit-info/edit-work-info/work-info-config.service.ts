@@ -29,15 +29,15 @@ export class WorkInfoConfigService {
 		return this.employeePage.selectedUser$.pipe(
 			map((user: User) => {
 				return [
-					new WorkInfoConfig({
-						...this.autocompleteConfigs.getOfficesConfig(),
-						label: 'Офис',
-						value: user.office,
-						type: 'autocomplete',
-						canEdit$: this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
-						placeholder: 'Выберите офис',
-						submitFn: this.editUser.changeOffice.bind(this.editUser, user),
-					}),
+					// new WorkInfoConfig({
+					// 	...this.autocompleteConfigs.getOfficesConfig(),
+					// 	label: 'Офис',
+					// 	value: user.office,
+					// 	type: 'autocomplete',
+					// 	canEdit$: this.permission.checkPermission$(UserRights.AddEditRemoveCompanyData),
+					// 	placeholder: 'Выберите офис',
+					// 	submitFn: this.editUser.changeOffice.bind(this.editUser, user),
+					// }),
 					new WorkInfoConfig({
 						...this.autocompleteConfigs.getPositionsConfig(),
 						label: 'Должность',

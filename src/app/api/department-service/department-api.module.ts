@@ -7,6 +7,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { DepartmentApiService } from './services/department-api.service';
 import { DepartmentUserApiService } from './services/department-user-api.service';
 import { ProjectApiService } from './services/project-api.service';
+import { CategoryApiService } from './services/category-api.service';
 
 /**
  * Module that provides all services and configuration.
@@ -15,7 +16,13 @@ import { ProjectApiService } from './services/project-api.service';
 	imports: [],
 	exports: [],
 	declarations: [],
-	providers: [DepartmentApiService, DepartmentUserApiService, ProjectApiService, ApiConfiguration],
+	providers: [
+		DepartmentApiService,
+		DepartmentUserApiService,
+		ProjectApiService,
+		CategoryApiService,
+		ApiConfiguration,
+	],
 })
 export class DepartmentApiModule {
 	static forRoot(params: ApiConfigurationParams): ModuleWithProviders<DepartmentApiModule> {

@@ -97,15 +97,15 @@
 						</mat-select>
 					</mat-form-field>
 				</do-form-field>
-				<do-form-field label="Офис">
-					<mat-form-field>
-						<mat-select placeholder="Выберите офис" formControlName="officeId">
-							<mat-option *ngFor="let office of offices$ | async" [value]="office.id">
-								{{ office.city }}, {{ office.address }}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</do-form-field>
+				<!--				<do-form-field label="Офис">-->
+				<!--					<mat-form-field>-->
+				<!--						<mat-select placeholder="Выберите офис" formControlName="officeId">-->
+				<!--							<mat-option *ngFor="let office of offices$ | async" [value]="office.id">-->
+				<!--								{{ office.city }}, {{ office.address }}-->
+				<!--							</mat-option>-->
+				<!--						</mat-select>-->
+				<!--					</mat-form-field>-->
+				<!--				</do-form-field>-->
 				<do-form-field label="Роль">
 					<mat-form-field>
 						<mat-select placeholder="Выберите роль" formControlName="roleId">

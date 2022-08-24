@@ -8,6 +8,8 @@ import { LoadingState } from '@shared/directives/button-loading.directive';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { SelectionModel } from '@app/utils/selection-model';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
+import { UserInfo } from '@api/project-service/models/user-info';
+import { ProjectResponse } from '@api/project-service/models/project-response';
 import { TableComponent } from '../../table/table.component';
 import { TableOptions } from '../../table/models/table-options';
 import { AddProjectUsersService, ProjectUserInfo } from './add-project-users.service';
@@ -82,11 +84,11 @@ export class AddProjectUsersComponent extends LoadingState implements OnInit, On
 		this.addUsersService
 			.addUsers(this.data.entityId, users)
 			.pipe(finalize(() => this.setLoading(false)))
-			.subscribe({ next: (users?: ProjectUserInfo[]) => this.close(users) });
+			.subscribe({ next: (users?: [UserInfo[], ProjectResponse]) => this.close(users) });
 	}
 
-	public close(users?: ProjectUserInfo[]): void {
-		this.dialogRef.close(users);
+	public close(result?: [UserInfo[], ProjectResponse]): void {
+		this.dialogRef.close(result);
 	}
 }
 

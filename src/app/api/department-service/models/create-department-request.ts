@@ -3,14 +3,24 @@
 import { CreateUserRequest } from './create-user-request';
 export interface CreateDepartmentRequest {
 	/**
+	 * Department categoryId.
+	 */
+	categoryId?: string;
+
+	/**
 	 * Department description.
 	 */
-	description?: null | string;
+	description?: string;
 
 	/**
 	 * Department name.
 	 */
 	name: string;
+
+	/**
+	 * Department parentId.
+	 */
+	parentId?: string;
 
 	/**
 	 * Department short name.
