@@ -87,7 +87,11 @@ export class AttendanceService {
 	}: {
 		reservedLeaveTimeIntervals: LeaveTime[];
 		workTimes: WorkTime[];
-		monthNormAndHolidays: [WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo];
+		monthNormAndHolidays: [
+			WorkTimeMonthLimitInfo | null,
+			WorkTimeMonthLimitInfo | null,
+			WorkTimeMonthLimitInfo | null
+		];
 	}): void {
 		this.setRate();
 		this.setWorkTimes(workTimes);
@@ -227,16 +231,18 @@ export class AttendanceService {
 		this.leaveTimes.next(leaveTimes);
 	}
 
-	private setMonthAndHolidaysForSelectedMonth({ normHours, holidays, month, year }: WorkTimeMonthLimitInfo): void {
+	private setMonthAndHolidaysForSelectedMonth(monthLimit: WorkTimeMonthLimitInfo | null): void {
+		const { normHours, holidays, month, year } = monthLimit || { normHours: 168, holidays: '', month: 0, year: 0 };
 		this.holidays = { month, year, holidays: holidays.split('').map(Number).map(Boolean) };
 		this.monthNorm.next(normHours * this.rate);
 	}
 
 	private setDatepickerHolidays(
-		holidays: [WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo]
+		holidays: [WorkTimeMonthLimitInfo | null, WorkTimeMonthLimitInfo | null, WorkTimeMonthLimitInfo | null]
 	): void {
-		this.datepickerHolidays = holidays.map((l: WorkTimeMonthLimitInfo) => ({
-			...l,
+		this.datepickerHolidays = holidays.map((l: WorkTimeMonthLimitInfo | null) => ({
+			month: l?.month || 0,
+			year: l?.year || 0,
 			holidays: l ? l.holidays.split('').map(Number).map(Boolean) : [],
 		}));
 	}
