@@ -237,7 +237,7 @@ export class AttendanceService {
 	): void {
 		this.datepickerHolidays = holidays.map((l: WorkTimeMonthLimitInfo) => ({
 			...l,
-			holidays: l.holidays.split('').map(Number).map(Boolean),
+			holidays: l ? l.holidays.split('').map(Number).map(Boolean) : [],
 		}));
 	}
 
