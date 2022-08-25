@@ -30,7 +30,7 @@
 		<do-upload-images></do-upload-images>
 	</div>
 	<do-actions class="actions">
-		<button doButton mat-dialog-close>Отменить</button>
+		<button doButton (click)="beforeClose()">Отменить</button>
 		<button mat-flat-button color="primary" [loading]="loading$ | async" (click)="submitReport()">Отправить</button>
 	</do-actions>
 </mat-dialog-content>
