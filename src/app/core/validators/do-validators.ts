@@ -21,7 +21,7 @@ const PASSWORD_REGEXP =
 export class DoValidators {
 	static required(control: AbstractControl): ValidationErrors | null {
 		const error = Validators.required(control);
-		return error ? { required: { message: 'Обязательное для заполнения' } } : null;
+		return error ? { required: { message: 'Обязательно для заполнения' } } : null;
 	}
 
 	static email(control: AbstractControl): ValidationErrors | null {

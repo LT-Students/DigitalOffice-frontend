@@ -44,22 +44,7 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 
 	public ngOnInit(): void {
 		this.closeEvents$.subscribe({
-			next: () => {
-				if (this.isFormDirty()) {
-					this.dialog
-						.confirm({
-							title: 'Вы уверены?',
-							message: 'Закрыть окно? Ваши данные не сохранятся',
-							confirmText: 'Да, закрыть',
-						})
-						.afterClosed()
-						.subscribe({
-							next: (confirm?: boolean) => (confirm ? this.close() : null),
-						});
-				} else {
-					this.close();
-				}
-			},
+			next: () => this.beforeClose(),
 		});
 	}
 
@@ -97,5 +82,22 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 
 	private close(): void {
 		this.dialogRef.close();
+	}
+
+	public beforeClose(): void {
+		if (this.isFormDirty()) {
+			this.dialog
+				.confirm({
+					title: 'Вы уверены?',
+					message: 'Закрыть окно? Ваши данные не сохранятся',
+					confirmText: 'Да, закрыть',
+				})
+				.afterClosed()
+				.subscribe({
+					next: (confirm?: boolean) => (confirm ? this.close() : null),
+				});
+		} else {
+			this.close();
+		}
 	}
 }

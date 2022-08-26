@@ -25,7 +25,7 @@ export interface DescriptionControlValue {
 })
 export class ProjectDescriptionFormComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	public form = this.fb.group({
-		shortDescription: ['', [DoValidators.matchMaxLength(100)]],
+		shortDescription: ['', [DoValidators.matchMaxLength(300)]],
 		description: [''],
 	});
 	private destroy$ = new Subject<void>();

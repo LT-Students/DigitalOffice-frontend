@@ -9,6 +9,7 @@ import { getFileIcon } from '@shared/pipes/file-icon.pipe';
 import { formatBytes } from '@shared/pipes/format-bytes.pipe';
 import { TableOptions } from '../../table/models/table-options';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
+import { ColumnDef } from '../../table/models';
 import { UploadProgressComponent } from './upload-progress/upload-progress.component';
 
 export class UploadFile {
@@ -50,14 +51,14 @@ export class AddFilesService {
 		return {
 			rowClass: 'file-row',
 			columns: [
-				{
+				new ColumnDef({
 					type: 'iconCell',
 					field: 'type-icon',
 					valueGetter: (file: UploadFile) => getFileIcon(file.file.type),
 					headerStyle: { flex: '0 0 24px', 'margin-right': '12px' },
 					columnStyle: { flex: 0, 'margin-right': '12px' },
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'editableTextFieldCell',
 					field: 'name',
 					headerName: 'Название',
@@ -66,14 +67,14 @@ export class AddFilesService {
 					params: new EditableTextFieldParams({
 						updateRow: (file: UploadFile, name: string) => (file.name = name),
 					}),
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'textCell',
 					field: 'size',
 					headerName: 'Размер',
 					valueGetter: (file: UploadFile) => formatBytes(file.file.size, this.locale),
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'selectCell',
 					field: 'access',
 					headerName: 'Приватность',
@@ -83,8 +84,8 @@ export class AddFilesService {
 						displayValueGetter: (type: FileAccessType) => this.typeMap.get(type) as string,
 						updateRow: (f: UploadFile, t: FileAccessType) => (f.accessType = t),
 					},
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'iconButtonCell',
 					field: 'delete',
 					valueGetter: (file: UploadFile) => file,
@@ -94,7 +95,7 @@ export class AddFilesService {
 						icon: () => Icons.Delete,
 						onClickFn: (file: UploadFile) => this.dataSource.removeFile(file),
 					},
-				},
+				}),
 			],
 		};
 	}

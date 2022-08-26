@@ -92,8 +92,8 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 
 	@Input() dataSource!: T[] | DataSource<T> | Observable<readonly T[]>;
 	@Input()
-	set columns(cols: ColumnDef[]) {
-		this._columns = cols;
+	set columns(cols: ColumnDef[] | null) {
+		this._columns = cols || [];
 		this.displayColumns = this._columns.map((col: ColumnDef) => col.field);
 	}
 	get columns(): ColumnDef[] {

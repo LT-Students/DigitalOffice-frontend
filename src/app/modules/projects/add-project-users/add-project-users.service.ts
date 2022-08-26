@@ -1,14 +1,20 @@
 import { Injectable } from '@angular/core';
 import { UserInfo } from '@api/filter-service/models/user-info';
-import { ProjectUserRoleType, UserRequest } from '@api/project-service/models';
+import {
+	ProjectResponse,
+	ProjectUserRoleType,
+	UserRequest,
+	UserInfo as ProjectUserInfoApi,
+} from '@api/project-service/models';
 import { Icons } from '@shared/modules/icons/icons';
 import { FilterService } from '@app/services/filter/filter.service';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { CheckboxParams } from '../../table/cell-components/checkbox/checkbox.component';
 import { TableOptions } from '../../table/models/table-options';
 import { ProjectService } from '../project.service';
 import { UserInfoParams } from '../../table/cell-components/user-info/user-info.component';
+import { ColumnDef } from '../../table/models';
 import { AddUsersDataSource, HiddenUser } from './add-project-users.component';
 
 export interface ProjectUserInfo extends UserInfo {
@@ -24,7 +30,7 @@ export class AddProjectUsersService {
 			selectionCompareWith: (u1: ProjectUserInfo, u2: ProjectUserInfo) => u1.id === u2.id,
 			rowHeight: 64,
 			columns: [
-				{
+				new ColumnDef({
 					type: 'checkboxCell',
 					field: 'checkbox',
 					valueGetter: (u: ProjectUserInfo) => this.alreadyInProject(u.id, idsToHide),
@@ -33,8 +39,8 @@ export class AddProjectUsersService {
 						disabled: (u: ProjectUserInfo) => this.alreadyInProject(u.id, idsToHide),
 						disabledTooltip: () => 'Сотрудник уже проекте',
 					}),
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'userInfoCell',
 					field: 'userInfo',
 					valueGetter: (user: ProjectUserInfo) => user,
@@ -44,14 +50,14 @@ export class AddProjectUsersService {
 							user.projectRole === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
 						iconColor: '#FFD89E',
 					}),
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'textCell',
 					field: 'department',
 					valueGetter: (user: ProjectUserInfo) => user.department?.name,
 					params: { lineClamp: 2 },
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'selectCell',
 					field: 'role',
 					valueGetter: (user: ProjectUserInfo) => user.projectRole,
@@ -68,7 +74,7 @@ export class AddProjectUsersService {
 						},
 						disabled: (u: ProjectUserInfo) => this.alreadyInProject(u.id, idsToHide),
 					},
-				},
+				}),
 			],
 		};
 	}
@@ -83,11 +89,19 @@ export class AddProjectUsersService {
 			);
 	}
 
-	public addUsers(projectId: string, users: ProjectUserInfo[]): Observable<any> {
+	// get project to display correct users count value in project page header
+	public addUsers(projectId: string, users: ProjectUserInfo[]): Observable<[ProjectUserInfoApi[], ProjectResponse]> {
 		const newUsers: UserRequest[] = users.map((u: ProjectUserInfo) => ({ userId: u.id, role: u.projectRole }));
 		return this.projectService
 			.addUsers(projectId, newUsers)
-			.pipe(switchMap(() => this.projectService.getProjectUsers(projectId)));
+			.pipe(
+				switchMap(() =>
+					forkJoin([
+						this.projectService.getProjectUsers(projectId),
+						this.projectService.getProject(projectId),
+					])
+				)
+			);
 	}
 
 	private alreadyInProject(userId: string, usersToHide: HiddenUser<ProjectUserRoleType>[]): boolean {

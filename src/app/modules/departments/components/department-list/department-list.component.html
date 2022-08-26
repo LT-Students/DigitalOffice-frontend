@@ -56,15 +56,15 @@
 							<p class="cell__content cell__content_ellipsissed">{{ department.name }}</p>
 						</ng-container>
 					</td>
-					<td class="cell">
-						<ng-container *ngIf="department?.description; else empty">
-							<p class="cell__content cell__content_ellipsissed">{{ department.description }}</p>
-						</ng-container>
-					</td>
+					<!--					<td class="cell">-->
+					<!--						<ng-container *ngIf="department?.description; else empty">-->
+					<!--							<p class="cell__content cell__content_ellipsissed">{{ department.description }}</p>-->
+					<!--						</ng-container>-->
+					<!--					</td>-->
 					<td class="cell">
 						<ng-container *ngIf="department?.director; else empty">
 							<p class="cell__content cell__content_ellipsissed">
-								{{ department.director?.user?.firstName }} {{ department.director?.user?.lastName }}
+								{{ department.director?.firstName }} {{ department.director?.lastName }}
 							</p>
 						</ng-container>
 					</td>

@@ -56,7 +56,7 @@ export class AttendanceResolver implements Resolve<boolean> {
 	}
 
 	private getMonthNormAndHolidays(): Observable<
-		[WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo, WorkTimeMonthLimitInfo]
+		[WorkTimeMonthLimitInfo | null, WorkTimeMonthLimitInfo | null, WorkTimeMonthLimitInfo | null]
 	> {
 		const date = DateTime.now();
 		return forkJoin([
@@ -66,7 +66,7 @@ export class AttendanceResolver implements Resolve<boolean> {
 		]);
 	}
 
-	private findMonthLimit({ month, year }: DateTime): Observable<WorkTimeMonthLimitInfo> {
+	private findMonthLimit({ month, year }: DateTime): Observable<WorkTimeMonthLimitInfo | null> {
 		return this.timeService
 			.findWorkTimeMonthLimit({ month, year, skipCount: 0, takeCount: 1 })
 			.pipe(map((res) => (res.body as WorkTimeMonthLimitInfo[])[0]));

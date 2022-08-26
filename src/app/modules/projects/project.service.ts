@@ -32,7 +32,11 @@ export class ProjectService {
 
 	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
 		params = { ...params, includedepartment: true };
-		return this.projectService.findProjects(params);
+		return this.projectService.findProjects(params).pipe(
+			map((res) => {
+				return res.body ? res : { ...res, body: [] };
+			})
+		);
 	}
 
 	public getProject(projectId: string): Observable<ProjectResponse> {
