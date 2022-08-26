@@ -27,7 +27,7 @@ export class ProjectUsersComponent implements OnInit {
 
 	public canManageUsers$ = this.usersService.canManageUsers$();
 	public filterData = this.usersService.getFilterData();
-	public tableColumns = this.usersService.getTableColumns();
+	public tableColumns$ = this.usersService.getTableColumns$();
 	public tableChanged = new Subject();
 	public dataSource!: Observable<UserInfo[]>;
 

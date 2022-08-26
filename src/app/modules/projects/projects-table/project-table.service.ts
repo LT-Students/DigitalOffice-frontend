@@ -28,27 +28,27 @@ export class ProjectTableService {
 
 	public getTableColumns(): ColumnDef[] {
 		return [
-			{ field: 'name', headerName: 'Название', sortEnabled: true, params: { lineClamp: 3 } },
-			{ field: 'shortName', headerName: 'Сокращенное название', params: { lineClamp: 3 } },
-			{ field: 'customer', headerName: 'Заказчик', params: { lineClamp: 3 } },
-			{
+			new ColumnDef({ field: 'name', headerName: 'Название', sortEnabled: true, params: { lineClamp: 3 } }),
+			new ColumnDef({ field: 'shortName', headerName: 'Сокращенное название', params: { lineClamp: 3 } }),
+			new ColumnDef({ field: 'customer', headerName: 'Заказчик', params: { lineClamp: 3 } }),
+			new ColumnDef({
 				field: 'department',
 				headerName: 'Департамент',
 				valueGetter: (project: ProjectInfo) => project.department?.shortName,
-			},
-			{
+			}),
+			new ColumnDef({
 				field: 'usersCount',
 				headerName: 'Количество человек',
 				type: 'textCell',
 				valueGetter: (project: ProjectInfo) => `${project.usersCount} чел`,
-			},
-			{
+			}),
+			new ColumnDef({
 				field: 'status',
 				headerName: 'Статус',
 				type: 'statusCell',
 				width: 50,
 				valueGetter: (project: ProjectInfo) => ProjectStatus.getStatusColor(project.status),
-			},
+			}),
 		];
 	}
 

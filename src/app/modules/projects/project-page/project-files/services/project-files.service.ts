@@ -26,22 +26,22 @@ export class ProjectFilesService {
 
 	public getTableColumns(): ColumnDef[] {
 		return [
-			{
+			new ColumnDef({
 				type: 'checkboxCell',
 				field: 'checkbox',
 				headerStyle: { flex: '0 0 18px' },
 				columnStyle: {
 					'flex-grow': 0,
 				},
-			},
-			{
+			}),
+			new ColumnDef({
 				type: 'iconCell',
 				field: 'type-icon',
 				valueGetter: (file: FileInfo) => getFileIcon(getTypeFromExtension(file.extension.slice(1))),
 				headerStyle: { flex: '0 0 24px', 'margin-right': '12px' },
 				columnStyle: { flex: 0, 'margin-right': '12px' },
-			},
-			{
+			}),
+			new ColumnDef({
 				type: 'textCell',
 				field: 'name',
 				headerName: 'Название',
@@ -49,8 +49,8 @@ export class ProjectFilesService {
 				columnStyle: {
 					flex: '0 0 25%',
 				},
-			},
-			{
+			}),
+			new ColumnDef({
 				type: 'textCell',
 				field: 'extension',
 				headerName: 'Тип',
@@ -59,8 +59,8 @@ export class ProjectFilesService {
 				columnStyle: {
 					'flex-grow': 2,
 				},
-			},
-			{
+			}),
+			new ColumnDef({
 				type: 'textCell',
 				field: 'uploadDate',
 				headerName: 'Дата загрузки',
@@ -72,15 +72,15 @@ export class ProjectFilesService {
 				columnStyle: {
 					'flex-grow': 2,
 				},
-			},
-			{
+			}),
+			new ColumnDef({
 				type: 'textCell',
 				field: 'size',
 				headerName: 'Размер',
 				valueGetter: (file: FileInfo) => formatBytes(file.size, this.locale),
 				columnClass: 'text-secondary_default',
-			},
-			{
+			}),
+			new ColumnDef({
 				type: 'iconButtonCell',
 				field: 'download',
 				headerName: 'Скачать',
@@ -92,8 +92,8 @@ export class ProjectFilesService {
 				columnStyle: {
 					'flex-grow': 0,
 				},
-			},
-			{
+			}),
+			new ColumnDef({
 				type: 'contextMenuCell',
 				field: 'context-menu',
 				valueGetter: (file: FileInfo) => file,
@@ -103,7 +103,7 @@ export class ProjectFilesService {
 				columnStyle: {
 					'flex-grow': 0,
 				},
-			},
+			}),
 		];
 	}
 }
