@@ -40,6 +40,15 @@
 					"required": false
 				},
 				{
+					"name": "orderbydescending",
+					"in": "query",
+					"description": "Define whether to sort result by creation date",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
 					"name": "skipCount",
 					"in": "query",
 					"description": "Number of entries to skip",
@@ -146,6 +155,62 @@
 					},
 					"404": {
 						"description": "Feedback was not found.\n",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/feedback/editstatus": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"put": {
+				"tags": ["Feedback"],
+				"operationId": "editFeedbackStatuses",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditFeedbackStatusesRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successfully changed statuses of specified feedbacks.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponseFeedbackResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request.\n",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - Token was not entered"
+					},
+					"403": {
+						"description": "Forbidden.\n* Invalid token.\n",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -307,6 +372,22 @@
 				"enum": ["Bug", "Wishes", "Other"],
 				"nullable": false,
 				"example": "Bug"
+			},
+			"EditFeedbackStatusesRequest": {
+				"type": "object",
+				"required": ["FeedbackIds", "Status"],
+				"properties": {
+					"FeedbackIds": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uuid"
+						}
+					},
+					"Status": {
+						"$ref": "#/components/schemas/FeedbackStatusType"
+					}
+				}
 			}
 		},
 		"parameters": {

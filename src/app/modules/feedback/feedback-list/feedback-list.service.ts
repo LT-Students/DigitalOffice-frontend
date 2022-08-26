@@ -8,7 +8,6 @@ import { TableOptions } from '../../table/models/table-options';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
 import { FeedbackType, FeedbackTypeInfo } from '../models/feedback-type';
 import { FilterDef, SelectFilterParams } from '../../dynamic-filter/models';
-import { FeedbackType } from '../models/feedback-type';
 import { ColumnDef } from '../../table/models';
 
 @Injectable()

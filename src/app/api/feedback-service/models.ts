@@ -6,3 +6,4 @@ export { FeedbackInfo } from './models/feedback-info';
 export { ImageContent } from './models/image-content';
 export { FeedbackStatusType } from './models/feedback-status-type';
 export { FeedbackType } from './models/feedback-type';
+export { EditFeedbackStatusesRequest } from './models/edit-feedback-statuses-request';
