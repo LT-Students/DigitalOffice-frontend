@@ -17,6 +17,6 @@ export class FeedbackListResolver implements Resolve<OperationResultResponse<Fee
 		state: RouterStateSnapshot
 	): Observable<OperationResultResponse<FeedbackInfo[]>> {
 		const params = this.feedbackListQueries.convertQueryUrlParamsToEndpointParams(route.queryParams);
-		return this.feedbackService.findReports(params);
+		return this.feedbackService.findFeedback(params);
 	}
 }

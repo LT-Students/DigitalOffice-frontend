@@ -60,7 +60,7 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 			: of([]);
 		imagesAction
 			.pipe(
-				switchMap((images) => this.feedbackService.createReport(category, comment, images)),
+				switchMap((images) => this.feedbackService.createFeedback(category, comment, images)),
 				finalize(() => this.setLoading(false))
 			)
 			.subscribe({

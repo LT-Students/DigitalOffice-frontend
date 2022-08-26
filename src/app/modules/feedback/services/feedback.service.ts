@@ -14,6 +14,7 @@ export interface FindFeedbackParams {
 	skipCount: number;
 	takeCount: number;
 	feedbacktype?: FeedbackType;
+	orderbydescending: boolean;
 }
 
 @Injectable({
@@ -22,7 +23,7 @@ export interface FindFeedbackParams {
 export class FeedbackService {
 	constructor(private feedbackApi: FeedbackApiService, private feedbackGatewayApi: FeedbackGatewayApiService) {}
 
-	public createReport(
+	public createFeedback(
 		type: FeedbackType,
 		comment: string,
 		images: ImageContent[] = []
@@ -30,14 +31,23 @@ export class FeedbackService {
 		return this.feedbackGatewayApi.createFeedback({ body: { type, content: comment, feedbackImages: images } });
 	}
 
-	public findReports(params: FindFeedbackParams): Observable<FindResultResponseFeedbackInfo> {
+	public archiveFeedback(feedbackIds: string[]): Observable<OperationResultResponse> {
+		return this.feedbackApi.editFeedbackStatuses({
+			body: {
+				feedbackIds,
+				status: FeedbackStatusType.Archived,
+			},
+		});
+	}
+
+	public findFeedback(params: FindFeedbackParams): Observable<FindResultResponseFeedbackInfo> {
 		return this.feedbackApi.findFeedbacks({
 			...params,
 			feedbackstatus: FeedbackStatusType.New,
 		});
 	}
 
-	public getReport(feedbackId: string): Observable<FeedbackResponse> {
+	public getFeedback(feedbackId: string): Observable<FeedbackResponse> {
 		return this.feedbackApi.getFeedback({ feedbackId }).pipe(map((res) => res.body as FeedbackResponse));
 	}
 }
