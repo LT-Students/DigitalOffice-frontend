@@ -20,7 +20,8 @@ export class AddLeaveHoursComponent extends AddEditLeaveHoursBase {
 
 	public handleSubmit(): void {
 		this.submit$().subscribe({
-			next: () => this.alert.open('Не забудьте сообщить отделу кадров о вашем отсутствии!'),
+			next: (success: boolean) =>
+				success && this.alert.open('Не забудьте сообщить отделу кадров о вашем отсутствии!'),
 		});
 	}
 }
