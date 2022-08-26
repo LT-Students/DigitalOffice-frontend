@@ -5,19 +5,21 @@ import { TableModule } from '../table/table.module';
 import { FeedbackFormComponent } from './feedback-form/feedback-form.component';
 import { UploadImagesComponent } from './feedback-form/upload-images/upload-images.component';
 import { ImageComponent } from './feedback-image/image.component';
-import { ReportListComponent } from './report-list/report-list.component';
+import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 import { FeedbackRoutingModule } from './feedback-routing.module';
-import { ReportDetailsComponent } from './report-details/report-details.component';
+import { FeedbackDetailsComponent } from './feedback-details/feedback-details.component';
+import { FeedbackCategoryPipe } from './feedback-category.pipe';
 
 @NgModule({
 	declarations: [
 		FeedbackFormComponent,
 		UploadImagesComponent,
 		ImageComponent,
-		ReportListComponent,
-		ReportDetailsComponent,
+		FeedbackListComponent,
+		FeedbackDetailsComponent,
+		FeedbackCategoryPipe,
 	],
 	imports: [SharedModule, TableModule, DynamicFilterModule, FeedbackRoutingModule],
-	exports: [FeedbackFormComponent, ReportListComponent],
+	exports: [FeedbackFormComponent, FeedbackListComponent],
 })
 export class FeedbackModule {}

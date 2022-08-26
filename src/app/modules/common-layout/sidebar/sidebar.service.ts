@@ -59,12 +59,12 @@ export class SidebarService {
 					path: [AppRoutes.Admin, AdminRoutes.Dashboard],
 					icon: Icons.Administration,
 				},
-				// {
-				// 	visible: () => !environment.production && user.isAdmin,
-				// 	title: 'Обратная связь',
-				// 	path: [AppRoutes.Reports],
-				// 	icon: Icons.Bug,
-				// },
+				{
+					visible: () => !environment.production && user.isAdmin,
+					title: 'Обратная связь',
+					path: [AppRoutes.Feedback],
+					icon: Icons.Bug,
+				},
 			].filter((l: Link) => l.visible());
 		})
 	);

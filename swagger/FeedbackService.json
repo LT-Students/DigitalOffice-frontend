@@ -40,6 +40,15 @@
 					"required": false
 				},
 				{
+					"name": "orderbydescending",
+					"in": "query",
+					"description": "Define whether to sort result by creation date",
+					"schema": {
+						"type": "boolean"
+					},
+					"required": false
+				},
+				{
 					"name": "skipCount",
 					"in": "query",
 					"description": "Number of entries to skip",
@@ -156,6 +165,62 @@
 					}
 				}
 			}
+		},
+		"/feedback/editstatus": {
+			"parameters": [
+				{
+					"$ref": "#/components/parameters/securityToken"
+				}
+			],
+			"put": {
+				"tags": ["Feedback"],
+				"operationId": "editFeedbackStatuses",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EditFeedbackStatusesRequest"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successfully changed statuses of specified feedbacks.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponseFeedbackResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad request.\n",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized - Token was not entered"
+					},
+					"403": {
+						"description": "Forbidden.\n* Invalid token.\n",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OperationResultResponse"
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	},
 	"components": {
@@ -221,6 +286,12 @@
 				"properties": {
 					"Feedback": {
 						"$ref": "#/components/schemas/FeedbackInfo"
+					},
+					"Images": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ImageContent"
+						}
 					}
 				}
 			},
@@ -234,8 +305,7 @@
 					"SenderFullName",
 					"SenderId",
 					"CreatedAtUtc",
-					"ChangedBy",
-					"ChangedAtUtc"
+					"ImagesCount"
 				],
 				"properties": {
 					"Id": {
@@ -269,13 +339,23 @@
 						"pattern": "YYYY-MM-DDTHH:mm",
 						"example": "2021-12-10 03:13"
 					},
-					"ChangedBy": {
-						"description": "Unique identifier of person changed feedback."
+					"ImagesCount": {
+						"type": "integer"
+					}
+				}
+			},
+			"ImageContent": {
+				"type": "object",
+				"required": ["Content", "Extension"],
+				"properties": {
+					"Content": {
+						"type": "string"
 					},
-					"ChangedAtUtc": {
-						"description": "Data and time changed feedback.",
-						"pattern": "YYYY-MM-DDTHH:mm",
-						"example": "2021-12-10 03:13"
+					"Extension": {
+						"type": "string"
+					},
+					"Name": {
+						"type": "string"
 					}
 				}
 			},
@@ -292,6 +372,22 @@
 				"enum": ["Bug", "Wishes", "Other"],
 				"nullable": false,
 				"example": "Bug"
+			},
+			"EditFeedbackStatusesRequest": {
+				"type": "object",
+				"required": ["FeedbackIds", "Status"],
+				"properties": {
+					"FeedbackIds": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"format": "uuid"
+						}
+					},
+					"Status": {
+						"$ref": "#/components/schemas/FeedbackStatusType"
+					}
+				}
 			}
 		},
 		"parameters": {

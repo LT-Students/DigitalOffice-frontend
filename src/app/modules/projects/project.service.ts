@@ -93,7 +93,7 @@ export class ProjectService {
 	public findFiles(projectId: string): Observable<FileInfo[]> {
 		return this.fileService
 			.findFiles({ projectid: projectId, skipCount: 0, takeCount: MAX_INT32 })
-			.pipe(map((res) => res.body as FileInfo[]));
+			.pipe(map((res) => (res.body || []) as FileInfo[]));
 	}
 
 	public removeFiles(projectId: string, fileIds: string[]): Observable<OperationResultResponse> {

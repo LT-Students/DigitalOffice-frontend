@@ -1,11 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ReportListComponent } from './report-list/report-list.component';
+import { FeedbackListComponent } from './feedback-list/feedback-list.component';
+import { FeedbackListResolver } from './feedback-list-resolver.service';
 
 const routes: Routes = [
 	{
 		path: '',
-		component: ReportListComponent,
+		component: FeedbackListComponent,
+		resolve: {
+			feedback: FeedbackListResolver,
+		},
 	},
 ];
 

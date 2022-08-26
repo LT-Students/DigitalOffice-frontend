@@ -1,0 +1,26 @@
+<div class="flex flex_jc_space-between">
+	<h1>Обратная связь</h1>
+	<button doButton [disabled]="!table.selection.selected.length" (click)="archiveFeedback()">
+		<mat-icon class="archive-icon" [svgIcon]="Icons.Archive"></mat-icon>Архивировать
+	</button>
+</div>
+<do-dynamic-filter
+	class="filter"
+	[filters]="filterConfig"
+	(filterChange)="handleParamsChange(true)"
+></do-dynamic-filter>
+<do-table
+	[sortActive]="initialSort.active"
+	[sortDirection]="initialSort.direction"
+	[dataSource]="dataSource"
+	[tableOptions]="tableOptions"
+	(rowClick)="openDetails($event)"
+	(sortChange)="handleParamsChange(true)"
+></do-table>
+<do-paginator
+	class="paginator"
+	[pageIndex]="initialQueryParams['pageIndex']"
+	[pageSize]="initialQueryParams['pageSize']"
+	[total]="dataSource.totalCount$ | async"
+	(page)="handleParamsChange()"
+></do-paginator>

@@ -114,7 +114,7 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 		(
 			color: (
 				primary: mat.define-palette($do-grey, 50),
-				accent: mat.define-palette($do-grey, 50),
+				accent: mat.define-palette($do-orange, 500),
 			),
 		)
 	)

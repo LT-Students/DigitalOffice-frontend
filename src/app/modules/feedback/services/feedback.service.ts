@@ -5,8 +5,17 @@ import { FeedbackType } from '@api/gateway-service/models/feedback-type';
 import { ImageContent } from '@api/gateway-service/models/image-content';
 import { Observable } from 'rxjs';
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { MAX_INT32 } from '@app/utils/utils';
 import { FindResultResponseFeedbackInfo } from '@api/feedback-service/models/find-result-response-feedback-info';
+import { map } from 'rxjs/operators';
+import { FeedbackResponse } from '@api/feedback-service/models/feedback-response';
+import { FeedbackStatusType } from '@api/feedback-service/models/feedback-status-type';
+
+export interface FindFeedbackParams {
+	skipCount: number;
+	takeCount: number;
+	feedbacktype?: FeedbackType;
+	orderbydescending: boolean;
+}
 
 @Injectable({
 	providedIn: 'root',
@@ -14,7 +23,7 @@ import { FindResultResponseFeedbackInfo } from '@api/feedback-service/models/fin
 export class FeedbackService {
 	constructor(private feedbackApi: FeedbackApiService, private feedbackGatewayApi: FeedbackGatewayApiService) {}
 
-	public createReport(
+	public createFeedback(
 		type: FeedbackType,
 		comment: string,
 		images: ImageContent[] = []
@@ -22,11 +31,23 @@ export class FeedbackService {
 		return this.feedbackGatewayApi.createFeedback({ body: { type, content: comment, feedbackImages: images } });
 	}
 
-	public findReports(): Observable<FindResultResponseFeedbackInfo> {
-		return this.feedbackApi.findFeedbacks({ skipCount: 0, takeCount: MAX_INT32 });
+	public archiveFeedback(feedbackIds: string[]): Observable<OperationResultResponse> {
+		return this.feedbackApi.editFeedbackStatuses({
+			body: {
+				feedbackIds,
+				status: FeedbackStatusType.Archived,
+			},
+		});
 	}
 
-	public getReport(feedbackId: string) {
-		return this.feedbackApi.getFeedback({ feedbackId });
+	public findFeedback(params: FindFeedbackParams): Observable<FindResultResponseFeedbackInfo> {
+		return this.feedbackApi.findFeedbacks({
+			...params,
+			feedbackstatus: FeedbackStatusType.New,
+		});
+	}
+
+	public getFeedback(feedbackId: string): Observable<FeedbackResponse> {
+		return this.feedbackApi.getFeedback({ feedbackId }).pipe(map((res) => res.body as FeedbackResponse));
 	}
 }

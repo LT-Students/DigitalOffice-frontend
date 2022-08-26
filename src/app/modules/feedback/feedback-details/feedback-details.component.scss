@@ -23,16 +23,8 @@
 	margin-bottom: 8px;
 }
 
-.category {
-	max-width: 257px;
-}
-
-mat-dialog-actions {
-	button {
-		width: 176px;
-
-		&:not(:last-child) {
-			margin-right: 20px;
-		}
-	}
+.images {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 128px);
+	gap: 8px 28px;
 }

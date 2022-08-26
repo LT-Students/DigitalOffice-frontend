@@ -65,7 +65,7 @@ const routes: Routes = [
 				loadChildren: () => import('./modules/departments/departments.module').then((m) => m.DepartmentsModule),
 			},
 			{
-				path: AppRoutes.Reports,
+				path: AppRoutes.Feedback,
 				canLoad: [AuthGuard, PortalGuard],
 				loadChildren: () => import('./modules/feedback/feedback.module').then((m) => m.FeedbackModule),
 			},

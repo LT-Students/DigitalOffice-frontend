@@ -7,5 +7,5 @@ export enum AppRoutes {
 	News = 'news',
 	Installer = 'installer',
 	TimeTrack = 'time',
-	Reports = 'reports',
+	Feedback = 'feedback',
 }
