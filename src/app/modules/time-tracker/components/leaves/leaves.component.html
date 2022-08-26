@@ -5,7 +5,7 @@
 		<col class="column column_width_m" />
 		<col class="column column_width_sm" />
 		<col class="column column_width_sm" />
-		<col class="column column_width_l" />
+		<col class="column" [style.width.%]="40" />
 		<col class="column column_width_t" />
 	</colgroup>
 	<thead>
@@ -14,6 +14,7 @@
 			<th>Внесенные часы</th>
 			<th>Дата отсутствия</th>
 			<th>Комментарий</th>
+			<th></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -37,19 +38,14 @@
 				<do-comment [text]="leave?.comment"></do-comment>
 			</td>
 			<td class="cell cell__icon">
-				<button *ngIf="canEdit$ | async" doButton [matMenuTriggerFor]="menu">
-					<mat-icon [svgIcon]="Icons.KebabMenu"></mat-icon>
+				<button *ngIf="canEdit$ | async" doButton (click)="openEditDialog(leave)">
+					<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
 				</button>
-				<mat-menu #menu="matMenu">
-					<button mat-menu-item (click)="openEditDialog(leave)">
-						<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
-						<span>Редактировать</span>
-					</button>
-					<button mat-menu-item (click)="openDeleteDialog(leave)">
-						<mat-icon [svgIcon]="Icons.Delete"></mat-icon>
-						<span>Удалить</span>
-					</button>
-				</mat-menu>
+			</td>
+			<td class="cell cell__icon">
+				<button *ngIf="canEdit$ | async" doButton (click)="openDeleteDialog(leave)">
+					<mat-icon [svgIcon]="Icons.Delete"></mat-icon>
+				</button>
 			</td>
 		</tr>
 	</tbody>

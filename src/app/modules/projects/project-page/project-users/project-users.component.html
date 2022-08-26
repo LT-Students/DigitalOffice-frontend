@@ -9,6 +9,6 @@
 <do-table
 	[dataSource]="dataSource"
 	rowHeight="64"
-	[columns]="tableColumns"
+	[columns]="tableColumns$ | async"
 	(sortChange)="tableChanged.next()"
 ></do-table>

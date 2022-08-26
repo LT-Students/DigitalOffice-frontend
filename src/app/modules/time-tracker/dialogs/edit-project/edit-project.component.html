@@ -33,7 +33,7 @@
 					matInput
 					formControlName="description"
 					maxlength="500"
-					placeholder="Оставьте комментарий для менеджера"
+					placeholder="Написать..."
 					data-test="edit-project-comment-input"
 				></textarea>
 				<mat-hint>{{ comment.value.length }}/500</mat-hint>
@@ -43,7 +43,7 @@
 			</mat-form-field>
 		</do-form-field>
 		<div class="controls">
-			<button doButton type="button" (click)="close()" data-test="close-dialog-btn">Отмена</button>
+			<button doButton type="button" (click)="close()" data-test="close-dialog-btn">Отменить</button>
 			<button
 				mat-flat-button
 				color="primary"
@@ -52,7 +52,7 @@
 				(click)="onSubmit()"
 				data-test="edit-project-save-btn"
 			>
-				Сохранить
+				Сохранить часы
 			</button>
 		</div>
 	</div>

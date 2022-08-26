@@ -14,6 +14,7 @@ import { CheckboxParams } from '../../table/cell-components/checkbox/checkbox.co
 import { TableOptions } from '../../table/models/table-options';
 import { ProjectService } from '../project.service';
 import { UserInfoParams } from '../../table/cell-components/user-info/user-info.component';
+import { ColumnDef } from '../../table/models';
 import { AddUsersDataSource, HiddenUser } from './add-project-users.component';
 
 export interface ProjectUserInfo extends UserInfo {
@@ -29,7 +30,7 @@ export class AddProjectUsersService {
 			selectionCompareWith: (u1: ProjectUserInfo, u2: ProjectUserInfo) => u1.id === u2.id,
 			rowHeight: 64,
 			columns: [
-				{
+				new ColumnDef({
 					type: 'checkboxCell',
 					field: 'checkbox',
 					valueGetter: (u: ProjectUserInfo) => this.alreadyInProject(u.id, idsToHide),
@@ -38,8 +39,8 @@ export class AddProjectUsersService {
 						disabled: (u: ProjectUserInfo) => this.alreadyInProject(u.id, idsToHide),
 						disabledTooltip: () => 'Сотрудник уже проекте',
 					}),
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'userInfoCell',
 					field: 'userInfo',
 					valueGetter: (user: ProjectUserInfo) => user,
@@ -49,14 +50,14 @@ export class AddProjectUsersService {
 							user.projectRole === ProjectUserRoleType.Manager ? Icons.StarBorder : null,
 						iconColor: '#FFD89E',
 					}),
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'textCell',
 					field: 'department',
 					valueGetter: (user: ProjectUserInfo) => user.department?.name,
 					params: { lineClamp: 2 },
-				},
-				{
+				}),
+				new ColumnDef({
 					type: 'selectCell',
 					field: 'role',
 					valueGetter: (user: ProjectUserInfo) => user.projectRole,
@@ -73,7 +74,7 @@ export class AddProjectUsersService {
 						},
 						disabled: (u: ProjectUserInfo) => this.alreadyInProject(u.id, idsToHide),
 					},
-				},
+				}),
 			],
 		};
 	}

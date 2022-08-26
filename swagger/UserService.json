@@ -1774,7 +1774,7 @@
             "type": "boolean",
             "default": false
           },
-          "DayOfBirth": {
+          "DateOfBirth": {
             "description": "Date of user birth.",
             "type": "string",
             "format": "date",

@@ -12,6 +12,7 @@ import { LeaveTimeType } from '../models/leave-time-type';
 import { TimeListDataSource } from '../manager-timelist.component';
 import { LeaveTime, UserStat } from '../models/user-stat';
 import { TIMELIST_ENTITY_INFO, TimelistEntityInfo } from '../models/timelist-entity';
+import { ColumnDef } from '../../table/models';
 import { TimeService } from './time.service';
 
 @Injectable()
@@ -50,7 +51,7 @@ export class ManagerTimelistService {
 	public getTableData(): TableOptions {
 		return {
 			columns: [
-				{
+				new ColumnDef({
 					field: 'username',
 					type: 'userInfoCell',
 					headerName: 'Фио',
@@ -58,8 +59,8 @@ export class ManagerTimelistService {
 					sortEnabled: true,
 					headerStyle: { 'padding-left': '60px', flex: '0 0 40%' },
 					columnStyle: { flex: '0 0 40%', overflow: 'hidden' },
-				},
-				{
+				}),
+				new ColumnDef({
 					field: 'hours',
 					type: 'textCell',
 					headerName: 'Часы / Норма',
@@ -67,20 +68,20 @@ export class ManagerTimelistService {
 						const userHours = this.countUserHours(stats);
 						return `${userHours} / ${stats.limitInfo.normHours}`;
 					},
-				},
-				{
+				}),
+				new ColumnDef({
 					field: 'projectCount',
 					type: 'textCell',
 					headerName: 'Проекты',
 					valueGetter: (stats: UserStat) => stats.workTimes.length,
-				},
-				{
+				}),
+				new ColumnDef({
 					field: 'contractType',
 					type: 'textCell',
 					headerName: 'Тип договора',
 					valueGetter: (stats: UserStat) => stats.companyInfo.contractName,
-				},
-				{
+				}),
+				new ColumnDef({
 					field: 'link',
 					type: 'iconButtonCell',
 					valueGetter: (stats: UserStat) => stats,
@@ -91,7 +92,7 @@ export class ManagerTimelistService {
 						onClickFn: (stats: UserStat) =>
 							this.router.navigateByUrl(`/${AppRoutes.Users}/${stats.user.id}`),
 					},
-				},
+				}),
 			],
 			rowStyle: {
 				'min-height': '64px',
@@ -108,14 +109,14 @@ export class ManagerTimelistService {
 				rowClass: 'timelist',
 				rowStyle: { 'min-height': '38px' },
 				columns: [
-					{
+					new ColumnDef({
 						field: 'entityName',
 						type: 'textCell',
 						headerName: 'Название проекта',
 						columnStyle: { flex: '0 0 40%', overflow: 'hidden' },
 						valueGetter: (wt: WorkTimeInfo) => wt.project?.name || 'Другое',
-					},
-					{
+					}),
+					new ColumnDef({
 						field: 'entityHours',
 						type: 'editableTimeCell',
 						headerName: 'Внесённые часы',
@@ -123,14 +124,14 @@ export class ManagerTimelistService {
 						params: new EditableTextFieldParams({
 							updateRow: (wt: WorkTimeInfo, h: string) => dataSource.updateWorkTime(wt, +h),
 						}),
-					},
-					{
+					}),
+					new ColumnDef({
 						field: 'comment',
 						type: 'showMoreTextCell',
 						headerName: 'Комментарий сотрудника',
 						valueGetter: (wt: WorkTimeInfo) => wt.description || '--',
-					},
-					{
+					}),
+					new ColumnDef({
 						field: 'link',
 						type: 'iconButtonCell',
 						valueGetter: (wt: WorkTimeInfo) => wt,
@@ -141,14 +142,14 @@ export class ManagerTimelistService {
 							onClickFn: (wt: WorkTimeInfo) =>
 								this.router.navigateByUrl(`/${AppRoutes.Projects}/${wt.project?.id}`),
 						},
-					},
+					}),
 				],
 			},
 			leaveTimes: {
 				rowClass: 'timelist',
 				rowStyle: { 'min-height': '38px' },
 				columns: [
-					{
+					new ColumnDef({
 						field: 'leaveType',
 						type: 'textCell',
 						headerName: 'Тип отсутствия',
@@ -157,19 +158,19 @@ export class ManagerTimelistService {
 						params: new TextCellParams({
 							prefixIcon: (lt: LeaveTime) => LeaveTimeType.getLeaveInfoByLeaveType(lt.leaveType).icon,
 						}),
-					},
-					{
+					}),
+					new ColumnDef({
 						field: 'leaveDates',
 						headerName: 'Даты отсутствия',
 						valueGetter: (lt: LeaveTime) => this.getLeavePeriodString(lt),
-					},
-					{
+					}),
+					new ColumnDef({
 						field: 'comment',
 						type: 'showMoreTextCell',
 						headerName: 'Комментарий сотрудника',
 						valueGetter: (lt: LeaveTime) => lt.comment || '--',
-					},
-					{ field: 'spacer', type: 'iconCell', columnStyle: { flex: '0 0 48px' } },
+					}),
+					new ColumnDef({ field: 'spacer', type: 'iconCell', columnStyle: { flex: '0 0 48px' } }),
 				],
 			},
 		};

@@ -21,7 +21,7 @@ export interface CreateUserRequest {
 	/**
 	 * Date of user birth.
 	 */
-	dayOfBirth?: string;
+	dateOfBirth?: string;
 
 	/**
 	 * User department ID.

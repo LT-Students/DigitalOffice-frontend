@@ -3,13 +3,29 @@ import { Icons } from '@shared/modules/icons/icons';
 import { TableCell } from '../../models';
 import { TableCellComponent } from '../../table-cell.component';
 
-export interface SelectCellParams {
+export class SelectCellParams {
 	options: any[];
 	displayValueGetter?: (o: any) => string;
 	iconGetter?: (o: any) => Icons | null;
 	iconColor?: string;
 	updateRow?: (o: any, v: any) => void;
 	disabled?: (o: any) => boolean;
+
+	constructor(params: {
+		options?: any[];
+		displayValueGetter?: (o: any) => string;
+		iconGetter?: (o: any) => Icons | null;
+		iconColor?: string;
+		updateRow?: (o: any, v: any) => void;
+		disabled?: (o: any) => boolean;
+	}) {
+		this.options = params.options || [];
+		this.displayValueGetter = params.displayValueGetter;
+		this.iconGetter = params.iconGetter;
+		this.iconColor = params.iconColor;
+		this.updateRow = params.updateRow;
+		this.disabled = params.disabled;
+	}
 }
 
 @Component({

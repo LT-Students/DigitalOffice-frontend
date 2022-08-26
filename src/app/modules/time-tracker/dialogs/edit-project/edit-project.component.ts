@@ -43,7 +43,7 @@ export class EditProjectComponent extends LoadingState implements OnInit {
 				this.workTime.userHours,
 				[DoValidators.required, DoValidators.intNum, DoValidators.max(744), DoValidators.min(0)],
 			],
-			description: [this.workTime.description],
+			description: [this.workTime.description || ''],
 		});
 	}
 

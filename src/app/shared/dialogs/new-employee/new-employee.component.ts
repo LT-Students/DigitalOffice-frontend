@@ -129,7 +129,7 @@ export class NewEmployeeComponent extends LoadingState implements OnDestroy {
 			communication: communications,
 			officeId: this.userForm.get('officeId')?.value,
 			roleId: this.userForm.get('roleId')?.value,
-			dayOfBirth: this.userForm.get('dayOfBirth')?.value,
+			dateOfBirth: this.userForm.get('dayOfBirth')?.value,
 			userCompany: {
 				companyId: companyId,
 				contractTermType: ContractTerm.Perpetual,

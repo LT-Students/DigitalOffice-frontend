@@ -71,7 +71,7 @@ export class ProjectService {
 				skipCount: 0,
 				takeCount: MAX_INT32,
 			})
-			.pipe(map((res: OperationResultResponse) => res.body));
+			.pipe(map((res: OperationResultResponse) => res.body || []));
 	}
 
 	public addUsers(projectId: string, users: UserRequest[]): Observable<any> {
