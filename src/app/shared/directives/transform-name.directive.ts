@@ -18,8 +18,8 @@ export class TransformNameDirective implements OnInit, OnDestroy {
 	}
 
 	private transform(value: string): string {
-		const text = value.toLowerCase().replace(/(?:^|[\s\-`])\p{L}/gu, (match: string) => match.toUpperCase());
-		return text.replace(/\s*([-`])\s*/g, '$1');
+		const text = value.toLowerCase().replace(/(?:^|[\s\-'])\p{L}/gu, (match: string) => match.toUpperCase());
+		return text.replace(/\s*([-'])\s*/g, '$1');
 	}
 
 	public ngOnDestroy() {
