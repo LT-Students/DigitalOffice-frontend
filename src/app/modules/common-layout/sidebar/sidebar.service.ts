@@ -62,7 +62,7 @@ export class SidebarService {
 				{
 					visible: () => !environment.production && user.isAdmin,
 					title: 'Обратная связь',
-					path: [AppRoutes.Reports],
+					path: [AppRoutes.Feedback],
 					icon: Icons.Bug,
 				},
 			].filter((l: Link) => l.visible());

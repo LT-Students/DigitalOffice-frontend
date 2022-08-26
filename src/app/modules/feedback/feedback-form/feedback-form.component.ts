@@ -65,7 +65,7 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 			)
 			.subscribe({
 				next: () => {
-					this.close();
+					this.close(true);
 					this.dialog.info({
 						title: 'Комментарий отправлен',
 						message: 'Спасибо! Это поможет сервису стать удобнее и лучше\n' + 'для пользователей',
@@ -80,8 +80,8 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 		return comment.length || this.uploadImages.compressedImages.length;
 	}
 
-	private close(): void {
-		this.dialogRef.close();
+	private close(isFeedbackCreated = false): void {
+		this.dialogRef.close(isFeedbackCreated);
 	}
 
 	public beforeClose(): void {

@@ -56,6 +56,10 @@ export class FeedbackListComponent implements OnInit, AfterViewInit {
 				next: (res) => this.openDetails(res.feedback, res.images),
 			});
 		}
+
+		this.feedbackDialog.refreshFeedbackPage$.pipe(takeUntil(this.destroy$)).subscribe({
+			next: () => this.updateTableData(false),
+		});
 	}
 
 	public ngAfterViewInit(): void {
