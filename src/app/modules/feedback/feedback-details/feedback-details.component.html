@@ -1,22 +1,22 @@
 <mat-dialog-content>
 	<h2 class="title">Обратная связь</h2>
 	<div class="flex flex_jc_space-between">
-		<h4 class="name">{{ report.senderFullName }}</h4>
-		<span class="date">{{ report.createdAtUtc | date: 'dd.MM.yyyy HH:mm' }}</span>
+		<h4 class="name">{{ feedback.senderFullName }}</h4>
+		<span class="date">{{ feedback.createdAtUtc | date: 'dd.MM.yyyy HH:mm' }}</span>
 	</div>
 	<div class="info">
 		<div>
 			<h5 class="field-title">Категория запроса</h5>
-			<span>{{ report.type | feedbackCategory }}</span>
+			<span>{{ feedback.type | feedbackCategory }}</span>
 		</div>
 		<div>
 			<h5 class="field-title">Комментарий</h5>
-			<span>{{ report.content }}</span>
+			<span>{{ feedback.content }}</span>
 		</div>
 		<div>
 			<h5 class="field-title">Материалы</h5>
-			<span *ngIf="!report.imagesCount">Не приложены</span>
-			<ng-container *ngIf="report.imagesCount">
+			<span *ngIf="!feedback.imagesCount">Не приложены</span>
+			<ng-container *ngIf="feedback.imagesCount">
 				<div class="flex flex_jc_center">
 					<mat-spinner *ngIf="loading$ | async" color="accent"></mat-spinner>
 				</div>

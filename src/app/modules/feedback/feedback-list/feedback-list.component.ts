@@ -8,6 +8,7 @@ import { PaginatorComponent } from '@shared/component/paginator/paginator.compon
 import { OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { first, map, takeUntil, tap } from 'rxjs/operators';
 import { Sort, SortDirection } from '@angular/material/sort';
+import { ImageContent } from '@api/feedback-service/models/image-content';
 import { FeedbackDialogService } from '../services/feedback-dialog.service';
 import { FeedbackService, FindFeedbackParams } from '../services/feedback.service';
 import { TableComponent } from '../../table/table.component';
@@ -32,15 +33,15 @@ export class FeedbackListComponent implements OnInit, AfterViewInit {
 	public initialQueryParams = this.route.snapshot.queryParams;
 	public initialSort = this.getInitialSort(this.initialQueryParams['sort']);
 
-	public filterConfig = this.reportList.getFilterConfig(this.initialQueryParams);
-	public tableOptions = this.reportList.getTableOptions();
+	public filterConfig = this.feedbackListService.getFilterConfig(this.initialQueryParams);
+	public tableOptions = this.feedbackListService.getTableOptions();
 	public dataSource = new FeedbackListDataSource(this.feedbackService, this.route);
 
 	private paramsChange$ = new Subject<boolean>();
 	private destroy$ = new Subject();
 
 	constructor(
-		private reportList: FeedbackListService,
+		private feedbackListService: FeedbackListService,
 		private feedbackDialog: FeedbackDialogService,
 		private feedbackService: FeedbackService,
 		private listQueries: FeedbackListQueriesService,
@@ -48,7 +49,14 @@ export class FeedbackListComponent implements OnInit, AfterViewInit {
 		private router: Router
 	) {}
 
-	ngOnInit(): void {}
+	public ngOnInit(): void {
+		const feedbackId = this.route.snapshot.queryParamMap.get('id');
+		if (feedbackId) {
+			this.feedbackService.getFeedback(feedbackId).subscribe({
+				next: (res) => this.openDetails(res.feedback, res.images),
+			});
+		}
+	}
 
 	public ngAfterViewInit(): void {
 		this.paramsChange$.pipe(takeUntil(this.destroy$)).subscribe({
@@ -67,15 +75,34 @@ export class FeedbackListComponent implements OnInit, AfterViewInit {
 		};
 	}
 
-	public openDetails(report: FeedbackInfo): void {
-		this.feedbackDialog.openReportDetails(report);
+	public openDetails(report: FeedbackInfo, images?: ImageContent[]): void {
+		this.router.navigate([], {
+			relativeTo: this.route,
+			queryParams: { id: report.id },
+			queryParamsHandling: 'merge',
+		});
+		this.feedbackDialog
+			.openReportDetails(report, images)
+			.afterClosed()
+			.subscribe({
+				next: () => {
+					this.router.navigate([], {
+						relativeTo: this.route,
+						queryParams: { id: null },
+						queryParamsHandling: 'merge',
+					});
+				},
+			});
 	}
 
 	public archiveFeedback(): void {
-		console.log(
-			'archived:',
-			this.table.selection.selected.map((f) => f.id)
-		);
+		const selectedFeedbackIds = this.table.selection.selected.map((f) => f.id);
+		this.feedbackService.archiveFeedback(selectedFeedbackIds).subscribe({
+			next: () => {
+				this.updateTableData(true);
+				this.table.selection.clear();
+			},
+		});
 	}
 
 	public handleParamsChange(resetPaginator = false): void {
@@ -90,7 +117,7 @@ export class FeedbackListComponent implements OnInit, AfterViewInit {
 			queryParams,
 			queryParamsHandling: 'merge',
 		});
-		const requestParams = this.listQueries.convertQueryUrlParamsToEndpointParams(params);
+		const requestParams = this.listQueries.convertQueryUrlParamsToEndpointParams(queryParams);
 		this.dataSource.loadFeedback(requestParams).subscribe({
 			next: () => {
 				if (resetPaginator) {
@@ -142,6 +169,6 @@ class FeedbackListDataSource extends DataSource<FeedbackInfo> {
 
 	public loadFeedback(params: FindFeedbackParams): Observable<OperationResultResponse<FeedbackInfo[]>> {
 		this.cancelPreviousLoad$.next();
-		return this.feedbackService.findReports(params).pipe(tap(this.observer), takeUntil(this.cancelPreviousLoad$));
+		return this.feedbackService.findFeedback(params).pipe(tap(this.observer), takeUntil(this.cancelPreviousLoad$));
 	}
 }
