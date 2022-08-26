@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { switchMap, tap } from 'rxjs/operators';
+import { finalize, switchMap, tap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
 import { TitleDatepickerV2Component } from '@shared/component/title-datepicker/title-datepicker-v2.component';
 import { ActivatedRoute } from '@angular/router';
@@ -10,6 +10,7 @@ import { MAX_INT32 } from '@app/utils/utils';
 import { SortDirection } from '@angular/material/sort';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { I18nPluralPipe } from '@angular/common';
+import { LoadingState } from '@shared/directives/button-loading.directive';
 import { TableComponent } from '../table/table.component';
 import { DynamicFilterComponent } from '../dynamic-filter/dynamic-filter.component';
 import { ManagerTimelistService } from './services/manager-timelist.service';
@@ -24,7 +25,7 @@ import { TIMELIST_ENTITY_INFO, TimelistEntityInfo, TimelistEntityType } from './
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [ManagerTimelistService, I18nPluralPipe],
 })
-export class ManagerTimelistComponent implements OnInit, AfterViewInit {
+export class ManagerTimelistComponent extends LoadingState implements OnInit, AfterViewInit {
 	public readonly Icons = Icons;
 	public readonly maxDate = DateTime.now().plus({ month: 1 });
 
@@ -42,7 +43,9 @@ export class ManagerTimelistComponent implements OnInit, AfterViewInit {
 		private timelistService: ManagerTimelistService,
 		private route: ActivatedRoute,
 		private timeService: TimeService
-	) {}
+	) {
+		super();
+	}
 
 	public ngOnInit(): void {
 		const data = this.route.snapshot.data['stats'];
@@ -64,9 +67,13 @@ export class ManagerTimelistComponent implements OnInit, AfterViewInit {
 	}
 
 	public handleDownload(): void {
+		this.setLoading(true);
 		const entityId = this.entityInfo.entityId;
 		const { year, month } = this.datepicker.selectDate;
-		this.timelistService.downloadStatistics(entityId, month, year);
+		this.timelistService
+			.downloadStatistics(entityId, month, year)
+			.pipe(finalize(() => this.setLoading(false)))
+			.subscribe();
 	}
 }
 

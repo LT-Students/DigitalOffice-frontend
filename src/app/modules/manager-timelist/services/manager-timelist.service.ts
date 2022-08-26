@@ -4,6 +4,8 @@ import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { Router } from '@angular/router';
 import { AppRoutes } from '@app/models/app-routes';
 import { I18nPluralPipe } from '@angular/common';
+import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { TableOptions } from '../../table/models/table-options';
 import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
@@ -187,9 +189,9 @@ export class ManagerTimelistService {
 		];
 	}
 
-	public downloadStatistics(entityId: string, month: number, year: number): void {
-		this.timeService.importStats(this.entityInfo.entityType, entityId, { month, year }).subscribe({
-			next: (content: string) => {
+	public downloadStatistics(entityId: string, month: number, year: number): Observable<string> {
+		return this.timeService.importStats(this.entityInfo.entityType, entityId, { month, year }).pipe(
+			tap((content: string) => {
 				const filename = `Statistic_${year}_${month}`;
 				const mediaType = 'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
 				const downloadLink = document.createElement('a');
@@ -197,7 +199,7 @@ export class ManagerTimelistService {
 				downloadLink.download = filename;
 				downloadLink.click();
 				downloadLink.remove();
-			},
-		});
+			})
+		);
 	}
 }
