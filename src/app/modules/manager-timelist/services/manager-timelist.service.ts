@@ -68,7 +68,9 @@ export class ManagerTimelistService {
 					headerName: 'Часы / Норма',
 					valueGetter: (stats: UserStat) => {
 						const userHours = this.countUserHours(stats);
-						return `${userHours} / ${stats.limitInfo.normHours}`;
+						const normHours = stats.limitInfo.normHours;
+						const rate = stats.companyInfo.rate;
+						return `${userHours} / ${normHours * rate}`;
 					},
 				}),
 				new ColumnDef({
