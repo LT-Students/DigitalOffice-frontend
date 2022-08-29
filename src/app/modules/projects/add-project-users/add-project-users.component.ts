@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, Inject, OnDestroy, ViewChil
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject, Observable, of, Subject, timer } from 'rxjs';
 import { FormControl } from '@angular/forms';
-import { debounce, finalize, map, startWith, takeUntil } from 'rxjs/operators';
+import { debounce, finalize, map, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
@@ -57,7 +57,12 @@ export class AddProjectUsersComponent extends LoadingState implements OnInit, On
 		this.searchControl.valueChanges
 			.pipe(
 				startWith(''),
-				debounce((search: string) => timer(search ? 300 : 0))
+				tap(
+					(v: string) =>
+						v && this.toggleControl.value && this.toggleControl.setValue(false, { emitEvent: false })
+				),
+				debounce((search: string) => timer(search ? 300 : 0)),
+				takeUntil(this.destroy$)
 			)
 			.subscribe({ next: (search: string) => this.dataSource.loadUsers(search) });
 		this.toggleControl.valueChanges.pipe(takeUntil(this.destroy$)).subscribe({
