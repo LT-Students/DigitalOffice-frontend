@@ -1,6 +1,6 @@
 import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { DateTime } from 'luxon';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { RoleInfo as UserRoleInfo } from '@api/user-service/models/role-info';
@@ -92,10 +92,9 @@ export class WorkInfoConfigService {
 	}
 
 	public adminCheckboxConfig$(): Observable<IsAdminStatusConfig> {
-		return combineLatest([this.employeePage.selectedUser$, this.permission.isAdmin$]).pipe(
-			map(([user, isCurrentUserAdmin]: [User, boolean]) => ({
+		return this.employeePage.selectedUser$.pipe(
+			map((user: User) => ({
 				isAdmin: user.isAdmin,
-				disabled: !isCurrentUserAdmin,
 				submitFn: this.editUser.changeAdminStatus.bind(this.editUser, user.id),
 			}))
 		);

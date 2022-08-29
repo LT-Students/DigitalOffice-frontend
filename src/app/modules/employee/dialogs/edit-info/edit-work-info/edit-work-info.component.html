@@ -2,8 +2,4 @@
 <div class="item" *ngFor="let config of configs$ | async">
 	<do-work-info-item [config]="config"></do-work-info-item>
 </div>
-<do-is-admin-status
-	*ngIf="adminConfig$ | async as adminConfig"
-	class="admin"
-	[config]="adminConfig"
-></do-is-admin-status>
+<do-is-admin-status *ngIf="isAdmin$ | async" class="admin" [config]="adminConfig$ | async"></do-is-admin-status>

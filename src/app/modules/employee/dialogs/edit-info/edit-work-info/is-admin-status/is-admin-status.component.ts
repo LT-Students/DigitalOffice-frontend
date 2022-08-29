@@ -1,24 +1,18 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { finalize, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { WorkInfoConfigService } from '../work-info-config.service';
 
 export interface IsAdminStatusConfig {
 	isAdmin: boolean;
-	disabled: boolean;
 	submitFn: (...args: any[]) => Observable<any>;
 }
 
 @Component({
 	selector: 'do-is-admin-status',
 	template: `
-		<mat-checkbox
-			#checkbox
-			[disabled]="config.disabled"
-			[checked]="config.isAdmin"
-			data-test="admin-status-checkbox"
-		>
+		<mat-checkbox #checkbox [checked]="config.isAdmin" data-test="admin-status-checkbox">
 			<span class="mat-body-2">Дать права администратора</span>
 		</mat-checkbox>
 		<button
@@ -48,7 +42,16 @@ export interface IsAdminStatusConfig {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IsAdminStatusComponent extends LoadingState implements OnInit {
-	@Input() config!: IsAdminStatusConfig;
+	@Input()
+	set config(config: IsAdminStatusConfig | null) {
+		if (config) {
+			this._config = config;
+		}
+	}
+	get config(): IsAdminStatusConfig {
+		return this._config;
+	}
+	private _config: IsAdminStatusConfig = { isAdmin: false, submitFn: () => EMPTY };
 
 	constructor(private workInfoConfig: WorkInfoConfigService) {
 		super();

@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LoadingState } from '@shared/directives/button-loading.directive';
+import { PermissionService } from '@app/services/permission.service';
 import { WorkInfoConfigService } from './work-info-config.service';
 
 @Component({
@@ -12,8 +13,9 @@ import { WorkInfoConfigService } from './work-info-config.service';
 export class EditWorkInfoComponent extends LoadingState implements OnInit {
 	public configs$ = this.workInfoConfig.getConfig$();
 	public adminConfig$ = this.workInfoConfig.adminCheckboxConfig$();
+	public isAdmin$ = this.permission.isAdmin$;
 
-	constructor(private workInfoConfig: WorkInfoConfigService) {
+	constructor(private workInfoConfig: WorkInfoConfigService, private permission: PermissionService) {
 		super();
 	}
 
