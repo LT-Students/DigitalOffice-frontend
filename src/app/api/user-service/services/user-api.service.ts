@@ -218,11 +218,6 @@ export class UserApiService extends BaseService {
 		includeavatars?: boolean;
 
 		/**
-		 * Include user certificates info in answer.
-		 */
-		includecertificates?: boolean;
-
-		/**
 		 * Include user communications info in answer.
 		 */
 		includecommunications?: boolean;
@@ -238,11 +233,6 @@ export class UserApiService extends BaseService {
 		includedepartment?: boolean;
 
 		/**
-		 * Include educations info in answer.
-		 */
-		includeeducations?: boolean;
-
-		/**
 		 * Include user office info in answer.
 		 */
 		includeoffice?: boolean;
@@ -253,19 +243,9 @@ export class UserApiService extends BaseService {
 		includeposition?: boolean;
 
 		/**
-		 * Include user projects info in answer.
-		 */
-		includeprojects?: boolean;
-
-		/**
 		 * Include user role info in answer.
 		 */
 		includerole?: boolean;
-
-		/**
-		 * Include user skills info in answer.
-		 */
-		includeskills?: boolean;
 
 		/**
 		 * Role localization.
@@ -278,16 +258,12 @@ export class UserApiService extends BaseService {
 			rb.query('email', params.email, {});
 			rb.query('includecurrentavatar', params.includecurrentavatar, {});
 			rb.query('includeavatars', params.includeavatars, {});
-			rb.query('includecertificates', params.includecertificates, {});
 			rb.query('includecommunications', params.includecommunications, {});
 			rb.query('includecompany', params.includecompany, {});
 			rb.query('includedepartment', params.includedepartment, {});
-			rb.query('includeeducations', params.includeeducations, {});
 			rb.query('includeoffice', params.includeoffice, {});
 			rb.query('includeposition', params.includeposition, {});
-			rb.query('includeprojects', params.includeprojects, {});
 			rb.query('includerole', params.includerole, {});
-			rb.query('includeskills', params.includeskills, {});
 			rb.query('locale', params.locale, {});
 		}
 
@@ -336,11 +312,6 @@ export class UserApiService extends BaseService {
 		includeavatars?: boolean;
 
 		/**
-		 * Include user certificates info in answer.
-		 */
-		includecertificates?: boolean;
-
-		/**
 		 * Include user communications info in answer.
 		 */
 		includecommunications?: boolean;
@@ -356,11 +327,6 @@ export class UserApiService extends BaseService {
 		includedepartment?: boolean;
 
 		/**
-		 * Include educations info in answer.
-		 */
-		includeeducations?: boolean;
-
-		/**
 		 * Include user office info in answer.
 		 */
 		includeoffice?: boolean;
@@ -371,19 +337,9 @@ export class UserApiService extends BaseService {
 		includeposition?: boolean;
 
 		/**
-		 * Include user projects info in answer.
-		 */
-		includeprojects?: boolean;
-
-		/**
 		 * Include user role info in answer.
 		 */
 		includerole?: boolean;
-
-		/**
-		 * Include user skills info in answer.
-		 */
-		includeskills?: boolean;
 
 		/**
 		 * Role localization.

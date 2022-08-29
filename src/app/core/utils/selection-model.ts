@@ -201,7 +201,11 @@ export class SelectionModel<T> {
 	/** Deselects a value. */
 	private _unmarkSelected(value: T) {
 		if (this.isSelected(value)) {
-			this._selection.delete(value);
+			// for some reason `this.compareWith` does not pass type check
+			const compareWith = this.compareWith;
+			const objectValue =
+				compareWith && Array.from(this._selection.values()).find((v: T) => compareWith(value, v));
+			this._selection.delete(objectValue || value);
 
 			if (this._emitChanges) {
 				this._deselectedToEmit.push(value);

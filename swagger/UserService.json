@@ -245,15 +245,6 @@
           "required": false
         },
         {
-          "name": "includecertificates",
-          "in": "query",
-          "description": "Include user certificates info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
           "name": "includecommunications",
           "in": "query",
           "description": "Include user communications info in answer.",
@@ -281,15 +272,6 @@
           "required": false
         },
         {
-          "name": "includeeducations",
-          "in": "query",
-          "description": "Include educations info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
           "name": "includeoffice",
           "in": "query",
           "description": "Include user office info in answer.",
@@ -308,27 +290,9 @@
           "required": false
         },
         {
-          "name": "includeprojects",
-          "in": "query",
-          "description": "Include user projects info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
           "name": "includerole",
           "in": "query",
           "description": "Include user role info in answer.",
-          "schema": {
-            "type": "boolean"
-          },
-          "required": false
-        },
-        {
-          "name": "includeskills",
-          "in": "query",
-          "description": "Include user skills info in answer.",
           "schema": {
             "type": "boolean"
           },
@@ -1695,27 +1659,6 @@
               "$ref": "#/components/schemas/ImageInfo"
             },
             "nullable": true
-          },
-          "Educations": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/EducationInfo"
-            },
-            "nullable": true
-          },
-          "Projects": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProjectInfo"
-            },
-            "nullable": true
-          },
-          "Skills": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
           }
         }
       },
@@ -2427,130 +2370,7 @@
           }
         }
       },
-      "ProjectInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name",
-          "Status",
-          "ShortName"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          },
-          "Status": {
-            "type": "string"
-          },
-          "ShortName": {
-            "type": "string"
-          },
-          "ShortDescription": {
-            "type": "string",
-            "nullable": true
-          },
-          "User": {
-            "$ref": "#/components/schemas/ProjectUserInfo",
-            "nullable": true
-          }
-        }
-      },
-      "ProjectUserInfo": {
-        "type": "object",
-        "required": [
-          "IsActive"
-        ],
-        "properties": {
-          "IsActive": {
-            "type": "boolean"
-          }
-        }
-      },
       "GenderInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "EducationInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "UniversityName",
-          "QualificationName"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "UniversityName": {
-            "type": "string"
-          },
-          "QualificationName": {
-            "type": "string"
-          },
-          "EducationForm": {
-            "$ref": "#/components/schemas/EducationFormInfo",
-            "nullable": true
-          },
-          "EducationType": {
-            "$ref": "#/components/schemas/EducationTypeInfo",
-            "nullable": true
-          },
-          "Completeness": {
-            "type": "string",
-            "nullable": true
-          },
-          "AdmissionAt": {
-            "type": "string",
-            "nullable": true
-          },
-          "IssueAt": {
-            "type": "string",
-            "nullable": true
-          },
-          "ImagesIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "nullable": true
-          }
-        }
-      },
-      "EducationTypeInfo": {
-        "type": "object",
-        "required": [
-          "Id",
-          "Name"
-        ],
-        "properties": {
-          "Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "Name": {
-            "type": "string"
-          }
-        }
-      },
-      "EducationFormInfo": {
         "type": "object",
         "required": [
           "Id",

@@ -41,7 +41,9 @@ export class CommunicationTypeModel {
 				break;
 			}
 			case CommunicationType.Skype: {
-				validators.push(DoValidators.skype, Validators.maxLength(31), Validators.minLength(5));
+				// temporary we decided to remove all validations for skype except max length
+				// validators.push(DoValidators.skype, Validators.maxLength(31), Validators.minLength(5));
+				validators.push(DoValidators.matchMaxLength(32));
 				break;
 			}
 			default: {

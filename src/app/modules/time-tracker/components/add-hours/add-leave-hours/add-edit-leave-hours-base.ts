@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize, first, mapTo, switchMap, tap } from 'rxjs/operators';
 import { LoadingState } from '@shared/directives/button-loading.directive';
+import { DoValidators } from '@app/validators/do-validators';
 import {
 	AttendanceService,
 	LAST_DAY_TO_FILL_HOURS,
@@ -16,9 +17,9 @@ export class AddEditLeaveHoursBase extends LoadingState {
 	public readonly maxDate = MAX_FUTURE_DATE;
 
 	public form = this.fb.group({
-		leaveType: [null, [Validators.required]],
-		startTime: [null, [Validators.required]],
-		endTime: [null, [Validators.required]],
+		leaveType: [null, [DoValidators.required]],
+		startTime: [null, [DoValidators.required]],
+		endTime: [null, [DoValidators.required]],
 		comment: [null],
 	});
 	public leaveTypes = LeaveTypeModel.getAllLeaveTypes();

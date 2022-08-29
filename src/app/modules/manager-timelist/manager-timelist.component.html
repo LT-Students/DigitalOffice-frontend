@@ -4,7 +4,9 @@
 	<do-title-datepicker-v2 [maxDate]="maxDate" [dateStyle]="{ 'text-transform': 'capitalize' }">
 		<h4 [style.margin]="0">Период:&nbsp;</h4>
 	</do-title-datepicker-v2>
-	<button mat-flat-button color="primary" (click)="handleDownload()">Выгрузить часы</button>
+	<button mat-flat-button color="primary" (click)="handleDownload()" [loading]="loading$ | async">
+		Выгрузить часы
+	</button>
 </div>
 <do-dynamic-filter [filters]="filterConfig"></do-dynamic-filter>
 <do-table [dataSource]="dataSource" [tableOptions]="tableData" [expandedRowTemplate]="details">

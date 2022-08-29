@@ -53,7 +53,7 @@
 <ng-template #editTemplate [formGroup]="editForm">
 	<do-form-field label="Фамилия">
 		<mat-form-field
-			[matTooltip]="editForm.controls[userPath.LAST_NAME].errors?.['name'] ? 'Фамилия может содержать только буквы, -, ` и пробел.\nФамилия не может начинаться и заканчиваться символами - и `' : ''"
+			[matTooltip]="editForm.controls[userPath.LAST_NAME].errors?.['name'] ? 'Фамилия может содержать только буквы, -, \' и пробел.\nФамилия не может начинаться и заканчиваться символами - и \'' : ''"
 			[matTooltipPosition]="'right'"
 		>
 			<input
@@ -72,7 +72,7 @@
 	</do-form-field>
 	<do-form-field label="Имя">
 		<mat-form-field
-			[matTooltip]="editForm.controls[userPath.FIRST_NAME].errors?.['name'] ? 'Имя может содержать только буквы, -, ` и пробел.\nИмя не может начинаться и заканчиваться символами - и `' : ''"
+			[matTooltip]="editForm.controls[userPath.FIRST_NAME].errors?.['name'] ? 'Имя может содержать только буквы, -, \' и пробел.\nИмя не может начинаться и заканчиваться символами - и \'' : ''"
 			[matTooltipPosition]="'right'"
 		>
 			<input
@@ -90,7 +90,10 @@
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field label="Отчество">
-		<mat-form-field>
+		<mat-form-field
+			[matTooltip]="editForm.controls[userPath.MIDDLE_NAME].errors?.['name'] ? 'Отчество может содержать только буквы, -, \' и пробел.\nОтчество не может начинаться и заканчиваться символами - и \'' : ''"
+			[matTooltipPosition]="'right'"
+		>
 			<input
 				doTransformName
 				matInput
