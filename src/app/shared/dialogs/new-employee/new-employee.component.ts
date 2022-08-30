@@ -22,6 +22,7 @@ import { PositionInfo } from '@api/position-service/models/position-info';
 import { LoadingState } from '@shared/directives/button-loading.directive';
 import { ContractSubjectApiService } from '@api/company-service/services/contract-subject-api.service';
 import { ContractSubjectInfo } from '@api/company-service/models/contract-subject-info';
+import { getUTCWithOffset } from '@app/utils/utils';
 
 @Component({
 	selector: 'do-new-employee',
@@ -118,6 +119,9 @@ export class NewEmployeeComponent extends LoadingState implements OnDestroy {
 			type: CommunicationType.Email,
 			value: this.userForm.get('email')?.value as string,
 		};
+		const { dayOfBirth, startWorkingAt } = this.userForm.getRawValue();
+		const dateOfBirthUtc = dayOfBirth && getUTCWithOffset(dayOfBirth);
+		const startWorkingAtUtc = startWorkingAt && getUTCWithOffset(startWorkingAt);
 
 		return {
 			firstName: this.userForm.get('firstName')?.value?.trim(),
@@ -129,11 +133,11 @@ export class NewEmployeeComponent extends LoadingState implements OnDestroy {
 			communication: communications,
 			officeId: this.userForm.get('officeId')?.value,
 			roleId: this.userForm.get('roleId')?.value,
-			dateOfBirth: this.userForm.get('dayOfBirth')?.value,
+			dateOfBirth: dateOfBirthUtc,
 			userCompany: {
 				companyId: companyId,
 				contractTermType: ContractTerm.Perpetual,
-				startWorkingAt: this.userForm.get('startWorkingAt')?.value,
+				startWorkingAt: startWorkingAtUtc,
 				rate: this.userForm.get('rate')?.value,
 				contractSubjectId: this.userForm.get('contractId')?.value,
 			},

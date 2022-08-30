@@ -12,6 +12,7 @@ import { User } from '@app/models/user/user.model';
 import { UserService } from '@app/services/user/user.service';
 import { UserPath } from '@app/types/edit-request';
 import { ContractSubjectApiService } from '@api/company-service/services/contract-subject-api.service';
+import { getUTCWithOffset } from '@app/utils/utils';
 
 @Injectable({
 	providedIn: 'root',
@@ -67,13 +68,13 @@ export class EditUserService {
 	}
 
 	public changeStartWorkingAt(user: User, date: DateTime): Observable<any> {
-		date = date.toUTC().plus({ minute: date.offset });
+		const dateUtc = getUTCWithOffset(date);
 		const oldDate = user.company?.startWorkingAt && DateTime.fromISO(user.company.startWorkingAt, { zone: 'utc' });
 		const isNewDate = !oldDate || +date.startOf('day') !== +oldDate.startOf('day');
 		return isNewDate
 			? this.companyUser.editCompanyUser({
 					userId: user.id,
-					body: [{ path: '/startworkingat', op: 'replace', value: date.toSQL() }],
+					body: [{ path: '/startworkingat', op: 'replace', value: dateUtc }],
 			  })
 			: EMPTY;
 	}
