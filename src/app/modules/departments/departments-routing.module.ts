@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DepartmentListComponent } from './components/department-list/department-list.component';
 import { DepartmentListResolver } from './resolvers/department-list.resolver';
 import { DepartmentCardComponent } from './components/department-card/department-card.component';
 import { DepartmentPageResolver } from './resolvers/department-page.resolver';
 import { TimelistResolver } from './resolvers/timelist.resolver';
 import { DepartmentsRoutes } from './models/departments-routes';
 import { DepartmentIdRouteContainerComponent } from './components/department-id-route-container/department-id-route-container.component';
+import { DepartmentListComponent } from './department-list/department-list.component';
 
 const routes: Routes = [
 	{

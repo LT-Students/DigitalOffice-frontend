@@ -41,12 +41,12 @@ export class SidebarService {
 					path: AppRoutes.Users,
 					icon: Icons.Users,
 				},
-				// {
-				// 	visible: () => true,
-				// 	title: 'Департаменты',
-				// 	path: AppRoutes.Departments,
-				// 	icon: Icons.Departments,
-				// },
+				{
+					visible: () => true,
+					title: 'Департаменты',
+					path: AppRoutes.Departments,
+					icon: Icons.Departments,
+				},
 				{
 					visible: () => user.department?.role === DepartmentUserRole.Manager,
 					title: 'Таймлист ДД',
