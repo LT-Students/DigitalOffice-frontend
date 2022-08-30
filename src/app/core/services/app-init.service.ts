@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from '@app/services/auth/auth.service';
 import { EMPTY, iif } from 'rxjs';
 import { PortalService } from '@app/services/portal.service';
@@ -30,7 +30,18 @@ export class AppInitService {
 					tap((res) => {
 						this.portalService.setPortal((res.body as PortalInfo) ?? null);
 					}),
-					switchMap(() => iif(() => token !== null, this.authService.getUserAndCompany(userId ?? ''), EMPTY))
+					switchMap(() =>
+						iif(
+							() => token !== null,
+							this.authService.getUserAndCompany(userId ?? '').pipe(
+								catchError(() => {
+									this.authService.logout();
+									return EMPTY;
+								})
+							),
+							EMPTY
+						)
+					)
 				)
 				.subscribe()
 				.add(resolve);
