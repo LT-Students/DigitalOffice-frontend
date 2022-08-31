@@ -49,18 +49,20 @@ export class TableComponent<T> implements OnInit, AfterContentInit {
 	@Input() selectionCompareWith?: (o1: T, o2: T) => boolean;
 
 	@Input()
-	set tableOptions(options: TableOptions) {
-		this.dataSource = options.dataSource || this.dataSource;
-		this.columns = options.columns || this._columns;
-		this._rowHeight = options.rowHeight || this._rowHeight;
-		this._rowStyle = options.rowStyle || this._rowStyle;
-		this._rowClass = options.rowClass || this._rowClass;
-		this.contextMenuItems = options.contextMenuItems || this.contextMenuItems;
-		this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
-		this.expandedRowComparator = options.expandedRowComparator || this.expandedRowComparator;
-		this.selectionCompareWith = options.selectionCompareWith || this.selectionCompareWith;
-		this.sortActive = options.sortActive || this.sortActive;
-		this.sortDirection = options.sortDirection || this.sortDirection;
+	set tableOptions(options: TableOptions | null) {
+		if (options) {
+			this.dataSource = options.dataSource || this.dataSource;
+			this.columns = options.columns || this._columns;
+			this._rowHeight = options.rowHeight || this._rowHeight;
+			this._rowStyle = options.rowStyle || this._rowStyle;
+			this._rowClass = options.rowClass || this._rowClass;
+			this.contextMenuItems = options.contextMenuItems || this.contextMenuItems;
+			this.isRowExpandable = options.isRowExpandable || this.isRowExpandable;
+			this.expandedRowComparator = options.expandedRowComparator || this.expandedRowComparator;
+			this.selectionCompareWith = options.selectionCompareWith || this.selectionCompareWith;
+			this.sortActive = options.sortActive || this.sortActive;
+			this.sortDirection = options.sortDirection || this.sortDirection;
+		}
 	}
 
 	@Input()

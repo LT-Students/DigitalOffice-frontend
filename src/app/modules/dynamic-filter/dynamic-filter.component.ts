@@ -16,7 +16,16 @@ export interface FilterEvent {
 })
 export class DynamicFilterComponent implements OnInit, OnDestroy {
 	@Output() filterChange = new EventEmitter<FilterEvent>();
-	@Input() filters: FilterDef[] = [];
+
+	@Input()
+	set filters(filters: FilterDef[] | null) {
+		this._filters = filters || this._filters;
+	}
+	get filters(): FilterDef[] {
+		return this._filters;
+	}
+	private _filters: FilterDef[] = [];
+
 	public form!: FormGroup;
 	private filterSubscription!: Subscription;
 

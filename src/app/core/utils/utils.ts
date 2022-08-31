@@ -62,3 +62,7 @@ export function getUTCWithOffset(date: DateTime): string {
 	const offset = date.offset;
 	return date.setZone('UTC').plus({ minutes: offset }).toSQL();
 }
+
+export function booleanGuard<T>(v: T | null | undefined): v is T {
+	return !!v;
+}
