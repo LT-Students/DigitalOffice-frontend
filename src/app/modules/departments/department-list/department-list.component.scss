@@ -1,0 +1,22 @@
+.header {
+	margin-bottom: 32px;
+
+	display: flex;
+	align-items: baseline;
+
+	.add-department-button {
+		margin-left: auto;
+	}
+
+	h1 {
+		margin: 0;
+	}
+}
+
+.filter {
+	margin-bottom: 24px;
+}
+
+do-paginator {
+	margin-top: 24px;
+}

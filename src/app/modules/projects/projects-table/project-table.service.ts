@@ -40,7 +40,7 @@ export class ProjectTableService {
 				field: 'usersCount',
 				headerName: 'Количество человек',
 				type: 'textCell',
-				valueGetter: (project: ProjectInfo) => `${project.usersCount} чел`,
+				valueGetter: (project: ProjectInfo) => `${project.usersCount} чел.`,
 			}),
 			new ColumnDef({
 				field: 'status',

@@ -1,0 +1,25 @@
+<div class="header">
+	<h1 doUnderline>Список департаментов</h1>
+	<button
+		*hasPermission="UserRights.AddEditRemoveDepartment"
+		class="add-department-button"
+		mat-flat-button
+		color="primary"
+		(click)="notImplemented()"
+		data-test="add-department-button"
+	>
+		<!--		[routerLink]="[DepartmentsRoutes.CreateDepartment]"-->
+		Добавить департамент
+	</button>
+</div>
+<do-dynamic-filter class="filter" [filters]="filters$ | async"></do-dynamic-filter>
+<do-table
+	[dataSource]="dataSource"
+	[tableOptions]="tableOptions$ | async"
+	(rowClick)="handleRowClick($event)"
+></do-table>
+<do-paginator
+	[pageIndex]="initialPaginatorValue.pageIndex"
+	[pageSize]="initialPaginatorValue.pageSize"
+	[total]="dataSource.totalCount$ | async"
+></do-paginator>
