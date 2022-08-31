@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DepartmentResponse } from '@api/department-service/models/department-response';
 import {
 	TIMELIST_ENTITY_INFO,
 	TimelistEntityInfo,
 	TimelistEntityType,
-} from '../../../manager-timelist/models/timelist-entity';
+} from '../../manager-timelist/models/timelist-entity';
+import { Department } from '../department-page/department';
 
 function resolveTimelistEntityInfo(route: ActivatedRoute): TimelistEntityInfo {
-	const { id, name } = route.snapshot.data['department'] as DepartmentResponse;
+	const { id, name } = route.snapshot.data['department'] as Department;
 	return { entityId: id, name, entityType: TimelistEntityType.Department };
 }
 

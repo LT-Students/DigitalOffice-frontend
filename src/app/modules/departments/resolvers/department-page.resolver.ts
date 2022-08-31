@@ -1,24 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { DepartmentService } from '@app/services/department/department.service';
-import { DepartmentResponse } from '@api/department-service/models/department-response';
-import { map } from 'rxjs/operators';
+import { DepartmentService } from '../department.service';
+import { Department } from '../department-page/department';
 
 @Injectable({
 	providedIn: 'root',
 })
-export class DepartmentPageResolver implements Resolve<DepartmentResponse> {
+export class DepartmentPageResolver implements Resolve<Department> {
 	constructor(private departmentService: DepartmentService) {}
 
-	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<DepartmentResponse> {
-		return this.departmentService
-			.getDepartment({
-				departmentId: route.params.id,
-				includeCategory: true,
-				includeUsers: true,
-			})
-			.pipe(map((res: OperationResultResponse<DepartmentResponse>) => res.body as DepartmentResponse));
+	public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Department> {
+		const departmentId = route.params['id'];
+		return this.departmentService.getDepartment(departmentId);
 	}
 }
