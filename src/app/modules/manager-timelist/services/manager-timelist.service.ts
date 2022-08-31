@@ -124,7 +124,8 @@ export class ManagerTimelistService {
 						field: 'entityHours',
 						type: 'editableTimeCell',
 						headerName: 'Внесённые часы',
-						valueGetter: (wt: WorkTimeInfo) => wt.managerHours || wt.userHours || 0,
+						valueGetter: (wt: WorkTimeInfo) =>
+							wt.managerHours != null ? wt.managerHours : wt.userHours || 0,
 						params: new EditableTextFieldParams({
 							updateRow: (wt: WorkTimeInfo, h: string) => dataSource.updateWorkTime(wt, +h),
 						}),
