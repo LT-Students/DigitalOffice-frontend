@@ -1,12 +1,18 @@
+export enum DepartmentUrlStatus {
+	Active = 'active',
+	Archived = 'archived',
+}
+
 export interface IDepartmentStatus {
 	value: boolean;
+	urlValue: DepartmentUrlStatus;
 	label: string;
 	color: string;
 }
 
 const departmentStatuses: IDepartmentStatus[] = [
-	{ value: true, color: '#ABF5C0', label: 'Активный' },
-	{ value: false, color: '#FFB2B2', label: 'В архиве' },
+	{ value: true, urlValue: DepartmentUrlStatus.Active, color: '#ABF5C0', label: 'Активный' },
+	{ value: false, urlValue: DepartmentUrlStatus.Archived, color: '#FFB2B2', label: 'В архиве' },
 ];
 
 export class DepartmentStatus {

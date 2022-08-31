@@ -103,7 +103,7 @@ export class DepartmentListService {
 						params: new SelectFilterParams({
 							placeholder: 'Статус',
 							options$: of(DepartmentStatus.getAllStatuses()),
-							valueGetter: (s: IDepartmentStatus) => s.value,
+							valueGetter: (s: IDepartmentStatus) => s.urlValue,
 							displayValueGetter: (s: IDepartmentStatus) => s.label,
 							icon: Icons.Status,
 							iconColor: (s: IDepartmentStatus) => s.color,

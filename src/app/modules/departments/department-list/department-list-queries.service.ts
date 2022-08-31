@@ -4,6 +4,7 @@ import { PAGINATOR_DEFAULT_OPTIONS, PaginatorDefaultOptions } from '@shared/comp
 import { QueryParamsConverter } from '@app/types/do-table-data-source';
 import { ListParams } from '../../feedback/feedback-list/feedback-list-queries.service';
 import { FindDepartmentsParams } from '../department.service';
+import { DepartmentUrlStatus } from '../models/department-status';
 
 export enum ClientQueryParam {
 	Status = 'status',
@@ -31,7 +32,7 @@ export class DepartmentListQueriesService extends QueryParamsConverter<
 	public getAdditionalQueryUrlParams(params: ListParams): QueryUrlParams {
 		return {
 			search: params['search'] || null,
-			status: params['status'] != null ? params['status'] : null,
+			status: params['status'] || null,
 			sort: params.active && params.direction ? `${params.active}_${params.direction}` : null,
 		};
 	}
@@ -40,8 +41,21 @@ export class DepartmentListQueriesService extends QueryParamsConverter<
 		return {
 			nameIncludeSubstring: params[ClientQueryParam.Search],
 			isAscendingSort: this.getSortParamValue(params[ClientQueryParam.Sort]),
-			isActive: params[ClientQueryParam.Status] != null ? params[ClientQueryParam.Status] : undefined,
+			isActive: this.getStatusValue(params[ClientQueryParam.Status]),
 		};
+	}
+
+	private getStatusValue(status?: string): boolean | undefined {
+		if (status == null) {
+			return undefined;
+		}
+		if (status === DepartmentUrlStatus.Active) {
+			return true;
+		}
+		if (status === DepartmentUrlStatus.Archived) {
+			return false;
+		}
+		return undefined;
 	}
 
 	private getSortParamValue(sort?: string): boolean {

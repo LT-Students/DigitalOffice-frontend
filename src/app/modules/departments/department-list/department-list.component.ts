@@ -6,6 +6,7 @@ import { PageEvent, PaginatorComponent } from '@shared/component/paginator/pagin
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { DoTableDataSource } from '@app/types/do-table-data-source';
 import { Observable } from 'rxjs';
+import { AlertService } from '@app/services/alert.service';
 import { FilterDef } from '../../dynamic-filter/models';
 import { DynamicFilterComponent } from '../../dynamic-filter/dynamic-filter.component';
 import { TableComponent } from '../../table/table.component';
@@ -41,7 +42,8 @@ export class DepartmentListComponent implements OnInit {
 		private departmentService: DepartmentService,
 		private tableQueries: DepartmentListQueriesService,
 		private route: ActivatedRoute,
-		private router: Router
+		private router: Router,
+		private alert: AlertService
 	) {}
 
 	public ngOnInit(): void {
@@ -49,6 +51,10 @@ export class DepartmentListComponent implements OnInit {
 		this.filters$ = this.departmentListService.getFilterData$();
 		this.tableOptions$ = this.departmentListService.getTableOptions$();
 		this.dataSource = this.createDataSource();
+	}
+
+	public notImplemented(): void {
+		this.alert.open('NOT IMPLEMENTED');
 	}
 
 	public handleRowClick(department: DepartmentInfo): void {
