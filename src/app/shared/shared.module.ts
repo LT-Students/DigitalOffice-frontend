@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
-import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/dialogs/user-recovery/user-recovery.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
@@ -94,7 +93,6 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
-		AddEditDepartmentComponent,
 		PlaceholderPipe,
 		UserRecoveryComponent,
 		CapitalizePipe,
@@ -175,7 +173,6 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
-		AddEditDepartmentComponent,
 		PlaceholderPipe,
 		UserRecoveryComponent,
 		CapitalizePipe,

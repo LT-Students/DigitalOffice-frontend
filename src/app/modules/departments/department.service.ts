@@ -30,4 +30,10 @@ export class DepartmentService {
 			.getDepartment({ departmentId, includeUsers: true, includeCategory: false })
 			.pipe(map((res) => new Department(res.body as DepartmentResponse)));
 	}
+
+	public createDepartment(name: string, shortName: string, description?: string): Observable<string> {
+		return this.departmentApi
+			.createDepartment({ body: { name, shortName, description, users: [] } })
+			.pipe(map((res) => res.body as string));
+	}
 }

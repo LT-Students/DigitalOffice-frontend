@@ -9,6 +9,7 @@ import { DepartmentPageComponent } from './department-page/department-page.compo
 import { DepartmentListComponent } from './department-list/department-list.component';
 import { DepartmentIdRouteContainerComponent } from './department-id-route-container/department-id-route-container.component';
 import { DepartmentInfoComponent } from './department-page/department-info/department-info.component';
+import { CreateDepartmentComponent } from './create-department/create-department.component';
 
 @NgModule({
 	declarations: [
@@ -16,6 +17,7 @@ import { DepartmentInfoComponent } from './department-page/department-info/depar
 		DepartmentListComponent,
 		DepartmentIdRouteContainerComponent,
 		DepartmentInfoComponent,
+		CreateDepartmentComponent,
 	],
 	imports: [SharedModule, DepartmentsRoutingModule, ManagerTimelistModule, DynamicFilterModule, TableModule],
 })
