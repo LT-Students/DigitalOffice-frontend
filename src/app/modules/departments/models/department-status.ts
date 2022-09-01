@@ -23,4 +23,8 @@ export class DepartmentStatus {
 	public static getStatusColorByValue(isActive: boolean): string {
 		return departmentStatuses.find((status) => status.value === isActive)?.color || '';
 	}
+
+	public static getStatusByValue(v: boolean): IDepartmentStatus {
+		return departmentStatuses.find((status) => status.value === v) || departmentStatuses[0];
+	}
 }

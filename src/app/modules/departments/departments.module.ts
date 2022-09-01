@@ -5,12 +5,22 @@ import { ManagerTimelistModule } from '../manager-timelist/manager-timelist.modu
 import { TableModule } from '../table/table.module';
 import { DynamicFilterModule } from '../dynamic-filter/dynamic-filter.module';
 import { DepartmentsRoutingModule } from './departments-routing.module';
-import { DepartmentCardComponent } from './components/department-card/department-card.component';
+import { DepartmentPageComponent } from './department-page/department-page.component';
 import { DepartmentListComponent } from './department-list/department-list.component';
-import { DepartmentIdRouteContainerComponent } from './components/department-id-route-container/department-id-route-container.component';
+import { DepartmentIdRouteContainerComponent } from './department-id-route-container/department-id-route-container.component';
+import { DepartmentInfoComponent } from './department-page/department-info/department-info.component';
+import { CreateDepartmentComponent } from './create-department/create-department.component';
+import { EditDepartmentComponent } from './edit-department/edit-department.component';
 
 @NgModule({
-	declarations: [DepartmentCardComponent, DepartmentListComponent, DepartmentIdRouteContainerComponent],
+	declarations: [
+		DepartmentPageComponent,
+		DepartmentListComponent,
+		DepartmentIdRouteContainerComponent,
+		DepartmentInfoComponent,
+		CreateDepartmentComponent,
+		EditDepartmentComponent,
+	],
 	imports: [SharedModule, DepartmentsRoutingModule, ManagerTimelistModule, DynamicFilterModule, TableModule],
 })
 export class DepartmentsModule {}

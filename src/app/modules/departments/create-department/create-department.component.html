@@ -1,0 +1,55 @@
+<div class="header">
+	<h3 doUnderline class="page-title">Создание департамента</h3>
+	<do-actions class="controls">
+		<button doButton (click)="onCancel()">Отменить</button>
+		<button mat-flat-button color="primary" [loading]="loading$ | async" (click)="onSubmit()">
+			Создать департамент
+		</button>
+	</do-actions>
+</div>
+<div class="form" [formGroup]="form">
+	<mat-card>
+		<h5 class="card-title">Информация о департаменте</h5>
+		<div class="name-group">
+			<do-form-field label="Название департамента">
+				<mat-form-field>
+					<input
+						matInput
+						doRemoveRedundantSpaces
+						formControlName="name"
+						type="text"
+						placeholder="Название департамента"
+					/>
+					<mat-error>{{ form.controls['name'].errors | controlErrors }}</mat-error>
+				</mat-form-field>
+			</do-form-field>
+			<do-form-field label="Сокращенное название">
+				<mat-form-field>
+					<input
+						matInput
+						doRemoveRedundantSpaces
+						formControlName="shortName"
+						type="text"
+						placeholder="Сокр. название"
+					/>
+					<mat-error>{{ form.controls['shortName'].errors | controlErrors }}</mat-error>
+				</mat-form-field>
+			</do-form-field>
+		</div>
+	</mat-card>
+	<mat-card>
+		<h5 class="card-title">Описание департамента</h5>
+		<do-form-field label="Описание">
+			<mat-form-field>
+				<textarea
+					matInput
+					formControlName="description"
+					cdkTextareaAutosize
+					cdkAutosizeMinRows="10"
+					cdkAutosizeMaxRows="10"
+				></textarea>
+				<mat-error>{{ form.controls['description'].errors | controlErrors }}</mat-error>
+			</mat-form-field>
+		</do-form-field>
+	</mat-card>
+</div>

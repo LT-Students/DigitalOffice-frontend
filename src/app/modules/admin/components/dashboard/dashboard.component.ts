@@ -8,7 +8,6 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 import { switchMap } from 'rxjs/operators';
 import { AdminDashboardModalType, DialogService, ModalWidth } from '@app/services/dialog.service';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
-import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
 import { AppRoutes } from '@app/models/app-routes';
 import { AddEditPositionComponent } from '../../modals/add-edit-position/add-edit-position.component';
 import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-office.component';
@@ -39,9 +38,6 @@ export class DashboardComponent implements OnInit {
 			.pipe(
 				switchMap((value: AdminDashboardModalType) => {
 					switch (value) {
-						case this.modalType.NEW_DEPARTMENT: {
-							return this.modalService.openModal(AddEditDepartmentComponent, ModalWidth.M).afterClosed();
-						}
 						case this.modalType.NEW_POSITION: {
 							return this.modalService.openModal(AddEditPositionComponent, ModalWidth.M).afterClosed();
 						}

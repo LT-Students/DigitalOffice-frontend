@@ -1,0 +1,32 @@
+:host {
+	display: block;
+}
+
+.header {
+	display: flex;
+	align-items: baseline;
+
+	h1 {
+		margin: 0;
+	}
+
+	.status {
+		margin-left: 16px;
+
+		.icon {
+			margin-left: 8px;
+		}
+	}
+
+	.controls {
+		margin-left: auto;
+
+		a {
+			width: 172px;
+		}
+	}
+}
+
+.short-name {
+	margin-top: 4px;
+}

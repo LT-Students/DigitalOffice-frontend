@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { MdePopoverModule } from '@material-extended/mde';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
-import { AddEditDepartmentComponent } from '@shared/dialogs/add-edit-department/add-edit-department.component';
 import { PlaceholderPipe } from '@shared/pipes/placeholder.pipe';
 import { UserRecoveryComponent } from '@shared/dialogs/user-recovery/user-recovery.component';
 import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
@@ -67,6 +66,7 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 import { JoinPipe } from './pipes/join.pipe';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
+import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-spaces.directive';
 
 @NgModule({
 	declarations: [
@@ -94,7 +94,6 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
-		AddEditDepartmentComponent,
 		PlaceholderPipe,
 		UserRecoveryComponent,
 		CapitalizePipe,
@@ -129,6 +128,7 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 		JoinPipe,
 		ImageViewerComponent,
 		SafeImageUrlPipe,
+		RemoveRedundantSpacesDirective,
 	],
 	imports: [
 		CommonModule,
@@ -175,7 +175,6 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 		ProjectTypePipe,
 		LeaveLabelPipe,
 		NewEmployeeComponent,
-		AddEditDepartmentComponent,
 		PlaceholderPipe,
 		UserRecoveryComponent,
 		CapitalizePipe,
@@ -206,6 +205,7 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 		JoinPipe,
 		ImageViewerComponent,
 		SafeImageUrlPipe,
+		RemoveRedundantSpacesDirective,
 	],
 })
 export class SharedModule {}

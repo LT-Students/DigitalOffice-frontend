@@ -5,10 +5,9 @@
 		class="add-department-button"
 		mat-flat-button
 		color="primary"
-		(click)="notImplemented()"
+		[routerLink]="[DepartmentsRoutes.CreateDepartment]"
 		data-test="add-department-button"
 	>
-		<!--		[routerLink]="[DepartmentsRoutes.CreateDepartment]"-->
 		Добавить департамент
 	</button>
 </div>

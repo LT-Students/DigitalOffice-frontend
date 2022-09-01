@@ -1,0 +1,64 @@
+<div class="header">
+	<h3 doUnderline class="page-title">Редактирование департамента</h3>
+	<do-actions class="controls">
+		<button doButton (click)="onCancel()">Отменить</button>
+		<button class="submit" mat-flat-button color="primary" [loading]="loading$ | async" (click)="onSubmit()">
+			Применить
+		</button>
+	</do-actions>
+</div>
+<div class="form" [formGroup]="form">
+	<mat-card>
+		<h5 class="card-title">Информация о департаменте</h5>
+		<div class="info">
+			<do-form-field label="Название департамента">
+				<mat-form-field>
+					<input
+						matInput
+						doRemoveRedundantSpaces
+						formControlName="name"
+						type="text"
+						placeholder="Название департамента"
+					/>
+					<mat-error>{{ form.controls['name'].errors | controlErrors }}</mat-error>
+				</mat-form-field>
+			</do-form-field>
+			<do-form-field label="Сокращенное название">
+				<mat-form-field>
+					<input
+						matInput
+						doRemoveRedundantSpaces
+						formControlName="shortName"
+						type="text"
+						placeholder="Сокр. название"
+					/>
+					<mat-error>{{ form.controls['shortName'].errors | controlErrors }}</mat-error>
+				</mat-form-field>
+			</do-form-field>
+			<do-form-field label="Директор">
+				<mat-form-field>
+					<input matInput formControlName="director" type="text" />
+					<mat-error>{{ form.controls['director'].errors | controlErrors }}</mat-error>
+				</mat-form-field>
+			</do-form-field>
+		</div>
+	</mat-card>
+	<button *ngIf="department$ | async as department" mat-flat-button color="warn" (click)="changeStatus()">
+		{{ department.isActive ? 'Удалить департамент' : 'Восстановить департамент' }}
+	</button>
+	<mat-card class="description">
+		<h5 class="card-title">Описание департамента</h5>
+		<do-form-field label="Описание">
+			<mat-form-field>
+				<textarea
+					matInput
+					formControlName="description"
+					cdkTextareaAutosize
+					cdkAutosizeMinRows="10"
+					cdkAutosizeMaxRows="10"
+				></textarea>
+				<mat-error>{{ form.controls['description'].errors | controlErrors }}</mat-error>
+			</mat-form-field>
+		</do-form-field>
+	</mat-card>
+</div>
