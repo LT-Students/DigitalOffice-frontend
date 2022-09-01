@@ -23,6 +23,7 @@ import { LoadingState } from '@shared/directives/button-loading.directive';
 import { ContractSubjectApiService } from '@api/company-service/services/contract-subject-api.service';
 import { ContractSubjectInfo } from '@api/company-service/models/contract-subject-info';
 import { getUTCWithOffset } from '@app/utils/utils';
+import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
 
 @Component({
 	selector: 'do-new-employee',
@@ -32,7 +33,7 @@ import { getUTCWithOffset } from '@app/utils/utils';
 })
 export class NewEmployeeComponent extends LoadingState implements OnDestroy {
 	public userForm: FormGroup;
-	public position$: Observable<PositionInfo[]>;
+	public positionsConfig = this.autocompleteConfigs.getPositionsConfig();
 	public department$: Observable<DepartmentInfo[]>;
 	public roles$: Observable<RoleInfo[]>;
 	public offices$: Observable<OfficeInfo[]>;
@@ -49,13 +50,11 @@ export class NewEmployeeComponent extends LoadingState implements OnDestroy {
 		private _departmentService: DepartmentService,
 		private _officeService: OfficeService,
 		private contractService: ContractSubjectApiService,
-		private currentCompany: CurrentCompanyService
+		private currentCompany: CurrentCompanyService,
+		private autocompleteConfigs: AutocompleteConfigsService
 	) {
 		super();
 		this.userForm = this._initForm();
-		this.position$ = this._positionService
-			.findPositions({ skipCount: 0, takeCount: 500 })
-			.pipe(map((res) => res.body ?? []));
 		this.department$ = this._departmentService
 			.findDepartments({
 				skipCount: 0,
