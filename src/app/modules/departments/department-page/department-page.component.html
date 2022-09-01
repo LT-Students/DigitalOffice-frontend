@@ -1,5 +1,5 @@
-<ng-container *ngIf="department$ | async as department">
-	<do-department-info [department]="department"></do-department-info>
+<ng-container *ngIf="state$ | async as state">
+	<do-department-info [department]="state.department"></do-department-info>
 	<mat-tab-group>
 		<!--		<mat-tab label="Команда">-->
 		<!--			<do-project-users class="tab-content"></do-project-users>-->
@@ -7,7 +7,7 @@
 		<mat-tab label="Общая информация">
 			<div class="tab-content">
 				<mat-card class="description">{{
-					department.description | placeholder: 'Описание отсутствует'
+					state.department.description | placeholder: 'Описание отсутствует'
 				}}</mat-card>
 			</div>
 		</mat-tab>

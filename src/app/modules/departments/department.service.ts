@@ -3,8 +3,9 @@ import { DepartmentApiService } from '@api/department-service/services/departmen
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { FindResponse } from '@app/types/operation-result-response.interface';
+import { FindResponse, OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { DepartmentResponse } from '@api/department-service/models/department-response';
+import { DepartmentPath, PatchDocument } from '@app/types/edit-request';
 import { Department } from './department-page/department';
 
 export interface FindDepartmentsParams {
@@ -35,5 +36,25 @@ export class DepartmentService {
 		return this.departmentApi
 			.createDepartment({ body: { name, shortName, description, users: [] } })
 			.pipe(map((res) => res.body as string));
+	}
+
+	public editDepartment(
+		departmentId: string,
+		editRequest: PatchDocument<DepartmentPath>[]
+	): Observable<OperationResultResponse> {
+		return this.departmentApi.editDepartment({ departmentId, body: editRequest });
+	}
+
+	public changeDepartmentStatus(departmentId: string, status: boolean): Observable<OperationResultResponse> {
+		return this.departmentApi.editDepartment({
+			departmentId,
+			body: [
+				{
+					op: 'replace',
+					path: '/isactive',
+					value: status,
+				},
+			],
+		});
 	}
 }

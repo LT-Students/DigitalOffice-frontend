@@ -10,6 +10,7 @@ import { DepartmentsRoutes } from './models/departments-routes';
 import { DepartmentIdRouteContainerComponent } from './department-id-route-container/department-id-route-container.component';
 import { DepartmentListComponent } from './department-list/department-list.component';
 import { CreateDepartmentComponent } from './create-department/create-department.component';
+import { EditDepartmentComponent } from './edit-department/edit-department.component';
 
 const routes: Routes = [
 	{
@@ -35,6 +36,11 @@ const routes: Routes = [
 			{
 				path: '',
 				component: DepartmentPageComponent,
+			},
+			{
+				path: DepartmentsRoutes.EditDepartment,
+				component: EditDepartmentComponent,
+				canActivate: [],
 			},
 			{
 				path: DepartmentsRoutes.TimeList,

@@ -66,6 +66,7 @@ import { TypeFromExtensionPipe } from './pipes/type-from-extension.pipe';
 import { JoinPipe } from './pipes/join.pipe';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
+import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-spaces.directive';
 
 @NgModule({
 	declarations: [
@@ -127,6 +128,7 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 		JoinPipe,
 		ImageViewerComponent,
 		SafeImageUrlPipe,
+		RemoveRedundantSpacesDirective,
 	],
 	imports: [
 		CommonModule,
@@ -203,6 +205,7 @@ import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 		JoinPipe,
 		ImageViewerComponent,
 		SafeImageUrlPipe,
+		RemoveRedundantSpacesDirective,
 	],
 })
 export class SharedModule {}

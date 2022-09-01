@@ -69,16 +69,9 @@ $button-theme: create-theme($theme-primary, $theme-accent, mat.define-palette($d
 		)
 	)
 );
-@include mat.input-color(
-	mat.define-light-theme(
-		(
-			color: (
-				primary: mat.define-palette($do-grey),
-				accent: mat.define-palette($do-orange, 50),
-			),
-		)
-	)
-);
+$input-theme: create-theme(mat.define-palette($do-grey), mat.define-palette($do-orange, 50));
+
+@include mat.input-color($input-theme);
 @include mat.datepicker-color(
 	mat.define-light-theme(
 		(

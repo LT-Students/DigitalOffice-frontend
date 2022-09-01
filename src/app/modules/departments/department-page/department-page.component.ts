@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
+import { SelectedDepartmentService } from '../department-id-route-container/selected-department.service';
 
 @Component({
 	selector: 'do-department-page',
@@ -12,7 +11,7 @@ import { map } from 'rxjs/operators';
 export class DepartmentPageComponent {
 	public readonly Icons = Icons;
 
-	public department$ = this.route.data.pipe(map((data) => data['department']));
+	public state$ = this.departmentPageState.departmentState$;
 
-	constructor(private route: ActivatedRoute) {}
+	constructor(private departmentPageState: SelectedDepartmentService) {}
 }

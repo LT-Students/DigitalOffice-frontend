@@ -152,7 +152,7 @@ $light-theme-foreground-palette: (
 	dividers: $dark-dividers,
 	disabled: $dark-disabled-text,
 	disabled-button: variables.$typo,
-	disabled-text: $dark-disabled-text,
+	disabled-text: variables.$typo,
 	elevation: black,
 	hint-text: $dark-disabled-text,
 	secondary-text: $dark-secondary-text,

@@ -10,6 +10,7 @@ import { DepartmentListComponent } from './department-list/department-list.compo
 import { DepartmentIdRouteContainerComponent } from './department-id-route-container/department-id-route-container.component';
 import { DepartmentInfoComponent } from './department-page/department-info/department-info.component';
 import { CreateDepartmentComponent } from './create-department/create-department.component';
+import { EditDepartmentComponent } from './edit-department/edit-department.component';
 
 @NgModule({
 	declarations: [
@@ -18,6 +19,7 @@ import { CreateDepartmentComponent } from './create-department/create-department
 		DepartmentIdRouteContainerComponent,
 		DepartmentInfoComponent,
 		CreateDepartmentComponent,
+		EditDepartmentComponent,
 	],
 	imports: [SharedModule, DepartmentsRoutingModule, ManagerTimelistModule, DynamicFilterModule, TableModule],
 })

@@ -1,16 +1,16 @@
 <div class="header">
-	<h3 doUnderline class="page-title">Создание департамента</h3>
+	<h3 doUnderline class="page-title">Редактирование департамента</h3>
 	<do-actions class="controls">
 		<button doButton (click)="onCancel()">Отменить</button>
-		<button mat-flat-button color="primary" [loading]="loading$ | async" (click)="onSubmit()">
-			Создать департамент
+		<button class="submit" mat-flat-button color="primary" [loading]="loading$ | async" (click)="onSubmit()">
+			Применить
 		</button>
 	</do-actions>
 </div>
 <div class="form" [formGroup]="form">
 	<mat-card>
 		<h5 class="card-title">Информация о департаменте</h5>
-		<div class="name-group">
+		<div class="info">
 			<do-form-field label="Название департамента">
 				<mat-form-field>
 					<input
@@ -35,9 +35,18 @@
 					<mat-error>{{ form.controls['shortName'].errors | controlErrors }}</mat-error>
 				</mat-form-field>
 			</do-form-field>
+			<do-form-field label="Директор">
+				<mat-form-field>
+					<input matInput formControlName="director" type="text" />
+					<mat-error>{{ form.controls['director'].errors | controlErrors }}</mat-error>
+				</mat-form-field>
+			</do-form-field>
 		</div>
 	</mat-card>
-	<mat-card>
+	<button *ngIf="department$ | async as department" mat-flat-button color="warn" (click)="changeStatus()">
+		{{ department.isActive ? 'Удалить департамент' : 'Восстановить департамент' }}
+	</button>
+	<mat-card class="description">
 		<h5 class="card-title">Описание департамента</h5>
 		<do-form-field label="Описание">
 			<mat-form-field>
