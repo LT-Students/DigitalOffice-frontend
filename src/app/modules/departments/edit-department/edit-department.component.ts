@@ -9,7 +9,7 @@ import { finalize, first, switchMap, switchMapTo } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { DepartmentPath, PatchDocument } from '@app/types/edit-request';
 import { booleanGuard } from '@app/utils/utils';
-import { SelectedDepartmentService } from '../department-id-route-container/selected-department.service';
+import { DepartmentPageStateService } from '../department-id-route-container/department-page-state.service';
 import { Department } from '../department-page/department';
 import { DepartmentService } from '../department.service';
 
@@ -38,7 +38,7 @@ export class EditDepartmentComponent extends LoadingState implements OnInit {
 		private navigation: NavigationService,
 		private route: ActivatedRoute,
 		private router: Router,
-		private departmentPageState: SelectedDepartmentService,
+		private departmentPageState: DepartmentPageStateService,
 		private departmentService: DepartmentService,
 		private dialog: DialogService
 	) {

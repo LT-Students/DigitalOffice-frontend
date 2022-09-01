@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { SelectedDepartmentService } from '../department-id-route-container/selected-department.service';
+import { DepartmentPageStateService } from '../department-id-route-container/department-page-state.service';
 
 @Component({
 	selector: 'do-department-page',
@@ -13,5 +13,5 @@ export class DepartmentPageComponent {
 
 	public state$ = this.departmentPageState.departmentState$;
 
-	constructor(private departmentPageState: SelectedDepartmentService) {}
+	constructor(private departmentPageState: DepartmentPageStateService) {}
 }

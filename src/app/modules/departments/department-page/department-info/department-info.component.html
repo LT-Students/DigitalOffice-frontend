@@ -11,8 +11,10 @@
 		></span>
 	</div>
 	<do-actions class="controls">
-		<a doButton [routerLink]="DepartmentsRoutes.EditDepartment">Редактировать</a>
-		<a mat-flat-button color="primary" [routerLink]="DepartmentsRoutes.TimeList">Таймлист</a>
+		<a *ngIf="canEditDepartment$ | async" doButton [routerLink]="DepartmentsRoutes.EditDepartment">Редактировать</a>
+		<a *ngIf="canAccessTimeList$ | async" mat-flat-button color="primary" [routerLink]="DepartmentsRoutes.TimeList"
+			>Таймлист</a
+		>
 	</do-actions>
 </div>
 <h5 class="short-name break-word">{{ department.name }}</h5>

@@ -6,7 +6,7 @@ import {
 	TimelistEntityType,
 } from '../../manager-timelist/models/timelist-entity';
 import { Department } from '../department-page/department';
-import { SelectedDepartmentService } from './selected-department.service';
+import { DepartmentPageStateService } from './department-page-state.service';
 
 function resolveTimelistEntityInfo(route: ActivatedRoute): TimelistEntityInfo {
 	const { id, name } = route.snapshot.data['department'] as Department;
@@ -19,7 +19,7 @@ function resolveTimelistEntityInfo(route: ActivatedRoute): TimelistEntityInfo {
 	styles: [],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [
-		SelectedDepartmentService,
+		DepartmentPageStateService,
 		{ provide: TIMELIST_ENTITY_INFO, useFactory: resolveTimelistEntityInfo, deps: [ActivatedRoute] },
 	],
 })

@@ -21,7 +21,7 @@ export class DepartmentPageState {
 }
 
 @Injectable()
-export class SelectedDepartmentService {
+export class DepartmentPageStateService {
 	private departmentState: BehaviorSubject<DepartmentPageState>;
 	public get departmentState$(): Observable<DepartmentPageState> {
 		return this.departmentState.asObservable();

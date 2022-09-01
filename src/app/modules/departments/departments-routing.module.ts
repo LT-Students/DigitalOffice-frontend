@@ -11,6 +11,8 @@ import { DepartmentIdRouteContainerComponent } from './department-id-route-conta
 import { DepartmentListComponent } from './department-list/department-list.component';
 import { CreateDepartmentComponent } from './create-department/create-department.component';
 import { EditDepartmentComponent } from './edit-department/edit-department.component';
+import { EditDepartmentGuard } from './guards/edit-department.guard';
+import { TimeListGuard } from './guards/time-list.guard';
 
 const routes: Routes = [
 	{
@@ -40,12 +42,13 @@ const routes: Routes = [
 			{
 				path: DepartmentsRoutes.EditDepartment,
 				component: EditDepartmentComponent,
-				canActivate: [],
+				canActivate: [EditDepartmentGuard],
 			},
 			{
 				path: DepartmentsRoutes.TimeList,
 				loadChildren: () =>
 					import('../manager-timelist/manager-timelist.module').then((m) => m.ManagerTimelistModule),
+				canActivate: [TimeListGuard],
 				resolve: {
 					stats: TimelistResolver,
 				},
