@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
 import { CreateDepartmentUsersRequest } from '../models/create-department-users-request';
+import { FindResultResponseUserInfo } from '../models/find-result-response-user-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
@@ -69,6 +70,141 @@ export class DepartmentUserApiService extends BaseService {
 	createDepartmentUser(params: { body: CreateDepartmentUsersRequest }): Observable<OperationResultResponse> {
 		return this.createDepartmentUser$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
+		);
+	}
+
+	/**
+	 * Path part for operation findDepartmentUsers
+	 */
+	static readonly FindDepartmentUsersPath = '/user/find';
+
+	/**
+	 * Returns finded department users.
+	 *
+	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
+	 * To access only the response body, use `findDepartmentUsers()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	findDepartmentUsers$Response(params: {
+		/**
+		 * Deparment id to find users.
+		 */
+		departmentId: string;
+
+		/**
+		 * Number of deparments to skip.
+		 */
+		skipCount: number;
+
+		/**
+		 * Number of departments to take.
+		 */
+		takeCount: number;
+
+		/**
+		 * If true returns sorted department users from A to Z, false - sorted from Z to A, null - no sorting.
+		 */
+		isAscendingSort?: boolean;
+
+		/**
+		 * If true returns sorted department users by role, false - sorted descending, null - no sorting.
+		 */
+		departmentUserRoleAscendingSort?: boolean;
+
+		/**
+		 * If true returns active departmnt users, false - not active, null - all.
+		 */
+		isActive?: boolean;
+
+		/**
+		 * If true returns departmnt users with avatars.
+		 */
+		includeAvatars?: boolean;
+
+		/**
+		 * If true returns departmnt users with positions.
+		 */
+		includePositions?: boolean;
+	}): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
+		const rb = new RequestBuilder(this.rootUrl, DepartmentUserApiService.FindDepartmentUsersPath, 'get');
+		if (params) {
+			rb.query('departmentId', params.departmentId, {});
+			rb.query('skipCount', params.skipCount, {});
+			rb.query('takeCount', params.takeCount, {});
+			rb.query('isAscendingSort', params.isAscendingSort, {});
+			rb.query('departmentUserRoleAscendingSort', params.departmentUserRoleAscendingSort, {});
+			rb.query('isActive', params.isActive, {});
+			rb.query('includeAvatars', params.includeAvatars, {});
+			rb.query('includePositions', params.includePositions, {});
+		}
+
+		return this.http
+			.request(
+				rb.build({
+					responseType: 'json',
+					accept: 'application/json',
+				})
+			)
+			.pipe(
+				filter((r: any) => r instanceof HttpResponse),
+				map((r: HttpResponse<any>) => {
+					return r as StrictHttpResponse<FindResultResponseUserInfo>;
+				})
+			);
+	}
+
+	/**
+	 * Returns finded department users.
+	 *
+	 * This method provides access to only to the response body.
+	 * To access the full response (for headers, for example), `findDepartmentUsers$Response()` instead.
+	 *
+	 * This method doesn't expect any request body.
+	 */
+	findDepartmentUsers(params: {
+		/**
+		 * Deparment id to find users.
+		 */
+		departmentId: string;
+
+		/**
+		 * Number of deparments to skip.
+		 */
+		skipCount: number;
+
+		/**
+		 * Number of departments to take.
+		 */
+		takeCount: number;
+
+		/**
+		 * If true returns sorted department users from A to Z, false - sorted from Z to A, null - no sorting.
+		 */
+		isAscendingSort?: boolean;
+
+		/**
+		 * If true returns sorted department users by role, false - sorted descending, null - no sorting.
+		 */
+		departmentUserRoleAscendingSort?: boolean;
+
+		/**
+		 * If true returns active departmnt users, false - not active, null - all.
+		 */
+		isActive?: boolean;
+
+		/**
+		 * If true returns departmnt users with avatars.
+		 */
+		includeAvatars?: boolean;
+
+		/**
+		 * If true returns departmnt users with positions.
+		 */
+		includePositions?: boolean;
+	}): Observable<FindResultResponseUserInfo> {
+		return this.findDepartmentUsers$Response(params).pipe(
+			map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)
 		);
 	}
 
