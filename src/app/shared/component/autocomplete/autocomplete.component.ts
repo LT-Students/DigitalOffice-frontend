@@ -24,6 +24,7 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 		<div class="container" matAutocompleteOrigin #origin="matAutocompleteOrigin">
 			<input
 				#search
+				#trigger="matAutocompleteTrigger"
 				matInput
 				[placeholder]="placeholder"
 				[required]="required"
@@ -36,7 +37,7 @@ import { MatFormField, MatFormFieldControl } from '@angular/material/form-field'
 			<mat-icon
 				class="arrow text-secondary_default"
 				[svgIcon]="Icons.ArrowDownV1"
-				(click)="search.focus()"
+				(click)="auto.isOpen ? trigger.closePanel() : search.focus()"
 			></mat-icon>
 			<mat-autocomplete
 				#auto="matAutocomplete"
