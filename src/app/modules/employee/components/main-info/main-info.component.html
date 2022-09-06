@@ -75,7 +75,15 @@
 					<div class="employee-info__first-column">
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Департамент</span>
-							<p class="mat-body">{{ user.department?.name | placeholder }}</p>
+							<p
+								class="mat-body"
+								[class.link]="user?.department"
+								[routerLink]="
+									user?.department ? ['/', AppRoutes.Departments, user?.department?.id] : null
+								"
+							>
+								{{ user.department?.name | placeholder }}
+							</p>
 						</div>
 						<div>
 							<span class="employee-info__field mat-body-2 text-secondary_default">Должность</span>
