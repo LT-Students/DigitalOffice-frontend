@@ -65,7 +65,6 @@ export class GenderSelectComponent implements OnInit, OnDestroy, ControlValueAcc
 	public setValue(name: string, options: GenderInfo[]): void {
 		const gender = options.find((g: GenderInfo) => g.name === name);
 		this.valueControl.setValue(gender || { id: null, name });
-		console.log(name, gender, this.valueControl.value);
 	}
 
 	public displayWithFn(option: GenderInfo): string {

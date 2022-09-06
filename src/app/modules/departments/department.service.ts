@@ -5,7 +5,10 @@ import { Observable } from 'rxjs';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
 import { FindResponse, OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { DepartmentResponse } from '@api/department-service/models/department-response';
+import { DepartmentUserApiService } from '@api/department-service/services/department-user-api.service';
 import { DepartmentPath, PatchDocument } from '@app/types/edit-request';
+import { MAX_INT32 } from '@app/utils/utils';
+import { UserInfo } from '@api/department-service/models/user-info';
 import { Department } from './department-page/department';
 
 export interface FindDepartmentsParams {
@@ -20,7 +23,7 @@ export interface FindDepartmentsParams {
 	providedIn: 'root',
 })
 export class DepartmentService {
-	constructor(private departmentApi: DepartmentApiService) {}
+	constructor(private departmentApi: DepartmentApiService, private departmentUserApi: DepartmentUserApiService) {}
 
 	public findDepartments(params: FindDepartmentsParams): Observable<FindResponse<DepartmentInfo>> {
 		return this.departmentApi.findDepartments(params).pipe(map((res) => new FindResponse(res)));
@@ -56,5 +59,18 @@ export class DepartmentService {
 				},
 			],
 		});
+	}
+
+	public findUsers(departmentId: string): Observable<UserInfo[]> {
+		return this.departmentUserApi
+			.findDepartmentUsers({
+				departmentId,
+				skipCount: 0,
+				takeCount: MAX_INT32,
+				isActive: true,
+				includeAvatars: true,
+				includePositions: true,
+			})
+			.pipe(map((res) => res.body || []));
 	}
 }
