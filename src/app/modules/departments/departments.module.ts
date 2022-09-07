@@ -13,6 +13,7 @@ import { DepartmentInfoComponent } from './department-page/department-info/depar
 import { CreateDepartmentComponent } from './create-department/create-department.component';
 import { EditDepartmentComponent } from './edit-department/edit-department.component';
 import { DepartmentUsersComponent } from './department-page/department-users/department-users.component';
+import { DepartmentProjectsComponent } from './department-page/department-projects/department-projects.component';
 
 @NgModule({
 	declarations: [
@@ -23,6 +24,7 @@ import { DepartmentUsersComponent } from './department-page/department-users/dep
 		CreateDepartmentComponent,
 		EditDepartmentComponent,
 		DepartmentUsersComponent,
+		DepartmentProjectsComponent,
 	],
 	imports: [
 		SharedModule,

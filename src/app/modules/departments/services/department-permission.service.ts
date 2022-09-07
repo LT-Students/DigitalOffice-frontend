@@ -5,6 +5,7 @@ import { CurrentUserService } from '@app/services/current-user.service';
 import { PermissionService } from '@app/services/permission.service';
 import { User } from '@app/models/user/user.model';
 import { UserRights } from '@app/types/user-rights.enum';
+import { DepartmentUserRole } from '@api/user-service/models/department-user-role';
 import { Department } from '../department-page/department';
 import { ExistingDepartmentUser } from '../department-page/department-users/models/new-department-user';
 import { DepartmentRole } from '../department-page/department-users/models/department-role-info';
@@ -21,6 +22,16 @@ export class DepartmentPermissionService {
 
 	public canManageDepartment$(department$: Observable<Department>): Observable<boolean> {
 		return this.checkPermission$(UserRights.AddEditRemoveDepartment, department$);
+	}
+
+	public canTransferProjects$(departmentId: string): Observable<boolean> {
+		return this.currentUser.user$.pipe(
+			map(
+				(user: User) =>
+					user.isAdmin ||
+					(user.department?.id === departmentId && user.department.role === DepartmentUserRole.Manager)
+			)
+		);
 	}
 
 	private checkPermission$(right: UserRights, department$: Observable<Department>): Observable<boolean> {
