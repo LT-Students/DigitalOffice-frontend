@@ -21,9 +21,10 @@ import { CredentialsApiService } from '@api/user-service/services/credentials-ap
 export interface IFindUsers {
 	skipCount: number;
 	takeCount: number;
-	ascendingsort?: boolean;
+	isascendingsort?: boolean;
 	fullnameincludesubstring?: string;
 	isactive?: boolean;
+	ispending?: boolean;
 	includecurrentavatar?: boolean;
 	includecommunications?: boolean;
 }
@@ -59,10 +60,6 @@ export class UserService {
 
 	public findUsers(params: IFindUsers): Observable<OperationResultResponse<UserInfo[]>> {
 		return this._userApiService.findUsers(params);
-	}
-
-	public findPending(params: IFindPending): Observable<OperationResultResponse<UserInfo[]>> {
-		return this.pendingApiService.findPending(params);
 	}
 
 	public createUser(params: CreateUserRequest): Observable<OperationResultResponse> {

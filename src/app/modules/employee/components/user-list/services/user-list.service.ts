@@ -158,14 +158,17 @@ export class UserListService {
 				return this.userService.findUsers({
 					...params,
 					isactive: false,
+					ispending: false,
 					includecurrentavatar: true,
 					includecommunications: true,
 				});
 			case 'pending':
-				return this.userService.findPending({
+				return this.userService.findUsers({
 					...params,
+					isactive: false,
+					ispending: true,
 					includecurrentavatar: true,
-					includecommunication: true,
+					includecommunications: true,
 				});
 			default:
 				return this.route.data.pipe(
