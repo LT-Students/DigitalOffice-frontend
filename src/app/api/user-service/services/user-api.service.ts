@@ -388,6 +388,7 @@ export class UserApiService extends BaseService {
 		 */
 		fullnameincludesubstring?: string;
 		isactive?: boolean;
+		ispending?: boolean;
 		includecurrentavatar?: boolean;
 		includecommunications?: boolean;
 	}): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
@@ -398,6 +399,7 @@ export class UserApiService extends BaseService {
 			rb.query('isascendingsort', params.isascendingsort, {});
 			rb.query('fullnameincludesubstring', params.fullnameincludesubstring, {});
 			rb.query('isactive', params.isactive, {});
+			rb.query('ispending', params.ispending, {});
 			rb.query('includecurrentavatar', params.includecurrentavatar, {});
 			rb.query('includecommunications', params.includecommunications, {});
 		}
@@ -446,6 +448,7 @@ export class UserApiService extends BaseService {
 		 */
 		fullnameincludesubstring?: string;
 		isactive?: boolean;
+		ispending?: boolean;
 		includecurrentavatar?: boolean;
 		includecommunications?: boolean;
 	}): Observable<FindResultResponseUserInfo> {
