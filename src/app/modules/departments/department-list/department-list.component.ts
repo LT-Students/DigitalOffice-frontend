@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserRights } from '@app/types/user-rights.enum';
 import { PageEvent, PaginatorComponent } from '@shared/component/paginator/paginator.component';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { DoTableDataSource } from '@app/types/do-table-data-source';
+import { DoTableDataSource, ListParams } from '@app/types/do-table-data-source';
 import { Observable } from 'rxjs';
 import { FilterDef } from '../../dynamic-filter/models';
 import { DynamicFilterComponent } from '../../dynamic-filter/dynamic-filter.component';
@@ -60,6 +60,9 @@ export class DepartmentListComponent implements OnInit {
 		const dataSource = new DoTableDataSource<DepartmentInfo>(initialValue);
 		dataSource.dataService = {
 			loadData: (params: FindDepartmentsParams) => this.departmentService.findDepartments(params),
+			convertListParamsToRequestParams: this.tableQueries.convertListParamsToRequestParams.bind(
+				this.tableQueries
+			),
 		};
 		dataSource.queryParamsConverter = this.tableQueries;
 		dataSource.route = this.route;

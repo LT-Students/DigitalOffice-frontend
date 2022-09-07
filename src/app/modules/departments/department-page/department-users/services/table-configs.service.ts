@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { AppRoutes } from '@app/models/app-routes';
 import { Icons } from '@shared/modules/icons/icons';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
+import { DoTableDataSource } from '@app/types/do-table-data-source';
 import { AutocompleteFilterParams, FilterDef, InputFilterParams } from '../../../../dynamic-filter/models';
 import { ColumnDef } from '../../../../table/models';
 import { UserInfoParams } from '../../../../table/cell-components/user-info/user-info.component';
@@ -13,12 +14,20 @@ import { DepartmentPermissionService } from '../../../services/department-permis
 import { DepartmentRole, DepartmentRoleInfo } from '../models/department-role-info';
 import { DepartmentUser } from '../models/department-user';
 import { TableOptions } from '../../../../table/models/table-options';
+import { Department } from '../../department';
+import { DepartmentUsersApiService } from './department-users-api.service';
 
 @Injectable()
 export class TableConfigsService {
 	private readonly iconColor = '#FFD89E';
 
+	set dataSource(dataSource: DoTableDataSource<DepartmentUser>) {
+		this._dataSource = dataSource;
+	}
+	private _dataSource!: DoTableDataSource<DepartmentUser>;
+
 	constructor(
+		private departmentUsersApi: DepartmentUsersApiService,
 		private departmentState: DepartmentPageStateService,
 		private autocompleteConfigs: AutocompleteConfigsService,
 		private router: Router,
@@ -49,13 +58,13 @@ export class TableConfigsService {
 		return this.departmentPermissions.canManageDepartment$(this.departmentState.department$).pipe(
 			map((hasPermission: boolean) => {
 				return {
-					sortActive: 'status',
-					sortDirection: 'asc',
+					sortActive: 'role',
+					sortDirection: 'desc',
 					rowHeight: 64,
 					columns: [
 						new ColumnDef({
 							type: 'userInfoCell',
-							field: 'userInfo',
+							field: 'name',
 							headerName: 'Фио',
 							sortEnabled: true,
 							disableClearSort: true,
@@ -76,8 +85,8 @@ export class TableConfigsService {
 						}),
 						new ColumnDef({
 							type: 'selectCell',
-							field: 'status',
-							headerName: 'Статус',
+							field: 'role',
+							headerName: 'Роль',
 							sortEnabled: true,
 							disableClearSort: true,
 							valueGetter: (user: DepartmentUser) => user.role,
@@ -89,7 +98,7 @@ export class TableConfigsService {
 									DepartmentRoleInfo.getRoleInfoByRole(role).label,
 								iconGetter: (role: DepartmentRole) => DepartmentRoleInfo.getRoleInfoByRole(role).icon,
 								iconColor: this.iconColor,
-								// updateRow: this.changeRole.bind(this),
+								updateRow: this.changeRole.bind(this),
 								disabled: () => !hasPermission,
 							},
 						}),
@@ -97,5 +106,15 @@ export class TableConfigsService {
 				};
 			})
 		);
+	}
+
+	private changeRole(u: DepartmentUser, role: DepartmentRole): void {
+		this.departmentState.department$
+			.pipe(
+				first(),
+				switchMap((d: Department) => this.departmentUsersApi.changeUserRole(d.id, u.id, role, u.role)),
+				switchMap(() => this._dataSource.refetchData())
+			)
+			.subscribe();
 	}
 }

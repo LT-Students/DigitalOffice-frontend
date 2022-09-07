@@ -19,7 +19,7 @@ export class DepartmentListResolver implements Resolve<FindResponse<DepartmentIn
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<FindResponse<DepartmentInfo>> {
-		const params = this.listQueriesService.convertQueryURLParamsToEndpointParams(route.queryParams);
+		const params = this.listQueriesService.convertQueryURLParamsToRequestParams(route.queryParams);
 		return this.departmentService.findDepartments(params);
 	}
 }

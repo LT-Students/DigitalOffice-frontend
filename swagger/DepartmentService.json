@@ -1155,7 +1155,7 @@
           "UsersIds"
         ],
         "properties": {
-          "Role": {
+          "Assignment": {
             "$ref": "#/components/schemas/DepartmentUserAssignment"
           },
           "UsersIds": {

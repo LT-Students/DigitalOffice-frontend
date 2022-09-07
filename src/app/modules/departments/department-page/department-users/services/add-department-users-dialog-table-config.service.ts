@@ -36,9 +36,12 @@ export class AddDepartmentUsersDialogTableConfigService extends AddUsersTableCon
 		];
 	}
 
-	protected getUserInfoParams(): UserInfoParams {
+	protected getUserInfoParams(existingUsers: ExistingDepartmentUser[]): UserInfoParams {
 		return new UserInfoParams({
-			statusIconGetter: (user: NewDepartmentUser) => DepartmentRoleInfo.getRoleInfoByRole(user.role).icon,
+			statusIconGetter: (user: NewDepartmentUser) => {
+				const existingUser = existingUsers.find((u) => u.id === user.id);
+				return DepartmentRoleInfo.getRoleInfoByRole(existingUser?.role || user.role).icon;
+			},
 			iconColor: this.iconColor,
 		});
 	}

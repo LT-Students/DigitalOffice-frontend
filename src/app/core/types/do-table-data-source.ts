@@ -18,6 +18,7 @@ interface FindParams {
 
 interface DataService<T, P extends FindParams = any> {
 	loadData: (params: P) => Observable<FindResponse<T>>;
+	convertListParamsToRequestParams?: (params: ListParams) => FindParams;
 }
 
 export type ListParams = Partial<FilterEvent & { active: string; direction: SortDirection } & PageEvent>;
@@ -107,6 +108,14 @@ export class DoTableDataSource<T> implements DataSource<T> {
 		this.totalCount$.next(response.totalCount);
 	}
 
+	public refetchData(): Observable<FindResponse<T>> {
+		const params = this.getListParams();
+		const requestParams = this.dataService?.convertListParamsToRequestParams
+			? this.dataService.convertListParamsToRequestParams(params)
+			: params;
+		return this.loadData(requestParams);
+	}
+
 	private updateChangeSubscription(): void {
 		let resetPaginator = false;
 		const changes = [
@@ -118,13 +127,12 @@ export class DoTableDataSource<T> implements DataSource<T> {
 		this.paramsChangesSubscription = merge(...changes)
 			.pipe(
 				tap((reset: boolean) => (resetPaginator = reset)),
-				map(() => {
-					const listParams = this.getListParams();
-					return this.queryParamsConverter?.convertListParamsToQueryUrlParams(listParams) || listParams;
-				}),
-				// update URL params if router is provided
-				tap((queryParams) => {
-					if (this.router) {
+				// map changes to all param values
+				map(() => this.getListParams()),
+				// update URL params if router and param converter are provided
+				tap((listParams: ListParams) => {
+					if (this.router && this.queryParamsConverter) {
+						const queryParams = this.queryParamsConverter?.convertListParamsToQueryUrlParams(listParams);
 						this.router.navigate([], {
 							relativeTo: this.route,
 							queryParams,
@@ -132,9 +140,11 @@ export class DoTableDataSource<T> implements DataSource<T> {
 						});
 					}
 				}),
-				switchMap((params: FindParams) => {
-					const requestParams =
-						this.queryParamsConverter?.convertQueryURLParamsToEndpointParams(params) || params;
+				// convert list params to request params
+				switchMap((params: ListParams) => {
+					const requestParams = this.dataService?.convertListParamsToRequestParams
+						? this.dataService.convertListParamsToRequestParams(params)
+						: params;
 					return this.loadData(requestParams);
 				})
 			)
@@ -159,7 +169,7 @@ export class DoTableDataSource<T> implements DataSource<T> {
 }
 
 export abstract class QueryParamsConverter<Q extends Params = Params, E extends Params = Params> {
-	constructor(private paginatorDefaults: PaginatorDefaultOptions) {}
+	constructor(protected paginatorDefaults: PaginatorDefaultOptions) {}
 
 	public abstract getAdditionalQueryUrlParams(params: ListParams): Q;
 	public abstract getAdditionalEndpointParams(params: Params): E;
@@ -176,7 +186,7 @@ export abstract class QueryParamsConverter<Q extends Params = Params, E extends 
 		};
 	}
 
-	public convertQueryURLParamsToEndpointParams(params: Params): E & { takeCount: number; skipCount: number } {
+	public convertQueryURLParamsToRequestParams(params: Params): E & { takeCount: number; skipCount: number } {
 		const pageIndex = Number(params['pageIndex'] || 0);
 		const pageSize = Number(params['pageSize'] || this.paginatorDefaults.pageSize);
 		const additionalParams = this.getAdditionalEndpointParams(params);

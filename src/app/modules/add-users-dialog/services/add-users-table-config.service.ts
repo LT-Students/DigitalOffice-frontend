@@ -11,13 +11,13 @@ import { AddUsersDataSource } from '../models/add-users-data-source';
 })
 export abstract class AddUsersTableConfigService<T extends NewUserBase> {
 	protected abstract getAdditionalColumns(existingUsers: ExistingUserBase[]): ColumnDef[];
-	protected abstract getUserInfoParams(): UserInfoParams;
+	protected abstract getUserInfoParams(existingUsers: ExistingUserBase[]): UserInfoParams;
 
 	public dataSource!: AddUsersDataSource<T>;
 
 	public getTableConfig(existingUsers: ExistingUserBase[]): TableOptions {
 		const additionalColumns = this.getAdditionalColumns ? this.getAdditionalColumns(existingUsers) : [];
-		const userInfoParams = this.getUserInfoParams && this.getUserInfoParams();
+		const userInfoParams = this.getUserInfoParams && this.getUserInfoParams(existingUsers);
 		return {
 			selectionCompareWith: (u1: T, u2: T) => u1.id === u2.id,
 			rowHeight: 64,
