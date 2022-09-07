@@ -3,7 +3,7 @@ import { Params } from '@angular/router';
 import { PAGINATOR_DEFAULT_OPTIONS, PaginatorDefaultOptions } from '@shared/component/paginator/paginator.component';
 import { QueryParamsConverter } from '@app/types/do-table-data-source';
 import { ListParams } from '../../feedback/feedback-list/feedback-list-queries.service';
-import { FindDepartmentsParams } from '../department.service';
+import { FindDepartmentsParams } from '../services/department.service';
 import { DepartmentUrlStatus } from '../models/department-status';
 
 export enum ClientQueryParam {

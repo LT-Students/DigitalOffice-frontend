@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
-import { DepartmentService } from '../department.service';
+import { DepartmentService } from '../services/department.service';
 import { Department } from '../department-page/department';
 
 @Injectable({

@@ -9,7 +9,7 @@ import { DepartmentUserApiService } from '@api/department-service/services/depar
 import { DepartmentPath, PatchDocument } from '@app/types/edit-request';
 import { MAX_INT32 } from '@app/utils/utils';
 import { UserInfo } from '@api/department-service/models/user-info';
-import { Department } from './department-page/department';
+import { Department } from '../department-page/department';
 
 export interface FindDepartmentsParams {
 	skipCount: number;
@@ -59,18 +59,5 @@ export class DepartmentService {
 				},
 			],
 		});
-	}
-
-	public findUsers(departmentId: string): Observable<UserInfo[]> {
-		return this.departmentUserApi
-			.findDepartmentUsers({
-				departmentId,
-				skipCount: 0,
-				takeCount: MAX_INT32,
-				isActive: true,
-				includeAvatars: true,
-				includePositions: true,
-			})
-			.pipe(map((res) => res.body || []));
 	}
 }

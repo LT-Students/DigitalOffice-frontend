@@ -6,7 +6,7 @@ import { FormBuilder } from '@angular/forms';
 import { DoValidators } from '@app/validators/do-validators';
 import { finalize } from 'rxjs/operators';
 import { AppRoutes } from '@app/models/app-routes';
-import { DepartmentService } from '../department.service';
+import { DepartmentService } from '../services/department.service';
 
 @Component({
 	selector: 'do-create-department',

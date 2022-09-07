@@ -3,7 +3,7 @@ import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { FindResponse } from '@app/types/operation-result-response.interface';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { DepartmentService } from '../department.service';
+import { DepartmentService } from '../services/department.service';
 import { DepartmentListQueriesService } from '../department-list/department-list-queries.service';
 
 @Injectable({

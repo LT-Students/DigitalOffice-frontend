@@ -120,8 +120,9 @@ export class DoTableDataSource<T> implements DataSource<T> {
 				tap((reset: boolean) => (resetPaginator = reset)),
 				map(() => {
 					const listParams = this.getListParams();
-					return this.queryParamsConverter?.convertListParamsToQueryUrlParams(listParams) || {};
+					return this.queryParamsConverter?.convertListParamsToQueryUrlParams(listParams) || listParams;
 				}),
+				// update URL params if router is provided
 				tap((queryParams) => {
 					if (this.router) {
 						this.router.navigate([], {
@@ -133,7 +134,7 @@ export class DoTableDataSource<T> implements DataSource<T> {
 				}),
 				switchMap((params: FindParams) => {
 					const requestParams =
-						this.queryParamsConverter?.convertQueryURLParamsToEndpointParams(params) || {};
+						this.queryParamsConverter?.convertQueryURLParamsToEndpointParams(params) || params;
 					return this.loadData(requestParams);
 				})
 			)

@@ -53,9 +53,11 @@ export class DepartmentListService {
 								if (department.director) {
 									const { firstName, lastName, middleName } = department.director;
 									const nonBreakingSpace = String.fromCharCode(160);
-									return `${lastName}${nonBreakingSpace}${firstName[0]}.${
-										middleName && middleName[0] + '.'
-									}`;
+									const initials = [firstName, middleName]
+										.filter(booleanGuard)
+										.map((s) => s[0] + '.')
+										.join('');
+									return `${lastName}${nonBreakingSpace}${initials}`;
 								}
 								return '–';
 							},

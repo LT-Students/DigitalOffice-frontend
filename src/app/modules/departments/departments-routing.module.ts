@@ -13,7 +13,7 @@ import { CreateDepartmentComponent } from './create-department/create-department
 import { EditDepartmentComponent } from './edit-department/edit-department.component';
 import { EditDepartmentGuard } from './guards/edit-department.guard';
 import { TimeListGuard } from './guards/time-list.guard';
-import { DepartmentUsersResolver } from './resolvers/department-users.resolver';
+import { DepartmentUsersResolver } from './department-page/department-users/department-users.resolver';
 
 const routes: Routes = [
 	{

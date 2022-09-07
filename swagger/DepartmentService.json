@@ -978,7 +978,7 @@
           "DepartmentUser": {
             "$ref": "#/components/schemas/DepartmentUserInfo"
           },
-          "Avatar": {
+          "AvatarImage": {
             "$ref": "#/components/schemas/ImageInfo"
           },
           "Position": {

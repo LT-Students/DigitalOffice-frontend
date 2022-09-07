@@ -10,7 +10,7 @@ import { FilterDef } from '../../dynamic-filter/models';
 import { DynamicFilterComponent } from '../../dynamic-filter/dynamic-filter.component';
 import { TableComponent } from '../../table/table.component';
 import { DepartmentsRoutes } from '../models/departments-routes';
-import { DepartmentService, FindDepartmentsParams } from '../department.service';
+import { DepartmentService, FindDepartmentsParams } from '../services/department.service';
 import { TableOptions } from '../../table/models/table-options';
 import { DepartmentListService } from './department-list.service';
 import { DepartmentListQueriesService } from './department-list-queries.service';
