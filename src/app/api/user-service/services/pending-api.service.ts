@@ -9,7 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { FindResultResponseUserInfo } from '../models/find-result-response-user-info';
 import { OperationResultResponse } from '../models/operation-result-response';
 
 @Injectable({
@@ -75,97 +74,6 @@ export class PendingApiService extends BaseService {
 	}): Observable<OperationResultResponse> {
 		return this.checkPending$Response(params).pipe(
 			map((r: StrictHttpResponse<OperationResultResponse>) => r.body as OperationResultResponse)
-		);
-	}
-
-	/**
-	 * Path part for operation findPending
-	 */
-	static readonly FindPendingPath = '/pending/find';
-
-	/**
-	 * Returns all pending users.
-	 *
-	 * This method provides access to the full `HttpResponse`, allowing access to response headers.
-	 * To access only the response body, use `findPending()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	findPending$Response(params: {
-		/**
-		 * Number of entries to skip.
-		 */
-		skipCount: number;
-
-		/**
-		 * Number of users to take.
-		 */
-		takeCount: number;
-
-		/**
-		 * includes user communications
-		 */
-		includecommunication?: boolean;
-
-		/**
-		 * includes user avatar
-		 */
-		includecurrentavatar?: boolean;
-	}): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
-		const rb = new RequestBuilder(this.rootUrl, PendingApiService.FindPendingPath, 'get');
-		if (params) {
-			rb.query('skipCount', params.skipCount, {});
-			rb.query('takeCount', params.takeCount, {});
-			rb.query('includecommunication', params.includecommunication, {});
-			rb.query('includecurrentavatar', params.includecurrentavatar, {});
-		}
-
-		return this.http
-			.request(
-				rb.build({
-					responseType: 'json',
-					accept: 'application/json',
-				})
-			)
-			.pipe(
-				filter((r: any) => r instanceof HttpResponse),
-				map((r: HttpResponse<any>) => {
-					return r as StrictHttpResponse<FindResultResponseUserInfo>;
-				})
-			);
-	}
-
-	/**
-	 * Returns all pending users.
-	 *
-	 * This method provides access to only to the response body.
-	 * To access the full response (for headers, for example), `findPending$Response()` instead.
-	 *
-	 * This method doesn't expect any request body.
-	 */
-	findPending(params: {
-		/**
-		 * Number of entries to skip.
-		 */
-		skipCount: number;
-
-		/**
-		 * Number of users to take.
-		 */
-		takeCount: number;
-
-		/**
-		 * includes user communications
-		 */
-		includecommunication?: boolean;
-
-		/**
-		 * includes user avatar
-		 */
-		includecurrentavatar?: boolean;
-	}): Observable<FindResultResponseUserInfo> {
-		return this.findPending$Response(params).pipe(
-			map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)
 		);
 	}
 
