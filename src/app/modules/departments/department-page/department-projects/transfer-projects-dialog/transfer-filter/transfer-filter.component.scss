@@ -1,0 +1,16 @@
+:host {
+	display: block;
+}
+
+.main-filter {
+	display: flex;
+	gap: 16px;
+
+	.name {
+		width: 100%;
+	}
+}
+
+.additional-filters {
+	overflow: hidden;
+}

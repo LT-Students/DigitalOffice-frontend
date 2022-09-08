@@ -10,7 +10,8 @@ import {
 } from '@shared/component/paginator/paginator.component';
 import { booleanGuard } from '@app/utils/utils';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { DynamicFilterComponent, FilterEvent } from '../../modules/dynamic-filter/dynamic-filter.component';
+import { EventEmitter } from '@angular/core';
+import { FilterEvent } from '../../modules/dynamic-filter/dynamic-filter.component';
 
 interface FindParams {
 	[key: string]: any;
@@ -21,6 +22,11 @@ interface DataService<T, P extends FindParams = any> {
 	convertListParamsToRequestParams?: (params: ListParams) => FindParams;
 }
 
+export interface DataSourceFilterBase {
+	filterChange: EventEmitter<FilterEvent>;
+	value: FilterEvent;
+}
+
 export type ListParams = Partial<FilterEvent & { active: string; direction: SortDirection } & PageEvent>;
 
 export class DoTableDataSource<T> implements DataSource<T> {
@@ -28,14 +34,14 @@ export class DoTableDataSource<T> implements DataSource<T> {
 	private data = new BehaviorSubject<T[]>([]);
 	private paramsChangesSubscription?: Subscription;
 
-	set filter(filter: DynamicFilterComponent | null) {
+	set filter(filter: DataSourceFilterBase | null) {
 		this._filter = filter;
 		this.updateChangeSubscription();
 	}
-	get filter(): DynamicFilterComponent | null {
+	get filter(): DataSourceFilterBase | null {
 		return this._filter;
 	}
-	private _filter: DynamicFilterComponent | null = null;
+	private _filter: DataSourceFilterBase | null = null;
 
 	set sort(sort: MatSort | null) {
 		this._sort = sort;
@@ -87,8 +93,10 @@ export class DoTableDataSource<T> implements DataSource<T> {
 	}
 	private _queryParamsConverter: QueryParamsConverter | null = null;
 
-	constructor(initialValue: FindResponse<T>) {
-		this.setData(initialValue);
+	constructor(initialValue?: FindResponse<T>) {
+		if (initialValue) {
+			this.setData(initialValue);
+		}
 	}
 
 	public connect(collectionViewer: CollectionViewer): Observable<T[]> {

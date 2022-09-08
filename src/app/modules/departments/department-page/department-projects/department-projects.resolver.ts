@@ -13,6 +13,6 @@ export class DepartmentProjectsResolver implements Resolve<FindResponse<ProjectI
 
 	resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<FindResponse<ProjectInfo>> {
 		const departmentId = route.params['id'];
-		return this.apiService.findProjects(departmentId);
+		return this.apiService.findDepartmentProjects(departmentId);
 	}
 }

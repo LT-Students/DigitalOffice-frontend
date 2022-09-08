@@ -1,0 +1,49 @@
+<div [formGroup]="form">
+	<div class="main-filter">
+		<do-form-field class="name">
+			<mat-form-field>
+				<input
+					matInput
+					type="search"
+					name="project-name"
+					placeholder="Введите название проекта"
+					formControlName="name"
+					data-test="search-project-input"
+				/>
+				<mat-icon class="text-secondary_default" matSuffix [svgIcon]="Icons.Search"></mat-icon>
+			</mat-form-field>
+		</do-form-field>
+		<button
+			*ngIf="!form.controls['department'].value"
+			mat-mini-fab
+			class="fab-button"
+			[class.mat-elevation-z0]="true"
+			(click)="additionalFiltersAreHidden = !additionalFiltersAreHidden"
+		>
+			<mat-icon [svgIcon]="Icons.Filter"></mat-icon>
+		</button>
+		<button
+			*ngIf="form.controls['department'].value"
+			mat-mini-fab
+			color="accent"
+			[class.mat-elevation-z0]="true"
+			(click)="additionalFiltersAreHidden = !additionalFiltersAreHidden"
+		>
+			<mat-icon [svgIcon]="Icons.Filter"></mat-icon>
+		</button>
+	</div>
+	<div class="additional-filters" [@filterExpanded]="additionalFiltersAreHidden ? 'collapsed' : 'expanded'">
+		<do-form-field>
+			<mat-form-field>
+				<do-autocomplete
+					formControlName="department"
+					placeholder="Департамент"
+					[options]="departmentAutocompleteConfig.options$ | async"
+					[displayWith]="departmentAutocompleteConfig.displayWithFn"
+					[valueGetter]="departmentAutocompleteConfig.valueGetter"
+					[filterFn]="departmentAutocompleteConfig.filterFn"
+				></do-autocomplete>
+			</mat-form-field>
+		</do-form-field>
+	</div>
+</div>

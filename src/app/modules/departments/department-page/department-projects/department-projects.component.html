@@ -11,4 +11,4 @@
 		</button>
 	</do-actions>
 </div>
-<do-table [dataSource]="dataSource" [tableOptions]="tableOptions"></do-table>
+<do-table [dataSource]="dataSource" [tableOptions]="tableOptions" (rowClick)="navigateToProject($event)"></do-table>
