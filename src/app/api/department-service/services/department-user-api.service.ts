@@ -108,6 +108,11 @@ export class DepartmentUserApiService extends BaseService {
 		isAscendingSort?: boolean;
 
 		/**
+		 * Find users by substring in full name
+		 */
+		fullnameincludesubstring?: string;
+
+		/**
 		 * If true returns sorted department users by role, false - sorted descending, null - no sorting.
 		 */
 		departmentUserRoleAscendingSort?: boolean;
@@ -126,6 +131,11 @@ export class DepartmentUserApiService extends BaseService {
 		 * If true returns departmnt users with positions.
 		 */
 		includePositions?: boolean;
+
+		/**
+		 * Returns departmnt users with the position.
+		 */
+		byPositionId?: string;
 	}): Observable<StrictHttpResponse<FindResultResponseUserInfo>> {
 		const rb = new RequestBuilder(this.rootUrl, DepartmentUserApiService.FindDepartmentUsersPath, 'get');
 		if (params) {
@@ -133,10 +143,12 @@ export class DepartmentUserApiService extends BaseService {
 			rb.query('skipCount', params.skipCount, {});
 			rb.query('takeCount', params.takeCount, {});
 			rb.query('isAscendingSort', params.isAscendingSort, {});
+			rb.query('fullnameincludesubstring', params.fullnameincludesubstring, {});
 			rb.query('departmentUserRoleAscendingSort', params.departmentUserRoleAscendingSort, {});
 			rb.query('isActive', params.isActive, {});
 			rb.query('includeAvatars', params.includeAvatars, {});
 			rb.query('includePositions', params.includePositions, {});
+			rb.query('byPositionId', params.byPositionId, {});
 		}
 
 		return this.http
@@ -184,6 +196,11 @@ export class DepartmentUserApiService extends BaseService {
 		isAscendingSort?: boolean;
 
 		/**
+		 * Find users by substring in full name
+		 */
+		fullnameincludesubstring?: string;
+
+		/**
 		 * If true returns sorted department users by role, false - sorted descending, null - no sorting.
 		 */
 		departmentUserRoleAscendingSort?: boolean;
@@ -202,6 +219,11 @@ export class DepartmentUserApiService extends BaseService {
 		 * If true returns departmnt users with positions.
 		 */
 		includePositions?: boolean;
+
+		/**
+		 * Returns departmnt users with the position.
+		 */
+		byPositionId?: string;
 	}): Observable<FindResultResponseUserInfo> {
 		return this.findDepartmentUsers$Response(params).pipe(
 			map((r: StrictHttpResponse<FindResultResponseUserInfo>) => r.body as FindResultResponseUserInfo)

@@ -46,7 +46,7 @@ export class TableConfigsService {
 				}),
 			},
 			{
-				key: 'nameincludesubstring',
+				key: 'name',
 				type: 'input',
 				width: 324,
 				params: new InputFilterParams({ placeholder: 'поиск', icon: Icons.Search }),

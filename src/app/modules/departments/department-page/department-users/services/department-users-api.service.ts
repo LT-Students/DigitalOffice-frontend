@@ -13,6 +13,8 @@ import { DepartmentRole, DepartmentRoleInfo } from '../models/department-role-in
 export interface FindUsersParams {
 	departmentUserRoleAscendingSort?: boolean;
 	isAscendingSort?: boolean;
+	byPositionId?: string;
+	fullnameincludesubstring?: string;
 }
 
 @Injectable({

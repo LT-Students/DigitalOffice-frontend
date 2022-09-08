@@ -77,6 +77,8 @@ export class DepartmentUsersComponent implements OnInit {
 		return {
 			departmentUserRoleAscendingSort: isRoleSort ? isAscendingSort : undefined,
 			isAscendingSort: !isRoleSort ? isAscendingSort : undefined,
+			fullnameincludesubstring: params['name'],
+			byPositionId: params['position'],
 		};
 	}
 
