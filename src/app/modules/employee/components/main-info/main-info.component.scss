@@ -174,3 +174,15 @@
 		width: 180px;
 	}
 }
+
+.link {
+	cursor: pointer;
+
+	color: variables.$accent_controls_default;
+
+	&:hover {
+		text-decoration: underline;
+
+		color: variables.$accent_controls_hover;
+	}
+}

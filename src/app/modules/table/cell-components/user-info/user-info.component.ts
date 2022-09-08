@@ -18,16 +18,16 @@ export class UserInfoParams {
 	onAvatarClick?: (o: any) => void;
 	onNameClick?: (o: any) => void;
 
-	constructor(params: {
+	constructor(params?: {
 		statusIconGetter?: (o: any) => Icons | null;
 		iconColor?: string;
 		onAvatarClick?: (o: any) => void;
 		onNameClick?: (o: any) => void;
 	}) {
-		this.iconColor = params.iconColor;
-		this.statusIconGetter = params.statusIconGetter;
-		this.onAvatarClick = params.onAvatarClick;
-		this.onNameClick = params.onNameClick;
+		this.iconColor = params?.iconColor;
+		this.statusIconGetter = params?.statusIconGetter;
+		this.onAvatarClick = params?.onAvatarClick;
+		this.onNameClick = params?.onNameClick;
 	}
 }
 

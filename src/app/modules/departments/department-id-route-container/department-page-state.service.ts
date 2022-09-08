@@ -6,7 +6,7 @@ import { ProjectInfo } from '@api/project-service/models/project-info';
 import { booleanGuard } from '@app/utils/utils';
 import { ActivatedRoute } from '@angular/router';
 import { Department } from '../department-page/department';
-import { DepartmentService } from '../department.service';
+import { DepartmentService } from '../services/department.service';
 
 export class DepartmentPageState {
 	public department: Department;
@@ -31,18 +31,6 @@ export class DepartmentPageStateService {
 		return this.departmentState$.pipe(
 			filter(booleanGuard),
 			map((state: DepartmentPageState) => state.department)
-		);
-	}
-	public get users$(): Observable<UserInfo[]> {
-		return this.departmentState$.pipe(
-			filter(booleanGuard),
-			map((state: DepartmentPageState) => state.users)
-		);
-	}
-	public get projects$(): Observable<ProjectInfo[]> {
-		return this.departmentState$.pipe(
-			filter(booleanGuard),
-			map((state: DepartmentPageState) => state.projects)
 		);
 	}
 

@@ -2,6 +2,6 @@
 /* eslint-disable */
 import { DepartmentUserAssignment } from './department-user-assignment';
 export interface EditDepartmentUsersAssignmentRequest {
-	role?: DepartmentUserAssignment;
+	assignment: DepartmentUserAssignment;
 	usersIds: Array<string>;
 }

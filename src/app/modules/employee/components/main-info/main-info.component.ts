@@ -7,6 +7,7 @@ import { PermissionService } from '@app/services/permission.service';
 import { UserRights } from '@app/types/user-rights.enum';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AppRoutes } from '@app/models/app-routes';
 import { EditInfoComponent } from '../../dialogs/edit-info/edit-info.component';
 import { UploadImageComponent } from '../../dialogs/upload-image/upload-image.component';
 import { EmployeePageService } from '../../services/employee-page.service';
@@ -19,8 +20,8 @@ import { EmployeePageService } from '../../services/employee-page.service';
 })
 export class MainInfoComponent implements OnInit {
 	public readonly Icons = Icons;
-
-	public DateFormat = DateFormat;
+	public readonly DateFormat = DateFormat;
+	public readonly AppRoutes = AppRoutes;
 
 	public user$ = this.employeePage.selectedUser$;
 	public canEdit$ = this.employeePage.canManagePersonalInfo$();

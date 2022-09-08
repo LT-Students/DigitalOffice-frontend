@@ -11,7 +11,7 @@ import { DepartmentPath, PatchDocument } from '@app/types/edit-request';
 import { booleanGuard } from '@app/utils/utils';
 import { DepartmentPageStateService } from '../department-id-route-container/department-page-state.service';
 import { Department } from '../department-page/department';
-import { DepartmentService } from '../department.service';
+import { DepartmentService } from '../services/department.service';
 
 interface FormValue {
 	name: string;

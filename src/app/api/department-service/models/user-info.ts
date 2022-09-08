@@ -8,7 +8,7 @@ import { PositionInfo } from './position-info';
  * User data.
  */
 export interface UserInfo {
-	avatar?: ImageInfo;
+	avatarImage?: ImageInfo;
 	departmentUser?: DepartmentUserInfo;
 	firstName: string;
 	id: string;

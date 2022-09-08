@@ -25,6 +25,7 @@ export interface AddEmployeeDialogData {
 	entityName: string;
 }
 
+// TODO replace with same component from standalone module
 @Component({
 	selector: 'do-add-project-users',
 	templateUrl: './add-project-users.component.html',

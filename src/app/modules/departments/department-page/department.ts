@@ -1,6 +1,6 @@
-import { DepartmentUserInfo } from '@api/department-service/models/department-user-info';
 import { DepartmentResponse } from '@api/department-service/models/department-response';
 import { DepartmentStatus, IDepartmentStatus } from '../models/department-status';
+import { ExistingDepartmentUser } from './department-users/models/new-department-user';
 
 export class Department {
 	public id: string;
@@ -9,7 +9,7 @@ export class Department {
 	public isActive: boolean;
 	public status: IDepartmentStatus;
 	public description: string;
-	public users: DepartmentUserInfo[];
+	public users: ExistingDepartmentUser[];
 
 	constructor(res: DepartmentResponse) {
 		this.id = res.id;
@@ -18,6 +18,6 @@ export class Department {
 		this.isActive = res.isActive;
 		this.status = DepartmentStatus.getStatusByValue(res.isActive);
 		this.description = res.description || '';
-		this.users = res.users || [];
+		this.users = (res.users || []).map((u) => new ExistingDepartmentUser(u));
 	}
 }

@@ -3,7 +3,7 @@ import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/r
 import { Observable } from 'rxjs';
 import { FindResponse } from '@app/types/operation-result-response.interface';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { DepartmentService } from '../department.service';
+import { DepartmentService } from '../services/department.service';
 import { DepartmentListQueriesService } from '../department-list/department-list-queries.service';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class DepartmentListResolver implements Resolve<FindResponse<DepartmentIn
 		route: ActivatedRouteSnapshot,
 		state: RouterStateSnapshot
 	): Observable<FindResponse<DepartmentInfo>> {
-		const params = this.listQueriesService.convertQueryURLParamsToEndpointParams(route.queryParams);
+		const params = this.listQueriesService.convertQueryURLParamsToRequestParams(route.queryParams);
 		return this.departmentService.findDepartments(params);
 	}
 }
