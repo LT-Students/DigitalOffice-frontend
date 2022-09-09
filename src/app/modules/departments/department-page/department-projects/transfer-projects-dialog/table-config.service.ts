@@ -16,7 +16,11 @@ export class TableConfigService {
 		return {
 			rowHeight: 64,
 			columns: [
-				new ColumnDef({ field: 'shortName', headerName: 'Сокращенное наименование', params: { lineClamp: 2 } }),
+				new ColumnDef({
+					field: 'shortName',
+					headerName: 'Краткое наименование',
+					params: { lineClamp: 2 },
+				}),
 				new ColumnDef({ field: 'customer', headerName: 'Заказчик', params: { lineClamp: 2 } }),
 				new ColumnDef({
 					field: 'department',
@@ -27,7 +31,7 @@ export class TableConfigService {
 					field: 'transfer-button',
 					type: 'slideApplyButtonCell',
 					valueGetter: (project: ProjectInfo) => project,
-					columnStyle: { flex: '0 0 54px' },
+					columnStyle: { flex: '0 0 20px' },
 					params: new SlideApplyButtonParams({
 						onClickFn: (project: ProjectInfo) => {
 							this.apiService.transferProject(departmentId, project.id).subscribe();

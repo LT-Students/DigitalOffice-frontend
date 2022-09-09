@@ -9,6 +9,7 @@ import {
 	Output,
 	TemplateRef,
 	ViewChild,
+	ViewEncapsulation,
 } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
@@ -19,14 +20,14 @@ import { SelectionModel } from '@app/utils/selection-model';
 import { CdkNoDataRow, CdkTable } from '@angular/cdk/table';
 import { MenuItem } from '@shared/component/context-menu/menu-item';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
-import { ColumnDef } from './models';
-import { TableOptions } from './models/table-options';
+import { ColumnDef, TableOptions } from './models';
 
 @Component({
 	selector: 'do-table',
 	templateUrl: './table.component.html',
 	styleUrls: ['./table.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	encapsulation: ViewEncapsulation.None,
 	animations: [
 		trigger('detailExpand', [
 			state('collapsed', style({ height: '0px', minHeight: '0' })),

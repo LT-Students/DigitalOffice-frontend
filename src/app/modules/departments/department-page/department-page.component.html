@@ -1,18 +1,18 @@
 <ng-container *ngIf="state$ | async as state">
 	<do-department-info [department]="state.department"></do-department-info>
-	<mat-tab-group>
-		<mat-tab label="Команда">
-			<do-department-users class="tab-content"></do-department-users>
-		</mat-tab>
-		<mat-tab label="Проекты">
-			<do-department-projects class="tab-content"></do-department-projects>
-		</mat-tab>
-		<mat-tab label="Общая информация">
-			<div class="tab-content">
-				<mat-card class="description">{{
-					state.department.description | placeholder: 'Описание отсутствует'
-				}}</mat-card>
-			</div>
-		</mat-tab>
-	</mat-tab-group>
+	<nav mat-tab-nav-bar>
+		<a
+			mat-tab-link
+			*ngFor="let link of navLinks"
+			[routerLink]="link.link"
+			routerLinkActive
+			#rla="routerLinkActive"
+			[active]="rla.isActive"
+		>
+			{{ link.label }}
+		</a>
+	</nav>
+	<div class="tab-content">
+		<router-outlet></router-outlet>
+	</div>
 </ng-container>

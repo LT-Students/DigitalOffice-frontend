@@ -49,6 +49,12 @@ cdk-footer-cell {
 	}
 }
 
+cdk-header-cell {
+	.mat-sort-header-content {
+		text-align: left;
+	}
+}
+
 .no-data-row {
 	margin-top: 20px;
 	padding: 20px;

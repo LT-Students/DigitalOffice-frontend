@@ -16,6 +16,7 @@ import { DepartmentUsersComponent } from './department-page/department-users/dep
 import { DepartmentProjectsComponent } from './department-page/department-projects/department-projects.component';
 import { TransferProjectsDialogComponent } from './department-page/department-projects/transfer-projects-dialog/transfer-projects-dialog.component';
 import { TransferFilterComponent } from './department-page/department-projects/transfer-projects-dialog/transfer-filter/transfer-filter.component';
+import { DepartmentOverviewComponent } from './department-page/department-overview/department-overview.component';
 
 @NgModule({
 	declarations: [
@@ -29,6 +30,7 @@ import { TransferFilterComponent } from './department-page/department-projects/t
 		DepartmentProjectsComponent,
 		TransferProjectsDialogComponent,
 		TransferFilterComponent,
+		DepartmentOverviewComponent,
 	],
 	imports: [
 		SharedModule,
