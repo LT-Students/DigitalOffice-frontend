@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.3.0",
+    "version": "1.0.3.1",
     "title": "DepartmentService",
     "description": "DepartmentService, is intended to work with the department."
   },
@@ -293,6 +293,42 @@
         }
       }
     },
+    "/departmentTree/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "DepartmentTree"
+        ],
+        "operationId": "getDepartmentTree",
+        "description": "Returns branch of departments.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned branch of departments.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseDepartmentsTreeInfo"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/create": {
       "parameters": [
         {
@@ -392,6 +428,15 @@
           "required": false
         },
         {
+          "name": "fullnameincludesubstring",
+          "in": "query",
+          "description": "Find users by substring in full name",
+          "schema": {
+            "type": "string"
+          },
+          "required": false
+        },
+        {
           "name": "departmentUserRoleAscendingSort",
           "in": "query",
           "description": "If true returns sorted department users by role, false - sorted descending, null - no sorting.",
@@ -424,6 +469,16 @@
           "description": "If true returns departmnt users with positions.",
           "schema": {
             "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "byPositionId",
+          "in": "query",
+          "description": "Returns departmnt users with the position.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
           },
           "required": false
         }
@@ -1274,6 +1329,23 @@
           }
         }
       },
+      "OperationResultResponseDepartmentsTreeInfo": {
+        "type": "object",
+        "required": [
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/DepartmentsTreeInfo"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "DepartmentResponse": {
         "type": "object",
         "description": "Full departmant information.",
@@ -1335,6 +1407,36 @@
             "type": "array",
             "items": {
               "type": "string"
+            }
+          }
+        }
+      },
+      "DepartmentsTreeInfo": {
+        "type": "object",
+        "description": "Department information of departments tree",
+        "required": [
+          "Id",
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "CategoryName": {
+            "type": "string"
+          },
+          "Children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DepartmentsTreeInfo"
             }
           }
         }
