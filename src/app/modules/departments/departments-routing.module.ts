@@ -14,6 +14,7 @@ import { EditDepartmentComponent } from './edit-department/edit-department.compo
 import { EditDepartmentGuard } from './guards/edit-department.guard';
 import { TimeListGuard } from './guards/time-list.guard';
 import { DepartmentUsersResolver } from './department-page/department-users/department-users.resolver';
+import { DepartmentProjectsResolver } from './department-page/department-projects/department-projects.resolver';
 
 const routes: Routes = [
 	{
@@ -35,6 +36,7 @@ const routes: Routes = [
 		resolve: {
 			department: DepartmentPageResolver,
 			users: DepartmentUsersResolver,
+			projects: DepartmentProjectsResolver,
 		},
 		children: [
 			{
