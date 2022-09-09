@@ -1,6 +1,16 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
-import { IconButtonParams, TableCell } from '../../models';
+import { TableCell } from '../../models';
+
+export class IconButtonParams {
+	onClickFn: (...args: any[]) => any;
+	icon: (...args: any[]) => Icons;
+
+	constructor(params: { onClickFn: (...args: any[]) => any; icon: (...args: any[]) => Icons }) {
+		this.icon = params.icon;
+		this.onClickFn = params.onClickFn;
+	}
+}
 
 @Component({
 	selector: 'do-icon-button',

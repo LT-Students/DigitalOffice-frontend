@@ -1,0 +1,44 @@
+@use 'base/variables' as variables;
+
+:host {
+	position: absolute;
+	top: 0;
+	left: 100%;
+	bottom: 0;
+
+	display: grid;
+
+	width: 54px;
+
+	background: variables.$diagram_7;
+
+	transition: left 300ms ease-in-out;
+	flex: 0 0 auto;
+	place-content: center;
+}
+
+:host-context(cdk-row):hover {
+	:host {
+		right: 0;
+		left: calc(100% - 54px);
+	}
+}
+
+:host.applied {
+	right: 0;
+	left: calc(100% - 54px);
+
+	background: transparent;
+}
+
+.slide-button {
+	color: #fff;
+
+	&:hover {
+		color: #fff;
+	}
+}
+
+.applied-icon {
+	color: variables.$accent_default;
+}

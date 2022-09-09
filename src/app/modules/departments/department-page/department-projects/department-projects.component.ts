@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EMPTY } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { DoTableDataSource, ListParams } from '@app/types/do-table-data-source';
@@ -68,9 +69,13 @@ export class DepartmentProjectsComponent implements OnInit {
 
 	public transferProjects(): void {
 		this.dialog
-			.open(TransferProjectsDialogComponent, { width: ModalWidth.M, viewContainerRef: this.viewContainerRef })
+			.open<boolean>(TransferProjectsDialogComponent, {
+				width: ModalWidth.M,
+				viewContainerRef: this.viewContainerRef,
+				disableClose: true,
+			})
 			.afterClosed()
-			.pipe(switchMap(() => this.dataSource.refetchData()))
+			.pipe(switchMap((shouldRefresh?: boolean) => (shouldRefresh ? this.dataSource.refetchData() : EMPTY)))
 			.subscribe();
 	}
 

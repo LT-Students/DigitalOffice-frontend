@@ -1,7 +1,7 @@
 import { ComponentFactoryResolver, ComponentRef, Injectable } from '@angular/core';
 import { DynamicComponentHostDirective } from '@shared/directives/dynamic-component-host.directive';
 import { ComponentType } from '@angular/cdk/overlay';
-import { CELL_TYPES, CellTypes, TableCell } from './models/table-cell';
+import { CELL_TYPES, CellTypes, TableCell } from './models';
 
 @Injectable()
 export class CellFactoryService {

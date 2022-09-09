@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ProjectApiService } from '@api/project-service/services/project-api.service';
-import { FindResponse } from '@app/types/operation-result-response.interface';
 import { ProjectInfo } from '@api/project-service/models/project-info';
-import { MAX_INT32 } from '@app/utils/utils';
 import { ProjectStatusType } from '@api/project-service/models/project-status-type';
+import { DepartmentApiService } from '@api/project-service/services/department-api.service';
+import { FindResponse, OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { MAX_INT32 } from '@app/utils/utils';
 
 export interface FindProjectsParams {
 	departmentid?: string;
@@ -19,7 +20,11 @@ export interface FindProjectsParams {
 	providedIn: 'root',
 })
 export class DepartmentProjectsApiService {
-	constructor(private projectApi: ProjectApiService) {}
+	constructor(private projectApi: ProjectApiService, private departmentApiService: DepartmentApiService) {}
+
+	public transferProject(departmentId: string, projectId: string): Observable<OperationResultResponse> {
+		return this.departmentApiService.editProjectDepartment({ body: { departmentId, projectId } });
+	}
 
 	public findDepartmentProjects(
 		departmentId: string,
