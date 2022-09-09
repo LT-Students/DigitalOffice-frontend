@@ -15,6 +15,9 @@ import { EditDepartmentGuard } from './guards/edit-department.guard';
 import { TimeListGuard } from './guards/time-list.guard';
 import { DepartmentUsersResolver } from './department-page/department-users/department-users.resolver';
 import { DepartmentProjectsResolver } from './department-page/department-projects/department-projects.resolver';
+import { DepartmentUsersComponent } from './department-page/department-users/department-users.component';
+import { DepartmentProjectsComponent } from './department-page/department-projects/department-projects.component';
+import { DepartmentOverviewComponent } from './department-page/department-overview/department-overview.component';
 
 const routes: Routes = [
 	{
@@ -42,6 +45,24 @@ const routes: Routes = [
 			{
 				path: '',
 				component: DepartmentPageComponent,
+				children: [
+					{
+						path: '',
+						redirectTo: DepartmentsRoutes.Users,
+					},
+					{
+						path: DepartmentsRoutes.Users,
+						component: DepartmentUsersComponent,
+					},
+					{
+						path: DepartmentsRoutes.Projects,
+						component: DepartmentProjectsComponent,
+					},
+					{
+						path: DepartmentsRoutes.Overview,
+						component: DepartmentOverviewComponent,
+					},
+				],
 			},
 			{
 				path: DepartmentsRoutes.EditDepartment,
