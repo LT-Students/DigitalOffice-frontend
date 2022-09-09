@@ -9,10 +9,9 @@ import { PermissionService } from '@app/services/permission.service';
 import { map } from 'rxjs/operators';
 import { UserRights } from '@app/types/user-rights.enum';
 import { booleanGuard } from '@app/utils/utils';
-import { ColumnDef } from '../../table/models';
+import { ColumnDef, TableOptions } from '../../table/models';
 import { FilterDef, InputFilterParams, SelectFilterParams } from '../../dynamic-filter/models';
 import { DepartmentStatus, IDepartmentStatus } from '../models/department-status';
-import { TableOptions } from '../../table/models/table-options';
 import { ClientQueryParam } from './department-list-queries.service';
 
 @Injectable()
@@ -39,16 +38,25 @@ export class DepartmentListService {
 							headerName: 'Наименование',
 							sortEnabled: true,
 							disableClearSort: true,
+							columnStyle: {
+								flex: 1.3,
+							},
 							params: { lineClamp: 3 },
 						}),
 						new ColumnDef({
 							field: 'shortName',
 							headerName: 'Краткое наименование',
+							columnStyle: {
+								flex: 1.1,
+							},
 							params: { lineClamp: 3 },
 						}),
 						new ColumnDef({
 							field: 'director',
 							headerName: 'Директор',
+							columnStyle: {
+								flex: 0.8,
+							},
 							valueGetter: (department: DepartmentInfo) => {
 								if (department.director) {
 									const { firstName, lastName, middleName } = department.director;
@@ -67,6 +75,10 @@ export class DepartmentListService {
 							field: 'usersCount',
 							headerName: 'Количество человек',
 							type: 'textCell',
+							columnStyle: {
+								display: 'flex',
+								'justify-content': 'center',
+							},
 							valueGetter: (department: DepartmentInfo) => `${department.countUsers} чел.`,
 						}),
 						hasRights
@@ -74,6 +86,10 @@ export class DepartmentListService {
 									field: 'status',
 									headerName: 'Статус',
 									type: 'statusCell',
+									columnStyle: {
+										display: 'flex',
+										'justify-content': 'center',
+									},
 									width: 50,
 									valueGetter: (department: DepartmentInfo) =>
 										DepartmentStatus.getStatusColorByValue(department.isActive),

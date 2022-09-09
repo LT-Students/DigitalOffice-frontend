@@ -40,12 +40,20 @@ export class ProjectTableService {
 				field: 'usersCount',
 				headerName: 'Количество человек',
 				type: 'textCell',
+				columnStyle: {
+					display: 'flex',
+					'justify-content': 'center',
+				},
 				valueGetter: (project: ProjectInfo) => `${project.usersCount} чел.`,
 			}),
 			new ColumnDef({
 				field: 'status',
 				headerName: 'Статус',
 				type: 'statusCell',
+				columnStyle: {
+					display: 'flex',
+					'justify-content': 'center',
+				},
 				width: 50,
 				valueGetter: (project: ProjectInfo) => ProjectStatus.getStatusColor(project.status),
 			}),
