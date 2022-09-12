@@ -4,8 +4,8 @@ import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
 import { finalize, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { ImageContent } from '@api/feedback-service/models/image-content';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { b64toBlob } from '@app/utils/utils';
+import { LoadingState } from '@app/utils/loading-state';
 import { FeedbackService } from '../services/feedback.service';
 
 @Component({

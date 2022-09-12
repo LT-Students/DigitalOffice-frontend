@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { FileAccessType } from '@api/file-service/models/file-access-type';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -8,6 +7,7 @@ import { FileInfo } from '@api/project-service/models/file-info';
 import { forkJoin, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingState } from '@app/utils/loading-state';
 import { FileService } from './file.service';
 
 @Component({

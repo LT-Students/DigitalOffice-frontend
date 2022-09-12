@@ -4,7 +4,7 @@ import { Subject, timer } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { debounce, finalize, startWith, takeUntil, tap } from 'rxjs/operators';
 import { Icons } from '@shared/modules/icons/icons';
-import { LoadingState } from '@shared/directives/button-loading.directive';
+import { LoadingState } from '@app/utils/loading-state';
 import { TableComponent } from '../table/table.component';
 import { TableOptions } from '../table/models/table-options';
 import { AddUsersTableConfigService } from './services/add-users-table-config.service';

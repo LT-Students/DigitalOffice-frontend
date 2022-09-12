@@ -11,8 +11,8 @@ import { finalize, first, map, switchMap } from 'rxjs/operators';
 import { EMPTY, Observable, of } from 'rxjs';
 import { Icons } from '@shared/modules/icons/icons';
 import { PermissionService } from '@app/services/permission.service';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { GenderApiService } from '@api/user-service/services/gender-api.service';
+import { LoadingState } from '@app/utils/loading-state';
 import { EmployeePageService } from '../../../services/employee-page.service';
 
 @Component({

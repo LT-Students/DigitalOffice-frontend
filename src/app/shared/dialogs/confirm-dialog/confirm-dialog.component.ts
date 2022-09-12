@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { LoadingState } from '@app/utils/loading-state';
 
 export interface ConfirmDialogData {
 	title: string;

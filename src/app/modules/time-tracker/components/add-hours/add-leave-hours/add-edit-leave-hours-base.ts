@@ -3,8 +3,8 @@ import { FormBuilder, FormControl } from '@angular/forms';
 import { LeaveTypeModel } from '@app/models/time/leave-type.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { finalize, first, mapTo, switchMap, tap } from 'rxjs/operators';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { DoValidators } from '@app/validators/do-validators';
+import { LoadingState } from '@app/utils/loading-state';
 import {
 	AttendanceService,
 	LAST_DAY_TO_FILL_HOURS,

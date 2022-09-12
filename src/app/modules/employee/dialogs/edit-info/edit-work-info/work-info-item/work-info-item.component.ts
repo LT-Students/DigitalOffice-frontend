@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ElementRef } from '@angular/core';
 import { Icons } from '@shared/modules/icons/icons';
 import { FormControl } from '@angular/forms';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { finalize, switchMap } from 'rxjs/operators';
+import { LoadingState } from '@app/utils/loading-state';
 import { WorkInfoConfigService } from '../work-info-config.service';
 import { WorkInfoConfig } from './work-info-item';
 

@@ -1,11 +1,12 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { DoValidators } from '@app/validators/do-validators';
 import { MatDialogRef } from '@angular/material/dialog';
-import { forkJoin, merge, Observable, of, Subject } from 'rxjs';
-import { filter, finalize, first, switchMap } from 'rxjs/operators';
+import { forkJoin, of, Subject } from 'rxjs';
+import { finalize, first, switchMap, takeUntil } from 'rxjs/operators';
+import { WarningOnDialogClose } from '@app/utils/warning-on-dialog-close';
+import { DoValidators } from '@app/validators/do-validators';
 import { DialogService } from '@app/services/dialog.service';
-import { LoadingState } from '@shared/directives/button-loading.directive';
+import { LoadingState } from '@app/utils/loading-state';
 import { FeedbackType } from '../models/feedback-type';
 import { FeedbackService } from '../services/feedback.service';
 import { UploadImagesComponent } from './upload-images/upload-images.component';
@@ -24,14 +25,10 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 		category: [this.feedbackTypes[0].type, [DoValidators.required]],
 		comment: ['', [DoValidators.required]],
 	});
+
 	public readonly destroy$ = new Subject();
 
-	private get closeEvents$(): Observable<MouseEvent | KeyboardEvent> {
-		return merge(
-			this.dialogRef.backdropClick(),
-			this.dialogRef.keydownEvents().pipe(filter((e: KeyboardEvent) => e.key === 'Escape'))
-		);
-	}
+	private warningOnClose = new WarningOnDialogClose(this.dialogRef, this.dialog);
 
 	constructor(
 		private fb: FormBuilder,
@@ -43,7 +40,7 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this.closeEvents$.subscribe({
+		this.warningOnClose.closeEvents$.pipe(takeUntil(this.destroy$)).subscribe({
 			next: () => this.beforeClose(),
 		});
 	}
@@ -68,7 +65,7 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 					this.close(true);
 					this.dialog.info({
 						title: 'Комментарий отправлен',
-						message: 'Спасибо! Это поможет сервису стать удобнее и лучше\n' + 'для пользователей',
+						message: 'Спасибо! Это поможет сервису стать удобнее и лучше для пользователей',
 						buttonText: 'Класс!',
 					});
 				},
@@ -85,19 +82,6 @@ export class FeedbackFormComponent extends LoadingState implements OnInit {
 	}
 
 	public beforeClose(): void {
-		if (this.isFormDirty()) {
-			this.dialog
-				.confirm({
-					title: 'Вы уверены?',
-					message: 'Закрыть окно? Ваши данные не сохранятся',
-					confirmText: 'Да, закрыть',
-				})
-				.afterClosed()
-				.subscribe({
-					next: (confirm?: boolean) => (confirm ? this.close() : null),
-				});
-		} else {
-			this.close();
-		}
+		this.warningOnClose.beforeClose(this.isFormDirty());
 	}
 }

@@ -9,7 +9,7 @@ import { throwError } from 'rxjs';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { AppRoutes } from '@app/models/app-routes';
 import { AutofillEvent } from '@angular/cdk/text-field';
-import { LoadingState } from '@shared/directives/button-loading.directive';
+import { LoadingState } from '@app/utils/loading-state';
 import { AuthRoutes } from '../../models/auth-routes';
 
 class LoginErrorMatcher implements ErrorStateMatcher {

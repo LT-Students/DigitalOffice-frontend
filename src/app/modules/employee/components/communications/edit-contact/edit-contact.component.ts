@@ -5,9 +5,9 @@ import { CommunicationInfo } from '@api/user-service/models/communication-info';
 import { CommunicationType } from '@api/user-service/models/communication-type';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel } from '@app/models/communication.model';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { CommunicationService } from '@app/services/user/communication.service';
 import { finalize } from 'rxjs/operators';
+import { LoadingState } from '@app/utils/loading-state';
 
 @Component({
 	selector: 'do-edit-contact',

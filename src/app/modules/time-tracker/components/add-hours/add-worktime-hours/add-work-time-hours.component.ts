@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { filter, finalize, map, takeUntil, withLatestFrom } from 'rxjs/operators';
 import { DoValidators } from '@app/validators/do-validators';
 import { EMPTY_GUID, isGUIDEmpty } from '@app/utils/utils';
-import { LoadingState } from '@shared/directives/button-loading.directive';
+import { LoadingState } from '@app/utils/loading-state';
 import { AttendanceService, LAST_DAY_TO_FILL_HOURS, SubmitWorkTimeValue } from '../../../services/attendance.service';
 import { WorkTime } from '../../../models/work-time';
 

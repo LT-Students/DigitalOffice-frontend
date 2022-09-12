@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { PasswordService } from '@app/services/user/password.service';
-import { LoadingState } from '@shared/directives/button-loading.directive';
+import { LoadingState } from '@app/utils/loading-state';
 import { AuthRoutes } from '../../models/auth-routes';
 
 @Component({
