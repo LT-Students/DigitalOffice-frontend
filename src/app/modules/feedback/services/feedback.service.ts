@@ -4,11 +4,11 @@ import { FeedbackApiService as FeedbackGatewayApiService } from '@api/gateway-se
 import { FeedbackType } from '@api/gateway-service/models/feedback-type';
 import { ImageContent } from '@api/gateway-service/models/image-content';
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { FindResultResponseFeedbackInfo } from '@api/feedback-service/models/find-result-response-feedback-info';
+import { FindResponse, OperationResultResponse } from '@app/types/operation-result-response.interface';
 import { map } from 'rxjs/operators';
 import { FeedbackResponse } from '@api/feedback-service/models/feedback-response';
 import { FeedbackStatusType } from '@api/feedback-service/models/feedback-status-type';
+import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
 
 export interface FindFeedbackParams {
 	skipCount: number;
@@ -40,11 +40,13 @@ export class FeedbackService {
 		});
 	}
 
-	public findFeedback(params: FindFeedbackParams): Observable<FindResultResponseFeedbackInfo> {
-		return this.feedbackApi.findFeedbacks({
-			...params,
-			feedbackstatus: FeedbackStatusType.New,
-		});
+	public findFeedback(params: FindFeedbackParams): Observable<FindResponse<FeedbackInfo>> {
+		return this.feedbackApi
+			.findFeedbacks({
+				...params,
+				feedbackstatus: FeedbackStatusType.New,
+			})
+			.pipe(map((res) => new FindResponse(res)));
 	}
 
 	public getFeedback(feedbackId: string): Observable<FeedbackResponse> {

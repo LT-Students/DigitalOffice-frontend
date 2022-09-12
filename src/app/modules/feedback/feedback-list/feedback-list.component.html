@@ -4,23 +4,17 @@
 		<mat-icon class="archive-icon" [svgIcon]="Icons.Archive"></mat-icon>Архивировать
 	</button>
 </div>
-<do-dynamic-filter
-	class="filter"
-	[filters]="filterConfig"
-	(filterChange)="handleParamsChange(true)"
-></do-dynamic-filter>
+<do-dynamic-filter class="filter" [filters]="filterConfig"></do-dynamic-filter>
 <do-table
 	[sortActive]="initialSort.active"
 	[sortDirection]="initialSort.direction"
 	[dataSource]="dataSource"
 	[tableOptions]="tableOptions"
 	(rowClick)="openDetails($event)"
-	(sortChange)="handleParamsChange(true)"
 ></do-table>
 <do-paginator
 	class="paginator"
 	[pageIndex]="initialQueryParams['pageIndex']"
 	[pageSize]="initialQueryParams['pageSize']"
 	[total]="dataSource.totalCount$ | async"
-	(page)="handleParamsChange()"
 ></do-paginator>
