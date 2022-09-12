@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
+import { first } from 'rxjs/operators';
+import { CommunicationInfo, CommunicationType } from '@api/user-service/models';
 import { ContextMenu } from '@shared/component/context-menu/context-menu';
 import { Icons } from '@shared/modules/icons/icons';
-import { CommunicationInfo } from '@api/user-service/models/communication-info';
-import { CommunicationType } from '@api/user-service/models/communication-type';
 import { ContextMenuComponent } from '@shared/component/context-menu/context-menu.component';
 import { MenuItem } from '@shared/component/context-menu/menu-item';
+import { EmployeePageService } from '../../../services/employee-page.service';
 import { ManageCommunicationsService } from './manage-communications.service';
 
 @Injectable()
 export class ContextMenuService implements ContextMenu {
 	private contextMenu?: ContextMenuComponent;
 
-	constructor(private manageCommunications: ManageCommunicationsService) {}
+	constructor(private manageCommunications: ManageCommunicationsService, private employeePage: EmployeePageService) {}
 
 	public setContextMenu(menuRef: ContextMenuComponent): void {
 		this.contextMenu = menuRef;
@@ -37,8 +38,22 @@ export class ContextMenuService implements ContextMenu {
 			},
 			{
 				title: 'Подтвердить e-mail',
-				visible: (communication: CommunicationInfo) =>
-					communication.type === CommunicationType.Email && !communication.isConfirmed,
+				visible: (communication: CommunicationInfo) => {
+					// not sure if this is a good idea to use this observable in a synchronous way. Probably need to
+					// refactor ContextMenu abstract class
+					let isCurrentUserOwner = false;
+					this.employeePage
+						.isOwner$()
+						.pipe(first())
+						.subscribe({
+							next: (isOwner: boolean) => (isCurrentUserOwner = isOwner),
+						});
+					return (
+						isCurrentUserOwner &&
+						communication.type === CommunicationType.Email &&
+						!communication.isConfirmed
+					);
+				},
 				action: this.manageCommunications.resendBaseConfirmation.bind(this.manageCommunications),
 				icon: Icons.EmailRead,
 			},
