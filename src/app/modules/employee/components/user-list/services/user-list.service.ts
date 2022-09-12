@@ -17,13 +17,13 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { UserInfo } from '@api/user-service/models/user-info';
 import { FilterService } from '@app/services/filter/filter.service';
 import { UserService } from '@app/services/user/user.service';
-import { IFindRequest } from '@app/types/find-request.interface';
+import { WithPagination } from '@app/types/find-request.interface';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { FormControl } from '@angular/forms';
 import { EditPayload, Status, UpdateUsersAction, UpdateUsersPayload, UserInfoLike } from '../user-list.types';
 
-interface FindUsersParams extends IFindRequest {
+interface FindUsersParams extends WithPagination {
 	fullnameincludesubstring?: string;
 }
 

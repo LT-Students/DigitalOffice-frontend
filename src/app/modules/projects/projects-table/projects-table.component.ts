@@ -1,17 +1,14 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Sort, SortDirection } from '@angular/material/sort';
+import { Subject } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 
 import { ProjectInfo } from '@api/project-service/models/project-info';
-import { BehaviorSubject, Observable, PartialObserver, Subject } from 'rxjs';
+import { DoTableDataSource } from '@app/types/do-table-data-source';
 import { UserRights } from '@app/types/user-rights.enum';
-import { CollectionViewer, DataSource } from '@angular/cdk/collections';
-import { PaginatorComponent } from '@shared/component/paginator/paginator.component';
-import { first, map, switchMap, takeUntil, tap } from 'rxjs/operators';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
-import { Sort, SortDirection } from '@angular/material/sort';
 import { IFindProjects } from '@app/services/project/project.service';
-import { User } from '@app/models/user/user.model';
-import { CurrentUserService } from '@app/services/current-user.service';
+import { PaginatorComponent } from '@shared/component/paginator/paginator.component';
 import { ProjectsRoutes } from '../models/projects-routes';
 import { ColumnDef } from '../../table/models';
 import { FilterDef } from '../../dynamic-filter/models';
@@ -28,19 +25,17 @@ import { ClientQueryParam, ProjectTableQueriesService } from './project-table-qu
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	providers: [ProjectTableService],
 })
-export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProjectsTableComponent implements OnInit, OnDestroy {
 	public UserRights = UserRights;
 	public ProjectsRoutes = ProjectsRoutes;
 
-	@ViewChild(DynamicFilterComponent) filter!: DynamicFilterComponent;
-	@ViewChild(TableComponent) table!: TableComponent<ProjectInfo>;
-	@ViewChild(PaginatorComponent) paginator!: PaginatorComponent;
+	@ViewChild(DynamicFilterComponent, { static: true }) filter!: DynamicFilterComponent;
+	@ViewChild(TableComponent, { static: true }) table!: TableComponent<ProjectInfo>;
+	@ViewChild(PaginatorComponent, { static: true }) paginator!: PaginatorComponent;
 
-	public tableData!: ProjectsDataSource;
+	public dataSource!: DoTableDataSource<ProjectInfo>;
 	public initialQueryParams = this.route.snapshot.queryParams;
 	public initialSort = this.getInitialSort(this.initialQueryParams[ClientQueryParam.Sort]);
-
-	private paramsChange$ = new Subject<boolean>();
 
 	public filters: FilterDef[] = [];
 	public columns: ColumnDef[] = [];
@@ -52,24 +47,17 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 		private projectService: ProjectService,
 		private tableQueries: ProjectTableQueriesService,
 		private route: ActivatedRoute,
-		private router: Router,
-		private currentUser: CurrentUserService
+		private router: Router
 	) {}
 
 	public ngOnInit(): void {
-		this.tableData = new ProjectsDataSource(this.projectService, this.route);
 		const departments$ = this.route.data.pipe(
 			first(),
 			map((data) => data.departments)
 		);
 		this.filters = this.projectTableService.getFilterData(this.initialQueryParams, departments$);
 		this.columns = this.projectTableService.getTableColumns();
-	}
-
-	public ngAfterViewInit(): void {
-		this.paramsChange$.pipe(takeUntil(this.destroy$)).subscribe({
-			next: this.updateTableData.bind(this),
-		});
+		this.dataSource = this.createDataSource();
 	}
 
 	public ngOnDestroy(): void {
@@ -77,12 +65,28 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 		this.destroy$.complete();
 	}
 
-	public handleRowClick(project: ProjectInfo): void {
-		this.router.navigate([project.id], { relativeTo: this.route });
+	private createDataSource(): DoTableDataSource<ProjectInfo> {
+		const initialData = this.route.snapshot.data['projects'];
+		const dataSource = new DoTableDataSource<ProjectInfo>(initialData);
+
+		dataSource.dataService = {
+			loadData: (params: IFindProjects) => this.projectService.findProjects(params),
+			convertListParamsToRequestParams: this.tableQueries.convertListParamsToRequestParams.bind(
+				this.tableQueries
+			),
+		};
+		dataSource.queryParamsConverter = this.tableQueries;
+		dataSource.route = this.route;
+		dataSource.router = this.router;
+		dataSource.filter = this.filter;
+		dataSource.sort = this.table.sort;
+		dataSource.paginator = this.paginator;
+
+		return dataSource;
 	}
 
-	public handleParamsChange(resetPaginator: boolean): void {
-		this.paramsChange$.next(resetPaginator);
+	public handleRowClick(project: ProjectInfo): void {
+		this.router.navigate([project.id], { relativeTo: this.route });
 	}
 
 	private getInitialSort(sortValue?: string): Sort {
@@ -92,70 +96,7 @@ export class ProjectsTableComponent implements OnInit, AfterViewInit, OnDestroy 
 		const [active, direction] = sortValue.split('_');
 		return {
 			active,
-			direction: (direction === 'rand' ? '' : direction) as SortDirection,
+			direction: direction as SortDirection,
 		};
-	}
-
-	public updateTableData(resetPaginator: boolean): void {
-		const { active, direction } = this.table.sort;
-		const { [ClientQueryParam.AllProjects]: projects, ...rest } = this.filter.value;
-		const params = {
-			...rest,
-			[ClientQueryParam.Sort]: `${active}_${direction || 'rand'}`,
-			[ClientQueryParam.AllProjects]: !projects && 'all',
-			pageIndex: resetPaginator ? 0 : this.paginator.pageIndex,
-			pageSize: this.paginator.pageSize,
-		};
-		const queryParams = this.tableQueries.filterQueries(params);
-		this.router.navigate([], {
-			relativeTo: this.route,
-			queryParams,
-			queryParamsHandling: 'merge',
-		});
-		this.currentUser.user$
-			.pipe(
-				first(),
-				switchMap((u: User) => {
-					const requestParams = this.tableQueries.convertQueryURLParamsToEndpointParams(params, u.id);
-					return this.tableData.loadProjects(requestParams);
-				})
-			)
-			.subscribe({
-				next: () => {
-					if (resetPaginator) {
-						this.paginator.pageIndex = 0;
-					}
-				},
-			});
-	}
-}
-
-class ProjectsDataSource implements DataSource<ProjectInfo> {
-	public totalCount$ = new BehaviorSubject(0);
-	private projects = new BehaviorSubject<ProjectInfo[]>([]);
-	private projectsObserver: PartialObserver<OperationResultResponse<ProjectInfo[]>> = {
-		next: (res) => {
-			this.projects.next(res.body as ProjectInfo[]);
-			this.totalCount$.next(res.totalCount as number);
-		},
-	};
-
-	constructor(private projectService: ProjectService, private route: ActivatedRoute) {
-		this.route.data
-			.pipe(
-				first(),
-				map((response) => response.projects)
-			)
-			.subscribe(this.projectsObserver);
-	}
-
-	public connect(collectionViewer: CollectionViewer): Observable<ProjectInfo[]> {
-		return this.projects.asObservable();
-	}
-
-	public disconnect(collectionViewer: CollectionViewer): void {}
-
-	public loadProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
-		return this.projectService.findProjects(params).pipe(tap(this.projectsObserver));
 	}
 }

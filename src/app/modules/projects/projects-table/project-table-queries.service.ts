@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@angular/core';
 import { Params } from '@angular/router';
-import { IFindProjects } from '@app/services/project/project.service';
-import {
-	PageEvent,
-	PAGINATOR_DEFAULT_OPTIONS,
-	PaginatorDefaultOptions,
-} from '@shared/component/paginator/paginator.component';
-import { FilterEvent } from '../../dynamic-filter/dynamic-filter.component';
+import { first } from 'rxjs/operators';
+import { User } from '@app/models/user/user.model';
+import { ListParams, QueryParamsConverter } from '@app/types/do-table-data-source';
+import { WithPagination } from '@app/types/find-request.interface';
+import { CurrentUserService } from '@app/services/current-user.service';
+import { PAGINATOR_DEFAULT_OPTIONS, PaginatorDefaultOptions } from '@shared/component/paginator/paginator.component';
+import { FindProjectsParams } from '../project.service';
 
 export enum ClientQueryParam {
 	Department = 'department',
@@ -16,51 +16,67 @@ export enum ClientQueryParam {
 	AllProjects = 'projects',
 }
 
-export interface SortParam {
-	sort: string;
+interface QueryUrlParams {
+	[ClientQueryParam.Department]: string | null;
+	[ClientQueryParam.Status]: string | null;
+	[ClientQueryParam.Search]: string | null;
+	[ClientQueryParam.Sort]: string | null;
+	[ClientQueryParam.AllProjects]: string | null;
 }
 
 @Injectable({
 	providedIn: 'root',
 })
-export class ProjectTableQueriesService {
-	constructor(@Inject(PAGINATOR_DEFAULT_OPTIONS) private paginatorDefaults: PaginatorDefaultOptions) {}
-
-	public filterQueries(params: Partial<FilterEvent & SortParam & PageEvent>) {
-		const filteredParams = Object.keys(params).reduce(
-			(a, k: string) => ({ ...a, [k]: params[k] != null && params[k] !== '' ? params[k] : null }),
-			{} as Record<string, any>
-		);
-		if (filteredParams['pageIndex'] === 0) {
-			filteredParams['pageIndex'] = null;
-		}
-		if (filteredParams['pageSize'] === this.paginatorDefaults.pageSize) {
-			filteredParams['pageSize'] = null;
-		}
-		const sort = filteredParams[ClientQueryParam.Sort];
-		if (sort && !sort.split('_')[1]) {
-			filteredParams[ClientQueryParam.Sort] = null;
-		}
-		if (filteredParams[ClientQueryParam.AllProjects] !== 'all') {
-			filteredParams[ClientQueryParam.AllProjects] = null;
-		}
-
-		return filteredParams;
+export class ProjectTableQueriesService extends QueryParamsConverter<Params, FindProjectsParams> {
+	constructor(
+		@Inject(PAGINATOR_DEFAULT_OPTIONS) paginatorDefaults: PaginatorDefaultOptions,
+		private currentUser: CurrentUserService
+	) {
+		super(paginatorDefaults);
 	}
 
-	public convertQueryURLParamsToEndpointParams(params: Params, userId: string): IFindProjects {
-		const pageIndex = Number(params['pageIndex'] || 0);
-		const pageSize = Number(params['pageSize'] || this.paginatorDefaults.pageSize);
+	public getAdditionalQueryUrlParams(params: ListParams): QueryUrlParams {
+		return {
+			[ClientQueryParam.Department]: params[ClientQueryParam.Department],
+			[ClientQueryParam.Status]: params[ClientQueryParam.Status],
+			[ClientQueryParam.Search]: params[ClientQueryParam.Search],
+			[ClientQueryParam.Sort]: `${params.active}_${params.direction}`,
+			[ClientQueryParam.AllProjects]: params[ClientQueryParam.AllProjects] ? null : 'all',
+		};
+	}
 
+	public getAdditionalRequestParams(params: Params): FindProjectsParams {
+		return {
+			nameincludesubstring: params[ClientQueryParam.Search],
+			projectstatus: params[ClientQueryParam.Status],
+			departmentid: params[ClientQueryParam.Department],
+			isascendingsort: this.getSortParamValue(params[ClientQueryParam.Sort]),
+			userid: params[ClientQueryParam.AllProjects] === 'all' ? undefined : this.getUserId(),
+		};
+	}
+
+	public convertListParamsToRequestParams(params: ListParams): FindProjectsParams & WithPagination {
+		const pageIndex = params.pageIndex || 0;
+		const pageSize = params.pageSize || this.paginatorDefaults.pageSize;
+		console.log(params);
 		return {
 			skipCount: pageIndex * pageSize,
 			takeCount: pageSize,
 			nameincludesubstring: params[ClientQueryParam.Search],
 			projectstatus: params[ClientQueryParam.Status],
 			departmentid: params[ClientQueryParam.Department],
-			isascendingsort: this.getSortParamValue(params[ClientQueryParam.Sort]),
-			userid: params[ClientQueryParam.AllProjects] === 'all' ? undefined : userId,
+			isascendingsort: params.direction === 'asc',
+			userid: params[ClientQueryParam.AllProjects] ? this.getUserId() : undefined,
 		};
+	}
+
+	private getUserId(): string {
+		let userId = '';
+		this.currentUser.user$.pipe(first()).subscribe({
+			next: (u: User) => (userId = u.id),
+		});
+
+		return userId;
 	}
 
 	private getSortParamValue(sort?: string): boolean | undefined {
@@ -69,9 +85,6 @@ export class ProjectTableQueriesService {
 				return true;
 			}
 			const direction = sort.split('_')[1];
-			if (direction === 'rand') {
-				return;
-			}
 			return direction === 'asc';
 		} catch (e) {
 			return true;

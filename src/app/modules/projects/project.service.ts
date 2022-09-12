@@ -1,23 +1,32 @@
 import { Injectable } from '@angular/core';
-import { ProjectApiService } from '@api/project-service/services/project-api.service';
-import { map } from 'rxjs/operators';
-import { ProjectResponse } from '@api/project-service/models/project-response';
 import { Observable } from 'rxjs';
-import { OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { map } from 'rxjs/operators';
+import { ProjectApiService } from '@api/project-service/services/project-api.service';
+import { ProjectResponse } from '@api/project-service/models/project-response';
 import { CreateProjectRequest } from '@api/project-service/models/create-project-request';
 import { EditRequest, ProjectPath } from '@app/types/edit-request';
 import { FileApiService } from '@api/project-service/services/file-api.service';
 import { ProjectInfo } from '@api/project-service/models/project-info';
-import { IFindProjects } from '@app/services/project/project.service';
 import { UserApiService } from '@api/project-service/services/user-api.service';
 import { UserInfo } from '@api/project-service/models/user-info';
-import { MAX_INT32 } from '@app/utils/utils';
 import { UserRequest } from '@api/project-service/models/user-request';
 import { FileInfo } from '@api/project-service/models/file-info';
 import { ProjectUserRoleType } from '@api/project-service/models/project-user-role-type';
-import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { FileAccessType } from '@api/project-service/models/file-access-type';
+import { ProjectStatusType } from '@api/project-service/models/project-status-type';
+import { FindResponse, OperationResultResponse } from '@app/types/operation-result-response.interface';
+import { DialogService, ModalWidth } from '@app/services/dialog.service';
+import { MAX_INT32 } from '@app/utils/utils';
+import { WithPagination } from '@app/types/find-request.interface';
 import { DownloadFilesComponent } from './download-files/download-files.component';
+
+export interface FindProjectsParams {
+	isascendingsort?: boolean;
+	projectstatus?: ProjectStatusType;
+	nameincludesubstring?: string;
+	userid?: string;
+	departmentid?: string;
+}
 
 @Injectable({
 	providedIn: 'root',
@@ -30,13 +39,10 @@ export class ProjectService {
 		private dialog: DialogService
 	) {}
 
-	public findProjects(params: IFindProjects): Observable<OperationResultResponse<ProjectInfo[]>> {
-		params = { ...params, includedepartment: true };
-		return this.projectService.findProjects(params).pipe(
-			map((res) => {
-				return res.body ? res : { ...res, body: [] };
-			})
-		);
+	public findProjects(params: FindProjectsParams & WithPagination): Observable<FindResponse<ProjectInfo>> {
+		return this.projectService
+			.findProjects({ ...params, includedepartment: true })
+			.pipe(map((res) => new FindResponse(res)));
 	}
 
 	public getProject(projectId: string): Observable<ProjectResponse> {

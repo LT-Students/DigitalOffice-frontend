@@ -1,16 +1,17 @@
+import { EventEmitter } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatSort, SortDirection } from '@angular/material/sort';
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject, merge, Observable, of, Subscription } from 'rxjs';
-import { FindResponse } from '@app/types/operation-result-response.interface';
 import { map, mapTo, switchMap, tap } from 'rxjs/operators';
-import { MatSort, SortDirection } from '@angular/material/sort';
+import { FindResponse } from '@app/types/operation-result-response.interface';
+import { WithPagination } from '@app/types/find-request.interface';
 import {
 	PageEvent,
 	PaginatorComponent,
 	PaginatorDefaultOptions,
 } from '@shared/component/paginator/paginator.component';
 import { booleanGuard } from '@app/utils/utils';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { EventEmitter } from '@angular/core';
 import { FilterEvent } from '../../modules/dynamic-filter/dynamic-filter.component';
 
 interface FindParams {
@@ -194,7 +195,7 @@ export abstract class QueryParamsConverter<Q extends Params, E extends Params> {
 		};
 	}
 
-	public convertQueryURLParamsToRequestParams(params: Params): E & { takeCount: number; skipCount: number } {
+	public convertQueryURLParamsToRequestParams(params: Params): E & WithPagination {
 		const pageIndex = Number(params['pageIndex'] || 0);
 		const pageSize = Number(params['pageSize'] || this.paginatorDefaults.pageSize);
 		const additionalParams = this.getAdditionalRequestParams(params);
