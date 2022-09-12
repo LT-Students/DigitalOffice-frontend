@@ -153,7 +153,7 @@ export class UserListService {
 	): Observable<OperationResultResponse<UserInfoLike[]>> {
 		switch (status) {
 			case 'active':
-				return this.filterService.filterUsers({ ...params });
+				return this.filterService.filterUsers({ ...params, isascendingsort: true });
 			case 'archive':
 				return this.userService.findUsers({
 					...params,
@@ -161,6 +161,7 @@ export class UserListService {
 					ispending: false,
 					includecurrentavatar: true,
 					includecommunications: true,
+					isascendingsort: true,
 				});
 			case 'pending':
 				return this.userService.findUsers({
@@ -169,6 +170,7 @@ export class UserListService {
 					ispending: true,
 					includecurrentavatar: true,
 					includecommunications: true,
+					isascendingsort: true,
 				});
 			default:
 				return this.route.data.pipe(

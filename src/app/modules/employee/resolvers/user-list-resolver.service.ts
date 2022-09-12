@@ -18,6 +18,7 @@ export class UserListResolver implements Resolve<OperationResultResponse<UserInf
 		return this.filterService.filterUsers({
 			skipCount: 0,
 			takeCount: 20,
+			isascendingsort: true,
 		});
 	}
 }
