@@ -95,13 +95,13 @@ export class EditDepartmentComponent extends LoadingState implements OnInit {
 					const confirmConfig = d.isActive
 						? {
 								title: 'Удаление департамента',
-								message: 'Вы действительно хотите удалить департамент Название департамента?',
+								message: `Вы действительно хотите удалить департамент <span class="text-accent_controls_default">${d.name}</span>?`,
 								confirmText: 'Да, удалить',
 								action$,
 						  }
 						: {
 								title: 'Восстановление департамента',
-								message: 'Вы действительно хотите восстановить департамент Название департамента?',
+								message: `Вы действительно хотите восстановить департамент <span class="text-accent_controls_default">${d.name}</span>?`,
 								confirmText: 'Восстановить',
 								action$,
 						  };

@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
 import { ProjectInfo } from '@api/project-service/models/project-info';
 import { Icons } from '@shared/modules/icons/icons';
-import { TableOptions } from '../../../../table/models/table-options';
 import { FilterDef, InputFilterParams, SelectFilterParams } from '../../../../dynamic-filter/models';
 import { IProjectStatus, ProjectStatus } from '../../../../projects/models/project-status';
-import { ColumnDef } from '../../../../table/models';
+import { ColumnDef, TableOptions } from '../../../../table/models';
 
 @Injectable()
 export class TableConfigsService {
@@ -41,6 +40,9 @@ export class TableConfigsService {
 			sortActive: 'name',
 			sortDirection: 'asc',
 			rowHeight: 96,
+			rowStyle: {
+				cursor: 'pointer',
+			},
 			columns: [
 				new ColumnDef({
 					field: 'name',
