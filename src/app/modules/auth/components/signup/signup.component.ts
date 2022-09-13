@@ -9,8 +9,8 @@ import { User } from '@app/models/user/user.model';
 import { CurrentUserService } from '@app/services/current-user.service';
 import { AppRoutes } from '@app/models/app-routes';
 import { HttpErrorResponse } from '@angular/common/http';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { HintValidation } from '@shared/component/validation-hint/validation-hint.component';
+import { LoadingState } from '@app/utils/loading-state';
 
 @Component({
 	selector: 'do-signup',

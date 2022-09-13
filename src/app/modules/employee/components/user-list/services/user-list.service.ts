@@ -17,13 +17,13 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { UserInfo } from '@api/user-service/models/user-info';
 import { FilterService } from '@app/services/filter/filter.service';
 import { UserService } from '@app/services/user/user.service';
-import { IFindRequest } from '@app/types/find-request.interface';
+import { WithPagination } from '@app/types/find-request.interface';
 import { NewEmployeeComponent } from '@shared/dialogs/new-employee/new-employee.component';
 import { DialogService, ModalWidth } from '@app/services/dialog.service';
 import { FormControl } from '@angular/forms';
 import { EditPayload, Status, UpdateUsersAction, UpdateUsersPayload, UserInfoLike } from '../user-list.types';
 
-interface FindUsersParams extends IFindRequest {
+interface FindUsersParams extends WithPagination {
 	fullnameincludesubstring?: string;
 }
 
@@ -153,7 +153,7 @@ export class UserListService {
 	): Observable<OperationResultResponse<UserInfoLike[]>> {
 		switch (status) {
 			case 'active':
-				return this.filterService.filterUsers({ ...params });
+				return this.filterService.filterUsers({ ...params, isascendingsort: true });
 			case 'archive':
 				return this.userService.findUsers({
 					...params,
@@ -161,6 +161,7 @@ export class UserListService {
 					ispending: false,
 					includecurrentavatar: true,
 					includecommunications: true,
+					isascendingsort: true,
 				});
 			case 'pending':
 				return this.userService.findUsers({
@@ -169,6 +170,7 @@ export class UserListService {
 					ispending: true,
 					includecurrentavatar: true,
 					includecommunications: true,
+					isascendingsort: true,
 				});
 			default:
 				return this.route.data.pipe(

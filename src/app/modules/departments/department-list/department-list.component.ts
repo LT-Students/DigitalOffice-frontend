@@ -1,17 +1,17 @@
 import { Component, ChangeDetectionStrategy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-import { UserRights } from '@app/types/user-rights.enum';
-import { PageEvent, PaginatorComponent } from '@shared/component/paginator/paginator.component';
-import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { DoTableDataSource, ListParams } from '@app/types/do-table-data-source';
 import { Observable } from 'rxjs';
+
+import { DepartmentInfo } from '@api/department-service/models/department-info';
+import { UserRights } from '@app/types/user-rights.enum';
+import { DoTableDataSource } from '@app/types/do-table-data-source';
+import { PageEvent, PaginatorComponent } from '@shared/component/paginator/paginator.component';
 import { FilterDef } from '../../dynamic-filter/models';
 import { DynamicFilterComponent } from '../../dynamic-filter/dynamic-filter.component';
 import { TableComponent } from '../../table/table.component';
 import { DepartmentsRoutes } from '../models/departments-routes';
 import { DepartmentService, FindDepartmentsParams } from '../services/department.service';
-import { TableOptions } from '../../table/models/table-options';
+import { TableOptions } from '../../table/models';
 import { DepartmentListService } from './department-list.service';
 import { DepartmentListQueriesService } from './department-list-queries.service';
 

@@ -6,8 +6,8 @@ import { CommunicationService } from '@app/services/user/communication.service';
 import { finalize } from 'rxjs/operators';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { CommunicationTypeModel } from '@app/models/communication.model';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { Subscription } from 'rxjs';
+import { LoadingState } from '@app/utils/loading-state';
 
 @Component({
 	selector: 'do-add-contact',

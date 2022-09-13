@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { finalize, switchMap } from 'rxjs/operators';
 import { EMPTY, Observable } from 'rxjs';
+import { LoadingState } from '@app/utils/loading-state';
 import { WorkInfoConfigService } from '../work-info-config.service';
 
 export interface IsAdminStatusConfig {

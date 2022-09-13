@@ -10,7 +10,7 @@ import { MAX_INT32 } from '@app/utils/utils';
 import { SortDirection } from '@angular/material/sort';
 import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
 import { I18nPluralPipe } from '@angular/common';
-import { LoadingState } from '@shared/directives/button-loading.directive';
+import { LoadingState } from '@app/utils/loading-state';
 import { TableComponent } from '../table/table.component';
 import { DynamicFilterComponent } from '../dynamic-filter/dynamic-filter.component';
 import { ManagerTimelistService } from './services/manager-timelist.service';
@@ -129,7 +129,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		this.timeService.editWorkTime(workTime.id, hours).subscribe({ error: () => this.data.next(oldData) });
 	}
 
-	private getSortOrder(sort: SortDirection): boolean | undefined {
-		return sort ? sort === 'asc' : undefined;
+	private getSortOrder(sort: SortDirection): boolean {
+		return sort === 'asc';
 	}
 }

@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Icons } from '@shared/modules/icons/icons';
-import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
-import { DateTime } from 'luxon';
-import { of } from 'rxjs';
 import { Params } from '@angular/router';
-import { TableOptions } from '../../table/models/table-options';
+import { of } from 'rxjs';
+import { DateTime } from 'luxon';
+import { FeedbackInfo } from '@api/feedback-service/models/feedback-info';
+import { Icons } from '@shared/modules/icons/icons';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
+import { ColumnDef, TableOptions } from '../../table/models';
 import { FeedbackType, FeedbackTypeInfo } from '../models/feedback-type';
 import { FilterDef, SelectFilterParams } from '../../dynamic-filter/models';
-import { ColumnDef } from '../../table/models';
 
 @Injectable()
 export class FeedbackListService {
@@ -66,7 +65,8 @@ export class FeedbackListService {
 					type: 'textCell',
 					field: 'createdAt',
 					headerName: 'Дата и время',
-					valueGetter: (f: FeedbackInfo) => DateTime.fromISO(f.createdAtUtc).toFormat('dd.MM.yyyy HH:mm'),
+					valueGetter: (f: FeedbackInfo) =>
+						DateTime.fromISO(f.createdAtUtc, { zone: 'utc' }).setZone('local').toFormat('dd.MM.yyyy HH:mm'),
 					sortEnabled: true,
 					disableClearSort: true,
 				}),

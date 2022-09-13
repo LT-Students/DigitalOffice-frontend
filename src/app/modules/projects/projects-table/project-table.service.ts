@@ -28,7 +28,13 @@ export class ProjectTableService {
 
 	public getTableColumns(): ColumnDef[] {
 		return [
-			new ColumnDef({ field: 'name', headerName: 'Название', sortEnabled: true, params: { lineClamp: 3 } }),
+			new ColumnDef({
+				field: 'name',
+				headerName: 'Название',
+				sortEnabled: true,
+				disableClearSort: true,
+				params: { lineClamp: 3 },
+			}),
 			new ColumnDef({ field: 'shortName', headerName: 'Сокращенное название', params: { lineClamp: 3 } }),
 			new ColumnDef({ field: 'customer', headerName: 'Заказчик', params: { lineClamp: 3 } }),
 			new ColumnDef({

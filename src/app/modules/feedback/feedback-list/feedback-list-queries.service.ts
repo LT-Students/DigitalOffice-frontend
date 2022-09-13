@@ -1,12 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import {
-	PageEvent,
-	PAGINATOR_DEFAULT_OPTIONS,
-	PaginatorDefaultOptions,
-} from '@shared/component/paginator/paginator.component';
 import { Params } from '@angular/router';
-import { SortDirection } from '@angular/material/sort';
-import { FilterEvent } from '../../dynamic-filter/dynamic-filter.component';
+import { ListParams, QueryParamsConverter } from '@app/types/do-table-data-source';
+import { PAGINATOR_DEFAULT_OPTIONS, PaginatorDefaultOptions } from '@shared/component/paginator/paginator.component';
 import { FindFeedbackParams } from '../services/feedback.service';
 
 export enum ClientQueryParam {
@@ -15,37 +10,42 @@ export enum ClientQueryParam {
 }
 
 interface QueryUrlParams {
-	pageIndex: number | null;
-	pageSize: number | null;
 	category: string | null;
 	sort: string | null;
 }
 
-export type ListParams = Partial<FilterEvent & { active: string; direction: SortDirection }> & PageEvent;
-
 @Injectable({
 	providedIn: 'root',
 })
-export class FeedbackListQueriesService {
-	constructor(@Inject(PAGINATOR_DEFAULT_OPTIONS) private paginatorDefaults: PaginatorDefaultOptions) {}
+export class FeedbackListQueriesService extends QueryParamsConverter<
+	Params,
+	Omit<FindFeedbackParams, 'skipCount' | 'takeCount'>
+> {
+	constructor(@Inject(PAGINATOR_DEFAULT_OPTIONS) paginatorDefaults: PaginatorDefaultOptions) {
+		super(paginatorDefaults);
+	}
 
-	public convertListParamsToQueryUrlParams(params: ListParams): QueryUrlParams {
+	public getAdditionalQueryUrlParams(params: ListParams): QueryUrlParams {
 		return {
-			pageIndex: params.pageIndex || null,
-			pageSize: params.pageSize === this.paginatorDefaults.pageSize ? null : params.pageSize,
-			category: params['category'],
+			category: params[ClientQueryParam.Category],
 			sort: params.active && params.direction ? `${params.active}_${params.direction}` : null,
 		};
 	}
+	public getAdditionalRequestParams(params: Params): Omit<FindFeedbackParams, 'skipCount' | 'takeCount'> {
+		return {
+			feedbacktype: params[ClientQueryParam.Category],
+			orderbydescending: this.getSortParamValue(params[ClientQueryParam.Sort]),
+		};
+	}
 
-	public convertQueryUrlParamsToEndpointParams(params: Params): FindFeedbackParams {
-		const pageIndex = Number(params['pageIndex'] || 0);
-		const pageSize = Number(params['pageSize'] || this.paginatorDefaults.pageSize);
+	public convertListParamsToRequestParams(listParams: ListParams): FindFeedbackParams {
+		const pageIndex = listParams.pageIndex || 0;
+		const pageSize = listParams.pageSize || this.paginatorDefaults.pageSize;
 		return {
 			skipCount: pageIndex * pageSize,
 			takeCount: pageSize,
-			feedbacktype: params[ClientQueryParam.Category],
-			orderbydescending: this.getSortParamValue(params[ClientQueryParam.Sort]),
+			feedbacktype: listParams[ClientQueryParam.Category],
+			orderbydescending: listParams.direction === 'asc',
 		};
 	}
 

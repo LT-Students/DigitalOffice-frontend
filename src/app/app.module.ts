@@ -59,7 +59,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 			deps: [MAT_DATE_LOCALE, MAT_LUXON_DATE_ADAPTER_OPTIONS],
 		},
 		{ provide: MAT_DATE_FORMATS, useValue: DATE_FORMAT },
-		{ provide: PAGINATOR_DEFAULT_OPTIONS, useValue: { pageSize: 20, pageSizeOptions: [20, 50, 100] } },
+		{ provide: PAGINATOR_DEFAULT_OPTIONS, useValue: { pageSize: 10, pageSizeOptions: [10, 50, 100] } },
 		{ provide: LOADING_BAR_CONFIG, useValue: { latencyThreshold: 100 } },
 	],
 	bootstrap: [AppComponent],

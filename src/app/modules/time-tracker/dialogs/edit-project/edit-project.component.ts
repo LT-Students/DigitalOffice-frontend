@@ -4,9 +4,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { DoValidators } from '@app/validators/do-validators';
 import { DateTime } from 'luxon';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { finalize } from 'rxjs/operators';
 import { isGUIDEmpty } from '@app/utils/utils';
+import { LoadingState } from '@app/utils/loading-state';
 import { AttendanceService, SubmitWorkTimeValue } from '../../services/attendance.service';
 import { WorkTime } from '../../models/work-time';
 

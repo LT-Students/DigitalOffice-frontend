@@ -7,8 +7,8 @@ import { PasswordService } from '@app/services/user/password.service';
 import { ReconstructPasswordRequest } from '@api/user-service/models/reconstruct-password-request';
 import { DoValidators } from '@app/validators/do-validators';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { HintValidation } from '@shared/component/validation-hint/validation-hint.component';
+import { LoadingState } from '@app/utils/loading-state';
 import { AuthRoutes } from '../../models/auth-routes';
 
 class PasswordErrorMatcher extends ErrorStateMatcher {

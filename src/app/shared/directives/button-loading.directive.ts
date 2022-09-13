@@ -12,15 +12,6 @@ import {
 import { MatButton } from '@angular/material/button';
 import { ThemePalette } from '@angular/material/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { BehaviorSubject } from 'rxjs';
-
-export class LoadingState {
-	public readonly loading$ = new BehaviorSubject(false);
-
-	public setLoading(loading: boolean): void {
-		this.loading$.next(loading);
-	}
-}
 
 @Directive({
 	selector: `button[mat-button][loading],

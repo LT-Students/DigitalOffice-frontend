@@ -1,12 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
-import { Icons } from '@shared/modules/icons/icons';
-import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
-import { Router } from '@angular/router';
-import { AppRoutes } from '@app/models/app-routes';
 import { I18nPluralPipe } from '@angular/common';
-import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { TableOptions } from '../../table/models/table-options';
+import { tap } from 'rxjs/operators';
+import { WorkTimeInfo } from '@api/time-service/models/work-time-info';
+import { AppRoutes } from '@app/models/app-routes';
+import { Icons } from '@shared/modules/icons/icons';
 import { FilterDef, InputFilterParams } from '../../dynamic-filter/models';
 import { EditableTextFieldParams } from '../../table/cell-components/editable-text-field/editable-text-field.component';
 import { TextCellParams } from '../../table/cell-components/text/text.component';
@@ -14,7 +13,7 @@ import { LeaveTimeType } from '../models/leave-time-type';
 import { TimeListDataSource } from '../manager-timelist.component';
 import { LeaveTime, UserStat } from '../models/user-stat';
 import { TIMELIST_ENTITY_INFO, TimelistEntityInfo } from '../models/timelist-entity';
-import { ColumnDef } from '../../table/models';
+import { ColumnDef, TableOptions } from '../../table/models';
 import { TimeService } from './time.service';
 
 @Injectable()
@@ -52,6 +51,8 @@ export class ManagerTimelistService {
 
 	public getTableData(): TableOptions {
 		return {
+			sortActive: 'username',
+			sortDirection: 'asc',
 			columns: [
 				new ColumnDef({
 					field: 'username',
@@ -59,6 +60,7 @@ export class ManagerTimelistService {
 					headerName: 'Фио',
 					valueGetter: (stats: UserStat) => ({ ...stats.user }),
 					sortEnabled: true,
+					disableClearSort: true,
 					headerStyle: { 'padding-left': '60px', flex: '0 0 40%' },
 					columnStyle: { flex: '0 0 40%', overflow: 'hidden' },
 				}),

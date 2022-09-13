@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { PermissionService } from '@app/services/permission.service';
+import { LoadingState } from '@app/utils/loading-state';
 import { WorkInfoConfigService } from './work-info-config.service';
 
 @Component({

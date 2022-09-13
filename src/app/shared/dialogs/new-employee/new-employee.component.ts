@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -6,7 +6,7 @@ import { CreateUserRequest } from '@api/user-service/models/create-user-request'
 import { CommunicationType, ContractTerm, CreateCommunicationRequest } from '@api/user-service/models';
 import { UserService } from '@app/services/user/user.service';
 import { Observable, Subject } from 'rxjs';
-import { finalize, first, map, switchMap } from 'rxjs/operators';
+import { finalize, first, map, switchMap, takeUntil } from 'rxjs/operators';
 import { RightsService } from '@app/services/rights/rights.service';
 import { RoleInfo } from '@api/rights-service/models/role-info';
 import { DoValidators } from '@app/validators/do-validators';
@@ -18,12 +18,13 @@ import { OfficeInfo } from '@api/office-service/models/office-info';
 import { CurrentCompanyService } from '@app/services/current-company.service';
 import { Company } from '@app/models/company';
 import { DepartmentInfo } from '@api/department-service/models/department-info';
-import { PositionInfo } from '@api/position-service/models/position-info';
-import { LoadingState } from '@shared/directives/button-loading.directive';
 import { ContractSubjectApiService } from '@api/company-service/services/contract-subject-api.service';
 import { ContractSubjectInfo } from '@api/company-service/models/contract-subject-info';
 import { getUTCWithOffset } from '@app/utils/utils';
 import { AutocompleteConfigsService } from '@shared/component/autocomplete/autocomplete-configs.service';
+import { LoadingState } from '@app/utils/loading-state';
+import { WarningOnDialogClose } from '@app/utils/warning-on-dialog-close';
+import { DialogService } from '@app/services/dialog.service';
 
 @Component({
 	selector: 'do-new-employee',
@@ -31,30 +32,37 @@ import { AutocompleteConfigsService } from '@shared/component/autocomplete/autoc
 	styleUrls: ['./new-employee.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewEmployeeComponent extends LoadingState implements OnDestroy {
-	public userForm: FormGroup;
+export class NewEmployeeComponent extends LoadingState implements OnInit, OnDestroy {
+	public userForm = this.initForm();
 	public positionsConfig = this.autocompleteConfigs.getPositionsConfig();
-	public department$: Observable<DepartmentInfo[]>;
-	public roles$: Observable<RoleInfo[]>;
-	public offices$: Observable<OfficeInfo[]>;
-	public contractTypes$: Observable<ContractSubjectInfo[]>;
+	public department$!: Observable<DepartmentInfo[]>;
+	public roles$!: Observable<RoleInfo[]>;
+	public offices$!: Observable<OfficeInfo[]>;
+	public contractTypes$!: Observable<ContractSubjectInfo[]>;
 
-	private _unsubscribe$: Subject<void>;
+	private warningOnClose = new WarningOnDialogClose(this.dialogRef, this.dialog);
+
+	private destroy$ = new Subject<void>();
 
 	constructor(
 		private _formBuilder: FormBuilder,
 		private _userService: UserService,
-		private _dialogRef: MatDialogRef<any>,
+		private dialogRef: MatDialogRef<any>,
 		private _rightsService: RightsService,
 		private _positionService: PositionService,
 		private _departmentService: DepartmentService,
 		private _officeService: OfficeService,
 		private contractService: ContractSubjectApiService,
 		private currentCompany: CurrentCompanyService,
-		private autocompleteConfigs: AutocompleteConfigsService
+		private autocompleteConfigs: AutocompleteConfigsService,
+		private dialog: DialogService
 	) {
 		super();
-		this.userForm = this._initForm();
+	}
+
+	public ngOnInit(): void {
+		this.dialogRef.disableClose = true;
+
 		this.department$ = this._departmentService
 			.findDepartments({
 				skipCount: 0,
@@ -70,12 +78,26 @@ export class NewEmployeeComponent extends LoadingState implements OnDestroy {
 		this.contractTypes$ = this.contractService
 			.findContractSubjects({ skipCount: 0, takeCount: 500 })
 			.pipe(map((res) => res.body ?? []));
-		this._unsubscribe$ = new Subject<void>();
+
+		this.warningOnClose.closeEvents$.pipe(takeUntil(this.destroy$)).subscribe({
+			next: () => this.beforeClose(),
+		});
 	}
 
 	public ngOnDestroy(): void {
-		this._unsubscribe$.next();
-		this._unsubscribe$.complete();
+		this.destroy$.next();
+		this.destroy$.complete();
+	}
+
+	public beforeClose(): void {
+		this.warningOnClose.beforeClose(this.isFormDirty());
+	}
+
+	private isFormDirty(): boolean {
+		const initialForm = this.initForm();
+		return Object.keys(initialForm.controls).some(
+			(k: string) => this.userForm.controls[k].value !== initialForm.controls[k].value
+		);
 	}
 
 	public createEmployee(): void {
@@ -91,11 +113,11 @@ export class NewEmployeeComponent extends LoadingState implements OnDestroy {
 				finalize(() => this.setLoading(false))
 			)
 			.subscribe((result: OperationResultResponse) => {
-				this._dialogRef.close(result);
+				this.dialogRef.close(result);
 			});
 	}
 
-	private _initForm(): FormGroup {
+	private initForm(): FormGroup {
 		return this._formBuilder.group({
 			lastName: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],
 			firstName: ['', [Validators.required, DoValidators.noWhitespaces, DoValidators.isNameValid]],

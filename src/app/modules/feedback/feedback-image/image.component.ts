@@ -5,7 +5,7 @@ import imageCompression from 'browser-image-compression';
 import { finalize, switchMap } from 'rxjs/operators';
 import { ImageContent } from '@api/gateway-service/models/image-content';
 import { ReplaySubject, Subscription } from 'rxjs';
-import { LoadingState } from '@shared/directives/button-loading.directive';
+import { LoadingState } from '@app/utils/loading-state';
 
 @Component({
 	selector: 'do-feedback-image',

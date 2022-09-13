@@ -36,7 +36,7 @@ export class DepartmentListQueriesService extends QueryParamsConverter<
 		};
 	}
 
-	public getAdditionalEndpointParams(params: Params): Omit<FindDepartmentsParams, 'skipCount' | 'takeCount'> {
+	public getAdditionalRequestParams(params: Params): Omit<FindDepartmentsParams, 'skipCount' | 'takeCount'> {
 		return {
 			nameIncludeSubstring: params[ClientQueryParam.Search],
 			isAscendingSort: this.getSortParamValue(params[ClientQueryParam.Sort]),

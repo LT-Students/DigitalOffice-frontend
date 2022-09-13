@@ -7,8 +7,6 @@ import { FindResponse, OperationResultResponse } from '@app/types/operation-resu
 import { DepartmentResponse } from '@api/department-service/models/department-response';
 import { DepartmentUserApiService } from '@api/department-service/services/department-user-api.service';
 import { DepartmentPath, PatchDocument } from '@app/types/edit-request';
-import { MAX_INT32 } from '@app/utils/utils';
-import { UserInfo } from '@api/department-service/models/user-info';
 import { Department } from '../department-page/department';
 
 export interface FindDepartmentsParams {

@@ -8,7 +8,7 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { User } from '@app/models/user/user.model';
 import { AppRoutes } from '@app/models/app-routes';
 import { UserService } from '@app/services/user/user.service';
-import { LoadingState } from '@shared/directives/button-loading.directive';
+import { LoadingState } from '@app/utils/loading-state';
 import { AdminRoutes } from '../../../admin/models/admin-routes';
 
 @Component({
