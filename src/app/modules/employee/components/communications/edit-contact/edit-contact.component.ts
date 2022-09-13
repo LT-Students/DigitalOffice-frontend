@@ -19,7 +19,9 @@ export class EditContactComponent extends LoadingState {
 	public readonly Type = CommunicationType;
 
 	public control = new FormControl(
-		this.communication.value,
+		this.isTypeStartingWithAt(this.communication.type)
+			? this.communication.value.slice(1)
+			: this.communication.value,
 		CommunicationTypeModel.getValidatorsByType(this.communication.type)
 	);
 	public contactType = this.communication.type;
@@ -30,6 +32,10 @@ export class EditContactComponent extends LoadingState {
 		private communicationService: CommunicationService
 	) {
 		super();
+	}
+
+	private isTypeStartingWithAt(t: CommunicationType): boolean {
+		return t === CommunicationType.Twitter || t === CommunicationType.Telegram;
 	}
 
 	public onClose(result?: any): void {
@@ -54,7 +60,7 @@ export class EditContactComponent extends LoadingState {
 			value = phoneNum.countryCallingCode.toString() + phoneNum.nationalNumber;
 		} else {
 			value = this.control.value;
-			if (this.contactType === CommunicationType.Telegram || this.contactType === CommunicationType.Twitter) {
+			if (this.isTypeStartingWithAt(this.contactType)) {
 				value = `@${value}`;
 			}
 		}
