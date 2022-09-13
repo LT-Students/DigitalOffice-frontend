@@ -1,16 +1,13 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectStatusType } from '@api/project-service/models/project-status-type';
-import { map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AppRoutes } from '@app/models/app-routes';
-import { ProjectInfo } from '@api/project-service/models/project-info';
+import { map } from 'rxjs/operators';
+import { ProjectInfo, ProjectStatusType } from '@api/project-service/models';
 
 interface Section {
 	name: string;
 	projects: ProjectInfo[];
 	plural: any;
-	isExpanded: boolean;
 }
 
 @Component({
@@ -20,11 +17,12 @@ interface Section {
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent implements OnInit {
-	public ProjectStatus = ProjectStatusType;
-	public projects$: Observable<[Section, Section]>;
+	public sections$!: Observable<[Section, Section]>;
 
-	constructor(private router: Router, private route: ActivatedRoute) {
-		this.projects$ = this.route.data.pipe(
+	constructor(private route: ActivatedRoute) {}
+
+	public ngOnInit(): void {
+		this.sections$ = this.route.data.pipe(
 			map((data) => data.projects as ProjectInfo[]),
 			map((projects: ProjectInfo[]) => [
 				{
@@ -35,7 +33,6 @@ export class ProjectsComponent implements OnInit {
 						few: '# проекта',
 						other: '# проектов',
 					},
-					isExpanded: false,
 				},
 				{
 					name: 'Участвовал в',
@@ -44,15 +41,8 @@ export class ProjectsComponent implements OnInit {
 						one: '# проекте',
 						other: '# проектах',
 					},
-					isExpanded: false,
 				},
 			])
 		);
-	}
-
-	public ngOnInit(): void {}
-
-	public onMoreClicked(projectId: string) {
-		this.router.navigate([AppRoutes.Projects, projectId]);
 	}
 }
