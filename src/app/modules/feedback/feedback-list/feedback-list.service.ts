@@ -39,6 +39,7 @@ export class FeedbackListService {
 				height: '96px',
 				padding: '12px 32px',
 				'align-items': 'baseline',
+				cursor: 'pointer',
 			},
 			columns: [
 				new ColumnDef({

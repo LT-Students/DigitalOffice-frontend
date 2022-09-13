@@ -32,6 +32,9 @@ export class DepartmentListService {
 					sortActive: active,
 					sortDirection: direction,
 					rowHeight: 96,
+					rowStyle: {
+						cursor: 'pointer',
+					},
 					columns: [
 						new ColumnDef({
 							field: 'name',
