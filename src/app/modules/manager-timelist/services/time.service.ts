@@ -22,7 +22,7 @@ export class TimeService {
 		entityType: TimelistEntityType,
 		entityId: string,
 		params: {
-			ascendingsort?: boolean;
+			ascendingsort: boolean;
 			nameincludesubstring?: string;
 			month: number;
 			year: number;

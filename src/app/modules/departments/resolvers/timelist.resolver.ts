@@ -19,6 +19,7 @@ export class TimelistResolver implements Resolve<UserStat[]> {
 			year: DateTime.now().year,
 			takeCount: MAX_INT32,
 			skipCount: 0,
+			ascendingsort: true,
 		});
 	}
 }

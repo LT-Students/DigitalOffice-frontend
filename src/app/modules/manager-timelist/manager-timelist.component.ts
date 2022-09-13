@@ -129,7 +129,7 @@ export class TimeListDataSource extends DataSource<UserStat> {
 		this.timeService.editWorkTime(workTime.id, hours).subscribe({ error: () => this.data.next(oldData) });
 	}
 
-	private getSortOrder(sort: SortDirection): boolean | undefined {
-		return sort ? sort === 'asc' : undefined;
+	private getSortOrder(sort: SortDirection): boolean {
+		return sort === 'asc';
 	}
 }

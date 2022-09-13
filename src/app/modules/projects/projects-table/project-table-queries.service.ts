@@ -58,7 +58,6 @@ export class ProjectTableQueriesService extends QueryParamsConverter<Params, Fin
 	public convertListParamsToRequestParams(params: ListParams): FindProjectsParams & WithPagination {
 		const pageIndex = params.pageIndex || 0;
 		const pageSize = params.pageSize || this.paginatorDefaults.pageSize;
-		console.log(params);
 		return {
 			skipCount: pageIndex * pageSize,
 			takeCount: pageSize,
