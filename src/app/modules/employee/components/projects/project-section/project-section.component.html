@@ -1,0 +1,22 @@
+<section class="section">
+	<h4 class="section-title">
+		{{ name }}
+		<span class="mat-h4 primary">{{ projects.length | i18nPlural: pluralCase }}</span>
+	</h4>
+	<div class="projects">
+		<do-project-card
+			class="project"
+			*ngFor="let project of projects | slice: 0:(isExpanded ? undefined : 4)"
+			[project]="project"
+		></do-project-card>
+	</div>
+	<ng-container *ngIf="projects.length > 4">
+		<button doButton class="show-all-button text-secondary_default" (click)="isExpanded = !isExpanded">
+			{{ isExpanded ? 'Скрыть все' : 'Показать все' }}
+			<mat-icon
+				[ngStyle]="{ transform: isExpanded ? 'rotate(180deg)' : '' }"
+				[svgIcon]="Icons.ArrowDownV1"
+			></mat-icon>
+		</button>
+	</ng-container>
+</section>

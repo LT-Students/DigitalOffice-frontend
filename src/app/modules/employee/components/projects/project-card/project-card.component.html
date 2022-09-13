@@ -1,0 +1,29 @@
+<div class="project-card">
+	<div class="card-header">
+		<h5
+			class="name"
+			doTruncateTooltip
+			[routerLink]="projectRoute"
+			[matTooltip]="project.name"
+			[matTooltipPosition]="'above'"
+		>
+			{{ project.name }}
+		</h5>
+		<mat-icon
+			*ngIf="project.status | projectStatus as status"
+			class="status"
+			[svgIcon]="Icons.Status"
+			[matTooltip]="status.label"
+			matTooltipPosition="above"
+			[style.color]="status.color"
+		></mat-icon>
+	</div>
+	<span *ngIf="project.customer as customer" class="customer text-secondary_default">{{ customer }}</span>
+	<span *ngIf="project.shortDescription as shortDescription" class="description">{{ shortDescription }}</span>
+	<span class="start-title text-secondary_default">Старт проекта</span>
+	<span>{{ project.startDateUtc | date: 'dd.MM.y' }}</span>
+	<a doButton class="button" [routerLink]="projectRoute">
+		<span>Подробнее</span>
+		<mat-icon [svgIcon]="Icons.KeyboardArrowRight"></mat-icon>
+	</a>
+</div>

@@ -23,6 +23,9 @@ import { WorkingHoursPipe } from './working-hours.pipe';
 import { GenderSelectComponent } from './components/gender-select/gender-select.component';
 import { CommunicationItemComponent } from './components/communications/communication-item/communication-item.component';
 import { CommunicationTypePipe } from './components/communications/communication-item/communication-type.pipe';
+import { ProjectCardComponent } from './components/projects/project-card/project-card.component';
+import { ProjectSectionComponent } from './components/projects/project-section/project-section.component';
+import { ProjectStatusPipe } from './components/projects/project-card/status-color.pipe';
 
 @NgModule({
 	declarations: [
@@ -46,6 +49,9 @@ import { CommunicationTypePipe } from './components/communications/communication
 		GenderSelectComponent,
 		CommunicationItemComponent,
 		CommunicationTypePipe,
+		ProjectCardComponent,
+		ProjectSectionComponent,
+		ProjectStatusPipe,
 	],
 	imports: [SharedModule, EmployeeRoutingModule],
 	providers: [],
