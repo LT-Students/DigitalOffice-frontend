@@ -20,7 +20,7 @@
 .form {
 	display: grid;
 	grid-template-columns: 0.8fr 1fr;
-	grid-template-rows: auto auto;
+	grid-template-rows: auto 36px;
 	grid-gap: 12px;
 
 	.card-title {

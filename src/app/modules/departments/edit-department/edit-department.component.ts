@@ -52,7 +52,6 @@ export class EditDepartmentComponent extends LoadingState implements OnInit {
 					name: [d.name, [DoValidators.required, DoValidators.matchMaxLength(300)]],
 					shortName: [d.shortName, [DoValidators.required, DoValidators.matchMaxLength(40)]],
 					description: [d.description, [DoValidators.matchMaxLength(1000)]],
-					director: [{ value: 'Циневич Р.К.', disabled: true }],
 				});
 			},
 		});
