@@ -12,7 +12,7 @@ const TELEGRAM_REGEXP = /^[A-Za-z]+(_?[A-Za-z0-9])*$/;
 // Не уверен за этот regex, но пока пусть будет, если кто умный - подайте идею.
 const SKYPE_REGEXP = /^[A-Za-z][A-Za-z0-9.,\-_]+$/;
 const TWITTER_REGEXP = /^\w+$/;
-const NAME_REGEXP = /^\p{L}[\p{L}'\- ]*$/u;
+const NAME_REGEXP = /^\s*\p{L}[\p{L}'\- ]*\s*$/u;
 const ONE_SPACE_BETWEEN_WORDS_REGEXP = /(\S\s{2,}\S)/;
 const INTEGER_NUMBER_REGEXP = /^-?\d+$/;
 const PASSWORD_REGEXP =

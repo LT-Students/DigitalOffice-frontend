@@ -9,8 +9,11 @@
 			<div class="new-employee__inputs">
 				<do-form-field label="Имя">
 					<mat-form-field
-						[matTooltip]="userForm.controls['firstName']?.errors?.['name'] ? 'Имя может содержать только буквы, -, \' и пробел.\nИмя не может начинаться и заканчиваться символами - и \'' : ''"
+						[matTooltip]="
+							'Имя может содержать только буквы, -, \' и пробел.\nИмя не может начинаться символами - и \''
+						"
 						[matTooltipPosition]="'right'"
+						[matTooltipDisabled]="!userForm.controls['firstName']?.errors?.['name']"
 					>
 						<input
 							tabindex="0"
@@ -30,8 +33,11 @@
 				</do-form-field>
 				<do-form-field label="Фамилия">
 					<mat-form-field
-						[matTooltip]="userForm.controls['lastName']?.errors?.['name'] ? 'Фамилия может содержать только буквы, -, \' и пробел.\nФамилия не может начинаться и заканчиваться символами - и \'' : ''"
+						[matTooltip]="
+							'Фамилия может содержать только буквы, -, \' и пробел.\nФамилия не может начинаться символами - и \''
+						"
 						[matTooltipPosition]="'right'"
+						[matTooltipDisabled]="!userForm.controls['lastName']?.errors?.['name']"
 					>
 						<input
 							matInput
@@ -50,8 +56,11 @@
 				</do-form-field>
 				<do-form-field label="Отчество">
 					<mat-form-field
-						[matTooltip]="userForm.controls['middleName']?.errors?.['name'] ? 'Отчество может содержать только буквы, -, \' и пробел.\nОтчество не может начинаться и заканчиваться символами - и \'' : ''"
+						[matTooltip]="
+							'Отчество может содержать только буквы, -, \' и пробел.\nОтчество не может начинаться символами - и \''
+						"
 						[matTooltipPosition]="'right'"
+						[matTooltipDisabled]="!userForm.controls['middleName']?.errors?.['name']"
 					>
 						<input matInput doTransformName placeholder="Введите отчество" formControlName="middleName" />
 						<mat-error *ngIf="userForm.controls['middleName']?.errors?.['whitespace']"

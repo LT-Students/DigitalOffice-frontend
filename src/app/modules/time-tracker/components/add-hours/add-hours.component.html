@@ -6,8 +6,12 @@
 			<mat-icon>expand_more</mat-icon>
 		</span>
 		<mat-menu #formTypeMenu="matMenu">
-			<button mat-menu-item (click)="toggleFormType(true)">Проект</button>
-			<button mat-menu-item (click)="toggleFormType(false)">Отсутствие</button>
+			<button mat-menu-item class="menu-item" [class.active]="isWorktimeForm" (click)="toggleFormType(true)">
+				Проект
+			</button>
+			<button mat-menu-item class="menu-item" [class.active]="!isWorktimeForm" (click)="toggleFormType(false)">
+				Отсутствие
+			</button>
 		</mat-menu>
 	</h3>
 	<do-add-work-time-hours *ngIf="isWorktimeForm"></do-add-work-time-hours>

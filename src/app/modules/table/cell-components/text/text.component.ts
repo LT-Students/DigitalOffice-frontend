@@ -17,7 +17,14 @@ export class TextCellParams {
 
 @Component({
 	selector: 'do-text',
-	template: `<div class="text" [style.-webkit-line-clamp]="lineClamp">
+	template: `<div
+		class="text"
+		doTruncateTooltip
+		[matTooltip]="value"
+		matTooltipShowDelay="300"
+		matTooltipPosition="above"
+		[style.-webkit-line-clamp]="lineClamp"
+	>
 		<mat-icon
 			*ngIf="prefixIcon as iconGetter"
 			class="text-secondary_default icon prefix"

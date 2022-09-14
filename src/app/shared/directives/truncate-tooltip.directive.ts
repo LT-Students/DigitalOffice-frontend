@@ -10,6 +10,8 @@ export class TruncateTooltipDirective implements AfterViewInit {
 	public ngAfterViewInit() {
 		const scroll = this.el.nativeElement.scrollHeight;
 		const client = this.el.nativeElement.clientHeight;
-		this.matTooltip.disabled = client >= scroll;
+		// in case there's a slight difference in heights because of line-height. Maybe it will result in bugs, but will see.
+		const tolerance = 2;
+		this.matTooltip.disabled = client + tolerance >= scroll;
 	}
 }
