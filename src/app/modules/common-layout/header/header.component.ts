@@ -35,7 +35,7 @@ export class HeaderComponent {
 	}
 
 	public onChangePasswordClick(): void {
-		this.dialog.open(ChangeUserPasswordComponent, { width: ModalWidth.M });
+		this.dialog.open(ChangeUserPasswordComponent, { width: ModalWidth.S });
 	}
 
 	public openFeedbackForm(): void {

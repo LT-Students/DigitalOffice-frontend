@@ -43,6 +43,8 @@ export class PasswordComponent implements OnInit, OnDestroy, ControlValueAccesso
 		return this.control.value;
 	}
 
+	@Input() name = `pwd-input-${PasswordComponent.nextId}`;
+
 	@Input()
 	set placeholder(v: string) {
 		this._placeholder = v;
