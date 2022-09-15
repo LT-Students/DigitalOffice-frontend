@@ -5,6 +5,8 @@
 }
 
 .user {
+	flex: 1;
+
 	display: flex;
 
 	.link {
@@ -24,6 +26,8 @@
 	}
 
 	.name {
+		align-self: flex-start;
+
 		margin-bottom: 4px;
 	}
 }
