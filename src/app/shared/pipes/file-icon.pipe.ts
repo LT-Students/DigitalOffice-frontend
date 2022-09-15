@@ -1,0 +1,92 @@
+import { Pipe, PipeTransform } from '@angular/core';
+import { Icons } from '@shared/modules/icons/icons';
+
+const MIME_TYPES_MAP = new Map([
+	['audio/aac', Icons.TextDoc],
+	['application/x-abiword', Icons.TextDoc],
+	['application/x-freearc', Icons.TextDoc],
+	['video/x-msvideo', Icons.TextDoc],
+	['application/vnd.amazon.ebook', Icons.TextDoc],
+	['application/octet-stream', Icons.TextDoc],
+	['image/bmp', Icons.Photo],
+	['application/x-bzip', Icons.Folder],
+	['application/x-bzip2', Icons.Folder],
+	['application/x-csh', Icons.Folder],
+	['text/css', Icons.TextDoc],
+	['text/csv', Icons.TextDoc],
+	['application/msword', Icons.TextDoc],
+	['application/vnd.openxmlformats-officedocument.wordprocessingml.document', Icons.TextDoc],
+	['application/vnd.ms-fontobject', Icons.TextDoc],
+	['application/epub+zip', Icons.Folder],
+	['application/gzip', Icons.Folder],
+	['image/gif', Icons.Photo],
+	['text/html', Icons.TextDoc],
+	['image/vnd.microsoft.icon', Icons.Photo],
+	['text/calendar', Icons.TextDoc],
+	['application/java-archive', Icons.Folder],
+	['image/jpeg', Icons.Photo],
+	['text/javascript', Icons.TextDoc],
+	['application/json', Icons.TextDoc],
+	['application/ld+json', Icons.TextDoc],
+	['audio/midi', Icons.TextDoc],
+	['audio/x-midi', Icons.TextDoc],
+	['text/javascript', Icons.TextDoc],
+	['audio/mpeg', Icons.TextDoc],
+	['video/mpeg', Icons.TextDoc],
+	['application/vnd.apple.installer+xml', Icons.TextDoc],
+	['application/vnd.oasis.opendocument.presentation', Icons.TextDoc],
+	['application/vnd.oasis.opendocument.spreadsheet', Icons.TextDoc],
+	['application/vnd.oasis.opendocument.text', Icons.TextDoc],
+	['audio/ogg', Icons.TextDoc],
+	['video/ogg', Icons.TextDoc],
+	['application/ogg', Icons.TextDoc],
+	['audio/opus', Icons.TextDoc],
+	['font/otf', Icons.TextDoc],
+	['image/png', Icons.Photo],
+	['application/pdf', Icons.TextDoc],
+	['application/x-httpd-php', Icons.TextDoc],
+	['application/vnd.ms-powerpoint', Icons.TextDoc],
+	['application/vnd.openxmlformats-officedocument.presentationml.presentation', Icons.TextDoc],
+	['application/vnd.rar', Icons.Folder],
+	['application/rtf', Icons.TextDoc],
+	['application/x-sh', Icons.TextDoc],
+	['image/svg+xml', Icons.Photo],
+	['application/x-shockwave-flash', Icons.TextDoc],
+	['application/x-tar', Icons.Folder],
+	['image/tiff', Icons.Photo],
+	['video/mp2t', Icons.TextDoc],
+	['font/ttf', Icons.TextDoc],
+	['text/plain', Icons.TextDoc],
+	['application/vnd.visio', Icons.TextDoc],
+	['audio/wav', Icons.TextDoc],
+	['audio/webm', Icons.TextDoc],
+	['video/webm', Icons.TextDoc],
+	['image/webp', Icons.Photo],
+	['font/woff', Icons.TextDoc],
+	['font/woff2', Icons.TextDoc],
+	['application/xhtml+xml', Icons.TextDoc],
+	['application/vnd.ms-excel', Icons.TextDoc],
+	['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', Icons.TextDoc],
+	['application/xml ', Icons.TextDoc],
+	['text/xml', Icons.TextDoc],
+	['application/vnd.mozilla.xul+xml', Icons.TextDoc],
+	['application/zip', Icons.Folder],
+	['video/3gpp', Icons.TextDoc],
+	['audio/3gpp', Icons.TextDoc],
+	['video/3gpp2', Icons.TextDoc],
+	['audio/3gpp2', Icons.TextDoc],
+	['application/x-7z-compressed', Icons.Folder],
+]);
+
+@Pipe({
+	name: 'fileIcon',
+})
+export class FileIconPipe implements PipeTransform {
+	transform(type: string): Icons {
+		return getFileIcon(type);
+	}
+}
+
+export function getFileIcon(type: string): Icons {
+	return MIME_TYPES_MAP.get(type) || Icons.TextDoc;
+}

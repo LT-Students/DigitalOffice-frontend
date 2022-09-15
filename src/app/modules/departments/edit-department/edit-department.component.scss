@@ -1,0 +1,43 @@
+.header {
+	margin-bottom: 24px;
+
+	display: flex;
+	align-items: baseline;
+
+	.page-title {
+		margin: 0;
+	}
+
+	.controls {
+		margin-left: auto;
+
+		.submit {
+			width: 172px;
+		}
+	}
+}
+
+.form {
+	display: grid;
+	grid-template-columns: 0.8fr 1fr;
+	grid-template-rows: auto 36px;
+	grid-gap: 12px;
+
+	.card-title {
+		margin-bottom: 18px;
+	}
+
+	mat-card {
+		padding: 20px;
+	}
+
+	.info {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.description {
+		grid-area: 1 / 2 / 3 / 3;
+	}
+}

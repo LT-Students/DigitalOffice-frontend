@@ -1,0 +1,553 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.1.1",
+    "title": "PositionService",
+    "description": "PositionService is an API that intended to work with positions."
+  },
+  "servers": [
+    {
+      "url": "https://position.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://position.dev.ltdo.xyz",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/position/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Position"
+        ],
+        "operationId": "getPosition",
+        "description": "Returns position by id.",
+        "parameters": [
+          {
+            "name": "positionId",
+            "in": "query",
+            "description": "Position global unique identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully returned a position.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponsePositionInfo"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/position/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipcount",
+          "in": "query",
+          "description": "Number of positions to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takecount",
+          "in": "query",
+          "description": "Number of positions to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "includedeactivated",
+          "in": "query",
+          "description": "If it is true, response will be have deactivated records.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Position"
+        ],
+        "operationId": "findPositions",
+        "description": "Returns all added positions.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned added positions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponsePositionInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/position/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Position"
+        ],
+        "operationId": "createPosition",
+        "description": "Adds a new position.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePositionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created position will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/position/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "positionId",
+          "in": "query",
+          "description": "Specific position id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Position"
+        ],
+        "operationId": "editPosition",
+        "description": "Edits a specified position.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditPositionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Update position operation success (boolean) status will be in response Body property.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "put": {
+        "tags": [
+          "PositionUser"
+        ],
+        "operationId": "editPositionUser",
+        "description": "Chage user position.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePositionUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success of operation will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatePositionRequest": {
+        "type": "object",
+        "description": "Specific position data.",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Position name.",
+            "type": "string",
+            "example": "IT projects consultant"
+          },
+          "Description": {
+            "description": "Position description.",
+            "type": "string",
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+            "nullable": true
+          }
+        }
+      },
+      "EditPositionRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/name",
+            "value": {
+              "description": "New position name",
+              "type": "string",
+              "example": "portal"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchPositionDocument"
+        }
+      },
+      "CreatePositionUserRequest": {
+        "type": "object",
+        "required": [
+          "UserId"
+        ],
+        "properties": {
+          "UserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "PositionId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "PatchPositionDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/name",
+              "/description",
+              "/isactive"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "PositionInfo": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "description": "Specific position id.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "description": "Position name.",
+            "type": "string",
+            "example": "IT projects consultant"
+          },
+          "Description": {
+            "description": "Position description.",
+            "type": "string",
+            "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+            "nullable": true
+          },
+          "IsActive": {
+            "description": "Marks whether position is active or not.",
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponsePositionInfo": {
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "Specific position id.",
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "description": "Position name.",
+                "type": "string",
+                "example": "IT projects consultant"
+              },
+              "description": {
+                "description": "Position description.",
+                "type": "string",
+                "example": "Responsibilities include the following. Communication with clients, analysis of client needs, setting a developer's task, control of execution, testing, delivery of the result to the client. Maintaining project documentation, both with the client and internal. Keeping statistics and analysis, searching for customers for integration in the supplier base. Document management (contracts, accounts, acts).",
+                "nullable": true
+              },
+              "isactive": {
+                "description": "Marks whether position is active or not.",
+                "type": "boolean",
+                "example": true
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponsePositionInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PositionInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

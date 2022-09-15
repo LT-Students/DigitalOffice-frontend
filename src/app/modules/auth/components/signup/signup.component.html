@@ -1,0 +1,44 @@
+<form class="auth" [formGroup]="loginForm" (ngSubmit)="signUp()" autocomplete="off">
+	<do-form-field
+		class="auth-input"
+		label="Придумай логин"
+		#trigger="mdePopoverTrigger"
+		[mdePopoverTriggerFor]="popover"
+		mdePopoverTriggerOn="none"
+		mdePopoverPositionX="before"
+		[mdePopoverOffsetX]="200"
+		[mdePopoverOffsetY]="-40"
+	>
+		<mat-form-field>
+			<input
+				#login
+				matInput
+				name="login"
+				type="text"
+				placeholder="Новый логин"
+				formControlName="login"
+				autocomplete="off"
+				(focusin)="trigger.openPopover()"
+				(focusout)="trigger.closePopover(); login.blur()"
+			/>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field class="auth-input" label="Введи пароль из письма">
+		<mat-form-field>
+			<do-password placeholder="Пароль" formControlName="password"></do-password>
+		</mat-form-field>
+	</do-form-field>
+	<button
+		[loading]="loading$ | async"
+		mat-flat-button
+		color="primary"
+		class="submit"
+		type="submit"
+		[disabled]="loginForm.invalid"
+	>
+		Войти
+	</button>
+</form>
+<mde-popover #popover="mdePopover" [mdePopoverOverlapTrigger]="false">
+	<do-validation-hint [validations]="hintValidations$ | async"></do-validation-hint>
+</mde-popover>

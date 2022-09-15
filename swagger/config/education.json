@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/EducationService.json",
+  "output": "src/app/api/education-service",
+  "templates": "swagger/templates",
+  "module": "EducationApiModule",
+  "excludeParameters": [
+    "token"
+  ],
+  "serviceSuffix": "ApiService"
+}

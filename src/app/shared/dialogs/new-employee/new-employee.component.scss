@@ -1,0 +1,50 @@
+@use '../../../../stylesheets/base/variables';
+
+.section {
+	margin-top: 32px;
+}
+
+.new-employee {
+	&__inputs {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		column-gap: 20px;
+		row-gap: 25px;
+	}
+
+	&__heading {
+		margin-bottom: 12px;
+	}
+
+	&__form-element_span_2 {
+		grid-column: span 2;
+	}
+
+	&__button {
+		width: 216px;
+	}
+
+	&__reset {
+		justify-self: end;
+	}
+
+	&__submit {
+		justify-self: start;
+	}
+
+	&__label_flex {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__actions {
+		margin-top: 35px;
+
+		display: flex;
+		justify-content: space-evenly;
+	}
+}
+
+.no-margin {
+	margin: 0;
+}

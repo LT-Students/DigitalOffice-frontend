@@ -1,0 +1,43 @@
+.content-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100%;
+	height: 100vh;
+
+	background: #fff;
+
+	.admin-router {
+		z-index: 10;
+	}
+
+	.waves-container {
+		position: absolute;
+
+		width: 100%;
+		height: 100%;
+
+		&.wave1 {
+			background: url('/assets/svg/wave1.svg') no-repeat bottom center / contain;
+		}
+
+		&.wave2 {
+			background: url('/assets/svg/wave2.svg') no-repeat bottom center / contain;
+		}
+
+		&.wave3 {
+			background: url('/assets/svg/wave3.svg') no-repeat bottom center / contain;
+		}
+	}
+
+	.portal-logo {
+		margin-right: 5px;
+
+		vertical-align: middle;
+	}
+
+	.portal-name {
+		margin-bottom: 40px;
+	}
+}

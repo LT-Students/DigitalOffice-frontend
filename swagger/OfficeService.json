@@ -1,0 +1,997 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.3.0",
+    "title": "OfficeService",
+    "description": "OfficeService is an API that intended to work with offices."
+  },
+  "servers": [
+    {
+      "url": "https://office.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://office.dev.ltdo.xyz",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/office/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Office"
+        ],
+        "operationId": "createOffice",
+        "description": "Adds a new office to company.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOfficeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created office will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/office/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of offices to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of offices to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "isAscendingSort",
+          "in": "query",
+          "description": "If true returns sorted offices from A to Z, false - sorted from Z to A, null - no sorting.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "isActive",
+          "in": "query",
+          "description": "If true returns active offices, false - not active, null - all offices.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "nameIncludeSubstring",
+          "in": "query",
+          "description": "Returns offices whose names contain a substring.",
+          "schema": {
+            "type": "string"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Office"
+        ],
+        "operationId": "findOffices",
+        "responses": {
+          "200": {
+            "description": "Successfully returned all offices.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseOfficeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseOfficeInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/office/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "officeId",
+          "in": "query",
+          "description": "Office global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Office"
+        ],
+        "operationId": "editOffice",
+        "description": "Edit the specified office by id.\n* The user must have to be admin or has right.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditOfficeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "OfficeUsers"
+        ],
+        "operationId": "createOfficeUsers",
+        "description": "Create users in specified office.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOfficeUsers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success operation will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "delete": {
+        "tags": [
+          "OfficeUsers"
+        ],
+        "operationId": "removeOfficeUsers",
+        "description": "Remove users from specified office.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveOfficeUsers"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success operation will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "createWorkspace",
+        "description": "Adds a new workspace.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created workspace will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspace/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of workspaces to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of workspaces to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "description": "If it is true, response will be have deactivated records.",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "findWorkspaces",
+        "responses": {
+          "200": {
+            "description": "Successfully returned all workspaces.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkspaceInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkspaceInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspacetype/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Workspace"
+        ],
+        "operationId": "createWorkspaceType",
+        "description": "Adds a new workspace type.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorkspaceTypeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Guid of the created workspace type will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/workspacetype/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of workspace types to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of workspace types to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "WorkspaceType"
+        ],
+        "operationId": "findWorkspaceTypes",
+        "responses": {
+          "200": {
+            "description": "Successfully returned all workspace types.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkspaceTypeInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseWorkspaceTypeInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateOfficeRequest": {
+        "type": "object",
+        "required": [
+          "City",
+          "Address"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "City": {
+            "type": "string"
+          },
+          "Address": {
+            "type": "string"
+          },
+          "Longitude": {
+            "type": "number"
+          },
+          "Latitude": {
+            "type": "number"
+          }
+        }
+      },
+      "CreateWorkspaceRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "WorkspaceTypeId"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "IsBookable": {
+            "type": "boolean"
+          },
+          "WorkspaceTypeId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": false
+          }
+        }
+      },
+      "CreateWorkspaceTypeRequest": {
+        "type": "object",
+        "required": [
+          "Name",
+          "BookingRule"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "StartTime": {
+            "type": "string",
+            "format": "date"
+          },
+          "EndTime": {
+            "type": "string",
+            "format": "date"
+          },
+          "BookingRule": {
+            "$ref": "#/components/schemas/BookingRule"
+          }
+        }
+      },
+      "CreateOfficeUsers": {
+        "type": "object",
+        "required": [
+          "UsersIds",
+          "OfficeId"
+        ],
+        "properties": {
+          "OfficeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "UsersIds": {
+            "type": "array",
+            "items":{
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "RemoveOfficeUsers": {
+        "type": "object",
+        "required": [
+          "UsersIds",
+          "OfficeId"
+        ],
+        "properties": {
+          "OfficeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "UsersIds": {
+            "type": "array",
+            "items":{
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "OfficeInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "City",
+          "Address",
+          "IsActive"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "City": {
+            "type": "string"
+          },
+          "Address": {
+            "type": "string"
+          },
+          "Longitude": {
+            "type": "number"
+          },
+          "Latitude": {
+            "type": "number"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "WorkspaceInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "WorkspaceType"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "IsBookable": {
+            "type": "boolean"
+          },
+          "WorkspaceType": {
+            "$ref": "#/components/schemas/WorkspaceTypeInfo"
+          }
+        }
+      },
+      "WorkspaceTypeInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "BookingRule"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "StartTime": {
+            "type": "string",
+            "format": "date",
+            "pattern": ""
+          },
+          "EndTime": {
+            "type": "string",
+            "format": "date",
+            "pattern": ""
+          },
+          "BookingRule": {
+            "$ref": "#/components/schemas/BookingRule"
+          },
+          "IsActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "BookingRule": {
+        "type": "string",
+        "description": "Booking rule type",
+        "enum": [
+          "BookingForbidden",
+          "PartialBooking",
+          "FullBooking"
+        ]
+      },
+      "PatchOfficeDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Name",
+              "/City",
+              "/Address",
+              "/Latitude",
+              "/Longitude",
+              "/IsActive"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "EditOfficeRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "format": "string",
+              "example": "office"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/City",
+            "value": {
+              "format": "string",
+              "example": "Moscow"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Address",
+            "value": {
+              "format": "string",
+              "example": "Moskow, street 51"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchOfficeDocument"
+        }
+      },
+      "ErrorResponse": {
+        "description": "Error information",
+        "type": "object",
+        "properties": {
+          "UtcTime": {
+            "type": "string"
+          },
+          "Header": {
+            "type": "string"
+          },
+          "Message": {
+            "description": "A human readable message providing more details about the error.",
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Status",
+          "Error"
+        ],
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseOfficeInfo": {
+        "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfficeInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseWorkspaceInfo": {
+        "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseWorkspaceTypeInfo": {
+        "type": "object",
+        "required": [
+          "Status",
+          "TotalCount",
+          "Errors"
+        ],
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkspaceTypeInfo"
+            }
+          },
+          "TotalCount": {
+            "type": "integer"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

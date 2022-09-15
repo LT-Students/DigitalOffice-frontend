@@ -1,0 +1,28 @@
+@use 'base/variables';
+
+.time-widget {
+	padding: 32px 48px;
+
+	display: flex;
+	flex-direction: column;
+
+	height: 100%;
+
+	do-title-datepicker {
+		margin-bottom: 68px;
+	}
+
+	.chart {
+		padding-bottom: 30px;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		width: 100%;
+	}
+
+	.legend {
+		align-self: center;
+	}
+}

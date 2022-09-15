@@ -1,0 +1,20 @@
+<h2 mat-dialog-title doUnderline>Загрузить файл</h2>
+<div class="dropzone" [class.have-files]="filesDataSource.haveFiles" doDnd (fileDropped)="onFileDropped($event)">
+	<img
+		*ngIf="!filesDataSource.haveFiles"
+		src="assets/svg/cloud-upload.svg"
+		alt="upload image"
+		width="40"
+		height="40"
+	/>
+	<span class="drag-hint text-secondary_default">Выберите файл или перетяните его сюда</span>
+	<button mat-flat-button (click)="uploadFile.click()" color="primary">Загрузить файл</button>
+	<input #uploadFile hidden type="file" multiple (change)="onFileChanged($event)" />
+</div>
+<mat-dialog-content *ngIf="filesDataSource.haveFiles">
+	<do-table class="table" [dataSource]="filesDataSource" [tableOptions]="tableOptions"></do-table>
+</mat-dialog-content>
+<mat-dialog-actions *ngIf="filesDataSource.haveFiles" align="center">
+	<button class="button" doButton mat-dialog-close>Отмена</button>
+	<button class="button" mat-flat-button color="primary" (click)="uploadFiles()">Сохранить</button>
+</mat-dialog-actions>

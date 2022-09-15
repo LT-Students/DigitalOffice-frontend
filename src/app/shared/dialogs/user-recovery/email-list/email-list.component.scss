@@ -1,0 +1,17 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.email {
+	width: 100%;
+
+	&:not(:last-child) {
+		margin-bottom: 16px;
+	}
+}
+
+.add-email-btn {
+	margin-left: -20px;
+}

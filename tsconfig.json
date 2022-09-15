@@ -8,12 +8,20 @@
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "module": "esnext",
+    "strict": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
     "typeRoots": [
       "node_modules/@types"
     ],
+    "paths": {
+      "@app/*": ["src/app/core/*"],
+      "@api/*": ["src/app/api/*"],
+      "@shared/*": ["src/app/shared/*"]
+    },
     "lib": [
       "es2018",
       "dom"
@@ -21,6 +29,7 @@
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true
+    "strictInjectionParameters": true,
+    "strictTemplates": true
   }
 }

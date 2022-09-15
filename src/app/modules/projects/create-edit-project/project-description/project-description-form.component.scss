@@ -1,0 +1,9 @@
+:host {
+	display: block;
+}
+
+.form {
+	do-form-field:not(:last-child) {
+		margin-bottom: 18px;
+	}
+}

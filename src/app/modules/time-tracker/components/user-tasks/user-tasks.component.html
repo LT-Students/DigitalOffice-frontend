@@ -1,0 +1,17 @@
+<mat-card class="card_grid activities">
+	<do-title-datepicker
+		title="Записи за"
+		[selectDate]="selectedDate$ | async"
+		[maxDate]="maxDate"
+		(dateSelection)="chosenMonthHandler($event)"
+	></do-title-datepicker>
+
+	<ng-container *ngIf="activities$ | async as activities">
+		<div class="tasks">
+			<do-projects [workTimes]="activities.workTimes" [canEdit]="canEdit$ | async"></do-projects>
+		</div>
+		<div class="tasks">
+			<do-leaves [leaves]="activities.leaves"></do-leaves>
+		</div>
+	</ng-container>
+</mat-card>

@@ -1,0 +1,28 @@
+<div *ngIf="selectedUser$ | async as selectedUser" class="employee-page__header flex flex_jc_end">
+	<ng-container *hasPermission="UserRights.AddEditRemoveUsers">
+		<button
+			*ngIf="selectedUser.isActive"
+			mat-button
+			class="employee-page__button mat-body-1 flex"
+			(click)="archiveUser(selectedUser.id)"
+		>
+			<mat-icon fontSet="material-icons-outlined">archive</mat-icon>
+			<span class="employee-page__button-label">Добавить в архив</span>
+		</button>
+		<button
+			*ngIf="!selectedUser.isActive"
+			mat-button
+			class="employee-page__button mat-body-1"
+			(click)="restoreUser(selectedUser)"
+		>
+			<mat-icon fontSet="material-icons-outlined">unarchive</mat-icon>
+			<span class="employee-page__button-label">Восстановить из архива</span>
+		</button>
+	</ng-container>
+</div>
+<mat-card class="card card_employee card_employee__info">
+	<do-employee-page-main-info></do-employee-page-main-info>
+</mat-card>
+<mat-card class="card card_employee card_employee__projects">
+	<do-employee-page-projects></do-employee-page-projects>
+</mat-card>

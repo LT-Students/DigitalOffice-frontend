@@ -1,1 +1,88 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'base/variables';
+@use 'globals/flex';
+@use 'globals/utils';
+@use 'layouts/card';
+@use 'stylesheets/layouts/auth';
+@use 'layouts/table';
+@use 'do/underlined';
+@use 'do/button';
+@use '~@angular/cdk/overlay-prebuilt';
+@use './stylesheets/material/expansion-panel';
+@use './stylesheets/material/mat-button';
+@use './stylesheets/material/mat-checkbox';
+@use './stylesheets/material/mat-select';
+@use './stylesheets/material/autocomplete';
+@use './stylesheets/material/mat-sidenav';
+@use './stylesheets/material/form-field';
+@use './stylesheets/material/dialog';
+@use './stylesheets/material/popover';
+@use './stylesheets/material/tabs';
+@use './stylesheets/material/tooltip';
+@use './stylesheets/news-feed/news-feed';
+
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+
+	box-sizing: border-box;
+
+	//font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+div,
+p {
+	margin: 0;
+	padding: 0;
+}
+
+a,
+a:visited,
+a:hover {
+	text-decoration: none;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+button:focus {
+	outline: none;
+}
+
+textarea {
+	resize: none !important;
+}
+
+.nav-link {
+	margin-bottom: 24px;
+
+	display: flex;
+	align-items: center;
+
+	text-decoration: none;
+
+	cursor: pointer;
+
+	color: variables.$main_text;
+
+	svg {
+		margin-right: 13px;
+
+		width: 5px;
+		height: 10px;
+		stroke: variables.$main_text;
+		fill: none;
+	}
+
+	&:hover {
+		opacity: 0.5;
+	}
+}

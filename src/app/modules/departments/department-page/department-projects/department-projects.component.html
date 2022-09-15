@@ -1,0 +1,14 @@
+<div class="flex header">
+	<do-dynamic-filter [filters]="filterConfig"></do-dynamic-filter>
+	<do-actions *ngIf="canTransferProjects$ | async">
+		<button
+			mat-flat-button
+			color="primary"
+			matTooltip="Перенести проект с другого департамента"
+			(click)="transferProjects()"
+		>
+			<mat-icon [svgIcon]="Icons.Add"></mat-icon>
+		</button>
+	</do-actions>
+</div>
+<do-table [dataSource]="dataSource" [tableOptions]="tableOptions" (rowClick)="navigateToProject($event)"></do-table>

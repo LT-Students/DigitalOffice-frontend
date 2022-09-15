@@ -1,0 +1,35 @@
+<h3 mat-dialog-title>{{ title }}</h3>
+<div class="content">
+	<ng-container *ngIf="!(emailForRecovery$ | async)?.value; else finish">
+		<div class="message">
+			Выберите e-mail сотрудника, на который будет отправлено приглашение или добавьте новый.
+		</div>
+		<do-email-list [form]="form" (selectionChange)="handleChange($event)"></do-email-list>
+	</ng-container>
+	<ng-template #finish>
+		<div class="message text-align_center">
+			На адрес <span class="text-accent_controls_default">{{ (emailForRecovery$ | async)?.value }}</span> было
+			отправлено приглашение.
+		</div>
+	</ng-template>
+</div>
+<mat-dialog-actions class="controls">
+	<ng-container *ngIf="!(emailForRecovery$ | async)?.value; else finishControl">
+		<button mat-button mat-dialog-close data-test="close-dialog">Отмена</button>
+		<button
+			[disabled]="!isFormValid"
+			[loading]="isLoading$ | async"
+			mat-flat-button
+			(click)="onSubmit()"
+			color="primary"
+			data-test="submit-dialog"
+		>
+			Отправить
+		</button>
+	</ng-container>
+	<ng-template #finishControl>
+		<button mat-flat-button [mat-dialog-close]="emailForRecovery$ | async" color="primary" data-test="close-dialog">
+			Всё понятно!
+		</button>
+	</ng-template>
+</mat-dialog-actions>

@@ -1,0 +1,32 @@
+<div class="form" [formGroup]="form">
+	<do-form-field label="Название проекта" class="wide-field">
+		<mat-form-field>
+			<input matInput formControlName="name" type="text" placeholder="Введите название проекта" />
+			<mat-error>{{ form.controls['name'].errors | controlErrors }}</mat-error>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Сокращенное название" [class.wide-field]="isEditMode">
+		<mat-form-field>
+			<input matInput formControlName="shortName" type="text" placeholder="Введите сокр. название" />
+			<mat-error>{{ form.controls['shortName'].errors | controlErrors }}</mat-error>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field *ngIf="!isEditMode" label="Департамент">
+		<mat-form-field>
+			<do-autocomplete
+				formControlName="department"
+				placeholder="Департамент"
+				[options]="departmentAutocompleteConfig.options$ | async"
+				[displayWith]="departmentAutocompleteConfig.displayWithFn"
+				[valueGetter]="departmentAutocompleteConfig.valueGetter"
+				[filterFn]="departmentAutocompleteConfig.filterFn"
+			></do-autocomplete>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Заказчик" class="wide-field">
+		<mat-form-field>
+			<input matInput formControlName="customer" type="text" placeholder="Введите наименование заказчика" />
+			<mat-error>{{ form.controls['customer'].errors | controlErrors }}</mat-error>
+		</mat-form-field>
+	</do-form-field>
+</div>

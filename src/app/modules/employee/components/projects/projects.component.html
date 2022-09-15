@@ -1,0 +1,8 @@
+<h3 class="title" doUnderline underlinedSize="sm">Проекты</h3>
+<do-project-section
+	class="section"
+	*ngFor="let section of sections$ | async"
+	[name]="section.name"
+	[pluralCase]="section.plural"
+	[projects]="section.projects"
+></do-project-section>

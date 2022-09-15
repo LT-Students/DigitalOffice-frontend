@@ -1,0 +1,46 @@
+.section {
+	margin: 40px 0;
+
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+
+	&:first-of-type {
+		margin-bottom: 80px;
+	}
+
+	&__content {
+		margin-top: 30px;
+
+		display: flex;
+		flex-wrap: wrap;
+		gap: 32px;
+	}
+
+	&__button {
+		padding: 0;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+
+		min-width: 286px;
+		height: 180px;
+
+		cursor: pointer;
+
+		background-color: #fff;
+		border-style: none;
+		border-radius: 8px;
+		box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.08);
+
+		&:hover {
+			background: rgba(253, 251, 255, 1);
+		}
+	}
+
+	&__button-label {
+		margin-top: 10px;
+	}
+}

@@ -1,0 +1,60 @@
+<form autocomplete="off" [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+	<h3 mat-dialog-title class="text-align_center">Редактирование компании</h3>
+	<mat-dialog-content *ngIf="company$ | async; else spinner">
+		<div class="form__container">
+			<h4 doUnderline>Компания</h4>
+			<section class="section">
+				<mat-form-field appearance="fill">
+					<mat-label>Название компании</mat-label>
+					<input
+						matInput
+						[formControlName]="EditPath.COMPANY_NAME"
+						placeholder="Введите название компании"
+						required
+					/>
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Название портала</mat-label>
+					<input matInput placeholder="Введите название портала" required />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Доменное имя</mat-label>
+					<input matInput placeholder="Введите доменное имя" required />
+				</mat-form-field>
+			</section>
+			<mat-divider></mat-divider>
+			<br />
+			<h4 doUnderline>SMTP</h4>
+			<section class="section">
+				<mat-form-field appearance="fill">
+					<mat-label>Хост</mat-label>
+					<input matInput placeholder="хост" required />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>Порт</mat-label>
+					<input matInput placeholder="порт" required />
+				</mat-form-field>
+				<mat-form-field appearance="fill">
+					<mat-label>E-mail</mat-label>
+					<input matInput placeholder="example@mail.com" required />
+				</mat-form-field>
+				<mat-checkbox required>Включить SSL</mat-checkbox>
+			</section>
+		</div>
+	</mat-dialog-content>
+	<mat-dialog-actions class="flex flex_jc_center">
+		<button mat-button mat-dialog-close type="button">Отмена</button>
+		<button
+			mat-flat-button
+			color="primary"
+			type="submit"
+			[loading]="(loading$$ | async) ?? false"
+			[disabled]="companyForm.invalid"
+		>
+			Редактировать
+		</button>
+	</mat-dialog-actions>
+</form>
+<ng-template #spinner>
+	<mat-spinner></mat-spinner>
+</ng-template>

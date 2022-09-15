@@ -1,0 +1,16 @@
+@use 'base/variables' as variables;
+
+:host {
+	display: flex;
+	flex-direction: column;
+
+	.label {
+		margin-bottom: 8px;
+	}
+
+	.required-marker::after {
+		content: '*';
+
+		color: variables.$alert;
+	}
+}

@@ -1,0 +1,69 @@
+<mat-card class="card card_standard">
+	<div class="header">
+		<h3 doUnderline underlinedSize="sm">Офисы</h3>
+		<button mat-flat-button color="accent" (click)="onAddEditOffice()">+ Добавить офис</button>
+	</div>
+	<div class="filters" [formGroup]="filters">
+		<do-form-field label="Статус" class="filters__status">
+			<mat-form-field>
+				<mat-select formControlName="showDeactivated">
+					<mat-option [value]="false">Активные</mat-option>
+					<mat-option [value]="true">Все</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</do-form-field>
+	</div>
+	<ng-container *ngIf="offices$ | async as offices">
+		<table *ngIf="offices.totalCount ?? 0 > 0; else emptyList" class="table" matSort>
+			<colgroup>
+				<col class="column column_width_m" />
+				<col class="column column_width_l" />
+				<col class="column column_width_m" />
+			</colgroup>
+			<thead>
+				<tr class="row">
+					<th mat-header-row="city" class="cell">
+						<p>Город</p>
+					</th>
+					<th mat-header-row="address" class="cell">
+						<p>Адрес</p>
+					</th>
+					<th mat-header-row="name" class="cell">
+						<p>Название</p>
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let office of offices.body" class="row">
+					<td class="cell">
+						<p class="cell__content cell__content_ellipsissed">{{ office.city ?? '—' }}</p>
+					</td>
+					<td class="cell">
+						<do-comment [text]="office.address"></do-comment>
+					</td>
+					<td class="cell">
+						<p class="cell__content cell__content_ellipsissed">{{ office.name ?? '—' }}</p>
+					</td>
+					<td class="cell text-align_right">
+						<button mat-icon-button (click)="onAddEditOffice(office)">
+							<mat-icon [svgIcon]="Icons.Edit"></mat-icon>
+						</button>
+						<button *ngIf="office.isActive; else restore" mat-icon-button (click)="onDeleteOffice(office)">
+							<mat-icon [svgIcon]="Icons.Delete"></mat-icon>
+						</button>
+						<ng-template #restore>
+							<button mat-icon-button (click)="onRestoreOffice(office)">
+								<mat-icon [svgIcon]="Icons.Unarchive"></mat-icon>
+							</button>
+						</ng-template>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-template #emptyList>
+			<do-empty-list [emptyMessage]="'Нет данных об офисах'"></do-empty-list>
+		</ng-template>
+	</ng-container>
+	<mat-paginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
+</mat-card>

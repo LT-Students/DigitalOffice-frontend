@@ -1,0 +1,188 @@
+@use 'base/variables';
+@use 'base/palettes' as *;
+@use '~@angular/material' as mat;
+
+.employee-info {
+	&__wrapper {
+		display: grid;
+
+		min-width: 600px;
+
+		grid-template-columns: 3fr 4fr 3fr;
+	}
+
+	&__main {
+		margin: 56px 50px 52px;
+
+		display: flex;
+		flex-direction: column;
+
+		align-items: center;
+
+		box-sizing: content-box;
+
+		text-align: center;
+	}
+
+	&__name {
+		box-sizing: border-box;
+		width: 250px;
+
+		word-wrap: break-word;
+	}
+
+	&__general {
+		margin: 52px 32px 52px 15px;
+	}
+
+	&__general-header {
+		padding: 7px 0;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+	}
+
+	&__edit-button {
+		display: inline-flex;
+		align-items: baseline;
+	}
+
+	&__edit {
+		margin-right: 5px;
+	}
+
+	&__additional {
+		position: relative;
+
+		background-color: mat.get-color-from-palette($do-grey, 50);
+	}
+
+	&__communications {
+		position: absolute;
+		top: 0;
+		left: 0;
+
+		padding-top: 52px;
+
+		overflow-y: hidden;
+
+		width: 100%;
+		height: 100%;
+	}
+
+	&__avatar {
+		position: relative;
+
+		margin-bottom: 12px;
+
+		overflow: hidden;
+
+		width: 180px;
+		height: 180px;
+
+		border-radius: 50%;
+
+		align-self: center;
+	}
+
+	&__upload-button {
+		position: absolute;
+		left: 0;
+		bottom: -50%;
+
+		padding-top: 8px;
+
+		width: 180px;
+		height: 60px;
+
+		cursor: pointer;
+
+		color: rgba(255, 255, 255, 0.9);
+
+		background-color: rgba(67, 67, 72, 0.6);
+
+		transition: bottom 0.1s ease-in;
+	}
+
+	&__avatar:hover &__upload-button {
+		bottom: 0;
+	}
+
+	&__upload-icon {
+		vertical-align: bottom;
+	}
+
+	&__about {
+		margin: 5px;
+
+		line-height: 21px;
+		text-align: center;
+		word-break: break-word;
+	}
+
+	&__columns {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&__second-column {
+		margin-left: 32px;
+
+		width: 185px;
+
+		mat-form-field {
+			width: 185px;
+		}
+	}
+
+	&__hint {
+		margin-left: 2px;
+
+		width: 16px;
+		height: 16px;
+
+		font-size: 16px;
+
+		vertical-align: -20%;
+	}
+
+	&__required-block {
+		text-align: left;
+	}
+
+	&__field {
+		margin: 0 0 6px;
+
+		display: inline-block;
+	}
+}
+
+.controls {
+	position: absolute;
+	bottom: 0;
+
+	padding: 32px 0 52px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&__button {
+		margin: 0 35px;
+
+		width: 180px;
+	}
+}
+
+.link {
+	cursor: pointer;
+
+	color: variables.$accent_controls_default;
+
+	&:hover {
+		text-decoration: underline;
+
+		color: variables.$accent_controls_hover;
+	}
+}

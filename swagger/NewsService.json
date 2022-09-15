@@ -1,0 +1,1398 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.2.6.0",
+    "title": "NewsService",
+    "description": "NewsService, is intended to work with the news - create them, update info and etc."
+  },
+  "servers": [
+    {
+      "url": "https://news.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://news.dev.ltdo.xyz",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/news/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "createNews",
+        "description": "Adds news and returns its Id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "New news Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/newsId"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "editNews",
+        "description": "Edit the specified news by id.\n* The user must have to be owner or has right.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditNewsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/newsId"
+        }
+      ],
+      "get": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "getNews",
+        "responses": {
+          "200": {
+            "description": "Successfully returned news information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseNewsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of news to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "publisherId",
+          "in": "query",
+          "description": "Publisher global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "includeChannel",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        },
+        {
+          "name": "channelId",
+          "in": "query",
+          "description": "Channel global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        },
+        {
+          "name": "tagId",
+          "in": "query",
+          "description": "Tag global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "News"
+        ],
+        "operationId": "findNews",
+        "description": "Returns all news information by filter.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned list of news.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseNewsInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channel/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Channel"
+        ],
+        "operationId": "createChannel",
+        "description": "Adds channel and returns its Id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateChannelRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "New channel Id, Satus and Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channel/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/channelId"
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Channel"
+        ],
+        "operationId": "editChannel",
+        "description": "Edit the specified channel by id.\n* The user must have to be owner or has right.\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditChannelRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channel/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/channelId"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of channel news to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of channe news to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": false
+        },
+        {
+          "name": "includeNews",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "channel"
+        ],
+        "operationId": "getChannel",
+        "responses": {
+          "200": {
+            "description": "Successfully returned channel information with included news.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseChannelResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/channel/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of channels to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "Name",
+          "in": "query",
+          "description": "Channel name.",
+          "schema": {
+            "type": "string"
+          },
+          "required": false
+        },
+        {
+          "name": "includeDeactivated",
+          "in": "query",
+          "schema": {
+            "type": "boolean"
+          },
+          "required": false
+        }
+      ],
+      "get": {
+        "tags": [
+          "Channel"
+        ],
+        "operationId": "findChannel",
+        "description": "Returns all channels information by filter.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned list of channels.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseChannelInfo"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Tag"
+        ],
+        "operationId": "createTag",
+        "description": "Adds tag and returns its Id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTagRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "New tag Id, Satus and Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/newsId"
+        }
+      ],
+      "put": {
+        "tags": [
+          "Tag"
+        ],
+        "operationId": "editTag",
+        "description": "Edit specified tags to news by news Id. Remove specified tags from news by news Id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditNewsTagsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tag/find": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "skipCount",
+          "in": "query",
+          "description": "Number of entries to skip.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        },
+        {
+          "name": "takeCount",
+          "in": "query",
+          "description": "Number of tags to take.",
+          "schema": {
+            "type": "integer"
+          },
+          "required": true
+        }
+      ],
+      "get": {
+        "tags": [
+          "Tag"
+        ],
+        "operationId": "findTag",
+        "description": "Returns all Tags information.",
+        "responses": {
+          "200": {
+            "description": "Successfully returned list of tags.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FindResultResponseTagInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateNewsRequest": {
+        "type": "object",
+        "required": [
+          "Preview",
+          "Content",
+          "Subject",
+          "IsActive",
+          "TagsIds"
+        ],
+        "properties": {
+          "Preview": {
+            "description": "The news preview.",
+            "type": "string"
+          },
+          "Content": {
+            "description": "The news content.",
+            "type": "string"
+          },
+          "Subject": {
+            "description": "The news subject.",
+            "type": "string"
+          },
+          "IsActive": {
+            "description": "Allows you to implement delayed publication.",
+            "type": "boolean"
+          },
+          "ChannelId": {
+            "description": "Unique identifier of the channel in which the news is published.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "TagsIds": {
+            "description": "List Ids of news tags.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "EditNewsRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/Preview",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Content",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Subject",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/ChannelId",
+            "value": {
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/IsActive",
+            "value": {
+              "format": "string",
+              "example": false
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/NewsPatchOperation"
+        }
+      },
+      "NewsPatchOperation": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/Preview",
+              "/Content",
+              "/Subject",
+              "/ChannelId",
+              "/IsActive"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "CreateChannelRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "The channels' name.",
+            "type": "string"
+          },
+          "PinnedMessage": {
+            "type": "string"
+          },
+          "PinnedNewsId": {
+            "type": "string",
+            "format": "uud"
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageConsist",
+            "nullable": true
+          }
+        }
+      },
+      "EditChannelRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/PinnedMessage",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/PinnedNewsId",
+            "value": {
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Name",
+            "value": {
+              "format": "string"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Image",
+            "value": {
+              "format": "object",
+              "Image": {
+                "$ref": "#/components/schemas/ImageConsist"
+              }
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/IsActive",
+            "value": {
+              "format": "string",
+              "example": false
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/ChannelPatchOperation"
+        }
+      },
+      "ChannelPatchOperation": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/PinnedMessage",
+              "/PinnedNewsId",
+              "/Name",
+              "/IsActive",
+              "/Image"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "CreateTagRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "The tag's name.",
+            "type": "string"
+          }
+        }
+      },
+      "EditNewsTagsRequest": {
+        "type": "object",
+        "required": [
+          "TagsToAdd",
+          "TagsToRemove"
+        ],
+        "properties": {
+          "TagsToAdd": {
+            "description": "List of tagsIds to add in specified news.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "TagsToRemove": {
+            "description": "List of tagsIds to remove from specified news.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      },
+      "UserInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "FirstName",
+          "LastName"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "FirstName": {
+            "type": "string"
+          },
+          "LastName": {
+            "type": "string"
+          },
+          "MiddleName": {
+            "type": "string"
+          },
+          "Avatar": {
+            "$ref": "#/components/schemas/ImageData"
+          }
+        }
+      },
+      "ImageData": {
+        "type": "object",
+        "properties": {
+          "ImageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Type": {
+            "type": "string",
+            "nullable": true
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultResponseNewsResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "required": [
+              "id",
+              "preview",
+              "content",
+              "subject",
+              "isActive",
+              "createdAtUtc"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "preview": {
+                "type": "string"
+              },
+              "content": {
+                "type": "string"
+              },
+              "subject": {
+                "type": "string"
+              },
+              "publisher": {
+                "$ref": "#/components/schemas/UserInfo"
+              },
+              "creator": {
+                "$ref": "#/components/schemas/UserInfo"
+              },
+              "channel": {
+                "$ref": "#/components/schemas/ChannelInfo"
+              },
+              "tags": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TagsInfo"
+                }
+              },
+              "isActive": {
+                "type": "boolean"
+              },
+              "publishedAtUtc": {
+                "type": "string",
+                "format": "date",
+                "nullable": true
+              },
+              "createdAtUtc": {
+                "type": "string",
+                "format": "date",
+                "nullable": false
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponse": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter news."
+          },
+          "Body": {
+            "type": "object"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseNewsInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter news."
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NewsInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseChannelResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "required": [
+              "id",
+              "name"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "name": {
+                "type": "string"
+              },
+              "pinnedMessage": {
+                "type": "string"
+              },
+              "pinnedNewsId": {
+                "type": "string",
+                "format": "uuid",
+                "nullable": true
+              },
+              "image": {
+                "$ref": "#/components/schemas/ImageConsist"
+              },
+              "news": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/NewsInfo"
+                }
+              }
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseChannelInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter channels."
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChannelInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FindResultResponseTagInfo": {
+        "type": "object",
+        "properties": {
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "TotalCount": {
+            "type": "integer",
+            "description": "Total number of finded by filter tags."
+          },
+          "Body": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagsInfo"
+            }
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "NewsInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Preview",
+          "Subject",
+          "IsActive",
+          "PublishedAtUtc"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Preview": {
+            "type": "string"
+          },
+          "Subject": {
+            "type": "string"
+          },
+          "Creator": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "Publisher": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "Channel": {
+            "$ref": "#/components/schemas/ChannelInfo"
+          },
+          "IsActive": {
+            "type": "boolean"
+          },
+          "CreatedAtUtc": {
+            "type": "string",
+            "format": "date"
+          },
+          "PublishedAtUtc": {
+            "type": "string",
+            "format": "date"
+          },
+          "Tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TagsInfo"
+            }
+          }
+        }
+      },
+      "ChannelInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "PinnedMessage": {
+            "type": "string"
+          },
+          "PinnedNewsId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "Image": {
+            "$ref": "#/components/schemas/ImageConsist",
+            "nullable": true
+          }
+        }
+      },
+      "TagsInfo": {
+        "type": "object",
+        "required": [
+          "Id",
+          "Name",
+          "Count"
+        ],
+        "properties": {
+          "Id": {
+            "type":"string",
+            "format": "uud"
+          },
+          "Name": {
+            "type":"string"
+          },
+          "Count": {
+            "type": "integer"
+          }
+        }
+      },
+      "ImageConsist": {
+        "type": "object",
+        "required": [
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Content": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      }
+    },
+    "parameters": {
+      "newsId": {
+        "name": "newsId",
+        "in": "query",
+        "description": "News global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "channelId": {
+        "name": "channelId",
+        "in": "query",
+        "description": "channel global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "tagId": {
+        "name": "tagId",
+        "in": "query",
+        "description": "channel global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      }
+    }
+  }
+}

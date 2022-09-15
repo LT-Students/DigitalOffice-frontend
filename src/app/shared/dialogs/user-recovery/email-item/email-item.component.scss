@@ -1,0 +1,27 @@
+.email {
+	&-container {
+		display: flex;
+
+		width: 100%;
+	}
+
+	&-input {
+		flex: 1;
+	}
+
+	&-save {
+		cursor: pointer;
+	}
+
+	&-edit-btn {
+		height: 20px;
+
+		line-height: 20px;
+	}
+
+	&-error {
+		position: relative;
+		top: 2px;
+		left: 26px;
+	}
+}

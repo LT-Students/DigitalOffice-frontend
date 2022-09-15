@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/OfficeService.json",
+  "output": "src/app/api/office-service",
+  "templates": "swagger/templates",
+  "module": "OfficeApiModule",
+  "excludeParameters": [
+    "token"
+  ],
+  "serviceSuffix": "ApiService"
+}

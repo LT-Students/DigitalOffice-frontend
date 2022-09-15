@@ -1,0 +1,35 @@
+<mat-dialog-content>
+	<h2 class="title">Обратная связь</h2>
+	<div class="flex flex_jc_space-between">
+		<h4 class="name">{{ feedback.senderFullName }}</h4>
+		<span class="date">{{ feedback.createdAtUtc | date: 'dd.MM.yyyy HH:mm' }}</span>
+	</div>
+	<div class="info">
+		<div>
+			<h5 class="field-title">Категория запроса</h5>
+			<span>{{ feedback.type | feedbackCategory }}</span>
+		</div>
+		<div>
+			<h5 class="field-title">Комментарий</h5>
+			<span>{{ feedback.content }}</span>
+		</div>
+		<div>
+			<h5 class="field-title">Материалы</h5>
+			<span *ngIf="!feedback.imagesCount">Не приложены</span>
+			<ng-container *ngIf="feedback.imagesCount">
+				<div class="flex flex_jc_center">
+					<mat-spinner *ngIf="loading$ | async" color="accent"></mat-spinner>
+				</div>
+				<div *ngIf="images$ | async as images" class="images">
+					<do-feedback-image
+						*ngFor="let image of images; index as i"
+						[isPreview]="true"
+						[image]="image"
+						(imageActionClicked)="viewer.selectedIndex = i; viewer.openImage()"
+					></do-feedback-image>
+					<do-image-viewer #viewer [images]="images"></do-image-viewer>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</mat-dialog-content>

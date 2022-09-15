@@ -1,0 +1,28 @@
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+
+	.has-hint {
+		margin-bottom: 22px;
+	}
+}
+
+.title {
+	margin-bottom: 8px;
+}
+
+.category {
+	max-width: 257px;
+}
+
+.actions {
+	margin-top: 32px;
+
+	display: flex;
+	justify-content: center;
+
+	button {
+		width: 176px;
+	}
+}

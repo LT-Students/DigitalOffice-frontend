@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/FeedbackService.json",
+  "output": "src/app/api/feedback-service",
+  "templates": "swagger/templates",
+  "module": "FeedbackApiModule",
+  "excludeParameters": [
+    "token"
+  ],
+  "serviceSuffix": "ApiService"
+}

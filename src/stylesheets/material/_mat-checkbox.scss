@@ -1,0 +1,11 @@
+@use 'base/variables' as variables;
+
+.mat-checkbox {
+	.mat-checkbox-inner-container {
+		height: 18px;
+		width: 18px;
+	}
+	.mat-checkbox-frame {
+		border-color: variables.$accent_controls_default;
+	}
+}

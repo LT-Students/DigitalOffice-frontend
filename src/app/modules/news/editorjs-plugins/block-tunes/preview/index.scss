@@ -1,0 +1,18 @@
+.ce-block__indicators {
+	position: absolute;
+	top: 0;
+	left: calc(100% + 10px);
+
+	display: flex;
+	gap: 8px;
+}
+
+.ce-block-indicator {
+	visibility: hidden;
+
+	cursor: pointer;
+
+	&_active {
+		visibility: visible;
+	}
+}

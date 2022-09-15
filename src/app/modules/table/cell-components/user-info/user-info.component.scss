@@ -1,0 +1,30 @@
+:host {
+	display: flex;
+}
+
+.info {
+	margin-left: 12px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	min-width: 0;
+}
+
+.icon {
+	margin-left: 4px;
+}
+
+.no-overflow {
+	overflow: hidden;
+
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.link {
+	&:visited {
+		color: unset;
+	}
+}

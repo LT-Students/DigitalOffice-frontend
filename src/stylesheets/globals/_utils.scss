@@ -1,0 +1,31 @@
+.vertical-align {
+	&_middle {
+		vertical-align: middle;
+	}
+}
+
+.text-align {
+	&_center {
+		text-align: center;
+	}
+
+	&_left {
+		text-align: left;
+	}
+
+	&_right {
+		text-align: right;
+	}
+}
+
+.break-word {
+	word-break: break-word;
+}
+
+.position-relative {
+	position: relative;
+}
+
+.pointer {
+	cursor: pointer;
+}

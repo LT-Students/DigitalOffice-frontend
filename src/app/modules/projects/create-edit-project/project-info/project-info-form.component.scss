@@ -1,0 +1,9 @@
+.form {
+	display: grid;
+	grid-template: repeat(3, auto) / 0.85fr 1fr;
+	gap: 18px;
+}
+
+.wide-field {
+	grid-column: span 2;
+}

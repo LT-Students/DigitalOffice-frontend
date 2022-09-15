@@ -1,0 +1,38 @@
+@use 'base/variables' as variables;
+
+.communications {
+	display: flex;
+
+	overflow: hidden;
+	flex-direction: column;
+
+	height: 100%;
+
+	background-color: variables.$light_1;
+}
+
+.header {
+	margin-bottom: 8px;
+	padding: 0 32px;
+
+	display: flex;
+
+	justify-content: space-between;
+	align-items: center;
+
+	.title {
+		margin-bottom: 0;
+	}
+}
+
+.list {
+	overflow-y: auto;
+
+	.item {
+		padding: 0 32px;
+
+		&:hover {
+			background: variables.$bg_2;
+		}
+	}
+}

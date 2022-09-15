@@ -1,0 +1,21 @@
+@use 'base/variables';
+
+.hidden-field {
+	position: absolute;
+
+	visibility: hidden;
+
+	width: 0;
+	height: 0;
+}
+
+.month-picker {
+	display: inline-flex;
+	align-items: center;
+
+	cursor: pointer;
+}
+
+.no-margin {
+	margin: 0;
+}

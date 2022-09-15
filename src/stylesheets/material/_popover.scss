@@ -1,0 +1,14 @@
+@use 'base/variables' as variables;
+
+.mde-popover-content {
+	margin-bottom: 8px;
+	padding: 12px;
+
+	color: #fff;
+	background-color: variables.$tooltip;
+	border-radius: 8px;
+}
+
+.mde-popover-direction-arrow {
+	border-color: transparent !important;
+}

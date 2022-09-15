@@ -1,0 +1,14 @@
+<a
+	class="item"
+	routerLinkActive="item_active"
+	[routerLink]="link.path"
+	[routerLinkActiveOptions]="isActiveLinkOptions"
+	[matTooltip]="link.title"
+	[matTooltipDisabled]="_isWideScreen"
+	matTooltipPosition="right"
+>
+	<div class="icon">
+		<mat-icon [svgIcon]="link.icon"></mat-icon>
+	</div>
+	<span class="title" *ngIf="_isWideScreen">{{ link.title }}</span>
+</a>

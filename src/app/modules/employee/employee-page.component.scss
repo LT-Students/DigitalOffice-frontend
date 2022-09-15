@@ -1,0 +1,29 @@
+.card_employee {
+	margin-bottom: 45px;
+
+	&__info {
+		padding: 0;
+	}
+
+	&__projects {
+		padding: 52px 47px;
+	}
+}
+
+.card_employee:last-child {
+	margin-bottom: 0;
+}
+
+.employee-page {
+	&__button {
+		margin-bottom: 15px;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__button-label {
+		margin-left: 7px;
+	}
+}

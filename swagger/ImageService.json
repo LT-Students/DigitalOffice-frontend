@@ -1,0 +1,316 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.1.0",
+    "title": "ImageService",
+    "description": "ImageService, is intended to work with the image."
+  },
+  "servers": [
+    {
+      "url": "https://image.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://image.dev.ltdo.xyz",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/image/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/imageId"
+        },
+        {
+          "$ref": "#/components/parameters/imageSource"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "getImage",
+        "description": "Returns image by its id.",
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseImageResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "NewsImage"
+        ],
+        "operationId": "createNewsImage",
+        "description": "Adds image and returns its Id.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "New image Id, Satus and Errors",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponseCreateImageNewsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fileimage/get": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "$ref": "#/components/parameters/imageId"
+        },
+        {
+          "$ref": "#/components/parameters/imageSource"
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateImageRequest": {
+        "type": "object",
+        "required": [
+          "Content",
+          "Extension",
+          "EnablePreview"
+        ],
+        "properties": {
+          "Content": {
+            "description": "The image' content.",
+            "type": "string"
+          },
+          "Extension": {
+            "description": "The image' extension.",
+            "type": "string",
+            "example": ".jpg"
+          },
+          "Name": {
+            "description": "The image' name.",
+            "type": "string"
+          },
+          "EnablePreview": {
+            "description": "The variable enable preview image'.",
+            "type": "boolean"
+          }
+        }
+      },
+      "OperationResultResponseCreateImageNewsResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/CreateImageNewsResponse"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateImageNewsResponse": {
+        "type": "object",
+        "required": [
+          "ImageId"
+        ],
+        "properties": {
+          "ImageId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "PreviewId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "OperationResultResponseImageResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "$ref": "#/components/schemas/ImageResponse"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ImageResponse":{
+        "type": "object",
+        "required": [
+          "Id",
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Content": {
+            "type": "string"
+          },
+          "Extension": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "required": [
+          "Status",
+          "Errors"
+        ],
+        "properties": {
+          "Body": {
+            "type": "object"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      }
+    },
+    "parameters": {
+      "imageId": {
+        "name": "imageId",
+        "in": "query",
+        "description": "Image global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      },
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ"
+        },
+        "required": true
+      },
+      "imageSource":{
+        "name": "source",
+        "in": "query",
+        "description": "Image source.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "User",
+            "Message",
+            "Project",
+            "News",
+            "Education"
+          ]
+        },
+        "required": true
+      }
+    }
+  }
+}

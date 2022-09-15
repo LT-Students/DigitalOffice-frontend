@@ -1,0 +1,11 @@
+.card {
+	overflow-x: auto;
+
+	&_standard {
+		padding: 52px 48px;
+	}
+
+	&_grid {
+		height: 100%;
+	}
+}

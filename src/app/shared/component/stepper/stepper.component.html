@@ -1,0 +1,15 @@
+	<button mat-icon-button type="button" [disabled]="disabled" class="field__button" (click)="onChangeClick(-step)">
+		-
+	</button>
+	<input
+		type="text"
+		matInput
+		[formControl]="stepperControl"
+		readonly
+		[placeholder]="placeholder"
+		[required]="required"
+		class="field__input"
+	/>
+	<button mat-icon-button type="button" [disabled]="disabled" class="field__button" (click)="onChangeClick(step)">
+		+
+	</button>

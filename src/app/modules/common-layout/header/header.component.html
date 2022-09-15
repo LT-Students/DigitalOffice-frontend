@@ -1,0 +1,21 @@
+<nav class="header">
+	<button doButton class="feedback-dialog" (click)="openFeedbackForm()">
+		<mat-icon [svgIcon]="Icons.Bug"></mat-icon>
+		&nbsp;Сообщить об ошибке
+	</button>
+	<ng-container *ngIf="currentUser$ | async as currentUser">
+		<div class="avatar" [matMenuTriggerFor]="menu">
+			<do-profile-image [image]="currentUser?.avatar" [userInitials]="currentUser" size="s"></do-profile-image>
+			<span class="avatar__greeting">
+				Привет, <strong>{{ currentUser?.firstName }}</strong>
+			</span>
+		</div>
+
+		<mat-menu #menu="matMenu" xPosition="before">
+			<button mat-menu-item [routerLink]="[AppRoutes.Users, currentUser?.id]">Карточка сотрудника</button>
+			<button mat-menu-item (click)="onChangePasswordClick()">Сменить пароль</button>
+			<button mat-menu-item (click)="onLogoutClick()">Выход</button>
+		</mat-menu>
+	</ng-container>
+</nav>
+<ngx-loading-bar [includeSpinner]="false" [fixed]="false" color="#FF8F65"></ngx-loading-bar>

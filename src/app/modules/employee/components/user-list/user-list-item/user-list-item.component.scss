@@ -1,0 +1,33 @@
+:host {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.user {
+	flex: 1;
+
+	display: flex;
+
+	.link {
+		cursor: pointer;
+
+		&.name:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.user-info {
+		margin-left: 20px;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.name {
+		align-self: flex-start;
+
+		margin-bottom: 4px;
+	}
+}

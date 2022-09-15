@@ -1,0 +1,21 @@
+@use 'base/variables' as variables;
+
+.mat-autocomplete-panel {
+	.mat-option {
+		height: 3em;
+
+		font-size: inherit;
+		line-height: 3em;
+
+		color: variables.$secondary_default;
+
+		&:hover,
+		&.mat-active {
+			color: variables.$main_text;
+		}
+
+		&.mat-selected:not(.mat-option-multiple) {
+			background: transparent;
+		}
+	}
+}

@@ -1,0 +1,4 @@
+<div *ngIf="label" class="label" [ngClass]="labelClass" [class.required-marker]="required || control?.required">
+	{{ label }}
+</div>
+<ng-content></ng-content>

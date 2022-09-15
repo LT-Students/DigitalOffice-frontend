@@ -1,0 +1,19 @@
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.dates-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 8px;
+}
+
+.submit-button {
+	margin-top: 20px;
+
+	width: 100%;
+	max-width: 192px;
+	align-self: center;
+}

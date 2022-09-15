@@ -1,0 +1,9 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/NewsService.json",
+  "output": "src/app/api/news-service",
+  "templates": "swagger/templates",
+  "module": "NewsApiModule",
+  "excludeParameters": ["token"],
+  "serviceSuffix": "ApiService"
+}

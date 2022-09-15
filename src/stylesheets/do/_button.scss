@@ -1,0 +1,66 @@
+@use '@angular/material' as mat;
+@use 'base/variables' as variables;
+@use '../theme' as theme;
+
+$typography: mat.get-typography-config(theme.$custom-typography);
+
+.do-button {
+	margin: 0;
+	padding: 0 12px;
+
+	display: inline-block;
+	overflow: visible;
+
+	box-sizing: border-box;
+	min-width: 32px;
+	height: 36px;
+
+	font-family: mat.font-family($typography);
+
+	font-size: mat.font-size($typography, 'button');
+
+	line-height: 36px;
+	text-align: center;
+	vertical-align: baseline;
+	white-space: nowrap;
+	text-decoration: none;
+
+	cursor: pointer;
+	user-select: none;
+
+	color: variables.$secondary_default;
+	background: none;
+	border: none;
+	border-radius: 5px;
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+
+	> * {
+		vertical-align: middle;
+	}
+
+	&:hover:not(:disabled, [disabled]) {
+		color: variables.$secondary_hover;
+	}
+
+	&:active,
+	&:focus:active {
+		&:not(:disabled, [disabled]) {
+			color: variables.$secondary_active;
+		}
+	}
+
+	&:disabled,
+	&[disabled] {
+		cursor: default;
+
+		color: variables.$typo;
+
+		background: variables.$bg_2;
+	}
+
+	&:focus-visible {
+		color: variables.$accent_controls_default;
+		outline: 2px solid variables.$accent_controls_default;
+	}
+}

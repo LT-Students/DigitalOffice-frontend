@@ -1,0 +1,25 @@
+@use 'base/variables' as variables;
+
+.dropzone {
+	margin-bottom: 18px;
+	padding: 48px 48px 68px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	width: 100%;
+
+	background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='#{variables.toRGB(variables.$accent_color)}' stroke-width='1' stroke-dasharray='12%2c8' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
+	border-radius: 10px;
+}
+
+.drag-hint {
+	margin-bottom: 20px;
+}
+
+.upload-message {
+	margin-bottom: 47px;
+
+	text-align: center;
+}

@@ -1,0 +1,60 @@
+<div class="modal">
+	<h3 class="modal__title">
+		Редактирование часов за проект
+		<span class="text-accent_controls_default project-name">
+			{{ workTime.project.name }}
+		</span>
+	</h3>
+	<div class="content" [formGroup]="editForm">
+		<div class="flex flex_ai_end">
+			<do-form-field class="modal__hours" label="Количество часов" labelClass="text-main">
+				<mat-form-field>
+					<input
+						matInput
+						doNumberInput
+						formControlName="userHours"
+						type="text"
+						placeholder="0"
+						data-test="edit-project-time-input"
+					/>
+					<mat-error>
+						{{ editForm.controls['userHours'].errors | controlErrors }}
+					</mat-error>
+				</mat-form-field>
+			</do-form-field>
+			<span class="mat-h3 date">&nbsp;за {{ workTimeDate | dateTime: 'LLLL yyyy' }}</span>
+		</div>
+		<do-form-field label="Комментарий" labelClass="text-main">
+			<mat-form-field>
+				<textarea
+					#comment
+					cdkTextareaAutosize
+					cdkAutosizeMinRows="5"
+					cdkAutosizeMaxRows="5"
+					matInput
+					formControlName="description"
+					maxlength="500"
+					placeholder="Написать..."
+					data-test="edit-project-comment-input"
+				></textarea>
+				<mat-hint>{{ comment.value.length }}/500</mat-hint>
+				<mat-error>
+					{{ editForm.controls['description'].errors | controlErrors }}
+				</mat-error>
+			</mat-form-field>
+		</do-form-field>
+		<div class="controls">
+			<button doButton type="button" (click)="close()" data-test="close-dialog-btn">Отменить</button>
+			<button
+				mat-flat-button
+				color="primary"
+				type="submit"
+				[loading]="loading$ | async"
+				(click)="onSubmit()"
+				data-test="edit-project-save-btn"
+			>
+				Сохранить часы
+			</button>
+		</div>
+	</div>
+</div>

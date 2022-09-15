@@ -1,0 +1,15 @@
+<h3 doUnderline underlinedSize="sm" class="no-margin">
+	{{ title }}&nbsp;
+	<span
+		(click)="picker.open()"
+		class="mat-h3 month-picker no-margin text-accent_controls_default"
+		[attr.data-test]="'title-datepicker-' + id"
+	>
+		{{ selectDate | dateTime: 'LLLL y' }}
+		<mat-icon [svgIcon]="Icons.ArrowDownV1"></mat-icon>
+	</span>
+</h3>
+<mat-form-field class="hidden-field">
+	<input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="$any(picker)" [(ngModel)]="selectDate" />
+	<mat-datepicker #picker startView="year" (monthSelected)="chosenMonthHandler($event, picker)"></mat-datepicker>
+</mat-form-field>

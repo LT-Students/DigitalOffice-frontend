@@ -1,0 +1,805 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.1.0",
+    "title": "EducationService",
+    "description": "EducationService is an API that intended to work with users educations."
+  },
+  "servers": [
+    {
+      "url": "https://education.ltdo.xyz",
+      "description": "Production server"
+    },
+    {
+      "url": "https://education.dev.ltdo.xyz",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/education/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Education"
+        ],
+        "operationId": "createEducation",
+        "description": "The method attempts to add the user education.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEducationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Created education Id (uuid) will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/education/edit": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "educationId",
+          "in": "query",
+          "description": "Specific education id",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "patch": {
+        "tags": [
+          "Education"
+        ],
+        "operationId": "editEducation",
+        "description": "Update education properties.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditEducationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Update education operation success (boolean) status will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/education/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        },
+        {
+          "name": "educationId",
+          "in": "query",
+          "description": "Education global unique identifier.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "required": true
+        }
+      ],
+      "delete": {
+        "tags": [
+          "Education"
+        ],
+        "operationId": "removeEducation",
+        "description": "Remove the specified education by id.",
+        "responses": {
+          "200": {
+            "description": "Ok.\n* Remove education operation success (boolean) status will be in response Body property.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/educationform/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "EducationForm"
+        ],
+        "operationId": "createEducationForm",
+        "description": "The method attempts to add education's form.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEducationFormRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. Form was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/educationtype/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "EducationType"
+        ],
+        "operationId": "createEducationType",
+        "description": "The method attempts to add education's type.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEducationTypeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. Type was created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/create": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "createImage",
+        "description": "The method attempts to add image to user/certificate/education.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateImageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Ok. Images was added to entity.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/image/remove": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/securityToken"
+        }
+      ],
+      "post": {
+        "tags": [
+          "Image"
+        ],
+        "operationId": "removeImages",
+        "description": "The method attempts to remove images from entity",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RemoveImagesRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationResultResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+  },
+  "components": {
+    "schemas": {
+      "CreateCredentialsRequest": {
+        "type": "object",
+        "required": [
+          "UserId",
+          "Login",
+          "Password"
+        ],
+        "properties": {
+          "UserId": {
+            "description": "Unique user identifier.",
+            "type": "string",
+            "format": "uuid",
+            "example": "ab4a5594-98aa-48ef-8ab9-c43c0a73902d"
+          },
+          "Login": {
+            "description": "User login.",
+            "type": "string",
+            "example": "Mylogin"
+          },
+          "Password": {
+            "description": "User password received by email.",
+            "type": "string",
+            "example": "Sicretpassword"
+          }
+        }
+      },
+      "OperationResultResponse": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "object",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OperationResultResponseImagesIds": {
+        "description": "Response object for action operations.",
+        "type": "object",
+        "properties": {
+          "Body": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "Status": {
+            "$ref": "#/components/schemas/OperationResultStatusType"
+          },
+          "Errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EducationCompleteness": {
+        "type": "string",
+        "description": "Education completeness.",
+        "enum": [
+          "Completed",
+          "Uncompleted"
+        ],
+        "example": "Completed"
+      },
+      "OperationResultStatusType": {
+        "type": "string",
+        "description": "Operation complition result status.",
+        "enum": [
+          "FullSuccess",
+          "PartialSuccess",
+          "Failed"
+        ],
+        "example": "FullSuccess",
+        "default": "FullSuccess"
+      },
+      "EditEducationRequest": {
+        "type": "array",
+        "minItems": 1,
+        "example": [
+          {
+            "op": "replace",
+            "path": "/UniversityName",
+            "value": {
+              "description": "New university name",
+              "type": "string",
+              "example": "State University"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/QualificationName",
+            "value": {
+              "description": "New qualification name.",
+              "type": "string",
+              "example": "Qualification"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/EducationFormId",
+            "value": {
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/EducationTypeId",
+            "value": {
+              "format": "string",
+              "type": "uuid"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/Completeness",
+            "value": {
+              "$ref": "#/components/schemas/EducationCompleteness"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/AdmissionAt",
+            "value": {
+              "description": "Date of admission.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "add",
+            "path": "/IssueAt",
+            "value": {
+              "description": "Date of issue.",
+              "type": "string",
+              "format": "date",
+              "example": "2021-01-21T00:00:00.000Z"
+            }
+          },
+          {
+            "op": "replace",
+            "path": "/IsActive",
+            "value": {
+              "description": "Is active certificate.",
+              "type": "bool",
+              "example": "false"
+            }
+          }
+        ],
+        "items": {
+          "$ref": "#/components/schemas/PatchEducationDocument"
+        }
+      },
+      "PatchEducationDocument": {
+        "type": "object",
+        "required": [
+          "op",
+          "path",
+          "value"
+        ],
+        "properties": {
+          "op": {
+            "type": "string",
+            "description": "The operation to be performed.",
+            "enum": [
+              "replace"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "description": "A JSON-Pointer.",
+            "enum": [
+              "/UniversityName",
+              "/QualificationName",
+              "/EducationFormId",
+              "/EducationTypeId",
+              "/Completeness",
+              "/AdmissiomAt",
+              "/IssueAt",
+              "/IsActive"
+            ]
+          },
+          "value": {
+            "type": "object",
+            "description": "The value to be used within the operations."
+          }
+        }
+      },
+      "CreateEducationRequest": {
+        "type": "object",
+        "required": [
+          "UserId",
+          "UniversityName",
+          "QualificationName",
+          "EducationFormId",
+          "EducationTypeId",
+          "Completeness",
+          "AdmissionAt"
+        ],
+        "properties": {
+          "UserId": {
+            "description": "Unique user identifier.",
+            "type": "string",
+            "format": "uuid"
+          },
+          "UniversityName": {
+            "description": "Name of the univerity.",
+            "type": "string",
+            "example": "Orel State University"
+          },
+          "QualificationName": {
+            "description": "Name of qualification.",
+            "type": "string",
+            "example": "Computer Programmer"
+          },
+          "EducationFormId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "EducationTypeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Completeness": {
+            "$ref": "#/components/schemas/EducationCompleteness"
+          },
+          "AdmissionAt": {
+            "description": "Date of admission.",
+            "type": "string",
+            "format": "date",
+            "example": "2021-01-21T00:00:00.000Z"
+          },
+          "IssueAt": {
+            "description": "Date of issuue.",
+            "type": "string",
+            "format": "date",
+            "example": "2021-01-21T00:00:00.000Z"
+          }
+        }
+      },
+      "ImageContent": {
+        "type": "object",
+        "required": [
+          "Name",
+          "Content",
+          "Extension"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Image name.",
+            "type": "string",
+            "example": "Avatar"
+          },
+          "Content": {
+            "description": "Image content.",
+            "type": "string",
+            "format": "base64"
+          },
+          "Extension": {
+            "description": "Image extension.",
+            "type": "string",
+            "example": ".png"
+          }
+        }
+      },
+      "CreateEducationFormRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Educations form name.",
+            "type": "string",
+            "example": "Online."
+          }
+        }
+      },
+      "CreateEducationTypeRequest": {
+        "type": "object",
+        "required": [
+          "Name"
+        ],
+        "properties": {
+          "Name": {
+            "description": "Educations type name.",
+            "type": "string",
+            "example": "Higher Education."
+          }
+        }
+      },
+      "CreateImageRequest": {
+        "type": "object",
+        "required": [
+          "CertificateId",
+          "Images"
+        ],
+        "properties": {
+          "CertificateId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier.",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "Images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ImageContent"
+            }
+          }
+        }
+      },
+      "RemoveImagesRequest": {
+        "type": "object",
+        "required": [
+          "CerificateId",
+          "ImagesIds"
+        ],
+        "properties": {
+          "CerificateId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier.",
+            "example": "49f0e767-4f07-44fe-beff-36d135006fde"
+          },
+          "ImagesIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "securityToken": {
+        "name": "token",
+        "in": "header",
+        "description": "The JWT token.",
+        "schema": {
+          "type": "string",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkw"
+        },
+        "required": true
+      },
+      "achievementId": {
+        "name": "achievmentId",
+        "in": "query",
+        "description": "Achievement global unique identifier.",
+        "schema": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "required": true
+      }
+    }
+  }
+}

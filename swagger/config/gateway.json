@@ -1,0 +1,11 @@
+{
+  "$schema": "../../node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "swagger/GatewayService.json",
+  "output": "src/app/api/gateway-service",
+  "templates": "swagger/templates",
+  "module": "GatewayApiModule",
+  "excludeParameters": [
+    "token"
+  ],
+  "serviceSuffix": "ApiService"
+}

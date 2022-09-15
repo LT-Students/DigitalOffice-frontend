@@ -1,0 +1,20 @@
+<div class="header">
+	<div class="flex flex_ai_baseline">
+		<h1 doUnderline class="break-word">{{ department.shortName }}</h1>
+		<span class="status text-secondary_default">
+			{{ department.status.label }}
+			<mat-icon
+				class="icon vertical-align_middle"
+				[svgIcon]="Icons.Status"
+				[style.color]="department.status.color"
+			></mat-icon
+		></span>
+	</div>
+	<do-actions class="controls">
+		<a *ngIf="canEditDepartment$ | async" doButton [routerLink]="DepartmentsRoutes.EditDepartment">Редактировать</a>
+		<a *ngIf="canAccessTimeList$ | async" mat-flat-button color="primary" [routerLink]="DepartmentsRoutes.TimeList"
+			>Таймлист</a
+		>
+	</do-actions>
+</div>
+<h5 class="short-name break-word">{{ department.name }}</h5>
