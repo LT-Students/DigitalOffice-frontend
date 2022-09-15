@@ -7,7 +7,7 @@ export interface HintValidation {
 
 //This component should be used inside mde-popover.
 @Component({
-	selector: 'do-password-hint',
+	selector: 'do-validation-hint',
 	templateUrl: './validation-hint.component.html',
 	styleUrls: ['./validation-hint.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
