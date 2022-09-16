@@ -7,7 +7,7 @@
 		size="l"
 	></do-profile-image>
 	<div class="user-info">
-		<span class="name link" [routerLink]="[user.id]">{{ user | fullName: true }}</span>
+		<span class="name link" [routerLink]="[user.id]">{{ user | fullName: true:true }}</span>
 		<ng-container *ngIf="additionalInfo">
 			<span class="mat-body-2 text-secondary_default">{{ additionalInfo.position?.name | placeholder }}</span>
 			<span class="mat-body-2 text-secondary_default">{{ additionalInfo.department?.name | placeholder }}</span>
