@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { DateTime } from 'luxon';
+import { Icons } from '@shared/modules/icons/icons';
 import { AttendanceService, MAX_FUTURE_DATE } from '../../services/attendance.service';
 import { ChartLegend } from './doughnut-chart/doughnut-chart.component';
 
@@ -11,6 +12,7 @@ import { ChartLegend } from './doughnut-chart/doughnut-chart.component';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TimeWidgetComponent {
+	public readonly Icons = Icons;
 	public readonly maxDate = MAX_FUTURE_DATE;
 
 	public selectedDate$ = this.attendanceService.selectedDate$;

@@ -184,7 +184,7 @@ export class DoughnutChartComponent implements OnInit, OnDestroy {
 				],
 			},
 			options: {
-				cutout: 65,
+				cutout: 90,
 				responsive: false,
 				maintainAspectRatio: false,
 				layout: {

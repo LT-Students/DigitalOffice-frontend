@@ -1,24 +1,11 @@
 @use 'base/variables' as variables;
 
 .add-hours {
-	&__matcard {
-		padding: 32px 48px;
-	}
-
-	&__menu {
-		margin: 0;
-
-		display: inline-flex;
-		align-items: center;
-
-		cursor: pointer;
-	}
+	padding: 32px 48px;
 }
 
-.menu-item {
-	color: variables.$disabled;
-}
+.tab-content {
+	margin-top: 24px;
 
-.active {
-	color: variables.$main_text;
+	display: block;
 }

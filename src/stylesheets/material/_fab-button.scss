@@ -9,6 +9,10 @@
 		color: mat.get-color-from-palette($primary-palette, 400);
 
 		background-color: mat.get-color-from-palette($primary-palette, 100);
+
+		.mat-button-wrapper {
+			line-height: 1;
+		}
 	}
 }
 
