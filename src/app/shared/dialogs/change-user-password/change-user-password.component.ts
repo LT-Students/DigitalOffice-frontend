@@ -45,7 +45,7 @@ export class ChangeUserPasswordComponent implements OnInit {
 		this.hintValidations$ = (this.form.get('newPassword') as FormControl).valueChanges.pipe(
 			startWith(''),
 			map((value: string) => [
-				{ label: 'от 8 до 14 символов', valid: value.length >= 8 && value.length <= 14 },
+				{ label: 'от 8 до 50 символов', valid: value.length >= 8 && value.length <= 50 },
 				{ label: 'заглавные буквы', valid: /[A-Z]/u.test(value) },
 				{ label: 'строчные буквы', valid: /[a-z]/u.test(value) },
 				{ label: 'минимум 1 цифра', valid: /\d/.test(value) },

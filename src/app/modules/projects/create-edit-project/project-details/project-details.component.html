@@ -11,12 +11,18 @@
 	</do-form-field>
 	<do-form-field [label]="form.controls['status'].value | endDateLabel">
 		<mat-form-field>
-			<input matInput formControlName="endDate" [matDatepicker]="endDate" placeholder="ДД месяц ГГГГ" />
+			<input
+				matInput
+				formControlName="endDate"
+				[matDatepicker]="endDate"
+				placeholder="ДД месяц ГГГГ"
+				[errorStateMatcher]="endDateErrorMatcher"
+			/>
 			<mat-datepicker-toggle matSuffix [for]="endDate">
 				<mat-icon matDatepickerToggleIcon>date_range</mat-icon>
 			</mat-datepicker-toggle>
 			<mat-datepicker #endDate></mat-datepicker>
-			<mat-error>{{ form.controls['endDate'].errors | controlErrors }}</mat-error>
+			<mat-error>{{ form.controls['endDate'].errors || form.errors | controlErrors }}</mat-error>
 		</mat-form-field>
 	</do-form-field>
 	<do-form-field label="Статус">
