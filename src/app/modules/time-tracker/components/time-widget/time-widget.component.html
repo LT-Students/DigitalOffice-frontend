@@ -13,7 +13,7 @@
 			[class.mat-elevation-z0]="true"
 			data-test="previous-month-btn"
 		>
-			<mat-icon fontSet="material-icons-round">chevron_left</mat-icon>
+			<mat-icon [svgIcon]="Icons.KeyboardArrowLeft"></mat-icon>
 		</button>
 		<do-doughnut-chart (chartLegend)="chartData = $event"></do-doughnut-chart>
 		<button
@@ -24,7 +24,7 @@
 			[class.mat-elevation-z0]="true"
 			data-test="next-month-btn"
 		>
-			<mat-icon fontSet="material-icons-round">chevron_right</mat-icon>
+			<mat-icon [svgIcon]="Icons.KeyboardArrowRight"></mat-icon>
 		</button>
 	</div>
 	<do-legend class="legend" [labels]="chartData.labels" [colors]="chartData.colors"></do-legend>

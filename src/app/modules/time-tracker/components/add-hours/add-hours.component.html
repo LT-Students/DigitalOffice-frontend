@@ -1,19 +1,15 @@
-<mat-card class="add-hours__matcard">
-	<h3 doUnderline underlinedSize="sm">
-		Внести часы в
-		<span class="mat-h3 add-hours__menu primary" [matMenuTriggerFor]="formTypeMenu" data-test="add-time-for-btn"
-			>{{ isWorktimeForm ? 'проект' : 'отсутствие' }}
-			<mat-icon>expand_more</mat-icon>
-		</span>
-		<mat-menu #formTypeMenu="matMenu">
-			<button mat-menu-item class="menu-item" [class.active]="isWorktimeForm" (click)="toggleFormType(true)">
-				Проект
-			</button>
-			<button mat-menu-item class="menu-item" [class.active]="!isWorktimeForm" (click)="toggleFormType(false)">
-				Отсутствие
-			</button>
-		</mat-menu>
-	</h3>
-	<do-add-work-time-hours *ngIf="isWorktimeForm"></do-add-work-time-hours>
-	<do-add-leave-hours *ngIf="!isWorktimeForm"></do-add-leave-hours>
+<mat-card class="add-hours">
+	<h3 doUnderline underlinedSize="sm" class="title">Внести часы</h3>
+	<mat-tab-group mat-stretch-tabs>
+		<mat-tab label="Проект">
+			<ng-template matTabContent>
+				<do-add-work-time-hours class="tab-content"></do-add-work-time-hours>
+			</ng-template>
+		</mat-tab>
+		<mat-tab label="Отсутствия">
+			<ng-template matTabContent>
+				<do-add-leave-hours class="tab-content"></do-add-leave-hours>
+			</ng-template>
+		</mat-tab>
+	</mat-tab-group>
 </mat-card>

@@ -1,32 +1,13 @@
 <div [formGroup]="addHoursForm" class="form">
-	<div class="dates-container">
-		<do-form-field label="Количество часов" labelClass="text-main">
-			<mat-form-field>
-				<input
-					matInput
-					doNumberInput
-					formControlName="time"
-					type="text"
-					placeholder="0"
-					data-test="work-hours-input"
-				/>
-				<mat-error>
-					{{ addHoursForm.controls['time'].errors | controlErrors }}
-				</mat-error>
-			</mat-form-field>
-		</do-form-field>
-
-		<do-form-field label="Месяц" labelClass="text-main">
-			<mat-form-field>
-				<mat-select [formControl]="dateControl" [compareWith]="compareDate" data-test="month-select">
-					<mat-option *ngFor="let month of monthOptions" [value]="month">
-						{{ month | dateTime: 'LLLL y' | titlecase }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
-		</do-form-field>
-	</div>
-
+	<do-form-field label="Месяц" labelClass="text-main">
+		<mat-form-field>
+			<mat-select [formControl]="dateControl" [compareWith]="compareDate" data-test="month-select">
+				<mat-option *ngFor="let month of monthOptions" [value]="month">
+					{{ month | dateTime: 'LLLL y' | titlecase }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</do-form-field>
 	<do-form-field label="Проект" labelClass="text-main">
 		<mat-form-field>
 			<mat-select
@@ -41,6 +22,21 @@
 			</mat-select>
 			<mat-error>
 				{{ addHoursForm.controls['project'].errors | controlErrors }}
+			</mat-error>
+		</mat-form-field>
+	</do-form-field>
+	<do-form-field label="Количество часов" labelClass="text-main">
+		<mat-form-field>
+			<input
+				matInput
+				doNumberInput
+				formControlName="time"
+				type="text"
+				placeholder="0"
+				data-test="work-hours-input"
+			/>
+			<mat-error>
+				{{ addHoursForm.controls['time'].errors | controlErrors }}
 			</mat-error>
 		</mat-form-field>
 	</do-form-field>
