@@ -14,6 +14,7 @@ import {
 	ControlValueAccessor,
 	FormBuilder,
 	FormControl,
+	FormGroupDirective,
 	NgControl,
 	ValidationErrors,
 	ValidatorFn,
@@ -23,7 +24,14 @@ import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DoValidators } from '@app/validators/do-validators';
+import { ErrorStateMatcher } from '@angular/material/core';
 import { ProjectStatus } from '../../models/project-status';
+
+class EndDateErrorMatcher implements ErrorStateMatcher {
+	public isErrorState(control: FormControl | null, form: FormGroupDirective | null): boolean {
+		return !!control?.invalid || !!form?.hasError('invalidDuration');
+	}
+}
 
 function validateDuration(startDateField: string, endDateField: string): ValidatorFn {
 	return (group: AbstractControl): ValidationErrors | null => {
@@ -31,7 +39,7 @@ function validateDuration(startDateField: string, endDateField: string): Validat
 		const endDate = group.get(endDateField)?.value as DateTime | null;
 
 		return startDate && endDate && startDate.startOf('day') > endDate.startOf('day')
-			? { invalidDuration: true }
+			? { invalidDuration: { message: 'Дата завершения не может быть меньше даты запуска' } }
 			: null;
 	};
 }
@@ -53,6 +61,8 @@ export class ProjectDetailsComponent implements OnInit, OnDestroy, ControlValueA
 	public readonly statuses = ProjectStatus.getAllStatuses();
 
 	@Input() isEditMode = false;
+
+	public endDateErrorMatcher = new EndDateErrorMatcher();
 
 	public form = this.fb.group(
 		{
