@@ -36,11 +36,15 @@ export class AddEditLeaveHoursBase extends LoadingState {
 	public handleDateSelection(): void {
 		const startTimeValue: DateTime = this.form.get('startTime')?.value;
 		const endTimeControl = this.form.get('endTime') as FormControl;
+		const endTimeValue: DateTime = this.form.get('startTime')?.value;
 		if (!startTimeValue) return;
-		if (!endTimeControl.value) {
+		if (!endTimeValue) {
 			endTimeControl.setValue(startTimeValue.endOf('day'));
 		}
-		const duration = this.attendanceService.getLeaveDuration(startTimeValue, endTimeControl.value);
+		if (endTimeValue > startTimeValue) {
+			return;
+		}
+		const duration = this.attendanceService.getLeaveDuration(startTimeValue, endTimeValue);
 		this.selectedIntervalDurationInHours$.next(duration);
 	}
 
