@@ -16,7 +16,7 @@ const NAME_REGEXP = /^\s*\p{L}[\p{L}'\- ]*\s*$/u;
 const ONE_SPACE_BETWEEN_WORDS_REGEXP = /(\S\s{2,}\S)/;
 const INTEGER_NUMBER_REGEXP = /^-?\d+$/;
 const PASSWORD_REGEXP =
-	/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\])[\w<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\]{8,14}$/;
+	/^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\])[\w<>\[\]\{\}!@#\$%\^&\*\.\,:;\?_\+\-\/\\]{8,50}$/;
 
 export class DoValidators {
 	static required(control: AbstractControl): ValidationErrors | null {
