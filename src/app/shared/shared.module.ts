@@ -67,6 +67,8 @@ import { JoinPipe } from './pipes/join.pipe';
 import { ImageViewerComponent } from './component/image-viewer/image-viewer.component';
 import { SafeImageUrlPipe } from './pipes/safe-image-url.pipe';
 import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-spaces.directive';
+import { PopoverComponent } from './component/popover/popover.component';
+import { PopoverTriggerDirective } from './component/popover/popover-trigger.directive';
 
 @NgModule({
 	declarations: [
@@ -129,6 +131,8 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		ImageViewerComponent,
 		SafeImageUrlPipe,
 		RemoveRedundantSpacesDirective,
+		PopoverComponent,
+		PopoverTriggerDirective,
 	],
 	imports: [
 		CommonModule,
@@ -206,6 +210,8 @@ import { RemoveRedundantSpacesDirective } from './directives/remove-redundant-sp
 		ImageViewerComponent,
 		SafeImageUrlPipe,
 		RemoveRedundantSpacesDirective,
+		PopoverComponent,
+		PopoverTriggerDirective,
 	],
 })
 export class SharedModule {}
