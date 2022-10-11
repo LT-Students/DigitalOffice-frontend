@@ -2,7 +2,6 @@ import { Title } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeRu from '@angular/common/locales/ru';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
@@ -33,7 +32,7 @@ function initializeCompanyAndUser(appInitService: AppInitService) {
 
 @NgModule({
 	declarations: [AppComponent],
-	imports: [AppRoutingModule, CoreModule, NgbModule, MatLuxonDateModule, SharedModule, CommonLayoutModule],
+	imports: [AppRoutingModule, CoreModule, MatLuxonDateModule, SharedModule, CommonLayoutModule],
 	providers: [
 		Title,
 		{

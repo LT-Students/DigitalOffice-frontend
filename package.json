@@ -55,7 +55,6 @@
     "@editorjs/quote": "^2.4.0",
     "@editorjs/underline": "^1.0.0",
     "@material-extended/mde": "^3.0.3",
-    "@ng-bootstrap/ng-bootstrap": "^7.0.0",
     "@ngx-loading-bar/core": "^5.1.2",
     "@ngx-loading-bar/http-client": "^5.1.2",
     "@ngx-loading-bar/router": "^5.1.2",
