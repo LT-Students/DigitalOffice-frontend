@@ -10,7 +10,7 @@ import { AutocompleteFilterParams, Filter } from '../../models';
 		<do-form-field>
 			<mat-form-field>
 				<do-autocomplete
-					[placeholder]="params?.placeholder"
+					[placeholder]="params.placeholder"
 					[formControl]="control"
 					[options]="params.options$ | async"
 					[displayWith]="params.displayWithFn"
@@ -28,9 +28,6 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 	public control = new UntypedFormControl(null);
 	public params!: AutocompleteFilterParams<any>;
 	private destroy$ = new Subject<void>();
-
-	private onChange = () => {};
-	private onTouched = () => {};
 
 	constructor() {}
 
@@ -53,4 +50,7 @@ export class AutocompleteComponent implements OnInit, OnDestroy, Filter<Autocomp
 	public writeValue(value: any): void {
 		this.control.setValue(value, { emitEvent: false });
 	}
+
+	private onChange = () => {};
+	private onTouched = () => {};
 }

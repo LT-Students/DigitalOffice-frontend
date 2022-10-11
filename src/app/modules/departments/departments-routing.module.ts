@@ -49,6 +49,7 @@ const routes: Routes = [
 					{
 						path: '',
 						redirectTo: DepartmentsRoutes.Users,
+						pathMatch: 'full',
 					},
 					{
 						path: DepartmentsRoutes.Users,

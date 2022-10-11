@@ -10,6 +10,7 @@ const employeeRoutes: Routes = [
 	{
 		path: '',
 		component: UserListComponent,
+		title: 'Список сотрудников',
 		resolve: {
 			users: UserListResolver,
 		},
@@ -17,6 +18,7 @@ const employeeRoutes: Routes = [
 	{
 		path: ':id',
 		component: EmployeePageComponent,
+		title: 'Карточка сотрудника',
 		resolve: { employee: EmployeeResolver, projects: PersonalProjectsResolver },
 	},
 	{ path: '**', pathMatch: 'full', redirectTo: '' },

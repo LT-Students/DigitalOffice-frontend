@@ -1,6 +1,6 @@
 <do-profile-image
 	[class.pointer]="params?.onAvatarClick"
-	(click)="params?.onAvatarClick?.call(this, user)"
+	(click)="params?.onAvatarClick(user)"
 	[image]="user.avatar"
 	[userInitials]="user"
 ></do-profile-image>
@@ -10,7 +10,7 @@
 			class="no-overflow"
 			[class.pointer]="params?.onNameClick"
 			[routerLink]="null"
-			(click)="params?.onNameClick?.call(this, user)"
+			(click)="params?.onNameClick(user)"
 			>{{ user | fullName: true:true }}</span
 		>
 		<mat-icon

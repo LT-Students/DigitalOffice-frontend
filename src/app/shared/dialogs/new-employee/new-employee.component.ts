@@ -93,13 +93,6 @@ export class NewEmployeeComponent extends LoadingState implements OnInit, OnDest
 		this.warningOnClose.beforeClose(this.isFormDirty());
 	}
 
-	private isFormDirty(): boolean {
-		const initialForm = this.initForm();
-		return Object.keys(initialForm.controls).some(
-			(k: string) => this.userForm.controls[k].value !== initialForm.controls[k].value
-		);
-	}
-
 	public createEmployee(): void {
 		this.setLoading(true);
 
@@ -115,6 +108,13 @@ export class NewEmployeeComponent extends LoadingState implements OnInit, OnDest
 			.subscribe((result: OperationResultResponse) => {
 				this.dialogRef.close(result);
 			});
+	}
+
+	private isFormDirty(): boolean {
+		const initialForm = this.initForm();
+		return Object.keys(initialForm.controls).some(
+			(k: string) => this.userForm.controls[k].value !== initialForm.controls[k].value
+		);
 	}
 
 	private initForm(): UntypedFormGroup {

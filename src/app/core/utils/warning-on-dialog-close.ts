@@ -1,4 +1,4 @@
-import { MatDialogRef } from '@angular/material/dialog/dialog-ref';
+import { MatDialogRef } from '@angular/material/dialog';
 import { merge, Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { DialogService } from '@app/services/dialog.service';

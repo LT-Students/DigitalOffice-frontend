@@ -1,15 +1,14 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Filter } from '../../models/filter';
-import { SelectFilterParams } from '../../models/select';
+import { Filter, SelectFilterParams } from '../../models';
 
 @Component({
 	selector: 'do-select',
 	template: `
 		<do-form-field>
 			<mat-form-field>
-				<mat-select [formControl]="control" [placeholder]="params?.placeholder || ''">
+				<mat-select [formControl]="control" [placeholder]="params.placeholder | placeholder: ''">
 					<mat-option *ngIf="params.allowReset">—</mat-option>
 					<mat-option
 						*ngFor="let option of params.options$ | async"
@@ -31,10 +30,8 @@ import { SelectFilterParams } from '../../models/select';
 })
 export class SelectComponent implements OnInit, OnDestroy, Filter<SelectFilterParams<any>> {
 	public control = new UntypedFormControl('');
-	private subscription!: Subscription;
 	public params!: SelectFilterParams<any>;
-	private onChange = () => {};
-	private onTouched = () => {};
+	private subscription!: Subscription;
 
 	constructor() {}
 
@@ -57,4 +54,7 @@ export class SelectComponent implements OnInit, OnDestroy, Filter<SelectFilterPa
 	public writeValue(value: string): void {
 		this.control.setValue(value);
 	}
+
+	private onChange = () => {};
+	private onTouched = () => {};
 }

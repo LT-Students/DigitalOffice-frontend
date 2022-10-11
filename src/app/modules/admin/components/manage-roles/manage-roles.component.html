@@ -35,11 +35,11 @@
 				<tr *ngFor="let role of roles.body" class="row">
 					<td class="cell">
 						<p class="cell__content cell__content_ellipsissed">
-							{{ role.localizations?.[0]?.name ?? '—' }}
+							{{ role.localizations[0].name | placeholder: '—' }}
 						</p>
 					</td>
 					<td class="cell">
-						<do-comment [text]="role.localizations?.[0]?.description"></do-comment>
+						<do-comment [text]="role.localizations[0].description"></do-comment>
 					</td>
 					<td class="cell text-align_right">
 						<button mat-icon-button (click)="onAddEditRole(role)">

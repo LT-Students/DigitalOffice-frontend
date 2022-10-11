@@ -19,8 +19,8 @@ import { AddEditOfficeComponent } from '../../modals/add-edit-office/add-edit-of
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfficeListComponent implements AfterViewInit {
-	public readonly Icons = Icons;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
+	public readonly Icons = Icons;
 
 	public offices$!: Observable<OperationResultResponse<OfficeInfo[]>>;
 	public filters: UntypedFormGroup;
@@ -63,7 +63,7 @@ export class OfficeListComponent implements AfterViewInit {
 			.openModal<AddEditOfficeComponent>(AddEditOfficeComponent, ModalWidth.M, officeInfo)
 			.afterClosed()
 			.subscribe({
-				next: (result) => {
+				next: () => {
 					this._refreshCurrentPage$$.next(true);
 				},
 			});
@@ -82,7 +82,7 @@ export class OfficeListComponent implements AfterViewInit {
 					return iif(() => !!confirm, this._officeService.deleteOffice(officeInfo.id ?? ''), EMPTY);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}
@@ -100,7 +100,7 @@ export class OfficeListComponent implements AfterViewInit {
 					return iif(() => !!confirm, this._officeService.restoreOffice(officeInfo.id ?? ''), EMPTY);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}

@@ -19,9 +19,8 @@ import { AddEditRoleComponent } from '../../modals/add-edit-role/add-edit-role.c
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ManageRolesComponent implements AfterViewInit {
-	public readonly Icons = Icons;
-
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
+	public readonly Icons = Icons;
 
 	public roles$!: Observable<OperationResultResponse<RoleInfo[]>>;
 	public filters: UntypedFormGroup;
@@ -64,7 +63,7 @@ export class ManageRolesComponent implements AfterViewInit {
 			.openModal<AddEditRoleComponent>(AddEditRoleComponent, ModalWidth.M, roleInfo)
 			.afterClosed()
 			.subscribe({
-				next: (result) => {
+				next: () => {
 					this._refreshCurrentPage$$.next(true);
 				},
 			});
@@ -90,7 +89,7 @@ export class ManageRolesComponent implements AfterViewInit {
 					);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}
@@ -115,7 +114,7 @@ export class ManageRolesComponent implements AfterViewInit {
 					);
 				})
 			)
-			.subscribe((result) => {
+			.subscribe(() => {
 				this._refreshCurrentPage$$.next(true);
 			});
 	}
